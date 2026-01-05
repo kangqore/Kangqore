@@ -60,3 +60,9 @@ Phase transitions require explicit PO approval.
 - Secure by default  
 - Minimal surface area  
 - Observability over complexity  
+## Governance & Role Control
+
+Administrative permissions are defined in:
+- `docs/ADMIN_ROLES.md`
+
+Any role expansion or permission change requires **explicit Product Owner approval**.
