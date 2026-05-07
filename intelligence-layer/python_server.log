@@ -1,0 +1,8 @@
+INFO:     Will watch for changes in these directories: ['/Users/maheshkumar/Desktop/Kangqore/intelligence-layer']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [93596] using StatReload
+INFO:     Started server process [93616]
+INFO:     Waiting for application startup.
+2026-03-18 04:44:33,578 - main - INFO - 🧠 Intelligence Layer starting up...
+INFO:     Application startup complete.
+INFO:     127.0.0.1:49439 - "GET / HTTP/1.1" 200 OK

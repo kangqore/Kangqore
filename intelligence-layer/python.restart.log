@@ -1,0 +1,9 @@
+Installing dependencies...
+start_python.sh: /Volumes/MKS MacBook/Kangqore/venv/bin/pip3: /Users/maheshkumar/Desktop/Kangqore/venv/bin/python3.14: bad interpreter: No such file or directory
+Starting Intelligence Engine on port 8000...
+Traceback (most recent call last):
+  File "/Volumes/MKS MacBook/Kangqore/intelligence-layer/main.py", line 8, in <module>
+    from routes.insights import router as insights_router
+  File "/Volumes/MKS MacBook/Kangqore/intelligence-layer/routes/insights.py", line 8, in <module>
+    from textblob import TextBlob
+ModuleNotFoundError: No module named 'textblob'

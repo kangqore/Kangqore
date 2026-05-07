@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: kangqore-postgres
+    environment:
+      POSTGRES_DB: kangqore_core
+      POSTGRES_USER: kangqore_user
+      POSTGRES_PASSWORD: kangqore_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - kangqore-network
+
+  # Node.js Core Backend
+  core-backend:
+    build:
+      context: ./core-backend
+      dockerfile: Dockerfile
+    container_name: kangqore-core-backend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://kangqore_user:kangqore_password@postgres:5432/kangqore_core
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      PYTHON_SERVICE_URL: http://intelligence-layer:8000
+      CORS_ORIGINS: http://localhost:3000,http://localhost:5173
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - intelligence-layer
+    volumes:
+      - ./core-backend/uploads:/app/uploads
+    networks:
+      - kangqore-network
+
+  # Python Intelligence Layer
+  intelligence-layer:
+    build:
+      context: ./intelligence-layer
+      dockerfile: Dockerfile
+    container_name: kangqore-intelligence-layer
+    environment:
+      PORT: 8000
+      ENVIRONMENT: production
+      CORE_BACKEND_URL: http://core-backend:3000
+    ports:
+      - "8000:8000"
+    networks:
+      - kangqore-network
+
+  # Frontend (if needed)
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: kangqore-frontend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     REACT_APP_API_URL: http://localhost:3000
+  #   depends_on:
+  #     - core-backend
+  #   networks:
+  #     - kangqore-network
+
+volumes:
+  postgres_data:
+
+networks:
+  kangqore-network:
+    driver: bridge

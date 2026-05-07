@@ -1,0 +1,271 @@
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
+import { departmentData } from '../data/departmentData';
+
+const RotatingAsterisk = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" className="mx-6 text-white/50 animate-[spin_8s_linear_infinite] shrink-0">
+    <g stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+      <line x1="12" y1="2" x2="12" y2="22" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+      <line x1="4.93" y1="19.07" x2="19.07" y2="4.93" />
+      <line x1="8.46" y1="3.54" x2="15.54" y2="20.46" />
+      <line x1="3.54" y1="8.46" x2="20.46" y2="15.54" />
+      <line x1="3.54" y1="15.54" x2="20.46" y2="8.46" />
+      <line x1="8.46" y1="20.46" x2="15.54" y2="3.54" />
+    </g>
+    <circle cx="12" cy="12" r="4.5" fill="currentColor" />
+  </svg>
+);
+
+const Footer = () => {
+  const { t } = useTranslation();
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+      setEmail('');
+      setTimeout(() => setSubscribed(false), 4000);
+    }
+  };
+
+  // What We Do - Service departments (first 8)
+  const whatWeDoLinks = departmentData.slice(0, 8).map(dept => ({
+    name: t(`departments.${dept.slug}`, dept.name),
+    path: `/department/${dept.slug}`
+  }));
+
+  // Who We Are links
+  const whoWeAreLinks = [
+    { name: t('menu.about_us'), path: '/about-us' },
+    { name: 'Values & Culture', path: '/values' },
+    { name: t('menu.leadership'), path: '/leadership' },
+    { name: t('menu.partners'), path: '/partners' },
+    { name: t('menu.testimonials'), path: '/testimonials' },
+    { name: t('menu.eqore'), path: '/eqore' },
+    { name: t('nav.careers'), path: '/careers' },
+    { name: t('nav.investors'), path: '/investors' },
+    { name: t('menu.location'), path: '/location' },
+    { name: t('menu.team'), path: '/team' },
+    { name: t('menu.brand_identity'), path: '/brand-identity' }
+  ];
+
+  // Industries links
+  const industriesLinks = [
+    { name: t('industries.banking'), path: '/industries/banking' },
+    { name: t('industries.insurance'), path: '/industries/insurance' },
+    { name: t('industries.edtech'), path: '/industries/edtech' },
+    { name: t('industries.healthcare'), path: '/industries/healthcare' },
+    { name: t('industries.life_science'), path: '/industries/life-science' },
+    { name: t('industries.media_tech'), path: '/industries/media-technology' },
+    { name: t('industries.retail'), path: '/industries/retail' },
+    { name: t('industries.travel_hospitality'), path: '/industries/travel-hospitality' },
+    { name: t('industries.energy_utilities'), path: '/industries/energy-utilities' },
+    { name: t('industries.manufacturing'), path: '/industries/manufacturing' },
+    { name: t('industries.info_services'), path: '/industries/information-services' },
+    { name: t('industries.consumer_goods'), path: '/industries/consumer-goods' }
+  ];
+
+  // Insights links
+  const insightsLinks = [
+    { name: t('menu.blogs'), path: '/blogs' },
+    { name: t('menu.case_studies'), path: '/case-studies' },
+    { name: t('menu.brochures'), path: '/brochures' },
+    { name: t('menu.events'), path: '/events' },
+    { name: t('menu.white_paper'), path: '/white-paper' }
+  ];
+
+  // Social media icons: LinkedIn, X (Twitter), Facebook, Instagram, YouTube, Reddit
+  const socialLinks = [
+    { 
+      name: 'LinkedIn', 
+      icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z', 
+      href: 'https://www.linkedin.com/company/kangqore' 
+    },
+    { 
+      name: 'X', 
+      icon: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z', 
+      href: 'https://x.com/kangqore' 
+    },
+    { 
+      name: 'Facebook', 
+      icon: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z', 
+      href: 'https://www.facebook.com/kangqore' 
+    },
+    { 
+      name: 'Instagram', 
+      icon: 'M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.757-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z', 
+      href: 'https://www.instagram.com/kangqore' 
+    },
+    { 
+      name: 'YouTube', 
+      icon: 'M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z', 
+      href: 'https://www.youtube.com/@kangqore' 
+    },
+    { 
+      name: 'Reddit', 
+      icon: 'M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z', 
+      href: 'https://www.reddit.com/r/kangqore' 
+    }
+  ];
+
+  return (
+    <footer className="bg-[#050505] text-white relative border-t border-white/5">
+      {/* Running Strip - Softened */}
+      <div className="w-full bg-brand-gradient/10 border-b border-white/5 py-4 overflow-hidden flex items-center">
+        <div className="animate-marquee whitespace-nowrap text-white/50 text-2xl sm:text-3xl lg:text-4xl font-display font-light tracking-wide flex w-max">
+          {/* First Copy */}
+          <span className="shrink-0 flex items-center">Kangqore is a value-driven IT company that enables enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation. <RotatingAsterisk /> Kangqore is a value-driven IT company that enables enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation. <RotatingAsterisk /> Kangqore is a value-driven IT company that enables enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation. <RotatingAsterisk /></span>
+          
+          {/* Second Copy (Duplicate for seamless loop) */}
+          <span className="shrink-0 flex items-center">Kangqore is a value-driven IT company that enables enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation. <RotatingAsterisk /> Kangqore is a value-driven IT company that enables enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation. <RotatingAsterisk /> Kangqore is a value-driven IT company that enables enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation. <RotatingAsterisk /></span>
+        </div>
+      </div>
+
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-16 lg:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+          
+          {/* Left Anchor - Newsletter & Mission (No Logo) */}
+          <div className="lg:col-span-4 flex flex-col justify-start items-start">
+            <div className="mb-10">
+              <h2 className="text-3xl lg:text-4xl font-display font-bold text-white tracking-tight leading-tight mb-4">
+                We Innovate <span className="text-transparent bg-clip-text bg-brand-gradient italic">Futures.</span>
+              </h2>
+              <p className="text-slate-400 leading-relaxed font-light">
+                Join our executive network. Get unfiltered insights on AI, digital transformation, and enterprise architecture delivered straight to your inbox.
+              </p>
+            </div>
+
+            {/* Newsletter Subscribe */}
+            <div className="w-full max-w-sm">
+              <form onSubmit={handleSubscribe} className="relative group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email address"
+                  required
+                  className="relative w-full bg-[#0a0a0c] border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/20 transition-all duration-300"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-black text-xs font-bold px-5 py-2.5 rounded-lg hover:bg-gray-200 transition-colors duration-300 flex items-center gap-2"
+                >
+                  {subscribed ? 'Verified' : 'Subscribe'}
+                  {!subscribed && <ArrowUpRight className="w-3 h-3" />}
+                </button>
+              </form>
+              {subscribed && (
+                <p className="text-[12px] text-emerald-400 mt-3 font-medium flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                  Subscription confirmed.
+                </p>
+              )}
+              <p className="text-[11px] text-slate-500 mt-4 font-light">By subscribing, you agree to our Privacy Policy. No spam, ever.</p>
+            </div>
+          </div>
+
+          {/* Links Section - 4 Columns */}
+          <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 pt-4 lg:pt-0">
+            
+            {/* Solutions */}
+            <div className="flex flex-col gap-6">
+              <h3 className="text-white font-bold tracking-widest uppercase text-xs">Solutions</h3>
+              <ul className="space-y-4">
+                <li><Link to="/department/ai-cognitive" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">AI & Cognitive</Link></li>
+                <li><Link to="/department/cloud-engineering" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Cloud & Engineering</Link></li>
+                <li><Link to="/department/cybersecurity" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Cybersecurity</Link></li>
+                <li><Link to="/department/digital-transformation-modernization" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Digital Transformation</Link></li>
+                <li className="pt-2">
+                  <Link to="/services" className="text-xs text-cyan-400 hover:text-cyan-300 hover:translate-x-1 font-bold uppercase tracking-widest transition-all duration-300 inline-flex items-center gap-2">
+                    View All <ArrowUpRight className="w-3 h-3" />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div className="flex flex-col gap-6">
+              <h3 className="text-white font-bold tracking-widest uppercase text-xs">Company</h3>
+              <ul className="space-y-4">
+                <li><Link to="/about-us" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">About Us</Link></li>
+                <li><Link to="/values" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Values & Culture</Link></li>
+                <li><Link to="/leadership" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Leadership</Link></li>
+                <li><Link to="/careers" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Careers</Link></li>
+                <li><Link to="/partners" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Partners</Link></li>
+              </ul>
+            </div>
+
+            {/* Insights */}
+            <div className="flex flex-col gap-6">
+              <h3 className="text-white font-bold tracking-widest uppercase text-xs">Insights</h3>
+              <ul className="space-y-4">
+                <li><Link to="/blogs" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Engineering Blog</Link></li>
+                <li><Link to="/case-studies" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Case Studies</Link></li>
+                <li><Link to="/white-paper" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">White Papers</Link></li>
+                <li><Link to="/events" className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 block">Events & Webinars</Link></li>
+              </ul>
+            </div>
+
+            {/* Connect */}
+            <div className="flex flex-col gap-6">
+              <h3 className="text-white font-bold tracking-widest uppercase text-xs">Connect</h3>
+              <ul className="space-y-4">
+                {socialLinks.map((social, index) => (
+                  <li key={index}>
+                    <a 
+                      href={social.href}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-sm text-slate-400 hover:text-cyan-400 hover:translate-x-1 transition-all duration-300 flex items-center gap-3 group"
+                    >
+                      {social.name}
+                      <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar - Minimalist */}
+      <div className="border-t border-white/5 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8">
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
+            
+            {/* Left - Copyright */}
+            <p className="text-xs text-slate-500 font-light">
+              © {new Date().getFullYear()} Kangqore Global Pvt Ltd. All rights reserved.
+            </p>
+
+            {/* Right - Legal Links (Dot Separated) */}
+            <div className="flex flex-wrap justify-center items-center gap-3 text-xs text-slate-500 font-light">
+              <Link to="/privacy" className="hover:text-white transition-colors duration-300">Privacy</Link>
+              <span className="text-slate-700">•</span>
+              <Link to="/terms" className="hover:text-white transition-colors duration-300">Terms</Link>
+              <span className="text-slate-700">•</span>
+              <Link to="/cookies" className="hover:text-white transition-colors duration-300">Cookies</Link>
+              <span className="text-slate-700">•</span>
+              <Link to="/accessibility" className="hover:text-white transition-colors duration-300">Accessibility</Link>
+              <span className="text-slate-700">•</span>
+              <Link to="/sitemap" className="hover:text-white transition-colors duration-300">Sitemap</Link>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

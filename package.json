@@ -1,0 +1,10 @@
+{
+  "name": "kangqore-root",
+  "version": "1.0.0",
+  "description": "Root script runner for Kangqore",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "build": "./build.sh"
+  }
+}

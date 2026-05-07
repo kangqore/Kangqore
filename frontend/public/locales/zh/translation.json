@@ -1,0 +1,201 @@
+{
+  "hero": {
+    "title": "智能且可靠地扩展",
+    "description": "我们帮助企业运营能够在复杂环境中进行推理、行动并交付可信结果的 AI 系统。",
+    "cta": "了解更多",
+    "slide1": {
+      "tag": "价值驱动的 IT 公司",
+      "title": "我们创新未来。",
+      "description": "AI 赋能的数字化转型、云、基础设施、自动化、网络安全、产品工程。",
+      "cta": "开始使用"
+    },
+    "slide2": {
+      "tag": "产品与平台工程",
+      "title": "驱动影响力的产品",
+      "description": "我们设计可在全球范围内扩展并交付可衡量、持续商业价值的数字产品和平台。",
+      "cta": "与我们共建"
+    },
+    "slide4": {
+      "tag": "智能运营",
+      "title": "更智能的运营",
+      "description": "我们简化流程和运营，以减少摩擦、提高效率并加速企业执行力。",
+      "cta": "探索方式"
+    },
+    "slide5": {
+      "tag": "云与数字基础",
+      "title": "为扩展而构建的基础",
+      "description": "我们设计弹性数字基础，支持关键工作负载和无缝增长性能。",
+      "cta": "探索能力"
+    },
+    "slide6": {
+      "tag": "企业现代化",
+      "title": "现代企业，基业长青",
+      "description": "我们将遗留环境转化为敏捷、安全且面向未来的系统，以适应不断变化的业务需求。",
+      "cta": "查看我们的方法"
+    }
+  },
+  "nav": {
+    "what_we_do": "我们的业务",
+    "who_we_are": "关于我们",
+    "industries": "行业",
+    "insights": "见解",
+    "careers": "招贤纳士",
+    "contact": "联系我们",
+    "news": "新闻",
+    "communities": "社区",
+    "investors": "投资者",
+    "login": "登录",
+    "logout": "登出",
+    "search": "搜索"
+  },
+  "menu": {
+    "about_us": "关于我们",
+    "leadership": "领导层",
+    "partners": "合作伙伴",
+    "testimonials": "客户感言",
+    "eqore": "eQORE",
+    "location": "地点",
+    "community": "社区",
+    "brand_identity": "品牌标识",
+    "blogs": "博客",
+    "case_studies": "成功案例",
+    "brochures": "宣传册",
+    "events": "活动",
+    "white_paper": "白皮书",
+    "team": "团队"
+  },
+  "industries": {
+    "banking": "银行",
+    "insurance": "保险",
+    "edtech": "教育科技",
+    "healthcare": "医疗保健",
+    "life_science": "生命科学",
+    "media_tech": "媒体与技术",
+    "retail": "零售",
+    "travel_hospitality": "旅游与酒店",
+    "energy_utilities": "能源与公用事业",
+    "manufacturing": "制造业",
+    "info_services": "信息服务",
+    "consumer_goods": "消费品"
+  },
+  "departments": {
+    "ai-cognitive": "AI 与认知",
+    "analytics-insights": "分析与洞察",
+    "cloud-engineering": "云工程",
+    "cybersecurity": "网络安全",
+    "digital-transformation-modernization": "数字化转型与现代化",
+    "automation": "自动化",
+    "product-engineering": "产品工程",
+    "infrastructure-networks-operations": "基础设施、网络与运营",
+    "consulting-advisory": "咨询与顾问服务",
+    "product-software-platform": "产品、软件与平台工程",
+    "enterprise-applications": "企业应用",
+    "emerging-technologies": "新兴技术",
+    "business-operations": "业务运营",
+    "sustainability": "可持续发展",
+    "marketing": "市场营销"
+  },
+  "departments_desc": {
+    "ai-cognitive": "利用推动创新和竞争优势的前沿 AI 和认知计算解决方案转型您的业务。",
+    "analytics-insights": "通过高级分析和大数据解决方案将数据转化为可操作的洞察。",
+    "cloud-engineering": "利用可扩展、安全且具有成本效益的云解决方案现代化您的基础设施。",
+    "cybersecurity": "通过全面的安全解决方案保护您的组织免受网络威胁。",
+    "digital-transformation-modernization": "通过全面的现代化解决方案为数字时代转型您的业务。",
+    "automation": "自动化业务流程以提高效率、降低成本并提高准确性。",
+    "product-engineering": "利用现代工程实践和前沿技术构建创新的数字产品。",
+    "infrastructure-networks-operations": "管理和现代化 IT 基础设施以实现可靠性、性能和可扩展性。",
+    "consulting-advisory": "转型业务并实现目标的战略咨询。",
+    "product-software-platform": "利用现代工程实践构建创新的产品和平台。",
+    "enterprise-applications": "实施和优化企业软件平台以简化运营。",
+    "emerging-technologies": "探索并实施前沿技术以获得竞争优势。",
+    "business-operations": "优化业务运营以实现效率、合规和增长。",
+    "sustainability": "推动可持续的业务实践和环境责任。",
+    "marketing": "全面的市场营销服务以增长您的品牌并触达受众。"
+  },
+  "footer": {
+    "description": "Kangqore 是一家价值驱动的 IT 公司，通过现代工程和 AI 赋能的创新，帮助企业和机构实现端到端的数字化转型。",
+    "view_all_services": "查看所有服务",
+    "terms": "使用条款",
+    "privacy": "隐私政策",
+    "rights_reserved": "Kangqore. 保留所有权利。"
+  },
+  "home": {
+    "trusted_by": "受全球领先公司信赖",
+    "scroll": "滚动",
+    "value_prop_intro": "Kangqore 是一家价值驱动的 IT 和数字化转型公司，受企业信赖，在快速变化的世界中进行现代化、扩展和创新。",
+    "learn_more": "了解我们的与众不同之处",
+    "services_title": "探索我们的服务",
+    "ready_to_transform": "准备好转型您的业务了吗？",
+    "typewriter": "今天，我们帮助组织通过[[智能系统]]、[[可扩展平台]]和[[结果驱动的工程]]来转型业务和发展行业。",
+    "key_capabilities": "核心能力",
+    "get_started": "立即开始",
+    "close": "关闭",
+    "value_prop": {
+      "card1": {
+        "title": "无中断、无风险或停机的现代化。",
+        "shortDesc": "我们帮助企业在不中断业务连续性的情况下现代化遗留系统、基础设施和平台——减少技术债务，同时提高安全性、可扩展性和成本效率。",
+        "heading": "企业现代化服务",
+        "description": "我们全面的现代化方法确保您的业务在转型技术格局的同时永不停歇。"
+      },
+      "card2": {
+        "title": "设计可扩展、适应并自我优化的运营。",
+        "shortDesc": "Kangqore 利用自动化、数据和 AI 重新设计企业流程——消除摩擦，提高决策速度，并在各个职能部门交付可衡量的运营效率。",
+        "heading": "智能运营与自动化",
+        "description": "将您的运营转化为自我优化的生态系统，持续提高效率并降低成本。"
+      },
+      "card3": {
+        "title": "由企业级系统驱动的体验设计。",
+        "shortDesc": "我们构建由可扩展平台、安全集成和实时智能支持的数字体验——确保每次客户和员工互动都交付一致性、性能和商业价值。",
+        "heading": "数字体验卓越",
+        "description": "创造卓越的数字体验，在取悦用户的同时交付可衡量的商业成果。"
+      }
+    },
+    "services": {
+      "label": "我们的服务",
+      "heading_prefix": "探索我们的",
+      "heading_highlight": "服务",
+      "heading_suffix": "",
+      "learn_more": "了解更多"
+    },
+    "industries_section": {
+      "label": "行业",
+      "heading_prefix": "跨主要行业的深厚领域",
+      "heading_highlight": "专业知识",
+      "heading_suffix": "",
+      "description": "我们将技术卓越与行业知识相结合，交付解决您特定挑战的解决方案。"
+    },
+    "case_studies": {
+      "label": "成功案例",
+      "heading_prefix": "真实影响。真实",
+      "heading_highlight": "结果",
+      "see_all": "查看所有案例"
+    },
+    "insights": {
+      "label": "见解与观点",
+      "heading_highlight": "见解",
+      "heading_suffix": "驱动变革。",
+      "view_all": "查看所有见解"
+    },
+    "faq": {
+      "label": "有问题吗？",
+      "heading_prefix": "常见",
+      "heading_highlight": "问题",
+      "description": "关于我们的服务、专业知识和合作模式的常见问题。"
+    },
+    "careers": {
+      "badge": "加入我们的全球团队",
+      "heading_prefix": "与我们一起构建",
+      "heading_highlight": "未来",
+      "heading_suffix": "。",
+      "description": "加入一个由远见者、工程师和创造者组成的团队。我们一直在寻找杰出人才来帮助我们解决世界上最复杂的挑战。",
+      "explore": "探索职位",
+      "how_we_work": "我们的工作方式",
+      "stats": {
+        "builders": "核心建设者",
+        "clients": "全球客户",
+        "culture": "迭代文化"
+      },
+      "quote": "\"我们是一个处于早期阶段的团队，怀揣全球雄心构建大胆的产品。\""
+    }
+  }
+}

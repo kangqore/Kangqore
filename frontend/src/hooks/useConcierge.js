@@ -1,0 +1,418 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+const BASE = process.env.REACT_APP_BACKEND_URL || '';
+const ENDPOINT = `${BASE}/api/ai/concierge`;
+const HISTORY_ENDPOINT = (id) =>
+  `${BASE}/api/ai/concierge/conversations/${encodeURIComponent(id)}`;
+const FEEDBACK_ENDPOINT = `${BASE}/api/ai/concierge/feedback`;
+
+const STORAGE_KEY = 'eqore.concierge.conversationId';
+const STORAGE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+
+function readStoredConversationId() {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed?.id || !parsed?.savedAt) return null;
+    if (Date.now() - parsed.savedAt > STORAGE_TTL_MS) return null;
+    return parsed.id;
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredConversationId(id) {
+  if (typeof window === 'undefined') return;
+  try {
+    if (!id) {
+      window.localStorage.removeItem(STORAGE_KEY);
+      return;
+    }
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ id, savedAt: Date.now() })
+    );
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
+const DEFAULT_GREETING_TEXT =
+  "Hi — I'm eQORE, the Kangqore AI Assistant.";
+
+function buildGreeting(seedContext) {
+  const name = seedContext?.name?.trim();
+  if (seedContext?.surface === 'service' && name) {
+    return `Hi — I'm eQORE. Ask me about ${name}, or anything else about Kangqore.`;
+  }
+  if (seedContext?.surface === 'department' && name) {
+    return `Hi — I'm eQORE. Ask me about ${name}, or anything else about Kangqore.`;
+  }
+  return DEFAULT_GREETING_TEXT;
+}
+
+function buildGreetingMessage(seedContext) {
+  return {
+    id: 'greeting',
+    role: 'assistant',
+    content: buildGreeting(seedContext),
+    citations: [],
+    guardrailsTripped: [],
+    done: true,
+  };
+}
+
+const INITIAL_GREETING = buildGreetingMessage(null);
+
+function parseSSEChunk(buffer) {
+  const events = [];
+  const blocks = buffer.split('\n\n');
+  const remainder = blocks.pop() || '';
+  for (const block of blocks) {
+    if (!block.trim()) continue;
+    let event = 'message';
+    const dataLines = [];
+    for (const line of block.split('\n')) {
+      if (line.startsWith('event:')) event = line.slice(6).trim();
+      else if (line.startsWith('data:')) dataLines.push(line.slice(5).trim());
+    }
+    if (dataLines.length === 0) continue;
+    try {
+      events.push({ event, data: JSON.parse(dataLines.join('\n')) });
+    } catch {
+      events.push({ event, data: { raw: dataLines.join('\n') } });
+    }
+  }
+  return { events, remainder };
+}
+
+export function useConcierge(options = {}) {
+  const { persist = true, seedContext = null } = options;
+  const [messages, setMessages] = useState(() => [buildGreetingMessage(seedContext)]);
+  const [streaming, setStreaming] = useState(false);
+  const [conversationId, setConversationIdState] = useState(null);
+  const [restoring, setRestoring] = useState(false);
+  const [error, setError] = useState(null);
+  const abortRef = useRef(null);
+
+  // When seedContext changes (e.g. visitor clicked "Ask eQORE" CTA on a different
+  // service page), refresh the greeting — but ONLY if the visitor hasn't started
+  // chatting yet. Don't blow away an in-flight conversation.
+  useEffect(() => {
+    setMessages((prev) => {
+      const hasUserMessages = prev.some((m) => m.role === 'user');
+      if (hasUserMessages) return prev;
+      return [buildGreetingMessage(seedContext)];
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seedContext?.surface, seedContext?.slug, seedContext?.name]);
+
+  const setConversationId = useCallback(
+    (id) => {
+      setConversationIdState(id);
+      if (persist) writeStoredConversationId(id);
+    },
+    [persist]
+  );
+
+  useEffect(() => {
+    if (!persist) return;
+    const stored = readStoredConversationId();
+    if (!stored) return;
+    let cancelled = false;
+    setRestoring(true);
+    fetch(HISTORY_ENDPOINT(stored))
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled || !data || !Array.isArray(data.messages)) return;
+        const restored = data.messages
+          .filter(
+            (m) =>
+              m && (m.role === 'user' || m.role === 'assistant') &&
+              typeof m.content === 'string'
+          )
+          .map((m, i) => ({
+            id: `r-${i}-${stored}`,
+            role: m.role,
+            content: m.content,
+            citations: m.citations || [],
+            guardrailsTripped: [],
+            done: true,
+          }));
+        if (restored.length === 0) {
+          writeStoredConversationId(null);
+          return;
+        }
+        setMessages([INITIAL_GREETING, ...restored]);
+        setConversationIdState(stored);
+      })
+      .catch(() => {
+        writeStoredConversationId(null);
+      })
+      .finally(() => {
+        if (!cancelled) setRestoring(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [persist]);
+
+  const send = useCallback(
+    async (text) => {
+      const trimmed = (text || '').trim();
+      if (!trimmed || streaming) return;
+
+      setError(null);
+      const userMsg = {
+        id: `u-${Date.now()}`,
+        role: 'user',
+        content: trimmed,
+        done: true,
+      };
+      const assistantId = `a-${Date.now()}`;
+      const assistantMsg = {
+        id: assistantId,
+        role: 'assistant',
+        content: '',
+        citations: [],
+        guardrailsTripped: [],
+        leadCaptured: null,
+        followups: [],
+        done: false,
+      };
+      setMessages((prev) => [...prev, userMsg, assistantMsg]);
+      setStreaming(true);
+
+      const controller = new AbortController();
+      abortRef.current = controller;
+
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: trimmed, conversationId }),
+          signal: controller.signal,
+        });
+
+        if (!res.ok || !res.body) {
+          throw new Error(
+            res.status === 429
+              ? 'You have sent too many messages. Please wait a moment.'
+              : `Concierge unavailable (${res.status})`
+          );
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let assembled = '';
+        let citations = [];
+        let trips = [];
+
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const { events, remainder } = parseSSEChunk(buffer);
+          buffer = remainder;
+
+          for (const { event, data } of events) {
+            if (event === 'delta' && data.text) {
+              assembled += data.text;
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId ? { ...m, content: assembled } : m
+                )
+              );
+            } else if (event === 'rewrite' && data.text) {
+              assembled = data.text;
+              trips = data.trips || trips;
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId
+                    ? { ...m, content: assembled, guardrailsTripped: trips }
+                    : m
+                )
+              );
+            } else if (event === 'followups') {
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId
+                    ? { ...m, followups: data.followups || [] }
+                    : m
+                )
+              );
+            } else if (event === 'done') {
+              assembled = data.text || assembled;
+              citations = data.citations || [];
+              trips = data.guardrailsTripped || [];
+              const followups = data.followups || [];
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId
+                    ? {
+                        ...m,
+                        content: assembled,
+                        citations,
+                        guardrailsTripped: trips,
+                        followups,
+                        done: true,
+                      }
+                    : m
+                )
+              );
+            } else if (event === 'conversation' && data.conversationId) {
+              setConversationId(data.conversationId);
+            } else if (event === 'lead_captured') {
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId
+                    ? {
+                        ...m,
+                        leadCaptured: {
+                          contactId: data.contactId,
+                          name: data.name,
+                          email: data.email,
+                          organization: data.organization,
+                          intent: data.intent,
+                        },
+                      }
+                    : m
+                )
+              );
+            } else if (event === 'error') {
+              throw new Error(data.message || 'Concierge error');
+            }
+          }
+        }
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        const msg = err.message || 'Concierge unavailable';
+        setError(msg);
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? {
+                  ...m,
+                  content:
+                    "I'm having trouble responding right now. A Kangqore consultant can help — can I take your name and email?",
+                  done: true,
+                }
+              : m
+          )
+        );
+      } finally {
+        setStreaming(false);
+        abortRef.current = null;
+      }
+    },
+    [conversationId, streaming, setConversationId]
+  );
+
+  const stop = useCallback(() => {
+    abortRef.current?.abort();
+  }, []);
+
+  const reset = useCallback(() => {
+    abortRef.current?.abort();
+    setMessages([INITIAL_GREETING]);
+    setConversationId(null);
+    setError(null);
+    setStreaming(false);
+  }, [setConversationId]);
+
+  const submitFeedback = useCallback(
+    async (messageId, rating, reason) => {
+      if (!conversationId) return false;
+      const filtered = messages.filter((m) => m.id !== 'greeting');
+      const messageIndex = filtered.findIndex((m) => m.id === messageId);
+      if (messageIndex < 0) return false;
+      try {
+        const res = await fetch(FEEDBACK_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            conversationId,
+            messageIndex,
+            rating,
+            reason: reason || undefined,
+          }),
+        });
+        if (!res.ok) return false;
+        setMessages((prev) =>
+          prev.map((m) => (m.id === messageId ? { ...m, feedback: rating } : m))
+        );
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [conversationId, messages]
+  );
+
+  const retry = useCallback(
+    (assistantId) => {
+      if (streaming) return;
+      let userText = null;
+      setMessages((prev) => {
+        const idx = prev.findIndex((m) => m.id === assistantId);
+        if (idx <= 0) return prev;
+        const candidate = prev[idx - 1];
+        if (candidate.role !== 'user') return prev;
+        userText = candidate.content;
+        return prev.slice(0, idx - 1);
+      });
+      if (userText) {
+        // setTimeout so state update commits before send picks up the message list
+        setTimeout(() => send(userText), 0);
+      }
+    },
+    [streaming, send]
+  );
+
+  return {
+    messages,
+    streaming,
+    restoring,
+    conversationId,
+    error,
+    send,
+    stop,
+    reset,
+    retry,
+    submitFeedback,
+  };
+}
+
+export const CONCIERGE_SUGGESTED_PROMPTS = [
+  'What does Kangqore do?',
+  'Which service is right for my business?',
+  'Build me a project roadmap',
+  'I need more leads',
+  'I want to build an app',
+  'I need AI automation',
+  'Compare Kangqore services',
+  'Book a consultation',
+];
+
+export function getSuggestedPrompts(seedContext) {
+  const name = seedContext?.name?.trim();
+  if (seedContext?.surface === 'service' && name) {
+    return [
+      `What does ${name} actually do?`,
+      `How does Kangqore approach ${name}?`,
+      `Book a consultation about ${name}`,
+    ];
+  }
+  if (seedContext?.surface === 'department' && name) {
+    return [
+      `What services does ${name} include?`,
+      `What outcomes does ${name} typically deliver?`,
+      `Book a consultation about ${name}`,
+    ];
+  }
+  return CONCIERGE_SUGGESTED_PROMPTS;
+}

@@ -1,0 +1,509 @@
+
+> frontend@0.1.0 start
+> craco start
+
+(node:6369) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:6369) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.103.176.152:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx
+Syntax error: 'import' and 'export' may only appear at the top level. (464:0) (464:undefined)
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+ERROR in ./src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /Users/maheshkumar/Desktop/Kangqore/frontend/src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx: 'import' and 'export' may only appear at the top level. (464:0)
+
+  462 | // 7. PIMCORE ARCHITECTURE SCHEMATIC
+  463 | // ═══════════════════════════════════════════════════════════════════════════════
+> 464 | export const PimArchitectureSchematic = () => {
+      | ^
+  465 |   const sectionRef = useRef(null);
+  466 |
+  467 |   useEffect(() => {
+    at constructor (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:367:19)
+    at FlowParserMixin.raise (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:6624:19)
+    at FlowParserMixin.parseStatementContent (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12947:18)
+    at FlowParserMixin.parseStatementLike (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12843:17)
+    at FlowParserMixin.parseStatementLike (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:2945:24)
+    at FlowParserMixin.parseStatementListItem (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12823:17)
+    at FlowParserMixin.parseBlockOrModuleBlockBody (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:13392:61)
+    at FlowParserMixin.parseBlockBody (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:13385:10)
+    at FlowParserMixin.parseBlock (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:13373:10)
+    at FlowParserMixin.parseFunctionBody (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12174:24)
+    at /Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:2919:63
+    at FlowParserMixin.forwardNoArrowParamsConversionAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3095:16)
+    at FlowParserMixin.parseFunctionBody (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:2919:12)
+    at FlowParserMixin.parseArrowExpression (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12149:10)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11759:12)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3620:18)
+    at FlowParserMixin.parseExprAtom (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11395:23)
+    at FlowParserMixin.parseExprAtom (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4793:20)
+    at FlowParserMixin.parseExprSubscripts (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+    at FlowParserMixin.parseUpdate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+    at FlowParserMixin.parseExprOps (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3578:18)
+    at /Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10864:39
+    at FlowParserMixin.allowInAnd (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10864:17)
+    at FlowParserMixin.parseMaybeAssignAllowInOrVoidPattern (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12567:17)
+    at FlowParserMixin.parseExprListItem (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12249:18)
+    at FlowParserMixin.parseCallExpressionArguments (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11316:22)
+    at FlowParserMixin.parseCoverCallAndAsyncArrowHead (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11250:29)
+    at FlowParserMixin.parseSubscript (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11184:19)
+    at FlowParserMixin.parseSubscript (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3679:18)
+    at FlowParserMixin.parseSubscripts (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11158:19)
+    at FlowParserMixin.parseSubscripts (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3645:18)
+    at FlowParserMixin.parseExprSubscripts (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11149:17)
+    at FlowParserMixin.parseUpdate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+    at FlowParserMixin.parseExprOps (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3578:18)
+    at /Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10864:39
+    at FlowParserMixin.allowInAnd (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12495:16)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10864:17)
+    at FlowParserMixin.parseVar (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:13460:91)
+    at FlowParserMixin.parseVarStatement (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:13306:10)
+
+ERROR in [eslint] 
+src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx
+  Line 464:  Parsing error: 'import' and 'export' may only appear at the top level. (464:0)
+
+webpack compiled with 2 errors and 1 warning
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx
+Syntax error: Expecting Unicode escape sequence \uXXXX. (689:34) (689:34)
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+ERROR in ./src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /Users/maheshkumar/Desktop/Kangqore/frontend/src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx: Expecting Unicode escape sequence \uXXXX. (689:34)
+
+  687 |                <div 
+  688 |                  className={`absolute top-0 left-0 h-full ${brandGradientClasses} rounded-full`} 
+> 689 |                  style={{ width: \`\${(skuCount / 200000) * 100}%\` }}
+      |                                   ^
+  690 |                />
+  691 |                <input 
+  692 |                  type="range" 
+    at constructor (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:367:19)
+    at FlowParserMixin.raise (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:6624:19)
+    at FlowParserMixin.readWord1 (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:6584:16)
+    at FlowParserMixin.readWord (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:6604:23)
+    at FlowParserMixin.getTokenFromCode (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:6323:14)
+    at FlowParserMixin.getTokenFromCode (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4826:11)
+    at FlowParserMixin.getTokenFromCode (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3224:13)
+    at FlowParserMixin.nextToken (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:5807:10)
+    at FlowParserMixin.next (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:5717:10)
+    at FlowParserMixin.eat (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:5721:12)
+    at FlowParserMixin.parseObjectProperty (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12023:14)
+    at FlowParserMixin.parseObjPropValue (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12052:100)
+    at FlowParserMixin.parseObjPropValue (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3368:26)
+    at FlowParserMixin.parsePropertyDefinition (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11989:17)
+    at FlowParserMixin.parseObjectLike (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11904:21)
+    at FlowParserMixin.parseExprAtom (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11403:23)
+    at FlowParserMixin.parseExprAtom (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4793:20)
+    at FlowParserMixin.parseExprSubscripts (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+    at FlowParserMixin.parseUpdate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+    at FlowParserMixin.parseExprOps (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3578:18)
+    at FlowParserMixin.parseExpressionBase (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10848:23)
+    at /Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10844:39
+    at FlowParserMixin.allowInAnd (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+    at FlowParserMixin.parseExpression (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10844:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4661:31)
+    at FlowParserMixin.jsxParseAttributeValue (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4633:21)
+    at FlowParserMixin.jsxParseAttribute (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4682:38)
+    at FlowParserMixin.jsxParseOpeningElementAfterName (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4696:28)
+    at FlowParserMixin.jsxParseOpeningElementAfterName (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4097:18)
+    at FlowParserMixin.jsxParseOpeningElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4691:17)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4715:33)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElement (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4778:17)
+    at FlowParserMixin.parseExprAtom (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4788:19)
+    at FlowParserMixin.parseExprSubscripts (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+    at FlowParserMixin.parseUpdate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+    at FlowParserMixin.parseExprOps (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+
+ERROR in [eslint] 
+src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx
+  Line 689:34:  Parsing error: Expecting Unicode escape sequence \uXXXX. (689:34)
+
+webpack compiled with 2 errors and 1 warning
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx
+Syntax error: Expecting Unicode escape sequence \uXXXX. (689:34) (689:34)
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+ERROR in ./src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /Users/maheshkumar/Desktop/Kangqore/frontend/src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx: Expecting Unicode escape sequence \uXXXX. (689:34)
+
+  687 |                <div 
+  688 |                  className={`absolute top-0 left-0 h-full ${brandGradientClasses} rounded-full`} 
+> 689 |                  style={{ width: \`\${(skuCount / 200000) * 100}%\` }}
+      |                                   ^
+  690 |                />
+  691 |                <input 
+  692 |                  type="range" 
+    at constructor (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:367:19)
+    at FlowParserMixin.raise (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:6624:19)
+    at FlowParserMixin.readWord1 (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:6584:16)
+    at FlowParserMixin.readWord (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:6604:23)
+    at FlowParserMixin.getTokenFromCode (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:6323:14)
+    at FlowParserMixin.getTokenFromCode (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4826:11)
+    at FlowParserMixin.getTokenFromCode (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3224:13)
+    at FlowParserMixin.nextToken (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:5807:10)
+    at FlowParserMixin.next (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:5717:10)
+    at FlowParserMixin.eat (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:5721:12)
+    at FlowParserMixin.parseObjectProperty (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12023:14)
+    at FlowParserMixin.parseObjPropValue (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12052:100)
+    at FlowParserMixin.parseObjPropValue (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3368:26)
+    at FlowParserMixin.parsePropertyDefinition (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11989:17)
+    at FlowParserMixin.parseObjectLike (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11904:21)
+    at FlowParserMixin.parseExprAtom (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11403:23)
+    at FlowParserMixin.parseExprAtom (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4793:20)
+    at FlowParserMixin.parseExprSubscripts (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+    at FlowParserMixin.parseUpdate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+    at FlowParserMixin.parseExprOps (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:3578:18)
+    at FlowParserMixin.parseExpressionBase (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10848:23)
+    at /Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10844:39
+    at FlowParserMixin.allowInAnd (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+    at FlowParserMixin.parseExpression (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10844:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4661:31)
+    at FlowParserMixin.jsxParseAttributeValue (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4633:21)
+    at FlowParserMixin.jsxParseAttribute (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4682:38)
+    at FlowParserMixin.jsxParseOpeningElementAfterName (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4696:28)
+    at FlowParserMixin.jsxParseOpeningElementAfterName (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4097:18)
+    at FlowParserMixin.jsxParseOpeningElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4691:17)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4715:33)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElement (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4778:17)
+    at FlowParserMixin.parseExprAtom (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:4788:19)
+    at FlowParserMixin.parseExprSubscripts (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+    at FlowParserMixin.parseUpdate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+    at FlowParserMixin.parseExprOps (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/maheshkumar/Desktop/Kangqore/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+
+ERROR in [eslint] 
+src/pages/services/enterprise-applications/components/PimcoreCustomSections.jsx
+  Line 689:34:  Parsing error: Expecting Unicode escape sequence \uXXXX. (689:34)
+
+webpack compiled with 2 errors and 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/ServicePageTemplate.jsx
+  Line 32:6:  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning

@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../../.."
+		},
+		{
+			"path": "../../../../../../Babygirl"
+		}
+	],
+	"settings": {
+		"liveServer.settings.port": 5051
+	}
+}

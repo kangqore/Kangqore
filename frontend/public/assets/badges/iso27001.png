@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>vanta-public</BucketName><RequestId>VTYEPFRF31CTJHRT</RequestId><HostId>R/e7Uul6bLktPiGs8L09qeya243tgf6xbIeGNok+HAZbtVTtbdf7UHxM7RWGO9E5DZ7XfNNle9bBgflmXPT4heHEK87O0twW</HostId></Error>

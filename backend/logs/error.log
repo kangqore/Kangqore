@@ -1,0 +1,25 @@
+2026-05-04 03:24:22:2422 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m
+2026-05-04 03:42:45:4245 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m
+2026-05-04 03:56:46:5646 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m
+2026-05-04 12:52:21:5221 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m
+2026-05-04 12:55:48:5548 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m
+2026-05-04 13:04:24:424 [31merror[39m: [31mconcierge.anthropic.error: 400 {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_id":"req_011Cah9CZZVHgusGSmJvps2Y"}[39m
+2026-05-04 13:04:24:424 [31merror[39m: [31mconcierge.stream.error: 400 {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_id":"req_011Cah9CZZVHgusGSmJvps2Y"}[39m
+2026-05-04 14:16:33:1633 [31merror[39m: [31mconcierge.anthropic.error: 400 {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_id":"req_011CahEhdTHJaM74CiyG7ZmT"}[39m
+2026-05-04 14:16:33:1633 [31merror[39m: [31mconcierge.stream.error: 400 {"type":"error","error":{"type":"invalid_request_error","message":"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."},"request_id":"req_011CahEhdTHJaM74CiyG7ZmT"}[39m
+2026-05-04 18:26:43:2643 [31merror[39m: [31mconcierge.persist.error: [39m
+[31mInvalid `prisma.conversation.create()` invocation in[39m
+[31m/Volumes/MKS MacBook/Kangqore/backend/src/routes/ai-concierge.ts:488:45[39m
+
+[31m  485 [39m
+[31m  486 const intents: Record<string, number> = {};[39m
+[31m  487 if (meta?.intent) intents[meta.intent] = 1;[39m
+[31m→ 488 const created = await prisma.conversation.create([39m
+[31mCan't reach database server at `db.cpbwzrkxviacivtevirv.supabase.co:5432`[39m
+
+[31mPlease make sure your database server is running at `db.cpbwzrkxviacivtevirv.supabase.co:5432`.[39m
+2026-05-04 18:52:53:5253 [31merror[39m: [31mkb.watcher.reload.error: fetch failed[39m
+2026-05-04 19:00:20:020 [31merror[39m: [31mconcierge.anthropic.error: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011CahcL5UevxDaEwXH9NLNV"}[39m
+2026-05-04 19:00:20:020 [31merror[39m: [31mconcierge.stream.error: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011CahcL5UevxDaEwXH9NLNV"}[39m
+2026-05-04 19:08:52:852 [31merror[39m: [31mconcierge.anthropic.error: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011Cahcyrb521ePeJvv5Ezt5"}[39m
+2026-05-04 19:08:52:852 [31merror[39m: [31mconcierge.stream.error: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011Cahcyrb521ePeJvv5Ezt5"}[39m

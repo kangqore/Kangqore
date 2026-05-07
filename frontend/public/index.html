@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.jpg" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1e40af" />
+    
+    <!-- ─── Default SEO Meta (overridden by react-helmet per page) ────── -->
+    <title>Kangqore — Intelligence-First Engineering</title>
+    <meta name="description" content="Kangqore enables enterprises to achieve end-to-end digital transformation through modern engineering, AI-enabled innovation, and intelligence-first architecture. 15 departments · 61+ services." />
+    <meta name="keywords" content="enterprise AI, digital transformation, cloud engineering, AI consulting, IT services, software engineering, Kangqore" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="author" content="Kangqore Global Pvt Ltd" />
+
+    <!-- ─── Open Graph / Facebook ────────────────────────────────────── -->
+    <meta property="og:site_name" content="Kangqore" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kangqore — Enterprise AI, Cloud & Digital Transformation" />
+    <meta property="og:description" content="Kangqore enables enterprises to achieve end-to-end digital transformation through modern engineering, AI-enabled innovation, and intelligence-first architecture." />
+    <meta property="og:image" content="https://kangqore.com/assets/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://kangqore.com" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- ─── Twitter Card ─────────────────────────────────────────────── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@kangqore" />
+    <meta name="twitter:creator" content="@kangqore" />
+    <meta name="twitter:title" content="Kangqore — Enterprise AI, Cloud & Digital Transformation" />
+    <meta name="twitter:description" content="Kangqore enables enterprises to achieve end-to-end digital transformation through modern engineering, AI-enabled innovation, and intelligence-first architecture." />
+    <meta name="twitter:image" content="https://kangqore.com/assets/og-image.jpg" />
+
+    <!-- ─── Preconnect for Performance ───────────────────────────────── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- ─── Canonical (default) ──────────────────────────────────────── -->
+    <link rel="canonical" href="https://kangqore.com" />
+
+    <!-- ─── PWA Configuration ────────────────────────────────────────── -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Kangqore" />
+    <meta name="msapplication-TileColor" content="#1e40af" />
+
+    <!-- ─── Base Organization Schema (JSON-LD) ───────────────────────── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Kangqore",
+      "legalName": "Kangqore Global Pvt Ltd",
+      "url": "https://kangqore.com",
+      "logo": "https://kangqore.com/assets/logo.png",
+      "description": "Kangqore is a value-driven IT company that enables enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation.",
+      "foundingDate": "2024",
+      "sameAs": [
+        "https://www.linkedin.com/company/kangqore",
+        "https://x.com/kangqore",
+        "https://www.facebook.com/kangqore",
+        "https://www.instagram.com/kangqore",
+        "https://www.youtube.com/@kangqore",
+        "https://www.reddit.com/r/kangqore"
+      ],
+      "contactPoint": [{
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "url": "https://kangqore.com/contact",
+        "availableLanguage": ["English"]
+      }]
+    }
+    </script>
+
+    <!-- ─── WebSite Schema with SearchAction ─────────────────────────── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Kangqore",
+      "url": "https://kangqore.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://kangqore.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script>
+      // Unregister any service workers to prevent caching issues
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for (let registration of registrations) {
+            registration.unregister();
+            console.log('Service worker unregistered');
+          }
+        }).then(() => {
+          // Clear all caches
+          if ('caches' in window) {
+            caches.keys().then(function(names) {
+              for (let name of names) {
+                caches.delete(name);
+                console.log('Cache cleared:', name);
+              }
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

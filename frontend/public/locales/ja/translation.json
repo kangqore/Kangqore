@@ -1,0 +1,201 @@
+{
+  "hero": {
+    "title": "信頼性の高い拡張を実現するインテリジェンス",
+    "description": "複雑な環境全体で推論、行動し、信頼できる成果をもたらすAIシステムの運用を支援します。",
+    "cta": "詳細を見る",
+    "slide1": {
+      "tag": "価値主導型IT企業",
+      "title": "未来を革新する。",
+      "description": "AIによるデジタルトランスフォーメーション、クラウド、インフラストラクチャ、自動化、サイバーセキュリティ、製品エンジニアリング。",
+      "cta": "始める"
+    },
+    "slide2": {
+      "tag": "製品＆プラットフォームエンジニアリング",
+      "title": "インパクトを生み出す製品",
+      "description": "世界規模で拡張し、測定可能で持続的なビジネス価値を提供するデジタル製品とプラットフォームを設計します。",
+      "cta": "私たちと一緒に構築"
+    },
+    "slide4": {
+      "tag": "インテリジェントオペレーション",
+      "title": "よりスマートに稼働するオペレーション",
+      "description": "プロセスと運用を合理化して摩擦を減らし、効率を向上させ、企業の実行力を加速させます。",
+      "cta": "方法を探る"
+    },
+    "slide5": {
+      "tag": "クラウド＆デジタル基盤",
+      "title": "拡張性のために構築された基盤",
+      "description": "重要なワークロードとシームレスな成長パフォーマンスをサポートする、回復力のあるデジタル基盤を設計します。",
+      "cta": "機能を見る"
+    },
+    "slide6": {
+      "tag": "企業近代化",
+      "title": "永続するために構築された現代企業",
+      "description": "レガシー環境を、進化するビジネスニーズに合わせて調整された、アジャイルで安全、かつ将来を見据えたシステムに変革します。",
+      "cta": "アプローチを見る"
+    }
+  },
+  "nav": {
+    "what_we_do": "事業内容",
+    "who_we_are": "会社概要",
+    "industries": "業界",
+    "insights": "インサイト",
+    "careers": "採用情報",
+    "contact": "お問い合わせ",
+    "news": "ニュース",
+    "communities": "コミュニティ",
+    "investors": "投資家の皆様へ",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "search": "検索"
+  },
+  "menu": {
+    "about_us": "私たちについて",
+    "leadership": "リーダーシップ",
+    "partners": "パートナー",
+    "testimonials": "お客様の声",
+    "eqore": "eQORE",
+    "location": "所在地",
+    "community": "コミュニティ",
+    "brand_identity": "ブランドアイデンティティ",
+    "blogs": "ブログ",
+    "case_studies": "ケーススタディ",
+    "brochures": "パンフレット",
+    "events": "イベント",
+    "white_paper": "ホワイトペーパー",
+    "team": "チーム"
+  },
+  "industries": {
+    "banking": "銀行",
+    "insurance": "保険",
+    "edtech": "教育テック",
+    "healthcare": "ヘルスケア",
+    "life_science": "ライフサイエンス",
+    "media_tech": "メディア＆テクノロジー",
+    "retail": "小売",
+    "travel_hospitality": "旅行＆ホスピタリティ",
+    "energy_utilities": "エネルギー＆ユーティリティ",
+    "manufacturing": "製造",
+    "info_services": "情報サービス",
+    "consumer_goods": "消費財"
+  },
+  "departments": {
+    "ai-cognitive": "AI & コグニティブ",
+    "analytics-insights": "アナリティクス & インサイト",
+    "cloud-engineering": "クラウドエンジニアリング",
+    "cybersecurity": "サイバーセキュリティ",
+    "digital-transformation-modernization": "デジタルトランスフォーメーション & 近代化",
+    "automation": "自動化",
+    "product-engineering": "製品エンジニアリング",
+    "infrastructure-networks-operations": "インフラ、ネットワーク & オペレーション",
+    "consulting-advisory": "コンサルティング & アドバイザリーサービス",
+    "product-software-platform": "製品、ソフトウェア & プラットフォームエンジニアリング",
+    "enterprise-applications": "エンタープライズアプリケーション",
+    "emerging-technologies": "新興技術",
+    "business-operations": "事業運営",
+    "sustainability": "サステナビリティ",
+    "marketing": "マーケティング"
+  },
+  "departments_desc": {
+    "ai-cognitive": "イノベーションと競争上の優位性を推進する最先端のAIおよびコグニティブコンピューティングソリューションでビジネスを変革します。",
+    "analytics-insights": "高度な分析とビッグデータソリューションにより、データを実用的なインサイトに変えます。",
+    "cloud-engineering": "スケーラブルで安全かつ費用対効果の高いクラウドソリューションでインフラストラクチャを近代化します。",
+    "cybersecurity": "包括的なセキュリティソリューションで、サイバー脅威から組織を保護します。",
+    "digital-transformation-modernization": "包括的な近代化ソリューションにより、デジタル時代に向けてビジネスを変革します。",
+    "automation": "ビジネスプロセスを自動化し、効率を高め、コストを削減し、精度を向上させます。",
+    "product-engineering": "最新のエンジニアリング手法と最先端技術を使用して、革新的なデジタル製品を構築します。",
+    "infrastructure-networks-operations": "信頼性、パフォーマンス、拡張性のためにITインフラストラクチャを管理および近代化します。",
+    "consulting-advisory": "ビジネスを変革し、目標を達成するための戦略的コンサルティング。",
+    "product-software-platform": "最新のエンジニアリング手法で革新的な製品とプラットフォームを構築します。",
+    "enterprise-applications": "業務を合理化するためにエンタープライズソフトウェアプラットフォームを実装および最適化します。",
+    "emerging-technologies": "競争上の優位性を得るために最先端の技術を探求し、実装します。",
+    "business-operations": "効率、コンプライアンス、成長のために事業運営を最適化します。",
+    "sustainability": "持続可能なビジネス慣行と環境への責任を推進します。",
+    "marketing": "ブランドを成長させ、オーディエンスにリーチするための包括的なマーケティングサービス。"
+  },
+  "footer": {
+    "description": "Kangqoreは、最新のエンジニアリングとAI対応のイノベーションを通じて、企業や機関がエンドツーエンドのデジタルトランスフォーメーションを達成できるようにする、価値主導型のIT企業です。",
+    "view_all_services": "すべてのサービスを見る",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "rights_reserved": "Kangqore. 全著作権所有。"
+  },
+  "home": {
+    "trusted_by": "世界中の大手企業から信頼されています",
+    "scroll": "スクロール",
+    "value_prop_intro": "Kangqoreは、急速に変化する世界で近代化、拡張、革新を行うために企業から信頼されている、価値主導型のITおよびデジタルトランスフォーメーション企業です。",
+    "learn_more": "私たちの違いについて詳しく知る",
+    "services_title": "サービスを探る",
+    "ready_to_transform": "ビジネスを変革する準備はできましたか？",
+    "typewriter": "今日、私たちは[[インテリジェントシステム]]、[[スケーラブルなプラットフォーム]]、[[成果主導のエンジニアリング]]を通じて、組織がビジネスを変革し、業界を進化させるのを支援しています。",
+    "key_capabilities": "主な機能",
+    "get_started": "始める",
+    "close": "閉じる",
+    "value_prop": {
+      "card1": {
+        "title": "中断、リスク、ダウンタイムのない近代化。",
+        "shortDesc": "事業継続性を損なうことなく、レガシーシステム、インフラストラクチャ、プラットフォームの近代化を支援し、セキュリティ、拡張性、コスト効率を向上させながら技術的負債を削減します。",
+        "heading": "企業近代化サービス",
+        "description": "当社の包括的な近代化アプローチにより、テクノロジーランドスケープを変革している間も、ビジネスが止まることはありません。"
+      },
+      "card2": {
+        "title": "拡張、適応、自己最適化するオペレーションを設計。",
+        "shortDesc": "Kangqoreは、自動化、データ、AIを使用してエンタープライズプロセスを再設計し、摩擦を排除し、意思決定のスピードを向上させ、機能全体で測定可能な運用効率を提供します。",
+        "heading": "インテリジェントオペレーション & 自動化",
+        "description": "オペレーションを自己最適化エコシステムに変革し、効率を継続的に改善してコストを削減します。"
+      },
+      "card3": {
+        "title": "エンタープライズグレードシステムを活用した体験デザイン。",
+        "shortDesc": "スケーラブルなプラットフォーム、安全な統合、リアルタイムインテリジェンスに裏打ちされたデジタル体験を構築し、すべての顧客と従業員のインタラクションが一貫性、パフォーマンス、ビジネス価値を提供することを保証します。",
+        "heading": "デジタル体験の卓越性",
+        "description": "測定可能なビジネス成果を提供しながら、ユーザーを喜ばせる並外れたデジタル体験を創造します。"
+      }
+    },
+    "services": {
+      "label": "当社のサービス",
+      "heading_prefix": "当社の",
+      "heading_highlight": "サービス",
+      "heading_suffix": "を探る",
+      "learn_more": "詳細はこちら"
+    },
+    "industries_section": {
+      "label": "業界",
+      "heading_prefix": "主要",
+      "heading_highlight": "業界",
+      "heading_suffix": "にわたる深いドメイン専門知識",
+      "description": "技術的な卓越性と業界知識を組み合わせて、特定の課題に対処するソリューションを提供します。"
+    },
+    "case_studies": {
+      "label": "サクセスストーリー",
+      "heading_prefix": "真のインパクト。真の",
+      "heading_highlight": "結果",
+      "see_all": "すべてのケーススタディを見る"
+    },
+    "insights": {
+      "label": "インサイト & 視点",
+      "heading_highlight": "変革を",
+      "heading_suffix": "推進するインサイト。",
+      "view_all": "すべてのインサイトを見る"
+    },
+    "faq": {
+      "label": "ご質問がありますか？",
+      "heading_prefix": "よくある",
+      "heading_highlight": "質問",
+      "description": "当社のサービス、専門知識、エンゲージメントモデルに関する一般的なクエリ。"
+    },
+    "careers": {
+      "badge": "グローバルチームに参加する",
+      "heading_prefix": "私たちと",
+      "heading_highlight": "未来",
+      "heading_suffix": "を築きましょう。",
+      "description": "先見の明のある人、エンジニア、クリエイターのチームに参加してください。私たちは、世界で最も複雑な課題を解決するのを手伝ってくれる並外れた才能を常に探しています。",
+      "explore": "採用情報を探る",
+      "how_we_work": "私たちの働き方",
+      "stats": {
+        "builders": "コアビルダー",
+        "clients": "グローバルクライアント",
+        "culture": "反復文化"
+      },
+      "quote": "「私たちは、世界的な野心を持って大胆な製品を構築している初期段階のチームです。」"
+    }
+  }
+}

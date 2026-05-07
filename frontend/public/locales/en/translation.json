@@ -1,0 +1,202 @@
+{
+  "hero": {
+    "title": "Intelligence That Scales Reliably",
+    "description": "We help enterprises operationalize AI systems that reason, act, and deliver trusted outcomes across complex environments.",
+    "cta": "Know More",
+    "slide1": {
+      "tag": "THE VALUE-DRIVEN IT COMPANY",
+      "title": "We Innovate Futures.",
+      "description": "AI-Enabled Digital Transformation, Cloud, Infrastructure, Automation, Cybersecurity, Product Engineering.",
+      "cta": "Get Started"
+    },
+    "slide2": {
+      "tag": "PRODUCT & PLATFORM ENGINEERING",
+      "title": "Products That Drive Impact",
+      "description": "We engineer digital products and platforms that scale globally and deliver measurable, sustained business value.",
+      "cta": "Build with us"
+    },
+    "slide4": {
+      "tag": "INTELLIGENT OPERATIONS",
+      "title": "Operations That Run Smarter",
+      "description": "We streamline processes and operations to reduce friction, improve efficiency, and accelerate enterprise execution.",
+      "cta": "Discover how"
+    },
+    "slide5": {
+      "tag": "CLOUD & DIGITAL FOUNDATIONS",
+      "title": "Foundations Built for Scale",
+      "description": "We design resilient digital foundations that support critical workloads and seamless growth performance.",
+      "cta": "Explore capabilities"
+    },
+    "slide6": {
+      "tag": "ENTERPRISE MODERNIZATION",
+      "title": "Modern Enterprises, Built to Last",
+      "description": "We transform legacy environments into agile, secure, and future-ready systems aligned to evolving business needs.",
+      "cta": "See our approach"
+    }
+  },
+  "nav": {
+    "what_we_do": "What We Do",
+    "who_we_are": "Who We Are",
+    "industries": "Industries",
+    "insights": "Insights",
+    "careers": "Careers",
+    "contact": "Contact Us",
+    "news": "News",
+    "communities": "Communities",
+    "investors": "Investors",
+    "login": "Login",
+    "logout": "Logout",
+    "search": "Search"
+  },
+  "menu": {
+    "about_us": "About Us",
+    "leadership": "Leadership",
+    "partners": "Partners",
+    "testimonials": "Testimonials",
+    "eqore": "eQORE",
+    "location": "Location",
+    "community": "Community",
+    "brand_identity": "Brand Identity",
+    "blogs": "Blogs",
+    "case_studies": "Case Studies",
+    "brochures": "Brochures",
+    "events": "Events",
+    "white_paper": "White Paper",
+    "team": "Team"
+  },
+  "industries": {
+    "banking": "Banking",
+    "insurance": "Insurance",
+    "edtech": "EdTech",
+    "healthcare": "Healthcare",
+    "life_science": "Life Science",
+    "media_tech": "Media & Technology",
+    "retail": "Retail",
+    "travel_hospitality": "Travel & Hospitality",
+    "energy_utilities": "Energy & Utilities",
+    "manufacturing": "Manufacturing",
+    "info_services": "Information Services",
+    "consumer_goods": "Consumer Goods",
+    "saas": "SaaS"
+  },
+  "departments": {
+    "ai-cognitive": "AI & Cognitive",
+    "analytics-insights": "Analytics & Insights",
+    "cloud-engineering": "Cloud Engineering",
+    "cybersecurity": "Cybersecurity",
+    "digital-transformation-modernization": "Digital Transformation & Modernization",
+    "automation": "Automation",
+    "product-engineering": "Product Engineering",
+    "infrastructure-networks-operations": "Infrastructure, Networks & Operations",
+    "consulting-advisory": "Consulting & Advisory",
+    "digital-engineering": "Digital Engineering",
+    "enterprise-applications": "Enterprise Applications",
+    "emerging-technologies": "Emerging Technologies",
+    "business-operations": "Business Operations",
+    "digital-marketing": "Digital Marketing",
+    "conversion-engineering": "Conversion Engineering"
+  },
+  "departments_desc": {
+    "ai-cognitive": "Transform your business with cutting-edge AI and cognitive computing solutions that drive innovation and competitive advantage.",
+    "analytics-insights": "Turn data into actionable insights with advanced analytics and big data solutions.",
+    "cloud-engineering": "Modernize your infrastructure with scalable, secure, and cost-effective cloud solutions.",
+    "cybersecurity": "Protect your organization from cyber threats with comprehensive security solutions.",
+    "digital-transformation-modernization": "Transform your business for the digital age with comprehensive modernization solutions.",
+    "automation": "Automate business processes to increase efficiency, reduce costs, and improve accuracy.",
+    "product-engineering": "Build innovative digital products with modern engineering practices and cutting-edge technologies.",
+    "infrastructure-networks-operations": "Manage and modernize IT infrastructure for reliability, performance, and scalability.",
+    "consulting-advisory": "Strategic consulting to transform your business and achieve your goals.",
+    "digital-engineering": "Build innovative products and platforms with modern engineering practices.",
+    "enterprise-applications": "Implement and optimize enterprise software platforms to streamline operations.",
+    "emerging-technologies": "Explore and implement cutting-edge technologies to gain competitive advantage.",
+    "business-operations": "Optimize business operations for efficiency, compliance, and growth.",
+    "digital-marketing": "Data-driven digital marketing to acquire, convert, and retain customers at scale.",
+    "conversion-engineering": "Specialized optimization to transform traffic into measurable business outcomes."
+  },
+  "footer": {
+    "description": "Kangqore is a value-driven IT company that enables enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation.",
+    "view_all_services": "View All Services",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "rights_reserved": "Kangqore Global Pvt Ltd. All rights reserved."
+  },
+  "home": {
+    "trusted_by": "Trusted by Leading Companies Worldwide",
+    "scroll": "Scroll",
+    "value_prop_intro": "Kangqore is a value-driven IT and digital transformation company trusted by enterprises to modernize, scale, and innovate in a rapidly changing world.",
+    "learn_more": "Learn more about what sets us apart",
+    "services_title": "Explore our services",
+    "ready_to_transform": "Ready to transform your business?",
+    "typewriter": "Today, we help organizations transform businesses & evolve industries through [[intelligent systems]], [[scalable platforms]], & [[outcome-driven engineering]].",
+    "key_capabilities": "Key Capabilities",
+    "get_started": "Get Started",
+    "close": "Close",
+    "value_prop": {
+      "card1": {
+        "title": "Modernization Without Disruption, Risk, Or Downtime.",
+        "shortDesc": "We help enterprises modernize legacy systems, infrastructure, and platforms without breaking business continuity—reducing technical debt while improving security, scalability, and cost efficiency.",
+        "heading": "Enterprise Modernization Services",
+        "description": "Our comprehensive modernization approach ensures your business never stops while we transform your technology landscape."
+      },
+      "card2": {
+        "title": "Design Operations That Scale, Adapt, And Self Optimize.",
+        "shortDesc": "Kangqore re-engineers enterprise processes using automation, data, and AI—eliminating friction, improving decision speed, and delivering measurable operational efficiency across functions.",
+        "heading": "Intelligent Operations & Automation",
+        "description": "Transform your operations into a self-optimizing ecosystem that continuously improves efficiency and reduces costs."
+      },
+      "card3": {
+        "title": "Experience Design Powered By Enterprise Grade Systems.",
+        "shortDesc": "We build digital experiences backed by scalable platforms, secure integrations, and real-time intelligence—ensuring every customer and employee interaction delivers consistency, performance, and business value.",
+        "heading": "Digital Experience Excellence",
+        "description": "Create exceptional digital experiences that delight users while delivering measurable business outcomes."
+      }
+    },
+    "services": {
+      "label": "What we offer",
+      "heading_prefix": "Explore our",
+      "heading_highlight": "services",
+      "heading_suffix": "",
+      "learn_more": "Learn More"
+    },
+    "industries_section": {
+      "label": "INDUSTRIES",
+      "heading_prefix": "Deep Domain Expertise Across Major",
+      "heading_highlight": "Industries",
+      "heading_suffix": "",
+      "description": "We combine technical excellence with industry knowledge to deliver solutions that address your specific challenges."
+    },
+    "case_studies": {
+      "label": "SUCCESS STORIES",
+      "heading_prefix": "Proven Impact. Measurable",
+      "heading_highlight": "Results",
+      "see_all": "See all case studies"
+    },
+    "insights": {
+      "label": "INSIGHTS & PERSPECTIVES",
+      "heading_highlight": "Insights",
+      "heading_suffix": "That Drive Change.",
+      "view_all": "View all insights"
+    },
+    "faq": {
+      "label": "Got Questions?",
+      "heading_prefix": "Frequently Asked",
+      "heading_highlight": "Questions",
+      "description": "Common queries about our services, expertise, and engagement models."
+    },
+    "careers": {
+      "badge": "Join Our Global Team",
+      "heading_prefix": "Build the",
+      "heading_highlight": "Future",
+      "heading_suffix": "with Us.",
+      "description": "Join a team of visionaries, engineers, and creators. We are always looking for exceptional talent to help us solve the world's most complex challenges.",
+      "explore": "Explore Careers",
+      "how_we_work": "How We Work",
+      "stats": {
+        "builders": "Core Builders",
+        "clients": "Global Clients",
+        "culture": "Iteration Culture"
+      },
+      "quote": "\"We’re an early-stage team building bold products with global ambition.\""
+    }
+  }
+}

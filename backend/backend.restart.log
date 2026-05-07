@@ -1,0 +1,44 @@
+
+> kangqore-backend@1.0.0 dev
+> tsx watch src/index.ts
+
+✅ HTTPS Global Agent configured to force IPv4
+2026-05-06 14:33:38:3338 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+🔧 Initializing Google OAuth Strategy
+   Callback URL: http://localhost:5050/api/oauth/google/callback
+⏰ Initializing Cron Jobs...
+   -> Nightly Snapshot Job scheduled (00:00 Daily)
+   -> Overdue Monitor scheduled (Hourly)
+   -> Impact Accrual scheduled (23:30 Daily)
+node:events:495
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5050
+    at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+    at __node_internal_uvExceptionWithHostPort (node:internal/errors:593:12)
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at path (/Volumes/MKS MacBook/Kangqore/backend/src/index.ts:205:8)
+    at Object.<anonymous> (/Volumes/MKS MacBook/Kangqore/backend/src/index.ts:230:30)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Object.transformer (/Volumes/MKS MacBook/Kangqore/backend/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Module._load (node:internal/modules/cjs/loader:1019:12)
+    at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:203:29)
+    at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+    at async loadESM (node:internal/process/esm_loader:34:7)
+    at async handleMainPromise (node:internal/modules/run_main:106:12)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1844:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+  code: 'EADDRINUSE',
+  errno: -48,
+  syscall: 'listen',
+  address: '::',
+  port: 5050
+}
+
+Node.js v18.20.8

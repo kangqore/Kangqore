@@ -1,0 +1,201 @@
+{
+  "hero": {
+    "title": "Inteligencia que escala de manera confiable",
+    "description": "Ayudamos a las empresas a poner en funcionamiento sistemas de IA que razonan, actúan y ofrecen resultados confiables en entornos complejos.",
+    "cta": "Saber más",
+    "slide1": {
+      "tag": "LA COMPAÑÍA DE TI IMPULSADA POR EL VALOR",
+      "title": "Innovamos Futuros.",
+      "description": "Transformación digital habilitada por IA, Nube, Infraestructura, Automatización, Ciberseguridad, Ingeniería de productos.",
+      "cta": "Empezar"
+    },
+    "slide2": {
+      "tag": "INGENIERÍA DE PRODUCTOS Y PLATAFORMAS",
+      "title": "Productos que generan impacto",
+      "description": "Diseñamos productos y plataformas digitales que escalan globalmente y ofrecen un valor comercial medible y sostenido.",
+      "cta": "Construye con nosotros"
+    },
+    "slide4": {
+      "tag": "OPERACIONES INTELIGENTES",
+      "title": "Operaciones que funcionan de manera más inteligente",
+      "description": "Optimizamos los procesos y las operaciones para reducir la fricción, mejorar la eficiencia y acelerar la ejecución empresarial.",
+      "cta": "Descubre cómo"
+    },
+    "slide5": {
+      "tag": "FUNDAMENTOS DIGITALES Y EN LA NUBE",
+      "title": "Cimientos construidos para escalar",
+      "description": "Diseñamos cimientos digitales resilientes que respaldan cargas de trabajo críticas y un rendimiento de crecimiento continuo.",
+      "cta": "Explorar capacidades"
+    },
+    "slide6": {
+      "tag": "MODERNIZACIÓN EMPRESARIAL",
+      "title": "Empresas modernas, construidas para perdurar",
+      "description": "Transformamos entornos heredados en sistemas ágiles, seguros y preparados para el futuro alineados con las necesidades comerciales en evolución.",
+      "cta": "Ver nuestro enfoque"
+    }
+  },
+  "nav": {
+    "what_we_do": "Lo que hacemos",
+    "who_we_are": "Quiénes somos",
+    "industries": "Industrias",
+    "insights": "Perspectivas",
+    "careers": "Carreras",
+    "contact": "Contáctenos",
+    "news": "Noticias",
+    "communities": "Comunidades",
+    "investors": "Inversores",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "search": "Buscar"
+  },
+  "menu": {
+    "about_us": "Sobre nosotros",
+    "leadership": "Liderazgo",
+    "partners": "Socios",
+    "testimonials": "Testimonios",
+    "eqore": "eQORE",
+    "location": "Ubicación",
+    "community": "Comunidad",
+    "brand_identity": "Identidad de marca",
+    "blogs": "Blogs",
+    "case_studies": "Casos de estudio",
+    "brochures": "Folletos",
+    "events": "Eventos",
+    "white_paper": "Libro blanco",
+    "team": "Equipo"
+  },
+  "industries": {
+    "banking": "Banca",
+    "insurance": "Seguros",
+    "edtech": "EdTech",
+    "healthcare": "Atención médica",
+    "life_science": "Ciencias de la vida",
+    "media_tech": "Medios y tecnología",
+    "retail": "Venta al por menor",
+    "travel_hospitality": "Viajes y hospitalidad",
+    "energy_utilities": "Energía y servicios públicos",
+    "manufacturing": "Manufactura",
+    "info_services": "Servicios de información",
+    "consumer_goods": "Bienes de consumo"
+  },
+  "departments": {
+    "ai-cognitive": "IA y Cognitivo",
+    "analytics-insights": "Analítica e Insights",
+    "cloud-engineering": "Ingeniería en la nube",
+    "cybersecurity": "Ciberseguridad",
+    "digital-transformation-modernization": "Transformación digital y modernización",
+    "automation": "Automatización",
+    "product-engineering": "Ingeniería de productos",
+    "infrastructure-networks-operations": "Infraestructura, redes y operaciones",
+    "consulting-advisory": "Consultoría y servicios de asesoramiento",
+    "product-software-platform": "Ingeniería de productos, software y plataformas",
+    "enterprise-applications": "Aplicaciones empresariales",
+    "emerging-technologies": "Tecnologías emergentes",
+    "business-operations": "Operaciones comerciales",
+    "sustainability": "Sostenibilidad",
+    "marketing": "Marketing"
+  },
+  "departments_desc": {
+    "ai-cognitive": "Transforme su negocio con soluciones de IA y computación cognitiva de vanguardia que impulsan la innovación y la ventaja competitiva.",
+    "analytics-insights": "Convierta los datos en información procesable con análisis avanzados y soluciones de big data.",
+    "cloud-engineering": "Modernice su infraestructura con soluciones en la nube escalables, seguras y rentables.",
+    "cybersecurity": "Proteja su organización de las amenazas cibernéticas con soluciones de seguridad integrales.",
+    "digital-transformation-modernization": "Transforme su negocio para la era digital con soluciones de modernización integrales.",
+    "automation": "Automatice los procesos comerciales para aumentar la eficiencia, reducir los costos y mejorar la precisión.",
+    "product-engineering": "Cree productos digitales innovadores con prácticas de ingeniería modernas y tecnologías de vanguardia.",
+    "infrastructure-networks-operations": "Gestione y modernice la infraestructura de TI para obtener confiabilidad, rendimiento y escalabilidad.",
+    "consulting-advisory": "Consultoría estratégica para transformar su negocio y alcanzar sus objetivos.",
+    "product-software-platform": "Cree productos y plataformas innovadores con prácticas de ingeniería modernas.",
+    "enterprise-applications": "Implemente y optimice plataformas de software empresarial para agilizar las operaciones.",
+    "emerging-technologies": "Explore e implemente tecnologías de vanguardia para obtener una ventaja competitiva.",
+    "business-operations": "Optimice las operaciones comerciales para lograr eficiencia, cumplimiento y crecimiento.",
+    "sustainability": "Impulse prácticas comerciales sostenibles y responsabilidad ambiental.",
+    "marketing": "Servicios de marketing integrales para hacer crecer su marca y llegar a su audiencia."
+  },
+  "footer": {
+    "description": "Kangqore es una empresa de TI impulsada por el valor que permite a las empresas e instituciones lograr una transformación digital de extremo a extremo a través de la ingeniería moderna y la innovación habilitada por la IA.",
+    "view_all_services": "Ver todos los servicios",
+    "terms": "Condiciones de uso",
+    "privacy": "Política de privacidad",
+    "rights_reserved": "Kangqore. Todos los derechos reservados."
+  },
+  "home": {
+    "trusted_by": "Con la confianza de empresas líderes en todo el mundo",
+    "scroll": "Desplaza",
+    "value_prop_intro": "Kangqore es una empresa de transformación digital y TI impulsada por el valor en la que confían las empresas para modernizarse, escalar e innovar en un mundo que cambia rápidamente.",
+    "learn_more": "Conozca más sobre lo que nos distingue",
+    "services_title": "Explore nuestros servicios",
+    "ready_to_transform": "¿Listo para transformar su negocio?",
+    "typewriter": "Hoy, ayudamos a las organizaciones a transformar negocios y evolucionar industrias a través de [[sistemas inteligentes]], [[plataformas escalables]] e [[ingeniería impulsada por resultados]].",
+    "key_capabilities": "Capacidades clave",
+    "get_started": "Empezar",
+    "close": "Cerrar",
+    "value_prop": {
+      "card1": {
+        "title": "Modernización sin interrupciones, riesgos ni tiempo de inactividad.",
+        "shortDesc": "Ayudamos a las empresas a modernizar los sistemas heredados, la infraestructura y las plataformas sin romper la continuidad del negocio, reduciendo la deuda técnica al tiempo que mejoramos la seguridad, la escalabilidad y la eficiencia de costos.",
+        "heading": "Servicios de modernización empresarial",
+        "description": "Nuestro enfoque integral de modernización garantiza que su negocio nunca se detenga mientras transformamos su panorama tecnológico."
+      },
+      "card2": {
+        "title": "Diseñar operaciones que escalen, se adapten y se autooptimicen.",
+        "shortDesc": "Kangqore rediseña los procesos empresariales utilizando automatización, datos e IA, eliminando la fricción, mejorando la velocidad de decisión y ofreciendo una eficiencia operativa medible en todas las funciones.",
+        "heading": "Operaciones inteligentes y automatización",
+        "description": "Transforme sus operaciones en un ecosistema autooptimizado que mejora continuamente la eficiencia y reduce los costos."
+      },
+      "card3": {
+        "title": "Diseño de experiencia impulsado por sistemas de grado empresarial.",
+        "shortDesc": "Creamos experiencias digitales respaldadas por plataformas escalables, integraciones seguras e inteligencia en tiempo real, asegurando que cada interacción con el cliente y el empleado brinde coherencia, rendimiento y valor comercial.",
+        "heading": "Excelencia en experiencia digital",
+        "description": "Cree experiencias digitales excepcionales que deleiten a los usuarios al tiempo que ofrecen resultados comerciales medibles."
+      }
+    },
+    "services": {
+      "label": "NUESTROS SERVICIOS",
+      "heading_prefix": "Explore nuestros",
+      "heading_highlight": "servicios",
+      "heading_suffix": "",
+      "learn_more": "Saber más"
+    },
+    "industries_section": {
+      "label": "INDUSTRIAS",
+      "heading_prefix": "Profunda experiencia en las",
+      "heading_highlight": "industrias",
+      "heading_suffix": "principales",
+      "description": "Combinamos la excelencia técnica con el conocimiento de la industria para ofrecer soluciones que aborden sus desafíos específicos."
+    },
+    "case_studies": {
+      "label": "HISTORIAS DE ÉXITO",
+      "heading_prefix": "Impacto real. Resultados",
+      "heading_highlight": "reales",
+      "see_all": "Ver todos los casos de estudio"
+    },
+    "insights": {
+      "label": "PERSPECTIVAS Y PUNTOS DE VISTA",
+      "heading_highlight": "Perspectivas",
+      "heading_suffix": "que impulsan el cambio.",
+      "view_all": "Ver todas las perspectivas"
+    },
+    "faq": {
+      "label": "¿Tienes preguntas?",
+      "heading_prefix": "Preguntas",
+      "heading_highlight": "frecuentes",
+      "description": "Consultas comunes sobre nuestros servicios, experiencia y modelos de participación."
+    },
+    "careers": {
+      "badge": "Únete a nuestro equipo global",
+      "heading_prefix": "Construye el",
+      "heading_highlight": "futuro",
+      "heading_suffix": "con nosotros.",
+      "description": "Únete a un equipo de visionarios, ingenieros y creadores. Siempre estamos buscando talentos excepcionales para ayudarnos a resolver los desafíos más complejos del mundo.",
+      "explore": "Explorar carreras",
+      "how_we_work": "Cómo trabajamos",
+      "stats": {
+        "builders": "Constructores",
+        "clients": "Clientes globales",
+        "culture": "Cultura de iteración"
+      },
+      "quote": "\"Somos un equipo en etapa inicial que crea productos audaces con ambición global.\""
+    }
+  }
+}
