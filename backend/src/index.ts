@@ -47,6 +47,9 @@ import deliverablesRoutes from './routes/deliverables'; // NEW
 import clientProfileRoutes from './routes/clientProfile'; // NEW (MNC Pillar 1)
 import accountabilityRoutes from './routes/accountability'; // NEW (MNC Shared Layer)
 import feedbackRoutes from './routes/feedback'; // NEW
+import schedulingRoutes from './routes/scheduling'; // NEW
+import { eqorePublicRoutes } from './eqore/routes'; // eQORE Phase 1 Public (Conversational AI)
+import { eqoreLeadIntelligenceRoutes } from './eqore-lead-intelligence'; // eQORE Phase 1 Admin (Lead Analyst)
 
 
 import { errorHandler } from './middleware/errorHandler';
@@ -58,6 +61,13 @@ import { initializeSocket, getIO } from './socket';
 // Initialize Prisma Client
 import { prisma } from './lib/prisma';
 export { prisma };
+// Environment Variable Validation
+const requiredEnvVars = ['DATABASE_URL', 'REDIS_URL'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+if (missingEnvVars.length > 0) {
+  console.error(`FATAL: Missing required environment variables: ${missingEnvVars.join(', ')}`);
+  process.exit(1);
+}
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -147,6 +157,15 @@ app.use('/api', contextRoutes);
 import adminStrategyRoutes from './routes/admin-strategy'; // Phase 4
 app.use('/api/admin/clients', adminStrategyRoutes); 
 app.use('/api/feedback', feedbackRoutes); // NEW
+app.use('/api/scheduling', schedulingRoutes); // NEW
+app.use('/api/eqore', eqorePublicRoutes); // eQORE Phase 1 Public (Visitor Concierge)
+app.use('/api/admin/eqore', eqoreLeadIntelligenceRoutes); // eQORE Lead Intelligence (Admin Analysis)
+
+// Kangqore ALIS — Advanced Lead Intelligence System (Phase 10)
+// Mounted under same admin prefix but as independent module above eQORE
+import { alisRouter } from './kangqore-alis';
+import { authenticate, authorize } from './middleware/auth';
+app.use('/api/admin/alis', authenticate, authorize(['ADMIN']), alisRouter);
 
 import servicesRoutes from './routes/services'; // Phase 3
 app.use('/api/services', servicesRoutes); 
@@ -157,6 +176,12 @@ app.use('/api/services', servicesRoutes);
 
 import reportsRoutes from './routes/reports'; // Gap 5
 app.use('/api/reports', reportsRoutes);
+
+// ─── KangqoreVis — Kangqore Visibility Intelligence System ────────────────────────────
+// Packaged framework. Sources connect later. Mounted before static frontend so
+// dynamic /sitemap.xml, /robots.txt, /llms.txt take precedence.
+import { kangqoreVisBootstrap } from './kangqore-vis';
+kangqoreVisBootstrap({ app });
 
 // Serve Uploaded Files with CORS headers for cross-origin access
 const uploadDir = process.env.UPLOAD_DIR || 'uploads';

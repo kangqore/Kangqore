@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id                         String                  @id @default(cuid())
-  email                      String                  @unique
+  id                         String                     @id @default(cuid())
+  email                      String                     @unique
   password                   String?
   name                       String
   company                    String?
-  role                       Role                    @default(CLIENT)
-  createdAt                  DateTime                @default(now())
-  updatedAt                  DateTime                @updatedAt
+  role                       Role                       @default(CLIENT)
+  createdAt                  DateTime                   @default(now())
+  updatedAt                  DateTime                   @updatedAt
   phone                      String?
   resetToken                 String?
   resetTokenExpiry           DateTime?
@@ -26,79 +26,82 @@ model User {
   gmail                      String?
   lastLoginAt                DateTime?
   linkedin                   String?
-  status                     UserStatus              @default(ACTIVE)
+  status                     UserStatus                 @default(ACTIVE)
   twitter                    String?
   collegeEmail               String?
-  customId                   String?                 @unique
+  customId                   String?                    @unique
   location                   String?
   purpose                    String?
-  appleId                    String?                 @unique
-  googleId                   String?                 @unique
-  linkedinId                 String?                 @unique
-  isRedFlagged               Boolean                 @default(false)
+  appleId                    String?                    @unique
+  googleId                   String?                    @unique
+  linkedinId                 String?                    @unique
+  isRedFlagged               Boolean                    @default(false)
   age                        Int?
   gender                     String?
   profession                 String?
-  documents                  String[]                @default([])
+  documents                  String[]                   @default([])
   portfolio                  Json?
   investorInterests          String[]
   investorPortfolio          String[]
   authorityRole              String?
-  clientProfile              ClientProfile?          @relation("ClientProfileOwner")
+  clientProfile              ClientProfile?             @relation("ClientProfileOwner")
+  clientAccountabilityEvents AccountabilityEvent[]      @relation("ClientAccountability")
+  userAccountabilityEvents   AccountabilityEvent[]      @relation("UserAccountability")
+  clientObligations          AccountabilityObligation[] @relation("ClientObligations")
+  userObligations            AccountabilityObligation[] @relation("UserObligations")
+  clientSnapshots            AccountabilitySnapshot[]   @relation("ClientSnapshots")
   adminItems                 AdminItem[]
+  clientAssumptions          Assumption[]
   auditLogs                  AuditLog[]
-  changeRequests             ChangeRequest[]         @relation("ChangeRequestClient")
+  availabilitySchedules      AvailabilitySchedule[]     @relation("UserAvailability")
+  changeRequests             ChangeRequest[]            @relation("ChangeRequestClient")
+  clientFeedbacks            ClientFeedback[]
   contents                   Content[]
   conversations              Conversation[]
-  approvedDecisions          Decision[]              @relation("DecisionApprover")
+  decisionStatusHistory      DecisionStatusHistory[]
+  decisionViews              DecisionView[]
+  approvedDecisions          Decision[]                 @relation("DecisionApprover")
   decisions                  Decision[]
   deliverables               Deliverable[]
-  partnerDeliverables        Deliverable[]           @relation("PartnerDeliverables")
-  receivedDocuments          Document[]              @relation("ClientDocuments")
-  emails                     EmailLog[]              @relation("ClientEmails")
-  investorEmails             EmailLog[]              @relation("InvestorEmails")
-  jobSeekerEmails            EmailLog[]              @relation("JobSeekerEmails")
-  partnerEmails              EmailLog[]              @relation("PartnerEmails")
+  partnerDeliverables        Deliverable[]              @relation("PartnerDeliverables")
+  clientDependencies         Dependency[]
+  receivedDocuments          Document[]                 @relation("ClientDocuments")
+  emails                     EmailLog[]                 @relation("ClientEmails")
+  investorEmails             EmailLog[]                 @relation("InvestorEmails")
+  jobSeekerEmails            EmailLog[]                 @relation("JobSeekerEmails")
+  partnerEmails              EmailLog[]                 @relation("PartnerEmails")
+  hostedEventTypes           EventType[]                @relation("HostedEventTypes")
   insights                   Insight[]
   invoices                   Invoice[]
-  meetings                   Meeting[]               @relation("ClientMeetings")
-  createdMeetings            Meeting[]               @relation("CreatedMeetings")
-  investorMeetings           Meeting[]               @relation("InvestorMeetings")
-  jobSeekerMeetings          Meeting[]               @relation("JobSeekerMeetings")
-  partnerMeetings            Meeting[]               @relation("PartnerMeetings")
-  partnerMessages            Message[]               @relation("PartnerMessages")
-  receivedMessages           Message[]               @relation("ReceivedMessages")
-  sentMessages               Message[]               @relation("SentMessages")
+  clientIssues               Issue[]
+  meetingLocations           MeetingLocation[]          @relation("UserLocations")
+  meetings                   Meeting[]                  @relation("ClientMeetings")
+  createdMeetings            Meeting[]                  @relation("CreatedMeetings")
+  investorMeetings           Meeting[]                  @relation("InvestorMeetings")
+  jobSeekerMeetings          Meeting[]                  @relation("JobSeekerMeetings")
+  partnerMeetings            Meeting[]                  @relation("PartnerMeetings")
+  partnerMessages            Message[]                  @relation("PartnerMessages")
+  receivedMessages           Message[]                  @relation("ReceivedMessages")
+  sentMessages               Message[]                  @relation("SentMessages")
   notifications              Notification[]
   oauthProviders             OAuthProvider[]
+  orgMemberships             OrgMembership[]            @relation("UserMemberships")
   productVersions            ProductVersion[]
   projects                   Project[]
-  partnerProjects            Project[]               @relation("PartnerProjects")
-  ledProjects                Project[]               @relation("ProjectLead")
+  ledProjects                Project[]                  @relation("ProjectLead")
+  partnerProjects            Project[]                  @relation("PartnerProjects")
   readingHistory             ReadingHistory[]
   resourceLinks              ResourceLink[]
   risks                      Risk[]
+  ownedRoutingForms          RoutingForm[]              @relation("OwnedRoutingForms")
+  hostedEvents               ScheduledEvent[]           @relation("EventHost")
+  ownedSchedulingLinks       SchedulingLink[]           @relation("OwnedSchedulingLinks")
+  ledServiceLines            ServiceLine[]
   sessions                   Session[]
   tasks                      Task[]
-  partnerTasks               Task[]                  @relation("PartnerTasks")
+  partnerTasks               Task[]                     @relation("PartnerTasks")
   ticketMessages             TicketMessage[]
   tickets                    Ticket[]
-  decisionViews              DecisionView[]
-  decisionStatusHistory      DecisionStatusHistory[]
-  clientAccountabilityEvents AccountabilityEvent[]   @relation("ClientAccountability")
-  userAccountabilityEvents   AccountabilityEvent[]   @relation("UserAccountability")
-
-  // RAID Log Relations
-  clientIssues       Issue[]
-  clientAssumptions  Assumption[]
-  clientDependencies Dependency[]
-
-  // NEW: Canonical accountability relations
-  clientObligations AccountabilityObligation[] @relation("ClientObligations")
-  userObligations   AccountabilityObligation[] @relation("UserObligations")
-  clientSnapshots   AccountabilitySnapshot[]   @relation("ClientSnapshots")
-  ledServiceLines   ServiceLine[]
-  clientFeedbacks   ClientFeedback[]
 
   @@map("users")
 }
@@ -111,10 +114,10 @@ model Document {
   type        String   @default("ASSET")
   size        Int?
   clientId    String
-  projectId   String?
   uploadedBy  String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  projectId   String?
   client      User     @relation("ClientDocuments", fields: [clientId], references: [id])
   project     Project? @relation("ProjectDocuments", fields: [projectId], references: [id])
 
@@ -122,75 +125,59 @@ model Document {
 }
 
 model Project {
-  id                   String                @id @default(cuid())
-  title                String
-  description          String?
-  status               ProjectStatus         @default(ACTIVE)
-  clientId             String
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  partnerId            String?
-  constraints          Json?
-  priorityOrder        String?
-  budget               Decimal?              @db.Decimal(12, 2)
-  dueDate              DateTime?
-  objectives           BusinessObjective[]
-  changeRequests       ChangeRequest[]
-  decisions            Decision[]
-  deliverables         Deliverable[]
-  invoices             Invoice[]
-  client               User                  @relation(fields: [clientId], references: [id])
-  partner              User?                 @relation("PartnerProjects", fields: [partnerId], references: [id])
-  leadId               String?
-  lead                 User?                 @relation("ProjectLead", fields: [leadId], references: [id])
-  risks                Risk[]
-  tasks                Task[]
-  accountabilityEvents AccountabilityEvent[]
-
-  // NEW: Canonical accountability relations
-  projectObligations AccountabilityObligation[] @relation("ProjectObligations")
-  projectSnapshots   AccountabilitySnapshot[]   @relation("ProjectSnapshots")
-
-  // RAID Log Relations
-  issues       Issue[]
-  assumptions  Assumption[]
-  dependencies Dependency[]
-
-  services     String[] // List of selected service slugs
-  serviceLines ServiceLine[] // Relation to ServiceLine model
-
-  // Phase 3: PMO Fields
-  category String?  @default("Transformation") // Strategy Pillar
-  spend    Decimal? @default(0) @db.Decimal(12, 2)
-  health   Int      @default(100) // 0-100 score
-  nextGate String? // e.g. "UAT Sign-off"
-
-  // Phase 12: Progress Validation Layer
-  progress                  Int?      @default(0) // 0-100
-  progressCalculationMethod String?   @default("MANUAL") // MANUAL, AUTO_DELIVERABLES, AUTO_MILESTONES, HYBRID
-  progressEvidence          Json? // { deliverables: [ids], milestones: [ids], lastCalculated: timestamp }
-  progressConfidence        Float?    @default(0) // 0-100: Confidence in progress accuracy
-  progressLastValidated     DateTime? // When progress was last auto-validated
-  progressOverride          Boolean   @default(false) // Admin manually overrode auto-calculation
-  progressOverrideReason    String?   @db.Text // Why admin overrode (shown to client)
-
-  // Alignment Assurance (Pulse)
-  adminConfidenceScore Int?      @default(0) // 0-100
-  clientSentimentScore Int?      @default(0) // 0-100
-  lastAlignmentCheck   DateTime?
-
-  // NEW: Product Vision & Strategic Alignment
-  vision               String? @db.Text
-  visionWorkflows      Json? // { workflows: [], features: [], uiux: [], ai: [] }
-  visionStatus         String  @default("PENDING") // PENDING, APPROVED, REVISION_REQUESTED
-  visionClientFeedback String? @db.Text
-
-  // NEW: SLA & Performance
-  slaMetrics Json? // { uptime: Float, latency: Int, throughput: Int, lastUpdated: DateTime }
-
-  documents       Document[]       @relation("ProjectDocuments")
-  productVersions ProductVersion[] @relation("ProjectVersions")
-  clientFeedbacks ClientFeedback[] @relation("ProjectFeedbacks")
+  id                        String                     @id @default(cuid())
+  title                     String
+  description               String?
+  status                    ProjectStatus              @default(ACTIVE)
+  clientId                  String
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+  partnerId                 String?
+  constraints               Json?
+  priorityOrder             String?
+  budget                    Decimal?                   @db.Decimal(12, 2)
+  dueDate                   DateTime?
+  services                  String[]
+  progress                  Int?                       @default(0)
+  progressCalculationMethod String?                    @default("MANUAL")
+  progressConfidence        Float?                     @default(0)
+  progressEvidence          Json?
+  progressLastValidated     DateTime?
+  progressOverride          Boolean                    @default(false)
+  progressOverrideReason    String?
+  category                  String?                    @default("Transformation")
+  health                    Int                        @default(100)
+  nextGate                  String?
+  spend                     Decimal?                   @default(0) @db.Decimal(12, 2)
+  leadId                    String?
+  adminConfidenceScore      Int?                       @default(0)
+  clientSentimentScore      Int?                       @default(0)
+  lastAlignmentCheck        DateTime?
+  slaMetrics                Json?
+  vision                    String?
+  visionClientFeedback      String?
+  visionStatus              String                     @default("PENDING")
+  visionWorkflows           Json?
+  objectives                BusinessObjective[]
+  accountabilityEvents      AccountabilityEvent[]
+  projectObligations        AccountabilityObligation[] @relation("ProjectObligations")
+  projectSnapshots          AccountabilitySnapshot[]   @relation("ProjectSnapshots")
+  assumptions               Assumption[]
+  changeRequests            ChangeRequest[]
+  clientFeedbacks           ClientFeedback[]           @relation("ProjectFeedbacks")
+  decisions                 Decision[]
+  deliverables              Deliverable[]
+  dependencies              Dependency[]
+  documents                 Document[]                 @relation("ProjectDocuments")
+  invoices                  Invoice[]
+  issues                    Issue[]
+  productVersions           ProductVersion[]           @relation("ProjectVersions")
+  client                    User                       @relation(fields: [clientId], references: [id])
+  lead                      User?                      @relation("ProjectLead", fields: [leadId], references: [id])
+  partner                   User?                      @relation("PartnerProjects", fields: [partnerId], references: [id])
+  risks                     Risk[]
+  tasks                     Task[]
+  serviceLines              ServiceLine[]              @relation("ProjectToServiceLine")
 
   @@index([clientId])
   @@index([status])
@@ -212,45 +199,40 @@ model Deliverable {
   qualityGateStatus     String                @default("PENDING")
   securityScanPassed    Boolean               @default(false)
   approvedAt            DateTime?
-  approvedByRole        String? // The role of the person who clicked "Accept", e.g. "Project Sponsor"
+  approvedByRole        String?
   invoiceId             String?
-  dueDate               DateTime? // Added for Timeline/Overdue tracking
+  dueDate               DateTime?
+  accountabilityEvents  AccountabilityEvent[]
   client                User                  @relation(fields: [clientId], references: [id])
   invoice               Invoice?              @relation(fields: [invoiceId], references: [id])
   partner               User?                 @relation("PartnerDeliverables", fields: [partnerId], references: [id])
   project               Project               @relation(fields: [projectId], references: [id])
-  accountabilityEvents  AccountabilityEvent[]
-
-  // Phase 7: Delivery Integrations
-  externalResources ExternalResource[]
-  deliverySignals   DeliverySignal[]
+  deliverySignals       DeliverySignal[]
+  externalResources     ExternalResource[]
 
   @@map("deliverables")
 }
 
-// Phase 7: Delivery Integrations
 model ExternalResource {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   deliverableId String
-  resourceType  String // GITHUB_REPO, JIRA_TICKET, DRIVE_FOLDER
-  externalId    String // URL or ID
+  resourceType  String
+  externalId    String
   lastSyncAt    DateTime?
-  createdAt     DateTime  @default(now())
-
-  deliverable Deliverable @relation(fields: [deliverableId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+  deliverable   Deliverable @relation(fields: [deliverableId], references: [id], onDelete: Cascade)
 
   @@map("external_resources")
 }
 
 model DeliverySignal {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   deliverableId String
-  signalType    String // PR_MERGED, TICKET_UPDATED, MANUAL_UPDATE
-  source        String // "GitHub", "User"
+  signalType    String
+  source        String
   payload       Json?
-  timestamp     DateTime @default(now())
-
-  deliverable Deliverable @relation(fields: [deliverableId], references: [id], onDelete: Cascade)
+  timestamp     DateTime    @default(now())
+  deliverable   Deliverable @relation(fields: [deliverableId], references: [id], onDelete: Cascade)
 
   @@index([deliverableId])
   @@map("delivery_signals")
@@ -266,7 +248,7 @@ model Task {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   partnerId   String?
-  dueDate     DateTime? // Added for Timeline/Overdue tracking
+  dueDate     DateTime?
   client      User      @relation(fields: [clientId], references: [id])
   partner     User?     @relation("PartnerTasks", fields: [partnerId], references: [id])
   project     Project   @relation(fields: [projectId], references: [id])
@@ -356,11 +338,11 @@ model AuditLog {
 model Conversation {
   id        String   @id @default(cuid())
   userId    String?
-  kind      String?  @default("chatbot")
   messages  Json
-  meta      Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  kind      String?  @default("chatbot")
+  meta      Json?
   user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([kind, createdAt])
@@ -402,44 +384,39 @@ model ConciergeFeedback {
 }
 
 model Risk {
-  id          String  @id @default(cuid())
-  title       String
-  description String?
-  severity    String
-  status      String  @default("OPEN")
-  probability String?
-  impact      String?
-  owner       String? // Legacy field, keep or migrate
-
-  // Ownership & Response Tracking
-  riskOwner        String?   @default("SHARED") // 'CLIENT', 'KANGQORE', 'SHARED'
-  trend            String?   @default("STABLE") // 'STABLE', 'WORSENING', 'IMPROVING'
-  mitigationPlan   String?   @db.Text
-  contingencyPlan  String?   @db.Text
-  clientResponse   String?   @db.Text
-  clientResponseAt DateTime?
-
-  projectId           String
-  clientId            String
-  createdAt           DateTime   @default(now())
-  updatedAt           DateTime   @updatedAt
-  acceptanceNote      String?
-  clientAcceptedAt    DateTime?
-  clientAcceptedBy    String?
-  acceptanceSignature String?
-  isClientVisible     Boolean    @default(true)
-  mitigatingDecisions Decision[]
-  client              User       @relation(fields: [clientId], references: [id])
-  project             Project    @relation(fields: [projectId], references: [id])
-
-  // Conversation Context Binding
+  id                   String                @id @default(cuid())
+  title                String
+  description          String?
+  severity             String
+  status               String                @default("OPEN")
+  probability          String?
+  impact               String?
+  owner                String?
+  projectId            String
+  clientId             String
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  acceptanceNote       String?
+  clientAcceptedAt     DateTime?
+  clientAcceptedBy     String?
+  acceptanceSignature  String?
+  isClientVisible      Boolean               @default(true)
   sourceEmailId        String?
   sourceMeetingId      String?
   sourceMessageId      String?
+  clientResponse       String?
+  clientResponseAt     DateTime?
+  contingencyPlan      String?
+  mitigationPlan       String?
+  riskOwner            String?               @default("SHARED")
+  trend                String?               @default("STABLE")
+  accountabilityEvents AccountabilityEvent[]
+  mitigatingDecisions  Decision[]
+  client               User                  @relation(fields: [clientId], references: [id])
+  project              Project               @relation(fields: [projectId], references: [id])
   sourceEmail          EmailLog?             @relation("RiskFromEmail", fields: [sourceEmailId], references: [id])
   sourceMeeting        Meeting?              @relation("RiskFromMeeting", fields: [sourceMeetingId], references: [id])
   sourceMessage        Message?              @relation("RiskFromMessage", fields: [sourceMessageId], references: [id])
-  accountabilityEvents AccountabilityEvent[]
 
   @@index([projectId])
   @@index([clientId])
@@ -448,41 +425,39 @@ model Risk {
 }
 
 model Decision {
-  id              String                  @id @default(cuid())
-  title           String
-  description     String
-  category        String? // New field for governance
-  status          String                  @default("DRAFT")
-  priority        String?
-  dueDate         DateTime?
-  projectId       String
-  clientId        String
-  approverId      String?
-  createdAt       DateTime                @default(now())
-  updatedAt       DateTime                @updatedAt
-  approvalRole    String?
-  approvedAt      DateTime?
-  impactTime      String? // e.g. "+2 Weeks"
-  impactCost      String? // e.g. "$5,000"
-  impactRisk      String? // e.g. "LOW"
-  changeRequestId String?
-  riskId          String?
-  approver        User?                   @relation("DecisionApprover", fields: [approverId], references: [id])
-  changeRequest   ChangeRequest?          @relation("ChangeApproval", fields: [changeRequestId], references: [id])
-  client          User                    @relation(fields: [clientId], references: [id])
-  project         Project                 @relation(fields: [projectId], references: [id])
-  risk            Risk?                   @relation(fields: [riskId], references: [id])
-  views           DecisionView[]
-  statusHistory   DecisionStatusHistory[]
-
-  // Conversation Context Binding
+  id                   String                  @id @default(cuid())
+  title                String
+  description          String
+  status               String                  @default("DRAFT")
+  priority             String?
+  dueDate              DateTime?
+  projectId            String
+  clientId             String
+  approverId           String?
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+  approvalRole         String?
+  approvedAt           DateTime?
+  changeRequestId      String?
+  riskId               String?
+  impactCost           String?
+  impactRisk           String?
+  impactTime           String?
   sourceEmailId        String?
   sourceMeetingId      String?
   sourceMessageId      String?
-  sourceEmail          EmailLog?             @relation("DecisionFromEmail", fields: [sourceEmailId], references: [id])
-  sourceMeeting        Meeting?              @relation("DecisionFromMeeting", fields: [sourceMeetingId], references: [id])
-  sourceMessage        Message?              @relation("DecisionFromMessage", fields: [sourceMessageId], references: [id])
+  category             String?
   accountabilityEvents AccountabilityEvent[]
+  statusHistory        DecisionStatusHistory[]
+  views                DecisionView[]
+  approver             User?                   @relation("DecisionApprover", fields: [approverId], references: [id])
+  changeRequest        ChangeRequest?          @relation("ChangeApproval", fields: [changeRequestId], references: [id])
+  client               User                    @relation(fields: [clientId], references: [id])
+  project              Project                 @relation(fields: [projectId], references: [id])
+  risk                 Risk?                   @relation(fields: [riskId], references: [id])
+  sourceEmail          EmailLog?               @relation("DecisionFromEmail", fields: [sourceEmailId], references: [id])
+  sourceMeeting        Meeting?                @relation("DecisionFromMeeting", fields: [sourceMeetingId], references: [id])
+  sourceMessage        Message?                @relation("DecisionFromMessage", fields: [sourceMessageId], references: [id])
 
   @@index([projectId])
   @@index([clientId])
@@ -494,11 +469,10 @@ model DecisionView {
   id         String   @id @default(cuid())
   decisionId String
   userId     String
-  duration   Int      @default(0) // Seconds spent viewing
+  duration   Int      @default(0)
   createdAt  DateTime @default(now())
-
-  decision Decision @relation(fields: [decisionId], references: [id])
-  user     User     @relation(fields: [userId], references: [id])
+  decision   Decision @relation(fields: [decisionId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 
   @@index([decisionId])
   @@index([userId])
@@ -512,9 +486,8 @@ model DecisionStatusHistory {
   toStatus   String
   userId     String
   createdAt  DateTime @default(now())
-
-  decision Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
-  user     User     @relation(fields: [userId], references: [id])
+  decision   Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id])
 
   @@index([decisionId])
   @@index([userId])
@@ -548,42 +521,37 @@ model Invoice {
 }
 
 model ChangeRequest {
-  id           String @id @default(cuid())
-  title        String
-  description  String
-  decisionType String // "Strategic", "Operational", "Financial"
-  priority     String @default("MEDIUM")
-  status       String @default("PROPOSED") // PROPOSED, APPROVED, REJECTED
-
-  // Transparency Layer
-  rationale              String?    @db.Text
-  tradeoffs              String?    @db.Text
-  acknowledgedAt         DateTime?
-  acknowledgedBy         String?
-  costImpact             Decimal?   @db.Decimal(10, 2)
+  id                     String                @id @default(cuid())
+  title                  String
+  description            String
+  status                 String                @default("PROPOSED")
+  priority               String                @default("MEDIUM")
+  costImpact             Decimal?              @db.Decimal(10, 2)
   timeImpact             String?
-  // Transparency Layer
-  adminResponseRationale String?    @db.Text
   projectId              String
   clientId               String
   requestedBy            String?
-  createdAt              DateTime   @default(now())
-  updatedAt              DateTime   @updatedAt
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
   invoiceId              String?
   rejectionImpact        String?
-  client                 User       @relation("ChangeRequestClient", fields: [clientId], references: [id])
-  invoice                Invoice?   @relation(fields: [invoiceId], references: [id])
-  project                Project    @relation(fields: [projectId], references: [id])
-  approvingDecisions     Decision[] @relation("ChangeApproval")
-
-  // Conversation Context Binding
-  sourceEmailId        String?
-  sourceMeetingId      String?
-  sourceMessageId      String?
-  sourceEmail          EmailLog?             @relation("ChangeFromEmail", fields: [sourceEmailId], references: [id])
-  sourceMeeting        Meeting?              @relation("ChangeFromMeeting", fields: [sourceMeetingId], references: [id])
-  sourceMessage        Message?              @relation("ChangeFromMessage", fields: [sourceMessageId], references: [id])
-  accountabilityEvents AccountabilityEvent[]
+  sourceEmailId          String?
+  sourceMeetingId        String?
+  sourceMessageId        String?
+  acknowledgedAt         DateTime?
+  acknowledgedBy         String?
+  adminResponseRationale String?
+  decisionType           String
+  rationale              String?
+  tradeoffs              String?
+  accountabilityEvents   AccountabilityEvent[]
+  client                 User                  @relation("ChangeRequestClient", fields: [clientId], references: [id])
+  invoice                Invoice?              @relation(fields: [invoiceId], references: [id])
+  project                Project               @relation(fields: [projectId], references: [id])
+  sourceEmail            EmailLog?             @relation("ChangeFromEmail", fields: [sourceEmailId], references: [id])
+  sourceMeeting          Meeting?              @relation("ChangeFromMeeting", fields: [sourceMeetingId], references: [id])
+  sourceMessage          Message?              @relation("ChangeFromMessage", fields: [sourceMessageId], references: [id])
+  approvingDecisions     Decision[]            @relation("ChangeApproval")
 
   @@index([projectId])
   @@index([clientId])
@@ -641,7 +609,7 @@ model Consultation {
   meetingMode         String?
   previousScheduledAt DateTime?
   topic               String?
-  services            String[] // List of interested service slugs
+  services            String[]
 
   @@index([status, createdAt])
   @@index([email])
@@ -856,42 +824,37 @@ model Notification {
 }
 
 model Meeting {
-  id        String   @id @default(uuid())
-  title     String
-  type      String
-  platform  String?
-  startTime DateTime
-  endTime   DateTime
-  timezone  String   @default("UTC")
-  joinLink  String?
-  status    String   @default("SCHEDULED")
-  clientId  String?
-  createdBy String
-  services  String[]
-
-  // Alignment Assurance (Phase 7)
-  adminConfidenceScore Int       @default(100) // 0-100
-  clientSentimentScore Int       @default(100) // 0-100
-  lastAlignmentCheck   DateTime?
-
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  investorId    String?
-  partnerId     String?
-  jobSeekerId   String?
-  momUrl        String?
-  recordingLink String?
-  location      String?
-  meetingMode   String?
-  client        User?    @relation("ClientMeetings", fields: [clientId], references: [id])
-  creator       User     @relation("CreatedMeetings", fields: [createdBy], references: [id])
-  investor      User?    @relation("InvestorMeetings", fields: [investorId], references: [id])
-  jobSeeker     User?    @relation("JobSeekerMeetings", fields: [jobSeekerId], references: [id])
-  partner       User?    @relation("PartnerMeetings", fields: [partnerId], references: [id])
-
-  // Inverse Relations: Triggered Artifacts
-  triggeredDecisions      Decision[]      @relation("DecisionFromMeeting")
+  id                      String          @id @default(uuid())
+  title                   String
+  type                    String
+  platform                String?
+  startTime               DateTime
+  endTime                 DateTime
+  timezone                String          @default("UTC")
+  joinLink                String?
+  status                  String          @default("SCHEDULED")
+  clientId                String?
+  createdBy               String
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  investorId              String?
+  partnerId               String?
+  jobSeekerId             String?
+  momUrl                  String?
+  recordingLink           String?
+  location                String?
+  meetingMode             String?
+  adminConfidenceScore    Int             @default(100)
+  clientSentimentScore    Int             @default(100)
+  lastAlignmentCheck      DateTime?
+  services                String[]
   triggeredChangeRequests ChangeRequest[] @relation("ChangeFromMeeting")
+  triggeredDecisions      Decision[]      @relation("DecisionFromMeeting")
+  client                  User?           @relation("ClientMeetings", fields: [clientId], references: [id])
+  creator                 User            @relation("CreatedMeetings", fields: [createdBy], references: [id])
+  investor                User?           @relation("InvestorMeetings", fields: [investorId], references: [id])
+  jobSeeker               User?           @relation("JobSeekerMeetings", fields: [jobSeekerId], references: [id])
+  partner                 User?           @relation("PartnerMeetings", fields: [partnerId], references: [id])
   triggeredRisks          Risk[]          @relation("RiskFromMeeting")
 
   @@map("meetings")
@@ -939,9 +902,9 @@ model ProductVersion {
   version     String?
   metadata    Json?
   clientId    String
-  projectId   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  projectId   String?
   client      User     @relation(fields: [clientId], references: [id])
   project     Project? @relation("ProjectVersions", fields: [projectId], references: [id])
 
@@ -963,83 +926,77 @@ model ResourceLink {
 }
 
 model Message {
-  id          String   @id @default(cuid())
-  content     String
-  senderId    String
-  receiverId  String?
-  channelId   String?
-  isRead      Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  attachments Json?
-  partnerId   String?
-  partner     User?    @relation("PartnerMessages", fields: [partnerId], references: [id])
-  receiver    User?    @relation("ReceivedMessages", fields: [receiverId], references: [id])
-  sender      User     @relation("SentMessages", fields: [senderId], references: [id])
-
-  // Context Mapping (Generic)
-  contextType String? // e.g. "RISK", "DECISION", "PROJECT", "DELIVERABLE"
-  contextId   String? // ID of the related entity
-  tags        Json? // Flexible tags
-
-  // Inverse Relations: Triggered Artifacts
-  triggeredDecisions      Decision[]      @relation("DecisionFromMessage")
+  id                      String          @id @default(cuid())
+  content                 String
+  senderId                String
+  receiverId              String?
+  channelId               String?
+  isRead                  Boolean         @default(false)
+  createdAt               DateTime        @default(now())
+  attachments             Json?
+  partnerId               String?
+  contextId               String?
+  contextType             String?
+  tags                    Json?
   triggeredChangeRequests ChangeRequest[] @relation("ChangeFromMessage")
+  triggeredDecisions      Decision[]      @relation("DecisionFromMessage")
+  partner                 User?           @relation("PartnerMessages", fields: [partnerId], references: [id])
+  receiver                User?           @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  sender                  User            @relation("SentMessages", fields: [senderId], references: [id])
   triggeredRisks          Risk[]          @relation("RiskFromMessage")
 
   @@index([senderId, receiverId])
-  @@index([contextType, contextId]) // Index for context lookups
+  @@index([contextType, contextId])
   @@map("messages")
 }
 
 model EmailLog {
-  id                   String   @id @default(cuid())
-  subject              String
-  from                 String
-  to                   String
-  body                 String
-  preview              String?
-  hasAttachment        Boolean  @default(false)
-  isUnread             Boolean  @default(true)
-  clientId             String?
-  createdAt            DateTime @default(now())
-  investorId           String?
-  partnerId            String?
-  attachments          Json?
-  direction            String?
-  isRead               Boolean  @default(false)
-  replyToId            String?
-  threadId             String?
-  jobSeekerId          String?
-  adminFolder          String?  @default("INBOX")
-  adminLabels          Json?
-  clientFolder         String?  @default("INBOX")
-  clientLabels         Json?
-  investorFolder       String?  @default("INBOX")
-  investorLabels       Json?
-  isAdminImportant     Boolean  @default(false)
-  isAdminStarred       Boolean  @default(false)
-  isClientImportant    Boolean  @default(false)
-  isClientStarred      Boolean  @default(false)
-  isInvestorImportant  Boolean  @default(false)
-  isInvestorStarred    Boolean  @default(false)
-  isJobSeekerImportant Boolean  @default(false)
-  isJobSeekerStarred   Boolean  @default(false)
-  isPartnerImportant   Boolean  @default(false)
-  isPartnerStarred     Boolean  @default(false)
-  jobSeekerFolder      String?  @default("INBOX")
-  jobSeekerLabels      Json?
-  partnerFolder        String?  @default("INBOX")
-  partnerLabels        Json?
-  category             String   @default("GENERAL")
-  isImmutable          Boolean  @default(false)
-  client               User?    @relation("ClientEmails", fields: [clientId], references: [id])
-  investor             User?    @relation("InvestorEmails", fields: [investorId], references: [id])
-  jobSeeker            User?    @relation("JobSeekerEmails", fields: [jobSeekerId], references: [id])
-  partner              User?    @relation("PartnerEmails", fields: [partnerId], references: [id])
-
-  // Inverse Relations: Triggered Artifacts
-  triggeredDecisions      Decision[]      @relation("DecisionFromEmail")
+  id                      String          @id @default(cuid())
+  subject                 String
+  from                    String
+  to                      String
+  body                    String
+  preview                 String?
+  hasAttachment           Boolean         @default(false)
+  isUnread                Boolean         @default(true)
+  clientId                String?
+  createdAt               DateTime        @default(now())
+  investorId              String?
+  partnerId               String?
+  attachments             Json?
+  direction               String?
+  isRead                  Boolean         @default(false)
+  replyToId               String?
+  threadId                String?
+  jobSeekerId             String?
+  adminFolder             String?         @default("INBOX")
+  adminLabels             Json?
+  clientFolder            String?         @default("INBOX")
+  clientLabels            Json?
+  investorFolder          String?         @default("INBOX")
+  investorLabels          Json?
+  isAdminImportant        Boolean         @default(false)
+  isAdminStarred          Boolean         @default(false)
+  isClientImportant       Boolean         @default(false)
+  isClientStarred         Boolean         @default(false)
+  isInvestorImportant     Boolean         @default(false)
+  isInvestorStarred       Boolean         @default(false)
+  isJobSeekerImportant    Boolean         @default(false)
+  isJobSeekerStarred      Boolean         @default(false)
+  isPartnerImportant      Boolean         @default(false)
+  isPartnerStarred        Boolean         @default(false)
+  jobSeekerFolder         String?         @default("INBOX")
+  jobSeekerLabels         Json?
+  partnerFolder           String?         @default("INBOX")
+  partnerLabels           Json?
+  category                String          @default("GENERAL")
+  isImmutable             Boolean         @default(false)
   triggeredChangeRequests ChangeRequest[] @relation("ChangeFromEmail")
+  triggeredDecisions      Decision[]      @relation("DecisionFromEmail")
+  client                  User?           @relation("ClientEmails", fields: [clientId], references: [id])
+  investor                User?           @relation("InvestorEmails", fields: [investorId], references: [id])
+  jobSeeker               User?           @relation("JobSeekerEmails", fields: [jobSeekerId], references: [id])
+  partner                 User?           @relation("PartnerEmails", fields: [partnerId], references: [id])
   triggeredRisks          Risk[]          @relation("RiskFromEmail")
 
   @@index([threadId])
@@ -1062,33 +1019,30 @@ model InvestorUpdate {
 }
 
 model ClientProfile {
-  id                  String          @id @default(cuid())
-  userId              String          @unique
-  legalEntityName     String?
-  registeredAddress   String?
-  taxId               String?
-  industryDomain      String?
-  jurisdiction        String?
-  dataResidency       String?
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
-  billingContactEmail String?
-  billingContactName  String?
-  billingContactPhone String?
-  escalationMatrix    Json?
-  authorityMatrix     AuthorityRole[]
-  interestedServices  String[] // List of interested service slugs from onboarding
-
-  // Governance Acknowledgement Layer (Enhanced)
-  governanceRules      String?   @db.Text // JSON or Text
-  governanceRationale  String?   @db.Text // Why these rules exist
-  governanceApprovedBy String? // Admin who set the rules
-  governanceApprovedAt DateTime? // When rules were last updated
-  rulesLastUpdated     DateTime?
+  id                   String          @id @default(cuid())
+  userId               String          @unique
+  legalEntityName      String?
+  registeredAddress    String?
+  taxId                String?
+  industryDomain       String?
+  jurisdiction         String?
+  dataResidency        String?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  billingContactEmail  String?
+  billingContactName   String?
+  billingContactPhone  String?
+  escalationMatrix     Json?
+  interestedServices   String[]
+  governanceRules      String?
   rulesAcknowledgedAt  DateTime?
-  rulesAcknowledgedBy  String? // Name or ID of the user who acknowledged
-
-  user User @relation("ClientProfileOwner", fields: [userId], references: [id])
+  rulesAcknowledgedBy  String?
+  rulesLastUpdated     DateTime?
+  governanceApprovedAt DateTime?
+  governanceApprovedBy String?
+  governanceRationale  String?
+  authorityMatrix      AuthorityRole[]
+  user                 User            @relation("ClientProfileOwner", fields: [userId], references: [id])
 }
 
 model AuthorityRole {
@@ -1116,6 +1070,809 @@ model BusinessObjective {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   project     Project  @relation(fields: [projectId], references: [id])
+}
+
+model AccountabilityEvent {
+  id                String                     @id @default(cuid())
+  eventType         String
+  eventCategory     String
+  projectId         String
+  clientId          String
+  userId            String
+  decisionId        String?
+  riskId            String?
+  changeRequestId   String?
+  deliverableId     String?
+  actionTaken       String
+  impactSummary     String?
+  commitmentNote    String?
+  ipAddress         String?
+  eventTimestamp    DateTime                   @default(now())
+  actorRole         ActorRole?
+  eventSource       EventSource?
+  relatedEntityId   String?
+  relatedEntityType RelatedEntityType?
+  summary           String?
+  changeRequest     ChangeRequest?             @relation(fields: [changeRequestId], references: [id])
+  client            User                       @relation("ClientAccountability", fields: [clientId], references: [id])
+  decision          Decision?                  @relation(fields: [decisionId], references: [id])
+  deliverable       Deliverable?               @relation(fields: [deliverableId], references: [id])
+  project           Project                    @relation(fields: [projectId], references: [id])
+  risk              Risk?                      @relation(fields: [riskId], references: [id])
+  user              User                       @relation("UserAccountability", fields: [userId], references: [id])
+  impacts           AccountabilityImpact[]     @relation("EventImpacts")
+  obligations       AccountabilityObligation[] @relation("EventObligations")
+
+  @@index([projectId, eventTimestamp])
+  @@index([clientId, eventTimestamp])
+  @@index([eventType])
+  @@map("accountability_events")
+}
+
+model AccountabilityObligation {
+  id             String              @id @default(cuid())
+  clientId       String
+  projectId      String
+  obligationType ObligationType
+  owedByRole     ActorRole
+  owedByUserId   String?
+  description    String
+  dueDate        DateTime?
+  status         ObligationStatus    @default(OPEN)
+  linkedEventId  String
+  createdAt      DateTime            @default(now())
+  resolvedAt     DateTime?
+  client         User                @relation("ClientObligations", fields: [clientId], references: [id])
+  linkedEvent    AccountabilityEvent @relation("EventObligations", fields: [linkedEventId], references: [id])
+  owedByUser     User?               @relation("UserObligations", fields: [owedByUserId], references: [id])
+  project        Project             @relation("ProjectObligations", fields: [projectId], references: [id])
+
+  @@index([clientId, status])
+  @@index([projectId, status])
+  @@index([owedByRole, status])
+  @@index([linkedEventId])
+  @@map("accountability_obligations")
+}
+
+model AccountabilityImpact {
+  id          String              @id @default(cuid())
+  eventId     String
+  impactType  ImpactType
+  impactValue Decimal             @db.Decimal(12, 2)
+  impactUnit  ImpactUnit
+  appliedTo   ImpactDomain
+  createdAt   DateTime            @default(now())
+  event       AccountabilityEvent @relation("EventImpacts", fields: [eventId], references: [id])
+
+  @@index([eventId])
+  @@index([appliedTo])
+  @@map("accountability_impacts")
+}
+
+model AccountabilitySnapshot {
+  id                 String   @id @default(cuid())
+  clientId           String
+  projectId          String
+  snapshotDate       DateTime @db.Date
+  clientDelayDays    Int      @default(0)
+  adminDelayDays     Int      @default(0)
+  externalDelayDays  Int      @default(0)
+  budgetClientCaused Decimal  @default(0) @db.Decimal(12, 2)
+  budgetAdminCaused  Decimal  @default(0) @db.Decimal(12, 2)
+  riskScore          Decimal  @default(0) @db.Decimal(5, 2)
+  createdAt          DateTime @default(now())
+  client             User     @relation("ClientSnapshots", fields: [clientId], references: [id])
+  project            Project  @relation("ProjectSnapshots", fields: [projectId], references: [id])
+
+  @@unique([projectId, snapshotDate])
+  @@index([clientId, snapshotDate])
+  @@map("accountability_snapshots")
+}
+
+model ServiceLine {
+  id          String           @id @default(cuid())
+  name        String
+  slug        String           @unique
+  description String?
+  leadId      String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  metrics     PracticeMetric[]
+  lead        User?            @relation(fields: [leadId], references: [id])
+  projects    Project[]        @relation("ProjectToServiceLine")
+
+  @@map("service_lines")
+}
+
+model PracticeMetric {
+  id            String      @id @default(cuid())
+  serviceLineId String
+  period        DateTime
+  revenue       Decimal     @db.Decimal(12, 2)
+  cost          Decimal     @db.Decimal(12, 2)
+  margin        Decimal     @db.Decimal(5, 2)
+  utilization   Decimal     @db.Decimal(5, 2)
+  headcount     Int
+  bench         Int
+  createdAt     DateTime    @default(now())
+  serviceLine   ServiceLine @relation(fields: [serviceLineId], references: [id])
+
+  @@unique([serviceLineId, period])
+  @@map("practice_metrics")
+}
+
+model Vendor {
+  id        String     @id @default(cuid())
+  name      String
+  category  String
+  risk      String     @default("LOW")
+  tier      String     @default("Operational")
+  status    String     @default("ACTIVE")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  contracts Contract[]
+
+  @@map("vendors")
+}
+
+model Contract {
+  id          String    @id @default(cuid())
+  vendorId    String
+  title       String
+  value       Decimal   @db.Decimal(12, 2)
+  startDate   DateTime
+  endDate     DateTime
+  renewalDate DateTime?
+  status      String    @default("ACTIVE")
+  vendor      Vendor    @relation(fields: [vendorId], references: [id])
+
+  @@map("contracts")
+}
+
+model Issue {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  priority    String    @default("MEDIUM")
+  status      String    @default("OPEN")
+  owner       String?
+  dueDate     DateTime?
+  projectId   String
+  clientId    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  client      User      @relation(fields: [clientId], references: [id])
+  project     Project   @relation(fields: [projectId], references: [id])
+
+  @@map("issues")
+}
+
+model Assumption {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("ACTIVE")
+  owner       String?
+  projectId   String
+  clientId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  client      User     @relation(fields: [clientId], references: [id])
+  project     Project  @relation(fields: [projectId], references: [id])
+
+  @@map("assumptions")
+}
+
+model Dependency {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  type        String    @default("INTERNAL")
+  status      String    @default("OPEN")
+  owner       String?
+  dueDate     DateTime?
+  projectId   String
+  clientId    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  client      User      @relation(fields: [clientId], references: [id])
+  project     Project   @relation(fields: [projectId], references: [id])
+
+  @@map("dependencies")
+}
+
+model IPAsset {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  type        String
+  status      String   @default("ACTIVE")
+  version     String   @default("1.0.0")
+  owner       String?
+  tags        String[]
+  downloads   Int      @default(0)
+  rating      Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("ip_assets")
+}
+
+model ClientFeedback {
+  id            String   @id @default(cuid())
+  projectId     String
+  clientId      String
+  npsScore      Int
+  comment       String?
+  testimonial   String?
+  isPublic      Boolean  @default(false)
+  adminResponse String?
+  designation   String?
+  companyName   String?
+  logoUrl       String?
+  photoUrl      String?
+  status        String   @default("PENDING")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  clientName    String?
+  idNumber      String?
+  client        User     @relation(fields: [clientId], references: [id])
+  project       Project  @relation("ProjectFeedbacks", fields: [projectId], references: [id])
+
+  @@map("client_feedbacks")
+}
+
+model EventType {
+  id                    String                 @id @default(cuid())
+  slug                  String                 @unique
+  name                  String
+  description           String?
+  duration              Int
+  color                 String                 @default("#2564ea")
+  bufferBefore          Int                    @default(0)
+  bufferAfter           Int                    @default(0)
+  maxPerDay             Int?
+  minNotice             Int                    @default(60)
+  maxAdvanceDays        Int                    @default(30)
+  hostId                String
+  isActive              Boolean                @default(true)
+  isPublic              Boolean                @default(true)
+  location              String?
+  locationType          String                 @default("VIDEO")
+  requirePhone          Boolean                @default(false)
+  requireCompany        Boolean                @default(false)
+  customQuestions       Json?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  host                  User                   @relation("HostedEventTypes", fields: [hostId], references: [id])
+  scheduledEvents       ScheduledEvent[]
+  schedulingLinks       SchedulingLink[]
+  availabilitySchedules AvailabilitySchedule[] @relation("AvailabilityScheduleToEventType")
+
+  @@index([hostId])
+  @@index([slug])
+  @@index([isActive, isPublic])
+  @@map("event_types")
+}
+
+model AvailabilitySchedule {
+  id         String      @id @default(cuid())
+  name       String      @default("Working Hours")
+  userId     String
+  isDefault  Boolean     @default(false)
+  timezone   String      @default("Asia/Kolkata")
+  rules      Json
+  overrides  Json?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  user       User        @relation("UserAvailability", fields: [userId], references: [id])
+  eventTypes EventType[] @relation("AvailabilityScheduleToEventType")
+
+  @@index([userId])
+  @@map("availability_schedules")
+}
+
+model MeetingLocation {
+  id        String   @id @default(cuid())
+  userId    String
+  kind      String
+  label     String
+  value     String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation("UserLocations", fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("meeting_locations")
+}
+
+model SchedulingLink {
+  id              String           @id @default(cuid())
+  slug            String           @unique
+  eventTypeId     String
+  ownerId         String
+  maxUses         Int?
+  useCount        Int              @default(0)
+  expiresAt       DateTime?
+  isActive        Boolean          @default(true)
+  prefillName     String?
+  prefillEmail    String?
+  prefillCompany  String?
+  createdAt       DateTime         @default(now())
+  scheduledEvents ScheduledEvent[]
+  eventType       EventType        @relation(fields: [eventTypeId], references: [id])
+  owner           User             @relation("OwnedSchedulingLinks", fields: [ownerId], references: [id])
+
+  @@index([slug])
+  @@index([eventTypeId])
+  @@map("scheduling_links")
+}
+
+model ScheduledEvent {
+  id               String               @id @default(cuid())
+  eventTypeId      String
+  hostId           String
+  title            String
+  startTime        DateTime
+  endTime          DateTime
+  timezone         String               @default("Asia/Kolkata")
+  status           ScheduledEventStatus @default(ACTIVE)
+  locationType     String?
+  locationValue    String?
+  joinUrl          String?
+  cancelledAt      DateTime?
+  cancelledBy      String?
+  cancelReason     String?
+  rescheduledFrom  String?
+  schedulingLinkId String?
+  consultationId   String?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  invitees         EventInvitee[]
+  noShows          InviteeNoShow[]
+  eventType        EventType            @relation(fields: [eventTypeId], references: [id])
+  host             User                 @relation("EventHost", fields: [hostId], references: [id])
+  schedulingLink   SchedulingLink?      @relation(fields: [schedulingLinkId], references: [id])
+
+  @@index([hostId, startTime])
+  @@index([eventTypeId])
+  @@index([status])
+  @@map("scheduled_events")
+}
+
+model EventInvitee {
+  id          String         @id @default(cuid())
+  eventId     String
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  timezone    String?
+  responses   Json?
+  status      InviteeStatus  @default(ACCEPTED)
+  viewedAt    DateTime?
+  cancelledAt DateTime?
+  createdAt   DateTime       @default(now())
+  event       ScheduledEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  noShow      InviteeNoShow?
+
+  @@unique([eventId, email])
+  @@index([eventId])
+  @@index([email])
+  @@map("event_invitees")
+}
+
+model InviteeNoShow {
+  id        String         @id @default(cuid())
+  eventId   String
+  inviteeId String         @unique
+  createdAt DateTime       @default(now())
+  createdBy String
+  event     ScheduledEvent @relation(fields: [eventId], references: [id])
+  invitee   EventInvitee   @relation(fields: [inviteeId], references: [id])
+
+  @@index([eventId])
+  @@map("invitee_no_shows")
+}
+
+model Organization {
+  id          String          @id @default(cuid())
+  name        String
+  slug        String          @unique
+  logoUrl     String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  invitations OrgInvitation[]
+  memberships OrgMembership[]
+
+  @@map("organizations")
+}
+
+model OrgMembership {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  role           String       @default("MEMBER")
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  user           User         @relation("UserMemberships", fields: [userId], references: [id])
+
+  @@unique([organizationId, userId])
+  @@map("org_memberships")
+}
+
+model OrgInvitation {
+  id             String       @id @default(cuid())
+  organizationId String
+  email          String
+  role           String       @default("MEMBER")
+  status         String       @default("PENDING")
+  token          String       @unique @default(cuid())
+  createdAt      DateTime     @default(now())
+  expiresAt      DateTime
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([token])
+  @@map("org_invitations")
+}
+
+model RoutingForm {
+  id                  String                  @id @default(cuid())
+  name                String
+  slug                String                  @unique
+  description         String?
+  ownerId             String
+  isActive            Boolean                 @default(true)
+  questions           Json
+  routingRules        Json
+  fallbackEventTypeId String?
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+  submissions         RoutingFormSubmission[]
+  owner               User                    @relation("OwnedRoutingForms", fields: [ownerId], references: [id])
+
+  @@index([slug])
+  @@map("routing_forms")
+}
+
+model RoutingFormSubmission {
+  id                  String      @id @default(cuid())
+  routingFormId       String
+  answers             Json
+  routedToEventTypeId String?
+  submitterName       String?
+  submitterEmail      String?
+  createdAt           DateTime    @default(now())
+  routingForm         RoutingForm @relation(fields: [routingFormId], references: [id])
+
+  @@index([routingFormId])
+  @@map("routing_form_submissions")
+}
+
+model EqoreConversation {
+  id            String         @id @default(uuid())
+  sessionId     String         @unique
+  status        String         @default("ACTIVE")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  currentIntent String?
+  device        String?
+  ipHash        String?
+  referrer      String?
+  sourcePage    String?
+  summary       String?
+  userAgent     String?
+  userId        String?
+  utmSource     String?
+  visitorType   String?
+  lead          EqoreLead?
+  messages      EqoreMessage[]
+
+  @@map("eqore_conversations")
+}
+
+model EqoreMessage {
+  id             String            @id @default(uuid())
+  conversationId String
+  role           String
+  content        String
+  intent         String?
+  createdAt      DateTime          @default(now())
+  metadata       Json?
+  conversation   EqoreConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@map("eqore_messages")
+}
+
+model EqoreLead {
+  id                          String                @id @default(uuid())
+  conversationId              String                @unique
+  sessionId                   String
+  visitorType                 String?
+  leadScore                   Int                   @default(0)
+  status                      String                @default("NEW")
+  createdAt                   DateTime              @default(now())
+  updatedAt                   DateTime              @updatedAt
+  companyName                 String?
+  conversationSummary         String?
+  email                       String?
+  leadCategory                String?
+  leadConfidence              Int                   @default(0)
+  leadQuality                 String?
+  name                        String?
+  phone                       String?
+  primaryIntent               String?
+  role                        String?
+  secureTokenHash             String?
+  sourcePage                  String?
+  website                     String?
+  authoritySignal             String?
+  budgetSignal                String?
+  buyingSignals               Json?
+  buyingStage                 String?
+  negativeSignals             Json?
+  nextBestQuestion            String?
+  painPoints                  Json?
+  problemStatement            String?
+  recommendedAction           String?
+  urgency                     String?
+  lastShadowAnalyzedAt        DateTime?
+  lastShadowAnalyzedMessageId String?
+  lastShadowError             String?
+  shadowAnalysisStatus        String?               @default("IDLE")
+  shadowAnalysisVersion       String?
+  shadowExtractionConfidence  Int?
+  departmentFitScores         Json?
+  lastServiceMatchedAt        DateTime?
+  matchedServices             Json?
+  primaryDepartment           String?
+  recommendedSolutionPackage  String?
+  secondaryDepartments        Json?
+  serviceFitScores            Json?
+  serviceMatchReason          String?
+  serviceMatchVersion         String?
+  consultationTimezone        String?               @default("Asia/Kolkata")
+  lastSchedulingIntentAt      DateTime?
+  offeredSlots                Json?
+  parsedConsultationWindow    Json?
+  preferredConsultationTime   String?
+  scheduledEventId            String?
+  schedulingStatus            EqoreSchedulingStatus @default(NONE)
+  selectedSlot                Json?
+  pipelineWeight              Float?                @default(0)
+  projectedValue              Decimal?              @db.Decimal(12, 2)
+  valueReasoning              Json?
+  valueTier                   String?
+  nurtureActions              Json?
+  nurtureBrief                String?
+
+  // Graph Intelligence (Phase 5)
+  graphContext           Json?
+  graphEnrichedAt        DateTime?
+  graphContextVersion    String?
+  recommendedCrossSells  Json?
+  recommendedCaseStudies Json?
+  recommendedConsultant  Json?
+
+  events       EqoreLeadEvent[]
+  conversation EqoreConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  // Phase 9: Sales Pipeline Automation
+  assignedOwnerId     String?
+  assignedOwnerName   String?
+  assignedTeam        String?
+  assignmentReason    String?
+  assignedAt          DateTime?
+  assignmentStatus    String?
+  salesStage          String?
+  salesPriority       String?
+  lastSalesActivityAt DateTime?
+
+  opportunity     EqoreSalesOpportunity?
+  salesTasks      EqoreSalesTask[]
+  salesActivities EqoreSalesActivity[]
+  salesNotes      EqoreSalesNote[]
+  crmSyncLogs     EqoreCrmSyncLog[]
+
+  @@index([sessionId])
+  @@index([leadScore])
+  @@index([status])
+  @@map("eqore_leads")
+}
+
+model EqoreLeadEvent {
+  id             String    @id @default(uuid())
+  leadId         String
+  eventType      String
+  previousScore  Int?
+  newScore       Int?
+  reason         String?
+  createdAt      DateTime  @default(now())
+  eventData      Json?
+  newStatus      String?
+  previousStatus String?
+  lead           EqoreLead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([eventType])
+  @@map("eqore_lead_events")
+}
+
+// ---------------------------------------------------------------------------
+// eQORE Big Brain Knowledge Graph (Phase 5)
+// ---------------------------------------------------------------------------
+
+model EqoreGraphNode {
+  id          String  @id @default(uuid())
+  type        String // DEPARTMENT, SERVICE, PROBLEM, INDUSTRY, CASE_STUDY, CONSULTANT, SOLUTION_PACKAGE
+  slug        String
+  label       String
+  description String?
+  metadata    Json?
+  version     String?
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  outgoingEdges EqoreGraphEdge[] @relation("OutgoingGraphEdges")
+  incomingEdges EqoreGraphEdge[] @relation("IncomingGraphEdges")
+
+  @@unique([type, slug])
+  @@index([type])
+  @@index([slug])
+  @@map("eqore_graph_nodes")
+}
+
+model EqoreGraphEdge {
+  id String @id @default(uuid())
+
+  fromNodeId String
+  toNodeId   String
+  type       String // BELONGS_TO, SOLVES, REQUIRES, COMPLEMENTS, CROSS_SELLS, PROVEN_IN, RECOMMENDED_FOR, LED_BY, USES_TECH, PACKAGED_AS
+
+  weight     Float   @default(1.0)
+  confidence Int     @default(100)
+  reason     String?
+  metadata   Json?
+  version    String?
+  isActive   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fromNode EqoreGraphNode @relation("OutgoingGraphEdges", fields: [fromNodeId], references: [id], onDelete: Cascade)
+  toNode   EqoreGraphNode @relation("IncomingGraphEdges", fields: [toNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([fromNodeId, toNodeId, type])
+  @@index([fromNodeId])
+  @@index([toNodeId])
+  @@index([type])
+  @@map("eqore_graph_edges")
+}
+
+model EqoreIndustry {
+  id                  String  @id @default(uuid())
+  slug                String  @unique
+  name                String
+  description         String?
+  priorityLevel       String  @default("standard") // standard, high, strategic
+  commonPainPoints    Json? // String[]
+  relevantDepartments Json? // String[] of department slugs
+  isActive            Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  caseStudies EqoreCaseStudy[]
+
+  @@index([slug])
+  @@map("eqore_industries")
+}
+
+model EqoreCaseStudy {
+  id             String  @id @default(uuid())
+  slug           String  @unique
+  title          String
+  description    String?
+  industryId     String?
+  departmentSlug String?
+  servicesSlugs  Json? // String[]
+  outcomeMetrics Json? // { metric: string, value: string }[]
+  proofStatus    String  @default("SEED_EXAMPLE") // SEED_EXAMPLE, INTERNAL_DRAFT, PUBLIC_VERIFIED, CLIENT_APPROVED
+  clientName     String?
+  isAnonymized   Boolean @default(true)
+  isActive       Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  industry EqoreIndustry? @relation(fields: [industryId], references: [id])
+
+  @@index([industryId])
+  @@index([departmentSlug])
+  @@index([proofStatus])
+  @@map("eqore_case_studies")
+}
+
+model EqoreConsultantProfile {
+  id                  String  @id @default(uuid())
+  slug                String  @unique
+  name                String
+  title               String?
+  bio                 String?
+  userId              String? // Optional link to User account
+  departmentSlugs     Json? // String[] of department slugs
+  serviceSlugs        Json? // String[] of service slugs
+  expertiseTags       Json? // String[]
+  industryExperience  Json? // String[] of industry slugs
+  availableForRouting Boolean @default(true)
+  priorityLevel       String  @default("standard") // standard, senior, principal
+  isActive            Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@map("eqore_consultant_profiles")
+}
+
+model EqoreAgentLog {
+  id             String  @id @default(uuid())
+  conversationId String?
+  leadId         String?
+  messageId      String?
+
+  routerSource      String?
+  detectedIntent    String?
+  routingConfidence Float?
+  selectedAgents    Json?
+  skippedAgents     Json?
+  reason            String?
+  resultsJson       Json? // Full EqoreAgentResult[] with metadata
+
+  modelProvider    String?
+  modelName        String?
+  promptTokens     Int?
+  completionTokens Int?
+  estimatedCost    Float?
+
+  classificationMs Int?
+  totalLatencyMs   Int?
+
+  status       String  @default("COMPLETED")
+  errorMessage String?
+
+  createdAt DateTime @default(now())
+
+  @@index([conversationId])
+  @@index([leadId])
+  @@index([detectedIntent])
+  @@index([createdAt])
+  @@map("eqore_agent_logs")
+}
+
+// ---------------------------------------------------------------------------
+// eQORE Client Assurance Response Bank (Phase 8A)
+// ---------------------------------------------------------------------------
+
+model EqoreAssuranceScenario {
+  id           String  @id @default(uuid())
+  question     String
+  answer       String
+  tags         Json? // String[]
+  departments  Json? // String[]
+  services     Json? // String[]
+  urgencyLevel String  @default("URGENT") // NORMAL, URGENT, CRISIS
+  category     String?
+  metadata     Json? // Additional context
+  isActive     Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("eqore_assurance_scenarios")
 }
 
 enum UserStatus {
@@ -1173,149 +1930,6 @@ enum AdminItemType {
   SCHEDULED
   LEAD
 }
-
-model AccountabilityEvent {
-  id String @id @default(cuid())
-
-  // Event Classification
-  eventType     String // DECISION_APPROVED | RISK_ACCEPTED | CHANGE_AUTHORIZED | DELIVERABLE_SIGNED
-  eventCategory String // COMMITMENT | ESCALATION | WITHDRAWAL
-
-  // NEW: Enhanced Classification
-  eventSource EventSource? // DASHBOARD | EMAIL | SYSTEM_RULE | API | ADMIN_OVERRIDE
-  actorRole   ActorRole? // ADMIN | CLIENT | SYSTEM | PARTNER
-
-  // Core References
-  projectId String
-  clientId  String
-  userId    String // Person who committed
-
-  // DEPRECATED: Specific entity FKs (keep for backward compat)
-  decisionId      String?
-  riskId          String?
-  changeRequestId String?
-  deliverableId   String?
-
-  // NEW: Polymorphic Entity Link (preferred)
-  relatedEntityType RelatedEntityType? // DECISION | RISK | CHANGE_REQUEST | etc.
-  relatedEntityId   String?
-
-  // Event Metadata
-  actionTaken    String // "Approved", "Accepted", "Rejected", "Escalated" [DEPRECATED]
-  impactSummary  String? // e.g., "+2 weeks, +$5k, Risk: High" [DEPRECATED]
-  commitmentNote String? // User-provided note/signature
-  ipAddress      String? // Audit trail
-
-  // NEW: Rich Summary
-  summary String? // Narrative description (replaces actionTaken + impactSummary)
-
-  // Timestamps
-  eventTimestamp DateTime @default(now())
-
-  // Relations
-  project       Project        @relation(fields: [projectId], references: [id])
-  client        User           @relation("ClientAccountability", fields: [clientId], references: [id])
-  user          User           @relation("UserAccountability", fields: [userId], references: [id])
-  decision      Decision?      @relation(fields: [decisionId], references: [id])
-  risk          Risk?          @relation(fields: [riskId], references: [id])
-  changeRequest ChangeRequest? @relation(fields: [changeRequestId], references: [id])
-  deliverable   Deliverable?   @relation(fields: [deliverableId], references: [id])
-
-  // NEW: Canonical relations
-  obligations AccountabilityObligation[] @relation("EventObligations")
-  impacts     AccountabilityImpact[]     @relation("EventImpacts")
-
-  @@index([projectId, eventTimestamp])
-  @@index([clientId, eventTimestamp])
-  @@index([eventType])
-  @@map("accountability_events")
-}
-
-// ============================================
-// CANONICAL ACCOUNTABILITY TABLES
-// ============================================
-
-model AccountabilityObligation {
-  id        String @id @default(cuid())
-  clientId  String
-  projectId String
-
-  obligationType ObligationType // APPROVAL_REQUIRED | ACCESS_REQUIRED | etc.
-  owedByRole     ActorRole // CLIENT | ADMIN | PARTNER
-  owedByUserId   String?
-
-  description String
-  dueDate     DateTime?
-  status      ObligationStatus @default(OPEN) // OPEN | FULFILLED | OVERDUE
-
-  linkedEventId String // FK to AccountabilityEvent
-  createdAt     DateTime  @default(now())
-  resolvedAt    DateTime?
-
-  // Relations
-  client      User                @relation("ClientObligations", fields: [clientId], references: [id])
-  project     Project             @relation("ProjectObligations", fields: [projectId], references: [id])
-  linkedEvent AccountabilityEvent @relation("EventObligations", fields: [linkedEventId], references: [id])
-  owedByUser  User?               @relation("UserObligations", fields: [owedByUserId], references: [id])
-
-  @@index([clientId, status])
-  @@index([projectId, status])
-  @@index([owedByRole, status])
-  @@index([linkedEventId])
-  @@map("accountability_obligations")
-}
-
-model AccountabilityImpact {
-  id      String @id @default(cuid())
-  eventId String // FK to AccountabilityEvent
-
-  impactType  ImpactType // DELAY_DAYS | COST_INCREASE | RISK_SCORE | SCOPE_EXPANSION
-  impactValue Decimal    @db.Decimal(12, 2)
-  impactUnit  ImpactUnit // DAYS | INR | USD | SCORE | PERCENT
-
-  appliedTo ImpactDomain // TIMELINE | BUDGET | RISK | QUALITY
-  createdAt DateTime     @default(now())
-
-  // Relations
-  event AccountabilityEvent @relation("EventImpacts", fields: [eventId], references: [id])
-
-  @@index([eventId])
-  @@index([appliedTo])
-  @@map("accountability_impacts")
-}
-
-model AccountabilitySnapshot {
-  id           String   @id @default(cuid())
-  clientId     String
-  projectId    String
-  snapshotDate DateTime @db.Date
-
-  // Delay Attribution
-  clientDelayDays   Int @default(0)
-  adminDelayDays    Int @default(0)
-  externalDelayDays Int @default(0)
-
-  // Budget Attribution
-  budgetClientCaused Decimal @default(0) @db.Decimal(12, 2)
-  budgetAdminCaused  Decimal @default(0) @db.Decimal(12, 2)
-
-  // Risk
-  riskScore Decimal @default(0) @db.Decimal(5, 2)
-
-  createdAt DateTime @default(now())
-
-  // Relations
-  client  User    @relation("ClientSnapshots", fields: [clientId], references: [id])
-  project Project @relation("ProjectSnapshots", fields: [projectId], references: [id])
-
-  @@unique([projectId, snapshotDate])
-  @@index([clientId, snapshotDate])
-  @@map("accountability_snapshots")
-}
-
-// ============================================
-// CANONICAL ACCOUNTABILITY ENUMS
-// ============================================
 
 enum ActorRole {
   ADMIN
@@ -1377,168 +1991,532 @@ enum ImpactDomain {
   QUALITY
 }
 
-// Phase 3: Service Lines & P&L
-model ServiceLine {
-  id          String   @id @default(cuid())
-  name        String // e.g. "AI & Autonomous Systems"
-  slug        String   @unique // e.g. "ai-autonomous"
-  description String?
-  leadId      String? // Link to User (Partner)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  metrics  PracticeMetric[]
-  projects Project[] // Relation to projects tagged with this service
-  lead     User?            @relation(fields: [leadId], references: [id])
-
-  @@map("service_lines")
+enum ScheduledEventStatus {
+  ACTIVE
+  CANCELLED
+  COMPLETED
+  NO_SHOW
 }
 
-model PracticeMetric {
-  id            String   @id @default(cuid())
-  serviceLineId String
-  period        DateTime // First day of the month
-  revenue       Decimal  @db.Decimal(12, 2)
-  cost          Decimal  @db.Decimal(12, 2)
-  margin        Decimal  @db.Decimal(5, 2) // Percentage
-  utilization   Decimal  @db.Decimal(5, 2) // Percentage
-  headcount     Int
-  bench         Int
+enum InviteeStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  CANCELLED
+}
+
+enum EqoreSchedulingStatus {
+  NONE
+  INTERESTED
+  PARSING_TIME
+  SLOT_OFFERED
+  NEGOTIATING
+  BOOKING_PENDING
+  BOOKED
+  CANCELLED
+  FAILED
+}
+
+// ==========================================
+// eQORE Phase 9: CRM + Sales Pipeline Automation
+// ==========================================
+
+model EqoreSalesOpportunity {
+  id                 String    @id @default(uuid())
+  leadId             String    @unique
+  ownerId            String?
+  stage              String    @default("NEW")
+  priority           String    @default("MEDIUM")
+  estimatedValue     Decimal?  @db.Decimal(12, 2)
+  primaryDepartment  String?
+  matchedServices    Json?
+  recommendedPackage String?
+  nextAction         String?
+  wonReason          String?
+  lostReason         String?
+  closedAt           DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  lead       EqoreLead            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  tasks      EqoreSalesTask[]
+  activities EqoreSalesActivity[]
+  notes      EqoreSalesNote[]
+  syncLogs   EqoreCrmSyncLog[]
+
+  @@map("eqore_sales_opportunities")
+}
+
+model EqoreSalesTask {
+  id            String    @id @default(uuid())
+  leadId        String
+  opportunityId String
+  ownerId       String?
+  title         String
+  description   String?
+  taskType      String
+  priority      String    @default("MEDIUM")
+  dueAt         DateTime?
+  status        String    @default("OPEN")
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  lead        EqoreLead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  opportunity EqoreSalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([opportunityId])
+  @@index([ownerId])
+  @@index([status])
+  @@map("eqore_sales_tasks")
+}
+
+model EqoreSalesActivity {
+  id            String   @id @default(uuid())
+  leadId        String
+  opportunityId String
+  activityType  String
+  description   String
+  metadata      Json?
   createdAt     DateTime @default(now())
 
-  serviceLine ServiceLine @relation(fields: [serviceLineId], references: [id])
+  lead        EqoreLead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  opportunity EqoreSalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
 
-  @@unique([serviceLineId, period])
-  @@map("practice_metrics")
+  @@index([leadId])
+  @@index([opportunityId])
+  @@map("eqore_sales_activities")
 }
 
-// Phase 3: Vendor Ecosystem
-model Vendor {
-  id        String     @id @default(cuid())
-  name      String
-  category  String // Cloud, SaaS, Staffing
-  risk      String     @default("LOW") // LOW, MEDIUM, HIGH
-  tier      String     @default("Operational") // Strategic, Tactical, Operational
-  status    String     @default("ACTIVE")
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  contracts Contract[]
-
-  @@map("vendors")
-}
-
-model Contract {
-  id          String    @id @default(cuid())
-  vendorId    String
-  title       String
-  value       Decimal   @db.Decimal(12, 2)
-  startDate   DateTime
-  endDate     DateTime
-  renewalDate DateTime?
-  status      String    @default("ACTIVE")
-  vendor      Vendor    @relation(fields: [vendorId], references: [id])
-
-  @@map("contracts")
-}
-
-// Phase 7: RAID Extensions
-model Issue {
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  priority    String    @default("MEDIUM")
-  status      String    @default("OPEN")
-  owner       String?
-  dueDate     DateTime?
-  projectId   String
-  clientId    String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  project Project @relation(fields: [projectId], references: [id])
-  client  User    @relation(fields: [clientId], references: [id])
-
-  @@map("issues")
-}
-
-model Assumption {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  status      String   @default("ACTIVE")
-  owner       String?
-  projectId   String
-  clientId    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  project Project @relation(fields: [projectId], references: [id])
-  client  User    @relation(fields: [clientId], references: [id])
-
-  @@map("assumptions")
-}
-
-model Dependency {
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  type        String    @default("INTERNAL")
-  status      String    @default("OPEN")
-  owner       String?
-  dueDate     DateTime?
-  projectId   String
-  clientId    String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  project Project @relation(fields: [projectId], references: [id])
-  client  User    @relation(fields: [clientId], references: [id])
-
-  @@map("dependencies")
-}
-
-// Phase 8: IP & Accelerators
-model IPAsset {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  type        String // FRAMEWORK, COMPONENT, DATASET, TEMPLATE
-  status      String   @default("ACTIVE") // ACTIVE, DEPRECATED, DRAFT
-  version     String   @default("1.0.0")
-  owner       String?
-  tags        String[]
-
-  // Usage tracking
-  downloads Int   @default(0)
-  rating    Float @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("ip_assets")
-}
-
-model ClientFeedback {
-  id            String   @id @default(cuid())
-  projectId     String
-  clientId      String
-  npsScore      Int
-  comment       String?  @db.Text
-  testimonial   String?  @db.Text
-  isPublic      Boolean  @default(false)
-  adminResponse String?  @db.Text
-  designation   String?
-  clientName    String?
-  idNumber      String?
-  companyName   String?
-  logoUrl       String?
-  photoUrl      String?
-  status        String   @default("PENDING") // PENDING, ACTIONED, CLOSED
+model EqoreSalesNote {
+  id            String   @id @default(uuid())
+  leadId        String
+  opportunityId String
+  authorId      String?
+  noteType      String   @default("CALL_NOTE")
+  content       String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  project       Project  @relation("ProjectFeedbacks", fields: [projectId], references: [id])
-  client        User     @relation(fields: [clientId], references: [id])
 
-  @@map("client_feedbacks")
+  lead        EqoreLead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  opportunity EqoreSalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([opportunityId])
+  @@map("eqore_sales_notes")
 }
 
+model EqoreCrmSyncLog {
+  id            String    @id @default(uuid())
+  leadId        String
+  opportunityId String
+  crmProvider   String    @default("INTERNAL")
+  externalCrmId String?
+  syncStatus    String    @default("PENDING")
+  syncPayload   Json?
+  errorMessage  String?
+  lastSyncedAt  DateTime?
+  createdAt     DateTime  @default(now())
+
+  lead        EqoreLead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  opportunity EqoreSalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([opportunityId])
+  @@index([syncStatus])
+  @@map("eqore_crm_sync_logs")
+}
+
+// ============================================
+// Kangqore Visibility Intelligence System (kangqore-vis)
+// Framework scaffold. Sources connect later.
+// ============================================
+
+enum KangqoreVisPageType {
+  HOME
+  DEPARTMENT
+  SERVICE
+  INDUSTRY
+  CASE_STUDY
+  INSIGHT
+  BLOG
+  WHITE_PAPER
+  EVENT
+  BROCHURE
+  COMPANY
+  LEGAL
+  CAREERS
+  CONTACT
+  OTHER
+}
+
+enum KangqoreVisSearchIntent {
+  INFORMATIONAL
+  NAVIGATIONAL
+  COMMERCIAL
+  TRANSACTIONAL
+  LEARN_EVALUATE_HIRE
+}
+
+enum KangqoreVisCtaKind {
+  BOOK_CONSULTATION
+  CONTACT_SALES
+  REQUEST_PROPOSAL
+  DOWNLOAD_ASSET
+  SUBSCRIBE
+  APPLY
+  NONE
+}
+
+enum KangqoreVisBlueprintStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum KangqoreVisAdapterKind {
+  ANALYTICS
+  SEO
+  PERFORMANCE
+  ANSWER_ENGINE
+}
+
+enum KangqoreVisConnectorStatus {
+  CONNECTED
+  UNCONNECTED
+  ERROR
+}
+
+enum KangqoreVisSchemaKind {
+  ORGANIZATION
+  WEBSITE
+  WEBPAGE
+  SERVICE
+  FAQ_PAGE
+  BREADCRUMB_LIST
+  ARTICLE
+  PERSON
+  PRODUCT
+  PROFESSIONAL_SERVICE
+  CONTACT_POINT
+}
+
+enum KangqoreVisAuditKind {
+  SCHEMA_CONTENT_MATCH
+  GOVERNANCE_CHECKLIST
+  BROKEN_LINK
+  PERFORMANCE_BUDGET
+  BRAND_VOICE
+  FORBIDDEN_CLAIM
+}
+
+enum KangqoreVisAuditSeverity {
+  INFO
+  WARN
+  ERROR
+}
+
+model KangqoreVisPageBlueprint {
+  id                String                     @id @default(cuid())
+  pageName          String
+  url               String                     @unique
+  pageType          KangqoreVisPageType        @default(OTHER)
+  primaryKeyword    String?
+  secondaryKeywords String[]
+  targetBuyer       String?
+  searchIntent      KangqoreVisSearchIntent?
+  aiIntent          String?
+  problemSolved     String?                    @db.Text
+  businessOutcome   String?                    @db.Text
+  parentHubId       String?
+  proofRequired     String?                    @db.Text
+  faqRequired       Boolean                    @default(false)
+  schemaRequired    KangqoreVisSchemaKind[]
+  ctaKind           KangqoreVisCtaKind         @default(NONE)
+  conversionGoal    String?
+  metaTitle         String?
+  metaDescription   String?                    @db.Text
+  ogImage           String?
+  status            KangqoreVisBlueprintStatus @default(DRAFT)
+  source            String?                    @default("manual")
+  createdAt         DateTime                   @default(now())
+  updatedAt         DateTime                   @updatedAt
+
+  parentHub        KangqoreVisHub?              @relation("HubBlueprints", fields: [parentHubId], references: [id])
+  spokes           KangqoreVisSpoke[]           @relation("BlueprintSpokes")
+  schemas          KangqoreVisSchemaRecord[]
+  internalLinksOut KangqoreVisInternalLink[]    @relation("LinkSource")
+  internalLinksIn  KangqoreVisInternalLink[]    @relation("LinkTarget")
+  keywords         KangqoreVisKeyword[]
+  audits           KangqoreVisAudit[]
+  governanceChecks KangqoreVisGovernanceCheck[]
+  cwvSamples       KangqoreVisCwvSample[]
+  faqs             KangqoreVisFAQ[]             @relation("BlueprintFAQs")
+
+  @@index([pageType])
+  @@index([status])
+  @@map("kangqore_vis_page_blueprints")
+}
+
+model KangqoreVisHub {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?  @db.Text
+  category    String?
+  url         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  spokes     KangqoreVisSpoke[]
+  blueprints KangqoreVisPageBlueprint[] @relation("HubBlueprints")
+
+  @@map("kangqore_vis_hubs")
+}
+
+model KangqoreVisSpoke {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?  @db.Text
+  hubId       String
+  url         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  hub        KangqoreVisHub             @relation(fields: [hubId], references: [id], onDelete: Cascade)
+  blueprints KangqoreVisPageBlueprint[] @relation("BlueprintSpokes")
+
+  @@index([hubId])
+  @@map("kangqore_vis_spokes")
+}
+
+model KangqoreVisEntity {
+  id          String                 @id @default(cuid())
+  slug        String                 @unique
+  name        String
+  description String?                @db.Text
+  category    String?
+  url         String?
+  schemaType  KangqoreVisSchemaKind?
+  sameAs      String[]
+  proofPoints String[]
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+
+  fromRels KangqoreVisEntityRelation[] @relation("EntityFrom")
+  toRels   KangqoreVisEntityRelation[] @relation("EntityTo")
+
+  @@index([category])
+  @@map("kangqore_vis_entities")
+}
+
+model KangqoreVisEntityRelation {
+  id        String   @id @default(cuid())
+  fromId    String
+  toId      String
+  kind      String
+  weight    Float    @default(1.0)
+  createdAt DateTime @default(now())
+
+  from KangqoreVisEntity @relation("EntityFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to   KangqoreVisEntity @relation("EntityTo", fields: [toId], references: [id], onDelete: Cascade)
+
+  @@unique([fromId, toId, kind])
+  @@index([toId])
+  @@map("kangqore_vis_entity_relations")
+}
+
+model KangqoreVisFAQCategory {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+
+  faqs KangqoreVisFAQ[]
+
+  @@map("kangqore_vis_faq_categories")
+}
+
+model KangqoreVisFAQ {
+  id          String   @id @default(cuid())
+  question    String
+  answer      String   @db.Text
+  categoryId  String?
+  blueprintId String?
+  source      String?  @default("manual")
+  position    Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category  KangqoreVisFAQCategory?   @relation(fields: [categoryId], references: [id])
+  blueprint KangqoreVisPageBlueprint? @relation("BlueprintFAQs", fields: [blueprintId], references: [id])
+
+  @@index([categoryId])
+  @@index([blueprintId])
+  @@map("kangqore_vis_faqs")
+}
+
+model KangqoreVisSchemaRecord {
+  id            String                @id @default(cuid())
+  blueprintId   String
+  schemaKind    KangqoreVisSchemaKind
+  jsonLd        Json
+  contentHash   String?
+  isValid       Boolean               @default(true)
+  lastAuditedAt DateTime?
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  blueprint KangqoreVisPageBlueprint @relation(fields: [blueprintId], references: [id], onDelete: Cascade)
+
+  @@unique([blueprintId, schemaKind])
+  @@map("kangqore_vis_schema_records")
+}
+
+model KangqoreVisInternalLink {
+  id         String   @id @default(cuid())
+  sourceId   String
+  targetId   String
+  anchorText String?
+  position   String?
+  createdAt  DateTime @default(now())
+
+  source KangqoreVisPageBlueprint @relation("LinkSource", fields: [sourceId], references: [id], onDelete: Cascade)
+  target KangqoreVisPageBlueprint @relation("LinkTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, targetId, anchorText])
+  @@index([targetId])
+  @@map("kangqore_vis_internal_links")
+}
+
+model KangqoreVisKeyword {
+  id             String   @id @default(cuid())
+  term           String
+  isPrimary      Boolean  @default(false)
+  blueprintId    String?
+  searchVolume   Int?
+  difficulty     Int?
+  rankingHistory Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  blueprint KangqoreVisPageBlueprint? @relation(fields: [blueprintId], references: [id], onDelete: Cascade)
+
+  @@index([term])
+  @@index([blueprintId])
+  @@map("kangqore_vis_keywords")
+}
+
+model KangqoreVisBacklink {
+  id           String    @id @default(cuid())
+  sourceUrl    String
+  targetUrl    String
+  anchorText   String?
+  domainRating Int?
+  status       String    @default("ACTIVE")
+  firstSeenAt  DateTime?
+  lastSeenAt   DateTime?
+  disavowed    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([sourceUrl, targetUrl])
+  @@index([status])
+  @@map("kangqore_vis_backlinks")
+}
+
+model KangqoreVisAudit {
+  id          String                   @id @default(cuid())
+  kind        KangqoreVisAuditKind
+  severity    KangqoreVisAuditSeverity @default(INFO)
+  blueprintId String?
+  message     String                   @db.Text
+  details     Json?
+  resolved    Boolean                  @default(false)
+  resolvedAt  DateTime?
+  createdAt   DateTime                 @default(now())
+
+  blueprint KangqoreVisPageBlueprint? @relation(fields: [blueprintId], references: [id], onDelete: Cascade)
+
+  @@index([kind, severity])
+  @@index([blueprintId])
+  @@map("kangqore_vis_audits")
+}
+
+model KangqoreVisDataSource {
+  id         String                     @id @default(cuid())
+  name       String                     @unique
+  kind       KangqoreVisAdapterKind
+  status     KangqoreVisConnectorStatus @default(UNCONNECTED)
+  config     Json?
+  lastError  String?                    @db.Text
+  lastSyncAt DateTime?
+  createdAt  DateTime                   @default(now())
+  updatedAt  DateTime                   @updatedAt
+
+  ingestions KangqoreVisIngestionJob[]
+
+  @@map("kangqore_vis_data_sources")
+}
+
+model KangqoreVisIngestionJob {
+  id           String    @id @default(cuid())
+  dataSourceId String
+  startedAt    DateTime  @default(now())
+  finishedAt   DateTime?
+  status       String    @default("RUNNING")
+  rowsIngested Int       @default(0)
+  error        String?   @db.Text
+
+  dataSource KangqoreVisDataSource @relation(fields: [dataSourceId], references: [id], onDelete: Cascade)
+
+  @@index([dataSourceId, startedAt])
+  @@map("kangqore_vis_ingestion_jobs")
+}
+
+model KangqoreVisKpiSnapshot {
+  id         String   @id @default(cuid())
+  metric     String
+  value      Float
+  dimension  String?
+  capturedAt DateTime @default(now())
+  source     String?
+
+  @@index([metric, capturedAt])
+  @@map("kangqore_vis_kpi_snapshots")
+}
+
+model KangqoreVisCwvSample {
+  id             String   @id @default(cuid())
+  blueprintId    String?
+  url            String
+  metric         String
+  value          Float
+  rating         String
+  navigationType String?
+  userAgent      String?
+  createdAt      DateTime @default(now())
+
+  blueprint KangqoreVisPageBlueprint? @relation(fields: [blueprintId], references: [id], onDelete: SetNull)
+
+  @@index([url, metric, createdAt])
+  @@map("kangqore_vis_cwv_samples")
+}
+
+model KangqoreVisGovernanceCheck {
+  id          String   @id @default(cuid())
+  blueprintId String
+  checkId     String
+  passed      Boolean
+  detail      String?  @db.Text
+  checkedAt   DateTime @default(now())
+
+  blueprint KangqoreVisPageBlueprint @relation(fields: [blueprintId], references: [id], onDelete: Cascade)
+
+  @@index([blueprintId, checkedAt])
+  @@map("kangqore_vis_governance_checks")
+}

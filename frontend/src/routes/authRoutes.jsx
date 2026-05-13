@@ -22,6 +22,7 @@ const InvestorDashboard = React.lazy(() => import('../pages/dashboards/investor/
 const CareersDashboard = React.lazy(() => import('../pages/dashboards/careers/CareersDashboard'));
 const AdminDashboard = React.lazy(() => import('../pages/dashboards/admin/AdminDashboard'));
 const ConsultationsManagement = React.lazy(() => import('../pages/admin/ConsultationsManagement'));
+const SchedulingManagement = React.lazy(() => import('../pages/admin/SchedulingManagement'));
 const ContactsManagement = React.lazy(() => import('../pages/admin/ContactsManagement'));
 const JobApplicationsManagement = React.lazy(() => import('../pages/admin/JobApplicationsManagement'));
 const UsersManagement = React.lazy(() => import('../pages/admin/UsersManagement'));
@@ -103,6 +104,9 @@ const PartnerEarnings = React.lazy(() => import('../pages/dashboards/partner/Par
 const PartnerDeliverables = React.lazy(() => import('../pages/dashboards/partner/PartnerDeliverables'));
 const AdminPartners = React.lazy(() => import('../pages/dashboards/admin/AdminPartners'));
 const AdminClientProfile = React.lazy(() => import('../pages/dashboards/admin/AdminClientProfile'));
+
+// KangqoreVis — Visibility Intelligence admin routes (lazy-loaded array)
+import { kangqoreVisAdminRoutes } from '../kangqore-vis';
 
 // New Client Dashboard sections
 const ClientFeedback = React.lazy(() => import('../pages/dashboards/client/ClientFeedback'));
@@ -240,6 +244,7 @@ export const authRoutes = [
 
   <Route key="admin-emails" path="/dashboard/admin/emails" element={<AdminEmailTabs />} />, // NEW Consolidated
   <Route key="admin-consultations" path="/dashboard/admin/consultations" element={<ConsultationsManagement />} />,
+  <Route key="admin-scheduling" path="/dashboard/admin/scheduling" element={<SchedulingManagement />} />,
   <Route key="admin-contacts" path="/dashboard/admin/contacts" element={<ContactsManagement />} />,
   <Route key="admin-applications" path="/dashboard/admin/applications" element={<JobApplicationsManagement />} />,
 
@@ -278,7 +283,10 @@ export const authRoutes = [
   
   // Admin Profile Routes
   <Route key="admin-profile" path="/dashboard/admin/profile" element={<Profile />} />,
-  <Route key="admin-profile-edit" path="/dashboard/admin/profile/edit" element={<Profile startEditing={true} />} />
+  <Route key="admin-profile-edit" path="/dashboard/admin/profile/edit" element={<Profile startEditing={true} />} />,
+
+  // KangqoreVis — Visibility Intelligence admin pages
+  ...kangqoreVisAdminRoutes,
 ];
 
 export default authRoutes;
