@@ -1,5 +1,4 @@
 
-ALTER TABLE "public"."_prisma_migrations" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."projects" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."deliverables" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."tasks" ENABLE ROW LEVEL SECURITY;
