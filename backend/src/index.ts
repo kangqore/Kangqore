@@ -48,7 +48,6 @@ import clientProfileRoutes from './routes/clientProfile'; // NEW (MNC Pillar 1)
 import accountabilityRoutes from './routes/accountability'; // NEW (MNC Shared Layer)
 import feedbackRoutes from './routes/feedback'; // NEW
 
-
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
 import { initializeSocket, getIO } from './socket';
@@ -58,6 +57,13 @@ import { initializeSocket, getIO } from './socket';
 // Initialize Prisma Client
 import { prisma } from './lib/prisma';
 export { prisma };
+// Environment Variable Validation
+const requiredEnvVars = ['DATABASE_URL', 'REDIS_URL'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+if (missingEnvVars.length > 0) {
+  console.error(`FATAL: Missing required environment variables: ${missingEnvVars.join(', ')}`);
+  process.exit(1);
+}
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -157,6 +163,12 @@ app.use('/api/services', servicesRoutes);
 
 import reportsRoutes from './routes/reports'; // Gap 5
 app.use('/api/reports', reportsRoutes);
+
+// ─── KangqoreVis — Kangqore Visibility Intelligence System ────────────────────────────
+// Packaged framework. Sources connect later. Mounted before static frontend so
+// dynamic /sitemap.xml, /robots.txt, /llms.txt take precedence.
+import { kangqoreVisBootstrap } from './kangqore-vis';
+kangqoreVisBootstrap({ app });
 
 // Serve Uploaded Files with CORS headers for cross-origin access
 const uploadDir = process.env.UPLOAD_DIR || 'uploads';
