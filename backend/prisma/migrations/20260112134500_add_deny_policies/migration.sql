@@ -1,6 +1,5 @@
 
 -- Drop existing policies if they exist (idempotency)
-DROP POLICY IF EXISTS "deny_public_access" ON "public"."_prisma_migrations";
 DROP POLICY IF EXISTS "deny_public_access" ON "public"."projects";
 DROP POLICY IF EXISTS "deny_public_access" ON "public"."deliverables";
 DROP POLICY IF EXISTS "deny_public_access" ON "public"."tasks";
@@ -17,7 +16,6 @@ DROP POLICY IF EXISTS "deny_public_access" ON "public"."contacts";
 DROP POLICY IF EXISTS "deny_public_access" ON "public"."job_applications";
 
 -- Create "Deny All" policies
-CREATE POLICY "deny_public_access" ON "public"."_prisma_migrations" FOR ALL TO public USING (false);
 CREATE POLICY "deny_public_access" ON "public"."projects" FOR ALL TO public USING (false);
 CREATE POLICY "deny_public_access" ON "public"."deliverables" FOR ALL TO public USING (false);
 CREATE POLICY "deny_public_access" ON "public"."tasks" FOR ALL TO public USING (false);
