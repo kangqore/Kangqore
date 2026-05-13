@@ -47,10 +47,6 @@ import deliverablesRoutes from './routes/deliverables'; // NEW
 import clientProfileRoutes from './routes/clientProfile'; // NEW (MNC Pillar 1)
 import accountabilityRoutes from './routes/accountability'; // NEW (MNC Shared Layer)
 import feedbackRoutes from './routes/feedback'; // NEW
-import schedulingRoutes from './routes/scheduling'; // NEW
-import { eqorePublicRoutes } from './eqore/routes'; // eQORE Phase 1 Public (Conversational AI)
-import { eqoreLeadIntelligenceRoutes } from './eqore-lead-intelligence'; // eQORE Phase 1 Admin (Lead Analyst)
-
 
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
@@ -157,15 +153,6 @@ app.use('/api', contextRoutes);
 import adminStrategyRoutes from './routes/admin-strategy'; // Phase 4
 app.use('/api/admin/clients', adminStrategyRoutes); 
 app.use('/api/feedback', feedbackRoutes); // NEW
-app.use('/api/scheduling', schedulingRoutes); // NEW
-app.use('/api/eqore', eqorePublicRoutes); // eQORE Phase 1 Public (Visitor Concierge)
-app.use('/api/admin/eqore', eqoreLeadIntelligenceRoutes); // eQORE Lead Intelligence (Admin Analysis)
-
-// Kangqore ALIS — Advanced Lead Intelligence System (Phase 10)
-// Mounted under same admin prefix but as independent module above eQORE
-import { alisRouter } from './kangqore-alis';
-import { authenticate, authorize } from './middleware/auth';
-app.use('/api/admin/alis', authenticate, authorize(['ADMIN']), alisRouter);
 
 import servicesRoutes from './routes/services'; // Phase 3
 app.use('/api/services', servicesRoutes); 
