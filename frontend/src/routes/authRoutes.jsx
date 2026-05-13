@@ -22,7 +22,6 @@ const InvestorDashboard = React.lazy(() => import('../pages/dashboards/investor/
 const CareersDashboard = React.lazy(() => import('../pages/dashboards/careers/CareersDashboard'));
 const AdminDashboard = React.lazy(() => import('../pages/dashboards/admin/AdminDashboard'));
 const ConsultationsManagement = React.lazy(() => import('../pages/admin/ConsultationsManagement'));
-const SchedulingManagement = React.lazy(() => import('../pages/admin/SchedulingManagement'));
 const ContactsManagement = React.lazy(() => import('../pages/admin/ContactsManagement'));
 const JobApplicationsManagement = React.lazy(() => import('../pages/admin/JobApplicationsManagement'));
 const UsersManagement = React.lazy(() => import('../pages/admin/UsersManagement'));
@@ -244,7 +243,6 @@ export const authRoutes = [
 
   <Route key="admin-emails" path="/dashboard/admin/emails" element={<AdminEmailTabs />} />, // NEW Consolidated
   <Route key="admin-consultations" path="/dashboard/admin/consultations" element={<ConsultationsManagement />} />,
-  <Route key="admin-scheduling" path="/dashboard/admin/scheduling" element={<SchedulingManagement />} />,
   <Route key="admin-contacts" path="/dashboard/admin/contacts" element={<ContactsManagement />} />,
   <Route key="admin-applications" path="/dashboard/admin/applications" element={<JobApplicationsManagement />} />,
 

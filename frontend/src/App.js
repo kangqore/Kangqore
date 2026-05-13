@@ -18,9 +18,6 @@ import Services from './pages/Services';
 import NotFound from './pages/NotFound';
 import InstallPrompt from './components/InstallPrompt';
 import OfflineIndicator from './components/OfflineIndicator';
-import EqoreLeadsPage from './pages/admin/EqoreLeadsPage'; // NEW eQORE
-import EqoreSalesPage from './pages/admin/EqoreSalesPage'; // Phase 9 Sales
-import AlisPage from './pages/admin/AlisPage'; // Phase 10 ALIS
 import './App.css';
 
 /**
@@ -165,11 +162,6 @@ function AppContent() {
                 
                 {/* Service routes (77 individual services) */}
                 {serviceRoutes}
-                
-                {/* Admin eQORE Routes */}
-                <Route path="/admin/eqore-leads" element={<EqoreLeadsPage />} />
-                <Route path="/admin/eqore-sales" element={<EqoreSalesPage />} />
-                <Route path="/admin/alis" element={<AlisPage />} />
 
                 {/* Default redirect for unmatched routes */}
                 <Route path="*" element={<NotFound />} />
@@ -188,8 +180,6 @@ function AppContent() {
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/queryClient';
 import { ThemeProvider } from './context/ThemeContext';
-import { PodcastProvider } from './context/PodcastContext';
-import PodcastMiniPlayer from './components/PodcastMiniPlayer';
 
 /**
  * Root App Component
@@ -201,10 +191,7 @@ function App() {
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <PodcastProvider>
-              <AppContent />
-              <PodcastMiniPlayer />
-            </PodcastProvider>
+            <AppContent />
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
