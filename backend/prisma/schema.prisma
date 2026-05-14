@@ -96,6 +96,13 @@ model User {
   ticketMessages             TicketMessage[]
   tickets                    Ticket[]
 
+  availabilitySchedules      AvailabilitySchedule[]     @relation("UserAvailability")
+  hostedEventTypes           EventType[]                @relation("HostedEventTypes")
+  meetingLocations           MeetingLocation[]          @relation("UserLocations")
+  orgMemberships             OrgMembership[]            @relation("UserMemberships")
+  ownedRoutingForms          RoutingForm[]              @relation("OwnedRoutingForms")
+  hostedEvents               ScheduledEvent[]           @relation("EventHost")
+  ownedSchedulingLinks       SchedulingLink[]           @relation("OwnedSchedulingLinks")
   @@map("users")
 }
 
@@ -1834,4 +1841,682 @@ model KangqoreVisGovernanceCheck {
 
   @@index([blueprintId, checkedAt])
   @@map("kangqore_vis_governance_checks")
+}
+
+enum EqoreSchedulingStatus {
+  NONE
+  INTERESTED
+  PARSING_TIME
+  SLOT_OFFERED
+  NEGOTIATING
+  BOOKING_PENDING
+  BOOKED
+  CANCELLED
+  FAILED
+}
+
+enum InviteeStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  CANCELLED
+}
+
+enum ScheduledEventStatus {
+  ACTIVE
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+model AvailabilitySchedule {
+  id         String      @id @default(cuid())
+  name       String      @default("Working Hours")
+  userId     String
+  isDefault  Boolean     @default(false)
+  timezone   String      @default("Asia/Kolkata")
+  rules      Json
+  overrides  Json?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  user       User        @relation("UserAvailability", fields: [userId], references: [id])
+  eventTypes EventType[] @relation("AvailabilityScheduleToEventType")
+
+  @@index([userId])
+  @@map("availability_schedules")
+}
+
+model EqoreAgentLog {
+  id             String  @id @default(uuid())
+  conversationId String?
+  leadId         String?
+  messageId      String?
+
+  routerSource      String?
+  detectedIntent    String?
+  routingConfidence Float?
+  selectedAgents    Json?
+  skippedAgents     Json?
+  reason            String?
+  resultsJson       Json? // Full EqoreAgentResult[] with metadata
+
+  modelProvider    String?
+  modelName        String?
+  promptTokens     Int?
+  completionTokens Int?
+  estimatedCost    Float?
+
+  classificationMs Int?
+  totalLatencyMs   Int?
+
+  status       String  @default("COMPLETED")
+  errorMessage String?
+
+  createdAt DateTime @default(now())
+
+  @@index([conversationId])
+  @@index([leadId])
+  @@index([detectedIntent])
+  @@index([createdAt])
+  @@map("eqore_agent_logs")
+}
+
+model EqoreAssuranceScenario {
+  id           String  @id @default(uuid())
+  question     String
+  answer       String
+  tags         Json? // String[]
+  departments  Json? // String[]
+  services     Json? // String[]
+  urgencyLevel String  @default("URGENT") // NORMAL, URGENT, CRISIS
+  category     String?
+  metadata     Json? // Additional context
+  isActive     Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("eqore_assurance_scenarios")
+}
+
+model EqoreCaseStudy {
+  id             String  @id @default(uuid())
+  slug           String  @unique
+  title          String
+  description    String?
+  industryId     String?
+  departmentSlug String?
+  servicesSlugs  Json? // String[]
+  outcomeMetrics Json? // { metric: string, value: string }[]
+  proofStatus    String  @default("SEED_EXAMPLE") // SEED_EXAMPLE, INTERNAL_DRAFT, PUBLIC_VERIFIED, CLIENT_APPROVED
+  clientName     String?
+  isAnonymized   Boolean @default(true)
+  isActive       Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  industry EqoreIndustry? @relation(fields: [industryId], references: [id])
+
+  @@index([industryId])
+  @@index([departmentSlug])
+  @@index([proofStatus])
+  @@map("eqore_case_studies")
+}
+
+model EqoreConsultantProfile {
+  id                  String  @id @default(uuid())
+  slug                String  @unique
+  name                String
+  title               String?
+  bio                 String?
+  userId              String? // Optional link to User account
+  departmentSlugs     Json? // String[] of department slugs
+  serviceSlugs        Json? // String[] of service slugs
+  expertiseTags       Json? // String[]
+  industryExperience  Json? // String[] of industry slugs
+  availableForRouting Boolean @default(true)
+  priorityLevel       String  @default("standard") // standard, senior, principal
+  isActive            Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@map("eqore_consultant_profiles")
+}
+
+model EqoreConversation {
+  id            String         @id @default(uuid())
+  sessionId     String         @unique
+  status        String         @default("ACTIVE")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  currentIntent String?
+  device        String?
+  ipHash        String?
+  referrer      String?
+  sourcePage    String?
+  summary       String?
+  userAgent     String?
+  userId        String?
+  utmSource     String?
+  visitorType   String?
+  lead          EqoreLead?
+  messages      EqoreMessage[]
+
+  @@map("eqore_conversations")
+}
+
+model EqoreCrmSyncLog {
+  id            String    @id @default(uuid())
+  leadId        String
+  opportunityId String
+  crmProvider   String    @default("INTERNAL")
+  externalCrmId String?
+  syncStatus    String    @default("PENDING")
+  syncPayload   Json?
+  errorMessage  String?
+  lastSyncedAt  DateTime?
+  createdAt     DateTime  @default(now())
+
+  lead        EqoreLead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  opportunity EqoreSalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([opportunityId])
+  @@index([syncStatus])
+  @@map("eqore_crm_sync_logs")
+}
+
+model EqoreGraphEdge {
+  id String @id @default(uuid())
+
+  fromNodeId String
+  toNodeId   String
+  type       String // BELONGS_TO, SOLVES, REQUIRES, COMPLEMENTS, CROSS_SELLS, PROVEN_IN, RECOMMENDED_FOR, LED_BY, USES_TECH, PACKAGED_AS
+
+  weight     Float   @default(1.0)
+  confidence Int     @default(100)
+  reason     String?
+  metadata   Json?
+  version    String?
+  isActive   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fromNode EqoreGraphNode @relation("OutgoingGraphEdges", fields: [fromNodeId], references: [id], onDelete: Cascade)
+  toNode   EqoreGraphNode @relation("IncomingGraphEdges", fields: [toNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([fromNodeId, toNodeId, type])
+  @@index([fromNodeId])
+  @@index([toNodeId])
+  @@index([type])
+  @@map("eqore_graph_edges")
+}
+
+model EqoreGraphNode {
+  id          String  @id @default(uuid())
+  type        String // DEPARTMENT, SERVICE, PROBLEM, INDUSTRY, CASE_STUDY, CONSULTANT, SOLUTION_PACKAGE
+  slug        String
+  label       String
+  description String?
+  metadata    Json?
+  version     String?
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  outgoingEdges EqoreGraphEdge[] @relation("OutgoingGraphEdges")
+  incomingEdges EqoreGraphEdge[] @relation("IncomingGraphEdges")
+
+  @@unique([type, slug])
+  @@index([type])
+  @@index([slug])
+  @@map("eqore_graph_nodes")
+}
+
+model EqoreIndustry {
+  id                  String  @id @default(uuid())
+  slug                String  @unique
+  name                String
+  description         String?
+  priorityLevel       String  @default("standard") // standard, high, strategic
+  commonPainPoints    Json? // String[]
+  relevantDepartments Json? // String[] of department slugs
+  isActive            Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  caseStudies EqoreCaseStudy[]
+
+  @@index([slug])
+  @@map("eqore_industries")
+}
+
+model EqoreLead {
+  id                          String                @id @default(uuid())
+  conversationId              String                @unique
+  sessionId                   String
+  visitorType                 String?
+  leadScore                   Int                   @default(0)
+  status                      String                @default("NEW")
+  createdAt                   DateTime              @default(now())
+  updatedAt                   DateTime              @updatedAt
+  companyName                 String?
+  conversationSummary         String?
+  email                       String?
+  leadCategory                String?
+  leadConfidence              Int                   @default(0)
+  leadQuality                 String?
+  name                        String?
+  phone                       String?
+  primaryIntent               String?
+  role                        String?
+  secureTokenHash             String?
+  sourcePage                  String?
+  website                     String?
+  authoritySignal             String?
+  budgetSignal                String?
+  buyingSignals               Json?
+  buyingStage                 String?
+  negativeSignals             Json?
+  nextBestQuestion            String?
+  painPoints                  Json?
+  problemStatement            String?
+  recommendedAction           String?
+  urgency                     String?
+  lastShadowAnalyzedAt        DateTime?
+  lastShadowAnalyzedMessageId String?
+  lastShadowError             String?
+  shadowAnalysisStatus        String?               @default("IDLE")
+  shadowAnalysisVersion       String?
+  shadowExtractionConfidence  Int?
+  departmentFitScores         Json?
+  lastServiceMatchedAt        DateTime?
+  matchedServices             Json?
+  primaryDepartment           String?
+  recommendedSolutionPackage  String?
+  secondaryDepartments        Json?
+  serviceFitScores            Json?
+  serviceMatchReason          String?
+  serviceMatchVersion         String?
+  consultationTimezone        String?               @default("Asia/Kolkata")
+  lastSchedulingIntentAt      DateTime?
+  offeredSlots                Json?
+  parsedConsultationWindow    Json?
+  preferredConsultationTime   String?
+  scheduledEventId            String?
+  schedulingStatus            EqoreSchedulingStatus @default(NONE)
+  selectedSlot                Json?
+  pipelineWeight              Float?                @default(0)
+  projectedValue              Decimal?              @db.Decimal(12, 2)
+  valueReasoning              Json?
+  valueTier                   String?
+  nurtureActions              Json?
+  nurtureBrief                String?
+
+  // Graph Intelligence (Phase 5)
+  graphContext           Json?
+  graphEnrichedAt        DateTime?
+  graphContextVersion    String?
+  recommendedCrossSells  Json?
+  recommendedCaseStudies Json?
+  recommendedConsultant  Json?
+
+  events       EqoreLeadEvent[]
+  conversation EqoreConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  // Phase 9: Sales Pipeline Automation
+  assignedOwnerId     String?
+  assignedOwnerName   String?
+  assignedTeam        String?
+  assignmentReason    String?
+  assignedAt          DateTime?
+  assignmentStatus    String?
+  salesStage          String?
+  salesPriority       String?
+  lastSalesActivityAt DateTime?
+
+  opportunity     EqoreSalesOpportunity?
+  salesTasks      EqoreSalesTask[]
+  salesActivities EqoreSalesActivity[]
+  salesNotes      EqoreSalesNote[]
+  crmSyncLogs     EqoreCrmSyncLog[]
+
+  @@index([sessionId])
+  @@index([leadScore])
+  @@index([status])
+  @@map("eqore_leads")
+}
+
+model EqoreLeadEvent {
+  id             String    @id @default(uuid())
+  leadId         String
+  eventType      String
+  previousScore  Int?
+  newScore       Int?
+  reason         String?
+  createdAt      DateTime  @default(now())
+  eventData      Json?
+  newStatus      String?
+  previousStatus String?
+  lead           EqoreLead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([eventType])
+  @@map("eqore_lead_events")
+}
+
+model EqoreMessage {
+  id             String            @id @default(uuid())
+  conversationId String
+  role           String
+  content        String
+  intent         String?
+  createdAt      DateTime          @default(now())
+  metadata       Json?
+  conversation   EqoreConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@map("eqore_messages")
+}
+
+model EqoreSalesActivity {
+  id            String   @id @default(uuid())
+  leadId        String
+  opportunityId String
+  activityType  String
+  description   String
+  metadata      Json?
+  createdAt     DateTime @default(now())
+
+  lead        EqoreLead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  opportunity EqoreSalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([opportunityId])
+  @@map("eqore_sales_activities")
+}
+
+model EqoreSalesNote {
+  id            String   @id @default(uuid())
+  leadId        String
+  opportunityId String
+  authorId      String?
+  noteType      String   @default("CALL_NOTE")
+  content       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  lead        EqoreLead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  opportunity EqoreSalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([opportunityId])
+  @@map("eqore_sales_notes")
+}
+
+model EqoreSalesOpportunity {
+  id                 String    @id @default(uuid())
+  leadId             String    @unique
+  ownerId            String?
+  stage              String    @default("NEW")
+  priority           String    @default("MEDIUM")
+  estimatedValue     Decimal?  @db.Decimal(12, 2)
+  primaryDepartment  String?
+  matchedServices    Json?
+  recommendedPackage String?
+  nextAction         String?
+  wonReason          String?
+  lostReason         String?
+  closedAt           DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  lead       EqoreLead            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  tasks      EqoreSalesTask[]
+  activities EqoreSalesActivity[]
+  notes      EqoreSalesNote[]
+  syncLogs   EqoreCrmSyncLog[]
+
+  @@map("eqore_sales_opportunities")
+}
+
+model EqoreSalesTask {
+  id            String    @id @default(uuid())
+  leadId        String
+  opportunityId String
+  ownerId       String?
+  title         String
+  description   String?
+  taskType      String
+  priority      String    @default("MEDIUM")
+  dueAt         DateTime?
+  status        String    @default("OPEN")
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  lead        EqoreLead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  opportunity EqoreSalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([opportunityId])
+  @@index([ownerId])
+  @@index([status])
+  @@map("eqore_sales_tasks")
+}
+
+model EventInvitee {
+  id          String         @id @default(cuid())
+  eventId     String
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  timezone    String?
+  responses   Json?
+  status      InviteeStatus  @default(ACCEPTED)
+  viewedAt    DateTime?
+  cancelledAt DateTime?
+  createdAt   DateTime       @default(now())
+  event       ScheduledEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  noShow      InviteeNoShow?
+
+  @@unique([eventId, email])
+  @@index([eventId])
+  @@index([email])
+  @@map("event_invitees")
+}
+
+model EventType {
+  id                    String                 @id @default(cuid())
+  slug                  String                 @unique
+  name                  String
+  description           String?
+  duration              Int
+  color                 String                 @default("#2564ea")
+  bufferBefore          Int                    @default(0)
+  bufferAfter           Int                    @default(0)
+  maxPerDay             Int?
+  minNotice             Int                    @default(60)
+  maxAdvanceDays        Int                    @default(30)
+  hostId                String
+  isActive              Boolean                @default(true)
+  isPublic              Boolean                @default(true)
+  location              String?
+  locationType          String                 @default("VIDEO")
+  requirePhone          Boolean                @default(false)
+  requireCompany        Boolean                @default(false)
+  customQuestions       Json?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  host                  User                   @relation("HostedEventTypes", fields: [hostId], references: [id])
+  scheduledEvents       ScheduledEvent[]
+  schedulingLinks       SchedulingLink[]
+  availabilitySchedules AvailabilitySchedule[] @relation("AvailabilityScheduleToEventType")
+
+  @@index([hostId])
+  @@index([slug])
+  @@index([isActive, isPublic])
+  @@map("event_types")
+}
+
+model InviteeNoShow {
+  id        String         @id @default(cuid())
+  eventId   String
+  inviteeId String         @unique
+  createdAt DateTime       @default(now())
+  createdBy String
+  event     ScheduledEvent @relation(fields: [eventId], references: [id])
+  invitee   EventInvitee   @relation(fields: [inviteeId], references: [id])
+
+  @@index([eventId])
+  @@map("invitee_no_shows")
+}
+
+model MeetingLocation {
+  id        String   @id @default(cuid())
+  userId    String
+  kind      String
+  label     String
+  value     String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation("UserLocations", fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("meeting_locations")
+}
+
+model OrgInvitation {
+  id             String       @id @default(cuid())
+  organizationId String
+  email          String
+  role           String       @default("MEMBER")
+  status         String       @default("PENDING")
+  token          String       @unique @default(cuid())
+  createdAt      DateTime     @default(now())
+  expiresAt      DateTime
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([token])
+  @@map("org_invitations")
+}
+
+model OrgMembership {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  role           String       @default("MEMBER")
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  user           User         @relation("UserMemberships", fields: [userId], references: [id])
+
+  @@unique([organizationId, userId])
+  @@map("org_memberships")
+}
+
+model Organization {
+  id          String          @id @default(cuid())
+  name        String
+  slug        String          @unique
+  logoUrl     String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  invitations OrgInvitation[]
+  memberships OrgMembership[]
+
+  @@map("organizations")
+}
+
+model RoutingForm {
+  id                  String                  @id @default(cuid())
+  name                String
+  slug                String                  @unique
+  description         String?
+  ownerId             String
+  isActive            Boolean                 @default(true)
+  questions           Json
+  routingRules        Json
+  fallbackEventTypeId String?
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+  submissions         RoutingFormSubmission[]
+  owner               User                    @relation("OwnedRoutingForms", fields: [ownerId], references: [id])
+
+  @@index([slug])
+  @@map("routing_forms")
+}
+
+model RoutingFormSubmission {
+  id                  String      @id @default(cuid())
+  routingFormId       String
+  answers             Json
+  routedToEventTypeId String?
+  submitterName       String?
+  submitterEmail      String?
+  createdAt           DateTime    @default(now())
+  routingForm         RoutingForm @relation(fields: [routingFormId], references: [id])
+
+  @@index([routingFormId])
+  @@map("routing_form_submissions")
+}
+
+model ScheduledEvent {
+  id               String               @id @default(cuid())
+  eventTypeId      String
+  hostId           String
+  title            String
+  startTime        DateTime
+  endTime          DateTime
+  timezone         String               @default("Asia/Kolkata")
+  status           ScheduledEventStatus @default(ACTIVE)
+  locationType     String?
+  locationValue    String?
+  joinUrl          String?
+  cancelledAt      DateTime?
+  cancelledBy      String?
+  cancelReason     String?
+  rescheduledFrom  String?
+  schedulingLinkId String?
+  consultationId   String?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  invitees         EventInvitee[]
+  noShows          InviteeNoShow[]
+  eventType        EventType            @relation(fields: [eventTypeId], references: [id])
+  host             User                 @relation("EventHost", fields: [hostId], references: [id])
+  schedulingLink   SchedulingLink?      @relation(fields: [schedulingLinkId], references: [id])
+
+  @@index([hostId, startTime])
+  @@index([eventTypeId])
+  @@index([status])
+  @@map("scheduled_events")
+}
+
+model SchedulingLink {
+  id              String           @id @default(cuid())
+  slug            String           @unique
+  eventTypeId     String
+  ownerId         String
+  maxUses         Int?
+  useCount        Int              @default(0)
+  expiresAt       DateTime?
+  isActive        Boolean          @default(true)
+  prefillName     String?
+  prefillEmail    String?
+  prefillCompany  String?
+  createdAt       DateTime         @default(now())
+  scheduledEvents ScheduledEvent[]
+  eventType       EventType        @relation(fields: [eventTypeId], references: [id])
+  owner           User             @relation("OwnedSchedulingLinks", fields: [ownerId], references: [id])
+
+  @@index([slug])
+  @@index([eventTypeId])
+  @@map("scheduling_links")
 }
