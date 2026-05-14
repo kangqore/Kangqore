@@ -49,6 +49,7 @@ import accountabilityRoutes from './routes/accountability'; // NEW (MNC Shared L
 import feedbackRoutes from './routes/feedback'; // NEW
 import schedulingRoutes from './routes/scheduling';
 import { eqorePublicRoutes } from './eqore/routes';
+import { eqoreLeadIntelligenceRoutes } from './eqore-lead-intelligence';
 
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
@@ -157,6 +158,7 @@ app.use('/api/admin/clients', adminStrategyRoutes);
 app.use('/api/feedback', feedbackRoutes); // NEW
 app.use('/api/scheduling', schedulingRoutes);
 app.use('/api/eqore', eqorePublicRoutes);
+app.use('/api/admin/eqore', eqoreLeadIntelligenceRoutes);
 
 import servicesRoutes from './routes/services'; // Phase 3
 app.use('/api/services', servicesRoutes); 
