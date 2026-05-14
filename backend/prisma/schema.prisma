@@ -96,6 +96,13 @@ model User {
   ticketMessages             TicketMessage[]
   tickets                    Ticket[]
 
+  availabilitySchedules      AvailabilitySchedule[]     @relation("UserAvailability")
+  hostedEventTypes           EventType[]                @relation("HostedEventTypes")
+  meetingLocations           MeetingLocation[]          @relation("UserLocations")
+  orgMemberships             OrgMembership[]            @relation("UserMemberships")
+  ownedRoutingForms          RoutingForm[]              @relation("OwnedRoutingForms")
+  hostedEvents               ScheduledEvent[]           @relation("EventHost")
+  ownedSchedulingLinks       SchedulingLink[]           @relation("OwnedSchedulingLinks")
   @@map("users")
 }
 
@@ -1834,4 +1841,245 @@ model KangqoreVisGovernanceCheck {
 
   @@index([blueprintId, checkedAt])
   @@map("kangqore_vis_governance_checks")
+}
+
+enum InviteeStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  CANCELLED
+}
+
+enum ScheduledEventStatus {
+  ACTIVE
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+model AvailabilitySchedule {
+  id         String      @id @default(cuid())
+  name       String      @default("Working Hours")
+  userId     String
+  isDefault  Boolean     @default(false)
+  timezone   String      @default("Asia/Kolkata")
+  rules      Json
+  overrides  Json?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  user       User        @relation("UserAvailability", fields: [userId], references: [id])
+  eventTypes EventType[] @relation("AvailabilityScheduleToEventType")
+
+  @@index([userId])
+  @@map("availability_schedules")
+}
+
+model EventInvitee {
+  id          String         @id @default(cuid())
+  eventId     String
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  timezone    String?
+  responses   Json?
+  status      InviteeStatus  @default(ACCEPTED)
+  viewedAt    DateTime?
+  cancelledAt DateTime?
+  createdAt   DateTime       @default(now())
+  event       ScheduledEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  noShow      InviteeNoShow?
+
+  @@unique([eventId, email])
+  @@index([eventId])
+  @@index([email])
+  @@map("event_invitees")
+}
+
+model EventType {
+  id                    String                 @id @default(cuid())
+  slug                  String                 @unique
+  name                  String
+  description           String?
+  duration              Int
+  color                 String                 @default("#2564ea")
+  bufferBefore          Int                    @default(0)
+  bufferAfter           Int                    @default(0)
+  maxPerDay             Int?
+  minNotice             Int                    @default(60)
+  maxAdvanceDays        Int                    @default(30)
+  hostId                String
+  isActive              Boolean                @default(true)
+  isPublic              Boolean                @default(true)
+  location              String?
+  locationType          String                 @default("VIDEO")
+  requirePhone          Boolean                @default(false)
+  requireCompany        Boolean                @default(false)
+  customQuestions       Json?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  host                  User                   @relation("HostedEventTypes", fields: [hostId], references: [id])
+  scheduledEvents       ScheduledEvent[]
+  schedulingLinks       SchedulingLink[]
+  availabilitySchedules AvailabilitySchedule[] @relation("AvailabilityScheduleToEventType")
+
+  @@index([hostId])
+  @@index([slug])
+  @@index([isActive, isPublic])
+  @@map("event_types")
+}
+
+model InviteeNoShow {
+  id        String         @id @default(cuid())
+  eventId   String
+  inviteeId String         @unique
+  createdAt DateTime       @default(now())
+  createdBy String
+  event     ScheduledEvent @relation(fields: [eventId], references: [id])
+  invitee   EventInvitee   @relation(fields: [inviteeId], references: [id])
+
+  @@index([eventId])
+  @@map("invitee_no_shows")
+}
+
+model MeetingLocation {
+  id        String   @id @default(cuid())
+  userId    String
+  kind      String
+  label     String
+  value     String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation("UserLocations", fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("meeting_locations")
+}
+
+model OrgInvitation {
+  id             String       @id @default(cuid())
+  organizationId String
+  email          String
+  role           String       @default("MEMBER")
+  status         String       @default("PENDING")
+  token          String       @unique @default(cuid())
+  createdAt      DateTime     @default(now())
+  expiresAt      DateTime
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([token])
+  @@map("org_invitations")
+}
+
+model OrgMembership {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  role           String       @default("MEMBER")
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  user           User         @relation("UserMemberships", fields: [userId], references: [id])
+
+  @@unique([organizationId, userId])
+  @@map("org_memberships")
+}
+
+model Organization {
+  id          String          @id @default(cuid())
+  name        String
+  slug        String          @unique
+  logoUrl     String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  invitations OrgInvitation[]
+  memberships OrgMembership[]
+
+  @@map("organizations")
+}
+
+model RoutingForm {
+  id                  String                  @id @default(cuid())
+  name                String
+  slug                String                  @unique
+  description         String?
+  ownerId             String
+  isActive            Boolean                 @default(true)
+  questions           Json
+  routingRules        Json
+  fallbackEventTypeId String?
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+  submissions         RoutingFormSubmission[]
+  owner               User                    @relation("OwnedRoutingForms", fields: [ownerId], references: [id])
+
+  @@index([slug])
+  @@map("routing_forms")
+}
+
+model RoutingFormSubmission {
+  id                  String      @id @default(cuid())
+  routingFormId       String
+  answers             Json
+  routedToEventTypeId String?
+  submitterName       String?
+  submitterEmail      String?
+  createdAt           DateTime    @default(now())
+  routingForm         RoutingForm @relation(fields: [routingFormId], references: [id])
+
+  @@index([routingFormId])
+  @@map("routing_form_submissions")
+}
+
+model ScheduledEvent {
+  id               String               @id @default(cuid())
+  eventTypeId      String
+  hostId           String
+  title            String
+  startTime        DateTime
+  endTime          DateTime
+  timezone         String               @default("Asia/Kolkata")
+  status           ScheduledEventStatus @default(ACTIVE)
+  locationType     String?
+  locationValue    String?
+  joinUrl          String?
+  cancelledAt      DateTime?
+  cancelledBy      String?
+  cancelReason     String?
+  rescheduledFrom  String?
+  schedulingLinkId String?
+  consultationId   String?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  invitees         EventInvitee[]
+  noShows          InviteeNoShow[]
+  eventType        EventType            @relation(fields: [eventTypeId], references: [id])
+  host             User                 @relation("EventHost", fields: [hostId], references: [id])
+  schedulingLink   SchedulingLink?      @relation(fields: [schedulingLinkId], references: [id])
+
+  @@index([hostId, startTime])
+  @@index([eventTypeId])
+  @@index([status])
+  @@map("scheduled_events")
+}
+
+model SchedulingLink {
+  id              String           @id @default(cuid())
+  slug            String           @unique
+  eventTypeId     String
+  ownerId         String
+  maxUses         Int?
+  useCount        Int              @default(0)
+  expiresAt       DateTime?
+  isActive        Boolean          @default(true)
+  prefillName     String?
+  prefillEmail    String?
+  prefillCompany  String?
+  createdAt       DateTime         @default(now())
+  scheduledEvents ScheduledEvent[]
+  eventType       EventType        @relation(fields: [eventTypeId], references: [id])
+  owner           User             @relation("OwnedSchedulingLinks", fields: [ownerId], references: [id])
+
+  @@index([slug])
+  @@index([eventTypeId])
+  @@map("scheduling_links")
 }
