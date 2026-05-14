@@ -1608,3 +1608,8 @@
 2026-05-08 04:51:32:5132 [32minfo[39m: [32mretrieval.index.loaded chunks=286[39m
 2026-05-08 04:51:32:5132 [32minfo[39m: [32mretrieval.index.done added=0 updated=0 unchanged=286 removed=0[39m
 2026-05-08 04:51:33:5133 [32minfo[39m: [32mkb.watcher.started watching=/Volumes/MKS MacBook/Kangqore/backend/knowledge-base/*.md[39m
+2026-05-14 20:01:41:141 [32minfo[39m: [32mEmailService: SendGrid configured.[39m
+2026-05-14 20:02:06:26 [32minfo[39m: [32mKB loaded: 292 chunks across 13 files (292 public/populated, 26 forbidden substrings)[39m
+2026-05-14 20:02:28:228 [32minfo[39m: [32mretrieval.index.loaded chunks=286[39m
+2026-05-14 20:02:28:228 [32minfo[39m: [32mretrieval.index.done added=0 updated=0 unchanged=286 removed=0[39m
+2026-05-14 20:02:29:229 [32minfo[39m: [32mkb.watcher.started watching=/Volumes/MKS MacBook/Kangqore/backend/knowledge-base/*.md[39m
