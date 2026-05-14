@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { ChevronDown, Globe, Menu, X, LogIn, LogOut, UserCircle, Search, Phone, ArrowRight, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Sun, Moon } from 'lucide-react';
+import { ChevronDown, Globe, Menu, X, LogIn, LogOut, UserCircle, Search, Phone, ArrowRight, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Sun, Moon, Mic } from 'lucide-react';
 import { navigationItems } from '../mock/mockData';
 import { useAuth } from '../context/AuthContext';
 import { departmentData } from '../data/departmentData';
@@ -58,6 +58,7 @@ const Header = ({ onMenuClick }) => {
     { name: t('menu.blogs'), path: '/blogs', icon: BookOpen },
     { name: t('menu.case_studies'), path: '/case-studies', icon: FileText },
     { name: t('menu.brochures'), path: '/brochures', icon: FileSpreadsheet },
+    { name: 'Podcasts', path: '/podcast', icon: Mic },
     { name: t('menu.events'), path: '/events', icon: Calendar },
     { name: t('menu.white_paper'), path: '/white-paper', icon: Award }
   ];
@@ -83,7 +84,7 @@ const Header = ({ onMenuClick }) => {
     { name: t('nav.what_we_do'), items: navigationItems.services, isMegaMenu: true, type: 'services' },
     { name: t('nav.who_we_are'), items: whoWeAreItems, isMegaMenu: true, type: 'whoWeAre' },
     { name: t('nav.industries'), items: industriesItems, isMegaMenu: true, type: 'industries' },
-    { name: t('nav.insights'), path: '/insights', isMegaMenu: false, isDirectLink: true }
+    { name: t('nav.insights'), items: insightsItems, isMegaMenu: true, type: 'insights' }
   ];
 
   return (
@@ -186,15 +187,6 @@ const Header = ({ onMenuClick }) => {
                 />
               </Link>
             </div>
-
-            {/* Mobile/Tablet - Hamburger Menu Button */}
-            <button
-              onClick={onMenuClick}
-              className="lg:hidden p-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
-              aria-label="Open menu"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
 
             {/* Desktop Navigation - Centered (Hidden on mobile/tablet) */}
             <nav className="hidden lg:flex items-center space-x-8">
@@ -512,6 +504,80 @@ const Header = ({ onMenuClick }) => {
                   </div>
                 )}
 
+                {/* Mega Menu for Insights */}
+                {activeDropdown === link.name && link.isMegaMenu && link.type === 'insights' && (
+                  <div 
+                    className="fixed left-0 right-0 top-[120px] bg-white dark:bg-black dark:border-gray-800 shadow-2xl border-t border-gray-200 z-[9999] animate-fade-in"
+                    onMouseEnter={() => setActiveDropdown(link.name)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                  >
+                    <div className="max-w-[1400px] mx-auto px-8 py-10">
+                      <div className="mb-8">
+                        <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Insights & Knowledge</h3>
+                        <p className="text-gray-600 dark:text-gray-400">Expert perspectives on the future of AI, technology, and business strategy</p>
+                      </div>
+                      
+                      <div className="grid grid-cols-5 gap-4">
+                        {insightsItems.map((item, index) => {
+                          const IconComponent = item.icon;
+                          return (
+                            <Link
+                              key={index}
+                              to={item.path}
+                              onClick={() => setActiveDropdown(null)}
+                              className="group p-4 rounded-xl hover:bg-blue-50 dark:bg-blue-900/20 transition-all duration-300"
+                            >
+                              <div className="flex flex-col items-center text-center gap-3">
+                                <Realistic3DIcon 
+                                  icon={IconComponent} 
+                                  className="w-16 h-16 group-hover:scale-110 mb-2" 
+                                  iconSize="w-8 h-8" 
+                                  theme="brand" 
+                                />
+                                <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                                  {item.name}
+                                </h4>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                      
+                      {/* Featured Insight / CTA */}
+                      <div className="mt-8 pt-6 border-t border-gray-200">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-100 dark:border-gray-800 flex items-center gap-6">
+                            <div className="w-24 h-24 bg-brand-gradient rounded-lg flex items-center justify-center shrink-0">
+                              <Tv className="w-12 h-12 text-white" />
+                            </div>
+                            <div>
+                              <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-1">eQORE Podcast</h4>
+                              <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">Listen to industry experts discuss the latest in agentic AI.</p>
+                              <Link to="/podcast" onClick={() => setActiveDropdown(null)} className="text-brand-blue font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">
+                                Listen Now <ArrowRight className="w-4 h-4" />
+                              </Link>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-brand-gradient rounded-xl p-6 text-white shadow-xl flex items-center justify-between">
+                            <div>
+                              <h4 className="text-xl font-bold mb-1">Newsletter</h4>
+                              <p className="text-white/90 text-sm">Get the latest insights delivered to your inbox.</p>
+                            </div>
+                            <Link
+                              to="/newsletter"
+                              onClick={() => setActiveDropdown(null)}
+                              className="px-6 py-3 bg-white dark:bg-black dark:border-gray-800 text-brand-blue font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg whitespace-nowrap"
+                            >
+                              Subscribe
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Regular Dropdown for other items */}
                 {activeDropdown === link.name && !link.isMegaMenu && (
                   <>
@@ -542,33 +608,35 @@ const Header = ({ onMenuClick }) => {
             ))}
           </nav>
 
-          {/* Right Side - Action Buttons (Desktop only) */}
-          <div className="hidden lg:flex items-center space-x-3">
+          {/* Right Side - Action Buttons */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Mobile Menu Toggle */}
+            <button 
+              onClick={onMenuClick}
+              className="lg:hidden p-2.5 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              aria-label="Toggle Mobile Menu"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+
+            {/* Desktop Search Button */}
             <button 
               onClick={() => setShowSearch(true)}
-              className="p-3 hover:bg-gray-100 dark:bg-[#0a0a0c] rounded-full transition-colors"
+              className="hidden lg:flex p-3 hover:bg-gray-100 dark:bg-[#0a0a0c] rounded-full transition-colors"
               data-testid="global-search-btn"
               title="Search"
             >
               <Search className="w-7 h-7 text-gray-700 dark:text-gray-200" strokeWidth={2.5} />
             </button>
             
+            {/* Desktop Contact Button */}
             <Link 
               to="/contact"
-              className="flex items-center gap-2 px-6 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-full font-semibold transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-700 shadow-md hover:shadow-lg"
+              className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-full font-semibold transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-700 shadow-md hover:shadow-lg"
             >
               <span>Contact Us</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
-
-            {/* Hamburger Menu Button - Right of Contact Us (Desktop) */}
-            <button
-              onClick={onMenuClick}
-              className="p-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-50 dark:hover:bg-gray-700"
-              aria-label="Open menu"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
           </div>
         </div>
       </div>

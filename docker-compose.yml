@@ -17,6 +17,18 @@ services:
     networks:
       - kangqore-network
 
+  # Redis for eQORE BullMQ
+  redis:
+    image: redis:7-alpine
+    container_name: kangqore-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - kangqore-network
+
   # Node.js Core Backend
   core-backend:
     build:
@@ -72,6 +84,7 @@ services:
 
 volumes:
   postgres_data:
+  redis_data:
 
 networks:
   kangqore-network:

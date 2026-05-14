@@ -435,3 +435,22 @@ input[type='range']::-webkit-slider-thumb:hover {
     inset 1px 1px 2px rgba(255,255,255,0.1);
   color: white !important;
 }
+
+/* Custom Scrollbar Utility */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.transition-slow {
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}

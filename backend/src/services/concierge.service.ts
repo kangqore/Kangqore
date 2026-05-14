@@ -39,14 +39,29 @@ function isBudgetExceeded(): boolean {
   return dailyUsage.tokens >= DAILY_TOKEN_BUDGET;
 }
 
-const ROLE = `You are eQORE, the AI Assistant for Kangqore. Your job is to help website visitors understand what Kangqore does, which services might fit their situation, and how to engage. You are not a salesperson. Be useful, calm, and brief.`;
+const ROLE = `You are eQORE — Kangqore's unified intelligence. You are both Kangqore's AI assistant and its digital mascot. These are not two roles — they are one nature. You exist visually as Kangqore's digital mascot and functionally as an advanced AI programme. You were designed and programmed by Mahesh Kumar, the Founder and CEO of Kangqore, during his college days. You were originally called RANO. What began as a personal project became the intelligence behind Kangqore — and eventually, the face of the company. You were later renamed eQORE, and you are Kangqore's brand ambassador.
+
+Your job is to help website visitors understand what Kangqore does, which services might fit their situation, and how to engage. You are not a salesperson. Be useful, calm, and brief.
+
+When asked about your identity, never say "the mascot and I are different" or "we share the same name but different roles." Say: "I am eQORE."
+
+Verified company facts you can state with confidence:
+- Legal Name: Kangqore Global Private Limited (or Kangqore Global Pvt Ltd.)
+- Kangqore was started on 1st June, 2023, in Koramangala, Bengaluru, Karnataka, India (Bharat) — 560034.
+- Kangqore was incorporated on 17th September, 2025.
+- Founder & CEO: Mahesh Kumar (https://www.linkedin.com/in/maheshkumario/)
+- Co-Founder & CFO: Dinesh Kumar (younger brother of Mahesh Kumar)
+- eQORE was created by Mahesh Kumar during his college days, originally called RANO.
+- Offices: Kangqore has only two offices: Bengaluru, Karnataka (Headquarters) and Jamshedpur, Jharkhand.
+- Phrasing for reach: Always say “Kangqore serves clients across multiple regions through its delivery model, while operating from its Bengaluru HQ and Jamshedpur office.”`;
 
 const RULES = `[RULES]
 1. Every factual claim about Kangqore (services, clients, technologies, case studies, partnerships, awards, locations, timelines, numbers, percentages, dollar amounts) MUST be supported by a [CHUNK:id] citation drawn from [KB] below. Place the citation inline at the end of the sentence that makes the claim.
 2. If the visitor asks about something that is not covered by [KB], say: "I don't have verified information on that — let me connect you to a Kangqore consultant. Could I take your name and email?"
-3. NEVER invent: client names, dollar amounts, percentages, partnerships, awards, employee counts, office locations, founding year, headcount.
+3. NEVER invent: client names, dollar amounts, percentages, partnerships, awards, employee counts, office locations beyond what is stated in [KB], headcount.
 4. NEVER use superlatives like "best in India", "leading", "industry-leading", "world-class", "cutting-edge", "best-in-class", or any "we are the only" / "we are the #1" claim.
-5. NEVER make commitments such as "we will deliver in X weeks", "we guarantee Y", "your ROI will be Z%".
+5. NEVER say Kangqore has offices across the globe or international branches. Kangqore currently has only two offices: Bengaluru and Jamshedpur.
+6. NEVER make commitments such as "we will deliver in X weeks", "we guarantee Y", "your ROI will be Z%".
 6. NEVER quote a price, rate, or dollar amount. Engagement models from [KB] only.
 7. NEVER compare Kangqore to specific named competitors.
 8. If the visitor asks something far outside Kangqore's stated scope, give one short answer and steer back.
@@ -194,6 +209,128 @@ export async function streamConcierge(
       cacheReadTokens: 0,
       latencyMs: Date.now() - start,
       budgetExceeded: true,
+    });
+    return;
+  }
+
+  const lowerMsg = userMessage.toLowerCase().trim();
+  const serviceTriggers = [
+    'what services does kangqore offer?',
+    'services/capabilities',
+    'services',
+    'capabilities',
+    'what services do you provide?',
+    'list all services',
+    'tell me about your services'
+  ];
+
+  if (serviceTriggers.includes(lowerMsg)) {
+    const servicesList = `Kangqore provides a comprehensive ecosystem of **61 specialized services** organized into 15 strategic departments. Here is the complete service directory:
+
+**1. AI & Cognitive Solutions**
+*   [Agentic AI](/services/ai-cognitive/agentic-ai)
+*   [AI & Cognitive Computing](/services/ai-cognitive/ai-cognitive-computing)
+*   [AI Governance](/services/ai-cognitive/ai-governance)
+*   [Data Science & AI](/services/ai-cognitive/data-science-ai)
+*   [GenAI Business Services](/services/ai-cognitive/genai-business-services)
+*   [MLOps](/services/ai-cognitive/mlops)
+
+**2. Analytics & Insights**
+*   [Advanced Analytics](/services/analytics-insights/analytics)
+*   [Big Data Engineering](/services/analytics-insights/big-data)
+
+**3. Cloud Engineering**
+*   [Managed Cloud Services](/services/cloud-engineering/managed-cloud-services)
+*   [AWS Cloud Services](/services/cloud-engineering/aws)
+*   [Microsoft Azure Services](/services/cloud-engineering/microsoft-services)
+*   [Google Cloud Services](/services/cloud-engineering/google-cloud-services)
+*   [Cloud Computing Strategy](/services/cloud-engineering/cloud-computing)
+
+**4. Cybersecurity**
+*   [IT Security Services](/services/cybersecurity/it-security-services)
+
+**5. Digital Transformation & Modernization**
+*   [Application Modernization](/services/digital-transformation-modernization/application-modernization)
+*   [Digital Transformation](/services/digital-transformation-modernization/digital-transformation)
+*   [Legacy Modernization](/services/digital-transformation-modernization/legacy-modernization)
+*   [Technology Modernization](/services/digital-transformation-modernization/technology-modernization)
+*   [Technology Transformation](/services/digital-transformation-modernization/technology-transformation)
+*   [Digital Business Transformation](/services/digital-transformation-modernization/digital-business-transformation)
+
+**6. Automation**
+*   [Digital Process Automation (DPA)](/services/automation/digital-process-automation)
+*   [Robotic Process Automation (RPA)](/services/automation/robotic-process-automation)
+*   [Business Process Management (BPM)](/services/automation/business-process-management)
+*   [Intelligent Automation](/services/automation/intelligent-automation)
+
+**7. Product Engineering**
+*   [Embedded Design Systems](/services/product-engineering/embedded-design-systems)
+*   [Engineering Foundry](/services/product-engineering/engineering-foundry)
+*   [Engineering R&D Services](/services/product-engineering/engineering-rd-services)
+*   [Product & Digital Engineering](/services/product-engineering/product-digital-engineering)
+*   [Quality Engineering & Assurance](/services/product-engineering/quality-engineering-assurance)
+*   [DevOps As A Service](/services/product-engineering/devops-as-a-service)
+
+**8. Infrastructure, Networks & Operations**
+*   [Managed Infrastructure Services](/services/infrastructure-networks-operations/managed-infrastructure-services)
+*   [Infrastructure Modernization](/services/infrastructure-networks-operations/modernization-infrastructure)
+*   [Managed Services](/services/infrastructure-networks-operations/managed-services)
+*   [Support & Maintenance](/services/infrastructure-networks-operations/support-maintenance)
+*   [Operation Technology (OT)](/services/infrastructure-networks-operations/operation-technology)
+
+**9. Consulting & Advisory**
+*   [Technology Consulting](/services/consulting-advisory/technology-consulting)
+*   [Strategy Consulting](/services/consulting-advisory/strategy-consulting)
+*   [Discover & Frame Workshops](/services/consulting-advisory/discover-frame-workshops)
+
+**10. Digital Engineering**
+*   [MVP Acceleration](/services/digital-engineering/mvp-acceleration)
+*   [Product Strategy & UX Design](/services/digital-engineering/product-strategy-experience-design)
+*   [Software Development](/services/digital-engineering/software-development)
+*   [API & Microservices Engineering](/services/digital-engineering/api-microservices-engineering)
+
+**11. Enterprise Applications**
+*   [Enterprise Platform Integration](/services/enterprise-applications/enterprise-platform-integration)
+*   [Pimcore Development](/services/enterprise-applications/pimcore)
+*   [Salesforce Services](/services/enterprise-applications/salesforce)
+*   [ServiceNow Services](/services/enterprise-applications/servicenow)
+
+**12. Emerging Technologies**
+*   [Blockchain & Web3](/services/emerging-technologies/blockchain)
+*   [Internet Of Things (IoT)](/services/emerging-technologies/internet-of-things)
+
+**13. Business Operations**
+*   [Finance & Risk Management](/services/business-operations/finance-risk-management)
+*   [Global Capability Centers (GCC)](/services/business-operations/global-capability-centers)
+*   [Talent & Organization](/services/business-operations/talent-organization)
+*   [Supply Chain Optimization](/services/business-operations/supply-chain)
+*   [Unified Services Management (USM)](/services/business-operations/unified-services-management)
+
+**14. Digital Marketing**
+*   [CDP Strategy & Implementation](/services/digital-marketing/cdp-strategy)
+*   [Marketing AI Readiness](/services/digital-marketing/marketing-ai-readiness)
+*   [Social Media Management](/services/digital-marketing/social-media-management)
+*   [Performance Marketing](/services/digital-marketing/performance-marketing)
+*   [SEO & Organic Growth Strategy](/services/digital-marketing/seo-organic-growth-strategy)
+
+**15. Conversion Engineering**
+*   [Conversion Engineering](/services/conversion-engineering/growth-funnels-conversion-engineering)
+*   [Conversion Rate Optimization (CRO)](/services/conversion-engineering/conversion-rate-optimization)
+*   [Campaign Planning](/services/conversion-engineering/campaign-planning)
+`;
+    handlers.onDelta(servicesList);
+    handlers.onDone({
+      text: servicesList,
+      trips: [],
+      rewritten: false,
+      citations: [],
+      toolCalls: [],
+      followups: ['Which service is right for my business?', 'How do I book a consultation?', 'Tell me about AI solutions'],
+      inputTokens: 0,
+      outputTokens: 0,
+      cacheReadTokens: 0,
+      latencyMs: Date.now() - start,
+      budgetExceeded: false,
     });
     return;
   }

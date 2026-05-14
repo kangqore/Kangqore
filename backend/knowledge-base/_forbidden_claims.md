@@ -50,6 +50,19 @@ Until verified by Kangqore Marketing/Legal:
 - "Top firm"
 - "#1 in"
 
+# Forbidden location claims
+
+- "offices across the globe"
+- "international branches"
+- "offices worldwide"
+- "offices in the USA"
+- "offices in US"
+- "offices in UK"
+- "offices in Europe"
+- "offices in Singapore"
+- "offices in UAE"
+- "global presence" (in the context of physical offices)
+
 # Forbidden commercial claims
 
 - "We guarantee"

@@ -15,6 +15,8 @@ import {
 import { prefilter, HANDOFF_MESSAGE } from '../services/concierge.guardrails';
 import { classifyIntent } from '../services/concierge.intent';
 import { retrieve, ensureIndexLoaded } from '../services/concierge.retrieval';
+import { EqoreSchedulingAgentService } from '../eqore/services/schedulingAgent.service';
+import { EqoreTokenService } from '../eqore/session/token.service';
 
 const router = Router();
 
@@ -138,6 +140,34 @@ router.post(
     }
 
     try {
+      // Phase 4: Handle Scheduling Intent
+      if (intent === 'scheduling') {
+        // Resolve eQORE lead for slot picker
+        let eqoreLead = await prisma.eqoreLead.findFirst({
+          where: { sessionId: conversationId || 'temp' }, // In ai-concierge, conversationId is often the session identifier from localStorage
+          orderBy: { createdAt: 'desc' }
+        });
+
+        // If no lead, create one (bridging legacy concierge to eQORE leads)
+        if (!eqoreLead && conversationId) {
+          eqoreLead = await prisma.eqoreLead.create({
+            data: {
+              sessionId: conversationId,
+              status: 'NEW',
+              sourcePage: req.headers.referer || 'concierge',
+            }
+          });
+        }
+
+        if (eqoreLead) {
+          sseEvent(res, 'lead_id', { leadId: eqoreLead.id });
+          const recommendation = await EqoreSchedulingAgentService.processSchedulingIntent(eqoreLead.id, message);
+          if (recommendation && recommendation.offeredSlots.length > 0) {
+            sseEvent(res, 'scheduling_slots', { slots: recommendation.offeredSlots });
+          }
+        }
+      }
+
       await streamConcierge(message, history, {
         onDelta: (delta) => {
           if (closed.value) return;

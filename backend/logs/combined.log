@@ -1608,3 +1608,36 @@
 2026-05-08 04:51:32:5132 [32minfo[39m: [32mretrieval.index.loaded chunks=286[39m
 2026-05-08 04:51:32:5132 [32minfo[39m: [32mretrieval.index.done added=0 updated=0 unchanged=286 removed=0[39m
 2026-05-08 04:51:33:5133 [32minfo[39m: [32mkb.watcher.started watching=/Volumes/MKS MacBook/Kangqore/backend/knowledge-base/*.md[39m
+2026-05-13 16:41:04:414 [32minfo[39m: [32mEmailService: SendGrid configured.[39m
+2026-05-13 16:41:44:4144 [32minfo[39m: [32mKB loaded: 292 chunks across 13 files (292 public/populated, 26 forbidden substrings)[39m
+2026-05-13 16:42:24:4224 [32minfo[39m: [32mkb.watcher.started watching=/Volumes/MKS MacBook/Kangqore/backend/knowledge-base/*.md[39m
+2026-05-13 16:59:53:5953 [32minfo[39m: [32mEmailService: SendGrid configured.[39m
+2026-05-13 17:00:17:017 [32minfo[39m: [32mRedis Mocked: Using in-memory no-op provider[39m
+2026-05-13 17:00:20:020 [32minfo[39m: [32mMOCK_REDIS enabled. Bypassing BullMQ initialization.[39m
+2026-05-13 17:00:25:025 [32minfo[39m: [32mKB loaded: 292 chunks across 13 files (292 public/populated, 26 forbidden substrings)[39m
+2026-05-13 17:01:16:116 [37mdebug[39m: [37membeddings.batch 8/8[39m
+2026-05-13 17:01:25:125 [32minfo[39m: [32mretrieval.index.loaded chunks=286[39m
+2026-05-13 17:01:25:125 [32minfo[39m: [32mretrieval.index.done added=1 updated=7 unchanged=278 removed=12[39m
+2026-05-13 17:01:25:125 [32minfo[39m: [32mkb.watcher.started watching=/Volumes/MKS MacBook/Kangqore/backend/knowledge-base/*.md[39m
+2026-05-13 17:11:28:1128 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-05-13 17:11:36:1136 [32minfo[39m: [32mEmailService: SendGrid configured.[39m
+2026-05-13 17:11:54:1154 [32minfo[39m: [32mRedis Mocked: Using in-memory no-op provider[39m
+2026-05-13 17:11:57:1157 [32minfo[39m: [32mMOCK_REDIS enabled. Bypassing BullMQ initialization.[39m
+2026-05-13 17:12:02:122 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-05-13 17:12:10:1210 [37mdebug[39m: [37membeddings.batch 12/19[39m
+2026-05-13 17:12:34:1234 [37mdebug[39m: [37membeddings.batch 19/19[39m
+2026-05-13 17:12:49:1249 [32minfo[39m: [32mretrieval.index.loaded chunks=297[39m
+2026-05-13 17:12:49:1249 [32minfo[39m: [32mretrieval.index.done added=12 updated=7 unchanged=278 removed=1[39m
+2026-05-13 17:12:49:1249 [32minfo[39m: [32mkb.watcher.started watching=/Volumes/MKS MacBook/Kangqore/backend/knowledge-base/*.md[39m
+2026-05-13 17:36:09:369 [32minfo[39m: [32mEmailService: SendGrid configured.[39m
+2026-05-13 17:36:25:3625 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-05-13 17:36:38:3638 [32minfo[39m: [32mretrieval.index.loaded chunks=297[39m
+2026-05-13 17:36:38:3638 [32minfo[39m: [32mretrieval.index.done added=0 updated=0 unchanged=297 removed=0[39m
+2026-05-13 17:36:39:3639 [32minfo[39m: [32mkb.watcher.started watching=/Volumes/MKS MacBook/Kangqore/backend/knowledge-base/*.md[39m
+2026-05-14 09:04:32:432 [32minfo[39m: [32mEmailService: SendGrid configured.[39m
+2026-05-14 09:05:17:517 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-05-14 09:05:28:528 [37mdebug[39m: [37membeddings.batch 12/19[39m
+2026-05-14 09:05:51:551 [37mdebug[39m: [37membeddings.batch 19/19[39m
+2026-05-14 09:06:06:66 [32minfo[39m: [32mretrieval.index.loaded chunks=297[39m
+2026-05-14 09:06:06:66 [32minfo[39m: [32mretrieval.index.done added=12 updated=7 unchanged=278 removed=1[39m
+2026-05-14 09:06:06:66 [32minfo[39m: [32mkb.watcher.started watching=/Volumes/MKS MacBook/Kangqore/backend/knowledge-base/*.md[39m

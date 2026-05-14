@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { format, addDays } from 'date-fns';
+import { parseSchedulingRequest, parseSchedulingRequestAsync, timeRangeToTimeStr } from '../hooks/nlpSchedulingParser';
+import AvailabilityPulse from '../components/scheduling/AvailabilityPulse';
 
 const ConciergeSection = lazy(() =>
   import('../components/concierge/ConciergeSection')
@@ -40,6 +43,7 @@ import VisualBackground from '../components/VisualBackground';
 import SEO from '../components/SEO';
 import { coreSEO } from '../data/seoData';
 import SecondaryButton from '../components/ui/SecondaryButton';
+import ExploreServices from '../components/ExploreServices';
 
 // ============================================================================
 // MOCK DATA
@@ -47,30 +51,58 @@ import SecondaryButton from '../components/ui/SecondaryButton';
 const heroSlides = [
   {
     id: 1,
-    tag: "AI & COGNITIVE SYSTEMS",
-    title: "Intelligence That Scales Reliably.",
-    description: "We help enterprises operationalize AI systems that reason, act, and deliver trusted outcomes across complex environments.",
-    cta: "Explore AI Solutions",
-    link: "/department/ai-cognitive",
-    video: "https://cdn.pixabay.com/video/2023/10/20/185859-876772714_large.mp4" // AI theme
+    tag: "ENTERPRISE TRANSFORMATION",
+    title: "Your Business Is Ready To Scale.",
+    titleGradient: "Your Systems May Not Be.",
+    description: "Kangqore engineers advanced enterprise AI, scalable cloud architecture, and intelligent automation pipelines. We help ambitious companies eliminate operational drag, modernize infrastructure, and convert technology into measurable business growth.",
+    microProof: "15 Depts • 61+ Services • Pure Engineering Execution",
+    cta: "Get a Business Technology Diagnostic",
+    link: "/contact",
+    video: "https://cdn.pixabay.com/video/2023/10/20/185859-876772714_large.mp4" 
   },
   {
     id: 2,
-    tag: "CLOUD & PLATFORM ENGINEERING",
-    title: "Foundations Built for Global Scale.",
-    description: "We design and engineer resilient digital foundations that support critical workloads and seamless growth performance.",
-    cta: "See Cloud Services",
-    link: "/department/cloud-engineering",
-    video: "https://cdn.pixabay.com/video/2020/09/11/49603-458315181_large.mp4" // Cloud theme
+    tag: "CYBERSECURITY & RISK",
+    title: "Secure The Critical Systems",
+    titleGradient: "Your Business Cannot Break.",
+    description: "Kangqore actively strengthens critical applications, enterprise cloud environments, core infrastructure, and digital workflows. We deploy security-first engineering designed to systematically reduce operational vulnerabilities and protect business continuity.",
+    microProof: "Cloud Risk • Business Continuity",
+    cta: "Get Security Snapshot",
+    link: "/contact",
+    video: "https://cdn.pixabay.com/video/2020/09/11/49603-458315181_large.mp4" 
   },
   {
     id: 3,
-    tag: "INTELLIGENT OPERATIONS",
-    title: "Operations That Run Smarter.",
-    description: "We streamline processes and operations to reduce friction, improve efficiency, and accelerate enterprise execution.",
-    cta: "Discover Automation",
-    link: "/department/automation",
-    video: "https://cdn.pixabay.com/video/2023/05/22/164016-829398835_large.mp4" // Automation/Tech theme
+    tag: "LEGACY MODERNIZATION",
+    title: "Modernize Legacy Systems.",
+    titleGradient: "Avoid The Rewrite Gamble.",
+    description: "We partner with technology leaders to systematically reduce compounding technical debt and securely migrate outdated monolithic systems. Build highly resilient, cloud-ready architecture through tightly controlled and risk-managed engineering execution.",
+    microProof: "Cloud Migration • Risk-Managed Sprints",
+    cta: "Request Legacy Risk Audit",
+    link: "/department/cloud-engineering",
+    video: "https://cdn.pixabay.com/video/2023/05/22/164016-829398835_large.mp4" 
+  },
+  {
+    id: 4,
+    tag: "AGENTIC AI & AUTOMATION",
+    title: "Automate Manual Workflows.",
+    titleGradient: "Keep Control Of Decisions.",
+    description: "We custom-design agentic AI workflows, advanced RAG systems, MLOps foundations, and intelligent automation pipelines that drastically reduce repetitive work. Maintain strict human oversight wherever enterprise accuracy, compliance, and judgment matter most.",
+    microProof: "Enterprise-Ready AI • Human-in-the-Loop Architecture",
+    cta: "Get AI Workflow Assessment",
+    link: "/department/ai-cognitive",
+    video: "https://cdn.pixabay.com/video/2020/09/11/49603-458315181_large.mp4" 
+  },
+  {
+    id: 5,
+    tag: "CONVERSION INTELLIGENCE",
+    title: "Your Website Gets Traffic.",
+    titleGradient: "But Is It Generating Pipeline?",
+    description: "We combine technical SEO, advanced GEO, LLMO, precision CRO, deep funnel analytics, and AI-led lead qualification frameworks. Systematically convert your digital visibility into high-value, sales-ready opportunities for your enterprise pipeline.",
+    microProof: "Predictive Lead Scoring • KVIS Visibility Systems",
+    cta: "Find Conversion Leaks",
+    link: "/department/digital-marketing",
+    video: "https://cdn.pixabay.com/video/2023/10/20/185859-876772714_large.mp4"
   }
 ];
 
@@ -142,13 +174,213 @@ const newsItems = [
 // ============================================================================
 // SECTION 1: HERO CAROUSEL
 // ============================================================================
+// ============================================================================
+// ============================================================================
+// HERO BOTTOM STRIP — Stats / Featured / Podcast
+// ============================================================================
+
+const AnimatedNumber = ({ value, duration = 2000 }) => {
+  const [count, setCount] = useState(0);
+  const numericValue = parseInt(value.replace(/[^0-9]/g, ''));
+  const suffix = value.replace(/[0-9]/g, '');
+
+  useEffect(() => {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      setCount(Math.floor(progress * numericValue));
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }, [numericValue, duration]);
+
+  return <>{count}{suffix}</>;
+};
+
+const heroStats = [
+  { value: '15', label: 'Departments' },
+  { value: '61+', label: 'Services' },
+  { value: '200+', label: 'Projects Delivered' },
+  { value: '98%', label: 'Client Satisfaction' }
+];
+
+import { usePodcast } from '../context/PodcastContext';
+
+const HeroBottomStrip = () => {
+  const [sectionRef, isVisible] = useScrollAnimation({ once: true, threshold: 0.1 });
+  const { isPlaying, togglePlay } = usePodcast();
+
+  return (
+    <div 
+      ref={sectionRef}
+      className="relative z-20 w-full bg-black/40 backdrop-blur-xl border-t border-white/[0.08] shadow-2xl overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-0 items-center">
+        
+        {/* Left Zone — Company Stats */}
+        <div className="py-8 lg:py-12 lg:pr-12 grid grid-cols-2 gap-x-8 gap-y-6 lg:border-r lg:border-white/[0.06]">
+          {heroStats.map((stat, i) => (
+            <div key={i} className="group cursor-default">
+              <div className="text-2xl sm:text-3xl font-black text-white mb-1 group-hover:text-cyan-400 transition-colors duration-300 font-display">
+                {isVisible ? <AnimatedNumber value={stat.value} /> : '0'}
+              </div>
+              <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 group-hover:text-white/60 transition-colors">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Center Zone — Featured Image (Hidden on Tablet) */}
+        <div className="hidden lg:flex items-center justify-center px-10 py-8">
+          <div className="relative w-full max-w-[280px] aspect-[16/10] group cursor-pointer transition-all duration-500">
+            <img
+              src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80"
+              alt="The Age of Agentic AI"
+              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/40 to-transparent">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400 mb-0.5">Featured</p>
+              <p className="text-white text-xs font-bold leading-tight group-hover:text-cyan-50 transition-colors">The Age of Agentic AI</p>
+            </div>
+            
+            {/* Play overlay subtle */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center ring-1 ring-white/20">
+                <Play className="w-4 h-4 text-white fill-current ml-0.5" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Zone — Podcast Highlight */}
+        <div className="py-8 lg:py-12 lg:pl-12 lg:border-l lg:border-white/[0.06] flex items-center gap-6 xl:gap-8">
+          {/* Left Part — Info & Waveform */}
+          <div className="flex-1">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-cyan-400 mb-2">PODCAST</p>
+            <h3 className="text-white font-bold text-base leading-tight mb-1">
+              The eQORE Show: Agentic Consent
+            </h3>
+            <p className="text-white/40 text-xs font-semibold mb-4">Episode 1 — Now Streaming</p>
+            
+            {/* Waveform with centered White Play Button */}
+            <div 
+              onClick={togglePlay}
+              className="relative flex items-center justify-center h-12 w-full max-w-[240px] group cursor-pointer"
+            >
+              <div className="flex items-center gap-1 h-6 w-full">
+                {[0.4, 0.7, 0.5, 0.9, 0.6, 0.8, 0.4, 0.7, 0.5, 0.3, 0.6, 0.8, 0.4, 0.7, 0.5, 0.9, 0.6, 0.8].map((h, i) => (
+                  <div 
+                    key={i} 
+                    className={`flex-1 rounded-full transition-all duration-500 ${
+                      isPlaying ? 'bg-cyan-400 animate-waveform-bounce' : 'bg-cyan-400/30 group-hover:bg-cyan-400/50'
+                    }`}
+                    style={{ 
+                      height: `${h * 100}%`,
+                      animationDelay: `${i * 0.05}s`
+                    }} 
+                  />
+                ))}
+              </div>
+              {/* White Play Button Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300 ring-4 ring-black/20">
+                  {isPlaying ? (
+                    <Pause className="w-4 h-4 text-black fill-current" />
+                  ) : (
+                    <Play className="w-4 h-4 text-black fill-current ml-0.5" />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <button 
+              onClick={() => document.getElementById('eqore-show')?.scrollIntoView({ behavior: 'smooth' })}
+              className="inline-flex text-[11px] font-black uppercase tracking-[0.2em] text-white hover:text-cyan-400 transition-colors items-center gap-2 mt-5"
+            >
+              Listen Now <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Right Part — Cover Image */}
+          <div className="w-28 h-28 sm:w-32 sm:h-32 xl:w-40 xl:h-40 flex-shrink-0 group cursor-pointer">
+            <img 
+              src="/images/Ep-01.png" 
+              alt="The eQORE Show" 
+              className="w-full h-full object-contain transition-transform duration-700"
+            />
+          </div>
+        </div>
+
+      </div>
+      <style>{`
+        @keyframes waveform-bounce {
+          0%, 100% { transform: scaleY(1); }
+          50% { transform: scaleY(2); }
+        }
+        .animate-waveform-bounce {
+          animation: waveform-bounce 0.8s ease-in-out infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const HUDText = ({ text, delay = 0, isCyan = false }) => {
+  const [displayText, setDisplayText] = useState('');
+  
+  useEffect(() => {
+    setDisplayText('');
+    let i = 0;
+    
+    const startTimer = setTimeout(() => {
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          setDisplayText(prev => text.slice(0, prev.length + 1));
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, 30);
+      return () => clearInterval(timer);
+    }, delay);
+    
+    return () => clearTimeout(startTimer);
+  }, [text, delay]);
+
+  return (
+    <span className="relative inline-flex items-center">
+      {displayText}
+      {displayText.length < text.length && (
+        <span className={`inline-block w-[0.4em] h-[1em] ml-[0.1em] ${isCyan ? 'bg-cyan-400' : 'bg-white/70'} animate-[pulse_0.1s_ease-in-out_infinite]`} />
+      )}
+    </span>
+  );
+};
+
 const HeroCarousel = () => {
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [toggleEffect, setToggleEffect] = useState(false);
 
-  // Silent auto-rotation — no visible controls needed
+  const togglePlayPause = () => {
+    setIsPaused(prev => !prev);
+    setToggleEffect(true);
+    setTimeout(() => setToggleEffect(false), 800);
+  };
+
+  const handleBackgroundClick = (e) => {
+    if (e.target.closest('button') || e.target.closest('a')) return;
+    togglePlayPause();
+  };
+
   useEffect(() => {
+    if (isPaused) return;
     const timer = setInterval(() => {
       if (!isAnimating) {
         setIsAnimating(true);
@@ -157,123 +389,106 @@ const HeroCarousel = () => {
       }
     }, 7000);
     return () => clearInterval(timer);
-  }, [currentSlide, isAnimating]);
+  }, [currentSlide, isAnimating, isPaused]);
 
   const slide = heroSlides[currentSlide];
 
   return (
     <>
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden cursor-pointer" onClick={handleBackgroundClick}>
       {/* Full-bleed video background */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4" type="video/mp4" />
-        </video>
-        {/* Gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-      </div>
-
-      {/* ── Hero Content: Full-immersion overlay with glass cards on right ── */}
-      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-36 sm:pt-40 lg:pt-52 pb-64 sm:pb-72 lg:pb-80">
-        {/* Glass cards — absolute positioned right side, lg+ only */}
-        <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-12 w-[210px] xl:w-[230px] z-10">
-          <Suspense fallback={<div className="aspect-[5/4] rounded-[1.75rem] bg-white dark:bg-black/5" aria-hidden="true" />}>
-            <HeroGlassCards />
-          </Suspense>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4" type="video/mp4" />
+          </video>
+          {/* Gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
         </div>
 
-        <div className="max-w-3xl space-y-6">
-
-          
-          {/* Headline — large, bold, cinematic */}
-          <h1 
-            key={`title-${currentSlide}`}
-            className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.05] tracking-tight text-white animate-fade-in"
-          >
-            {slide.id === 3 ? t('hero.title') : t(`hero.slide${slide.id}.title`)}
-          </h1>
-          
-          {/* Subtitle — single clean line */}
-          <p 
-            key={`desc-${currentSlide}`}
-            className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-2xl animate-fade-in"
-          >
-            {slide.id === 3 ? t('hero.description') : t(`hero.slide${slide.id}.description`)}
-          </p>
-          
-          {/* CTA — futuristic dual action */}
-          <div className="pt-4 flex flex-col sm:flex-row items-center gap-5 animate-fade-in">
-            {/* ── Primary CTA: "Know More" — luminous pill ── */}
-            <Link
-              to={slide.link}
-              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-9 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97]"
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255,255,255,0.25)',
-                boxShadow: '0 0 20px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.15)',
-              }}
-            >
-              {/* Hover glow sweep */}
-              <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{
-                background: 'radial-gradient(ellipse 120% 80% at 50% 120%, rgba(255,255,255,0.15) 0%, transparent 70%)',
-              }} />
-              
-              <span className="relative z-10 text-white font-semibold tracking-wide text-[15px]">
-                {slide.id === 3 ? t('hero.cta') : t(`hero.slide${slide.id}.cta`)}
-              </span>
-              
-              {/* Arrow with animated slide */}
-              <span className="relative z-10 w-8 h-8 rounded-full bg-white dark:bg-gray-900 dark:border-gray-800/10 border border-white/20 flex items-center justify-center group-hover:bg-white dark:bg-gray-900 dark:border-gray-800 group-hover:border-white transition-all duration-500">
-                <ArrowRight className="w-4 h-4 text-gray-900 dark:text-white group-hover:translate-x-0.5 transition-all duration-500" />
-              </span>
-              
-              {/* Bottom shimmer line */}
-              <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            </Link>
-
-            {/* ── Secondary CTA: "Ask eQORE AI" — AI-alive glass pill ── */}
-            <button 
-              onClick={() => document.getElementById('eqore-ai-concierge')?.scrollIntoView({ behavior: 'smooth' })}
-              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97]"
-              style={{
-                background: 'linear-gradient(135deg, rgba(37,100,234,0.15) 0%, rgba(74,182,212,0.1) 100%)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                border: '1px solid rgba(74,182,212,0.3)',
-                boxShadow: '0 0 24px rgba(37,100,234,0.12), inset 0 1px 0 rgba(255,255,255,0.08)',
-              }}
-            >
-              {/* Animated gradient border overlay on hover */}
-              <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{
-                background: 'radial-gradient(ellipse 120% 80% at 50% 120%, rgba(74,182,212,0.2) 0%, transparent 70%)',
-              }} />
-
-              <span className="relative z-10 text-white/90 font-semibold tracking-wide text-[15px] group-hover:text-white transition-colors duration-300">
-                Ask eQORE AI
-              </span>
-
-              {/* AI sparkle icon with pulse ring */}
-              <span className="relative z-10 w-9 h-9 flex items-center justify-center">
-                {/* Pulse ring */}
-                <span className="absolute inset-0 rounded-full border border-cyan-400/40 animate-[heroPulseRing_2.5s_ease-out_infinite]" />
-                {/* Icon container */}
-                <span className="relative w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/30 to-cyan-400/20 border border-white/15 flex items-center justify-center group-hover:from-blue-500/50 group-hover:to-cyan-400/40 transition-all duration-500">
-                  <Sparkles className="w-4 h-4 text-cyan-300 group-hover:text-white transition-colors duration-300" />
-                </span>
-              </span>
-            </button>
+        {/* ── Hero Content ── */}
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-20 sm:pt-24 lg:pt-28 pb-16 sm:pb-20 lg:pb-24">
+          {/* Glass cards — absolute positioned right side, lg+ only */}
+          <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-12 w-[245px] xl:w-[265px] z-10">
+            <Suspense fallback={<div className="aspect-[5/4] rounded-[1.75rem] bg-white dark:bg-black/5" aria-hidden="true" />}>
+              <HeroGlassCards />
+            </Suspense>
           </div>
 
-          {/* Keyframe injection for hero button animations */}
+          <div className="max-w-[850px] space-y-6">
+            
+            {slide.microProof && (
+              <div key={`micro-${currentSlide}`} className="inline-flex items-center gap-3 px-4 py-2 rounded-sm bg-[#0a192f]/60 border-l-2 border-cyan-400 border-r border-t border-b border-white/10 backdrop-blur-md mb-4 shadow-[0_0_15px_rgba(34,211,238,0.1)] relative overflow-hidden">
+                <div className="absolute inset-0 w-full h-[1px] bg-cyan-400/20 blur-[1px] animate-[scan_2s_ease-in-out_infinite]" />
+                <span className="text-[10px] sm:text-[11px] font-bold text-cyan-400 uppercase tracking-widest font-mono">
+                  <HUDText text={slide.tag} isCyan={true} />
+                </span>
+                <span className="w-1 h-1 rounded-sm bg-cyan-400/50 animate-[pulse_0.5s_infinite]"></span>
+                <span className="text-[10px] sm:text-[11px] text-cyan-100/70 font-mono uppercase tracking-wider line-clamp-1">
+                  <HUDText text={slide.microProof} delay={slide.tag.length * 30 + 100} />
+                </span>
+              </div>
+            )}
+
+            <h1 
+              key={`title-${currentSlide}`}
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold leading-[1.05] tracking-tight text-white animate-fade-in"
+            >
+              {slide.title}
+              {slide.titleGradient && (
+                <>
+                  <br />
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">{slide.titleGradient}</span>
+                </>
+              )}
+            </h1>
+            
+            <p 
+              key={`desc-${currentSlide}`}
+              className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-3xl animate-fade-in font-medium line-clamp-3 py-6 sm:py-8"
+            >
+              {slide.description}
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center gap-5 animate-fade-in">
+              <Link
+                to={slide.link}
+                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/70 backdrop-blur-xl text-gray-900 shadow-xl"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
+                <span className="relative z-10 text-gray-900 font-bold tracking-wide text-[13px]">
+                  {slide.cta}
+                </span>
+                <div className="relative z-10 w-7 h-7 rounded-full bg-gray-900 flex items-center justify-center transition-all duration-500 group-hover:bg-brand-blue shadow-md">
+                  <ArrowRight className="w-4 h-4 text-white transition-all duration-500 group-hover:translate-x-0.5" />
+                </div>
+                <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-cyan-400/50 blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </Link>
+
+              <button 
+                onClick={() => document.getElementById('eqore-ai-concierge')?.scrollIntoView({ behavior: 'smooth' })}
+                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-black/40 backdrop-blur-xl shadow-xl"
+              >
+                <span className="relative z-10 text-white/90 font-bold tracking-wide text-[13px] group-hover:text-white transition-colors duration-300">
+                  Ask eQORE AI<sup className="text-[9px] ml-0.5 opacity-70">™</sup>
+                </span>
+                <div className="relative z-10 w-7 h-7 flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-full border border-cyan-400/40 animate-[heroPulseRing_2.5s_ease-out_infinite]" />
+                  <div className="relative w-6 h-6 rounded-full bg-brand-gradient flex items-center justify-center shadow-[0_0_10px_rgba(34,211,238,0.4)]">
+                    <Sparkles className="w-3 h-3 text-white" />
+                  </div>
+                </div>
+              </button>
+            </div>
+
           <style>{`
             @keyframes heroPulseRing {
               0% { transform: scale(1); opacity: 0.6; }
@@ -283,32 +498,71 @@ const HeroCarousel = () => {
           `}</style>
         </div>
 
-        {/* Minimal dot indicators — bottom left */}
-        <div className="flex items-center gap-2 mt-16">
-          {heroSlides.map((_, index) => (
+        {/* Minimal dot indicators & Controls */}
+        <div className="flex items-center gap-5 mt-16">
+          <div className="flex items-center gap-2">
+            {heroSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  if (!isAnimating) {
+                    setIsAnimating(true);
+                    setCurrentSlide(index);
+                    setTimeout(() => setIsAnimating(false), 800);
+                  }
+                }}
+                className={`h-1 rounded-full transition-all duration-500 ${
+                  index === currentSlide
+                    ? 'w-10 bg-white shadow-[0_0_10px_rgba(255,255,255,0.4)]'
+                    : 'w-3 bg-white/30 hover:bg-white/50'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+          
+          <div className="relative flex items-center justify-center w-8 h-8">
             <button
-              key={index}
-              onClick={() => {
-                if (!isAnimating) {
-                  setIsAnimating(true);
-                  setCurrentSlide(index);
-                  setTimeout(() => setIsAnimating(false), 800);
-                }
-              }}
-              className={`h-1 rounded-full transition-all duration-500 ${
-                index === currentSlide
-                  ? 'w-10 bg-white dark:bg-gray-900 dark:border-gray-800 shadow-[0_0_10px_rgba(255,255,255,0.4)]'
-                  : 'w-3 bg-white dark:bg-gray-900 dark:border-gray-800/30 hover:bg-white dark:bg-gray-900 dark:border-gray-800/50'
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
+              onClick={togglePlayPause}
+              className={`absolute inset-0 z-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/10 transition-colors shadow-lg group ${toggleEffect ? 'animate-pond-button pointer-events-none' : ''}`}
+              aria-label={isPaused ? "Play slides" : "Pause slides"}
+            >
+              {isPaused ? <Play className="w-3.5 h-3.5 text-white/70 group-hover:text-white ml-0.5 transition-colors" /> : <Pause className="w-3.5 h-3.5 text-white/70 group-hover:text-white transition-colors" />}
+            </button>
+            {toggleEffect && (
+              <div className="absolute inset-0 rounded-full border border-white/60 pointer-events-none animate-pond-ring" />
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="absolute bottom-[55%] sm:bottom-[52%] left-1/2 -translate-x-1/2 flex flex-col items-center text-white/50 hover:text-white/80 transition-colors cursor-pointer z-10">
-        <ChevronDown className="w-5 h-5 animate-bounce" />
-      </div>
+      {/* ── Hero Bottom Strip: Events | Featured | Highlights ── */}
+      <HeroBottomStrip />
+
+      <style>{`
+        @keyframes scroll-line {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(100%); }
+        }
+        .animate-scroll-line {
+          animation: scroll-line 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        @keyframes pond-button {
+          0% { transform: scale(1); opacity: 1; }
+          20% { transform: scale(2); opacity: 0.2; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes pond-ring {
+          0% { transform: scale(1); opacity: 0.8; border-width: 2px; }
+          100% { transform: scale(4); opacity: 0; border-width: 0px; }
+        }
+        .animate-pond-button {
+          animation: pond-button 0.8s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+        }
+        .animate-pond-ring {
+          animation: pond-ring 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+      `}</style>
     </section>
     </>
   );
@@ -509,7 +763,7 @@ const InsightsSubscribeBlock = () => {
 
 const TrustIntelligenceLayer = () => {
   return (
-    <section className="relative z-20 -mt-32 bg-white dark:bg-black py-24 md:-mt-40 md:pb-32 transition-colors duration-500">
+    <section id="trust-intelligence" className="relative z-20 bg-white dark:bg-black py-24 md:pb-32 transition-colors duration-500">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
         
         {/* The McKinsey Hero Grid Layout (Applied to Intelligence Section) */}
@@ -582,7 +836,10 @@ const TrustLogoStrip = () => {
     <section className="relative w-full bg-white dark:bg-black py-12 sm:py-16 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-10">
         <p className="text-sm sm:text-base font-bold text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] text-center">
-          Trusted by leading Indian enterprises and Fortune <span className="text-gray-900 dark:text-white font-extrabold">500</span> organizations worldwide.
+          Trusted by <span className="text-gray-900 dark:text-white font-extrabold">150+</span> leading Indian enterprises and <span className="text-gray-900 dark:text-white font-extrabold">50+</span> Fortune <span className="text-gray-900 dark:text-white font-extrabold">500</span> organizations worldwide.
+        </p>
+        <p className="text-[7px] sm:text-[8px] mt-2 font-medium text-gray-400 dark:text-gray-500 uppercase tracking-[0.1em] text-center">
+          Our speed in learning and executing is unmatched, earning the trust of hundreds of founders.
         </p>
       </div>
       {/* Marquee Container */}
@@ -591,7 +848,7 @@ const TrustLogoStrip = () => {
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white dark:from-black to-transparent z-10" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white dark:from-black to-transparent z-10" />
         {/* Scrolling track */}
-        <div className="flex animate-marquee-horizontal items-start pb-8 w-max">
+        <div className="flex animate-marquee-horizontal items-start pt-6 pb-8 w-max">
           {[...trustLogos, ...trustLogos].map((logo, i) => {
             return (
               <div
@@ -981,138 +1238,6 @@ const ValueProposition = () => {
 
 
 // ... (other imports)
-
-const ExploreServices = () => {
-  const [titleRef, titleVisible] = useScrollAnimation({ once: true, threshold: 0.3 });
-  const { t } = useTranslation();
-  const originalServices = departmentData;
-  const services = [...originalServices, ...originalServices];
-  const containerRef = useRef(null);
-  const animationRef = useRef(null);
-  const [isHovered, setIsHovered] = useState(false);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const scrollStep = () => {
-      if (!isHovered) {
-        container.scrollLeft += 1;
-        // If we scrolled past the first set of cards, reset to 0 seamlessly
-        if (container.scrollLeft >= container.scrollWidth / 2) {
-          container.scrollLeft = 0;
-        }
-      }
-      animationRef.current = requestAnimationFrame(scrollStep);
-    };
-
-    animationRef.current = requestAnimationFrame(scrollStep);
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [isHovered]);
-
-  return (
-    <>
-
-
-    <section className="pt-0 pb-32 bg-white dark:bg-black overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div 
-          ref={titleRef}
-          className={`mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6 transition-all duration-1000 ${
-            titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}
-        >
-          <div>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-gray-400"></div>
-              <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
-                {t('home.services.label')}
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl">
-              {t('home.services.heading_prefix')} <span className="bg-brand-gradient bg-clip-text text-transparent">{t('home.services.heading_highlight')}</span>
-              {t('home.services.heading_suffix')}
-            </h2>
-          </div>
-
-          <Link to="/services" className="hidden md:flex items-center gap-2 text-brand-blue font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all mb-2">
-            Explore Our Services
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </div>
-
-        <div 
-          className="relative group/carousel overflow-hidden mt-8"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <div 
-            ref={containerRef}
-            className="flex items-start gap-6 pb-12 pt-4 px-6 overflow-x-auto hide-scrollbar"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {services.map((service, index) => {
-              const uniqueKey = `${service.slug}-${index}`;
-              return (
-                <div key={uniqueKey} className="flex-none w-[300px] md:w-[350px]">
-                  <Link
-                    to={`/department/${service.slug}`}
-                    className="group block h-[400px] p-8 bg-brand-gradient rounded-[32px] shadow-lg transition-all duration-300 relative overflow-hidden hover:shadow-2xl hover:-translate-y-2 border-0"
-                  >
-                    {/* Hover Overlays */}
-                    {service.videoBackground ? (
-                      <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-110 group-hover:scale-100 z-0"
-                      >
-                        <source src={service.videoBackground} type="video/mp4" />
-                      </video>
-                    ) : service.defaultCapabilityImage ? (
-                      <img 
-                        src={service.defaultCapabilityImage} 
-                        alt={service.name}
-                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-110 group-hover:scale-100 z-0"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
-                    )}
-
-                    {/* Black Overlay on Hover */}
-                    <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
-                    
-                    <div className="relative z-20 h-full flex flex-col">
-                      <h3 className="text-2xl font-bold mb-4 leading-tight text-white">
-                        {t(`departments.${service.slug}`, service.name)}
-                      </h3>
-                      
-                      <p className="text-sm leading-relaxed mb-8 flex-1 text-white/90">
-                        {t(`departments_desc.${service.slug}`, service.description)}
-                      </p>
-                      
-                      <div className="flex items-center gap-2 font-semibold text-white transform transition-all duration-300 group-hover:translate-x-2">
-                        {t('home.services.learn_more')}
-                        <ArrowRight className="w-5 h-5" />
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </section>
-    </>
-  );
-};
 
 // ============================================================================
 // SECTION 4: INDUSTRIES WE SERVE
@@ -1530,11 +1655,11 @@ const CaseStudiesSection = () => {
           </div>
           <Link 
             to="/case-studies" 
-            className="group flex items-center gap-2 text-lg font-medium text-white hover:text-cyan-400 transition-colors"
+            className="group flex items-center gap-3 text-[15px] font-bold text-white hover:text-cyan-400 transition-colors uppercase tracking-widest"
           >
             {t('home.case_studies.see_all')}
-            <span className="w-8 h-8 rounded-full bg-white dark:bg-black/10 flex items-center justify-center group-hover:bg-brand-blue group-hover:text-white transition-colors">
-              <ArrowRight className="w-4 h-4" />
+            <span className="w-10 h-10 rounded-full bg-white flex items-center justify-center group-hover:bg-brand-blue transition-all duration-300 shadow-lg">
+              <ArrowRight className="w-5 h-5 text-gray-900 group-hover:text-white transition-all duration-300" />
             </span>
           </Link>
         </div>
@@ -1949,73 +2074,120 @@ const FeaturedInsightsSection = () => {
 };
 
 // ============================================================================
-// SECTION 6.5: COMPANY HANDBOOK CTA
+// SECTION 9: EQORE COMMAND CENTER (Automation)
 // ============================================================================
-const CompanyHandbookSection = () => {
-  const [ref, visible] = useScrollAnimation({ once: true, threshold: 0.1 });
+const EqoreTypingSection = ({ bookingRef }) => {
+  const [inputValue, setInputValue] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [feedback, setFeedback] = useState("Command the Intelligence Core...");
+
+  const handleAutomate = async (e) => {
+    e.preventDefault();
+    if (!inputValue.trim() || isProcessing) return;
+
+    setIsProcessing(true);
+    setFeedback("Processing with NLP engine...");
+
+    try {
+      // Advanced NLP Parser — async call to chrono-node backend
+      const intent = await parseSchedulingRequestAsync(inputValue);
+
+      if (intent.understood) {
+        let finalTimeStr = intent.timeStr;
+        if (!finalTimeStr && intent.timeRange) {
+          finalTimeStr = timeRangeToTimeStr(intent.timeRange);
+        }
+
+        if (finalTimeStr && intent.targetDate) {
+          if (bookingRef.current) {
+            bookingRef.current.selectDateTime(intent.targetDate, finalTimeStr);
+            setFeedback(intent.summary || `Automation engaged: Setting consultation for ${format(intent.targetDate, 'EEEE')} at ${finalTimeStr}.`);
+            
+            // Scroll to widget to show selection
+            const widget = document.getElementById('scheduling-widget');
+            if (widget) widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        } else {
+          // Understood partially (e.g. "next week" with no time)
+          setFeedback(intent.summary || "Please specify a time, e.g., 'Friday at 2pm'.");
+          if (intent.targetDate && bookingRef.current) {
+             // Just select the date
+             bookingRef.current.selectDateTime(intent.targetDate, "09:00 AM"); // placeholder time
+             const widget = document.getElementById('scheduling-widget');
+             if (widget) widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      } else {
+        setFeedback("Could not parse schedule. Try: 'Friday at 10:00 AM' or 'tomorrow afternoon'.");
+      }
+    } catch (err) {
+      setFeedback("NLP engine unavailable. Try: 'Friday at 10:00 AM' or 'tomorrow afternoon'.");
+    } finally {
+      setIsProcessing(false);
+      setInputValue('');
+    }
+  };
 
   return (
-    <section className="py-32 bg-white dark:bg-black overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div 
-          ref={ref}
-          className={`relative rounded-[3rem] overflow-hidden bg-[#090b14] transition-all duration-1000 ${
-            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}
-        >
-          {/* Background Gradient & Effects */}
-          <div className="absolute inset-0">
-            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#2564ea]/20 to-transparent"></div>
-            <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-[#4ab6d4]/10 rounded-full blur-[100px]"></div>
+    <section className="pb-32 bg-white dark:bg-black">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row items-center gap-10">
+          {/* eQORE Avatar with Circular Pulse Ring */}
+          <div className="relative shrink-0">
+            <div className="absolute inset-0 rounded-full border border-cyan-400/40 animate-[heroPulseRing_3s_ease-out_infinite]" />
+            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-white/20 dark:border-white/10 shadow-2xl bg-black relative z-10 transition-transform duration-500 hover:scale-110">
+              <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
+            </div>
+            {/* Status Indicator */}
+            <div className="absolute bottom-1 right-1 w-5 h-5 bg-cyan-400 border-2 border-white dark:border-[#0a0a0c] rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)] z-20"></div>
           </div>
 
-          <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center p-12 lg:p-20">
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-gray-900 dark:border-gray-800/10 border border-white/20 text-xs font-bold uppercase tracking-wider text-[#4ab6d4]">
-                <BookOpen className="w-4 h-4" /> Company Profile
+          {/* Premium Minimal Input Content */}
+          <div className="flex-1 w-full relative">
+            {/* Custom Marquee Placeholder Overlay */}
+            {!inputValue && (
+              <div className="absolute inset-0 pointer-events-none flex items-center overflow-hidden whitespace-nowrap z-0">
+                <style>
+                  {`
+                    @keyframes placeholder-scroll {
+                      0% { transform: translateX(0); }
+                      100% { transform: translateX(-50%); }
+                    }
+                    .animate-placeholder-scroll {
+                      animation: placeholder-scroll 25s linear infinite;
+                    }
+                  `}
+                </style>
+                <div className="flex animate-placeholder-scroll">
+                  <span className="text-2xl md:text-4xl font-light tracking-tight text-gray-300 pr-20">
+                    Ask eQORE to book your 30-minute Discovery Call at your preferred date and time.
+                  </span>
+                  <span className="text-2xl md:text-4xl font-light tracking-tight text-gray-300 pr-20">
+                    Ask eQORE to book your 30-minute Discovery Call at your preferred date and time.
+                  </span>
+                </div>
               </div>
-              
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
-                Discover The <br />
-                <span className="text-transparent bg-clip-text bg-brand-gradient">Kangqore Standard</span>
-              </h2>
-              
-              <p className="text-lg lg:text-xl text-gray-400 leading-relaxed max-w-lg">
-                Explore our full capabilities, engagement models, and the engineering philosophy that drives outcomes for global enterprises.
-              </p>
+            )}
 
-              <div className="pt-4 flex flex-col sm:flex-row gap-4">
-                <Link 
-                  to="/company-handbook"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 dark:text-white font-bold rounded-xl hover:bg-brand-gradient hover:text-white transition-all transform hover:scale-105"
-                >
-                  View Company Handbook
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="relative hidden lg:block">
-              {/* Abstract document representation */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#4ab6d4]/20 to-[#2564ea]/20 rounded-[2rem] transform rotate-6 scale-105 blur-lg"></div>
-              <div className="relative bg-white dark:bg-gray-900 dark:border-gray-800/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-10 transform -rotate-3 hover:rotate-0 transition-all duration-700 h-[400px] flex flex-col">
-                <div className="w-16 h-16 bg-brand-gradient rounded-2xl flex items-center justify-center mb-8">
-                  <ShieldCheck className="w-8 h-8 text-white" />
-                </div>
-                <div className="space-y-4">
-                  <div className="h-4 bg-white dark:bg-black/20 rounded w-3/4"></div>
-                  <div className="h-4 bg-white dark:bg-black/10 rounded w-full"></div>
-                  <div className="h-4 bg-white dark:bg-black/10 rounded w-5/6"></div>
-                </div>
-                <div className="mt-auto pt-8 border-t border-white/10 flex items-center justify-between">
-                  <div className="flex gap-2">
-                    <div className="w-8 h-8 bg-blue-500/30 rounded-full"></div>
-                    <div className="w-8 h-8 bg-cyan-500/30 rounded-full -ml-4"></div>
-                  </div>
-                  <div className="text-white/50 text-sm">Interactive Format</div>
-                </div>
-              </div>
-            </div>
+            <form onSubmit={handleAutomate} className="relative group z-10">
+              <input 
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder=""
+                className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 px-0 py-5 text-2xl md:text-4xl font-light tracking-tight text-gray-900 dark:text-white placeholder-gray-300 focus:outline-none focus:border-cyan-400 transition-all duration-500"
+              />
+              <button 
+                type="submit"
+                disabled={isProcessing || !inputValue.trim()}
+                className="absolute right-0 top-1/2 -translate-y-1/2 p-3 text-cyan-400 hover:text-brand-blue hover:scale-125 active:scale-95 transition-all duration-300 disabled:opacity-0"
+              >
+                {isProcessing ? <RefreshCw className="w-7 h-7 animate-spin" /> : <Send className="w-7 h-7" />}
+              </button>
+              
+              {/* Animated underline glow on hover/focus */}
+              <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-cyan-400 transition-all duration-700 group-focus-within:w-full group-hover:w-full opacity-50 shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
+            </form>
           </div>
         </div>
       </div>
@@ -2023,9 +2195,9 @@ const CompanyHandbookSection = () => {
   );
 };
 
-// ============================================================================
-// SECTION 8: CAREERS CTA
-// ============================================================================
+
+
+
 const CareersCTASection = () => {
   const { t } = useTranslation();
   // Team members data - 4 Women, 3 Men (Global Diverse)
@@ -2053,11 +2225,6 @@ const CareersCTASection = () => {
           
           {/* Left Column: Content */}
           <div className="text-left space-y-6 md:space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-gray-900 dark:border-gray-800/20 backdrop-blur-md border border-white/40 text-xs sm:text-sm font-bold uppercase tracking-wider text-white shadow-lg">
-              <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-cyan-300 animate-pulse shadow-[0_0_8px_rgba(103,232,249,0.8)]"></span>
-              {t('home.careers.badge')}
-            </div>
-            
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
               {t('home.careers.heading_prefix')} <br className="hidden sm:block" /><span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-cyan-300 animate-shimmer bg-[length:200%_auto] font-extrabold drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">{t('home.careers.heading_highlight')}</span> {t('home.careers.heading_suffix')}
             </h2>
@@ -2066,35 +2233,79 @@ const CareersCTASection = () => {
               {t('home.careers.description')}
             </p>
 
-            <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-4">
-                <Link 
-                to="/careers" 
-                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white dark:bg-gray-900 dark:border-gray-800 text-blue-900 font-bold rounded-xl hover:bg-brand-gradient hover:text-white transition-all transform hover:scale-105 shadow-[0_10px_30px_rgba(0,0,0,0.2)] w-full sm:w-auto"
+            <div className="flex flex-col sm:flex-row items-center gap-5 pt-4">
+              {/* ── Primary CTA: "Explore Careers" — Hero-style luminous pill ── */}
+              <Link
+                to="/careers"
+                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-9 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97]"
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  boxShadow: '0 0 20px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.15)',
+                }}
               >
-                {t('home.careers.explore')}
-                <ArrowRight className="w-5 h-5" />
+                {/* Hover glow sweep */}
+                <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{
+                  background: 'radial-gradient(ellipse 120% 80% at 50% 120%, rgba(255,255,255,0.15) 0%, transparent 70%)',
+                }} />
+                
+                <span className="relative z-10 text-white font-semibold tracking-wide text-[15px]">
+                  {t('home.careers.explore')}
+                </span>
+                
+                {/* Arrow with animated slide */}
+                <span className="relative z-10 w-8 h-8 rounded-full bg-white dark:bg-gray-900 dark:border-gray-800/10 border border-white/20 flex items-center justify-center group-hover:bg-white dark:bg-gray-900 dark:border-gray-800 group-hover:border-white transition-all duration-500">
+                  <ArrowRight className="w-4 h-4 text-gray-900 dark:text-white group-hover:translate-x-0.5 transition-all duration-500" />
+                </span>
+                
+                {/* Bottom shimmer line */}
+                <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </Link>
+
+              {/* ── Secondary CTA: "Our Culture" — Hero-style AI-alive glass pill ── */}
               <Link 
-                to="/culture" 
-                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-blue-800/30 backdrop-blur-md border border-white/20 text-white font-semibold rounded-xl hover:bg-brand-gradient hover:border-transparent transition-colors shadow-lg w-full sm:w-auto"
+                to="/culture"
+                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97]"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(37,100,234,0.15) 0%, rgba(74,182,212,0.1) 100%)',
+                  backdropFilter: 'blur(24px)',
+                  WebkitBackdropFilter: 'blur(24px)',
+                  border: '1px solid rgba(74,182,212,0.3)',
+                  boxShadow: '0 0 24px rgba(37,100,234,0.12), inset 0 1px 0 rgba(255,255,255,0.08)',
+                }}
               >
-                {t('home.careers.how_we_work')}
-                <ArrowUpRight className="w-5 h-5 opacity-70" />
+                {/* Animated gradient border overlay on hover */}
+                <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{
+                  background: 'radial-gradient(ellipse 120% 80% at 50% 120%, rgba(74,182,212,0.2) 0%, transparent 70%)',
+                }} />
+
+                <span className="relative z-10 text-white/90 font-semibold tracking-wide text-[15px] group-hover:text-white transition-colors duration-300">
+                  {t('home.careers.how_we_work')}
+                </span>
+
+                {/* Animated icon container */}
+                <span className="relative z-10 w-9 h-9 flex items-center justify-center">
+                  <span className="relative w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/30 to-cyan-400/20 border border-white/15 flex items-center justify-center group-hover:from-blue-500/50 group-hover:to-cyan-400/40 transition-all duration-500">
+                    <ArrowUpRight className="w-4 h-4 text-cyan-300 group-hover:text-white transition-colors duration-300" />
+                  </span>
+                </span>
               </Link>
             </div>
             
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 sm:gap-12 pt-8 border-t border-white/10">
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-white">18+</div>
+                <div className="text-2xl sm:text-3xl font-bold text-white">30+</div>
                 <div className="text-xs sm:text-sm text-blue-200">{t('home.careers.stats.builders')}</div>
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-white">50+</div>
+                <div className="text-2xl sm:text-3xl font-bold text-white">61</div>
                 <div className="text-xs sm:text-sm text-blue-200">{t('home.careers.stats.clients')}</div>
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-white">Fast</div>
+                <div className="text-2xl sm:text-3xl font-bold text-white">15</div>
                 <div className="text-xs sm:text-sm text-blue-200">{t('home.careers.stats.culture')}</div>
               </div>
             </div>
@@ -2155,14 +2366,19 @@ const CareersCTASection = () => {
 // ============================================================================
 // REMAINING SECTIONS IMPORTED FROM ORIGINAL COMPONENTS
 // ============================================================================
-import ScheduleConsultation from '../components/ScheduleConsultation';
+import BookingWidget from '../components/scheduling/BookingWidget';
 import ContactForm from '../components/ContactForm';
 import TransformCTA from '../components/TransformCTA';
+import EqoreShowSection from '../components/podcast/EqoreShowSection';
+
+
 
 // ============================================================================
 // MAIN HOMEPAGE COMPONENT
 // ============================================================================
 const HomePage = () => {
+  const bookingRef = useRef(null);
+
   return (
     <>
       <SEO 
@@ -2196,9 +2412,23 @@ const HomePage = () => {
       <CaseStudiesSection />
       <LeadershipSection />
       <FeaturedInsightsSection />
-      <CompanyHandbookSection />
+      <EqoreShowSection />
 
-      <ScheduleConsultation />
+      <section id="scheduling-widget" className="py-24 bg-white dark:bg-black relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            Schedule Your <span className="bg-brand-gradient bg-clip-text text-transparent">Consultation</span>
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-10">
+            Choose a time that works for you and let's discuss how we can innovate your future together.
+          </p>
+          <AvailabilityPulse eventTypeSlug="discovery-cmkfi" />
+        </div>
+        <BookingWidget ref={bookingRef} eventTypeSlug="discovery-cmkfi" />
+      </section>
+
+      <EqoreTypingSection bookingRef={bookingRef} />
+
       <CareersCTASection />
       <ContactForm />
       <TransformCTA />

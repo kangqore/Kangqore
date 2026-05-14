@@ -13,6 +13,8 @@ import {
   ThumbsDown,
   Mic,
   MicOff,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 import { useConcierge, CONCIERGE_SUGGESTED_PROMPTS } from '../../hooks/useConcierge';
 import { useVoiceInput } from '../../hooks/useVoiceInput';
@@ -33,19 +35,64 @@ function looksLikeHandoff(text) {
   return HANDOFF_KEYWORDS.some((k) => lower.includes(k));
 }
 
-function renderInlineCitations(text) {
+function cleanTextForSpeech(text) {
+  if (!text) return '';
+  return text
+    .replace(/\[CHUNK:[a-zA-Z0-9_\-]+\]/g, '') // remove citation chunks
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // replace markdown links with just the text
+    .replace(/\*\*(.*?)\*\*/g, '$1') // remove bold
+    .replace(/`(.*?)`/g, '$1') // remove inline code
+    .replace(/#/g, '') // remove heading hashes
+    .trim();
+}
+
+function renderFormattedText(text) {
   if (!text) return text;
-  const parts = text.split(/(\[CHUNK:[A-Za-z0-9_\-#]+\])/g);
-  return parts.map((part, i) => {
-    const m = part.match(/^\[CHUNK:([A-Za-z0-9_\-#]+)\]$/);
-    if (m) {
-      return (
-        <span key={i} className="mx-1 align-middle">
-          <CitationBadge chunkId={m[1]} />
-        </span>
-      );
+  
+  // Strip out citations and any preceding whitespace to fix punctuation spacing
+  const cleanText = text.replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '');
+  
+  // For non-citation parts, handle **bold** syntax
+  const boldParts = cleanText.split(/(\*\*.*?\*\*)/g);
+  return boldParts.flatMap((bPart, j) => {
+    if (bPart.startsWith('**') && bPart.endsWith('**')) {
+      const boldInner = bPart.slice(2, -2);
+      // Check if the bold text itself contains a link
+      const boldLinkParts = boldInner.split(/(\[.*?\]\(.*?\))/g);
+      return <strong key={`bold-${j}`} className="text-white font-semibold">
+        {boldLinkParts.map((lPart, k) => {
+          const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
+          if (m) {
+            return (
+              <a key={`blink-${j}-${k}`} href={m[2]} target="_blank" rel="noopener noreferrer" className="text-brand-cyan hover:underline">
+                {m[1]}
+              </a>
+            );
+          }
+          return <span key={`btext-${j}-${k}`}>{lPart}</span>;
+        })}
+      </strong>;
     }
-    return <span key={i}>{part}</span>;
+    
+    // Also parse markdown links outside of bold [text](url)
+    const linkParts = bPart.split(/(\[.*?\]\(.*?\))/g);
+    return linkParts.map((lPart, k) => {
+      const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
+      if (m) {
+        return (
+          <a
+            key={`link-${j}-${k}`}
+            href={m[2]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand-cyan hover:underline"
+          >
+            {m[1]}
+          </a>
+        );
+      }
+      return <span key={`text-${j}-${k}`}>{lPart}</span>;
+    });
   });
 }
 
@@ -65,6 +112,8 @@ const ConciergeSection = () => {
   const [input, setInput] = useState('');
   const [showLeadFor, setShowLeadFor] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+  const spokenMessagesRef = useRef(new Set());
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
@@ -94,16 +143,65 @@ const ConciergeSection = () => {
     }
   }, [messages, streaming]);
 
+  // Voice Output Logic
+  useEffect(() => {
+    if (!isVoiceEnabled || !messages.length) return;
+    
+    // Find the latest assistant message that is completely done streaming
+    const latestAssistantMsg = [...messages].reverse().find(m => m.role === 'assistant' && m.done);
+    
+    if (latestAssistantMsg && !spokenMessagesRef.current.has(latestAssistantMsg.id)) {
+      spokenMessagesRef.current.add(latestAssistantMsg.id);
+      
+      const cleanText = cleanTextForSpeech(latestAssistantMsg.content);
+      if (cleanText && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // stop any current speech
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        
+        // Prioritize male voices
+        const voices = window.speechSynthesis.getVoices();
+        const maleVoice = voices.find(v => 
+          v.name.includes('Google UK English Male') || 
+          v.name.includes('Google US English') && v.name.includes('Male') || 
+          v.name === 'Daniel' || 
+          v.name === 'Alex' || 
+          v.name === 'David' || 
+          v.name === 'Mark' ||
+          v.name === 'George'
+        );
+        if (maleVoice) {
+          utterance.voice = maleVoice;
+        }
+        
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+  }, [messages, isVoiceEnabled]);
+
   const submit = (e) => {
     e?.preventDefault?.();
     const text = input.trim();
     if (!text || streaming) return;
     setInput('');
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel(); // Cut off voice when user asks new question
+    }
     send(text);
   };
 
   const onChip = (text) => {
     if (streaming) return;
+    if (text === "Schedule Your Consultation") {
+      const widget = document.getElementById('scheduling-widget');
+      if (widget) {
+        widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+    if (text === "Contact Us...") {
+      window.location.href = '/contact';
+      return;
+    }
     send(text);
   };
 
@@ -118,17 +216,17 @@ const ConciergeSection = () => {
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1px] w-12 bg-gray-400 dark:bg-gray-600"></div>
             <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-            eQORE AI Assistant
+            eQORE AI<sup className="text-[10px] ml-0.5 opacity-70">™</sup> Assistant
             </span>
           </div>
           <h2
             id="eqore-ai-heading"
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl"
           >
-            Ask <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI</span>. Get Answers Instantly.
+            Have a Question? From Business Problem to Solution Direction — Ask <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI</span><sup className="bg-brand-gradient bg-clip-text text-transparent text-[0.45em] ml-0.5">™</sup>.
           </h2>
-          <p className="mt-6 text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
-            Ask eQORE AI how we architect, scale, and secure your organization.
+          <p className="mt-6 text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
+            eQORE helps leaders identify relevant Kangqore capabilities, understand possible solution paths, and connect with the right team for deeper consultation.
           </p>
         </div>
 
@@ -148,11 +246,30 @@ const ConciergeSection = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  const newState = !isVoiceEnabled;
+                  setIsVoiceEnabled(newState);
+                  if (!newState && 'speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                  }
+                }}
+                className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${
+                  isVoiceEnabled 
+                    ? 'bg-cyan-400/20 text-cyan-400 border-cyan-400/30' 
+                    : 'bg-white/10 text-white/60 hover:text-white border-white/10'
+                }`}
+                title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
+              >
+                {isVoiceEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                <span className="hidden sm:inline">Voice</span>
+              </button>
               {hasUserMessages && (
                 <button
                   type="button"
                   onClick={reset}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-white/50 hover:text-white px-3 py-2 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/5 border border-white/10 transition-all"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-white/60 hover:text-white px-3 py-2 rounded-xl bg-white/10 border border-white/10 transition-all"
                   title="Start a new conversation"
                 >
                   <MessageSquarePlus className="w-3.5 h-3.5" /> New Session
@@ -218,7 +335,7 @@ const ConciergeSection = () => {
                             {msg.content}
                           </span>
                         ) : (
-                          renderInlineCitations(msg.content)
+                          renderFormattedText(msg.content)
                         )}
                         {!msg.done && msg.role === 'assistant' && (
                           <span className="inline-block w-1.5 h-4 ml-0.5 align-middle bg-brand-cyan animate-pulse rounded-sm" />
@@ -227,9 +344,17 @@ const ConciergeSection = () => {
                     </div>
 
                     {!isUser && msg.done && msg.citations && msg.citations.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 ml-10">
+                      <div className="flex flex-wrap items-center gap-1.5 ml-10">
                         <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400 dark:text-slate-500">
-                          Sources
+                          Sources:{' '}
+                          <a 
+                            href="https://kangqore.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-brand-cyan hover:underline lowercase tracking-normal"
+                          >
+                            kangqore.com
+                          </a>
                         </span>
                         {msg.citations.map((cid) => (
                           <CitationBadge key={cid} chunkId={cid} />
@@ -242,12 +367,12 @@ const ConciergeSection = () => {
                         <button
                           type="button"
                           onClick={() => copyMessage(msg)}
-                          className="inline-flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white px-1.5 py-0.5 rounded"
+                          className="inline-flex items-center gap-1 text-[10px] text-white/50 hover:text-white px-1.5 py-0.5 rounded transition-colors"
                           title="Copy"
                         >
                           {copiedId === msg.id ? (
                             <>
-                              <Check className="w-3 h-3 text-emerald-500" /> Copied
+                              <Check className="w-3 h-3 text-brand-cyan" /> Copied
                             </>
                           ) : (
                             <>
@@ -259,7 +384,7 @@ const ConciergeSection = () => {
                           type="button"
                           onClick={() => retry(msg.id)}
                           disabled={streaming}
-                          className="inline-flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white disabled:opacity-50 px-1.5 py-0.5 rounded"
+                          className="inline-flex items-center gap-1 text-[10px] text-white/50 hover:text-white disabled:opacity-50 px-1.5 py-0.5 rounded transition-colors"
                           title="Retry this answer"
                         >
                           <RotateCcw className="w-3 h-3" /> Retry
@@ -268,10 +393,10 @@ const ConciergeSection = () => {
                           type="button"
                           onClick={() => submitFeedback(msg.id, 'up')}
                           disabled={!conversationId || msg.feedback === 'up'}
-                          className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded ${
+                          className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                             msg.feedback === 'up'
-                              ? 'text-emerald-600 dark:text-emerald-400'
-                              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                              ? 'text-brand-cyan'
+                              : 'text-white/50 hover:text-white'
                           } disabled:opacity-50`}
                           title="Helpful"
                         >
@@ -281,10 +406,10 @@ const ConciergeSection = () => {
                           type="button"
                           onClick={() => submitFeedback(msg.id, 'down')}
                           disabled={!conversationId || msg.feedback === 'down'}
-                          className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded ${
+                          className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                             msg.feedback === 'down'
-                              ? 'text-rose-600 dark:text-rose-400'
-                              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                              ? 'text-rose-400'
+                              : 'text-white/50 hover:text-white'
                           } disabled:opacity-50`}
                           title="Not helpful"
                         >
@@ -320,13 +445,13 @@ const ConciergeSection = () => {
                     )}
 
                     {showHandoffOffer && !msg.leadCaptured && (
-                      <div className="ml-10">
+                      <div className="ml-11 mt-1">
                         <button
                           type="button"
                           onClick={() => setShowLeadFor(msg.id)}
-                          className="text-xs font-semibold text-brand-blue dark:text-brand-cyan hover:underline"
+                          className="text-xs font-bold text-white hover:text-gray-200 hover:underline flex items-center gap-1.5 transition-colors"
                         >
-                          → Talk to a Kangqore consultant
+                          <span>&rarr;</span> Talk to a Kangqore consultant
                         </button>
                       </div>
                     )}
@@ -354,14 +479,19 @@ const ConciergeSection = () => {
               <div className="mb-6 -mx-1 flex flex-wrap gap-2">
                 {[
                   "What is Kangqore?",
-                  "What services do you offer?",
+                  "Services/Capabilities",
                   "What are your departments?",
                   "Which industries do you serve?",
                   "Why choose Kangqore?",
+                  "What services does Kangqore offer?",
+                  "Who is the founder and CEO of the company?",
+                  "who is eQORE in Kangqore?",
                   "Tell me about your success stories.",
                   "How does your GCC model work?",
                   "What is your approach to Agentic AI?",
                   "How do you ensure data security?",
+                  "Schedule Your Consultation",
+                  "Contact Us...",
                 ].map((p) => (
                   <SuggestedPromptChip
                     key={p}
@@ -430,8 +560,7 @@ const ConciergeSection = () => {
             )}
 
             <p className="mt-3 text-[11px] text-slate-400 dark:text-slate-500 text-center">
-              eQORE may make mistakes. For commitments and pricing, confirm with a
-              Kangqore consultant.
+              eQORE provides guidance based on Kangqore’s service knowledge. Final scope, pricing, and commitments are confirmed by our consultants.
             </p>
           </div>
         </div>

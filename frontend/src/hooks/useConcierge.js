@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { getPageContext } from './pageContextMap';
 
 const BASE = process.env.REACT_APP_BACKEND_URL || '';
 const ENDPOINT = `${BASE}/api/ai/concierge`;
@@ -40,9 +41,14 @@ function writeStoredConversationId(id) {
 }
 
 const DEFAULT_GREETING_TEXT =
-  "Hi — I'm eQORE, the Kangqore AI Assistant.";
+  "Hi — I'm eQORE, Kangqore's unified intelligence. Ask me anything about Kangqore.";
 
 function buildGreeting(seedContext) {
+  // 1. Try the contextual intelligence registry for a domain-specific greeting
+  const ctx = getPageContext(seedContext);
+  if (ctx?.greeting) return ctx.greeting;
+
+  // 2. Fallback: generic service/department greeting
   const name = seedContext?.name?.trim();
   if (seedContext?.surface === 'service' && name) {
     return `Hi — I'm eQORE. Ask me about ${name}, or anything else about Kangqore.`;
@@ -283,6 +289,18 @@ export function useConcierge(options = {}) {
                     : m
                 )
               );
+            } else if (event === 'lead_id') {
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId ? { ...m, leadId: data.leadId } : m
+                )
+              );
+            } else if (event === 'scheduling_slots') {
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId ? { ...m, schedulingSlots: data.slots } : m
+                )
+              );
             } else if (event === 'error') {
               throw new Error(data.message || 'Concierge error');
             }
@@ -399,6 +417,11 @@ export const CONCIERGE_SUGGESTED_PROMPTS = [
 ];
 
 export function getSuggestedPrompts(seedContext) {
+  // 1. Try the contextual intelligence registry for domain-specific prompts
+  const ctx = getPageContext(seedContext);
+  if (ctx?.prompts?.length) return ctx.prompts;
+
+  // 2. Fallback: generic service/department prompts
   const name = seedContext?.name?.trim();
   if (seedContext?.surface === 'service' && name) {
     return [
