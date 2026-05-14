@@ -180,6 +180,8 @@ function AppContent() {
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/queryClient';
 import { ThemeProvider } from './context/ThemeContext';
+import { PodcastProvider } from './context/PodcastContext';
+import PodcastMiniPlayer from './components/PodcastMiniPlayer';
 
 /**
  * Root App Component
@@ -191,7 +193,10 @@ function App() {
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <AppContent />
+            <PodcastProvider>
+              <AppContent />
+              <PodcastMiniPlayer />
+            </PodcastProvider>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>

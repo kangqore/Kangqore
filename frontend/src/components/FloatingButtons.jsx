@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUp, MessageCircle, Accessibility, Menu, X, ChevronRight, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Moon, Sun, Plus } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LogIn, LogOut, UserCircle, ArrowUp, MessageCircle, Accessibility, Menu, X, ChevronRight, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Moon, Sun, Plus } from 'lucide-react';
 import { departmentData } from '../data/departmentData';
+import { useAuth } from '../context/AuthContext';
 import EQoreChatbot from './EQoreChatbot';
 
 const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
   const [fontSize, setFontSize] = useState(100);
@@ -18,7 +22,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      setIsVisible(window.pageYOffset > 300);
+      setIsVisible(window.pageYOffset > 600);
     };
     window.addEventListener('scroll', toggleVisibility);
     return () => window.removeEventListener('scroll', toggleVisibility);
@@ -58,6 +62,12 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
     }
     localStorage.setItem('darkMode', isDarkMode.toString());
   }, [isDarkMode]);
+
+  const handleLogout = () => {
+    logout();
+    setShowFullMenu(false);
+    navigate('/');
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -122,6 +132,14 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
     { name: 'Consumer Goods', path: '/industries/consumer-goods', icon: Package }
   ];
 
+  const insightsItems = [
+    { name: 'Blogs', path: '/blogs', icon: BookOpen },
+    { name: 'Case Studies', path: '/case-studies', icon: FileText },
+    { name: 'Brochures', path: '/brochures', icon: FileSpreadsheet },
+    { name: 'Events', path: '/events', icon: Calendar },
+    { name: 'White Papers', path: '/white-paper', icon: Award }
+  ];
+
   const socialLinks = [
     { name: 'LinkedIn', icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z', href: 'https://www.linkedin.com/company/kangqore' },
     { name: 'Twitter', icon: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z', href: 'https://x.com/kangqore' },
@@ -133,9 +151,51 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
     <>
       <EQoreChatbot />
 
-      {/* Unified Omni-Action Trigger */}
+      {/* New Vertical Floating Stack (eQORE AI & Menu) */}
       <div 
-        className={`fixed bottom-8 right-8 z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
+        className={`fixed right-8 z-[50] flex flex-col items-center gap-4 transition-all duration-700 ease-in-out ${
+          !isVisible || isYielding || showFullMenu ? 'opacity-0 translate-y-10 pointer-events-none' : 'opacity-100 translate-y-0'
+        }`}
+        style={{ bottom: '32px' }} // Aligned with the Plus button on the left (bottom-8)
+      >
+        {/* eQORE AI Button */}
+        <div className="group/item relative">
+          <button
+            onClick={toggleChatbot}
+            className="w-[56px] h-[56px] rounded-full bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 shadow-[0_10px_40px_rgba(0,0,0,0.15)] overflow-hidden flex items-center justify-center transition-all duration-500 hover:scale-110 hover:shadow-[0_0_25px_rgba(37,100,234,0.4)] group"
+            aria-label="Ask eQORE AI"
+          >
+            <img 
+              src="/images/eqore-avatar.png" 
+              alt="eQORE AI" 
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+            />
+          </button>
+          {/* Tooltip */}
+          <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10">
+            Ask eQORE AI
+          </div>
+        </div>
+
+        {/* Hamburger Menu Button */}
+        <div className="group/item relative">
+          <button
+            onClick={() => setShowFullMenu(true)}
+            className="w-[56px] h-[56px] rounded-full bg-brand-gradient text-white shadow-2xl flex items-center justify-center transition-all duration-500 transform hover:scale-110 active:scale-95 hover:shadow-[0_0_25px_rgba(74,182,212,0.5)]"
+            aria-label="Open Menu"
+          >
+            <Menu className="w-6 h-6 text-white" />
+          </button>
+          {/* Tooltip */}
+          <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10">
+            Open Menu
+          </div>
+        </div>
+      </div>
+
+      {/* Unified Omni-Action Trigger - Moved to LEFT */}
+      <div 
+        className={`fixed bottom-8 left-8 z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
       >
         <button
           onClick={() => setIsOmniOpen(!isOmniOpen)}
@@ -155,23 +215,21 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
               <ArrowUp className="w-5 h-5 group-hover/btn:-translate-y-1 transition-transform" />
             </button>
           )}
-          <button onClick={openWhatsApp} className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 text-[#25D366] rounded-full shadow-lg border border-gray-100 flex items-center justify-center" title="WhatsApp Support">
-            <MessageCircle className="w-5 h-5" />
+          <button onClick={openWhatsApp} className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-full shadow-lg border border-gray-100 flex items-center justify-center group" title="WhatsApp Support">
+            <svg className="w-6 h-6 transition-transform group-hover:scale-110" viewBox="0 0 24 24" fill="#25D366" stroke="none" strokeWidth="0">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+            </svg>
           </button>
-          <button onClick={toggleChatbot} className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 text-brand-blue rounded-full shadow-lg border border-gray-100 flex items-center justify-center" title="Chat with eQORE">
-            <Sparkles className="w-5 h-5" />
-          </button>
-          <button onClick={() => { setShowAccessibility(!showAccessibility); setIsOmniOpen(false); }} className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 dark:text-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center" title="Appearance Settings">
-            <Accessibility className="w-5 h-5" />
-          </button>
-          <button onClick={() => { setShowFullMenu(true); setIsOmniOpen(false); }} className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 dark:text-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center" title="Sitemap Menu">
-            <Menu className="w-5 h-5" />
+          <button onClick={() => { setShowAccessibility(!showAccessibility); setIsOmniOpen(false); }} className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-full shadow-lg border border-gray-100 flex items-center justify-center group" title="Appearance Settings">
+            <svg className="w-6 h-6 transition-transform group-hover:scale-110 text-brand-blue" viewBox="0 0 24 24" fill="currentColor" stroke="none" strokeWidth="0">
+              <path fillRule="evenodd" clipRule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Zm0-19.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM6.5 10a1.5 1.5 0 0 0 0 3h1.867l-1.393 4.873a1.5 1.5 0 1 0 2.884.825L12 11.237l2.142 7.461a1.5 1.5 0 1 0 2.884-.825L15.633 13H17.5a1.5 1.5 0 0 0 0-3h-11Z" />
+            </svg>
           </button>
         </div>
 
         {/* Accessibility Panel */}
         {showAccessibility && (
-          <div className="absolute bottom-24 right-0 bg-white dark:bg-gray-800 rounded-[2rem] shadow-2xl p-8 w-80 border border-gray-100 dark:border-gray-700 z-[101] animate-in fade-in zoom-in-95">
+          <div className="absolute bottom-24 left-0 bg-white dark:bg-gray-800 rounded-[2rem] shadow-2xl p-8 w-80 border border-gray-100 dark:border-gray-700 z-[101] animate-in fade-in zoom-in-95">
             <div className="flex items-center justify-between mb-8">
               <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-3 text-xl">Appearance</h3>
               <button onClick={() => setShowAccessibility(false)} className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center text-gray-400"><X className="w-4 h-4" /></button>
@@ -195,79 +253,322 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
       </div>
 
       {/* Sidebar Menu Overlay */}
-      {showFullMenu && (
-        <div className="fixed inset-0 z-[9998] flex justify-end">
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowFullMenu(false)} />
-          <div className="relative h-full w-full sm:w-96 lg:w-1/4 bg-white dark:bg-gray-900 dark:border-gray-800 shadow-2xl overflow-y-auto z-[9999] animate-in slide-in-from-right duration-500">
-            <div className="px-8 pt-8 pb-4 flex items-center justify-between border-b border-gray-100">
-              <img src="https://customer-assets.emergentagent.com/job_cog-site-clone/artifacts/focgf8oz_Logo%2BText.png" alt="Kangqore" className="h-12" style={{ filter: 'brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2395%) hue-rotate(201deg) brightness(95%) contrast(101%)' }} />
-              <button onClick={() => setShowFullMenu(false)} className="w-10 h-10 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center hover:bg-gray-100 dark:bg-[#0a0a0c] transition-colors">
-                <X className="w-5 h-5 text-gray-400" />
-              </button>
-            </div>
-            <div className="p-8 space-y-10">
-              <nav className="space-y-6">
-                <div>
-                  <button onClick={() => toggleMenu('whatWeDo')} className="w-full flex items-center justify-between text-lg font-bold text-gray-900 dark:text-white group">
-                    <span className="group-hover:text-brand-blue transition-colors">What We Do</span>
-                    <ChevronDown className={`w-5 h-5 transition-transform ${expandedMenu === 'whatWeDo' ? 'rotate-180' : ''}`} />
-                  </button>
-                  {expandedMenu === 'whatWeDo' && (
-                    <div className="mt-4 grid gap-2">
-                      {departmentData.map((dept) => (
-                        <Link key={dept.slug} to={`/department/${dept.slug}`} onClick={() => setShowFullMenu(false)} className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-brand-blue hover:bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center gap-3">
-                          <dept.icon className="w-4 h-4 opacity-50" />
-                          {dept.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <button onClick={() => toggleMenu('whoWeAre')} className="w-full flex items-center justify-between text-lg font-bold text-gray-900 dark:text-white group">
-                    <span className="group-hover:text-brand-blue transition-colors">Who We Are</span>
-                    <ChevronDown className={`w-5 h-5 transition-transform ${expandedMenu === 'whoWeAre' ? 'rotate-180' : ''}`} />
-                  </button>
-                  {expandedMenu === 'whoWeAre' && (
-                    <div className="mt-4 grid gap-2">
-                      {whoWeAreItems.map((item) => (
-                        <Link key={item.path} to={item.path} onClick={() => setShowFullMenu(false)} className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-brand-blue hover:bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center gap-3">
-                          <item.icon className="w-4 h-4 opacity-50" />
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <button onClick={() => toggleMenu('industries')} className="w-full flex items-center justify-between text-lg font-bold text-gray-900 dark:text-white group">
-                    <span className="group-hover:text-brand-blue transition-colors">Industries</span>
-                    <ChevronDown className={`w-5 h-5 transition-transform ${expandedMenu === 'industries' ? 'rotate-180' : ''}`} />
-                  </button>
-                  {expandedMenu === 'industries' && (
-                    <div className="mt-4 grid gap-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
-                      {industriesItems.map((item) => (
-                        <Link key={item.path} to={item.path} onClick={() => setShowFullMenu(false)} className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-brand-blue hover:bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center gap-3">
-                          <item.icon className="w-4 h-4 opacity-50" />
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <Link to="/contact" onClick={() => setShowFullMenu(false)} className="block text-lg font-bold text-gray-900 dark:text-white hover:text-brand-blue transition-colors">Contact Us</Link>
-              </nav>
-              <div className="pt-10 border-t border-gray-100 flex gap-6">
-                {socialLinks.map((social, i) => (
-                  <a key={i} href={social.href} target="_blank" rel="noopener" className="text-gray-400 hover:text-brand-blue transition-colors">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d={social.icon} /></svg>
-                  </a>
-                ))}
+      <AnimatePresence>
+        {showFullMenu && (
+          <div className="fixed inset-0 z-[9998] flex justify-end">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md" 
+              onClick={() => setShowFullMenu(false)} 
+            />
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative h-full w-full sm:w-[450px] bg-[#0a0a0c]/90 backdrop-blur-2xl border-l border-white/5 shadow-[0_0_100px_rgba(0,0,0,0.5)] flex flex-col z-[9999]"
+            >
+              {/* Decorative background glow */}
+              <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none">
+                <div className="absolute -top-[10%] -right-[10%] w-[300px] h-[300px] bg-brand-blue/10 rounded-full blur-[120px]" />
+                <div className="absolute top-[40%] -left-[20%] w-[250px] h-[250px] bg-cyan-400/5 rounded-full blur-[100px]" />
               </div>
-            </div>
+
+              {/* Sidebar Header */}
+              <div className="px-10 pt-8 pb-6 flex items-center justify-between border-b border-white/5 relative z-10">
+                <Link to="/" onClick={() => setShowFullMenu(false)}>
+                  <img 
+                    src="https://customer-assets.emergentagent.com/job_cog-site-clone/artifacts/focgf8oz_Logo%2BText.png" 
+                    alt="Kangqore" 
+                    className="h-20 lg:h-24 object-contain" 
+                    style={{ filter: 'brightness(0) invert(1)' }} 
+                  />
+                </Link>
+                <button 
+                  onClick={() => setShowFullMenu(false)} 
+                  className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 border border-white/10 transition-all group"
+                >
+                  <X className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
+                </button>
+              </div>
+
+              {/* Sidebar Navigation */}
+              <div className="flex-1 overflow-y-auto px-10 py-6 space-y-6 relative z-10 custom-scrollbar">
+                <nav className="space-y-5">
+                  {/* Category: What We Do */}
+                  <div className="space-y-3">
+                    <button 
+                      onClick={() => toggleMenu('whatWeDo')} 
+                      className="w-full flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-xl transition-all duration-300 ${expandedMenu === 'whatWeDo' ? 'bg-brand-blue/20 text-brand-blue shadow-[0_0_15px_rgba(37,100,234,0.3)]' : 'bg-white/5 text-white/50 group-hover:text-white'}`}>
+                          <Package className="w-5 h-5" />
+                        </div>
+                        <span className={`text-lg font-bold transition-all duration-300 ${expandedMenu === 'whatWeDo' ? 'text-white' : 'text-white/70 group-hover:text-white'}`}>
+                          What We Do
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-white/30 transition-transform duration-500 ${expandedMenu === 'whatWeDo' ? 'rotate-180 text-brand-blue' : ''}`} />
+                    </button>
+                    
+                    <AnimatePresence>
+                      {expandedMenu === 'whatWeDo' && (
+                        <motion.div 
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid gap-1 pl-12 pt-1">
+                            {departmentData.map((dept) => (
+                              <Link 
+                                key={dept.slug} 
+                                to={`/department/${dept.slug}`} 
+                                onClick={() => setShowFullMenu(false)} 
+                                className="group/link py-1.5 text-[14px] text-white/50 hover:text-brand-blue flex items-center justify-between transition-colors"
+                              >
+                                <span>{dept.name}</span>
+                                <ChevronRight className="w-3 h-3 opacity-0 group-hover/link:opacity-100 -translate-x-2 group-hover/link:translate-x-0 transition-all" />
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Category: Who We Are */}
+                  <div className="space-y-3">
+                    <button 
+                      onClick={() => toggleMenu('whoWeAre')} 
+                      className="w-full flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-xl transition-all duration-300 ${expandedMenu === 'whoWeAre' ? 'bg-cyan-400/20 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'bg-white/5 text-white/50 group-hover:text-white'}`}>
+                          <Users className="w-5 h-5" />
+                        </div>
+                        <span className={`text-lg font-bold transition-all duration-300 ${expandedMenu === 'whoWeAre' ? 'text-white' : 'text-white/70 group-hover:text-white'}`}>
+                          Who We Are
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-white/30 transition-transform duration-500 ${expandedMenu === 'whoWeAre' ? 'rotate-180 text-cyan-400' : ''}`} />
+                    </button>
+                    
+                    <AnimatePresence>
+                      {expandedMenu === 'whoWeAre' && (
+                        <motion.div 
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid gap-1 pl-12 pt-1">
+                            {whoWeAreItems.map((item) => (
+                              <Link 
+                                key={item.path} 
+                                to={item.path} 
+                                onClick={() => setShowFullMenu(false)} 
+                                className="group/link py-1.5 text-[14px] text-white/50 hover:text-cyan-400 flex items-center justify-between transition-colors"
+                              >
+                                <span>{item.name}</span>
+                                <ChevronRight className="w-3 h-3 opacity-0 group-hover/link:opacity-100 -translate-x-2 group-hover/link:translate-x-0 transition-all" />
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Category: Industries */}
+                  <div className="space-y-3">
+                    <button 
+                      onClick={() => toggleMenu('industries')} 
+                      className="w-full flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-xl transition-all duration-300 ${expandedMenu === 'industries' ? 'bg-purple-500/20 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.3)]' : 'bg-white/5 text-white/50 group-hover:text-white'}`}>
+                          <Building2 className="w-5 h-5" />
+                        </div>
+                        <span className={`text-lg font-bold transition-all duration-300 ${expandedMenu === 'industries' ? 'text-white' : 'text-white/70 group-hover:text-white'}`}>
+                          Industries
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-white/30 transition-transform duration-500 ${expandedMenu === 'industries' ? 'rotate-180 text-purple-400' : ''}`} />
+                    </button>
+                    
+                    <AnimatePresence>
+                      {expandedMenu === 'industries' && (
+                        <motion.div 
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid gap-1 pl-12 pt-1 max-h-[200px] overflow-y-auto custom-scrollbar pr-4">
+                            {industriesItems.map((item) => (
+                              <Link 
+                                key={item.path} 
+                                to={item.path} 
+                                onClick={() => setShowFullMenu(false)} 
+                                className="group/link py-1.5 text-[14px] text-white/50 hover:text-purple-400 flex items-center justify-between transition-colors"
+                              >
+                                <span>{item.name}</span>
+                                <ChevronRight className="w-3 h-3 opacity-0 group-hover/link:opacity-100 -translate-x-2 group-hover/link:translate-x-0 transition-all" />
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Category: Insights */}
+                  <div className="space-y-3">
+                    <button 
+                      onClick={() => toggleMenu('insights')} 
+                      className="w-full flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-xl transition-all duration-300 ${expandedMenu === 'insights' ? 'bg-amber-500/20 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.3)]' : 'bg-white/5 text-white/50 group-hover:text-white'}`}>
+                          <BookOpen className="w-5 h-5" />
+                        </div>
+                        <span className={`text-lg font-bold transition-all duration-300 ${expandedMenu === 'insights' ? 'text-white' : 'text-white/70 group-hover:text-white'}`}>
+                          Insights
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-white/30 transition-transform duration-500 ${expandedMenu === 'insights' ? 'rotate-180 text-amber-400' : ''}`} />
+                    </button>
+                    
+                    <AnimatePresence>
+                      {expandedMenu === 'insights' && (
+                        <motion.div 
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid gap-1 pl-12 pt-1 max-h-[200px] overflow-y-auto custom-scrollbar pr-4">
+                            {insightsItems.map((item) => (
+                              <Link 
+                                key={item.path} 
+                                to={item.path} 
+                                onClick={() => setShowFullMenu(false)} 
+                                className="group/link py-1.5 text-[14px] text-white/50 hover:text-amber-400 flex items-center justify-between transition-colors"
+                              >
+                                <span>{item.name}</span>
+                                <ChevronRight className="w-3 h-3 opacity-0 group-hover/link:opacity-100 -translate-x-2 group-hover/link:translate-x-0 transition-all" />
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Direct Link: Contact */}
+                  <Link 
+                    to="/contact" 
+                    onClick={() => setShowFullMenu(false)} 
+                    className="flex items-center gap-3 group py-1.5"
+                  >
+                    <div className="p-2 rounded-xl bg-white/5 text-white/50 group-hover:bg-brand-gradient group-hover:text-white group-hover:shadow-[0_0_20px_rgba(37,100,234,0.4)] transition-all duration-300">
+                      <MessageSquare className="w-5 h-5" />
+                    </div>
+                    <span className="text-lg font-bold text-white/70 group-hover:text-white transition-all">Contact Us</span>
+                  </Link>
+
+                  {/* Auth Section */}
+                  <div className="pt-3 mt-3 border-t border-white/5">
+                    {user ? (
+                      <div className="space-y-3">
+                        <Link 
+                          to={
+                            user.role === 'ADMIN' ? '/dashboard/admin' :
+                            user.role === 'CLIENT' ? '/dashboard/client' :
+                            user.role === 'PARTNER' ? '/dashboard/partner' :
+                            user.role === 'INVESTOR' ? '/dashboard/investor' :
+                            user.role === 'JOB_SEEKER' ? '/dashboard/careers' :
+                            '/client-portal'
+                          }
+                          onClick={() => setShowFullMenu(false)}
+                          className="flex items-center gap-3 group py-1.5"
+                        >
+                          <div className="w-10 h-10 rounded-xl bg-brand-gradient flex items-center justify-center text-white font-bold overflow-hidden shadow-lg border border-white/10 group-hover:scale-105 transition-transform">
+                            {user.avatarUrl ? (
+                              <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
+                            ) : user.role === 'ADMIN' ? (
+                              <img src="/assets/eqore_avatar.jpg" alt="Kangqore Admin" className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="text-sm">{user.name?.charAt(0).toUpperCase()}</span>
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-[15px] font-bold text-white group-hover:text-brand-blue transition-colors truncate">{user.name}</p>
+                            <p className="text-[10px] text-white/40 uppercase tracking-widest truncate">{user.role?.replace('_', ' ')}</p>
+                          </div>
+                        </Link>
+                        <button 
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-3 group py-1.5"
+                        >
+                          <div className="p-2 rounded-xl bg-white/5 text-white/50 group-hover:bg-red-500/20 group-hover:text-red-400 transition-all duration-300">
+                            <LogOut className="w-5 h-5" />
+                          </div>
+                          <span className="text-lg font-bold text-white/70 group-hover:text-red-400 transition-all">Logout</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <Link 
+                        to="/login" 
+                        onClick={() => setShowFullMenu(false)} 
+                        className="flex items-center gap-3 group py-1.5"
+                      >
+                        <div className="p-2 rounded-xl bg-white/5 text-white/50 group-hover:bg-cyan-400 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all duration-300">
+                          <LogIn className="w-5 h-5" />
+                        </div>
+                        <span className="text-lg font-bold text-white/70 group-hover:text-white transition-all">Login</span>
+                      </Link>
+                    )}
+                  </div>
+                </nav>
+              </div>
+
+              {/* Sidebar Footer */}
+              <div className="px-10 py-6 border-t border-white/5 relative z-10 bg-black/20">
+                <p className="text-[9px] uppercase tracking-widest font-bold text-white/30 mb-4">Connect with us</p>
+                <div className="flex gap-3">
+                  {socialLinks.map((social, i) => (
+                    <a 
+                      key={i} 
+                      href={social.href} 
+                      target="_blank" 
+                      rel="noopener" 
+                      className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-brand-blue hover:shadow-[0_0_20px_rgba(37,100,234,0.4)] transition-all duration-300 group"
+                      title={social.name}
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d={social.icon} />
+                      </svg>
+                    </a>
+                  ))}
+                </div>
+                <div className="mt-6 flex items-center justify-between text-[10px] text-white/20 font-medium tracking-tight">
+                  <p>© 2026 Kangqore Global Pvt Ltd.</p>
+                  <Link to="/privacy" className="hover:text-white/40 transition-colors">Privacy Policy</Link>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 };

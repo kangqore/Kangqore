@@ -7,7 +7,7 @@ import {
   FolderKanban, ClipboardList, MessageSquare, Download, HelpCircle,
   Star, Trash2, Calendar, AlertTriangle, Bookmark, LayoutDashboard, Loader2, CalendarDays, Mail, Layers, Link as LinkIcon, FileCheck, UserPen, UserX,
   Target, Inbox, Send, Flag, Receipt, GitCommit, Clock, Server,
-  Activity, Award, FileSignature, ShieldCheck, Lightbulb, Zap, Layout, AlertOctagon, LifeBuoy
+  Activity, Award, FileSignature, ShieldCheck, Lightbulb, Zap, Layout, AlertOctagon, LifeBuoy, BrainCircuit
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -345,7 +345,13 @@ const DashboardLayout = ({ children, role, title, subtitle, headerActions }) => 
         { name: 'Messages', icon: Inbox, path: '/dashboard/admin/contacts' },
         { name: 'Emails', icon: Send, path: '/dashboard/admin/emails' },
 
-        // 9. System
+        // 9. Intelligence
+        { name: 'Intelligence', isHeader: true },
+        { name: 'eQORE Leads', icon: Zap, path: '/dashboard/admin/eqore-leads' },
+        { name: 'Sales Command', icon: Target, path: '/dashboard/admin/eqore-sales' },
+        { name: 'Kangqore ALIS', icon: BrainCircuit, path: '/dashboard/admin/alis' },
+
+        // 10. System
         { name: 'System', isHeader: true },
         { name: 'Content (CMS)', icon: FileText, path: '/dashboard/admin/content' },
       ]
