@@ -2202,6 +2202,7 @@ model EqoreLead {
   salesPriority       String?
   lastSalesActivityAt DateTime?
 
+  salesNotes      EqoreSalesNote[]
   @@index([sessionId])
   @@index([leadScore])
   @@index([status])
@@ -2452,6 +2453,7 @@ model EqoreSalesOpportunity {
   activities EqoreSalesActivity[]
   syncLogs   EqoreCrmSyncLog[]
 
+  notes      EqoreSalesNote[]
   @@map("eqore_sales_opportunities")
 }
 
@@ -2497,4 +2499,22 @@ model EqoreIndustry {
 
   @@index([slug])
   @@map("eqore_industries")
+}
+
+model EqoreSalesNote {
+  id            String   @id @default(uuid())
+  leadId        String
+  opportunityId String
+  authorId      String?
+  noteType      String   @default("CALL_NOTE")
+  content       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  lead        EqoreLead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  opportunity EqoreSalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([opportunityId])
+  @@map("eqore_sales_notes")
 }
