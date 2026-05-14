@@ -44,7 +44,7 @@ adminRouter.post('/graph/sync', EqoreGraphController.syncGraph);
 adminRouter.get('/leads/:leadId/timeline', async (req, res) => {
   try {
     const { leadId } = req.params;
-    const { prisma: db } = await import('../../lib/prisma');
+    const { prisma: db } = await import('../lib/prisma');
     const logs = await db.eqoreAgentLog.findMany({
       where: { leadId },
       orderBy: { createdAt: 'desc' },
@@ -60,13 +60,13 @@ adminRouter.get('/leads/:leadId/timeline', async (req, res) => {
 adminRouter.get('/leads/:leadId/assurance', async (req, res) => {
   try {
     const { leadId } = req.params;
-    const { prisma: db } = await import('../../lib/prisma');
+    const { prisma: db } = await import('../lib/prisma');
     const logs = await db.eqoreAgentLog.findMany({
       where: { leadId, detectedIntent: 'CLIENT_ASSURANCE_QUERY' },
       orderBy: { createdAt: 'desc' }
     });
     
-    const assuranceEvents = logs.map(log => {
+    const assuranceEvents = logs.map((log: any) => {
       const results = (log.resultsJson as any[]) || [];
       const assuranceResult = results.find(r => r.agentName === 'AssuranceEngine');
       return {

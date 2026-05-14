@@ -136,9 +136,9 @@ export class EqoreSchedulingAgentService {
     const { SchedulingService } = await import('../../services/scheduling.service');
 
     // Race-condition check: ensure the slot is still available right before booking
-    const availableSlots = await SchedulingService.getAvailability(eventType.id, new Date(selectedSlot.start), new Date(selectedSlot.end));
+    const availableSlots = await AvailabilityService.getAvailableSlots(eventType.id, new Date(selectedSlot.start), new Date(selectedSlot.end));
     const isStillAvailable = availableSlots.some(
-      s => s.startTime.getTime() === new Date(selectedSlot.start).getTime()
+      (s: TimeSlot) => s.startTime.getTime() === new Date(selectedSlot.start).getTime()
     );
 
     if (!isStillAvailable) {
@@ -148,7 +148,6 @@ export class EqoreSchedulingAgentService {
     const bookingResult = await SchedulingService.bookEvent({
       eventTypeId: eventType.id,
       startTime: selectedSlot.start,
-      endTime: selectedSlot.end,
       invitee: {
         name: lead.name || 'eQORE Lead',
         email: lead.email!,

@@ -155,6 +155,12 @@ router.post(
               sessionId: conversationId,
               status: 'NEW',
               sourcePage: req.headers.referer || 'concierge',
+              conversation: {
+                connectOrCreate: {
+                  where: { sessionId: conversationId },
+                  create: { sessionId: conversationId },
+                },
+              },
             }
           });
         }

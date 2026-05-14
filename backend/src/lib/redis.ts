@@ -19,7 +19,7 @@ export const redisConnection = process.env.MOCK_REDIS === 'true'
 if (process.env.MOCK_REDIS === 'true') {
   logger.info('Redis Mocked: Using in-memory no-op provider');
 } else {
-  redisConnection.on('error', (err) => {
+  redisConnection.on('error', (err: Error) => {
     logger.error('Redis Connection Error:', err);
   });
 

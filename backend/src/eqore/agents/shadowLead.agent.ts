@@ -18,26 +18,43 @@ export class EqoreShadowLeadAgent {
   ): Promise<ShadowIntelligence | null> {
     if (process.env.TEST_MODE === 'true') {
       return {
-        visitorType: "B2B_BUYER",
-        buyingStage: "EVALUATION",
-        businessIntent: "AI Automation Workflow",
+        visitorType: "Enterprise Prospect",
+        buyingStage: "Solution Evaluation",
+        primaryIntent: "AI Automation Workflow",
         problemStatement: "Need to modernize internal workflow with AI automation",
         painPoints: ["manual internal workflow", "outdated processes"],
-        buyingSignals: ["How much would it cost", "can we talk tomorrow afternoon"],
-        negativeSignals: [],
-        urgencyLevel: "HIGH",
-        budgetSignal: "PRICING_REQUESTED",
-        authoritySignal: "UNKNOWN",
-        matchedServices: [
-          { slug: "digital-transformation", fitScore: 0.95, reasoning: "Workflow modernization" },
-          { slug: "agentic-ai", fitScore: 0.90, reasoning: "AI automation requested" }
+        buyingSignals: [
+          { signal: "How much would it cost", strength: "High", evidenceMessageIds: [] },
+          { signal: "can we talk tomorrow afternoon", strength: "High", evidenceMessageIds: [] }
         ],
+        negativeSignals: [],
+        urgency: "High",
+        budgetSignal: "Quote Requested",
+        authoritySignal: "Unknown",
+        recommendedAction: "Offer Consultation",
+        nextBestQuestion: "Which specific workflows are you looking to automate with AI first?",
+        conversationSummary: "Fintech company looking to modernize internal workflows with AI automation. Requested pricing and a meeting for tomorrow afternoon.",
+        extractionConfidence: 85,
         primaryDepartment: "digital-transformation-modernization",
-        nextBestAction: "SCHEDULE_CONSULTATION",
+        matchedServices: [
+          { slug: "digital-transformation", service: "Digital Transformation", fitScore: 0.95, reason: "Workflow modernization" },
+          { slug: "agentic-ai", service: "Agentic AI", fitScore: 0.90, reason: "AI automation requested" }
+        ],
         schedulingIntent: true,
-        extractedTimePreference: "tomorrow afternoon",
-        recommendedQuestion: "Which specific workflows are you looking to automate with AI first?",
-        conversationSummary: "Fintech company looking to modernize internal workflows with AI automation. Requested pricing and a meeting for tomorrow afternoon."
+        timePreference: "tomorrow afternoon",
+        scoringSignals: {
+          hasSpecificBusinessProblem: true,
+          hasServiceNeed: true,
+          hasPricingIntent: true,
+          hasConsultationIntent: true,
+          hasUrgency: true,
+          hasCompanyContext: false,
+          hasContactReadiness: false,
+          hasDecisionAuthority: false,
+          hasNegativeIntent: false,
+          hasSpamRisk: false
+        },
+        eventCandidates: []
       };
     }
 

@@ -11,6 +11,7 @@ import { LlmClassifierService } from './llmClassifier.service';
 import { RoutingCacheService } from './routingCache.service';
 import { EqoreIntent, EqoreRoutingDecision } from './intentSchema';
 import { EqoreOrchestratorService } from '../orchestrator/eqoreOrchestrator.service';
+import { OrchestrationTimeline } from '../orchestrator/agentResult';
 import logger from '../../utils/logger';
 
 export class AgentDispatcherService {
@@ -25,7 +26,7 @@ export class AgentDispatcherService {
     sessionId: string;
     history: { role: string; content: string }[];
     messages: { id: string; role: string; content: string }[];
-  }): Promise<{ intent: EqoreIntent; responseContent: string }> {
+  }): Promise<{ intent: EqoreIntent; responseContent: string; timeline: OrchestrationTimeline }> {
     const { message, conversationId, leadId, messageId, sessionId, history, messages } = params;
     let classificationMs = 0;
 
@@ -63,10 +64,15 @@ export class AgentDispatcherService {
           shouldRunShadowAgent: true,
           shouldRunServiceMatcher: true,
           shouldRunSchedulingAgent: false,
+          shouldRunAssuranceEngine: false,
           shouldRunHumanHandoff: false,
           reason: 'Classification failed. Safe fallback.'
         };
       }
+    }
+
+    if (!decision) {
+      throw new Error('Routing decision could not be resolved');
     }
 
     // 4. Delegate to Orchestrator

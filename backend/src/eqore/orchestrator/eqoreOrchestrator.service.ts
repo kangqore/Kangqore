@@ -72,7 +72,7 @@ export class EqoreOrchestratorService {
         agentResults.push(shadowResult);
         // During test mode, if Shadow detected scheduling, dynamically flag it
         const lead = await prisma.eqoreLead.findUnique({ where: { id: leadId } });
-        if (lead?.schedulingStatus === 'REQUESTED' || (lead as any).preferredConsultationTime) {
+        if (lead?.schedulingStatus === 'INTERESTED' || (lead as any).preferredConsultationTime) {
           decision.shouldRunSchedulingAgent = true;
         }
       } else {
@@ -273,8 +273,8 @@ export class EqoreOrchestratorService {
         agentName: 'SchedulingAgent',
         status: 'SUCCESS',
         userVisibleMessage: msg || undefined,
-        backendActions: result.offeredSlots.length > 0 ? ['SLOTS_OFFERED'] : ['SCHEDULING_INTENT_DETECTED'],
-        leadUpdates: { schedulingStatus: result.status },
+        backendActions: result?.offeredSlots && result.offeredSlots.length > 0 ? ['SLOTS_OFFERED'] : ['SCHEDULING_INTENT_DETECTED'],
+        leadUpdates: { schedulingStatus: result?.status ?? 'NONE' },
         latencyMs: Date.now() - start
       };
     } catch (error) {
