@@ -18,6 +18,9 @@ import Services from './pages/Services';
 import NotFound from './pages/NotFound';
 import InstallPrompt from './components/InstallPrompt';
 import OfflineIndicator from './components/OfflineIndicator';
+import EqoreLeadsPage from './pages/admin/EqoreLeadsPage';
+import EqoreSalesPage from './pages/admin/EqoreSalesPage';
+import AlisPage from './pages/admin/AlisPage';
 import './App.css';
 
 /**
@@ -162,6 +165,11 @@ function AppContent() {
                 
                 {/* Service routes (77 individual services) */}
                 {serviceRoutes}
+
+                {/* Admin eQORE Routes */}
+                <Route path="/admin/eqore-leads" element={<EqoreLeadsPage />} />
+                <Route path="/admin/eqore-sales" element={<EqoreSalesPage />} />
+                <Route path="/admin/alis" element={<AlisPage />} />
 
                 {/* Default redirect for unmatched routes */}
                 <Route path="*" element={<NotFound />} />

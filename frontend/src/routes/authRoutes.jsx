@@ -22,6 +22,7 @@ const InvestorDashboard = React.lazy(() => import('../pages/dashboards/investor/
 const CareersDashboard = React.lazy(() => import('../pages/dashboards/careers/CareersDashboard'));
 const AdminDashboard = React.lazy(() => import('../pages/dashboards/admin/AdminDashboard'));
 const ConsultationsManagement = React.lazy(() => import('../pages/admin/ConsultationsManagement'));
+const SchedulingManagement = React.lazy(() => import('../pages/admin/SchedulingManagement'));
 const ContactsManagement = React.lazy(() => import('../pages/admin/ContactsManagement'));
 const JobApplicationsManagement = React.lazy(() => import('../pages/admin/JobApplicationsManagement'));
 const UsersManagement = React.lazy(() => import('../pages/admin/UsersManagement'));
@@ -29,6 +30,7 @@ const LeadsManagement = React.lazy(() => import('../pages/admin/LeadsManagement'
 const AnalyticsManagement = React.lazy(() => import('../pages/admin/AnalyticsManagement'));
 const ConciergeAnalytics = React.lazy(() => import('../pages/admin/concierge/ConciergeAnalytics'));
 const ConciergeKnowledge = React.lazy(() => import('../pages/admin/concierge/ConciergeKnowledge'));
+const AssuranceIntelligencePanel = React.lazy(() => import('../pages/admin/concierge/AssuranceIntelligencePanel'));
 const ContentManagementPage = React.lazy(() => import('../pages/admin/ContentManagementPage'));
 const SystemSettings = React.lazy(() => import('../pages/admin/SystemSettings'));
 const CapacityDashboard = React.lazy(() => import('../pages/dashboards/admin/CapacityDashboard'));
@@ -211,6 +213,7 @@ export const authRoutes = [
   <Route key="admin-analytics" path="/dashboard/admin/analytics" element={<AnalyticsManagement />} />,
   <Route key="admin-concierge-analytics" path="/dashboard/admin/concierge/analytics" element={<ConciergeAnalytics />} />,
   <Route key="admin-concierge-knowledge" path="/dashboard/admin/concierge/knowledge" element={<ConciergeKnowledge />} />,
+  <Route key="admin-concierge-assurance" path="/dashboard/admin/concierge/assurance" element={<AssuranceIntelligencePanel />} />,
   <Route key="admin-kpi" path="/dashboard/admin/kpi" element={<KPIAnalyticsDashboard />} />, // NEW Board KPI Dashboard
   <Route key="admin-capacity" path="/dashboard/admin/capacity" element={<CapacityDashboard />} />, // NEW Capacity Dashboard
   <Route key="admin-infrastructure" path="/dashboard/admin/infrastructure" element={<AIInfrastructureDashboard />} />, // NEW AI Infra Dashboard
@@ -243,6 +246,7 @@ export const authRoutes = [
 
   <Route key="admin-emails" path="/dashboard/admin/emails" element={<AdminEmailTabs />} />, // NEW Consolidated
   <Route key="admin-consultations" path="/dashboard/admin/consultations" element={<ConsultationsManagement />} />,
+  <Route key="admin-scheduling" path="/dashboard/admin/scheduling" element={<SchedulingManagement />} />,
   <Route key="admin-contacts" path="/dashboard/admin/contacts" element={<ContactsManagement />} />,
   <Route key="admin-applications" path="/dashboard/admin/applications" element={<JobApplicationsManagement />} />,
 
