@@ -50,6 +50,8 @@ import feedbackRoutes from './routes/feedback'; // NEW
 import schedulingRoutes from './routes/scheduling';
 import { eqorePublicRoutes } from './eqore/routes';
 import { eqoreLeadIntelligenceRoutes } from './eqore-lead-intelligence';
+import { alisRouter } from './kangqore-alis';
+import { authenticate, authorize } from './middleware/auth';
 
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
@@ -159,6 +161,7 @@ app.use('/api/feedback', feedbackRoutes); // NEW
 app.use('/api/scheduling', schedulingRoutes);
 app.use('/api/eqore', eqorePublicRoutes);
 app.use('/api/admin/eqore', eqoreLeadIntelligenceRoutes);
+app.use('/api/admin/alis', authenticate, authorize(['ADMIN']), alisRouter);
 
 import servicesRoutes from './routes/services'; // Phase 3
 app.use('/api/services', servicesRoutes); 
