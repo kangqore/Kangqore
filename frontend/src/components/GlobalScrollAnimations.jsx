@@ -19,14 +19,14 @@ const GlobalScrollAnimations = () => {
       // We explicitly ignore elements that declare they shouldn't be revealed
       // or already have a data-gsap marker.
       const revealElements = document.querySelectorAll(`
-        h1:not([data-gsap], .no-reveal),
-        h2:not([data-gsap], .no-reveal),
-        h3:not([data-gsap], .no-reveal),
-        h4:not([data-gsap], .no-reveal),
-        p:not([data-gsap], .no-reveal),
-        li:not([data-gsap], .no-reveal, nav li),
-        .card:not([data-gsap], .no-reveal),
-        .reveal-on-scroll:not([data-gsap], .no-reveal)
+        h1:not([data-gsap]):not(.no-reveal),
+        h2:not([data-gsap]):not(.no-reveal),
+        h3:not([data-gsap]):not(.no-reveal),
+        h4:not([data-gsap]):not(.no-reveal),
+        p:not([data-gsap]):not(.no-reveal),
+        li:not([data-gsap]):not(.no-reveal),
+        .card:not([data-gsap]):not(.no-reveal),
+        .reveal-on-scroll:not([data-gsap]):not(.no-reveal)
       `);
 
       let indexOffset = 0;
@@ -34,13 +34,14 @@ const GlobalScrollAnimations = () => {
       revealElements.forEach((el) => {
         // Exclude elements inside highly customized GSAP sections to avoid double-animating
         if (
-          el.closest('.custom-gsap-section') || 
-          el.closest('.salesforce-page-override') || 
-          el.closest('.api-microservices-page-override') || 
+          el.closest('.custom-gsap-section') ||
+          el.closest('.salesforce-page-override') ||
+          el.closest('.api-microservices-page-override') ||
           el.closest('.pimcore-page-override') ||
           el.closest('.no-global-gsap') ||
-          el.closest('header') || 
+          el.closest('header') ||
           el.closest('footer') ||
+          el.closest('nav') ||
           el.closest('.group\\/carousel') // Ignore items inside horizontal GSAP/native carousels
         ) {
            return;
@@ -72,7 +73,7 @@ const GlobalScrollAnimations = () => {
       });
       
       // Secondary pass for high-fidelity images if any
-      const images = document.querySelectorAll('img:not([data-gsap], .no-reveal, .hero-bg, .logo)');
+      const images = document.querySelectorAll('img:not([data-gsap]):not(.no-reveal):not(.hero-bg):not(.logo)');
       images.forEach((img) => {
         if (img.closest('header') || img.closest('footer') || img.closest('.custom-gsap-section') || img.closest('.salesforce-page-override') || img.closest('.api-microservices-page-override') || img.closest('.pimcore-page-override')) return;
         
