@@ -7,6 +7,7 @@ import Brochures from '../pages/Brochures';
 import Events from '../pages/Events';
 import WhitePaper from '../pages/WhitePaper';
 import Insights from '../pages/Insights';
+import PodcastPage from '../pages/PodcastPage';
 // Blog detail pages
 import BlogDetails from '../pages/BlogDetails';
 import FutureAiEnterprise from '../pages/blogs/FutureAiEnterprise';
@@ -38,6 +39,7 @@ import CloudStrategyWorkshop from '../pages/events/CloudStrategyWorkshop';
 export const contentRoutes = [
   // Main listing pages
   <Route key="insights" path="/insights" element={<Insights />} />,
+  <Route key="podcast" path="/podcast" element={<PodcastPage />} />,
   <Route key="blogs" path="/blogs" element={<Blogs />} />,
   <Route key="case-studies" path="/case-studies" element={<CaseStudiesPage />} />,
   <Route key="white-papers" path="/white-papers" element={<WhitePaper />} />,

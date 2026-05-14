@@ -10,7 +10,7 @@ const SecondaryButton = ({ text, link, onClick, className = '', theme = 'dark', 
   const themeClasses = theme === 'dark' 
     ? 'bg-[#1D1D1F] text-white' 
     : theme === 'light'
-    ? 'bg-white text-[#1D1D1F] border border-gray-200'
+    ? 'bg-white text-[#1D1D1F]'
     : 'bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20';
 
   const content = (

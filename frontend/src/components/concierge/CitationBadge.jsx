@@ -22,16 +22,8 @@ function prettifyChunkId(chunkId) {
 }
 
 const CitationBadge = ({ chunkId }) => {
-  const label = prettifyChunkId(chunkId);
-  return (
-    <span
-      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20"
-      title={chunkId}
-    >
-      <BookOpen className="w-2.5 h-2.5" />
-      {label}
-    </span>
-  );
+  // The user requested: "don't show the Sources on the answer"
+  return null;
 };
 
 export default CitationBadge;

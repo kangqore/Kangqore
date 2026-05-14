@@ -53,7 +53,7 @@ const AskEqoreCTA = ({ kind = 'service', name, slug, departmentName }) => {
 
             <div className="flex-1 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-gray-900 dark:border-gray-800/15 border border-white/20 text-[10px] font-bold uppercase tracking-widest mb-3">
-                <Sparkles className="w-3 h-3" /> eQORE AI Assistant
+                <Sparkles className="w-3 h-3" /> eQORE AI<sup className="text-[10px] ml-0.5 opacity-70">™</sup> Assistant
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
                 {displayName

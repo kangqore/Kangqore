@@ -6,6 +6,7 @@ const NewsPage = React.lazy(() => import('../pages/NewsPage'));
 const CommunitiesPage = React.lazy(() => import('../pages/CommunitiesPage'));
 const InvestorsPage = React.lazy(() => import('../pages/InvestorsPage'));
 const DepartmentPage = React.lazy(() => import('../pages/DepartmentPage'));
+const BookingPage = React.lazy(() => import('../pages/BookingPage'));
 
 // Who We Are pages
 const AboutUs = React.lazy(() => import('../pages/AboutUs'));
@@ -17,6 +18,7 @@ const Eqore = React.lazy(() => import('../pages/Eqore'));
 const Location = React.lazy(() => import('../pages/Location'));
 const Team = React.lazy(() => import('../pages/Team'));
 const BrandIdentity = React.lazy(() => import('../pages/BrandIdentity'));
+const OurCulture = React.lazy(() => import('../pages/OurCulture'));
 
 // Legal & Compliance pages
 const PrivacyPolicy = React.lazy(() => import('../pages/legal/PrivacyPolicy'));
@@ -31,6 +33,9 @@ const Sitemap = React.lazy(() => import('../pages/legal/Sitemap'));
  * Note: /services route is defined directly in App.js
  */
 export const publicRoutes = [
+  // Scheduling pages
+  <Route key="booking" path="/book/:slug" element={<BookingPage />} />,
+
   // General pages
   <Route key="contact" path="/contact" element={<ContactUs />} />,
   <Route key="careers" path="/careers" element={<CareersPage />} />,
@@ -49,6 +54,7 @@ export const publicRoutes = [
   <Route key="location" path="/location" element={<Location />} />,
   <Route key="team" path="/team" element={<Team />} />,
   <Route key="brand-identity" path="/brand-identity" element={<BrandIdentity />} />,
+  <Route key="culture" path="/culture" element={<OurCulture />} />,
 
   // Legal & Compliance pages
   <Route key="privacy" path="/privacy" element={<PrivacyPolicy />} />,

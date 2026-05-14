@@ -5,86 +5,68 @@ import { departmentData } from '../data/departmentData';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const ExploreServices = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
   const scrollContainerRef = useRef(null);
-  const autoPlayRef = useRef(null);
+  const animationRef = useRef(null);
   const [sectionRef, sectionVisible] = useScrollAnimation({ once: true, threshold: 0.1 });
 
-  // Card width + gap - responsive
-  const cardWidthWithGap = 404;
+  // Double the data for seamless loop
+  const displayData = [...departmentData, ...departmentData];
 
-  // Get responsive card width
-  const getCardWidth = () => {
-    if (typeof window !== 'undefined') {
-      if (window.innerWidth < 640) return 280; // Mobile
-      if (window.innerWidth < 768) return 320; // Tablet
-      return 380; // Desktop
-    }
-    return 380;
-  };
+  // Card width (340px) + gap (24px) = 364px
+  const cardWidthWithGap = 364;
 
-  const [cardWidth, setCardWidth] = useState(getCardWidth());
-
+  // Handle scroll to update active index based on position
   useEffect(() => {
-    const handleResize = () => setCardWidth(getCardWidth());
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    const container = scrollContainerRef.current;
+    if (!container) return;
 
-  const scrollToCard = (index) => {
-    setActiveIndex(index);
-    
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const maxScroll = container.scrollWidth - container.clientWidth;
-      const targetScroll = index * cardWidthWithGap;
-      
-      container.scrollTo({
-        left: Math.min(targetScroll, maxScroll),
-        behavior: 'smooth'
-      });
-    }
-  };
+    const handleScroll = () => {
+      const scrollLeft = container.scrollLeft;
+      // Calculate active index based on which card is in the 2nd position
+      const indexInDisplayData = Math.round(scrollLeft / cardWidthWithGap) + 1;
+      setActiveIndex(indexInDisplayData);
 
-  const nextSlide = () => {
-    const newIndex = activeIndex >= departmentData.length - 1 ? 0 : activeIndex + 1;
-    scrollToCard(newIndex);
-  };
-
-  const prevSlide = () => {
-    const newIndex = activeIndex <= 0 ? departmentData.length - 1 : activeIndex - 1;
-    scrollToCard(newIndex);
-  };
-
-  // Auto-scroll effect
-  useEffect(() => {
-    if (isAutoPlaying && !isHovered && sectionVisible) {
-      autoPlayRef.current = setInterval(() => {
-        setActiveIndex(prev => {
-          const newIndex = prev >= departmentData.length - 1 ? 0 : prev + 1;
-          if (scrollContainerRef.current) {
-            const container = scrollContainerRef.current;
-            const maxScroll = container.scrollWidth - container.clientWidth;
-            const targetScroll = newIndex * cardWidthWithGap;
-            
-            container.scrollTo({
-              left: newIndex === 0 ? 0 : Math.min(targetScroll, maxScroll),
-              behavior: 'smooth'
-            });
-          }
-          return newIndex;
-        });
-      }, 4000);
-    }
-
-    return () => {
-      if (autoPlayRef.current) {
-        clearInterval(autoPlayRef.current);
+      // Seamless loop reset
+      if (scrollLeft >= container.scrollWidth / 2) {
+        container.scrollLeft = 0;
+      } else if (scrollLeft <= 0) {
+        // Optional: handle reverse if needed, but we scroll forward
       }
     };
-  }, [isAutoPlaying, isHovered, sectionVisible]);
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [cardWidthWithGap]);
+
+  // Continuous loop animation
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const scrollStep = () => {
+      if (!isHovered && sectionVisible) {
+        container.scrollLeft += 1; // Adjust speed here (1px per frame)
+      }
+      animationRef.current = requestAnimationFrame(scrollStep);
+    };
+
+    animationRef.current = requestAnimationFrame(scrollStep);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isHovered, sectionVisible]);
+
+  // Initial setup
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft = 0;
+    }
+  }, []);
 
   return (
     <section 
@@ -97,31 +79,28 @@ const ExploreServices = () => {
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-16 lg:mb-20">
           {/* Left Side - Title */}
-          <div className="lg:w-1/2">
+          <div className="w-full">
             <span className="text-sm font-semibold text-brand-blue uppercase tracking-wider mb-4 block">
               What we offer
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
-              Explore our{' '}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-6">
+              Explore Our{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">
-                services
+                Capabilities/Departments
               </span>
             </h2>
-          </div>
-          
-          {/* Right Side - Description */}
-          <div className="lg:w-1/2 lg:pt-8">
-            <p className="text-gray-600 dark:text-gray-400 text-lg lg:text-xl leading-relaxed mb-6">
-              We deliver end-to-end technology solutions across 15 specialized departments, 
-              offering 77+ services designed to transform your business and drive innovation.
-            </p>
-            <Link
-              to="/services"
-              className="inline-flex items-center gap-2 text-brand-blue font-semibold hover:text-blue-700 group"
-            >
-              View All Services
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <p className="text-gray-600 dark:text-gray-400 text-lg lg:text-xl leading-relaxed max-w-3xl">
+                From AI and cloud to cybersecurity, modernization, and automation — Kangqore helps businesses build systems that scale reliably.
+              </p>
+              <Link
+                to="/services"
+                className="inline-flex items-center gap-2 text-brand-blue font-semibold hover:text-blue-700 group whitespace-nowrap"
+              >
+                View All Services
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -130,53 +109,47 @@ const ExploreServices = () => {
           ref={scrollContainerRef}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className="flex gap-4 md:gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide"
+          className="flex gap-4 md:gap-6 overflow-x-auto pb-8 scrollbar-hide"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {departmentData.map((dept, index) => {
+          {displayData.map((dept, index) => {
             const IconComponent = dept.icon;
             const isActive = index === activeIndex;
             
             return (
               <div
-                key={dept.slug}
-                className={`flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] snap-start rounded-2xl transition-all duration-500 ${
+                key={`${dept.slug}-${index}`}
+                className={`flex-shrink-0 w-[280px] sm:w-[320px] md:w-[340px] h-[420px] md:h-[500px] snap-start rounded-2xl transition-all duration-500 flex flex-col group/card ${
                   isActive 
-                    ? 'bg-brand-gradient text-white shadow-2xl md:scale-105' 
-                    : 'bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-gray-900 dark:text-white hover:shadow-lg'
+                    ? 'bg-[#050505] shadow-[0_20px_50px_rgba(0,0,0,0.3)] opacity-100 ring-1 ring-white/10' 
+                    : 'bg-gradient-to-br from-[#3ba1e3] to-[#4ab6d4] opacity-90 hover:opacity-100 hover:bg-[#050505] hover:shadow-2xl'
                 }`}
               >
-                <div className="p-5 md:p-6">
+                <div className="p-6 md:p-8 flex flex-col h-full">
                   {/* Department Icon & Number */}
                   <div className="flex items-center justify-between mb-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      isActive ? 'bg-white dark:bg-gray-900 dark:border-gray-800/20' : 'bg-brand-gradient'
-                    }`}>
-                      <IconComponent className={`w-6 h-6 ${isActive ? 'text-white' : 'text-white'}`} />
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-white/20 backdrop-blur-sm">
+                      <IconComponent className="w-6 h-6 text-white" />
                     </div>
-                    <span className={`text-sm font-medium ${isActive ? 'text-white/70' : 'text-gray-400'}`}>
+                    <span className="text-sm font-medium text-white/70">
                       {dept.services.length} services
                     </span>
                   </div>
 
                   {/* Department Name */}
-                  <h3 className={`text-xl font-bold mb-2 ${isActive ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
+                  <h3 className="text-xl font-bold mb-2 text-white">
                     {dept.name}
                   </h3>
 
                   {/* Description */}
-                  <p className={`text-sm mb-3 leading-relaxed ${
-                    isActive ? 'text-white/90' : 'text-gray-600 dark:text-gray-400'
-                  }`}>
+                  <p className="text-sm md:text-base mb-6 leading-relaxed text-white/90 line-clamp-6 flex-1">
                     {dept.description}
                   </p>
 
                   {/* Learn More Link */}
                   <Link
                     to={`/department/${dept.slug}`}
-                    className={`inline-flex items-center gap-2 font-semibold group ${
-                      isActive ? 'text-white' : 'text-gray-900 dark:text-white'
-                    }`}
+                    className="inline-flex items-center gap-2 font-semibold group text-white mt-auto pt-4 border-t border-white/10"
                   >
                     Learn More
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -197,39 +170,7 @@ const ExploreServices = () => {
           </div>
         </div>
 
-        {/* Navigation Controls - Below the progress bar */}
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <button
-            onClick={prevSlide}
-            className="p-3 rounded-full border-2 border-gray-900 text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white transition-all duration-300"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          
-          <span className="text-sm text-gray-500 min-w-[60px] text-center">
-            {activeIndex + 1} / {departmentData.length}
-          </span>
-          
-          <button
-            onClick={nextSlide}
-            className="p-3 rounded-full border-2 border-gray-900 text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white transition-all duration-300"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-          
-          {/* Play/Pause Button */}
-          <button
-            onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-            className={`p-3 rounded-full border-2 transition-all duration-300 ${
-              isAutoPlaying 
-                ? 'border-brand-blue text-brand-blue hover:bg-brand-gradient hover:text-white' 
-                : 'border-gray-400 text-gray-400 hover:bg-gray-400 hover:text-white'
-            }`}
-            title={isAutoPlaying ? 'Pause auto-scroll' : 'Play auto-scroll'}
-          >
-            {isAutoPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-          </button>
-        </div>
+
 
         {/* Stats */}
         <div className="mt-20 lg:mt-28 grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
@@ -241,13 +182,13 @@ const ExploreServices = () => {
           </div>
           <div className="text-center">
             <div className="text-4xl lg:text-5xl font-bold bg-brand-gradient bg-clip-text text-transparent">
-              77+
+              61+
             </div>
             <div className="text-gray-600 dark:text-gray-400 mt-2 text-base lg:text-lg">Services</div>
           </div>
           <div className="text-center">
             <div className="text-4xl lg:text-5xl font-bold bg-brand-gradient bg-clip-text text-transparent">
-              500+
+              200+
             </div>
             <div className="text-gray-600 dark:text-gray-400 mt-2 text-base lg:text-lg">Projects Delivered</div>
           </div>
