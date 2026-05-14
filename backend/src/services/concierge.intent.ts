@@ -8,6 +8,7 @@ export type Intent =
   | 'comparison'
   | 'roadmap'
   | 'lead'
+  | 'scheduling'
   | 'other';
 
 interface RuleSet {
@@ -16,6 +17,12 @@ interface RuleSet {
 }
 
 const RULES: RuleSet[] = [
+  {
+    intent: 'scheduling',
+    patterns: [
+      /\b(book (a )?(call|consultation|meeting|demo)|schedule (a )?(call|consultation|meeting|demo)|talk to (someone|a (consultant|sales|expert))|consultation|appointment|available|availability|slots?|tomorrow|next\s+week|this\s+week|monday|tuesday|wednesday|thursday|friday)\b/i,
+    ],
+  },
   {
     intent: 'pricing',
     patterns: [

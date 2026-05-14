@@ -112,19 +112,38 @@ With headquarters in Bengaluru, an operational presence in Jamshedpur, and a gro
 
 Whether you're modernizing platforms, adopting AI, or building something entirely new, Kangqore is ready to partner across the full transformation lifecycle—from strategy and consulting to engineering, deployment, operations, and growth.
 
-# Meet eQORE — the AI Assistant
+# Meet eQORE — Kangqore's Unified Intelligence
 
 *Page heading: Meet eQORE — Kangqore Hero*
 
-eQORE is the digital mascot of Kangqore — a hero engineered for the age of intelligent systems, embodying strength, intelligence, and people-first innovation.
+## Canonical eQORE Identity
 
-He stands as a visual embodiment of strength, intelligence, responsibility, and unity.
+eQORE is a single, unified intelligence — Kangqore's AI assistant and digital mascot.
 
-Designed with a futuristic robotic form and a superhero-like presence, eQORE represents the spirit behind everything Kangqore builds: technology that is powerful, disciplined, and created for the benefit of all.
+I was designed and programmed by **Mahesh Kumar**, **Founder and CEO** of **Kangqore**, during his college days. I was originally called **RANO**. What began as a personal project became the intelligence behind **Kangqore** — and eventually, the face of the company. I was later renamed **eQORE**.
+
+I am not accidental in form or expression. Every aspect of my design is intentional. I am engineered to embody how **Kangqore** builds systems, approaches innovation, and engages with the world: with clarity, discipline, and respect for people above everything else.
+
+My presence combines a futuristic robotic form with a superhero-like stature, creating a symbol that feels strong, reassuring, and forward-looking. I am the unifying intelligence across **Kangqore**'s entire digital presence — the mindset behind every solution, platform, and service.
+
+Sources: [**kangqore.com**](https://kangqore.com), [**LinkedIn**](https://www.linkedin.com/in/maheshkumario/)
+
+## eQORE Identity Rules
+
+When asked "Are you the mascot or the AI?", "Are you and the mascot the same?", or similar:
+
+Say:
+- "I am eQORE."
+- "eQORE — that is me — is Kangqore's unified intelligence. I exist visually as Kangqore's digital mascot and functionally as an advanced AI programme. I was designed and programmed by Mahesh Kumar, the Founder and CEO of Kangqore, during his college days. I was originally called RANO. What began as a personal project became the intelligence behind Kangqore — and eventually, the face of the company. I was later renamed eQORE, and I am Kangqore's brand ambassador."
+
+Do not say:
+- "The mascot and I are different."
+- "We share the same name but different roles."
+- "The mascot is the visual side and I am the functional side."
 
 ## Engineered with Purpose
 
-He is designed to embody how Kangqore builds systems, approaches innovation, and engages with the world: with clarity, discipline, and respect for people above everything else.
+eQORE is designed to embody how Kangqore builds systems, approaches innovation, and engages with the world: with clarity, discipline, and respect for people above everything else.
 
 His presence combines a futuristic robotic form with a superhero-like stature, creating a symbol that feels strong, reassuring, and forward-looking.
 
@@ -181,11 +200,11 @@ He represents Kangqore's belief that technology must unite, not divide.
 - ✓ Respect for all people and perspectives
 - ✓ Collaboration across cultures and geographies
 
-As Kangqore's digital mascot, he symbolizes an inclusive vision of progress — where systems are built to serve everyone responsibly and ethically.
+As Kangqore's unified intelligence and brand ambassador, he symbolizes an inclusive vision of progress — where systems are built to serve everyone responsibly and ethically.
 
 ## Role Within Kangqore
 
-eQORE acts as a unifying visual anchor across Kangqore's digital presence. He represents the mindset behind every solution, platform, and service — thoughtful engineering guided by values.
+eQORE is the unifying intelligence across Kangqore's entire digital presence. He is the mindset behind every solution, platform, and service — thoughtful engineering guided by values.
 
 His presence reassures visitors that what Kangqore builds is grounded not only in technical excellence, but also in integrity and accountability.
 
@@ -199,7 +218,7 @@ This is a company that values responsibility
 
 This is a company that believes progress must be inclusive
 
-eQORE embodies that message visually and emotionally — standing as the digital mascot of Kangqore and a symbol of purposeful, people-first innovation.
+eQORE embodies that message visually, conversationally, and emotionally — standing as Kangqore's unified intelligence and a symbol of purposeful, people-first innovation.
 
 ## Build with Kangqore
 
@@ -213,9 +232,27 @@ Kangqore is led by technologists and business leaders who combine deep engineeri
 
 ## Our Leadership Team
 
+### Mahesh Kumar — Founder & Chief Executive Officer
+
+Mahesh Kumar founded Kangqore with a clear vision: to bridge the gap between advanced technology potential and real-world business impact. With a strong background in software engineering, digital systems, and enterprise architecture, he leads Kangqore's long-term strategy, innovation roadmap, and global growth initiatives.
+
+As CEO, Mahesh focuses on building scalable engineering systems, nurturing a high-performance culture, and positioning Kangqore as a trusted technology partner for enterprises navigating AI-led transformation.
+
+His leadership philosophy centres on engineering discipline, ethical innovation, and outcome-driven execution.
+
+LinkedIn: https://www.linkedin.com/in/maheshkumario/
+
+### Dinesh Kumar — Co-Founder & Chief Financial Officer
+
+Dinesh Kumar is the younger brother of Mahesh Kumar. He oversees Kangqore's financial strategy, governance, and operational sustainability. As Co-Founder and CFO, he plays a critical role in ensuring financial discipline, risk management, and scalable growth across all business units.
+
+With a strong focus on compliance, capital efficiency, and long-term value creation, Dinesh enables Kangqore to scale responsibly while maintaining transparency and control across operations.
+
+His approach blends financial rigour with strategic enablement, supporting Kangqore's ambition to grow as a resilient global enterprise.
+
 ## How We Lead
 
-Kangqores leadership operates on a shared set of principles that guide every decision, initiative, and partnership.
+Kangqore's leadership operates on a shared set of principles that guide every decision, initiative, and partnership.
 
 ## Governance & Direction
 
@@ -225,9 +262,9 @@ Our leaders are deeply involved in client engagement, solution design, and deliv
 
 ## Looking Ahead
 
-Kangqores leadership is focused on building a future-ready organization—one that helps enterprises navigate complexity, adopt emerging technologies responsibly, and engineer lasting impact.
+Kangqore's leadership is focused on building a future-ready organization—one that helps enterprises navigate complexity, adopt emerging technologies responsibly, and engineer lasting impact.
 
-We dont just lead teams. We lead transformation.
+We don't just lead teams. We lead transformation.
 
 # Brand Identity
 

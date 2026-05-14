@@ -48,6 +48,7 @@ import clientProfileRoutes from './routes/clientProfile'; // NEW (MNC Pillar 1)
 import accountabilityRoutes from './routes/accountability'; // NEW (MNC Shared Layer)
 import feedbackRoutes from './routes/feedback'; // NEW
 import schedulingRoutes from './routes/scheduling';
+import { eqorePublicRoutes } from './eqore/routes';
 
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
@@ -155,6 +156,7 @@ import adminStrategyRoutes from './routes/admin-strategy'; // Phase 4
 app.use('/api/admin/clients', adminStrategyRoutes); 
 app.use('/api/feedback', feedbackRoutes); // NEW
 app.use('/api/scheduling', schedulingRoutes);
+app.use('/api/eqore', eqorePublicRoutes);
 
 import servicesRoutes from './routes/services'; // Phase 3
 app.use('/api/services', servicesRoutes); 
