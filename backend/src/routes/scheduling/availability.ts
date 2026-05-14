@@ -148,6 +148,7 @@ router.get('/summary/:slug', async (req, res, next) => {
  */
 router.get('/', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const schedules = await prisma.availabilitySchedule.findMany({
       where: { userId: req.user.id },
       orderBy: { isDefault: 'desc' }
@@ -164,6 +165,7 @@ router.get('/', authenticate, async (req: AuthRequest, res, next) => {
  */
 router.post('/', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const { error, value } = scheduleSchema.validate(req.body);
     if (error) throw createError(error.details[0].message, 400);
 
@@ -194,6 +196,7 @@ router.post('/', authenticate, async (req: AuthRequest, res, next) => {
  */
 router.put('/:id', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const { error, value } = scheduleSchema.validate(req.body);
     if (error) throw createError(error.details[0].message, 400);
 

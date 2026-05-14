@@ -44,6 +44,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
  */
 router.get('/', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const events = await prisma.scheduledEvent.findMany({
       where: { hostId: req.user.id },
       include: {
@@ -64,6 +65,7 @@ router.get('/', authenticate, async (req: AuthRequest, res, next) => {
  */
 router.get('/:id', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const event = await prisma.scheduledEvent.findUnique({
       where: { id: req.params.id },
       include: {
@@ -92,6 +94,7 @@ router.get('/:id', authenticate, async (req: AuthRequest, res, next) => {
  */
 router.post('/:id/cancel', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const { reason } = req.body;
     const event = await prisma.scheduledEvent.findUnique({
       where: { id: req.params.id }
@@ -115,6 +118,7 @@ router.post('/:id/cancel', authenticate, async (req: AuthRequest, res, next) => 
  */
 router.get('/:id/invitees', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const event = await prisma.scheduledEvent.findUnique({
       where: { id: req.params.id }
     });
@@ -139,6 +143,7 @@ router.get('/:id/invitees', authenticate, async (req: AuthRequest, res, next) =>
  */
 router.post('/:id/no-show', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const { inviteeId } = req.body;
     const event = await prisma.scheduledEvent.findUnique({
       where: { id: req.params.id }
@@ -174,6 +179,7 @@ router.post('/:id/no-show', authenticate, async (req: AuthRequest, res, next) =>
  */
 router.delete('/:id/no-show', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const event = await prisma.scheduledEvent.findUnique({
       where: { id: req.params.id }
     });

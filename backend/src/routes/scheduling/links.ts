@@ -24,6 +24,7 @@ const linkSchema = Joi.object({
  */
 router.get('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const links = await prisma.schedulingLink.findMany({
       where: { ownerId: req.user.id },
       include: { eventType: true },
@@ -41,6 +42,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response, next: Next
  */
 router.post('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const { error, value } = linkSchema.validate(req.body);
     if (error) throw createError(error.details[0].message, 400);
 
@@ -73,6 +75,7 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response, next: Nex
  */
 router.delete('/:id', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const link = await prisma.schedulingLink.findUnique({
       where: { id: req.params.id }
     });

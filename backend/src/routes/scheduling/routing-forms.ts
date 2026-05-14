@@ -42,6 +42,7 @@ const routingFormSchema = Joi.object({
  */
 router.get('/', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const forms = await prisma.routingForm.findMany({
       where: { ownerId: req.user.id },
       orderBy: { createdAt: 'desc' }
@@ -108,7 +109,7 @@ router.post('/:slug/submit', async (req: Request, res, next) => {
         answers,
         submitterName: name,
         submitterEmail: email,
-        routedToEventTypeId
+        routedToEventTypeId: routedEventTypeId
       }
     });
 
@@ -131,6 +132,7 @@ router.post('/:slug/submit', async (req: Request, res, next) => {
  */
 router.post('/', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const { error, value } = routingFormSchema.validate(req.body);
     if (error) throw createError(error.details[0].message, 400);
 

@@ -13,6 +13,7 @@ const router = Router();
  */
 router.get('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const membership = await prisma.orgMembership.findFirst({
       where: { userId: req.user.id },
       include: { organization: true }
@@ -34,6 +35,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response, next: Next
  */
 router.get('/members', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const membership = await prisma.orgMembership.findFirst({
       where: { userId: req.user.id }
     });
@@ -57,8 +59,9 @@ router.get('/members', authenticate, async (req: AuthRequest, res, next) => {
  */
 router.post('/invitations', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const { email, role } = req.body;
-    
+
     const membership = await prisma.orgMembership.findFirst({
       where: { userId: req.user.id, role: { in: ['OWNER', 'ADMIN'] } }
     });
@@ -88,6 +91,7 @@ router.post('/invitations', authenticate, async (req: AuthRequest, res, next) =>
  */
 router.delete('/members/:id', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const targetMembershipId = req.params.id;
 
     const myMembership = await prisma.orgMembership.findFirst({

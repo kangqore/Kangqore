@@ -41,6 +41,7 @@ const eventTypeSchema = Joi.object({
  */
 router.get('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const eventTypes = await prisma.eventType.findMany({
       where: { hostId: req.user.id },
       orderBy: { createdAt: 'desc' }
@@ -86,6 +87,7 @@ router.get('/:slug', async (req: Request, res: Response, next: NextFunction) => 
  */
 router.post('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const { error, value } = eventTypeSchema.validate(req.body);
     if (error) {
       throw createError(error.details[0].message, 400);
@@ -120,6 +122,7 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response, next: Nex
  */
 router.put('/:id', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const { error, value } = eventTypeSchema.validate(req.body);
     if (error) {
       throw createError(error.details[0].message, 400);
@@ -164,6 +167,7 @@ router.put('/:id', authenticate, async (req: AuthRequest, res: Response, next: N
  */
 router.delete('/:id', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) return res.sendStatus(401);
     const eventType = await prisma.eventType.findUnique({
       where: { id: req.params.id }
     });
