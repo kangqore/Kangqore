@@ -20,10 +20,16 @@ export const coreSEO = {
     url: '/about-us',
   },
   services: {
-    title: 'Our Services — 15 Departments · 61 Services',
-    description: 'Explore Kangqore\'s full-spectrum digital capabilities: AI & Cognitive, Cloud Engineering, Cybersecurity, Digital Transformation, and 11 more departments.',
-    keywords: 'IT services, AI services, cloud services, digital transformation services, enterprise technology',
+    title: 'Services — 6 Departments · 61 Services',
+    description: 'Explore Kangqore\'s 61 services across 6 departments: AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
+    keywords: 'IT services, AI services, cloud services, digital transformation, enterprise technology, Kangqore departments',
     url: '/services',
+  },
+  departments: {
+    title: 'Departments — 6 Departments · 61 Services',
+    description: '6 Kangqore departments · 61 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
+    keywords: 'Kangqore departments, AI department, cloud department, modernization department, security department, enterprise platforms, growth department',
+    url: '/departments',
   },
   contact: {
     title: 'Contact Us — Talk to Our Experts',
@@ -139,8 +145,12 @@ export const contentSEO = {
   },
 };
 
-// ─── Department Pages ──────────────────────────────────────────────────────────
-export const departmentSEO = {
+// ─── Department Pages (LEGACY — 15-department structure) ──────────────────────
+// ⚠️  DEPRECATED. Retained only so legacy /department/<slug> URLs render until
+// engineering wires the 301 redirects in `legacyRedirects` (see bottom of file).
+// New canonical SEO lives in `departmentSEO` below.
+// ────────────────────────────────────────────────────────────────────────────────
+export const legacyDepartmentSEO = {
   'ai-cognitive': {
     title: 'AI & Cognitive Computing Services',
     description: 'Enterprise AI solutions: Agentic AI, GenAI, MLOps, AI Governance, Data Science, and Cognitive Computing. Build intelligent systems that scale.',
@@ -295,41 +305,564 @@ export const authSEO = {
   resetPassword: { title: 'Reset Password', description: 'Set a new password for your Kangqore account.', noindex: true },
 };
 
-// ─── Service Pages (Granular) ──────────────────────────────────────────────────
-export const serviceSEO = {
-  // AI & Cognitive
-  'agentic-ai': {
-    title: 'Agentic AI — Autonomous Intelligent Agents',
-    description: 'Build autonomous AI agents that can reason, plan, and execute complex tasks. Enterprise-grade agentic AI systems for autonomous business operations.',
-    keywords: 'agentic AI, autonomous agents, AI reasoning, AI planning, intelligent agents',
+// ─── Department Pages (6 Canonical Departments) ────────────────────────────────
+// New canonical structure. Each department page lives at /departments/<slug>.
+// See departmentsData.js for the source-of-truth department metadata.
+// ────────────────────────────────────────────────────────────────────────────────
+export const departmentSEO = {
+  cognition: {
+    title: 'Kangqore Cognition Department — AI, Data & Automation',
+    description: '11 AI, data, and automation services — agentic AI, GenAI, MLOps, analytics, and intelligent automation. Powered by eQORE™.',
+    keywords: 'agentic AI services, GenAI consulting, MLOps, data science, RPA, intelligent automation, eQORE, Kangqore Cognition',
+    url: '/departments/cognition',
   },
-  'genai-business-services': {
-    title: 'Generative AI for Business — GenAI Services',
-    description: 'Transform your business with Generative AI: LLMs, custom model fine-tuning, and AI-driven content generation for enterprise scale.',
-    keywords: 'generative AI, GenAI services, LLM implementation, custom AI models',
+  foundry: {
+    title: 'Kangqore Foundry Department — Cloud, Engineering & Infrastructure',
+    description: '17 cloud, engineering, and infrastructure services — AWS, Azure, GCP, DevOps, embedded systems, IoT. Powered by Engineering Foundry™.',
+    keywords: 'cloud engineering, AWS consulting, Azure services, GCP, DevOps, infrastructure, product engineering, Kangqore Foundry',
+    url: '/departments/foundry',
   },
-  'mlops': {
-    title: 'MLOps Services — Scalable Machine Learning Operations',
-    description: 'Streamline your machine learning lifecycle with MLOps: automated pipelines, model versioning, monitoring, and continuous training.',
-    keywords: 'MLOps, machine learning operations, model deployment, ML pipelines',
+  reimagine: {
+    title: 'Kangqore Reimagine Department — Modernization & Transformation',
+    description: '12 modernization and transformation services — application modernization, legacy migration, digital transformation. The Kangqore Modernization Playbook™.',
+    keywords: 'application modernization, legacy modernization, digital transformation, technology consulting, MVP acceleration, blockchain',
+    url: '/departments/reimagine',
   },
-  // Cloud Engineering
-  'aws': {
-    title: 'AWS Cloud Services — Amazon Web Services Experts',
-    description: 'Expert AWS consulting, architecture, migration, and managed services. Optimize your enterprise workload on Amazon Web Services.',
-    keywords: 'AWS services, Amazon Web Services consulting, AWS migration, AWS architecture',
+  shield: {
+    title: 'Kangqore Shield Department — Security, Risk & Trust',
+    description: 'Cybersecurity, AI governance, finance & risk, quality engineering, and OT security — 5 services under Shield™ Trust & Governance Framework.',
+    keywords: 'cybersecurity, AI governance, finance risk management, quality engineering, OT security, trust framework, Kangqore Shield',
+    url: '/departments/shield',
   },
-  'google-cloud-services': {
-    title: 'Google Cloud Platform (GCP) Services',
-    description: 'Leverage Google Cloud for data analytics, machine learning, and scalable enterprise applications. Expert GCP implementation and management.',
-    keywords: 'Google Cloud, GCP services, BigQuery, Google Cloud consulting',
+  platforms: {
+    title: 'Kangqore Platforms Department — Enterprise Applications & Operations',
+    description: '8 enterprise platform services — Salesforce, ServiceNow, Pimcore, GCC, Supply Chain, USM. Implemented in 12 weeks, run with SLA.',
+    keywords: 'Salesforce implementation, ServiceNow, Pimcore, enterprise platform integration, GCC, supply chain, Kangqore Platforms',
+    url: '/departments/platforms',
   },
-  // Conversion Engineering
-  'conversion-rate-optimization': {
-    title: 'CRO Services — Conversion Rate Optimization',
-    description: 'Maximize your digital revenue with data-driven CRO: A/B testing, user psychology, friction audits, and growth engineering.',
-    keywords: 'CRO services, conversion rate optimization, A/B testing, growth engineering',
+  growth: {
+    title: 'Kangqore Growth Department — Marketing, Visibility & Conversion',
+    description: '8 growth services — CDP, Marketing AI, SEO, Performance Marketing, CRO. Pipeline you can attribute, not traffic you can boast about. KVIS™.',
+    keywords: 'CDP strategy, marketing AI, SEO, performance marketing, CRO, growth funnels, conversion engineering, KVIS, Kangqore Growth',
+    url: '/departments/growth',
   },
 };
 
-export default { coreSEO, contentSEO, departmentSEO, industrySEO, serviceSEO, authSEO };
+// ─── Service Pages (61 services — flat /services/<slug>) ───────────────────────
+// Source-of-truth: servicesData.js. SEO titles follow the formula:
+//   [Service Name] — [Department ShortName] | Kangqore
+// Descriptions: 140–155 chars, outcome-led, banner-brand-anchored.
+// ────────────────────────────────────────────────────────────────────────────────
+export const serviceSEO = {
+
+  // ─── Cognition (11) ──
+  'agentic-ai': {
+    title: 'Agentic AI — Cognition | Kangqore',
+    description: 'Autonomous AI agents that reason, plan, and execute complex tasks — governed, observable, human-in-the-loop. Built by Kangqore Cognition (eQORE™).',
+    keywords: 'agentic AI, autonomous AI agents, AI reasoning, multi-step AI, human-in-the-loop AI, eQORE',
+    url: '/services/agentic-ai',
+  },
+  'ai-cognitive-computing': {
+    title: 'AI & Cognitive Computing — Cognition | Kangqore',
+    description: 'Cognitive computing systems that understand, reason, and learn from data — natural language understanding, pattern recognition, and machine reasoning.',
+    keywords: 'cognitive computing, natural language understanding, machine reasoning, pattern recognition, cognitive AI',
+    url: '/services/ai-cognitive-computing',
+  },
+  'data-science-ai': {
+    title: 'Data Science & AI — Cognition | Kangqore',
+    description: 'Data science with AI: predictive modeling, statistical analysis, feature engineering, and model deployment — turn data into business decisions.',
+    keywords: 'data science, predictive modeling, AI modeling, feature engineering, model deployment, data visualization',
+    url: '/services/data-science-ai',
+  },
+  'genai-business-services': {
+    title: 'GenAI Business Services — Cognition | Kangqore',
+    description: 'Generative AI for the enterprise — LLM implementation, custom fine-tuning, content & code generation, and enterprise AI assistants. Powered by eQORE™.',
+    keywords: 'generative AI, GenAI services, LLM implementation, custom AI fine-tuning, enterprise AI assistants',
+    url: '/services/genai-business-services',
+  },
+  'mlops': {
+    title: 'MLOps — Cognition | Kangqore',
+    description: 'Production-grade MLOps — model versioning, automated pipelines, continuous training, monitoring, and feature stores for the full ML lifecycle.',
+    keywords: 'MLOps, machine learning operations, model deployment, ML pipelines, model monitoring, feature stores',
+    url: '/services/mlops',
+  },
+  'analytics': {
+    title: 'Analytics — Cognition | Kangqore',
+    description: 'End-to-end analytics — business intelligence, dashboards, KPI tracking, self-service analytics, and data storytelling for measurable decision-making.',
+    keywords: 'business analytics, business intelligence, dashboards, KPI tracking, self-service analytics, data storytelling',
+    url: '/services/analytics',
+  },
+  'big-data': {
+    title: 'Big Data — Cognition | Kangqore',
+    description: 'Big data platforms at scale — data lakes, distributed processing, real-time streaming, data warehousing, and ETL pipelines for enterprise workloads.',
+    keywords: 'big data, data lakes, distributed processing, real-time streaming, data warehousing, ETL pipelines',
+    url: '/services/big-data',
+  },
+  'digital-process-automation': {
+    title: 'Digital Process Automation (DPA) — Cognition | Kangqore',
+    description: 'Digital process automation — process discovery, workflow automation, integration, monitoring, and continuous optimization for operational efficiency.',
+    keywords: 'digital process automation, DPA, workflow automation, process discovery, business process automation',
+    url: '/services/digital-process-automation',
+  },
+  'robotic-process-automation': {
+    title: 'Robotic Process Automation (RPA) — Cognition | Kangqore',
+    description: 'Enterprise RPA — bot development, attended and unattended automation, bot monitoring, and CoE setup for rule-based business processes.',
+    keywords: 'robotic process automation, RPA services, software bots, attended automation, unattended automation, RPA CoE',
+    url: '/services/robotic-process-automation',
+  },
+  'business-process-management': {
+    title: 'Business Process Management — Cognition | Kangqore',
+    description: 'Enterprise BPM — process modeling, workflow automation, process orchestration, business rules, and analytics for end-to-end process excellence.',
+    keywords: 'business process management, BPM, process modeling, workflow automation, process orchestration',
+    url: '/services/business-process-management',
+  },
+  'intelligent-automation': {
+    title: 'Intelligent Automation — Cognition | Kangqore',
+    description: 'AI-powered automation — AI decision automation, NLP integration, document intelligence, cognitive automation, and process orchestration combined.',
+    keywords: 'intelligent automation, AI automation, cognitive automation, document intelligence, NLP automation',
+    url: '/services/intelligent-automation',
+  },
+
+  // ─── Foundry (17) ──
+  'managed-cloud-services': {
+    title: 'Managed Cloud Services — Foundry | Kangqore',
+    description: 'End-to-end managed cloud — 24/7 monitoring, cost optimization, security management, performance tuning, and compliance support across hyperscalers.',
+    keywords: 'managed cloud services, cloud management, cloud monitoring, cloud cost optimization, cloud security',
+    url: '/services/managed-cloud-services',
+  },
+  'aws': {
+    title: 'AWS — Foundry | Kangqore',
+    description: 'Expert AWS services — architecture, migration, cost optimization, security best practices, and DevOps on AWS for enterprise workloads.',
+    keywords: 'AWS services, Amazon Web Services consulting, AWS architecture, AWS migration, AWS DevOps',
+    url: '/services/aws',
+  },
+  'microsoft-services': {
+    title: 'Microsoft Services — Foundry | Kangqore',
+    description: 'Microsoft cloud services — Azure implementation, Microsoft 365, Power Platform, Dynamics 365, and Microsoft security & compliance.',
+    keywords: 'Microsoft Azure, Azure consulting, Microsoft 365, Power Platform, Dynamics 365',
+    url: '/services/microsoft-services',
+  },
+  'google-cloud-services': {
+    title: 'Google Cloud Services — Foundry | Kangqore',
+    description: 'Google Cloud Platform expertise — GCP architecture, BigQuery analytics, AI/ML on GCP, Kubernetes (GKE), and data solutions.',
+    keywords: 'Google Cloud, GCP services, BigQuery, GKE, AI on GCP, GCP data solutions',
+    url: '/services/google-cloud-services',
+  },
+  'cloud-computing': {
+    title: 'Cloud Computing — Foundry | Kangqore',
+    description: 'Multi-cloud and hybrid cloud strategy — cloud strategy, multi-cloud management, hybrid solutions, cloud native development, and FinOps.',
+    keywords: 'cloud computing, multi-cloud strategy, hybrid cloud, cloud native development, FinOps',
+    url: '/services/cloud-computing',
+  },
+  'embedded-design-systems': {
+    title: 'Embedded Design Systems & IT/OT — Foundry | Kangqore',
+    description: 'Embedded systems and IT/OT convergence — firmware development, IT/OT integration, IoT connectivity, and edge computing for industrial use.',
+    keywords: 'embedded systems, IT/OT convergence, firmware development, IoT connectivity, edge computing',
+    url: '/services/embedded-design-systems',
+  },
+  'engineering-foundry': {
+    title: 'Engineering Foundry — Foundry | Kangqore',
+    description: 'Engineering Foundry™ — rapid prototyping, innovation sprints, technical POCs, experimentation, and technology scouting with embedded engineering pods.',
+    keywords: 'engineering foundry, embedded engineering pods, rapid prototyping, innovation sprints, technical POCs',
+    url: '/services/engineering-foundry',
+  },
+  'engineering-rd-services': {
+    title: 'Engineering R&D Services — Foundry | Kangqore',
+    description: 'Engineering R&D — technology research, innovation labs, IP development, patent support, and academic partnerships for product innovation.',
+    keywords: 'engineering R&D, technology research, innovation labs, IP development, patent support',
+    url: '/services/engineering-rd-services',
+  },
+  'product-digital-engineering': {
+    title: 'Product Digital Engineering — Foundry | Kangqore',
+    description: 'Digital engineering for connected products — product digitization, connected products, digital twins, smart features, and data integration.',
+    keywords: 'product digital engineering, connected products, digital twins, smart products, product digitization',
+    url: '/services/product-digital-engineering',
+  },
+  'devops-as-a-service': {
+    title: 'DevOps as a Service (DaaS) — Foundry | Kangqore',
+    description: 'Managed DevOps — CI/CD pipelines, infrastructure as code, container orchestration, monitoring, and SRE practices for faster, reliable delivery.',
+    keywords: 'DevOps as a service, DaaS, CI/CD pipelines, infrastructure as code, container orchestration, SRE',
+    url: '/services/devops-as-a-service',
+  },
+  'managed-infrastructure-services': {
+    title: 'Managed Infrastructure Services — Foundry | Kangqore',
+    description: 'End-to-end managed infrastructure — 24/7 monitoring, incident management, capacity planning, performance optimization, and automation.',
+    keywords: 'managed infrastructure, infrastructure monitoring, incident management, capacity planning, IT automation',
+    url: '/services/managed-infrastructure-services',
+  },
+  'modernization-infrastructure': {
+    title: 'Modernization Infrastructure — Foundry | Kangqore',
+    description: 'Modernize legacy infrastructure — assessment, modernization roadmap, cloud migration, hybrid infrastructure, and infrastructure as code (IaC).',
+    keywords: 'infrastructure modernization, cloud migration, hybrid infrastructure, infrastructure as code, IaC',
+    url: '/services/modernization-infrastructure',
+  },
+  'managed-services': {
+    title: 'Managed Services — Foundry | Kangqore',
+    description: 'Full suite of managed IT services — service desk, application management, infrastructure management, security services, and cloud management.',
+    keywords: 'managed IT services, service desk, application management, infrastructure management, cloud management',
+    url: '/services/managed-services',
+  },
+  'support-maintenance': {
+    title: 'Support & Maintenance — Foundry | Kangqore',
+    description: 'Ongoing support and maintenance — helpdesk support, application support, system maintenance, patch management, and SLA management.',
+    keywords: 'support maintenance, helpdesk support, application support, patch management, SLA management',
+    url: '/services/support-maintenance',
+  },
+  'software-development': {
+    title: 'Software Development — Foundry | Kangqore',
+    description: 'Custom software development — full-stack development, agile methodology, code quality, CI/CD, and documentation tailored to your business needs.',
+    keywords: 'software development, custom software, full-stack development, agile development, CI/CD',
+    url: '/services/software-development',
+  },
+  'api-microservices-engineering': {
+    title: 'API & Microservices Engineering — Foundry | Kangqore',
+    description: 'API-first and microservices — API design, microservices architecture, API gateway, service mesh, and API management for scalable applications.',
+    keywords: 'API engineering, microservices architecture, API gateway, service mesh, API management',
+    url: '/services/api-microservices-engineering',
+  },
+  'internet-of-things': {
+    title: 'Internet of Things (IoT) — Foundry | Kangqore',
+    description: 'End-to-end IoT — IoT architecture, device connectivity, IoT analytics, platform integration, and security for connected device ecosystems.',
+    keywords: 'Internet of Things, IoT services, IoT platform, IoT analytics, device connectivity, IoT security',
+    url: '/services/internet-of-things',
+  },
+
+  // ─── Reimagine (12) ──
+  'application-modernization': {
+    title: 'Application Modernization — Reimagine | Kangqore',
+    description: 'Modernize legacy applications — legacy assessment, re-platforming, re-architecting, containerization, and API enablement. The Modernization Playbook™.',
+    keywords: 'application modernization, re-platforming, re-architecting, containerization, API enablement',
+    url: '/services/application-modernization',
+  },
+  'digital-transformation': {
+    title: 'Digital Transformation — Reimagine | Kangqore',
+    description: 'End-to-end digital transformation — digital strategy, operating model design, technology enablement, change management, and value realization.',
+    keywords: 'digital transformation, digital strategy, operating model design, change management, value realization',
+    url: '/services/digital-transformation',
+  },
+  'legacy-modernization': {
+    title: 'Legacy Modernization — Reimagine | Kangqore',
+    description: 'Modernize aging systems — assessment, migration planning, data migration, testing, and cutover management. Risk-managed, fixed-bid waves.',
+    keywords: 'legacy modernization, system migration, data migration, technical debt reduction, cutover management',
+    url: '/services/legacy-modernization',
+  },
+  'technology-modernization': {
+    title: 'Technology Modernization — Reimagine | Kangqore',
+    description: 'Modernize your technology stack — technology assessment, roadmap development, implementation, integration, and optimization.',
+    keywords: 'technology modernization, tech stack modernization, IT modernization, technology roadmap',
+    url: '/services/technology-modernization',
+  },
+  'technology-transformation': {
+    title: 'Technology Transformation — Reimagine | Kangqore',
+    description: 'Fundamental technology change — vision and strategy, architecture design, transformation execution, change enablement, and value measurement.',
+    keywords: 'technology transformation, IT transformation, architecture transformation, change enablement',
+    url: '/services/technology-transformation',
+  },
+  'digital-business-transformation': {
+    title: 'Digital Business Transformation — Reimagine | Kangqore',
+    description: 'Reimagine business models — business model innovation, digital products, customer experience, operational excellence, and data monetization.',
+    keywords: 'digital business transformation, business model innovation, digital products, customer experience, data monetization',
+    url: '/services/digital-business-transformation',
+  },
+  'technology-consulting': {
+    title: 'Technology Consulting — Reimagine | Kangqore',
+    description: 'Expert technology consulting — technology strategy, architecture advisory, vendor selection, technology roadmaps, and IT governance.',
+    keywords: 'technology consulting, IT advisory, architecture advisory, technology strategy, IT governance',
+    url: '/services/technology-consulting',
+  },
+  'strategy-consulting': {
+    title: 'Strategy Consulting — Reimagine | Kangqore',
+    description: 'Business and technology strategy — business strategy, digital strategy, market analysis, competitive positioning, and growth strategy.',
+    keywords: 'strategy consulting, business strategy, digital strategy, market analysis, growth strategy',
+    url: '/services/strategy-consulting',
+  },
+  'discover-frame-workshops': {
+    title: 'Discover & Frame Workshops — Reimagine | Kangqore',
+    description: 'Structured workshops — design thinking, problem framing, ideation, solution design, and roadmap development. The diagnostic entry-point.',
+    keywords: 'design thinking workshops, problem framing, ideation sessions, solution design, technology roadmaps',
+    url: '/services/discover-frame-workshops',
+  },
+  'mvp-acceleration': {
+    title: 'MVP Acceleration — Reimagine | Kangqore',
+    description: 'Rapid MVP build and validation — rapid prototyping, agile sprints, user validation, iterative development, and launch support.',
+    keywords: 'MVP development, MVP acceleration, rapid prototyping, agile sprints, product launch',
+    url: '/services/mvp-acceleration',
+  },
+  'product-strategy-experience-design': {
+    title: 'Product Strategy & Experience Design — Reimagine | Kangqore',
+    description: 'Product strategy and UX/UI — product vision, user research, UX/UI design, design systems, and usability testing for exceptional product experiences.',
+    keywords: 'product strategy, UX design, UI design, design systems, user research, usability testing',
+    url: '/services/product-strategy-experience-design',
+  },
+  'blockchain': {
+    title: 'Blockchain — Reimagine | Kangqore',
+    description: 'Blockchain solutions — blockchain strategy, smart contracts, private networks, DeFi, and supply chain transparency. Built for enterprise rigor.',
+    keywords: 'blockchain services, smart contracts, private blockchain, DeFi, supply chain blockchain',
+    url: '/services/blockchain',
+  },
+
+  // ─── Shield (5) ──
+  'it-security-services': {
+    title: 'IT Security Services — Shield | Kangqore',
+    description: 'Enterprise cybersecurity — security assessment, threat detection, incident response, security operations, and compliance management.',
+    keywords: 'IT security, cybersecurity, threat detection, incident response, security operations, compliance',
+    url: '/services/it-security-services',
+  },
+  'finance-risk-management': {
+    title: 'Finance & Risk Management — Shield | Kangqore',
+    description: 'Finance transformation and risk — risk assessment, compliance, financial planning, and audit support. Under Shield™ Trust & Governance Framework.',
+    keywords: 'finance risk management, financial controls, risk assessment, compliance, audit support',
+    url: '/services/finance-risk-management',
+  },
+  'ai-governance': {
+    title: 'AI Governance — Shield | Kangqore',
+    description: 'Responsible AI frameworks — ethical AI guidelines, bias detection and mitigation, model explainability, compliance monitoring, and risk assessment.',
+    keywords: 'AI governance, responsible AI, AI ethics, bias detection, model explainability, AI compliance',
+    url: '/services/ai-governance',
+  },
+  'quality-engineering-assurance': {
+    title: 'Quality Engineering & Assurance — Shield | Kangqore',
+    description: 'Quality engineering — test strategy, test automation, performance testing, security testing, and quality metrics for production-grade releases.',
+    keywords: 'quality engineering, test automation, performance testing, security testing, QA services',
+    url: '/services/quality-engineering-assurance',
+  },
+  'operation-technology': {
+    title: 'Operation Technology (OT) — Shield | Kangqore',
+    description: 'OT security and management — OT assessment, OT security, IT/OT convergence, SCADA systems, and industrial IoT for critical environments.',
+    keywords: 'operation technology, OT security, IT/OT convergence, SCADA, industrial IoT',
+    url: '/services/operation-technology',
+  },
+
+  // ─── Platforms (8) ──
+  'enterprise-platform-integration': {
+    title: 'Enterprise Platform Integration — Platforms | Kangqore',
+    description: 'Connect enterprise applications — integration strategy, API development, ESB implementation, data integration, and iPaaS solutions.',
+    keywords: 'enterprise integration, API integration, ESB, iPaaS, data integration, platform integration',
+    url: '/services/enterprise-platform-integration',
+  },
+  'pimcore': {
+    title: 'Pimcore — Platforms | Kangqore',
+    description: 'Pimcore PIM/DAM — PIM implementation, DAM setup, data modeling, integration, and custom development for product information and digital assets.',
+    keywords: 'Pimcore, PIM, DAM, product information management, digital asset management',
+    url: '/services/pimcore',
+  },
+  'salesforce': {
+    title: 'Salesforce — Platforms | Kangqore',
+    description: 'Salesforce implementation — Sales Cloud, Service Cloud, Marketing Cloud, custom development, and integration for customer-centric operations.',
+    keywords: 'Salesforce implementation, Sales Cloud, Service Cloud, Marketing Cloud, Salesforce consulting',
+    url: '/services/salesforce',
+  },
+  'servicenow': {
+    title: 'ServiceNow — Platforms | Kangqore',
+    description: 'ServiceNow implementation — ITSM, ITOM, HR Service Delivery, custom apps, and integration for unified enterprise service management.',
+    keywords: 'ServiceNow implementation, ITSM, ITOM, HR Service Delivery, ServiceNow consulting',
+    url: '/services/servicenow',
+  },
+  'global-capability-centers': {
+    title: 'Global Capability Centers (GCC) — Platforms | Kangqore',
+    description: 'Build and scale GCCs — GCC setup, operating model, talent management, process excellence, and technology enablement for global delivery.',
+    keywords: 'global capability centers, GCC setup, GCC operating model, GCC talent management',
+    url: '/services/global-capability-centers',
+  },
+  'talent-organization': {
+    title: 'Talent & Organization — Platforms | Kangqore',
+    description: 'Talent and org design — talent strategy, org design, change management, learning and development, and HR technology for workforce transformation.',
+    keywords: 'talent management, org design, change management, learning development, HR technology',
+    url: '/services/talent-organization',
+  },
+  'supply-chain': {
+    title: 'Supply Chain — Platforms | Kangqore',
+    description: 'Supply chain transformation — strategy, planning and forecasting, logistics optimization, visibility, and sustainability for resilient operations.',
+    keywords: 'supply chain transformation, supply chain strategy, demand forecasting, logistics optimization',
+    url: '/services/supply-chain',
+  },
+  'unified-services-management': {
+    title: 'Unified Services Management (USM) — Platforms | Kangqore',
+    description: 'Unified service management — service strategy, process design, tool implementation, governance, and continuous improvement for consistent delivery.',
+    keywords: 'unified services management, USM, service strategy, IT service management, ITIL',
+    url: '/services/unified-services-management',
+  },
+
+  // ─── Growth (8) ──
+  'cdp-strategy': {
+    title: 'Customer Data Strategy — Growth | Kangqore',
+    description: 'First-party customer data strategy — unified profiles, real-time segmentation, privacy & compliance, and cross-channel activation. KVIS™.',
+    keywords: 'customer data strategy, CDP strategy, first-party data, customer profiles, real-time segmentation',
+    url: '/services/cdp-strategy',
+  },
+  'marketing-ai-readiness': {
+    title: 'Marketing AI Readiness — Growth | Kangqore',
+    description: 'GenAI for marketing — creative ops audit, GenAI roadmap, content personalization at scale, workflow automation, and AI-driven asset generation.',
+    keywords: 'marketing AI, GenAI marketing, creative operations, content personalization, marketing workflow automation',
+    url: '/services/marketing-ai-readiness',
+  },
+  'social-media-management': {
+    title: 'Social Media Management — Growth | Kangqore',
+    description: 'Social media strategy and management — strategy development, content creation, community management, and analytics across all platforms.',
+    keywords: 'social media management, social strategy, content creation, community management, social analytics',
+    url: '/services/social-media-management',
+  },
+  'performance-marketing': {
+    title: 'Performance Marketing — Growth | Kangqore',
+    description: 'Data-driven performance marketing — PPC, social ads, retargeting, conversion optimization, and attribution for measurable pipeline.',
+    keywords: 'performance marketing, PPC, social ads, retargeting, conversion optimization, attribution modeling',
+    url: '/services/performance-marketing',
+  },
+  'seo-organic-growth-strategy': {
+    title: 'SEO & Organic Growth Strategy — Growth | Kangqore',
+    description: 'Technical SEO and organic growth — technical SEO, content clustering, off-page footprint, and Core Web Vitals for sustained search visibility.',
+    keywords: 'SEO, technical SEO, organic growth, content clustering, Core Web Vitals, search visibility',
+    url: '/services/seo-organic-growth-strategy',
+  },
+  'growth-funnels-conversion-engineering': {
+    title: 'Growth Funnels & Conversion Engineering — Growth | Kangqore',
+    description: 'Engineered growth funnels — funnel design, A/B testing, conversion optimization, growth hacking, and funnel analytics for maximum revenue.',
+    keywords: 'growth funnels, conversion engineering, A/B testing, funnel optimization, growth hacking',
+    url: '/services/growth-funnels-conversion-engineering',
+  },
+  'conversion-rate-optimization': {
+    title: 'Conversion Rate Optimization (CRO) — Growth | Kangqore',
+    description: 'Maximum yield from existing traffic — A/B testing, behavior analytics, heuristic analysis, and friction audits. Pipeline you can attribute.',
+    keywords: 'conversion rate optimization, CRO, A/B testing, behavior analytics, friction audits',
+    url: '/services/conversion-rate-optimization',
+  },
+  'campaign-planning': {
+    title: 'Campaign Planning — Growth | Kangqore',
+    description: 'Strategic campaign planning — campaign strategy, channel planning, creative development, execution, and continuous optimization.',
+    keywords: 'campaign planning, marketing campaigns, channel planning, creative development, campaign optimization',
+    url: '/services/campaign-planning',
+  },
+
+};
+
+// ─── Legacy Redirects (15 old departments + 61 old service paths) ──────────────
+// 301 redirect map: old URL → new URL.
+// Wire into the routing layer before launch (next.config.js / vercel.json /
+// React Router redirects / hosting redirects file).
+// See Section 19.7 of the plan for the rationale and full audit trail.
+// ────────────────────────────────────────────────────────────────────────────────
+export const legacyRedirects = {
+
+  // ─── 15 OLD DEPARTMENT URLs → 6 NEW PRACTICES ─────────────────────
+  '/department/ai-cognitive':                          '/departments/cognition',
+  '/department/analytics-insights':                    '/departments/cognition',
+  '/department/automation':                            '/departments/cognition',
+  '/department/cloud-engineering':                     '/departments/foundry',
+  '/department/cybersecurity':                         '/departments/shield',
+  '/department/digital-transformation-modernization':  '/departments/reimagine',
+  '/department/product-engineering':                   '/departments/foundry',
+  '/department/infrastructure-networks-operations':    '/departments/foundry',
+  '/department/consulting-advisory':                   '/departments/reimagine',
+  '/department/digital-engineering':                   '/departments/reimagine',
+  '/department/enterprise-applications':               '/departments/platforms',
+  '/department/emerging-technologies':                 '/departments/foundry',
+  '/department/business-operations':                   '/departments/platforms',
+  '/department/digital-marketing':                     '/departments/growth',
+  '/department/conversion-engineering':                '/departments/growth',
+
+  // ─── 61 OLD SERVICE URLs → FLAT NEW SERVICE URLs ──────────────────
+
+  // AI & Cognitive (6)
+  '/services/ai-cognitive/agentic-ai':                 '/services/agentic-ai',
+  '/services/ai-cognitive/ai-cognitive-computing':     '/services/ai-cognitive-computing',
+  '/services/ai-cognitive/ai-governance':              '/services/ai-governance',
+  '/services/ai-cognitive/data-science-ai':            '/services/data-science-ai',
+  '/services/ai-cognitive/genai-business-services':    '/services/genai-business-services',
+  '/services/ai-cognitive/mlops':                      '/services/mlops',
+
+  // Analytics & Insights (2)
+  '/services/analytics-insights/analytics':            '/services/analytics',
+  '/services/analytics-insights/big-data':             '/services/big-data',
+
+  // Cloud Engineering (5)
+  '/services/cloud-engineering/managed-cloud-services':'/services/managed-cloud-services',
+  '/services/cloud-engineering/aws':                   '/services/aws',
+  '/services/cloud-engineering/microsoft-services':    '/services/microsoft-services',
+  '/services/cloud-engineering/google-cloud-services': '/services/google-cloud-services',
+  '/services/cloud-engineering/cloud-computing':       '/services/cloud-computing',
+
+  // Cybersecurity (1)
+  '/services/cybersecurity/it-security-services':      '/services/it-security-services',
+
+  // Digital Transformation & Modernization (6)
+  '/services/digital-transformation-modernization/application-modernization':       '/services/application-modernization',
+  '/services/digital-transformation-modernization/digital-transformation':          '/services/digital-transformation',
+  '/services/digital-transformation-modernization/legacy-modernization':            '/services/legacy-modernization',
+  '/services/digital-transformation-modernization/technology-modernization':        '/services/technology-modernization',
+  '/services/digital-transformation-modernization/technology-transformation':       '/services/technology-transformation',
+  '/services/digital-transformation-modernization/digital-business-transformation': '/services/digital-business-transformation',
+
+  // Automation (4)
+  '/services/automation/digital-process-automation':   '/services/digital-process-automation',
+  '/services/automation/robotic-process-automation':   '/services/robotic-process-automation',
+  '/services/automation/business-process-management':  '/services/business-process-management',
+  '/services/automation/intelligent-automation':       '/services/intelligent-automation',
+
+  // Product Engineering (6)
+  '/services/product-engineering/embedded-design-systems':         '/services/embedded-design-systems',
+  '/services/product-engineering/engineering-foundry':             '/services/engineering-foundry',
+  '/services/product-engineering/engineering-rd-services':         '/services/engineering-rd-services',
+  '/services/product-engineering/product-digital-engineering':     '/services/product-digital-engineering',
+  '/services/product-engineering/quality-engineering-assurance':   '/services/quality-engineering-assurance',
+  '/services/product-engineering/devops-as-a-service':             '/services/devops-as-a-service',
+
+  // Infrastructure, Networks & Operations (5)
+  '/services/infrastructure-networks-operations/managed-infrastructure-services': '/services/managed-infrastructure-services',
+  '/services/infrastructure-networks-operations/modernization-infrastructure':    '/services/modernization-infrastructure',
+  '/services/infrastructure-networks-operations/managed-services':                '/services/managed-services',
+  '/services/infrastructure-networks-operations/support-maintenance':             '/services/support-maintenance',
+  '/services/infrastructure-networks-operations/operation-technology':            '/services/operation-technology',
+
+  // Consulting & Advisory (3)
+  '/services/consulting-advisory/technology-consulting':       '/services/technology-consulting',
+  '/services/consulting-advisory/strategy-consulting':         '/services/strategy-consulting',
+  '/services/consulting-advisory/discover-frame-workshops':    '/services/discover-frame-workshops',
+
+  // Digital Engineering (4)
+  '/services/digital-engineering/mvp-acceleration':                  '/services/mvp-acceleration',
+  '/services/digital-engineering/product-strategy-experience-design':'/services/product-strategy-experience-design',
+  '/services/digital-engineering/software-development':              '/services/software-development',
+  '/services/digital-engineering/api-microservices-engineering':     '/services/api-microservices-engineering',
+
+  // Enterprise Applications (4)
+  '/services/enterprise-applications/enterprise-platform-integration': '/services/enterprise-platform-integration',
+  '/services/enterprise-applications/pimcore':                         '/services/pimcore',
+  '/services/enterprise-applications/salesforce':                      '/services/salesforce',
+  '/services/enterprise-applications/servicenow':                      '/services/servicenow',
+
+  // Emerging Technologies (2)
+  '/services/emerging-technologies/blockchain':                    '/services/blockchain',
+  '/services/emerging-technologies/internet-of-things':            '/services/internet-of-things',
+
+  // Business Operations (5)
+  '/services/business-operations/finance-risk-management':         '/services/finance-risk-management',
+  '/services/business-operations/global-capability-centers':       '/services/global-capability-centers',
+  '/services/business-operations/talent-organization':             '/services/talent-organization',
+  '/services/business-operations/supply-chain':                    '/services/supply-chain',
+  '/services/business-operations/unified-services-management':     '/services/unified-services-management',
+
+  // Digital Marketing (5)
+  '/services/digital-marketing/cdp-strategy':                      '/services/cdp-strategy',
+  '/services/digital-marketing/marketing-ai-readiness':            '/services/marketing-ai-readiness',
+  '/services/digital-marketing/social-media-management':           '/services/social-media-management',
+  '/services/digital-marketing/performance-marketing':             '/services/performance-marketing',
+  '/services/digital-marketing/seo-organic-growth-strategy':       '/services/seo-organic-growth-strategy',
+
+  // Conversion Engineering (3)
+  '/services/conversion-engineering/growth-funnels-conversion-engineering': '/services/growth-funnels-conversion-engineering',
+  '/services/conversion-engineering/conversion-rate-optimization':          '/services/conversion-rate-optimization',
+  '/services/conversion-engineering/campaign-planning':                     '/services/campaign-planning',
+};
+
+// Tally: 15 department redirects + 61 service redirects = 76 rows total.
+
+export default {
+  coreSEO,
+  contentSEO,
+  departmentSEO,
+  legacyDepartmentSEO,    // legacy — retained until 301 redirects are wired
+  industrySEO,
+  serviceSEO,
+  authSEO,
+  legacyRedirects,
+};
