@@ -1,71 +1,136 @@
-// ─── /departments — Phase C Placeholder ────────────────────────────────────────
-// Minimal index page listing all 6 canonical departments.
-// Real template ships in Phase D (Section 21.3 of the project plan).
-// Phase C ships `<meta robots="noindex,follow">` to keep crawlers off until
-// the real template lands.
+// ─── /departments — Real index (Phase D) ──────────────────────────────────────
+// Replaces the Phase C placeholder. Indexable (no robots noindex).
+//
+// Visual structure per plan Section 21.3 / 21.7:
+//   6 department tiles, each with its own accent color + brand-pillar treatment.
 // ────────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { ArrowRight } from 'lucide-react';
 import { departmentsData, departmentsList } from '../data/departmentsData';
+import { servicesData } from '../data/servicesData';
+import { coreSEO } from '../data/seoData';
 
 const DepartmentsIndexPage = () => {
+  const seo = coreSEO.departments || {};
+
   return (
     <>
       <Helmet>
-        <title>Departments — 6 Departments · 61 Services | Kangqore</title>
-        <meta name="robots" content="noindex,follow" />
-        <meta
-          name="description"
-          content="6 Kangqore departments · 61 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth."
-        />
+        <title>{seo.title || 'Departments — 6 Departments · 61 Services | Kangqore'}</title>
+        <meta name="description" content={seo.description} />
+        {seo.keywords && <meta name="keywords" content={seo.keywords} />}
       </Helmet>
 
-      <div className="min-h-[60vh] max-w-5xl mx-auto px-6 py-16">
-        <p className="text-sm uppercase tracking-widest text-brand-blue mb-3">
-          Kangqore
-        </p>
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          6 Departments · 61 Services
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-12 max-w-3xl">
-          Explore Kangqore's six canonical departments, each organising the
-          services that drive intelligence-led execution.
-        </p>
+      <div className="max-w-6xl mx-auto px-6 py-16">
+        {/* Header */}
+        <header className="mb-14 max-w-3xl">
+          <p className="text-sm uppercase tracking-widest text-brand-blue mb-3">
+            Kangqore
+          </p>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5">
+            6 Departments · 61 Services
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+            One intelligence-led execution ecosystem, organised across six
+            specialised departments. Each department owns a clear capability
+            domain — AI, cloud, modernization, trust, enterprise platforms,
+            and growth.
+          </p>
+        </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* 6-card grid */}
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {departmentsList.map((slug) => {
             const d = departmentsData[slug];
+            const Icon = d.icon;
+            const top3 = (d.heroServiceSlugs || d.serviceSlugs.slice(0, 3))
+              .slice(0, 3)
+              .map((s) => servicesData[s])
+              .filter(Boolean);
+
             return (
-              <Link
-                key={slug}
-                to={`/departments/${slug}`}
-                className="block border border-gray-200 dark:border-gray-800 rounded-lg p-6 hover:border-gray-400 dark:hover:border-gray-600 transition-colors"
-              >
-                <div
-                  className="h-1 w-12 mb-4 rounded-full"
-                  style={{ backgroundColor: d.accentColor }}
-                />
-                <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">
-                  Kangqore
-                </p>
-                <h2 className="text-xl font-bold mb-1">{d.shortName}</h2>
-                <p className="text-sm text-gray-500 mb-3">{d.tagline}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                  {d.description}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {d.serviceCount} services · Featured: {d.bannerBrand}
-                </p>
-              </Link>
+              <li key={slug}>
+                <Link
+                  to={`/departments/${slug}`}
+                  className="block h-full border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-600 transition-colors group"
+                >
+                  {/* Accent bar */}
+                  <div
+                    className="h-1.5 w-full"
+                    style={{ backgroundColor: d.accentColor }}
+                    aria-hidden="true"
+                  />
+
+                  <div className="p-6">
+                    {/* Eyebrow + icon */}
+                    <div className="flex items-center gap-2 mb-3">
+                      {Icon && (
+                        <Icon
+                          className="w-5 h-5"
+                          style={{ color: d.accentColor }}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold">
+                        Kangqore
+                      </p>
+                    </div>
+
+                    {/* Name + tagline */}
+                    <h2 className="text-2xl font-bold mb-1">{d.shortName}</h2>
+                    <p className="text-sm font-medium mb-3" style={{ color: d.accentColor }}>
+                      {d.tagline}
+                    </p>
+
+                    {/* Description */}
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                      {d.description}
+                    </p>
+
+                    {/* Banner brand badge */}
+                    <p className="text-xs text-gray-500 mb-4">
+                      Featured: <span className="font-semibold text-gray-700 dark:text-gray-200">{d.bannerBrand}</span>
+                      {' · '}
+                      {d.serviceCount} services
+                    </p>
+
+                    {/* Top 3 services */}
+                    {top3.length > 0 && (
+                      <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 mb-5">
+                        {top3.map((svc) => (
+                          <li key={svc.slug}>· {svc.name}</li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {/* CTA */}
+                    <p
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-2.5 transition-all"
+                      style={{ color: d.accentColor }}
+                    >
+                      Explore {d.shortName.toUpperCase()}
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </p>
+                  </div>
+                </Link>
+              </li>
             );
           })}
-        </div>
+        </ul>
 
-        <p className="text-xs text-gray-400 mt-12 italic">
-          Phase C placeholder — full template ships in Phase D.
-        </p>
+        {/* Bottom CTA */}
+        <div className="text-center pt-8 border-t border-gray-200 dark:border-gray-800">
+          <Link
+            to="/services"
+            className="inline-flex items-center gap-2 text-base font-semibold text-brand-blue hover:underline"
+          >
+            Explore all 61 services
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </>
   );

@@ -171,6 +171,75 @@ describe('Data architecture — 6 Departments × 61 Services', () => {
     });
   });
 
+  // ─── Phase D — new department fields ─────────────────────────────────────────
+
+  test('every department has a non-empty heroBody string', () => {
+    departmentsList.forEach((slug) => {
+      const d = departmentsData[slug];
+      expect(typeof d.heroBody).toBe('string');
+      expect(d.heroBody.length).toBeGreaterThan(50);
+    });
+  });
+
+  test('every department has exactly 5 heroServiceSlugs and each references a real service', () => {
+    departmentsList.forEach((slug) => {
+      const d = departmentsData[slug];
+      expect(Array.isArray(d.heroServiceSlugs)).toBe(true);
+      expect(d.heroServiceSlugs).toHaveLength(5);
+      d.heroServiceSlugs.forEach((svcSlug) => {
+        expect(servicesData[svcSlug]).toBeDefined();
+      });
+    });
+  });
+
+  test('every department has buyerPersonas { primary, secondary[] }', () => {
+    departmentsList.forEach((slug) => {
+      const personas = departmentsData[slug].buyerPersonas;
+      expect(personas).toBeDefined();
+      expect(typeof personas.primary).toBe('string');
+      expect(personas.primary.length).toBeGreaterThan(0);
+      expect(Array.isArray(personas.secondary)).toBe(true);
+      expect(personas.secondary.length).toBeGreaterThan(0);
+    });
+  });
+
+  test('every department has exactly 3 businessOutcomes with metric+label', () => {
+    departmentsList.forEach((slug) => {
+      const outcomes = departmentsData[slug].businessOutcomes;
+      expect(Array.isArray(outcomes)).toBe(true);
+      expect(outcomes).toHaveLength(3);
+      outcomes.forEach((o) => {
+        expect(typeof o.metric).toBe('string');
+        expect(o.metric.length).toBeGreaterThan(0);
+        expect(typeof o.label).toBe('string');
+        expect(o.label.length).toBeGreaterThan(0);
+        // caseStudySlug may be null (no case yet) or a string (linked)
+        expect(o.caseStudySlug === null || typeof o.caseStudySlug === 'string').toBe(true);
+      });
+    });
+  });
+
+  test('every department has 1-3 relatedDepartments, all valid slugs, no self-reference', () => {
+    departmentsList.forEach((slug) => {
+      const related = departmentsData[slug].relatedDepartments;
+      expect(Array.isArray(related)).toBe(true);
+      expect(related.length).toBeGreaterThanOrEqual(1);
+      expect(related.length).toBeLessThanOrEqual(3);
+      related.forEach((relSlug) => {
+        expect(departmentsList).toContain(relSlug);
+        expect(relSlug).not.toBe(slug);
+      });
+    });
+  });
+
+  test('every department has a non-empty deliveryApproach string', () => {
+    departmentsList.forEach((slug) => {
+      const d = departmentsData[slug];
+      expect(typeof d.deliveryApproach).toBe('string');
+      expect(d.deliveryApproach.length).toBeGreaterThan(20);
+    });
+  });
+
   test('each service inherits its department bannerBrand', () => {
     servicesList.forEach((svcSlug) => {
       const svc = servicesData[svcSlug];
