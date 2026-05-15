@@ -1,5 +1,5 @@
 // ─── Data Architecture Invariants Test ─────────────────────────────────────────
-// Guards the 6-Practices × 61-Services canonical architecture.
+// Guards the 6-Departments × 61-Services canonical architecture.
 //
 // These tests must pass in CI. If they fail, the data files have drifted —
 // fix the data, not the test.
@@ -9,18 +9,18 @@
 // ────────────────────────────────────────────────────────────────────────────────
 
 import {
-  practicesData,
-  practicesList,
-} from '../practicesData';
+  departmentsData,
+  departmentsList,
+} from '../departmentsData';
 
 import {
   servicesData,
   servicesList,
-  servicesByPractice,
+  servicesByDepartment,
 } from '../servicesData';
 
 const EXPECTED_TOTAL_SERVICES = 61;
-const EXPECTED_PRACTICES = 6;
+const EXPECTED_DEPARTMENTS = 6;
 
 const EXPECTED_COUNTS = {
   cognition: 11,
@@ -31,16 +31,16 @@ const EXPECTED_COUNTS = {
   growth: 8,
 };
 
-describe('Data architecture — 6 Practices × 61 Services', () => {
+describe('Data architecture — 6 Departments × 61 Services', () => {
 
-  test('practicesList has exactly 6 practices', () => {
-    expect(practicesList).toHaveLength(EXPECTED_PRACTICES);
+  test('departmentsList has exactly 6 departments', () => {
+    expect(departmentsList).toHaveLength(EXPECTED_DEPARTMENTS);
   });
 
-  test('every practice slug in practicesList exists in practicesData', () => {
-    practicesList.forEach((slug) => {
-      expect(practicesData[slug]).toBeDefined();
-      expect(practicesData[slug].slug).toBe(slug);
+  test('every department slug in departmentsList exists in departmentsData', () => {
+    departmentsList.forEach((slug) => {
+      expect(departmentsData[slug]).toBeDefined();
+      expect(departmentsData[slug].slug).toBe(slug);
     });
   });
 
@@ -48,65 +48,65 @@ describe('Data architecture — 6 Practices × 61 Services', () => {
     expect(servicesList).toHaveLength(EXPECTED_TOTAL_SERVICES);
   });
 
-  test('every service has a valid practiceSlug pointing to a known practice', () => {
+  test('every service has a valid departmentSlug pointing to a known department', () => {
     servicesList.forEach((slug) => {
       const svc = servicesData[slug];
       expect(svc).toBeDefined();
       expect(svc.slug).toBe(slug);
-      expect(practicesList).toContain(svc.practiceSlug);
+      expect(departmentsList).toContain(svc.departmentSlug);
     });
   });
 
-  test('each practice.serviceCount matches its serviceSlugs.length', () => {
-    practicesList.forEach((practiceSlug) => {
-      const practice = practicesData[practiceSlug];
-      expect(practice.serviceCount).toBe(practice.serviceSlugs.length);
+  test('each department.serviceCount matches its serviceSlugs.length', () => {
+    departmentsList.forEach((departmentSlug) => {
+      const department = departmentsData[departmentSlug];
+      expect(department.serviceCount).toBe(department.serviceSlugs.length);
     });
   });
 
-  test('each practice has the expected service count', () => {
-    Object.entries(EXPECTED_COUNTS).forEach(([practiceSlug, expectedCount]) => {
-      expect(practicesData[practiceSlug].serviceCount).toBe(expectedCount);
+  test('each department has the expected service count', () => {
+    Object.entries(EXPECTED_COUNTS).forEach(([departmentSlug, expectedCount]) => {
+      expect(departmentsData[departmentSlug].serviceCount).toBe(expectedCount);
     });
   });
 
-  test('sum of all practice service counts equals 61', () => {
-    const sum = practicesList.reduce(
-      (total, slug) => total + practicesData[slug].serviceCount,
+  test('sum of all department service counts equals 61', () => {
+    const sum = departmentsList.reduce(
+      (total, slug) => total + departmentsData[slug].serviceCount,
       0
     );
     expect(sum).toBe(EXPECTED_TOTAL_SERVICES);
   });
 
-  test('every serviceSlug in a practice exists in servicesData', () => {
-    practicesList.forEach((practiceSlug) => {
-      practicesData[practiceSlug].serviceSlugs.forEach((svcSlug) => {
+  test('every serviceSlug in a department exists in servicesData', () => {
+    departmentsList.forEach((departmentSlug) => {
+      departmentsData[departmentSlug].serviceSlugs.forEach((svcSlug) => {
         expect(servicesData[svcSlug]).toBeDefined();
       });
     });
   });
 
-  test('every service in servicesByPractice matches its canonical practiceSlug', () => {
-    Object.entries(servicesByPractice).forEach(([practiceSlug, svcSlugs]) => {
+  test('every service in servicesByDepartment matches its canonical departmentSlug', () => {
+    Object.entries(servicesByDepartment).forEach(([departmentSlug, svcSlugs]) => {
       svcSlugs.forEach((svcSlug) => {
-        expect(servicesData[svcSlug].practiceSlug).toBe(practiceSlug);
+        expect(servicesData[svcSlug].departmentSlug).toBe(departmentSlug);
       });
     });
   });
 
-  test('servicesByPractice counts match practicesData counts', () => {
-    practicesList.forEach((practiceSlug) => {
-      const expected = practicesData[practiceSlug].serviceCount;
-      const actual = servicesByPractice[practiceSlug].length;
+  test('servicesByDepartment counts match departmentsData counts', () => {
+    departmentsList.forEach((departmentSlug) => {
+      const expected = departmentsData[departmentSlug].serviceCount;
+      const actual = servicesByDepartment[departmentSlug].length;
       expect(actual).toBe(expected);
     });
   });
 
-  test('practicesData.serviceSlugs is a permutation of servicesByPractice (same set, order may differ)', () => {
-    practicesList.forEach((practiceSlug) => {
-      const fromPractices = [...practicesData[practiceSlug].serviceSlugs].sort();
-      const fromServices = [...servicesByPractice[practiceSlug]].sort();
-      expect(fromServices).toEqual(fromPractices);
+  test('departmentsData.serviceSlugs is a permutation of servicesByDepartment (same set, order may differ)', () => {
+    departmentsList.forEach((departmentSlug) => {
+      const fromDepartments = [...departmentsData[departmentSlug].serviceSlugs].sort();
+      const fromServices = [...servicesByDepartment[departmentSlug]].sort();
+      expect(fromServices).toEqual(fromDepartments);
     });
   });
 
@@ -130,7 +130,7 @@ describe('Data architecture — 6 Practices × 61 Services', () => {
     const required = [
       'slug',
       'name',
-      'practiceSlug',
+      'departmentSlug',
       'bannerBrand',
       'shortDescription',
       'fullDescription',
@@ -149,7 +149,7 @@ describe('Data architecture — 6 Practices × 61 Services', () => {
     });
   });
 
-  test('every practice has the required core fields', () => {
+  test('every department has the required core fields', () => {
     const required = [
       'slug',
       'name',
@@ -162,20 +162,20 @@ describe('Data architecture — 6 Practices × 61 Services', () => {
       'serviceCount',
       'serviceSlugs',
     ];
-    practicesList.forEach((practiceSlug) => {
-      const practice = practicesData[practiceSlug];
+    departmentsList.forEach((departmentSlug) => {
+      const department = departmentsData[departmentSlug];
       required.forEach((field) => {
-        expect(practice[field]).toBeDefined();
+        expect(department[field]).toBeDefined();
       });
-      expect(Array.isArray(practice.serviceSlugs)).toBe(true);
+      expect(Array.isArray(department.serviceSlugs)).toBe(true);
     });
   });
 
-  test('each service inherits its practice bannerBrand', () => {
+  test('each service inherits its department bannerBrand', () => {
     servicesList.forEach((svcSlug) => {
       const svc = servicesData[svcSlug];
-      const practice = practicesData[svc.practiceSlug];
-      expect(svc.bannerBrand).toBe(practice.bannerBrand);
+      const department = departmentsData[svc.departmentSlug];
+      expect(svc.bannerBrand).toBe(department.bannerBrand);
     });
   });
 
@@ -186,9 +186,9 @@ describe('Data architecture — 6 Practices × 61 Services', () => {
     });
   });
 
-  test('all practice slugs are kebab-case', () => {
+  test('all department slugs are kebab-case', () => {
     const kebabRe = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-    practicesList.forEach((slug) => {
+    departmentsList.forEach((slug) => {
       expect(slug).toMatch(kebabRe);
     });
   });

@@ -1,11 +1,11 @@
 // ─── Kangqore Services — 61 Canonical Services ────────────────────────────────
 // Single source of truth for all 61 services, keyed by slug.
-// Every service belongs to EXACTLY ONE practice via `practiceSlug` — no
-// cross-tagging. The `relatedServiceSlugs` array provides cross-practice
+// Every service belongs to EXACTLY ONE department via `departmentSlug` — no
+// cross-tagging. The `relatedServiceSlugs` array provides cross-department
 // discoverability without breaking canonical ownership.
 //
-// ARCHITECTURE: 6 Practices · 61 Services (canonical, single-layer)
-// Supersedes the nested 15-department structure in departmentData.js.
+// ARCHITECTURE: 6 Departments · 61 Services (canonical, single-layer)
+// Supersedes the nested legacy 15-department structure in departmentData.js.
 // See: /Users/maheshkumar/.claude/plans/act-as-the-lead-curious-starlight.md
 //      Sections 17, 18, 19 for the architecture decisions and rationale.
 //
@@ -23,7 +23,7 @@ export const servicesData = {
   'agentic-ai': {
     slug: 'agentic-ai',
     name: 'Agentic AI',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Build autonomous AI agents that can reason, plan, and execute complex tasks',
     fullDescription: 'Deploy intelligent AI agents capable of autonomous decision-making, multi-step reasoning, and goal-oriented task execution for your business processes.',
@@ -36,7 +36,7 @@ export const servicesData = {
   'ai-cognitive-computing': {
     slug: 'ai-cognitive-computing',
     name: 'AI & Cognitive Computing',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Leverage cognitive technologies to mimic human thought processes',
     fullDescription: 'Implement cognitive computing solutions that understand, reason, and learn from data to enhance business operations.',
@@ -49,7 +49,7 @@ export const servicesData = {
   'data-science-ai': {
     slug: 'data-science-ai',
     name: 'Data Science & AI',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Extract insights and build predictive models from your data',
     fullDescription: 'Combine data science expertise with AI capabilities to uncover insights, build models, and drive data-driven decisions.',
@@ -62,7 +62,7 @@ export const servicesData = {
   'genai-business-services': {
     slug: 'genai-business-services',
     name: 'GenAI Business Services',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Implement generative AI solutions for business transformation',
     fullDescription: 'Leverage generative AI technologies including LLMs, image generation, and content creation for business applications.',
@@ -75,7 +75,7 @@ export const servicesData = {
   'mlops': {
     slug: 'mlops',
     name: 'MLOps',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Streamline ML model development, deployment, and operations',
     fullDescription: 'Implement MLOps practices for efficient machine learning lifecycle management from development to production.',
@@ -88,7 +88,7 @@ export const servicesData = {
   'analytics': {
     slug: 'analytics',
     name: 'Analytics',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Comprehensive analytics solutions for business intelligence',
     fullDescription: 'Implement end-to-end analytics solutions including dashboards, reports, and advanced analytics capabilities.',
@@ -101,7 +101,7 @@ export const servicesData = {
   'big-data': {
     slug: 'big-data',
     name: 'Big Data',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Handle massive datasets with scalable big data infrastructure',
     fullDescription: 'Build and manage big data platforms that process, store, and analyze large volumes of data efficiently.',
@@ -114,7 +114,7 @@ export const servicesData = {
   'digital-process-automation': {
     slug: 'digital-process-automation',
     name: 'Digital Process Automation (DPA)',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Automate and optimize digital business processes',
     fullDescription: 'Implement comprehensive digital process automation to streamline workflows and improve efficiency.',
@@ -127,7 +127,7 @@ export const servicesData = {
   'robotic-process-automation': {
     slug: 'robotic-process-automation',
     name: 'Robotic Process Automation (RPA)',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Deploy software robots for repetitive tasks',
     fullDescription: 'Implement RPA solutions to automate rule-based, repetitive business processes.',
@@ -140,7 +140,7 @@ export const servicesData = {
   'business-process-management': {
     slug: 'business-process-management',
     name: 'Business Process Management',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Design, execute, and optimize business processes',
     fullDescription: 'Implement BPM solutions to model, automate, and improve business processes.',
@@ -153,7 +153,7 @@ export const servicesData = {
   'intelligent-automation': {
     slug: 'intelligent-automation',
     name: 'Intelligent Automation',
-    practiceSlug: 'cognition',
+    departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'AI-powered automation for complex processes',
     fullDescription: 'Combine AI with automation for intelligent decision-making and complex process handling.',
@@ -170,7 +170,7 @@ export const servicesData = {
   'managed-cloud-services': {
     slug: 'managed-cloud-services',
     name: 'Managed Cloud Services',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'End-to-end cloud management and optimization',
     fullDescription: 'Comprehensive managed services for your cloud infrastructure including monitoring, optimization, and support.',
@@ -183,7 +183,7 @@ export const servicesData = {
   'aws': {
     slug: 'aws',
     name: 'AWS',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Amazon Web Services implementation and management',
     fullDescription: 'Expert AWS services from architecture design to migration and ongoing management.',
@@ -196,7 +196,7 @@ export const servicesData = {
   'microsoft-services': {
     slug: 'microsoft-services',
     name: 'Microsoft Services',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Microsoft Azure and M365 solutions',
     fullDescription: 'Complete Microsoft cloud solutions including Azure infrastructure, Microsoft 365, and Power Platform.',
@@ -209,7 +209,7 @@ export const servicesData = {
   'google-cloud-services': {
     slug: 'google-cloud-services',
     name: 'Google Cloud Services',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Google Cloud Platform expertise and implementation',
     fullDescription: 'Leverage Google Cloud for data analytics, machine learning, and enterprise applications.',
@@ -222,7 +222,7 @@ export const servicesData = {
   'cloud-computing': {
     slug: 'cloud-computing',
     name: 'Cloud Computing',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Multi-cloud and hybrid cloud strategies',
     fullDescription: 'Design and implement cloud computing strategies that align with your business goals.',
@@ -235,7 +235,7 @@ export const servicesData = {
   'embedded-design-systems': {
     slug: 'embedded-design-systems',
     name: 'Embedded Design Systems & IT/OT',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Design embedded systems and IT/OT convergence solutions',
     fullDescription: 'Develop embedded systems and bridge the gap between IT and operational technology.',
@@ -248,7 +248,7 @@ export const servicesData = {
   'engineering-foundry': {
     slug: 'engineering-foundry',
     name: 'Engineering Foundry',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Innovation hub for engineering excellence',
     fullDescription: 'Access our engineering foundry for rapid prototyping, experimentation, and innovation.',
@@ -261,7 +261,7 @@ export const servicesData = {
   'engineering-rd-services': {
     slug: 'engineering-rd-services',
     name: 'Engineering R&D Services',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Research and development for product innovation',
     fullDescription: 'Partner with our R&D team to research, develop, and innovate new product capabilities.',
@@ -274,7 +274,7 @@ export const servicesData = {
   'product-digital-engineering': {
     slug: 'product-digital-engineering',
     name: 'Product Digital Engineering Services',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Digital engineering for connected products',
     fullDescription: 'Transform physical products with digital capabilities and connected experiences.',
@@ -287,7 +287,7 @@ export const servicesData = {
   'devops-as-a-service': {
     slug: 'devops-as-a-service',
     name: 'DevOps as a Service (DaaS)',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Managed DevOps for accelerated delivery',
     fullDescription: 'Implement DevOps practices as a service for faster, more reliable software delivery.',
@@ -300,7 +300,7 @@ export const servicesData = {
   'managed-infrastructure-services': {
     slug: 'managed-infrastructure-services',
     name: 'Managed Infrastructure Services',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'End-to-end infrastructure management',
     fullDescription: 'Comprehensive managed services for your entire IT infrastructure.',
@@ -313,7 +313,7 @@ export const servicesData = {
   'modernization-infrastructure': {
     slug: 'modernization-infrastructure',
     name: 'Modernization Infrastructure',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Modernize legacy infrastructure',
     fullDescription: 'Transform legacy infrastructure to modern, cloud-ready architecture.',
@@ -326,7 +326,7 @@ export const servicesData = {
   'managed-services': {
     slug: 'managed-services',
     name: 'Managed Services',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Comprehensive IT managed services',
     fullDescription: 'Full suite of managed IT services to optimize operations and reduce costs.',
@@ -339,7 +339,7 @@ export const servicesData = {
   'support-maintenance': {
     slug: 'support-maintenance',
     name: 'Support And Maintenance',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Ongoing support and maintenance services',
     fullDescription: 'Reliable support and maintenance to keep your systems running smoothly.',
@@ -352,7 +352,7 @@ export const servicesData = {
   'software-development': {
     slug: 'software-development',
     name: 'Software Development',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Custom software development services',
     fullDescription: 'Build custom software solutions tailored to your business needs.',
@@ -365,7 +365,7 @@ export const servicesData = {
   'api-microservices-engineering': {
     slug: 'api-microservices-engineering',
     name: 'API & Microservices Engineering',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Design and build modern API-first architectures',
     fullDescription: 'Implement API-first and microservices architectures for scalable applications.',
@@ -378,7 +378,7 @@ export const servicesData = {
   'internet-of-things': {
     slug: 'internet-of-things',
     name: 'Internet Of Things (IoT)',
-    practiceSlug: 'foundry',
+    departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Connected device solutions and IoT platforms',
     fullDescription: 'Build comprehensive IoT solutions from device connectivity to analytics.',
@@ -395,7 +395,7 @@ export const servicesData = {
   'application-modernization': {
     slug: 'application-modernization',
     name: 'Application Modernization',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Modernize legacy applications for cloud-native performance',
     fullDescription: 'Transform legacy applications to modern architectures including microservices, containers, and cloud-native.',
@@ -408,7 +408,7 @@ export const servicesData = {
   'digital-transformation': {
     slug: 'digital-transformation',
     name: 'Digital Transformation',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'End-to-end digital transformation strategy and execution',
     fullDescription: 'Comprehensive digital transformation from strategy through execution, enabling new business capabilities.',
@@ -421,7 +421,7 @@ export const servicesData = {
   'legacy-modernization': {
     slug: 'legacy-modernization',
     name: 'Legacy Modernization',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Transform aging systems into modern platforms',
     fullDescription: 'Modernize legacy systems to reduce technical debt, improve performance, and enable innovation.',
@@ -434,7 +434,7 @@ export const servicesData = {
   'technology-modernization': {
     slug: 'technology-modernization',
     name: 'Technology Modernization',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Update technology stack for improved performance',
     fullDescription: 'Modernize your technology stack to leverage latest capabilities and improve business outcomes.',
@@ -447,7 +447,7 @@ export const servicesData = {
   'technology-transformation': {
     slug: 'technology-transformation',
     name: 'Technology Transformation',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Fundamental technology change for business value',
     fullDescription: 'Drive fundamental technology changes that deliver significant business value and competitive advantage.',
@@ -460,7 +460,7 @@ export const servicesData = {
   'digital-business-transformation': {
     slug: 'digital-business-transformation',
     name: 'Digital Business Transformation',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Transform business models through digital innovation',
     fullDescription: 'Reimagine business models and operations through digital technologies and innovation.',
@@ -473,7 +473,7 @@ export const servicesData = {
   'technology-consulting': {
     slug: 'technology-consulting',
     name: 'Technology Consulting',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Expert technology guidance and advisory',
     fullDescription: 'Get expert advice on technology strategy, architecture, and implementation.',
@@ -486,7 +486,7 @@ export const servicesData = {
   'strategy-consulting': {
     slug: 'strategy-consulting',
     name: 'Strategy Consulting',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Develop winning business and technology strategies',
     fullDescription: 'Work with our strategists to define and execute strategies that drive growth.',
@@ -499,7 +499,7 @@ export const servicesData = {
   'discover-frame-workshops': {
     slug: 'discover-frame-workshops',
     name: 'Discover & Frame Workshops',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Collaborative workshops for problem-solving and innovation',
     fullDescription: 'Engage in structured workshops to discover opportunities and frame solutions.',
@@ -512,7 +512,7 @@ export const servicesData = {
   'mvp-acceleration': {
     slug: 'mvp-acceleration',
     name: 'MVP Acceleration',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Rapidly build and validate minimum viable products',
     fullDescription: 'Accelerate your path to market with rapid MVP development and validation.',
@@ -525,7 +525,7 @@ export const servicesData = {
   'product-strategy-experience-design': {
     slug: 'product-strategy-experience-design',
     name: 'Product Strategy & Experience Design',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Strategic product planning and UX design',
     fullDescription: 'Define product strategy and create exceptional user experiences.',
@@ -538,7 +538,7 @@ export const servicesData = {
   'blockchain': {
     slug: 'blockchain',
     name: 'Blockchain',
-    practiceSlug: 'reimagine',
+    departmentSlug: 'reimagine',
     bannerBrand: 'The Kangqore Modernization Playbook™',
     shortDescription: 'Decentralized solutions with blockchain technology',
     fullDescription: 'Implement blockchain solutions for transparency, security, and efficiency.',
@@ -555,7 +555,7 @@ export const servicesData = {
   'it-security-services': {
     slug: 'it-security-services',
     name: 'IT Security Services',
-    practiceSlug: 'shield',
+    departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
     shortDescription: 'Comprehensive IT security assessment and implementation',
     fullDescription: 'End-to-end IT security services including assessment, implementation, monitoring, and incident response.',
@@ -568,7 +568,7 @@ export const servicesData = {
   'finance-risk-management': {
     slug: 'finance-risk-management',
     name: 'Finance & Risk Management',
-    practiceSlug: 'shield',
+    departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
     shortDescription: 'Finance transformation and risk management solutions',
     fullDescription: 'Transform finance operations and implement comprehensive risk management.',
@@ -581,7 +581,7 @@ export const servicesData = {
   'ai-governance': {
     slug: 'ai-governance',
     name: 'AI Governance',
-    practiceSlug: 'shield',
+    departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
     shortDescription: 'Establish frameworks for responsible and ethical AI deployment',
     fullDescription: 'Create comprehensive AI governance frameworks ensuring ethical, transparent, and compliant AI implementations.',
@@ -594,7 +594,7 @@ export const servicesData = {
   'quality-engineering-assurance': {
     slug: 'quality-engineering-assurance',
     name: 'Quality Engineering & Assurance',
-    practiceSlug: 'shield',
+    departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
     shortDescription: 'Comprehensive quality engineering services',
     fullDescription: 'Ensure product quality through comprehensive testing and quality assurance practices.',
@@ -607,7 +607,7 @@ export const servicesData = {
   'operation-technology': {
     slug: 'operation-technology',
     name: 'Operation Technology (OT)',
-    practiceSlug: 'shield',
+    departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
     shortDescription: 'Operational technology management and security',
     fullDescription: 'Manage and secure operational technology environments for industrial operations.',
@@ -624,7 +624,7 @@ export const servicesData = {
   'enterprise-platform-integration': {
     slug: 'enterprise-platform-integration',
     name: 'Enterprise Platform Integration',
-    practiceSlug: 'platforms',
+    departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
     shortDescription: 'Integrate enterprise platforms and applications',
     fullDescription: 'Connect your enterprise applications for seamless data flow and process automation.',
@@ -637,7 +637,7 @@ export const servicesData = {
   'pimcore': {
     slug: 'pimcore',
     name: 'Pimcore',
-    practiceSlug: 'platforms',
+    departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
     shortDescription: 'Pimcore PIM/DAM implementation and customization',
     fullDescription: 'Implement Pimcore for product information management and digital asset management.',
@@ -650,7 +650,7 @@ export const servicesData = {
   'salesforce': {
     slug: 'salesforce',
     name: 'Salesforce',
-    practiceSlug: 'platforms',
+    departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
     shortDescription: 'Salesforce implementation and customization',
     fullDescription: 'Transform customer relationships with Salesforce solutions.',
@@ -663,7 +663,7 @@ export const servicesData = {
   'servicenow': {
     slug: 'servicenow',
     name: 'ServiceNow',
-    practiceSlug: 'platforms',
+    departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
     shortDescription: 'ServiceNow implementation and optimization',
     fullDescription: 'Implement ServiceNow for IT service management and beyond.',
@@ -676,7 +676,7 @@ export const servicesData = {
   'global-capability-centers': {
     slug: 'global-capability-centers',
     name: 'Global Capability Centers (GCC)',
-    practiceSlug: 'platforms',
+    departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
     shortDescription: 'Establish and optimize global capability centers',
     fullDescription: 'Build and scale global capability centers for operational excellence.',
@@ -689,7 +689,7 @@ export const servicesData = {
   'talent-organization': {
     slug: 'talent-organization',
     name: 'Talent & Organization',
-    practiceSlug: 'platforms',
+    departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
     shortDescription: 'Talent management and organizational effectiveness',
     fullDescription: 'Transform talent management and organizational capabilities.',
@@ -702,7 +702,7 @@ export const servicesData = {
   'supply-chain': {
     slug: 'supply-chain',
     name: 'Supply Chain',
-    practiceSlug: 'platforms',
+    departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
     shortDescription: 'Supply chain optimization and transformation',
     fullDescription: 'Optimize and transform supply chain operations for efficiency and resilience.',
@@ -715,7 +715,7 @@ export const servicesData = {
   'unified-services-management': {
     slug: 'unified-services-management',
     name: 'Unified Services Management (USM)',
-    practiceSlug: 'platforms',
+    departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
     shortDescription: 'Unified approach to service management',
     fullDescription: 'Implement unified service management for consistent service delivery.',
@@ -732,7 +732,7 @@ export const servicesData = {
   'cdp-strategy': {
     slug: 'cdp-strategy',
     name: 'Customer Data Strategy',
-    practiceSlug: 'growth',
+    departmentSlug: 'growth',
     bannerBrand: 'KVIS™',
     shortDescription: 'Build a "single source of truth" for customer data to combat the death of cookies.',
     fullDescription: 'Architect a robust first-party data ecosystem that connects every touchpoint, ensuring data sovereignty and highly personalized customer experiences.',
@@ -745,7 +745,7 @@ export const servicesData = {
   'marketing-ai-readiness': {
     slug: 'marketing-ai-readiness',
     name: 'Marketing AI Readiness',
-    practiceSlug: 'growth',
+    departmentSlug: 'growth',
     bannerBrand: 'KVIS™',
     shortDescription: 'Audit and optimize creative operations with GenAI to save 40%+ in costs.',
     fullDescription: 'Deploy cutting-edge Generative AI across your marketing workflows to accelerate creative production, personalize content at scale, and drastically reduce operational overhead.',
@@ -758,7 +758,7 @@ export const servicesData = {
   'social-media-management': {
     slug: 'social-media-management',
     name: 'Social Media Management',
-    practiceSlug: 'growth',
+    departmentSlug: 'growth',
     bannerBrand: 'KVIS™',
     shortDescription: 'Comprehensive social media strategy and management',
     fullDescription: 'Build and manage your social media presence across all platforms.',
@@ -771,7 +771,7 @@ export const servicesData = {
   'performance-marketing': {
     slug: 'performance-marketing',
     name: 'Performance Marketing',
-    practiceSlug: 'growth',
+    departmentSlug: 'growth',
     bannerBrand: 'KVIS™',
     shortDescription: 'Data-driven marketing for measurable results',
     fullDescription: 'Drive measurable results with performance-based digital marketing.',
@@ -784,7 +784,7 @@ export const servicesData = {
   'seo-organic-growth-strategy': {
     slug: 'seo-organic-growth-strategy',
     name: 'SEO & Organic Growth Strategy',
-    practiceSlug: 'growth',
+    departmentSlug: 'growth',
     bannerBrand: 'KVIS™',
     shortDescription: 'Dominate search visibility with technical SEO architecture.',
     fullDescription: 'Answer user intent better than anyone else while ensuring your site architecture makes that content accessible.',
@@ -797,7 +797,7 @@ export const servicesData = {
   'growth-funnels-conversion-engineering': {
     slug: 'growth-funnels-conversion-engineering',
     name: 'Growth Funnels & Conversion Engineering',
-    practiceSlug: 'growth',
+    departmentSlug: 'growth',
     bannerBrand: 'KVIS™',
     shortDescription: 'Engineer growth through optimized funnels',
     fullDescription: 'Design and optimize growth funnels for maximum conversion and revenue.',
@@ -810,7 +810,7 @@ export const servicesData = {
   'conversion-rate-optimization': {
     slug: 'conversion-rate-optimization',
     name: 'Conversion Rate Optimization (CRO)',
-    practiceSlug: 'growth',
+    departmentSlug: 'growth',
     bannerBrand: 'KVIS™',
     shortDescription: 'Engineer maximum yield from your existing traffic.',
     fullDescription: 'Merge deep psychological user research with rigorous quantitative A/B testing to identify friction.',
@@ -823,7 +823,7 @@ export const servicesData = {
   'campaign-planning': {
     slug: 'campaign-planning',
     name: 'Campaign Planning',
-    practiceSlug: 'growth',
+    departmentSlug: 'growth',
     bannerBrand: 'KVIS™',
     shortDescription: 'Strategic marketing campaign planning and execution',
     fullDescription: 'Plan and execute marketing campaigns that deliver results.',
@@ -838,15 +838,15 @@ export const servicesData = {
 // Ordered list of all service slugs (61 total).
 export const servicesList = Object.keys(servicesData);
 
-// Inverse index: services grouped by practice slug. Derived from servicesData
+// Inverse index: services grouped by department slug. Derived from servicesData
 // so it cannot drift from the source of truth.
-export const servicesByPractice = {
-  cognition:  servicesList.filter((s) => servicesData[s].practiceSlug === 'cognition'),
-  foundry:    servicesList.filter((s) => servicesData[s].practiceSlug === 'foundry'),
-  reimagine:  servicesList.filter((s) => servicesData[s].practiceSlug === 'reimagine'),
-  shield:     servicesList.filter((s) => servicesData[s].practiceSlug === 'shield'),
-  platforms:  servicesList.filter((s) => servicesData[s].practiceSlug === 'platforms'),
-  growth:     servicesList.filter((s) => servicesData[s].practiceSlug === 'growth'),
+export const servicesByDepartment = {
+  cognition:  servicesList.filter((s) => servicesData[s].departmentSlug === 'cognition'),
+  foundry:    servicesList.filter((s) => servicesData[s].departmentSlug === 'foundry'),
+  reimagine:  servicesList.filter((s) => servicesData[s].departmentSlug === 'reimagine'),
+  shield:     servicesList.filter((s) => servicesData[s].departmentSlug === 'shield'),
+  platforms:  servicesList.filter((s) => servicesData[s].departmentSlug === 'platforms'),
+  growth:     servicesList.filter((s) => servicesData[s].departmentSlug === 'growth'),
 };
 
 // Lookup helper. Throws on invalid slug so callers fail loudly.
@@ -860,7 +860,7 @@ export const getService = (slug) => {
   return service;
 };
 
-// Return featured services (one per practice, by convention).
+// Return featured services (one per department, by convention).
 export const getFeaturedServices = () =>
   servicesList.filter((s) => servicesData[s].featured).map((s) => servicesData[s]);
 

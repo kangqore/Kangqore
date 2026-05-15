@@ -1,17 +1,19 @@
-// ─── Kangqore Practices — 6 Canonical Practices ───────────────────────────────
-// Single source of truth for the 6 practice areas (the "what we do" pillars).
-// Each practice owns a defined ordered list of service slugs (canonical, no
+// ─── Kangqore Departments — 6 Canonical Departments ───────────────────────────
+// Single source of truth for the 6 departments (the "what we do" pillars).
+// Each department owns a defined ordered list of service slugs (canonical, no
 // cross-tagging). All service-level data lives in servicesData.js.
 //
-// ARCHITECTURE: 6 Practices · 61 Services (canonical, single-layer)
-// Supersedes the legacy 15-department structure in departmentData.js.
+// ARCHITECTURE: 6 Departments · 61 Services (canonical, single-layer)
+// Supersedes the legacy 15-department structure in departmentData.js
+// (note: legacy file is singular `departmentData.js`; this canonical file
+// is plural `departmentsData.js`).
 // See: /Users/maheshkumar/.claude/plans/act-as-the-lead-curious-starlight.md
 //      Sections 17, 18, 19 for the architecture decisions and rationale.
 // ────────────────────────────────────────────────────────────────────────────────
 
 import { Brain, Cog, RefreshCw, Shield, Layers, TrendingUp } from 'lucide-react';
 
-export const practicesData = {
+export const departmentsData = {
   cognition: {
     slug: 'cognition',
     name: 'Kangqore Cognition',
@@ -164,8 +166,8 @@ export const practicesData = {
   },
 };
 
-// Ordered list of practice slugs (for nav, sitemap, iteration order).
-export const practicesList = [
+// Ordered list of department slugs (for nav, sitemap, iteration order).
+export const departmentsList = [
   'cognition',
   'foundry',
   'reimagine',
@@ -176,14 +178,14 @@ export const practicesList = [
 
 // Lookup helper. Throws on invalid slug so callers fail loudly rather than
 // rendering an empty page.
-export const getPractice = (slug) => {
-  const practice = practicesData[slug];
-  if (!practice) {
+export const getDepartment = (slug) => {
+  const department = departmentsData[slug];
+  if (!department) {
     throw new Error(
-      `Unknown practice slug: "${slug}". Valid slugs: ${practicesList.join(', ')}`
+      `Unknown department slug: "${slug}". Valid slugs: ${departmentsList.join(', ')}`
     );
   }
-  return practice;
+  return department;
 };
 
-export default practicesData;
+export default departmentsData;

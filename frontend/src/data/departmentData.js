@@ -1,10 +1,14 @@
 // ─── ⚠️  LEGACY — 15 departments × 61 services (nested) ───────────────────────
 // ⚠️  DEPRECATED. Retained only for backwards compatibility with components
-// that have not yet migrated to the new 6-practices × 61-services architecture.
+// that have not yet migrated to the new 6-departments × 61-services architecture.
 //
 // CANONICAL SOURCE OF TRUTH (use these instead):
-//   - frontend/src/data/practicesData.js   — 6 practices
-//   - frontend/src/data/servicesData.js    — 61 services (flat, keyed by slug)
+//   - frontend/src/data/departmentsData.js (plural) — 6 canonical departments
+//   - frontend/src/data/servicesData.js              — 61 services (flat, keyed by slug)
+//
+// File-name disambiguation:
+//   - departmentData.js  (singular, THIS FILE) — legacy 15-department nested
+//   - departmentsData.js (plural)              — canonical 6-department flat
 //
 // Migration mapping is in frontend/src/data/seoData.js → legacyRedirects.
 // 301 redirects from /department/<old> and /services/<old-dept>/<svc>

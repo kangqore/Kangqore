@@ -20,16 +20,16 @@ export const coreSEO = {
     url: '/about-us',
   },
   services: {
-    title: 'Services — 6 Practices · 61 Services',
-    description: 'Explore Kangqore\'s 61 services across 6 practices: AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
-    keywords: 'IT services, AI services, cloud services, digital transformation, enterprise technology, Kangqore practices',
+    title: 'Services — 6 Departments · 61 Services',
+    description: 'Explore Kangqore\'s 61 services across 6 departments: AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
+    keywords: 'IT services, AI services, cloud services, digital transformation, enterprise technology, Kangqore departments',
     url: '/services',
   },
-  practices: {
-    title: 'Practices — 6 Practices · 61 Services',
-    description: '6 Kangqore practices · 61 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
-    keywords: 'Kangqore practices, AI practice, cloud practice, modernization practice, security practice, enterprise platforms, growth practice',
-    url: '/practices',
+  departments: {
+    title: 'Departments — 6 Departments · 61 Services',
+    description: '6 Kangqore departments · 61 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
+    keywords: 'Kangqore departments, AI department, cloud department, modernization department, security department, enterprise platforms, growth department',
+    url: '/departments',
   },
   contact: {
     title: 'Contact Us — Talk to Our Experts',
@@ -148,9 +148,9 @@ export const contentSEO = {
 // ─── Department Pages (LEGACY — 15-department structure) ──────────────────────
 // ⚠️  DEPRECATED. Retained only so legacy /department/<slug> URLs render until
 // engineering wires the 301 redirects in `legacyRedirects` (see bottom of file).
-// New canonical SEO lives in `practiceSEO` below.
+// New canonical SEO lives in `departmentSEO` below.
 // ────────────────────────────────────────────────────────────────────────────────
-export const departmentSEO = {
+export const legacyDepartmentSEO = {
   'ai-cognitive': {
     title: 'AI & Cognitive Computing Services',
     description: 'Enterprise AI solutions: Agentic AI, GenAI, MLOps, AI Governance, Data Science, and Cognitive Computing. Build intelligent systems that scale.',
@@ -305,52 +305,52 @@ export const authSEO = {
   resetPassword: { title: 'Reset Password', description: 'Set a new password for your Kangqore account.', noindex: true },
 };
 
-// ─── Practice Pages (6 Canonical Practices) ────────────────────────────────────
-// New canonical structure. Each practice page lives at /practices/<slug>.
-// See practicesData.js for the source-of-truth practice metadata.
+// ─── Department Pages (6 Canonical Departments) ────────────────────────────────
+// New canonical structure. Each department page lives at /departments/<slug>.
+// See departmentsData.js for the source-of-truth department metadata.
 // ────────────────────────────────────────────────────────────────────────────────
-export const practiceSEO = {
+export const departmentSEO = {
   cognition: {
-    title: 'Kangqore Cognition Practice — AI, Data & Automation',
+    title: 'Kangqore Cognition Department — AI, Data & Automation',
     description: '11 AI, data, and automation services — agentic AI, GenAI, MLOps, analytics, and intelligent automation. Powered by eQORE™.',
     keywords: 'agentic AI services, GenAI consulting, MLOps, data science, RPA, intelligent automation, eQORE, Kangqore Cognition',
-    url: '/practices/cognition',
+    url: '/departments/cognition',
   },
   foundry: {
-    title: 'Kangqore Foundry Practice — Cloud, Engineering & Infrastructure',
+    title: 'Kangqore Foundry Department — Cloud, Engineering & Infrastructure',
     description: '17 cloud, engineering, and infrastructure services — AWS, Azure, GCP, DevOps, embedded systems, IoT. Powered by Engineering Foundry™.',
     keywords: 'cloud engineering, AWS consulting, Azure services, GCP, DevOps, infrastructure, product engineering, Kangqore Foundry',
-    url: '/practices/foundry',
+    url: '/departments/foundry',
   },
   reimagine: {
-    title: 'Kangqore Reimagine Practice — Modernization & Transformation',
+    title: 'Kangqore Reimagine Department — Modernization & Transformation',
     description: '12 modernization and transformation services — application modernization, legacy migration, digital transformation. The Kangqore Modernization Playbook™.',
     keywords: 'application modernization, legacy modernization, digital transformation, technology consulting, MVP acceleration, blockchain',
-    url: '/practices/reimagine',
+    url: '/departments/reimagine',
   },
   shield: {
-    title: 'Kangqore Shield Practice — Security, Risk & Trust',
+    title: 'Kangqore Shield Department — Security, Risk & Trust',
     description: 'Cybersecurity, AI governance, finance & risk, quality engineering, and OT security — 5 services under Shield™ Trust & Governance Framework.',
     keywords: 'cybersecurity, AI governance, finance risk management, quality engineering, OT security, trust framework, Kangqore Shield',
-    url: '/practices/shield',
+    url: '/departments/shield',
   },
   platforms: {
-    title: 'Kangqore Platforms Practice — Enterprise Applications & Operations',
+    title: 'Kangqore Platforms Department — Enterprise Applications & Operations',
     description: '8 enterprise platform services — Salesforce, ServiceNow, Pimcore, GCC, Supply Chain, USM. Implemented in 12 weeks, run with SLA.',
     keywords: 'Salesforce implementation, ServiceNow, Pimcore, enterprise platform integration, GCC, supply chain, Kangqore Platforms',
-    url: '/practices/platforms',
+    url: '/departments/platforms',
   },
   growth: {
-    title: 'Kangqore Growth Practice — Marketing, Visibility & Conversion',
+    title: 'Kangqore Growth Department — Marketing, Visibility & Conversion',
     description: '8 growth services — CDP, Marketing AI, SEO, Performance Marketing, CRO. Pipeline you can attribute, not traffic you can boast about. KVIS™.',
     keywords: 'CDP strategy, marketing AI, SEO, performance marketing, CRO, growth funnels, conversion engineering, KVIS, Kangqore Growth',
-    url: '/practices/growth',
+    url: '/departments/growth',
   },
 };
 
 // ─── Service Pages (61 services — flat /services/<slug>) ───────────────────────
 // Source-of-truth: servicesData.js. SEO titles follow the formula:
-//   [Service Name] — [Practice ShortName] | Kangqore
+//   [Service Name] — [Department ShortName] | Kangqore
 // Descriptions: 140–155 chars, outcome-led, banner-brand-anchored.
 // ────────────────────────────────────────────────────────────────────────────────
 export const serviceSEO = {
@@ -744,21 +744,21 @@ export const serviceSEO = {
 export const legacyRedirects = {
 
   // ─── 15 OLD DEPARTMENT URLs → 6 NEW PRACTICES ─────────────────────
-  '/department/ai-cognitive':                          '/practices/cognition',
-  '/department/analytics-insights':                    '/practices/cognition',
-  '/department/automation':                            '/practices/cognition',
-  '/department/cloud-engineering':                     '/practices/foundry',
-  '/department/cybersecurity':                         '/practices/shield',
-  '/department/digital-transformation-modernization':  '/practices/reimagine',
-  '/department/product-engineering':                   '/practices/foundry',
-  '/department/infrastructure-networks-operations':    '/practices/foundry',
-  '/department/consulting-advisory':                   '/practices/reimagine',
-  '/department/digital-engineering':                   '/practices/reimagine',
-  '/department/enterprise-applications':               '/practices/platforms',
-  '/department/emerging-technologies':                 '/practices/foundry',
-  '/department/business-operations':                   '/practices/platforms',
-  '/department/digital-marketing':                     '/practices/growth',
-  '/department/conversion-engineering':                '/practices/growth',
+  '/department/ai-cognitive':                          '/departments/cognition',
+  '/department/analytics-insights':                    '/departments/cognition',
+  '/department/automation':                            '/departments/cognition',
+  '/department/cloud-engineering':                     '/departments/foundry',
+  '/department/cybersecurity':                         '/departments/shield',
+  '/department/digital-transformation-modernization':  '/departments/reimagine',
+  '/department/product-engineering':                   '/departments/foundry',
+  '/department/infrastructure-networks-operations':    '/departments/foundry',
+  '/department/consulting-advisory':                   '/departments/reimagine',
+  '/department/digital-engineering':                   '/departments/reimagine',
+  '/department/enterprise-applications':               '/departments/platforms',
+  '/department/emerging-technologies':                 '/departments/foundry',
+  '/department/business-operations':                   '/departments/platforms',
+  '/department/digital-marketing':                     '/departments/growth',
+  '/department/conversion-engineering':                '/departments/growth',
 
   // ─── 61 OLD SERVICE URLs → FLAT NEW SERVICE URLs ──────────────────
 
@@ -854,13 +854,13 @@ export const legacyRedirects = {
   '/services/conversion-engineering/campaign-planning':                     '/services/campaign-planning',
 };
 
-// Tally: 15 practice redirects + 61 service redirects = 76 rows total.
+// Tally: 15 department redirects + 61 service redirects = 76 rows total.
 
 export default {
   coreSEO,
   contentSEO,
-  practiceSEO,
-  departmentSEO,    // legacy — retained until 301 redirects are wired
+  departmentSEO,
+  legacyDepartmentSEO,    // legacy — retained until 301 redirects are wired
   industrySEO,
   serviceSEO,
   authSEO,
