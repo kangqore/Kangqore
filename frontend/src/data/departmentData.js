@@ -1,7 +1,23 @@
-import { 
-  Brain, Cloud, Database, Code, Cog, Cpu, Shield, Zap, Users, 
-  Sparkles, BarChart3, Settings, Lock, Rocket, Bot, Server, 
-  Briefcase, Lightbulb, Globe, Leaf, Megaphone, TrendingUp, Activity 
+// ─── ⚠️  LEGACY — 15 departments × 61 services (nested) ───────────────────────
+// ⚠️  DEPRECATED. Retained only for backwards compatibility with components
+// that have not yet migrated to the new 6-practices × 61-services architecture.
+//
+// CANONICAL SOURCE OF TRUTH (use these instead):
+//   - frontend/src/data/practicesData.js   — 6 practices
+//   - frontend/src/data/servicesData.js    — 61 services (flat, keyed by slug)
+//
+// Migration mapping is in frontend/src/data/seoData.js → legacyRedirects.
+// 301 redirects from /department/<old> and /services/<old-dept>/<svc>
+// must be wired before this file is removed.
+//
+// See: /Users/maheshkumar/.claude/plans/act-as-the-lead-curious-starlight.md
+//      Sections 17, 18, 19 for the architecture decisions.
+// ────────────────────────────────────────────────────────────────────────────────
+
+import {
+  Brain, Cloud, Database, Code, Cog, Cpu, Shield, Zap, Users,
+  Sparkles, BarChart3, Settings, Lock, Rocket, Bot, Server,
+  Briefcase, Lightbulb, Globe, Leaf, Megaphone, TrendingUp, Activity
 } from 'lucide-react';
 
 // Slugify helper function
