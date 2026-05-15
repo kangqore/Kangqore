@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown, Globe, Menu, X, LogIn, LogOut, UserCircle, Search, Phone, ArrowRight, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Sun, Moon, Mic } from 'lucide-react';
 import { navigationItems } from '../mock/mockData';
 import { useAuth } from '../context/AuthContext';
-import { departmentData } from '../data/departmentData';
+import { departmentsData, departmentsList } from '../data/departmentsData';
+import { servicesData } from '../data/servicesData';
 import GlobalSearch from './GlobalSearch';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTheme } from '../context/ThemeContext';
@@ -26,18 +27,43 @@ const Header = ({ onMenuClick }) => {
   // State for the mega-menu hover panel
   const [activeMegaDept, setActiveMegaDept] = useState(0);
 
-  // Generate services categories from departmentData
-  const servicesCategories = departmentData.map(dept => ({
-    title: dept.name,
-    slug: dept.slug,
-    icon: dept.icon,
-    description: dept.description,
-    items: dept.services.map(service => ({
-      name: service.name,
-      slug: service.slug,
-      shortDescription: service.shortDescription
-    }))
-  }));
+  // Phase D — build mega-menu categories from the 6-department canonical data.
+  // Right pane shows the department's TOP 5 hero services (not all services).
+  // Each hero service may reference a service whose canonical home is a
+  // different department (e.g., Cognition's hero list includes AI Governance
+  // which lives canonically in Shield) — surfaced with a small cross-cut badge.
+  const servicesCategories = departmentsList.map((deptSlug) => {
+    const dept = departmentsData[deptSlug];
+    const heroSlugs = dept.heroServiceSlugs || dept.serviceSlugs.slice(0, 5);
+    return {
+      title: dept.shortName,
+      fullName: dept.name,
+      slug: dept.slug,
+      icon: dept.icon,
+      tagline: dept.tagline,
+      description: dept.description,
+      accentColor: dept.accentColor,
+      bannerBrand: dept.bannerBrand,
+      serviceCount: dept.serviceCount,
+      items: heroSlugs
+        .map((svcSlug) => {
+          const svc = servicesData[svcSlug];
+          if (!svc) return null;
+          return {
+            name: svc.name,
+            slug: svc.slug,
+            shortDescription: svc.shortDescription,
+            // Cross-cut marker: true when the service's canonical home is a
+            // DIFFERENT department than the one surfacing it in heroServiceSlugs.
+            crossDepartment:
+              svc.departmentSlug !== deptSlug
+                ? departmentsData[svc.departmentSlug]?.shortName
+                : null,
+          };
+        })
+        .filter(Boolean),
+    };
+  });
 
   // Who We Are menu items
   const whoWeAreItems = [
@@ -240,8 +266,8 @@ const Header = ({ onMenuClick }) => {
                       {/* Top Bar */}
                       <div className="flex items-center justify-between px-10 py-5 border-b border-gray-100 dark:border-gray-700 bg-gray-50/60 dark:bg-gray-900/60 shrink-0">
                         <div>
-                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Our Services</h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{servicesCategories.length} departments · {departmentData.reduce((a, d) => a + d.services.length, 0)} services</p>
+                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Departments</h3>
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{departmentsList.length} departments · {departmentsList.reduce((a, s) => a + departmentsData[s].serviceCount, 0)} services</p>
                         </div>
                         <Link
                           to="/services"
@@ -267,32 +293,41 @@ const Header = ({ onMenuClick }) => {
                                   onMouseEnter={() => setActiveMegaDept(index)}
                                   onClick={() => {
                                     setActiveDropdown(null);
-                                    navigate(`/department/${category.slug}`);
+                                    navigate(`/departments/${category.slug}`);
                                   }}
                                   className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-left transition-all duration-200 group mb-0.5 ${
-                                    isActive 
-                                      ? 'bg-white dark:bg-black dark:border-gray-800 shadow-[0_2px_12px_rgba(0,0,0,0.06)] ring-1 ring-gray-100' 
+                                    isActive
+                                      ? 'bg-white dark:bg-black dark:border-gray-800 shadow-[0_2px_12px_rgba(0,0,0,0.06)] ring-1 ring-gray-100'
                                       : 'hover:bg-white dark:bg-black dark:border-gray-800/60'
                                   }`}
                                 >
-                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200 ${
-                                    isActive 
-                                      ? 'bg-brand-gradient shadow-md' 
-                                      : 'bg-gray-100 dark:bg-gray-800 dark:border-gray-700 group-hover:bg-gray-200'
-                                  }`}>
+                                  <div
+                                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200 ${
+                                      isActive
+                                        ? 'shadow-md'
+                                        : 'bg-gray-100 dark:bg-gray-800 dark:border-gray-700 group-hover:bg-gray-200'
+                                    }`}
+                                    style={isActive ? { backgroundColor: category.accentColor } : undefined}
+                                  >
                                     <IconComponent className={`w-5 h-5 transition-colors ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-700 dark:text-gray-300'}`} />
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <p className={`text-sm font-semibold truncate transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:text-white'}`}>
-                                      {category.title}
+                                      {category.title.toUpperCase()}
                                     </p>
-                                    <p className={`text-[11px] transition-colors ${isActive ? 'text-brand-blue' : 'text-gray-400'}`}>
-                                      {category.items.length} {category.items.length === 1 ? 'service' : 'services'}
+                                    <p
+                                      className="text-[11px] transition-colors"
+                                      style={isActive ? { color: category.accentColor } : undefined}
+                                    >
+                                      {isActive ? category.tagline : `${category.serviceCount} services`}
                                     </p>
                                   </div>
-                                  <ArrowRight className={`w-4 h-4 shrink-0 transition-all duration-200 ${
-                                    isActive ? 'opacity-100 translate-x-0 text-brand-blue' : 'opacity-0 -translate-x-2 text-gray-400'
-                                  }`} />
+                                  <ArrowRight
+                                    className={`w-4 h-4 shrink-0 transition-all duration-200 ${
+                                      isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 text-gray-400'
+                                    }`}
+                                    style={isActive ? { color: category.accentColor } : undefined}
+                                  />
                                 </button>
                               );
                             })}
@@ -309,36 +344,60 @@ const Header = ({ onMenuClick }) => {
                               return (
                                 <>
                                   <div className="flex items-center gap-4 mb-6 pb-5 border-b border-gray-100">
-                                    <div className="w-12 h-12 bg-brand-gradient rounded-2xl flex items-center justify-center shadow-lg">
+                                    <div
+                                      className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+                                      style={{ backgroundColor: activeCat.accentColor }}
+                                    >
                                       <ActiveIcon className="w-6 h-6 text-white" />
                                     </div>
                                     <div className="flex-1">
-                                      <h4 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">{activeCat.title}</h4>
+                                      <p
+                                        className="text-[11px] uppercase tracking-widest font-semibold mb-0.5"
+                                        style={{ color: activeCat.accentColor }}
+                                      >
+                                        {activeCat.fullName}
+                                      </p>
+                                      <h4 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
                                       <p className="text-sm text-gray-500 mt-0.5 line-clamp-1">{activeCat.description}</p>
                                     </div>
                                     <Link
-                                      to={`/department/${activeCat.slug}`}
+                                      to={`/departments/${activeCat.slug}`}
                                       onClick={() => setActiveDropdown(null)}
-                                      className="text-xs font-semibold text-brand-blue hover:text-blue-700 transition-colors flex items-center gap-1 shrink-0 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 rounded-full hover:bg-blue-100"
+                                      className="text-xs font-semibold transition-colors flex items-center gap-1 shrink-0 px-3 py-1.5 rounded-full hover:opacity-90"
+                                      style={{
+                                        color: '#ffffff',
+                                        backgroundColor: activeCat.accentColor,
+                                      }}
                                     >
                                       View Department
                                       <ArrowRight className="w-3 h-3" />
                                     </Link>
                                   </div>
 
-                                  {/* Services Grid */}
+                                  {/* Banner brand badge */}
+                                  <div className="mb-5 flex items-center gap-2 text-xs">
+                                    <span className="uppercase tracking-widest text-gray-400">Featured:</span>
+                                    <span className="font-semibold text-gray-700 dark:text-gray-300">{activeCat.bannerBrand}</span>
+                                  </div>
+
+                                  {/* Top hero services grid (5 max) */}
                                   <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
                                     {activeCat.items.map((item, idx) => (
                                       <Link
                                         key={idx}
-                                        to={`/services/${activeCat.slug}/${item.slug}`}
+                                        to={`/services/${item.slug}`}
                                         onClick={() => setActiveDropdown(null)}
                                         className="group relative p-5 rounded-2xl border border-gray-100 bg-white dark:bg-black dark:border-gray-800 hover:bg-gray-50 hover:border-gray-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.05)] transition-all duration-200"
                                       >
                                         <div className="flex items-start justify-between gap-3">
                                           <div className="flex-1 min-w-0">
-                                            <h5 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors mb-1.5 leading-snug">
+                                            <h5 className="text-sm font-semibold text-gray-900 dark:text-white transition-colors mb-1.5 leading-snug group-hover:underline">
                                               {item.name}
+                                              {item.crossDepartment && (
+                                                <span className="ml-1.5 text-[10px] text-gray-400 font-normal">
+                                                  (in {item.crossDepartment})
+                                                </span>
+                                              )}
                                             </h5>
                                             {item.shortDescription && (
                                               <p className="text-[12px] text-gray-400 leading-relaxed line-clamp-2 group-hover:text-gray-500 transition-colors">
@@ -346,12 +405,15 @@ const Header = ({ onMenuClick }) => {
                                               </p>
                                             )}
                                           </div>
-                                          <div className="mt-0.5 w-7 h-7 rounded-full bg-gray-50 dark:bg-[#050505] group-hover:bg-brand-blue/10 flex items-center justify-center shrink-0 transition-all duration-200">
-                                            <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-brand-blue group-hover:translate-x-0.5 transition-all" />
+                                          <div className="mt-0.5 w-7 h-7 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center shrink-0 transition-all duration-200">
+                                            <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:translate-x-0.5 transition-all" />
                                           </div>
                                         </div>
-                                        {/* Bottom accent line */}
-                                        <div className="absolute bottom-0 left-5 right-5 h-[2px] bg-gradient-to-r from-brand-blue to-cyan-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full"></div>
+                                        {/* Bottom accent line — uses department accent color */}
+                                        <div
+                                          className="absolute bottom-0 left-5 right-5 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full"
+                                          style={{ backgroundColor: activeCat.accentColor }}
+                                        ></div>
                                       </Link>
                                     ))}
                                   </div>

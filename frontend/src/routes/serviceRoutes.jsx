@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-// Phase C — flat canonical service route (placeholder; Phase D ships real template)
-const ServicePagePlaceholder = React.lazy(() => import('../pages/ServicePagePlaceholder'));
+// Phase D — flat canonical service route real template (replaces Phase C placeholder).
+const ServicePage6 = React.lazy(() => import('../pages/ServicePageReal'));
 
 // AI & Cognitive services
 const AgenticAI = React.lazy(() => import('../pages/services/ai-cognitive/AgenticAI'));
@@ -99,11 +99,11 @@ const GrowthFunnelsConversion = React.lazy(() => import('../pages/services/conve
  * Service Routes - All 77 service pages
  */
 export const serviceRoutes = [
-  // Phase C — flat canonical service route (placeholder until Phase D ships real template)
+  // Phase D — flat canonical service route with real template (replaces Phase C placeholder).
   // React Router 6/7 picks the MORE SPECIFIC path automatically, so the 2-segment
   // legacy routes below still win for /services/<dept>/<slug> URLs. The flat
   // /services/:slug route catches the new 1-segment canonical URLs.
-  <Route key="service-flat" path="/services/:slug" element={<ServicePagePlaceholder />} />,
+  <Route key="service-flat" path="/services/:slug" element={<ServicePage6 />} />,
 
   // AI & Cognitive (6)
   <Route key="agentic-ai" path="/services/ai-cognitive/agentic-ai" element={<AgenticAI />} />,

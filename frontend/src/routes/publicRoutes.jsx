@@ -6,9 +6,11 @@ const NewsPage = React.lazy(() => import('../pages/NewsPage'));
 const CommunitiesPage = React.lazy(() => import('../pages/CommunitiesPage'));
 const InvestorsPage = React.lazy(() => import('../pages/InvestorsPage'));
 const DepartmentPage = React.lazy(() => import('../pages/DepartmentPage'));
-// Phase C — new canonical department routes (placeholders; Phase D ships real templates)
+// Phase C scaffolded these as placeholders; Phase D upgrades them to real templates.
+// DepartmentsIndexPage.jsx was upgraded in-place (no robots noindex; real layout).
+// DepartmentPage real template is DepartmentPageReal.jsx (placeholder file retired).
 const DepartmentsIndexPage = React.lazy(() => import('../pages/DepartmentsIndexPage'));
-const DepartmentPagePlaceholder = React.lazy(() => import('../pages/DepartmentPagePlaceholder'));
+const DepartmentPage6 = React.lazy(() => import('../pages/DepartmentPageReal'));
 const BookingPage = React.lazy(() => import('../pages/BookingPage'));
 
 // Who We Are pages
@@ -47,9 +49,9 @@ export const publicRoutes = [
   <Route key="investors" path="/investors" element={<InvestorsPage />} />,
   <Route key="department" path="/department/:departmentSlug" element={<DepartmentPage />} />,
 
-  // Phase C — new canonical 6-department routes (placeholders; full templates in Phase D)
+  // Phase D — canonical 6-department routes with real templates (replaces Phase C placeholders).
   <Route key="departments-index" path="/departments" element={<DepartmentsIndexPage />} />,
-  <Route key="department-detail" path="/departments/:slug" element={<DepartmentPagePlaceholder />} />,
+  <Route key="department-detail" path="/departments/:slug" element={<DepartmentPage6 />} />,
   
   // Who We Are pages
   <Route key="about-us" path="/about-us" element={<AboutUs />} />,

@@ -44,6 +44,7 @@ import SEO from '../components/SEO';
 import { coreSEO } from '../data/seoData';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import ExploreServices from '../components/ExploreServices';
+import DepartmentsGrid from '../components/DepartmentsGrid';
 
 // ============================================================================
 // MOCK DATA
@@ -2405,7 +2406,10 @@ const HomePage = () => {
       <Suspense fallback={<div className="w-full h-[200px]" aria-hidden="true" />}>
         <ConciergeSection />
       </Suspense>
-      <ExploreServices />
+      {/* Phase D — 6-department canonical grid replaces the legacy 15-dept carousel.
+          ExploreServices is no longer rendered (kept in repo only as fallback during transition;
+          deletion scheduled for the cleanup PR after Phase F). */}
+      <DepartmentsGrid />
       <IndustriesWeServe />
       <TrustStatementSection />
       <PartnerBadgesStrip />
