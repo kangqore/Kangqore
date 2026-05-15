@@ -24,6 +24,11 @@ jobs:
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
 
+    # Redirect drift gate — fails fast if shared/legacyRedirects.json was edited
+    # but the .generated.json mirrors were not regenerated.
+    - name: Verify legacy-redirect mirrors are in sync
+      run: npm run redirects:check
+
     # Backend Build
     - name: Install Backend Dependencies
       working-directory: ./backend
@@ -44,3 +49,15 @@ jobs:
       env:
         REACT_APP_BACKEND_URL: "" # Relative path for prod
         CI: false # Don't treat warnings as errors
+
+    # Phase C — Legacy 301 redirect smoke tests against the Express middleware.
+    # Uses the compiled backend dist (no Docker needed in CI for this layer).
+    - name: Run legacy-redirect smoke test (local harness)
+      run: npm run test:redirects:local
+
+    # Frontend Jest data architecture invariants (PR #14 regression guard)
+    - name: Run data architecture invariants
+      working-directory: ./frontend
+      run: npx craco test --testPathPattern=dataArchitecture --watchAll=false
+      env:
+        CI: true

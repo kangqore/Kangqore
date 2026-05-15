@@ -5,6 +5,10 @@
   "scripts": {
     "start": "cd backend && npm start",
     "dev": "cd backend && npm run dev",
-    "build": "./build.sh"
+    "build": "./build.sh",
+    "redirects:generate": "node scripts/generate-redirects.mjs",
+    "redirects:check": "node scripts/generate-redirects.mjs --check",
+    "test:redirects": "node scripts/test-redirects.mjs",
+    "test:redirects:local": "node scripts/test-redirects-local.mjs"
   }
 }

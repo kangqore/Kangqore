@@ -3,6 +3,8 @@
 // Every description is 150–160 characters, keyword-rich, and unique.
 // ────────────────────────────────────────────────────────────────────────────────
 
+import legacyRedirectsGenerated from './legacyRedirects.generated.json';
+
 const BASE_URL = 'https://kangqore.com';
 
 // ─── Core Pages ────────────────────────────────────────────────────────────────
@@ -736,125 +738,20 @@ export const serviceSEO = {
 };
 
 // ─── Legacy Redirects (15 old departments + 61 old service paths) ──────────────
-// 301 redirect map: old URL → new URL.
-// Wire into the routing layer before launch (next.config.js / vercel.json /
-// React Router redirects / hosting redirects file).
-// See Section 19.7 of the plan for the rationale and full audit trail.
+// Canonical source: `shared/legacyRedirects.json` at repo root.
+// Mirror at `frontend/src/data/legacyRedirects.generated.json` is produced by
+// `npm run redirects:generate` (root). To add/edit a redirect:
+//   1. Edit `shared/legacyRedirects.json`
+//   2. Run `npm run redirects:generate` from repo root
+//   3. Commit BOTH `shared/legacyRedirects.json` AND the two `.generated.json` mirrors
+// CI gate: `npm run redirects:check` fails fast on any drift.
+// Backend reads from `backend/src/data/legacyRedirects.generated.json` (same source).
+// See plan Section 20.6 for rationale and ModuleScopePlugin constraint.
 // ────────────────────────────────────────────────────────────────────────────────
-export const legacyRedirects = {
+export const legacyRedirects = legacyRedirectsGenerated;
 
-  // ─── 15 OLD DEPARTMENT URLs → 6 NEW PRACTICES ─────────────────────
-  '/department/ai-cognitive':                          '/departments/cognition',
-  '/department/analytics-insights':                    '/departments/cognition',
-  '/department/automation':                            '/departments/cognition',
-  '/department/cloud-engineering':                     '/departments/foundry',
-  '/department/cybersecurity':                         '/departments/shield',
-  '/department/digital-transformation-modernization':  '/departments/reimagine',
-  '/department/product-engineering':                   '/departments/foundry',
-  '/department/infrastructure-networks-operations':    '/departments/foundry',
-  '/department/consulting-advisory':                   '/departments/reimagine',
-  '/department/digital-engineering':                   '/departments/reimagine',
-  '/department/enterprise-applications':               '/departments/platforms',
-  '/department/emerging-technologies':                 '/departments/foundry',
-  '/department/business-operations':                   '/departments/platforms',
-  '/department/digital-marketing':                     '/departments/growth',
-  '/department/conversion-engineering':                '/departments/growth',
-
-  // ─── 61 OLD SERVICE URLs → FLAT NEW SERVICE URLs ──────────────────
-
-  // AI & Cognitive (6)
-  '/services/ai-cognitive/agentic-ai':                 '/services/agentic-ai',
-  '/services/ai-cognitive/ai-cognitive-computing':     '/services/ai-cognitive-computing',
-  '/services/ai-cognitive/ai-governance':              '/services/ai-governance',
-  '/services/ai-cognitive/data-science-ai':            '/services/data-science-ai',
-  '/services/ai-cognitive/genai-business-services':    '/services/genai-business-services',
-  '/services/ai-cognitive/mlops':                      '/services/mlops',
-
-  // Analytics & Insights (2)
-  '/services/analytics-insights/analytics':            '/services/analytics',
-  '/services/analytics-insights/big-data':             '/services/big-data',
-
-  // Cloud Engineering (5)
-  '/services/cloud-engineering/managed-cloud-services':'/services/managed-cloud-services',
-  '/services/cloud-engineering/aws':                   '/services/aws',
-  '/services/cloud-engineering/microsoft-services':    '/services/microsoft-services',
-  '/services/cloud-engineering/google-cloud-services': '/services/google-cloud-services',
-  '/services/cloud-engineering/cloud-computing':       '/services/cloud-computing',
-
-  // Cybersecurity (1)
-  '/services/cybersecurity/it-security-services':      '/services/it-security-services',
-
-  // Digital Transformation & Modernization (6)
-  '/services/digital-transformation-modernization/application-modernization':       '/services/application-modernization',
-  '/services/digital-transformation-modernization/digital-transformation':          '/services/digital-transformation',
-  '/services/digital-transformation-modernization/legacy-modernization':            '/services/legacy-modernization',
-  '/services/digital-transformation-modernization/technology-modernization':        '/services/technology-modernization',
-  '/services/digital-transformation-modernization/technology-transformation':       '/services/technology-transformation',
-  '/services/digital-transformation-modernization/digital-business-transformation': '/services/digital-business-transformation',
-
-  // Automation (4)
-  '/services/automation/digital-process-automation':   '/services/digital-process-automation',
-  '/services/automation/robotic-process-automation':   '/services/robotic-process-automation',
-  '/services/automation/business-process-management':  '/services/business-process-management',
-  '/services/automation/intelligent-automation':       '/services/intelligent-automation',
-
-  // Product Engineering (6)
-  '/services/product-engineering/embedded-design-systems':         '/services/embedded-design-systems',
-  '/services/product-engineering/engineering-foundry':             '/services/engineering-foundry',
-  '/services/product-engineering/engineering-rd-services':         '/services/engineering-rd-services',
-  '/services/product-engineering/product-digital-engineering':     '/services/product-digital-engineering',
-  '/services/product-engineering/quality-engineering-assurance':   '/services/quality-engineering-assurance',
-  '/services/product-engineering/devops-as-a-service':             '/services/devops-as-a-service',
-
-  // Infrastructure, Networks & Operations (5)
-  '/services/infrastructure-networks-operations/managed-infrastructure-services': '/services/managed-infrastructure-services',
-  '/services/infrastructure-networks-operations/modernization-infrastructure':    '/services/modernization-infrastructure',
-  '/services/infrastructure-networks-operations/managed-services':                '/services/managed-services',
-  '/services/infrastructure-networks-operations/support-maintenance':             '/services/support-maintenance',
-  '/services/infrastructure-networks-operations/operation-technology':            '/services/operation-technology',
-
-  // Consulting & Advisory (3)
-  '/services/consulting-advisory/technology-consulting':       '/services/technology-consulting',
-  '/services/consulting-advisory/strategy-consulting':         '/services/strategy-consulting',
-  '/services/consulting-advisory/discover-frame-workshops':    '/services/discover-frame-workshops',
-
-  // Digital Engineering (4)
-  '/services/digital-engineering/mvp-acceleration':                  '/services/mvp-acceleration',
-  '/services/digital-engineering/product-strategy-experience-design':'/services/product-strategy-experience-design',
-  '/services/digital-engineering/software-development':              '/services/software-development',
-  '/services/digital-engineering/api-microservices-engineering':     '/services/api-microservices-engineering',
-
-  // Enterprise Applications (4)
-  '/services/enterprise-applications/enterprise-platform-integration': '/services/enterprise-platform-integration',
-  '/services/enterprise-applications/pimcore':                         '/services/pimcore',
-  '/services/enterprise-applications/salesforce':                      '/services/salesforce',
-  '/services/enterprise-applications/servicenow':                      '/services/servicenow',
-
-  // Emerging Technologies (2)
-  '/services/emerging-technologies/blockchain':                    '/services/blockchain',
-  '/services/emerging-technologies/internet-of-things':            '/services/internet-of-things',
-
-  // Business Operations (5)
-  '/services/business-operations/finance-risk-management':         '/services/finance-risk-management',
-  '/services/business-operations/global-capability-centers':       '/services/global-capability-centers',
-  '/services/business-operations/talent-organization':             '/services/talent-organization',
-  '/services/business-operations/supply-chain':                    '/services/supply-chain',
-  '/services/business-operations/unified-services-management':     '/services/unified-services-management',
-
-  // Digital Marketing (5)
-  '/services/digital-marketing/cdp-strategy':                      '/services/cdp-strategy',
-  '/services/digital-marketing/marketing-ai-readiness':            '/services/marketing-ai-readiness',
-  '/services/digital-marketing/social-media-management':           '/services/social-media-management',
-  '/services/digital-marketing/performance-marketing':             '/services/performance-marketing',
-  '/services/digital-marketing/seo-organic-growth-strategy':       '/services/seo-organic-growth-strategy',
-
-  // Conversion Engineering (3)
-  '/services/conversion-engineering/growth-funnels-conversion-engineering': '/services/growth-funnels-conversion-engineering',
-  '/services/conversion-engineering/conversion-rate-optimization':          '/services/conversion-rate-optimization',
-  '/services/conversion-engineering/campaign-planning':                     '/services/campaign-planning',
-};
-
-// Tally: 15 department redirects + 61 service redirects = 76 rows total.
+// Tally check: shared/legacyRedirects.json contains 15 + 61 = 76 entries.
+// Asserted in CI via `npm run redirects:check`.
 
 export default {
   coreSEO,

@@ -12,6 +12,7 @@ import { Toaster } from './components/ui/toaster';
 
 // Import modular routes
 import { authRoutes, publicRoutes, industryRoutes, contentRoutes, serviceRoutes } from './routes';
+import { legacyRedirectRoutes } from './routes/legacyRedirectRoutes';
 // Import page components
 import HomePage from './pages/HomePage';
 import Services from './pages/Services';
@@ -129,6 +130,12 @@ function AppContent() {
       <WebVitalsReporter />
       <Suspense fallback={<PageLoader />}>
         <Routes>
+          {/* Legacy URL redirects (76 entries) — MUST come first.
+              In production, Express middleware intercepts these before the JS
+              loads. This client-side fallback handles dev mode (CRA dev server)
+              and any URL the server misses. */}
+          {legacyRedirectRoutes}
+
           {/* Auth & Dashboard Routes (no Header/Footer) */}
           {authRoutes}
 
