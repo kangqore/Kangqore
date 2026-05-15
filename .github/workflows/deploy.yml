@@ -29,6 +29,11 @@ jobs:
     - name: Verify legacy-redirect mirrors are in sync
       run: npm run redirects:check
 
+    # Sitemap drift gate — fails fast if departmentsData.js or servicesData.js
+    # changed without regenerating frontend/public/sitemap.xml.
+    - name: Verify sitemap.xml matches canonical data
+      run: npm run sitemap:check
+
     # Backend Build
     - name: Install Backend Dependencies
       working-directory: ./backend

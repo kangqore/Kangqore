@@ -1,0 +1,26 @@
+# Kangqore — robots.txt
+# Public marketing pages are crawlable; admin / auth / API are not.
+
+User-agent: *
+Allow: /
+
+# Private surfaces
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /book/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+
+# Parameterized URLs (tracking, sessions, etc.)
+Disallow: /*?*
+
+# Legacy URL paths (Phase C ships 301 redirects, but explicit disallow
+# saves crawl budget by signalling "don't follow these patterns")
+Disallow: /department/
+Disallow: /services/*/
+
+Sitemap: https://kangqore.com/sitemap.xml

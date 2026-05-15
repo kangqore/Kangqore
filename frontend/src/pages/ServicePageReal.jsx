@@ -20,6 +20,9 @@ import { serviceSEO } from '../data/seoData';
 import Breadcrumb from '../components/Breadcrumb';
 import NotFound from './NotFound';
 
+const SITE_URL = 'https://kangqore.com';
+const ORG_NAME = 'Kangqore';
+
 const ServicePage = () => {
   const { slug } = useParams();
 
@@ -31,12 +34,87 @@ const ServicePage = () => {
   const dept = departmentsData[svc.departmentSlug];
   const seo = serviceSEO[slug] || {};
 
+  const pageUrl = `${SITE_URL}/services/${slug}`;
+  const deptUrl = `${SITE_URL}/departments/${dept.slug}`;
+  const pageTitle = seo.title || `${svc.name} — ${dept.shortName} | Kangqore`;
+  const pageDescription = seo.description || svc.shortDescription;
+  const ogImage = `${SITE_URL}/og/default.png`; // per-service images can be wired later
+
+  // JSON-LD: Service schema + BreadcrumbList (deep breadcrumb even though URL is flat).
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Service',
+        '@id': pageUrl,
+        name: svc.name,
+        description: svc.shortDescription,
+        provider: {
+          '@type': 'Organization',
+          name: ORG_NAME,
+          url: SITE_URL,
+        },
+        serviceType: dept.tagline,
+        url: pageUrl,
+        brand: {
+          '@type': 'Brand',
+          name: svc.bannerBrand.replace(/[™®]/g, '').trim(),
+        },
+        isPartOf: {
+          '@type': 'Service',
+          name: dept.name,
+          url: deptUrl,
+        },
+        ...(svc.relatedServiceSlugs && svc.relatedServiceSlugs.length > 0
+          ? {
+              isRelatedTo: svc.relatedServiceSlugs.slice(0, 3).map((relSlug) => {
+                const rel = servicesData[relSlug];
+                return {
+                  '@type': 'Service',
+                  name: rel?.name || relSlug,
+                  url: `${SITE_URL}/services/${relSlug}`,
+                };
+              }),
+            }
+          : {}),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Departments', item: `${SITE_URL}/departments` },
+          { '@type': 'ListItem', position: 3, name: dept.shortName, item: deptUrl },
+          { '@type': 'ListItem', position: 4, name: svc.name, item: pageUrl },
+        ],
+      },
+    ],
+  };
+
   return (
     <>
       <Helmet>
-        <title>{seo.title || `${svc.name} — ${dept.shortName} | Kangqore`}</title>
-        <meta name="description" content={seo.description || svc.shortDescription} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
         {seo.keywords && <meta name="keywords" content={seo.keywords} />}
+        <link rel="canonical" href={pageUrl} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content={ORG_NAME} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={pageUrl} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={ogImage} />
+
+        {/* JSON-LD: Service + BreadcrumbList */}
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
       {/* Top accent band (inherits department color) */}
