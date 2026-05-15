@@ -55,6 +55,7 @@ import { authenticate, authorize } from './middleware/auth';
 
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
+import { legacyRedirectsMiddleware } from './middleware/legacyRedirects';
 import { initializeSocket, getIO } from './socket';
 
 
@@ -197,6 +198,14 @@ if (process.env.PRERENDER_TOKEN) {
   app.use(prerender.set('prerenderToken', process.env.PRERENDER_TOKEN));
   console.log('🤖 Prerender.io SEO/AEO Middleware Active');
 }
+
+// ─── Legacy URL 301 Redirects (Phase C) ────────────────────────────────────────
+// MUST run BEFORE express.static() and the SPA fallback so legacy URLs return
+// a real 301 with a Location header instead of 200 + index.html.
+// The middleware itself guards against intercepting /api/* paths.
+// Data source: backend/src/data/legacyRedirects.generated.json
+//   (canonical authoring source: shared/legacyRedirects.json at repo root)
+app.use(legacyRedirectsMiddleware);
 
 // Serve Frontend Static Files
 const frontendBuildPath = path.join(__dirname, '../../frontend/build');
