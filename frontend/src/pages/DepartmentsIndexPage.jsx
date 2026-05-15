@@ -13,15 +13,86 @@ import { departmentsData, departmentsList } from '../data/departmentsData';
 import { servicesData } from '../data/servicesData';
 import { coreSEO } from '../data/seoData';
 
+const SITE_URL = 'https://kangqore.com';
+const ORG_NAME = 'Kangqore';
+
 const DepartmentsIndexPage = () => {
   const seo = coreSEO.departments || {};
+  const pageUrl = `${SITE_URL}/departments`;
+  const pageTitle = seo.title || 'Departments — 6 Departments · 61 Services | Kangqore';
+  const pageDescription =
+    seo.description ||
+    '6 Kangqore departments · 61 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.';
+  const ogImage = `${SITE_URL}/og/default.png`;
+
+  // JSON-LD: CollectionPage that lists the 6 departments + BreadcrumbList.
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': pageUrl,
+        name: 'Kangqore Departments',
+        description: pageDescription,
+        url: pageUrl,
+        provider: {
+          '@type': 'Organization',
+          name: ORG_NAME,
+          url: SITE_URL,
+        },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: departmentsList.map((slug, i) => {
+            const d = departmentsData[slug];
+            return {
+              '@type': 'ListItem',
+              position: i + 1,
+              item: {
+                '@type': 'Service',
+                name: d.name,
+                description: d.description,
+                serviceType: d.tagline,
+                url: `${SITE_URL}/departments/${slug}`,
+              },
+            };
+          }),
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Departments', item: pageUrl },
+        ],
+      },
+    ],
+  };
 
   return (
     <>
       <Helmet>
-        <title>{seo.title || 'Departments — 6 Departments · 61 Services | Kangqore'}</title>
-        <meta name="description" content={seo.description} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
         {seo.keywords && <meta name="keywords" content={seo.keywords} />}
+        <link rel="canonical" href={pageUrl} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content={ORG_NAME} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={pageUrl} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={ogImage} />
+
+        {/* JSON-LD: CollectionPage + BreadcrumbList */}
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-6 py-16">
