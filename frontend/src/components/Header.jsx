@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown, Globe, Menu, X, LogIn, LogOut, UserCircle, Search, Phone, ArrowRight, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Sun, Moon, Mic } from 'lucide-react';
@@ -26,6 +26,34 @@ const Header = ({ onMenuClick }) => {
 
   // State for the mega-menu hover panel
   const [activeMegaDept, setActiveMegaDept] = useState(0);
+
+  // Cmd+K / Ctrl+K keyboard shortcut opens GlobalSearch.
+  // This is the Stripe / Linear / Notion pattern — search remains accessible
+  // for power users even though the visible search icon was replaced by the
+  // "Ask eQORE AI" pill in the nav. Documented in /eqore page tooltip.
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const isCmdK = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
+      if (isCmdK) {
+        e.preventDefault();
+        setShowSearch(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Opens the global eQORE chatbot. Reuses the existing
+  // window event listened to by EQoreChatbot.jsx — same mechanism the
+  // mid-page <AskEqoreCTA /> uses on service / department pages.
+  const openEqoreChat = () => {
+    if (typeof window === 'undefined') return;
+    window.dispatchEvent(
+      new CustomEvent('toggle-eqore-chatbot', {
+        detail: { surface: 'global-header', openOnly: true },
+      })
+    );
+  };
 
   // Phase D — build mega-menu categories from the 6-department canonical data.
   // Right pane shows the department's TOP 5 hero services (not all services).
@@ -672,8 +700,20 @@ const Header = ({ onMenuClick }) => {
 
           {/* Right Side - Action Buttons */}
           <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Mobile Search Button (fallback for users without a keyboard).
+                On desktop, search is invoked via Cmd/Ctrl+K — see useEffect above. */}
+            <button
+              onClick={() => setShowSearch(true)}
+              className="lg:hidden p-2.5 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              aria-label="Open search"
+              title="Search"
+              data-testid="global-search-btn-mobile"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+
             {/* Mobile Menu Toggle */}
-            <button 
+            <button
               onClick={onMenuClick}
               className="lg:hidden p-2.5 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               aria-label="Toggle Mobile Menu"
@@ -681,18 +721,38 @@ const Header = ({ onMenuClick }) => {
               <Menu className="w-6 h-6" />
             </button>
 
-            {/* Desktop Search Button */}
-            <button 
-              onClick={() => setShowSearch(true)}
-              className="hidden lg:flex p-3 hover:bg-gray-100 dark:bg-[#0a0a0c] rounded-full transition-colors"
-              data-testid="global-search-btn"
-              title="Search"
+            {/* Desktop: "Ask eQORE AI" pill — replaces the legacy search icon.
+                The pill is the primary brand CTA in the header: gradient border,
+                sparkles glyph, subtle hover expansion. Click dispatches the
+                global toggle-eqore-chatbot event consumed by EQoreChatbot.jsx.
+                Keyboard shortcut Cmd/Ctrl+K still opens the legacy GlobalSearch
+                modal for power users (registered in useEffect at top of file).
+                See: src/components/concierge/AskEqoreCTA.jsx for the mid-page
+                CTA variant that uses the same event mechanism. */}
+            <button
+              type="button"
+              onClick={openEqoreChat}
+              className="group relative hidden lg:inline-flex items-center rounded-full p-[2px] bg-gradient-to-r from-brand-blue to-brand-cyan shadow-md hover:shadow-lg transition-all duration-300"
+              aria-label="Ask eQORE AI — Kangqore's AI assistant"
+              data-testid="ask-eqore-btn"
+              title="Ask eQORE AI  (search: ⌘K)"
             >
-              <Search className="w-7 h-7 text-gray-700 dark:text-gray-200" strokeWidth={2.5} />
+              <span
+                className="inline-flex items-center gap-2 rounded-full bg-white dark:bg-black px-5 py-2.5 text-sm font-semibold text-gray-900 dark:text-white transition-all duration-300 group-hover:gap-3"
+              >
+                <Sparkles
+                  className="w-4 h-4 text-brand-blue dark:text-brand-cyan transition-transform duration-300 group-hover:scale-110"
+                  strokeWidth={2.5}
+                  aria-hidden="true"
+                />
+                <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
+                  Ask eQORE AI
+                </span>
+              </span>
             </button>
-            
+
             {/* Desktop Contact Button */}
-            <Link 
+            <Link
               to="/contact"
               className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-full font-semibold transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-700 shadow-md hover:shadow-lg"
             >
