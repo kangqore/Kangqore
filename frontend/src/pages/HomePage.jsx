@@ -45,6 +45,7 @@ import { coreSEO } from '../data/seoData';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import ExploreServices from '../components/ExploreServices';
 import DepartmentsGrid from '../components/DepartmentsGrid';
+import DepartmentCarousel from '../components/home/DepartmentCarousel';
 
 // ============================================================================
 // MOCK DATA
@@ -416,7 +417,7 @@ const HeroCarousel = () => {
         </div>
 
         {/* ── Hero Content ── */}
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-20 sm:pt-24 lg:pt-28 pb-16 sm:pb-20 lg:pb-24">
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 sm:pt-40 lg:pt-[200px] pb-16 sm:pb-20 lg:pb-24">
           {/* Glass cards — absolute positioned right side, lg+ only */}
           <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-12 w-[245px] xl:w-[265px] z-10">
             <Suspense fallback={<div className="aspect-[5/4] rounded-[1.75rem] bg-white dark:bg-black/5" aria-hidden="true" />}>
@@ -2409,7 +2410,7 @@ const HomePage = () => {
       {/* Phase D — 6-department canonical grid replaces the legacy 15-dept carousel.
           ExploreServices is no longer rendered (kept in repo only as fallback during transition;
           deletion scheduled for the cleanup PR after Phase F). */}
-      <DepartmentsGrid />
+      <DepartmentCarousel />
       <IndustriesWeServe />
       <TrustStatementSection />
       <PartnerBadgesStrip />
