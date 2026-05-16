@@ -723,7 +723,7 @@ const GenericMidPageCTA = ({ serviceName, ctaLink }) => {
   );
 };
 
-const ServicePageTemplate = ({ service, department }) => {
+const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
   const [openFaq, setOpenFaq] = useState(0);
   const [expandedCards, setExpandedCards] = useState({});
   const [activePhilosophyIndex, setActivePhilosophyIndex] = useState(0);
@@ -833,7 +833,7 @@ const ServicePageTemplate = ({ service, department }) => {
 
   // Button Config
   const primaryButton = service.primaryButton || { text: 'Get Started', link: '/contact' };
-  const secondaryButton = service.secondaryButton === null ? null : (service.secondaryButton || { text: `Back to ${department.name}`, link: `/department/${department.slug}` });
+  const secondaryButton = service.secondaryButton === null ? null : (service.secondaryButton || { text: `Back to ${department.name}`, link: `/departments/${department.slug}` });
 
   // ─── JSON-LD SCHEMA GENERATION (SEO/AEO/GEO) ────────────────────────────────
   const baseUrl = "https://kangqore.com";
@@ -895,7 +895,7 @@ const ServicePageTemplate = ({ service, department }) => {
         "@type": "ListItem",
         "position": 3,
         "name": department.name,
-        "item": `${baseUrl}/department/${department.slug}`
+        "item": `${baseUrl}/departments/${department.slug}`
       },
       {
         "@type": "ListItem",
@@ -918,12 +918,14 @@ const ServicePageTemplate = ({ service, department }) => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
-      <SEO 
-        title={service.name} 
-        description={service.description || service.shortDescription} 
-        schemas={pageSchemas}
-        url={serviceUrl}
-      />
+      {!disableSEO && (
+        <SEO
+          title={service.name}
+          description={service.description || service.shortDescription}
+          schemas={pageSchemas}
+          url={serviceUrl}
+        />
+      )}
 
       {/* Hero Section */}
       {service.heroSection ? service.heroSection : (
@@ -944,7 +946,7 @@ const ServicePageTemplate = ({ service, department }) => {
           breadcrumb={[
             { label: 'Home', link: '/' },
             { label: 'Services', link: '/services' },
-            { label: department.name, link: `/department/${department.slug}` },
+            { label: department.name, link: `/departments/${department.slug}` },
             { label: service.name }
           ]}
           showWave={false}
