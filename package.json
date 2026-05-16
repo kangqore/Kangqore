@@ -11,6 +11,10 @@
     "test:redirects": "node scripts/test-redirects.mjs",
     "test:redirects:local": "node scripts/test-redirects-local.mjs",
     "sitemap:generate": "node scripts/generate-sitemap.mjs",
-    "sitemap:check": "node scripts/generate-sitemap.mjs --check"
+    "sitemap:check": "node scripts/generate-sitemap.mjs --check",
+    "audit:seo-data": "node scripts/audit-seo-data.mjs",
+    "audit:legacy-coverage": "node scripts/audit-legacy-coverage.mjs",
+    "audit:page-seo": "node scripts/audit-page-seo.mjs",
+    "audit:all": "npm run audit:seo-data && npm run audit:legacy-coverage && npm run audit:page-seo"
   }
 }

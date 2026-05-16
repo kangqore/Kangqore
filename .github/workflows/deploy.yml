@@ -34,6 +34,17 @@ jobs:
     - name: Verify sitemap.xml matches canonical data
       run: npm run sitemap:check
 
+    # Phase F audit gates — pure static analysis, sub-second each.
+    # Each audit script exits non-zero on any failure with a precise reason.
+    - name: Audit SEO data completeness (departmentSEO + serviceSEO)
+      run: npm run audit:seo-data
+
+    - name: Audit legacy URL coverage (every legacy URL has a valid redirect)
+      run: npm run audit:legacy-coverage
+
+    - name: Audit page-source SEO surface (canonical + OG + JSON-LD)
+      run: npm run audit:page-seo
+
     # Backend Build
     - name: Install Backend Dependencies
       working-directory: ./backend
