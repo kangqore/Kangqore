@@ -10,7 +10,7 @@ import {
   AIAcceleratorRoadmap,
   AIMetricsSection,
   AITransformationMagnet
-} from './components/AICustomSections';
+} from '../../../components/services/cognition/AICustomSections';
 
 const GenAIBusinessServices = () => {
   const service = {

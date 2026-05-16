@@ -1,12 +1,23 @@
-// ─── /services/:slug — Real template (Phase D) ────────────────────────────────
-// Replaces the Phase C placeholder. Indexable (no robots noindex).
+// ─── /services/:slug — Real template (Phase D + Phase G2) ─────────────────────
+// Phase D shipped the canonical flat /services/<slug> route with a clean skeleton
+// (Hero → Problem → Features → Approach → Related → CTA). Phase G2 layers a
+// premium render path on top WITHOUT touching the skeleton.
 //
-// Structure per plan Section 21.5:
-//   Hero → Problem it solves → What Kangqore delivers (key features) →
-//   Delivery approach → Related services → Final CTA
+// Fork rule: if a slug is registered in PREMIUM_REGISTRY (per-dept premium
+// content modules under components/services/<dept>/), render the premium path
+// via ServicePageTemplate (the lifted legacy template, with disableSEO so this
+// component still owns canonical SEO/canonical/JSON-LD/OG). Otherwise the
+// existing skeleton renders unchanged.
 //
-// Use cases section is omitted if servicesData[slug].useCases is absent
-// (graceful empty state — content authors can add later without component change).
+// Per Phase G locked constraints:
+//  - /services/<slug> is canonical for both paths.
+//  - Breadcrumbs use canonical 6-dept names (dept.shortName) and plural URL
+//    pattern /departments/<slug>. No "AI & Cognitive" / "Digital Marketing"
+//    legacy labels leak through.
+//  - Premium content does not duplicate base identity fields (name/slug/
+//    departmentSlug/shortDescription/fullDescription stay in servicesData).
+//  - JSX, lucide icons, and section components live in dept-scoped modules —
+//    never in servicesData.js.
 // ────────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
@@ -18,10 +29,21 @@ import { servicesData, servicesList } from '../data/servicesData';
 import { departmentsData } from '../data/departmentsData';
 import { serviceSEO } from '../data/seoData';
 import Breadcrumb from '../components/Breadcrumb';
+import ServicePageTemplate from '../components/ServicePageTemplate';
+import { COGNITION_SECTIONS } from '../components/services/cognition/sections';
 import NotFound from './NotFound';
 
 const SITE_URL = 'https://kangqore.com';
 const ORG_NAME = 'Kangqore';
+
+// Per-service premium content registry, namespaced by dept. Each entry is a
+// presentation-layer object that merges over the canonical base service to
+// produce the legacy-template-compatible shape (highFidelity, capabilities,
+// customSections JSX, hero customization, stats, etc.). Future phases (G4
+// Growth, G5 Platforms, G6 Foundry) add their own modules and spread them in.
+const PREMIUM_REGISTRY = {
+  ...COGNITION_SECTIONS,
+};
 
 const ServicePage = () => {
   const { slug } = useParams();
@@ -38,7 +60,7 @@ const ServicePage = () => {
   const deptUrl = `${SITE_URL}/departments/${dept.slug}`;
   const pageTitle = seo.title || `${svc.name} — ${dept.shortName} | Kangqore`;
   const pageDescription = seo.description || svc.shortDescription;
-  const ogImage = `${SITE_URL}/og/default.png`; // per-service images can be wired later
+  const ogImage = `${SITE_URL}/og/default.png`;
 
   // JSON-LD: Service schema + BreadcrumbList (deep breadcrumb even though URL is flat).
   const jsonLd = {
@@ -90,39 +112,95 @@ const ServicePage = () => {
     ],
   };
 
+  // Canonical Helmet block — emitted for BOTH skeleton and premium paths so
+  // SEO/canonical/JSON-LD/OG behavior is identical regardless of which body
+  // renders. ServicePageTemplate's own SEO is suppressed via disableSEO.
+  const canonicalHelmet = (
+    <Helmet>
+      <title>{pageTitle}</title>
+      <meta name="description" content={pageDescription} />
+      {seo.keywords && <meta name="keywords" content={seo.keywords} />}
+      <link rel="canonical" href={pageUrl} />
+
+      {/* Open Graph */}
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content={pageUrl} />
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={pageDescription} />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:site_name" content={ORG_NAME} />
+
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content={pageUrl} />
+      <meta name="twitter:title" content={pageTitle} />
+      <meta name="twitter:description" content={pageDescription} />
+      <meta name="twitter:image" content={ogImage} />
+
+      {/* JSON-LD: Service + BreadcrumbList */}
+      <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+    </Helmet>
+  );
+
+  const accentBand = (
+    <div
+      className="h-1 w-full"
+      style={{ backgroundColor: dept.accentColor }}
+      aria-hidden="true"
+    />
+  );
+
+  // ─── Premium path ──────────────────────────────────────────────────────────
+  // When a slug is registered in PREMIUM_REGISTRY, render via the lifted
+  // ServicePageTemplate with canonical department metadata. The premium
+  // service object merges:
+  //   1. Base identity fields from canonical servicesData (preserved verbatim)
+  //   2. The dept-module's presentation layer (highFidelity, capabilities,
+  //      customSections JSX, hero customization, stats — all resolved at
+  //      module load, including lucide icons that data files don't import)
+  const premiumExtras = PREMIUM_REGISTRY[slug];
+  if (premiumExtras) {
+    // Spread order matters: presentation layer first, then identity fields
+    // re-asserted from canonical base so dept modules CANNOT accidentally
+    // override name/slug/shortDescription (DoD #3 enforcement). The dept
+    // module IS allowed to override fullDescription and image — the hero
+    // description and visuals are presentation choices.
+    const premiumService = {
+      fullDescription: svc.fullDescription,
+      image: svc.image,
+      ...premiumExtras,
+      name: svc.name,
+      slug: svc.slug,
+      shortDescription: svc.shortDescription,
+    };
+
+    // Canonical 6-dept metadata for the template — uses shortName so the
+    // breadcrumb reads "Home > Services > Cognition > Agentic AI", NOT
+    // "AI & Cognitive". URL pattern is /departments/<slug> (plural).
+    const premiumDept = {
+      name: dept.shortName,
+      slug: dept.slug,
+      description: dept.description,
+    };
+
+    return (
+      <>
+        {canonicalHelmet}
+        {accentBand}
+        <ServicePageTemplate
+          service={premiumService}
+          department={premiumDept}
+          disableSEO
+        />
+      </>
+    );
+  }
+
+  // ─── Skeleton path (unchanged from Phase D) ────────────────────────────────
   return (
     <>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        {seo.keywords && <meta name="keywords" content={seo.keywords} />}
-        <link rel="canonical" href={pageUrl} />
-
-        {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={pageUrl} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:site_name" content={ORG_NAME} />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={pageUrl} />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        <meta name="twitter:image" content={ogImage} />
-
-        {/* JSON-LD: Service + BreadcrumbList */}
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      </Helmet>
-
-      {/* Top accent band (inherits department color) */}
-      <div
-        className="h-1 w-full"
-        style={{ backgroundColor: dept.accentColor }}
-        aria-hidden="true"
-      />
+      {canonicalHelmet}
+      {accentBand}
 
       <article className="max-w-4xl mx-auto px-6 py-12">
         <Breadcrumb
