@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX } from 'lucide-react';
+import { Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, Mic, MicOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useConcierge, getSuggestedPrompts } from '../hooks/useConcierge';
 import { parseSchedulingRequest } from '../hooks/nlpSchedulingParser';
@@ -97,10 +97,85 @@ const EQoreChatbot = () => {
   const [seedContext, setSeedContext] = useState(null);
   const [schedulingIntents, setSchedulingIntents] = useState({}); // msgId → parsedIntent
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
   const spokenMessagesRef = useRef(new Set());
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
   const { messages, streaming, conversationId, error, send, reset } = useConcierge({ seedContext });
+
+  // ─── Voice Input (Web Speech API) ──────────────────────────────────
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return; // Browser doesn't support it
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+      // Show interim results in the input field for live feedback
+      setInputText(finalTranscript || interimTranscript);
+
+      // Auto-send on final result
+      if (finalTranscript.trim()) {
+        setIsListening(false);
+        // Small delay so user sees the final text before it sends
+        setTimeout(() => {
+          send(finalTranscript.trim());
+          setInputText('');
+        }, 300);
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.warn('Speech recognition error:', event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+
+    return () => {
+      recognition.abort();
+    };
+  }, []);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) return;
+    if (isListening) {
+      recognitionRef.current.abort();
+      setIsListening(false);
+    } else {
+      setInputText('');
+      // Abort any lingering session before starting fresh
+      try { recognitionRef.current.abort(); } catch (_) { /* noop */ }
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
+      } catch (err) {
+        console.warn('SpeechRecognition.start() failed:', err.message);
+        setIsListening(false);
+      }
+    }
+  };
 
   // Floating prompts (3) — derived from seed when present, otherwise default top 3.
   const floatingPrompts = getSuggestedPrompts(seedContext).slice(0, 3);
@@ -408,21 +483,42 @@ const EQoreChatbot = () => {
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              disabled={streaming}
-              placeholder="Query the intelligence core..."
-              className="w-full pl-4 pr-12 py-3.5 bg-[#050505] border border-white/10 rounded-xl focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 outline-none text-sm text-white placeholder-slate-500 transition-all shadow-inner disabled:opacity-60"
+              disabled={streaming || isListening}
+              placeholder={isListening ? 'Listening...' : 'Query the intelligence core...'}
+              className={`w-full pl-4 pr-24 py-3.5 bg-[#050505] border rounded-xl focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 outline-none text-sm text-white placeholder-slate-500 transition-all shadow-inner disabled:opacity-60 ${
+                isListening ? 'border-red-500/60 ring-1 ring-red-500/30' : 'border-white/10'
+              }`}
             />
-            <button
-              type="submit"
-              disabled={!inputText.trim() || streaming}
-              className="absolute right-2 p-2 bg-brand-blue text-white rounded-lg hover:bg-brand-blue/80 disabled:opacity-30 disabled:bg-white/10 disabled:text-white/30 transition-all flex items-center justify-center"
-            >
-              {streaming ? (
-                <RefreshCw className="w-4 h-4 animate-spin" />
-              ) : (
-                <Send className="w-4 h-4" />
+            <div className="absolute right-2 flex items-center gap-1">
+              {/* Mic Button */}
+              {(window.SpeechRecognition || window.webkitSpeechRecognition) && (
+                <button
+                  type="button"
+                  onClick={toggleListening}
+                  disabled={streaming}
+                  className={`p-2 rounded-lg transition-all flex items-center justify-center ${
+                    isListening
+                      ? 'bg-red-500/20 text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.3)]'
+                      : 'hover:bg-white/10 text-slate-400 hover:text-cyan-400'
+                  } disabled:opacity-30`}
+                  title={isListening ? 'Stop listening' : 'Voice input'}
+                >
+                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                </button>
               )}
-            </button>
+              {/* Send Button */}
+              <button
+                type="submit"
+                disabled={!inputText.trim() || streaming}
+                className="p-2 bg-brand-blue text-white rounded-lg hover:bg-brand-blue/80 disabled:opacity-30 disabled:bg-white/10 disabled:text-white/30 transition-all flex items-center justify-center"
+              >
+                {streaming ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+              </button>
+            </div>
           </div>
         </form>
       </div>

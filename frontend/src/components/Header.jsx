@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, Globe, Menu, X, LogIn, LogOut, UserCircle, Search, Phone, ArrowRight, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Sun, Moon, Mic } from 'lucide-react';
 import { navigationItems } from '../mock/mockData';
 import { useAuth } from '../context/AuthContext';
@@ -17,7 +17,85 @@ const Header = ({ onMenuClick }) => {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHoveringTop, setIsHoveringTop] = useState(false);
+  const [isLightBackground, setIsLightBackground] = useState(false);
+
+  // Adaptive Glassmorphic Logic - Detects light sections under the header
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const sections = document.querySelectorAll('section, main > div, footer, .hero-section');
+      const lightElements = [];
+      
+      sections.forEach(sec => {
+        const style = window.getComputedStyle(sec);
+        const bgColor = style.backgroundColor;
+        if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+          const rgb = bgColor.match(/\d+/g);
+          if (rgb && rgb.length >= 3) {
+            const r = parseInt(rgb[0]);
+            const g = parseInt(rgb[1]);
+            const b = parseInt(rgb[2]);
+            const a = rgb[3] !== undefined ? parseFloat(rgb[3]) : 1;
+            if (a > 0.1) {
+              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+              if (luminance > 0.6) { // Threshold for light backgrounds
+                lightElements.push(sec);
+              }
+            }
+          }
+        }
+      });
+
+      const intersectingSet = new Set();
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            intersectingSet.add(entry.target);
+          } else {
+            intersectingSet.delete(entry.target);
+          }
+        });
+        setIsLightBackground(intersectingSet.size > 0);
+      }, {
+        rootMargin: '-50px 0px -90% 0px', // Checks intersection at header's exact height
+        threshold: 0
+      });
+
+      lightElements.forEach(el => observer.observe(el));
+      return () => observer.disconnect();
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [location.pathname]);
+
+  // Handle scroll to hide/show utility bar
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle mouse move to show utility bar when hovering top
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      // If mouse is in the top 50px of the viewport, show the bar
+      if (e.clientY < 50) {
+        setIsHoveringTop(true);
+      } else if (e.clientY > 100 && !activeDropdown) {
+        // Only hide if we aren't interacting with a menu
+        setIsHoveringTop(false);
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [activeDropdown]);
+
+  const showUtilityBar = !isScrolled || isHoveringTop;
 
   const handleLogout = () => {
     logout();
@@ -135,34 +213,40 @@ const Header = ({ onMenuClick }) => {
   ];
 
   const navLinks = [
-    { name: t('nav.what_we_do'), items: navigationItems.services, isMegaMenu: true, type: 'services' },
-    { name: t('nav.who_we_are'), items: whoWeAreItems, isMegaMenu: true, type: 'whoWeAre' },
-    { name: t('nav.industries'), items: industriesItems, isMegaMenu: true, type: 'industries' },
-    { name: t('nav.insights'), items: insightsItems, isMegaMenu: true, type: 'insights' }
+    { id: 'services', name: t('nav.what_we_do'), items: navigationItems.services, isMegaMenu: true, type: 'services' },
+    { id: 'who-we-are', name: t('nav.who_we_are'), items: whoWeAreItems, isMegaMenu: true, type: 'whoWeAre' },
+    { id: 'industries', name: t('nav.industries'), items: industriesItems, isMegaMenu: true, type: 'industries' },
+    { id: 'insights', name: t('nav.insights'), items: insightsItems, isMegaMenu: true, type: 'insights' }
   ];
 
   return (
     <>
-      <header className="bg-white dark:bg-black shadow-sm dark:shadow-gray-900/50">
-        {/* Top utility bar - Hidden on mobile/tablet, visible on lg and up */}
-        <div className="hidden lg:block border-b border-gray-200 dark:border-gray-700">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-end items-center h-10 text-sm">
-              <div className="flex items-center space-x-6 text-gray-600 dark:text-gray-400">
-                <Link to="/careers" className="hover:text-gray-900 dark:text-white dark:hover:text-white transition-colors">Careers</Link>
-                <Link to="/news" className="hover:text-gray-900 dark:text-white dark:hover:text-white transition-colors">News</Link>
-                <Link to="/communities" className="hover:text-gray-900 dark:text-white dark:hover:text-white transition-colors">Communities</Link>
-                <Link to="/investors" className="hover:text-gray-900 dark:text-white dark:hover:text-white transition-colors">Investors</Link>
+      <header 
+        className="fixed top-0 left-0 right-0 z-[10000] pointer-events-none"
+        onMouseEnter={() => setIsHoveringTop(true)}
+      >
+        {/* Top utility bar - Floating Pill */}
+        <div 
+          className={`hidden lg:block max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto transition-all duration-500 ease-in-out ${
+            showUtilityBar ? 'mt-4 translate-y-0 opacity-100 h-9' : 'mt-0 -translate-y-full opacity-0 h-0 overflow-hidden'
+          }`}
+        >
+          <div className="flex justify-end items-center h-full px-8 text-[13px] font-medium tracking-wide">
+            <div className="flex items-center space-x-5 text-white drop-shadow-md">
+                <Link to="/careers" className="hover:text-white/80 transition-colors">Careers</Link>
+                <Link to="/news" className="hover:text-white/80 transition-colors">News</Link>
+                <Link to="/communities" className="hover:text-white/80 transition-colors">Communities</Link>
+                <Link to="/investors" className="hover:text-white/80 transition-colors">Investors</Link>
 
                 <LanguageSwitcher />
                 
                 {/* Dark Mode Toggle */}
                 <button
                   onClick={toggleTheme}
-                  className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  className="p-1.5 rounded-full hover:bg-white/20 transition-colors"
                   aria-label="Toggle Dark Mode"
                 >
-                  {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                  {theme === 'dark' ? <Sun className="w-4 h-4 text-white" /> : <Moon className="w-4 h-4 text-white" />}
                 </button>
                 
                 {/* Login/Logout in top bar */}
@@ -177,7 +261,7 @@ const Header = ({ onMenuClick }) => {
                         user.role === 'JOB_SEEKER' ? '/dashboard/careers' :
                         '/client-portal'
                       }
-                      className="flex items-center gap-1 hover:text-brand-blue transition-colors font-medium"
+                      className="flex items-center gap-1 hover:text-white/80 transition-colors font-medium"
                     >
                       <div className="w-6 h-6 rounded-full bg-brand-gradient flex items-center justify-center text-white font-bold overflow-hidden">
                         {user.avatarUrl ? (
@@ -192,7 +276,7 @@ const Header = ({ onMenuClick }) => {
                     </Link>
                     <button 
                       onClick={handleLogout}
-                      className="flex items-center gap-1 hover:text-red-600 transition-colors font-medium"
+                      className="flex items-center gap-1 hover:text-red-400 transition-colors font-medium"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Logout</span>
@@ -201,571 +285,805 @@ const Header = ({ onMenuClick }) => {
                 ) : (
                   <Link 
                     to="/login"
-                    className="flex items-center gap-1.5 hover:text-brand-blue transition-colors font-medium group"
+                    className="flex items-center gap-1.5 hover:text-white/80 transition-colors font-medium group"
                   >
                     <div className="relative w-5 h-5">
                       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                           <linearGradient id="userGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stopColor="#1a1a1a" />
-                            <stop offset="100%" stopColor="#4a4a4a" />
+                            <stop offset="0%" stopColor="#ffffff" />
+                            <stop offset="100%" stopColor="#e2e8f0" />
                           </linearGradient>
                         </defs>
-                        <circle cx="12" cy="8" r="4" stroke="url(#userGradient)" strokeWidth="2" fill="none" className="group-hover:stroke-blue-600 transition-colors"/>
-                        <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" stroke="url(#userGradient)" strokeWidth="2" strokeLinecap="round" fill="none" className="group-hover:stroke-blue-600 transition-colors"/>
+                        <circle cx="12" cy="8" r="4" stroke="url(#userGradient)" strokeWidth="2" fill="none" />
+                        <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" stroke="url(#userGradient)" strokeWidth="2" strokeLinecap="round" fill="none" />
                       </svg>
                     </div>
                     <span>Login</span>
                   </Link>
                 )}
               </div>
-            </div>
           </div>
         </div>
 
-        {/* Main navigation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 lg:h-20">
-            {/* Logo */}
+        {/* Unified Floating Island Bar */}
+        <div 
+          className={`max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto transition-all duration-500 ease-in-out ${
+            showUtilityBar ? 'mt-2' : 'mt-6'
+          }`}
+        >
+          <div className={`backdrop-blur-3xl rounded-full border shadow-[0_8px_32px_rgba(0,0,0,0.12)] flex items-center justify-between h-16 lg:h-20 px-6 lg:px-8 transition-colors duration-500 ${
+            isLightBackground 
+              ? 'bg-black/30 dark:bg-black/40 border-black/10 dark:border-white/5' 
+              : 'bg-white/10 dark:bg-white/5 border-white/20 dark:border-white/10'
+          }`}>
+            {/* Logo Island Section */}
             <div className="flex items-center">
               <Link 
                 to="/" 
-                className="flex items-center"
+                className="flex items-center shrink-0 group"
                 onClick={() => setActiveDropdown(null)}
               >
                 <img 
                   src="https://customer-assets.emergentagent.com/job_cog-site-clone/artifacts/focgf8oz_Logo%2BText.png" 
                   alt="Kangqore Logo" 
-                  className="h-32 lg:h-48"
-                  style={{ filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2395%) hue-rotate(201deg) brightness(95%) contrast(101%)' }}
+                  className="h-20 lg:h-28 -ml-2 transition-all duration-300 group-hover:scale-105 brightness-0 invert"
                 />
               </Link>
             </div>
 
-            {/* Desktop Navigation - Centered (Hidden on mobile/tablet) */}
-            <nav className="hidden lg:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <div
-                key={link.name}
-                className="relative"
-              >
-                {link.isDirectLink ? (
-                  <Link 
-                    to={link.path}
-                    className="flex items-center space-x-1 text-gray-700 dark:text-gray-200 hover:text-brand-blue transition-colors py-2 font-medium"
-                  >
-                    <span>{link.name}</span>
-                  </Link>
-                ) : (
+            {/* Desktop Navigation - Nested Pill Content */}
+            <nav className={`hidden lg:flex items-center space-x-4 rounded-full px-5 py-0.5 border shadow-sm transition-colors duration-500 ${
+              isLightBackground
+                ? 'bg-black/20 dark:bg-black/30 border-black/10'
+                : 'bg-white/50 dark:bg-white/10 border-white/40'
+            }`}>
+              {navLinks.map((link) => (
+                <div
+                  key={link.id}
+                  className="relative group"
+                  onMouseEnter={() => setActiveDropdown(link.id)}
+                >
                   <button 
-                    className="flex items-center space-x-1 text-gray-700 dark:text-gray-200 hover:text-brand-blue transition-colors py-2 font-medium"
-                    onMouseEnter={() => setActiveDropdown(link.name)}
+                    className={`flex items-center space-x-1 hover:text-brand-blue transition-colors duration-300 py-1.5 font-bold tracking-tight text-[14px] ${
+                      isLightBackground ? 'text-white' : 'text-gray-800 dark:text-gray-200'
+                    }`}
                   >
                     <span>{link.name}</span>
-                    <ChevronDown className="w-4 h-4" />
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeDropdown === link.id ? 'rotate-180 text-brand-blue' : 'text-gray-400 group-hover:text-brand-blue'}`} />
                   </button>
-                )}
-                
-                {/* Bridge area to prevent menu from closing */}
-                {activeDropdown === link.name && link.isMegaMenu && (
-                  <div 
-                    className="absolute top-full left-0 right-0 h-4"
-                    onMouseEnter={() => setActiveDropdown(link.name)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                  />
-                )}
-                
-                {/* Mega Menu for Services (What We Do) */}
-                {activeDropdown === link.name && link.isMegaMenu && link.type === 'services' && (
-                  <div 
-                    className="fixed left-0 right-0 top-[120px] bottom-0 bg-white dark:bg-black shadow-2xl border-t border-gray-100 dark:border-gray-700 z-[9999] overflow-hidden"
-                    onMouseEnter={() => setActiveDropdown(link.name)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                    style={{ animation: 'megaFadeIn 0.25s ease-out' }}
-                  >
-                    <style>{`
-                      @keyframes megaFadeIn {
-                        from { opacity: 0; transform: translateY(-8px); }
-                        to { opacity: 1; transform: translateY(0); }
-                      }
-                    `}</style>
-
-                    <div className="h-full flex flex-col">
-                      {/* Top Bar */}
-                      <div className="flex items-center justify-between px-10 py-5 border-b border-gray-100 dark:border-gray-700 bg-gray-50/60 dark:bg-gray-900/60 shrink-0">
-                        <div>
-                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Departments</h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{departmentsList.length} departments · {departmentsList.reduce((a, s) => a + departmentsData[s].serviceCount, 0)} services</p>
-                        </div>
-                        <Link
-                          to="/services"
-                          onClick={() => setActiveDropdown(null)}
-                          className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-full hover:bg-gray-800 transition-all duration-300 group"
-                        >
-                          View All Services
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                        </Link>
-                      </div>
-                      
-                      {/* Two-Panel Body */}
-                      <div className="flex flex-1 min-h-0 overflow-hidden">
-                        {/* Left Panel - Department List */}
-                        <div className="w-[340px] bg-gray-50/80 dark:bg-gray-800/80 border-r border-gray-100 dark:border-gray-700 overflow-y-auto shrink-0" style={{ scrollbarWidth: 'thin' }}>
-                          <div className="py-3 px-3">
-                            {servicesCategories.map((category, index) => {
-                              const IconComponent = category.icon;
-                              const isActive = activeMegaDept === index;
-                              return (
-                                <button
-                                  key={index}
-                                  onMouseEnter={() => setActiveMegaDept(index)}
-                                  onClick={() => {
-                                    setActiveDropdown(null);
-                                    navigate(`/departments/${category.slug}`);
-                                  }}
-                                  className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-left transition-all duration-200 group mb-0.5 ${
-                                    isActive
-                                      ? 'bg-white dark:bg-black dark:border-gray-800 shadow-[0_2px_12px_rgba(0,0,0,0.06)] ring-1 ring-gray-100'
-                                      : 'hover:bg-white dark:bg-black dark:border-gray-800/60'
-                                  }`}
-                                >
-                                  <div
-                                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200 ${
-                                      isActive
-                                        ? 'shadow-md'
-                                        : 'bg-gray-100 dark:bg-gray-800 dark:border-gray-700 group-hover:bg-gray-200'
-                                    }`}
-                                    style={isActive ? { backgroundColor: category.accentColor } : undefined}
-                                  >
-                                    <IconComponent className={`w-5 h-5 transition-colors ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-700 dark:text-gray-300'}`} />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <p className={`text-sm font-semibold truncate transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:text-white'}`}>
-                                      {category.title.toUpperCase()}
-                                    </p>
-                                    <p
-                                      className="text-[11px] transition-colors"
-                                      style={isActive ? { color: category.accentColor } : undefined}
-                                    >
-                                      {isActive ? category.tagline : `${category.serviceCount} services`}
-                                    </p>
-                                  </div>
-                                  <ArrowRight
-                                    className={`w-4 h-4 shrink-0 transition-all duration-200 ${
-                                      isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 text-gray-400'
-                                    }`}
-                                    style={isActive ? { color: category.accentColor } : undefined}
-                                  />
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Right Panel - Active Department's Services */}
-                        <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-                          <div className="px-10 py-6">
-                            {/* Department Header */}
-                            {servicesCategories[activeMegaDept] && (() => {
-                              const activeCat = servicesCategories[activeMegaDept];
-                              const ActiveIcon = activeCat.icon;
-                              return (
-                                <>
-                                  <div className="flex items-center gap-4 mb-6 pb-5 border-b border-gray-100">
-                                    <div
-                                      className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
-                                      style={{ backgroundColor: activeCat.accentColor }}
-                                    >
-                                      <ActiveIcon className="w-6 h-6 text-white" />
-                                    </div>
-                                    <div className="flex-1">
-                                      <p
-                                        className="text-[11px] uppercase tracking-widest font-semibold mb-0.5"
-                                        style={{ color: activeCat.accentColor }}
-                                      >
-                                        {activeCat.fullName}
-                                      </p>
-                                      <h4 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
-                                      <p className="text-sm text-gray-500 mt-0.5 line-clamp-1">{activeCat.description}</p>
-                                    </div>
-                                    <Link
-                                      to={`/departments/${activeCat.slug}`}
-                                      onClick={() => setActiveDropdown(null)}
-                                      className="text-xs font-semibold transition-colors flex items-center gap-1 shrink-0 px-3 py-1.5 rounded-full hover:opacity-90"
-                                      style={{
-                                        color: '#ffffff',
-                                        backgroundColor: activeCat.accentColor,
-                                      }}
-                                    >
-                                      View Department
-                                      <ArrowRight className="w-3 h-3" />
-                                    </Link>
-                                  </div>
-
-                                  {/* Banner brand badge */}
-                                  <div className="mb-5 flex items-center gap-2 text-xs">
-                                    <span className="uppercase tracking-widest text-gray-400">Featured:</span>
-                                    <span className="font-semibold text-gray-700 dark:text-gray-300">{activeCat.bannerBrand}</span>
-                                  </div>
-
-                                  {/* Top hero services grid (5 max) */}
-                                  <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
-                                    {activeCat.items.map((item, idx) => (
-                                      <Link
-                                        key={idx}
-                                        to={`/services/${item.slug}`}
-                                        onClick={() => setActiveDropdown(null)}
-                                        className="group relative p-5 rounded-2xl border border-gray-100 bg-white dark:bg-black dark:border-gray-800 hover:bg-gray-50 hover:border-gray-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.05)] transition-all duration-200"
-                                      >
-                                        <div className="flex items-start justify-between gap-3">
-                                          <div className="flex-1 min-w-0">
-                                            <h5 className="text-sm font-semibold text-gray-900 dark:text-white transition-colors mb-1.5 leading-snug group-hover:underline">
-                                              {item.name}
-                                              {item.crossDepartment && (
-                                                <span className="ml-1.5 text-[10px] text-gray-400 font-normal">
-                                                  (in {item.crossDepartment})
-                                                </span>
-                                              )}
-                                            </h5>
-                                            {item.shortDescription && (
-                                              <p className="text-[12px] text-gray-400 leading-relaxed line-clamp-2 group-hover:text-gray-500 transition-colors">
-                                                {item.shortDescription}
-                                              </p>
-                                            )}
-                                          </div>
-                                          <div className="mt-0.5 w-7 h-7 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center shrink-0 transition-all duration-200">
-                                            <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:translate-x-0.5 transition-all" />
-                                          </div>
-                                        </div>
-                                        {/* Bottom accent line — uses department accent color */}
-                                        <div
-                                          className="absolute bottom-0 left-5 right-5 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full"
-                                          style={{ backgroundColor: activeCat.accentColor }}
-                                        ></div>
-                                      </Link>
-                                    ))}
-                                  </div>
-                                </>
-                              );
-                            })()}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Bottom CTA Bar */}
-                      <div className="shrink-0 border-t border-gray-100 bg-gradient-to-r from-gray-900 via-gray-900 to-gray-800 dark:from-black dark:via-black dark:to-black px-10 py-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></div>
-                            <p className="text-white/90 text-sm font-medium">Ready to transform your business?</p>
-                            <p className="text-white/50 text-sm hidden xl:block">Let's discuss how our services can help you achieve your goals.</p>
-                          </div>
-                          <Link
-                            to="/contact"
-                            onClick={() => setActiveDropdown(null)}
-                            className="flex items-center gap-2 px-5 py-2 bg-white dark:bg-black text-gray-900 dark:text-white text-sm font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 group shrink-0"
-                          >
-                            Contact Us
-                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Mega Menu for Who We Are */}
-                {activeDropdown === link.name && link.isMegaMenu && link.type === 'whoWeAre' && (
-                  <div 
-                    className="fixed left-0 right-0 top-[120px] bg-white dark:bg-black dark:border-gray-800 shadow-2xl border-t border-gray-200 z-[9999] animate-fade-in"
-                    onMouseEnter={() => setActiveDropdown(link.name)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                  >
-                    <div className="max-w-[1400px] mx-auto px-8 py-10">
-                      <div className="mb-8">
-                        <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Who We Are</h3>
-                        <p className="text-gray-600 dark:text-gray-400">Discover our story, leadership, and the values that drive our success</p>
-                      </div>
-                      
-                      <div className="grid grid-cols-5 gap-4">
-                        {whoWeAreItems.map((item, index) => {
-                          const IconComponent = item.icon;
-                          return (
-                            <Link
-                              key={index}
-                              to={item.path}
-                              onClick={() => setActiveDropdown(null)}
-                              className="group p-4 rounded-xl hover:bg-blue-50 dark:bg-blue-900/20 transition-all duration-300"
-                            >
-                              <div className="flex items-center gap-3 mb-2">
-                                <Realistic3DIcon 
-                                  icon={IconComponent} 
-                                  className="w-10 h-10 group-hover:scale-110" 
-                                  iconSize="w-5 h-5" 
-                                  theme="brand" 
-                                />
-                                <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                                  {item.name}
-                                </h4>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                      
-                      {/* CTA */}
-                      <div className="mt-8 pt-6 border-t border-gray-200">
-                        <div className="bg-gradient-to-r from-brand-blue to-cyan-400 rounded-xl p-6 text-white shadow-xl">
-                          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                            <div>
-                              <h4 className="text-xl font-bold mb-1">Join Our Team</h4>
-                              <p className="text-white/90 text-sm">Explore career opportunities and grow with us.</p>
-                            </div>
-                            <Link
-                              to="/careers"
-                              onClick={() => setActiveDropdown(null)}
-                              className="px-6 py-3 bg-white dark:bg-black dark:border-gray-800 text-brand-blue font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg whitespace-nowrap"
-                            >
-                              View Careers
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Mega Menu for Industries */}
-                {activeDropdown === link.name && link.isMegaMenu && link.type === 'industries' && (
-                  <div 
-                    className="fixed left-0 right-0 top-[120px] bg-white dark:bg-black dark:border-gray-800 shadow-2xl border-t border-gray-200 z-[9999] animate-fade-in"
-                    onMouseEnter={() => setActiveDropdown(link.name)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                  >
-                    <div className="max-w-[1400px] mx-auto px-8 py-10">
-                      <div className="mb-8">
-                        <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Industries We Serve</h3>
-                        <p className="text-gray-600 dark:text-gray-400">Delivering tailored solutions across diverse industry verticals</p>
-                      </div>
-                      
-                      <div className="grid grid-cols-4 gap-4">
-                        {industriesItems.map((item, index) => {
-                          const IconComponent = item.icon;
-                          return (
-                            <Link
-                              key={index}
-                              to={item.path}
-                              onClick={() => setActiveDropdown(null)}
-                              className="group p-4 rounded-xl hover:bg-blue-50 dark:bg-blue-900/20 transition-all duration-300 flex items-center gap-3"
-                            >
-                              <Realistic3DIcon 
-                                icon={IconComponent} 
-                                className="w-12 h-12 group-hover:scale-110" 
-                                iconSize="w-6 h-6" 
-                                theme="cyan" 
-                              />
-                              <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                                {item.name}
-                              </h4>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                      
-                      {/* CTA */}
-                      <div className="mt-8 pt-6 border-t border-gray-200">
-                        <div className="bg-gradient-to-r from-brand-blue to-cyan-400 rounded-xl p-6 text-white shadow-xl">
-                          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                            <div>
-                              <h4 className="text-xl font-bold mb-1">Industry-specific Solutions</h4>
-                              <p className="text-white/90 text-sm">Let's discuss how we can help transform your industry.</p>
-                            </div>
-                            <Link
-                              to="/contact"
-                              onClick={() => setActiveDropdown(null)}
-                              className="px-6 py-3 bg-white dark:bg-black dark:border-gray-800 text-brand-blue font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg whitespace-nowrap"
-                            >
-                              Get Started
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Mega Menu for Insights */}
-                {activeDropdown === link.name && link.isMegaMenu && link.type === 'insights' && (
-                  <div 
-                    className="fixed left-0 right-0 top-[120px] bg-white dark:bg-black dark:border-gray-800 shadow-2xl border-t border-gray-200 z-[9999] animate-fade-in"
-                    onMouseEnter={() => setActiveDropdown(link.name)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                  >
-                    <div className="max-w-[1400px] mx-auto px-8 py-10">
-                      <div className="mb-8">
-                        <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Insights & Knowledge</h3>
-                        <p className="text-gray-600 dark:text-gray-400">Expert perspectives on the future of AI, technology, and business strategy</p>
-                      </div>
-                      
-                      <div className="grid grid-cols-5 gap-4">
-                        {insightsItems.map((item, index) => {
-                          const IconComponent = item.icon;
-                          return (
-                            <Link
-                              key={index}
-                              to={item.path}
-                              onClick={() => setActiveDropdown(null)}
-                              className="group p-4 rounded-xl hover:bg-blue-50 dark:bg-blue-900/20 transition-all duration-300"
-                            >
-                              <div className="flex flex-col items-center text-center gap-3">
-                                <Realistic3DIcon 
-                                  icon={IconComponent} 
-                                  className="w-16 h-16 group-hover:scale-110 mb-2" 
-                                  iconSize="w-8 h-8" 
-                                  theme="brand" 
-                                />
-                                <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                                  {item.name}
-                                </h4>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                      
-                      {/* Featured Insight / CTA */}
-                      <div className="mt-8 pt-6 border-t border-gray-200">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-100 dark:border-gray-800 flex items-center gap-6">
-                            <div className="w-24 h-24 bg-brand-gradient rounded-lg flex items-center justify-center shrink-0">
-                              <Tv className="w-12 h-12 text-white" />
-                            </div>
-                            <div>
-                              <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-1">eQORE Podcast</h4>
-                              <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">Listen to industry experts discuss the latest in agentic AI.</p>
-                              <Link to="/podcast" onClick={() => setActiveDropdown(null)} className="text-brand-blue font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">
-                                Listen Now <ArrowRight className="w-4 h-4" />
-                              </Link>
-                            </div>
-                          </div>
-                          
-                          <div className="bg-brand-gradient rounded-xl p-6 text-white shadow-xl flex items-center justify-between">
-                            <div>
-                              <h4 className="text-xl font-bold mb-1">Newsletter</h4>
-                              <p className="text-white/90 text-sm">Get the latest insights delivered to your inbox.</p>
-                            </div>
-                            <Link
-                              to="/newsletter"
-                              onClick={() => setActiveDropdown(null)}
-                              className="px-6 py-3 bg-white dark:bg-black dark:border-gray-800 text-brand-blue font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg whitespace-nowrap"
-                            >
-                              Subscribe
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Regular Dropdown for other items */}
-                {activeDropdown === link.name && !link.isMegaMenu && (
-                  <>
-                    {/* Bridge area for regular dropdowns */}
+                  
+                  {/* Bridge area to prevent menu from closing */}
+                  {activeDropdown === link.id && link.isMegaMenu && (
                     <div 
-                      className="absolute top-full left-0 right-0 h-2"
-                      onMouseEnter={() => setActiveDropdown(link.name)}
+                      className="absolute top-full left-0 right-0 h-8 pointer-events-auto"
+                      onMouseEnter={() => setActiveDropdown(link.id)}
                       onMouseLeave={() => setActiveDropdown(null)}
                     />
+                  )}
+                  
+                  {/* Mega Menu for Services (What We Do) */}
+                  {activeDropdown === link.id && link.isMegaMenu && link.type === 'services' && (
                     <div 
-                      className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-black dark:border-gray-800 shadow-xl rounded-lg border border-gray-100 py-2 z-50"
-                      onMouseEnter={() => setActiveDropdown(link.name)}
+                      className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bottom-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto"
+                      onMouseEnter={() => setActiveDropdown(link.id)}
                       onMouseLeave={() => setActiveDropdown(null)}
+                      style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
                     >
-                      {link.items.map((item, index) => (
-                        <a
-                          key={index}
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:bg-blue-900/20 hover:text-brand-blue transition-colors"
-                        >
-                          {item}
-                        </a>
-                      ))}
+                      <style>{`
+                        @keyframes megaFadeIn {
+                          from { opacity: 0; transform: translateY(10px) scale(0.98); }
+                          to { opacity: 1; transform: translateY(0) scale(1); }
+                        }
+                      `}</style>
+
+                      <div className="h-full flex flex-col">
+                        {/* Top Bar */}
+                        <div className="flex items-center justify-between px-10 py-6 border-b border-gray-100/50 dark:border-gray-800/50 bg-gray-50/50 dark:bg-gray-900/50 shrink-0">
+                          <div>
+                            <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Enterprise Solutions</h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 font-medium">{departmentsList.length} global departments · Specialized engineering execution</p>
+                          </div>
+                          <Link
+                            to="/services"
+                            onClick={() => setActiveDropdown(null)}
+                            className="flex items-center gap-2 px-6 py-3 bg-brand-gradient text-white text-sm font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-lg"
+                          >
+                            Explore All Services
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                        </div>
+                        
+                        {/* Two-Panel Body */}
+                        <div className="flex flex-1 min-h-0 overflow-hidden">
+                          {/* Left Panel - Department List */}
+                          <div className="w-[380px] bg-gray-50/30 dark:bg-gray-800/20 border-r border-gray-100 dark:border-gray-800/50 overflow-y-auto shrink-0 custom-scrollbar">
+                            <div className="py-4 px-4 space-y-1">
+                              {servicesCategories.map((category, index) => {
+                                const IconComponent = category.icon;
+                                const isActive = activeMegaDept === index;
+                                return (
+                                  <button
+                                    key={index}
+                                    onMouseEnter={() => setActiveMegaDept(index)}
+                                    onClick={() => {
+                                      setActiveDropdown(null);
+                                      navigate(`/departments/${category.slug}`);
+                                    }}
+                                    className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left transition-all duration-300 group ${
+                                      isActive
+                                        ? 'bg-white dark:bg-gray-900 shadow-xl ring-1 ring-gray-100 dark:ring-gray-800'
+                                        : 'hover:bg-white/50 dark:hover:bg-gray-900/40'
+                                    }`}
+                                  >
+                                    <div
+                                      className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
+                                        isActive ? 'shadow-lg scale-110' : 'bg-gray-100 dark:bg-gray-800 group-hover:bg-gray-200 dark:group-hover:bg-gray-700'
+                                      }`}
+                                      style={isActive ? { backgroundColor: category.accentColor } : undefined}
+                                    >
+                                      <IconComponent className={`w-5 h-5 transition-colors ${isActive ? 'text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700'}`} />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <p className={`text-[13px] font-black uppercase tracking-wider transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700'}`}>
+                                        {category.title}
+                                      </p>
+                                      <p className="text-[11px] text-gray-400 mt-0.5 font-medium">{category.serviceCount} Core Services</p>
+                                    </div>
+                                    <ArrowRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}`} style={{ color: category.accentColor }} />
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* Right Panel - Active Department's Services */}
+                          <div className="flex-1 overflow-y-auto custom-scrollbar">
+                            <div className="px-12 py-10">
+                              {servicesCategories[activeMegaDept] && (() => {
+                                const activeCat = servicesCategories[activeMegaDept];
+                                const ActiveIcon = activeCat.icon;
+                                return (
+                                  <>
+                                    <div className="flex items-center gap-6 mb-10 pb-8 border-b border-gray-100 dark:border-gray-800/50">
+                                      <div
+                                        className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center shadow-2xl animate-pulse-slow"
+                                        style={{ backgroundColor: activeCat.accentColor }}
+                                      >
+                                        <ActiveIcon className="w-8 h-8 text-white" />
+                                      </div>
+                                      <div className="flex-1">
+                                        <p className="text-[11px] uppercase tracking-[0.3em] font-black mb-1.5 opacity-60" style={{ color: activeCat.accentColor }}>
+                                          {activeCat.fullName}
+                                        </p>
+                                        <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
+                                        <p className="text-base text-gray-500 dark:text-gray-400 mt-2 font-medium max-w-2xl">{activeCat.description}</p>
+                                      </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
+                                      {activeCat.items.map((item, idx) => (
+                                        <Link
+                                          key={idx}
+                                          to={`/services/${item.slug}`}
+                                          onClick={() => setActiveDropdown(null)}
+                                          className="group relative p-6 rounded-[2rem] border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-2xl transition-all duration-300"
+                                        >
+                                          <div className="flex items-start justify-between gap-4">
+                                            <div className="flex-1 min-w-0">
+                                              <h5 className="text-[15px] font-black text-gray-900 dark:text-white transition-colors mb-2 leading-tight group-hover:text-brand-blue">
+                                                {item.name}
+                                                {item.crossDepartment && (
+                                                  <span className="block mt-1 text-[10px] text-brand-blue font-black uppercase tracking-wider">
+                                                    Part of {item.crossDepartment}
+                                                  </span>
+                                                )}
+                                              </h5>
+                                              <p className="text-[12px] text-gray-500 dark:text-gray-400 leading-relaxed font-medium line-clamp-2">
+                                                {item.shortDescription}
+                                              </p>
+                                            </div>
+                                            <div className="mt-1 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-brand-blue group-hover:rotate-[-45deg]">
+                                              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-white" />
+                                            </div>
+                                          </div>
+                                          <div
+                                            className="absolute bottom-4 left-6 right-6 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-full"
+                                            style={{ backgroundColor: activeCat.accentColor }}
+                                          ></div>
+                                        </Link>
+                                      ))}
+                                    </div>
+                                  </>
+                                );
+                              })()}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </>
-                )}
-              </div>
-            ))}
-          </nav>
+                  )}
 
-          {/* Right Side - Action Buttons */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Mobile Search Button (fallback for users without a keyboard).
-                On desktop, search is invoked via Cmd/Ctrl+K — see useEffect above. */}
-            <button
-              onClick={() => setShowSearch(true)}
-              className="lg:hidden p-2.5 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Open search"
-              title="Search"
-              data-testid="global-search-btn-mobile"
-            >
-              <Search className="w-5 h-5" />
-            </button>
+                  {/* Mega Menu for Who We Are */}
+                  {activeDropdown === link.id && link.isMegaMenu && link.type === 'whoWeAre' && (
+                    <div 
+                      className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto"
+                      onMouseEnter={() => setActiveDropdown(link.id)}
+                      onMouseLeave={() => setActiveDropdown(null)}
+                      style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                    >
+                      <div className="max-w-[1400px] mx-auto">
+                        <div className="mb-10 flex items-end justify-between">
+                          <div>
+                            <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Who We Are</h3>
+                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Discover the engineering excellence and values driving global transformation.</p>
+                          </div>
+                          <Link to="/about-us" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
+                            Our Story <ArrowRight className="w-5 h-5" />
+                          </Link>
+                        </div>
+                        
+                        <div className="grid grid-cols-5 gap-4">
+                          {whoWeAreItems.map((item, index) => {
+                            const IconComponent = item.icon;
+                            return (
+                              <Link
+                                key={index}
+                                to={item.path}
+                                onClick={() => setActiveDropdown(null)}
+                                className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300"
+                              >
+                                <div className="flex flex-col items-center text-center gap-4">
+                                  <Realistic3DIcon 
+                                    icon={IconComponent} 
+                                    className="w-14 h-14 group-hover:scale-110 transition-transform" 
+                                    iconSize="w-6 h-6" 
+                                    theme="brand" 
+                                  />
+                                  <h4 className="font-black text-[15px] text-gray-900 dark:text-white tracking-tight">
+                                    {item.name}
+                                  </h4>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={onMenuClick}
-              className="lg:hidden p-2.5 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Toggle Mobile Menu"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
+                  {/* Mega Menu for Industries */}
+                  {activeDropdown === link.id && link.isMegaMenu && link.type === 'industries' && (
+                    <div 
+                      className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto"
+                      onMouseEnter={() => setActiveDropdown(link.id)}
+                      onMouseLeave={() => setActiveDropdown(null)}
+                      style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                    >
+                      <div className="max-w-[1400px] mx-auto">
+                        <div className="mb-10 flex items-end justify-between">
+                          <div>
+                            <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Industries We Serve</h3>
+                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Domain-specific engineering execution for global leaders.</p>
+                          </div>
+                          <Link to="/contact" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
+                            Industry Consultation <ArrowRight className="w-5 h-5" />
+                          </Link>
+                        </div>
+                        
+                        <div className="grid grid-cols-4 gap-6">
+                          {industriesItems.map((item, index) => {
+                            const IconComponent = item.icon;
+                            return (
+                              <Link
+                                key={index}
+                                to={item.path}
+                                onClick={() => setActiveDropdown(null)}
+                                className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300 flex items-center gap-5"
+                              >
+                                <Realistic3DIcon 
+                                  icon={IconComponent} 
+                                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform" 
+                                  iconSize="w-5 h-5" 
+                                  theme="cyan" 
+                                />
+                                <h4 className="font-black text-[16px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                                  {item.name}
+                                </h4>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-            {/* Desktop: "Ask eQORE AI" pill — replaces the legacy search icon.
-                The pill is the primary brand CTA in the header: gradient border,
-                sparkles glyph, subtle hover expansion. Click dispatches the
-                global toggle-eqore-chatbot event consumed by EQoreChatbot.jsx.
-                Keyboard shortcut Cmd/Ctrl+K still opens the legacy GlobalSearch
-                modal for power users (registered in useEffect at top of file).
-                See: src/components/concierge/AskEqoreCTA.jsx for the mid-page
-                CTA variant that uses the same event mechanism. */}
-            <button
-              type="button"
-              onClick={openEqoreChat}
-              className="group relative hidden lg:inline-flex items-center rounded-full p-[2px] bg-gradient-to-r from-brand-blue to-brand-cyan shadow-md hover:shadow-lg transition-all duration-300"
-              aria-label="Ask eQORE AI — Kangqore's AI assistant"
-              data-testid="ask-eqore-btn"
-              title="Ask eQORE AI  (search: ⌘K)"
-            >
-              <span
-                className="inline-flex items-center gap-2 rounded-full bg-white dark:bg-black px-5 py-2.5 text-sm font-semibold text-gray-900 dark:text-white transition-all duration-300 group-hover:gap-3"
+                  {/* Mega Menu for Insights */}
+                  {activeDropdown === link.id && link.isMegaMenu && link.type === 'insights' && (
+                    <div 
+                      className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto"
+                      onMouseEnter={() => setActiveDropdown(link.id)}
+                      onMouseLeave={() => setActiveDropdown(null)}
+                      style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                    >
+                      <div className="max-w-[1400px] mx-auto">
+                        <div className="mb-10 flex items-end justify-between">
+                          <div>
+                            <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Insights & Knowledge</h3>
+                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Expert perspectives on AI foundations, technical debt, and business velocity.</p>
+                          </div>
+                          <Link to="/blogs" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
+                            View All Insights <ArrowRight className="w-5 h-5" />
+                          </Link>
+                        </div>
+                        
+                        <div className="grid grid-cols-5 gap-4">
+                          {insightsItems.map((item, index) => {
+                            const IconComponent = item.icon;
+                            return (
+                              <Link
+                                key={index}
+                                to={item.path}
+                                onClick={() => setActiveDropdown(null)}
+                                className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300"
+                              >
+                                <div className="flex flex-col items-center text-center gap-4">
+                                  <Realistic3DIcon 
+                                    icon={IconComponent} 
+                                    className="w-16 h-16 group-hover:scale-110 mb-2 transition-transform" 
+                                    iconSize="w-7 h-7" 
+                                    theme="brand" 
+                                  />
+                                  <h4 className="font-black text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                                    {item.name}
+                                  </h4>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </nav>
+
+            {/* Action Island Section - AI & Contact */}
+            <div className="flex items-center gap-3">
+              {/* "Ask eQORE AI" pill */}
+              <button
+                type="button"
+                onClick={openEqoreChat}
+                className="group relative hidden lg:inline-flex items-center justify-center rounded-full px-6 py-2.5 overflow-hidden shadow-[0_0_30px_rgba(6,182,212,0.2)] hover:shadow-[0_0_40px_rgba(236,72,153,0.3)] transition-all duration-500 hover:scale-[1.05] active:scale-[0.98] border border-white/20"
+                aria-label="Ask eQORE AI"
               >
-                <Sparkles
-                  className="w-4 h-4 text-brand-blue dark:text-brand-cyan transition-transform duration-300 group-hover:scale-110"
-                  strokeWidth={2.5}
-                  aria-hidden="true"
-                />
-                <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-                  Ask eQORE AI
+                <style>{`
+                  .ai-btn-fluid-base {
+                    position: absolute;
+                    inset: -50%;
+                    background: linear-gradient(
+                      -45deg, 
+                      #1e3a8a 0%, #1e3a8a 10%,       /* Navy 10% */
+                      #3b82f6 15%, #3b82f6 85%,      /* Blue 75% */
+                      #06b6d4 90%, #06b6d4 95%,      /* Cyan 5% */
+                      #1e3a8a 100%                   /* Return */
+                    );
+                    background-size: 200% 200%;
+                    animation: consciousBreathe 6s ease-in-out infinite alternate;
+                    z-index: 0;
+                  }
+                  .ai-btn-fluid-blobs {
+                    position: absolute;
+                    inset: -20%;
+                    background-image: 
+                      radial-gradient(circle at 30% 40%, rgba(168,85,247,0.8) 0%, transparent 15%),
+                      radial-gradient(circle at 70% 60%, rgba(236,72,153,0.8) 0%, transparent 15%),
+                      radial-gradient(circle at 45% 30%, rgba(239,68,68,0.9) 0%, transparent 10%),
+                      radial-gradient(circle at 55% 70%, rgba(249,115,22,0.9) 0%, transparent 10%);
+                    filter: blur(6px);
+                    animation: synapseFire 4s ease-in-out infinite alternate;
+                    mix-blend-mode: color-dodge;
+                    z-index: 1;
+                  }
+                  .ai-btn-thread-layer {
+                    position: absolute;
+                    inset: -10%;
+                    background-image: 
+                      repeating-linear-gradient(60deg, transparent, transparent 4px, rgba(255,255,255,0.15) 4px, rgba(255,255,255,0.15) 5px),
+                      repeating-linear-gradient(-60deg, transparent, transparent 4px, rgba(255,255,255,0.15) 4px, rgba(255,255,255,0.15) 5px);
+                    background-size: 16px 16px;
+                    z-index: 2;
+                    opacity: 0.6;
+                    mix-blend-mode: overlay;
+                    animation: threadDrift 15s linear infinite;
+                  }
+                  .ai-btn-glass {
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.3) 100%);
+                    backdrop-filter: blur(2px);
+                    z-index: 3;
+                    transition: backdrop-filter 0.5s ease;
+                  }
+                  .group:hover .ai-btn-glass {
+                    backdrop-filter: blur(0px);
+                  }
+                  @keyframes consciousBreathe {
+                    0% { background-position: 0% 50%; transform: scale(1); }
+                    50% { background-position: 100% 50%; transform: scale(1.02); }
+                    100% { background-position: 0% 50%; transform: scale(1); }
+                  }
+                  @keyframes synapseFire {
+                    0% { 
+                      background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; 
+                      opacity: 0.3;
+                    }
+                    50% {
+                      background-position: 5% 5%, -5% -5%, 5% -5%, -5% 5%;
+                      opacity: 1;
+                      filter: blur(4px) brightness(1.5);
+                    }
+                    100% { 
+                      background-position: -5% 0%, 0% 5%, -5% -5%, 5% 0%; 
+                      opacity: 0.4;
+                    }
+                  }
+                  @keyframes threadDrift {
+                    0% { background-position: 0px 0px; }
+                    100% { background-position: 16px 16px; }
+                  }
+                `}</style>
+                
+                {/* Advanced Fluid Motion Graphics */}
+                <div className="ai-btn-fluid-base"></div>
+                <div className="ai-btn-fluid-blobs"></div>
+                <div className="ai-btn-thread-layer"></div>
+                <div className="ai-btn-glass"></div>
+                
+                <span className="relative z-10 flex items-center gap-2 text-[14px] font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] tracking-wide">
+                  <Sparkles className="w-4 h-4 text-white animate-pulse" />
+                  <span>Ask eQORE AI</span>
                 </span>
-              </span>
-            </button>
+              </button>
 
-            {/* Desktop Contact Button */}
-            <Link
-              to="/contact"
-              className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-full font-semibold transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-700 shadow-md hover:shadow-lg"
-            >
-              <span>Contact Us</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+              {/* Desktop Contact Button */}
+              <Link
+                to="/contact"
+                className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full font-black text-[14px] transition-all duration-300 hover:scale-[1.05] active:scale-[0.98] shadow-lg hover:shadow-xl"
+              >
+                <span>Contact Us</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              {/* Mobile Controls */}
+              <div className="flex lg:hidden items-center gap-2">
+                <button
+                  onClick={() => setShowSearch(true)}
+                  className="p-3 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-700 dark:text-white hover:bg-gray-200"
+                >
+                  <Search className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={onMenuClick}
+                  className="p-3 bg-brand-gradient text-white rounded-full shadow-lg"
+                >
+                  <Menu className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
-    
-    {/* Global Search Modal */}
-    <GlobalSearch isOpen={showSearch} onClose={() => setShowSearch(false)} />
+
+        {/* Mega Menus Rendered Outside the Pill to avoid filter clipping */}
+        {navLinks.map((link) => (
+          <React.Fragment key={`mega-${link.id}`}>
+            {/* Bridge Area */}
+            {activeDropdown === link.id && link.isMegaMenu && (
+              <div 
+                className="fixed left-0 right-0 top-[96px] h-12 pointer-events-auto z-[9998]"
+                onMouseEnter={() => setActiveDropdown(link.id)}
+                onMouseLeave={() => setActiveDropdown(null)}
+              />
+            )}
+
+            {/* Services Mega Menu */}
+            {activeDropdown === link.id && link.isMegaMenu && link.type === 'services' && (
+              <div 
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bottom-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
+                  showUtilityBar ? 'top-[144px]' : 'top-[104px]'
+                }`}
+                onMouseEnter={() => setActiveDropdown(link.id)}
+                onMouseLeave={() => setActiveDropdown(null)}
+                style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
+              >
+                <style>{`
+                  @keyframes megaFadeIn {
+                    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+                    to { opacity: 1; transform: translateY(0) scale(1); }
+                  }
+                `}</style>
+
+                <div className="h-full flex flex-col">
+                  {/* Top Bar */}
+                  <div className="flex items-center justify-between px-10 py-6 border-b border-gray-100/50 dark:border-gray-800/50 bg-gray-50/50 dark:bg-gray-900/50 shrink-0">
+                    <div>
+                      <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Enterprise Solutions</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 font-medium">{departmentsList.length} global departments · Specialized engineering execution</p>
+                    </div>
+                    <Link
+                      to="/services"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center gap-2 px-6 py-3 bg-brand-gradient text-white text-sm font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-lg"
+                    >
+                      Explore All Services
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                  
+                  {/* Two-Panel Body */}
+                  <div className="flex flex-1 min-h-0 overflow-hidden">
+                    {/* Left Panel - Department List */}
+                    <div className="w-[380px] bg-gray-50/30 dark:bg-gray-800/20 border-r border-gray-100 dark:border-gray-800/50 overflow-y-auto shrink-0 custom-scrollbar">
+                      <div className="py-4 px-4 space-y-1">
+                        {servicesCategories.map((category, index) => {
+                          const IconComponent = category.icon;
+                          const isActive = activeMegaDept === index;
+                          return (
+                            <button
+                              key={index}
+                              onMouseEnter={() => setActiveMegaDept(index)}
+                              onClick={() => {
+                                setActiveDropdown(null);
+                                navigate(`/departments/${category.slug}`);
+                              }}
+                              className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left transition-all duration-300 group ${
+                                isActive
+                                  ? 'bg-white dark:bg-gray-900 shadow-xl ring-1 ring-gray-100 dark:ring-gray-800'
+                                  : 'hover:bg-white/50 dark:hover:bg-gray-900/40'
+                              }`}
+                            >
+                              <div
+                                className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
+                                  isActive ? 'shadow-lg scale-110' : 'bg-gray-100 dark:bg-gray-800 group-hover:bg-gray-200 dark:group-hover:bg-gray-700'
+                                }`}
+                                style={isActive ? { backgroundColor: category.accentColor } : undefined}
+                              >
+                                <IconComponent className={`w-5 h-5 transition-colors ${isActive ? 'text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700'}`} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className={`text-[13px] font-black uppercase tracking-wider transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700'}`}>
+                                  {category.title}
+                                </p>
+                                <p className="text-[11px] text-gray-400 mt-0.5 font-medium">{category.serviceCount} Core Services</p>
+                              </div>
+                              <ArrowRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}`} style={{ color: category.accentColor }} />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Right Panel - Active Department's Services */}
+                    <div className="flex-1 overflow-y-auto custom-scrollbar">
+                      <div className="px-12 py-10">
+                        {servicesCategories[activeMegaDept] && (() => {
+                          const activeCat = servicesCategories[activeMegaDept];
+                          const ActiveIcon = activeCat.icon;
+                          return (
+                            <>
+                              <div className="flex items-center gap-6 mb-10 pb-8 border-b border-gray-100 dark:border-gray-800/50">
+                                <div
+                                  className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center shadow-2xl animate-pulse-slow"
+                                  style={{ backgroundColor: activeCat.accentColor }}
+                                >
+                                  <ActiveIcon className="w-8 h-8 text-white" />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-[11px] uppercase tracking-[0.3em] font-black mb-1.5 opacity-60" style={{ color: activeCat.accentColor }}>
+                                    {activeCat.fullName}
+                                  </p>
+                                  <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
+                                  <p className="text-base text-gray-500 dark:text-gray-400 mt-2 font-medium max-w-2xl">{activeCat.description}</p>
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
+                                {activeCat.items.map((item, idx) => (
+                                  <Link
+                                    key={idx}
+                                    to={`/services/${item.slug}`}
+                                    onClick={() => setActiveDropdown(null)}
+                                    className="group relative p-6 rounded-[2rem] border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-2xl transition-all duration-300"
+                                  >
+                                    <div className="flex items-start justify-between gap-4">
+                                      <div className="flex-1 min-w-0">
+                                        <h5 className="text-[15px] font-black text-gray-900 dark:text-white transition-colors mb-2 leading-tight group-hover:text-brand-blue">
+                                          {item.name}
+                                          {item.crossDepartment && (
+                                            <span className="block mt-1 text-[10px] text-brand-blue font-black uppercase tracking-wider">
+                                              Part of {item.crossDepartment}
+                                            </span>
+                                          )}
+                                        </h5>
+                                        <p className="text-[12px] text-gray-500 dark:text-gray-400 leading-relaxed font-medium line-clamp-2">
+                                          {item.shortDescription}
+                                        </p>
+                                      </div>
+                                      <div className="mt-1 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-brand-blue group-hover:rotate-[-45deg]">
+                                        <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-white" />
+                                      </div>
+                                    </div>
+                                    <div
+                                      className="absolute bottom-4 left-6 right-6 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-full"
+                                      style={{ backgroundColor: activeCat.accentColor }}
+                                    ></div>
+                                  </Link>
+                                ))}
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Who We Are Mega Menu */}
+            {activeDropdown === link.id && link.isMegaMenu && link.type === 'whoWeAre' && (
+              <div 
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto transition-all duration-500 ${
+                  showUtilityBar ? 'top-[144px]' : 'top-[104px]'
+                }`}
+                onMouseEnter={() => setActiveDropdown(link.id)}
+                onMouseLeave={() => setActiveDropdown(null)}
+                style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
+              >
+                <div className="max-w-[1400px] mx-auto">
+                  <div className="mb-10 flex items-end justify-between">
+                    <div>
+                      <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Who We Are</h3>
+                      <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Discover the engineering excellence and values driving global transformation.</p>
+                    </div>
+                    <Link to="/about-us" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
+                      Our Story <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </div>
+                  
+                  <div className="grid grid-cols-5 gap-4">
+                    {whoWeAreItems.map((item, index) => {
+                      const IconComponent = item.icon;
+                      return (
+                        <Link
+                          key={index}
+                          to={item.path}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300"
+                        >
+                          <div className="flex flex-col items-center text-center gap-4">
+                            <Realistic3DIcon 
+                              icon={IconComponent} 
+                              className="w-14 h-14 group-hover:scale-110 transition-transform" 
+                              iconSize="w-6 h-6" 
+                              theme="brand" 
+                            />
+                            <h4 className="font-black text-[15px] text-gray-900 dark:text-white tracking-tight">
+                              {item.name}
+                            </h4>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Industries Mega Menu */}
+            {activeDropdown === link.id && link.isMegaMenu && link.type === 'industries' && (
+              <div 
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto transition-all duration-500 ${
+                  showUtilityBar ? 'top-[144px]' : 'top-[104px]'
+                }`}
+                onMouseEnter={() => setActiveDropdown(link.id)}
+                onMouseLeave={() => setActiveDropdown(null)}
+                style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
+              >
+                <div className="max-w-[1400px] mx-auto">
+                  <div className="mb-10 flex items-end justify-between">
+                    <div>
+                      <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Industries We Serve</h3>
+                      <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Domain-specific engineering execution for global leaders.</p>
+                    </div>
+                    <Link to="/contact" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
+                      Industry Consultation <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </div>
+                  
+                  <div className="grid grid-cols-4 gap-6">
+                    {industriesItems.map((item, index) => {
+                      const IconComponent = item.icon;
+                      return (
+                        <Link
+                          key={index}
+                          to={item.path}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300 flex items-center gap-5"
+                        >
+                          <Realistic3DIcon 
+                            icon={IconComponent} 
+                            className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform" 
+                            iconSize="w-5 h-5" 
+                            theme="cyan" 
+                          />
+                          <h4 className="font-black text-[16px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                            {item.name}
+                          </h4>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Insights Mega Menu */}
+            {activeDropdown === link.id && link.isMegaMenu && link.type === 'insights' && (
+              <div 
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto transition-all duration-500 ${
+                  showUtilityBar ? 'top-[144px]' : 'top-[104px]'
+                }`}
+                onMouseEnter={() => setActiveDropdown(link.id)}
+                onMouseLeave={() => setActiveDropdown(null)}
+                style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
+              >
+                <div className="max-w-[1400px] mx-auto">
+                  <div className="mb-10 flex items-end justify-between">
+                    <div>
+                      <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Insights & Knowledge</h3>
+                      <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Expert perspectives on AI foundations, technical debt, and business velocity.</p>
+                    </div>
+                    <Link to="/blogs" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
+                      View All Insights <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </div>
+                  
+                  <div className="grid grid-cols-5 gap-4">
+                    {insightsItems.map((item, index) => {
+                      const IconComponent = item.icon;
+                      return (
+                        <Link
+                          key={index}
+                          to={item.path}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300"
+                        >
+                          <div className="flex flex-col items-center text-center gap-4">
+                            <Realistic3DIcon 
+                              icon={IconComponent} 
+                              className="w-16 h-16 group-hover:scale-110 mb-2 transition-transform" 
+                              iconSize="w-7 h-7" 
+                              theme="brand" 
+                            />
+                            <h4 className="font-black text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                              {item.name}
+                            </h4>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+          </React.Fragment>
+        ))}
+      </header>
+      
+      {/* Global Search Modal */}
+      <GlobalSearch isOpen={showSearch} onClose={() => setShowSearch(false)} />
     </>
   );
 };
