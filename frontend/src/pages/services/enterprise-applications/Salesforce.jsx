@@ -10,7 +10,7 @@ import {
   SalesforceArchitectureShowcase,
   SalesforceExecutionEcosystem,
   SalesforceFutureReadySection
-} from './components/SalesforceCustomSections';
+} from '../../../components/services/platforms/SalesforceCustomSections';
 import { 
     Cloud, 
     CheckCircle2, 

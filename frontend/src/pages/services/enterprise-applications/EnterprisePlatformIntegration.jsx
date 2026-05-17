@@ -11,7 +11,7 @@ import {
   EPIStrengthsBento,
   EPIPhilosophyBg,
   EPIIntegrationGraph
-} from './components/EPICustomSections';
+} from '../../../components/services/platforms/EPICustomSections';
 
 gsap.registerPlugin(ScrollTrigger);
 

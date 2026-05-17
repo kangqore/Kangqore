@@ -9,7 +9,7 @@ import {
   ExecutionPodSection,
   BusinessTypesSection,
   SocialReadinessMagnet
-} from './components/SocialMediaCustomSections';
+} from '../../../components/services/growth/SocialMediaCustomSections';
 
 const SocialMediaManagement = () => {
   const service = {

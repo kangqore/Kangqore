@@ -9,7 +9,7 @@ import {
   USMReadinessMagnet,
   USMControlTower,
   USMExecutionEcosystem
-} from './components/USMCustomSections';
+} from '../../../components/services/platforms/USMCustomSections';
 
 const UnifiedServicesManagement = () => {
   const service = {

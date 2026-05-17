@@ -9,7 +9,7 @@ import {
   CROSuccessSection,
   CROReadinessMagnet,
   CROLogoTrustSection
-} from './components/CROCustomSections';
+} from '../../../components/services/growth/CROCustomSections';
 
 const ConversionRateOptimization = () => {
   const service = {

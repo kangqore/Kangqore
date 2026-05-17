@@ -10,7 +10,7 @@ import {
   SEOSuccessSection,
   SEOReadinessMagnet,
   LogoTrustSection
-} from './components/SEOCustomSections';
+} from '../../../components/services/growth/SEOCustomSections';
 
 const SEOOrganicGrowthStrategy = () => {
   const service = {

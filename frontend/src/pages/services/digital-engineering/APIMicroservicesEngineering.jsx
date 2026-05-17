@@ -15,7 +15,7 @@ import {
   APIPreMatrixSection,
   APIArchitectureShowcase,
   APIPhilosophyBackground
-} from './components/APICustomSections';
+} from '../../../components/services/foundry/APICustomSections';
 
 gsap.registerPlugin(ScrollTrigger);
 

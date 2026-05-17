@@ -9,7 +9,7 @@ import {
   IoTDeliveryModel,
   IoTExecutionEcosystem,
   IoTFutureReadySection
-} from './components/IoTCustomSections';
+} from '../../../components/services/foundry/IoTCustomSections';
 
 const InternetOfThings = () => {
   // ============================================

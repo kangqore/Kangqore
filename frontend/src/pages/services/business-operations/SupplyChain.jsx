@@ -1,7 +1,7 @@
 import React from 'react';
 import { Activity, Layers, Search, TrendingUp, Zap, Target, Shield, Heart, Briefcase, Globe, BrainCircuit, Box, Anchor, Building2, Truck, Server, BarChart3, Cloud, FileText, Database } from 'lucide-react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
-import { SupplyChainControlTower, SupplyChainReadinessMagnet } from './components/SupplyChainCustomSections';
+import { SupplyChainControlTower, SupplyChainReadinessMagnet } from '../../../components/services/platforms/SupplyChainCustomSections';
 
 const SupplyChain = () => {
   const service = {

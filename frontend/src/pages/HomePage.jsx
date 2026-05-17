@@ -420,7 +420,7 @@ const HeroCarousel = () => {
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 sm:pt-40 lg:pt-[200px] pb-16 sm:pb-20 lg:pb-24">
           <div className="transform translate-y-[0.8cm]">
             {/* Glass cards — absolute positioned right side, lg+ only */}
-          <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-12 w-[245px] xl:w-[265px] z-10 mt-[2.1cm]">
+          <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-12 w-[245px] xl:w-[265px] z-10 -mt-[2.9cm]">
             <Suspense fallback={<div className="aspect-[5/4] rounded-[1.75rem] bg-white dark:bg-black/5" aria-hidden="true" />}>
               <HeroGlassCards />
             </Suspense>

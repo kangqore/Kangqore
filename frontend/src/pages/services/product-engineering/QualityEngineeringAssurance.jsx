@@ -2,7 +2,7 @@ import React from 'react';
 import { Layers, Search, ShieldCheck, Zap, Target, Bot, Activity, BrainCircuit, CheckCircle2, Cpu, Rocket, MonitorSmartphone, Code2, Network, RadioTower, BarChart3, Globe2, Shield, TrendingUp, Award, Workflow, Database, RefreshCw, ServerCog, Wifi, Users, Smartphone, FileSpreadsheet, Scale, HardDrive, Infinity } from 'lucide-react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
 import { Link } from 'react-router-dom';
-import { QECustomSectionsBlock1, QECustomSectionsBlock2 } from './components/QECustomSections';
+import { QECustomSectionsBlock1, QECustomSectionsBlock2 } from '../../../components/services/shield/QECustomSections';
 
 const QualityEngineeringAssurance = () => {
   // ============================================

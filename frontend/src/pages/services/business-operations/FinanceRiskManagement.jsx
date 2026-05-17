@@ -13,7 +13,7 @@ import {
   FinanceDeliveryModel,
   FinanceExecutionEcosystem,
   FinanceFutureReadySection
-} from './components/FinanceRiskCustomSections';
+} from '../../../components/services/shield/FinanceRiskCustomSections';
 
 gsap.registerPlugin(ScrollTrigger);
 
