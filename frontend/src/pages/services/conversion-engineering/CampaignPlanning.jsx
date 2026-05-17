@@ -10,7 +10,7 @@ import {
   BusinessImpactSection,
   CampaignReadinessMagnet,
   CampaignLogoTrustSection
-} from './components/CampaignPlanningCustomSections';
+} from '../../../components/services/growth/CampaignPlanningCustomSections';
 
 const CampaignPlanning = () => {
   const service = {

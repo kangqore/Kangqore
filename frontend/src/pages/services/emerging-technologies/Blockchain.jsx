@@ -12,7 +12,7 @@ import {
   BlockchainDeliveryModel,
   BlockchainExecutionEcosystem,
   BlockchainFutureReadySection
-} from './components/BlockchainCustomSections';
+} from '../../../components/services/reimagine/BlockchainCustomSections';
 
 gsap.registerPlugin(ScrollTrigger);
 

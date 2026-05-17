@@ -12,7 +12,7 @@ import {
   ServicenowDeliveryModel,
   ServicenowExecutionEcosystem,
   ServicenowFutureReadySection
-} from './components/ServicenowCustomSections';
+} from '../../../components/services/platforms/ServicenowCustomSections';
 
 gsap.registerPlugin(ScrollTrigger);
 

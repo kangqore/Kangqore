@@ -31,6 +31,11 @@ import { serviceSEO } from '../data/seoData';
 import Breadcrumb from '../components/Breadcrumb';
 import ServicePageTemplate from '../components/ServicePageTemplate';
 import { COGNITION_SECTIONS } from '../components/services/cognition/sections';
+import { FOUNDRY_SECTIONS } from '../components/services/foundry/sections';
+import { REIMAGINE_SECTIONS } from '../components/services/reimagine/sections';
+import { SHIELD_SECTIONS } from '../components/services/shield/sections';
+import { PLATFORMS_SECTIONS } from '../components/services/platforms/sections';
+import { GROWTH_SECTIONS } from '../components/services/growth/sections';
 import NotFound from './NotFound';
 
 const SITE_URL = 'https://kangqore.com';
@@ -43,6 +48,11 @@ const ORG_NAME = 'Kangqore';
 // Growth, G5 Platforms, G6 Foundry) add their own modules and spread them in.
 const PREMIUM_REGISTRY = {
   ...COGNITION_SECTIONS,
+  ...FOUNDRY_SECTIONS,
+  ...REIMAGINE_SECTIONS,
+  ...SHIELD_SECTIONS,
+  ...PLATFORMS_SECTIONS,
+  ...GROWTH_SECTIONS,
 };
 
 const ServicePage = () => {

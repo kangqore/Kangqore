@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Target, Layers, Shield, TrendingUp, BarChart3, DollarSign, MousePointerClick, Gauge, Search, Users, Activity, Filter, Rocket, Database, Settings, CheckCircle2, Bot, PenTool, LayoutTemplate, Briefcase, RefreshCw, FileText } from 'lucide-react';
-import Realistic3DIcon from '../../../../components/ui/Realistic3DIcon';
+import Realistic3DIcon from '../../ui/Realistic3DIcon';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 

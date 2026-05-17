@@ -7,8 +7,8 @@ import {
 } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Realistic3DIcon from '../../../../components/ui/Realistic3DIcon';
-import SecondaryButton from '../../../../components/ui/SecondaryButton';
+import Realistic3DIcon from '../../ui/Realistic3DIcon';
+import SecondaryButton from '../../ui/SecondaryButton';
 
 gsap.registerPlugin(ScrollTrigger);
 

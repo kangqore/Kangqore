@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Database, Users, Zap, Search, Activity, CheckCircle2, Share2, Layers, BarChart3, Lock, MessageCircle, TrendingUp, Clock, Target, Database as DatabaseIcon, Globe, Briefcase, Filter, Rocket, Settings, Check, LayoutTemplate, FileText } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Realistic3DIcon from '../../../../components/ui/Realistic3DIcon';
-import SecondaryButton from '../../../../components/ui/SecondaryButton';
+import Realistic3DIcon from '../../ui/Realistic3DIcon';
+import SecondaryButton from '../../ui/SecondaryButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
