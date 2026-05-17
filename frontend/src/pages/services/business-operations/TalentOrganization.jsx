@@ -13,7 +13,7 @@ import {
   TalentDeliveryModel,
   TalentExecutionEcosystem,
   TalentFutureReadySection
-} from './components/TalentOrgCustomSections';
+} from '../../../components/services/platforms/TalentOrgCustomSections';
 
 gsap.registerPlugin(ScrollTrigger);
 

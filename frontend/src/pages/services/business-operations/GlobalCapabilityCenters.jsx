@@ -12,7 +12,7 @@ import {
   GCCFutureReady,
   GCCDiamondModel,
   KangqoreCommandCenterDashboard
-} from './components/GlobalCapabilityCentersCustomSections';
+} from '../../../components/services/platforms/GlobalCapabilityCentersCustomSections';
 
 const GlobalCapabilityCenters = () => {
   // ============================================

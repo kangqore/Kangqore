@@ -15,7 +15,7 @@ import {
   AIImpactSection,
   AIReadinessMagnet,
   AILogoTrustSection
-} from './components/MarketingAISections';
+} from '../../../components/services/growth/MarketingAISections';
 
 const MarketingAIReadiness = () => {
   const service = {

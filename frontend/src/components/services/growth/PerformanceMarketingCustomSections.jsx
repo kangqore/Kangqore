@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Target, Layers, Shield, TrendingUp, Eye, BarChart3, DollarSign, MousePointerClick, Gauge, PenTool, Video, Search, Sparkles, Building2, ShoppingCart, Briefcase, Globe, GraduationCap, Heart, Landmark, Rocket, Users, LineChart, Plus } from 'lucide-react';
 import { gsap } from 'gsap';
-import SecondaryButton from '../../../../components/ui/SecondaryButton';
+import SecondaryButton from '../../ui/SecondaryButton';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);

@@ -10,7 +10,7 @@ import {
   CDPImpactSection,
   CDPReadinessMagnet,
   CDPLogoTrustSection
-} from './components/CDPCustomSections';
+} from '../../../components/services/growth/CDPCustomSections';
 
 const CDPStrategy = () => {
   const service = {

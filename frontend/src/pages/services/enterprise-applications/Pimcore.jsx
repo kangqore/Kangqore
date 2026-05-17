@@ -12,7 +12,7 @@ import {
   PimArchitectureSchematic,
   PimUseCasesCarousel,
   PimBenefitsGrid
-} from './components/PimcoreCustomSections';
+} from '../../../components/services/platforms/PimcoreCustomSections';
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -11,7 +11,7 @@ import {
   BusinessNeedsSection,
   PerformanceReadinessMagnet,
   LogoTrustSection
-} from './components/PerformanceMarketingCustomSections';
+} from '../../../components/services/growth/PerformanceMarketingCustomSections';
 
 const PerformanceMarketing = () => {
   const service = {

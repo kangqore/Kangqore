@@ -32,10 +32,12 @@
 // ────────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Brain, BrainCircuit, Zap, ShieldCheck, Shield, Search, Network, Target,
   DollarSign, TrendingUp, Layers, Activity, Database, BarChart3, Cloud,
   Cpu, Sparkles, RefreshCw, Lock, AlertTriangle,
+  LineChart, ArrowRight, ChevronRight,
 } from 'lucide-react';
 import {
   AIChallengesSection,
@@ -1059,12 +1061,390 @@ const aiGovernance = {
   ),
 };
 
+// ─── analytics (Cognition, T3 — added in PR 2) ─────────────────────────────────
+const analytics = {
+  description:
+    'Transform raw data into actionable intelligence through modern analytics architectures, predictive modeling, and AI-powered insights — engineered for scale, governance, and business impact.',
+  fullDescription: (
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold text-white">Engineering Decision Systems for the Modern Enterprise</h2>
+      <p>Transform raw data into actionable intelligence through modern analytics architectures, predictive modeling, and AI-powered insights — engineered for scale, governance, and business impact.</p>
+      <div className="bg-white dark:bg-gray-900 dark:border-gray-800/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
+        <p className="font-bold text-cyan-300 mb-1">We don&rsquo;t just build dashboards.</p>
+        <p className="font-medium text-white italic">We build decision systems.</p>
+      </div>
+    </div>
+  ),
+
+  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  stats: [
+    { value: '5X', label: 'Faster Insights', color: 'text-cyan-400' },
+    { value: '10X', label: 'Model Performance', color: 'text-blue-400' },
+    { value: '30%', label: 'Cost Savings', color: 'text-emerald-400' },
+    { value: 'Governed', label: 'Decision Systems', color: 'text-purple-400' },
+  ],
+
+  highFidelity: {
+    narrative: {
+      badge: 'Strategic Intelligence :: 2026',
+      titleLine1: 'Analytics',
+      titleHighlight: 'Precision',
+      titleLine2: 'for Decisions.',
+      description:
+        'Data without context is noise. We engineer decision systems that bridge the gap between fragmented raw data and executive-ready intelligence.',
+      bottleneckLabel: 'The Impediment',
+      bottleneckText: 'Incoherent data lakes & siloed analytics reports.',
+      requirementLabel: 'The Requirement',
+      requirementText: 'Observable, governed, and AI-native decision pipelines.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80',
+      statusLabel: 'Decision Velocity',
+      statusValue: 'Optimized',
+    },
+    philosophy: {
+      icon: <LineChart className="w-7 h-7 text-brand-blue" />,
+      title: 'Analytics',
+      titleHighlight: 'Logic-First Intelligence.',
+      description:
+        'We move beyond standard reporting into cognitive intelligence — architecting systems that prioritize relevance, provenance, and actionable outcomes.',
+      pills: ['Predictive ROI', 'Hardened Governance', 'MLOps Ready', 'Zero Insight Debt'],
+    },
+    matrix: {
+      engineId: 'Engine :: Insights_V4',
+      title: 'Enablement Matrix',
+      subtext: 'Our end-to-end analytics engineering deconstructed into modular, governed intelligence layers.',
+      layers: [
+        { title: 'Ingestion', id: 'AN_AQ', icon: <Database />, desc: 'Multi-modal data capture and multi-source integration.' },
+        { title: 'Unification', id: 'AN_UNI', icon: <Layers />, desc: 'Semantic modeling and distributed data lakehouse unification.' },
+        { title: 'Intelligence', id: 'AN_IQ', icon: <BrainCircuit />, desc: 'Predictive modeling and cognitive intelligence modules.' },
+        { title: 'Delivery', id: 'AN_DLV', icon: <Activity />, desc: 'Executive KPI command centers and real-time triggers.' },
+      ],
+    },
+    schematic: {
+      titleLine1: 'Transform',
+      titleHighlight: 'Information.',
+      description:
+        'Your data should stay as a strategic asset, not a technical burden. We build the foundations for undisputed competitive advantage.',
+      stats: [
+        { label: 'Accuracy', val: 'ABSOLUTE' },
+        { label: 'Latency', val: 'ZERO' },
+        { label: 'Velocity', val: 'EXPONENTIAL' },
+      ],
+    },
+  },
+
+  technologies: [
+    { category: 'Data Platforms & Lakehouse', items: ['Snowflake', 'Databricks', 'BigQuery', 'Redshift', 'Azure Synapse'] },
+    { category: 'ETL / ELT & Orchestration', items: ['Airflow', 'dbt', 'Fivetran', 'Azure Data Factory', 'Talend'] },
+    { category: 'Real-Time & Streaming', items: ['Kafka', 'Kinesis', 'Spark Streaming', 'Flink', 'Pub/Sub'] },
+    { category: 'BI & Visualization', items: ['Power BI', 'Tableau', 'Looker', 'Superset', 'Metabase'] },
+    { category: 'ML & Predictive Analytics', items: ['Scikit-learn', 'XGBoost', 'PyTorch', 'TensorFlow', 'Prophet'] },
+    { category: 'Governance & Observability', items: ['Great Expectations', 'Collibra', 'Monte Carlo', 'Purview', 'OpenLineage'] },
+  ],
+
+  capabilities: [
+    {
+      title: 'Descriptive & Diagnostic',
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: [
+        { heading: 'Descriptive Analytics', description: 'Understand what happened. Exploratory data analysis, KPI tracking, and executive reporting to provide visibility.' },
+        { heading: 'Diagnostic Analytics', description: 'Understand why it happened. Root cause analysis, variance tracking, and segmentation to enable corrective actions.' },
+      ],
+    },
+    {
+      title: 'Predictive & Prescriptive',
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: [
+        { heading: 'Predictive Analytics', description: 'Understand what is likely to happen. Time-series forecasting and ML models for proactive business strategy.' },
+        { heading: 'Prescriptive Solutions', description: 'Understand what action to take. Optimization modeling and decision engines to move from insight to execution.' },
+      ],
+    },
+    {
+      title: 'Cognitive Intelligence',
+      bgImage: '/images/capabilities/ai-cognitive.png',
+      items: [
+        { heading: 'Cognitive Analytics', description: 'AI-augmented systems using NLP, Graph analytics, and pattern detection to embed AI into analytics workflows.' },
+      ],
+    },
+  ],
+
+  customFAQs: [
+    { question: 'What is Analytics?', answer: 'Analytics is the process of transforming data into insights through statistical analysis, modeling, and visualization to support better decision-making.' },
+    { question: 'What are the types of analytics?', answer: 'We specialize in Descriptive (what happened), Diagnostic (why it happened), Predictive (likelihood), Prescriptive (actions to take), and Cognitive (AI-augmented intelligence).' },
+    { question: 'What is Cognitive Analytics?', answer: 'AI-augmented analytics using NLP, ML, graph systems, and semantic intelligence to extract deeper contextual meaning from data.' },
+    { question: 'How does Kangqore ensure data quality?', answer: 'Through data validation pipelines, governance frameworks, lineage tracking, and continuous monitoring systems.' },
+    { question: 'Do you support real-time analytics?', answer: 'Yes. We design streaming architectures using event-driven pipelines (Kafka/Kinesis) and real-time dashboards.' },
+  ],
+
+  trustPillars: [
+    { title: 'Executive KPI Command Center', tag: 'Decision Velocity', description: 'Real-time C-level dashboards and business health metrics with drill-down intelligence for strategic oversight.' },
+    { title: 'Customer 360 & Segmentation', tag: 'Growth Intelligence', description: 'Unified customer profiles and cohort analysis paired with CLV and churn prediction for personalized marketing.' },
+    { title: 'Demand Forecasting', tag: 'Predictive Analytics', description: 'Time-series modeling and inventory optimization using scenario simulations for resilient supply chains.' },
+    { title: 'Operational Efficiency Analytics', tag: 'Operational Excellence', description: 'SLA tracking and bottleneck identification to eliminate cost leakage and improve process throughput.' },
+    { title: 'Fraud & Risk Analytics', tag: 'Risk Intelligence', description: 'Anomaly detection and risk scoring engines providing real-time alerts for enterprise security.' },
+    { title: 'Marketing Attribution & ROI', tag: 'Revenue Analytics', description: 'Multi-touch attribution and campaign performance tracking to optimize CAC and maximize ROAS.' },
+    { title: 'Real-Time Streaming Analytics', tag: 'Real-Time Systems', description: 'Event streaming dashboards and live triggers for high-frequency operational intelligence.' },
+    { title: 'Cognitive Analytics Modules', tag: 'AI-Augmented Analytics', description: 'Document intelligence and sentiment analysis using knowledge graphs for deeper contextual insights.' },
+  ],
+
+  trustPillarsRightTitle: 'Analytics Systems Built for Speed, Accuracy & Governance',
+  trustPillarsRightDescription:
+    'Kangqore builds modern analytics ecosystems that turn fragmented data into trusted insights. From data ingestion to BI to predictive modeling, we architect scalable pipelines, semantic layers, and governance controls — so leaders get faster decisions without compromising accuracy, privacy, or compliance.',
+  trustPillarsRightButton: 'Get an Analytics Assessment',
+
+  whyKangqoreIntro:
+    'Kangqore is an AI-driven digital engineering company building the next generation of intelligent, autonomous, and scalable enterprise systems. We move analytics from reporting → prediction → intelligent automation.',
+  whyKangqore: [
+    { title: 'Engineering-first design', description: 'Analytics architected for technical precision and performance.' },
+    { title: 'Governance by default', description: 'Security, compliance, and lineage are embedded at the core.' },
+    { title: 'AI-ready architecture', description: 'Built to seamlessly integrate with ML models and cognitive agents.' },
+    { title: 'Industry-aligned frameworks', description: 'Tailored solutions that speak the language of your specific sector.' },
+    { title: 'Business-outcome focus', description: 'We measure success by the impact on your bottom line.' },
+    { title: 'Scalable & secure', description: 'Enterprise-grade implementations designed to grow with your data.' },
+  ],
+
+  industryIntro: 'We design industry-specific analytics solutions that address real-world business challenges:',
+  industries: [
+    { name: 'BFSI', description: 'Risk scoring, fraud analytics, credit modeling.' },
+    { name: 'Retail & E-commerce', description: 'Demand forecasting, customer segmentation, pricing optimization.' },
+    { name: 'Manufacturing', description: 'Predictive maintenance, OEE monitoring, quality analytics.' },
+    { name: 'Healthcare', description: 'Clinical analytics, patient risk modeling, outcome forecasting.' },
+    { name: 'Public Sector', description: 'Data modernization, citizen service intelligence, performance monitoring.' },
+  ],
+
+  ctaTitle: 'Build a Scalable Analytics Foundation',
+  ctaSubtitle: 'Turn your data into a strategic advantage.',
+  ctaButtonText: 'Request a Consultation',
+};
+
+// ─── big-data (Cognition, T3 — added in PR 2) ──────────────────────────────────
+const bigData = {
+  description:
+    'Design, modernize, and operationalize enterprise-grade data ecosystems that enable real-time intelligence, advanced analytics, and AI-driven growth.',
+  fullDescription: (
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold text-white">Build Scalable Data Foundations That Power Intelligent Enterprises</h2>
+      <p>Design, modernize, and operationalize enterprise-grade data ecosystems that enable real-time intelligence, advanced analytics, and AI-driven growth.</p>
+    </div>
+  ),
+  image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200',
+  imageClassName: 'aspect-[4/5]',
+  fullWidthCustomOverview: true,
+
+  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  stats: [
+    { value: 'PB+', label: 'Data Managed', color: 'text-cyan-400' },
+    { value: 'Real-time', label: 'Processing', color: 'text-blue-400' },
+    { value: 'Zero', label: 'Migration Errors', color: 'text-emerald-400' },
+    { value: '99.9%', label: 'Uptime', color: 'text-purple-400' },
+  ],
+
+  highFidelity: {
+    narrative: {
+      badge: 'Market Disruption :: 2026',
+      titleLine1: 'The Data',
+      titleHighlight: 'Explosion',
+      titleLine2: 'is Real.',
+      description:
+        'Modern enterprises are generating unimaginable volumes of data. Most are not just unready — they are operationally paralyzed by the sheer scale of fragmented information.',
+      bottleneckLabel: 'The Bottleneck',
+      bottleneckText: 'Incoherent cloud platforms & fragmented legacy systems.',
+      requirementLabel: 'The Consequence',
+      requirementText: 'Reactive scaling & skyrocketing architectural debt.',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200',
+      statusLabel: 'Latency Check',
+      statusValue: '4ms_Target',
+    },
+    philosophy: {
+      icon: <Database className="w-7 h-7 text-brand-blue" />,
+      title: 'Big Data',
+      titleHighlight: 'Logic-First.',
+      description:
+        'We architect ecosystems that prioritize relevance and governance over simple collection — turning reactive datasets into proactive strategic assets.',
+      pills: ['Enterprise ROI', 'Hardened Security', 'Reactive Autonomy', 'Zero Data Debt'],
+    },
+    matrix: {
+      engineId: 'Engine :: Kang_V4',
+      title: 'Enablement Matrix',
+      subtext: 'Comprehensive deconstruction of the enterprise data lifecycle into modular, governed intelligence layers.',
+      layers: [
+        { title: 'Acquisition', id: 'AQ_STRAT', icon: <RefreshCw />, desc: 'Intelligent multi-modal data capture pipelines.' },
+        { title: 'Unification', id: 'UN_CORE', icon: <Layers />, desc: 'Semantic deconstruction of distributed silos.' },
+        { title: 'Processing', id: 'PR_ENGINE', icon: <Cpu />, desc: 'AI-native streaming and transformation modules.' },
+        { title: 'Assurance', id: 'AS_HARD', icon: <ShieldCheck />, desc: 'End-to-end provenance and governance fabric.' },
+      ],
+    },
+    schematic: {
+      titleLine1: 'Accelerate',
+      titleHighlight: 'Everything.',
+      description:
+        'Your data should not overwhelm your systems. It should be the fuel for undisputed competitive advantage.',
+      stats: [
+        { label: 'Latency', val: 'ZERO' },
+        { label: 'ROI', val: 'EXPONENTIAL' },
+        { label: 'Security', val: 'ABSOLUTE' },
+      ],
+    },
+  },
+
+  technologies: [
+    { category: 'Data Processing', items: ['Apache Hadoop', 'Apache Spark', 'Kafka', 'Flink', 'Presto', 'Hive'] },
+    { category: 'Databases', items: ['MongoDB', 'PostgreSQL', 'Snowflake', 'BigQuery', 'Cassandra', 'Redis'] },
+    { category: 'Cloud Platforms', items: ['AWS', 'Azure', 'Google Cloud', 'DigitalOcean', 'IBM Cloud'] },
+    { category: 'Orchestration & Governance', items: ['Airflow', 'dbt', 'Data Catalog Tools', 'Data Governance Frameworks', 'Purview'] },
+  ],
+
+  capabilities: [
+    {
+      title: 'EDW Optimization',
+      bgImage: '/images/capabilities/data-analytics.png',
+      description: 'Equip your Enterprise Data Warehouse to tackle the growing demands of big data. Build a central data repository that unifies heterogeneous sources, maintains data quality, and gives you access to the information you need – when you need it.',
+      items: ['Modernization of legacy warehouses', 'ELT / Offload Architecture', 'Data Archiving Solutions', 'Datastore, Governance & Security Management', 'Self Service BI / Discovery Enablement'],
+    },
+    {
+      title: 'Lakehouse Architecture',
+      bgImage: '/images/capabilities/software-engineering.png',
+      description: 'Define, design, and develop the capabilities of dealing with data of any size, shape, and speed. Empower your developers, data scientists and analysts with the right tools to leverage quintillions of bytes of data.',
+      items: ['Strategy & Roadmap Development', 'Prototyping & Tool Evaluation', 'Data Integration, Access & Services', 'Scalable Storage & Processing Architecture', 'Construction & Go-Live Enablement'],
+    },
+    {
+      title: 'Stream & Real-Time',
+      bgImage: '/images/capabilities/business-strategy.png',
+      description: 'Redefine real-time processing. Garner insights from data streams generating from disparate sources as and when the event occurs.',
+      items: ['Real-time Data Ingestion', 'Scalable Data Processing & Storage', 'Event-driven Architecture & Flow', 'Dashboards, Alerting & Monitoring Systems'],
+    },
+    {
+      title: 'Migration & Integration',
+      bgImage: '/images/capabilities/digital-transformation.png',
+      description: 'Platform consolidation and large-scale data absorption across multi-source environments. We ensure seamless transitions and data integrity during complex enterprise transformation initiatives.',
+      items: ['Large-scale data absorption & ingestion', 'Platform consolidation & unification', 'Multi-source integration frameworks', 'Structured & unstructured data handling'],
+    },
+    {
+      title: 'Hadoop-Based Platforms',
+      bgImage: '/images/capabilities/data-analytics.png',
+      description: 'Leverage the power of distributed processing for cost-effective enterprise storage and high-concurrency analysis. We modernize Hadoop ecosystems for active archiving and scalable compute.',
+      items: ['Hadoop as Enterprise Data Warehouse', 'Hadoop as Active Archive Solution', 'Large-scale concurrent processing', 'Cost-effective long-term storage & retrieval'],
+    },
+    {
+      title: 'RDBMS to NoSQL (R2M)',
+      bgImage: '/images/capabilities/data-analytics.png',
+      description: 'Automated conversion of legacy relational data into modern document-based schemas for high performance. Reduce manual migration errors and optimize for cloud-native speed.',
+      items: ['Automated schema conversion & mapping', 'Replication & integrity validation', 'Performance optimization for NoSQL', 'Reduced manual migration overhead'],
+    },
+    {
+      title: 'Managed Data Services',
+      bgImage: '/images/capabilities/data-analytics.png',
+      description: 'Reliable 24/7 managed support for data platforms, ensuring continuous uptime, performance tuning, and ongoing governance for your intelligence ecosystem.',
+      items: ['Platform monitoring & health checks', 'Continuous performance optimization', 'Ongoing governance & compliance', 'Managed analytics operations'],
+    },
+  ],
+
+  trustPillars: [
+    { title: 'Data Migration & Integration Services', tag: 'Absorption', description: 'Unified pipelines to absorb massive datasets from silos into a cohesive, governed data ecosystem.' },
+    { title: 'Managed Big Data Services', tag: 'Operations', description: 'Reliable 24/7 managed support for data platforms, ensuring continuous uptime and performance tuning.' },
+    { title: 'Data Analysis Platform', tag: 'Intelligence', description: 'Self-service analytics hubs that allow business users to discover insights without technical overhead.' },
+    { title: 'Hadoop Data Warehouse', tag: 'Scalability', description: 'High-concurrency data warehousing solutions built on distributed processing frameworks for enterprise scale.' },
+    { title: 'Hadoop Active Archive', tag: 'Cost Optimization', description: 'Move cold data to cost-effective storage while keeping it queryable and accessible for historical analysis.' },
+    { title: 'RDBMS to NoSQL Migration', tag: 'Modernization', description: 'Automated conversion of legacy relational data into modern document-based schemas for high performance.' },
+  ],
+
+  trustPillarsRightTitle: 'End-to-End Data Transformation Solutions',
+  trustPillarsRightDescription:
+    'We design scalable, secure, and agile data ecosystems that accelerate innovation, improve operational efficiency, and enable smooth customer experiences tailored to your digital transformation journey.',
+  trustPillarsRightButton: 'Request a Consultation',
+
+  whyKangqoreIntro:
+    'We don&rsquo;t just implement tools. We build future-ready data platforms that solve architectural complexity and drive measurable growth.',
+  whyKangqore: [
+    { title: 'AI-native architecture', description: 'Data platforms built with embedded intelligence for next-gen AI applications.' },
+    { title: 'Enterprise-grade governance', description: 'End-to-end security and compliance integrated directly into the pipeline.' },
+    { title: 'Scalable cloud-first infrastructure', description: 'Native multi-cloud and hybrid architectures that grow with your enterprise.' },
+    { title: 'Performance-optimized engineering', description: 'Eliminating bottlenecks to ensure lightning-fast processing at extreme scale.' },
+    { title: 'Strategic technology partnerships', description: 'Leveraging top-tier relationships with Snowflake, Databricks, and Cloud giants.' },
+    { title: 'Outcomes-focused delivery', description: 'Engineering defined by business impact, not just storage volume.' },
+  ],
+
+  // Inline JSX section — broken legacy URLs rewritten to canonical /services/<slug> per locked decision
+  postIndustrySections: (
+    <section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white overflow-hidden relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
+          <div className="lg:w-1/2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-brand-blue rounded-full text-xs font-bold mb-6 tracking-widest uppercase">
+              Portfolio Ecosystem
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight font-display">
+              Related Analytics <span className="text-transparent bg-clip-text bg-brand-gradient">Offerings</span>
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 leading-relaxed max-w-xl">
+              Accelerate your data journey by combining Big Data engineering with our broader portfolio of intelligence services.
+            </p>
+            <div className="space-y-4">
+              {[
+                { name: 'Agentic AI', link: '/services/agentic-ai', icon: <BrainCircuit className="w-5 h-5" />, desc: 'Autonomous systems and agentic intelligence.' },
+                { name: 'Analytics', link: '/services/analytics', icon: <BarChart3 className="w-5 h-5" />, desc: 'Modern EDW and descriptive analytics.' },
+                { name: 'Data Science & AI', link: '/services/data-science-ai', icon: <LineChart className="w-5 h-5" />, desc: 'Predictive modeling and statistical analysis.' },
+              ].map((offering, idx) => (
+                <Link key={idx} to={offering.link} className="group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 border border-gray-100 rounded-3xl hover:border-blue-300 hover:shadow-lg transition-all duration-500">
+                  <div className="w-14 h-14 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-gradient group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
+                    {offering.icon}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-xl text-gray-900 dark:text-white tracking-tight group-hover:text-brand-blue transition-colors">{offering.name}</span>
+                      <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-brand-blue transition-all group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                    <p className="text-gray-500 leading-relaxed">{offering.desc}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-12 flex items-center gap-6">
+              <Link to="/services" className="inline-flex items-center gap-2 px-10 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-brand-blue transition-all group shadow-xl">
+                Explore Services
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+          <div className="lg:w-5/12 relative">
+            <div className="relative aspect-square w-full max-w-[550px] mx-auto">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-400/10 blur-[100px] rounded-full"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-gray-100 flex items-center justify-center relative z-20 group">
+                <div className="absolute inset-4 bg-brand-gradient rounded-[32px] opacity-10 group-hover:opacity-20 transition-opacity"></div>
+                <div className="absolute inset-8 border border-brand-blue/30 rounded-3xl border-dashed"></div>
+                <div className="relative">
+                  <Database className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
+                  <Lock className="w-6 h-6" />
+                </div>
+                <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:-rotate-6 transition-transform">
+                  <Zap className="w-7 h-7" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ),
+
+  ctaTitle: 'Turn Data Chaos Into Competitive Advantage',
+  ctaDescription: 'Let&rsquo;s design your next-generation data platform.',
+  ctaButtonText: 'Schedule a Strategy Call',
+};
+
 // ─── Registry export ───────────────────────────────────────────────────────────
-// 6 services wired in G2:
-//   - 5 Cognition AI services (departmentSlug: 'cognition')
+// 8 services wired:
+//   - 5 Cognition AI services + 2 Cognition T3 (analytics, big-data)
 //   - 1 Shield service co-located here due to shared AI asset coupling
 //     (ai-governance — departmentSlug: 'shield')
-// Future phases (G4 Growth, G5 Platforms, G6 Foundry) add their own modules.
 export const COGNITION_SECTIONS = {
   'agentic-ai': agenticAI,
   'ai-cognitive-computing': aiCognitiveComputing,
@@ -1072,4 +1452,6 @@ export const COGNITION_SECTIONS = {
   'genai-business-services': genaiBusinessServices,
   'mlops': mlops,
   'ai-governance': aiGovernance,
+  'analytics': analytics,
+  'big-data': bigData,
 };

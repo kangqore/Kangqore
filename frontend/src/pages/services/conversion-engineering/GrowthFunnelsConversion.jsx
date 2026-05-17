@@ -9,7 +9,7 @@ import {
   FunnelSuccessSection,
   FunnelReadinessMagnet,
   FunnelLogoTrustSection
-} from './components/FunnelCustomSections';
+} from '../../../components/services/growth/FunnelCustomSections';
 
 const GrowthFunnelsConversion = () => {
   const service = {
