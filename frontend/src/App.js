@@ -22,6 +22,7 @@ import OfflineIndicator from './components/OfflineIndicator';
 import EqoreLeadsPage from './pages/admin/EqoreLeadsPage';
 import EqoreSalesPage from './pages/admin/EqoreSalesPage';
 import AlisPage from './pages/admin/AlisPage';
+import EQoreAIConsole from './pages/EQoreAIConsole';
 import './App.css';
 
 /**
@@ -138,6 +139,7 @@ function AppContent() {
 
           {/* Auth & Dashboard Routes (no Header/Footer) */}
           {authRoutes}
+          <Route path="/eqore-ai" element={<EQoreAIConsole />} />
 
           {/* Services page - defined at top level to avoid nested routes issues */}
           <Route path="/services" element={

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, Mic, MicOff } from 'lucide-react';
+import { Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, Mic, MicOff, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useConcierge, getSuggestedPrompts } from '../hooks/useConcierge';
 import { parseSchedulingRequest } from '../hooks/nlpSchedulingParser';
@@ -204,6 +204,19 @@ const EQoreChatbot = () => {
   }, []);
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.search.includes('openChat=true')) {
+      setIsOpen(true);
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('openChat');
+        window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+      } catch (e) {
+        console.warn('Failed to clean openChat param', e);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
@@ -284,16 +297,27 @@ const EQoreChatbot = () => {
           <div className="absolute inset-0 bg-brand-cyan/5 blur-xl pointer-events-none"></div>
           
           <div className="flex items-center gap-5 relative z-10">
-            {/* Mac style window controls */}
-            <div className="flex items-center gap-2 group">
-              <button onClick={() => setIsOpen(false)} className="w-3.5 h-3.5 rounded-full bg-pink-500 hover:bg-pink-400 transition-colors shadow-sm flex items-center justify-center opacity-80 hover:opacity-100" title="Close">
-                <X className="w-2.5 h-2.5 text-black opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="flex items-center gap-2 group relative z-20">
+              <button 
+                onClick={() => setIsOpen(false)} 
+                className="w-3.5 h-3.5 rounded-full bg-pink-500 hover:bg-pink-400 transition-colors shadow-sm flex items-center justify-center relative cursor-pointer" 
+                title="Close"
+              >
+                <X className="w-2 h-2 text-black/80 opacity-80 hover:opacity-100 transition-opacity absolute pointer-events-none font-bold" strokeWidth={3.5} />
               </button>
-              <button onClick={() => setIsMaximized(false)} className="w-3.5 h-3.5 rounded-full bg-purple-500 hover:bg-purple-400 transition-colors shadow-sm flex items-center justify-center opacity-80 hover:opacity-100" title="Minimize">
-                <div className="w-2 h-0.5 bg-black opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
+              <button 
+                onClick={() => setIsMaximized(false)} 
+                className="w-3.5 h-3.5 rounded-full bg-purple-500 hover:bg-purple-400 transition-colors shadow-sm flex items-center justify-center relative cursor-pointer" 
+                title="Minimize"
+              >
+                <div className="w-1.5 h-0.5 bg-black/80 opacity-85 hover:opacity-100 transition-opacity absolute rounded-full pointer-events-none font-bold" />
               </button>
-              <button onClick={() => setIsMaximized(true)} className="w-3.5 h-3.5 rounded-full bg-blue-500 hover:bg-blue-400 transition-colors shadow-sm flex items-center justify-center opacity-80 hover:opacity-100" title="Maximize">
-                <div className="w-2 h-2 border border-black opacity-0 group-hover:opacity-100 transition-opacity rounded-sm" />
+              <button 
+                onClick={() => setIsMaximized(true)} 
+                className="w-3.5 h-3.5 rounded-full bg-blue-500 hover:bg-blue-400 transition-colors shadow-sm flex items-center justify-center relative cursor-pointer" 
+                title="Maximize"
+              >
+                <div className="w-1.5 h-1.5 border border-black/80 opacity-85 hover:opacity-100 transition-opacity absolute rounded-[1px] pointer-events-none font-bold" strokeWidth={3.5} />
               </button>
             </div>
 
@@ -313,6 +337,9 @@ const EQoreChatbot = () => {
             </div>
           </div>
           <div className="flex items-center gap-1 relative z-10">
+            <Link to="/eqore-ai" className="p-2 hover:bg-white/10 rounded-lg transition-colors text-slate-400 hover:text-white" title="Launch Standalone Full-Screen Console">
+              <ExternalLink className="w-4 h-4 text-cyan-400 animate-[pulse_2s_infinite]" />
+            </Link>
             <button
               onClick={() => {
                 const newState = !isVoiceEnabled;
