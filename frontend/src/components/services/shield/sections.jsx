@@ -72,6 +72,7 @@ import {
   FinanceFutureReadySection,
 } from './FinanceRiskCustomSections';
 import { QECustomSectionsBlock1, QECustomSectionsBlock2 } from './QECustomSections';
+import { SHIELD_IT_SECURITY_AND_OT_SECTIONS } from './it-security-and-ot-services';
 
 // ─── finance-risk-management (Shield) ─────────────────────────────────────────
 const financeRiskManagement = {
@@ -670,10 +671,20 @@ const qualityEngineeringAssurance = {
 };
 
 // ─── Registry export ───────────────────────────────────────────────────────────
-// 2 Shield T1 services wired in this module. AI Governance (also Shield-canonical)
-// is co-located in cognition/sections.jsx due to shared AICustomSections asset
-// coupling — see that file's header for the rationale.
+// 4 Shield services wired here:
+//   - finance-risk-management (T1, already wired)
+//   - quality-engineering-assurance (T1, already wired)
+//   - it-security-services (Phase B / KQ-SER-SHIELD-001, lifted from
+//     legacy cybersecurity/ITSecurityServices.jsx)
+//   - operation-technology (Phase B / KQ-SER-SHIELD-001, lifted from legacy
+//     infrastructure-networks-operations/OperationTechnology.jsx, with GSAP
+//     animations isolated in OTAnimatedCoESection wrapper using gsap.context()
+//     scoped cleanup)
+//
+// AI Governance (also Shield-canonical) is co-located in cognition/sections.jsx
+// due to shared AICustomSections asset coupling — see that file's header.
 export const SHIELD_SECTIONS = {
   'finance-risk-management': financeRiskManagement,
   'quality-engineering-assurance': qualityEngineeringAssurance,
+  ...SHIELD_IT_SECURITY_AND_OT_SECTIONS,
 };
