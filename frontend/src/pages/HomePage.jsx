@@ -9,9 +9,7 @@ const ConciergeSection = lazy(() =>
   import('../components/concierge/ConciergeSection')
 );
 
-const HeroGlassCards = lazy(() =>
-  import('../components/hero/HeroGlassCards')
-);
+import HeroGlassCards from '../components/hero/HeroGlassCards';
 import { Link } from 'react-router-dom';
 import { 
   ChevronLeft, ChevronRight, ChevronDown, Calendar, Clock,
@@ -420,10 +418,8 @@ const HeroCarousel = () => {
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 sm:pt-40 lg:pt-[200px] pb-16 sm:pb-20 lg:pb-24">
           <div className="transform translate-y-[0.8cm]">
             {/* Glass cards — absolute positioned right side, lg+ only */}
-          <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-12 w-[245px] xl:w-[265px] z-10 -mt-[2.9cm]">
-            <Suspense fallback={<div className="aspect-[5/4] rounded-[1.75rem] bg-white dark:bg-black/5" aria-hidden="true" />}>
-              <HeroGlassCards />
-            </Suspense>
+          <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-12 w-[245px] xl:w-[265px] z-10 -mt-[3.2cm] translate-x-[1.1cm]">
+            <HeroGlassCards />
           </div>
 
           <div className="max-w-[850px] space-y-6">
@@ -478,17 +474,12 @@ const HeroCarousel = () => {
 
               <button 
                 onClick={() => document.getElementById('eqore-ai-concierge')?.scrollIntoView({ behavior: 'smooth' })}
-                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-black/40 backdrop-blur-xl shadow-xl"
+                className="group inline-flex items-center gap-2 px-4 py-2 hover:opacity-80 transition-opacity duration-300"
               >
-                <span className="relative z-10 text-white/90 font-bold tracking-wide text-[13px] group-hover:text-white transition-colors duration-300">
+                <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
                   Ask eQORE AI<sup className="text-[9px] ml-0.5 opacity-70">™</sup>
                 </span>
-                <div className="relative z-10 w-7 h-7 flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full border border-cyan-400/40 animate-[heroPulseRing_2.5s_ease-out_infinite]" />
-                  <div className="relative w-6 h-6 rounded-full bg-brand-gradient flex items-center justify-center shadow-[0_0_10px_rgba(34,211,238,0.4)]">
-                    <Sparkles className="w-3 h-3 text-white" />
-                  </div>
-                </div>
+                <ArrowRight className="w-4 h-4 text-cyan-400 transform group-hover:translate-x-1 transition-transform duration-300" />
               </button>
             </div>
 
@@ -501,42 +492,8 @@ const HeroCarousel = () => {
           `}</style>
         </div>
 
-        {/* Minimal dot indicators & Controls */}
-        <div className="flex items-center gap-5 mt-16">
-          <div className="flex items-center gap-2">
-            {heroSlides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  if (!isAnimating) {
-                    setIsAnimating(true);
-                    setCurrentSlide(index);
-                    setTimeout(() => setIsAnimating(false), 800);
-                  }
-                }}
-                className={`h-1 rounded-full transition-all duration-500 ${
-                  index === currentSlide
-                    ? 'w-10 bg-white shadow-[0_0_10px_rgba(255,255,255,0.4)]'
-                    : 'w-3 bg-white/30 hover:bg-white/50'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-          
-          <div className="relative flex items-center justify-center w-8 h-8">
-            <button
-              onClick={togglePlayPause}
-              className={`absolute inset-0 z-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/10 transition-colors shadow-lg group ${toggleEffect ? 'animate-pond-button pointer-events-none' : ''}`}
-              aria-label={isPaused ? "Play slides" : "Pause slides"}
-            >
-              {isPaused ? <Play className="w-3.5 h-3.5 text-white/70 group-hover:text-white ml-0.5 transition-colors" /> : <Pause className="w-3.5 h-3.5 text-white/70 group-hover:text-white transition-colors" />}
-            </button>
-            {toggleEffect && (
-              <div className="absolute inset-0 rounded-full border border-white/60 pointer-events-none animate-pond-ring" />
-            )}
-          </div>
-        </div>
+        {/* Invisible spacer to replace removed carousel indicators and maintain layout height */}
+        <div className="h-[48px] mt-16 w-full pointer-events-none opacity-0" aria-hidden="true" />
       </div>
     </div>
 
