@@ -134,16 +134,14 @@ const Header = ({ onMenuClick }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Opens the global eQORE chatbot. Reuses the existing
-  // window event listened to by EQoreChatbot.jsx — same mechanism the
-  // mid-page <AskEqoreCTA /> uses on service / department pages.
+  // Opens the global eQORE chatbot console.
   const openEqoreChat = () => {
-    if (typeof window === 'undefined') return;
-    window.dispatchEvent(
-      new CustomEvent('toggle-eqore-chatbot', {
-        detail: { surface: 'global-header', openOnly: true },
-      })
-    );
+    navigate('/eqore-ai', {
+      state: {
+        returnTo: location.pathname + location.search,
+        source: 'navbar_ask_eqore_ai',
+      },
+    });
   };
 
   // Phase D — build mega-menu categories from the 6-department canonical data.

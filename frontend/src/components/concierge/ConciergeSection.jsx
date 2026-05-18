@@ -15,7 +15,9 @@ import {
   MicOff,
   Volume2,
   VolumeX,
+  ExternalLink,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useConcierge, CONCIERGE_SUGGESTED_PROMPTS } from '../../hooks/useConcierge';
 import { useVoiceInput } from '../../hooks/useVoiceInput';
 import CitationBadge from './CitationBadge';
@@ -221,9 +223,9 @@ const ConciergeSection = () => {
           </div>
           <h2
             id="eqore-ai-heading"
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-5xl"
           >
-            Have a Question? From Business Problem to Solution Direction — Ask <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI</span><sup className="bg-brand-gradient bg-clip-text text-transparent text-[0.45em] ml-0.5">™</sup>.
+            From Business Questions to Solution Direction — Ask <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI</span><sup className="bg-brand-gradient bg-clip-text text-transparent text-[0.45em] ml-0.5">™</sup>
           </h2>
           <p className="mt-6 text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
             eQORE helps leaders identify relevant Kangqore capabilities, understand possible solution paths, and connect with the right team for deeper consultation.
@@ -246,6 +248,13 @@ const ConciergeSection = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <Link
+                to="/eqore-ai"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white/60 hover:text-white px-3 py-2 rounded-xl bg-white/10 border border-white/10 transition-all"
+                title="Launch Standalone Full-Screen Console"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-cyan-400" /> Launch Console
+              </Link>
               <button
                 type="button"
                 onClick={() => {

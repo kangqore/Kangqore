@@ -391,6 +391,44 @@ export function useConcierge(options = {}) {
     [streaming, send]
   );
 
+  const loadConversation = useCallback(
+    async (id) => {
+      if (!id) return;
+      abortRef.current?.abort();
+      setRestoring(true);
+      setError(null);
+      setStreaming(false);
+      try {
+        const res = await fetch(HISTORY_ENDPOINT(id));
+        if (!res.ok) throw new Error('Failed to load history');
+        const data = await res.json();
+        if (data && Array.isArray(data.messages)) {
+          const restored = data.messages
+            .filter(
+              (m) =>
+                m && (m.role === 'user' || m.role === 'assistant') &&
+                typeof m.content === 'string'
+            )
+            .map((m, i) => ({
+              id: `r-${i}-${id}`,
+              role: m.role,
+              content: m.content,
+              citations: m.citations || [],
+              guardrailsTripped: [],
+              done: true,
+            }));
+          setMessages([INITIAL_GREETING, ...restored]);
+          setConversationId(id);
+        }
+      } catch (err) {
+        setError('Could not load that conversation thread.');
+      } finally {
+        setRestoring(false);
+      }
+    },
+    [setConversationId]
+  );
+
   return {
     messages,
     streaming,
@@ -402,6 +440,7 @@ export function useConcierge(options = {}) {
     reset,
     retry,
     submitFeedback,
+    loadConversation,
   };
 }
 
