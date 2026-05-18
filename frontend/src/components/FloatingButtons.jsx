@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogIn, LogOut, UserCircle, ArrowUp, MessageCircle, Accessibility, Menu, X, ChevronRight, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Moon, Sun, Plus } from 'lucide-react';
+import { LogIn, LogOut, UserCircle, ArrowUp, ChevronUp, MessageCircle, Accessibility, Menu, X, ChevronRight, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Moon, Sun, Plus } from 'lucide-react';
 import { departmentData } from '../data/departmentData';
 import { useAuth } from '../context/AuthContext';
 import EQoreChatbot from './EQoreChatbot';
@@ -151,34 +151,16 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
     <>
       <EQoreChatbot />
 
-      {/* New Vertical Floating Stack (eQORE AI & Menu) */}
+      {/* New Vertical Floating Stack (eQORE AI & Menu) - Moved to LEFT */}
       <div 
-        className={`fixed right-8 z-[50] flex flex-col items-center gap-4 transition-all duration-700 ease-in-out ${
+        className={`fixed left-8 z-[50] flex flex-col items-center gap-4 transition-all duration-700 ease-in-out ${
           !isVisible || isYielding || showFullMenu ? 'opacity-0 translate-y-10 pointer-events-none' : 'opacity-100 translate-y-0'
         }`}
         style={{ bottom: '32px' }} // Aligned with the Plus button on the left (bottom-8)
       >
-        {/* eQORE AI Button */}
-        <div className="group/item relative">
-          <button
-            onClick={toggleChatbot}
-            className="w-[56px] h-[56px] rounded-full bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 shadow-[0_10px_40px_rgba(0,0,0,0.15)] overflow-hidden flex items-center justify-center transition-all duration-500 hover:scale-110 hover:shadow-[0_0_25px_rgba(37,100,234,0.4)] group"
-            aria-label="Ask eQORE AI"
-          >
-            <img 
-              src="/images/eqore-avatar.png" 
-              alt="eQORE AI" 
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-            />
-          </button>
-          {/* Tooltip */}
-          <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10">
-            Ask eQORE AI
-          </div>
-        </div>
 
-        {/* Hamburger Menu Button */}
-        <div className="group/item relative">
+        {/* Hamburger Menu Button (Mobile Only) */}
+        <div className="group/item relative md:hidden">
           <button
             onClick={() => setShowFullMenu(true)}
             className="w-[56px] h-[56px] rounded-full bg-brand-gradient text-white shadow-2xl flex items-center justify-center transition-all duration-500 transform hover:scale-110 active:scale-95 hover:shadow-[0_0_25px_rgba(74,182,212,0.5)]"
@@ -187,34 +169,58 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
             <Menu className="w-6 h-6 text-white" />
           </button>
           {/* Tooltip */}
-          <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10">
+          <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10">
             Open Menu
           </div>
         </div>
       </div>
 
-      {/* Unified Omni-Action Trigger - Moved to LEFT */}
+      {/* Unified Omni-Action Trigger - Moved to RIGHT */}
       <div 
-        className={`fixed bottom-8 left-8 z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
+        className={`fixed bottom-8 right-8 z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
       >
+        {/* Standalone Scroll to Top - Rendered first to be at the very bottom in flex-col-reverse */}
+        {isVisible && (
+          <button onClick={scrollToTop} className="w-[44px] h-[44px] bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-full shadow-lg border border-gray-100 dark:border-gray-800 flex items-center justify-center group/btn overflow-hidden relative" title="Scroll to Top">
+            <div className="flex flex-col items-center justify-center -space-y-[12px] group-hover/btn:-translate-y-1 transition-transform relative z-10 pt-[2px]">
+              <ChevronUp className="w-5 h-5 stroke-[2.5]" />
+              <ChevronUp className="w-5 h-5 stroke-[2.5]" />
+              <ChevronUp className="w-5 h-5 stroke-[2.5]" />
+            </div>
+          </button>
+        )}
+
         <button
           onClick={() => setIsOmniOpen(!isOmniOpen)}
-          className={`p-4 rounded-full shadow-2xl transition-all duration-500 transform hover:scale-110 active:scale-95 flex items-center justify-center ${
+          className={`p-3 rounded-full shadow-2xl transition-all duration-500 transform hover:scale-110 active:scale-95 flex items-center justify-center ${
             isOmniOpen ? 'bg-gray-900 text-white rotate-45' : 'bg-brand-gradient text-white'
           }`}
           aria-label="Toggle Actions"
         >
-          {isOmniOpen ? <X className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
+          {isOmniOpen ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
         </button>
 
         <div className={`flex flex-col gap-4 transition-all duration-500 origin-bottom ${
           isOmniOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-50 pointer-events-none'
         }`}>
-          {isVisible && (
-            <button onClick={scrollToTop} className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 dark:text-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center group/btn" title="Scroll to Top">
-              <ArrowUp className="w-5 h-5 group-hover/btn:-translate-y-1 transition-transform" />
+          {/* eQORE AI Button */}
+          <div className="group/item relative">
+            <button
+              onClick={toggleChatbot}
+              className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 shadow-[0_10px_40px_rgba(0,0,0,0.15)] overflow-hidden flex items-center justify-center transition-all duration-500 hover:scale-110 hover:shadow-[0_0_25px_rgba(37,100,234,0.4)] group"
+              aria-label="Ask eQORE AI"
+            >
+              <img 
+                src="/images/eqore-avatar.png" 
+                alt="eQORE AI" 
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+              />
             </button>
-          )}
+            {/* Tooltip */}
+            <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10">
+              Ask eQORE AI
+            </div>
+          </div>
           <button onClick={openWhatsApp} className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-full shadow-lg border border-gray-100 flex items-center justify-center group" title="WhatsApp Support">
             <svg className="w-6 h-6 transition-transform group-hover:scale-110" viewBox="0 0 24 24" fill="#25D366" stroke="none" strokeWidth="0">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
@@ -229,7 +235,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
         {/* Accessibility Panel */}
         {showAccessibility && (
-          <div className="absolute bottom-24 left-0 bg-white dark:bg-gray-800 rounded-[2rem] shadow-2xl p-8 w-80 border border-gray-100 dark:border-gray-700 z-[101] animate-in fade-in zoom-in-95">
+          <div className="absolute bottom-24 right-0 bg-white dark:bg-gray-800 rounded-[2rem] shadow-2xl p-8 w-80 border border-gray-100 dark:border-gray-700 z-[101] animate-in fade-in zoom-in-95">
             <div className="flex items-center justify-between mb-8">
               <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-3 text-xl">Appearance</h3>
               <button onClick={() => setShowAccessibility(false)} className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center text-gray-400"><X className="w-4 h-4" /></button>

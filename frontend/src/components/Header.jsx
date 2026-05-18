@@ -10,6 +10,7 @@ import GlobalSearch from './GlobalSearch';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTheme } from '../context/ThemeContext';
 import Realistic3DIcon from './ui/Realistic3DIcon';
+import { useSmartNav } from '../hooks/useSmartNav';
 
 const Header = ({ onMenuClick }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -20,8 +21,15 @@ const Header = ({ onMenuClick }) => {
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isInHero, setIsInHero] = useState(true);
   const [isHoveringTop, setIsHoveringTop] = useState(false);
   const [isLightBackground, setIsLightBackground] = useState(false);
+
+  // Auto-hide smart navigation hook
+  const { isSmartNavVisible, setNavHovered } = useSmartNav({ 
+    timeout: 1000,
+    disabled: isInHero
+  });
 
   // Adaptive Glassmorphic Logic - Detects light sections under the header
   useEffect(() => {
@@ -71,11 +79,16 @@ const Header = ({ onMenuClick }) => {
     return () => clearTimeout(timeout);
   }, [location.pathname]);
 
-  // Handle scroll to hide/show utility bar
+  // Handle scroll to hide/show utility bar and track hero section
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+      setIsInHero(window.scrollY < window.innerHeight * 0.6);
     };
+    
+    // Initial check on mount
+    handleScroll();
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -222,8 +235,17 @@ const Header = ({ onMenuClick }) => {
   return (
     <>
       <header 
-        className="fixed top-0 left-0 right-0 z-[10000] pointer-events-none"
-        onMouseEnter={() => setIsHoveringTop(true)}
+        className={`fixed left-0 right-0 z-[10000] pointer-events-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isSmartNavVisible ? 'top-0' : '-top-40 opacity-0'
+        }`}
+        onMouseEnter={() => {
+          setIsHoveringTop(true);
+          setNavHovered(true);
+        }}
+        onMouseLeave={() => {
+          setIsHoveringTop(false);
+          setNavHovered(false);
+        }}
       >
         {/* Top utility bar - Floating Pill */}
         <div 
@@ -306,16 +328,15 @@ const Header = ({ onMenuClick }) => {
           </div>
         </div>
 
-        {/* Unified Floating Island Bar */}
         <div 
           className={`max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto transition-all duration-500 ease-in-out ${
-            showUtilityBar ? 'mt-2' : 'mt-6'
+            showUtilityBar ? 'pt-2' : 'pt-6'
           }`}
         >
-          <div className={`backdrop-blur-3xl rounded-full border shadow-[0_8px_32px_rgba(0,0,0,0.12)] flex items-center justify-between h-16 lg:h-20 px-6 lg:px-8 transition-colors duration-500 ${
+          <div className={`backdrop-blur-2xl rounded-full border shadow-[0_8px_32px_rgba(0,0,0,0.12)] flex items-center justify-between h-16 lg:h-20 px-6 lg:px-8 transition-colors duration-500 ${
             isLightBackground 
-              ? 'bg-black/30 dark:bg-black/40 border-black/10 dark:border-white/5' 
-              : 'bg-white/10 dark:bg-white/5 border-white/20 dark:border-white/10'
+              ? 'bg-black/[0.03] dark:bg-black/10 border-black/5 shadow-[inset_0_1px_1px_rgba(0,0,0,0.02)]' 
+              : 'bg-white/[0.02] dark:bg-white/[0.01] border-white/5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
           }`}>
             {/* Logo Island Section */}
             <div className="flex items-center">
@@ -327,16 +348,18 @@ const Header = ({ onMenuClick }) => {
                 <img 
                   src="https://customer-assets.emergentagent.com/job_cog-site-clone/artifacts/focgf8oz_Logo%2BText.png" 
                   alt="Kangqore Logo" 
-                  className="h-20 lg:h-28 -ml-2 transition-all duration-300 group-hover:scale-105 brightness-0 invert"
+                  className={`h-20 lg:h-28 -ml-2 transition-all duration-300 group-hover:scale-105 ${
+                    isLightBackground ? 'brightness-0' : 'brightness-0 invert'
+                  }`}
                 />
               </Link>
             </div>
 
             {/* Desktop Navigation - Nested Pill Content */}
-            <nav className={`hidden lg:flex items-center space-x-4 rounded-full px-5 py-0.5 border shadow-sm transition-colors duration-500 ${
+            <nav className={`hidden lg:flex items-center space-x-4 rounded-full px-5 py-0.5 border transition-colors duration-500 backdrop-blur-md ${
               isLightBackground
-                ? 'bg-black/20 dark:bg-black/30 border-black/10'
-                : 'bg-white/50 dark:bg-white/10 border-white/40'
+                ? 'bg-white/70 border-white/20 shadow-sm'
+                : 'bg-black/70 border-white/10 shadow-sm'
             }`}>
               {navLinks.map((link) => (
                 <div
@@ -346,11 +369,11 @@ const Header = ({ onMenuClick }) => {
                 >
                   <button 
                     className={`flex items-center space-x-1 hover:text-brand-blue transition-colors duration-300 py-1.5 font-bold tracking-tight text-[14px] ${
-                      isLightBackground ? 'text-white' : 'text-gray-800 dark:text-gray-200'
+                      isLightBackground ? 'text-gray-900' : 'text-white'
                     }`}
                   >
                     <span>{link.name}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeDropdown === link.id ? 'rotate-180 text-brand-blue' : 'text-gray-400 group-hover:text-brand-blue'}`} />
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeDropdown === link.id ? 'rotate-180 text-brand-blue' : isLightBackground ? 'text-gray-500 group-hover:text-brand-blue' : 'text-white/60 group-hover:text-brand-blue'}`} />
                   </button>
                   
                   {/* Bridge area to prevent menu from closing */}
