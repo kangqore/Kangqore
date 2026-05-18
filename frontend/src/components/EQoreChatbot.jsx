@@ -92,6 +92,7 @@ function renderFormattedText(text) {
 
 const EQoreChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const [inputText, setInputText] = useState('');
   const [showLeadFor, setShowLeadFor] = useState(null);
   const [seedContext, setSeedContext] = useState(null);
@@ -275,21 +276,28 @@ const EQoreChatbot = () => {
   const hasUserMessages = messages.some((m) => m.role === 'user');
 
   return (
-    <div className="fixed bottom-28 right-8 z-[101]">
-      <button
-        onClick={() => setIsOpen(false)}
-        className="absolute -top-3 -right-3 w-8 h-8 bg-[#1a1a1a] hover:bg-red-500/20 text-slate-400 hover:text-red-400 border border-white/10 rounded-full shadow-lg flex items-center justify-center z-[51] transition-all"
-        aria-label="Close chatbot"
-      >
-        <X className="w-4 h-4" />
-      </button>
-
-      <div className="absolute bottom-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-xl rounded-2xl shadow-2xl w-[360px] sm:w-[400px] border border-white/10 overflow-hidden flex flex-col h-[600px] max-h-[80vh] animate-fade-in-up origin-bottom-right">
+    <div className="fixed bottom-28 right-8 z-[10001]">
+      <div className={`absolute bottom-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-xl rounded-2xl shadow-2xl ${isMaximized ? 'w-[80vw] sm:w-[75vw] lg:w-[760px] h-[80vh]' : 'w-[340px] sm:w-[390px] lg:w-[440px] h-[600px]'} border border-white/10 overflow-hidden flex flex-col max-h-[85vh] animate-fade-in-up origin-bottom-right transition-all duration-500`}>
 
         {/* Header */}
         <div className="bg-[#111115] border-b border-white/5 p-4 flex items-center justify-between text-white relative overflow-hidden">
           <div className="absolute inset-0 bg-brand-cyan/5 blur-xl pointer-events-none"></div>
-          <div className="flex items-center gap-3 relative z-10">
+          
+          <div className="flex items-center gap-5 relative z-10">
+            {/* Mac style window controls */}
+            <div className="flex items-center gap-2 group">
+              <button onClick={() => setIsOpen(false)} className="w-3.5 h-3.5 rounded-full bg-pink-500 hover:bg-pink-400 transition-colors shadow-sm flex items-center justify-center opacity-80 hover:opacity-100" title="Close">
+                <X className="w-2.5 h-2.5 text-black opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+              <button onClick={() => setIsMaximized(false)} className="w-3.5 h-3.5 rounded-full bg-purple-500 hover:bg-purple-400 transition-colors shadow-sm flex items-center justify-center opacity-80 hover:opacity-100" title="Minimize">
+                <div className="w-2 h-0.5 bg-black opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
+              </button>
+              <button onClick={() => setIsMaximized(true)} className="w-3.5 h-3.5 rounded-full bg-blue-500 hover:bg-blue-400 transition-colors shadow-sm flex items-center justify-center opacity-80 hover:opacity-100" title="Maximize">
+                <div className="w-2 h-2 border border-black opacity-0 group-hover:opacity-100 transition-opacity rounded-sm" />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-3">
             <div className="relative">
               <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.2)] bg-[#050505]">
                 <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
@@ -301,6 +309,7 @@ const EQoreChatbot = () => {
               <p className="text-[10px] text-cyan-400/80 uppercase tracking-widest font-semibold">
                 {streaming ? 'Thinking…' : 'System Online'}
               </p>
+            </div>
             </div>
           </div>
           <div className="flex items-center gap-1 relative z-10">
