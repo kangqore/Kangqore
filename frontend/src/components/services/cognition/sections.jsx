@@ -48,6 +48,7 @@ import {
   AIMetricsSection,
   AITransformationMagnet,
 } from './AICustomSections';
+import { COGNITION_AUTOMATION_SECTIONS } from './automation-services';
 
 // ─── agentic-ai (Cognition) ────────────────────────────────────────────────────
 const agenticAI = {
@@ -1441,10 +1442,13 @@ const bigData = {
 };
 
 // ─── Registry export ───────────────────────────────────────────────────────────
-// 8 services wired:
+// 12 services wired:
 //   - 5 Cognition AI services + 2 Cognition T3 (analytics, big-data)
 //   - 1 Shield service co-located here due to shared AI asset coupling
 //     (ai-governance — departmentSlug: 'shield')
+//   - 4 Cognition Automation services lifted from legacy 15-dept "automation"
+//     folder (Phase G — RESET DIRECTION 2026-05-18). Defined in
+//     ./automation-services.jsx and spread in below.
 export const COGNITION_SECTIONS = {
   'agentic-ai': agenticAI,
   'ai-cognitive-computing': aiCognitiveComputing,
@@ -1454,4 +1458,5 @@ export const COGNITION_SECTIONS = {
   'ai-governance': aiGovernance,
   'analytics': analytics,
   'big-data': bigData,
+  ...COGNITION_AUTOMATION_SECTIONS,
 };
