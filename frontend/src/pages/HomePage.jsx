@@ -52,11 +52,11 @@ const heroSlides = [
   {
     id: 1,
     tag: "ENTERPRISE TRANSFORMATION",
-    title: "Your Business Is Ready To Scale.",
-    titleGradient: "Your Systems May Not Be.",
-    description: "Kangqore engineers advanced enterprise AI, scalable cloud architecture, and intelligent automation pipelines. We help ambitious companies eliminate operational drag, modernize infrastructure, and convert technology into measurable business growth.",
-    microProof: "15 Depts • 61+ Services • Pure Engineering Execution",
-    cta: "Get a Business Technology Diagnostic",
+    title: "Engineer the Systems That",
+    titleGradient: "Scale Your Ambition.",
+    description: "Kangqore builds intelligent digital infrastructure that helps businesses modernize operations, automate workflows, secure systems, and accelerate growth.",
+    microProof: "Trusted by 150+ Enterprises • 15 Depts • 61+ Services",
+    cta: "Start Your Transformation",
     link: "/contact",
     video: "https://cdn.pixabay.com/video/2023/10/20/185859-876772714_large.mp4" 
   },
@@ -363,39 +363,11 @@ const HUDText = ({ text, delay = 0, isCyan = false }) => {
 
 const HeroCarousel = () => {
   const { t } = useTranslation();
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [toggleEffect, setToggleEffect] = useState(false);
-
-  const togglePlayPause = () => {
-    setIsPaused(prev => !prev);
-    setToggleEffect(true);
-    setTimeout(() => setToggleEffect(false), 800);
-  };
-
-  const handleBackgroundClick = (e) => {
-    if (e.target.closest('button') || e.target.closest('a')) return;
-    togglePlayPause();
-  };
-
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      if (!isAnimating) {
-        setIsAnimating(true);
-        setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-        setTimeout(() => setIsAnimating(false), 800);
-      }
-    }, 7000);
-    return () => clearInterval(timer);
-  }, [currentSlide, isAnimating, isPaused]);
-
-  const slide = heroSlides[currentSlide];
+  const slide = heroSlides[0];
 
   return (
     <>
-    <section className="relative overflow-hidden cursor-pointer" onClick={handleBackgroundClick}>
+    <section className="relative overflow-hidden">
       {/* Full-bleed video background */}
       <div className="absolute inset-0">
           <video
@@ -415,31 +387,18 @@ const HeroCarousel = () => {
         </div>
 
         {/* ── Hero Content ── */}
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 sm:pt-40 lg:pt-[200px] pb-16 sm:pb-20 lg:pb-24">
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-40 sm:pt-48 lg:pt-[240px] pb-16 sm:pb-20 lg:pb-24">
           <div className="transform translate-y-[0.8cm]">
             {/* Glass cards — absolute positioned right side, lg+ only */}
-          <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-12 w-[245px] xl:w-[265px] z-10 -mt-[3.2cm] translate-x-[1.1cm]">
+          <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-16 xl:right-24 w-[245px] xl:w-[265px] z-10 -mt-[4.9cm] translate-x-[2.45cm] scale-[1.02] origin-top-right">
             <HeroGlassCards />
           </div>
 
-          <div className="max-w-[850px] space-y-6">
+          <div className="max-w-[850px] space-y-5">
             
-            {slide.microProof && (
-              <div key={`micro-${currentSlide}`} className="inline-flex items-center gap-3 px-4 py-2 rounded-sm bg-[#0a192f]/60 border-l-2 border-cyan-400 border-r border-t border-b border-white/10 backdrop-blur-md mb-4 shadow-[0_0_15px_rgba(34,211,238,0.1)] relative overflow-hidden">
-                <div className="absolute inset-0 w-full h-[1px] bg-cyan-400/20 blur-[1px] animate-[scan_2s_ease-in-out_infinite]" />
-                <span className="text-[10px] sm:text-[11px] font-bold text-cyan-400 uppercase tracking-widest font-mono">
-                  <HUDText text={slide.tag} isCyan={true} />
-                </span>
-                <span className="w-1 h-1 rounded-sm bg-cyan-400/50 animate-[pulse_0.5s_infinite]"></span>
-                <span className="text-[10px] sm:text-[11px] text-cyan-100/70 font-mono uppercase tracking-wider line-clamp-1">
-                  <HUDText text={slide.microProof} delay={slide.tag.length * 30 + 100} />
-                </span>
-              </div>
-            )}
-
             <h1 
-              key={`title-${currentSlide}`}
-              className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold leading-[1.05] tracking-tight text-white animate-fade-in"
+              key="title-0"
+              className="text-[2.4rem] sm:text-[2.9rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.15] tracking-tight text-white animate-fade-in"
             >
               {slide.title}
               {slide.titleGradient && (
@@ -451,13 +410,13 @@ const HeroCarousel = () => {
             </h1>
             
             <p 
-              key={`desc-${currentSlide}`}
-              className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-3xl animate-fade-in font-medium line-clamp-3 py-6 sm:py-8"
+              key="desc-0"
+              className="text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-3xl animate-fade-in font-medium line-clamp-3 py-6 sm:py-8"
             >
               {slide.description}
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center gap-5 animate-fade-in">
+            <div className="flex flex-col sm:flex-row items-center gap-8 animate-fade-in">
               <Link
                 to={slide.link}
                 className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/70 backdrop-blur-xl text-gray-900 shadow-xl"
@@ -472,15 +431,15 @@ const HeroCarousel = () => {
                 <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-cyan-400/50 blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </Link>
 
-              <button 
-                onClick={() => document.getElementById('eqore-ai-concierge')?.scrollIntoView({ behavior: 'smooth' })}
+              <Link
+                to="/contact"
                 className="group inline-flex items-center gap-2 px-4 py-2 hover:opacity-80 transition-opacity duration-300"
               >
                 <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
-                  Ask eQORE AI<sup className="text-[9px] ml-0.5 opacity-70">™</sup>
+                  Schedule a briefing
                 </span>
                 <ArrowRight className="w-4 h-4 text-cyan-400 transform group-hover:translate-x-1 transition-transform duration-300" />
-              </button>
+              </Link>
             </div>
 
           <style>{`
@@ -492,10 +451,30 @@ const HeroCarousel = () => {
           `}</style>
         </div>
 
-        {/* Invisible spacer to replace removed carousel indicators and maintain layout height */}
+        {/* Invisible spacer */}
         <div className="h-[48px] mt-16 w-full pointer-events-none opacity-0" aria-hidden="true" />
       </div>
     </div>
+
+      {/* ── Hero Trust Logo Strip (Above the Fold) ── */}
+      <div className="relative z-20 w-full bg-black/40 backdrop-blur-xl border-t border-white/[0.08] py-5 sm:py-6">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <p className="text-[10px] sm:text-[11px] font-bold text-white/40 uppercase tracking-[0.25em] text-center mb-4">
+            Trusted by <span className="text-white/70">150+</span> leading enterprises
+          </p>
+          <div className="flex items-center justify-center gap-8 sm:gap-12 lg:gap-16 flex-wrap">
+            {trustLogos.slice(0, 7).map((logo) => (
+              <div key={logo.name} className="flex items-center justify-center opacity-40 hover:opacity-80 transition-opacity duration-300">
+                <img
+                  src={logo.src}
+                  alt={logo.name}
+                  className="h-6 sm:h-8 w-auto object-contain filter brightness-0 invert"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* ── Hero Bottom Strip: Events | Featured | Highlights ── */}
       <HeroBottomStrip />
@@ -780,6 +759,7 @@ const TrustIntelligenceLayer = () => {
 // TRUST LOGO STRIP (Social Proof)
 // ============================================================================
 const trustLogos = [
+  { name: "TATA Steel", src: "/assets/logos/tata-steel.png", scale: "h-10 sm:h-12" },
   { name: "Axis Bank", src: "/assets/logos/axis-bank.svg", scale: "h-8 sm:h-10" },
   { name: "Bank Of Baroda", src: "/assets/logos/bank-of-baroda.svg", scale: "h-10 sm:h-12" },
   { name: "Bank of India", src: "/assets/logos/bank-of-india.svg", scale: "h-10 sm:h-12" },
@@ -789,7 +769,6 @@ const trustLogos = [
   { name: "Government Of Jharkhand", src: "/assets/logos/jharkhand.svg", scale: "h-12 sm:h-16" },
   { name: "Geeks IT Services", src: "/assets/logos/geeks-it-grey.png", scale: "h-10 sm:h-12", preGreyed: true },
   { name: "NIT Jamshedpur", src: "/assets/logos/nit-jamshedpur.png", scale: "h-12 sm:h-14" },
-  { name: "TATA Steel", src: "/assets/logos/tata-steel.png", scale: "h-10 sm:h-12" },
 ];
 
 const TrustLogoStrip = () => {
