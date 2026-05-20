@@ -28,6 +28,8 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
+  const [isLightBackground, setIsLightBackground] = useState(false);
+
   useEffect(() => {
     // Smart Yielding Logic: Dim utilities when hovering over interactive content
     const handleMouseEnter = () => setIsYielding(true);
@@ -45,6 +47,54 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
     };
+  }, []);
+
+  // Adaptive logic for bottom right floating button
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const sections = document.querySelectorAll('section, main > div, footer, .hero-section');
+      const lightElements = [];
+      
+      sections.forEach(sec => {
+        const style = window.getComputedStyle(sec);
+        const bgColor = style.backgroundColor;
+        if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+          const rgb = bgColor.match(/\d+/g);
+          if (rgb && rgb.length >= 3) {
+            const r = parseInt(rgb[0]);
+            const g = parseInt(rgb[1]);
+            const b = parseInt(rgb[2]);
+            const a = rgb[3] !== undefined ? parseFloat(rgb[3]) : 1;
+            if (a > 0.1) {
+              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+              if (luminance > 0.6) { // Threshold for light backgrounds
+                lightElements.push(sec);
+              }
+            }
+          }
+        }
+      });
+
+      const intersectingSet = new Set();
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            intersectingSet.add(entry.target);
+          } else {
+            intersectingSet.delete(entry.target);
+          }
+        });
+        setIsLightBackground(intersectingSet.size > 0);
+      }, {
+        rootMargin: '-90% 0px 0px 0px', // Checks intersection at the bottom of the viewport
+        threshold: 0
+      });
+
+      lightElements.forEach(el => observer.observe(el));
+      return () => observer.disconnect();
+    }, 500);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
@@ -177,7 +227,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
       {/* Unified Omni-Action Trigger - Moved to RIGHT */}
       <div 
-        className={`fixed bottom-8 right-8 z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
+        className={`fixed bottom-8 right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
       >
         {/* Standalone Scroll to Top - Rendered first to be at the very bottom in flex-col-reverse */}
         {isVisible && (
@@ -192,8 +242,10 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
         <button
           onClick={() => setIsOmniOpen(!isOmniOpen)}
-          className={`p-3 rounded-full shadow-2xl transition-all duration-500 transform hover:scale-110 active:scale-95 flex items-center justify-center ${
-            isOmniOpen ? 'bg-gray-900 text-white rotate-45' : 'bg-brand-gradient text-white'
+          className={`w-12 h-12 rounded-full shadow-2xl transition-all duration-500 transform hover:scale-110 active:scale-95 flex items-center justify-center ${
+            isOmniOpen 
+              ? (isLightBackground ? 'bg-brand-blue text-white rotate-45' : 'bg-white text-gray-900 rotate-45')
+              : (isLightBackground ? 'bg-gray-900 text-white' : 'bg-brand-gradient text-white')
           }`}
           aria-label="Toggle Actions"
         >

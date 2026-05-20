@@ -252,21 +252,21 @@ const Header = ({ onMenuClick }) => {
           }`}
         >
           <div className="flex justify-end items-center h-full px-8 text-[13px] font-medium tracking-wide">
-            <div className="flex items-center space-x-5 text-white drop-shadow-md">
-                <Link to="/careers" className="hover:text-white/80 transition-colors">Careers</Link>
-                <Link to="/news" className="hover:text-white/80 transition-colors">News</Link>
-                <Link to="/communities" className="hover:text-white/80 transition-colors">Communities</Link>
-                <Link to="/investors" className="hover:text-white/80 transition-colors">Investors</Link>
+            <div className={`flex items-center space-x-5 drop-shadow-md transition-colors duration-500 ${isLightBackground ? 'text-gray-900' : 'text-white'}`}>
+                <Link to="/careers" className={`transition-colors ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Careers</Link>
+                <Link to="/news" className={`transition-colors ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>News</Link>
+                <Link to="/communities" className={`transition-colors ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Communities</Link>
+                <Link to="/investors" className={`transition-colors ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Investors</Link>
 
                 <LanguageSwitcher />
                 
                 {/* Dark Mode Toggle */}
                 <button
                   onClick={toggleTheme}
-                  className="p-1.5 rounded-full hover:bg-white/20 transition-colors"
+                  className={`p-1.5 rounded-full transition-colors ${isLightBackground ? 'hover:bg-black/10' : 'hover:bg-white/20'}`}
                   aria-label="Toggle Dark Mode"
                 >
-                  {theme === 'dark' ? <Sun className="w-4 h-4 text-white" /> : <Moon className="w-4 h-4 text-white" />}
+                  {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                 </button>
                 
                 {/* Login/Logout in top bar */}
@@ -281,7 +281,7 @@ const Header = ({ onMenuClick }) => {
                         user.role === 'JOB_SEEKER' ? '/dashboard/careers' :
                         '/client-portal'
                       }
-                      className="flex items-center gap-1 hover:text-white/80 transition-colors font-medium"
+                      className={`flex items-center gap-1 transition-colors font-medium ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}
                     >
                       <div className="w-6 h-6 rounded-full bg-brand-gradient flex items-center justify-center text-white font-bold overflow-hidden">
                         {user.avatarUrl ? (
@@ -327,7 +327,7 @@ const Header = ({ onMenuClick }) => {
         </div>
 
         <div 
-          className={`max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto transition-all duration-500 ease-in-out ${
+          className={`max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto transition-all duration-500 ease-in-out mt-[0.3cm] ${
             showUtilityBar ? 'pt-2' : 'pt-6'
           }`}
         >
@@ -347,7 +347,7 @@ const Header = ({ onMenuClick }) => {
                   src="https://customer-assets.emergentagent.com/job_cog-site-clone/artifacts/focgf8oz_Logo%2BText.png" 
                   alt="Kangqore Logo" 
                   className={`h-20 lg:h-28 -ml-2 transition-all duration-300 group-hover:scale-105 ${
-                    isLightBackground ? 'brightness-0' : 'brightness-0 invert'
+                    (isLightBackground && !isInHero) ? 'brightness-0' : 'brightness-0 invert'
                   }`}
                 />
               </Link>

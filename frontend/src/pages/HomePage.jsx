@@ -216,7 +216,7 @@ const HeroBottomStrip = () => {
   return (
     <div 
       ref={sectionRef}
-      className="relative z-20 w-full bg-black/40 backdrop-blur-xl border-t border-white/[0.08] shadow-2xl overflow-hidden"
+      className="relative z-20 w-full bg-black/40 backdrop-blur-xl overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-0 items-center">
         
@@ -366,10 +366,18 @@ const HeroCarousel = () => {
   const slide = heroSlides[0];
 
   return (
-    <>
-    <section className="relative overflow-hidden">
-      {/* Full-bleed video background */}
-      <div className="absolute inset-0">
+    <div className="w-full bg-white dark:bg-black px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-8 relative transition-colors duration-500">
+      {/* ── Corner Accents: Inverse rounded geometry at the sharp 90° page corners ── */}
+      <div className="absolute top-0 left-0 w-[72px] h-[72px] sm:w-[90px] sm:h-[90px] lg:w-[110px] lg:h-[110px] bg-[#070d1b] overflow-hidden z-0">
+        <div className="absolute bottom-0 right-0 w-full h-full bg-white dark:bg-black rounded-tl-full transition-colors duration-500" />
+      </div>
+      <div className="absolute top-0 right-0 w-[72px] h-[72px] sm:w-[90px] sm:h-[90px] lg:w-[110px] lg:h-[110px] bg-[#070d1b] overflow-hidden z-0">
+        <div className="absolute bottom-0 left-0 w-full h-full bg-white dark:bg-black rounded-tr-full transition-colors duration-500" />
+      </div>
+
+    <section className="relative w-full overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] border border-white/5 ring-1 ring-white/10 z-[1]">
+      {/* Canvas video background */}
+      <div className="absolute inset-0 bg-[#0a1228]">
           <video
             autoPlay
             loop
@@ -387,7 +395,7 @@ const HeroCarousel = () => {
         </div>
 
         {/* ── Hero Content ── */}
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-40 sm:pt-48 lg:pt-[240px] pb-16 sm:pb-20 lg:pb-24">
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 sm:pt-40 lg:pt-[160px] pb-16 sm:pb-20 lg:pb-24">
           <div className="transform translate-y-[0.8cm]">
             {/* Glass cards — absolute positioned right side, lg+ only */}
           <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-16 xl:right-24 w-[245px] xl:w-[265px] z-10 -mt-[4.9cm] translate-x-[2.45cm] scale-[1.02] origin-top-right">
@@ -451,29 +459,49 @@ const HeroCarousel = () => {
           `}</style>
         </div>
 
-        {/* Invisible spacer */}
-        <div className="h-[48px] mt-16 w-full pointer-events-none opacity-0" aria-hidden="true" />
+        {/* Invisible spacer to maintain layout */}
+        <div className="h-[48px] mt-6 w-full pointer-events-none opacity-0" aria-hidden="true" />
       </div>
     </div>
 
       {/* ── Hero Trust Logo Strip (Above the Fold) ── */}
-      <div className="relative z-20 w-full bg-black/40 backdrop-blur-xl border-t border-white/[0.08] py-5 sm:py-6">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <p className="text-[10px] sm:text-[11px] font-bold text-white/40 uppercase tracking-[0.25em] text-center mb-4">
-            Trusted by <span className="text-white/70">150+</span> leading enterprises
+      <div className="relative z-20 w-full bg-black/40 backdrop-blur-xl py-[calc(1.25rem+0.5cm)] sm:py-[calc(1.5rem+0.5cm)] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-10">
+          <p className="text-[10px] sm:text-[11px] font-bold text-white/40 uppercase tracking-[0.25em] text-center max-w-4xl mx-auto leading-relaxed">
+            Our speed in learning and executing is unmatched, earning the trust of hundreds of organizations worldwide.
           </p>
-          <div className="flex items-center justify-center gap-8 sm:gap-12 lg:gap-16 flex-wrap">
-            {trustLogos.slice(0, 7).map((logo) => (
-              <div key={logo.name} className="flex items-center justify-center opacity-40 hover:opacity-80 transition-opacity duration-300">
-                <img
-                  src={logo.src}
-                  alt={logo.name}
-                  className="h-6 sm:h-8 w-auto object-contain filter brightness-0 invert"
-                />
+        </div>
+
+        {/* Full-width Right-to-Left Infinite Marquee for Hero Trust Logos */}
+        <div className="relative w-full overflow-hidden">
+          {/* Edge fade masks */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-r from-black/60 to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-l from-black/60 to-transparent pointer-events-none" />
+
+          <div className="flex w-max animate-[heroTrustMarquee_35s_linear_infinite] items-center gap-12 sm:gap-16 lg:gap-20 hover:[animation-play-state:paused] py-2">
+            {[...trustLogos, ...trustLogos, ...trustLogos, ...trustLogos].map((logo, index) => (
+              <div key={`${logo.name}-${index}`} className="flex flex-col items-center justify-center group shrink-0 w-28 sm:w-32">
+                <div className="h-10 sm:h-12 w-full flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity duration-300">
+                  <img
+                    src={logo.src}
+                    alt={logo.name}
+                    className="max-h-8 sm:max-h-10 w-auto object-contain filter brightness-0 invert transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <span className="mt-3 text-[9px] sm:text-[10px] font-bold text-white/30 group-hover:text-white/75 transition-colors duration-300 uppercase tracking-widest text-center">
+                  {logo.name}
+                </span>
               </div>
             ))}
           </div>
         </div>
+
+        <style>{`
+          @keyframes heroTrustMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-25%); }
+          }
+        `}</style>
       </div>
 
       {/* ── Hero Bottom Strip: Events | Featured | Highlights ── */}
@@ -504,7 +532,7 @@ const HeroCarousel = () => {
         }
       `}</style>
     </section>
-    </>
+    </div>
   );
 };
 
