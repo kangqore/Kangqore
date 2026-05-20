@@ -2073,3 +2073,706 @@ const productDigitalEngineeringCoESection = (
     </div>
   </section>
 );
+
+// Related Disciplines schematic (postFAQSections)
+const productDigitalEngineeringRelatedSection = (
+  <section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white overflow-hidden relative">
+    <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
+         style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '100px 100px' }}></div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
+        <div className="lg:w-1/2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-brand-blue rounded-full text-xs font-bold mb-6 tracking-widest uppercase">
+            Synergistic Ecosystem
+          </div>
+          <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 tracking-tight font-display leading-[0.95]">
+            Related <br />
+            <span className="text-transparent bg-clip-text bg-brand-gradient italic">Disciplines.</span>
+          </h2>
+          <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+          <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 leading-relaxed max-w-xl">
+            Digital product engineering is the vanguard of transformation. Amplify its impact by integrating our data, cloud, and core automation frameworks.
+          </p>
+          <div className="space-y-4">
+            {[
+              { name: 'DevOps & CloudOps', link: '/services/cloud-computing', icon: <Workflow className="w-5 h-5" />, desc: 'Ensure continuous integration, collaboration, and unbreakable delivery pipelines.' },
+              { name: 'Big Data Strategy', link: '/services/big-data', icon: <Layers className="w-5 h-5" />, desc: 'Unlock meaningful insights and drive predictive product decision-making.' },
+              { name: 'Embedded Design', link: '/services/embedded-design-systems', icon: <Cpu className="w-5 h-5" />, desc: 'Precision engineering for specialized embedded microcontrollers and IoT systems.' },
+              { name: 'Agentic AI', link: '/services/genai-business-services', icon: <Bot className="w-5 h-5" />, desc: 'Power next-generation autonomous workflows within your products.' },
+            ].map((offering, idx) => (
+              <Link key={idx} to={offering.link} className="group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 border border-gray-100 rounded-3xl hover:border-blue-300 hover:shadow-lg transition-all duration-500">
+                <div className="w-14 h-14 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-gradient group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
+                  {offering.icon}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-xl text-gray-900 dark:text-white tracking-tight group-hover:text-brand-blue transition-colors">{offering.name}</span>
+                    <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 group-hover:text-brand-blue transition-all group-hover:translate-x-1"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                  </div>
+                  <p className="text-gray-500 leading-relaxed">{offering.desc}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="lg:w-5/12 relative">
+          <div className="relative aspect-square w-full max-w-[550px] mx-auto">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
+            <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#DIGI_CORE</span></div>
+              <div className="flex justify-between gap-4"><span>MODE:</span> <span>SCALING</span></div>
+              <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">LIVE</span></div>
+            </div>
+            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+              <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">SysLog</div>
+              <div>PLATFORM_SYNC...</div>
+              <div>LATENCY: &lt;1ms</div>
+            </div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-gray-100 flex items-center justify-center relative z-20 group">
+              <div className="absolute inset-4 bg-brand-gradient rounded-[32px] opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="absolute inset-8 border border-brand-blue/30 rounded-3xl border-dashed animate-spin-slow"></div>
+              <div className="relative">
+                <Target className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
+              </div>
+              <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:-rotate-6 transition-transform">
+                <Layers className="w-7 h-7" />
+              </div>
+            </div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-28 h-28 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center border border-blue-50 relative z-10 hover:-translate-y-2 transition-all duration-300">
+                  <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
+                  <Rocket className="w-14 h-14 text-blue-600 drop-shadow-sm" />
+                </div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">PROTOTYPE</span>
+              </div>
+            </div>
+            <div className="absolute bottom-20 left-0 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
+                  <BrainCircuit className="w-12 h-12 text-white" />
+                </div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">COGNITIVE</span>
+              </div>
+            </div>
+            <div className="absolute bottom-20 right-0 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-32 h-32 bg-slate-900 rounded-[40px] shadow-[0_30px_60px_rgba(0,0,0,0.3)] flex items-center justify-center relative -translate-x-6 hover:translate-x-0 transition-transform duration-300 overflow-hidden">
+                  <div className="absolute inset-0 bg-brand-gradient opacity-10 group-hover:opacity-20 transition-opacity"></div>
+                  <div className="relative"><RadioTower className="w-16 h-16 text-emerald-400" /></div>
+                </div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">TELEMETRY</span>
+              </div>
+            </div>
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
+              <defs>
+                <linearGradient id="pde-flow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#2564ea" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#4ab6d4" stopOpacity="0.4" />
+                </linearGradient>
+              </defs>
+              <path d="M250,250 L250,140" stroke="url(#pde-flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
+              <path d="M250,250 L140,380" stroke="url(#pde-flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
+              <path d="M250,250 L360,380" stroke="url(#pde-flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
+              <circle r="4" fill="#2564ea"><animateMotion path="M250,250 L250,140" dur="2s" repeatCount="indefinite" /></circle>
+              <circle r="4" fill="#22d3ee"><animateMotion path="M250,250 L140,380" dur="2.5s" repeatCount="indefinite" /></circle>
+              <circle r="4" fill="#10b981"><animateMotion path="M250,250 L360,380" dur="3s" repeatCount="indefinite" /></circle>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+// ─── 3. product-digital-engineering ───────────────────────────────────────────
+const productDigitalEngineering = {
+  titleLine1: 'Product &',
+  titleHighlight: 'Digital Engineering.',
+  videoBackground: '/videos/network-4916894.mp4',
+  description: 'Engineering excellence for next-generation products and platforms.',
+  fullDescription: (
+    <div className="space-y-4">
+      <h2 className="text-2xl font-semibold tracking-tight">At Kangqore, we combine deep engineering discipline with a high-velocity product culture.</h2>
+      <p className="font-light tracking-tight leading-snug opacity-80">
+        We help you build products, platforms, and digital experiences that customers adopt, trust, and love. Our Product & Digital Engineering services deliver enterprise-grade execution maturity to turn innovation into production-grade systems at scale.
+      </p>
+    </div>
+  ),
+  image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=80',
+  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  hideGenericMidPageCta: true,
+  hideGenericFaq: true,
+
+  stats: [
+    { value: '40% Faster', label: 'Platform Architecture', color: 'text-blue-500' },
+    { value: 'Zero-Defect', label: 'Quality Engineering', color: 'text-brand-blue' },
+    { value: '100% Scalable', label: 'Smart Devices', color: 'text-indigo-500' },
+    { value: '10x Agility', label: 'MVP Innovation', color: 'text-purple-500' },
+  ],
+
+  highFidelity: {
+    narrative: {
+      badge: 'DIGITAL ENGINEERING :: ENTERPRISE GRADE',
+      titleLine1: 'Architect',
+      titleHighlight: 'Digital Ecosystems.',
+      titleLine2: 'At High Velocity.',
+      description: 'The digital landscape is evolving faster than ever—creating endless opportunities to innovate and differentiate. But sustained advantage doesn’t come from ideas alone. It comes from engineering rigor, modern delivery, and the ability to turn innovation into production-grade systems at scale. Kangqore brings proven expertise to help enterprises and digital-native businesses create future-ready customer experiences, modernize platforms, and unlock new business value.',
+      bottleneckLabel: 'The Market Reality',
+      bottleneckText: 'Monolithic architectures, manual testing bottlenecks, disconnected devices, and slow innovation cycles stalling product momentum.',
+      requirementLabel: 'The Enterprise Requirement',
+      requirementText: 'A unified digital engineering core integrating cloud-native platforms, AI-driven quality assurance, connected IoT endpoints, and rapid MVP acceleration.',
+      image: 'https://images.pexels.com/photos/8438980/pexels-photo-8438980.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      statusLabel: 'Engineering Velocity',
+      statusValue: 'Maximized',
+    },
+    philosophy: {
+      icon: <Cpu className="w-7 h-7 text-brand-blue" />,
+      title: 'The Kangqore',
+      titleHighlight: 'Digital Foundry™.',
+      description: 'Our proprietary Digital Foundry™ organizes enterprise product engineering into five integrated pillars — delivering compounding business value from conceptualization to global scale.',
+      pills: ['Platform Engineering', 'Quality Engineering', 'Device Engineering', 'Experience Design', 'MVP Acceleration'],
+    },
+    matrix: {
+      engineId: 'Engine :: KG_DIGI_V2',
+      title: '4-Layer Engineering Architecture',
+      subtext: 'Enterprise digital challenges deconstructed into scalable, governed, and automated delivery layers.',
+      layers: [
+        { title: 'Platform', id: 'KG_PLAT', icon: <Layers />, desc: 'Cloud-native architecture, microservices transition, and scalable digital ecosystems.' },
+        { title: 'Quality', id: 'KG_QUAL', icon: <ShieldCheck />, desc: 'AI-driven test automation, DevSecOps integration, and continuous reliability.' },
+        { title: 'Device', id: 'KG_DEV', icon: <Network />, desc: 'IoT integration, embedded software, and intelligent edge computing.' },
+        { title: 'Experience', id: 'KG_EXP', icon: <BrainCircuit />, desc: 'Cognitive, human-centered design bridging technical feasibility with user adoption.' },
+      ],
+    },
+    schematic: {
+      titleLine1: 'Accelerate',
+      titleHighlight: 'Innovation.',
+      description: 'Our Digital Engineering ecosystem ensures every code commit delivers measurable ROI — reducing time-to-market while ensuring absolute reliability.',
+      stats: [
+        { label: 'Time-to-Market', val: 'ACCELERATED' },
+        { label: 'Platform Scalability', val: 'INFINITE' },
+        { label: 'Quality Assurance', val: 'AUTOMATED' },
+      ],
+    },
+  },
+
+  capabilities: [
+    {
+      title: 'Next-Gen Platform Engineering',
+      description: 'Build high-performing modern solutions bridging cloud-native architectures and AI-driven automation. We transform legacy monoliths into agile microservices, enabling true digital scale.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/software-engineering.png',
+      items: ['Cloud-native platform development', 'Monolith to microservices migration', 'Backend, API, and UI optimization', 'Azure & AWS migration accelerators', 'High-availability ecosystem design'],
+    },
+    {
+      title: 'AI-Driven Quality Engineering (QE)',
+      description: 'Transform QA from a cost center to a business enabler. Our automation-first, risk-based QE approach leverages AI and ML to accelerate testing without compromising absolute reliability.',
+      image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/ai-cognitive.png',
+      items: ['Intelligent test automation frameworks', 'GenAI-powered test case generation', 'Cloud & Packaged application testing', 'Performance, security & compliance testing', 'Quality Center of Excellence (QCoE) setup'],
+    },
+    {
+      title: 'Smart Device & IoT Engineering',
+      description: 'Develop cutting-edge hardware solutions and modernize existing devices. We connect physical assets to the digital thread, enabling intelligent automation and real-time edge computing.',
+      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/software-engineering.png',
+      items: ['Embedded software & firmware development', 'End-to-end device prototyping & design', 'Digital twin & edge computing solutions', 'Regulatory certification & compliance', 'Hardware-to-cloud telemetry pipelines'],
+    },
+    {
+      title: 'Cognitive Experience Design',
+      description: 'Grounded in Human-Centered Design, our 5DE approach unites people, businesses, and technologies. We craft digital experiences that drive user adoption, retention, and trust.',
+      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/ai-cognitive.png',
+      items: ['Empathy-driven UX/UI strategy', 'Frictionless user journey mapping', 'Interactive prototyping & validation', 'Technical feasibility alignment', 'Cross-platform experience consistency'],
+    },
+    {
+      title: 'MVP & Innovation Acceleration',
+      description: 'Bring innovations to life before your competitors do. Our Digital Foundry offering is designed for startups and enterprise innovation labs needing rapid, scalable product conceptualization.',
+      image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: ['Rapid concept-to-prototype cycles', 'Minimum Viable Product (MVP) engineering', 'Product architecture consulting', 'Lean innovation team augmentation', 'Fast-fail learning iterations'],
+    },
+  ],
+
+  technologies: [
+    { category: 'Next-Gen Platform Engineering', items: ['AWS / Azure', 'Docker / Kubernetes', 'Spring Boot', 'Node.js', 'Go'] },
+    { category: 'AI-Driven Quality Engineering', items: ['Selenium / Cypress', 'Appium', 'JMeter', 'SonarQube', 'AI Test Gen (GenAI)'] },
+    { category: 'Smart Device & IoT Engineering', items: ['C / C++', 'Python', 'MQTT / AMQP', 'FreeRTOS', 'Azure IoT Edge'] },
+    { category: 'Cognitive Experience Design', items: ['Figma', 'Framer', 'React / Next.js', 'Three.js / WebGL', 'Tailwind CSS'] },
+    { category: 'MVP & Innovation Acceleration', items: ['Vercel', 'Firebase / Supabase', 'GraphQL', 'Tailwind CSS', 'Vercel AI SDK'] },
+  ],
+
+  solutions: [
+    { title: 'Next-Gen Platform Engineering', description: 'Scalable, cloud-native architectures that transition your monolithic systems into high-performing, agile digital ecosystems.', icon: <Layers className="w-8 h-8" /> },
+    { title: 'AI-Driven Quality Engineering', description: 'Intelligent test frameworks powered by AI to ensure software reliability, accelerate delivery, and transform QA into a strategic asset.', icon: <ShieldCheck className="w-8 h-8" /> },
+    { title: 'Smart Device Engineering', description: 'From embedded systems to digital twins, we modernize hardware to interact seamlessly within your connected enterprise.', icon: <Cpu className="w-8 h-8" /> },
+    { title: 'Cognitive Experience Design', description: 'Human-centered UI/UX that eliminates friction, builds empathy, and guarantees technical feasibility at scale.', icon: <BrainCircuit className="w-8 h-8" /> },
+    { title: 'Innovation Acceleration', description: 'Rapid MVP development and architecture consulting via our Digital Foundry, getting your best ideas to market faster.', icon: <Rocket className="w-8 h-8" /> },
+  ],
+
+  preWhyKangqoreSections: productDigitalEngineeringCoESection,
+
+  whyKangqoreIntro: "Kangqore's Product & Digital Engineering practice isn't just about modernizing code — it's about accelerating market dominance. We bring enterprise-grade scale with startup-like velocity.",
+  whyKangqore: [
+    { title: 'Pimcore', description: 'Kangqore’s expertise in the Pimcore solutions empowers enterprises to drive innovation and accelerate growth in today’s dynamic digital landscape.' },
+    { title: 'Managed Content as a Service', description: 'Enabling real time, relevant digital asset delivery and discovery on the device, and channel of choice is imperative for creating differentiation in the digital business world. Intelligent solutions that can streamline, optimize, and manage digital experiences through content are the need of the hour.' },
+    { title: 'Kangqore IoT Fabric', description: 'With the exponential increase in the number of connected IoT devices, enterprises are prioritizing data monetization. Proprietary IoT platforms are now non-negotiable. Kangqore IoT Fabric provides a secure, enterprise-grade infrastructure to guarantee the smooth, scalable implementation of your connected device ecosystem.' },
+    { title: 'Anomaly Detection', description: 'The digital world has changed dramatically in the last few years. Global data production is expected to double every two years through 2026. While every business races to harness the power of this digital universe, the sheer velocity and variety of information easily overwhelms legacy systems. Our anomaly detection delivers precise insights through the noise.' },
+  ],
+
+  industryTitle: 'Industries We Empower',
+  industries: [
+    { name: 'Healthcare & Life Sciences' },
+    { name: 'EdTech & Digital Learning' },
+    { name: 'Industrial & Manufacturing' },
+    { name: 'Banking & Financial Services' },
+    { name: 'Retail, CPG & Logistics' },
+    { name: 'Media & Entertainment' },
+  ],
+
+  customFAQs: [
+    { question: 'What is the Digital Foundry offering?', answer: 'The Digital Foundry is our specialized innovation engine designed to help startups, digital natives, and enterprise teams accelerate their concept-to-prototype cycle. We provide MVP engineering, architecture consulting, and rapid market validation.' },
+    { question: 'How does your Quality Engineering differ from traditional testing?', answer: 'Traditional testing is reactive and manual. Our Quality Engineering (QE) is an automation-first, risk-based approach leveraging AI/ML and GenAI. We build intelligent test frameworks that integrate directly into continuous delivery pipelines, transforming QA into a strategic enabler.' },
+    { question: 'Do you help with legacy system modernization?', answer: 'Yes. Our Platform Engineering practice specializes in transitioning monolithic, legacy architectures into modular, cloud-native microservices on AWS and Azure, ensuring high performance and unconstrained scalability.' },
+    { question: 'What is involved in Device Engineering?', answer: 'Our Device Engineering practice covers the intersection of physical hardware and digital platforms. This includes embedded software design, FPGA/VLSI design, and the creation of intelligent IoT, digital twin, and edge computing networks.' },
+  ],
+
+  postFAQSections: productDigitalEngineeringRelatedSection,
+};
+
+// ─── 4. devops-as-a-service ────────────────────────────────────────────────────
+const devopsAsAServiceRelatedSection = (
+  <section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white overflow-hidden relative">
+    <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
+         style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '100px 100px' }}></div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
+        <div className="lg:w-1/2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-brand-blue rounded-full text-xs font-bold mb-6 tracking-widest uppercase">
+            Operations Ecosystem
+          </div>
+          <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 tracking-tight font-display leading-[0.95]">
+            Related Engineering <br />
+            <span className="text-transparent bg-clip-text bg-brand-gradient italic">Solutions.</span>
+          </h2>
+          <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+          <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 leading-relaxed max-w-xl">
+            Elevate your DevOps maturity by integrating resilient infrastructure with our broader product engineering and cloud mastery portfolio.
+          </p>
+          <div className="space-y-4">
+            {[
+              // NOTE: legacy "/services/cloud-engineering" dept-index -> canonical service cloud-computing
+              { name: 'Cloud & Infrastructure Services', link: '/services/cloud-computing', icon: <Layers className="w-5 h-5" />, desc: 'Build the foundational infrastructure hosting your pipelines.' },
+              { name: 'Digital Process Automation', link: '/services/digital-process-automation', icon: <Workflow className="w-5 h-5" />, desc: 'Scale automation outside the engineering department.' },
+              { name: 'Quality Engineering', link: '/services/quality-engineering-assurance', icon: <ShieldCheck className="w-5 h-5" />, desc: 'Automate test paradigms directly into your deployment cycle.' },
+              // NOTE: legacy "saas-product-development" not canonical -> software-development
+              { name: 'SaaS Product Development', link: '/services/software-development', icon: <Target className="w-5 h-5" />, desc: 'Architect multi-tenant products built to leverage DevOps efficiency.' },
+            ].map((offering, idx) => (
+              <Link key={idx} to={offering.link} className="group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 border border-gray-100 rounded-3xl hover:border-blue-300 hover:shadow-lg transition-all duration-500">
+                <div className="w-14 h-14 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-gradient group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
+                  {offering.icon}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-xl text-gray-900 dark:text-white tracking-tight group-hover:text-brand-blue transition-colors">{offering.name}</span>
+                    <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 group-hover:text-brand-blue transition-all group-hover:translate-x-1"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                  </div>
+                  <p className="text-gray-500 leading-relaxed">{offering.desc}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-12 flex items-center gap-6">
+            <Link to="/services" className="inline-flex items-center gap-2 px-10 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-brand-blue transition-all group shadow-xl">
+              Explore Services
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </Link>
+            <div className="hidden sm:block text-sm text-gray-400 font-mono italic">// ARCHITECTING_RESILIENCE...</div>
+          </div>
+        </div>
+        <div className="lg:w-5/12 relative">
+          <div className="relative aspect-square w-full max-w-[550px] mx-auto">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
+            <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-gray-100 flex items-center justify-center relative z-20 group">
+              <div className="absolute inset-4 bg-brand-gradient rounded-[32px] opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="absolute inset-8 border border-brand-blue/30 rounded-3xl border-dashed animate-spin-slow"></div>
+              <div className="relative">
+                <Activity className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
+              </div>
+            </div>
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
+              <defs>
+                <linearGradient id="devo-flow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#2564ea" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#4ab6d4" stopOpacity="0.4" />
+                </linearGradient>
+              </defs>
+              <path d="M250,250 L250,140" stroke="url(#devo-flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
+              <path d="M250,250 L140,380" stroke="url(#devo-flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
+              <path d="M250,250 L360,380" stroke="url(#devo-flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
+              <circle r="4" fill="#2564ea"><animateMotion path="M250,250 L250,140" dur="2s" repeatCount="indefinite" /></circle>
+              <circle r="4" fill="#22d3ee"><animateMotion path="M250,250 L140,380" dur="2.5s" repeatCount="indefinite" /></circle>
+              <circle r="4" fill="#10b981"><animateMotion path="M250,250 L360,380" dur="3s" repeatCount="indefinite" /></circle>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const devopsAsAService = {
+  titleLine1: 'Absolute',
+  titleHighlight: 'Resilience.',
+  videoBackground: '/videos/network-loop.mp4',
+  description: 'Accelerate deployment cycles. Engineer self-healing environments. Scale with unyielding certainty across any cloud architecture.',
+  fullDescription: (
+    <div className="space-y-4">
+      <h2 className="text-2xl font-semibold tracking-tight">Kangqore dominates operations engineering, eliminating delivery friction to guarantee absolute platform stability.</h2>
+      <p className="font-light tracking-tight leading-snug opacity-80">
+        We recognize that today's deployment operations demand more than just automation. We architect governed, immutable, and natively scalable infrastructures that radically accelerate your delivery velocity while definitively neutralizing operational risk.
+      </p>
+    </div>
+  ),
+  image: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=1200&q=80',
+  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  hideGenericMidPageCta: true,
+  hideGenericFaq: true,
+
+  stats: [
+    { value: 'Optimize', label: 'Delivery Pipelines', color: 'text-blue-500' },
+    { value: 'Eradicate', label: 'Deployment Friction', color: 'text-brand-blue' },
+    { value: 'Secure', label: 'Maximum Resilience', color: 'text-indigo-500' },
+    { value: 'Govern', label: 'Cloud Infrastructure', color: 'text-purple-500' },
+  ],
+
+  highFidelity: {
+    narrative: {
+      badge: 'Enterprise Excellence :: 2026',
+      titleLine1: 'Enterprise',
+      titleHighlight: 'DevOps as a Service.',
+      titleLine2: 'At Scale.',
+      description: 'We architect absolute deployment supremacy. Moving beyond incremental pipeline optimization, Kangqore embeds immutable governance, cognitive automation, and measurable business velocity into your enterprise DNA. We engineer the operational foundation required to dominate your market.',
+      bottleneckLabel: 'The Impediment',
+      bottleneckText: 'Manual friction, brittle legacy architectures, and systemic delivery bottlenecks paralyzing enterprise scaling velocity.',
+      requirementLabel: 'The Requirement',
+      requirementText: 'Zero-trust, completely autonomous, and natively scalable operations ecosystems engineered for unyielding resilience.',
+      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80',
+      statusLabel: 'Deployment Velocity',
+      statusValue: 'Maximized',
+    },
+    philosophy: {
+      icon: <Zap className="w-7 h-7 text-brand-blue" />,
+      title: 'DevOps',
+      titleHighlight: 'Outcome-First Design.',
+      description: "We mandate that every infrastructure transformation delivers exponential enterprise value. We don't just build pipelines; we forge autonomous, self-healing operational capabilities engineered for high-confidence, zero-downtime execution.",
+      pills: ['Zero-Trust Security', 'Immutable Infrastructure', 'Continuous Delivery', 'Advanced Observability'],
+    },
+    matrix: {
+      engineId: 'Engine :: DEVOPS-A_V3',
+      title: 'Enablement Matrix',
+      subtext: 'The ultimate DevOps lifecycle, deconstructed into autonomous, heavily governed, enterprise-grade execution layers.',
+      layers: [
+        { title: 'Assess', id: 'DEVO_ASSESS', icon: <Search />, desc: 'Discovery, architecture assessment, and strategic DevOps roadmap alignment.' },
+        { title: 'Design', id: 'DEVO_DESIGN', icon: <Layers />, desc: 'Zero-trust infrastructure design and intelligent solution planning.' },
+        { title: 'Deliver', id: 'DEVO_DEL', icon: <Activity />, desc: 'Structured implementation of GitOps workflows and CI/CD pipelines.' },
+        { title: 'Govern', id: 'DEVO_GOV', icon: <ShieldCheck />, desc: 'State visualization, continuous monitoring, and infrastructure cost optimization.' },
+      ],
+    },
+    schematic: {
+      titleLine1: 'Guarantee',
+      titleHighlight: 'Stability.',
+      description: 'Your technical infrastructure must drive market dominance. We engineer the delivery frameworks that transform deployment metrics from unpredictable variables into guaranteed, absolute outcomes.',
+      stats: [
+        { label: 'Reliability', val: 'UNCOMPROMISING' },
+        { label: 'Speed', val: 'ACCELERATED' },
+        { label: 'Security', val: 'EMBEDDED' },
+      ],
+    },
+  },
+
+  capabilities: [
+    { title: 'DevOps Advisory', description: 'Architect an enterprise-grade DevOps transformation roadmap. Our elite advisory team consists of highly-skilled experts who deliver irrefutable proposals to improve and elevate your operational maturity.', image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/cloud-infrastructure.png', items: ['Architecture gap analysis', 'DevOps maturity assessment', 'Transformation roadmap development', 'Toolchain standardization', 'Value stream mapping'] },
+    { title: 'Immutable Infrastructure & GitOps', description: 'Deploy zero-trust, tamper-proof environments. Kangqore builds environments that support immutable container images that cannot be tampered with, guaranteeing absolute consistency and security.', image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/cloud-infrastructure.png', items: ['Infrastructure as Code (IaC) implementation', 'Container orchestration (Kubernetes)', 'GitOps workflow design', 'Security & compliance automation', 'Multi-cloud environment provisioning'] },
+    { title: 'CI/CD Pipeline Development', description: 'Accelerate your delivery lifecycle. Kangqore engineers pipelines that include the latest tools to support continuous integration and continuous delivery for hyper-velocity releases.', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/software-engineering.png', items: ['Automated testing integration', 'Zero-downtime deployment pipelines', 'Artifact management & security scanning', 'Build performance optimization', 'DevSecOps integration'] },
+    { title: 'Deployment Strategies', description: 'Eliminate manual friction and deployment risk. Kangqore supports advanced Canary and Blue-Green deployment strategies through robust automation, ensuring seamless rollouts.', image: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/business-strategy.png', items: ['Canary release automation', 'Blue-Green deployment architectures', 'A/B testing infrastructure', 'Automated rollback mechanisms', 'Traffic routing rules & service mesh'] },
+    { title: 'System State Visualization & Dashboards', description: 'Achieve total operational clarity. Kangqore uses best of breed toolsets such as Grafana/Kibana to develop enhanced visualizations, reports, and real-time dashboards.', image: 'https://images.unsplash.com/photo-1543286386-713bdd548b11?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/data-analytics.png', items: ['Centralized log management', 'Distributed tracing (OpenTelemetry)', 'Custom KPI dashboards (Grafana)', 'Predictive alerting systems', 'Cloud cost optimization analytics'] },
+  ],
+
+  technologiesTitle: 'CI/CD & Infrastructure Architectures We Excel In',
+  technologiesDescription: "A platform-agnostic automation stack integrating the world's leading deployment, orchestration, and observational frameworks.",
+  technologies: [
+    { category: 'CI/CD & Version Control', items: ['GitHub Actions', 'GitLab CI', 'Jenkins', 'ArgoCD', 'Bitbucket Pipelines'] },
+    { category: 'Infrastructure & Provisioning', items: ['Terraform', 'Pulumi', 'AWS CloudFormation', 'Ansible', 'Packer'] },
+    { category: 'Containerization & Orchestration', items: ['Kubernetes', 'Docker', 'Amazon EKS', 'Google GKE', 'Azure AKS'] },
+    { category: 'Observability & Monitoring', items: ['Datadog', 'Prometheus', 'Grafana', 'ELK Stack / Kibana', 'New Relic'] },
+    { category: 'Security & Compliance', items: ['HashiCorp Vault', 'SonarQube', 'Snyk', 'Aqua Security', 'Trivy'] },
+  ],
+
+  trustPillars: [
+    { title: 'DevOps Assessment', tag: 'Strategic Advisory', description: 'Request a comprehensive landscape analysis and receive: an architecture baseline, your top deployment constraints, an actionable implementation roadmap to achieve GitOps maturity. Learn More →' },
+    { title: 'Immutable Architectures', tag: 'Infrastructure', description: 'Stop treating servers as pets. We deploy Infrastructure as Code (IaC) to guarantee environments that are consistent, reproducible, and impervious to manual drift configuration errors. Learn More →' },
+    { title: 'Zero-Downtime Delivery', tag: 'Automation', description: 'Traditional pipelines halt features. Advanced CI/CD orchestrates flow. We embed automated testing and security checks into continuous delivery ecosystems utilizing Canary and Blue-Green strategies. Learn More →' },
+    { title: 'Operational Omniscience', tag: 'Observability', description: 'Visibility must transcend basic metrics. We architect centralized telemetry, enabling predictive alerting and deep system state visualization across distributed microservices. Learn More →' },
+  ],
+  trustPillarsRightTitle: 'Immutable Enterprise Optimization',
+  trustPillarsRightDescription: 'Kangqore provides end-to-end DevOps optimization that helps organizations accelerate deployment cycles, eliminate manual bottlenecks, and operate at unprecedented scale. By combining intelligent pipelines and deep platform engineering insights, we engineer ecosystems that are secure, cognitive, and natively scalable.',
+  trustPillarsRightButton: 'Request Infrastructure Assessment',
+  trustPillarsVideo: '/videos/network-loop.mp4',
+
+  whyKangqoreIntro: 'Kangqore secures stability and deployment velocity simultaneously. We obliterate the friction between development and operations by architecting immutable infrastructure tied to automated delivery systems.',
+  whyKangqore: [
+    { title: 'Uncompromising Stability', description: 'We radically reduce platform outages and degraded experiences by engineering self-healing infrastructure topologies.' },
+    { title: 'Real-Time Mitigation', description: 'Detect incidents instantaneously as they happen and execute automated mitigation strategies to minimize customer impact.' },
+    { title: 'Predictive Defense Mechanisms', description: 'Analyze telemetry to predict when issues or bottlenecks are likely to take place, then deploy prophylactic safeguards against catastrophic failure.' },
+    { title: 'Accelerated Scaling', description: 'Achieve total DevOps scalability with modular architectures that adapt instantly to variable market demands without structural refactoring.' },
+    { title: 'Value-First Governance', description: 'Every pipeline and environment configuration is tied to live KPIs, ROI dashboards, and compliance checkpoints — securing operational excellence.' },
+  ],
+
+  industryTitle: 'Industry-Specific Pipeline Optimization',
+  industries: [
+    { name: 'Banking & Financial Services' },
+    { name: 'SaaS Platforms & Independent Software Vendors' },
+    { name: 'Healthcare & Life Sciences' },
+    { name: 'E-commerce & Retail' },
+    { name: 'Technology, Media & Telecom' },
+  ],
+
+  customFAQs: [
+    { question: 'How does Kangqore achieve DevOps stability for our clients?', answer: 'We ensure DevOps stability in the following ways:\n• Reduce platform outages and degraded experiences.\n• Detect incidents when they happen and develop mitigation strategies in real-time to minimize customer impact.\n• Predict when issues/problems are likely to take place and then develop defense mechanisms against a catastrophic failure.' },
+    { question: 'How does Kangqore improve DevOps resilience for our clients?', answer: 'We build highly-available, multi-region architectures leveraging Kubernetes and immutable infrastructure patterns. By decoupling stateful components and utilizing traffic routing policies with service meshes, our environments automatically redirect load around degraded nodes—guaranteeing uninterrupted user experiences.' },
+    { question: 'How does Kangqore achieve DevOps scalability for our clients?', answer: 'We utilize cloud-native horizontal pod auto-scaling and elasticity parameters governed by metrics like CPU, memory, and custom queues. Accompanied by Infrastructure as Code (IaC), this allows enterprises to seamlessly scale resources vertically and horizontally instantaneously to meet demand volatility.' },
+  ],
+
+  postFAQSections: devopsAsAServiceRelatedSection,
+};
+
+// ─── 5. managed-infrastructure-services ────────────────────────────────────────
+const managedInfrastructureServicesRelatedSection = (
+  <section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white overflow-hidden relative">
+    <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
+         style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '100px 100px' }}></div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
+        <div className="lg:w-1/2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-brand-blue rounded-full text-xs font-bold mb-6 tracking-widest uppercase">
+            Operations Ecosystem
+          </div>
+          <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 tracking-tight font-display leading-[0.95]">
+            Related Infrastructure <br />
+            <span className="text-transparent bg-clip-text bg-brand-gradient italic">Offerings.</span>
+          </h2>
+          <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+          <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 leading-relaxed max-w-xl">
+            Take a holistic approach to your operations. Speed up digital transformation across a variety of journeys by exploring our integrated enterprise capabilities.
+          </p>
+          <div className="space-y-4">
+            {[
+              // NOTE: legacy "cybersecurity/managed-security-services" not canonical -> it-security-services
+              { name: 'Managed Security Services', link: '/services/it-security-services', icon: <ShieldCheck className="w-5 h-5" />, desc: 'Deploy absolute cyber resilience alongside your managed infrastructure.' },
+              { name: 'Software Defined Infrastructure', link: '#', icon: <Server className="w-5 h-5" />, desc: 'Modernize environments with infrastructure driven strictly by code.' },
+              // NOTE: legacy "cloud-data-center-advisory-transformation" not canonical -> modernization-infrastructure
+              { name: 'Cloud & Data Center Advisory', link: '/services/modernization-infrastructure', icon: <Database className="w-5 h-5" />, desc: 'Expert strategic consulting to modernize and migrate your core assets.' },
+              // NOTE: legacy "digital-workspace" not canonical -> managed-infrastructure-services
+              { name: 'Workspace Transformation', link: '/services/managed-infrastructure-services', icon: <Monitor className="w-5 h-5" />, desc: 'Re-engineer productivity with secure, agile digital environments.' },
+            ].map((offering, idx) => (
+              <Link key={idx} to={offering.link} className="group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 border border-gray-100 rounded-3xl hover:border-blue-300 hover:shadow-lg transition-all duration-500">
+                <div className="w-14 h-14 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-gradient group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
+                  {offering.icon}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-xl text-gray-900 dark:text-white tracking-tight group-hover:text-brand-blue transition-colors">{offering.name}</span>
+                    <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 group-hover:text-brand-blue transition-all group-hover:translate-x-1"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                  </div>
+                  <p className="text-gray-500 leading-relaxed">{offering.desc}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-12 flex items-center gap-6">
+            <Link to="/services" className="inline-flex items-center gap-2 px-10 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-brand-blue transition-all group shadow-xl">
+              Explore Services
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </Link>
+            <div className="hidden sm:block text-sm text-gray-400 font-mono italic">// ARCHITECTING_RESILIENCE...</div>
+          </div>
+        </div>
+        <div className="lg:w-5/12 relative flex justify-center items-center">
+          <div className="relative aspect-square w-full max-w-[450px] mx-auto flex justify-center items-center">
+            <div className="absolute w-[350px] h-[350px] flex items-center justify-center z-0">
+              <div className="absolute w-full h-[2px] border-t-2 border-dashed border-blue-200/50 rotate-45"></div>
+              <div className="absolute w-[2px] h-full border-l-2 border-dashed border-blue-200/50 rotate-45"></div>
+              <div className="absolute inset-0 rotate-45 pointer-events-none">
+                <div className="absolute top-[0] left-1/2 -translate-x-1/2 -translate-y-[3px] w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                <div className="absolute bottom-[0] left-1/2 -translate-x-1/2 translate-y-[3px] w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                <div className="absolute left-[0] top-1/2 -translate-x-[3px] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                <div className="absolute right-[0] top-1/2 translate-x-[3px] -translate-y-1/2 w-2 h-2 rounded-full bg-green-500"></div>
+              </div>
+            </div>
+            <div className="relative w-[280px] h-[280px] bg-white dark:bg-gray-900 dark:border-gray-800 rounded-[48px] shadow-[0_20px_80px_rgba(37,100,234,0.07)] border border-gray-100 flex items-center justify-center z-20 overflow-hidden group hover:shadow-[0_20px_80px_rgba(37,100,234,0.12)] transition-all duration-500">
+              <div className="absolute inset-5 border border-blue-200/50 rounded-[36px] border-dashed z-10 pointer-events-none group-hover:border-brand-blue/30 transition-colors duration-500"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] bg-gradient-to-br from-blue-50/80 to-blue-100/10 rotate-45 rounded-[40px] overflow-hidden z-0">
+                <div className="absolute inset-0 opacity-40 mix-blend-multiply" style={{ backgroundImage: 'linear-gradient(rgba(37,100,234,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(37,100,234,0.15) 1px, transparent 1px)', backgroundSize: '16px 16px' }}></div>
+              </div>
+              <div className="relative z-30 transform group-hover:scale-105 transition-transform duration-500">
+                <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-blue drop-shadow-sm">
+                  <rect x="9.5" y="4" width="5" height="5" rx="1" fill="white" />
+                  <rect x="3.5" y="15" width="5" height="5" rx="1" fill="white" />
+                  <rect x="15.5" y="15" width="5" height="5" rx="1" fill="white" />
+                  <path d="M12 9v4" />
+                  <path d="M6 15v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const managedInfrastructureServices = {
+  titleLine1: 'Absolute',
+  titleHighlight: 'Control.',
+  videoBackground: '/videos/network-loop.mp4',
+  description: 'Unify Cloud & DC, Workspaces, and Enterprise Networks under one absolute command.',
+  fullDescription: (
+    <div className="space-y-4">
+      <h2 className="text-2xl font-semibold tracking-tight">Kangqore orchestrates your entire hybrid ecosystem from Cloud & DC infrastructure to End-user Workspaces.</h2>
+      <p className="font-light tracking-tight leading-snug opacity-80">
+        We engineer robust, intelligent managed infrastructure solutions across five core pillars: Cloud & DC, Database Platforms, Digital Workspaces, Enterprise Networks, and Cross-functional NOC/SOC operations. We eradicate friction, radically optimize costs, and enforce absolute security across your global footprint.
+      </p>
+    </div>
+  ),
+  image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80',
+  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  hideGenericMidPageCta: true,
+  hideGenericFaq: true,
+
+  stats: [
+    { value: 'Eradicate', label: 'Management Burden', color: 'text-blue-500' },
+    { value: 'Optimize', label: 'Infrastructure Costs', color: 'text-brand-blue' },
+    { value: 'Enhance', label: 'Security Posture', color: 'text-indigo-500' },
+    { value: 'Gain', label: 'Real-Time Visibility', color: 'text-purple-500' },
+  ],
+
+  highFidelity: {
+    narrative: {
+      badge: 'Enterprise Excellence :: 2026',
+      titleLine1: 'Omni-Functional',
+      titleHighlight: 'Managed Infrastructure.',
+      titleLine2: 'At Scale.',
+      description: 'We deliver comprehensive Managed Infrastructure solutions encompassing critical database administration, next-gen enterprise networking, and 24/7 cross-functional service desk operations. Kangqore transcends basic support by embedding cognitive automation across your entire IT stack.',
+      bottleneckLabel: 'The Impediment',
+      bottleneckText: 'Disjointed management across Cloud Ops, legacy networks, and disparate digital workspaces paralyzing your enterprise velocity.',
+      requirementLabel: 'The Requirement',
+      requirementText: 'A unified, governed managed services capability providing absolute operational transparency across all infrastructure pillars.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80',
+      statusLabel: 'Infrastructure Operations',
+      statusValue: 'Autonomous',
+    },
+    philosophy: {
+      icon: <Zap className="w-7 h-7 text-brand-blue" />,
+      title: 'Infrastructure',
+      titleHighlight: 'Outcome-First Design.',
+      description: 'Our philosophy dictates that every domain—whether it is securing enterprise networks, managing VDI workspaces, or tuning high-availability databases—must deliver compounding enterprise value driven by rigorous ITSM processes.',
+      pills: ['Cross-functional NOC', 'ITIL Governed', 'Cloud & DC Optimized', 'Workspace SecOps'],
+    },
+    matrix: {
+      engineId: 'Engine :: MIS_ORCHECTRATOR_V3',
+      title: 'Enablement Matrix',
+      subtext: 'The definitive managed infrastructure lifecycle spanning Cloud, Databases, Workspaces, and Networks.',
+      layers: [
+        { title: 'Assess', id: 'MANA_ASSESS', icon: <Search />, desc: 'Deep infrastructure discovery spanning cloud, DC, and enterprise networks.' },
+        { title: 'Design', id: 'MANA_DESIGN', icon: <Layers />, desc: 'Seamless transition design for complex VDI workspaces and database platforms.' },
+        { title: 'Govern', id: 'MANA_GOV', icon: <ShieldCheck />, desc: 'Strict ITIL process governance, vendor management, and IP address control.' },
+        { title: 'Optimize', id: 'MANA_OPT', icon: <Activity />, desc: 'Continuous performance tuning across cross-functional service desk operations.' },
+      ],
+    },
+    schematic: {
+      titleLine1: 'Guarantee',
+      titleHighlight: 'Resilience.',
+      description: 'Your IT infrastructure investment must drive market advantage. We implement cognitive management frameworks that transform volatile operational metrics into guaranteed, optimized outcomes.',
+      stats: [
+        { label: 'Uptime', val: 'UNCOMPROMISING' },
+        { label: 'Efficiency', val: 'MAXIMIZED' },
+        { label: 'Compliance', val: 'ABSOLUTE' },
+      ],
+    },
+  },
+
+  capabilities: [
+    { title: 'Cloud & DC Infrastructure', description: 'Commanding hybrid cloud and physical deployments. Kangqore ensures your servers, storage, and distributed virtual networks execute with absolute precision and maximum efficiency.', image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/cloud-infrastructure.png', items: ['Cloud Managed Services (CloudOps, DevOps & FinOps)', 'Data Center Management (Physical, Virtual, Storage & Backup)', 'DC & Cloud Networking Support'] },
+    { title: 'Databases & Application Platforms', description: 'Guaranteeing data superiority. We provide uncompromising administration and engineering services for elite database architectures and complex middleware to secure unbreakable application platforms.', image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/data-analytics.png', items: ['Database & Middleware Administration', 'Database Engineering Services', 'Application Platform Maintenance and Support'] },
+    { title: 'Digital Workspaces', description: 'Frictionless enterprise productivity. Kangqore engineers and manages secure end-user environments, seamless directory services, and advanced implementations to enable absolute workforce mobility.', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/business-strategy.png', items: ['End-User Device Management', 'Enterprise Directory Services', 'Messaging and Collaboration', 'Enterprise Mobility Management', 'Virtual Desktop Infrastructure (VDI) and DaaS'] },
+    { title: 'Enterprise Networks', description: 'Architecting unyielding perimeters. We provide granular management of your LAN, WAN, and Wireless ecosystems alongside sophisticated zero-trust network security devices and IP address management.', image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/cloud-infrastructure.png', items: ['LAN, WAN & Wireless Network Management', 'Network Security Device Management', 'DNS, DHCP, IP Address Management', 'IP Telephony, Audio and Video System Support'] },
+    { title: 'Cross-functional Services', description: 'Total operational omniscience. Benefit from our 24/7 Enterprise NOC, intelligent global service desk, and rigorous ITSM process management driven by powerful reporting and predictive analytics.', image: 'https://images.unsplash.com/photo-1543286386-713bdd548b11?auto=format&fit=crop&q=80', bgImage: '/images/capabilities/growth-marketing.png', items: ['Global Service Desk Operations', 'Enterprise Monitoring & NOC Services', 'IT Asset Management', 'Strategic Vendor Management', 'Rigorous ITSM Process Management', 'Operational Reporting and Analytics'] },
+  ],
+
+  technologiesTitle: 'Core Infrastructure Management Architectures',
+  technologiesDescription: "A platform-agnostic automation and orchestration stack integrating the world's leading deployment and observational frameworks.",
+  technologies: [
+    { category: 'Cloud Platforms', items: ['AWS', 'Microsoft Azure', 'Google Cloud Platform (GCP)'] },
+    { category: 'Infrastructure Management', items: ['VMware vSphere', 'Nutanix', 'Cisco Intersight', 'Ansible'] },
+    { category: 'Networking & Security', items: ['Cisco Meraki', 'Palo Alto Networks', 'Fortinet', 'F5 Networks'] },
+    { category: 'ITSM & Monitoring', items: ['ServiceNow', 'Datadog', 'Splunk', 'SolarWinds'] },
+    { category: 'Digital Workspace', items: ['Microsoft 365', 'Citrix Workspace', 'VMware Horizon', 'Microsoft Intune'] },
+  ],
+
+  trustPillars: [
+    { title: 'Kangqore Cognitive Platform', tag: 'AI-First', description: 'Our intelligent platform utilizes machine learning for real-time insights and automation, enabling a radically proactive approach to IT infrastructure management. Predict failures before they occur.' },
+    { title: 'Zero-Drift IT Governance', tag: 'Methodology', description: 'We orchestrate unyielding adherence to established ITIL best practices to guarantee consistent, high-quality service delivery across incident, problem, change, and configuration management.' },
+    { title: 'Kangqore Omni-Sight Telemetry', tag: 'Observability', description: "Benefit from Kangqore's proprietary one-stop solution for simplified, predictive IT operations across highly complex multi-cloud and hybrid environments." },
+    { title: 'Hyper-Scale Execution Tiers', tag: 'Scalability', description: 'From Standard 24/7 support to Advanced bespoke SLA plans, we architect highly flexible, rigorous service tiers tailored to dominate specific operational and market demands.' },
+  ],
+  trustPillarsRightTitle: 'Immutable Enterprise Optimization',
+  trustPillarsRightDescription: 'Kangqore provides end-to-end IT infrastructure management that helps organizations eradicate friction, eliminate manual bottlenecks, and operate at unprecedented scale. By combining cognitive platforms with deep engineering expertise, we assure ecosystems that are resilient, scalable, and secure.',
+  trustPillarsRightButton: 'Request IT Landscape Analysis',
+  trustPillarsVideo: '/videos/network-loop.mp4',
+
+  whyKangqoreIntro: 'Kangqore Technologies Limited is an AI-led, customer-first digital engineering and Mindful IT fortress. Guided by two core philosophies, high-impact solutions for customers and uncompromising resilience, Kangqore combines a verticalized approach from chip to cloud with expertise in AI, automation, and disruptive technologies to build secure, scalable, and enterprise-ready infrastructures.',
+  whyKangqore: [
+    { title: 'Absolute Enterprise Scale', description: 'Managing operations for billion-dollar corporations worldwide with unyielding precision and massive Annualized Revenues backing our stability.' },
+    { title: 'Global SOC/NOC Footprint', description: 'Continuous 24/7/365 surveillance, predictive operations, and rapid incident resolution across our elite global delivery centers.' },
+    { title: 'Elite Strategic Partnerships', description: 'Deep, certified integrations with Microsoft, AWS, Google Cloud, and defining technology leaders to ensure unparalleled infrastructure access.' },
+    { title: 'Cognitive IT Optimization', description: 'Leveraging AI-first predictive monitoring to automatically identify cost anomalies, security vulnerabilities, and deployment redundancies.' },
+    { title: 'Industry-Focused Solutions', description: 'Proprietary platforms deployed across specialized verticals ensuring your infrastructure complies with the strict architectural demands of your market.' },
+  ],
+
+  industryTitle: 'Industry-Specific Infrastructure Operations',
+  industries: [
+    { name: 'Banking & Financial Services' },
+    { name: 'Healthcare & Life Sciences' },
+    { name: 'Retail & Consumer Goods' },
+    { name: 'Technology, Media & Telecom' },
+    { name: 'Manufacturing & Industry 4.0' },
+  ],
+
+  customFAQs: [
+    { question: 'How does Kangqore optimize infrastructure management over maintaining an internal team?', answer: 'Kangqore eradicates the limitations of internal teams by providing 24/7/365 access to elite, certified engineers backed by our cognitive ELLIPSE platform and WATCH360 monitoring. We assume full accountability for uptime, patching, and incident resolution—allowing your internal talent to focus entirely on specialized, revenue-generating initiatives rather than reactive firefighting.' },
+    { question: "How smooth is the transition to Kangqore's Managed Infrastructure Services?", answer: 'Flawless. Whether deploying a new greenfield environment or taking over a well-established legacy system, our proven Enterprise Service Transition methodology ensures a seamless handover. We execute rigorous knowledge transfers, architecture documentation, and parallel testing to guarantee absolute zero disruption to your active enterprise operations.' },
+    { question: 'Can Kangqore handle massive, multi-regional hybrid cloud architectures?', answer: 'Absolutely. We architect and govern some of the most complex hybrid and multi-cloud environments globally. Our deep strategic partnerships with AWS, Azure, and Google Cloud, combined with advanced CloudOps and FinOps practices, mean we excel at ensuring consistency, security, and cost-efficiency across highly dispersed geographic nodes.' },
+  ],
+
+  postFAQSections: managedInfrastructureServicesRelatedSection,
+};
