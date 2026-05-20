@@ -49,6 +49,7 @@ import {
   Zap, AlertTriangle, Brain, Terminal, Globe, Building2, Heart, ShoppingCart,
   Factory, Film, Plane, PieChart,
 } from 'lucide-react';
+import { REIMAGINE_LEGACY_SECTIONS } from './reimagine-services';
 import {
   BlockchainPhilosophyBackground,
   BlockchainWhySection,
@@ -2028,10 +2029,14 @@ const technologyTransformation = {
 //   - technology-transformation (parent + 2 decomposed pillars injected via
 //     postCapabilitiesSections; 5 other TT detail subpages were placeholder
 //     stubs and have been dropped)
+// Phase C (KQ-SER-REIMAGINE-001) — 7 legacy lift entries are spread in below.
+// Defined in ./reimagine-services.jsx with 3 wrapper components for stateful
+// sections (1× useState, 2× GSAP with scoped gsap.context() cleanup).
 export const REIMAGINE_SECTIONS = {
   'blockchain': blockchain,
   'technology-consulting': technologyConsulting,
   'strategy-consulting': strategyConsulting,
   'discover-frame-workshops': discoverFrameWorkshops,
   'technology-transformation': technologyTransformation,
+  ...REIMAGINE_LEGACY_SECTIONS,
 };

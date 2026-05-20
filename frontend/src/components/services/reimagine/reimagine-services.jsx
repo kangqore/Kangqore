@@ -25,9 +25,9 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   Activity, AlertTriangle, ArrowRight, BarChart3, Brain, BrainCircuit, Building2,
-  CheckCircle2, ChevronRight, Clock, Cloud, Code, Cpu, Database, Eye, Factory,
+  CheckCircle2, ChevronRight, Clock, Cloud, Code, Compass, Cpu, Database, Eye, Factory,
   Film, Fingerprint, Globe, Heart, Home, Layers, Layout, LayoutTemplate,
-  Lightbulb, Lock, MessageSquare, MonitorSmartphone, Network, Plane,
+  Lightbulb, Lock, MessageSquare, MonitorSmartphone, Network, PieChart, Plane,
   RefreshCw, Rocket, Search, Settings, Shield, ShieldCheck, ShoppingCart,
   Smartphone, Target, Terminal, TrendingUp, Users, Workflow, Zap,
 } from 'lucide-react';
@@ -557,7 +557,335 @@ const MVPAccelerationAnimatedSections = () => {
 };
 
 // (3) Product Strategy & Experience Design — GSAP wrapper with scoped gsap.context() cleanup
-// (inserted by subsequent edit)
+//
+// Holds 3 refs (diamond, differentiator, journey) for 3 distinct animations:
+// diamond entrance+parallax, differentiator stagger, journey timeline path-draw
+// with scrub. Counter animation scoped to sectionRef. Cleanup via ctx.revert().
+const ProductStrategyAnimatedSections = () => {
+  const sectionRef = useRef(null);
+  const diamondRef = useRef(null);
+  const differentiatorRef = useRef(null);
+  const journeyRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const statElements = sectionRef.current
+        ? sectionRef.current.querySelectorAll('.stat-counter-text')
+        : [];
+      statElements.forEach((el) => {
+        const text = el.textContent || '';
+        const match = text.match(/(\d+)%/);
+        if (match) {
+          const targetNum = parseInt(match[1], 10);
+          const originalText = text;
+          const counter = { val: 0 };
+          ScrollTrigger.create({
+            trigger: el, start: 'top 85%', once: true,
+            onEnter: () => {
+              gsap.to(counter, {
+                val: targetNum, duration: 2, ease: 'power2.out',
+                onUpdate: () => { el.textContent = originalText.replace(`${targetNum}%`, `${Math.round(counter.val)}%`); },
+              });
+            },
+          });
+        }
+      });
+
+      if (diamondRef.current) {
+        gsap.fromTo(diamondRef.current,
+          { opacity: 0, scale: 0.8, y: 60 },
+          { opacity: 1, scale: 1, y: 0, duration: 1.2, ease: 'power3.out',
+            scrollTrigger: { trigger: diamondRef.current, start: 'top 80%', once: true },
+          });
+        gsap.to(diamondRef.current, {
+          y: -30, ease: 'none',
+          scrollTrigger: { trigger: diamondRef.current, start: 'top bottom', end: 'bottom top', scrub: 1 },
+        });
+      }
+
+      if (differentiatorRef.current) {
+        const items = differentiatorRef.current.querySelectorAll('.diff-item');
+        gsap.fromTo(items,
+          { opacity: 0, y: 30, x: -20 },
+          { opacity: 1, y: 0, x: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out',
+            scrollTrigger: { trigger: differentiatorRef.current, start: 'top 80%', once: true },
+          });
+      }
+
+      if (journeyRef.current) {
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: journeyRef.current, start: 'top 75%', end: 'bottom 60%', scrub: 0.8 },
+        });
+        const pathEl = journeyRef.current.querySelector('.journey-curve-path');
+        if (pathEl) {
+          const pathLength = pathEl.getTotalLength();
+          gsap.set(pathEl, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
+          tl.to(pathEl, { strokeDashoffset: 0, duration: 1, ease: 'none' }, 0);
+        }
+        const glowEl = journeyRef.current.querySelector('.journey-curve-glow');
+        if (glowEl) {
+          const gl = glowEl.getTotalLength();
+          gsap.set(glowEl, { strokeDasharray: gl, strokeDashoffset: gl });
+          tl.to(glowEl, { strokeDashoffset: 0, duration: 1, ease: 'none' }, 0);
+        }
+        const nodes = journeyRef.current.querySelectorAll('.journey-node');
+        nodes.forEach((node, i) => {
+          tl.fromTo(node, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.15, ease: 'back.out(2)' }, i * 0.2);
+        });
+        const cards = journeyRef.current.querySelectorAll('.journey-card');
+        gsap.fromTo(cards,
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out',
+            scrollTrigger: { trigger: journeyRef.current, start: 'top 60%', once: true },
+          });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const journeyPhases = [
+    { phase: 'DISCOVER', icon: <Search className="w-7 h-7" />, title: 'Understand Ambition', desc: 'Understand business goals, customer needs, market context, and product ambition.', gradient: 'from-slate-600 to-slate-800', ring: 'border-slate-400', glow: 'shadow-slate-400/40' },
+    { phase: 'FRAME', icon: <Target className="w-7 h-7" />, title: 'Define Opportunity', desc: 'Define the opportunity, priorities, journeys, solution direction, and experience principles.', gradient: 'from-blue-500 to-blue-700', ring: 'border-blue-400', glow: 'shadow-blue-500/40', kangqore: true },
+    { phase: 'DESIGN', icon: <Lightbulb className="w-7 h-7" />, title: 'Create Systems', desc: 'Create prototypes, UX/UI systems, design language, and reusable patterns for execution.', gradient: 'from-brand-blue to-indigo-600', ring: 'border-brand-blue', glow: 'shadow-brand-blue/40', kangqore: true },
+    { phase: 'ACTIVATE', icon: <Rocket className="w-7 h-7" />, title: 'Launch & Evolve', desc: 'Prepare for launch, adoption, design-to-engineering continuity, and next-phase evolution.', gradient: 'from-emerald-500 to-emerald-700', ring: 'border-emerald-400', glow: 'shadow-emerald-500/40', kangqore: true },
+  ];
+
+  return (
+    <div ref={sectionRef} className="product-strategy-page-override">
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes diamond-float-3d { 0%, 100% { transform: rotate(45deg) rotateX(12deg) translateZ(0); } 50% { transform: rotate(45deg) rotateX(12deg) translateZ(20px); } }
+        @keyframes connector-draw { from { stroke-dashoffset: 200; } to { stroke-dashoffset: 0; } }
+        @keyframes dot-ping { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(3); opacity: 0; } 100% { transform: scale(1); opacity: 0; } }
+        .stat-counter-text { font-variant-numeric: tabular-nums; }
+      ` }} />
+
+      {/* Enterprise Design CoE — 3D Diamond + Differentiators */}
+      <section className="py-20 lg:py-28 overflow-hidden relative bg-white dark:bg-black z-[10]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
+            <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
+              <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
+                <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+                  Our <strong className="text-brand-blue">Enterprise Design CoE</strong> provides a high-velocity strategic blueprint, surrounding your product idea with four critical layers of UX validation.
+                </p>
+                <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                  We replace &ldquo;build-and-hope&rdquo; with &ldquo;validate-and-architect.&rdquo; By unifying lean discovery, high-fidelity mockups, strategic research, and scalable design architectures, we ensure your product UX is built on a foundation of absolute confidence.
+                </p>
+              </div>
+            </div>
+            <div className="w-full lg:w-[60%] xl:w-[65%] relative flex justify-center lg:justify-end">
+              <div ref={diamondRef} className="hidden lg:block relative lg:w-[550px] lg:h-[330px] xl:w-[750px] xl:h-[450px]">
+                <div className="absolute top-0 left-[50%] lg:left-0 -translate-x-1/2 lg:-translate-x-0 w-[1000px] h-[600px] lg:origin-top-left flex items-center justify-center lg:scale-[0.55] xl:scale-[0.75]">
+                  <svg className="absolute w-[600px] h-[600px] pointer-events-none z-0" viewBox="0 0 600 600">
+                    <defs>
+                      <linearGradient id="psed-blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#2564ea" />
+                        <stop offset="100%" stopColor="#4ab6d4" />
+                      </linearGradient>
+                    </defs>
+                    <circle cx="300" cy="40" r="7" fill="url(#psed-blue-grad)" style={{ animation: 'dot-ping 3s ease-in-out infinite' }} />
+                    <path d="M 300 40 L 300 85 L 195 190" fill="none" stroke="url(#psed-blue-grad)" strokeWidth="3" strokeDasharray="200" style={{ animation: 'connector-draw 2s ease-out forwards' }} />
+                    <circle cx="40" cy="300" r="7" fill="url(#psed-blue-grad)" style={{ animation: 'dot-ping 3s ease-in-out infinite 0.5s' }} />
+                    <path d="M 40 300 L 85 300 L 190 405" fill="none" stroke="url(#psed-blue-grad)" strokeWidth="3" strokeDasharray="200" style={{ animation: 'connector-draw 2s ease-out 0.3s forwards' }} />
+                    <circle cx="300" cy="560" r="7" fill="url(#psed-blue-grad)" style={{ animation: 'dot-ping 3s ease-in-out infinite 1s' }} />
+                    <path d="M 300 560 L 300 515 L 405 410" fill="none" stroke="url(#psed-blue-grad)" strokeWidth="3" strokeDasharray="200" style={{ animation: 'connector-draw 2s ease-out 0.6s forwards' }} />
+                    <circle cx="560" cy="300" r="7" fill="url(#psed-blue-grad)" style={{ animation: 'dot-ping 3s ease-in-out infinite 1.5s' }} />
+                    <path d="M 560 300 L 515 300 L 410 195" fill="none" stroke="url(#psed-blue-grad)" strokeWidth="3" strokeDasharray="200" style={{ animation: 'connector-draw 2s ease-out 0.9s forwards' }} />
+                  </svg>
+                  <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
+                    <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'diamond-float-3d 6s ease-in-out infinite' }}>
+                      <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Lean<br/>Discovery</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Strategic<br/>Roadmap</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Flawless<br/>UI/UX</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Architected<br/>Scalability</div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute top-[60px] right-1/2 mr-[165px] w-[320px] z-20">
+                    <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300 text-right">
+                      <li>Ethnographic research •</li>
+                      <li>Competitive teardowns •</li>
+                      <li>Behavior tracking •</li>
+                      <li>User intent mapping •</li>
+                    </ul>
+                  </div>
+                  <div className="absolute top-[120px] left-1/2 ml-[180px] w-[320px] z-20">
+                    <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300 text-left">
+                      <li>• MVP feature slicing</li>
+                      <li>• Workflow logic trees</li>
+                      <li>• ROI metric definitions</li>
+                      <li>• Go-to-market orchestration</li>
+                    </ul>
+                  </div>
+                  <div className="absolute bottom-[100px] right-1/2 mr-[165px] w-[320px] z-20">
+                    <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300 text-right">
+                      <li>Transcendental interfaces •</li>
+                      <li>Zero-friction interactions •</li>
+                      <li>Micro-animation logic •</li>
+                      <li>Deep brand embedding •</li>
+                    </ul>
+                  </div>
+                  <div className="absolute bottom-[60px] left-1/2 ml-[165px] w-[320px] z-20">
+                    <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300 text-left">
+                      <li>• React/Figma single truth</li>
+                      <li>• Centralized token governance</li>
+                      <li>• Multi-platform logic paths</li>
+                      <li>• Agile developer handoff</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-5 w-full">
+                {[
+                  { title: 'Lean Discovery', items: ['UX Research', 'Behavioral mapping'], gradient: 'from-blue-600 to-blue-800' },
+                  { title: 'Strategic Roadmap', items: ['Feature slicing', 'ROI metrics'], gradient: 'from-blue-400 to-blue-600' },
+                  { title: 'Flawless UI/UX', items: ['Pixel perfection', 'Interactive models'], gradient: 'from-blue-900 to-slate-900' },
+                  { title: 'Architected Scalability', items: ['Token governance', 'Zero-friction handoff'], gradient: 'from-cyan-500 to-cyan-700' },
+                ].map((q, idx) => (
+                  <div key={idx} className="bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl border border-gray-100 shadow-md overflow-hidden">
+                    <div className={`bg-gradient-to-r ${q.gradient} p-4 text-white font-bold text-sm`}>{q.title}</div>
+                    <div className="p-4"><ul className="space-y-1 text-xs text-gray-600 dark:text-gray-400">{q.items.map((i, k) => <li key={k}>• {i}</li>)}</ul></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div ref={differentiatorRef} className="max-w-5xl mx-auto">
+            <div className="space-y-4">
+              {[
+                { num: 1, title: 'Connect Strategy with Build', text: 'We bridge the gap between design vision and technical execution so decisions stay coherent.' },
+                { num: 2, title: 'Validate Earlier', text: 'We use rapid framing and high-fidelity prototyping to reduce uncertainty before heavy investment.' },
+                { num: 3, title: 'Scale with Systems', text: 'We build reusable design foundations that improve product consistency, speed, and governance.' },
+                { num: 4, title: 'Improve Adoption', text: 'We plan for the human realities that shape how users actually adopt and use digital products.' },
+                { num: 5, title: 'Maturity Assessments', text: 'We help identify where teams can improve their product, design, and technology execution.' },
+              ].map((d) => (
+                <div key={d.num} className="diff-item group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-blue to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-l-2xl"></div>
+                  <div className="w-11 h-11 bg-slate-900 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0 group-hover:bg-brand-blue transition-colors">{d.num}</div>
+                  <div>
+                    <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-1 group-hover:text-brand-blue transition-colors">{d.title}</h4>
+                    <p className="text-gray-500 text-sm leading-relaxed">{d.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Journey Timeline */}
+      <section className="py-32 overflow-hidden relative" style={{ backgroundColor: '#fefffc' }}>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={journeyRef}>
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
+            <div className="w-full lg:w-[55%] relative">
+              <div className="hidden lg:block absolute left-[14px] top-0 bottom-0 w-[30px]" style={{ zIndex: 1 }}>
+                <svg className="w-full h-full" viewBox="0 0 30 1000" preserveAspectRatio="none" fill="none">
+                  <defs>
+                    <linearGradient id="psed-journey-grad-v" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#94a3b8" />
+                      <stop offset="25%" stopColor="#3b82f6" />
+                      <stop offset="50%" stopColor="#2564ea" />
+                      <stop offset="75%" stopColor="#10b981" />
+                      <stop offset="100%" stopColor="#a855f7" />
+                    </linearGradient>
+                    <filter id="psed-journey-glow-v">
+                      <feGaussianBlur stdDeviation="2" result="blur" />
+                      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                  </defs>
+                  <path d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="#cbd5e1" strokeOpacity="0.3" strokeWidth="2" fill="none" />
+                  <path className="journey-curve-glow" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#psed-journey-grad-v)" strokeWidth="3" strokeLinecap="round" fill="none" filter="url(#psed-journey-glow-v)" opacity="0.3" />
+                  <path className="journey-curve-path" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#psed-journey-grad-v)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                  {[125, 375, 625, 875].map((cy, i) => (
+                    <g key={i} className="journey-node" style={{ transformOrigin: `15px ${cy}px` }}>
+                      <circle cx="15" cy={cy} r="9" fill="none" stroke="url(#psed-journey-grad-v)" strokeWidth="0.8" opacity="0.2">
+                        <animate attributeName="r" values="9;13;9" dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.2;0.08;0.2" dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="15" cy={cy} r="7" fill="white" stroke="url(#psed-journey-grad-v)" strokeWidth="1.5" />
+                      <circle cx="15" cy={cy} r="3" fill="url(#psed-journey-grad-v)" opacity="0.7">
+                        <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+                      </circle>
+                      <text x="15" y={cy + 1} textAnchor="middle" dominantBaseline="central" fill="gray" fontSize="5" fontWeight="800" fontFamily="monospace">{String(i + 1).padStart(2, '0')}</text>
+                    </g>
+                  ))}
+                </svg>
+              </div>
+              <div className="space-y-6 lg:pl-[55px]">
+                {journeyPhases.map((item, idx) => (
+                  <div key={idx} className="journey-card group" style={{ perspective: '800px' }}>
+                    <div className="relative bg-white dark:bg-gray-900 dark:border-gray-800 border border-gray-100 rounded-3xl p-6 lg:p-8 hover:shadow-xl hover:border-gray-200 transition-all duration-500 hover:-translate-y-1 flex items-start gap-6">
+                      <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-700`}></div>
+                      <div className={`relative z-10 w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white shadow-lg ${item.glow} group-hover:scale-110 transition-all duration-500`}>
+                        {item.icon}
+                        <div className={`absolute inset-0 rounded-2xl border-2 ${item.ring} opacity-0 group-hover:opacity-30 group-hover:scale-125 transition-all duration-700`}></div>
+                      </div>
+                      <div className="relative z-10 flex-1 min-w-0">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
+                          {item.kangqore && (
+                            <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full">
+                              <div className="w-1 h-1 bg-brand-blue rounded-full animate-pulse"></div>
+                              <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
+                            </div>
+                          )}
+                        </div>
+                        <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover:text-brand-blue transition-colors duration-300">{item.title}</h4>
+                        <p className="text-sm text-gray-400 font-light leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="lg:hidden absolute left-6 top-0 bottom-0 w-px">
+                <div className="w-full h-full bg-gradient-to-b from-slate-600 via-brand-blue to-purple-500 opacity-20 rounded-full"></div>
+              </div>
+            </div>
+
+            <div className="w-full lg:w-[45%] lg:sticky lg:top-32">
+              <div className="space-y-10">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-blue/5 border border-brand-blue/10 rounded-full mb-8">
+                    <Rocket className="w-4 h-4 text-brand-blue" />
+                    <span className="text-xs font-bold tracking-[0.3em] text-brand-blue uppercase">Design-to-Build Journey</span>
+                  </div>
+                  <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 font-display tracking-tight leading-[0.95]">
+                    From Ambition to <br />
+                    <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">Market Ready.</span>
+                  </h2>
+                  <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+                  <p className="text-lg text-gray-500 font-light leading-relaxed max-w-lg">
+                    A connected system for moving from customer understanding to product clarity to design systems and launch-ready direction.
+                  </p>
+                </div>
+                <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-100">
+                  <div>
+                    <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">04</div>
+                  </div>
+                  <div>
+                    <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Timeline</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">4-12<span className="text-sm text-gray-400 ml-1">wks</span></div>
+                  </div>
+                  <div>
+                    <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Confidence</div>
+                    <div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">100%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // SERVICE ENTRIES (7)
@@ -2034,15 +2362,659 @@ const digitalBusinessTransformation = {
 };
 
 // ─── 6. mvp-acceleration ──────────────────────────────────────────────────────
-// (entry inserted by subsequent edit)
+
+// preMatrix — quote panel + "fastest way to waste money" + 6-card value grid (no animations)
+const mvpAccelerationPreMatrixSection = (
+  <>
+    <div className="relative py-28 md:py-36 px-4 overflow-hidden bg-white dark:bg-black">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20"></div>
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-gray-100 dark:bg-[#0a0a0c]/50 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="relative rounded-[3rem] overflow-hidden aspect-square">
+              <img src="/images/happy_team.png" alt="Happy Startup Team" className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700 group-hover:scale-105" />
+            </div>
+          </div>
+          <div className="flex items-start gap-6 lg:gap-10">
+            <div className="hidden md:flex flex-col items-center gap-3 pt-2">
+              <div className="w-px h-8 bg-gradient-to-b from-transparent to-gray-200"></div>
+              <div className="w-2.5 h-2.5 bg-gray-900 rounded-full"></div>
+              <div className="w-px h-32 bg-gradient-to-b from-gray-200 to-transparent"></div>
+            </div>
+            <div className="flex-1">
+              <div className="text-7xl md:text-9xl font-serif text-gray-900 dark:text-white/[0.05] leading-none select-none mb-2">&ldquo;</div>
+              <p className="text-2xl md:text-4xl lg:text-[2.75rem] font-light text-gray-800 dark:text-gray-50 leading-[1.3] font-display -mt-12 md:-mt-16 pl-2 lg:pl-0">
+                Helping startups and digital product teams validate ideas faster, launch sharper MVPs, and build the foundation for{' '}
+                <span className="text-transparent bg-clip-text bg-brand-gradient italic font-normal">scalable growth.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section className="py-32 bg-white dark:bg-black relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+          <div>
+            <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 tracking-tight leading-[0.95] font-display">
+              The fastest way to waste money is to build too much, <br />
+              <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">too early.</span>
+            </h2>
+            <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+            <p className="text-xl text-gray-500 font-light leading-relaxed mb-8">
+              A strong MVP is not just a smaller product. It is a smarter first step. Kangqore helps organizations validate product direction, attract early users, and improve investor confidence.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-8">
+            <div className="insight-card p-10 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-[3rem] border border-transparent hover:border-brand-blue/10 transition-all group">
+              <div className="flex items-start space-x-6">
+                <div className="w-16 h-16 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl flex items-center justify-center text-brand-blue shadow-lg">
+                  <ShieldCheck className="w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold tracking-widest text-brand-blue uppercase mb-3 text-transparent bg-clip-text bg-brand-gradient">THE VALIDATION</h4>
+                  <p className="text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed italic">
+                    &ldquo;An MVP helps test whether the market actually wants what you are building before major investment is committed.&rdquo;
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="insight-card p-10 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-[3rem] border border-transparent hover:border-brand-blue/10 transition-all group">
+              <div className="flex items-start space-x-6">
+                <div className="w-16 h-16 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl flex items-center justify-center text-emerald-500 shadow-lg">
+                  <Lightbulb className="w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold tracking-widest text-emerald-500 uppercase mb-3">THE LEVERAGE</h4>
+                  <p className="text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed italic">
+                    &ldquo;A well-scoped MVP improves funding readiness, speeds user learning, and lowers the cost of future scaling.&rdquo;
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section className="py-32" style={{ backgroundColor: '#fefffc' }}>
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex flex-col lg:flex-row gap-20">
+          <div className="lg:w-1/3">
+            <div className="sticky top-32">
+              <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 font-display tracking-tight leading-[0.95]">
+                Value We <br />
+                <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">Deliver.</span>
+              </h2>
+              <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+              <p className="text-lg text-gray-500 font-light leading-relaxed">
+                With MVP Acceleration, we prioritize what matters first so teams launch smarter, not just cheaper.
+              </p>
+            </div>
+          </div>
+          <div className="lg:w-2/3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { title: 'Validate before you overbuild', content: 'Test the business concept against real market demand and reduce early-stage investment risk.', icon: <ShieldCheck className="w-6 h-6" />, image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=800&auto=format&fit=crop' },
+                { title: 'Faster path from idea to launch', content: 'Move from concept to usable MVP through structured scoping, design, agile build, and iterative release.', icon: <Rocket className="w-6 h-6" />, image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop' },
+                { title: 'Sharper investor confidence', content: 'Create stronger credibility through a product that demonstrates demand, direction, and execution intent.', icon: <TrendingUp className="w-6 h-6" />, image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=800&auto=format&fit=crop' },
+                { title: 'Scalable thinking from day one', content: 'Build the MVP on an architecture and design foundation that supports future expansion.', icon: <Layers className="w-6 h-6" />, image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop' },
+                { title: 'Learning built into delivery', content: 'Use user feedback, usage signals, and iteration loops to improve the product continuously.', icon: <RefreshCw className="w-6 h-6" />, image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop' },
+                { title: 'Cost efficiency by design', content: 'Prioritize what matters first so teams launch smarter, not just cheaper. Eliminate waste.', icon: <Target className="w-6 h-6" />, image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop' },
+              ].map((item, idx) => (
+                <div key={idx} className="group relative h-[320px] rounded-3xl overflow-hidden transition-all duration-300" style={{ backgroundColor: '#fefffc', border: 'none', boxShadow: 'none' }}>
+                  <img src={item.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 scale-100 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[1]" />
+                  <div className="relative z-10 h-full p-8 flex flex-col justify-start">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-brand-blue mb-6 group-hover:text-white transition-all duration-500 shadow-none border-none" style={{ backgroundColor: 'transparent' }}>
+                      {item.icon}
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-white transition-colors duration-500">{item.title}</h4>
+                    <p className="text-gray-500 font-light leading-relaxed group-hover:text-white/90 transition-colors duration-500">{item.content}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </>
+);
+
+const mvpAccelerationExecutionEcosystem = (
+  <section className="py-24 bg-gray-50 dark:bg-black overflow-hidden relative z-[10]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex flex-col lg:flex-row items-center gap-16">
+        <div className="lg:w-1/2">
+          <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 tracking-tight leading-[0.95] font-display">
+            Related Execution <br />
+            <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">Expertise.</span>
+          </h2>
+          <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-xl">
+            Extend your MVP into a full-scale product. Kangqore provides the end-to-end engineering muscle to scale what you&rsquo;ve validated.
+          </p>
+          <div className="space-y-4">
+            {[
+              { name: 'Discover & Frame Workshops', link: '/services/discover-frame-workshops', icon: <Compass className="w-5 h-5" />, desc: 'Structured discovery before you build.' },
+              { name: 'Product Digital Engineering', link: '/services/product-digital-engineering', icon: <Cpu className="w-5 h-5" />, desc: 'Enterprise-grade platform development at scale.' },
+              { name: 'Modernization Infrastructure', link: '/services/modernization-infrastructure', icon: <Layers className="w-5 h-5" />, desc: 'Modernize legacy debt into a scalable digital core.' },
+            ].map((e, idx) => (
+              <Link key={idx} to={e.link} className="group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 border border-gray-100 rounded-3xl hover:border-blue-300 transition-all shadow-sm">
+                <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-all">{e.icon}</div>
+                <div>
+                  <span className="font-bold text-lg block mb-1 group-hover:text-brand-blue transition-colors">{e.name}</span>
+                  <p className="text-gray-500 text-sm">{e.desc}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="lg:w-1/2 relative">
+          <div className="relative aspect-square w-full max-w-[550px] mx-auto">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-blue/10 blur-[100px] rounded-full"></div>
+            <div className="absolute top-0 left-0 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="flex justify-between gap-4"><span>blueprint_id:</span> <span className="text-brand-blue">#KG_MVP_A01</span></div>
+              <div className="flex justify-between gap-4"><span>logic_state:</span> <span className="text-emerald-500">LAUNCH_READY</span></div>
+            </div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-gray-100 flex items-center justify-center relative z-20 group">
+              <div className="absolute inset-4 bg-brand-gradient rounded-[32px] opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="absolute inset-6 border border-brand-blue/30 rounded-3xl border-dashed animate-spin-slow"></div>
+              <div className="relative"><Rocket className="w-20 h-20 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" /></div>
+              <div className="absolute -top-3 -right-3 w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-emerald-400 shadow-2xl border border-white/10">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center border border-blue-50 relative z-10 hover:-translate-y-2 transition-all duration-300"><Compass className="w-12 h-12 text-brand-blue" /></div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Discover_Frame</span>
+              </div>
+            </div>
+            <div className="absolute bottom-10 left-0 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Cpu className="w-12 h-12 text-cyan-400" /></div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
+              </div>
+            </div>
+            <div className="absolute bottom-10 right-0 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center relative -translate-x-4 hover:translate-x-0 transition-transform duration-300"><RefreshCw className="w-12 h-12 text-white" /></div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
+              </div>
+            </div>
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
+              <defs>
+                <linearGradient id="mvp-exec-flow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#0066FF" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#00D2FF" stopOpacity="0.4" />
+                </linearGradient>
+              </defs>
+              <path d="M250,250 L250,120" stroke="url(#mvp-exec-flow-grad)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <path d="M250,250 L120,400" stroke="url(#mvp-exec-flow-grad)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <path d="M250,250 L380,400" stroke="url(#mvp-exec-flow-grad)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <circle r="3" fill="#0066FF"><animateMotion path="M250,250 L250,120" dur="2s" repeatCount="indefinite" /></circle>
+              <circle r="3" fill="#00D2FF"><animateMotion path="M250,250 L120,400" dur="2.5s" repeatCount="indefinite" /></circle>
+              <circle r="3" fill="#6366f1"><animateMotion path="M250,250 L380,400" dur="3s" repeatCount="indefinite" /></circle>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const mvpAcceleration = {
+  titleLine1: 'MVP',
+  titleHighlight: 'Acceleration.',
+  videoBackground: '/videos/engineering-rd-bg.mp4',
+  description: 'Turn product ideas into launch-ready momentum.',
+  fullDescription: (
+    <div className="space-y-4">
+      <p className="font-light tracking-tight leading-snug opacity-80">
+        Kangqore helps startups, innovation teams, and growth-stage businesses move from concept to market with faster, smarter MVP execution. We combine product discovery, validation, design, engineering, and launch-readiness to shape fundable, scalable MVPs that reduce waste, sharpen learning, and accelerate time to traction.
+      </p>
+    </div>
+  ),
+  image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80',
+  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  hideGenericMidPageCta: true,
+  hideGenericFaq: true,
+
+  stats: [
+    { value: 'Validate', label: 'Market fit & assumptions', color: 'text-blue-500' },
+    { value: 'Accelerate', label: 'Idea-to-launch speed', color: 'text-emerald-500' },
+    { value: 'Reduce', label: 'Early-stage waste', color: 'text-purple-500' },
+    { value: 'Build', label: 'Scalable foundations', color: 'text-brand-blue' },
+  ],
+
+  ctaTitle: 'Ready to turn your idea into a fundable, launch-ready product?',
+  ctaDescription: "Let's validate the opportunity, define the right MVP, and build a product foundation that gets you to market faster—with stronger confidence, sharper scope, and room to scale.",
+  ctaSecondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  trustStripText: 'Helping startups, innovation teams, and growth-stage businesses validate ideas faster, launch sharper MVPs, and build the foundation for scalable growth.',
+
+  highFidelity: {
+    narrative: {
+      badge: 'VELOCITY :: 2026',
+      titleLine1: 'MVP Acceleration.',
+      titleHighlight: 'Turn product ideas into launch-ready momentum.',
+      titleLine2: '',
+      description: 'Kangqore helps startups and innovation teams move from concept to market with faster, smarter MVP execution. We combine product discovery, validation, design, engineering, and launch-readiness to shape fundable, scalable MVPs.',
+      bottleneckLabel: 'The Challenge',
+      bottleneckText: 'The fastest way to waste money is to build too much, too early.',
+      requirementLabel: 'The Solution',
+      requirementText: 'A strong MVP is not just a smaller product. It is a smarter first step.',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80',
+      statusLabel: 'MVP Status',
+      statusValue: 'ACCELERATING',
+    },
+    philosophy: {
+      icon: <Rocket className="w-7 h-7 text-gray-900 dark:text-white" />,
+      title: 'Our MVP',
+      titleHighlight: 'Acceleration Model.',
+      description: 'We unify product intelligence with high-velocity engineering to reach your first traction milestone faster.',
+      pills: ['Validate', 'Accelerate', 'Reduce', 'Build'],
+      features: [
+        { title: 'Validate', label: 'Market Fit & Critical Assumptions', icon: <Search className="w-5 h-5 text-gray-400" />, content: 'Test the business concept against real market demand. We separate must-have capabilities from later-phase enhancements to reduce early-stage investment risk.' },
+        { title: 'Accelerate', label: 'Idea-to-Launch Speed', icon: <Zap className="w-5 h-5 text-gray-400" />, content: 'Move from zero to one with structural speed. Our Blitz method combines rapid prototyping with agile execution to shave weeks off typical timelines.' },
+        { title: 'Reduce', label: 'Early-Stage Waste & Debt', icon: <TrendingUp className="w-5 h-5 text-gray-400" />, content: 'Avoid building too much too early. We focus resources on the "Engine" of your value proposition, ensuring every line of code serves a validation purpose.' },
+        { title: 'Build', label: 'Scalable Foundations', icon: <Compass className="w-5 h-5 text-gray-400" />, content: 'Architecture designed for growth. We lay the technical and design foundation that supports future expansion without forcing early rework.' },
+      ],
+    },
+    matrix: {
+      engineId: 'Engine :: MVP_Blitz_V4',
+      title: 'Our MVP Acceleration Delivery Model.',
+      subtext: 'At Kangqore, MVP acceleration is structured as a disciplined execution model—built to validate ideas quickly, reduce avoidable waste, and move products from concept to market with stronger confidence.',
+      layers: [
+        { title: 'Frame', id: 'MV_01', icon: <Search />, desc: 'Understand the opportunity, problem, user context, and business objective.' },
+        { title: 'Scope', id: 'MV_02', icon: <Target />, desc: 'Define the MVP, prioritize features, align workflows, and structure the delivery path.' },
+        { title: 'Build', id: 'MV_03', icon: <Cpu />, desc: 'Design, engineer, validate, and release through agile execution.' },
+        { title: 'Evolve', id: 'MV_04', icon: <Activity />, desc: 'Learn from users, iterate with intent, and prepare the product for broader growth.' },
+      ],
+    },
+    schematic: {
+      titleLine1: 'Engineering Excellence. ',
+      titleHighlight: 'Absolute Accountability.',
+    },
+  },
+
+  capabilitiesTitle: 'Our Capabilities.',
+  capabilitiesDescription: "Kangqore's MVP acceleration capabilities are designed to help startups and innovation teams move from idea to launch with sharper execution, lower waste, and stronger readiness for scale.",
+  capabilities: [
+    { title: 'Smart Build to First Traction', description: 'Shape and launch an MVP that helps you validate demand early and reach your first meaningful users faster.', bgImage: '/images/capabilities/iot-connected.png', items: ['Focus the build on launch-critical features', 'Reduce waste through lean scoping', 'Accelerate real-user validation', 'Create a stronger path to first traction'], micro: 'Get the first 100 users to use your application.' },
+    { title: 'Insight-Led Product Evolution', description: 'Use relevant user and product signals to refine the MVP with better confidence after launch.', bgImage: '/images/capabilities/business-strategy.png', items: ['Capture actionable product feedback', 'Improve roadmap decisions with real usage signals', 'Reduce assumption-led iteration', 'Guide product evolution with sharper insight'], micro: 'Harness user feedback to fuel product evolution.' },
+    { title: 'Dedicated Cross-Functional Team', description: 'Bring together the right mix of product, design, and engineering talent around the MVP from day one.', bgImage: '/images/capabilities/growth-marketing.png', items: ['Agile product and engineering alignment', 'Focused ownership across the build cycle', 'Faster collaboration and delivery movement', 'Better decision-making across disciplines'], micro: 'A hand-picked agile team best suited for your dream project.' },
+    { title: 'Scalable Design System', description: 'Create a product experience that stays consistent, reusable, and ready to grow across screens and platforms.', bgImage: '/images/capabilities/ux-design.png', items: ['Cohesive UI patterns from the start', 'Faster design-to-development handoff', 'Reusable interface logic for scale', 'Stronger product consistency across touchpoints'], micro: 'Product-perfect design system for cohesive branding.' },
+    { title: 'Universal Codebase', description: 'Reduce build and maintenance complexity through a more unified development approach.', bgImage: '/images/capabilities/business-strategy.png', items: ['Shared logic across platforms', 'Faster release cycles', 'Lower long-term development overhead', 'Simpler evolution of the MVP foundation'], micro: 'Reduced complexity with a single codebase for all platforms.' },
+    { title: 'Scalable Architecture', description: 'Build the MVP on a technical foundation that can handle growth without forcing early rework.', bgImage: '/images/capabilities/software-engineering.png', items: ['Future-ready architecture decisions', 'Better readiness for traffic and usage growth', 'Cleaner extensibility for next-phase features', 'Stronger long-term engineering efficiency'], micro: 'Future-proof architecture for a growing user base.' },
+  ],
+
+  trustPillars: [
+    { title: 'Validate before you overbuild', tag: 'Validation', description: 'Test the business concept against real market demand and reduce early-stage investment risk.' },
+    { title: 'Faster path from idea to launch', tag: 'Velocity', description: 'Move from concept to usable MVP through structured scoping, design, agile build, and iterative release.' },
+    { title: 'Sharper investor confidence', tag: 'Credibility', description: 'Create stronger credibility through a product that demonstrates demand, direction, and execution intent.' },
+    { title: 'Scalable thinking from day one', tag: 'Foundation', description: 'Build the MVP on architecture and design foundations that support future expansion.' },
+    { title: 'Learning built into delivery', tag: 'Intelligence', description: 'Use user feedback, usage signals, and iteration loops to improve the product continuously.' },
+    { title: 'Cost efficiency without cutting corners', tag: 'Efficiency', description: 'Prioritize what matters first so teams launch smarter, not just cheaper.' },
+  ],
+
+  whyKangqore: [
+    { title: 'Strong Foundation', description: 'Scalable architecture and product thinking that support future expansion from the first release.' },
+    { title: 'Smart Build', description: 'Reduced time and cost through focused scoping, reusable patterns, and efficient engineering choices.' },
+    { title: 'AI-Ready Acceleration', description: 'Use modern AI capabilities where they create real advantage in speed, product intelligence, or workflow efficiency.' },
+    { title: 'Targeted User Testing', description: 'Go beyond basic functionality to ensure the MVP actually resonates with its intended audience.' },
+    { title: 'Quick Shipping', description: 'Agile execution and standardized delivery practices that move your vision faster toward market.' },
+    { title: 'Industry Expertise', description: 'Context-aware product decisions shaped by real business, domain, and user challenges.' },
+  ],
+
+  industriesTitle: 'Where MVP Acceleration Adds Most Value',
+  industriesDescription: 'MVP acceleration is crucial whether you are building a net-new disruptive platform or validating a digital innovation concept.',
+  industries: [
+    { name: 'Startup Product Validation', description: 'Validate new product ideas before committing to full-scale build investment.' },
+    { name: 'Enterprise Innovation Initiatives', description: 'Bring structure to internal product, platform, or digital innovation concepts.' },
+    { name: 'New Venture & MVP Planning', description: 'Define the leanest launchable version of a product while preserving long-term scalability.' },
+    { name: 'Growth-Stage Product Scaling', description: 'Scale a validated MVP into a broader product with deeper capability and wider reach.' },
+    { name: 'Platform Extensions & New Modules', description: 'Assess what should be added, how it should work, and where it fits within the larger product strategy.' },
+    { name: 'Cross-Platform Product Launch', description: 'Launch on multiple platforms simultaneously with a unified codebase and consistent UX.' },
+  ],
+
+  technologiesTitle: 'Tools & Technologies We Use Across MVP Acceleration.',
+  technologiesDescription: 'Our MVP execution is technology-aware and business-led. We use modern engineering, design, and cloud-native stacks to move from concept to launch with speed and confidence.',
+  technologies: [
+    { category: 'Frontend', items: ['React', 'Next.js', 'React Native', 'Flutter'] },
+    { category: 'Backend', items: ['Node.js', 'Python', 'Go', 'GraphQL'] },
+    { category: 'Cloud & DevOps', items: ['AWS', 'GCP', 'Docker', 'CI/CD Pipelines'] },
+    { category: 'Design & Product', items: ['Figma', 'Whimsical', 'Jira', 'Notion'] },
+  ],
+
+  customFAQs: [
+    { question: 'What does MVP Acceleration usually cost?', answer: 'MVP cost depends on scope, complexity, feature depth, team composition, and speed expectations. The right way to estimate is by aligning business goals, MVP scope, and technical complexity before build begins.' },
+    { question: 'Why choose Kangqore for MVP Acceleration?', answer: 'Because early-stage products need more than coding speed. They need concept validation, cost discipline, execution clarity, and a build model that helps test the core idea with real users before overspending.' },
+    { question: 'How does an MVP help the business?', answer: 'An MVP helps you validate the concept before committing to full-scale product development. It gives you earlier user feedback, reveals issues sooner, reduces wasted investment, and supports better product decisions.' },
+    { question: 'How do you ensure scalability and flexibility for future growth?', answer: 'By choosing scalable technologies, using modular architecture, and designing the MVP so future features can be added without rewriting the whole product.' },
+    { question: 'What technologies and frameworks do you use for MVP development?', answer: "The stack is chosen according to the product's needs. We leverage multiple modern options across frontend, backend, and AI/cloud ecosystems." },
+    { question: 'How do you ensure a smooth transition from MVP to a full product?', answer: 'We design for scale-readiness from the start through adaptive UX systems, extensible architecture, documented decisions, and a cleaner path from validation-stage MVP to longer-term product evolution.' },
+    { question: 'How long does MVP development usually take?', answer: 'Timeline depends on complexity: around 10–12 weeks for simpler MVPs, about 3–4 months for average MVPs, and up to 6 months or more for complex MVPs.' },
+  ],
+
+  preMatrixSection: mvpAccelerationPreMatrixSection,
+  postCapabilitiesSections: <MVPAccelerationAnimatedSections />,
+  postFAQSections: mvpAccelerationExecutionEcosystem,
+};
 
 // ─── 7. product-strategy-experience-design ────────────────────────────────────
-// (entry inserted by subsequent edit)
+
+const psedPreMatrixSection = (
+  <>
+    <div className="relative py-28 md:py-36 px-4 overflow-hidden bg-white dark:bg-black">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20"></div>
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-gray-100 dark:bg-[#0a0a0c]/50 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="relative rounded-[3rem] overflow-hidden aspect-square">
+              <img src="/images/happy_team.png" alt="Happy Startup Team" className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700 group-hover:scale-105" />
+            </div>
+          </div>
+          <div className="flex items-start gap-6 lg:gap-10">
+            <div className="hidden md:flex flex-col items-center gap-3 pt-2">
+              <div className="w-px h-8 bg-gradient-to-b from-transparent to-gray-200"></div>
+              <div className="w-2.5 h-2.5 bg-gray-900 rounded-full"></div>
+              <div className="w-px h-32 bg-gradient-to-b from-gray-200 to-transparent"></div>
+            </div>
+            <div className="flex-1">
+              <div className="text-7xl md:text-9xl font-serif text-gray-900 dark:text-white/[0.05] leading-none select-none mb-2">&ldquo;</div>
+              <p className="text-2xl md:text-4xl lg:text-[2.75rem] font-light text-gray-800 dark:text-gray-50 leading-[1.3] font-display -mt-12 md:-mt-16 pl-2 lg:pl-0">
+                Helping global brands across industries orchestrate exceptional UX and architect design systems that drive{' '}
+                <span className="text-transparent bg-clip-text bg-brand-gradient italic font-normal">limitless growth.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section className="py-32 bg-white dark:bg-black relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+          <div>
+            <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 tracking-tight leading-[0.95] font-display">
+              A fragmented user experience directly erodes <br />
+              <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">brand equity.</span>
+            </h2>
+            <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+            <p className="text-xl text-gray-500 font-light leading-relaxed mb-8">
+              A flawless UI/UX is not just visual polish. It is a strategic revenue multiplier. Kangqore helps global organizations unify their digital presence and create experiences that naturally convert.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-8">
+            <div className="insight-card p-10 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-[3rem] border border-transparent hover:border-brand-blue/10 transition-all group">
+              <div className="flex items-start space-x-6">
+                <div className="w-16 h-16 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl flex items-center justify-center text-brand-blue shadow-lg">
+                  <Layers className="w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold tracking-widest text-brand-blue uppercase mb-3 text-transparent bg-clip-text bg-brand-gradient">THE FOUNDATION</h4>
+                  <p className="text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed italic">
+                    &ldquo;An Enterprise Design Architecture prevents scaling debt and ensures that new feature development takes days, not months.&rdquo;
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="insight-card p-10 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-[3rem] border border-transparent hover:border-brand-blue/10 transition-all group">
+              <div className="flex items-start space-x-6">
+                <div className="w-16 h-16 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl flex items-center justify-center text-emerald-500 shadow-lg">
+                  <BrainCircuit className="w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold tracking-widest text-emerald-500 uppercase mb-3">THE STRATEGY</h4>
+                  <p className="text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed italic">
+                    &ldquo;When algorithmic user intelligence is merged with high-fidelity design, customer adoption accelerates exponentially.&rdquo;
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </>
+);
+
+const psedExecutionEcosystem = (
+  <section className="py-24 bg-gray-50 dark:bg-black overflow-hidden relative z-[10]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex flex-col lg:flex-row items-center gap-16">
+        <div className="lg:w-1/2">
+          <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 tracking-tight leading-[0.95] font-display">
+            Related Engineering <br />
+            <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">Expertise.</span>
+          </h2>
+          <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-xl">
+            Extend your design strategy into a full-scale product. Kangqore provides the end-to-end engineering muscle to build what you&rsquo;ve architected.
+          </p>
+          <div className="space-y-4">
+            {[
+              { name: 'Digital Process Automation', link: '/services/digital-process-automation', icon: <Compass className="w-5 h-5" />, desc: 'Automate complex operational workflows via scaled platforms.' },
+              { name: 'Product Digital Engineering', link: '/services/product-digital-engineering', icon: <Cpu className="w-5 h-5" />, desc: 'Enterprise-grade platform development at scale.' },
+              { name: 'MVP Acceleration', link: '/services/mvp-acceleration', icon: <Rocket className="w-5 h-5" />, desc: 'Rapid velocity engineering and scale-ready launch models.' },
+            ].map((e, idx) => (
+              <Link key={idx} to={e.link} className="group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 border border-gray-100 rounded-3xl hover:border-blue-300 transition-all shadow-sm">
+                <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-all">{e.icon}</div>
+                <div>
+                  <span className="font-bold text-lg block mb-1 group-hover:text-brand-blue transition-colors">{e.name}</span>
+                  <p className="text-gray-500 text-sm">{e.desc}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="lg:w-1/2 relative">
+          <div className="relative aspect-square w-full max-w-[550px] mx-auto">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-blue/10 blur-[100px] rounded-full"></div>
+            <div className="absolute top-0 left-0 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="flex justify-between gap-4"><span>blueprint_id:</span> <span className="text-brand-blue">#KG_UX_S01</span></div>
+              <div className="flex justify-between gap-4"><span>logic_state:</span> <span className="text-emerald-500">VALIDATED</span></div>
+            </div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-gray-100 flex items-center justify-center relative z-20 group">
+              <div className="absolute inset-4 bg-brand-gradient rounded-[32px] opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="absolute inset-6 border border-brand-blue/30 rounded-3xl border-dashed animate-spin-slow"></div>
+              <div className="relative"><Rocket className="w-20 h-20 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" /></div>
+              <div className="absolute -top-3 -right-3 w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-emerald-400 shadow-2xl border border-white/10">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center border border-blue-50 relative z-10 hover:-translate-y-2 transition-all duration-300"><Compass className="w-12 h-12 text-brand-blue" /></div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Discover_Frame</span>
+              </div>
+            </div>
+            <div className="absolute bottom-10 left-0 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Cpu className="w-12 h-12 text-cyan-400" /></div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
+              </div>
+            </div>
+            <div className="absolute bottom-10 right-0 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center relative -translate-x-4 hover:translate-x-0 transition-transform duration-300"><RefreshCw className="w-12 h-12 text-white" /></div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
+              </div>
+            </div>
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
+              <defs>
+                <linearGradient id="psed-exec-flow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#0066FF" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#00D2FF" stopOpacity="0.4" />
+                </linearGradient>
+              </defs>
+              <path d="M250,250 L250,120" stroke="url(#psed-exec-flow-grad)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <path d="M250,250 L120,400" stroke="url(#psed-exec-flow-grad)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <path d="M250,250 L380,400" stroke="url(#psed-exec-flow-grad)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <circle r="3" fill="#0066FF"><animateMotion path="M250,250 L250,120" dur="2s" repeatCount="indefinite" /></circle>
+              <circle r="3" fill="#00D2FF"><animateMotion path="M250,250 L120,400" dur="2.5s" repeatCount="indefinite" /></circle>
+              <circle r="3" fill="#6366f1"><animateMotion path="M250,250 L380,400" dur="3s" repeatCount="indefinite" /></circle>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const productStrategyExperienceDesign = {
+  titleLine1: 'Product Strategy &',
+  titleHighlight: 'Design.',
+  videoBackground: '/videos/engineering-rd-bg.mp4',
+  description: 'Design what matters. Build what wins.',
+  fullDescription: (
+    <div className="space-y-4">
+      <p className="font-light tracking-tight leading-snug opacity-80">
+        Kangqore helps organizations define better products, design stronger user experiences, and turn ideas into execution-ready outcomes.
+      </p>
+    </div>
+  ),
+  image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&q=80',
+  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  hideGenericMidPageCta: true,
+  hideGenericFaq: true,
+
+  stats: [
+    { value: 'Define', label: 'Stronger product direction & value clarity', color: 'text-cyan-400' },
+    { value: 'Design', label: 'Smarter user journeys & digital experiences', color: 'text-blue-400' },
+    { value: 'Accelerate', label: 'Concept-to-launch speed', color: 'text-emerald-400' },
+    { value: 'Scale', label: 'System adoption & maturity', color: 'text-purple-400' },
+  ],
+
+  ctaTitle: 'Ready to define a sharper product and a stronger experience?',
+  ctaDescription: "Let's shape the right product strategy, design the right experience, and create the execution-ready foundation needed to move faster with confidence.",
+  ctaSecondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  trustStripText: 'Helping enterprises, digital product teams, and growth-stage businesses shape better products, stronger experiences, and clearer paths from idea to launch.',
+
+  highFidelity: {
+    narrative: {
+      badge: 'UX_STRAT :: 2026',
+      titleLine1: 'Product Strategy &',
+      titleHighlight: 'Design.',
+      titleLine2: '',
+      description: 'Kangqore combines strategic product thinking with execution realism. We help organizations move from customer understanding to product clarity to design systems and launch-ready direction — without breaking continuity between strategy, design, and build.',
+      bottleneckLabel: 'The Challenge',
+      bottleneckText: 'A product can be engineered well and still fail if the strategy and experience are weak.',
+      requirementLabel: 'The Solution',
+      requirementText: 'Kangqore helps businesses connect business intent, user needs, and execution realities — so product teams make better choices earlier and build with greater confidence.',
+      image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80',
+      statusLabel: 'Engagement Tier',
+      statusValue: 'STRATEGIC',
+    },
+    philosophy: {
+      icon: <Lightbulb className="w-7 h-7 text-gray-900 dark:text-white" />,
+      title: 'Design What Matters.',
+      titleHighlight: 'Build What Wins.',
+      description: 'We unify business intent, user needs, and execution realities so you can build with greater confidence.',
+      pills: ['Strategy', 'Research', 'Design', 'Prototypes'],
+      features: [
+        { title: 'Strategy', label: 'Product Strategy', icon: <Target className="w-5 h-5 text-gray-400" />, content: 'Define where the product should go, why it matters, and how it should create value through strategic prioritization.' },
+        { title: 'Design', label: 'Product & UX/UI Design', icon: <LayoutTemplate className="w-5 h-5 text-gray-400" />, content: 'Shape experiences that are intuitive, usable, and accessible, aligned perfectly with your brand and business goals.' },
+        { title: 'Prototyping', label: 'Innovation & Rapid Prototyping', icon: <Zap className="w-5 h-5 text-gray-400" />, content: 'Bring ideas to life quickly so teams can test, refine, and align on direction before committing to full build.' },
+        { title: 'Systems', label: 'Design Systems', icon: <Layers className="w-5 h-5 text-gray-400" />, content: 'Create a scalable experience foundation that improves consistency, speed, and governance across all touchpoints.' },
+      ],
+    },
+    matrix: {
+      engineId: 'Engine :: Strat_V1',
+      title: 'Our Execution Matrix.',
+      subtext: 'A connected system for moving from customer understanding to product clarity to launch-ready direction.',
+      layers: [],
+    },
+    schematic: {
+      titleLine1: 'Strategic Vision. ',
+      titleHighlight: 'Flawless Experience.',
+      description: 'Your product strategy should connect user needs with execution realities.',
+    },
+  },
+
+  capabilitiesTitle: 'Our Capabilities.',
+  capabilitiesDescription: "Kangqore's design enablement capabilities are structured to help enterprises build cohesive, flawless, and scalable digital experiences from the ground up.",
+  capabilities: [
+    { title: 'Product Strategy', description: 'Start with strategy to validate product-market fit, accelerate transformation, and ensure long-term success. We&rsquo;ll partner to uncover growth opportunities, align products with business goals, and create tailored, user-validated plans.', bgImage: '/images/capabilities/business-strategy.png', items: ['Uncover expansion opportunities and growth levers', 'Align product-engineering pods with business North Stars', 'Create tailored, user-validated execution roadmaps', "Strategic prioritization of 'Must-Win' product features"], micro: 'Aligning product vision with enterprise growth levers.' },
+    { title: 'Product and UX/UI Design', description: 'User wireframes, user flows, sitemaps, component libraries, and more to design the product experience. This includes crafting the structure, look, and functionality, while considering the medium, brand, accessibility, and best practices.', bgImage: '/images/capabilities/ux-design.png', items: ['High-fidelity user journeys and sitemap orchestration', 'Unified interaction systems for multi-platform cohesion', 'Inclusive, accessibility-first design architectures', 'Performance-optimized UI components for rapid adoption'], micro: 'Designing experiences that naturally convert.' },
+    { title: 'Design Systems', description: 'Create a single source of truth to help your team and partners deliver seamless, consistent digital experiences at every touchpoint. Your design system could contain patterns, components, guidelines, and other core UX and brand elements.', bgImage: '/images/capabilities/ux-design.png', items: ['Scalable pattern libraries and tokenized UI governance', 'Reusable component architectures for engineering velocity', 'Brand-aligned style guides and global experience standards', 'Cross-functional documentation for design-build continuity'], micro: 'Scaling foundations for global digital consistency.' },
+    { title: 'Innovation and Rapid Prototyping', description: 'Refine concepts, reduce risks, and bring market-ready products to users faster. Together, we&rsquo;ll build a realistic, limited-functionality representation of your proposed experience for testing, iteration, socialization, and spec creation.', bgImage: '/images/capabilities/software-engineering.png', items: ['Realistic, limited-functionality models for early testing', 'Stakeholder socialization and specular concept creation', 'High-velocity iteration loops to reduce build uncertainty', 'Technical de-risking through functional proof-of-concepts'], micro: 'Testing market-readiness before heavy build investment.' },
+    { title: 'User and Market Research', description: 'Gather data, then turn it into insights and actionable plans. Using quantitative, qualitative, and algorithmic techniques, we help you deeply understand your market and audience to drive product-market fit, growth, and user satisfaction.', bgImage: '/images/capabilities/business-strategy.png', items: ['Algorithmic audience profiling and market trend synthesis', 'In-depth usability testing and behavioral signal analysis', 'Competitive benchmarking and category-defining research', 'Clear, data-backed recommendations for product evolution'], micro: 'Evidence-led decisions for category dominance.' },
+    { title: 'Product Launch and Adoption', description: "Just because you build it doesn't mean users will come. Prepare for a smooth launch and drive adoption by partnering with Kangqore on change management and strategic launch plans that consider your users, culture, constraints, and more.", bgImage: '/images/capabilities/business-strategy.png', items: ['Strategic product launch and adoption roadmaps', 'Experience continuity planning across phased rollout', 'Human-centric change management and user-enablement', 'Adoption monitoring and post-launch experience tuning'], micro: 'Ensuring real-world success at the moment of launch.' },
+    { title: 'Modern Product Digital Maturity Assessment', description: 'Lower costs, drive innovation, and build thriving teams with our Modern Product Digital Maturity Assessment. We&rsquo;ll help spot opportunities and enhance execution across product, design, and tech through team assessments and upskilling.', bgImage: '/images/capabilities/business-strategy.png', items: ['Deep-dive assessment of product, design, and tech stacks', 'Capability gap identification and talent uplift roadmaps', 'Team-level assessment for innovation-readiness', 'Roadmaps to reduce operational drag and improve velocity'], micro: 'Unlocking enterprise velocity through maturity review.' },
+    { title: 'Strategic Design-to-Build Alignment', description: 'Architect the handoff between design vision and engineering execution to ensure what is designed is what is shipped. We close the gap between strategy and code to ensure no loss in intent during technical implementation.', bgImage: '/images/capabilities/ux-design.png', items: ['Collaborative design-engineering pods for continuity', 'Strategy-led technical feasibility assessments', 'Seamless asset handoff and implementation governance', 'Execution confidence through strategy-to-code alignment'], micro: 'Bridging the gap between vision and shipped code.' },
+  ],
+
+  trustPillars: [
+    { title: 'Data-driven over opinion-led', tag: 'Intelligence', description: 'Transform qualitative and quantitative insights into hardened product strategy frameworks.' },
+    { title: 'Flawless across every touchpoint', tag: 'Consistency', description: 'Ensure the user experience remains intuitively perfect across web, mobile, and emerging interfaces.' },
+    { title: 'Built to scale effortlessly', tag: 'Architecture', description: 'Leverage robust design systems that allow component reuse and rapid UI evolution.' },
+    { title: 'Validation before heavy engineering', tag: 'Prototyping', description: 'Test interactive, high-fidelity prototypes to confirm market resonance before writing code.' },
+    { title: 'Aligned with business outcomes', tag: 'Strategy', description: 'Design decisions are tightly coupled with the core metrics that drive your business forward.' },
+    { title: 'Accelerated time-to-value', tag: 'Velocity', description: 'Streamline the gap between concept and launch with optimized design-to-development workflows.' },
+  ],
+
+  whyKangqore: [
+    { title: 'Integrated Strategic Design and Development', description: 'We connect product thinking, experience design, and delivery planning so decisions stay coherent from concept to execution.' },
+    { title: 'Concierge Thinking, Scalable Delivery', description: 'You get high-touch collaboration with a model designed to support enterprise speed, consistency, and growth.' },
+    { title: 'Organizational Enablement', description: 'We work with your team, not around it — helping improve product thinking, design maturity, and internal capability through collaboration.' },
+  ],
+
+  industriesTitle: 'Where Experience Strategy Adds Most Value',
+  industriesDescription: 'Product Strategy & Design is relevant across new products, experience redesigns, and large-scale portfolios.',
+  industries: [
+    { name: 'New Digital Products', description: 'Define the right opportunity, validate direction, and shape a usable, differentiated first experience.' },
+    { name: 'Product Modernization', description: 'Reimagine outdated product journeys, interface systems, and design logic for modern expectations.' },
+    { name: 'Growth-Stage Product Scaling', description: 'Build reusable design foundations and sharper roadmap decisions as product complexity grows.' },
+    { name: 'Enterprise Experience Transformation', description: 'Improve customer and internal digital experiences through stronger strategy, design governance, and adoption thinking.' },
+    { name: 'Innovation Programs', description: 'Use rapid prototyping and research to test new ideas before full commitment.' },
+    { name: 'Platform & Multi-Touchpoint Ecosystems', description: 'Create consistency across products, channels, and customer interaction layers.' },
+  ],
+
+  technologiesTitle: 'Tools & Technologies for Strategic Design.',
+  technologiesDescription: 'We leverage industry-leading design, prototyping, and research tools to execute high-fidelity product strategy and seamless engineering handoffs.',
+  technologies: [
+    { category: 'Strategy & Research', items: ['Qualitative & Quantitative Tools', 'Insight Synthesis', 'Market Analysis', 'Opportunity Mapping'] },
+    { category: 'Design & Prototyping', items: ['Figma', 'Sketch', 'Rapid Prototyping', 'Concept Modeling'] },
+    { category: 'Systems & Governance', items: ['Design Systems', 'Component Libraries', 'Standards', 'UI Governance'] },
+    { category: 'Launch & Maturity', items: ['Launch Planning', 'Adoption Tracking', 'Product Maturity Assessment', 'Execution Review'] },
+  ],
+
+  customFAQs: [
+    { question: 'How are product strategy and experience design connected?', answer: 'Product strategy defines what should be built, why it matters, and how it should create value. Experience design turns that direction into journeys, interactions, and product behavior users can actually understand and adopt.' },
+    { question: 'What does Kangqore include in this service?', answer: 'It can include product strategy, UX/UI design, design systems, rapid prototyping, launch readiness, product maturity assessments, and user and market research.' },
+    { question: 'Do you only work on early-stage products?', answer: 'No. This service is relevant across new products, growth-stage products, experience redesigns, modernization initiatives, and large-scale enterprise product portfolios.' },
+    { question: 'Can you support both strategy and downstream execution?', answer: 'Yes. The source page&rsquo;s strongest idea is the connection between design and build; Kangqore keeps that same continuity and extends it into execution-ready delivery planning.' },
+    { question: 'What is the role of research in this engagement?', answer: 'Research helps validate assumptions, reveal customer needs, understand the market, and improve product decisions with stronger evidence.' },
+    { question: 'What is a product digital maturity assessment?', answer: 'It is a structured way to evaluate how well your teams execute across product, design, and technology — and where capability or process improvements can unlock better outcomes.' },
+    { question: 'How does this help launch and adoption?', answer: 'Because designing a product is not enough. Products need launch planning, user understanding, and adoption thinking to succeed in real-world environments.' },
+  ],
+
+  preMatrixSection: psedPreMatrixSection,
+  postCapabilitiesSections: <ProductStrategyAnimatedSections />,
+  postFAQSections: psedExecutionEcosystem,
+};
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // REGISTRY EXPORT
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const REIMAGINE_LEGACY_SECTIONS = {
-  // (populated by subsequent edit)
+  'application-modernization': applicationModernization,
+  'digital-transformation': digitalTransformation,
+  'legacy-modernization': legacyModernization,
+  'technology-modernization': technologyModernization,
+  'digital-business-transformation': digitalBusinessTransformation,
+  'mvp-acceleration': mvpAcceleration,
+  'product-strategy-experience-design': productStrategyExperienceDesign,
 };
