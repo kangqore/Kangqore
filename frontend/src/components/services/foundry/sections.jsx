@@ -264,6 +264,50 @@ const apiMicroservicesEngineering = {
       <APIExecutionEcosystem />
     </div>
   ),
+
+  trustPillars: [
+    { title: 'Gateway foresight before scaling', tag: 'Governance', description: 'Design entry points that centralize control without creating delivery bottlenecks.' },
+    { title: 'Domain-aligned service boundaries', tag: 'Architecture', description: 'Ensure services are scoped for independence, maintainability, and long-term evolution.' },
+    { title: 'Identity-first security protocols', tag: 'Security', description: 'Protect every service interaction with hardened authentication and zero-trust rigor.' },
+    { title: 'Automated policy enforcement', tag: 'Compliance', description: 'Bake governance into the delivery pipeline to ensure consistency across the service sprawl.' },
+    { title: 'Full-cycle service accountability', tag: 'Reliability', description: 'From boundary discovery to runtime observability, end-to-end ownership of service health.' },
+    { title: 'Modernization-ready foundations', tag: 'Future-Ready', description: 'Architect for the next generation of digital products with scalable, decoupled platforms.' },
+  ],
+
+  technologies: [
+    { category: 'Gateways & Management', items: ['Kong', 'Apigee', 'AWS API Gateway', 'Azure API Management', 'Tyk', 'MuleSoft Anypoint'] },
+    { category: 'Service Mesh & Connectivity', items: ['Istio', 'Linkerd', 'Consul', 'Kuma', 'Traefik Mesh'] },
+    { category: 'Runtimes & Frameworks', items: ['Spring Boot', 'Node.js', 'Go', 'Quarkus', 'Micronaut', '.NET Core'] },
+    { category: 'Infrastructure & Orchestration', items: ['Kubernetes', 'Docker', 'Amazon ECS', 'Nomad', 'Terraform'] },
+    { category: 'Observability & Control', items: ['Prometheus', 'Grafana', 'Jaeger', 'OpenTelemetry', 'Kiali', 'Dynatrace'] },
+    { category: 'Security & Identity', items: ['OAuth2', 'JWT', 'Keycloak', 'Auth0', 'Okta', 'Vault'] },
+    { category: 'Communication Patterns', items: ['gRPC', 'GraphQL', 'Kafka', 'RabbitMQ', 'WebSockets', 'REST'] },
+  ],
+
+  whyKangqore: [
+    { title: 'Architecture-First Execution', description: "We don't just build endpoints; we design distributed systems that prioritize resilience and maintainability." },
+    { title: 'Governed Engineering Rigor', description: 'We embed governance and security into the core engineering fabric, ensuring your ecosystem scales with absolute control.' },
+    { title: 'Future-Ready Ecosystems', description: 'We help you prepare for service sprawl by building foundations that can adapt to changing technology and business demands.' },
+  ],
+
+  industries: [
+    { name: 'Financial Services', description: 'Secure, high-performance API ecosystems meeting open banking and regulatory rigor.' },
+    { name: 'Healthcare', description: 'Interoperable service architectures for patient data exchange and clinical workflow automation.' },
+    { name: 'E-commerce', description: 'Scalable microservices for inventory, checkout, and personalized customer journeys.' },
+    { name: 'Logistics', description: 'Real-time service layers for fleet tracking, route optimization, and supply chain visibility.' },
+  ],
+
+  customFAQs: [
+    { question: 'What is the difference between an API Gateway and a Service Mesh?', answer: 'An API Gateway manages "north-south" traffic (external clients securely accessing internal services). A Service Mesh manages "east-west" traffic (how your internal microservices communicate, authenticate, and route data amongst themselves).' },
+    { question: 'Do we need microservices, or is a modular monolith enough?', answer: 'It depends on your scale. If you face organizational bottlenecks, varied scaling requirements for specific features, or technology lock-in, microservices offer advantages. For many, a well-engineered modular monolith is the right first step before full decomposition.' },
+    { question: 'How do you secure communication between microservices?', answer: 'We implement zero-trust principles within the internal network. This typically involves a service mesh that automatically issues and validates certificates for Mutual TLS (mTLS) combined with identity-based routing.' },
+    { question: 'What happens when a service fails in a distributed environment?', answer: 'We engineer for failure using patterns like circuit breakers, retries, timeouts, and fallback mechanisms. The architecture must ensure that the failure of a single inventory service does not cascade and bring down the entire checkout flow.' },
+    { question: 'How long does a microservices transformation take?', answer: 'We avoid "big bang" rewrites. We typically deploy a gateway facade in weeks to strangle the monolith, and sequentially migrate services over 6-12 months based on business priority and risk.' },
+  ],
+
+  ctaTitle: 'Scale Without Entropy.',
+  ctaDescription: 'Transform fragmented service sprawl into a governed, resilient platform designed for absolute engineering confidence.',
+  ctaButtonText: 'Consult a Lead Architect',
 };
 
 // ─── internet-of-things (Foundry · T1) ────────────────────────────────────────
@@ -475,6 +519,47 @@ const internetOfThings = {
       <IoTFutureReadySection />
     </div>
   ),
+
+  trustPillars: [
+    { title: 'Platform-first connected architecture', tag: 'Architecture', description: 'Design IoT ecosystems that prioritize platform scalability, device intelligence, and operational control.' },
+    { title: 'Enterprise-grade integration by default', tag: 'Integration', description: 'Ensure IoT systems connect cleanly with ERP, CRM, gateways, and broader enterprise data flows.' },
+    { title: 'Lifecycle operations discipline', tag: 'Operations', description: 'Support IoT success through onboarding, monitoring, managed support, and continuous platform evolution.' },
+  ],
+
+  technologies: [
+    { category: 'Platforms & Ecosystem', items: ['Microsoft Azure IoT', 'AWS IoT', 'PTC ThingWorx', 'MongoDB', 'WindRiver', 'Intel'] },
+    { category: 'Industry Standards', items: ['TSDSI', 'Industrial Internet Consortium', 'OPC Foundation', 'MQTT Protocol'] },
+    { category: 'Engineering Themes', items: ['Microservices', 'Web APIs', 'Edge Processing', 'Business Intelligence', 'Device Virtualization', 'OTA Updates'] },
+    { category: 'Advanced Analytics', items: ['Asset Analytics & Condition Monitoring', 'Predictive Maintenance', 'Conversational Interfaces', 'Video Intelligence', 'OCR & Image Classification', 'NLP & Text Mining'] },
+  ],
+
+  whyKangqore: [
+    { title: 'Dedicated IoT Engineering Pods', description: 'Cross-functional squads with embedded device, platform, analytics, and integration specialists assigned to your program from day one.' },
+    { title: 'Agile Connected Delivery', description: 'Sprint-based delivery with IoT-specific ceremonies — device readiness reviews, platform health checks, and telemetry validation gates.' },
+    { title: 'Global Delivery with Local Context', description: "Delivery centers across time zones, paired with domain consultants who understand your industry's connected-system requirements." },
+    { title: 'Partnership Ecosystem', description: 'Certified partnerships with Azure IoT, AWS IoT, PTC ThingWorx, and Intel — ensuring platform decisions are backed by vendor-level expertise.' },
+    { title: 'Security-by-Design Discipline', description: 'Device identity, OTA security, encrypted telemetry, and zero-trust architecture principles are embedded into every engagement.' },
+    { title: 'Outcome-Based Engagement Models', description: 'Flexible pricing — from fixed-scope PoCs to managed IoT operations — aligned with your business outcomes, not just effort.' },
+  ],
+
+  industries: [
+    { name: 'Smart Industries', description: 'For manufacturing, energy, and utilities environments, IoT helps reimagine operations, improve process visibility, and unlock more resilient, efficient industrial systems.' },
+    { name: 'Smart Living', description: 'For wearables, healthcare, and security environments, IoT helps create safer, healthier, and more responsive connected experiences.' },
+    { name: 'Smart Enterprises', description: 'For buildings, offices, retail, and connected enterprise environments, IoT helps link people, machines, and information to improve security, efficiency, and operational intelligence.' },
+  ],
+
+  customFAQs: [
+    { question: 'What business value does IoT create for enterprises?', answer: 'IoT creates business value by connecting assets and scaling operations efficiently, acting on real-time data, transforming business processes, improving decisions with augmented intelligence, and managing end-to-end connected processes.' },
+    { question: 'Where is IoT most commonly applied?', answer: 'IoT is most commonly applied across smart industries (manufacturing, energy, utilities), smart living (wearables, healthcare, security), and smart enterprises (connected buildings, offices, retail environments).' },
+    { question: 'How do enterprises move from IoT pilots to production?', answer: 'By progressing through a structured three-phase model: Proof of Concept (validate connected use cases), Productization (build scalable connected products), and Operationalization (establish monitoring, onboarding, and managed operations).' },
+    { question: 'Why is enterprise integration important in IoT?', answer: 'Because IoT value is only realized when connected systems work alongside ERP, CRM, gateways, and broader enterprise workflows — creating actual operational value instead of isolated data streams.' },
+    { question: 'What capabilities matter most in a full IoT partner?', answer: 'A complete IoT partner should provide strategy and consulting, intelligent platform engineering, connected device enablement, vertical applications, system integration, testing, managed support, IIoT enablement, and DevOps automation.' },
+    { question: 'What IoT platforms and technologies does Kangqore work with?', answer: 'We work across Microsoft Azure IoT, AWS IoT, PTC ThingWorx, MongoDB, WindRiver, Intel, along with microservices, web APIs, edge processing, analytics, device virtualization, and OTA update frameworks.' },
+  ],
+
+  ctaTitle: 'Ready to build a connected platform that scales from pilot to production?',
+  ctaDescription: 'Connect your assets, engineering insights, and business outcomes with Kangqore.',
+  ctaButtonText: 'Talk to Our IoT Architects',
 };
 
 // ─── managed-cloud-services (Foundry · T3) ────────────────────────────────────
@@ -646,6 +731,42 @@ const managedCloudServices = {
       ],
     },
   ],
+
+  technologies: [
+    { category: 'Cloud Platforms', items: ['Amazon Web Services (AWS)', 'Microsoft Azure', 'Google Cloud Platform (GCP)', 'Multi-cloud & Hybrid Architectures'] },
+    { category: 'Monitoring & Observability', items: ['Datadog', 'New Relic', 'Prometheus', 'Grafana', 'CloudWatch', 'Azure Monitor', 'Google Cloud Operations'] },
+    { category: 'DevOps & Automation', items: ['Terraform', 'Ansible', 'CloudFormation', 'GitHub Actions', 'Azure DevOps', 'Jenkins', 'ArgoCD'] },
+    { category: 'Containers & Orchestration', items: ['Docker', 'Kubernetes (EKS, AKS, GKE)', 'Helm', 'Istio Service Mesh', 'Serverless Frameworks'] },
+    { category: 'Security & Compliance', items: ['AWS GuardDuty', 'Azure Sentinel', 'Prisma Cloud', 'HashiCorp Vault', 'CrowdStrike', 'Qualys', 'SIEM Stacks'] },
+    { category: 'FinOps & Cost Management', items: ['AWS Cost Explorer', 'Azure Cost Management', 'CloudHealth', 'Apptio Cloudability', 'Spot.io'] },
+  ],
+
+  whyKangqoreIntro: 'Kangqore treats cloud operations as an engineering discipline — not a support contract. We bring SRE rigor, FinOps discipline, and SecOps integration together into a unified managed services model that delivers measurable outcomes: reliability, cost control, security, and operational velocity.',
+  whyKangqore: [
+    { title: 'SRE-Grade Reliability Engineering', description: 'SLO-driven operations with incident response discipline and uptime accountability.' },
+    { title: 'FinOps Cost Governance', description: 'Structured financial operations that convert cloud spend from a variable liability into a controlled investment.' },
+    { title: 'SecOps Embedded by Design', description: 'Zero-trust security, IAM governance, and compliance alignment built into cloud operations from day one.' },
+    { title: 'Full-Stack Observability', description: 'End-to-end monitoring of cost, performance, latency, usage, and anomalies — not just uptime metrics.' },
+    { title: 'Automation-First Operations', description: 'Infrastructure automation, IaC, and DevOps pipelines reduce toil and accelerate response times.' },
+  ],
+
+  industryIntro: 'Managed cloud operations underpin mission-critical systems across every industry. Our SRE, FinOps, and SecOps capabilities are adapted to the specific compliance, performance, and cost requirements of each sector.',
+  industries: [
+    { name: 'Banking & Financial Services', description: 'Compliance-aware cloud operations, security hardening, and zero-downtime reliability for regulated environments.' },
+    { name: 'Healthcare & Life Sciences', description: 'HIPAA-aligned cloud management, clinical data governance, and secure infrastructure operations.' },
+    { name: 'Retail & eCommerce', description: 'Auto-scaling for peak traffic, cost optimization, and always-on platform reliability.' },
+    { name: 'Manufacturing', description: 'IoT data pipeline management, operational technology integration, and disaster recovery planning.' },
+    { name: 'Technology & SaaS', description: 'Multi-cloud architecture management, DevOps automation, and FinOps optimization for SaaS platforms.' },
+    { name: 'Energy & Utilities', description: 'Secure infrastructure management, compliance automation, and high-availability operations.' },
+  ],
+
+  customFAQs: [
+    { question: 'What is the difference between Managed Cloud Services and standard cloud support?', answer: 'Managed Cloud Services goes beyond reactive support — it includes proactive monitoring, FinOps cost governance, security hardening, SRE-driven reliability engineering, and continuous optimization as an ongoing operational discipline.' },
+    { question: 'Do you support multi-cloud environments?', answer: 'Yes. We manage workloads across AWS, Azure, and GCP — including hybrid and multi-cloud architectures. Our governance frameworks are designed to provide unified visibility and control regardless of provider.' },
+    { question: 'How quickly can you reduce our cloud costs?', answer: 'Most organizations see 15–35% cost reduction within the first 60–90 days through rightsizing, idle resource elimination, and reserved instance optimization. Long-term FinOps governance sustains and compounds these savings.' },
+    { question: 'How do you handle security and compliance?', answer: 'Security is embedded by design — not added after deployment. We implement zero-trust architecture, continuous vulnerability scanning, IAM governance, and regulatory compliance alignment (ISO, SOC 2, GDPR, HIPAA) from day one.' },
+    { question: 'What SLAs do you commit to for monitoring and incident response?', answer: 'We define and manage to SLOs (Service Level Objectives) agreed with your team, covering uptime, incident response times, and mean time to recovery (MTTR). All commitments are documented and tracked via observability dashboards.' },
+  ],
 };
 
 // ─── aws (Foundry · T3) ───────────────────────────────────────────────────────
@@ -784,6 +905,35 @@ const aws = {
       ],
     },
   ],
+
+  technologies: [
+    { category: 'Core AWS Services', items: ['EC2', 'S3', 'RDS', 'Aurora', 'DynamoDB', 'Lambda', 'ECS', 'EKS', 'API Gateway', 'CloudFront', 'VPC', 'Route53'] },
+    { category: 'Security & Governance', items: ['IAM', 'AWS Organizations', 'Control Tower', 'GuardDuty', 'Security Hub', 'WAF', 'Shield'] },
+    { category: 'DevOps & Automation', items: ['CloudFormation', 'Terraform', 'CodePipeline', 'CodeBuild', 'GitHub Actions', 'Jenkins'] },
+    { category: 'Data & Analytics', items: ['Redshift', 'Glue', 'EMR', 'Kinesis', 'Athena', 'QuickSight'] },
+    { category: 'AI/ML on AWS', items: ['SageMaker', 'Bedrock', 'Personalize', 'Rekognition', 'Comprehend'] },
+  ],
+
+  whyKangqore: [
+    { title: 'Architecture Frameworks', description: 'Enterprise-grade AWS Well-Architected deployments tailored for high-scale environments.' },
+    { title: 'Security-First Approach', description: 'Hardened IAM, access controls, and compliance-ready architectures built into every layer.' },
+    { title: 'Multi-Industry Delivery', description: 'Proven experience delivering complex AWS solutions for BFSI, Retail, and Healthcare.' },
+    { title: 'DevOps-Integrated Cloud', description: 'Native CI/CD and IaC execution patterns for high-velocity software delivery.' },
+    { title: 'AI & Data-Driven Strategy', description: 'Forward-looking cloud roadmaps designed for long-term AI and data innovation.' },
+  ],
+
+  industries: [
+    { name: 'BFSI (Banking & Insurance)' },
+    { name: 'Retail & eCommerce' },
+    { name: 'Healthcare & Life Sciences' },
+    { name: 'SaaS & Technology Startups' },
+    { name: 'Manufacturing' },
+    { name: 'Media & Technology' },
+  ],
+
+  ctaTitle: 'Build Your AWS Cloud with Confidence',
+  ctaDescription: 'Whether you’re migrating, modernizing, or optimizing — Kangqore helps you design AWS environments that drive performance.',
+  ctaButtonText: 'Schedule an AWS Strategy Session',
 };
 
 // ─── microsoft-services (Foundry · T3) ────────────────────────────────────────
@@ -944,6 +1094,33 @@ const microsoftServices = {
         { heading: 'Process Digitization Strategy', description: 'Process digitization strategy that empowers business teams responsibly.' },
       ],
     },
+  ],
+
+  whyKangqoreIntro: 'Kangqore approaches Microsoft services as structured engineering programs — designed for scalability, governance, and sustainable transformation. Our focus is on integration clarity and architectural stability, not just tool deployment.',
+  whyKangqore: [
+    { title: 'Engineering-First Delivery', description: 'We approach Microsoft services as structured engineering programs — not tool deployments.' },
+    { title: 'Security-by-Default Architecture', description: 'Governance, monitoring, and compliance awareness are embedded into design — not added later.' },
+    { title: 'Platform Readiness Mindset', description: 'Every implementation is evaluated for scalability, operational resilience, cost control, and lifecycle sustainability.' },
+    { title: 'Integration Clarity', description: 'We design cohesive ecosystems where Azure, M365, Dynamics, and Power Platform operate as unified systems.' },
+    { title: 'Governance-Aware Automation', description: 'Low-code and automation implementations include citizen development guardrails and enterprise oversight controls.' },
+  ],
+
+  industryIntro: 'Microsoft ecosystems power mission-critical operations across industries. But digital transformation requires integration clarity, secure infrastructure, governance-aware automation, and business-aligned analytics. We ensure Microsoft investments align with measurable enterprise value — not just technical upgrades.',
+  industries: [
+    { name: 'Industrial & Manufacturing', description: 'Connected products, predictive systems, and operational data intelligence.' },
+    { name: 'Healthcare', description: 'Secure collaboration, compliance frameworks, and clinical data governance.' },
+    { name: 'EduTech', description: 'Modern workplace enablement, identity governance, and productivity platforms.' },
+    { name: 'Retail', description: 'CRM/ERP integration, analytics pipelines, and customer data platforms.' },
+    { name: 'BFSI', description: 'Security posture, Sentinel readiness, and governance-first cloud architecture.' },
+    { name: 'Energy', description: 'IoT integration, operational data flows, and infrastructure modernization.' },
+  ],
+
+  customFAQs: [
+    { question: 'What makes Microsoft Services different from a standard Azure deployment?', answer: 'We approach Microsoft services as structured engineering programs — not tool deployments. Every engagement includes architecture design, governance frameworks, and lifecycle planning to ensure long-term resilience.' },
+    { question: 'How does Kangqore handle Microsoft ecosystem fragmentation?', answer: 'We design integration architectures that unify identity, data, security, and applications across the Microsoft ecosystem — ensuring applications do not fragment as environments scale.' },
+    { question: 'Do you support Dynamics 365 customization?', answer: 'Yes. We handle CRM and ERP integration strategy, custom workflow design, reporting optimizations, and scalable architecture planning to support long-term operational growth.' },
+    { question: 'How is security embedded into your Microsoft implementations?', answer: 'Security-by-default architecture is a core principle. Governance, monitoring, and compliance awareness are embedded into design — not added as afterthoughts post-deployment.' },
+    { question: 'What Microsoft accelerator programs do you offer?', answer: 'We offer structured assessments including Azure Migration Assessment (8 weeks), Sentinel Readiness Assessment, Modern Workspace Enablement, Advanced Analytics Platform Briefing, and Azure DC Migration Blueprint.' },
   ],
 };
 
@@ -1111,6 +1288,42 @@ const googleCloudServices = {
         { heading: 'SRE & Observability', description: 'SLO-driven reliability engineering with Cloud Monitoring, Logging, and Trace for full observability.' },
       ],
     },
+  ],
+
+  technologies: [
+    { category: 'Compute & Containers', items: ['Google Kubernetes Engine (GKE)', 'Cloud Run', 'Cloud Functions', 'Compute Engine', 'App Engine', 'Anthos'] },
+    { category: 'Data & Analytics', items: ['BigQuery', 'Cloud Dataflow', 'Cloud Pub/Sub', 'Cloud Dataproc', 'Cloud Composer', 'Looker', 'Data Catalog'] },
+    { category: 'AI & Machine Learning', items: ['Vertex AI', 'Gemini API', 'AutoML', 'AI Platform Pipelines', 'TensorFlow on GCP', 'Document AI', 'Dialogflow CX'] },
+    { category: 'Storage & Databases', items: ['Cloud Storage', 'Cloud Spanner', 'Cloud SQL', 'Firestore', 'Bigtable', 'Memorystore', 'AlloyDB'] },
+    { category: 'Security & Identity', items: ['Google Security Command Center', 'Cloud IAM', 'BeyondCorp Enterprise', 'VPC Service Controls', 'Cloud Armor', 'Chronicle SIEM'] },
+    { category: 'DevOps & Networking', items: ['Cloud Build', 'Artifact Registry', 'Cloud Deploy', 'Terraform on GCP', 'Cloud CDN', 'Cloud Load Balancing', 'Cloud DNS'] },
+  ],
+
+  whyKangqoreIntro: "Kangqore combines deep cloud architecture expertise, an AI-first engineering mindset, enterprise modernization frameworks, and DevOps & SRE maturity. We don't just deploy Google Cloud — we engineer cloud systems that evolve with your ambition.",
+  whyKangqore: [
+    { title: 'Cloud Architecture Depth', description: 'Deep GCP architectural expertise across compute, networking, data, AI, and security layers.' },
+    { title: 'AI-First Engineering Mindset', description: 'Every cloud engagement is evaluated for AI and analytics enablement — not just infrastructure deployment.' },
+    { title: 'Enterprise Modernization Frameworks', description: 'Structured frameworks for legacy modernization that reduce risk and accelerate transformation timelines.' },
+    { title: 'DevOps & SRE Maturity', description: 'Automation-first delivery with SLO-driven reliability engineered directly into cloud operations.' },
+    { title: 'Governance-Driven Execution', description: 'Security, compliance, and cost governance embedded from design through operations — never retrofitted.' },
+  ],
+
+  industryIntro: "Google Cloud's AI-first ecosystem powers transformation across every industry. Kangqore tailors GCP architecture and delivery to the specific data, compliance, and intelligence requirements of each sector.",
+  industries: [
+    { name: 'Banking & Financial Services', description: 'BigQuery-powered risk analytics, compliance-aligned infrastructure, and AI-driven fraud detection.' },
+    { name: 'Healthcare & Life Sciences', description: 'HIPAA-aligned GCP environments, clinical data platforms, and AI-assisted diagnostic systems.' },
+    { name: 'Retail & eCommerce', description: 'Personalization AI, demand forecasting, and scalable data pipelines for customer intelligence.' },
+    { name: 'Manufacturing', description: 'IoT data ingestion, predictive maintenance AI, and operational analytics on Cloud Dataflow.' },
+    { name: 'Media & Technology', description: 'Content intelligence, real-time streaming analytics, and AI-powered recommendation systems.' },
+    { name: 'Energy & Utilities', description: 'Smart grid data platforms, environmental analytics, and sustainability reporting on GCP.' },
+  ],
+
+  customFAQs: [
+    { question: 'Why choose Google Cloud over other cloud providers?', answer: 'Google Cloud offers the most advanced AI and data platform in the enterprise market — with BigQuery, Vertex AI, and Gemini providing unmatched intelligence capabilities. For organizations prioritizing data analytics, AI production deployment, and global network performance, GCP provides structural advantages.' },
+    { question: 'How does Kangqore approach Google Cloud migrations?', answer: 'We follow a structured program: cloud readiness assessment, dependency mapping, migration sequencing, cutover planning, and post-migration validation. Every migration is designed for zero data loss, minimal downtime, and security hardening throughout the transition.' },
+    { question: 'Can you help us deploy production AI on GCP?', answer: 'Yes. We specialize in Vertex AI platform setup, ML pipeline automation, and Gemini API integration. Our AI readiness assessments evaluate data maturity, infrastructure requirements, and governance frameworks before any production deployment begins.' },
+    { question: 'Do you manage multi-cloud environments that include GCP?', answer: 'Yes. We design and manage multi-cloud architectures that integrate GCP with AWS and Azure. Our governance frameworks provide unified visibility and control across providers.' },
+    { question: 'What business outcomes can we expect from a GCP engagement?', answer: 'Typical outcomes include reduced infrastructure overhead, accelerated analytics performance, faster software deployment cycles, improved cloud cost visibility, production-ready AI deployment, and enhanced compliance and governance posture.' },
   ],
 };
 
@@ -1336,6 +1549,43 @@ const cloudComputing = {
         { heading: 'Performance Analytics', description: 'Detailed analytics on system and process performance.' },
       ],
     },
+  ],
+
+  technologies: [
+    { category: 'Cloud Platforms', items: ['Amazon Web Services (AWS)', 'Microsoft Azure', 'Google Cloud Platform (GCP)', 'Multi-Cloud & Hybrid Architectures'] },
+    { category: 'Containers & Orchestration', items: ['Docker', 'Kubernetes (EKS / AKS / GKE)', 'Helm', 'Istio Service Mesh', 'Serverless Frameworks'] },
+    { category: 'Infrastructure as Code', items: ['Terraform', 'AWS CloudFormation', 'Azure Bicep', 'Ansible', 'Pulumi'] },
+    { category: 'Monitoring & Observability', items: ['Datadog', 'Prometheus', 'Grafana', 'New Relic', 'CloudWatch', 'Azure Monitor'] },
+    { category: 'Security & Compliance', items: ['Zero-Trust Architecture', 'IAM Governance', 'SIEM Stacks', 'Vault (HashiCorp)', 'Prisma Cloud', 'CrowdStrike'] },
+    { category: 'Networking & Delivery', items: ['Cloud CDN', 'Load Balancers', 'API Gateways', 'VPC Design', 'DNS Management', 'Private Connectivity'] },
+  ],
+
+  whyKangqoreIntro: 'Cloud Computing is no longer optional — it is the backbone of modern enterprises. Kangqore builds cloud ecosystems that are engineered for performance, designed for resilience, optimized for cost, and ready for global scale.',
+  whyKangqore: [
+    { title: 'Cloud-First Architecture Mindset', description: 'Every engagement starts with architecture — not tool selection. We design cloud systems that scale structurally.' },
+    { title: 'DevOps-Native Approach', description: 'Infrastructure-as-Code, CI/CD automation, and SRE discipline embedded into every cloud delivery.' },
+    { title: 'Governance-Focused Execution', description: 'Policy-driven cloud governance that provides cost visibility, access control, and compliance assurance.' },
+    { title: 'Security Integrated from Day One', description: 'Zero-trust, encrypted, monitored, and compliance-aligned — security is never retrofitted after deployment.' },
+    { title: 'Performance-Led Optimization', description: 'Continuous monitoring and optimization ensure cloud performance compounds — not degrades — over time.' },
+    { title: 'Enterprise Accountability', description: 'SLO commitments, observability dashboards, and structured reporting keep cloud operations transparent and accountable.' },
+  ],
+
+  industryIntro: "Cloud computing underpins every sector's digital operations. Kangqore tailors cloud architecture and delivery to the specific performance, compliance, and scalability requirements of each industry.",
+  industries: [
+    { name: 'Healthcare', description: 'Secure patient systems, compliance-ready infrastructure, and telehealth scalability without compromising data governance.' },
+    { name: 'Banking & Finance', description: 'Low-latency systems, encrypted environments, and risk-managed cloud governance for regulated financial operations.' },
+    { name: 'Retail & eCommerce', description: 'Elastic scaling for peak traffic events, intelligent load balancing, and real-time inventory data pipelines.' },
+    { name: 'SaaS & Technology', description: 'Cloud-native product architecture purpose-built for rapid growth, multi-tenancy, and developer velocity.' },
+    { name: 'Manufacturing', description: 'IoT data integration, predictive operations platforms, and resilient infrastructure for industry environments.' },
+    { name: 'Energy & Utilities', description: 'Secure cloud environments for grid data, operational analytics, and sustainability reporting platforms.' },
+  ],
+
+  customFAQs: [
+    { question: 'Is cloud migration risky?', answer: 'Not with phased execution, rollback strategies, and environment simulation. We map all dependencies before migration begins and execute in controlled phases that preserve data integrity and user experience.' },
+    { question: 'How do you control cloud cost?', answer: 'Cloud cost is architecture-driven, not just a billing problem. We implement architecture-level optimization — rightsizing, reserved capacity strategies, idle resource elimination — combined with automated FinOps governance and real-time spend dashboards.' },
+    { question: 'Can we modernize gradually without a full cutover?', answer: 'Yes. We implement phased modernization aligned with business cycles. Applications can be migrated incrementally — starting with rehosting for speed, then refactoring for long-term structural improvement.' },
+    { question: 'How secure is your cloud architecture?', answer: 'Security is engineered within — not layered on top. Every architecture includes zero-trust segmentation, IAM governance, encryption at rest and in transit, continuous threat monitoring, and automated compliance enforcement.' },
+    { question: 'Who is cloud computing best suited for at Kangqore?', answer: 'Enterprises modernizing legacy infrastructure, high-growth startups scaling rapidly, SaaS platforms needing elastic performance, product companies moving to microservices, and organizations pursuing a cloud-first digital strategy.' },
   ],
 };
 
