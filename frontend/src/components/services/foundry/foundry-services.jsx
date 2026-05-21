@@ -3599,3 +3599,383 @@ const modernizationInfrastructure = {
   customSections: <ModernizationInfraValueAccordion />,
   postCapabilitiesSections: modernizationInfrastructurePostCapSection,
 };
+
+// ─── software-development (was digital-engineering/SoftwareDevelopment.jsx) ───
+// Editorial quote + insight cards — preMatrixSection in legacy. No GSAP refs.
+const softwareDevelopmentPreMatrixSection = (
+  <>
+    <div className="relative py-28 md:py-36 px-4 overflow-hidden bg-white dark:bg-black">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden"></div>
+      </div>
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+          <div className="relative group">
+            <div className="relative rounded-[3rem] overflow-hidden aspect-square">
+              <img src="https://images.pexels.com/photos/8068255/pexels-photo-8068255.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Engineering Team" className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700 group-hover:scale-105" />
+            </div>
+          </div>
+          <div className="flex items-start gap-6 lg:gap-10">
+            <div className="hidden md:flex flex-col items-center gap-3 pt-2">
+              <div className="w-px h-8 bg-gradient-to-b from-transparent to-gray-200"></div>
+              <div className="w-2.5 h-2.5 bg-gray-900 rounded-full"></div>
+              <div className="w-px h-32 bg-gradient-to-b from-gray-200 to-transparent"></div>
+            </div>
+            <div className="flex-1">
+              <div className="text-7xl md:text-9xl font-serif text-gray-900 dark:text-white/[0.05] leading-none select-none mb-2">"</div>
+              <p className="text-2xl md:text-4xl lg:text-[2.75rem] font-light text-gray-800 dark:text-gray-50 leading-[1.3] font-display -mt-12 md:-mt-16 pl-2 lg:pl-0">
+                Good software is not just built. It is defined, engineered, tested, integrated, and evolved with{' '}
+                <span className="text-transparent bg-clip-text bg-brand-gradient italic font-normal">discipline.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section className="py-32 bg-white dark:bg-black relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+          <div>
+            <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 tracking-tight leading-[0.95] font-display">
+              Software that works at launch{' '}<br />
+              <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">and scales for years.</span>
+            </h2>
+            <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+            <p className="text-xl text-gray-500 font-light leading-relaxed mb-8">
+              Modern software development demands more than coding capacity. It requires product clarity, architecture foresight, delivery rigor, quality engineering, integration readiness, and the ability to adapt as business needs evolve.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-8">
+            <div className="insight-card p-10 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-[3rem] border border-transparent hover:border-brand-blue/10 transition-all group">
+              <div className="flex items-start space-x-6">
+                <div className="w-16 h-16 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl flex items-center justify-center text-brand-blue shadow-lg"><Layers className="w-8 h-8" /></div>
+                <div>
+                  <h4 className="text-xs font-bold tracking-widest text-brand-blue uppercase mb-3 text-transparent bg-clip-text bg-brand-gradient">THE CHALLENGE</h4>
+                  <p className="text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed italic">"Many software initiatives lose momentum because scope is unclear, systems do not integrate well, delivery slows, and future scale was not planned early enough."</p>
+                </div>
+              </div>
+            </div>
+            <div className="insight-card p-10 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-[3rem] border border-transparent hover:border-brand-blue/10 transition-all group">
+              <div className="flex items-start space-x-6">
+                <div className="w-16 h-16 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl flex items-center justify-center text-emerald-500 shadow-lg"><BrainCircuit className="w-8 h-8" /></div>
+                <div>
+                  <h4 className="text-xs font-bold tracking-widest text-emerald-500 uppercase mb-3">THE ADVANTAGE</h4>
+                  <p className="text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed italic">"When software development is approached as a full-cycle engineering discipline, teams move faster, reduce rework, improve quality, and create stronger long-term value."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </>
+);
+
+// Related Engineering Expertise — postFAQSections in legacy. No GSAP refs.
+const softwareDevelopmentRelatedSection = (
+  <section className="py-24 bg-gray-50 dark:bg-black overflow-hidden relative z-[10]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex flex-col lg:flex-row items-center gap-16">
+        <div className="lg:w-1/2">
+          <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 tracking-tight leading-[0.95] font-display">
+            Related Engineering{' '}<br />
+            <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">Expertise.</span>
+          </h2>
+          <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-xl">
+            Extend your software development initiative into a full-scale digital ecosystem. Kangqore provides the end-to-end engineering muscle to build, modernize, and scale.
+          </p>
+          <div className="space-y-4">
+            {[
+              // NOTE: legacy "/services/digital-engineering/mvp-acceleration" -> canonical /services/mvp-acceleration (dept segment dropped)
+              { name: 'MVP Acceleration', link: '/services/mvp-acceleration', icon: <Rocket className="w-5 h-5" />, desc: 'Rapid-velocity product engineering and scale-ready launch models.' },
+              // NOTE: legacy "/services/digital-engineering/api-microservices-engineering" -> canonical /services/api-microservices-engineering (dept segment dropped)
+              { name: 'API & Microservices Engineering', link: '/services/api-microservices-engineering', icon: <Network className="w-5 h-5" />, desc: 'Modern API-first and microservices architectures for scalable systems.' },
+              // NOTE: legacy "/services/digital-engineering/product-strategy-experience-design" -> canonical /services/product-strategy-experience-design (dept segment dropped)
+              { name: 'Product Strategy & Experience Design', link: '/services/product-strategy-experience-design', icon: <Layers className="w-5 h-5" />, desc: 'Strategic product planning, UX research, and design systems for digital products.' }
+            ].map((e, idx) => (
+              <Link key={idx} to={e.link} className="group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl transition-all shadow-sm">
+                <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-all">{e.icon}</div>
+                <div>
+                  <span className="font-bold text-lg block mb-1 group-hover:text-brand-blue transition-colors">{e.name}</span>
+                  <p className="text-gray-500 text-sm">{e.desc}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="lg:w-1/2 relative">
+          <div className="relative aspect-square w-full max-w-[550px] mx-auto">
+            <div className="absolute inset-0 pointer-events-none overflow-hidden"></div>
+            <div className="absolute top-0 left-0 p-3 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="flex justify-between gap-4"><span>build_id:</span> <span className="text-brand-blue">#KG_SD_V2</span></div>
+              <div className="flex justify-between gap-4"><span>pipeline:</span> <span className="text-emerald-500">DEPLOYED</span></div>
+            </div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.1)] flex items-center justify-center relative z-20 group">
+              <div className="absolute inset-4 bg-brand-gradient rounded-[32px] opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div className="absolute inset-6 border border-brand-blue/30 rounded-3xl border-dashed animate-spin-slow"></div>
+              <div className="relative"><Code2 className="w-20 h-20 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" /></div>
+              <div className="absolute -top-3 -right-3 w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-emerald-400 shadow-2xl border border-white/10"><CheckCircle2 className="w-5 h-5" /></div>
+            </div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center relative z-10 hover:-translate-y-2 transition-all duration-300"><Rocket className="w-12 h-12 text-brand-blue" /></div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">MVP_Accel</span>
+              </div>
+            </div>
+            <div className="absolute bottom-10 left-0 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Network className="w-12 h-12 text-cyan-400" /></div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">API_Eng</span>
+              </div>
+            </div>
+            <div className="absolute bottom-10 right-0 group">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center relative -translate-x-4 hover:translate-x-0 transition-transform duration-300"><Layers className="w-12 h-12 text-white" /></div>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Strategy</span>
+              </div>
+            </div>
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
+              <defs><linearGradient id="exec-flow-grad-sd" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#0066FF" stopOpacity="0.8" /><stop offset="100%" stopColor="#00D2FF" stopOpacity="0.4" /></linearGradient></defs>
+              <path d="M250,250 L250,120" stroke="url(#exec-flow-grad-sd)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <path d="M250,250 L120,400" stroke="url(#exec-flow-grad-sd)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <path d="M250,250 L380,400" stroke="url(#exec-flow-grad-sd)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <circle r="3" fill="#0066FF"><animateMotion path="M250,250 L250,120" dur="2s" repeatCount="indefinite" /></circle>
+              <circle r="3" fill="#00D2FF"><animateMotion path="M250,250 L120,400" dur="2.5s" repeatCount="indefinite" /></circle>
+              <circle r="3" fill="#6366f1"><animateMotion path="M250,250 L380,400" dur="3s" repeatCount="indefinite" /></circle>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const softwareDevelopment = {
+  titleLine1: 'Software',
+  titleHighlight: 'Development.',
+  videoBackground: 'https://videos.pexels.com/video-files/7989448/7989448-hd_1920_1080_25fps.mp4',
+  description: "Build scalable software with sharper engineering, stronger product thinking, and faster execution.",
+  fullDescription: (
+    <div className="space-y-4">
+      <p className="font-light tracking-tight leading-snug opacity-80">
+        Kangqore delivers end-to-end software development services that help organizations design, build, modernize, integrate, and scale digital products with confidence. We combine product understanding, engineering depth, modern architecture, domain insight, and future-ready technologies to create software that is reliable, adaptable, and built for measurable business value.
+      </p>
+    </div>
+  ),
+  image: 'https://images.pexels.com/photos/3184583/pexels-photo-3184583.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+
+  hideGenericMidPageCta: true,
+  hideGenericFaq: true,
+
+  stats: [
+    { value: 'Validate', label: 'Ideas, requirements & technical direction', color: 'text-cyan-400' },
+    { value: 'Build', label: 'Reliable digital products & platforms', color: 'text-blue-400' },
+    { value: 'Accelerate', label: 'Delivery speed, quality & release confidence', color: 'text-emerald-400' },
+    { value: 'Scale', label: 'Systems, teams & software foundations', color: 'text-purple-400' }
+  ],
+  primaryButton: { text: "Talk To Our Experts", link: "/contact" },
+  secondaryButton: { text: "Explore Capabilities", link: "#capabilities" },
+  ctaTitle: 'Ready to build software that is sharper, faster, and built to scale?',
+  ctaDescription: "Let's define the right product direction, engineer the right solution, and deliver software that creates lasting business value across launch, growth, and long-term evolution.",
+  ctaSecondaryButton: { text: "Schedule A Software Strategy Session", link: "/contact" },
+  trustStripText: 'Trusted by ambitious startups, growth-stage businesses, and enterprises building modern digital products, platforms, and software ecosystems.',
+  highFidelity: {
+    narrative: {
+      badge: 'SOFTWARE ENGINEERING :: ENTERPRISE GRADE',
+      titleLine1: 'Software',
+      titleHighlight: 'Development.',
+      titleLine2: '',
+      description: 'Most software initiatives lose momentum not because the code is bad — but because clarity was missing, architecture was short-sighted, quality was treated as an afterthought, and delivery lacked engineering discipline. Kangqore exists to fix that.',
+      bottleneckLabel: 'The Silent Killer',
+      bottleneckText: 'Unclear scope compounds into rework. Short-sighted architecture becomes technical debt. Bolted-on testing creates fragile releases. The result: products that ship late and break early.',
+      requirementLabel: 'The Kangqore Way',
+      requirementText: 'A unified engineering discipline that connects discovery, architecture, development, quality, DevOps, and evolution into one cohesive, accountable delivery model.',
+      image: 'https://images.pexels.com/photos/3184583/pexels-photo-3184583.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+      statusLabel: 'Engineering Velocity',
+      statusValue: 'MAXIMIZED'
+    },
+    philosophy: {
+      icon: <Code2 className="w-7 h-7 text-gray-900 dark:text-white" />,
+      title: 'Build What Matters.',
+      titleHighlight: 'Ship What Wins.',
+      description: 'We don\'t just write code. We engineer systems that are defined with clarity, built with discipline, tested with rigor, and evolved with intention.',
+      pills: ['Discovery', 'Architecture', 'Engineering', 'Evolution'],
+      features: [
+        { title: 'Discovery', label: 'Product Discovery & Framing', icon: <Search className="w-5 h-5 text-gray-400" />, content: 'Define the right product before development effort compounds through structured discovery and validation.' },
+        { title: 'Architecture', label: 'Cloud-Native Architecture', icon: <Layers className="w-5 h-5 text-gray-400" />, content: 'Design scalable, maintainable systems with modern patterns — microservices, API-first, event-driven.' },
+        { title: 'Engineering', label: 'Full-Stack Engineering', icon: <Code2 className="w-5 h-5 text-gray-400" />, content: 'Build with quality-first discipline across frontend, backend, mobile, and cloud environments.' },
+        { title: 'Evolution', label: 'Continuous Improvement', icon: <RefreshCw className="w-5 h-5 text-gray-400" />, content: 'Support, optimize, modernize, and extend the product through structured post-launch engineering.' }
+      ]
+    },
+    matrix: {
+      engineId: 'Engine :: SD_V2',
+      title: 'Our Execution Matrix.',
+      subtext: 'A connected system for moving from requirements to reliable, scalable software at velocity.',
+      layers: [
+        { title: 'Define', id: 'SD_DEF', icon: <Search />, desc: 'Deconstructing business requirements, user needs, and technical constraints into actionable engineering blueprints.' },
+        { title: 'Architect', id: 'SD_ARC', icon: <Layers />, desc: 'Designing scalable cloud-native architectures, microservices patterns, and API-first integration strategies.' },
+        { title: 'Develop', id: 'SD_DEV', icon: <Zap />, desc: 'High-velocity engineering with CI/CD automation, quality-first pipelines, and test-driven delivery workflows.' },
+        { title: 'Evolve', id: 'SD_EVO', icon: <Activity />, desc: 'Continuous optimization, modernization readiness, performance tuning, and long-term platform sustainability.' }
+      ]
+    },
+    schematic: {
+      titleLine1: 'Engineering Rigor.',
+      titleHighlight: 'Business Value.',
+      description: 'Your software should be your greatest competitive asset. We engineer it to stay that way — across every release, every integration, and every scale milestone.',
+      stats: [
+        { label: 'Quality', val: 'ABSOLUTE' },
+        { label: 'Speed', val: 'VELOCITY' },
+        { label: 'Security', val: 'HARDENED' }
+      ]
+    }
+  },
+  capabilitiesTitle: "Our Capabilities.",
+  capabilitiesDescription: "Kangqore's software development capabilities are designed to help organizations move from idea to deployment with stronger clarity, better engineering outcomes, and greater readiness for scale.",
+  capabilities: [
+    {
+      title: "Product Discovery & Solution Framing",
+      description: "Define the right product before development effort compounds. Kangqore helps organizations shape stronger software direction before engineering begins by bringing together business goals, user needs, workflow understanding, and technical thinking.",
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: ["Idea validation and requirement clarity", "User, workflow, and market-context discovery", "MVP and roadmap definition", "Solution framing and scope prioritization"],
+      micro: "Clear direction before the first line of code."
+    },
+    {
+      title: "UI/UX Design Services",
+      description: "Create digital experiences that are intuitive, usable, and aligned to product intent. We design software experiences that are not only visually refined, but also practical, user-centered, and conversion-aware.",
+      bgImage: '/images/capabilities/ux-design.png',
+      items: ["UX strategy and journey mapping", "Wireframes and interface design", "Interaction logic and design systems", "Usability-focused product experience design"],
+      micro: "Interfaces that convert and retain."
+    },
+    {
+      title: "Custom Software Development",
+      description: "Build tailored software aligned to your business logic, operations, and growth model. Kangqore develops custom software solutions that reflect how your business actually works.",
+      bgImage: '/images/capabilities/software-engineering.png',
+      items: ["Custom web and enterprise applications", "Platform and product engineering", "Business workflow enablement", "Scalable, maintainable software delivery"],
+      micro: "Software shaped by your business, not generic templates."
+    },
+    {
+      title: "Mobile Application Development",
+      description: "Launch mobile experiences that are performance-ready and user-centered across devices. We create mobile applications that combine smooth UX, reliable performance, and modern engineering standards.",
+      bgImage: '/images/capabilities/data-analytics.png',
+      items: ["iOS and Android application development", "Cross-platform mobile engineering", "Mobile UX and interface delivery", "Testing, release, and optimization support"],
+      micro: "Mobile-first, performance-always."
+    },
+    {
+      title: "Cloud Application Development",
+      description: "Develop cloud-native applications with better scalability, resilience, and flexibility. Kangqore builds cloud-ready applications that support modern deployment and easier scaling.",
+      bgImage: '/images/capabilities/cloud-infrastructure.png',
+      items: ["Cloud-ready architecture planning", "Modern application deployment patterns", "Reliability and performance optimization", "Integration with cloud ecosystems"],
+      micro: "Born in the cloud, built for scale."
+    },
+    {
+      title: "DevOps & Delivery Enablement",
+      description: "Accelerate release cycles and improve delivery confidence through modern engineering operations. We help teams release faster, reduce deployment friction, and improve engineering consistency.",
+      bgImage: '/images/capabilities/cloud-infrastructure.png',
+      items: ["CI/CD pipeline enablement", "Infrastructure automation", "Environment orchestration", "Faster, safer release workflows"],
+      micro: "Ship with speed and confidence."
+    },
+    {
+      title: "Software Testing & Quality Engineering",
+      description: "Strengthen software quality through disciplined testing and release assurance. Kangqore helps teams improve confidence in every release through structured quality engineering practices.",
+      bgImage: '/images/capabilities/software-engineering.png',
+      items: ["Functional and regression testing", "Performance and reliability validation", "Security-aware testing support", "QA strategy and release confidence"],
+      micro: "Quality is a discipline, not a checkpoint."
+    },
+    {
+      title: "Application Support & Maintenance",
+      description: "Keep software healthy, current, and operational after launch. Kangqore provides structured support and maintenance services that help teams sustain application stability and resolve issues faster.",
+      bgImage: '/images/capabilities/ai-cognitive.png',
+      items: ["Issue resolution and enhancement support", "Patching and maintenance cycles", "Performance and uptime support", "Long-term application sustainability"],
+      micro: "Software value extends far beyond release day."
+    },
+    {
+      title: "Legacy System Modernization",
+      description: "Transform aging applications into more agile, scalable, and future-fit software assets. Kangqore brings together assessment, refactoring, migration, and architecture renewal.",
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: ["Legacy assessment and modernization planning", "Architecture and platform renewal", "Migration and refactoring strategies", "Continuity-led transformation execution"],
+      micro: "Evolve without disruption."
+    },
+    {
+      title: "SaaS Application Development",
+      description: "Create scalable SaaS platforms with stronger multi-tenant, operational, and growth readiness. Kangqore designs and engineers SaaS products built for recurring delivery and platform flexibility.",
+      bgImage: '/images/capabilities/software-engineering.png',
+      items: ["SaaS product design and engineering", "Subscription and platform architecture", "Scalable cloud-based deployment", "Extensible product foundations"],
+      micro: "Platforms that grow with your customer base."
+    },
+    {
+      title: "System Integration Services",
+      description: "Improve operational efficiency by connecting applications, platforms, and data flows. Kangqore helps organizations integrate platforms, services, and data environments for smoother operations.",
+      bgImage: '/images/capabilities/digital-transformation.png',
+      items: ["Integration architecture planning", "API and service connectivity", "Workflow and system interoperability", "Enterprise data movement enablement"],
+      micro: "Connected systems. Streamlined operations."
+    },
+    {
+      title: "Technology Consulting & Engineering Advisory",
+      description: "Make sharper technology decisions with architecture, tooling, and delivery guidance. Kangqore provides technology consulting that helps organizations make better software decisions before committing effort.",
+      bgImage: '/images/capabilities/software-engineering.png',
+      items: ["Solution architecture advisory", "Engineering and platform direction", "Delivery-model recommendations", "Modernization and technical planning"],
+      micro: "Better decisions before bigger commitments."
+    }
+  ],
+  trustPillars: [
+    { title: 'Product clarity before engineering begins', tag: 'Discovery', description: 'Define the right product direction before development effort compounds.' },
+    { title: 'Architecture designed for longevity', tag: 'Architecture', description: 'Build software foundations that can scale, integrate, and adapt without early regret.' },
+    { title: 'Quality embedded at every phase', tag: 'Quality', description: 'Testing, security, and reliability are engineering disciplines — not last-stage checkpoints.' },
+    { title: 'DevOps-accelerated delivery', tag: 'Velocity', description: 'CI/CD pipelines, infrastructure automation, and release workflows that ship with confidence.' },
+    { title: 'Full-cycle accountability', tag: 'Lifecycle', description: 'From discovery through post-launch support, one cohesive model for the entire software journey.' },
+    { title: 'Cross-functional alignment', tag: 'Alignment', description: 'Product thinking, UX, architecture, dev, testing, and DevOps unified into one execution path.' }
+  ],
+  whyKangqore: [
+    { title: 'Business-Aligned Engineering', description: 'We connect software decisions to business goals, not just technical implementation.' },
+    { title: 'Full-Cycle Execution', description: 'From discovery and design to development, testing, deployment, and optimization — we cover the lifecycle end to end.' },
+    { title: 'Future-Ready Foundations', description: 'We help you build software that can scale, integrate, modernize, and adapt without early architectural regret.' }
+  ],
+  industriesTitle: 'Software Development Services Across Industries, Technologies & Business Priorities',
+  industriesDescription: 'Software decisions sit at the intersection of industry context, technology choices, and leadership goals. Kangqore helps organizations navigate all three.',
+  industries: [
+    { name: 'Healthcare', description: 'Software aligned to compliance, patient workflows, and clinical data requirements.' },
+    { name: 'Software & Technology', description: 'Platforms, SaaS products, and developer tools built for scale and extensibility.' },
+    { name: 'FinTech & Banking', description: 'Secure, reliable financial software meeting regulatory and performance demands.' },
+    { name: 'Real Estate', description: 'Property management, marketplace, and transaction platforms built for growth.' },
+    { name: 'Travel & Logistics', description: 'Booking, fleet management, and operational software optimized for real-time processing.' },
+    { name: 'Media & Entertainment', description: 'Content platforms, streaming solutions, and engagement-driven digital products.' }
+  ],
+  technologiesTitle: "Tools & Technologies We Use Across Software Development.",
+  technologiesDescription: "Kangqore aligns technology choices to product goals, architectural needs, performance demands, and long-term maintainability.",
+  technologies: [
+    { category: 'Frontend Technologies', items: ['React', 'Angular', 'Vue.js', 'Next.js', 'Astro', 'HTML5', 'CSS'] },
+    { category: 'Backend Technologies', items: ['.NET', 'Java', 'Node.js', 'Python', 'PHP', 'Go'] },
+    { category: 'Databases / Data Storage', items: ['MySQL', 'SQL Server', 'MongoDB', 'Amazon S3', 'Amazon RDS', 'Cassandra'] },
+    { category: 'Mobile', items: ['iOS', 'Android', 'React Native', 'Flutter', 'Xamarin', 'Cordova', 'PWA'] },
+    { category: 'DevOps', items: ['Jenkins', 'Terraform', 'Ansible', 'Kubernetes', 'Docker', 'Chef', 'Puppet'] },
+    { category: 'Cloud Technologies', items: ['AWS', 'Microsoft Azure', 'Google Cloud'] },
+    { category: 'Platforms', items: ['Salesforce', 'Adobe Commerce', 'Power BI', 'Oracle'] }
+  ],
+  customFAQs: [
+    { question: "What does Kangqore Software Development include?", answer: "It includes discovery, UX/UI, custom engineering, mobile and cloud development, testing, DevOps, integrations, modernization, SaaS development, and post-launch support." },
+    { question: "Do you work with both startups and enterprises?", answer: "Yes. We support early-stage product teams, scaling businesses, and enterprise organizations depending on their software goals and delivery complexity." },
+    { question: "Can you modernize existing systems instead of building from scratch?", answer: "Yes. We work across both net-new software development and modernization of legacy applications, platforms, and workflows." },
+    { question: "Do you provide software testing and post-launch support?", answer: "Yes. Quality engineering, release validation, maintenance, and continuous support are part of a full-cycle software delivery model." },
+    { question: "How do you choose the right tech stack?", answer: "We choose based on product goals, scalability needs, integration complexity, security requirements, team realities, and long-term maintainability." },
+    { question: "Can Kangqore also support cloud, DevOps, and integration needs?", answer: "Yes. Those capabilities are tightly integrated into our software development delivery model." }
+  ],
+  preMatrixSection: softwareDevelopmentPreMatrixSection,
+  postCapabilitiesSections: <SoftwareDevelopmentAnimatedSections />,
+  postFAQSections: softwareDevelopmentRelatedSection,
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FOUNDRY LEGACY SECTIONS — Phase D2 registry export
+// Spread into FOUNDRY_SECTIONS by foundry/sections.jsx. Keys are canonical slugs.
+// ═══════════════════════════════════════════════════════════════════════════════
+export const FOUNDRY_LEGACY_SECTIONS = {
+  'embedded-design-systems': embeddedDesignSystems,
+  'engineering-rd-services': engineeringRDServices,
+  'product-digital-engineering': productDigitalEngineering,
+  'devops-as-a-service': devopsAsAService,
+  'managed-infrastructure-services': managedInfrastructureServices,
+  'engineering-foundry': engineeringFoundry,
+  'modernization-infrastructure': modernizationInfrastructure,
+  'software-development': softwareDevelopment,
+};
