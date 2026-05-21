@@ -248,22 +248,22 @@ const Header = ({ onMenuClick }) => {
         {/* Top utility bar - Floating Pill */}
         <div 
           className={`hidden lg:block max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto transition-all duration-500 ease-in-out ${
-            showUtilityBar ? 'mt-4 translate-y-0 opacity-100 h-9' : 'mt-0 -translate-y-full opacity-0 h-0 overflow-hidden'
+            showUtilityBar ? 'mt-4 translate-y-[4px] opacity-100 h-9' : 'mt-0 -translate-y-full opacity-0 h-0 overflow-hidden'
           }`}
         >
           <div className="flex justify-end items-center h-full px-8 text-[13px] font-medium tracking-wide">
-            <div className={`flex items-center space-x-5 drop-shadow-md transition-colors duration-500 ${isLightBackground ? 'text-gray-900' : 'text-white'}`}>
-                <Link to="/careers" className={`transition-colors ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Careers</Link>
-                <Link to="/news" className={`transition-colors ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>News</Link>
-                <Link to="/communities" className={`transition-colors ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Communities</Link>
-                <Link to="/investors" className={`transition-colors ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Investors</Link>
+            <div className={`flex items-center space-x-5 drop-shadow-md transition-colors duration-500 ${(isLightBackground && !isInHero) ? 'text-gray-900' : 'text-white'}`}>
+                <Link to="/careers" className={`transition-colors ${(isLightBackground && !isInHero) ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Careers</Link>
+                <Link to="/news" className={`transition-colors ${(isLightBackground && !isInHero) ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>News</Link>
+                <Link to="/communities" className={`transition-colors ${(isLightBackground && !isInHero) ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Communities</Link>
+                <Link to="/investors" className={`transition-colors ${(isLightBackground && !isInHero) ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Investors</Link>
 
                 <LanguageSwitcher />
                 
                 {/* Dark Mode Toggle */}
                 <button
                   onClick={toggleTheme}
-                  className={`p-1.5 rounded-full transition-colors ${isLightBackground ? 'hover:bg-black/10' : 'hover:bg-white/20'}`}
+                  className={`p-1.5 rounded-full transition-colors ${(isLightBackground && !isInHero) ? 'hover:bg-black/10' : 'hover:bg-white/20'}`}
                   aria-label="Toggle Dark Mode"
                 >
                   {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -281,7 +281,7 @@ const Header = ({ onMenuClick }) => {
                         user.role === 'JOB_SEEKER' ? '/dashboard/careers' :
                         '/client-portal'
                       }
-                      className={`flex items-center gap-1 transition-colors font-medium ${isLightBackground ? 'hover:text-gray-600' : 'hover:text-white/80'}`}
+                      className={`flex items-center gap-1 transition-colors font-medium ${(isLightBackground && !isInHero) ? 'hover:text-gray-600' : 'hover:text-white/80'}`}
                     >
                       <div className="w-6 h-6 rounded-full bg-brand-gradient flex items-center justify-center text-white font-bold overflow-hidden">
                         {user.avatarUrl ? (
@@ -331,10 +331,10 @@ const Header = ({ onMenuClick }) => {
             showUtilityBar ? 'pt-2' : 'pt-6'
           }`}
         >
-          <div className={`backdrop-blur-2xl rounded-full border shadow-[0_8px_32px_rgba(0,0,0,0.12)] flex items-center justify-between h-16 lg:h-20 px-6 lg:px-8 transition-colors duration-500 ${
+          <div className={`backdrop-blur-[12px] rounded-full border shadow-[0_8px_32px_rgba(0,0,0,0.08)] flex items-center justify-between h-16 lg:h-20 px-6 lg:px-8 transition-colors duration-500 ${
             isLightBackground 
-              ? 'bg-black/[0.03] dark:bg-black/10 border-black/5 shadow-[inset_0_1px_1px_rgba(0,0,0,0.02)]' 
-              : 'bg-white/[0.02] dark:bg-white/[0.01] border-white/5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
+              ? 'bg-black/[0.03] dark:bg-black/[0.05] border-black/[0.04] shadow-[inset_0_1px_1px_rgba(0,0,0,0.01)]' 
+              : 'bg-white/[0.08] dark:bg-white/[0.05] border-white/[0.06] shadow-[inset_0_1px_1px_rgba(255,255,255,0.04)]'
           }`}>
             {/* Logo Island Section */}
             <div className="flex items-center">
