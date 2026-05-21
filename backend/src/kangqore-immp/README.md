@@ -1,0 +1,150 @@
+# KIMMP — Kangqore Intelligence Mind Management Processor
+
+KIMMP is Kangqore's **mother intelligence layer** — the brain that sits above and
+connects the four existing systems:
+
+- **eQORE** — talks to people
+- **eQORE Lead Intelligence** — qualifies people
+- **ALIS** — studies revenue / market patterns
+- **VIS** — builds visibility (SEO / AEO / GEO / LLMO)
+
+> eQORE speaks, Lead Intelligence qualifies, ALIS strategizes, VIS grows knowledge —
+> **KIMMP understands, decides, and orchestrates.**
+
+This folder currently ships **PR 1 only**: the **Human Behavior Intelligence Layer**.
+The wider KIMMP vision (decision engine, workflow orchestrator, governance, agent
+registry, revenue/delivery intelligence, founder command center) is a phased roadmap —
+see *Roadmap* below. Nothing here is wired into the live eQORE flow yet; it is a
+passive, admin-only, read-only intelligence service.
+
+---
+
+## What PR 1 does
+
+Given conversation text, it infers the visitor's **behavioral state** — with
+confidence scores — so Kangqore can respond like a thoughtful business operator
+instead of a generic chatbot.
+
+It detects nine states: `URGENCY`, `FRUSTRATION`, `STRESS`, `CONFUSION`,
+`SKEPTICISM`, `TRUST_NEED`, `TECHNICAL_DEPTH`, `DECISION_READINESS`,
+`BUYING_SERIOUSNESS` — plus a communication style and a recommended response mode.
+
+### Ethical boundary (locked, non-negotiable)
+
+KIMMP analyzes **observable communication signals only**. It never emits clinical
+diagnoses or harmful labels ("low IQ", "mentally weak", "emotionally unstable", …).
+This is enforced twice: in the Tier-2 system prompt, and again by a deterministic
+`LabelGuardrail` that scrubs every human-facing string before it leaves the layer.
+
+---
+
+## Architecture — two-tier hybrid
+
+```
+              ┌───────────────────────────────────────────────┐
+  messages →  │  BehaviorAnalyzer  (orchestrator)              │
+              └───────────────────────────────────────────────┘
+                       │
+        ┌──────────────┴───────────────┐
+        ▼                              ▼
+  TIER 1 — local                 TIER 2 — cloud brain
+  Tier1SignalExtractor           Tier2ClaudeReasoner
+  • lexicons + heuristics        • Anthropic / Claude
+  • ~1ms, free, every message    • only when Tier-1 is unsure
+  • fully explainable              OR a HIGH-severity signal fires
+        │                              │
+        └──────────────┬───────────────┘
+                       ▼
+         TraitEstimator (Big Five — volume-gated)
+                       ▼
+         LabelGuardrail → BehaviorProfile
+```
+
+- **Tier 1** is the genuinely *local* "intelligence algorithm" — weighted phrase
+  lexicons (`behavior/lexicons.ts`) plus structural heuristics (exclamation density,
+  ALL-CAPS ratio, question density). No API call.
+- **Tier 2** escalates to Claude only when Tier-1 aggregate confidence is below
+  `KIMMP_TIER2_CONFIDENCE_FLOOR` *or* a `HIGH`-severity state is present. Most
+  messages never reach the API, so cost stays bounded.
+- **Traits** (Big Five / OCEAN) are **volume-gated** — short chats do not carry
+  enough text for a defensible personality estimate, so traits stay `available:false`
+  until the conversation crosses `KIMMP_TRAIT_MIN_CHARS` / `KIMMP_TRAIT_MIN_MESSAGES`.
+  ("Neuroticism" is surfaced as `emotionalSensitivity` to avoid a clinical label.)
+
+### Files
+
+| Path | Role |
+|---|---|
+| `core/types.ts` | Shared types, `KIMMP_VERSION` |
+| `core/flags.ts` | Env-driven feature flags & tunables |
+| `behavior/lexicons.ts` | Tier-1 weighted phrase lexicons |
+| `behavior/signalExtractor.service.ts` | Tier-1 deterministic extractor |
+| `behavior/claudeReasoner.service.ts` | Tier-2 Claude reasoning pass |
+| `behavior/traitEstimator.service.ts` | Volume-gated Big Five estimator |
+| `behavior/behaviorAnalyzer.service.ts` | Orchestrator (Tier-1 → Tier-2 → traits) |
+| `behavior/behaviorSchema.ts` | zod validation (input + Tier-2 payload) |
+| `behavior/behaviorProfileStore.service.ts` | Optional, graceful persistence |
+| `guardrails/labelGuardrail.ts` | Harmful-label backstop |
+| `controllers/behaviorAnalysis.controller.ts` | HTTP handlers |
+| `routes.ts` | Route registry |
+
+---
+
+## API
+
+Mounted at `/api/admin/kangqore-immp` (see `backend/src/index.ts`).
+
+| Method | Path | Auth | Purpose |
+|---|---|---|---|
+| GET | `/health` | public | Module status |
+| POST | `/behavior/analyze` | ADMIN | Analyze conversation text |
+| GET | `/behavior/profiles/:id` | ADMIN | Fetch a stored profile |
+
+`POST /behavior/analyze` body:
+
+```json
+{
+  "messages": [
+    { "role": "USER", "content": "We have an old ERP system. It keeps breaking. Our team is frustrated. Can you fix this fast?" }
+  ],
+  "analyzedRole": "USER"
+}
+```
+
+---
+
+## Configuration
+
+| Env var | Default | Purpose |
+|---|---|---|
+| `KIMMP_ENABLED` | `true` | Master switch |
+| `KIMMP_TIER2_ENABLED` | `true` | Allow the Claude reasoning pass |
+| `KIMMP_PERSIST` | `false` | Persist profiles (needs the migration) |
+| `KIMMP_REASONER_MODEL` | `claude-haiku-4-5-20251001` | Tier-2 model |
+| `KIMMP_TIER2_CONFIDENCE_FLOOR` | `0.55` | Escalation threshold |
+| `KIMMP_TRAIT_MIN_CHARS` | `600` | Trait volume gate (characters) |
+| `KIMMP_TRAIT_MIN_MESSAGES` | `4` | Trait volume gate (messages) |
+
+Tier-2 also needs `ANTHROPIC_API_KEY` (already used by eQORE). Without it, KIMMP
+runs Tier-1 only.
+
+## Persistence / migration
+
+Persistence is **deferred to a follow-up PR**. The `KimmpBehaviorProfile` model,
+its migration, and enabling `KIMMP_PERSIST` ship separately — this PR is the
+behavior engine only. The analyze endpoint works fully in-memory; the store layer
+(`behavior/behaviorProfileStore.service.ts`) is present but dormant while
+`KIMMP_PERSIST=false` (the default).
+
+---
+
+## Roadmap (phased — not built yet)
+
+| PR | Slice |
+|---|---|
+| **PR 1 ✅** | Human Behavior Intelligence Layer (this folder) |
+| PR 2 | Wire behavior signals into the live eQORE response flow |
+| PR 3 | Signal Ledger + Decision Engine |
+| PR 4 | Lead-Intelligence / ALIS / VIS enrichment |
+| PR 5 | Permission · Governance · Observability |
+| PR 6+ | Workflow orchestrator, revenue/delivery/CS intelligence, Command Center |

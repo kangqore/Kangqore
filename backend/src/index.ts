@@ -51,6 +51,7 @@ import schedulingRoutes from './routes/scheduling';
 import { eqorePublicRoutes } from './eqore/routes';
 import { eqoreLeadIntelligenceRoutes } from './eqore-lead-intelligence';
 import { alisRouter } from './kangqore-alis';
+import { kangqoreImmpRoutes } from './kangqore-immp';
 import { authenticate, authorize } from './middleware/auth';
 
 import { errorHandler } from './middleware/errorHandler';
@@ -163,6 +164,8 @@ app.use('/api/scheduling', schedulingRoutes);
 app.use('/api/eqore', eqorePublicRoutes);
 app.use('/api/admin/eqore', eqoreLeadIntelligenceRoutes);
 app.use('/api/admin/alis', authenticate, authorize(['ADMIN']), alisRouter);
+// KIMMP — Human Behavior Intelligence Layer (auth applied per-route inside the router).
+app.use('/api/admin/kangqore-immp', kangqoreImmpRoutes);
 
 import servicesRoutes from './routes/services'; // Phase 3
 app.use('/api/services', servicesRoutes); 
