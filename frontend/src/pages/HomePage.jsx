@@ -10,6 +10,8 @@ const ConciergeSection = lazy(() =>
 );
 
 import HeroGlassCards from '../components/hero/HeroGlassCards';
+import HeroChatWidget from '../components/hero/HeroChatWidget';
+import BIDSProductVisual from '../components/hero/BIDSProductVisual';
 import { Link } from 'react-router-dom';
 import { 
   ChevronLeft, ChevronRight, ChevronDown, Calendar, Clock,
@@ -51,59 +53,37 @@ import DepartmentCarousel from '../components/home/DepartmentCarousel';
 const heroSlides = [
   {
     id: 1,
+    type: 'video',
     tag: "ENTERPRISE TRANSFORMATION",
     title: "Engineer the Systems That",
     titleGradient: "Scale Your Ambition.",
     description: "Kangqore builds intelligent digital infrastructure that helps businesses modernize operations, automate workflows, secure systems, and accelerate growth.",
-    microProof: "Trusted by 150+ Enterprises • 15 Depts • 61+ Services",
-    cta: "Start Your Transformation",
-    link: "/contact",
-    video: "https://cdn.pixabay.com/video/2023/10/20/185859-876772714_large.mp4" 
+    cta: "Explore Our Capabilities",
+    secondaryCta: "Schedule Your 30-min Discovery Call",
+    link: "/services",
+    secondaryLink: "/contact",
+    video: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4",
   },
   {
     id: 2,
-    tag: "CYBERSECURITY & RISK",
-    title: "Secure The Critical Systems",
-    titleGradient: "Your Business Cannot Break.",
-    description: "Kangqore actively strengthens critical applications, enterprise cloud environments, core infrastructure, and digital workflows. We deploy security-first engineering designed to systematically reduce operational vulnerabilities and protect business continuity.",
-    microProof: "Cloud Risk • Business Continuity",
-    cta: "Get Security Snapshot",
-    link: "/contact",
-    video: "https://cdn.pixabay.com/video/2020/09/11/49603-458315181_large.mp4" 
+    type: 'chat',
+    tag: "eQORE AI™ CONCIERGE",
+    title: "Innovate Your Next Move.",
+    description: "",
+    image: "/images/hero-tennis.png",
   },
   {
     id: 3,
-    tag: "LEGACY MODERNIZATION",
-    title: "Modernize Legacy Systems.",
-    titleGradient: "Avoid The Rewrite Gamble.",
-    description: "We partner with technology leaders to systematically reduce compounding technical debt and securely migrate outdated monolithic systems. Build highly resilient, cloud-ready architecture through tightly controlled and risk-managed engineering execution.",
-    microProof: "Cloud Migration • Risk-Managed Sprints",
-    cta: "Request Legacy Risk Audit",
-    link: "/department/cloud-engineering",
-    video: "https://cdn.pixabay.com/video/2023/05/22/164016-829398835_large.mp4" 
+    type: 'product',
+    tag: "PROPRIETARY INTELLIGENCE",
+    title: "Kangqore BIDS™",
+    description: "Kangqore BIDS™ is a proprietary intelligence framework that diagnoses operational bottlenecks, maps growth opportunities, and recommends data-backed transformation priorities across technology, operations, marketing, security, and business systems.",
+    cta: "Request a Diagnostic Assessment",
+    secondaryCta: "Explore BIDS™",
+    link: "/contact",
+    secondaryLink: "/bids",
+    background: "/images/imgbg3.png",
   },
-  {
-    id: 4,
-    tag: "AGENTIC AI & AUTOMATION",
-    title: "Automate Manual Workflows.",
-    titleGradient: "Keep Control Of Decisions.",
-    description: "We custom-design agentic AI workflows, advanced RAG systems, MLOps foundations, and intelligent automation pipelines that drastically reduce repetitive work. Maintain strict human oversight wherever enterprise accuracy, compliance, and judgment matter most.",
-    microProof: "Enterprise-Ready AI • Human-in-the-Loop Architecture",
-    cta: "Get AI Workflow Assessment",
-    link: "/department/ai-cognitive",
-    video: "https://cdn.pixabay.com/video/2020/09/11/49603-458315181_large.mp4" 
-  },
-  {
-    id: 5,
-    tag: "CONVERSION INTELLIGENCE",
-    title: "Your Website Gets Traffic.",
-    titleGradient: "But Is It Generating Pipeline?",
-    description: "We combine technical SEO, advanced GEO, LLMO, precision CRO, deep funnel analytics, and AI-led lead qualification frameworks. Systematically convert your digital visibility into high-value, sales-ready opportunities for your enterprise pipeline.",
-    microProof: "Predictive Lead Scoring • KVIS Visibility Systems",
-    cta: "Find Conversion Leaks",
-    link: "/department/digital-marketing",
-    video: "https://cdn.pixabay.com/video/2023/10/20/185859-876772714_large.mp4"
-  }
 ];
 
 const caseStudies = [
@@ -363,130 +343,291 @@ const HUDText = ({ text, delay = 0, isCyan = false }) => {
 
 const HeroCarousel = () => {
   const { t } = useTranslation();
-  const slide = heroSlides[0];
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isManuallyPaused, setIsManuallyPaused] = useState(false);
+  const [isChatEngaged, setIsChatEngaged] = useState(false);
+  const videoRef = useRef(null);
+  const touchStartX = useRef(0);
+  const slideCount = heroSlides.length;
+
+  // Derived: auto-play only when ALL conditions are met
+  const isAutoPlaying = !isManuallyPaused && !isChatEngaged;
+
+  // Listen for eQORE chat engagement events from HeroChatWidget
+  useEffect(() => {
+    const handleChatEngaged = () => setIsChatEngaged(true);
+    const handleChatIdle = () => setIsChatEngaged(false);
+    window.addEventListener('hero-chat-engaged', handleChatEngaged);
+    window.addEventListener('hero-chat-idle', handleChatIdle);
+    return () => {
+      window.removeEventListener('hero-chat-engaged', handleChatEngaged);
+      window.removeEventListener('hero-chat-idle', handleChatIdle);
+    };
+  }, []);
+
+  // Auto-advance every 6 seconds
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const timer = setInterval(() => {
+      setActiveSlide(prev => (prev + 1) % slideCount);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [isAutoPlaying, slideCount]);
+
+  // Pause/play video based on active slide
+  useEffect(() => {
+    if (videoRef.current) {
+      if (activeSlide === 0) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [activeSlide]);
+
+  const goToSlide = (index) => {
+    setActiveSlide(index);
+  };
+
+  // Touch swipe handlers
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e) => {
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 50) {
+      if (delta > 0) goToSlide((activeSlide + 1) % slideCount);
+      else goToSlide((activeSlide - 1 + slideCount) % slideCount);
+    }
+  };
+
+  const currentSlide = heroSlides[activeSlide];
 
   return (
-    <div className="w-full bg-white dark:bg-black px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-8 relative transition-colors duration-500">
-      {/* ── Corner Accents: Inverse rounded geometry at the sharp 90° page corners ── */}
-      <div className="absolute top-0 left-0 w-[72px] h-[72px] sm:w-[90px] sm:h-[90px] lg:w-[110px] lg:h-[110px] bg-[#070d1b] overflow-hidden z-0">
-        <div className="absolute bottom-0 right-0 w-full h-full bg-white dark:bg-black rounded-tl-full transition-colors duration-500" />
-      </div>
-      <div className="absolute top-0 right-0 w-[72px] h-[72px] sm:w-[90px] sm:h-[90px] lg:w-[110px] lg:h-[110px] bg-[#070d1b] overflow-hidden z-0">
-        <div className="absolute bottom-0 left-0 w-full h-full bg-white dark:bg-black rounded-tr-full transition-colors duration-500" />
-      </div>
+    <div className="w-full bg-white dark:bg-black px-2 pt-2 pb-2 relative transition-colors duration-500">
 
-    <section className="relative w-full overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] border border-white/5 ring-1 ring-white/10 z-[1]">
-      {/* Canvas video background */}
-      <div className="absolute inset-0 bg-[#0a1228]">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            disablePictureInPicture
-            controlsList="nodownload nofullscreen noremoteplayback"
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4" type="video/mp4" />
-          </video>
-          {/* Gradient overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-        </div>
-
-        {/* ── Hero Content ── */}
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 sm:pt-40 lg:pt-[160px] pb-16 sm:pb-20 lg:pb-24">
-          <div className="transform translate-y-[0.8cm]">
-            {/* Glass cards — absolute positioned right side, lg+ only */}
-          <div className="hidden lg:block absolute top-36 sm:top-40 lg:top-52 right-6 sm:right-8 lg:right-16 xl:right-24 w-[245px] xl:w-[265px] z-10 -mt-[4.9cm] translate-x-[2.45cm] scale-[1.02] origin-top-right">
-            <HeroGlassCards />
+    <section
+      className="relative w-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228]"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onClick={(e) => {
+        // Only toggle on empty-area clicks (not buttons, links, inputs, or the chat widget)
+        const tag = e.target.tagName.toLowerCase();
+        const isInteractive = ['button', 'a', 'input', 'textarea', 'select'].includes(tag);
+        const isInsideInteractive = e.target.closest('button, a, input, textarea, form, [role="button"], .hero-chat-widget');
+        if (!isInteractive && !isInsideInteractive) {
+          setIsManuallyPaused(prev => !prev);
+        }
+      }}
+    >
+      {/* ── ACTUAL HERO AREA (bg + content + dots only — trust strip & HeroBottomStrip live OUTSIDE this wrapper) ── */}
+      <div className="relative min-h-[720px] sm:min-h-[760px] lg:min-h-[800px] overflow-hidden">
+      {/* ── BACKGROUND LAYERS (stacked, crossfade via opacity) ── */}
+      {heroSlides.map((slide, index) => (
+        <div
+          key={`bg-${slide.id}`}
+          className={`absolute inset-0 transition-opacity duration-[800ms] ease-in-out ${
+            index === activeSlide ? 'opacity-100 z-[1]' : 'opacity-0 z-0'
+          }`}
+        >
+          <div className="absolute inset-0 bg-[#0a1228]">
+            {slide.type === 'video' && (
+              <video
+                ref={index === 0 ? videoRef : null}
+                autoPlay={index === 0}
+                loop
+                muted
+                playsInline
+                disablePictureInPicture
+                controlsList="nodownload nofullscreen noremoteplayback"
+                className="absolute inset-0 w-full h-full object-cover"
+              >
+                <source src={slide.video} type="video/mp4" />
+              </video>
+            )}
+            {slide.type === 'chat' && slide.image && (
+              <img
+                src={slide.image}
+                alt="Kangqore AI Tennis"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: 'center calc(50% + 38px)' }}
+              />
+            )}
+            {slide.type === 'product' && slide.background && (
+              <img
+                src={slide.background}
+                alt="Kangqore BIDS Dashboard"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            {/* Gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
           </div>
-
-          <div className="max-w-[850px] space-y-5">
-            
-            <h1 
-              key="title-0"
-              className="text-[2.4rem] sm:text-[2.9rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.15] tracking-tight text-white animate-fade-in"
-            >
-              {slide.title}
-              {slide.titleGradient && (
-                <>
-                  <br />
-                  <span className="bg-brand-gradient bg-clip-text text-transparent">{slide.titleGradient}</span>
-                </>
-              )}
-            </h1>
-            
-            <p 
-              key="desc-0"
-              className="text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-3xl animate-fade-in font-medium line-clamp-3 py-6 sm:py-8"
-            >
-              {slide.description}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row items-center gap-8 animate-fade-in">
-              <Link
-                to={slide.link}
-                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/70 backdrop-blur-xl text-gray-900 shadow-xl"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
-                <span className="relative z-10 text-gray-900 font-bold tracking-wide text-[13px]">
-                  {slide.cta}
-                </span>
-                <div className="relative z-10 w-7 h-7 rounded-full bg-gray-900 flex items-center justify-center transition-all duration-500 group-hover:bg-brand-blue shadow-md">
-                  <ArrowRight className="w-4 h-4 text-white transition-all duration-500 group-hover:translate-x-0.5" />
-                </div>
-                <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-cyan-400/50 blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </Link>
-
-              <Link
-                to="/contact"
-                className="group inline-flex items-center gap-2 px-4 py-2 hover:opacity-80 transition-opacity duration-300"
-              >
-                <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
-                  Schedule a briefing
-                </span>
-                <ArrowRight className="w-4 h-4 text-cyan-400 transform group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-            </div>
-
-          <style>{`
-            @keyframes heroPulseRing {
-              0% { transform: scale(1); opacity: 0.6; }
-              70% { transform: scale(1.35); opacity: 0; }
-              100% { transform: scale(1.35); opacity: 0; }
-            }
-          `}</style>
         </div>
+      ))}
 
-        {/* Invisible spacer to maintain layout */}
-        <div className="h-[48px] mt-6 w-full pointer-events-none opacity-0" aria-hidden="true" />
+      {/* ── CONTENT LAYERS (stacked, crossfade) ── */}
+      <div className="relative z-[2] min-h-[720px] sm:min-h-[760px] lg:min-h-[800px]">
+        {heroSlides.map((slide, index) => (
+          <div
+            key={`content-${slide.id}`}
+            className={`absolute inset-0 transition-opacity duration-[800ms] ease-in-out ${
+              index === activeSlide ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-[194px] lg:pt-[250px] pb-[167px] sm:pb-[175px] h-full flex flex-col">
+
+              {/* Right panel — conditional per slide type */}
+              {slide.type === 'video' && (
+                <div className="hidden lg:block absolute top-[253px] right-6 sm:right-8 lg:right-16 xl:right-24 w-[245px] xl:w-[265px] z-10 scale-[1.02] origin-top-right">
+                  <HeroGlassCards />
+                </div>
+              )}
+
+
+              <div className={`${
+                slide.type === 'product' 
+                  ? 'max-w-[680px]' 
+                  : slide.type === 'chat' 
+                    ? 'max-w-2xl'
+                    : 'max-w-3xl'
+              } flex flex-col h-full`}>
+                
+                <div className="space-y-5 flex-shrink-0">
+
+                  <h1
+                    key={`title-${slide.id}`}
+                    className={`text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-fade-in ${
+                      (slide.id === 2 || slide.id === 3) ? 'whitespace-nowrap text-[6.5vw] sm:text-[2.8rem]' : ''
+                    }`}
+                  >
+                  {slide.title}
+                  {slide.titleGradient && (
+                    <>
+                      {' '}
+                      <span className="bg-brand-gradient bg-clip-text text-transparent">{slide.titleGradient}</span>
+                    </>
+                  )}
+                </h1>
+
+                {/* Trademark badge for BIDS slide */}
+                {slide.trademark && (
+                  <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-brand-gradient shadow-lg shadow-blue-500/20">
+                    <span className="text-[13px] font-bold text-white tracking-wide">{slide.trademark}</span>
+                  </div>
+                )}
+
+                {slide.description && (
+                  <p
+                    key={`desc-${slide.id}`}
+                    className="text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-3xl animate-fade-in font-medium line-clamp-3 py-4 sm:py-6"
+                  >
+                    {slide.description}
+                  </p>
+                )}
+
+                {/* Chat widget for slide 2 */}
+                {slide.type === 'chat' && (
+                  <div className="py-4 sm:py-6 hero-chat-widget" style={{ overflow: 'visible' }}>
+                    <HeroChatWidget />
+                  </div>
+                )}
+
+                </div>
+
+                <div className="flex-grow min-h-[20px]" />
+
+                {/* CTAs for slides */}
+                {slide.cta && (
+                  <div className="flex flex-col sm:flex-row items-center gap-8 animate-fade-in">
+                    {slide.cta && (
+                      <Link
+                        to={slide.link}
+                        className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/70 backdrop-blur-xl text-gray-900 shadow-xl"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
+                        <span className="relative z-10 text-gray-900 font-bold tracking-wide text-[13px]">
+                          {slide.cta}
+                        </span>
+                        <div className="relative z-10 w-7 h-7 rounded-full bg-gray-900 flex items-center justify-center transition-all duration-500 group-hover:bg-brand-blue shadow-md">
+                          <ArrowRight className="w-4 h-4 text-white transition-all duration-500 group-hover:translate-x-0.5" />
+                        </div>
+                        <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-cyan-400/50 blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      </Link>
+                    )}
+
+                    {slide.secondaryCta && (
+                      <Link
+                        to={slide.secondaryLink || "/contact"}
+                        className="group inline-flex items-center gap-2 px-4 py-2 hover:opacity-80 transition-opacity duration-300"
+                      >
+                        <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
+                          {slide.secondaryCta}
+                        </span>
+                        <ArrowRight className="w-4 h-4 text-cyan-400 transform group-hover:translate-x-1 transition-transform duration-300" />
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
 
-      {/* ── Hero Trust Logo Strip (Above the Fold) ── */}
+      {/* ── Slide Dot Indicators ── */}
+      <div className="absolute bottom-8 sm:bottom-10 left-0 right-0 z-30 hero-slide-indicators mt-[76px]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center gap-4">
+          <div className="flex items-center gap-2.5">
+            {heroSlides.map((_, index) => (
+              <button
+                key={`dot-${index}`}
+                onClick={() => goToSlide(index)}
+                className={`transition-all duration-500 rounded-full ${
+                  index === activeSlide
+                    ? 'w-8 h-[5px] bg-brand-gradient shadow-lg shadow-blue-500/30'
+                    : 'w-[5px] h-[5px] bg-white/30 hover:bg-white/60'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+          
+          {/* Pause / Play Button — 4x size */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsManuallyPaused(prev => !prev);
+            }}
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95"
+            aria-label={isManuallyPaused ? "Start autoplay" : "Pause autoplay"}
+          >
+            {isManuallyPaused ? (
+              <Play className="w-5 h-5 fill-current ml-0.5" />
+            ) : (
+              <Pause className="w-5 h-5 fill-current" />
+            )}
+          </button>
+        </div>
+      </div>
+      </div>
+
+      {/* ── Hero Trust Logo Strip ── */}
       <div className="relative z-20 w-full bg-black/40 backdrop-blur-xl py-[calc(1.25rem+0.5cm)] sm:py-[calc(1.5rem+0.5cm)] overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-10">
-          <p className="text-[10px] sm:text-[11px] font-bold text-white/40 uppercase tracking-[0.25em] text-center max-w-4xl mx-auto leading-relaxed">
+          <p className="text-[10px] sm:text-[11px] font-bold text-white/40 uppercase tracking-[0.25em] text-center mx-auto leading-relaxed whitespace-nowrap">
             Our speed in learning and executing is unmatched, earning the trust of hundreds of organizations worldwide.
           </p>
         </div>
-
-        {/* Full-width Right-to-Left Infinite Marquee for Hero Trust Logos */}
         <div className="relative w-full overflow-hidden">
-          {/* Edge fade masks */}
           <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-r from-black/60 to-transparent pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-l from-black/60 to-transparent pointer-events-none" />
-
           <div className="flex w-max animate-[heroTrustMarquee_35s_linear_infinite] items-center gap-12 sm:gap-16 lg:gap-20 hover:[animation-play-state:paused] py-2">
             {[...trustLogos, ...trustLogos, ...trustLogos, ...trustLogos].map((logo, index) => (
               <div key={`${logo.name}-${index}`} className="flex flex-col items-center justify-center group shrink-0 w-28 sm:w-32">
                 <div className="h-10 sm:h-12 w-full flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity duration-300">
-                  <img
-                    src={logo.src}
-                    alt={logo.name}
-                    className="max-h-8 sm:max-h-10 w-auto object-contain filter brightness-0 invert transition-transform duration-300 group-hover:scale-105"
-                  />
+                  <img src={logo.src} alt={logo.name} className="max-h-8 sm:max-h-10 w-auto object-contain filter brightness-0 invert transition-transform duration-300 group-hover:scale-105" />
                 </div>
                 <span className="mt-3 text-[9px] sm:text-[10px] font-bold text-white/30 group-hover:text-white/75 transition-colors duration-300 uppercase tracking-widest text-center">
                   {logo.name}
@@ -495,7 +636,6 @@ const HeroCarousel = () => {
             ))}
           </div>
         </div>
-
         <style>{`
           @keyframes heroTrustMarquee {
             0% { transform: translateX(0); }
@@ -504,10 +644,15 @@ const HeroCarousel = () => {
         `}</style>
       </div>
 
-      {/* ── Hero Bottom Strip: Events | Featured | Highlights ── */}
+      {/* ── Hero Bottom Strip ── */}
       <HeroBottomStrip />
 
       <style>{`
+        @keyframes heroPulseRing {
+          0% { transform: scale(1); opacity: 0.6; }
+          70% { transform: scale(1.35); opacity: 0; }
+          100% { transform: scale(1.35); opacity: 0; }
+        }
         @keyframes scroll-line {
           0% { transform: translateY(-100%); }
           100% { transform: translateY(100%); }
