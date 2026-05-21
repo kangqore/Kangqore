@@ -30,6 +30,7 @@ import {
   Network, Layers, Search, ShieldCheck, Activity, GitBranch, Database,
   ShoppingCart, Server, Cloud, Layout, Settings, Globe, Users, BrainCircuit,
   Target, Zap, Truck, BarChart3, Shield, Share2, Bot,
+  CheckCircle2, Briefcase, TrendingUp, Boxes,
 } from 'lucide-react';
 import {
   EPIWhySection,
@@ -309,6 +310,39 @@ const enterprisePlatformIntegration = {
       <EPIStrengthsBento />
     </>
   ),
+
+  trustPillars: [
+    { title: 'Architecture-first interoperability design', tag: 'Architecture', description: 'Design integration patterns that connect heterogeneous systems without creating rigid, fragile point-to-point dependencies.' },
+    { title: 'API governance and lifecycle discipline', tag: 'Governance', description: 'Bring standardization, policy control, and lifecycle management to growing API and integration estates.' },
+    { title: 'Hybrid and cloud-ready integration', tag: 'Scalability', description: 'Support growth across on-premises, cloud, and mixed environments without increasing operational fragility.' },
+    { title: 'Modernization without disruption', tag: 'Continuity', description: 'Preserve the value of existing enterprise assets while creating modern integration layers around them.' },
+    { title: 'Secure data exchange and compliance', tag: 'Security', description: 'Protect every integration flow with hardened security, encryption, and compliance-aware patterns.' },
+    { title: 'Observable, intelligent integration operations', tag: 'Intelligence', description: 'Instrument integration estates with monitoring, analytics, and AI-assisted operational efficiency.' },
+  ],
+
+  whyKangqoreIntro: 'Kangqore approaches enterprise integration as both an architecture discipline and a business enablement layer. We do not just connect systems—we help organizations reduce operational fragmentation, preserve existing platform value, modernize with intent, and build interoperability models that stay manageable as complexity increases.',
+  whyKangqore: [
+    { title: 'Continuity Without Stagnation', description: 'We help modernize the enterprise without forcing unnecessary disruption to systems that still carry business value.', icon: Layers },
+    { title: 'Architecture-Led Interoperability', description: 'We design integration patterns that connect applications, APIs, data, and workflows with stronger structure and less long-term fragility.', icon: ShieldCheck },
+    { title: 'Built for Scale and Governance', description: 'We balance flexibility with control so expanding integration estates remain observable, standardized, and secure.', icon: Server },
+  ],
+
+  industries: [
+    { name: 'Healthcare', description: 'Interoperable patient-data exchange, HIE integration, and compliance-aware connectivity for healthcare systems.' },
+    { name: 'Financial Services', description: 'Secure payment gateway integration, ACH/SWIFT connectivity, and regulatory-compliant data exchange.' },
+    { name: 'Logistics', description: 'End-to-end TMS/WMS/ERP integration for real-time visibility and operational coordination.' },
+    { name: 'E-commerce', description: 'Marketplace integration, multi-channel synchronization, and scalable order-to-fulfillment workflows.' },
+  ],
+
+  customFAQs: [
+    { question: 'What is enterprise platform integration?', answer: 'It is the practice of connecting enterprise applications, data flows, APIs, partner systems, and workflows so they can operate as part of a more unified, interoperable business environment.' },
+    { question: 'Why is integration important for digital transformation?', answer: 'Because transformation fails when systems remain disconnected. Integration enables continuity between legacy and modern platforms, improves data movement, and helps business processes operate with less friction.' },
+    { question: 'Can you integrate legacy systems without replacing them?', answer: 'Yes. In many cases, the right approach is to preserve useful systems while creating modern integration layers around them so they can continue to add value.' },
+    { question: 'What is the difference between API integration and enterprise integration?', answer: 'API integration is one important part of enterprise integration. Enterprise integration is broader and can include workflows, EDI/B2B exchange, orchestration, legacy connectivity, partner ecosystems, and hybrid platform interoperability.' },
+    { question: 'Do you support hybrid and cloud integration models?', answer: 'Yes. Kangqore supports on-premises, cloud-native, and hybrid integration patterns depending on business constraints, security needs, and modernization goals.' },
+    { question: 'Can AI be used inside integration workflows?', answer: 'Yes, selectively. AI and ML can improve mapping, cleansing, anomaly detection, workflow adaptation, and other intelligent process areas when there is a clear operational benefit.' },
+    { question: 'How do you govern large integration estates?', answer: 'Through architecture standards, API lifecycle discipline, monitoring, policy enforcement, version control, and runtime observability across the integration ecosystem.' },
+  ],
 };
 
 // ─── pimcore (Platforms) ───────────────────────────────────────────────────────
@@ -472,6 +506,39 @@ const pimcore = {
       <PimBenefitsGrid />
     </>
   ),
+
+  trustPillars: [
+    { title: 'Unified product and master data layer', tag: 'Data', description: 'Centralize fragmented information into one governed, channel-ready source of truth.' },
+    { title: 'AI-assisted enrichment and automation', tag: 'Intelligence', description: 'Use AI to improve product content, mapping, validation, and operational efficiency.' },
+    { title: 'End-to-end commerce enablement', tag: 'Commerce', description: 'Connect PIM-first data foundations into scalable B2B and B2C commerce experiences.' },
+    { title: 'Governed digital asset operations', tag: 'Assets', description: 'Manage media centrally with workflows, metadata, and brand-consistent delivery.' },
+    { title: 'Omnichannel experience delivery', tag: 'Experience', description: 'Compose and deliver contextual digital experiences across channels with personalization.' },
+    { title: 'Platform-led scalability', tag: 'Scale', description: 'Architect for multi-market, multilingual, and multi-channel growth from day one.' },
+  ],
+
+  whyKangqore: [
+    { title: 'Platform-Led Thinking', description: 'We shape Pimcore around business workflows, data governance, and experience delivery—not around isolated feature configuration.', icon: BrainCircuit },
+    { title: 'Built Across the Full Value Chain', description: 'From product data and master data to assets, commerce, and digital experience, we connect the full operating picture.', icon: Network },
+    { title: 'Execution with Evolution in Mind', description: 'We design for adoption, scale, integration, and managed growth so the platform remains valuable after launch.', icon: Activity },
+  ],
+
+  industries: [
+    { name: 'Manufacturing', description: 'Product data governance, multi-channel catalog management, and B2B commerce enablement.' },
+    { name: 'Retail & Consumer Goods', description: 'Omnichannel product experiences, DAM centralization, and personalized shopping journeys.' },
+    { name: 'Distribution & Wholesale', description: 'Unified product data, dealer portals, and eStore platform enablement.' },
+    { name: 'Healthcare & Life Sciences', description: 'Regulated content management, master data governance, and compliant digital experiences.' },
+  ],
+
+  customFAQs: [
+    { question: 'What is Pimcore and why do enterprises use it?', answer: 'Pimcore is used to centralize and manage product information, digital assets, master data, commerce content, and digital experiences in one connected platform environment.' },
+    { question: 'What Pimcore services does Kangqore provide?', answer: 'Kangqore provides strategy, implementation, integration, AI-assisted enrichment, workflow design, and managed services across the Pimcore ecosystem.' },
+    { question: 'Can Pimcore support both B2B and B2C use cases?', answer: 'Yes. It is well suited to product-rich, catalog-heavy, content-connected digital commerce and experience use cases across both B2B and B2C environments.' },
+    { question: 'Can Pimcore integrate with ERP, CRM, eCommerce, and marketplace systems?', answer: 'Yes. A strong Pimcore engagement should include secure, scalable integration patterns across the broader enterprise stack.' },
+    { question: 'Is Pimcore suitable for global catalogs and multi-market operations?', answer: 'Yes, especially when multilingual product data, localization, workflow governance, and cross-channel publishing are important.' },
+    { question: 'How does AI fit into the Pimcore model?', answer: 'AI can help with product-content generation, enrichment, mapping, validation, personalization, and operational efficiency when used in the right business context.' },
+    { question: 'What is the difference between PIM and MDM inside the Pimcore ecosystem?', answer: 'PIM focuses on product information and channel-ready enrichment, while MDM focuses more broadly on trusted core records across multiple enterprise domains.' },
+    { question: 'How do you ensure Pimcore stays valuable after go-live?', answer: 'Through governance, integration discipline, workflow optimization, performance support, managed services, and a roadmap for continuous platform evolution.' },
+  ],
 };
 
 // ─── salesforce (Platforms) ────────────────────────────────────────────────────
@@ -619,6 +686,36 @@ const salesforce = {
       <SalesforceExecutionEcosystem />
     </>
   ),
+
+  trustPillars: [
+    { title: 'Business-Led CRM Thinking', tag: 'Strategy', description: 'We design Salesforce around revenue, service, engagement, and operating outcomes—not isolated feature activation.' },
+    { title: 'Connected Execution Across Clouds', tag: 'Ecosystem', description: 'We connect Sales, Service, Community, Commerce, and Marketing Cloud into a more coherent enterprise model.' },
+    { title: 'Modernization with Control', tag: 'Architecture', description: 'From Lightning modernization to integration and migration, we reduce disruption while improving long-term value.' },
+  ],
+
+  whyKangqore: [
+    { title: 'Business-Led CRM Thinking', description: 'We design Salesforce around revenue, service, engagement, and operating outcomes—not isolated feature activation.', icon: Zap },
+    { title: 'Connected Execution Across Clouds', description: 'We connect Sales, Service, Community, Commerce, and Marketing Cloud into a more coherent enterprise model.', icon: Cloud },
+    { title: 'Modernization with Control', description: 'From Lightning modernization to integration and migration, we reduce disruption while improving long-term platform value.', icon: CheckCircle2 },
+  ],
+
+  industries: [
+    { name: 'Financial Services', description: 'Unified customer views and strict security across banking and insurance operations.' },
+    { name: 'Retail & Commerce', description: 'Omnichannel personalization bridging Commerce Cloud and Marketing Cloud.' },
+    { name: 'Manufacturing', description: 'Streamlined B2B sales pipelines and responsive dealer/partner communities.' },
+    { name: 'Healthcare', description: 'Connected patient journeys prioritizing compliance and fast service response.' },
+  ],
+
+  customFAQs: [
+    { question: 'What Salesforce services does Kangqore provide?', answer: 'Kangqore provides Salesforce advisory, implementation, integration, migration, Lightning modernization, analytics, customization, and cloud-specific transformation support.' },
+    { question: 'Which Salesforce clouds do you work across?', answer: 'Sales Cloud, Service Cloud, Community Cloud, Commerce Cloud, and Marketing Cloud.' },
+    { question: 'Do you support Salesforce integration with enterprise systems?', answer: 'Yes. Integration is a core part of our offering, including APIs, middleware, OOB connectors, AppExchange, and legacy or third-party systems.' },
+    { question: 'Can you help migrate existing Salesforce or legacy environments?', answer: 'Yes. We cover org-to-org and legacy-to-Salesforce migration with integrity, consistency, and deduplication in focus.' },
+    { question: 'Do you support Lightning and LWC modernization?', answer: 'Yes. We explicitly support Lightning and LWC capabilities and Classic-to-Lightning modernization to improve UX and performance.' },
+    { question: 'How does Salesforce improve service operations?', answer: 'The Service Cloud focuses on unified visibility, dashboards, support metrics, faster responses, self-service communities, and stronger customer loyalty.' },
+    { question: 'How does Salesforce improve sales execution?', answer: 'The Sales Cloud focuses on customer visibility, opportunity tracking, reporting, analytics, and faster deal movement.' },
+    { question: 'How does Salesforce support commerce and marketing?', answer: 'The Commerce Cloud focuses on omnichannel commerce and shared commerce operations, while the Marketing Cloud focuses on personalized customer journeys, lifecycle engagement, and cross-channel activation.' },
+  ],
 };
 
 // ─── servicenow (Platforms) ────────────────────────────────────────────────────
@@ -762,6 +859,35 @@ const servicenow = {
       <ServicenowExecutionEcosystem />
     </>
   ),
+
+  trustPillars: [
+    { title: 'Workflow discipline before platform expansion', tag: 'Governance', description: 'Structure ServiceNow around real operating models, governance needs, and workflow maturity.' },
+    { title: 'Enterprise integration over new silos', tag: 'Architecture', description: 'Connect ServiceNow into broader enterprise systems instead of creating isolated platform islands.' },
+    { title: 'Automation with governance and visibility', tag: 'Operations', description: 'Use workflow automation to reduce manual friction while preserving governance, security, and compliance.' },
+  ],
+
+  whyKangqore: [
+    { title: 'Workflow Discipline', description: 'We structure ServiceNow around real operating models, governance needs, and workflow maturity—not just module activation.', icon: Layers },
+    { title: 'Platform Connectedness', description: 'We integrate ServiceNow into broader enterprise systems instead of allowing new operational silos to form.', icon: Network },
+    { title: 'Automation with Control', description: 'We use workflow automation to reduce manual friction while preserving governance, security, and compliance visibility.', icon: ShieldCheck },
+  ],
+
+  industries: [
+    { name: 'Financial Services', description: 'Governed service workflows meeting regulatory, compliance, and operational resilience requirements.' },
+    { name: 'Healthcare', description: 'Standardized IT and enterprise service operations supporting clinical efficiency and compliance.' },
+    { name: 'Manufacturing', description: 'Connected IT and OT service workflows improving asset visibility and operational continuity.' },
+    { name: 'Technology', description: 'Scalable ITSM and platform workflows supporting rapid growth and engineering velocity.' },
+  ],
+
+  customFAQs: [
+    { question: 'What does ServiceNow transformation usually include?', answer: 'It typically includes a mix of advisory, implementation, integration, automation, platform configuration, and managed support depending on the maturity of the environment and the workflows being modernized.' },
+    { question: 'Which workflow areas can ServiceNow support?', answer: 'IT, customer, employee, and platform workflows, with specific capability references to ITSM, ITOM, ITAM, security operations, GRC, customer service management, onboarding, custom apps, and integration management.' },
+    { question: 'Why is integration important in a ServiceNow program?', answer: 'Because value drops quickly when workflows stay disconnected. Third-party integration, data synchronization, App Engine, REST APIs, and workflow automation are central to platform effectiveness.' },
+    { question: 'How does ServiceNow help reduce inefficiency?', answer: 'By standardizing processes, reducing manual effort, increasing visibility, and improving workflow alignment across service functions.' },
+    { question: 'Can ServiceNow support security and compliance use cases?', answer: 'Yes. Security Operations plus Governance, Risk and Compliance is an explicit part of the ServiceNow capability set we implement.' },
+    { question: 'What engagement models are possible?', answer: 'We offer fixed one-time services, fixed monthly services, staff augmentation, and core-flex style models—each tailored to the maturity and velocity of your ServiceNow program.' },
+    { question: 'What outcomes should enterprises expect?', answer: 'Better service standardization, lower manual effort, improved visibility, cost optimization, and stronger value realization from platform investments.' },
+  ],
 };
 
 // ─── global-capability-centers (Platforms) ─────────────────────────────────────
@@ -953,6 +1079,44 @@ const globalCapabilityCenters = {
       <GCCFutureReady />
     </>
   ),
+
+  trustPillars: [
+    { title: 'Your hiring velocity for niche AI/ML roles increases 3x', tag: 'Talent Speed', description: 'Pre-built pipelines across Bengaluru, Hyderabad, and Pune — not assembled on demand when you sign. 21-day average time-to-fill for platform engineers and ML specialists.' },
+    { title: 'Your compliance risk drops to near-zero from Day 1', tag: 'Regulatory Safety', description: 'Entity formation, EPFO, ESI, Professional Tax, STPI/SEZ — all filed before your first engineer writes a line of code. Ongoing regulatory monitoring handled as part of the operating engagement.' },
+    { title: 'Your engineering team ships production code by Day 90', tag: 'Speed-to-Value', description: '30/60/90 immersion model: domain context → codebase mastery → independent delivery. No 6-month ramp-up period.' },
+    { title: 'Your operational cost stays 40-60% below self-setup', tag: 'Economics', description: 'Kangqore\'s operating model eliminates the overhead of building internal compliance, HR, and facilities teams from scratch — delivering cost advantages of 40-60% compared to self-managed GCC setup.' },
+    { title: 'Your center runs like HQ, not an offshore outpost', tag: 'Cultural Parity', description: 'Same sprint cadence, same standup rituals, same JIRA boards. Shadow rotations with your HQ leads. Customer-empathy-led onboarding so the team understands WHY they build, not just WHAT.' },
+    { title: 'You exit our model whenever you choose', tag: 'Zero Lock-in', description: 'No 3-year BOT contracts. No transfer fees. The team is yours, the IP is yours, the center is yours. When you are ready to internalize operations, we hand over and step back.' },
+  ],
+
+  whyKangqoreIntro: 'Unlike traditional GCC consultants who charge advisory fees to tell you what you already know, and unlike managed service providers who lock you into 3-year BOT contracts — Kangqore operates on a fundamentally different model.',
+  whyKangqore: [
+    { title: 'We\'ve navigated India compliance so you don\'t have to', description: 'PAN, TAN, GST, EPFO, ESI, Professional Tax, STPI/SEZ, and critical Transfer Pricing frameworks (Cost-Plus markups) engineered upfront. Your GCC launches compliant and tax-optimized, not scrambling.', icon: Globe },
+    { title: 'Elite engineers, not a bloated SI pyramid', description: 'We target the top 1% of India\'s engineering talent pool. You don\'t need 10,000 average developers; you need 50 elite platform engineers. 500+ pre-vetted experts across LLM, cloud, and cybersecurity. Average 21-day time-to-fill.', icon: Search },
+    { title: 'We operate your GCC infrastructure — you focus on engineering', description: 'Facility management, IT provisioning, vendor management, payroll processing, compliance monitoring, and HR operations — all handled by Kangqore. Your engineering leadership focuses on product, not procurement.', icon: Layers },
+    { title: 'Our commercial model has no traps', description: 'Flexible engagement models without multi-year lock-in. No BOT transfer fees. Scaling tied to your actual business needs. The center, team, and IP are yours — we provide the operating infrastructure underneath.', icon: Briefcase },
+    { title: 'We do not compete with your engineering leadership', description: 'Your GCC team reports to your VP of Engineering, executes your roadmap, and attends your standups. We are the operating layer underneath — not a managed services provider inserting ourselves between you and your team.', icon: Activity },
+    { title: 'We have a defined exit path — by design', description: 'When your center reaches operational maturity and you want to internalize HR, compliance, and facility management, we execute a structured handover. No extended transition fees. No artificial dependency. We succeed when you no longer need us.', icon: TrendingUp },
+  ],
+
+  industriesTitle: 'Industries We Build GCCs For',
+  industries: [
+    { name: 'Financial Services & FinTech', description: 'Building the plumbing for modern finance. We deploy GCCs handling LLM fine-tuning for algorithmic trading, ISO 20022 payments modernization, and real-time fraud detection pipelines under strict RBI and SOC 2 Type II compliance.' },
+    { name: 'Healthcare & Life Sciences', description: 'HIPAA BAA executed pre-launch. We build units driving clinical genomic data pipelines, FHIR API interoperability layers, and FDA 21 CFR Part 11 validation workflows directly inside your sprint cycle.' },
+    { name: 'SaaS & Product Companies', description: 'We don\'t do IT support. We build product engineering units integrated directly into your CI/CD pipeline (GitHub Actions/GitLab) building multi-tenant microservices, WebAssembly modules, and real-time pub/sub systems.' },
+    { name: 'Technology & ISVs', description: 'Your genuine extension in India. Platform engineering squads building Kubernetes operators, custom Terraform providers, and agentic AI workflows tightly coupled with your San Francisco or London HQ.' },
+    { name: 'Retail & E-commerce', description: 'Omnichannel engineering units building composable MACH architectures (Microservices, API-first, Cloud-native, Headless) performing elastic scaling to handle peak global transaction volumes with sub-50ms latency.' },
+    { name: 'Manufacturing & Industrial', description: 'Bridging OT-IT convergence. Our units build IoT SCADA telemetry hubs, predictive maintenance digital twins, and edge computing layers with strict ISA/IEC 62443 security compliance.' },
+  ],
+
+  customFAQs: [
+    { question: 'What exactly is GCC-as-a-Service, and how is Kangqore\'s model different?', answer: 'GCC-as-a-Service is our operating model where we handle entity formation (PAN, TAN, GST, STPI/SEZ), facility provisioning, compliance management (EPFO, ESI, Professional Tax), talent acquisition, IT infrastructure, and HR operations — while you retain 100% strategic control and IP ownership of your team. The center is yours from Day 1. Unlike traditional BOT models, there is no 3-year lock-in and no transfer fee — because there is nothing to "transfer." It was always yours.' },
+    { question: 'How fast can a GCC go from sign-off to first production sprint?', answer: '60 days from commercial sign-off to first engineering sprint. The breakdown: Days 1-15 for entity registration and compliance filing, Days 10-30 for workspace lease execution and IT infrastructure provisioning (AWS/Azure landing zones, VPN tunnels, endpoint management), Days 15-45 for talent sourcing and technical screening, Days 30-60 for onboarding, domain immersion, and codebase walkthroughs. Your team ships independently by Day 90.' },
+    { question: 'Which Indian cities does Kangqore operate GCCs in?', answer: 'Primary hubs: Bengaluru (deepest AI/ML and product engineering talent), Hyderabad (strong enterprise and cloud engineering pools, competitive costs), and Pune (emerging SaaS and DevOps concentration). We also support NCR (Delhi/Gurgaon/Noida) for enterprise-heavy functions. For Tier-2 expansion beyond 100 headcount, we advise on Jaipur, Indore, Coimbatore, and Visakhapatnam based on your specific role requirements and cost targets.' },
+    { question: 'What does the commercial engagement model look like?', answer: 'Kangqore offers flexible engagement models tailored to your GCC stage and scale — from dedicated team retainers to outcome-based delivery pricing. Operating costs cover compliant workspace, IT infrastructure, HR operations (payroll, benefits, statutory compliance), facility management, and administrative services. We structure commercial terms to avoid multi-year lock-in so you retain the ability to scale or internalize operations based on your evolving business needs.' },
+    { question: 'How does Kangqore handle India labor law and regulatory compliance?', answer: 'We manage full statutory compliance: Employees\' Provident Fund (EPFO), Employees\' State Insurance (ESI), Professional Tax (state-specific), Shops & Establishment Act registration, Payment of Gratuity Act, Maternity Benefit Act, and applicable state labor welfare fund contributions. For STPI/SEZ-registered entities, we handle annual compliance filings, foreign inward remittance documentation, and softex form submissions. All compliance is monitored continuously — not just at launch.' },
+    { question: 'Can I scale the team up or down after launch?', answer: 'Yes. Our operating model scales elastically. Add engineers with 30-day ramp lead time (sourced through our pre-built pipeline). Scale down with appropriate notice — we handle the employment law implications, notice periods, and knowledge transfer. Typical growth trajectory: start with a unit of 8-12, grow to a squad of 20-30 within 6 months, and scale to 50-100+ within 12-18 months based on your product roadmap velocity.' },
+  ],
 };
 
 // ─── talent-organization (Platforms) ───────────────────────────────────────────
@@ -1143,6 +1307,39 @@ const talentOrganization = {
       <TalentExecutionEcosystem />
     </>
   ),
+
+  trustPillars: [
+    { title: 'Science-backed talent interventions', tag: 'People Science', description: 'Every recommendation is grounded in behavioral science, organizational psychology, and workforce analytics — not generic best practices.' },
+    { title: 'AI-native at every layer', tag: 'AI-Powered', description: 'From GenAI-powered screening to predictive attrition and agentic HR automation — technology amplifies every talent initiative.' },
+    { title: 'Culture as measurable infrastructure', tag: 'Culture', description: 'We treat culture as a governed, measured system — not an abstract aspiration. Sentiment analytics, behavioral design, and ONA make culture tangible.' },
+    { title: 'Leadership pipeline accountability', tag: 'Leadership', description: 'Systematic leadership development from first-time managers to C-suite succession — with structured pathways, not one-off seminars.' },
+    { title: 'Data-driven workforce decisions', tag: 'Analytics', description: 'Real-time people analytics, predictive modeling, and decision intelligence that transforms HR from cost center to competitive advantage.' },
+    { title: 'Transformation execution discipline', tag: 'Change', description: 'We don\'t just design change — we deploy, measure, and scale it across the enterprise with governed adoption frameworks.' },
+  ],
+
+  whyKangqore: [
+    { title: 'Execution-First Talent Models', description: 'We don\'t do theory. We instrument capability frameworks that directly tie workforce output to P&L performance, eliminating consultative fluff.', icon: Target },
+    { title: 'Platform-Driven Readiness', description: 'We deploy AI to automate base-level HR operations and use predictive attrition models to secure your most critical engineering and leadership nodes.', icon: BrainCircuit },
+    { title: 'Culture as a Governed System', description: 'Culture isn\'t an aspiration; it\'s an operating system constraint. We use hard data and organizational network analysis (ONA) to measure, govern, and enforce performance behaviors.', icon: Users },
+  ],
+
+  industries: [
+    { name: 'Banking & Financial Services', description: 'Regulatory-aware talent strategy, compliance culture, risk-conscious leadership development, and AI-powered workforce planning for regulated environments.' },
+    { name: 'Technology & SaaS', description: 'Engineering talent retention, skills-based organizations, GenAI upskilling at scale, and innovation-driving culture design for high-velocity teams.' },
+    { name: 'Healthcare & Life Sciences', description: 'Clinical workforce planning, compassion-centered culture, specialized talent pipelines, and compliance-grade people analytics.' },
+    { name: 'Manufacturing & Industrial', description: 'Frontline workforce transformation, safety culture engineering, multi-generational talent integration, and Industry 4.0 skills acceleration.' },
+    { name: 'Retail & E-commerce', description: 'High-volume talent acquisition, seasonal workforce optimization, customer-centric culture design, and omnichannel employee experience.' },
+    { name: 'Professional Services', description: 'Knowledge worker retention, partnership-track leadership, client-centric organizational design, and AI-augmented service delivery models.' },
+  ],
+
+  customFAQs: [
+    { question: 'How does Kangqore differ from traditional HR consulting firms?', answer: 'Traditional HR consulting sells "advisory" — bloated slide decks on organizational theory and change management. We operate as execution partners. We treat talent infrastructures as engineering systems: tracking capability gaps, automating HR processes with AI, and instrumenting performance metrics that tie directly to business outcomes.' },
+    { question: 'What does "culture as an operating system" actually mean?', answer: 'It means moving culture out of the hands of HR marketing and into data governance. We use Organizational Network Analysis (ONA) and sentiment analytics to quantitatively measure bottlenecks, silos, and friction points, then deploy systems to enforce operational velocity.' },
+    { question: 'How do you integrate AI into workforce transformation?', answer: 'We deploy AI to crush HR overhead. This means integrating agentic AI to handle employee inquiries, GenAI for automated skill gap assessments, and predictive models to flag high-risk attrition in critical engineering pipelines before they impact delivery targets.' },
+    { question: 'How do you approach leadership development differently?', answer: 'We abandon theoretical seminars for high-stakes capability simulation. We build leadership capacity by throwing managers into structured scenario models, utilizing real-time performance analytics to ensure leaders are production-capable, not just certified.' },
+    { question: 'Can you help with workforce planning for rapid growth or restructuring?', answer: 'Yes. We use data-driven workforce planning models that align talent supply with business demand — including scenario modeling, capability gap analysis, AI-powered demand forecasting, succession planning, and organizational redesign for scale. Whether you\'re scaling from 50 to 500 or restructuring a 10,000-person org, our frameworks adapt.' },
+    { question: 'How do you measure the success of talent transformation?', answer: 'Through quantifiable metrics: 30–50% faster decision-making cycles, engagement scores, attrition rate reduction, leadership pipeline readiness, capability gap closure rates, time-to-productivity improvements, internal mobility rates, and culture health indicators — all tracked through integrated analytics dashboards with real-time visibility.' },
+  ],
 };
 
 // ─── supply-chain (Platforms) ──────────────────────────────────────────────────
@@ -1314,6 +1511,39 @@ const supplyChain = {
       <SupplyChainReadinessMagnet />
     </>
   ),
+
+  trustPillarsVideo: '/videos/engineering-rd-bg.mp4',
+  trustPillars: [
+    { title: 'Faster planning cycles', tag: 'Planning', description: 'Tightly coupled demand modeling leading to immediate, high-fidelity forecasting confidence.' },
+    { title: 'Lower inventory exposure', tag: 'Inventory', description: 'Preventative algorithms that dynamically reduce stockouts while eliminating bloat.' },
+    { title: 'Better fulfillment responsiveness', tag: 'Transactions', description: 'Streamlined orchestration that sharply reduces order-to-cash lifecycle lag.' },
+    { title: 'Absolute network visibility', tag: 'Telemetry', description: 'Track assets, suppliers, and operational risk across the global grid in real-time.' },
+    { title: 'ESG accountability', tag: 'Sustainability', description: 'Supply chain sustainability encoded directly into process compliance gates.' },
+  ],
+
+  whyKangqore: [
+    { title: 'Execution, Not Theory', description: 'You don\'t need a vendor to simply map process flows. You need a partner that makes your supply chain more predictable, visible, and resilient.', icon: Target },
+    { title: 'AI-Led Analytics', description: 'We embed algorithmic intelligence into risk monitoring, forecasting precision, and operational decision support.', icon: BrainCircuit },
+    { title: 'True Network Observability', description: 'Attain absolute operational visibility across assets, suppliers, and fulfillment using integrated IoT and telemetry architecture.', icon: Activity },
+  ],
+
+  industries: [
+    { name: 'Manufacturing & Industrial', description: 'Industry 4.0 telemetry mapping, production forecasting, and hardware-integrated planning.' },
+    { name: 'Retail & Consumer Goods', description: 'Omnichannel fulfillment orchestration, precise inventory placing, and demand volatility smoothing.' },
+    { name: 'Healthcare & Life Sciences', description: 'Cold-chain traceability, strict regulatory compliance, and rapid vital-asset distribution.' },
+    { name: 'Transportation & Logistics', description: 'Elastic routing networks, fuel and asset optimization, and real-time fleet telemetry.' },
+  ],
+
+  customFAQs: [
+    { question: 'What supply chain services does Kangqore provide?', answer: 'Kangqore provides end-to-end supply chain management services across demand and supply planning, source-to-pay transformation, engineering support and asset monitoring, order management and fulfillment, aftermarket services, supply chain risk and analytics, and ESG-led supply chain operations.' },
+    { question: 'How do you support end-to-end visibility?', answer: 'We improve end-to-end visibility through connected data models, operational dashboards, control-tower thinking, IoT-enabled monitoring, and predictive analytics layers that help teams identify issues earlier and respond with less manual effort.' },
+    { question: 'Can you help optimize supply chain cost and speed?', answer: 'Absolutely. We focus on removing friction across planning, sourcing, fulfillment, and service workflows so enterprises can radically reduce operational cost, accelerate transaction execution, and improve overall market responsiveness.' },
+    { question: 'How do you enable resilience in global supply chains?', answer: 'We build resilience through better planning algorithms, stronger analytics, AI-led risk visibility, lean process redesign, and tight technology integration that helps clients anticipate disruption and maintain continuity.' },
+    { question: 'How does AI improve supply chain management?', answer: 'AI improves forecasting accuracy, powers supplier risk sensing, drives workflow automation, and provides unmatched decision support. We integrate GenAI, Machine Learning, and advanced analytics to execute these advantages at scale.' },
+    { question: 'Do you support ESG and sustainability in supply chain operations?', answer: 'Yes. We help organizations integrate ESG requirements deeply into supply chain processes through assessment, advisory, reporting architecture, and operating model redesign—ensuring sustainability is built into how the chain runs.' },
+    { question: 'How long does a typical supply chain transformation take?', answer: 'It depends on scope, but our engagements follow a clear cadence: diagnostic and value-chain mapping in 2 to 3 weeks, solution architecture and pilot design in 4 to 6 weeks, and full-scale deployment within 90 to 120 days. We measure ROI from the first quarter of deployment, not from an arbitrary project end date. Most clients see measurable operational improvement within 90 days of engagement kickoff.' },
+    { question: 'How do you integrate with our existing ERP and legacy systems?', answer: 'We do not rip and replace. Our approach is integration-first. We work with your existing SAP, Oracle, Microsoft Dynamics, or Infor backbone and layer in the necessary telemetry, automation, and analytics connectors. We have deep experience wiring platforms like Kinaxis, Blue Yonder, project44, and Coupa into legacy environments without disrupting active operations. Your teams keep working while we upgrade the plumbing underneath.' },
+  ],
 };
 
 // ─── unified-services-management (Platforms) ───────────────────────────────────
@@ -1501,6 +1731,39 @@ const unifiedServicesManagement = {
       <USMExecutionEcosystem />
     </>
   ),
+
+  trustPillars: [
+    { title: 'Absolute visibility', tag: 'Observability', description: '360-degree transparency across every enterprise workflow, instantly exposing bottlenecks and SLA risks.' },
+    { title: 'Zero-touch resolution', tag: 'Automation', description: 'AI-driven deflection and automated fulfillment scripts that drastically reduce human intervention.' },
+    { title: 'Cross-functional speed', tag: 'Integration', description: 'Seamlessly connected IT, HR, and Finance systems that eliminate departmental silos.' },
+    { title: 'Frictionless experience', tag: 'UX', description: 'Consumer-grade service portals that make internal enterprise support feel effortless.' },
+    { title: 'Predictive governance', tag: 'AI-Powered', description: 'Machine learning algorithms that predict service outages and capacity constraints before they happen.' },
+  ],
+
+  whyKangqore: [
+    { title: 'Execution, Not Theory', description: 'We don’t just draw operating models on whiteboards. We engineer the underlying platforms, build the automated workflows, and run the managed services to guarantee the outcome.', icon: Target },
+    { title: 'Platform Agnostic Expertise', description: 'Whether you run on ServiceNow, BMC, Atlassian, or Salesforce, we have the deep technical architecture capability to integrate your fragmented systems into one fabric.', icon: Boxes },
+    { title: 'AI-Native Approach', description: 'We embed decision intelligence and GenAI directly into your service workflows, enabling predictive routing, auto-resolution, and zero-touch ticket deflection.', icon: BrainCircuit },
+  ],
+
+  industries: [
+    { name: 'Banking & Financial Services', description: 'Secure, compliant service portals for trading desks, branch support, and cross-border operations.' },
+    { name: 'Healthcare & Life Sciences', description: 'Unified clinical support desks, facility management workflows, and rapid onboarding for medical staff.' },
+    { name: 'Technology & SaaS', description: 'High-velocity developer support, automated provisioning, and seamless IT-to-Engineering issue escalation.' },
+    { name: 'Manufacturing & Industrial', description: 'Connected shop-floor support, supply chain vendor portals, and integrated IoT maintenance alerts.' },
+  ],
+
+  customFAQs: [
+    { question: 'What is Unified Service Management?', answer: 'A model that extends service management beyond IT into HR, Finance, Facilities, Customer Ops, and other business functions through one connected platform.' },
+    { question: 'Why does USM matter?', answer: 'It removes silos, improves service consistency, reduces operational costs, and creates better employee and customer experiences.' },
+    { question: 'Which departments can be unified?', answer: 'IT, HR, Finance, Procurement, Facilities, Legal, Customer Support, Shared Services, and more.' },
+    { question: 'How does AI improve service management?', answer: 'AI automates repetitive tasks, predicts issues, improves routing, powers virtual agents, and delivers faster resolutions.' },
+    { question: 'Can Kangqore modernize legacy service models?', answer: 'Yes. We redesign outdated ticketing and fragmented workflows into scalable digital operating models.' },
+    { question: 'Do you support ServiceNow and other platforms?', answer: 'Yes. We support ServiceNow, Microsoft ecosystems, BMC, Salesforce, Atlassian, AWS, Google Cloud, IBM, and custom workflow environments.' },
+    { question: 'How do you measure success?', answer: 'Through SLA improvements, resolution speed, automation rate, satisfaction scores, productivity gains, and cost reduction.' },
+    { question: 'Is this suitable for global enterprises?', answer: 'Yes. Our frameworks are built for multi-region, multi-language, high-scale enterprise environments.' },
+    { question: 'How long does a typical USM transformation take?', answer: 'It depends on scope, but our engagements follow a clear cadence: service inventory mapping and maturity assessment in 2 to 3 weeks, platform architecture and pilot design in 4 to 6 weeks, and phased deployment within 90 to 120 days. Most organizations see measurable SLA improvement and ticket deflection gains within the first quarter of deployment.' },
+  ],
 };
 
 // ─── Registry export ───────────────────────────────────────────────────────────
