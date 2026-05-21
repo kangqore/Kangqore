@@ -49,6 +49,8 @@ import {
   IoTExecutionEcosystem,
   IoTFutureReadySection,
 } from './IoTCustomSections';
+// Phase D2 — 8 legacy Foundry service lifts (not-yet-wired services).
+import { FOUNDRY_LEGACY_SECTIONS } from './foundry-services';
 
 // ─── api-microservices-engineering (Foundry · T1) ─────────────────────────────
 const apiMicroservicesEngineering = {
@@ -1601,4 +1603,6 @@ export const FOUNDRY_SECTIONS = {
   'microsoft-services': microsoftServices,
   'google-cloud-services': googleCloudServices,
   'cloud-computing': cloudComputing,
+  // Phase D2 — 8 legacy Foundry service lifts from foundry-services.jsx
+  ...FOUNDRY_LEGACY_SECTIONS,
 };
