@@ -29,6 +29,7 @@ import React from 'react';
 import {
   Network, Wifi, Cloud, Search, Layers, ShieldCheck, Activity, Server,
   TrendingUp, RefreshCw, Settings, Zap, Brain,
+  Award, Gauge, Shield, Target, Users, Wrench,
 } from 'lucide-react';
 import {
   APIPhilosophyBackground,
@@ -49,6 +50,14 @@ import {
   IoTExecutionEcosystem,
   IoTFutureReadySection,
 } from './IoTCustomSections';
+import {
+  OperationsCoESection,
+  ExecutionEcosystemSection,
+} from './ManagedServicesCustomSections';
+import {
+  SupportCoESection,
+  SupportEcosystemSection,
+} from './SupportMaintenanceCustomSections';
 // Phase D2 — 8 legacy Foundry service lifts (not-yet-wired services).
 import { FOUNDRY_LEGACY_SECTIONS } from './foundry-services';
 
@@ -1591,6 +1600,551 @@ const cloudComputing = {
   ],
 };
 
+// ─── managed-services (Foundry · T1) ──────────────────────────────────────────
+const managedServices = {
+  titleLine1: 'Managed IT',
+  titleHighlight: 'Services.',
+  description: (
+    <div className="space-y-4">
+      <p className="font-light tracking-tight leading-snug opacity-80">
+        Kangqore Managed Services gives you a scalable, measurable operating layer — combining service desk excellence, endpoint and platform operations, cloud, security, DevOps, and governance-ready support to keep your business moving with confidence.
+      </p>
+    </div>
+  ),
+  image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80',
+  videoBackground: '/videos/business-meeting-6774639.mp4',
+
+  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  hideGenericMidPageCta: true,
+  hideGenericFaq: true,
+
+  stats: [
+    { value: 'Reduce', label: 'Risk & operational complexity', color: 'text-blue-500' },
+    { value: 'Accelerate', label: 'Outcomes & productivity', color: 'text-brand-blue' },
+    { value: 'Predictable', label: 'Costs & service quality', color: 'text-indigo-500' },
+    { value: 'Always-On', label: 'Support & resilience', color: 'text-purple-500' },
+  ],
+
+  highFidelity: {
+    narrative: {
+      badge: 'MANAGED OPERATIONS :: 2026',
+      titleLine1: 'The hybrid IT reality is',
+      titleHighlight: 'stretching teams thin.',
+      titleLine2: '',
+      description: 'Hybrid operations have expanded support scope, security exposure, tooling complexity, and service expectations — pulling IT leaders away from modernization priorities and strategic execution.',
+      bottleneckLabel: 'The Overload',
+      bottleneckText: '81% of IT leaders feel overwhelmed by functional responsibilities.*',
+      requirementLabel: 'The Conflict',
+      requirementText: '76% struggle to balance innovation with operational excellence.*',
+      image: '/images/hybrid-it-reality-7793698.jpg',
+      statusLabel: 'Architecture',
+      statusValue: 'Constrained',
+    },
+    philosophy: {
+      icon: <Zap className="w-7 h-7 text-brand-blue" />,
+      title: 'Our Managed Services',
+      titleHighlight: 'Delivery Model.',
+      description: 'At Kangqore, Managed Services is structured across four rigorous execution phases to ensure zero disruption, strong governance, and measurable enterprise-scale continuity.',
+      pills: ['Assess & Baseline', 'Transition & Stabilize', 'Operate & Govern', 'Optimize & Transform'],
+    },
+    matrix: {
+      engineId: 'Engine :: MNG_OPS_V1',
+      title: '4-Phase Operating Lifecycle',
+      subtext: 'We deconstruct the complexity of enterprise operations into measurable, risk-aware execution layers.',
+      layers: [
+        { title: 'Assess', id: 'MNG_ASSESS', icon: <Search />, desc: 'Inventory, maturity scoring, risk posture, SLA mapping, and support model design.' },
+        { title: 'Transition', id: 'MNG_TRANS', icon: <Layers />, desc: 'Knowledge transfer, tooling integration, runbooks, pilot rollout, and stabilization planning.' },
+        { title: 'Operate', id: 'MNG_OPS', icon: <ShieldCheck />, desc: 'ITIL-aligned operations, SLO/SLA governance, reporting, continuous monitoring, and service coordination.' },
+        { title: 'Optimize', id: 'MNG_OPT', icon: <Activity />, desc: 'Automation, cost optimization, proactive incident reduction, service improvements, and operational maturity gains.' },
+      ],
+    },
+    schematic: {
+      titleLine1: 'A Single',
+      titleHighlight: 'Operating Model.',
+      description: 'Run your IT, apps, cloud, DevOps, testing, security, and endpoint operations through one governed framework — built for continuity, measurable outcomes, and business resilience.',
+      stats: [
+        { label: 'Reliability', val: 'SLO-BACKED' },
+        { label: 'Resolution', val: 'ACCELERATED' },
+        { label: 'Efficiency', val: 'MEASURABLE' },
+      ],
+    },
+  },
+
+  trustPillars: [
+    {
+      title: 'Zero-Disruption Transition',
+      tag: 'Execution',
+      description: 'Our transition framework is designed to ensure seamless knowledge transfer, tooling alignment, runbook maturity, and operational continuity without disrupting business performance.',
+    },
+    {
+      title: 'Outcome-Driven SLA Governance',
+      tag: 'Governance',
+      description: 'Our SLA models go well beyond uptime metrics. We define and govern service outcomes against continuity, performance, and business KPIs with full transparency and accountability.',
+    },
+    {
+      title: 'Proactive Monitoring & Observability',
+      tag: 'Operations',
+      description: 'We deploy advanced telemetry, event correlation, and predictive analytics to detect and resolve anomalies before they impact your business operations or end-user experience.',
+    },
+    {
+      title: 'Continuous Service Optimization',
+      tag: 'Scale',
+      description: 'We deploy FinOps, proactive automation, backlog reduction, and recurring improvement cadences to reduce incident volume and structurally lower your total cost of ownership.',
+    },
+  ],
+  trustPillarsRightTitle: 'Governed Managed Operations: Built for Trust, Control & Continuity',
+  trustPillarsRightDescription: 'Kangqore structures managed services around measurable SLAs, proactive monitoring, disciplined governance, and automation-led improvement. We combine expert-led execution with intelligent operational tooling to help organizations scale support without sacrificing visibility, stability, or control.',
+  trustPillarsRightButton: 'Request a Consultation',
+  trustPillarsVideo: '/videos/working-machine-4751312.mp4',
+
+  capabilities: [
+    {
+      title: 'Managed Application Support',
+      description: 'Keep business-critical applications stable, updated, and continuously improving.\n\nKangqore provides structured support for core business applications to ensure reliability, release readiness, and operational continuity. We combine support, maintenance, enhancements, and proactive monitoring to reduce backlog, improve responsiveness, and keep applications aligned with business needs.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/software-engineering.png',
+      items: ['L2/L3 support, corrective maintenance, and issue resolution', 'Enhancement support and controlled release management', 'Backlog reduction and service improvement planning', 'Performance, reliability, and availability monitoring'],
+    },
+    {
+      title: 'Salesforce Managed Services',
+      description: 'Maximize Salesforce ROI with certified expertise and always-on optimization.\n\nOur Salesforce managed services help organizations keep their CRM ecosystem agile, governed, and high-performing. From administration and enhancements to integrations and platform health, Kangqore ensures Salesforce continues to evolve with your business.',
+      image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: ['Admin, configuration, workflow, and enhancement delivery', 'Custom development and third-party integrations', 'Data quality, governance, and cleanup operations', 'Platform monitoring, support, and performance optimization'],
+    },
+    {
+      title: 'Managed Testing Services',
+      description: 'Protect release quality while accelerating delivery confidence.\n\nKangqore delivers managed testing operations that embed quality into your release lifecycle. We support functional validation, regression readiness, performance assurance, and continuous quality reporting so your teams can ship with greater trust and fewer surprises.',
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/quality-testing.png',
+      items: ['Functional, regression, and usability validation', 'Performance and security testing support', 'Test process optimization and release readiness checks', 'Continuous QA reporting, dashboards, and quality KPIs'],
+    },
+    {
+      title: 'Cloud Managed Services',
+      description: 'Operate cloud with speed, control, cost visibility, and resilience.\n\nWe help enterprises run cloud environments with stronger governance, better observability, and disciplined operational support. Kangqore combines cloud operations, optimization, and compliance management to reduce complexity across modern infrastructure estates.',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/cloud-infrastructure.png',
+      items: ['Cloud monitoring, operations, and incident handling', 'Migration support and environment optimization', 'Cost governance, utilization tracking, and FinOps practices', 'Compliance posture management and operational controls'],
+    },
+    {
+      title: 'DevOps Managed Services',
+      description: 'Make releases more predictable through automation and delivery discipline.\n\nKangqore supports DevOps environments through managed pipeline operations, automation frameworks, and continuous delivery governance. We help engineering teams accelerate changes while improving reliability, deployment consistency, and toolchain efficiency.',
+      image: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/cloud-infrastructure.png',
+      items: ['CI/CD pipeline implementation and managed operations', 'Build, test, and release automation support', 'Deployment reliability and change governance', 'Continuous improvement across the DevOps toolchain'],
+    },
+    {
+      title: 'Managed Security Services',
+      description: 'Stay ahead of evolving threats with continuous monitoring and rapid response.\n\nOur managed security services strengthen enterprise defense through operational vigilance, guided remediation, and governance-driven improvement. Kangqore helps organizations reduce security risk while building a stronger, more resilient security posture over time.',
+      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/cybersecurity.png',
+      items: ['Vulnerability management and threat detection support', 'Incident response coordination and playbook-driven action', 'Security posture reviews and control improvement', 'Ongoing advisory, reporting, and remediation guidance'],
+    },
+    {
+      title: 'Intelligent Service Desk',
+      description: 'Fast, responsive user support that doesn’t consume your core IT bandwidth.\n\nKangqore’s service desk model is designed to improve user experience while reducing operational burden on internal teams. We provide responsive support, request fulfilment, self-service enablement, and workflow standardization to create a more scalable support function.',
+      image: 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: ['24/7 help desk and request fulfilment operations', 'Self-service enablement and knowledge base support', 'Service catalog workflows and ticket automation', 'Field support or on-site options where required'],
+    },
+    {
+      title: 'Modern Endpoint & Device Management',
+      description: 'Keep devices compliant, patched, and productive at scale.\n\nWe help enterprises manage the full endpoint lifecycle with consistency, security, and operational control. From provisioning and compliance to patching and digital experience monitoring, Kangqore ensures endpoint ecosystems remain stable and user-ready.',
+      image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/iot-connected.png',
+      items: ['Full device lifecycle and endpoint administration', 'Asset management and compliance controls', 'Patch management, packaging, and software distribution', 'Experience monitoring and proactive remediation actions'],
+    },
+    {
+      title: 'Identity & Endpoint Security Management',
+      description: 'Protect users, devices, and data with hardened controls and policy enforcement.\n\nKangqore helps organizations strengthen endpoint and identity security through policy-led governance, encryption controls, privileged access oversight, and audit-ready operational discipline. The result is stronger protection without sacrificing usability.',
+      image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/cybersecurity.png',
+      items: ['Endpoint security and encryption management', 'Secure wipe, remote tracking, and control enforcement', 'Privileged access and identity governance support', 'Policy-based controls and audit readiness measures'],
+    },
+    {
+      title: 'Provisioning & Deployment Operations',
+      description: 'Standardized rollout, recovery, and workplace enablement for modern operations.\n\nWe streamline provisioning and deployment services to support modern workplace readiness at scale. Kangqore ensures devices, environments, and user setups are delivered consistently through standardized execution, lifecycle coordination, and operational support.',
+      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: ['Provisioning and configuration services', 'Deployment and redeployment coordination', 'Asset recovery and lifecycle support', 'Collaboration enablement and virtual desktop support'],
+    }
+  ],
+
+  technologiesTitle: 'Tools & Technologies We Excel In',
+  technologiesDescription: 'An enterprise-grade managed services stack built for workflow control, observability, endpoint governance, and operational resilience.',
+  technologies: [
+    { category: 'ITSM / Workflow', items: ['ServiceNow', 'Jira Service Management', 'Freshservice', 'ManageEngine'] },
+    { category: 'Observability', items: ['Grafana', 'Prometheus', 'ELK', 'Datadog', 'New Relic', 'OpenTelemetry'] },
+    { category: 'Endpoint / UEM', items: ['Microsoft Intune', 'Jamf', 'Workspace ONE'] },
+    { category: 'Security', items: ['EDR/XDR Platforms', 'SIEM Integrations', 'IAM/PAM Tooling'] },
+    { category: 'Cloud Platforms', items: ['AWS', 'Microsoft Azure', 'Google Cloud Platform (GCP)'] },
+    { category: 'DevOps Tooling', items: ['Jenkins', 'GitLab CI', 'GitHub Actions', 'ArgoCD'] },
+    { category: 'Automation', items: ['Power Automate', 'Ansible', 'Terraform'] }
+  ],
+
+  whyKangqoreIntro: 'Kangqore bridges the gap between hybrid IT complexity and governed, scalable operations. We deliver outcome-driven managed services that stabilize service environments, improve operational efficiency, and strengthen resilience across every layer of the enterprise.',
+  whyKangqore: [
+    { 
+      icon: Award, 
+      title: 'Enterprise Operational Pedigree', 
+      description: 'Stabilizing and optimizing complex IT environments with disciplined execution and service maturity.' 
+    },
+    { 
+      icon: Target, 
+      title: 'Outcome-Driven SLAs', 
+      description: 'We align service governance to continuity, performance, and business KPIs — not just ticket closure.' 
+    },
+    { 
+      icon: Users, 
+      title: 'Specialized Expertise On Demand', 
+      description: 'Access certified cloud, service, automation, security, and platform experts without the hiring overhead.' 
+    },
+    {
+      icon: ShieldCheck,
+      title: 'Zero-Disruption Transition',
+      description: 'Structured onboarding, knowledge transfer, and stabilization that protects continuity from day one.'
+    },
+    {
+      icon: TrendingUp,
+      title: 'Continuous Optimization Culture',
+      description: 'We improve service quality over time through automation, backlog reduction, and recurring review cadences.'
+    },
+    {
+      icon: Gauge,
+      title: 'Governance That Scales',
+      description: 'Escalation models, review frameworks, operational reporting, and service visibility built for enterprise control.'
+    }
+  ],
+
+  industryTitle: 'Industry-Specific Solutions.',
+  industryIntro: 'We bring deep domain context to deliver managed services that align to operational realities across regulated, customer-centric, and technology-intensive industries.',
+  industries: [
+    { name: 'Banking & Financial Services', description: 'Regulated infrastructure operations with audit-ready governance.' },
+    { name: 'Healthcare & Life Sciences', description: 'HIPAA-compliant IT operations ensuring clinical system availability.' },
+    { name: 'Retail & Consumer Goods', description: 'Always-on platform support for omnichannel commerce at scale.' },
+    { name: 'Manufacturing', description: 'Zero-downtime industrial IT with predictive monitoring & OT integration.' },
+    { name: 'Technology', description: 'DevOps-ready managed operations for fast-moving engineering teams.' },
+    { name: 'Professional Services', description: 'Scalable IT backbone enabling distributed workforce productivity.' }
+  ],
+
+  faqTitle: 'Frequently Asked Questions',
+  faqSubline: 'Common questions about our Managed Services model, governance, support structure, and delivery outcomes.',
+  customFAQs: [
+    {
+      question: "What's included in Managed IT Services beyond support tickets?",
+      answer: 'We go far beyond reactive break-fix. Our Managed Services include proactive infrastructure monitoring, regular security patching, capacity planning, continuous cost optimization (FinOps), architectural reviews, and automated incident remediation. We function as a strategic extension of your IT capability.'
+    },
+    {
+      question: 'How do you structure SLAs, escalation, and governance?',
+      answer: 'Our Service Level Agreements (SLAs) are co-created with you, focusing on business outcomes rather than just technical uptime. We establish clear escalation matrices, dedicated account managers, and transparent governance cadences (weekly operational reviews, monthly executive reporting) to ensure absolute accountability.'
+    },
+    {
+      question: 'Can you support hybrid environments and distributed teams?',
+      answer: 'Absolutely. We manage complex, hybrid ecosystems encompassing on-premise data centers, multi-cloud architectures, edge devices, and global remote workforces. Our tooling and processes are designed to secure and optimize distributed infrastructure seamlessly.'
+    },
+    {
+      question: 'How do you improve service quality over time, not just maintain it?',
+      answer: 'We implement a Continuous Improvement (CI) cadence utilizing ITIL best practices and automation. By analyzing incident trends, we identify root causes and deploy automation (runbooks, self-healing scripts) to permanently eliminate recurring issues, structurally lowering your ticket volume over time.'
+    },
+    {
+      question: 'Do you provide 24/7 support and proactive monitoring?',
+      answer: 'Yes. Our Network Operations Center (NOC) and Security Operations Center (SOC) provide fully managed, SLA-backed 24/7/365 coverage. We leverage advanced telemetry and predictive analytics to detect and resolve anomalies before they impact your business operations.'
+    },
+    {
+      question: 'How do pricing models work: fixed, consumption, or hybrid?',
+      answer: 'We offer flexible commercial models aligned to your growth trajectory. This includes fixed-fee per-device/per-user models for predictable budgeting, consumption-based pricing for dynamic cloud resources, or hybrid models that blend base coverage with block-hour access for ad-hoc specialization.'
+    }
+  ],
+
+  preWhyKangqoreSections: (
+    <OperationsCoESection />
+  ),
+  postFAQSections: (
+    <ExecutionEcosystemSection />
+  )
+};
+
+// ─── support-maintenance (Foundry · T1) ──────────────────────────────────────
+const supportMaintenance = {
+  titleLine1: 'Support &',
+  titleHighlight: 'Maintenance.',
+  description: (
+    <div className="space-y-4">
+      <p className="font-light tracking-tight leading-snug opacity-80">
+        We replace reactive firefighting with a disciplined reliability engine. Kangqore surrounds your enterprise applications and critical infrastructure with a governed maintenance framework — neutralizing technical debt, accelerating resolution, and sustaining operational confidence.
+      </p>
+    </div>
+  ),
+  image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80',
+  videoBackground: '/videos/business-meeting-6774639.mp4',
+
+  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+  hideGenericMidPageCta: true,
+  hideGenericFaq: true,
+
+  stats: [
+    { value: 'Zero', label: 'Disruption maintenance windows', color: 'text-blue-500' },
+    { value: 'Swift', label: 'Triage and incident resolution', color: 'text-brand-blue' },
+    { value: 'Secure', label: 'Patch and upgrade hygiene', color: 'text-indigo-500' },
+    { value: 'Stable', label: 'Environment uptime and health', color: 'text-purple-500' }
+  ],
+
+  highFidelity: {
+    narrative: {
+      badge: 'SUPPORT OPERATIONS :: 2026',
+      titleLine1: 'Without structured maintenance,',
+      titleHighlight: 'performance slowly',
+      titleLine2: 'becomes risk.',
+      description: 'Most failures are not caused by a single major event. They build over time through unresolved issues, patch lag, weak monitoring, and recurring operational friction. Kangqore helps organizations turn support and maintenance into a reliable operating discipline that improves uptime, security, and long-term service quality.',
+      bottleneckLabel: 'The Drift',
+      bottleneckText: '73% of outages stem from unresolved issues that gradually erode reliability, security, and user confidence.*',
+      requirementLabel: 'The Cost',
+      requirementText: '68% of enterprises report weak maintenance discipline increases recurring incidents, delays, and avoidable operational risk.*',
+      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=80',
+      statusLabel: 'Maintenance Status',
+      statusValue: 'STABILIZED'
+    },
+    philosophy: {
+      icon: <Wrench className="w-7 h-7 text-brand-blue" />,
+      title: 'Our Support & Maintenance',
+      titleHighlight: 'Delivery Model.',
+      description: 'At Kangqore, support and maintenance is structured as a disciplined execution model — built to stabilize systems, reduce recurring issues, and improve service quality over time.',
+      pills: ['Baseline & Assess', 'Stabilize & Prioritize', 'Maintain & Execute', 'Improve & Optimize']
+    },
+    matrix: {
+      engineId: 'Engine :: SUPP-MAINT_V3',
+      title: 'Support Lifecycle',
+      subtext: 'Our support and maintenance lifecycle deconstructed into four disciplined execution phases.',
+      layers: [
+        { title: 'Baseline', id: 'SM_BASE', icon: <Search />, desc: 'Understand systems, environments, issue patterns, known gaps, and maintenance obligations.' },
+        { title: 'Stabilize', id: 'SM_STAB', icon: <Shield />, desc: 'Address immediate incident, patch, monitoring, and backlog priorities.' },
+        { title: 'Maintain', id: 'SM_MAINT', icon: <Wrench />, desc: 'Run structured support, release, patch, upgrade, and issue-resolution cycles.' },
+        { title: 'Improve', id: 'SM_IMPR', icon: <TrendingUp />, desc: 'Drive recurring issue elimination, reliability tuning, and governance-led optimization.' }
+      ]
+    },
+    schematic: {
+      titleLine1: 'Maintenance Coverage',
+      titleHighlight: 'Across the Lifecycle.',
+      description: 'From corrective fixes to perfective enhancements — structured maintenance that keeps every layer of your environment stable, secure, and continuously improving.',
+      stats: [
+        { label: 'Corrective', val: 'FIX' },
+        { label: 'Adaptive', val: 'EVOLVE' },
+        { label: 'Preventive', val: 'FORTIFY' }
+      ]
+    }
+  },
+
+  trustStripText: 'Supporting enterprise applications, infrastructure, and digital platforms with disciplined maintenance operations.',
+  trustPillars: [
+    {
+      title: 'Continuity for Business-Critical Systems',
+      tag: 'Continuity',
+      description: 'Keep applications and infrastructure available, supported, and aligned to day-to-day operational needs.'
+    },
+    {
+      title: 'Controlled Change & Maintenance Discipline',
+      tag: 'Governance',
+      description: 'Execute patching, upgrades, and releases through governed maintenance windows and rollback-ready plans.'
+    },
+    {
+      title: 'Faster Issue Resolution with Stronger Visibility',
+      tag: 'Operations',
+      description: 'Improve triage, escalation, root-cause analysis, and service reporting across support operations.'
+    },
+    {
+      title: 'Preventive Reliability Improvement',
+      tag: 'Prevention',
+      description: 'Reduce recurring problems through performance analysis, log reviews, and structured optimization actions.'
+    },
+    {
+      title: 'Maintenance Aligned to Security & Compliance',
+      tag: 'Security',
+      description: 'Support secure environments through patch hygiene, access reviews, and vulnerability remediation coordination.'
+    }
+  ],
+  trustPillarsRightTitle: 'Dependable Support Operations: Built for Stability, Visibility & Continuous Improvement',
+  trustPillarsRightDescription: 'Kangqore structures support and maintenance around measurable SLAs, disciplined change control, proactive monitoring, and governed improvement cycles. We combine rapid issue resolution with long-term reliability engineering to help organizations sustain performance without sacrificing security or control.',
+  trustPillarsRightButton: 'Request a Consultation',
+  trustPillarsVideo: '/videos/working-machine-4751312.mp4',
+
+  capabilities: [
+    {
+      title: 'Application Support & Maintenance',
+      description: 'Keep business applications stable, current, and aligned with changing operational needs. Kangqore helps enterprises sustain application performance through structured maintenance, rapid issue resolution, version support, and execution of ongoing perfective enhancements.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/ai-cognitive.png',
+      items: [
+        'Corrective and adaptive bug fixes',
+        'Application health and uptime monitoring',
+        'Release readiness and deployment',
+        'Ongoing version and dependency support'
+      ]
+    },
+    {
+      title: 'Infrastructure Support Services',
+      description: 'Maintain the health, stability, and availability of your core IT environments. We help organizations keep their servers, storage, middleware, and foundational network systems operational, monitored, and meticulously maintained against performance drift.',
+      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/cloud-infrastructure.png',
+      items: [
+        'Server and storage environment upkeep',
+        'OS and middleware maintenance',
+        'Capacity planning and uptime support',
+        'Backup and recovery validation'
+      ]
+    },
+    {
+      title: 'Monitoring & Incident Management',
+      description: 'Detect issues earlier, respond faster, and eliminate operational disruption. Kangqore enables proactive system visibility across services — helping operations teams manage critical alerts, accelerate triage timelines, and proactively resolve anomalies.',
+      image: 'https://images.unsplash.com/photo-1504384308090-c89e12bf9a42?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: [
+        'Proactive monitoring and alerting',
+        'Incident triage and matrix escalation',
+        'Deep root-cause engineering analysis',
+        'SLA and performance reporting transparency'
+      ]
+    },
+    {
+      title: 'Patch, Upgrade & Change Execution',
+      description: 'Keep systems deeply secure, functionally current, and controlled through governed maintenance cycles. We help enterprises orchestrate patch deployments, minor version upgrades, and planned operational changes with rigorous, rollback-ready coordination.',
+      image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: [
+        'Orchestrated patch management deployment',
+        'Minor application and dependency upgrades',
+        'Risk-assessed change validation',
+        'Governed maintenance window coordination'
+      ]
+    },
+    {
+      title: 'Performance & Reliability Optimization',
+      description: 'Structurally improve application responsiveness, service stability, and long-term quality. Kangqore helps IT leaders trace recurring infrastructure faults, optimize resource allocation, and implement preventive code or configuration adjustments.',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/data-analytics.png',
+      items: [
+        'Recurring issue pattern identification',
+        'System behaviour and footprint tuning',
+        'Preventative reliability fixes',
+        'Log review and fault pattern analysis'
+      ]
+    },
+    {
+      title: 'Security Maintenance & Cyber Hygiene',
+      description: 'Enforce secure, compliant environments through governed operations and uncompromising cyber hygiene. We help technical teams sustain defensive baselines by orchestrating continuous vulnerability remediation, access control checks, and posture tracking.',
+      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/ai-cognitive.png',
+      items: [
+        'Routine vulnerability remediation',
+        'Operational configuration hardening',
+        'Identity and access hygiene reviews',
+        'Compliance-aligned patching verification'
+      ]
+    },
+    {
+      title: 'User & Service Support Operations',
+      description: 'Deliver responsive, technically fluent support experiences for demanding operational environments. Kangqore drives support operations that optimize end-user service request handling, streamline ticketing flows, and dramatically compress resolution times.',
+      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/business-strategy.png',
+      items: [
+        'Tiered L1/L2/L3 support execution',
+        'Streamlined service request handling',
+        'Technical knowledge base management',
+        'Accelerated resolution workflows'
+      ]
+    },
+    {
+      title: 'Managed Maintenance Governance',
+      description: 'Establish unwavering visibility, systemic accountability, and operational control. Kangqore anchors support engagements with mature execution governance, translating technical maintenance activities into executive-level SLAs, outcomes, and roadmaps.',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80',
+      bgImage: '/images/capabilities/ai-cognitive.png',
+      items: [
+        'Executive SLA tracking and reporting',
+        'Clear escalation and ownership matrices',
+        'Monthly service and backlog reviews',
+        'Continuous operational improvement roadmaps'
+      ]
+    }
+  ],
+
+  whyKangqoreIntro: 'Kangqore turns support and maintenance from a cost center into a reliability engine. We deliver structured, governed operations that stabilize environments, reduce recurring issues, and continuously improve service quality across your entire IT estate.',
+  whyKangqore: [
+    { title: 'Structured Support Models', description: 'Tiered L1/L2/L3 support with clear escalation paths, SLA governance, and disciplined ticket management.' },
+    { title: 'Proactive, Not Reactive', description: 'We shift support from firefighting to prevention through monitoring, pattern analysis, and continuous improvement.' },
+    { title: 'Zero-Disruption Maintenance', description: 'Governed change windows, rollback-ready execution, and validation protocols that protect operational continuity.' },
+    { title: 'Full-Stack Coverage', description: 'Applications, infrastructure, platforms, endpoints, and cloud environments — all supported under one governed model.' },
+    { title: 'Measurable Improvement', description: 'Monthly service reviews, KPI tracking, and improvement roadmaps that demonstrably reduce incidents over time.' },
+    { title: 'Security-First Hygiene', description: 'Patch governance, vulnerability remediation, access reviews, and configuration upkeep built into every maintenance cycle.' }
+  ],
+
+  industries: [
+    { name: 'Banking & Financial Services', description: 'Regulated system uptime with audit-ready maintenance governance.' },
+    { name: 'Healthcare & Life Sciences', description: 'HIPAA-compliant support ensuring clinical system availability.' },
+    { name: 'Retail & Consumer Goods', description: 'Always-on platform maintenance for peak-season resilience.' },
+    { name: 'Manufacturing', description: 'Zero-downtime support for industrial IT and OT environments.' },
+    { name: 'Technology', description: 'Rapid-response support for fast-moving engineering teams.' },
+    { name: 'Professional Services', description: 'Reliable IT backbone maintenance for distributed workforces.' }
+  ],
+
+  faqTitle: 'Frequently Asked Questions',
+  faqSubline: 'Common questions about our Support & Maintenance model, coverage, issue resolution, and governance approach.',
+  customFAQs: [
+    {
+      question: 'What is included in Kangqore Support & Maintenance services?',
+      answer: 'Our support and maintenance services cover application support, infrastructure maintenance, monitoring and incident management, patch and upgrade execution, performance optimization, security hygiene, user support operations, and governance. We provide end-to-end coverage across your IT estate with L1, L2, and L3 support tiers, proactive monitoring, and disciplined change control.'
+    },
+    {
+      question: 'Do you support both applications and infrastructure?',
+      answer: 'Yes. We provide structured support for business-critical applications (corrective, adaptive, preventive, and perfective maintenance) as well as infrastructure environments (servers, storage, middleware, cloud platforms). Our teams work across your full stack to ensure consistent reliability and availability.'
+    },
+    {
+      question: 'How do you handle patching and upgrades without disruption?',
+      answer: 'We execute all patching, upgrades, and dependency updates through governed maintenance windows with rollback-ready plans. Every change goes through validation, impact assessment, and coordination to minimize risk. Our approach ensures zero-disruption execution while keeping environments secure and current.'
+    },
+    {
+      question: 'Can you provide L1, L2, and L3 support coverage?',
+      answer: 'Absolutely. We offer tiered support models including L1 (first-line triage and ticket handling), L2 (technical troubleshooting and resolution), and L3 (deep engineering support and root-cause analysis). Support levels are customized to your operational requirements, SLA targets, and escalation matrix.'
+    },
+    {
+      question: 'How do you reduce recurring incidents over time?',
+      answer: 'We implement structured root-cause analysis, log review, and pattern identification to eliminate recurring issues at their source. Our continuous improvement methodology includes preventive remediation actions, reliability tuning, and regular service reviews that systematically reduce incident volume and improve mean-time-to-resolution.'
+    },
+    {
+      question: 'Do you offer governance and monthly service reviews?',
+      answer: 'Yes. Every engagement includes SLA and KPI tracking, monthly service reviews, escalation and ownership matrices, and a continuous improvement roadmap. We provide transparent reporting on ticket volumes, resolution times, SLA compliance, and backlog trends to ensure accountability and measurable progress.'
+    }
+  ],
+
+  technologies: [
+    {
+      category: 'Service Management / ITSM',
+      items: ['ServiceNow', 'Jira', 'Freshservice', 'ManageEngine']
+    },
+    {
+      category: 'Monitoring / Observability',
+      items: ['Splunk', 'ELK', 'Grafana', 'Prometheus']
+    },
+    {
+      category: 'Delivery / Maintenance Automation',
+      items: ['Jenkins', 'Azure DevOps', 'GitHub Actions', 'Cloud-native alerting']
+    },
+    {
+      category: 'Endpoint / Security Maintenance',
+      items: ['Endpoint management', 'Patch orchestration', 'Vulnerability platforms', 'Config hygiene tooling']
+    }
+  ],
+
+  preWhyKangqoreSections: (
+    <SupportCoESection />
+  ),
+  postFAQSections: (
+    <SupportEcosystemSection />
+  )
+};
+
 // ─── Registry export ───────────────────────────────────────────────────────────
 // 7 services wired in G2 PR 2 (all canonically Foundry):
 //   - 2 T1 services with custom GSAP section blocks (api-microservices-engineering, internet-of-things)
@@ -1603,6 +2157,8 @@ export const FOUNDRY_SECTIONS = {
   'microsoft-services': microsoftServices,
   'google-cloud-services': googleCloudServices,
   'cloud-computing': cloudComputing,
+  'managed-services': managedServices,
+  'support-maintenance': supportMaintenance,
   // Phase D2 — 8 legacy Foundry service lifts from foundry-services.jsx
   ...FOUNDRY_LEGACY_SECTIONS,
 };
