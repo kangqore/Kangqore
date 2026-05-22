@@ -110,6 +110,7 @@ Mounted at `/api/admin/kangqore-immp` (see `backend/src/index.ts`).
 | GET/PATCH | `/page-factory/pages/:id` | ADMIN | Get / update a page |
 | POST | `/page-factory/pages/:id/publish` | ADMIN | Publish a page (admin-gated) |
 | POST | `/page-factory/pages/:id/unpublish` | ADMIN | Return a page to DRAFT |
+| POST | `/page-factory/generate` | ADMIN | KIMMP drafts a page via Claude → saved as DRAFT (PR-C) |
 | POST | `/page-factory/opportunities/scan` | ADMIN | Detect missing-page opportunities (PR-B) |
 | GET | `/page-factory/opportunities` | ADMIN | List detected opportunities |
 | PATCH | `/page-factory/opportunities/:id` | ADMIN | Update an opportunity's status |
@@ -171,7 +172,7 @@ storage is skipped with a warning.
 | **PR-A1 ✅** | Page Factory rails — generated-page model + store + lifecycle API |
 | **PR-A2 ✅** | Page Factory — dynamic frontend renderer + admin authoring UI |
 | **PR-B ✅** | Page Factory — missing-page detection (opportunity ledger) |
-| PR-C | Page Factory — KIMMP generates page content (Claude + validators) |
+| **PR-C ✅** | Page Factory — KIMMP generates page content (Claude + claim validator) |
 | PR-D | Page Factory — publish workflow (sitemap, schema, audit) |
 | PR 3+ | Signal Ledger, Decision Engine, governance, … |
 

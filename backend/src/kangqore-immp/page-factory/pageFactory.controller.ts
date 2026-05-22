@@ -11,6 +11,7 @@ import { KimmpFlags } from '../core/flags';
 import { createPageSchema, updatePageSchema, PAGE_TYPES, PAGE_STATUSES } from './pageSchema';
 import { PageStore } from './pageStore.service';
 import { MissingPageDetector } from './missingPageDetector.service';
+import { PageGenerator } from './pageGenerator.service';
 
 /** Maps a thrown DB error to an HTTP response. Returns true if handled. */
 function handleDbError(error: unknown, res: Response): boolean {
@@ -29,6 +30,17 @@ function handleDbError(error: unknown, res: Response): boolean {
     hint: 'The kimmp_generated_pages table may be missing — run `prisma migrate deploy`.',
   });
   return true;
+}
+
+/** Derive a valid page slug from free text. */
+function slugify(s: string): string {
+  return (
+    s
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 80) || 'page'
+  );
 }
 
 export class PageFactoryController {
@@ -163,6 +175,84 @@ export class PageFactoryController {
       return res.json({ opportunity });
     } catch (error) {
       return void handleDbError(error, res);
+    }
+  }
+
+  /** POST /page-factory/generate — KIMMP drafts a page via Claude, saved as DRAFT. */
+  static async generate(req: Request, res: Response) {
+    if (!KimmpFlags.enabled()) {
+      return res.status(503).json({ error: 'KIMMP is disabled (KIMMP_ENABLED=false)' });
+    }
+    const { title, pageType, slug, department, primaryService, opportunityId } = req.body || {};
+    if (typeof title !== 'string' || !title.trim()) {
+      return res.status(422).json({ error: 'title is required' });
+    }
+    if (!PAGE_TYPES.includes(pageType)) {
+      return res.status(422).json({ error: `pageType must be one of: ${PAGE_TYPES.join(', ')}` });
+    }
+
+    try {
+      const generated = await PageGenerator.generate({
+        title: title.trim(),
+        pageType,
+        department: typeof department === 'string' ? department : undefined,
+        primaryService: typeof primaryService === 'string' ? primaryService : undefined,
+      });
+
+      // Locked rule: never save a page carrying unsupported claims.
+      if (generated.claimIssues.length > 0) {
+        return res.status(422).json({
+          error: 'Generated content contained unsupported claims — nothing was saved.',
+          claimIssues: generated.claimIssues,
+        });
+      }
+
+      const page = await PageStore.create(
+        {
+          slug: typeof slug === 'string' && slug.trim() ? slug.trim() : slugify(title),
+          pageType,
+          title: title.trim(),
+          department:
+            typeof department === 'string' && department.trim() ? department.trim() : undefined,
+          primaryService:
+            typeof primaryService === 'string' && primaryService.trim()
+              ? primaryService.trim()
+              : undefined,
+          content: generated.content,
+        },
+        (req as any).user?.userId
+      );
+
+      // If this came from a detected opportunity, mark it converted.
+      if (typeof opportunityId === 'string' && opportunityId) {
+        try {
+          await MissingPageDetector.setStatus(opportunityId, 'CONVERTED');
+        } catch {
+          /* non-fatal — the page was still created */
+        }
+      }
+
+      return res.status(201).json({
+        page,
+        generation: { model: generated.model, status: 'DRAFT' },
+      });
+    } catch (error) {
+      const msg = (error as Error).message || '';
+      if (msg.includes('ANTHROPIC_API_KEY')) {
+        return res
+          .status(503)
+          .json({ error: 'Page generation unavailable: ANTHROPIC_API_KEY not set' });
+      }
+      if ((error as { code?: string }).code === 'P2002') {
+        return res.status(409).json({ error: 'A page with that slug already exists' });
+      }
+      if ((error as { status?: number }).status === 529 || /overloaded/i.test(msg)) {
+        return res.status(503).json({
+          error: 'Page generation temporarily unavailable — the model is overloaded. Retry shortly.',
+        });
+      }
+      logger.error('KIMMP page generation failed:', error);
+      return res.status(500).json({ error: 'Page generation failed', detail: msg });
     }
   }
 
