@@ -43,6 +43,9 @@ export const KimmpFlags = {
 
   /** Allow the Tier-2 Claude pass during shadow observation. Off by default to bound cost. */
   shadowTier2: () => bool('KIMMP_SHADOW_TIER2', false),
+
+  /** Size of the in-memory recent-shadow-observation buffer (PR 2.5). */
+  shadowBufferSize: () => num('KIMMP_SHADOW_BUFFER', 200),
 };
 
 export function logKimmpFlagSummary(): void {
