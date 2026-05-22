@@ -22,6 +22,9 @@ pageFactoryRoutes.patch('/pages/:id', requireAuth, requireRole(['ADMIN']), PageF
 pageFactoryRoutes.post('/pages/:id/publish', requireAuth, requireRole(['ADMIN']), PageFactoryController.publish);
 pageFactoryRoutes.post('/pages/:id/unpublish', requireAuth, requireRole(['ADMIN']), PageFactoryController.unpublish);
 
+// Content generation (PR-C) — KIMMP drafts a page via Claude.
+pageFactoryRoutes.post('/generate', requireAuth, requireRole(['ADMIN']), PageFactoryController.generate);
+
 // Missing-page detection (PR-B).
 pageFactoryRoutes.post('/opportunities/scan', requireAuth, requireRole(['ADMIN']), PageFactoryController.scanOpportunities);
 pageFactoryRoutes.get('/opportunities', requireAuth, requireRole(['ADMIN']), PageFactoryController.listOpportunities);

@@ -29,6 +29,9 @@ export const KimmpFlags = {
   /** Anthropic model used for the Tier-2 reasoning pass. */
   reasonerModel: () => process.env.KIMMP_REASONER_MODEL || 'claude-haiku-4-5-20251001',
 
+  /** Anthropic model used for Page Factory content generation (PR-C). */
+  generatorModel: () => process.env.KIMMP_GENERATOR_MODEL || 'claude-sonnet-4-6',
+
   /** Escalate to Tier-2 when Tier-1 aggregate confidence falls below this. */
   tier2ConfidenceFloor: () => num('KIMMP_TIER2_CONFIDENCE_FLOOR', 0.55),
 
