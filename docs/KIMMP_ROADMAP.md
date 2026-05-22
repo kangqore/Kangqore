@@ -63,10 +63,16 @@ Remaining — each system emits signals into the ledger, and KIMMP feeds back:
   traffic — enabling it pre-validation puts unvalidated AI in the live chat.
 Value-gated on launch traffic.
 
-### Phase 3 — Decision + Workflow engine · _Owner: Backend + Founder_
-KIMMP reads the ledger and decides next-best action; a workflow router triggers
-the right system. This is the step that makes KIMMP an *orchestrator*. Requires
-Founder-defined decision policy + approval matrix.
+### Phase 3 — Decision + Workflow engine · _DECISION ENGINE BUILT_ · _Owner: Backend + Founder_
+**Done:** the Decision Engine — KIMMP reads NEW signals from the ledger, applies
+a deterministic decision policy, and records `PROPOSED` next-best actions
+(`POST /decisions/evaluate`, `GET /decisions`, `PATCH /decisions/:id`). KIMMP
+decides and recommends only.
+
+**Remaining (gated on Phase 4):** the *workflow executor* — turning an APPROVED
+decision into a real cross-system action. Deliberately out of scope until the
+governance/permission layer + approval matrix exist (locked rule: never silent
+action).
 
 ### Phase 4 — Governance, Permission, Observability, Cost · _Owner: DevOps / Security_
 Before any autonomy: per-action permission, human-approval gates, full audit,
