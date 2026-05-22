@@ -2619,3 +2619,29 @@ model KimmpPageAudit {
   @@index([createdAt])
   @@map("kimmp_page_audit")
 }
+
+// ---------------------------------------------------------------------------
+// KIMMP Signal Ledger (Phase 1) — the one hub every system writes signals to
+// and KIMMP reads from. Replaces ad-hoc point-to-point wiring with a backbone.
+// ---------------------------------------------------------------------------
+model KimmpSignal {
+  id             String   @id @default(uuid())
+  sourceModule   String // eqore | lead-intelligence | alis | vis | kimmp
+  signalType     String
+  signalCategory String // BEHAVIOR | INTENT | MARKET | CONTENT | RISK | SYSTEM
+  signalValue    String
+  confidence     Float    @default(0)
+  severity       String   @default("LOW") // LOW | MODERATE | HIGH | CRITICAL
+  conversationId String?
+  leadId         String?
+  sessionId      String?
+  metadata       Json?
+  status         String   @default("NEW") // NEW | PROCESSED | DISMISSED
+  createdAt      DateTime @default(now())
+
+  @@index([sourceModule])
+  @@index([signalCategory])
+  @@index([status])
+  @@index([createdAt])
+  @@map("kimmp_signals")
+}

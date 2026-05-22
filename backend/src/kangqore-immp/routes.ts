@@ -12,6 +12,7 @@ import { KIMMP_VERSION } from './core/types';
 import { KimmpFlags } from './core/flags';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
+import { SignalLedgerController } from './controllers/signalLedger.controller';
 
 const kangqoreImmpRoutes = Router();
 
@@ -58,6 +59,10 @@ kangqoreImmpRoutes.get(
   requireRole(['ADMIN']),
   BehaviorAnalysisController.backfill
 );
+
+// Signal Ledger (Phase 1) — the cross-system signal hub.
+kangqoreImmpRoutes.post('/signals', requireAuth, requireRole(['ADMIN']), SignalLedgerController.ingest);
+kangqoreImmpRoutes.get('/signals', requireAuth, requireRole(['ADMIN']), SignalLedgerController.query);
 
 // Page Factory (PR-A1) — generated-page store + lifecycle API.
 kangqoreImmpRoutes.use('/page-factory', pageFactoryRoutes);

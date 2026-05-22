@@ -19,6 +19,7 @@ import logger from '../../utils/logger';
 import { KimmpFlags } from '../core/flags';
 import { BehaviorAnalyzer } from '../behavior/behaviorAnalyzer.service';
 import { BehaviorProfileStore } from '../behavior/behaviorProfileStore.service';
+import { SignalLedger } from '../signals/signalLedger.service';
 import { CommunicationStyle, ResponseMode, Severity } from '../core/types';
 
 export interface ShadowObserveInput {
@@ -113,6 +114,24 @@ export class KimmpEqoreShadowObserver {
       conversationId: input.conversationId,
       leadId: input.leadId,
       sessionId: input.sessionId,
+    });
+
+    // Phase 1 — emit the behavior reading into the Signal Ledger (best-effort).
+    await SignalLedger.record({
+      sourceModule: 'kimmp',
+      signalType: 'BEHAVIOR_READING',
+      signalCategory: 'BEHAVIOR',
+      signalValue: profile.recommendedResponseMode,
+      confidence: profile.tier1Confidence,
+      severity: profile.states[0]?.severity ?? 'LOW',
+      conversationId: input.conversationId,
+      leadId: input.leadId,
+      sessionId: input.sessionId,
+      metadata: {
+        communicationStyle: profile.communicationStyle,
+        tier2Used: profile.tier2Used,
+        topStates,
+      },
     });
 
     // Greppable, structured single-line log — the PR 2 review surface.

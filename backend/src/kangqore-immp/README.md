@@ -104,6 +104,8 @@ Mounted at `/api/admin/kangqore-immp` (see `backend/src/index.ts`).
 | GET | `/behavior/profiles/:id` | ADMIN | Fetch a stored profile |
 | GET | `/shadow/observations?limit=50` | ADMIN | Recent shadow-mode readings of live eQORE traffic (PR 2.5) |
 | GET | `/shadow/backfill?limit=25` | ADMIN | Run KIMMP over existing eQORE conversation history (PR 2.6) |
+| POST | `/signals` | ADMIN | Ingest a signal into the Signal Ledger (Phase 1) |
+| GET | `/signals` | ADMIN | Query the Signal Ledger (filter by module/category/severity/status) |
 | GET | `/page-factory/rendered/:slug` | public | Fetch a PUBLISHED page by slug (consumed by the renderer) |
 | GET | `/page-factory/pages` | ADMIN | List generated pages (filter `?status=&pageType=`) |
 | POST | `/page-factory/pages` | ADMIN | Create a DRAFT page |
@@ -178,6 +180,15 @@ storage is skipped with a warning.
 
 The Page Factory (PR-A → PR-D) is complete: detect → generate → review →
 publish (audited) → discoverable in the sitemap, rendered with JSON-LD.
+
+### Signal Ledger (Phase 1)
+
+`signals/` is the cross-system signal hub — the base for connecting all four
+systems. Every system writes signals to one table (`kimmp_signals`); KIMMP
+reads one place. This PR ships the ledger + its first producer: the behavior
+shadow observer emits one `BEHAVIOR` signal per analysis. The eQORE /
+Lead-Intelligence / ALIS / VIS producers and the Decision Engine that consumes
+the ledger are Phase 2+ — see `docs/KIMMP_ROADMAP.md`.
 | PR 3+ | Signal Ledger, Decision Engine, governance, … |
 
 See `docs/KIMMP_PAGE_FACTORY_PLAN.md` for the full Page Factory build path.
