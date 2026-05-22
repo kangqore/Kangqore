@@ -50,4 +50,12 @@ kangqoreImmpRoutes.get(
   BehaviorAnalysisController.listShadowObservations
 );
 
+// Shadow backfill (PR 2.6) — run KIMMP over existing eQORE conversation history.
+kangqoreImmpRoutes.get(
+  '/shadow/backfill',
+  requireAuth,
+  requireRole(['ADMIN']),
+  BehaviorAnalysisController.backfill
+);
+
 export { kangqoreImmpRoutes };

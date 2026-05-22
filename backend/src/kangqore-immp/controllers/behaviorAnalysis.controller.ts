@@ -12,6 +12,7 @@ import {
   KimmpEqoreShadowObserver,
   ShadowObservation,
 } from '../eqore-bridge/eqoreShadowObserver.service';
+import { KimmpShadowBackfill } from '../eqore-bridge/shadowBackfill.service';
 
 export class BehaviorAnalysisController {
   /** POST /behavior/analyze — analyze conversation text, return a BehaviorProfile. */
@@ -108,6 +109,35 @@ export class BehaviorAnalysisController {
       emotionalSummary: row.emotionalSummary ?? '',
       guardrailFlags: Array.isArray(row.guardrailFlags) ? row.guardrailFlags : [],
     };
+  }
+
+  /** GET /shadow/backfill — run KIMMP over recent existing eQORE conversations. */
+  static async backfill(req: Request, res: Response) {
+    if (!KimmpFlags.enabled()) {
+      return res.status(503).json({ error: 'KIMMP is disabled (KIMMP_ENABLED=false)' });
+    }
+    const raw = Number(req.query.limit);
+    const limit = Number.isFinite(raw) ? Math.min(Math.max(1, raw), 100) : 25;
+
+    try {
+      const started = Date.now();
+      const result = await KimmpShadowBackfill.analyzeRecent(limit);
+      return res.json({
+        ...result,
+        meta: {
+          latencyMs: Date.now() - started,
+          requestedLimit: limit,
+          tier2: KimmpFlags.shadowTier2(),
+          note:
+            result.persisted > 0
+              ? `${result.persisted} observation(s) also persisted to the database.`
+              : 'Read-only — observations not persisted (KIMMP_PERSIST off or table absent).',
+        },
+      });
+    } catch (error) {
+      logger.error('KIMMP shadow backfill failed:', error);
+      return res.status(500).json({ error: 'Backfill failed' });
+    }
   }
 
   /** GET /behavior/profiles/:id — fetch a previously stored profile. */

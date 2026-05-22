@@ -103,6 +103,7 @@ Mounted at `/api/admin/kangqore-immp` (see `backend/src/index.ts`).
 | POST | `/behavior/analyze` | ADMIN | Analyze conversation text |
 | GET | `/behavior/profiles/:id` | ADMIN | Fetch a stored profile |
 | GET | `/shadow/observations?limit=50` | ADMIN | Recent shadow-mode readings of live eQORE traffic (PR 2.5) |
+| GET | `/shadow/backfill?limit=25` | ADMIN | Run KIMMP over existing eQORE conversation history (PR 2.6) |
 
 `POST /behavior/analyze` body:
 
