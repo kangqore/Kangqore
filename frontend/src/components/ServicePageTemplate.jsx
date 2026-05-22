@@ -10,6 +10,7 @@ import SEO from './SEO';
 import Realistic3DIcon from './ui/Realistic3DIcon';
 import AskEqoreCTA from './concierge/AskEqoreCTA';
 import SecondaryButton from './ui/SecondaryButton';
+import CaseStudiesSection from './services/shared/CaseStudiesSection';
 
 // Custom Hook for Scroll Animations
 const useScrollAnimation = (options = { threshold: 0.1, triggerOnce: true }) => {
@@ -1276,6 +1277,16 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
 
       {/* Custom Sections after Capabilities */}
       {service.postCapabilitiesSections && service.postCapabilitiesSections}
+
+      {/* Case Studies / Proof — renders only when the service supplies caseStudies data */}
+      {service.caseStudies && service.caseStudies.length > 0 && (
+        <CaseStudiesSection
+          caseStudies={service.caseStudies}
+          title={service.caseStudiesTitle}
+          intro={service.caseStudiesIntro}
+          serviceName={service.name}
+        />
+      )}
 
       {/* Solutions Carousel */}
       {service.solutions && service.solutions.length > 0 && (
