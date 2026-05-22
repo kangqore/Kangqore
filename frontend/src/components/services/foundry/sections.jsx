@@ -60,6 +60,11 @@ import {
 } from './SupportMaintenanceCustomSections';
 // Phase D2 — 8 legacy Foundry service lifts (not-yet-wired services).
 import { FOUNDRY_LEGACY_SECTIONS } from './foundry-services';
+import PremiumAnimatedSections from '../shared/PremiumSectionKit';
+import {
+  managedCloudServicesPremiumData, awsPremiumData, microsoftServicesPremiumData,
+  googleCloudServicesPremiumData, cloudComputingPremiumData,
+} from '../shared/l2PremiumData';
 
 // ─── api-microservices-engineering (Foundry · T1) ─────────────────────────────
 const apiMicroservicesEngineering = {
@@ -575,6 +580,7 @@ const internetOfThings = {
 
 // ─── managed-cloud-services (Foundry · T3) ────────────────────────────────────
 const managedCloudServices = {
+  postCapabilitiesSections: <PremiumAnimatedSections data={managedCloudServicesPremiumData} />,
   description:
     'Modern cloud environments are powerful — but without operational discipline, cost control, and security governance, they become fragile and expensive. Kangqore delivers engineered cloud operations built on SRE, FinOps, and SecOps principles.',
   image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
@@ -782,6 +788,7 @@ const managedCloudServices = {
 
 // ─── aws (Foundry · T3) ───────────────────────────────────────────────────────
 const aws = {
+  postCapabilitiesSections: <PremiumAnimatedSections data={awsPremiumData} />,
   description: (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold text-white">
@@ -949,6 +956,7 @@ const aws = {
 
 // ─── microsoft-services (Foundry · T3) ────────────────────────────────────────
 const microsoftServices = {
+  postCapabilitiesSections: <PremiumAnimatedSections data={microsoftServicesPremiumData} />,
   description: (
     <div>
       <p className="mb-4">
@@ -1137,6 +1145,7 @@ const microsoftServices = {
 
 // ─── google-cloud-services (Foundry · T3) ─────────────────────────────────────
 const googleCloudServices = {
+  postCapabilitiesSections: <PremiumAnimatedSections data={googleCloudServicesPremiumData} />,
   description: (
     <div>
       <p className="mb-4">
@@ -1340,6 +1349,7 @@ const googleCloudServices = {
 
 // ─── cloud-computing (Foundry · T3) ───────────────────────────────────────────
 const cloudComputing = {
+  postCapabilitiesSections: <PremiumAnimatedSections data={cloudComputingPremiumData} />,
   description: (
     <div>
       <p className="mb-4">

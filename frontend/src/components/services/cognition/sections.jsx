@@ -49,6 +49,8 @@ import {
   AITransformationMagnet,
 } from './AICustomSections';
 import { COGNITION_AUTOMATION_SECTIONS } from './automation-services';
+import PremiumAnimatedSections from '../shared/PremiumSectionKit';
+import { analyticsPremiumData } from '../shared/l2PremiumData';
 
 // ─── agentic-ai (Cognition) ────────────────────────────────────────────────────
 const agenticAI = {
@@ -1064,6 +1066,7 @@ const aiGovernance = {
 
 // ─── analytics (Cognition, T3 — added in PR 2) ─────────────────────────────────
 const analytics = {
+  postCapabilitiesSections: <PremiumAnimatedSections data={analyticsPremiumData} />,
   description:
     'Transform raw data into actionable intelligence through modern analytics architectures, predictive modeling, and AI-powered insights — engineered for scale, governance, and business impact.',
   fullDescription: (
