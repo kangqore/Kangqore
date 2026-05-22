@@ -22,4 +22,9 @@ pageFactoryRoutes.patch('/pages/:id', requireAuth, requireRole(['ADMIN']), PageF
 pageFactoryRoutes.post('/pages/:id/publish', requireAuth, requireRole(['ADMIN']), PageFactoryController.publish);
 pageFactoryRoutes.post('/pages/:id/unpublish', requireAuth, requireRole(['ADMIN']), PageFactoryController.unpublish);
 
+// Missing-page detection (PR-B).
+pageFactoryRoutes.post('/opportunities/scan', requireAuth, requireRole(['ADMIN']), PageFactoryController.scanOpportunities);
+pageFactoryRoutes.get('/opportunities', requireAuth, requireRole(['ADMIN']), PageFactoryController.listOpportunities);
+pageFactoryRoutes.patch('/opportunities/:id', requireAuth, requireRole(['ADMIN']), PageFactoryController.updateOpportunity);
+
 export { pageFactoryRoutes };
