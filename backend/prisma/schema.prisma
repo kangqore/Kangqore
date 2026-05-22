@@ -2645,3 +2645,29 @@ model KimmpSignal {
   @@index([createdAt])
   @@map("kimmp_signals")
 }
+
+// ---------------------------------------------------------------------------
+// KIMMP Decision Engine (Phase 3) — proposed next-best actions derived from
+// signals. KIMMP decides and RECOMMENDS; it does not auto-execute. A decision
+// is PROPOSED until an admin approves it.
+// ---------------------------------------------------------------------------
+model KimmpDecision {
+  id                String   @id @default(uuid())
+  signalId          String?
+  decisionType      String // RESPONSE_POLICY | SALES_ALERT | CONTENT_OPPORTUNITY | MARKET_ALERT | HUMAN_HANDOFF
+  recommendedAction String
+  targetModule      String // eqore | lead-intelligence | alis | vis | human
+  reasoning         String
+  confidence        Float    @default(0)
+  priority          Int      @default(1)
+  status            String   @default("PROPOSED") // PROPOSED | APPROVED | EXECUTED | DISMISSED
+  conversationId    String?
+  leadId            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([status])
+  @@index([targetModule])
+  @@index([createdAt])
+  @@map("kimmp_decisions")
+}

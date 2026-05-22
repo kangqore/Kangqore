@@ -13,6 +13,7 @@ import { KimmpFlags } from './core/flags';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { SignalLedgerController } from './controllers/signalLedger.controller';
+import { DecisionEngineController } from './controllers/decisionEngine.controller';
 
 const kangqoreImmpRoutes = Router();
 
@@ -79,6 +80,11 @@ kangqoreImmpRoutes.get(
 // Signal Ledger (Phase 1) — the cross-system signal hub.
 kangqoreImmpRoutes.post('/signals', requireAuth, requireRole(['ADMIN']), SignalLedgerController.ingest);
 kangqoreImmpRoutes.get('/signals', requireAuth, requireRole(['ADMIN']), SignalLedgerController.query);
+
+// Decision Engine (Phase 3) — proposes next-best actions from signals.
+kangqoreImmpRoutes.post('/decisions/evaluate', requireAuth, requireRole(['ADMIN']), DecisionEngineController.evaluate);
+kangqoreImmpRoutes.get('/decisions', requireAuth, requireRole(['ADMIN']), DecisionEngineController.list);
+kangqoreImmpRoutes.patch('/decisions/:id', requireAuth, requireRole(['ADMIN']), DecisionEngineController.updateStatus);
 
 // Page Factory (PR-A1) — generated-page store + lifecycle API.
 kangqoreImmpRoutes.use('/page-factory', pageFactoryRoutes);

@@ -108,6 +108,9 @@ Mounted at `/api/admin/kangqore-immp` (see `backend/src/index.ts`).
 | GET | `/signals` | ADMIN | Query the Signal Ledger (filter by module/category/severity/status) |
 | GET | `/leads/:leadId/behavior` | ADMIN | KIMMP's aggregated behavioral read of a lead (Phase 2) |
 | GET | `/market/behavior-signals` | ADMIN | KIMMP's market-level behavioral snapshot for ALIS (Phase 2) |
+| POST | `/decisions/evaluate` | ADMIN | Run the Decision Engine over NEW signals (Phase 3) |
+| GET | `/decisions` | ADMIN | List proposed decisions (filter `?status=`) |
+| PATCH | `/decisions/:id` | ADMIN | Approve / dismiss / mark a decision executed |
 | GET | `/page-factory/rendered/:slug` | public | Fetch a PUBLISHED page by slug (consumed by the renderer) |
 | GET | `/page-factory/pages` | ADMIN | List generated pages (filter `?status=&pageType=`) |
 | POST | `/page-factory/pages` | ADMIN | Create a DRAFT page |
@@ -185,12 +188,20 @@ publish (audited) → discoverable in the sitemap, rendered with JSON-LD.
 
 ### Signal Ledger (Phase 1)
 
-`signals/` is the cross-system signal hub — the base for connecting all four
-systems. Every system writes signals to one table (`kimmp_signals`); KIMMP
-reads one place. This PR ships the ledger + its first producer: the behavior
-shadow observer emits one `BEHAVIOR` signal per analysis. The eQORE /
-Lead-Intelligence / ALIS / VIS producers and the Decision Engine that consumes
-the ledger are Phase 2+ — see `docs/KIMMP_ROADMAP.md`.
+`signals/` is the cross-system signal hub. Every system writes signals to one
+table (`kimmp_signals`); KIMMP reads one place. First producer: the behavior
+shadow observer emits one `BEHAVIOR` signal per analysis.
+
+### Decision Engine (Phase 3)
+
+`decision/` reads NEW signals from the ledger, applies a deterministic,
+explainable **decision policy** (`decisionPolicy.ts`), and records `PROPOSED`
+decisions (`kimmp_decisions`) — next-best actions an admin reviews.
+
+**KIMMP decides and recommends; it does NOT auto-execute.** Turning a decision
+into a real cross-system action is gated on the Phase-4 governance/permission
+layer and admin approval (locked rule: never silent action). A decision is
+`PROPOSED` until an admin moves it to `APPROVED` / `EXECUTED` / `DISMISSED`.
 | PR 3+ | Signal Ledger, Decision Engine, governance, … |
 
 See `docs/KIMMP_PAGE_FACTORY_PLAN.md` for the full Page Factory build path.
