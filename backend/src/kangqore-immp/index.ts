@@ -13,4 +13,5 @@ export { kangqoreImmpRoutes } from './routes';
 export { KIMMP_VERSION } from './core/types';
 export { KimmpFlags } from './core/flags';
 export { BehaviorAnalyzer } from './behavior/behaviorAnalyzer.service';
+export { KimmpEqoreShadowObserver } from './eqore-bridge/eqoreShadowObserver.service';
 export type { BehaviorProfile, BehaviorSignal, AnalyzeInput } from './core/types';

@@ -55,7 +55,10 @@ const MODE_CLAUSES: Record<ResponseMode, string> = {
 };
 
 export class BehaviorAnalyzer {
-  static async analyze(input: AnalyzeInputParsed): Promise<BehaviorProfile> {
+  static async analyze(
+    input: AnalyzeInputParsed,
+    options?: { disableTier2?: boolean }
+  ): Promise<BehaviorProfile> {
     const analyzedRole = (input.analyzedRole || 'USER').toUpperCase();
 
     const texts = input.messages
@@ -70,6 +73,7 @@ export class BehaviorAnalyzer {
     const hasHighSeverity = tier1.states.some((s) => s.severity === 'HIGH');
     const wantTier2 =
       KimmpFlags.tier2Enabled() &&
+      !options?.disableTier2 &&
       texts.length > 0 &&
       (tier1.tier1Confidence < KimmpFlags.tier2ConfidenceFloor() || hasHighSeverity);
 
