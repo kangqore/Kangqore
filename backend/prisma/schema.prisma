@@ -2601,3 +2601,21 @@ model KimmpPageOpportunity {
   @@index([priority])
   @@map("kimmp_page_opportunities")
 }
+
+// ---------------------------------------------------------------------------
+// KIMMP Page Factory — page lifecycle audit trail (PR-D).
+// Every create / publish / unpublish is recorded: who did what, when.
+// ---------------------------------------------------------------------------
+model KimmpPageAudit {
+  id        String   @id @default(uuid())
+  pageId    String?
+  slug      String
+  action    String // CREATED | GENERATED | PUBLISHED | UNPUBLISHED
+  actor     String?
+  detail    String?
+  createdAt DateTime @default(now())
+
+  @@index([pageId])
+  @@index([createdAt])
+  @@map("kimmp_page_audit")
+}
