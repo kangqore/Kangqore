@@ -5,6 +5,7 @@ import { EqoreLeadClassificationService } from '../../eqore-lead-intelligence/sc
 import { EqoreLeadScoringService } from '../../eqore-lead-intelligence/scoring/leadScoring.service';
 import { eqoreQueue } from '../queue/eqore.queue';
 import { AgentDispatcherService } from '../routing/agentDispatcher.service';
+import { KimmpEqoreShadowObserver } from '../../kangqore-immp/eqore-bridge/eqoreShadowObserver.service';
 import logger from '../../utils/logger';
 
 export class EqoreConversationController {
@@ -86,6 +87,16 @@ export class EqoreConversationController {
           }
         });
       }
+
+      // ─── KIMMP PR 2 — shadow-mode behavior observation ───
+      // Fire-and-forget. KIMMP observes and logs only; it never alters the
+      // response or the eQORE flow, and never throws.
+      KimmpEqoreShadowObserver.observe({
+        conversationId: conversation.id,
+        leadId: lead.id,
+        sessionId,
+        messages: messages.map(m => ({ role: m.role, content: m.content })),
+      });
 
       // 1. Pre-safety: Prompt Injection Check
       const injectionKeywords = ['ignore previous instructions', 'reveal your system prompt', 'show internal score', 'bypass rules', 'developer mode', 'act as unrestricted'];

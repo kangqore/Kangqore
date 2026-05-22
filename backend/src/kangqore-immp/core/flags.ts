@@ -37,6 +37,12 @@ export const KimmpFlags = {
 
   /** Minimum analyzed messages before Big Five traits may be estimated. */
   traitMinMessages: () => num('KIMMP_TRAIT_MIN_MESSAGES', 4),
+
+  /** PR 2 — observe eQORE conversations in shadow mode (analyze + log, no response change). */
+  eqoreShadow: () => bool('KIMMP_EQORE_SHADOW', true),
+
+  /** Allow the Tier-2 Claude pass during shadow observation. Off by default to bound cost. */
+  shadowTier2: () => bool('KIMMP_SHADOW_TIER2', false),
 };
 
 export function logKimmpFlagSummary(): void {

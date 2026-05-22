@@ -11,11 +11,14 @@ connects the four existing systems:
 > eQORE speaks, Lead Intelligence qualifies, ALIS strategizes, VIS grows knowledge —
 > **KIMMP understands, decides, and orchestrates.**
 
-This folder currently ships **PR 1 only**: the **Human Behavior Intelligence Layer**.
-The wider KIMMP vision (decision engine, workflow orchestrator, governance, agent
-registry, revenue/delivery intelligence, founder command center) is a phased roadmap —
-see *Roadmap* below. Nothing here is wired into the live eQORE flow yet; it is a
-passive, admin-only, read-only intelligence service.
+This folder ships the **Human Behavior Intelligence Layer** (PR 1) plus **shadow-mode
+eQORE observation** (PR 2). The wider KIMMP vision (decision engine, workflow
+orchestrator, governance, agent registry, revenue/delivery intelligence, founder
+command center) is a phased roadmap — see *Roadmap* below.
+
+KIMMP does **not** yet influence eQORE's responses. In shadow mode it analyzes live
+conversations and logs the behavioral reading it *would* recommend — observe-only, so
+it cannot affect the visitor experience. Letting it shape responses is a later PR (2b).
 
 ---
 
@@ -138,13 +141,26 @@ behavior engine only. The analyze endpoint works fully in-memory; the store laye
 
 ---
 
-## Roadmap (phased — not built yet)
+## Roadmap (phased)
 
 | PR | Slice |
 |---|---|
 | **PR 1 ✅** | Human Behavior Intelligence Layer (this folder) |
-| PR 2 | Wire behavior signals into the live eQORE response flow |
-| PR 3 | Signal Ledger + Decision Engine |
-| PR 4 | Lead-Intelligence / ALIS / VIS enrichment |
-| PR 5 | Permission · Governance · Observability |
-| PR 6+ | Workflow orchestrator, revenue/delivery/CS intelligence, Command Center |
+| **PR 2 ✅** | Shadow-mode eQORE observation — analyze live traffic, log only |
+| PR 2b | Let behavior signals shape eQORE responses (tone / response mode) |
+| PR 1.5 | Persistence — `KimmpBehaviorProfile` model + migration |
+| PR 3+ | Page Factory, Signal Ledger, Decision Engine, governance, … |
+
+See `docs/KIMMP_PAGE_FACTORY_PLAN.md` for the Page Factory build path.
+
+### Shadow mode (PR 2)
+
+KIMMP observes every eQORE conversation via `eqore-bridge/eqoreShadowObserver.ts`,
+hooked into `EqoreConversationController.handleMessage`. The call is fire-and-forget:
+it never blocks or breaks the chat flow. Each observation logs one greppable line —
+`[KIMMP:SHADOW] …` — carrying the recommended response mode, style, and top signals.
+
+| Env var | Default | Purpose |
+|---|---|---|
+| `KIMMP_EQORE_SHADOW` | `true` | Enable shadow observation of eQORE traffic |
+| `KIMMP_SHADOW_TIER2` | `false` | Allow the Claude Tier-2 pass during shadow runs (cost) |
