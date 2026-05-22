@@ -2576,3 +2576,28 @@ model KimmpGeneratedPage {
   @@index([pageType])
   @@map("kimmp_generated_pages")
 }
+
+// ---------------------------------------------------------------------------
+// KIMMP Page Factory — detected missing-page opportunities (PR-B).
+// A recurring visitor question with no dedicated page becomes an OPEN
+// opportunity for an admin to review. KIMMP never auto-creates pages.
+// ---------------------------------------------------------------------------
+model KimmpPageOpportunity {
+  id              String   @id @default(uuid())
+  title           String
+  suggestedSlug   String   @unique
+  pageType        String   @default("faq")
+  sourceModule    String   @default("eqore")
+  sourceReason    String
+  sampleQuestion  String?
+  signalCount     Int      @default(1)
+  priority        Int      @default(1)
+  priorityLabel   String   @default("Single mention")
+  status          String   @default("OPEN") // OPEN | DISMISSED | CONVERTED
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([status])
+  @@index([priority])
+  @@map("kimmp_page_opportunities")
+}

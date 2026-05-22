@@ -10,6 +10,7 @@ import logger from '../../utils/logger';
 import { KimmpFlags } from '../core/flags';
 import { createPageSchema, updatePageSchema, PAGE_TYPES, PAGE_STATUSES } from './pageSchema';
 import { PageStore } from './pageStore.service';
+import { MissingPageDetector } from './missingPageDetector.service';
 
 /** Maps a thrown DB error to an HTTP response. Returns true if handled. */
 function handleDbError(error: unknown, res: Response): boolean {
@@ -119,6 +120,47 @@ export class PageFactoryController {
       const page = await PageStore.getPublishedBySlug(req.params.slug);
       if (!page) return res.status(404).json({ error: 'Page not found or not published' });
       return res.json({ page });
+    } catch (error) {
+      return void handleDbError(error, res);
+    }
+  }
+
+  /** POST /page-factory/opportunities/scan — detect missing-page opportunities. */
+  static async scanOpportunities(req: Request, res: Response) {
+    if (!KimmpFlags.enabled()) {
+      return res.status(503).json({ error: 'KIMMP is disabled (KIMMP_ENABLED=false)' });
+    }
+    try {
+      const limit = Number(req.query.limit);
+      const result = await MissingPageDetector.scan({
+        conversationLimit: Number.isFinite(limit) ? Math.min(Math.max(1, limit), 2000) : undefined,
+      });
+      return res.json({ result });
+    } catch (error) {
+      return void handleDbError(error, res);
+    }
+  }
+
+  /** GET /page-factory/opportunities?status= — list detected opportunities. */
+  static async listOpportunities(req: Request, res: Response) {
+    const status = typeof req.query.status === 'string' ? req.query.status : undefined;
+    try {
+      const opportunities = await MissingPageDetector.list(status);
+      return res.json({ opportunities, count: opportunities.length });
+    } catch (error) {
+      return void handleDbError(error, res);
+    }
+  }
+
+  /** PATCH /page-factory/opportunities/:id — update an opportunity's status. */
+  static async updateOpportunity(req: Request, res: Response) {
+    const status = (req.body || {}).status;
+    if (!['OPEN', 'DISMISSED', 'CONVERTED'].includes(status)) {
+      return res.status(422).json({ error: 'status must be OPEN, DISMISSED, or CONVERTED' });
+    }
+    try {
+      const opportunity = await MissingPageDetector.setStatus(req.params.id, status);
+      return res.json({ opportunity });
     } catch (error) {
       return void handleDbError(error, res);
     }
