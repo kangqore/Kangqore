@@ -14,5 +14,6 @@ export { KIMMP_VERSION } from './core/types';
 export { KimmpFlags } from './core/flags';
 export { BehaviorAnalyzer } from './behavior/behaviorAnalyzer.service';
 export { KimmpEqoreShadowObserver } from './eqore-bridge/eqoreShadowObserver.service';
+export { KimmpEqoreInfluence } from './eqore-bridge/eqoreInfluence.service';
 export { SignalLedger } from './signals/signalLedger.service';
 export type { BehaviorProfile, BehaviorSignal, AnalyzeInput } from './core/types';

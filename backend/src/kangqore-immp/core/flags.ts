@@ -47,6 +47,9 @@ export const KimmpFlags = {
   /** Allow the Tier-2 Claude pass during shadow observation. Off by default to bound cost. */
   shadowTier2: () => bool('KIMMP_SHADOW_TIER2', false),
 
+  /** PR 2b — let KIMMP's behavior reading shape eQORE responses. OFF by default. */
+  eqoreInfluence: () => bool('KIMMP_EQORE_INFLUENCE', false),
+
   /** Size of the in-memory recent-shadow-observation buffer (PR 2.5). */
   shadowBufferSize: () => num('KIMMP_SHADOW_BUFFER', 200),
 };

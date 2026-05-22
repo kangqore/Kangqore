@@ -57,8 +57,10 @@ Remaining — each system emits signals into the ledger, and KIMMP feeds back:
   feed lead scoring
 - ALIS → ledger (market/demand) **and** KIMMP behavior patterns feed ALIS
 - VIS → ledger (content gaps)
-- **KIMMP → eQORE influence (PR 2b)** — behavior signals shape eQORE responses
-  (today KIMMP only observes). Gated on shadow-data accuracy review.
+- **KIMMP → eQORE influence (PR 2b)** — ✅ BUILT. Behavior shapes eQORE
+  responses via a flag-gated framing step (`KIMMP_EQORE_INFLUENCE`, OFF by
+  default). Keep it OFF until KIMMP's behavior reading is validated on real
+  traffic — enabling it pre-validation puts unvalidated AI in the live chat.
 Value-gated on launch traffic.
 
 ### Phase 3 — Decision + Workflow engine · _Owner: Backend + Founder_
