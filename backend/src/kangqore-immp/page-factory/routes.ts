@@ -30,4 +30,7 @@ pageFactoryRoutes.post('/opportunities/scan', requireAuth, requireRole(['ADMIN']
 pageFactoryRoutes.get('/opportunities', requireAuth, requireRole(['ADMIN']), PageFactoryController.listOpportunities);
 pageFactoryRoutes.patch('/opportunities/:id', requireAuth, requireRole(['ADMIN']), PageFactoryController.updateOpportunity);
 
+// Publish workflow (PR-D) — page lifecycle audit trail.
+pageFactoryRoutes.get('/audit', requireAuth, requireRole(['ADMIN']), PageFactoryController.audit);
+
 export { pageFactoryRoutes };

@@ -41,6 +41,26 @@ export class SitemapService {
       priority: PRIORITY_BY_TYPE[b.pageType] ?? '0.5',
     }));
 
+    // KIMMP Page Factory — include published generated pages (PR-D).
+    // `prisma as any`: kimmpGeneratedPage may be absent from the generated
+    // client on a fresh checkout. A failure here must not break the sitemap.
+    try {
+      const kimmpPages = await (prisma as any).kimmpGeneratedPage.findMany({
+        where: { status: 'PUBLISHED' },
+        select: { route: true, updatedAt: true },
+      });
+      for (const p of kimmpPages) {
+        entries.push({
+          url: this.absolute(p.route),
+          lastmod: new Date(p.updatedAt).toISOString().split('T')[0],
+          changefreq: 'weekly',
+          priority: '0.7',
+        });
+      }
+    } catch {
+      /* KIMMP pages unavailable — sitemap still serves the VIS blueprints */
+    }
+
     if (entries.length === 0) {
       entries.push({
         url: BASE_URL,

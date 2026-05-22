@@ -12,6 +12,7 @@ import { createPageSchema, updatePageSchema, PAGE_TYPES, PAGE_STATUSES } from '.
 import { PageStore } from './pageStore.service';
 import { MissingPageDetector } from './missingPageDetector.service';
 import { PageGenerator } from './pageGenerator.service';
+import { PublishWorkflow } from './publishWorkflow.service';
 
 /** Maps a thrown DB error to an HTTP response. Returns true if handled. */
 function handleDbError(error: unknown, res: Response): boolean {
@@ -59,6 +60,7 @@ export class PageFactoryController {
     try {
       const createdBy = (req as any).user?.userId;
       const page = await PageStore.create(parsed.data, createdBy);
+      await PublishWorkflow.recordCreation(page, createdBy, false);
       return res.status(201).json({ page });
     } catch (error) {
       return void handleDbError(error, res);
@@ -109,7 +111,7 @@ export class PageFactoryController {
   static async publish(req: Request, res: Response) {
     try {
       const publishedBy = (req as any).user?.userId;
-      const page = await PageStore.publish(req.params.id, publishedBy);
+      const page = await PublishWorkflow.publish(req.params.id, publishedBy);
       return res.json({ page });
     } catch (error) {
       return void handleDbError(error, res);
@@ -119,7 +121,7 @@ export class PageFactoryController {
   /** POST /page-factory/pages/:id/unpublish — return a page to DRAFT. */
   static async unpublish(req: Request, res: Response) {
     try {
-      const page = await PageStore.unpublish(req.params.id);
+      const page = await PublishWorkflow.unpublish(req.params.id, (req as any).user?.userId);
       return res.json({ page });
     } catch (error) {
       return void handleDbError(error, res);
@@ -222,6 +224,7 @@ export class PageFactoryController {
         },
         (req as any).user?.userId
       );
+      await PublishWorkflow.recordCreation(page, (req as any).user?.userId, true);
 
       // If this came from a detected opportunity, mark it converted.
       if (typeof opportunityId === 'string' && opportunityId) {
@@ -253,6 +256,18 @@ export class PageFactoryController {
       }
       logger.error('KIMMP page generation failed:', error);
       return res.status(500).json({ error: 'Page generation failed', detail: msg });
+    }
+  }
+
+  /** GET /page-factory/audit — page lifecycle audit trail. */
+  static async audit(req: Request, res: Response) {
+    const raw = Number(req.query.limit);
+    const limit = Number.isFinite(raw) ? Math.min(Math.max(1, raw), 500) : 100;
+    try {
+      const entries = await PublishWorkflow.recent(limit);
+      return res.json({ entries, count: entries.length });
+    } catch (error) {
+      return void handleDbError(error, res);
     }
   }
 

@@ -114,6 +114,7 @@ Mounted at `/api/admin/kangqore-immp` (see `backend/src/index.ts`).
 | POST | `/page-factory/opportunities/scan` | ADMIN | Detect missing-page opportunities (PR-B) |
 | GET | `/page-factory/opportunities` | ADMIN | List detected opportunities |
 | PATCH | `/page-factory/opportunities/:id` | ADMIN | Update an opportunity's status |
+| GET | `/page-factory/audit` | ADMIN | Page lifecycle audit trail (PR-D) |
 
 `POST /behavior/analyze` body:
 
@@ -173,7 +174,10 @@ storage is skipped with a warning.
 | **PR-A2 ✅** | Page Factory — dynamic frontend renderer + admin authoring UI |
 | **PR-B ✅** | Page Factory — missing-page detection (opportunity ledger) |
 | **PR-C ✅** | Page Factory — KIMMP generates page content (Claude + claim validator) |
-| PR-D | Page Factory — publish workflow (sitemap, schema, audit) |
+| **PR-D ✅** | Page Factory — publish workflow: audit trail, sitemap inclusion, JSON-LD |
+
+The Page Factory (PR-A → PR-D) is complete: detect → generate → review →
+publish (audited) → discoverable in the sitemap, rendered with JSON-LD.
 | PR 3+ | Signal Ledger, Decision Engine, governance, … |
 
 See `docs/KIMMP_PAGE_FACTORY_PLAN.md` for the full Page Factory build path.

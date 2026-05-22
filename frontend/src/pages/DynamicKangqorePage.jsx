@@ -96,6 +96,14 @@ export default function DynamicKangqorePage() {
   const sections = Array.isArray(content.sections) ? content.sections : [];
   const internalLinks = Array.isArray(content.internalLinks) ? content.internalLinks : [];
   const pageUrl = `${SITE_URL}${page.route || `/${page.slug}`}`;
+  const schemaTypes = Array.isArray(content.schema) ? content.schema : [];
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': schemaTypes[0] || 'WebPage',
+    name: page.title,
+    url: pageUrl,
+    ...(seo.description ? { description: seo.description } : {}),
+  };
 
   return (
     <div className="bg-white">
@@ -107,6 +115,7 @@ export default function DynamicKangqorePage() {
         <meta property="og:title" content={seo.title || page.title} />
         {seo.description && <meta property="og:description" content={seo.description} />}
         <meta property="og:url" content={pageUrl} />
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
       {/* Hero */}
