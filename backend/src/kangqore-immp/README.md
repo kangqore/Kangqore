@@ -102,6 +102,7 @@ Mounted at `/api/admin/kangqore-immp` (see `backend/src/index.ts`).
 | GET | `/health` | public | Module status |
 | POST | `/behavior/analyze` | ADMIN | Analyze conversation text |
 | GET | `/behavior/profiles/:id` | ADMIN | Fetch a stored profile |
+| GET | `/shadow/observations?limit=50` | ADMIN | Recent shadow-mode readings of live eQORE traffic (PR 2.5) |
 
 `POST /behavior/analyze` body:
 
@@ -159,6 +160,10 @@ KIMMP observes every eQORE conversation via `eqore-bridge/eqoreShadowObserver.ts
 hooked into `EqoreConversationController.handleMessage`. The call is fire-and-forget:
 it never blocks or breaks the chat flow. Each observation logs one greppable line —
 `[KIMMP:SHADOW] …` — carrying the recommended response mode, style, and top signals.
+
+Recent observations are also kept in an in-memory ring buffer and exposed at
+`GET /shadow/observations` (PR 2.5), so an admin can review the readings without
+grepping logs. The buffer clears on restart; durable storage lands with PR 1.5.
 
 | Env var | Default | Purpose |
 |---|---|---|

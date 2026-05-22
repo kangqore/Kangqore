@@ -42,4 +42,12 @@ kangqoreImmpRoutes.get(
   BehaviorAnalysisController.getProfile
 );
 
+// Shadow-mode review (PR 2.5) — recent observations of live eQORE traffic.
+kangqoreImmpRoutes.get(
+  '/shadow/observations',
+  requireAuth,
+  requireRole(['ADMIN']),
+  BehaviorAnalysisController.listShadowObservations
+);
+
 export { kangqoreImmpRoutes };
