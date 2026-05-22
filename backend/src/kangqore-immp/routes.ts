@@ -60,6 +60,14 @@ kangqoreImmpRoutes.get(
   BehaviorAnalysisController.backfill
 );
 
+// KIMMP → Lead Intelligence (Phase 2) — KIMMP's behavioral read of a lead.
+kangqoreImmpRoutes.get(
+  '/leads/:leadId/behavior',
+  requireAuth,
+  requireRole(['ADMIN']),
+  BehaviorAnalysisController.leadBehavior
+);
+
 // Signal Ledger (Phase 1) — the cross-system signal hub.
 kangqoreImmpRoutes.post('/signals', requireAuth, requireRole(['ADMIN']), SignalLedgerController.ingest);
 kangqoreImmpRoutes.get('/signals', requireAuth, requireRole(['ADMIN']), SignalLedgerController.query);

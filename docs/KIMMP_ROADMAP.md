@@ -41,8 +41,12 @@ table, `signalLedger` service, `POST/GET /signals`, and the first producer (the
 behavior shadow observer emits a `BEHAVIOR` signal per analysis). The other
 producers + the Decision Engine that consumes the ledger are Phase 2+.
 
-### Phase 2 — Connect the four as producers · _Owner: Backend + AI/ML_
-Each system emits signals into the ledger, and KIMMP starts feeding back:
+### Phase 2 — Connect the four as producers · _IN PROGRESS_ · _Owner: Backend + AI/ML_
+**Done:** KIMMP → Lead Intelligence (advisory) — `GET /leads/:leadId/behavior`
+surfaces KIMMP's aggregated behavioral read + sales posture per lead. Advisory
+only — it does not yet move the lead score (that is a later gated step).
+
+Remaining — each system emits signals into the ledger, and KIMMP feeds back:
 - eQORE → ledger (intent, behavior already via KIMMP)
 - Lead Intelligence → ledger (lead score, stage) **and** KIMMP behavior signals
   feed lead scoring
