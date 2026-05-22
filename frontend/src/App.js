@@ -16,12 +16,13 @@ import { legacyRedirectRoutes } from './routes/legacyRedirectRoutes';
 // Import page components
 import HomePage from './pages/HomePage';
 import Services from './pages/Services';
-import NotFound from './pages/NotFound';
+import DynamicKangqorePage from './pages/DynamicKangqorePage';
 import InstallPrompt from './components/InstallPrompt';
 import OfflineIndicator from './components/OfflineIndicator';
 import EqoreLeadsPage from './pages/admin/EqoreLeadsPage';
 import EqoreSalesPage from './pages/admin/EqoreSalesPage';
 import AlisPage from './pages/admin/AlisPage';
+import KimmpPagesPage from './pages/admin/KimmpPagesPage';
 import EQoreAIConsole from './pages/EQoreAIConsole';
 import './App.css';
 
@@ -179,9 +180,10 @@ function AppContent() {
                 <Route path="/admin/eqore-leads" element={<EqoreLeadsPage />} />
                 <Route path="/admin/eqore-sales" element={<EqoreSalesPage />} />
                 <Route path="/admin/alis" element={<AlisPage />} />
+                <Route path="/admin/kimmp-pages" element={<KimmpPagesPage />} />
 
-                {/* Default redirect for unmatched routes */}
-                <Route path="*" element={<NotFound />} />
+                {/* Catch-all: resolve a KIMMP generated page, else NotFound. */}
+                <Route path="*" element={<DynamicKangqorePage />} />
               </Routes>
             </MainLayout>
           } />
