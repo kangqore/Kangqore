@@ -104,6 +104,12 @@ Mounted at `/api/admin/kangqore-immp` (see `backend/src/index.ts`).
 | GET | `/behavior/profiles/:id` | ADMIN | Fetch a stored profile |
 | GET | `/shadow/observations?limit=50` | ADMIN | Recent shadow-mode readings of live eQORE traffic (PR 2.5) |
 | GET | `/shadow/backfill?limit=25` | ADMIN | Run KIMMP over existing eQORE conversation history (PR 2.6) |
+| GET | `/page-factory/rendered/:slug` | public | Fetch a PUBLISHED page by slug (consumed by the renderer) |
+| GET | `/page-factory/pages` | ADMIN | List generated pages (filter `?status=&pageType=`) |
+| POST | `/page-factory/pages` | ADMIN | Create a DRAFT page |
+| GET/PATCH | `/page-factory/pages/:id` | ADMIN | Get / update a page |
+| POST | `/page-factory/pages/:id/publish` | ADMIN | Publish a page (admin-gated) |
+| POST | `/page-factory/pages/:id/unpublish` | ADMIN | Return a page to DRAFT |
 
 `POST /behavior/analyze` body:
 
@@ -159,9 +165,21 @@ storage is skipped with a warning.
 | **PR 2 ✅** | Shadow-mode eQORE observation — analyze live traffic, log only |
 | PR 2b | Let behavior signals shape eQORE responses (tone / response mode) |
 | PR 1.5 | Persistence — `KimmpBehaviorProfile` model + migration |
-| PR 3+ | Page Factory, Signal Ledger, Decision Engine, governance, … |
+| **PR-A1 ✅** | Page Factory rails — generated-page model + store + lifecycle API |
+| PR-A2 | Page Factory — dynamic frontend renderer + admin authoring UI |
+| PR-B → D | Page Factory — detection, generation, publish workflow |
+| PR 3+ | Signal Ledger, Decision Engine, governance, … |
 
-See `docs/KIMMP_PAGE_FACTORY_PLAN.md` for the Page Factory build path.
+See `docs/KIMMP_PAGE_FACTORY_PLAN.md` for the full Page Factory build path.
+
+### Page Factory (PR-A1)
+
+`page-factory/` stores website pages as structured data (`KimmpGeneratedPage`),
+so one dynamic renderer can serve them — no hand-written React per page. A page is
+`DRAFT` until an admin publishes it; KIMMP never auto-publishes. PR-A1 is the
+backend rails only (model + API); the renderer and admin UI are PR-A2. The
+`kimmp_generated_pages` migration is committed but **not auto-applied** — run
+`prisma migrate deploy` per environment.
 
 ### Shadow mode (PR 2)
 

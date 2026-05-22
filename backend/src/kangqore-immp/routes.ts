@@ -11,6 +11,7 @@ import { requireAuth, requireRole } from '../middleware/rbac';
 import { KIMMP_VERSION } from './core/types';
 import { KimmpFlags } from './core/flags';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
+import { pageFactoryRoutes } from './page-factory/routes';
 
 const kangqoreImmpRoutes = Router();
 
@@ -57,5 +58,8 @@ kangqoreImmpRoutes.get(
   requireRole(['ADMIN']),
   BehaviorAnalysisController.backfill
 );
+
+// Page Factory (PR-A1) — generated-page store + lifecycle API.
+kangqoreImmpRoutes.use('/page-factory', pageFactoryRoutes);
 
 export { kangqoreImmpRoutes };

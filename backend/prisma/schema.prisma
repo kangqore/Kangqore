@@ -2549,3 +2549,30 @@ model KimmpBehaviorProfile {
   @@index([createdAt])
   @@map("kimmp_behavior_profiles")
 }
+
+// ---------------------------------------------------------------------------
+// KIMMP Page Factory — generated website pages (PR-A1).
+// Pages are stored as structured data and rendered by one dynamic renderer.
+// Publishing is admin-gated: a page is DRAFT until an admin publishes it.
+// ---------------------------------------------------------------------------
+model KimmpGeneratedPage {
+  id             String    @id @default(uuid())
+  slug           String    @unique
+  route          String    @unique
+  pageType       String
+  title          String
+  status         String    @default("DRAFT") // DRAFT | PUBLISHED | ARCHIVED
+  department     String?
+  primaryService String?
+  contentJson    Json // hero, sections, seo, schema, internalLinks
+  version        Int       @default(1)
+  createdBy      String?
+  publishedAt    DateTime?
+  publishedBy    String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status])
+  @@index([pageType])
+  @@map("kimmp_generated_pages")
+}
