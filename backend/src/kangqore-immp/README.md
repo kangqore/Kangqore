@@ -172,7 +172,7 @@ storage is skipped with a warning.
 |---|---|
 | **PR 1 ✅** | Human Behavior Intelligence Layer (this folder) |
 | **PR 2 ✅** | Shadow-mode eQORE observation — analyze live traffic, log only |
-| PR 2b | Let behavior signals shape eQORE responses (tone / response mode) |
+| **PR 2b ✅** | Behavior shapes eQORE responses — flag-gated `KIMMP_EQORE_INFLUENCE`, OFF by default |
 | PR 1.5 | Persistence — `KimmpBehaviorProfile` model + migration |
 | **PR-A1 ✅** | Page Factory rails — generated-page model + store + lifecycle API |
 | **PR-A2 ✅** | Page Factory — dynamic frontend renderer + admin authoring UI |
@@ -220,3 +220,4 @@ the database instead, so observations survive server restarts.
 |---|---|---|
 | `KIMMP_EQORE_SHADOW` | `true` | Enable shadow observation of eQORE traffic |
 | `KIMMP_SHADOW_TIER2` | `false` | Allow the Claude Tier-2 pass during shadow runs (cost) |
+| `KIMMP_EQORE_INFLUENCE` | `false` | PR 2b — let behavior shape eQORE responses. **Off** until validated on real traffic. |

@@ -6,6 +6,7 @@ import { EqoreLeadScoringService } from '../../eqore-lead-intelligence/scoring/l
 import { eqoreQueue } from '../queue/eqore.queue';
 import { AgentDispatcherService } from '../routing/agentDispatcher.service';
 import { KimmpEqoreShadowObserver } from '../../kangqore-immp/eqore-bridge/eqoreShadowObserver.service';
+import { KimmpEqoreInfluence } from '../../kangqore-immp/eqore-bridge/eqoreInfluence.service';
 import logger from '../../utils/logger';
 
 export class EqoreConversationController {
@@ -130,6 +131,15 @@ export class EqoreConversationController {
         messages: messages.map(m => ({ id: m.id, role: m.role, content: m.content }))
       });
 
+      // ─── KIMMP PR 2b — behavior may shape the response ───
+      // Flag-gated (KIMMP_EQORE_INFLUENCE, default OFF) — a no-op unless enabled.
+      // Best-effort: on any failure it returns the original content unchanged.
+      const influence = await KimmpEqoreInfluence.apply(
+        dispatchResult.responseContent,
+        messages.map(m => ({ role: m.role, content: m.content }))
+      );
+      const finalContent = influence.content;
+
       // 3. Save Assistant Message
       // The dispatcher returns the synchronous "Concierge" response.
       // If a background agent (eQORE Shadow) was invoked, it may push websocket events later.
@@ -137,7 +147,7 @@ export class EqoreConversationController {
         data: {
           conversationId: conversation.id,
           role: 'EQORE',
-          content: dispatchResult.responseContent,
+          content: finalContent,
           intent: dispatchResult.intent
         }
       });
