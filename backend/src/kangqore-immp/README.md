@@ -106,6 +106,7 @@ Mounted at `/api/admin/kangqore-immp` (see `backend/src/index.ts`).
 | GET | `/shadow/backfill?limit=25` | ADMIN | Run KIMMP over existing eQORE conversation history (PR 2.6) |
 | POST | `/signals` | ADMIN | Ingest a signal into the Signal Ledger (Phase 1) |
 | GET | `/signals` | ADMIN | Query the Signal Ledger (filter by module/category/severity/status) |
+| GET | `/leads/:leadId/behavior` | ADMIN | KIMMP's aggregated behavioral read of a lead (Phase 2) |
 | GET | `/page-factory/rendered/:slug` | public | Fetch a PUBLISHED page by slug (consumed by the renderer) |
 | GET | `/page-factory/pages` | ADMIN | List generated pages (filter `?status=&pageType=`) |
 | POST | `/page-factory/pages` | ADMIN | Create a DRAFT page |

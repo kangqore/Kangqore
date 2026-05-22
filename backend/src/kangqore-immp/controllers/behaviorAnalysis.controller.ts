@@ -13,6 +13,7 @@ import {
   ShadowObservation,
 } from '../eqore-bridge/eqoreShadowObserver.service';
 import { KimmpShadowBackfill } from '../eqore-bridge/shadowBackfill.service';
+import { LeadBehaviorSummaryService } from '../lead-intelligence-bridge/leadBehaviorSummary.service';
 
 export class BehaviorAnalysisController {
   /** POST /behavior/analyze — analyze conversation text, return a BehaviorProfile. */
@@ -138,6 +139,15 @@ export class BehaviorAnalysisController {
       logger.error('KIMMP shadow backfill failed:', error);
       return res.status(500).json({ error: 'Backfill failed' });
     }
+  }
+
+  /** GET /leads/:leadId/behavior — KIMMP's aggregated behavioral read of a lead. */
+  static async leadBehavior(req: Request, res: Response) {
+    if (!KimmpFlags.enabled()) {
+      return res.status(503).json({ error: 'KIMMP is disabled (KIMMP_ENABLED=false)' });
+    }
+    const summary = await LeadBehaviorSummaryService.forLead(req.params.leadId);
+    return res.json({ summary });
   }
 
   /** GET /behavior/profiles/:id — fetch a previously stored profile. */
