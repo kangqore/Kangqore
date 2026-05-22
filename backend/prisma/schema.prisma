@@ -2518,3 +2518,34 @@ model EqoreSalesNote {
   @@index([opportunityId])
   @@map("eqore_sales_notes")
 }
+
+// ---------------------------------------------------------------------------
+// KIMMP — Kangqore Intelligence Mind Management Processor
+// Human Behavior Intelligence Layer — stored behavior profiles (PR 1.5).
+// Confidence-scored behavioral signals only; never clinical diagnoses.
+// ---------------------------------------------------------------------------
+model KimmpBehaviorProfile {
+  id                      String   @id @default(uuid())
+  conversationId          String?
+  leadId                  String?
+  sessionId               String?
+  analyzedRole            String   @default("USER")
+  messageCount            Int      @default(0)
+  totalChars              Int      @default(0)
+  states                  Json // BehaviorSignal[]
+  communicationStyle      String
+  traits                  Json // TraitEstimate (volume-gated)
+  recommendedResponseMode String
+  emotionalSummary        String
+  tier1Confidence         Float
+  tier2Used               Boolean  @default(false)
+  guardrailFlags          Json?
+  version                 String
+  createdAt               DateTime @default(now())
+
+  @@index([conversationId])
+  @@index([leadId])
+  @@index([sessionId])
+  @@index([createdAt])
+  @@map("kimmp_behavior_profiles")
+}

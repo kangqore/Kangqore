@@ -18,6 +18,7 @@
 import logger from '../../utils/logger';
 import { KimmpFlags } from '../core/flags';
 import { BehaviorAnalyzer } from '../behavior/behaviorAnalyzer.service';
+import { BehaviorProfileStore } from '../behavior/behaviorProfileStore.service';
 import { CommunicationStyle, ResponseMode, Severity } from '../core/types';
 
 export interface ShadowObserveInput {
@@ -104,6 +105,14 @@ export class KimmpEqoreShadowObserver {
       traitsAvailable: profile.traits.available,
       emotionalSummary: profile.emotionalSummary,
       guardrailFlags: profile.guardrailFlags,
+    });
+
+    // Durable persistence (PR 1.5) — flag-gated; a no-op + graceful when
+    // KIMMP_PERSIST=false or the table is absent. Keeps shadow data across restarts.
+    await BehaviorProfileStore.save(profile, {
+      conversationId: input.conversationId,
+      leadId: input.leadId,
+      sessionId: input.sessionId,
     });
 
     // Greppable, structured single-line log — the PR 2 review surface.

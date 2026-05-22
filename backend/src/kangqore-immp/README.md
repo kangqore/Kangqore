@@ -134,11 +134,19 @@ runs Tier-1 only.
 
 ## Persistence / migration
 
-Persistence is **deferred to a follow-up PR**. The `KimmpBehaviorProfile` model,
-its migration, and enabling `KIMMP_PERSIST` ship separately — this PR is the
-behavior engine only. The analyze endpoint works fully in-memory; the store layer
-(`behavior/behaviorProfileStore.service.ts`) is present but dormant while
-`KIMMP_PERSIST=false` (the default).
+PR 1.5 adds the `KimmpBehaviorProfile` model and a migration
+(`prisma/migrations/20260522120000_add_kimmp_behavior_profile`). The migration is
+**not auto-applied** — apply it per environment with `prisma migrate deploy`, then
+set `KIMMP_PERSIST=true`.
+
+- `KIMMP_PERSIST=true` — every behavior analysis (including shadow observations) is
+  stored, and `GET /shadow/observations` serves from the database, so readings
+  survive restarts.
+- `KIMMP_PERSIST=false` (default) — analysis runs fully in-memory and
+  `/shadow/observations` serves the in-memory ring buffer only.
+
+Persistence degrades gracefully: if the table is absent, analysis still works and
+storage is skipped with a warning.
 
 ---
 
@@ -163,7 +171,8 @@ it never blocks or breaks the chat flow. Each observation logs one greppable lin
 
 Recent observations are also kept in an in-memory ring buffer and exposed at
 `GET /shadow/observations` (PR 2.5), so an admin can review the readings without
-grepping logs. The buffer clears on restart; durable storage lands with PR 1.5.
+grepping logs. With `KIMMP_PERSIST=true` (PR 1.5) the endpoint serves durably from
+the database instead, so observations survive server restarts.
 
 | Env var | Default | Purpose |
 |---|---|---|
