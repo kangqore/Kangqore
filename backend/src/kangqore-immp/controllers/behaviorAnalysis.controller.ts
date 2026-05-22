@@ -14,6 +14,7 @@ import {
 } from '../eqore-bridge/eqoreShadowObserver.service';
 import { KimmpShadowBackfill } from '../eqore-bridge/shadowBackfill.service';
 import { LeadBehaviorSummaryService } from '../lead-intelligence-bridge/leadBehaviorSummary.service';
+import { MarketBehaviorSignals } from '../alis-bridge/marketBehaviorSignals.service';
 
 export class BehaviorAnalysisController {
   /** POST /behavior/analyze — analyze conversation text, return a BehaviorProfile. */
@@ -148,6 +149,17 @@ export class BehaviorAnalysisController {
     }
     const summary = await LeadBehaviorSummaryService.forLead(req.params.leadId);
     return res.json({ summary });
+  }
+
+  /** GET /market/behavior-signals — KIMMP's market-level behavioral snapshot for ALIS. */
+  static async marketSignals(req: Request, res: Response) {
+    if (!KimmpFlags.enabled()) {
+      return res.status(503).json({ error: 'KIMMP is disabled (KIMMP_ENABLED=false)' });
+    }
+    const raw = Number(req.query.windowDays);
+    const windowDays = Number.isFinite(raw) ? Math.min(Math.max(1, raw), 365) : 30;
+    const snapshot = await MarketBehaviorSignals.snapshot(windowDays);
+    return res.json({ snapshot });
   }
 
   /** GET /behavior/profiles/:id — fetch a previously stored profile. */

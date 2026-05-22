@@ -68,6 +68,14 @@ kangqoreImmpRoutes.get(
   BehaviorAnalysisController.leadBehavior
 );
 
+// KIMMP → ALIS (Phase 2) — market-level behavioral snapshot.
+kangqoreImmpRoutes.get(
+  '/market/behavior-signals',
+  requireAuth,
+  requireRole(['ADMIN']),
+  BehaviorAnalysisController.marketSignals
+);
+
 // Signal Ledger (Phase 1) — the cross-system signal hub.
 kangqoreImmpRoutes.post('/signals', requireAuth, requireRole(['ADMIN']), SignalLedgerController.ingest);
 kangqoreImmpRoutes.get('/signals', requireAuth, requireRole(['ADMIN']), SignalLedgerController.query);

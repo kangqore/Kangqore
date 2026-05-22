@@ -42,9 +42,14 @@ behavior shadow observer emits a `BEHAVIOR` signal per analysis). The other
 producers + the Decision Engine that consumes the ledger are Phase 2+.
 
 ### Phase 2 — Connect the four as producers · _IN PROGRESS_ · _Owner: Backend + AI/ML_
-**Done:** KIMMP → Lead Intelligence (advisory) — `GET /leads/:leadId/behavior`
-surfaces KIMMP's aggregated behavioral read + sales posture per lead. Advisory
-only — it does not yet move the lead score (that is a later gated step).
+**Done:**
+- KIMMP → Lead Intelligence (advisory) — `GET /leads/:leadId/behavior` surfaces
+  KIMMP's behavioral read + sales posture per lead.
+- KIMMP → ALIS (advisory) — `GET /market/behavior-signals` surfaces a
+  market-level behavioral snapshot (demand drivers) for executive intelligence.
+
+Both advisory — they expose intelligence; they do not yet mutate the lead score
+or ALIS's aggregations (those are later gated steps).
 
 Remaining — each system emits signals into the ledger, and KIMMP feeds back:
 - eQORE → ledger (intent, behavior already via KIMMP)
