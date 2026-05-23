@@ -84,6 +84,13 @@ const heroSlides = [
     secondaryLink: "/bids",
     background: "/images/imgbg3.png",
   },
+  {
+    id: 4,
+    type: 'statement',
+    tag: "OUR PHILOSOPHY",
+    title: "",
+    description: "",
+  },
 ];
 
 const caseStudies = [
@@ -460,9 +467,24 @@ const HeroCarousel = () => {
                 className="absolute inset-0 w-full h-full object-cover"
               />
             )}
-            {/* Gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+            {slide.type === 'statement' && (
+              <>
+                {/* Textured black-charcoal background */}
+                <div className="absolute inset-0 bg-[#0a1228] animate-[statementGradient_8s_ease_infinite]" style={{ backgroundImage: 'linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #0f172a 50%, #0a1228 75%, #020617 100%)', backgroundSize: '200% 200%' }} />
+                {/* Subtle noise/grain texture for depth */}
+                <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
+                {/* Soft lighter spots */}
+                <div className="absolute top-[10%] right-[15%] w-[35vw] h-[35vw] rounded-full bg-cyan-400/[0.04] blur-[80px]" />
+                <div className="absolute bottom-[5%] left-[10%] w-[25vw] h-[25vw] rounded-full bg-blue-600/[0.03] blur-[60px]" />
+              </>
+            )}
+            {/* Gradient overlays — skip for statement slide to keep it bright */}
+            {slide.type !== 'statement' && (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+              </>
+            )}
           </div>
         </div>
       ))}
@@ -486,6 +508,74 @@ const HeroCarousel = () => {
               )}
 
 
+              {/* ── Statement slide: matched to reference design ── */}
+              {slide.type === 'statement' ? (
+                <div className="w-full h-full relative">
+                  {/* Centered text block — matching reference placement */}
+                  <div className="absolute inset-0 flex items-center justify-center animate-fade-in">
+                    <div className="flex items-start gap-4 sm:gap-6 lg:gap-8 translate-x-[40px] sm:translate-x-[60px] md:translate-x-[90px] lg:translate-x-[120px] xl:translate-x-[160px]">
+                      {/* Rotating circle badge — matching reference */}
+                      <Link 
+                        to="/about-us" 
+                        className="relative w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] md:w-[80px] md:h-[80px] lg:w-[90px] lg:h-[90px] flex-shrink-0 mt-1 sm:mt-2 block cursor-pointer group hover:scale-110 transition-transform duration-300 z-10"
+                      >
+                        <div className="absolute inset-0 w-full h-full animate-[spin_12s_linear_infinite]">
+                          {/* Outer ring with gradient border */}
+                          <div className="absolute inset-0 rounded-full p-[2px] bg-brand-gradient">
+                            <div className="w-full h-full rounded-full bg-[#0a1228] opacity-80" />
+                          </div>
+                          {/* Rotating text */}
+                          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+                            <defs>
+                              <path id="circlePath4" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+                              <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#4ab6d4" />
+                                <stop offset="100%" stopColor="#2564ea" />
+                              </linearGradient>
+                            </defs>
+                            <text fill="url(#brandGrad)" fontSize="9.5" fontWeight="700" letterSpacing="3">
+                              <textPath href="#circlePath4">KANGQORE • INNOVATE • FUTURES • </textPath>
+                            </text>
+                          </svg>
+                          {/* Center arrow */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white -rotate-45" />
+                          </div>
+                        </div>
+                      </Link>
+                    <h1 className="leading-[1.12] tracking-[-0.02em] text-white mb-0 select-none text-left">
+                      {/* Line 1: "Companies don't evolve" */}
+                      <span className="block">
+                        <span className="text-[1rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-black italic uppercase">Companies</span>
+                        <span className="text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] font-bold lowercase ml-1.5 sm:ml-2 opacity-90">don't evolve</span>
+                      </span>
+                      {/* Line 2: "by ideas alone. They evolve" */}
+                      <span className="block">
+                        <span className="text-[1rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-black italic uppercase">By Ideas Alone.</span>
+                        <span className="text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] font-bold normal-case ml-1.5 sm:ml-2 opacity-90">They evolve</span>
+                      </span>
+                      {/* Line 3: "through innovation." */}
+                      <span className="block">
+                        <span className="text-[1rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-black italic uppercase">Through</span>
+                        <span className="ml-1.5 sm:ml-2">
+                          <span className="text-[1.1rem] sm:text-[1.6rem] md:text-[2.1rem] lg:text-[2.6rem] xl:text-[2.9rem] font-black italic uppercase bg-brand-gradient bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(37,100,234,0.3)]">Innovation.</span>
+                        </span>
+                      </span>
+                      {/* Line 4: "At Kangqore" & "We Innovate Futures." */}
+                      <span className="flex items-baseline gap-3 sm:gap-4 -mt-1 sm:-mt-2">
+                        <span className="text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] font-bold tracking-[0.2em] text-white/50 whitespace-nowrap">At Kangqore</span>
+                        <span className="text-[1rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-black italic uppercase bg-brand-gradient bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(37,100,234,0.3)]">We Innovate Futures.</span>
+                      </span>
+                    </h1>
+                    </div>
+                  </div>
+
+                  {/* Subline — anchored bottom-left, matching the reference */}
+                  <p className="absolute bottom-0 left-[40px] text-[0.65rem] sm:text-[0.7rem] lg:text-[0.75rem] text-white/70 leading-[1.65] max-w-xl animate-fade-in font-bold">
+                    AI, Engineering, Cloud, Cybersecurity, and Intelligent Transformation,<br className="hidden sm:block" /> building future-ready systems for the next generation of business.
+                  </p>
+                </div>
+              ) : (
               <div className={`${
                 slide.type === 'product' 
                   ? 'max-w-[680px]' 
@@ -571,6 +661,7 @@ const HeroCarousel = () => {
                   </div>
                 )}
               </div>
+              )}
             </div>
           </div>
         ))}
@@ -674,6 +765,11 @@ const HeroCarousel = () => {
         }
         .animate-pond-ring {
           animation: pond-ring 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+        @keyframes statementGradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
       `}</style>
     </section>
