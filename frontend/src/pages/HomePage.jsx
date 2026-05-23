@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 import { 
   ChevronLeft, ChevronRight, ChevronDown, Calendar, Clock,
   User, Mail, Building, MessageSquare, Check, Cpu, Zap, Users, ArrowRight, ArrowLeft, ArrowUpRight,
-  Plus, X, Pause, Play, Briefcase, Globe, Phone, Send, Search, Menu,
+  Plus, X, Pause, Play, SkipForward, Briefcase, Globe, Phone, Send, Search, Menu,
   Facebook, Twitter, Linkedin, Instagram, Target, ShieldCheck, Scale, Handshake,
   Bot, RefreshCw, Cloud, TrendingUp, Lock, BarChart3, BookOpen,
   Landmark, Factory, Monitor, Sparkles
@@ -355,6 +355,8 @@ const HeroCarousel = () => {
   const [isChatEngaged, setIsChatEngaged] = useState(false);
   const videoRef = useRef(null);
   const touchStartX = useRef(0);
+  const clickCount = useRef(0);
+  const clickTimeout = useRef(null);
   const slideCount = heroSlides.length;
 
   // Derived: auto-play only when ALL conditions are met
@@ -418,12 +420,23 @@ const HeroCarousel = () => {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={(e) => {
-        // Only toggle on empty-area clicks (not buttons, links, inputs, or the chat widget)
+        // Multi-click navigation on empty-area clicks (not buttons, links, inputs, or the chat widget)
         const tag = e.target.tagName.toLowerCase();
         const isInteractive = ['button', 'a', 'input', 'textarea', 'select'].includes(tag);
         const isInsideInteractive = e.target.closest('button, a, input, textarea, form, [role="button"], .hero-chat-widget');
         if (!isInteractive && !isInsideInteractive) {
-          setIsManuallyPaused(prev => !prev);
+          clickCount.current += 1;
+          if (clickTimeout.current) clearTimeout(clickTimeout.current);
+          clickTimeout.current = setTimeout(() => {
+            if (clickCount.current === 1) {
+              setIsManuallyPaused(prev => !prev);
+            } else if (clickCount.current === 2) {
+              goToSlide((activeSlide + 1) % slideCount);
+            } else if (clickCount.current >= 3) {
+              goToSlide((activeSlide - 1 + slideCount) % slideCount);
+            }
+            clickCount.current = 0;
+          }, 250);
         }
       }}
     >
@@ -469,13 +482,13 @@ const HeroCarousel = () => {
             )}
             {slide.type === 'statement' && (
               <>
-                {/* Textured black-charcoal background */}
-                <div className="absolute inset-0 bg-[#0a1228] animate-[statementGradient_8s_ease_infinite]" style={{ backgroundImage: 'linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #0f172a 50%, #0a1228 75%, #020617 100%)', backgroundSize: '200% 200%' }} />
-                {/* Subtle noise/grain texture for depth */}
-                <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
-                {/* Soft lighter spots */}
-                <div className="absolute top-[10%] right-[15%] w-[35vw] h-[35vw] rounded-full bg-cyan-400/[0.04] blur-[80px]" />
-                <div className="absolute bottom-[5%] left-[10%] w-[25vw] h-[25vw] rounded-full bg-blue-600/[0.03] blur-[60px]" />
+                <img 
+                  src="/images/chess_4thbg.png" 
+                  alt="Chess Background" 
+                  className="absolute inset-0 w-full h-full object-cover" 
+                />
+                {/* Subtle dark overlay to ensure the text remains legible over the image */}
+                <div className="absolute inset-0 bg-black/40" />
               </>
             )}
             {/* Gradient overlays — skip for statement slide to keep it bright */}
@@ -533,13 +546,13 @@ const HeroCarousel = () => {
                                 <stop offset="100%" stopColor="#2564ea" />
                               </linearGradient>
                             </defs>
-                            <text fill="url(#brandGrad)" fontSize="9.5" fontWeight="700" letterSpacing="3">
-                              <textPath href="#circlePath4">KANGQORE • INNOVATE • FUTURES • </textPath>
+                            <text fill="#ffffff" fontSize="10.5" fontWeight="700" letterSpacing="3.5">
+                              <textPath href="#circlePath4">KNOW ABOUT KANGQORE • ★ ★ ★ • </textPath>
                             </text>
                           </svg>
                           {/* Center arrow */}
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white -rotate-45" />
+                            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white -rotate-45" strokeWidth={3} />
                           </div>
                         </div>
                       </Link>
@@ -571,7 +584,7 @@ const HeroCarousel = () => {
                   </div>
 
                   {/* Subline — anchored bottom-left, matching the reference */}
-                  <p className="absolute bottom-0 left-[40px] text-[0.65rem] sm:text-[0.7rem] lg:text-[0.75rem] text-white/70 leading-[1.65] max-w-xl animate-fade-in font-bold">
+                  <p className="absolute bottom-0 left-[40px] text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] text-white/70 leading-[1.65] max-w-2xl animate-fade-in font-bold">
                     AI, Engineering, Cloud, Cybersecurity, and Intelligent Transformation,<br className="hidden sm:block" /> building future-ready systems for the next generation of business.
                   </p>
                 </div>
@@ -685,21 +698,33 @@ const HeroCarousel = () => {
             ))}
           </div>
           
-          {/* Pause / Play Button — 4x size */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsManuallyPaused(prev => !prev);
-            }}
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95"
-            aria-label={isManuallyPaused ? "Start autoplay" : "Pause autoplay"}
-          >
-            {isManuallyPaused ? (
-              <Play className="w-5 h-5 fill-current ml-0.5" />
-            ) : (
-              <Pause className="w-5 h-5 fill-current" />
-            )}
-          </button>
+          {/* Media Controls */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsManuallyPaused(prev => !prev);
+              }}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95"
+              aria-label={isManuallyPaused ? "Start autoplay" : "Pause autoplay"}
+            >
+              {isManuallyPaused ? (
+                <Play className="w-5 h-5 fill-current ml-0.5" />
+              ) : (
+                <Pause className="w-5 h-5 fill-current" />
+              )}
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                goToSlide((activeSlide + 1) % slideCount);
+              }}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95"
+              aria-label="Next slide"
+            >
+              <SkipForward className="w-5 h-5 fill-current" />
+            </button>
+          </div>
         </div>
       </div>
       </div>
