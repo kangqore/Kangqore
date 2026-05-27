@@ -52,6 +52,18 @@ export const KimmpFlags = {
 
   /** Size of the in-memory recent-shadow-observation buffer (PR 2.5). */
   shadowBufferSize: () => num('KIMMP_SHADOW_BUFFER', 200),
+
+  /** Phase 2 — KIMMP behavior adds bonus points to Lead Intelligence score. OFF by default.
+   *  Enable only after KIMMP's behavior reading is validated on real traffic. */
+  scoreBridgeEnabled: () => bool('KIMMP_SCORE_BRIDGE', false),
+
+  /** Phase 5 — RAG: ground KIMMP reasoning in Kangqore's KB. OFF by default.
+   *  Enable once VOYAGE_API_KEY is set and the KB index is populated. */
+  ragEnabled: () => bool('KIMMP_RAG_ENABLED', false),
+
+  /** Phase 5 — run and store v0 predictions per lead. OFF by default.
+   *  Enable after the migration is applied. */
+  predictionsEnabled: () => bool('KIMMP_PREDICTIONS_ENABLED', false),
 };
 
 export function logKimmpFlagSummary(): void {

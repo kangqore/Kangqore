@@ -5,6 +5,7 @@ import * as ContentGap from '../services/alisContentGap.service';
 import * as ExecutiveAlert from '../services/alisExecutiveAlert.service';
 import * as Forecast from '../services/alisForecast.service';
 import { TimeRange, isValidRange } from '../services/alisUtils';
+import { AlisSignalProducer } from '../signals/alisSignalProducer.service';
 
 // ---------------------------------------------------------------------------
 // Kangqore ALIS — Admin REST Controller (Phase 10)
@@ -94,6 +95,16 @@ export const AlisAdminController = {
       res.json(data);
     } catch (e: any) {
       res.status(500).json({ error: 'ALIS growth recs failed', message: e.message });
+    }
+  },
+
+  // Phase 2 — emit MARKET signals for high-demand departments.
+  async emitMarketSignals(_req: Request, res: Response) {
+    try {
+      const result = await AlisSignalProducer.scanAndEmit();
+      res.json({ ok: true, ...result });
+    } catch (e: any) {
+      res.status(500).json({ error: 'ALIS signal scan failed', message: e.message });
     }
   },
 };

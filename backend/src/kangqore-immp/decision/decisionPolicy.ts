@@ -98,12 +98,73 @@ export function decide(signal: SignalLike): DecisionProposal | null {
     }
   }
 
+  // INTENT signals — emitted by eQORE per message and by Lead Intelligence on score changes.
+  if (signal.signalCategory === 'INTENT') {
+    const value = signal.signalValue;
+
+    // Lead has reached a high-value sales status.
+    if (value === 'GOLDEN' || value === 'HOT') {
+      return {
+        decisionType: 'SALES_ALERT',
+        recommendedAction: `Lead ${signal.leadId ?? 'unknown'} reached ${value} status — alert sales immediately and consider creating or raising the opportunity.`,
+        targetModule: 'lead-intelligence',
+        reasoning: `Lead Intelligence signal: status=${value} (severity ${signal.severity}).`,
+        priority: Math.max(priority, 21),
+      };
+    }
+
+    // High-value eQORE intents worth a sales alert.
+    if (value === 'PRICING_OR_PROPOSAL' || value === 'SCHEDULING') {
+      return {
+        decisionType: 'SALES_ALERT',
+        recommendedAction: 'Visitor is requesting pricing or scheduling — flag for follow-up and ensure an opportunity is logged.',
+        targetModule: 'lead-intelligence',
+        reasoning: `eQORE intent signal: ${value} (severity ${signal.severity}).`,
+        priority: Math.max(priority, 13),
+      };
+    }
+
+    if (value === 'HUMAN_HANDOFF') {
+      return {
+        decisionType: 'HUMAN_HANDOFF',
+        recommendedAction: 'Visitor explicitly requested a human — escalate for immediate personal follow-up.',
+        targetModule: 'human',
+        reasoning: `eQORE intent: HUMAN_HANDOFF (severity ${signal.severity}).`,
+        priority: Math.max(priority, 21),
+      };
+    }
+
+    // ESCALATED status — worth a nudge.
+    if (value === 'ESCALATED') {
+      return {
+        decisionType: 'SALES_ALERT',
+        recommendedAction: `Lead ${signal.leadId ?? 'unknown'} has escalated — monitor closely and consider reaching out.`,
+        targetModule: 'lead-intelligence',
+        reasoning: `Lead Intelligence signal: status=ESCALATED.`,
+        priority,
+      };
+    }
+
+    return null; // Other intent values — no action needed.
+  }
+
+  // CONTENT signals — emitted by VIS from page opportunity detection.
+  if (signal.signalCategory === 'CONTENT') {
+    return {
+      decisionType: 'CONTENT_OPPORTUNITY',
+      recommendedAction: `Visitors are repeatedly asking about "${signal.signalValue}" — review the page opportunity and consider generating or publishing a page for this topic.`,
+      targetModule: 'vis',
+      reasoning: `VIS content gap signal: ${signal.signalType}="${signal.signalValue}" (priority ${signal.severity}).`,
+      priority,
+    };
+  }
+
   if (signal.signalCategory === 'MARKET') {
     return {
       decisionType: 'MARKET_ALERT',
-      recommendedAction: 'Review this market signal for executive intelligence.',
+      recommendedAction: `Demand spike detected in "${signal.signalValue}" — review ALIS for executive intelligence and consider allocating capacity.`,
       targetModule: 'alis',
-      reasoning: `Market signal ${signal.signalType}.`,
+      reasoning: `ALIS market signal ${signal.signalType}: ${signal.signalValue} (severity ${signal.severity}).`,
       priority,
     };
   }

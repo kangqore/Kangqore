@@ -1,6 +1,8 @@
 import { prisma } from '../../lib/prisma';
 import logger from '../../utils/logger';
 import { ShadowIntelligence } from '../../eqore/agents/shadowLead.schema';
+import { LeadSignalProducer } from '../signals/leadSignalProducer.service';
+import { LeadScoringBridge } from '../../kangqore-immp/lead-intelligence-bridge/leadScoringBridge.service';
 
 export interface ScoreCalculationResult {
   score: number;
@@ -226,6 +228,13 @@ export class EqoreLeadScoringService {
 
       const result = this.calculateScore(input);
 
+      // Phase 2 — KIMMP behavior boost (flag-gated, best-effort, max +10).
+      const behaviorBoost = await LeadScoringBridge.behaviorBoost(leadId);
+      if (behaviorBoost > 0) {
+        result.score = Math.min(100, result.score + behaviorBoost);
+        result.scoreReasons.push(`+${behaviorBoost} KIMMP behavior signal`);
+      }
+
       // Delta Tracking
       const scoreDelta = result.score - lead.leadScore;
       const confidenceDelta = result.confidence - lead.leadConfidence;
@@ -293,6 +302,16 @@ export class EqoreLeadScoringService {
             status: newStatus,
             updatedAt: new Date()
           }
+        });
+
+        // Phase 2 — emit signal to Signal Ledger (fire-and-forget).
+        void LeadSignalProducer.onScoreChange({
+          leadId,
+          previousScore: lead.leadScore,
+          newScore: result.score,
+          previousStatus,
+          newStatus,
+          confidence: result.confidence,
         });
       }
     } catch (err) {

@@ -2652,22 +2652,99 @@ model KimmpSignal {
 // is PROPOSED until an admin approves it.
 // ---------------------------------------------------------------------------
 model KimmpDecision {
-  id                String   @id @default(uuid())
+  id                String    @id @default(uuid())
   signalId          String?
-  decisionType      String // RESPONSE_POLICY | SALES_ALERT | CONTENT_OPPORTUNITY | MARKET_ALERT | HUMAN_HANDOFF
+  decisionType      String    // RESPONSE_POLICY | SALES_ALERT | CONTENT_OPPORTUNITY | MARKET_ALERT | HUMAN_HANDOFF
   recommendedAction String
-  targetModule      String // eqore | lead-intelligence | alis | vis | human
+  targetModule      String    // eqore | lead-intelligence | alis | vis | human
   reasoning         String
-  confidence        Float    @default(0)
-  priority          Int      @default(1)
-  status            String   @default("PROPOSED") // PROPOSED | APPROVED | EXECUTED | DISMISSED
+  confidence        Float     @default(0)
+  priority          Int       @default(1)
+  status            String    @default("PROPOSED") // PROPOSED | APPROVED | EXECUTED | DISMISSED
   conversationId    String?
   leadId            String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  // Phase 4 governance columns
+  approvedBy        String?   // admin userId who approved
+  approvedAt        DateTime?
+  dismissedBy       String?   // admin userId who dismissed
+  dismissedAt       DateTime?
+  executedBy        String?   // admin userId who marked executed (Phase 3 workflow)
+  executedAt        DateTime?
+  notes             String?   // human notes on the approval/dismissal decision
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   @@index([status])
   @@index([targetModule])
   @@index([createdAt])
   @@map("kimmp_decisions")
+}
+
+// ---------------------------------------------------------------------------
+// KIMMP Governance — Audit Log (Phase 4)
+// Immutable record of every governance action taken on KIMMP artefacts.
+// ---------------------------------------------------------------------------
+model KimmpAuditEntry {
+  id         String   @id @default(uuid())
+  actor      String   // admin userId (or "SYSTEM" for automated actions)
+  action     String   // DECISION_APPROVED | DECISION_DISMISSED | DECISION_EXECUTED | SIGNAL_DISMISSED | ENGINE_RUN | COST_RECORDED
+  targetType String   // decision | signal | engine | cost
+  targetId   String?  // ID of the artefact acted on
+  notes      String?  // admin-supplied reason or context
+  metadata   Json?    // structured context snapshot
+  createdAt  DateTime @default(now())
+
+  @@index([actor])
+  @@index([action, createdAt])
+  @@index([targetType, targetId])
+  @@map("kimmp_audit_entries")
+}
+
+// ---------------------------------------------------------------------------
+// KIMMP Governance — LLM Cost Ledger (Phase 4)
+// Tracks per-call token usage and estimated USD cost for every Claude API call
+// KIMMP makes. Enables the admin dashboard to show spend and detect runaway cost.
+// ---------------------------------------------------------------------------
+model KimmpLlmCost {
+  id               String   @id @default(uuid())
+  operation        String   // BEHAVIOR_TIER2 | PAGE_GENERATION | CLAIM_VALIDATION
+  model            String   // e.g. claude-haiku-4-5-20251001
+  inputTokens      Int      @default(0)
+  outputTokens     Int      @default(0)
+  estimatedCostUsd Float    @default(0)
+  conversationId   String?
+  leadId           String?
+  pageId           String?
+  createdAt        DateTime @default(now())
+
+  @@index([operation])
+  @@index([createdAt])
+  @@map("kimmp_llm_costs")
+}
+
+// ---------------------------------------------------------------------------
+// KIMMP Phase 5 — Prediction Ledger
+// Records every prediction run so outputs can be compared against real
+// outcomes as data accumulates. This IS the ML training label store — each
+// row is a (features, prediction, actualOutcome?) pair for future model builds.
+// ---------------------------------------------------------------------------
+model KimmpPrediction {
+  id                    String   @id @default(uuid())
+  leadId                String
+  // v0 outputs (rules-based; replaced by ML models post-launch)
+  conversionProbability Float    @default(0)   // 0.0–1.0
+  acvEstimate           Float    @default(0)   // USD
+  deliveryRisk          String   @default("LOW") // LOW | MODERATE | HIGH
+  modelVersion          String   @default("v0-rules")
+  // Feature snapshot at prediction time (for future model training)
+  features              Json?
+  // Outcome — filled in post-conversion for training labels
+  actualConverted       Boolean?
+  actualAcv             Float?
+  actualDeliveryIssue   Boolean?
+  createdAt             DateTime @default(now())
+
+  @@index([leadId])
+  @@index([createdAt])
+  @@map("kimmp_predictions")
 }

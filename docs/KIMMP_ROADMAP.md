@@ -1,6 +1,6 @@
 # KIMMP — Roadmap of Further Operations
 
-_Last updated: 2026-05-22 · Companion to `KIMMP_STATUS.md`_
+_Last updated: 2026-05-28 · Companion to `KIMMP_STATUS.md`_
 
 This is the build roadmap for turning KIMMP from **two working faculties** into
 the intelligence layer that actually connects eQORE, eQORE Lead Intelligence,
@@ -41,48 +41,100 @@ table, `signalLedger` service, `POST/GET /signals`, and the first producer (the
 behavior shadow observer emits a `BEHAVIOR` signal per analysis). The other
 producers + the Decision Engine that consumes the ledger are Phase 2+.
 
-### Phase 2 — Connect the four as producers · _IN PROGRESS_ · _Owner: Backend + AI/ML_
+### Phase 2 — Connect the four as producers · **✅ COMPLETE** · _Owner: Backend + AI/ML_
+All four systems now emit signals into the Signal Ledger and KIMMP feeds back:
+
+- **eQORE → ledger** — INTENT signal emitted per message dispatch
+  (`eqoreConversation.controller.ts`).
+- **Lead Intelligence → ledger** — INTENT/RISK signal on lead score/status change
+  (`leadSignalProducer.service.ts`, called from `updateLeadScore`).
+- **ALIS → ledger** — MARKET signals via `AlisSignalProducer.scanAndEmit()`
+  (`POST /api/admin/alis/signals/emit`).
+- **VIS → ledger** — CONTENT signals from page opportunities via
+  `VisSignalProducer.scanAndEmit()` (`POST /api/admin/kangqore-immp/signals/scan-vis`).
+- **KIMMP → Lead Intelligence (advisory)** — `GET /leads/:leadId/behavior`.
+- **KIMMP → Lead Intelligence (score bridge)** — `LeadScoringBridge.behaviorBoost()`
+  adds 0–10 pts based on behavioral posture. Flag-gated `KIMMP_SCORE_BRIDGE=false`
+  — enable after real-traffic validation.
+- **KIMMP → ALIS (advisory)** — `GET /market/behavior-signals`.
+- **KIMMP → eQORE influence (PR 2b)** — flag-gated `KIMMP_EQORE_INFLUENCE=false`.
+  Keep OFF until behavior reading is validated on real traffic.
+
+All producers are value-gated on real launch traffic — inert until visitors flow.
+
+### Phase 3 — Decision + Workflow engine · **✅ COMPLETE** · _Owner: Backend + Founder_
+**Decision Engine (previously built):** reads NEW signals, applies deterministic policy,
+records `PROPOSED` next-best actions. Policy covers BEHAVIOR, INTENT, CONTENT,
+MARKET, RISK signal categories.
+
+**Workflow Executor (now built):** turns an `APPROVED` decision into a real
+cross-system action via `POST /decisions/:id/execute`. Five per-module executors:
+
+| Decision type | Target | What the executor does |
+|---|---|---|
+| `SALES_ALERT` | lead-intelligence | Creates an `EqoreSalesOpportunity` (if none exists) + logs `KIMMP_SALES_ALERT` lead event |
+| `HUMAN_HANDOFF` | human | Escalates the lead to ESCALATED status + logs `KIMMP_HUMAN_HANDOFF` lead event |
+| `CONTENT_OPPORTUNITY` | vis | Promotes the `KimmpPageOpportunity` to PENDING for generation + optional lead event |
+| `MARKET_ALERT` | alis | Emits a `MARKET_ALERT_ACTIONED` SYSTEM signal into the Signal Ledger |
+| `RESPONSE_POLICY` | eqore | Logs the recommendation; no auto-mutation (enable `KIMMP_EQORE_INFLUENCE` manually) |
+
+Every execution is: admin-approved (Phase 4 gate) → audit-logged → tracer-emitted →
+decision marked EXECUTED with `executedBy`/`executedAt`.
+
+### Phase 4 — Governance, Permission, Observability, Cost · **✅ BUILT** · _Owner: DevOps / Security_
 **Done:**
-- KIMMP → Lead Intelligence (advisory) — `GET /leads/:leadId/behavior` surfaces
-  KIMMP's behavioral read + sales posture per lead.
-- KIMMP → ALIS (advisory) — `GET /market/behavior-signals` surfaces a
-  market-level behavioral snapshot (demand drivers) for executive intelligence.
+- **Permission Matrix** (`permissionMatrix.ts`) — deterministic per-`decisionType` rules:
+  required role + whether a note is mandatory. `HUMAN_HANDOFF` and `SALES_ALERT`
+  require a written note; all types require ADMIN at v1.
+- **Human-approval gate** — `PATCH /decisions/:id` now reads the permission matrix,
+  writes governance columns (`approvedBy`, `approvedAt`, `dismissedBy`, `dismissedAt`,
+  `executedBy`, `executedAt`, `notes`) and returns 403 if the policy is violated.
+- **Audit Log** (`auditLog.service.ts` + `kimmp_audit_entries` table) — immutable
+  record of every approval, dismissal, engine run. `GET /governance/audit`.
+- **LLM Cost Ledger** (`costTracker.service.ts` + `kimmp_llm_costs` table) — records
+  input/output tokens and estimated USD per Claude call. Instrumented on Tier-2
+  behavior reasoning and page generation. `GET /governance/cost`.
+- **Structured Tracer** (`kimmpTracer.service.ts`) — emits `[KIMMP:TRACE]`-prefixed
+  structured log lines for signal received → decision proposed → approved/dismissed.
+  Drop-in OpenTelemetry upgrade path documented in the service.
+- **Permission inspector** — `GET /governance/permissions` shows the current matrix.
+- **Migration** — `20260528000000_kimmp_phase4_governance` adds governance columns to
+  `kimmp_decisions` and creates `kimmp_audit_entries`, `kimmp_llm_costs`.
 
-Both advisory — they expose intelligence; they do not yet mutate the lead score
-or ALIS's aggregations (those are later gated steps).
+**Unblocks:** Phase 3 workflow executor (turning APPROVED decisions into real actions)
+and all Phase 5+ autonomy.
 
-Remaining — each system emits signals into the ledger, and KIMMP feeds back:
-- eQORE → ledger (intent, behavior already via KIMMP)
-- Lead Intelligence → ledger (lead score, stage) **and** KIMMP behavior signals
-  feed lead scoring
-- ALIS → ledger (market/demand) **and** KIMMP behavior patterns feed ALIS
-- VIS → ledger (content gaps)
-- **KIMMP → eQORE influence (PR 2b)** — ✅ BUILT. Behavior shapes eQORE
-  responses via a flag-gated framing step (`KIMMP_EQORE_INFLUENCE`, OFF by
-  default). Keep it OFF until KIMMP's behavior reading is validated on real
-  traffic — enabling it pre-validation puts unvalidated AI in the live chat.
-Value-gated on launch traffic.
+### Phase 5 — ML prediction + RAG · **✅ BUILT (v0)** · _Owner: AI / ML_
 
-### Phase 3 — Decision + Workflow engine · _DECISION ENGINE BUILT_ · _Owner: Backend + Founder_
-**Done:** the Decision Engine — KIMMP reads NEW signals from the ledger, applies
-a deterministic decision policy, and records `PROPOSED` next-best actions
-(`POST /decisions/evaluate`, `GET /decisions`, `PATCH /decisions/:id`). KIMMP
-decides and recommends only.
+**RAG layer (buildable pre-launch — static KB):**
+- `kimmpRag.service.ts` — wraps the existing Voyage-AI embedding stack and
+  `retrieve()` function used by eQORE. KIMMP gets KB-grounded context at
+  Tier-2 reasoning time.
+- Injected into Tier-2 behavioral analysis: up to 3 relevant KB chunks appended
+  to the Claude prompt so behavior assessment is grounded in actual Kangqore
+  capabilities.
+- Flag gate: `KIMMP_RAG_ENABLED=false` (enable once VOYAGE_API_KEY is set and
+  KB is indexed).
+- Admin endpoint: `GET /rag/query?q=...` to test retrieval.
 
-**Remaining (gated on Phase 4):** the *workflow executor* — turning an APPROVED
-decision into a real cross-system action. Deliberately out of scope until the
-governance/permission layer + approval matrix exist (locked rule: never silent
-action).
+**v0 Prediction layer (rules-based scaffold, data collection for future ML):**
+- `kimmpPrediction.service.ts` — three deterministic predictors (rules-first,
+  not opaque ML; each rule is documented):
+  - `conversionProbability` (0.0–1.0): lead score, status, scheduling, behavior posture
+  - `acvEstimate` (USD): projectedValue or valueTier fallback, adjusted by behavior
+  - `deliveryRisk` (LOW/MODERATE/HIGH): urgency + stress signals + requirements clarity
+- `predictionStore.service.ts` + `kimmp_predictions` table — every prediction
+  stored with features snapshot. `actualConverted`, `actualAcv`, `actualDeliveryIssue`
+  columns filled in post-conversion to close the training loop for v1 ML models.
+- Decision Engine integration: high conversion probability (+8 priority) and
+  high delivery risk (+5 priority) boost PROPOSED decision urgency.
+- Flag gate: `KIMMP_PREDICTIONS_ENABLED=false` (enable after migration applied).
+- Admin endpoints: `POST /predictions/run/:leadId`, `GET /predictions/:leadId`.
 
-### Phase 4 — Governance, Permission, Observability, Cost · _Owner: DevOps / Security_
-Before any autonomy: per-action permission, human-approval gates, full audit,
-OpenTelemetry-style tracing, LLM cost monitoring. Non-negotiable prerequisite
-for Phase 5+.
-
-### Phase 5 — ML prediction + RAG · _Owner: AI / ML_
-Conversion / ACV / churn / delivery-risk prediction models; a RAG layer so
-KIMMP reasons from Kangqore's own verified knowledge. Needs accumulated data
-from Phases 2–3.
+**Traffic gate (for v1 ML models):** Real models need real outcome labels.
+Enable the v0 predictors at launch and collect labeled data. The prediction
+store's feature+outcome rows are the training set for v1 gradient-boosted or
+neural models in Phase 5 v1.
 
 ### Phase 6 — Command Center + extended intelligence · _Owner: Frontend + Data_
 Founder dashboard; revenue / delivery / customer-success intelligence. The

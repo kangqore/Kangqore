@@ -7,7 +7,15 @@ import { eqoreQueue } from '../queue/eqore.queue';
 import { AgentDispatcherService } from '../routing/agentDispatcher.service';
 import { KimmpEqoreShadowObserver } from '../../kangqore-immp/eqore-bridge/eqoreShadowObserver.service';
 import { KimmpEqoreInfluence } from '../../kangqore-immp/eqore-bridge/eqoreInfluence.service';
+import { SignalLedger } from '../../kangqore-immp/signals/signalLedger.service';
 import logger from '../../utils/logger';
+
+/** High-value intents that warrant a HIGH severity INTENT signal. */
+const HIGH_INTENT_INTENTS = new Set([
+  'PRICING_OR_PROPOSAL',
+  'SCHEDULING',
+  'HUMAN_HANDOFF',
+]);
 
 export class EqoreConversationController {
   static async handleMessage(req: Request, res: Response) {
@@ -129,6 +137,21 @@ export class EqoreConversationController {
         sessionId,
         history: messages.map(m => ({ role: m.role, content: m.content })),
         messages: messages.map(m => ({ id: m.id, role: m.role, content: m.content }))
+      });
+
+      // ─── Phase 2 — eQORE emits INTENT signal to Signal Ledger ───
+      // Fire-and-forget; never throws; never blocks the response path.
+      void SignalLedger.record({
+        sourceModule: 'eqore',
+        signalType: 'INTENT_DETECTED',
+        signalCategory: 'INTENT',
+        signalValue: dispatchResult.intent,
+        confidence: 0.8,
+        severity: HIGH_INTENT_INTENTS.has(dispatchResult.intent) ? 'HIGH' : 'LOW',
+        conversationId: conversation.id,
+        leadId: lead.id,
+        sessionId,
+        metadata: { source: dispatchResult.intent },
       });
 
       // ─── KIMMP PR 2b — behavior may shape the response ───

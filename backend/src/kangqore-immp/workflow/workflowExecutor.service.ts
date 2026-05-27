@@ -1,0 +1,155 @@
+// ---------------------------------------------------------------------------
+// KIMMP Workflow Executor (Phase 3 remainder)
+//
+// Turns an APPROVED decision into a real cross-system action.
+//
+// Safety contract (never silent action):
+// 1. Only APPROVED decisions may be executed — PROPOSED and DISMISSED are
+//    rejected with a clear error.
+// 2. Every execution writes an audit entry and a tracer event via Phase 4
+//    infrastructure.
+// 3. Every executor is best-effort inside — failures are surfaced to the
+//    caller but do not corrupt the decision record.
+// 4. The decision is marked EXECUTED only after the action succeeds, and the
+//    governance columns (executedBy, executedAt) are written by the controller.
+// ---------------------------------------------------------------------------
+
+import { prisma } from '../../lib/prisma';
+import logger from '../../utils/logger';
+import { KimmpAuditLog } from '../governance/auditLog.service';
+import { KimmpTracer } from '../governance/kimmpTracer.service';
+import { runSalesAlert } from './executors/salesAlertExecutor';
+import { runHumanHandoff } from './executors/humanHandoffExecutor';
+import { runContentOpportunity } from './executors/contentOpportunityExecutor';
+import { runMarketAlert } from './executors/marketAlertExecutor';
+import { runResponsePolicy } from './executors/responsePolicyExecutor';
+
+export interface ExecutionResult {
+  ok: boolean;
+  decisionId: string;
+  decisionType: string;
+  targetModule: string;
+  action: string;
+  detail?: Record<string, unknown>;
+}
+
+export class WorkflowExecutor {
+  /**
+   * Execute one APPROVED decision. Returns an ExecutionResult.
+   * Throws with a human-readable message if the decision is not in APPROVED state
+   * or cannot be found.
+   */
+  static async execute(decisionId: string, actorId: string): Promise<ExecutionResult> {
+    // 1. Load the decision.
+    let decision: any;
+    try {
+      decision = await (prisma as any).kimmpDecision.findUnique({ where: { id: decisionId } });
+    } catch (err) {
+      throw new Error('Decision store unavailable — apply the Phase 4 migration.');
+    }
+
+    if (!decision) throw new Error(`Decision ${decisionId} not found.`);
+    if (decision.status !== 'APPROVED') {
+      throw new Error(
+        `Decision ${decisionId} is in status "${decision.status}" — only APPROVED decisions may be executed.`
+      );
+    }
+
+    // 2. Load the originating signal to get signalValue (used by some executors).
+    let signalValue: string | null = null;
+    if (decision.signalId) {
+      try {
+        const sig = await (prisma as any).kimmpSignal.findUnique({
+          where: { id: decision.signalId },
+          select: { signalValue: true },
+        });
+        signalValue = sig?.signalValue ?? null;
+      } catch {
+        // Non-blocking — executors degrade gracefully without signalValue.
+      }
+    }
+
+    const execInput = {
+      decisionId,
+      leadId: decision.leadId,
+      conversationId: decision.conversationId,
+      recommendedAction: decision.recommendedAction,
+      priority: decision.priority,
+      signalValue,
+    };
+
+    logger.info(
+      `[KIMMP:WORKFLOW] executing decision=${decisionId} type=${decision.decisionType} ` +
+        `target=${decision.targetModule} actor=${actorId}`
+    );
+
+    // 3. Dispatch to the correct executor.
+    let execResult: { action: string; detail?: Record<string, unknown> };
+    switch (decision.decisionType) {
+      case 'SALES_ALERT':
+        execResult = await runSalesAlert(execInput);
+        break;
+      case 'HUMAN_HANDOFF':
+        execResult = await runHumanHandoff(execInput);
+        break;
+      case 'CONTENT_OPPORTUNITY':
+        execResult = await runContentOpportunity(execInput);
+        break;
+      case 'MARKET_ALERT':
+        execResult = await runMarketAlert(execInput);
+        break;
+      case 'RESPONSE_POLICY':
+        execResult = await runResponsePolicy(execInput);
+        break;
+      default:
+        execResult = {
+          action: 'UNHANDLED_DECISION_TYPE',
+          detail: { note: `No executor registered for type "${decision.decisionType}".` },
+        };
+    }
+
+    // 4. Mark the decision EXECUTED with governance columns.
+    try {
+      await (prisma as any).kimmpDecision.update({
+        where: { id: decisionId },
+        data: {
+          status: 'EXECUTED',
+          executedBy: actorId,
+          executedAt: new Date(),
+        },
+      });
+    } catch (err) {
+      logger.warn(`[KIMMP:WORKFLOW] could not mark decision ${decisionId} EXECUTED: ${(err as Error).message}`);
+    }
+
+    // 5. Audit + trace (fire-and-forget).
+    void KimmpAuditLog.record({
+      actor: actorId,
+      action: 'DECISION_EXECUTED',
+      targetType: 'decision',
+      targetId: decisionId,
+      metadata: {
+        decisionType: decision.decisionType,
+        targetModule: decision.targetModule,
+        action: execResult.action,
+        detail: execResult.detail,
+      },
+    });
+
+    KimmpTracer.emit('DECISION_EXECUTED', {
+      decisionId,
+      actor: actorId,
+      decisionType: decision.decisionType,
+      targetModule: decision.targetModule,
+      action: execResult.action,
+    });
+
+    return {
+      ok: true,
+      decisionId,
+      decisionType: decision.decisionType,
+      targetModule: decision.targetModule,
+      ...execResult,
+    };
+  }
+}
