@@ -36,8 +36,37 @@ const eventTypeSchema = Joi.object({
 });
 
 /**
+ * GET /api/scheduling/event-types/public
+ * List all public active event types (no auth — used by booking widget for duration selection)
+ */
+router.get('/public', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const eventTypes = await prisma.eventType.findMany({
+      where: { isActive: true, isPublic: true },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        description: true,
+        duration: true,
+        color: true,
+        locationType: true,
+        minNotice: true,
+        maxAdvanceDays: true,
+        requirePhone: true,
+        requireCompany: true
+      },
+      orderBy: { duration: 'asc' }
+    });
+    res.json({ success: true, eventTypes });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
  * GET /api/scheduling/event-types
- * List all event types for current user
+ * List all event types for current user (authenticated)
  */
 router.get('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
