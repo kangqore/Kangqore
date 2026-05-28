@@ -40,7 +40,6 @@
     "geoip-lite": "^2.0.2",
     "gray-matter": "^4.0.3",
     "helmet": "^7.1.0",
-    "ical-generator": "^10.2.0",
     "ioredis": "^5.10.1",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",

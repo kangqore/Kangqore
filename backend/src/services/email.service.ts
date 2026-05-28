@@ -1,6 +1,6 @@
 import sgMail from '@sendgrid/mail';
-import ical, { ICalCalendarMethod } from 'ical-generator';
 import { format } from 'date-fns';
+import { randomUUID } from 'crypto';
 import logger from '../utils/logger';
 
 interface BookingConfirmationData {
@@ -238,24 +238,35 @@ class EmailService {
     attendeeName: string;
     joinUrl?: string;
   }): string {
-    const cal = ical({
-      name: 'Kangqore Consultation',
-      method: ICalCalendarMethod.REQUEST
-    });
+    const fmt = (d: Date) =>
+      d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const uid = `${randomUUID()}@kangqore.com`;
+    const now = fmt(new Date());
+    const desc = params.joinUrl
+      ? `Join: ${params.joinUrl}`
+      : 'Kangqore consultation call.';
 
-    cal.createEvent({
-      start: params.startTime,
-      end: params.endTime,
-      timezone: params.timezone,
-      summary: params.title,
-      description: params.joinUrl ? `Join the meeting: ${params.joinUrl}` : 'Kangqore consultation call.',
-      location: params.joinUrl || 'Online',
-      url: params.joinUrl,
-      organizer: { name: params.organiserName, email: params.organiserEmail },
-      attendees: [{ name: params.attendeeName, email: params.attendeeEmail, rsvp: true }]
-    });
+    const lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Kangqore//Kangqore//EN',
+      'METHOD:REQUEST',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      `UID:${uid}`,
+      `DTSTAMP:${now}`,
+      `DTSTART;TZID=${params.timezone}:${fmt(params.startTime)}`,
+      `DTEND;TZID=${params.timezone}:${fmt(params.endTime)}`,
+      `SUMMARY:${params.title.replace(/\n/g, '\\n')}`,
+      `DESCRIPTION:${desc.replace(/\n/g, '\\n')}`,
+      `LOCATION:${params.joinUrl || 'Online'}`,
+      `ORGANIZER;CN=${params.organiserName}:MAILTO:${params.organiserEmail}`,
+      `ATTENDEE;CN=${params.attendeeName};RSVP=TRUE;ROLE=REQ-PARTICIPANT:MAILTO:${params.attendeeEmail}`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ];
 
-    return cal.toString();
+    return lines.join('\r\n');
   }
 
   private bookingEmailHtml(params: {
