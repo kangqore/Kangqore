@@ -2042,6 +2042,10 @@ model ScheduledEvent {
   locationType     String?
   locationValue    String?
   joinUrl          String?
+  cancelToken      String?              @unique
+  rescheduleToken  String?              @unique
+  reminderSent24h  Boolean              @default(false)
+  reminderSent1h   Boolean              @default(false)
   cancelledAt      DateTime?
   cancelledBy      String?
   cancelReason     String?
@@ -2059,6 +2063,8 @@ model ScheduledEvent {
   @@index([hostId, startTime])
   @@index([eventTypeId])
   @@index([status])
+  @@index([cancelToken])
+  @@index([rescheduleToken])
   @@map("scheduled_events")
 }
 

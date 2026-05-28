@@ -1,4 +1,4 @@
-import { Router, Response, NextFunction } from 'express';
+import { Router, Response, NextFunction, Request } from 'express';
 import Joi from 'joi';
 import { prisma } from '../../lib/prisma';
 import { createError } from '../../middleware/errorHandler';
@@ -8,7 +8,6 @@ import { startOfDay, endOfDay, addDays, parseISO } from 'date-fns';
 
 const router = Router();
 
-// Validation schemas
 const scheduleSchema = Joi.object({
   name: Joi.string().min(2).max(100).required(),
   timezone: Joi.string().required(),
@@ -32,9 +31,9 @@ const scheduleSchema = Joi.object({
 
 /**
  * GET /api/scheduling/availability/slots/:slug
- * Public endpoint to get available slots for an event type
+ * Public — available time slots for a single day (used by booking widget)
  */
-router.get('/slots/:slug', async (req, res, next) => {
+router.get('/slots/:slug', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params;
     const { date, timezone } = req.query;
@@ -43,17 +42,14 @@ router.get('/slots/:slug', async (req, res, next) => {
       where: { slug, isActive: true, isPublic: true }
     });
 
-    if (!eventType) {
-      throw createError('Event type not found', 404);
-    }
+    if (!eventType) throw createError('Event type not found', 404);
 
     const startDate = date ? startOfDay(parseISO(date as string)) : startOfDay(new Date());
-    const endDate = endOfDay(startDate); // For now, just 1 day. Or add 6 days for a week view.
-    
+
     const slots = await AvailabilityService.getAvailableSlots(
       eventType.id,
       startDate,
-      addDays(startDate, 1), // Get slots for 24h from start
+      addDays(startDate, 1),
       (timezone as string) || 'UTC'
     );
 
@@ -64,16 +60,43 @@ router.get('/slots/:slug', async (req, res, next) => {
 });
 
 /**
- * GET /api/scheduling/availability/summary/:slug
- * Public endpoint returning a real-time availability pulse:
- *   - slotsThisWeek: total available consultation windows this week
- *   - nextAvailable: { date, time, dayLabel } for the next open slot
- *   - refreshedAt: ISO timestamp of when this was computed
- *
- * Used by the Live Availability Pulse component on the homepage.
- * No fake urgency — only real data from AvailabilityService.
+ * GET /api/scheduling/availability/dates/:slug
+ * Public — per-day availability summary for date picker.
+ * Returns availableCount per day so frontend can show which days have slots.
+ * Query params: days (default 30), timezone
  */
-router.get('/summary/:slug', async (req, res, next) => {
+router.get('/dates/:slug', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { slug } = req.params;
+    const { timezone, days } = req.query;
+
+    const eventType = await prisma.eventType.findUnique({
+      where: { slug, isActive: true, isPublic: true }
+    });
+
+    if (!eventType) throw createError('Event type not found', 404);
+
+    const rangeDays = Math.min(parseInt(days as string) || 30, eventType.maxAdvanceDays);
+    const rangeStart = startOfDay(new Date());
+
+    const dateAvailability = await AvailabilityService.getDateAvailability(
+      eventType.id,
+      rangeStart,
+      rangeDays,
+      (timezone as string) || 'UTC'
+    );
+
+    res.json({ success: true, dates: dateAvailability, maxAdvanceDays: eventType.maxAdvanceDays });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * GET /api/scheduling/availability/summary/:slug
+ * Public — real-time availability pulse (used by InlineSchedulingCard)
+ */
+router.get('/summary/:slug', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params;
     const { timezone } = req.query;
@@ -82,9 +105,7 @@ router.get('/summary/:slug', async (req, res, next) => {
       where: { slug, isActive: true, isPublic: true }
     });
 
-    if (!eventType) {
-      throw createError('Event type not found', 404);
-    }
+    if (!eventType) throw createError('Event type not found', 404);
 
     const now = new Date();
     const weekStart = startOfDay(now);
@@ -98,8 +119,6 @@ router.get('/summary/:slug', async (req, res, next) => {
     );
 
     const availableSlots = slots.filter(s => s.isAvailable);
-
-    // Find the next available slot that's in the future
     const futureSlots = availableSlots.filter(s => new Date(s.startTime) > now);
     const nextSlot = futureSlots.length > 0 ? futureSlots[0] : null;
 
@@ -108,26 +127,16 @@ router.get('/summary/:slug', async (req, res, next) => {
       const slotDate = new Date(nextSlot.startTime);
       const isToday = startOfDay(slotDate).getTime() === startOfDay(now).getTime();
       const isTomorrow = startOfDay(slotDate).getTime() === startOfDay(addDays(now, 1)).getTime();
-
-      let dayLabel: string;
-      if (isToday) dayLabel = 'Today';
-      else if (isTomorrow) dayLabel = 'Tomorrow';
-      else {
-        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        dayLabel = dayNames[slotDate.getDay()];
-      }
-
-      // Format time
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const dayLabel = isToday ? 'Today' : isTomorrow ? 'Tomorrow' : dayNames[slotDate.getDay()];
       const hours = slotDate.getHours();
       const mins = slotDate.getMinutes();
       const ampm = hours >= 12 ? 'PM' : 'AM';
       const displayH = hours > 12 ? hours - 12 : hours || 12;
-      const timeLabel = `${displayH}:${String(mins).padStart(2, '0')} ${ampm}`;
-
       nextAvailable = {
         date: slotDate.toISOString(),
-        time: timeLabel,
-        dayLabel,
+        time: `${displayH}:${String(mins).padStart(2, '0')} ${ampm}`,
+        dayLabel
       };
     }
 
@@ -135,7 +144,7 @@ router.get('/summary/:slug', async (req, res, next) => {
       success: true,
       slotsThisWeek: availableSlots.length,
       nextAvailable,
-      refreshedAt: now.toISOString(),
+      refreshedAt: now.toISOString()
     });
   } catch (error) {
     next(error);
@@ -144,9 +153,9 @@ router.get('/summary/:slug', async (req, res, next) => {
 
 /**
  * GET /api/scheduling/availability
- * List current user's schedules
+ * List current user's availability schedules (authenticated)
  */
-router.get('/', authenticate, async (req: AuthRequest, res, next) => {
+router.get('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     if (!req.user) return res.sendStatus(401);
     const schedules = await prisma.availabilitySchedule.findMany({
@@ -161,15 +170,14 @@ router.get('/', authenticate, async (req: AuthRequest, res, next) => {
 
 /**
  * POST /api/scheduling/availability
- * Create new schedule
+ * Create new availability schedule
  */
-router.post('/', authenticate, async (req: AuthRequest, res, next) => {
+router.post('/', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     if (!req.user) return res.sendStatus(401);
     const { error, value } = scheduleSchema.validate(req.body);
     if (error) throw createError(error.details[0].message, 400);
 
-    // If setting as default, unset others
     if (value.isDefault) {
       await prisma.availabilitySchedule.updateMany({
         where: { userId: req.user.id, isDefault: true },
@@ -178,10 +186,7 @@ router.post('/', authenticate, async (req: AuthRequest, res, next) => {
     }
 
     const schedule = await prisma.availabilitySchedule.create({
-      data: {
-        ...value,
-        userId: req.user.id
-      }
+      data: { ...value, userId: req.user.id }
     });
 
     res.status(201).json({ success: true, schedule });
@@ -192,23 +197,20 @@ router.post('/', authenticate, async (req: AuthRequest, res, next) => {
 
 /**
  * PUT /api/scheduling/availability/:id
- * Update schedule
+ * Update availability schedule
  */
-router.put('/:id', authenticate, async (req: AuthRequest, res, next) => {
+router.put('/:id', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     if (!req.user) return res.sendStatus(401);
     const { error, value } = scheduleSchema.validate(req.body);
     if (error) throw createError(error.details[0].message, 400);
 
-    const existing = await prisma.availabilitySchedule.findUnique({
-      where: { id: req.params.id }
-    });
+    const existing = await prisma.availabilitySchedule.findUnique({ where: { id: req.params.id } });
 
     if (!existing || existing.userId !== req.user.id) {
       throw createError('Schedule not found', 404);
     }
 
-    // If setting as default, unset others
     if (value.isDefault && !existing.isDefault) {
       await prisma.availabilitySchedule.updateMany({
         where: { userId: req.user.id, isDefault: true },

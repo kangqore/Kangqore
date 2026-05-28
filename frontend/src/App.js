@@ -24,6 +24,8 @@ import EqoreSalesPage from './pages/admin/EqoreSalesPage';
 import AlisPage from './pages/admin/AlisPage';
 import KimmpPagesPage from './pages/admin/KimmpPagesPage';
 import EQoreAIConsole from './pages/EQoreAIConsole';
+import BookingCancelPage from './pages/BookingCancelPage';
+import BookingReschedulePage from './pages/BookingReschedulePage';
 import './App.css';
 
 /**
@@ -141,6 +143,10 @@ function AppContent() {
           {/* Auth & Dashboard Routes (no Header/Footer) */}
           {authRoutes}
           <Route path="/eqore-ai" element={<EQoreAIConsole />} />
+
+          {/* Public booking management — no header/footer, token-based */}
+          <Route path="/booking/cancel/:token" element={<BookingCancelPage />} />
+          <Route path="/booking/reschedule/:token" element={<BookingReschedulePage />} />
 
           {/* Services page - defined at top level to avoid nested routes issues */}
           <Route path="/services" element={

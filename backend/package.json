@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.92.0",
+    "@esbuild/darwin-arm64": "^0.28.0",
     "@prisma/client": "5.22.0",
     "@sendgrid/mail": "^8.1.6",
     "@types/passport": "^1.0.17",
@@ -39,6 +40,7 @@
     "geoip-lite": "^2.0.2",
     "gray-matter": "^4.0.3",
     "helmet": "^7.1.0",
+    "ical-generator": "^10.2.0",
     "ioredis": "^5.10.1",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
