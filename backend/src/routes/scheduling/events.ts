@@ -7,7 +7,6 @@ import { SchedulingService } from '../../services/scheduling.service';
 
 const router = Router();
 
-// Validation schemas
 const bookingSchema = Joi.object({
   eventTypeId: Joi.string().required(),
   startTime: Joi.string().isoDate().required(),
@@ -39,6 +38,51 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 /**
+ * POST /api/scheduling/events/cancel-by-token
+ * Public endpoint — cancel a booking using the cancel token from confirmation email
+ */
+router.post('/cancel-by-token', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { token, reason } = req.body;
+    if (!token) throw createError('Cancel token is required', 400);
+
+    const event = await SchedulingService.cancelByToken(token, reason);
+    res.json({ success: true, event });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * GET /api/scheduling/events/reschedule/:token
+ * Public — get event details to display in the reschedule UI
+ */
+router.get('/reschedule/:token', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const event = await SchedulingService.getEventByRescheduleToken(req.params.token);
+    res.json({ success: true, event });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * POST /api/scheduling/events/reschedule/:token
+ * Public — reschedule a booking to a new time slot
+ */
+router.post('/reschedule/:token', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { newStartTime } = req.body;
+    if (!newStartTime) throw createError('newStartTime is required', 400);
+
+    const event = await SchedulingService.rescheduleByToken(req.params.token, newStartTime);
+    res.json({ success: true, event });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
  * GET /api/scheduling/events
  * List events for current user
  */
@@ -47,10 +91,7 @@ router.get('/', authenticate, async (req: AuthRequest, res, next) => {
     if (!req.user) return res.sendStatus(401);
     const events = await prisma.scheduledEvent.findMany({
       where: { hostId: req.user.id },
-      include: {
-        invitees: true,
-        eventType: true
-      },
+      include: { invitees: true, eventType: true },
       orderBy: { startTime: 'asc' }
     });
     res.json({ success: true, events });
@@ -71,9 +112,7 @@ router.get('/:id', authenticate, async (req: AuthRequest, res, next) => {
       include: {
         invitees: true,
         eventType: true,
-        host: {
-          select: { id: true, name: true, email: true }
-        }
+        host: { select: { id: true, name: true, email: true } }
       }
     });
 
@@ -90,15 +129,13 @@ router.get('/:id', authenticate, async (req: AuthRequest, res, next) => {
 
 /**
  * POST /api/scheduling/events/:id/cancel
- * Cancel event
+ * Cancel event (authenticated — host/admin)
  */
 router.post('/:id/cancel', authenticate, async (req: AuthRequest, res, next) => {
   try {
     if (!req.user) return res.sendStatus(401);
     const { reason } = req.body;
-    const event = await prisma.scheduledEvent.findUnique({
-      where: { id: req.params.id }
-    });
+    const event = await prisma.scheduledEvent.findUnique({ where: { id: req.params.id } });
 
     if (!event) throw createError('Event not found', 404);
     if (event.hostId !== req.user.id && req.user.role !== 'ADMIN') {
@@ -119,18 +156,13 @@ router.post('/:id/cancel', authenticate, async (req: AuthRequest, res, next) => 
 router.get('/:id/invitees', authenticate, async (req: AuthRequest, res, next) => {
   try {
     if (!req.user) return res.sendStatus(401);
-    const event = await prisma.scheduledEvent.findUnique({
-      where: { id: req.params.id }
-    });
+    const event = await prisma.scheduledEvent.findUnique({ where: { id: req.params.id } });
 
     if (!event || (event.hostId !== req.user.id && req.user.role !== 'ADMIN')) {
       throw createError('Unauthorized', 403);
     }
 
-    const invitees = await prisma.eventInvitee.findMany({
-      where: { eventId: req.params.id }
-    });
-
+    const invitees = await prisma.eventInvitee.findMany({ where: { eventId: req.params.id } });
     res.json({ success: true, invitees });
   } catch (error) {
     next(error);
@@ -145,23 +177,16 @@ router.post('/:id/no-show', authenticate, async (req: AuthRequest, res, next) =>
   try {
     if (!req.user) return res.sendStatus(401);
     const { inviteeId } = req.body;
-    const event = await prisma.scheduledEvent.findUnique({
-      where: { id: req.params.id }
-    });
+    const event = await prisma.scheduledEvent.findUnique({ where: { id: req.params.id } });
 
     if (!event || (event.hostId !== req.user.id && req.user.role !== 'ADMIN')) {
       throw createError('Unauthorized', 403);
     }
 
     const noShow = await prisma.inviteeNoShow.create({
-      data: {
-        eventId: req.params.id,
-        inviteeId,
-        createdBy: req.user.id
-      }
+      data: { eventId: req.params.id, inviteeId, createdBy: req.user.id }
     });
 
-    // Update event status if needed
     await prisma.scheduledEvent.update({
       where: { id: req.params.id },
       data: { status: 'NO_SHOW' }
@@ -180,23 +205,14 @@ router.post('/:id/no-show', authenticate, async (req: AuthRequest, res, next) =>
 router.delete('/:id/no-show', authenticate, async (req: AuthRequest, res, next) => {
   try {
     if (!req.user) return res.sendStatus(401);
-    const event = await prisma.scheduledEvent.findUnique({
-      where: { id: req.params.id }
-    });
+    const event = await prisma.scheduledEvent.findUnique({ where: { id: req.params.id } });
 
     if (!event || (event.hostId !== req.user.id && req.user.role !== 'ADMIN')) {
       throw createError('Unauthorized', 403);
     }
 
-    await prisma.inviteeNoShow.deleteMany({
-      where: { eventId: req.params.id }
-    });
-
-    await prisma.scheduledEvent.update({
-      where: { id: req.params.id },
-      data: { status: 'ACTIVE' }
-    });
-
+    await prisma.inviteeNoShow.deleteMany({ where: { eventId: req.params.id } });
+    await prisma.scheduledEvent.update({ where: { id: req.params.id }, data: { status: 'ACTIVE' } });
     res.json({ success: true, message: 'No-show removed' });
   } catch (error) {
     next(error);
