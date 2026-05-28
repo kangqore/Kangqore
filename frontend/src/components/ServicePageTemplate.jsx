@@ -316,233 +316,181 @@ const SolutionsCarousel = ({ solutions }) => {
 
 // Capabilities Carousel Component
 const CapabilitiesCarousel = ({ cards, iconArray }) => {
-  const containerRef = React.useRef(null);
-  const animationRef = React.useRef(null);
-  const [expandedCards, setExpandedCards] = React.useState({});
-  const [isHovered, setIsHovered] = React.useState(false);
-  
-  const scrollLeftBtn = () => {
-    if (containerRef.current) containerRef.current.scrollBy({ left: -360, behavior: 'smooth' });
+  // Bento grid layout configuration based on card count
+  // Layout pattern (for 6 cards):
+  //   Row 1: [card0] [card1] [card2] [card3 — tall, spans 2 rows]
+  //   Row 2: [card4]   [card5 — wide, spans 2 cols]  [card3 cont.]
+  const getGridPlacement = (index, total) => {
+    if (total >= 6) {
+      // 6+ cards: classic bento with tall right card
+      const placements = [
+        'col-span-1 row-span-1',                          // 0: top-left
+        'col-span-1 row-span-1',                          // 1: top-center-left
+        'col-span-1 row-span-1',                          // 2: top-center-right
+        'col-span-1 row-span-2 bento-tall',               // 3: right tall
+        'col-span-1 row-span-1',                          // 4: bottom-left
+        'col-span-2 row-span-1 bento-wide',               // 5: bottom-center wide
+      ];
+      return placements[index] || 'col-span-1 row-span-1';
+    } else if (total === 5) {
+      const placements = [
+        'col-span-1 row-span-1',
+        'col-span-1 row-span-1',
+        'col-span-1 row-span-1',
+        'col-span-1 row-span-2 bento-tall',
+        'col-span-3 row-span-1 bento-wide',
+      ];
+      return placements[index] || 'col-span-1 row-span-1';
+    } else if (total === 4) {
+      const placements = [
+        'col-span-1 row-span-1',
+        'col-span-1 row-span-1',
+        'col-span-1 row-span-1',
+        'col-span-1 row-span-1',
+      ];
+      return placements[index] || 'col-span-1 row-span-1';
+    } else {
+      // 3 or fewer: simple equal grid
+      return 'col-span-1 row-span-1';
+    }
   };
-  
-  const scrollRightBtn = () => {
-    if (containerRef.current) containerRef.current.scrollBy({ left: 360, behavior: 'smooth' });
-  };
 
-  const toggleExpand = (originalIndex) => {
-    setExpandedCards(prev => ({ ...prev, [originalIndex]: !prev[originalIndex] }));
-  };
-
-  // Continuous auto-scroll effect
-  React.useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const scrollStep = () => {
-      if (!isHovered) {
-        container.scrollLeft += 1;
-        // If we scrolled past the first set of cards, reset to 0 seamlessly
-        if (container.scrollLeft >= container.scrollWidth / 2) {
-          container.scrollLeft = 0;
-        }
-      }
-      animationRef.current = requestAnimationFrame(scrollStep);
-    };
-
-    animationRef.current = requestAnimationFrame(scrollStep);
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [isHovered]);
-
-  // Duplicate cards for infinite scrolling effect
-  const extendedCards = [...cards, ...cards];
+  // Only show first 6 cards in the bento grid (extras are hidden)
+  const visibleCards = cards.slice(0, 6);
+  const gridCols = visibleCards.length <= 4 ? visibleCards.length : 4;
 
   return (
-    <div 
-      className="relative group/carousel overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Infinite Scroll Container */}
-      <div 
-        ref={containerRef}
-        className="flex items-start gap-6 lg:gap-8 pb-12 pt-4 pr-6 lg:pr-8 overflow-x-auto hide-scrollbar"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+    <div className="relative">
+      {/* Bento Grid */}
+      <div
+        className="bento-capabilities-grid"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${gridCols}, 1fr)`,
+          gridAutoRows: 'minmax(280px, 1fr)',
+          gap: '8px',
+        }}
       >
-        {extendedCards.map((card, idx) => {
-          const cardIndex = idx % cards.length;
-          // Alternate light and dark themes based on index for the Apple card effect
-          const isDark = cardIndex % 2 === 0;
-          const isExpanded = expandedCards[cardIndex];
-          const visibleItems = isExpanded ? (card.items || []) : (card.items || []).slice(0, 2);
-          const hasMore = (card.items || []).length > 2 || card.tableData;
-          
+        {visibleCards.map((card, idx) => {
+          const placement = getGridPlacement(idx, visibleCards.length);
+          const isTall = placement.includes('bento-tall');
+          const isWide = placement.includes('bento-wide');
+
+          // Fallback image placeholders for cards without bgImage
+          const fallbackImages = [
+            '/images/capabilities/data-analytics.png',
+            '/images/capabilities/software-engineering.png',
+            '/images/capabilities/business-strategy.png',
+            '/images/capabilities/digital-transformation.png',
+            '/images/capabilities/cloud-infrastructure.png',
+            '/images/capabilities/ai-cognitive.png',
+          ];
+          const bgImage = card.bgImage || fallbackImages[idx % fallbackImages.length];
+
           return (
-            <div 
-              key={idx} 
-              className={`
-                flex-none w-[270px] sm:w-[320px] lg:w-[360px]
-                bg-[#FEFFFC] rounded-[32px] p-6 lg:p-8 pb-20 hover:scale-[1.02] transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] flex flex-col items-start relative overflow-hidden shrink-0 text-[#1D1D1F]
-                ${!isExpanded ? 'h-[400px] lg:h-[480px]' : ''}
-              `}
+            <div
+              key={idx}
+              className={`bento-card relative rounded-[16px] overflow-hidden group cursor-pointer ${placement}`}
+              style={{ minHeight: isTall ? '576px' : '280px' }}
             >
-              {/* Conditional Image Background */}
-              {card.bgImage ? (
-                <>
-                  <div className="absolute inset-0 z-0 rounded-[32px] overflow-hidden">
-                    <img title={card.title} src={card.bgImage} alt={card.title} className="w-full h-full object-cover" loading="lazy" />
-                    <div className="absolute inset-0 bg-black/70"></div>
-                  </div>
-                </>
-              ) : (
-                /* Decorative Abstract Background Elements (Fallback) */
-                <>
-                  <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-gradient-to-r from-[#2564ea]/10 to-[#4ab6d4]/10 rounded-full blur-[60px] pointer-events-none z-0"></div>
-                  <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-[#2564ea]/5 to-[#4ab6d4]/5 rounded-full blur-[50px] pointer-events-none -translate-x-1/2 z-0"></div>
-                </>
-              )}
-
-              <div className={`relative z-10 w-full flex flex-col ${!isExpanded ? 'flex-1 min-h-0' : ''}`}>
-                {/* Top Left Icon */}
-                <div className="mb-6">
-                  {(() => {
-                    const IconComponent = iconArray[cardIndex % iconArray.length];
-                    return (
-                      <Realistic3DIcon 
-                        icon={IconComponent} 
-                        className="w-14 h-14" 
-                        theme={card.bgImage ? "glass" : (cardIndex % 2 === 0 ? "brand" : "cyan")} 
-                      />
-                    );
-                  })()}
-                </div>
-
-                <h3 className={`text-3xl lg:text-4xl font-semibold tracking-tight leading-tight mb-4 font-display pr-4 ${card.bgImage ? 'text-white drop-shadow-md' : 'text-[#1D1D1F]'}`}>
-                  {card.title}
-                </h3>
-                {card.description && (
-                  <p className={`text-sm tracking-tight leading-relaxed mb-6 pr-4 ${card.bgImage ? 'text-white/60' : 'text-gray-400'}`}>
-                    {card.description}
-                  </p>
-                )}
-                
-                {/* Content area - clipped when collapsed */}
-                <div className={`${!isExpanded ? 'flex-1 overflow-hidden' : ''}`}>
-                  {/* Table rendering (only when expanded) */}
-                  {card.tableData && isExpanded && (
-                    <div className="overflow-x-auto -mx-2 mb-4">
-                      <table className={`w-full text-xs border-collapse ${card.bgImage ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}>
-                        <thead>
-                          <tr>
-                            {card.tableData.columns.map((col, ci) => (
-                              <th key={ci} className={`px-3 py-2.5 text-left font-semibold text-xs tracking-tight border ${card.bgImage ? 'border-white/20 bg-white dark:bg-gray-900 dark:border-gray-800/5' : 'border-gray-200 bg-gray-50'}`}>
-                                {col}
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {card.tableData.rows.map((row, ri) => (
-                            <tr key={ri}>
-                              <td className={`px-3 py-2.5 font-semibold text-xs tracking-tight border align-top ${card.bgImage ? 'border-white/20 bg-white dark:bg-gray-900 dark:border-gray-800/5' : 'border-gray-200 bg-gray-50'}`}>
-                                {row.label}
-                              </td>
-                              {row.values.map((val, vi) => (
-                                <td key={vi} className={`px-3 py-2.5 text-xs tracking-tight border align-top leading-relaxed ${card.bgImage ? 'border-white/20' : 'border-gray-200'}`}>
-                                  {val.split('\n').map((line, li) => (
-                                    <span key={li} className="block">• {line}</span>
-                                  ))}
-                                </td>
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-
-                  {/* Bullet items rendering */}
-                  {!card.tableData && (
-                    <div className="space-y-5">
-                      {visibleItems.map((item, itemIndex) => (
-                        <div key={itemIndex} className="group/item flex items-start gap-3">
-                          <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 shadow-sm ${card.bgImage ? 'bg-white dark:bg-gray-900 dark:border-gray-800/80 group-hover/item:bg-white dark:bg-gray-900 dark:border-gray-800' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] opacity-80 group-hover/item:opacity-100'} transition-colors duration-300`}></span>
-                          <div className="text-sm">
-                            {typeof item === 'string' ? (
-                              <span className={`tracking-tight leading-relaxed block ${card.bgImage ? 'text-white font-medium drop-shadow-md' : 'text-gray-600 dark:text-gray-400 font-light'}`}>
-                                {item}
-                              </span>
-                            ) : (
-                              <>
-                                <span className={`block tracking-tight mb-0.5 ${card.bgImage ? 'text-white font-semibold drop-shadow-md' : 'text-gray-800 dark:text-gray-50 font-medium'}`}>
-                                  {item.heading}
-                                </span>
-                                <span className={`block tracking-tight leading-relaxed text-xs ${card.bgImage ? 'text-white/70 font-medium' : 'text-gray-400 font-light'}`}>
-                                  {item.description}
-                                </span>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Know More / Show Less Link — pushed to bottom via mt-auto */}
-                {hasMore && (
-                  <button 
-                    onClick={() => toggleExpand(cardIndex)}
-                    className={`mt-auto pt-4 text-sm font-semibold tracking-tight transition-colors duration-300 text-left shrink-0 ${card.bgImage ? 'text-cyan-400 hover:text-cyan-300' : 'text-[#2564ea] hover:text-[#4ab6d4]'}`}
-                  >
-                    {isExpanded ? '← Show Less' : 'Know More →'}
-                  </button>
-                )}
+              {/* Background Image — fills entire card */}
+              <div className="absolute inset-0 z-0">
+                <img
+                  src={bgImage}
+                  alt={card.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
               </div>
 
-              {/* Floating Action Button (+ / - icon) - Bottom Right */}
-              <div 
-                onClick={() => toggleExpand(cardIndex)}
-                className={`absolute bottom-6 right-6 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-300 shadow-md z-20 bg-gray-100/50 text-[#1D1D1F] hover:bg-white dark:bg-gray-900 dark:border-gray-800 hover:shadow-lg`}
-              >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {isExpanded ? (
-                    <path d="M1 7H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  ) : (
-                    <path d="M7 1V13M1 7H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              {/* Text Overlay — positioned at top with cream/frosted background */}
+              <div className="relative z-10 flex flex-col h-full">
+                <div
+                  className="bento-text-overlay p-5 lg:p-6"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(245,244,240,0.92) 0%, rgba(245,244,240,0.85) 70%, rgba(245,244,240,0) 100%)',
+                  }}
+                >
+                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 tracking-tight leading-snug mb-1.5">
+                    {card.title}
+                  </h3>
+                  {card.description && (
+                    <p className="text-[13px] lg:text-sm text-gray-600 leading-relaxed font-normal line-clamp-3">
+                      {card.description}
+                    </p>
                   )}
-                </svg>
+                </div>
+                {/* Spacer to push content to bottom if needed */}
+                <div className="flex-1" />
               </div>
+
+              {/* Subtle hover overlay */}
+              <div className="absolute inset-0 z-[5] bg-black/0 group-hover:bg-black/10 transition-colors duration-500 pointer-events-none" />
             </div>
           );
         })}
       </div>
 
-      {/* Navigation Buttons */}
-      <div className="flex justify-end pr-4 sm:pr-8 gap-3 mt-6">
-        <button 
-          onClick={scrollLeftBtn} 
-          className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200 flex items-center justify-center transition-colors text-gray-900 dark:text-white shadow-sm z-10 relative"
-          aria-label="Previous capability"
+      {/* Show remaining cards if more than 6 */}
+      {cards.length > 6 && (
+        <div
+          className="mt-2"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${Math.min(cards.length - 6, 4)}, 1fr)`,
+            gap: '8px',
+          }}
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="rotate-180">
-            <path d="M5 1L11 7L5 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <button 
-          onClick={scrollRightBtn} 
-          className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200 flex items-center justify-center transition-colors text-gray-900 dark:text-white shadow-sm z-10 relative"
-          aria-label="Next capability"
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 1L11 7L5 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      </div>
+          {cards.slice(6).map((card, idx) => {
+            const realIdx = idx + 6;
+            const fallbackImages = [
+              '/images/capabilities/data-analytics.png',
+              '/images/capabilities/software-engineering.png',
+              '/images/capabilities/business-strategy.png',
+              '/images/capabilities/digital-transformation.png',
+              '/images/capabilities/cloud-infrastructure.png',
+              '/images/capabilities/ai-cognitive.png',
+            ];
+            const bgImage = card.bgImage || fallbackImages[realIdx % fallbackImages.length];
+
+            return (
+              <div
+                key={realIdx}
+                className="bento-card relative rounded-[16px] overflow-hidden group cursor-pointer"
+                style={{ minHeight: '280px' }}
+              >
+                <div className="absolute inset-0 z-0">
+                  <img
+                    src={bgImage}
+                    alt={card.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="relative z-10 flex flex-col h-full">
+                  <div
+                    className="bento-text-overlay p-5 lg:p-6"
+                    style={{
+                      background: 'linear-gradient(180deg, rgba(245,244,240,0.92) 0%, rgba(245,244,240,0.85) 70%, rgba(245,244,240,0) 100%)',
+                    }}
+                  >
+                    <h3 className="text-lg lg:text-xl font-bold text-gray-900 tracking-tight leading-snug mb-1.5">
+                      {card.title}
+                    </h3>
+                    {card.description && (
+                      <p className="text-[13px] lg:text-sm text-gray-600 leading-relaxed font-normal line-clamp-3">
+                        {card.description}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex-1" />
+                </div>
+                <div className="absolute inset-0 z-[5] bg-black/0 group-hover:bg-black/10 transition-colors duration-500 pointer-events-none" />
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       <style dangerouslySetInnerHTML={{__html: `
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -558,6 +506,51 @@ const CapabilitiesCarousel = ({ cards, iconArray }) => {
         .reveal-on-scroll.is-visible {
           opacity: 1;
           transform: translateY(0);
+        }
+
+        /* Bento grid responsive */
+        @media (max-width: 1023px) {
+          .bento-capabilities-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .bento-capabilities-grid .bento-tall {
+            grid-row: span 1 !important;
+            min-height: 280px !important;
+          }
+          .bento-capabilities-grid .bento-wide {
+            grid-column: span 2 !important;
+          }
+          .bento-capabilities-grid .col-span-1 {
+            grid-column: span 1;
+          }
+          .bento-capabilities-grid .col-span-2 {
+            grid-column: span 2;
+          }
+          .bento-capabilities-grid .col-span-3 {
+            grid-column: span 2;
+          }
+        }
+
+        @media (max-width: 639px) {
+          .bento-capabilities-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .bento-capabilities-grid .bento-tall,
+          .bento-capabilities-grid .bento-wide {
+            grid-column: span 1 !important;
+            grid-row: span 1 !important;
+            min-height: 260px !important;
+          }
+          .bento-capabilities-grid .col-span-1,
+          .bento-capabilities-grid .col-span-2,
+          .bento-capabilities-grid .col-span-3 {
+            grid-column: span 1 !important;
+          }
+        }
+
+        /* Bento card image zoom on hover */
+        .bento-card:hover img {
+          transform: scale(1.05);
         }
       `}} />
     </div>

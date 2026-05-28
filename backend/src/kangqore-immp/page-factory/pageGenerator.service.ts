@@ -12,6 +12,7 @@ import logger from '../../utils/logger';
 import { KimmpFlags } from '../core/flags';
 import { pageContentSchema, PageContent } from './pageSchema';
 import { ClaimValidator, ClaimIssue } from './claimValidator';
+import { KimmpCostTracker } from '../governance/costTracker.service';
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' });
 
@@ -80,6 +81,14 @@ export class PageGenerator {
       temperature: 0.4,
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userPrompt }],
+    });
+
+    // Phase 4 — record token cost (fire-and-forget).
+    void KimmpCostTracker.record({
+      operation: 'PAGE_GENERATION',
+      model,
+      inputTokens: response.usage?.input_tokens ?? 0,
+      outputTokens: response.usage?.output_tokens ?? 0,
     });
 
     const text = response.content[0]?.type === 'text' ? response.content[0].text : '';

@@ -14,6 +14,8 @@ import logger from '../../utils/logger';
 import { KimmpFlags } from '../core/flags';
 import { Tier1Result } from './signalExtractor.service';
 import { tier2ResponseSchema, Tier2ResponseParsed } from './behaviorSchema';
+import { KimmpCostTracker } from '../governance/costTracker.service';
+import { KimmpRag } from '../rag/kimmpRag.service';
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' });
 
@@ -80,12 +82,16 @@ export class Tier2ClaudeReasoner {
       .map((s) => `${s.type}=${s.intensity.toFixed(2)}`)
       .join(', ') || 'none';
 
+    // Phase 5 — RAG: pull relevant KB context to ground the behavioral read.
+    const ragContext = await KimmpRag.query(input.texts.slice(-3).join(' '), 3);
+
     const userPrompt = [
       `Tier-1 (deterministic) already detected: ${tier1Hint}.`,
       `Trait estimation is ${input.traitsEligible ? 'ALLOWED — there is enough text' : 'NOT allowed — too little text, return traits: null'}.`,
       '',
       'Conversation (visitor messages only):',
       ...input.texts.map((t, i) => `[${i + 1}] ${t}`),
+      ...(ragContext.contextBlock ? ['', ragContext.contextBlock] : []),
     ].join('\n');
 
     try {
@@ -95,6 +101,14 @@ export class Tier2ClaudeReasoner {
         temperature: 0.2,
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: userPrompt }],
+      });
+
+      // Phase 4 — record token cost (fire-and-forget).
+      void KimmpCostTracker.record({
+        operation: 'BEHAVIOR_TIER2',
+        model,
+        inputTokens: response.usage?.input_tokens ?? 0,
+        outputTokens: response.usage?.output_tokens ?? 0,
       });
 
       const text = response.content[0]?.type === 'text' ? response.content[0].text : '';

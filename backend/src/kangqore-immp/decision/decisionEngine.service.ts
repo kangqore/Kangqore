@@ -13,7 +13,10 @@
 
 import { prisma } from '../../lib/prisma';
 import logger from '../../utils/logger';
+import { KimmpTracer } from '../governance/kimmpTracer.service';
 import { decide, SignalLike } from './decisionPolicy';
+import { KimmpPredictionService } from '../prediction/kimmpPrediction.service';
+import { PredictionStore } from '../prediction/predictionStore.service';
 
 export interface EvaluateResult {
   signalsEvaluated: number;
@@ -55,7 +58,22 @@ export class DecisionEngine {
       const proposal = decide(signal);
       try {
         if (proposal) {
-          await (prisma as any).kimmpDecision.create({
+          // Phase 5 — run prediction for lead-bearing signals and boost priority.
+          let finalPriority = proposal.priority;
+          if (signal.leadId) {
+            const prediction = await KimmpPredictionService.predict(signal.leadId);
+            if (prediction) {
+              // High conversion probability → bump priority by up to +8.
+              if (prediction.conversionProbability >= 0.7) finalPriority = Math.min(34, finalPriority + 8);
+              else if (prediction.conversionProbability >= 0.5) finalPriority = Math.min(34, finalPriority + 4);
+              // High delivery risk on an outward action → bump priority.
+              if (prediction.deliveryRisk === 'HIGH') finalPriority = Math.min(34, finalPriority + 5);
+              // Store the prediction (fire-and-forget).
+              void PredictionStore.save(prediction);
+            }
+          }
+
+          const row = await (prisma as any).kimmpDecision.create({
             data: {
               signalId: signal.id,
               decisionType: proposal.decisionType,
@@ -63,11 +81,20 @@ export class DecisionEngine {
               targetModule: proposal.targetModule,
               reasoning: proposal.reasoning,
               confidence: signal.confidence,
-              priority: proposal.priority,
+              priority: finalPriority,
               status: 'PROPOSED',
               conversationId: signal.conversationId ?? null,
               leadId: signal.leadId ?? null,
             },
+          });
+          // Phase 4 — trace every proposed decision.
+          KimmpTracer.decisionProposed(row.id, {
+            signalId: signal.id,
+            decisionType: proposal.decisionType,
+            targetModule: proposal.targetModule,
+            priority: proposal.priority,
+            confidence: signal.confidence,
+            leadId: signal.leadId ?? undefined,
           });
           proposed += 1;
         } else {

@@ -17,5 +17,7 @@ alisRouter.get('/buyer-intent', AlisAdminController.getBuyerIntent);
 alisRouter.get('/content-gaps', AlisAdminController.getContentGaps);
 alisRouter.get('/alerts', AlisAdminController.getAlerts);
 alisRouter.get('/growth-recs', AlisAdminController.getGrowthRecs);
+// Phase 2 — trigger ALIS → Signal Ledger market signal scan.
+alisRouter.post('/signals/emit', AlisAdminController.emitMarketSignals);
 
 export { alisRouter };
