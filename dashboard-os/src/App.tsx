@@ -9,6 +9,7 @@ import { PlaceholderPage } from '@pages/PlaceholderPage'
 import { StrategyModule }   from '@features/strategy'
 import { ProjectsModule }   from '@features/projects'
 import { ResourcesModule }  from '@features/resources'
+import { FinanceModule }    from '@features/finance'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,7 +18,6 @@ const queryClient = new QueryClient({
 })
 
 const PLACEHOLDER_MODULES = [
-  'finance',
   'clients', 'partners', 'leads', 'investors',
   'careers', 'marketing', 'workflows', 'departments',
   'analytics', 'kimmp',
@@ -51,6 +51,9 @@ export default function App() {
 
             {/* Phase 1c — Resources & Team */}
             <Route path="resources/*" element={<ResourcesModule />} />
+
+            {/* Phase 1d — Financial Operations */}
+            <Route path="finance/*"   element={<FinanceModule />}   />
 
             {/* Remaining modules — placeholder until their phase */}
             {PLACEHOLDER_MODULES.map(mod => (
