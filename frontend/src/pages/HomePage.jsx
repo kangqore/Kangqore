@@ -1685,13 +1685,16 @@ const LeadershipSection = () => {
           </div>
 
           {/* Right Column: Clean Minimalist Editorial Text (Col 7) */}
-          <div className="lg:col-span-7 space-y-8 lg:pl-6 text-left">
+          <div className="lg:col-span-7 space-y-6 lg:pl-6 text-left">
+            {/* Standalone large premium quote icon anchor */}
+            <Quote className="w-12 h-12 text-brand-blue dark:text-brand-cyan opacity-40 transform -scale-x-100" />
+            
             <div className="space-y-6 text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100 leading-relaxed font-sans">
               <p>
-                “The next era will not be defined by companies that simply use AI. It will be defined by those that use AI to amplify human imagination, ambition, and potential. Businesses don't evolve by ideas alone; they evolve through innovation. At Kangqore, we innovate futures.
+                The next era will not be defined by companies that simply use AI. It will be defined by those that use AI to amplify human imagination, ambition, and potential. Businesses don't evolve by ideas alone; they evolve through innovation. At Kangqore, we innovate futures.
               </p>
               <p>
-                Technology can automate tasks and accelerate decisions, but only humans can create purpose, vision, and meaning. That's why we've chosen a side: human outcomes always lead. Humans set the destination; intelligent systems accelerate the journey. The future isn't AI led or human in the loop. It's human led intelligence at scale.”
+                Technology can automate tasks and accelerate decisions, but only humans can create purpose, vision, and meaning. That's why we've chosen a side: human outcomes always lead. Humans set the destination; intelligent systems accelerate the journey. The future isn't AI led or human in the loop. It's human led intelligence at scale.
               </p>
             </div>
 
