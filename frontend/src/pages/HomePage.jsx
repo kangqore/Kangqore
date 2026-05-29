@@ -1664,7 +1664,7 @@ const LeadershipSection = () => {
   const [ref, visible] = useScrollAnimation({ once: true, threshold: 0.15 });
 
   return (
-    <section className="py-24 md:py-36 bg-white dark:bg-black text-gray-900 dark:text-white overflow-hidden relative border-y border-gray-100 dark:border-neutral-900">
+    <section className="py-24 md:py-36 bg-white dark:bg-black text-gray-900 dark:text-white overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div 
           ref={ref}
