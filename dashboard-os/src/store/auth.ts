@@ -20,6 +20,7 @@ interface AuthStore {
 
   login: (email: string, password: string) => Promise<void>
   signup: (data: SignupPayload) => Promise<void>
+  loginAsDemo: () => void
   logout: () => void
   clearError: () => void
 }
@@ -72,6 +73,13 @@ export const useAuthStore = create<AuthStore>()(
           throw err
         }
       },
+
+      loginAsDemo: () => set({
+        user: { id: 'demo', name: 'Mahesh Kumar', email: 'admin@kangqore.com', role: 'ADMIN' },
+        token: 'demo-token',
+        isAuthenticated: true,
+        error: null,
+      }),
 
       logout: () => {
         set({ user: null, token: null, isAuthenticated: false, error: null })

@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Eye, EyeOff, ArrowRight, Target, LayoutDashboard, Brain } from 'lucide-react'
+import { Eye, EyeOff, ArrowRight, Target, LayoutDashboard, Brain, Zap } from 'lucide-react'
 import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
 import { useAuthStore, ROLE_REDIRECT } from '@store/auth'
@@ -22,7 +22,7 @@ const FEATURES = [
 ]
 
 export function LoginPage() {
-  const { login, isLoading, error, clearError } = useAuthStore()
+  const { login, loginAsDemo, isLoading, error, clearError } = useAuthStore()
   const navigate = useNavigate()
   const location = useLocation()
   const [showPwd, setShowPwd] = useState(false)
@@ -148,6 +148,23 @@ export function LoginPage() {
               Sign in
             </Button>
           </form>
+
+          <div className="relative my-5">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-slate-50 px-3 text-xs text-slate-400">or</span>
+            </div>
+          </div>
+
+          <button
+            onClick={() => { loginAsDemo(); navigate('/os/strategy', { replace: true }) }}
+            className="w-full flex items-center justify-center gap-2 h-9 rounded-xl border-2 border-dashed border-purple-200 text-sm font-semibold text-purple-600 hover:bg-purple-50 hover:border-purple-400 transition-all duration-150"
+          >
+            <Zap className="w-4 h-4" />
+            Continue as Demo (no login required)
+          </button>
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Don't have an account?{' '}
