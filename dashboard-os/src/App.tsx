@@ -6,8 +6,9 @@ import { ProtectedRoute } from '@components/auth/ProtectedRoute'
 import { LoginPage } from '@pages/auth/LoginPage'
 import { SignupPage } from '@pages/auth/SignupPage'
 import { PlaceholderPage } from '@pages/PlaceholderPage'
-import { StrategyModule }  from '@features/strategy'
-import { ProjectsModule }  from '@features/projects'
+import { StrategyModule }   from '@features/strategy'
+import { ProjectsModule }   from '@features/projects'
+import { ResourcesModule }  from '@features/resources'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,7 +17,7 @@ const queryClient = new QueryClient({
 })
 
 const PLACEHOLDER_MODULES = [
-  'resources', 'finance',
+  'finance',
   'clients', 'partners', 'leads', 'investors',
   'careers', 'marketing', 'workflows', 'departments',
   'analytics', 'kimmp',
@@ -46,7 +47,10 @@ export default function App() {
             <Route path="strategy/*" element={<StrategyModule />} />
 
             {/* Phase 1b — Projects & Agile */}
-            <Route path="projects/*" element={<ProjectsModule />} />
+            <Route path="projects/*"  element={<ProjectsModule />}  />
+
+            {/* Phase 1c — Resources & Team */}
+            <Route path="resources/*" element={<ResourcesModule />} />
 
             {/* Remaining modules — placeholder until their phase */}
             {PLACEHOLDER_MODULES.map(mod => (
