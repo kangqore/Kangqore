@@ -1674,13 +1674,13 @@ const LeadershipSection = () => {
         >
           {/* Left Column: Simple rectangular premium portrait (Col 5) */}
           <div className="lg:col-span-5 relative group">
-            <div className="relative overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl max-w-sm sm:max-w-md mx-auto lg:mx-0 aspect-[4/3] sm:aspect-square md:aspect-[4/3] lg:aspect-[4/3]">
+            <div className="relative overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl max-w-sm sm:max-w-md mx-auto lg:mx-0">
               <img 
                 src="/images/leadership/ceo-mahesh-kumar.png" 
                 alt="Mahesh Kumar, Founder and CEO" 
-                className="w-full h-full object-cover transform scale-[1.01] group-hover:scale-105 transition-transform duration-[1.2s] object-top"
+                className="w-full h-auto block transform scale-[1.01] group-hover:scale-105 transition-transform duration-[1.2s]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
             </div>
           </div>
 
