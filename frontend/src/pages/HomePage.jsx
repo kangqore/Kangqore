@@ -1674,11 +1674,11 @@ const LeadershipSection = () => {
         >
           {/* Left Column: Simple rectangular premium portrait (Col 5) */}
           <div className="lg:col-span-5 relative group">
-            <div className="relative overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl max-w-sm sm:max-w-md mx-auto lg:mx-0">
+            <div className="relative overflow-hidden shadow-2xl max-w-sm sm:max-w-md mx-auto lg:mx-0 aspect-[4/5]">
               <img 
                 src="/images/leadership/ceo-mahesh-kumar.png" 
                 alt="Mahesh Kumar, Founder and CEO" 
-                className="w-full h-auto block transform scale-[1.01] group-hover:scale-105 transition-transform duration-[1.2s]"
+                className="w-full h-full object-cover object-top block transform scale-[1.01] group-hover:scale-105 transition-transform duration-[1.2s]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
             </div>
@@ -1724,11 +1724,11 @@ const LeadershipSection = () => {
                   href="https://x.com/maheshkumarx"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300 ease-out"
+                  className="text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300 ease-out flex items-center justify-center"
                   aria-label="X"
                 >
                   <svg 
-                    className="w-5.5 h-5.5 fill-current" 
+                    className="w-5 h-5 fill-current" 
                     viewBox="0 0 24 24" 
                     xmlns="http://www.w3.org/2000/svg"
                   >
