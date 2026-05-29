@@ -1689,16 +1689,10 @@ const LeadershipSection = () => {
             {/* Uniform Editorial Quote Blocks */}
             <div className="space-y-6 text-[13px] md:text-[14px] font-normal text-gray-300 leading-relaxed font-sans">
               <p>
-                “The next era will not be defined by companies that simply use AI. It will be defined by those that use AI to amplify human imagination, ambition, and potential.
+                “The next era will not be defined by companies that simply use AI. It will be defined by those that use AI to amplify human imagination, ambition, and potential. Businesses don't evolve by ideas alone; they evolve through innovation. At Kangqore, we innovate futures.
               </p>
               <p>
-                Businesses don't evolve by ideas alone; they evolve through innovation. At Kangqore, we innovate futures.
-              </p>
-              <p>
-                Technology can automate tasks and accelerate decisions, but only humans can create purpose, vision, and meaning. That's why we've chosen a side: human outcomes always lead. Humans set the destination; intelligent systems accelerate the journey.
-              </p>
-              <p>
-                The future isn't AI-led or human-in-the-loop. It's human-led intelligence at scale.”
+                Technology can automate tasks and accelerate decisions, but only humans can create purpose, vision, and meaning. That's why we've chosen a side: human outcomes always lead. Humans set the destination; intelligent systems accelerate the journey. The future isn't AI-led or human-in-the-loop. It's human-led intelligence at scale.”
               </p>
             </div>
 
