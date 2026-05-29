@@ -6,7 +6,8 @@ import { ProtectedRoute } from '@components/auth/ProtectedRoute'
 import { LoginPage } from '@pages/auth/LoginPage'
 import { SignupPage } from '@pages/auth/SignupPage'
 import { PlaceholderPage } from '@pages/PlaceholderPage'
-import { StrategyModule } from '@features/strategy'
+import { StrategyModule }  from '@features/strategy'
+import { ProjectsModule }  from '@features/projects'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,7 +16,7 @@ const queryClient = new QueryClient({
 })
 
 const PLACEHOLDER_MODULES = [
-  'projects', 'resources', 'finance',
+  'resources', 'finance',
   'clients', 'partners', 'leads', 'investors',
   'careers', 'marketing', 'workflows', 'departments',
   'analytics', 'kimmp',
@@ -41,8 +42,11 @@ export default function App() {
           >
             <Route index element={<Navigate to="/os/strategy" replace />} />
 
-            {/* Phase 1a — Strategy (nested routes handled inside module) */}
+            {/* Phase 1a — Strategy */}
             <Route path="strategy/*" element={<StrategyModule />} />
+
+            {/* Phase 1b — Projects & Agile */}
+            <Route path="projects/*" element={<ProjectsModule />} />
 
             {/* Remaining modules — placeholder until their phase */}
             {PLACEHOLDER_MODULES.map(mod => (
