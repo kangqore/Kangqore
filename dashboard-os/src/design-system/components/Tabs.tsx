@@ -36,7 +36,7 @@ function Tabs({ tabs, value, onChange, variant = 'underline', children, classNam
               variant === 'underline' && [
                 'px-4 py-2.5 text-slate-500 hover:text-slate-800',
                 'border-b-2 border-transparent -mb-px',
-                'data-[state=active]:border-purple-600 data-[state=active]:text-purple-700',
+                'data-[state=active]:border-blue-600 data-[state=active]:text-blue-700',
               ],
               variant === 'pills' && [
                 'px-4 py-1.5 rounded-lg text-slate-500 hover:text-slate-700',
@@ -50,7 +50,7 @@ function Tabs({ tabs, value, onChange, variant = 'underline', children, classNam
               <span className={cn(
                 'text-xs rounded-full px-1.5 py-0.5 font-medium',
                 value === tab.value
-                  ? 'bg-purple-100 text-purple-700'
+                  ? 'bg-blue-100 text-blue-700'
                   : 'bg-slate-200 text-slate-500'
               )}>
                 {tab.count}

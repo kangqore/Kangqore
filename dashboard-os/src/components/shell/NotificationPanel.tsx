@@ -59,7 +59,7 @@ export function NotificationPanel() {
               key={n.id}
               className={cn(
                 'flex gap-3 px-5 py-4 hover:bg-slate-50 transition-colors cursor-pointer',
-                !n.read && 'bg-purple-50/40'
+                !n.read && 'bg-blue-50/40'
               )}
             >
               <Avatar name={n.user} size="sm" />
@@ -72,7 +72,7 @@ export function NotificationPanel() {
                 <p className="text-[11px] text-slate-400 mt-1">{n.time}</p>
               </div>
               {!n.read && (
-                <div className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 flex-shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 flex-shrink-0" />
               )}
             </div>
           ))}

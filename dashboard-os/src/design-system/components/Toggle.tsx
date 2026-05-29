@@ -26,9 +26,9 @@ function Toggle({ checked, onChange, label, description, disabled, size = 'md', 
       disabled={disabled}
       className={cn(
         'relative inline-flex items-center rounded-full transition-colors duration-200 outline-none',
-        'focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2',
+        'focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
         'disabled:opacity-50 disabled:cursor-not-allowed',
-        'data-[state=checked]:bg-purple-600 data-[state=unchecked]:bg-slate-200',
+        'data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-slate-200',
         track
       )}
     >

@@ -2,7 +2,7 @@ import * as RadixProgress from '@radix-ui/react-progress'
 import { cn } from '../cn'
 
 const colorMap = {
-  brand:   'bg-purple-600',
+  brand:   'bg-[#2564ea]',
   success: 'bg-green-500',
   warning: 'bg-amber-500',
   danger:  'bg-red-500',

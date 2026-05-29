@@ -10,7 +10,7 @@ import type { ProgramStatus } from '../types'
 const STATUS_COLOR: Record<ProgramStatus, string> = {
   active:    '#22c55e',
   planned:   '#3b82f6',
-  completed: '#a855f7',
+  completed: '#3b82f6',
   'on-hold': '#94a3b8',
 }
 
@@ -73,7 +73,7 @@ export function PortfolioMap() {
               <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
               <Bar dataKey="active"    fill="#22c55e" radius={[4, 4, 0, 0]} />
               <Bar dataKey="planned"   fill="#3b82f6" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="completed" fill="#a855f7" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="completed" fill="#3b82f6" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </Card>

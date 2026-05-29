@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand */
-  --color-brand-50:  #f5f0ff;
-  --color-brand-100: #ede0ff;
-  --color-brand-200: #d9bfff;
-  --color-brand-300: #be93ff;
-  --color-brand-400: #a855f7;
-  --color-brand-500: #9333ea;
-  --color-brand-600: #7c22ce;
-  --color-brand-700: #6b21a8;
-  --color-brand-800: #581c87;
-  --color-brand-900: #3b0764;
+  /* Brand — Kangqore official: #2564ea → #4ab6d4 */
+  --color-brand-50:  #eef6ff;
+  --color-brand-100: #d9ecff;
+  --color-brand-200: #b3d9ff;
+  --color-brand-300: #7ec0f0;
+  --color-brand-400: #4ab6d4;
+  --color-brand-500: #2564ea;
+  --color-brand-600: #1a52cc;
+  --color-brand-700: #1440a8;
+  --color-brand-800: #0f2f80;
+  --color-brand-900: #0a1f58;
+  --color-brand-gradient: linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%);
 
   /* Surface */
   --color-surface-0:   #ffffff;

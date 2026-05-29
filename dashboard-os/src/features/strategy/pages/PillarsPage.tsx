@@ -53,8 +53,8 @@ export function PillarsPage() {
               onClick={() => setHealthFilter(f.value)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 healthFilter === f.value
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-white border border-slate-200 text-slate-500 hover:border-purple-300'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
               }`}
             >
               {f.label}

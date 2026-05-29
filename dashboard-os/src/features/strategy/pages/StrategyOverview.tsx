@@ -53,8 +53,8 @@ export function StrategyOverview() {
               onClick={() => setSelectedQuarter(q)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 selectedQuarter === q
-                  ? 'bg-purple-600 text-white shadow-sm'
-                  : 'bg-white border border-slate-200 text-slate-500 hover:border-purple-300'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
               }`}
             >
               {q}
@@ -69,7 +69,7 @@ export function StrategyOverview() {
           label="Strategic Pillars"
           value={pillars.length}
           icon={<Target className="w-5 h-5" />}
-          iconColor="bg-purple-100 text-purple-600"
+          iconColor="bg-blue-100 text-blue-600"
           change={0}
           changeLabel="all active"
         />

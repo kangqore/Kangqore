@@ -52,7 +52,7 @@ export function SprintBoard() {
         <select
           value={selectedProjectId}
           onChange={e => setSelectedProject(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100"
+          className="ml-auto h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         >
           {projects.filter(p => p.status !== 'planned').map(p => (
             <option key={p.id} value={p.id}>{p.name}</option>
@@ -98,7 +98,7 @@ export function SprintBoard() {
                 {[
                   { color: 'bg-green-500', label: 'Done',        val: donePts   },
                   { color: 'bg-amber-500', label: 'In Progress',  val: inProgPts },
-                  { color: 'bg-purple-600',label: 'Todo',         val: todoPts   },
+                  { color: 'bg-blue-600',label: 'Todo',         val: todoPts   },
                 ].map(s => (
                   <span key={s.label} className="flex items-center gap-1.5 text-slate-500">
                     <span className={`w-2 h-2 rounded-full ${s.color}`} />

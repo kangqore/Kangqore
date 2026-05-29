@@ -53,7 +53,7 @@ export function BurnRatePage() {
         {[
           { label: 'Avg Monthly Burn',  value: fmtK(avgBurn),       bg: 'bg-red-50   border-red-100',    text: 'text-red-700'    },
           { label: 'Current Balance',   value: fmtK(latestBalance), bg: 'bg-green-50 border-green-100',  text: 'text-green-700'  },
-          { label: 'Cash Runway',       value: `${runway} months`,   bg: 'bg-purple-50 border-purple-100',text: 'text-purple-700' },
+          { label: 'Cash Runway',       value: `${runway} months`,   bg: 'bg-blue-50 border-blue-100',text: 'text-blue-700' },
           { label: 'Months of Data',    value: `${months}`,          bg: 'bg-slate-50  border-slate-100', text: 'text-slate-700'  },
         ].map(c => (
           <div key={c.label} className={`${c.bg} border rounded-2xl p-4`}>
@@ -98,8 +98,8 @@ export function BurnRatePage() {
           <LineChart data={projected}>
             <defs>
               <linearGradient id="projGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%"  stopColor="#9333ea" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="#9333ea" stopOpacity={0}   />
+                <stop offset="5%"  stopColor="#2564ea" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="#2564ea" stopOpacity={0}   />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f3f7" />
@@ -107,8 +107,8 @@ export function BurnRatePage() {
             <YAxis tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} tickFormatter={fmtK} />
             <ReferenceLine y={0} stroke="#ef4444" strokeDasharray="4 2" label={{ value: 'Zero cash', position: 'insideTopRight', fontSize: 10, fill: '#ef4444' }} />
             <Tooltip formatter={(v) => [fmt(Number(v)), '']} contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
-            <Line type="monotone" dataKey="balance"   stroke="#9333ea" strokeWidth={2.5} dot={{ r: 3, fill: '#9333ea' }} connectNulls={false} name="Actual"    />
-            <Line type="monotone" dataKey="projected" stroke="#9333ea" strokeWidth={2}   dot={{ r: 3 }} strokeDasharray="6 3"                 name="Projected" />
+            <Line type="monotone" dataKey="balance"   stroke="#2564ea" strokeWidth={2.5} dot={{ r: 3, fill: '#2564ea' }} connectNulls={false} name="Actual"    />
+            <Line type="monotone" dataKey="projected" stroke="#2564ea" strokeWidth={2}   dot={{ r: 3 }} strokeDasharray="6 3"                 name="Projected" />
           </LineChart>
         </ResponsiveContainer>
         <p className="text-xs text-slate-400 mt-2 text-center">Projected at avg burn of {fmtK(avgBurn)}/month — assumes no new revenue</p>
@@ -123,7 +123,7 @@ export function BurnRatePage() {
             <XAxis type="number" tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} tickFormatter={fmtK} />
             <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 11, fill: '#4b5368' }} axisLine={false} tickLine={false} />
             <Tooltip formatter={(v) => [fmt(Number(v)), 'Spent']} contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
-            <Bar dataKey="burn" fill="#9333ea" radius={[0, 6, 6, 0]} />
+            <Bar dataKey="burn" fill="#2564ea" radius={[0, 6, 6, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </Card>

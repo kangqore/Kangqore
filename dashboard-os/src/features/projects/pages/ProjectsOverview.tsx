@@ -42,7 +42,7 @@ export function ProjectsOverview() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Active Projects"  value={active}     icon={<Briefcase    className="w-5 h-5" />} iconColor="bg-purple-100 text-purple-600" />
+        <StatCard label="Active Projects"  value={active}     icon={<Briefcase    className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
         <StatCard label="Completed"        value={completed}  icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"   />
         <StatCard label="At Risk / Behind" value={atRisk}     icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'} />
         <StatCard label="Open Issues"      value={openIssues} icon={<Clock        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"     />
@@ -57,7 +57,7 @@ export function ProjectsOverview() {
             <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
             <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 11, fill: '#4b5368' }} axisLine={false} tickLine={false} />
             <Tooltip formatter={(v) => [`${v}%`, 'Progress']} contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
-            <Bar dataKey="progress" radius={[0, 6, 6, 0]} fill="#9333ea" />
+            <Bar dataKey="progress" radius={[0, 6, 6, 0]} fill="#2564ea" />
           </BarChart>
         </ResponsiveContainer>
       </Card>

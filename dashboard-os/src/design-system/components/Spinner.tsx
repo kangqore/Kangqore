@@ -8,7 +8,7 @@ const sizeMap = {
 }
 
 const colorMap = {
-  brand:   'border-purple-200 border-t-purple-600',
+  brand:   'border-[#4ab6d4]/30 border-t-[#2564ea]',
   white:   'border-white/30 border-t-white',
   slate:   'border-slate-200 border-t-slate-500',
   success: 'border-green-200 border-t-green-600',

@@ -60,15 +60,15 @@ export const TEAM: TeamMember[] = [
 ]
 
 export const ALLOCATIONS: Allocation[] = [
-  { id: 'a1',  memberId: 'm1', memberName: 'Mahesh Kumar',  projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#7c22ce', hoursPerWeek: 8,  startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 20 },
+  { id: 'a1',  memberId: 'm1', memberName: 'Mahesh Kumar',  projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#2564ea', hoursPerWeek: 8,  startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 20 },
   { id: 'a2',  memberId: 'm1', memberName: 'Mahesh Kumar',  projectId: 'pj2', projectName: 'eQORE v2 Rebuild',         projectColor: '#2563eb', hoursPerWeek: 10, startDate: '2025-11-01', endDate: '2026-06-30', allocationPct: 25 },
-  { id: 'a3',  memberId: 'm1', memberName: 'Mahesh Kumar',  projectId: 'pj4', projectName: 'Kangqore OS Dashboard',    projectColor: '#7c22ce', hoursPerWeek: 16, startDate: '2026-03-01', endDate: '2026-10-31', allocationPct: 40 },
-  { id: 'a4',  memberId: 'm2', memberName: 'Anika Roy',     projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#7c22ce', hoursPerWeek: 16, startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 40 },
+  { id: 'a3',  memberId: 'm1', memberName: 'Mahesh Kumar',  projectId: 'pj4', projectName: 'Kangqore OS Dashboard',    projectColor: '#2564ea', hoursPerWeek: 16, startDate: '2026-03-01', endDate: '2026-10-31', allocationPct: 40 },
+  { id: 'a4',  memberId: 'm2', memberName: 'Anika Roy',     projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#2564ea', hoursPerWeek: 16, startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 40 },
   { id: 'a5',  memberId: 'm2', memberName: 'Anika Roy',     projectId: 'pj3', projectName: 'Nexus Partner Portal',     projectColor: '#059669', hoursPerWeek: 12, startDate: '2026-02-15', endDate: '2026-05-31', allocationPct: 30 },
-  { id: 'a6',  memberId: 'm3', memberName: 'Dev Patel',     projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#7c22ce', hoursPerWeek: 20, startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 50 },
+  { id: 'a6',  memberId: 'm3', memberName: 'Dev Patel',     projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#2564ea', hoursPerWeek: 20, startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 50 },
   { id: 'a7',  memberId: 'm3', memberName: 'Dev Patel',     projectId: 'pj2', projectName: 'eQORE v2 Rebuild',         projectColor: '#2563eb', hoursPerWeek: 12, startDate: '2025-11-01', endDate: '2026-06-30', allocationPct: 30 },
-  { id: 'a8',  memberId: 'm3', memberName: 'Dev Patel',     projectId: 'pj4', projectName: 'Kangqore OS Dashboard',    projectColor: '#7c22ce', hoursPerWeek: 6,  startDate: '2026-03-01', endDate: '2026-10-31', allocationPct: 15 },
-  { id: 'a9',  memberId: 'm4', memberName: 'Priya Sharma',  projectId: 'pj4', projectName: 'Kangqore OS Dashboard',    projectColor: '#7c22ce', hoursPerWeek: 16, startDate: '2026-03-01', endDate: '2026-10-31', allocationPct: 40 },
+  { id: 'a8',  memberId: 'm3', memberName: 'Dev Patel',     projectId: 'pj4', projectName: 'Kangqore OS Dashboard',    projectColor: '#2564ea', hoursPerWeek: 6,  startDate: '2026-03-01', endDate: '2026-10-31', allocationPct: 15 },
+  { id: 'a9',  memberId: 'm4', memberName: 'Priya Sharma',  projectId: 'pj4', projectName: 'Kangqore OS Dashboard',    projectColor: '#2564ea', hoursPerWeek: 16, startDate: '2026-03-01', endDate: '2026-10-31', allocationPct: 40 },
   { id: 'a10', memberId: 'm4', memberName: 'Priya Sharma',  projectId: 'pj5', projectName: 'FinTrack Analytics Suite', projectColor: '#d97706', hoursPerWeek: 16, startDate: '2026-03-15', endDate: '2026-08-15', allocationPct: 40 },
   { id: 'a11', memberId: 'm5', memberName: 'Ravi Nair',     projectId: 'pj2', projectName: 'eQORE v2 Rebuild',         projectColor: '#2563eb', hoursPerWeek: 24, startDate: '2025-11-01', endDate: '2026-06-30', allocationPct: 60 },
   { id: 'a12', memberId: 'm5', memberName: 'Ravi Nair',     projectId: 'pj3', projectName: 'Nexus Partner Portal',     projectColor: '#059669', hoursPerWeek: 8,  startDate: '2026-02-15', endDate: '2026-05-31', allocationPct: 20 },

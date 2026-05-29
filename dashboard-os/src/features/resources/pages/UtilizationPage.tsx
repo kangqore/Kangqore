@@ -8,7 +8,7 @@ import { Avatar } from '@design-system/components/Avatar'
 import { Progress } from '@design-system/components/Progress'
 import { useResourcesStore } from '../store'
 
-const MEMBER_COLORS = ['#9333ea','#2563eb','#059669','#d97706','#dc2626','#0891b2','#7c3aed','#0f766e']
+const MEMBER_COLORS = ['#2564ea','#2563eb','#059669','#d97706','#dc2626','#0891b2','#2564ea','#0f766e']
 
 export function UtilizationPage() {
   const { team, utilHistory } = useResourcesStore()
@@ -105,7 +105,7 @@ export function UtilizationPage() {
               <YAxis type="category" dataKey="name" width={64} tick={{ fontSize: 11, fill: '#4b5368' }} axisLine={false} tickLine={false} />
               <ReferenceLine x={95} stroke="#ef4444" strokeDasharray="4 2" />
               <Tooltip formatter={(v) => [`${v}%`, 'Utilization']} contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
-              <Bar dataKey="util" radius={[0, 6, 6, 0]} fill="#9333ea" name="Utilized" />
+              <Bar dataKey="util" radius={[0, 6, 6, 0]} fill="#2564ea" name="Utilized" />
             </BarChart>
           </ResponsiveContainer>
         </Card>
@@ -119,7 +119,7 @@ export function UtilizationPage() {
               <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
               <ReferenceLine y={95} stroke="#ef4444" strokeDasharray="4 2" />
               <Tooltip formatter={(v) => [`${v}%`, 'Avg Util']} contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
-              <Bar dataKey="avg" radius={[6, 6, 0, 0]} fill="#7c22ce" />
+              <Bar dataKey="avg" radius={[6, 6, 0, 0]} fill="#1d54d8" />
             </BarChart>
           </ResponsiveContainer>
         </Card>

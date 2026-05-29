@@ -12,8 +12,8 @@ export function PlaceholderPage() {
   return (
     <div className="flex items-center justify-center min-h-[60vh]">
       <Card className="max-w-sm w-full text-center p-10">
-        <div className="w-16 h-16 rounded-2xl bg-purple-50 flex items-center justify-center mx-auto mb-5">
-          <Icon className="w-8 h-8 text-purple-500" />
+        <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-5">
+          <Icon className="w-8 h-8 text-blue-500" />
         </div>
         <Badge variant="warning" size="sm" dot className="mb-3">Coming in Phase 1</Badge>
         <h2 className="text-lg font-semibold text-slate-900">{module?.label ?? 'Module'}</h2>

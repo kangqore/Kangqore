@@ -47,7 +47,7 @@ export function LoginPage() {
       {/* Left — brand panel */}
       <div className="hidden lg:flex lg:w-[45%] bg-[#0f1117] flex-col justify-between p-12">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-violet-700 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
             <span className="text-white font-bold">K</span>
           </div>
           <div>
@@ -59,7 +59,7 @@ export function LoginPage() {
         <div>
           <h1 className="text-4xl font-bold text-white leading-tight">
             Strategy meets<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]">
               execution.
             </span>
           </h1>
@@ -70,8 +70,8 @@ export function LoginPage() {
           <div className="mt-10 space-y-4">
             {FEATURES.map(f => (
               <div key={f.label} className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-purple-950/60 border border-purple-900/40 flex items-center justify-center flex-shrink-0">
-                  <f.icon className="w-4 h-4 text-purple-400" />
+                <div className="w-10 h-10 rounded-xl bg-blue-950/60 border border-blue-900/40 flex items-center justify-center flex-shrink-0">
+                  <f.icon className="w-4 h-4 text-blue-400" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-white">{f.label}</p>
@@ -90,7 +90,7 @@ export function LoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="flex items-center gap-2.5 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-violet-700 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
               <span className="text-white font-bold text-sm">K</span>
             </div>
             <span className="font-semibold text-slate-900">Kangqore OS</span>
@@ -117,7 +117,7 @@ export function LoginPage() {
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-slate-700">Password</label>
-                <Link to="/forgot-password" className="text-xs text-purple-600 hover:text-purple-700 font-medium">
+                <Link to="/forgot-password" className="text-xs text-blue-600 hover:text-blue-700 font-medium">
                   Forgot password?
                 </Link>
               </div>
@@ -127,7 +127,7 @@ export function LoginPage() {
                   placeholder="••••••••"
                   className={cn(
                     'w-full h-9 rounded-xl border bg-white text-sm text-slate-900 placeholder:text-slate-400',
-                    'border-slate-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100',
+                    'border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100',
                     'outline-none transition-all duration-150 pl-3 pr-10',
                     errors.password && 'border-red-400 focus:border-red-400 focus:ring-red-100'
                   )}
@@ -160,7 +160,7 @@ export function LoginPage() {
 
           <button
             onClick={() => { loginAsDemo(); navigate('/os/strategy', { replace: true }) }}
-            className="w-full flex items-center justify-center gap-2 h-9 rounded-xl border-2 border-dashed border-purple-200 text-sm font-semibold text-purple-600 hover:bg-purple-50 hover:border-purple-400 transition-all duration-150"
+            className="w-full flex items-center justify-center gap-2 h-9 rounded-xl border-2 border-dashed border-blue-200 text-sm font-semibold text-blue-600 hover:bg-blue-50 hover:border-blue-400 transition-all duration-150"
           >
             <Zap className="w-4 h-4" />
             Continue as Demo (no login required)
@@ -168,7 +168,7 @@ export function LoginPage() {
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Don't have an account?{' '}
-            <Link to="/signup" className="text-purple-600 hover:text-purple-700 font-medium">
+            <Link to="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
               Create one
             </Link>
           </p>

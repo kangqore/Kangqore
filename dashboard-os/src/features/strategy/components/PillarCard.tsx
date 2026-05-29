@@ -55,7 +55,7 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
           <Avatar name={pillar.owner} size="xs" />
           <span>{pillar.owner}</span>
         </div>
-        <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-purple-500 group-hover:translate-x-0.5 transition-all" />
+        <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all" />
       </div>
     </Card>
   )

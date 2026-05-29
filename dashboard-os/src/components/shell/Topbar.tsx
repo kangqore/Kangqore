@@ -15,7 +15,7 @@ const MOCK_USER = { name: 'Mahesh Kumar', email: 'admin@kangqore.com', role: 'Ad
 const UNREAD_COUNT = 3
 
 export function Topbar() {
-  const { sidebarCollapsed, openNotificationPanel } = useUIStore()
+  const { openNotificationPanel } = useUIStore()
   const location = useLocation()
 
   const currentModule = allNavItems.find(item =>
@@ -23,13 +23,7 @@ export function Topbar() {
   )
 
   return (
-    <header
-      className={cn(
-        'fixed top-0 right-0 h-16 bg-white border-b border-slate-100 z-30',
-        'flex items-center gap-4 px-5 transition-all duration-300 ease-in-out',
-        sidebarCollapsed ? 'left-16' : 'left-[260px]'
-      )}
-    >
+    <header className="flex-shrink-0 h-16 bg-white border-b border-slate-100 flex items-center gap-4 px-5 z-10">
       {/* Page title */}
       <div className="flex-1 min-w-0">
         <h1 className="text-sm font-semibold text-slate-900 truncate">
@@ -48,7 +42,7 @@ export function Topbar() {
           placeholder="Search anything…"
           className={cn(
             'h-8 w-56 rounded-xl border border-slate-200 bg-slate-50 pl-8 pr-3 text-sm text-slate-700',
-            'placeholder:text-slate-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100',
+            'placeholder:text-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100',
             'transition-all duration-150'
           )}
         />
@@ -63,7 +57,7 @@ export function Topbar() {
         >
           <Bell className="w-4 h-4" />
           {UNREAD_COUNT > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-purple-600 text-white text-[9px] font-bold flex items-center justify-center">
+            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">
               {UNREAD_COUNT}
             </span>
           )}

@@ -56,8 +56,8 @@ const ROLE_CARDS: RoleCard[] = [
     label: 'Job Seeker',
     description: 'Apply for positions, track interviews, and manage your portfolio',
     icon: GraduationCap,
-    color: 'border-purple-500 bg-purple-50',
-    iconBg: 'bg-purple-100 text-purple-600',
+    color: 'border-blue-500 bg-blue-50',
+    iconBg: 'bg-blue-100 text-blue-600',
   },
 ]
 
@@ -96,7 +96,7 @@ export function SignupPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2.5 mb-5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-violet-700 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
               <span className="text-white font-bold">K</span>
             </div>
             <span className="font-semibold text-slate-900 text-lg">Kangqore OS</span>
@@ -124,7 +124,7 @@ export function SignupPage() {
                 >
                   {active && (
                     <span className="absolute top-3 right-3 w-5 h-5 rounded-full bg-white flex items-center justify-center shadow-sm">
-                      <Check className="w-3 h-3 text-purple-600" />
+                      <Check className="w-3 h-3 text-blue-600" />
                     </span>
                   )}
                   <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center', active ? card.iconBg : 'bg-slate-100 text-slate-400')}>
@@ -173,7 +173,7 @@ export function SignupPage() {
                   placeholder="At least 8 characters"
                   className={cn(
                     'w-full h-9 rounded-xl border bg-white text-sm text-slate-900 placeholder:text-slate-400',
-                    'border-slate-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100',
+                    'border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100',
                     'outline-none transition-all duration-150 pl-3 pr-10',
                     errors.password && 'border-red-400 focus:border-red-400 focus:ring-red-100'
                   )}
@@ -197,7 +197,7 @@ export function SignupPage() {
 
           <p className="mt-5 text-center text-sm text-slate-500">
             Already have an account?{' '}
-            <Link to="/login" className="text-purple-600 hover:text-purple-700 font-medium">
+            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">
               Sign in
             </Link>
           </p>
@@ -205,8 +205,8 @@ export function SignupPage() {
 
         <p className="text-center text-xs text-slate-400 mt-5">
           By creating an account you agree to our{' '}
-          <span className="text-purple-600 cursor-pointer hover:underline">Terms</span> and{' '}
-          <span className="text-purple-600 cursor-pointer hover:underline">Privacy Policy</span>
+          <span className="text-blue-600 cursor-pointer hover:underline">Terms</span> and{' '}
+          <span className="text-blue-600 cursor-pointer hover:underline">Privacy Policy</span>
         </p>
       </div>
     </div>

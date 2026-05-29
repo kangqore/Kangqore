@@ -10,7 +10,7 @@ const fmt = (n: number) => `£${(n / 1000).toFixed(0)}k`
 const CATEGORIES: (BudgetCategory | 'all')[] = ['all', 'Personnel', 'Software', 'Infrastructure', 'Marketing', 'Travel', 'Legal', 'Other']
 
 const CAT_COLOR: Record<BudgetCategory, string> = {
-  Personnel:      '#9333ea',
+  Personnel:      '#2564ea',
   Software:       '#2563eb',
   Infrastructure: '#059669',
   Marketing:      '#d97706',
@@ -50,7 +50,7 @@ export function BudgetTracker() {
       {/* Summary strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Total Budget',  value: fmt(totalAllocated),  color: 'bg-purple-100 text-purple-700' },
+          { label: 'Total Budget',  value: fmt(totalAllocated),  color: 'bg-blue-100 text-blue-700' },
           { label: 'Spent',         value: fmt(totalSpent),      color: 'bg-red-100 text-red-700'       },
           { label: 'Committed',     value: fmt(totalCommitted),  color: 'bg-amber-100 text-amber-700'   },
           { label: 'Remaining',     value: fmt(totalRemaining),  color: 'bg-green-100 text-green-700'   },
@@ -112,7 +112,7 @@ export function BudgetTracker() {
             key={c}
             onClick={() => setCat(c)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              catFilter === c ? 'bg-purple-600 text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-purple-300'
+              catFilter === c ? 'bg-blue-600 text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
             }`}
           >
             {c === 'all' ? 'All Categories' : c}

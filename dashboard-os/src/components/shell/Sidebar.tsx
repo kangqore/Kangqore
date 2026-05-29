@@ -11,7 +11,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed top-0 left-0 h-screen z-40 flex flex-col bg-[#0f1117] border-r border-[#1e2130] transition-all duration-300 ease-in-out',
+        'flex-shrink-0 flex flex-col bg-[#0f1117] border-r border-[#1e2130] transition-all duration-300 ease-in-out h-full',
         sidebarCollapsed ? 'w-16' : 'w-[260px]'
       )}
     >
@@ -20,7 +20,7 @@ export function Sidebar() {
         'flex items-center gap-3 border-b border-[#1e2130] flex-shrink-0',
         sidebarCollapsed ? 'h-16 justify-center px-0' : 'h-16 px-5'
       )}>
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-violet-700 flex items-center justify-center flex-shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0">
           <span className="text-white font-bold text-sm">K</span>
         </div>
         {!sidebarCollapsed && (
@@ -51,7 +51,7 @@ export function Sidebar() {
                       'flex items-center gap-3 rounded-xl transition-all duration-150 group relative',
                       sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-9 px-3',
                       isActive
-                        ? 'bg-purple-950/60 text-white before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-5 before:w-0.5 before:rounded-r before:bg-purple-500'
+                        ? 'bg-blue-950/60 text-white before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-5 before:w-0.5 before:rounded-r before:bg-[#2564ea]'
                         : 'text-slate-400 hover:bg-[#1a1d26] hover:text-slate-200'
                     )}
                   >

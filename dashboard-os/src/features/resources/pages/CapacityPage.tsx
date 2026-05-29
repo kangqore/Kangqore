@@ -9,7 +9,7 @@ const WEEKS = ['W18', 'W19', 'W20', 'W21', 'W22', 'W23', 'W24']
 const UTIL_BG = (u: number) =>
   u >= 95 ? 'bg-red-500'    :
   u >= 80 ? 'bg-amber-500'  :
-  u >= 60 ? 'bg-purple-500' :
+  u >= 60 ? 'bg-blue-500' :
   'bg-green-500'
 
 export function CapacityPage() {
@@ -46,7 +46,7 @@ export function CapacityPage() {
         <CardHeader className="px-5 pt-5 pb-3">
           <CardTitle>Weekly Allocation by Person</CardTitle>
           <div className="flex items-center gap-3 text-xs text-slate-400">
-            {[{ color: 'bg-green-500', label: '<60%' }, { color: 'bg-purple-500', label: '60–80%' }, { color: 'bg-amber-500', label: '80–95%' }, { color: 'bg-red-500', label: '≥95%' }].map(l => (
+            {[{ color: 'bg-green-500', label: '<60%' }, { color: 'bg-blue-500', label: '60–80%' }, { color: 'bg-amber-500', label: '80–95%' }, { color: 'bg-red-500', label: '≥95%' }].map(l => (
               <span key={l.label} className="flex items-center gap-1.5">
                 <span className={`w-2.5 h-2.5 rounded-sm ${l.color}`} />
                 {l.label}

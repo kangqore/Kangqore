@@ -17,7 +17,7 @@ const TYPE_COLOR: Record<IssueType, string> = {
   bug:     'text-red-500',
   feature: 'text-blue-500',
   task:    'text-green-500',
-  epic:    'text-purple-500',
+  epic:    'text-blue-500',
 }
 const PRIORITY_COLOR: Record<Priority, string> = {
   critical: 'text-red-500',
@@ -86,21 +86,21 @@ export function IssueTracker() {
         <select
           value={priorityFilter}
           onChange={e => setPriority(e.target.value as Priority | 'all')}
-          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100"
+          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         >
           {PRIORITIES.map(p => <option key={p} value={p}>{p === 'all' ? 'All Priorities' : p}</option>)}
         </select>
         <select
           value={typeFilter}
           onChange={e => setType(e.target.value as IssueType | 'all')}
-          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100"
+          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         >
           {TYPES.map(t => <option key={t} value={t}>{t === 'all' ? 'All Types' : t}</option>)}
         </select>
         <select
           value={projectFilter}
           onChange={e => setProject(e.target.value)}
-          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100"
+          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         >
           <option value="all">All Projects</option>
           {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -131,7 +131,7 @@ export function IssueTracker() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <TypeIcon className={cn('w-4 h-4 flex-shrink-0', TYPE_COLOR[issue.type])} />
-                      <span className="font-medium text-slate-800 group-hover:text-purple-700 transition-colors">{issue.title}</span>
+                      <span className="font-medium text-slate-800 group-hover:text-blue-700 transition-colors">{issue.title}</span>
                       {issue.labels.slice(0, 2).map(l => (
                         <Badge key={l} variant="neutral" size="sm">{l}</Badge>
                       ))}

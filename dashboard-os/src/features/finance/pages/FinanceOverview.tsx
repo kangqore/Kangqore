@@ -43,29 +43,29 @@ export function FinanceOverview() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Cash Balance"    value={fmt(balance)}   prefix="" icon={<Wallet        className="w-5 h-5" />} iconColor="bg-purple-100 text-purple-600" change={8}  changeLabel="vs last month" />
+        <StatCard label="Cash Balance"    value={fmt(balance)}   prefix="" icon={<Wallet        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" change={8}  changeLabel="vs last month" />
         <StatCard label="Revenue Invoiced" value={fmt(invoiced)}  prefix="" icon={<DollarSign    className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"    change={12} changeLabel="YTD"          />
         <StatCard label="Collected"        value={fmt(collected)} prefix="" icon={<TrendingUp    className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"  />
         <StatCard label="Overdue"          value={fmt(overdue)}   prefix="" icon={<AlertCircle   className="w-5 h-5" />} iconColor={overdue > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-400'} />
       </div>
 
       {/* Runway chip */}
-      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-violet-50 border border-purple-100 rounded-2xl">
+      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-blue-50 border border-blue-100 rounded-2xl">
         <div className="flex flex-col">
-          <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">Cash Runway</span>
+          <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">Cash Runway</span>
           <span className="text-2xl font-bold text-slate-900">{runway} months</span>
         </div>
-        <div className="w-px self-stretch bg-purple-200 mx-2" />
+        <div className="w-px self-stretch bg-blue-200 mx-2" />
         <div className="flex flex-col">
           <span className="text-xs text-slate-500">Monthly burn rate</span>
           <span className="text-lg font-bold text-slate-700">{fmt(monthlyBurn)}</span>
         </div>
-        <div className="w-px self-stretch bg-purple-200 mx-2" />
+        <div className="w-px self-stretch bg-blue-200 mx-2" />
         <div className="flex flex-col">
           <span className="text-xs text-slate-500">Total budget</span>
           <span className="text-lg font-bold text-slate-700">{fmt(budget)}</span>
         </div>
-        <div className="w-px self-stretch bg-purple-200 mx-2" />
+        <div className="w-px self-stretch bg-blue-200 mx-2" />
         <div className="flex-1">
           <Progress
             value={Math.round((spent / budget) * 100)}
@@ -106,15 +106,15 @@ export function FinanceOverview() {
           <AreaChart data={cashFlow}>
             <defs>
               <linearGradient id="balGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%"  stopColor="#9333ea" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#9333ea" stopOpacity={0}   />
+                <stop offset="5%"  stopColor="#2564ea" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#2564ea" stopOpacity={0}   />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f3f7" />
             <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} tickFormatter={v => `£${v / 1000}k`} />
             <Tooltip formatter={(v) => [`£${Number(v).toLocaleString()}`, 'Balance']} contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
-            <Area type="monotone" dataKey="runningBalance" stroke="#9333ea" fill="url(#balGrad)" strokeWidth={2} dot={false} />
+            <Area type="monotone" dataKey="runningBalance" stroke="#2564ea" fill="url(#balGrad)" strokeWidth={2} dot={false} />
           </AreaChart>
         </ResponsiveContainer>
       </Card>
@@ -150,7 +150,7 @@ export function FinanceOverview() {
                 <div className="w-32 flex-shrink-0">
                   <div className="relative h-2 bg-slate-100 rounded-full overflow-hidden">
                     <div className="absolute left-0 top-0 h-full rounded-full bg-green-400" style={{ width: `${collectedPct}%` }} />
-                    <div className="absolute left-0 top-0 h-full rounded-full bg-purple-500 opacity-40" style={{ width: `${spentPct}%` }} />
+                    <div className="absolute left-0 top-0 h-full rounded-full bg-blue-500 opacity-40" style={{ width: `${spentPct}%` }} />
                   </div>
                   <p className="text-[10px] text-slate-400 mt-1 text-right">{spentPct}% spent</p>
                 </div>

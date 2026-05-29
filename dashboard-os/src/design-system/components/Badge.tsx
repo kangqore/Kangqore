@@ -11,7 +11,7 @@ const badge = cva(
         danger:  'bg-red-50    text-red-700    border-red-200',
         info:    'bg-blue-50   text-blue-700   border-blue-200',
         neutral: 'bg-slate-50  text-slate-600  border-slate-200',
-        brand:   'bg-purple-50 text-purple-700 border-purple-200',
+        brand:   'bg-blue-50 text-blue-700 border-blue-200',
         dark:    'bg-slate-800 text-white       border-transparent',
       },
       size: {
@@ -33,7 +33,7 @@ const dotColors: Record<string, string> = {
   danger:  'bg-red-500',
   info:    'bg-blue-500',
   neutral: 'bg-slate-400',
-  brand:   'bg-purple-500',
+  brand:   'bg-blue-500',
   dark:    'bg-slate-300',
 }
 

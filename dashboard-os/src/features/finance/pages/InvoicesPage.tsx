@@ -75,7 +75,7 @@ export function InvoicesPage() {
               key={s}
               onClick={() => setStatus(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                statusFilter === s ? 'bg-purple-600 text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-purple-300'
+                statusFilter === s ? 'bg-blue-600 text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
               }`}
             >
               {s}

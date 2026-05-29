@@ -25,7 +25,7 @@ export function FinanceModule() {
             className={({ isActive }) => cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
-                ? 'border-purple-600 text-purple-700'
+                ? 'border-blue-600 text-blue-700'
                 : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
             )}
           >

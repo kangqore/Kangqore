@@ -104,10 +104,10 @@ export const CASH_FLOW: CashFlowPoint[] = [
 ]
 
 export const PROJECT_FINANCIALS: ProjectFinancial[] = [
-  { projectId: 'pj1', projectName: 'Alpha CRM Platform',       projectColor: '#7c22ce', client: 'TechNova Inc.',    budget: 180000, invoiced: 124500, collected: 80500, spent: 98000,  margin: 46 },
+  { projectId: 'pj1', projectName: 'Alpha CRM Platform',       projectColor: '#2564ea', client: 'TechNova Inc.',    budget: 180000, invoiced: 124500, collected: 80500, spent: 98000,  margin: 46 },
   { projectId: 'pj2', projectName: 'eQORE v2 Rebuild',          projectColor: '#2563eb', client: 'Internal',        budget: 310000, invoiced: 15000,  collected: 0,     spent: 245000, margin: 21 },
   { projectId: 'pj3', projectName: 'Nexus Partner Portal',      projectColor: '#059669', client: 'Nexus Partners',  budget: 90000,  invoiced: 40500,  collected: 22000, spent: 52000,  margin: 42 },
-  { projectId: 'pj4', projectName: 'Kangqore OS Dashboard',     projectColor: '#7c22ce', client: 'Internal',        budget: 95000,  invoiced: 0,      collected: 0,     spent: 28000,  margin: 0  },
+  { projectId: 'pj4', projectName: 'Kangqore OS Dashboard',     projectColor: '#2564ea', client: 'Internal',        budget: 95000,  invoiced: 0,      collected: 0,     spent: 28000,  margin: 0  },
   { projectId: 'pj5', projectName: 'FinTrack Analytics Suite',  projectColor: '#d97706', client: 'Meridian Capital', budget: 140000, invoiced: 28000,  collected: 0,     spent: 45000,  margin: 38 },
   { projectId: 'pj6', projectName: 'GlobeMed Patient Portal',   projectColor: '#dc2626', client: 'GlobeMed Group',  budget: 220000, invoiced: 12000,  collected: 0,     spent: 12000,  margin: 55 },
 ]

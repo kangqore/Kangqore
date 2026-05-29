@@ -5,10 +5,10 @@ import { Tooltip } from '@design-system/components/Tooltip'
 import { useResourcesStore } from '../store'
 
 const PROJECTS = [
-  { id: 'pj1', name: 'Alpha CRM',    color: '#7c22ce', short: 'CRM'    },
+  { id: 'pj1', name: 'Alpha CRM',    color: '#1d54d8', short: 'CRM'    },
   { id: 'pj2', name: 'eQORE v2',     color: '#2563eb', short: 'eQORE'  },
   { id: 'pj3', name: 'Nexus Portal', color: '#059669', short: 'Nexus'  },
-  { id: 'pj4', name: 'OS Dashboard', color: '#7c22ce', short: 'OS'     },
+  { id: 'pj4', name: 'OS Dashboard', color: '#1d54d8', short: 'OS'     },
   { id: 'pj5', name: 'FinTrack',     color: '#d97706', short: 'Fin'    },
   { id: 'pj6', name: 'GlobeMed',     color: '#dc2626', short: 'Globe'  },
 ]

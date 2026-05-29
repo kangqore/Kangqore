@@ -8,12 +8,12 @@ const button = cva(
   {
     variants: {
       variant: {
-        primary:   'bg-purple-600 text-white hover:bg-purple-700 active:bg-purple-800 focus-visible:ring-purple-500 shadow-sm',
+        primary:   'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white hover:opacity-90 active:opacity-95 focus-visible:ring-[#2564ea] shadow-sm',
         secondary: 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 active:bg-slate-100 focus-visible:ring-slate-400 shadow-sm',
         ghost:     'text-slate-600 hover:bg-slate-100 active:bg-slate-200 focus-visible:ring-slate-400',
         danger:    'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500 shadow-sm',
         success:   'bg-green-600 text-white hover:bg-green-700 active:bg-green-800 focus-visible:ring-green-500 shadow-sm',
-        brand:     'bg-gradient-to-r from-purple-600 to-violet-600 text-white hover:from-purple-700 hover:to-violet-700 focus-visible:ring-purple-500 shadow-sm',
+        brand:     'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white hover:opacity-90 focus-visible:ring-[#2564ea] shadow-sm',
       },
       size: {
         sm:   'h-8 px-3 text-xs rounded-lg',

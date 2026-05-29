@@ -145,7 +145,7 @@ export function GanttPage() {
 
         {/* Legend */}
         <div className="px-4 py-3 border-t border-slate-100 flex items-center gap-6 text-xs text-slate-500">
-          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-purple-600" />Active</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-600" />Active</span>
           <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-green-500" />Completed</span>
           <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-500" />Planned</span>
           <span className="flex items-center gap-1.5"><span className="w-px h-3 bg-red-400" />Today</span>

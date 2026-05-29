@@ -15,7 +15,7 @@ interface StatCardProps {
   className?: string
 }
 
-function StatCard({ label, value, change, changeLabel, icon, iconColor = 'bg-purple-100 text-purple-600', prefix, suffix, loading, className }: StatCardProps) {
+function StatCard({ label, value, change, changeLabel, icon, iconColor = 'bg-blue-100 text-blue-600', prefix, suffix, loading, className }: StatCardProps) {
   const isPositive = change !== undefined && change > 0
   const isNegative = change !== undefined && change < 0
   const isNeutral  = change !== undefined && change === 0

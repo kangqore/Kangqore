@@ -11,7 +11,7 @@ import { useResourcesStore } from '../store'
 import type { Department, MemberStatus } from '../types'
 
 const DEPT_COLORS: Record<Department, string> = {
-  Engineering: 'bg-purple-100 text-purple-700',
+  Engineering: 'bg-blue-100 text-blue-700',
   Design:      'bg-pink-100   text-pink-700',
   Product:     'bg-blue-100   text-blue-700',
   Sales:       'bg-green-100  text-green-700',
@@ -54,7 +54,7 @@ export function TeamOverview() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Team Size"          value={team.length}    icon={<Users         className="w-5 h-5" />} iconColor="bg-purple-100 text-purple-600" />
+        <StatCard label="Team Size"          value={team.length}    icon={<Users         className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
         <StatCard label="Avg Utilization"    value={`${avgUtil}%`}  icon={<AlertTriangle className="w-5 h-5" />} iconColor={avgUtil > 85 ? 'bg-amber-100 text-amber-600' : 'bg-green-100 text-green-600'} />
         <StatCard label="Overloaded (≥95%)"  value={overloaded}     icon={<AlertTriangle className="w-5 h-5" />} iconColor={overloaded > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-400'} />
         <StatCard label="Weekly Capacity"    value={`£${(totalBillable / 1000).toFixed(0)}k`} icon={<Users className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" changeLabel="billable value/wk" />
@@ -65,7 +65,7 @@ export function TeamOverview() {
         <Input placeholder="Search team…" prefix={<Search className="w-3.5 h-3.5" />} className="w-52" value={search} onChange={e => setSearch(e.target.value)} />
         <div className="flex items-center gap-2 flex-wrap">
           {DEPTS.map(d => (
-            <button key={d} onClick={() => setDept(d)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all capitalize ${dept === d ? 'bg-purple-600 text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-purple-300'}`}>
+            <button key={d} onClick={() => setDept(d)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all capitalize ${dept === d ? 'bg-blue-600 text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'}`}>
               {d}
             </button>
           ))}
