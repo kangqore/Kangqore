@@ -348,6 +348,19 @@ const HUDText = ({ text, delay = 0, isCyan = false }) => {
   );
 };
 
+const trustLogos = [
+  { name: "TATA Steel", src: "/assets/logos/tata-steel.png", scale: "h-10 sm:h-12" },
+  { name: "Axis Bank", src: "/assets/logos/axis-bank.svg", scale: "h-8 sm:h-10" },
+  { name: "Bank Of Baroda", src: "/assets/logos/bank-of-baroda.svg", scale: "h-10 sm:h-12" },
+  { name: "Bank of India", src: "/assets/logos/bank-of-india.svg", scale: "h-10 sm:h-12" },
+  { name: "SBI", src: "/assets/logos/sbi.svg", scale: "h-10 sm:h-12" },
+  { name: "Indian Railways", src: "/assets/logos/indian-railways-grey.png", scale: "h-12 sm:h-16", preGreyed: true },
+  { name: "RSB Industries", src: "/assets/logos/rsb-industries.png", scale: "h-8 sm:h-10" },
+  { name: "Government Of Jharkhand", src: "/assets/logos/jharkhand.svg", scale: "h-12 sm:h-16" },
+  { name: "Geeks IT Services", src: "/assets/logos/geeks-it-grey.png", scale: "h-10 sm:h-12", preGreyed: true },
+  { name: "NIT Jamshedpur", src: "/assets/logos/nit-jamshedpur.png", scale: "h-12 sm:h-14" },
+];
+
 const HeroCarousel = () => {
   const { t } = useTranslation();
   const [activeSlide, setActiveSlide] = useState(0);
@@ -1050,64 +1063,7 @@ const TrustIntelligenceLayer = () => {
   );
 };
 
-// ============================================================================
-// TRUST LOGO STRIP (Social Proof)
-// ============================================================================
-const trustLogos = [
-  { name: "TATA Steel", src: "/assets/logos/tata-steel.png", scale: "h-10 sm:h-12" },
-  { name: "Axis Bank", src: "/assets/logos/axis-bank.svg", scale: "h-8 sm:h-10" },
-  { name: "Bank Of Baroda", src: "/assets/logos/bank-of-baroda.svg", scale: "h-10 sm:h-12" },
-  { name: "Bank of India", src: "/assets/logos/bank-of-india.svg", scale: "h-10 sm:h-12" },
-  { name: "SBI", src: "/assets/logos/sbi.svg", scale: "h-10 sm:h-12" },
-  { name: "Indian Railways", src: "/assets/logos/indian-railways-grey.png", scale: "h-12 sm:h-16", preGreyed: true },
-  { name: "RSB Industries", src: "/assets/logos/rsb-industries.png", scale: "h-8 sm:h-10" },
-  { name: "Government Of Jharkhand", src: "/assets/logos/jharkhand.svg", scale: "h-12 sm:h-16" },
-  { name: "Geeks IT Services", src: "/assets/logos/geeks-it-grey.png", scale: "h-10 sm:h-12", preGreyed: true },
-  { name: "NIT Jamshedpur", src: "/assets/logos/nit-jamshedpur.png", scale: "h-12 sm:h-14" },
-];
 
-const TrustLogoStrip = () => {
-  return (
-    <section className="relative w-full bg-white dark:bg-black py-12 sm:py-16 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-10">
-        <p className="text-sm sm:text-base font-bold text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] text-center">
-          Trusted by <span className="text-gray-900 dark:text-white font-extrabold">150+</span> leading Indian enterprises and <span className="text-gray-900 dark:text-white font-extrabold">50+</span> Fortune <span className="text-gray-900 dark:text-white font-extrabold">500</span> organizations worldwide.
-        </p>
-        <p className="text-[7px] sm:text-[8px] mt-2 font-medium text-gray-400 dark:text-gray-500 uppercase tracking-[0.1em] text-center">
-          Our speed in learning and executing is unmatched, earning the trust of hundreds of founders.
-        </p>
-      </div>
-      {/* Marquee Container */}
-      <div className="relative w-full overflow-hidden">
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white dark:from-black to-transparent z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white dark:from-black to-transparent z-10" />
-        {/* Scrolling track */}
-        <div className="flex animate-marquee-horizontal items-start pt-6 pb-8 w-max">
-          {[...trustLogos, ...trustLogos].map((logo, i) => {
-            return (
-              <div
-                key={`${logo.name}-${i}`}
-                className="flex flex-col items-center group px-12 shrink-0 transition-all duration-300"
-              >
-                <div className={`flex items-center justify-center opacity-40 group-hover:opacity-100 transition-all duration-300 filter grayscale ${logo.preGreyed ? '' : 'brightness-0'} dark:invert`}>
-                  <img 
-                    src={logo.src} 
-                    alt={logo.name} 
-                    className={`${logo.scale} w-auto object-contain transition-transform duration-300 group-hover:scale-110`}
-                  />
-                </div>
-                <span className="mt-4 text-[10px] font-black text-brand-blue dark:text-cyan-400 opacity-0 group-hover:opacity-100 transition-all duration-300 uppercase tracking-widest translate-y-2 group-hover:translate-y-0">
-                  {logo.name}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 // ============================================================================
 // STRATEGIC PARTNERSHIPS MARQUEE
@@ -1229,176 +1185,7 @@ const StickyMobileCTA = () => {
   );
 };
 
-// ============================================================================
-// SECTION 2: VALUE PROPOSITION
-// ============================================================================
 
-
-
-
-
-const TypewriterText = ({ isVisible }) => {
-  const { t, i18n } = useTranslation();
-  const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
-  const [parsedContent, setParsedContent] = useState({ text: '', highlights: [] });
-
-  const rawText = t('home.typewriter');
-
-  // Parse the text for delimiters [[...]] to identify highlights
-  useEffect(() => {
-    const parseText = (text) => {
-      const regex = /\[\[(.*?)\]\]/g;
-      let match;
-      let lastIndex = 0;
-      let cleanText = '';
-      const highlights = [];
-
-      while ((match = regex.exec(text)) !== null) {
-        // Add text before the match
-        cleanText += text.slice(lastIndex, match.index);
-        
-        // Calculate start of highlight in the clean text
-        const start = cleanText.length;
-        
-        // Add the content inside brackets
-        cleanText += match[1];
-        
-        // Calculate end of highlight
-        const end = cleanText.length;
-        
-        highlights.push({ start, end });
-        lastIndex = regex.lastIndex;
-      }
-      
-      // Add remaining text
-      cleanText += text.slice(lastIndex);
-      
-      return { text: cleanText, highlights };
-    };
-
-    const parsed = parseText(rawText);
-    setParsedContent(parsed);
-    setDisplayedText('');
-    setCurrentIndex(0);
-    setIsComplete(false);
-  }, [rawText, i18n.language]); // Re-parse when text or language changes
-  
-  useEffect(() => {
-    if (!isVisible || !parsedContent.text) return;
-    
-    if (currentIndex < parsedContent.text.length) {
-      const char = parsedContent.text[currentIndex];
-      let delay = 10; // Hollywood CGI Cyber speed (super fast)
-      
-      // Add rhythmic pauses for punctuation
-      if (char === '.' || char === '!' || char === '?') delay = 120;
-      else if (char === ',' || char === '&' || char === ';') delay = 60;
-
-      const timeout = setTimeout(() => {
-        setDisplayedText(parsedContent.text.slice(0, currentIndex + 1));
-        setCurrentIndex(currentIndex + 1);
-      }, delay);
-      
-      return () => clearTimeout(timeout);
-    } else {
-      setIsComplete(true);
-    }
-  }, [currentIndex, isVisible, parsedContent.text]);
-
-  const renderText = () => {
-    const text = displayedText;
-    const { highlights } = parsedContent;
-    
-    if (!text) return null;
-
-    let result = [];
-    let lastIndex = 0;
-    
-    // Find highlights that intersect with the currently displayed text
-    const activeHighlights = highlights.filter(h => h.start < text.length);
-
-    activeHighlights.forEach((highlight, idx) => {
-      // Text before highlight
-      if (highlight.start > lastIndex) {
-        result.push(
-          <span key={`plain-${idx}`}>
-            {text.slice(lastIndex, highlight.start)}
-          </span>
-        );
-      }
-      
-      // Highlighted text
-      // Clip end index to current text length (for typing effect)
-      const end = Math.min(highlight.end, text.length);
-      if (end > highlight.start) {
-        result.push(
-          <span 
-            key={`highlight-${idx}`}
-            className="bg-brand-gradient bg-clip-text text-transparent"
-          >
-            {text.slice(highlight.start, end)}
-          </span>
-        );
-      }
-      
-      lastIndex = highlight.end;
-    });
-
-    // Remaining text after last highlight (if any) that has been typed so far
-    if (lastIndex < text.length) {
-      result.push(
-        <span key="remaining">
-          {text.slice(lastIndex)}
-        </span>
-      );
-    }
-
-    return result;
-  };
-
-  return (
-    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white max-w-5xl mb-6 leading-tight tracking-tight drop-shadow-[0_0_8px_rgba(255,255,255,0.1)] dark:drop-shadow-[0_0_12px_rgba(74,182,212,0.2)]">
-      {renderText()}
-      {!isComplete && (
-        <span className="inline-block w-1 h-12 md:h-14 lg:h-16 bg-brand-cyan ml-1 animate-[pulse_0.4s_ease-in-out_infinite] shadow-[0_0_10px_#4ab6d4]" />
-      )}
-    </h2>
-  );
-};
-
-const ValueProposition = () => {
-  const { t, i18n } = useTranslation();
-  const [titleRef, titleVisible] = useScrollAnimation({ once: true, threshold: 0.3 });
-
-  return (
-    <section className="relative pt-20 sm:pt-24 lg:pt-32 pb-32 lg:pb-40 bg-white dark:bg-black overflow-hidden">
-      <VisualBackground />
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div 
-          ref={titleRef}
-          className={`mb-8 lg:mb-10 transition-all duration-1000 ${
-            titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}
-        >
-          <p className="text-gray-500 dark:text-gray-400 text-xl md:text-2xl lg:text-3xl max-w-4xl mb-12 leading-relaxed font-medium tracking-tight">
-            {t('home.value_prop_intro')}
-          </p>
-          
-          <TypewriterText isVisible={titleVisible} key={i18n.language} />
-          
-          <SecondaryButton 
-            text="Explore Our Capabilities" 
-            link="/services" 
-            theme="light"
-            className="mt-4"
-          />
-        </div>
-      </div>
-    </section>
-  );
-};
 
 // ============================================================================
 // SECTION 3: EXPLORE SERVICES
@@ -2570,8 +2357,6 @@ const HomePage = () => {
       />
       <HeroCarousel />
       <TrustIntelligenceLayer />
-      <TrustLogoStrip />
-      <ValueProposition />
       <Suspense fallback={<div className="w-full h-[200px]" aria-hidden="true" />}>
         <ConciergeSection />
       </Suspense>
