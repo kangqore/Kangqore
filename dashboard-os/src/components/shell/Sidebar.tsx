@@ -12,7 +12,7 @@ export function Sidebar() {
     <aside
       className={cn(
         'flex-shrink-0 flex flex-col bg-[#0f1117] border-r border-[#1e2130] transition-all duration-300 ease-in-out h-full',
-        sidebarCollapsed ? 'w-16' : 'w-[260px]'
+        sidebarCollapsed ? 'w-16' : 'w-[210px]'
       )}
     >
       {/* Logo */}

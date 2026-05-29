@@ -1,6 +1,6 @@
 import {
   LineChart, Line, BarChart, Bar,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell
 } from 'recharts'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
@@ -42,24 +42,26 @@ export function BurnRatePage() {
     .sort((a, b) => b.burn - a.burn)
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-slate-900">Burn Rate & Runway</h2>
-        <p className="text-sm text-slate-500 mt-0.5">Monthly outflow analysis and cash runway projection</p>
+    <div className="space-y-8">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900">Burn Rate & Runway</h2>
+          <p className="text-sm text-slate-400 mt-0.5">Monthly outflow analysis and cash runway projection</p>
+        </div>
       </div>
 
       {/* KPI strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: 'Avg Monthly Burn',  value: fmtK(avgBurn),       bg: 'bg-red-50   border-red-100',    text: 'text-red-700'    },
-          { label: 'Current Balance',   value: fmtK(latestBalance), bg: 'bg-green-50 border-green-100',  text: 'text-green-700'  },
-          { label: 'Cash Runway',       value: `${runway} months`,   bg: 'bg-blue-50 border-blue-100',text: 'text-blue-700' },
-          { label: 'Months of Data',    value: `${months}`,          bg: 'bg-slate-50  border-slate-100', text: 'text-slate-700'  },
+          { label: 'Avg Monthly Burn',  value: fmtK(avgBurn),       text: 'text-red-600' },
+          { label: 'Current Balance',   value: fmtK(latestBalance), text: 'text-green-600' },
+          { label: 'Cash Runway',       value: `${runway} months`,   text: 'text-blue-600' },
+          { label: 'Months of Data',    value: `${months}`,          text: 'text-slate-700' },
         ].map(c => (
-          <div key={c.label} className={`${c.bg} border rounded-2xl p-4`}>
-            <p className="text-xs font-semibold text-slate-500 mb-1">{c.label}</p>
-            <p className={`text-2xl font-bold ${c.text}`}>{c.value}</p>
-          </div>
+          <Card key={c.label} className="hover:border-slate-200/80 transition-all duration-200">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">{c.label}</p>
+            <p className="text-2xl font-bold text-slate-800">{c.value}</p>
+          </Card>
         ))}
       </div>
 
@@ -67,21 +69,21 @@ export function BurnRatePage() {
       <Card>
         <CardHeader>
           <CardTitle>Burn Rate vs Revenue</CardTitle>
-          <div className="flex items-center gap-3 text-xs text-slate-400">
-            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-red-400" />Monthly burn</span>
-            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-green-400" />Revenue</span>
-            <span className="flex items-center gap-1.5"><span className="w-2.5 h-1 bg-orange-400 rounded" />3-month avg burn</span>
+          <div className="flex items-center gap-4 text-xs text-slate-400">
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-400" />Outflow (Burn)</span>
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-400" />Inflow (Revenue)</span>
+            <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-orange-400 rounded" />3-Mo Avg</span>
           </div>
         </CardHeader>
         <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={burnData} barGap={4} barSize={20}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f3f7" vertical={false} />
+          <BarChart data={burnData} barGap={6} barSize={16}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f1f3f7/60" vertical={false} />
             <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} tickFormatter={fmtK} />
             <Tooltip formatter={(v) => [fmt(Number(v)), '']} contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
-            <Bar dataKey="Revenue" fill="#22c55e" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Burn"    fill="#f87171" radius={[4, 4, 0, 0]} />
-            <Line type="monotone" dataKey="Rolling Avg" stroke="#f59e0b" strokeWidth={2} dot={false} />
+            <Bar dataKey="Revenue" fill="#22c55e" radius={[3, 3, 0, 0]} />
+            <Bar dataKey="Burn"    fill="#ef4444" radius={[3, 3, 0, 0]} />
+            <Line type="monotone" dataKey="Rolling Avg" stroke="#f59e0b" strokeWidth={1.5} dot={false} />
           </BarChart>
         </ResponsiveContainer>
       </Card>
@@ -96,22 +98,16 @@ export function BurnRatePage() {
         </CardHeader>
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={projected}>
-            <defs>
-              <linearGradient id="projGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%"  stopColor="#2564ea" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="#2564ea" stopOpacity={0}   />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f3f7" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#f1f3f7/60" vertical={false} />
             <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} tickFormatter={fmtK} />
-            <ReferenceLine y={0} stroke="#ef4444" strokeDasharray="4 2" label={{ value: 'Zero cash', position: 'insideTopRight', fontSize: 10, fill: '#ef4444' }} />
+            <ReferenceLine y={0} stroke="#ef4444" strokeDasharray="4 2" label={{ value: 'Zero cash', position: 'insideTopRight', fontSize: 10, fill: '#ef4444', fontWeight: 600 }} />
             <Tooltip formatter={(v) => [fmt(Number(v)), '']} contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
-            <Line type="monotone" dataKey="balance"   stroke="#2564ea" strokeWidth={2.5} dot={{ r: 3, fill: '#2564ea' }} connectNulls={false} name="Actual"    />
-            <Line type="monotone" dataKey="projected" stroke="#2564ea" strokeWidth={2}   dot={{ r: 3 }} strokeDasharray="6 3"                 name="Projected" />
+            <Line type="monotone" dataKey="balance"   stroke="#2564ea" strokeWidth={2} dot={{ r: 3, fill: '#2564ea', strokeWidth: 0 }} connectNulls={false} name="Actual"    />
+            <Line type="monotone" dataKey="projected" stroke="#2564ea" strokeWidth={1.5} dot={{ r: 3 }} strokeDasharray="6 3"                 name="Projected" />
           </LineChart>
         </ResponsiveContainer>
-        <p className="text-xs text-slate-400 mt-2 text-center">Projected at avg burn of {fmtK(avgBurn)}/month — assumes no new revenue</p>
+        <p className="text-[10px] font-semibold text-slate-400 mt-3 text-center uppercase tracking-wider">Projected at avg burn of {fmtK(avgBurn)}/month — assumes no new revenue</p>
       </Card>
 
       {/* Burn by project */}
@@ -119,11 +115,15 @@ export function BurnRatePage() {
         <CardHeader><CardTitle>Spend by Project (YTD)</CardTitle></CardHeader>
         <ResponsiveContainer width="100%" height={180}>
           <BarChart data={projectBurn} layout="vertical" barSize={16}>
-            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f3f7" />
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f3f7/60" />
             <XAxis type="number" tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} tickFormatter={fmtK} />
             <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 11, fill: '#4b5368' }} axisLine={false} tickLine={false} />
             <Tooltip formatter={(v) => [fmt(Number(v)), 'Spent']} contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
-            <Bar dataKey="burn" fill="#2564ea" radius={[0, 6, 6, 0]} />
+            <Bar dataKey="burn" radius={[0, 4, 4, 0]}>
+              {projectBurn.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </Card>

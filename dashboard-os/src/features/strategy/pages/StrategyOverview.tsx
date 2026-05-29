@@ -39,12 +39,12 @@ export function StrategyOverview() {
   const totalSpent  = pillars.reduce((s, p) => s + p.spent, 0)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h2 className="text-xl font-bold text-slate-900">Strategy Overview</h2>
-          <p className="text-sm text-slate-500 mt-0.5">Company-wide strategic health across all pillars and OKRs</p>
+          <p className="text-sm text-slate-400 mt-0.5">Company-wide strategic health across all pillars and OKRs</p>
         </div>
         <div className="flex items-center gap-2">
           {QUARTER_OPTIONS.map(q => (
@@ -53,8 +53,8 @@ export function StrategyOverview() {
               onClick={() => setSelectedQuarter(q)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 selectedQuarter === q
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+                  ? 'bg-slate-900 text-white shadow-sm'
+                  : 'bg-white border border-slate-200 text-slate-500 hover:border-slate-300'
               }`}
             >
               {q}
@@ -64,12 +64,12 @@ export function StrategyOverview() {
       </div>
 
       {/* KPI row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           label="Strategic Pillars"
           value={pillars.length}
           icon={<Target className="w-5 h-5" />}
-          iconColor="bg-blue-100 text-blue-600"
+          iconColor="bg-slate-50 text-slate-600"
           change={0}
           changeLabel="all active"
         />
@@ -77,14 +77,14 @@ export function StrategyOverview() {
           label="Active Programs"
           value={activePrograms}
           icon={<LayoutDashboard className="w-5 h-5" />}
-          iconColor="bg-blue-100 text-blue-600"
+          iconColor="bg-slate-50 text-slate-600"
           suffix={`/${programs.length}`}
         />
         <StatCard
           label="OKR Progress"
           value={`${avgProgress}%`}
           icon={<TrendingUp className="w-5 h-5" />}
-          iconColor="bg-green-100 text-green-600"
+          iconColor="bg-slate-50 text-slate-600"
           change={8}
           changeLabel="vs last quarter"
         />
@@ -92,23 +92,23 @@ export function StrategyOverview() {
           label="At Risk / Behind"
           value={health.atRisk + health.behind}
           icon={<AlertTriangle className="w-5 h-5" />}
-          iconColor={health.atRisk + health.behind > 1 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-400'}
+          iconColor={health.atRisk + health.behind > 1 ? 'bg-red-50 text-red-600' : 'bg-slate-50 text-slate-400'}
           changeLabel="pillars need attention"
         />
       </div>
 
       {/* OKR health + Budget */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Donut */}
         <Card className="lg:col-span-1">
           <CardHeader>
             <CardTitle>OKR Health — {selectedQuarter}</CardTitle>
             <Badge variant="neutral" size="sm">{objectives.length} objectives</Badge>
           </CardHeader>
-          <div className="flex items-center gap-4">
-            <ResponsiveContainer width={110} height={110}>
+          <div className="flex items-center gap-6">
+            <ResponsiveContainer width={100} height={100}>
               <PieChart>
-                <Pie data={donutData} cx="50%" cy="50%" innerRadius={32} outerRadius={50} dataKey="value" strokeWidth={2}>
+                <Pie data={donutData} cx="50%" cy="50%" innerRadius={34} outerRadius={46} dataKey="value" strokeWidth={1.5}>
                   {donutData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                 </Pie>
                 <Tooltip formatter={(v, n) => [v, n]} />
@@ -119,9 +119,9 @@ export function StrategyOverview() {
                 <div key={d.name} className="flex items-center justify-between text-xs">
                   <span className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full" style={{ background: d.color }} />
-                    <span className="text-slate-600">{d.name}</span>
+                    <span className="text-slate-500">{d.name}</span>
                   </span>
-                  <span className="font-semibold text-slate-900">{d.value}</span>
+                  <span className="font-semibold text-slate-800">{d.value}</span>
                 </div>
               ))}
             </div>
@@ -132,15 +132,15 @@ export function StrategyOverview() {
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Portfolio Budget</CardTitle>
-            <span className="text-sm font-semibold text-slate-900">
+            <span className="text-sm font-semibold text-slate-800">
               £{(totalSpent / 1000).toFixed(0)}k / £{(totalBudget / 1000).toFixed(0)}k
             </span>
           </CardHeader>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {pillars.map(p => (
               <div key={p.id} className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: p.color }} />
-                <span className="text-xs text-slate-600 w-36 truncate">{p.name}</span>
+                <span className="text-xs text-slate-500 w-36 truncate">{p.name}</span>
                 <div className="flex-1">
                   <Progress
                     value={Math.round((p.spent / p.budget) * 100)}
@@ -148,13 +148,13 @@ export function StrategyOverview() {
                     color={p.spent / p.budget > 0.85 ? 'danger' : p.spent / p.budget > 0.7 ? 'warning' : 'success'}
                   />
                 </div>
-                <span className="text-xs text-slate-500 w-16 text-right">
+                <span className="text-xs font-semibold text-slate-500 w-16 text-right">
                   {Math.round((p.spent / p.budget) * 100)}%
                 </span>
               </div>
             ))}
           </div>
-          <div className="mt-4 pt-4 border-t border-slate-100">
+          <div className="mt-5 pt-4 border-t border-slate-100/50">
             <Progress
               value={Math.round((totalSpent / totalBudget) * 100)}
               color="brand"
@@ -168,8 +168,8 @@ export function StrategyOverview() {
 
       {/* Pillars grid */}
       <div>
-        <h3 className="text-sm font-semibold text-slate-700 mb-3">Strategic Pillars</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <h3 className="text-sm font-semibold text-slate-400 mb-4 uppercase tracking-wider">Strategic Pillars</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {pillars.map(p => <PillarCard key={p.id} pillar={p} />)}
         </div>
       </div>
@@ -182,15 +182,15 @@ export function StrategyOverview() {
         </CardHeader>
         <div className="space-y-3">
           {programs.filter(p => p.status === 'active').slice(0, 6).map(prog => (
-            <div key={prog.id} className="flex items-center gap-3 py-2 border-b border-slate-50 last:border-0">
+            <div key={prog.id} className="flex items-center gap-4 py-3 border-b border-slate-100/50 last:border-0">
               <div className="w-1.5 h-8 rounded-full flex-shrink-0" style={{ background: prog.pillarColor }} />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{prog.name}</p>
+                <p className="text-sm font-semibold text-slate-800 truncate">{prog.name}</p>
                 <p className="text-xs text-slate-400">{prog.pillarName}</p>
               </div>
               <div className="w-28">
                 <Progress value={prog.progress} size="sm" color="brand" />
-                <p className="text-[10px] text-slate-400 mt-1 text-right">{prog.progress}%</p>
+                <p className="text-[10px] text-slate-400 mt-1 text-right font-medium">{prog.progress}%</p>
               </div>
               <Avatar name={prog.owner} size="xs" />
             </div>
