@@ -95,7 +95,7 @@ const ContactForm = () => {
   };
 
   return (
-    <section className="py-28 md:py-36 lg:py-44 bg-gray-50 dark:bg-black">
+    <section className="py-28 md:py-36 lg:py-44 bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Side - Contact Info */}

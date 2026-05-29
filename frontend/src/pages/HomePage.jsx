@@ -1656,196 +1656,90 @@ const TestimonialsSection = () => {
 // SECTION 5.5: LEADERSHIP
 // ============================================================================
 
-// Typewriter component for Leadership Statement headline
-const LeadershipTypewriter = ({ isVisible }) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
-
-  // Text with highlight markers
-  const fullText = `"We don't just build technology. We take [[accountability]] for business outcomes."`;
-  
-  // Parse text to find highlighted sections
-  const parseText = (text) => {
-    const regex = /\[\[(.*?)\]\]/g;
-    let match;
-    let lastIndex = 0;
-    let cleanText = '';
-    const highlights = [];
-
-    while ((match = regex.exec(text)) !== null) {
-      cleanText += text.slice(lastIndex, match.index);
-      const start = cleanText.length;
-      cleanText += match[1];
-      const end = cleanText.length;
-      highlights.push({ start, end });
-      lastIndex = regex.lastIndex;
-    }
-    cleanText += text.slice(lastIndex);
-    
-    return { text: cleanText, highlights };
-  };
-
-  const { text, highlights } = parseText(fullText);
-
-  useEffect(() => {
-    if (!isVisible) return;
-    
-    if (currentIndex < text.length) {
-      const timeout = setTimeout(() => {
-        setDisplayedText(text.slice(0, currentIndex + 1));
-        setCurrentIndex(currentIndex + 1);
-      }, 15);
-      return () => clearTimeout(timeout);
-    } else {
-      setIsComplete(true);
-    }
-  }, [currentIndex, isVisible, text]);
-
-  const renderText = () => {
-    const displayText = displayedText;
-    if (!displayText) return null;
-
-    let result = [];
-    let lastIndex = 0;
-    
-    const activeHighlights = highlights.filter(h => h.start < displayText.length);
-
-    activeHighlights.forEach((highlight, idx) => {
-      if (highlight.start > lastIndex) {
-        result.push(
-          <span key={`plain-${idx}`}>
-            {displayText.slice(lastIndex, highlight.start)}
-          </span>
-        );
-      }
-      
-      const end = Math.min(highlight.end, displayText.length);
-      if (end > highlight.start) {
-        result.push(
-          <span 
-            key={`highlight-${idx}`}
-            className="text-transparent bg-clip-text bg-brand-gradient"
-          >
-            {displayText.slice(highlight.start, end)}
-          </span>
-        );
-      }
-      
-      lastIndex = highlight.end;
-    });
-
-    if (lastIndex < displayText.length) {
-      result.push(
-        <span key="remaining">
-          {displayText.slice(lastIndex)}
-        </span>
-      );
-    }
-
-    return result;
-  };
-
-  return (
-    <h2 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
-      {renderText()}
-      {!isComplete && (
-        <span className="inline-block w-1 h-10 md:h-12 bg-brand-gradient ml-1" />
-      )}
-    </h2>
-  );
-};
+// ============================================================================
+// SECTION 5.5: LEADERSHIP (FOUNDER STATEMENT)
+// ============================================================================
 
 const LeadershipSection = () => {
-  const [ref, visible] = useScrollAnimation({ once: true, threshold: 0.2 });
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: x * 10, y: y * -10 });
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-  };
+  const [ref, visible] = useScrollAnimation({ once: true, threshold: 0.15 });
 
   return (
-    <section className="py-32 bg-white dark:bg-black overflow-hidden relative">
-      {/* Decorative Background Element */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[20rem] font-black text-gray-50/50 dark:text-gray-800/10 pointer-events-none select-none z-0">
-        FOUNDER
-      </div>
-
+    <section className="py-24 md:py-36 bg-white dark:bg-black text-gray-900 dark:text-white overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div 
           ref={ref}
-          className={`grid lg:grid-cols-2 gap-16 lg:gap-24 items-center transition-all duration-1000 ${
-            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+          className={`grid lg:grid-cols-12 gap-16 lg:gap-24 items-center transition-all duration-1000 ${
+            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
           }`}
         >
-          {/* Image Side with 3D Tilt */}
-          <div 
-            className="relative group perspective-1000"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div 
-              className="relative rounded-[3rem] overflow-visible aspect-[4/5] max-w-md mx-auto lg:mx-0 transition-transform duration-200 ease-out shadow-2xl"
-              style={{
-                transform: `rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
-                transformStyle: 'preserve-3d'
-              }}
-            >
-              {/* Image Container */}
-              <div className="absolute inset-0 rounded-[3rem] overflow-hidden bg-[#f5f5f7] dark:bg-black">
-                <img 
-                  src="/images/leadership/ceo-mahesh-kumar.png" 
-                  alt="Mahesh Kumar, Founder and CEO" 
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 object-top"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-              </div>
-
-              {/* Floating Glass Nameplate */}
-              <div 
-                className="absolute -bottom-6 -right-6 lg:-right-12 p-8 rounded-3xl glass-morphism dark:dark-glass shadow-2xl border border-white/20 dark:border-white/10 z-20 min-w-[280px]"
-                style={{ transform: 'translateZ(50px)' }}
-              >
-                <div className="relative">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 bg-brand-blue/10 rounded-full animate-pulse"></div>
-                  <p className="text-gray-900 dark:text-white font-black text-3xl tracking-tight">Mahesh Kumar</p>
-                  <p className="text-brand-blue dark:text-brand-cyan font-bold tracking-widest uppercase text-[10px] mt-2 flex items-center gap-2">
-                    <span className="w-4 h-[1px] bg-brand-blue dark:bg-brand-cyan"></span>
-                    Founder & CEO, Kangqore
-                  </p>
-                </div>
-              </div>
+          {/* Left Column: Simple rectangular premium portrait (Col 5) */}
+          <div className="lg:col-span-5 relative group">
+            <div className="relative overflow-hidden shadow-2xl max-w-sm sm:max-w-md mx-auto lg:mx-0 aspect-[4/5] rounded-xl border border-gray-100 dark:border-neutral-900">
+              <img 
+                src="/images/leadership/ceo-mahesh-kumar.png" 
+                alt="Mahesh Kumar, Founder and CEO" 
+                className="w-full h-full object-cover object-top block transform scale-[1.01] group-hover:scale-105 transition-transform duration-[1.2s]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none"></div>
             </div>
           </div>
 
-          {/* Content Side */}
-          <div className="space-y-10 lg:pl-10">
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="h-[1px] w-12 bg-brand-blue"></div>
-                <span className="text-xs font-black text-brand-blue uppercase tracking-[0.3em]">
-                  The Visionary
-                </span>
-              </div>
-              <LeadershipTypewriter isVisible={visible} />
-            </div>
+          {/* Right Column: Clean Minimalist Editorial Text (Col 7) */}
+          <div className="lg:col-span-7 space-y-6 lg:pl-6 text-left">
+            {/* Standalone large premium quote icon anchor */}
+            <Quote className="w-12 h-12 text-black dark:text-white opacity-100 transform -scale-x-100" />
             
-            <div className="space-y-8 text-xl text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
-              <p className="relative">
-                <span className="absolute -left-6 top-0 text-6xl font-serif text-gray-100 dark:text-gray-800 pointer-events-none">"</span>
-                At Kangqore, we bridge strategy and execution. We help businesses modernize systems, build scalable platforms, and deploy AI-led solutions that perform in real-world conditions.
+            <div className="space-y-6 text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100 leading-relaxed font-sans">
+              <p>
+                The next era will not be defined by companies that simply use AI. It will be defined by those that use AI to amplify human imagination, ambition, and potential. Businesses don't evolve by ideas alone; they evolve through innovation. At Kangqore, we innovate futures.
               </p>
-              <p className="text-gray-900 dark:text-white font-bold border-l-4 border-brand-blue pl-6 py-2">
-                Our promise is simple: build systems that endure, scale, and deliver measurable value.
+              <p>
+                Technology can automate tasks and accelerate decisions, but only humans can create purpose, vision, and meaning. That's why we've chosen a side: human outcomes always lead. Humans set the destination; intelligent systems accelerate the journey. The future isn't AI led or human in the loop. It's human led intelligence at scale.
               </p>
             </div>
+
+            {/* Editorial Attribution & Minimalist Links */}
+            <div className="pt-6 border-t border-gray-200 dark:border-neutral-800 space-y-4">
+              <div>
+                <p className="text-gray-900 dark:text-white font-semibold text-lg tracking-tight">Mahesh Kumar</p>
+                <p className="text-xs text-neutral-500 font-medium tracking-wider uppercase mt-0.5">Founder & CEO, Kangqore</p>
+              </div>
+
+              {/* Minimalist standalone social icons matching the reference image */}
+              <div className="flex items-center gap-6 mt-3">
+                <a
+                  href="https://in.linkedin.com/in/maheshkumario"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-700 dark:text-neutral-400 opacity-70 hover:opacity-100 hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-300 ease-out"
+                  aria-label="LinkedIn"
+                >
+                  <svg 
+                    className="w-6 h-6 fill-current" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                </a>
+                <a
+                  href="https://x.com/maheshkumarx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-700 dark:text-neutral-400 opacity-70 hover:opacity-100 hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-300 ease-out flex items-center justify-center"
+                  aria-label="X"
+                >
+                  <svg 
+                    className="w-5 h-5 fill-current" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
