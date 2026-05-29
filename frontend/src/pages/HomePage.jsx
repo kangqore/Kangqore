@@ -19,7 +19,7 @@ import {
   Plus, X, Pause, Play, SkipForward, Briefcase, Globe, Phone, Send, Search, Menu,
   Facebook, Twitter, Linkedin, Instagram, Target, ShieldCheck, Scale, Handshake,
   Bot, RefreshCw, Cloud, TrendingUp, Lock, BarChart3, BookOpen,
-  Landmark, Factory, Monitor, Sparkles
+  Landmark, Factory, Monitor, Sparkles, Quote, Star
 } from 'lucide-react';
 import {
   Dialog,
@@ -93,38 +93,27 @@ const heroSlides = [
   },
 ];
 
-const caseStudies = [
+const homeTestimonials = [
   {
-    id: 1,
-    category: "FINANCIAL SERVICES",
-    title: "Fortune 100 Investment Bank — Core Trading Infrastructure Modernization",
-    description: "Reduced latency by 45% and secured $40M in operational savings via cloud modernization.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
-    link: "/case-studies"
+    quote: "Kangqore transformed our digital infrastructure, resulting in 40% cost reduction and 3x faster deployment cycles.",
+    author: "James Miller",
+    role: "CTO, Fortune 500 Bank",
+    initials: "JM",
+    rating: 5
   },
   {
-    id: 2,
-    category: "HEALTHCARE",
-    title: "Top 5 U.S. Healthcare Network — Agentic AI for Claims Processing",
-    description: "Achieved 3x faster claims processing and zero-downtime compliance across 12 regions.",
-    image: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=600&q=80",
-    link: "/case-studies"
+    quote: "Their AI solutions helped us predict customer behavior with 95% accuracy, revolutionizing our marketing strategy.",
+    author: "Sarah Chen",
+    role: "VP Digital, Retail Giant",
+    initials: "SC",
+    rating: 5
   },
   {
-    id: 3,
-    category: "E-COMMERCE",
-    title: "Fortune 500 Global Retailer — End-to-End Supply Chain Automation",
-    description: "Delivered 99.99% uptime during peak events and increased checkout conversions by 18%.",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",
-    link: "/case-studies"
-  },
-  {
-    id: 4,
-    category: "LOGISTICS",
-    title: "Tier-1 Global Logistics Carrier — Legacy-to-Microservices Migration",
-    description: "Migrated 200+ legacy services to microservices, saving $15M annually in technical debt.",
-    image: "https://images.unsplash.com/photo-1580674285054-bed31e145f59?w=600&q=80",
-    link: "/case-studies"
+    quote: "The team's expertise in cloud migration was exceptional. Zero downtime during our entire transition.",
+    author: "Michael Brown",
+    role: "IT Director, Healthcare Corp",
+    initials: "MB",
+    rating: 5
   }
 ];
 
@@ -1512,45 +1501,59 @@ const TrustStatementTypewriter = ({ isVisible }) => {
 };
 
 // ============================================================================
-// SECTION 5: CASE STUDIES
+// SECTION 5: TESTIMONIALS
 // ============================================================================
-const CaseStudyCard = ({ study, index }) => {
+const TestimonialCard = ({ testimonial, index }) => {
   const [cardRef, cardVisible] = useScrollAnimation({ once: true, threshold: 0.2 });
   
   return (
-    <a 
-      href={study.link}
+    <div 
       ref={cardRef}
-      className={`group relative h-[500px] rounded-[2rem] overflow-hidden transition-all duration-700 transform hover:scale-[1.02] ${
+      className={`group relative p-8 md:p-10 rounded-[2rem] overflow-hidden transition-all duration-700 bg-white/5 dark:bg-black/30 backdrop-blur-xl border border-white/10 dark:border-white/5 shadow-xl hover:shadow-[0_0_30px_rgba(74,182,212,0.1)] hover:border-cyan-500/30 hover:scale-[1.02] transform ${
         cardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
       }`}
       style={{ transitionDelay: `${index * 0.15}s` }}
     >
-      <img 
-        src={study.image} 
-        alt={study.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+      {/* Decorative subtle background gradient on card hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
       
-      <div className="absolute inset-0 p-8 flex flex-col justify-end">
-        <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-          <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-3 block">
-            {study.category}
+      {/* Star Ratings */}
+      <div className="flex items-center gap-1 mb-6">
+        {[...Array(testimonial.rating)].map((_, i) => (
+          <Star key={i} className="w-5 h-5 fill-cyan-400 text-cyan-400" />
+        ))}
+      </div>
+
+      {/* Quote Icon */}
+      <div className="absolute top-8 right-8 opacity-10 group-hover:opacity-20 transition-opacity">
+        <Quote className="w-12 h-12 text-cyan-400" />
+      </div>
+
+      {/* Quote Text */}
+      <blockquote className="text-lg md:text-xl font-medium text-gray-800 dark:text-gray-200 leading-relaxed mb-8 relative z-10">
+        "{testimonial.quote}"
+      </blockquote>
+
+      {/* Author details */}
+      <div className="flex items-center gap-4 relative z-10 border-t border-gray-100 dark:border-white/10 pt-6">
+        {/* Avatar Initials */}
+        <div className="w-12 h-12 rounded-full bg-brand-gradient flex items-center justify-center text-white font-bold text-sm shadow-md">
+          {testimonial.initials}
+        </div>
+        <div>
+          <cite className="not-italic text-base font-bold text-gray-900 dark:text-white block">
+            {testimonial.author}
+          </cite>
+          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mt-0.5">
+            {testimonial.role}
           </span>
-          <h3 className="text-xl font-bold text-white mb-3 leading-snug">
-            {study.title}
-          </h3>
-          <p className="text-sm text-gray-300 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-            {study.description}
-          </p>
         </div>
       </div>
-    </a>
+    </div>
   );
 };
 
-const CaseStudiesSection = () => {
+const TestimonialsSection = () => {
   const { t } = useTranslation();
   const [titleRef, titleVisible] = useScrollAnimation({ once: true, threshold: 0.3 });
   const sectionRef = useRef(null);
@@ -1587,7 +1590,7 @@ const CaseStudiesSection = () => {
       }}
     >
       {/* Dark Overlay to ensure readability */}
-      <div className="absolute inset-0 bg-gray-900/90"></div>
+      <div className="absolute inset-0 bg-gray-900/90 dark:bg-black/90"></div>
 
       <div 
         className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-transform duration-100 ease-out"
@@ -1601,9 +1604,9 @@ const CaseStudiesSection = () => {
         >
           <div>
             <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-gray-400"></div>
+              <div className="h-[1px] w-12 bg-cyan-400"></div>
               <span className="text-sm font-semibold text-gray-300 uppercase tracking-widest">
-                {t('home.case_studies.label')}
+                TESTIMONIALS
               </span>
             </div>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
@@ -1611,7 +1614,7 @@ const CaseStudiesSection = () => {
             </h2>
           </div>
           <Link 
-            to="/case-studies" 
+            to="/contact" 
             className="group flex items-center gap-3 text-[15px] font-bold text-white hover:text-cyan-400 transition-colors uppercase tracking-widest"
           >
             {t('home.case_studies.see_all')}
@@ -1622,8 +1625,8 @@ const CaseStudiesSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {caseStudies.slice(0, 3).map((study, index) => (
-            <CaseStudyCard key={study.id} study={study} index={index} />
+          {homeTestimonials.map((testimonial, index) => (
+            <TestimonialCard key={index} testimonial={testimonial} index={index} />
           ))}
         </div>
       </div>
@@ -1850,185 +1853,7 @@ const LeadershipSection = () => {
   );
 };
 
-// ============================================================================
-// SECTION 6: FEATURED INSIGHTS (The Fix)
-// ============================================================================
-const insightsData = [
-  {
-    id: 1,
-    contentType: "Blogs",
-    date: "13 January 2026",
-    author: "Kangqore",
-    title: "AI-Native Networks: Engineering the Future of Intelligent Telecom",
-    tags: ["Agentic AI", "Cloud Platforms", "Enterprise AI"],
-    tagColors: ["bg-cyan-200", "bg-blue-200", "bg-cyan-200"],
-    image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&q=80",
-    link: "#"
-  },
-  {
-    id: 2,
-    contentType: "Whitepaper",
-    date: "10 January 2026",
-    author: "Kangqore",
-    title: "The State of Enterprise AI: 2026 Outlook",
-    description: "A comprehensive analysis of how large-scale organizations are moving from pilot to production, featuring insights from 500+ CTOs.",
-    tags: ["Strategy", "Innovation"],
-    tagColors: ["bg-purple-200", "bg-pink-200"],
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80",
-    link: "#"
-  },
-  {
-    id: 3,
-    contentType: "Case Study",
-    date: "05 January 2026",
-    author: "Kangqore",
-    title: "Modernizing Legacy Banking Systems at Scale",
-    description: "How a leading global bank reduced technical debt by 40% and accelerated feature delivery using our AI-driven migration framework.",
-    tags: ["Banking", "Cloud"],
-    tagColors: ["bg-green-200", "bg-emerald-200"],
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
-    link: "#"
-  }
-];
 
-const FeaturedCard = ({ item }) => {
-  const [cardRef, cardVisible] = useScrollAnimation({ once: true, threshold: 0.2 });
-  
-  return (
-    <div 
-      ref={cardRef}
-      className={`relative group h-full min-h-[500px] rounded-[2rem] overflow-hidden transition-all duration-700 transform hover:scale-[1.02] cursor-pointer bg-gray-900 ${
-        cardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-      }`}
-    >
-      <img 
-        src={item.image} 
-        alt={item.title}
-        className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700"
-      />
-      
-      <div className="absolute top-6 left-6 z-20">
-        <span className="px-4 py-2 bg-white dark:bg-black text-gray-900 dark:text-white text-xs font-bold uppercase tracking-wide rounded-full">
-          {item.contentType}
-        </span>
-      </div>
-      
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-      
-      <div className="absolute bottom-0 left-0 right-0 p-8">
-        <h3 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
-          {item.title}
-        </h3>
-      </div>
-    </div>
-  );
-};
-
-const StandardCard = ({ item, index }) => {
-  const [cardRef, cardVisible] = useScrollAnimation({ once: true, threshold: 0.2 });
-  
-  return (
-    <div 
-      ref={cardRef}
-      className={`flex flex-col bg-[#f5f5f7] dark:bg-black rounded-[2rem] overflow-hidden transition-all duration-700 transform hover:scale-[1.02] group cursor-pointer ${
-        cardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-      }`}
-      style={{ transitionDelay: `${index * 0.15 + 0.2}s` }}
-    >
-      <div className="relative h-64 overflow-hidden">
-        <div className="absolute top-4 left-4 z-10">
-          <span className="px-4 py-2 bg-white dark:bg-black text-gray-900 dark:text-white text-xs font-bold uppercase tracking-wide rounded-full">
-            {item.contentType}
-          </span>
-        </div>
-        <img 
-          src={item.image} 
-          alt={item.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-        />
-      </div>
-      
-      <div className="flex flex-col flex-1 p-6">
-        <div className="flex items-center justify-between text-xs text-gray-500 font-medium mb-3">
-          <span>{item.author}</span>
-          <span>{item.date}</span>
-        </div>
-        
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 leading-snug group-hover:text-brand-blue transition-colors">
-          {item.title}
-        </h3>
-        
-        <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3">
-          {item.description}
-        </p>
-        
-        <div className="mt-auto flex flex-wrap gap-2">
-          {item.tags.map((tag, idx) => (
-            <span 
-              key={idx} 
-              className={`px-3 py-1 ${item.tagColors[idx] || 'bg-gray-100 dark:bg-[#0a0a0c]'} text-gray-900 dark:text-white text-[10px] md:text-xs font-medium rounded-sm`}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const FeaturedInsightsSection = () => {
-  const { t } = useTranslation();
-  const [titleRef, titleVisible] = useScrollAnimation({ once: true, threshold: 0.3 });
-  
-  return (
-    <section className="py-32 bg-[#f5f5f7] dark:bg-black">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div 
-          ref={titleRef}
-          className={`mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 transition-all duration-1000 ${
-            titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}
-        >
-          <div>
-             <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-gray-400"></div>
-              <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
-                {t('home.insights.label')}
-              </span>
-            </div>
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
-              {t('home.insights.heading_highlight')} That Drive{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">
-                Change
-              </span>
-              .
-            </h2>
-          </div>
-           <Link 
-            to="/insights" 
-            className="group flex items-center gap-2 text-lg font-medium text-gray-900 dark:text-white hover:text-brand-blue transition-colors"
-          >
-            {t('home.insights.view_all')}
-            <span className="w-8 h-8 rounded-full bg-white dark:bg-gray-900 dark:border-gray-800 flex items-center justify-center group-hover:bg-brand-blue group-hover:text-white transition-colors shadow-sm">
-              <ArrowRight className="w-4 h-4" />
-            </span>
-          </Link>
-        </div>
-
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
-             <FeaturedCard item={insightsData[0]} />
-          </div>
-          <div className="lg:col-span-2 grid md:grid-cols-2 gap-8">
-             <StandardCard item={insightsData[1]} index={0} />
-             <StandardCard item={insightsData[2]} index={1} />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
 // ============================================================================
 // SECTION 9: EQORE COMMAND CENTER (Automation)
@@ -2155,171 +1980,7 @@ const EqoreTypingSection = ({ bookingRef }) => {
 
 
 
-const CareersCTASection = () => {
-  const { t } = useTranslation();
-  // Team members data - 4 Women, 3 Men (Global Diverse)
-  const teamMembers = [
-    { id: 1, img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80", alt: "Senior Executive" }, // Woman
-    { id: 2, img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80", alt: "Tech Lead" }, // Man
-    { id: 3, img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80", alt: "Product Designer" }, // Woman
-    { id: 4, img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80", alt: "Engineering Manager" }, // Man
-    { id: 5, img: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80", alt: "Lead Developer" }, // Woman (Fixed Again)
-    { id: 6, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80", alt: "Solutions Architect" }, // Man
-    { id: 7, img: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&q=80", alt: "HR Director" }, // Woman
-  ];
 
-  return (
-    <section className="py-32 bg-brand-gradient text-white relative overflow-hidden">
-      {/* Background Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-         <div className="absolute -top-24 -left-24 w-64 h-64 md:w-96 md:h-96 bg-cyan-400 rounded-full blur-[128px] opacity-20 mix-blend-screen"></div>
-         <div className="absolute top-1/2 right-0 w-64 h-64 md:w-[500px] md:h-[500px] bg-purple-500 rounded-full blur-[128px] opacity-20 mix-blend-screen"></div>
-         <div className="absolute bottom-0 left-1/3 w-48 h-48 md:w-64 md:h-64 bg-blue-400 rounded-full blur-[96px] opacity-20 mix-blend-screen"></div>
-      </div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          
-          {/* Left Column: Content */}
-          <div className="text-left space-y-6 md:space-y-8">
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
-              {t('home.careers.heading_prefix')} <br className="hidden sm:block" /><span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-cyan-300 animate-shimmer bg-[length:200%_auto] font-extrabold drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">{t('home.careers.heading_highlight')}</span> {t('home.careers.heading_suffix')}
-            </h2>
-            
-            <p className="text-base sm:text-lg lg:text-xl text-blue-50 max-w-xl leading-relaxed">
-              {t('home.careers.description')}
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center gap-5 pt-4">
-              {/* ── Primary CTA: "Explore Careers" — Hero-style luminous pill ── */}
-              <Link
-                to="/careers"
-                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-9 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97]"
-                style={{
-                  background: 'rgba(255,255,255,0.08)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  boxShadow: '0 0 20px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.15)',
-                }}
-              >
-                {/* Hover glow sweep */}
-                <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{
-                  background: 'radial-gradient(ellipse 120% 80% at 50% 120%, rgba(255,255,255,0.15) 0%, transparent 70%)',
-                }} />
-                
-                <span className="relative z-10 text-white font-semibold tracking-wide text-[15px]">
-                  {t('home.careers.explore')}
-                </span>
-                
-                {/* Arrow with animated slide */}
-                <span className="relative z-10 w-8 h-8 rounded-full bg-white dark:bg-gray-900 dark:border-gray-800/10 border border-white/20 flex items-center justify-center group-hover:bg-white dark:bg-gray-900 dark:border-gray-800 group-hover:border-white transition-all duration-500">
-                  <ArrowRight className="w-4 h-4 text-gray-900 dark:text-white group-hover:translate-x-0.5 transition-all duration-500" />
-                </span>
-                
-                {/* Bottom shimmer line */}
-                <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              </Link>
-
-              {/* ── Secondary CTA: "Our Culture" — Hero-style AI-alive glass pill ── */}
-              <Link 
-                to="/culture"
-                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97]"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(37,100,234,0.15) 0%, rgba(74,182,212,0.1) 100%)',
-                  backdropFilter: 'blur(24px)',
-                  WebkitBackdropFilter: 'blur(24px)',
-                  border: '1px solid rgba(74,182,212,0.3)',
-                  boxShadow: '0 0 24px rgba(37,100,234,0.12), inset 0 1px 0 rgba(255,255,255,0.08)',
-                }}
-              >
-                {/* Animated gradient border overlay on hover */}
-                <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{
-                  background: 'radial-gradient(ellipse 120% 80% at 50% 120%, rgba(74,182,212,0.2) 0%, transparent 70%)',
-                }} />
-
-                <span className="relative z-10 text-white/90 font-semibold tracking-wide text-[15px] group-hover:text-white transition-colors duration-300">
-                  {t('home.careers.how_we_work')}
-                </span>
-
-                {/* Animated icon container */}
-                <span className="relative z-10 w-9 h-9 flex items-center justify-center">
-                  <span className="relative w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/30 to-cyan-400/20 border border-white/15 flex items-center justify-center group-hover:from-blue-500/50 group-hover:to-cyan-400/40 transition-all duration-500">
-                    <ArrowUpRight className="w-4 h-4 text-cyan-300 group-hover:text-white transition-colors duration-300" />
-                  </span>
-                </span>
-              </Link>
-            </div>
-            
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 sm:gap-12 pt-8 border-t border-white/10">
-              <div>
-                <div className="text-2xl sm:text-3xl font-bold text-white">30+</div>
-                <div className="text-xs sm:text-sm text-blue-200">{t('home.careers.stats.builders')}</div>
-              </div>
-              <div>
-                <div className="text-2xl sm:text-3xl font-bold text-white">61</div>
-                <div className="text-xs sm:text-sm text-blue-200">{t('home.careers.stats.clients')}</div>
-              </div>
-              <div>
-                <div className="text-2xl sm:text-3xl font-bold text-white">15</div>
-                <div className="text-xs sm:text-sm text-blue-200">{t('home.careers.stats.culture')}</div>
-              </div>
-            </div>
-            <p className="pt-4 sm:pt-6 text-xs sm:text-sm text-blue-200/80 italic">
-              {t('home.careers.quote')}
-            </p>
-          </div>
-
-          {/* Right Column: Team Grid */}
-          <div className="relative mt-12 lg:mt-0">
-            {/* Grid Layout - Changed to hide on very small screens, responsive on sm up */}
-            <div className="hidden sm:grid grid-cols-3 gap-3 md:gap-4 transform lg:rotate-2 lg:hover:rotate-0 transition-transform duration-700 ease-out">
-              {/* Column 1 - Downward offset */}
-              <div className="flex flex-col gap-3 md:gap-4 mt-8 md:mt-12">
-                <div className="relative h-32 md:h-48 rounded-xl md:rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                  <img src={teamMembers[0].img} alt={teamMembers[0].alt} className="w-full h-full object-cover" />
-                </div>
-                <div className="relative h-40 md:h-56 rounded-xl md:rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                  <img src={teamMembers[1].img} alt={teamMembers[1].alt} className="w-full h-full object-cover" />
-                </div>
-              </div>
-
-              {/* Column 2 - Centered */}
-              <div className="flex flex-col gap-3 md:gap-4">
-                <div className="relative h-24 md:h-40 rounded-xl md:rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                   <img src={teamMembers[2].img} alt={teamMembers[2].alt} className="w-full h-full object-cover" />
-                </div>
-                <div className="relative h-48 md:h-64 rounded-xl md:rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-300 ring-2 ring-white/30 z-10">
-                   <img src={teamMembers[3].img} alt={teamMembers[3].alt} className="w-full h-full object-cover" />
-                </div>
-                <div className="relative h-24 md:h-40 rounded-xl md:rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                   <img src={teamMembers[4].img} alt={teamMembers[4].alt} className="w-full h-full object-cover" />
-                </div>
-              </div>
-
-              {/* Column 3 - Upward offset */}
-              <div className="flex flex-col gap-3 md:gap-4 mt-6 md:mt-8">
-                <div className="relative h-40 md:h-56 rounded-xl md:rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                  <img src={teamMembers[5].img} alt={teamMembers[5].alt} className="w-full h-full object-cover" />
-                </div>
-                <div className="relative h-32 md:h-48 rounded-xl md:rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300">
-                  <img src={teamMembers[6].img} alt={teamMembers[6].alt} className="w-full h-full object-cover" />
-                </div>
-              </div>
-            </div>
-            
-            {/* Mobile-only featured image (since grid is too complex for very small screens) */}
-            <div className="sm:hidden relative h-64 rounded-2xl overflow-hidden shadow-2xl ring-2 ring-white/30">
-                <img src={teamMembers[3].img} alt={teamMembers[3].alt} className="w-full h-full object-cover" />
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    </section>
-  );
-};
 // ============================================================================
 // REMAINING SECTIONS IMPORTED FROM ORIGINAL COMPONENTS
 // ============================================================================
@@ -2367,9 +2028,8 @@ const HomePage = () => {
       <IndustriesWeServe />
       <TrustStatementSection />
       <PartnerBadgesStrip />
-      <CaseStudiesSection />
+      <TestimonialsSection />
       <LeadershipSection />
-      <FeaturedInsightsSection />
       <EqoreShowSection />
 
       <section id="scheduling-widget" className="py-24 bg-white dark:bg-black relative overflow-hidden">
@@ -2387,7 +2047,6 @@ const HomePage = () => {
 
       <EqoreTypingSection bookingRef={bookingRef} />
 
-      <CareersCTASection />
       <ContactForm />
       <TransformCTA />
       <StickyMobileCTA />
