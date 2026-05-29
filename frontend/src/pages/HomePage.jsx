@@ -1687,7 +1687,7 @@ const LeadershipSection = () => {
           {/* Right Column: Clean Minimalist Editorial Text (Col 7) */}
           <div className="lg:col-span-7 space-y-6 lg:pl-6 text-left">
             {/* Standalone large premium quote icon anchor */}
-            <Quote className="w-12 h-12 text-brand-blue dark:text-brand-cyan opacity-40 transform -scale-x-100" />
+            <Quote className="w-12 h-12 text-black dark:text-white opacity-100 transform -scale-x-100" />
             
             <div className="space-y-6 text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100 leading-relaxed font-sans">
               <p>
