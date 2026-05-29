@@ -1700,7 +1700,7 @@ const LeadershipSection = () => {
             <div className="pt-6 border-t border-neutral-900 space-y-4">
               <div>
                 <p className="text-white font-semibold text-lg tracking-tight">Mahesh Kumar</p>
-                <p className="text-xs text-neutral-500 font-medium tracking-wider uppercase mt-0.5">Founder & CEO, Kangqore Global Pvt. Ltd.</p>
+                <p className="text-xs text-neutral-500 font-medium tracking-wider uppercase mt-0.5">Founder & CEO, Kangqore</p>
               </div>
 
               {/* Minimalist social links */}
