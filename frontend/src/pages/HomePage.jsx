@@ -1664,7 +1664,7 @@ const LeadershipSection = () => {
   const [ref, visible] = useScrollAnimation({ once: true, threshold: 0.15 });
 
   return (
-    <section className="py-24 md:py-36 bg-[#030303] text-white overflow-hidden relative">
+    <section className="py-24 md:py-36 bg-white dark:bg-black text-gray-900 dark:text-white overflow-hidden relative border-y border-gray-100 dark:border-neutral-900">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div 
           ref={ref}
@@ -1674,20 +1674,20 @@ const LeadershipSection = () => {
         >
           {/* Left Column: Simple rectangular premium portrait (Col 5) */}
           <div className="lg:col-span-5 relative group">
-            <div className="relative overflow-hidden shadow-2xl max-w-sm sm:max-w-md mx-auto lg:mx-0 aspect-[4/5]">
+            <div className="relative overflow-hidden shadow-2xl max-w-sm sm:max-w-md mx-auto lg:mx-0 aspect-[4/5] rounded-xl border border-gray-100 dark:border-neutral-900">
               <img 
                 src="/images/leadership/ceo-mahesh-kumar.png" 
                 alt="Mahesh Kumar, Founder and CEO" 
                 className="w-full h-full object-cover object-top block transform scale-[1.01] group-hover:scale-105 transition-transform duration-[1.2s]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none"></div>
             </div>
           </div>
 
           {/* Right Column: Clean Minimalist Editorial Text (Col 7) */}
           <div className="lg:col-span-7 space-y-8 lg:pl-6 text-left">
-            {/* Uniform Editorial Quote Blocks */}
-            <div className="space-y-6 text-[13px] md:text-[14px] font-normal text-gray-300 leading-relaxed font-sans">
+            {/* Uniform Editorial Quote Blocks - Scaled Up for Legibility */}
+            <div className="space-y-6 text-lg md:text-xl font-normal text-gray-600 dark:text-gray-300 leading-relaxed font-sans">
               <p>
                 “The next era will not be defined by companies that simply use AI. It will be defined by those that use AI to amplify human imagination, ambition, and potential. Businesses don't evolve by ideas alone; they evolve through innovation. At Kangqore, we innovate futures.
               </p>
@@ -1697,9 +1697,9 @@ const LeadershipSection = () => {
             </div>
 
             {/* Editorial Attribution & Minimalist Links */}
-            <div className="pt-6 border-t border-neutral-900 space-y-4">
+            <div className="pt-6 border-t border-gray-200 dark:border-neutral-800 space-y-4">
               <div>
-                <p className="text-white font-semibold text-lg tracking-tight">Mahesh Kumar</p>
+                <p className="text-gray-900 dark:text-white font-semibold text-lg tracking-tight">Mahesh Kumar</p>
                 <p className="text-xs text-neutral-500 font-medium tracking-wider uppercase mt-0.5">Founder & CEO, Kangqore</p>
               </div>
 
@@ -1709,7 +1709,7 @@ const LeadershipSection = () => {
                   href="https://in.linkedin.com/in/maheshkumario"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300 ease-out"
+                  className="text-gray-700 dark:text-neutral-400 opacity-70 hover:opacity-100 hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-300 ease-out"
                   aria-label="LinkedIn"
                 >
                   <svg 
@@ -1724,7 +1724,7 @@ const LeadershipSection = () => {
                   href="https://x.com/maheshkumarx"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300 ease-out flex items-center justify-center"
+                  className="text-gray-700 dark:text-neutral-400 opacity-70 hover:opacity-100 hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-300 ease-out flex items-center justify-center"
                   aria-label="X"
                 >
                   <svg 
