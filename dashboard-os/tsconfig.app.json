@@ -19,7 +19,21 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Path aliases — relative values, no baseUrl needed */
+    "paths": {
+      "@/*":               ["./src/*"],
+      "@components/*":     ["./src/components/*"],
+      "@design-system":    ["./src/design-system/index.ts"],
+      "@design-system/*":  ["./src/design-system/*"],
+      "@features/*":       ["./src/features/*"],
+      "@hooks/*":          ["./src/hooks/*"],
+      "@lib/*":            ["./src/lib/*"],
+      "@pages/*":          ["./src/pages/*"],
+      "@store/*":          ["./src/store/*"],
+      "@types/*":          ["./src/types/*"]
+    }
   },
   "include": ["src"]
 }

@@ -1,33 +1,35 @@
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
+import { OSLayout } from '@components/shell/OSLayout'
+import { PlaceholderPage } from '@pages/PlaceholderPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5,
-      retry: 1,
-    },
+    queries: { staleTime: 1000 * 60 * 5, retry: 1 },
   },
 })
+
+const OS_MODULES = [
+  'strategy', 'projects', 'resources', 'finance',
+  'clients', 'partners', 'leads', 'investors',
+  'careers', 'marketing', 'workflows', 'departments',
+  'analytics', 'kimmp',
+]
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="min-h-screen bg-[var(--color-surface-50)] flex items-center justify-center">
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-[var(--color-brand-500)]" />
-              <span className="text-xl font-semibold text-[var(--color-text-primary)]">
-                Kangqore OS
-              </span>
-            </div>
-            <p className="text-[var(--color-text-muted)] text-sm">
-              Phase 0a — Foundation ready. Design system next.
-            </p>
-          </div>
-        </div>
+        <Routes>
+          <Route path="/os" element={<OSLayout />}>
+            <Route index element={<Navigate to="/os/strategy" replace />} />
+            {OS_MODULES.map(mod => (
+              <Route key={mod} path={mod} element={<PlaceholderPage />} />
+            ))}
+          </Route>
+          <Route path="/" element={<Navigate to="/os/strategy" replace />} />
+        </Routes>
         <Toaster position="top-right" />
       </BrowserRouter>
     </QueryClientProvider>
