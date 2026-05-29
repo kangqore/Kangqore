@@ -1368,69 +1368,6 @@ const TypewriterText = ({ isVisible }) => {
   );
 };
 
-const ROIBanner = () => {
-  return (
-    <div className="w-full relative rounded-xl overflow-hidden shadow-2xl mb-16 border border-white/10 hover:shadow-[0_20px_50px_rgba(37,100,234,0.3)] transition-shadow duration-500 group">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] opacity-95 mix-blend-multiply dark:mix-blend-normal" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-white/30 via-transparent to-transparent opacity-50" />
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay group-hover:opacity-20 transition-opacity duration-700" />
-      
-      <div className="relative z-10 flex flex-col lg:flex-row items-stretch text-white px-6 py-8 md:p-8 gap-6 md:gap-8">
-        
-        {/* Left Column: Title + First Stat */}
-        <div className="flex-1 flex flex-col justify-between">
-          <div className="flex justify-between items-start mb-6 lg:mb-4">
-            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white drop-shadow-md">AI that delivers ROI</h3>
-            <Link to="/services" className="lg:hidden text-xs sm:text-sm font-bold bg-white dark:bg-gray-900 dark:border-gray-800 text-[#2564ea] px-4 py-2 rounded shadow hover:bg-gray-100 hover:scale-105 transition-all inline-flex items-center gap-1 whitespace-nowrap">
-              Find out more <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-          <div>
-            <p className="text-sm sm:text-base leading-relaxed text-blue-50 font-medium">
-              <strong className="text-2xl sm:text-3xl font-extrabold text-white mr-1 drop-shadow-sm">45%</strong>
-              reduction in app dev effort enabled by AI Force.Software for a Financial services major
-            </p>
-          </div>
-        </div>
-
-        {/* Dividers & Middle Column 1 */}
-        <div className="hidden lg:block w-[1px] bg-white dark:bg-black/20 self-stretch" />
-        <div className="flex-1 flex items-end">
-          <p className="text-sm sm:text-base leading-relaxed text-blue-50 font-medium">
-            <strong className="text-2xl sm:text-3xl font-extrabold text-white mr-1 drop-shadow-sm">20%</strong>
-            IT Ops MTTR reduction enabled by AI Force.Ops for a Tools manufacturer
-          </p>
-        </div>
-
-        {/* Dividers & Middle Column 2 */}
-        <div className="hidden lg:block w-[1px] bg-white dark:bg-black/20 self-stretch" />
-        <div className="flex-1 flex items-end">
-          <p className="text-sm sm:text-base leading-relaxed text-blue-50 font-medium">
-            <strong className="text-2xl sm:text-3xl font-extrabold text-white mr-1 drop-shadow-sm">3x</strong>
-            faster time-to-market achieved via Agentic AI workflows for a Global E-commerce leader
-          </p>
-        </div>
-
-        {/* Dividers & Right Column */}
-        <div className="hidden lg:block w-[1px] bg-white dark:bg-black/20 self-stretch" />
-        <div className="flex-1 flex flex-col justify-between">
-          <div className="hidden lg:flex justify-end mb-6 lg:mb-4">
-            <Link to="/services" className="text-sm font-bold bg-white dark:bg-gray-900 dark:border-gray-800 text-[#2564ea] px-5 py-2.5 rounded shadow-lg hover:bg-gray-100 hover:scale-105 hover:shadow-xl transition-all inline-flex items-center gap-1.5 whitespace-nowrap">
-              Find out more <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          <p className="text-sm sm:text-base leading-relaxed text-blue-50 font-medium">
-            <strong className="text-2xl sm:text-3xl font-extrabold text-white mr-1 drop-shadow-sm">87%</strong>
-            investigation time reduction through AI-enabled trade surveillance for a Financial Services major
-          </p>
-        </div>
-        
-      </div>
-    </div>
-  );
-};
-
 const ValueProposition = () => {
   const { t, i18n } = useTranslation();
   const [titleRef, titleVisible] = useScrollAnimation({ once: true, threshold: 0.3 });
@@ -1448,8 +1385,6 @@ const ValueProposition = () => {
           <p className="text-gray-500 dark:text-gray-400 text-xl md:text-2xl lg:text-3xl max-w-4xl mb-12 leading-relaxed font-medium tracking-tight">
             {t('home.value_prop_intro')}
           </p>
-          
-          <ROIBanner />
           
           <TypewriterText isVisible={titleVisible} key={i18n.language} />
           
