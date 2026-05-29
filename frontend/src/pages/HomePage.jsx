@@ -1687,7 +1687,7 @@ const LeadershipSection = () => {
           {/* Right Column: Clean Minimalist Editorial Text (Col 7) */}
           <div className="lg:col-span-7 space-y-8 lg:pl-6 text-left">
             {/* Uniform Editorial Quote Blocks */}
-            <div className="space-y-6 text-lg md:text-xl font-normal text-gray-300 leading-relaxed font-sans">
+            <div className="space-y-6 text-base md:text-lg font-normal text-gray-300 leading-relaxed font-sans">
               <p>
                 “The next era will not be defined by companies that simply use AI. It will be defined by those that use AI to amplify human imagination, ambition, and potential.
               </p>
