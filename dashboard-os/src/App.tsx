@@ -11,6 +11,7 @@ import { ProjectsModule }   from '@features/projects'
 import { ResourcesModule }  from '@features/resources'
 import { FinanceModule }    from '@features/finance'
 import { ClientsModule }   from '@features/clients'
+import { PartnersModule }  from '@features/partners'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +20,7 @@ const queryClient = new QueryClient({
 })
 
 const PLACEHOLDER_MODULES = [
-  'partners', 'leads', 'investors',
+  'leads', 'investors',
   'careers', 'marketing', 'workflows', 'departments',
   'analytics', 'kimmp',
 ]
@@ -58,6 +59,9 @@ export default function App() {
 
             {/* Phase 2a — Client Management */}
             <Route path="clients/*"   element={<ClientsModule />}   />
+
+            {/* Phase 2b — Partner Management */}
+            <Route path="partners/*"  element={<PartnersModule />}  />
 
             {/* Remaining modules — placeholder until their phase */}
             {PLACEHOLDER_MODULES.map(mod => (
