@@ -6,6 +6,7 @@ import { ProtectedRoute } from '@components/auth/ProtectedRoute'
 import { LoginPage } from '@pages/auth/LoginPage'
 import { SignupPage } from '@pages/auth/SignupPage'
 import { PlaceholderPage } from '@pages/PlaceholderPage'
+import { StrategyModule } from '@features/strategy'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -13,8 +14,8 @@ const queryClient = new QueryClient({
   },
 })
 
-const OS_MODULES = [
-  'strategy', 'projects', 'resources', 'finance',
+const PLACEHOLDER_MODULES = [
+  'projects', 'resources', 'finance',
   'clients', 'partners', 'leads', 'investors',
   'careers', 'marketing', 'workflows', 'departments',
   'analytics', 'kimmp',
@@ -25,11 +26,11 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          {/* Public auth routes */}
+          {/* Public */}
           <Route path="/login"  element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
 
-          {/* Protected OS — requires authentication */}
+          {/* Protected OS */}
           <Route
             path="/os"
             element={
@@ -39,12 +40,16 @@ export default function App() {
             }
           >
             <Route index element={<Navigate to="/os/strategy" replace />} />
-            {OS_MODULES.map(mod => (
-              <Route key={mod} path={mod} element={<PlaceholderPage />} />
+
+            {/* Phase 1a — Strategy (nested routes handled inside module) */}
+            <Route path="strategy/*" element={<StrategyModule />} />
+
+            {/* Remaining modules — placeholder until their phase */}
+            {PLACEHOLDER_MODULES.map(mod => (
+              <Route key={mod} path={`${mod}/*`} element={<PlaceholderPage />} />
             ))}
           </Route>
 
-          {/* Root redirect */}
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
