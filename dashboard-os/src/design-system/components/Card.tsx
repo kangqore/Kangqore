@@ -1,7 +1,7 @@
 import { cn } from '../cn'
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'flat' | 'elevated'
+  variant?: 'default' | 'flat' | 'elevated' | 'glass'
   padding?: 'none' | 'sm' | 'md' | 'lg'
 }
 
@@ -13,14 +13,15 @@ const paddingMap = {
 }
 
 const variantMap = {
-  default:  'bg-white border border-slate-100 shadow-[0_0_0_1px_rgb(0_0_0/0.04),0_2px_8px_0_rgb(0_0_0/0.06)]',
-  flat:     'bg-white border border-slate-200',
-  elevated: 'bg-white shadow-lg border border-slate-100',
+  default:  'bg-white border border-slate-100/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]',
+  flat:     'bg-white border border-slate-200/60',
+  elevated: 'bg-white shadow-[0_4px_16px_rgba(0,0,0,0.02)] border border-slate-100/80',
+  glass:    'bg-white border border-slate-100/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]',
 }
 
 function Card({ className, variant = 'default', padding = 'md', children, ...props }: CardProps) {
   return (
-    <div className={cn('rounded-2xl', variantMap[variant], paddingMap[padding], className)} {...props}>
+    <div className={cn('rounded-xl transition-all duration-300', variantMap[variant], paddingMap[padding], className)} {...props}>
       {children}
     </div>
   )

@@ -40,30 +40,38 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        'bg-white border border-slate-200 rounded-xl p-3 shadow-sm select-none',
+        'bg-white border border-slate-100 rounded-xl p-3.5 select-none transition-all duration-200',
+        'hover:border-slate-200/80',
         isDragging && !dragging && 'opacity-30',
-        dragging && 'shadow-xl rotate-1 scale-105',
+        dragging && 'shadow-md bg-white border-slate-300',
         'cursor-grab active:cursor-grabbing'
       )}
     >
-      <div className="flex items-start gap-2">
-        <button {...attributes} {...listeners} className="text-slate-300 hover:text-slate-500 mt-0.5 flex-shrink-0">
+      <div className="flex items-start gap-2.5">
+        <button 
+          {...attributes} 
+          {...listeners} 
+          className="text-slate-300 hover:text-slate-500 hover:bg-slate-50 p-1 rounded-lg mt-0.5 flex-shrink-0 transition-colors"
+        >
           <GripVertical className="w-3.5 h-3.5" />
         </button>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <Flag className={cn('w-3 h-3 flex-shrink-0', PRIORITY_COLOR[task.priority])} />
-            <span className="text-[10px] text-slate-400 font-mono">{task.id.toUpperCase()}</span>
+          <div className="flex items-center gap-1.5 mb-2">
+            <Flag className={cn('w-3.5 h-3.5 flex-shrink-0', PRIORITY_COLOR[task.priority])} />
+            <span className="text-[10px] text-slate-400 font-mono tracking-wider">{task.id.toUpperCase()}</span>
           </div>
-          <p className="text-xs font-medium text-slate-800 leading-relaxed mb-2">{task.title}</p>
-          <div className="flex items-center gap-1 flex-wrap mb-2">
+          <p className="text-xs font-semibold text-slate-800 leading-relaxed mb-2.5">{task.title}</p>
+          <div className="flex items-center gap-1.5 flex-wrap mb-3">
             {task.labels.slice(0, 2).map(l => (
-              <Badge key={l} variant={LABEL_VARIANT[l] ?? 'neutral'} size="sm">{l}</Badge>
+              <Badge key={l} variant={LABEL_VARIANT[l] ?? 'neutral'} size="sm" className="font-medium tracking-wide">{l}</Badge>
             ))}
           </div>
-          <div className="flex items-center justify-between">
-            <Avatar name={task.assignee} size="xs" />
-            <span className="text-[10px] text-slate-400">{task.storyPoints} pts</span>
+          <div className="flex items-center justify-between border-t border-slate-100/50 pt-2.5 mt-1">
+            <div className="flex items-center gap-2">
+              <Avatar name={task.assignee} size="xs" />
+              <span className="text-[10px] font-medium text-slate-500">{task.assignee.split(' ')[0]}</span>
+            </div>
+            <span className="text-[10px] font-semibold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">{task.storyPoints} pts</span>
           </div>
         </div>
       </div>
@@ -73,22 +81,26 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
 
 function Column({ status, tasks }: { status: typeof COLUMNS[0]; tasks: Task[] }) {
   return (
-    <div className="flex flex-col gap-2 min-w-[220px] w-[220px]">
+    <div className="flex flex-col gap-2.5 min-w-[230px] w-[230px]">
       {/* Header */}
-      <div className="flex items-center gap-2 px-1 mb-1">
-        <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: status.color }} />
-        <span className="text-xs font-semibold text-slate-700">{status.label}</span>
-        <span className="ml-auto text-xs font-bold text-slate-400 bg-slate-100 rounded-full w-5 h-5 flex items-center justify-center">
+      <div className="flex items-center gap-2 px-1 mb-1.5">
+        <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: status.color }} />
+        <span className="text-xs font-semibold text-slate-600">{status.label}</span>
+        <span className="ml-auto text-[10px] font-bold text-slate-400 bg-slate-100 rounded-full w-5 h-5 flex items-center justify-center">
           {tasks.length}
         </span>
       </div>
       {/* Drop zone */}
       <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
         <div className={cn(
-          'flex flex-col gap-2 min-h-[80px] p-2 rounded-xl bg-slate-50 border border-slate-100',
+          'flex flex-col gap-2 min-h-[120px] p-2 rounded-xl bg-slate-50/40 border border-slate-100/60',
           tasks.length === 0 && 'items-center justify-center'
         )}>
-          {tasks.length === 0 && <p className="text-xs text-slate-300 py-4">Drop here</p>}
+          {tasks.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-8">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-300">Drop here</p>
+            </div>
+          )}
           {tasks.map(t => <TaskCard key={t.id} task={t} />)}
         </div>
       </SortableContext>
