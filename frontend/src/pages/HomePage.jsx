@@ -57,7 +57,7 @@ const heroSlides = [
     tag: "ENTERPRISE TRANSFORMATION",
     title: "Engineer the Systems That",
     titleGradient: "Scale Your Ambition.",
-    description: "Kangqore builds intelligent digital infrastructure that helps businesses modernize operations, automate workflows, secure systems, and accelerate growth.",
+    description: "Kangqore partners with ambitious organizations to engineer intelligent digital infrastructure that modernizes operations, automates enterprise workflows, secures critical systems, and accelerates measurable growth.",
     cta: "Explore Our Capabilities",
     secondaryCta: "Schedule Your 30-min Discovery Call",
     link: "/services",
@@ -852,15 +852,16 @@ const EditorialCard = ({ card, featured = false }) => {
   return (
     <Link
       to={card.href}
-      className={`group relative overflow-hidden bg-slate-900 dark:bg-black transition-all duration-700 w-full ${card.aspect}`}
+      className={`group relative z-10 overflow-hidden bg-slate-900 dark:bg-black transition-all duration-700 w-full rounded-2xl ${card.aspect}`}
+      style={{ transform: 'translateZ(0)' }}
     >
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden rounded-2xl">
         <img
           src={card.image}
           alt={card.title}
           className="h-full w-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent rounded-2xl" />
       </div>
 
       <div className="relative z-10 flex h-full flex-col justify-end p-6 md:p-8">
@@ -921,7 +922,7 @@ const InsightsSubscribeBlock = () => {
   };
 
   return (
-    <div className="bg-gray-900 dark:bg-black p-10 flex flex-col justify-center aspect-video">
+    <div className="bg-gray-900 dark:bg-black p-10 flex flex-col justify-center aspect-video rounded-2xl">
       {status === 'success' ? (
         /* ── Success State ── */
         <div className="flex flex-col items-center justify-center text-center gap-4 animate-fade-in">
@@ -938,7 +939,7 @@ const InsightsSubscribeBlock = () => {
             Subscribe to the latest Kangqore Insights on the topics you care about.
           </h3>
           
-          <form onSubmit={handleSubscribe} className="relative mb-4 flex">
+          <form onSubmit={handleSubscribe} className="relative mb-4 flex rounded-xl overflow-hidden">
             <input 
               type="email"
               id="insights-subscribe-email"
@@ -979,13 +980,13 @@ const InsightsSubscribeBlock = () => {
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white dark:bg-gray-900 dark:border-gray-800/5 transition-colors font-sans">
+            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 transition-colors font-sans rounded-xl">
               Apple
             </button>
-            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white dark:bg-gray-900 dark:border-gray-800/5 transition-colors font-sans">
+            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 transition-colors font-sans rounded-xl">
               Google
             </button>
-            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white dark:bg-gray-900 dark:border-gray-800/5 transition-colors font-sans">
+            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 transition-colors font-sans rounded-xl">
               LinkedIn
             </button>
           </div>
