@@ -341,6 +341,11 @@ const DashboardLayout = ({ children, role, title, subtitle, headerActions }) => 
 
         { name: 'User Mgmt', icon: UserPen, path: '/dashboard/admin/users' },
         { name: 'Leads (CRM)', icon: Target, path: '/dashboard/admin/leads' },
+        { name: 'Scheduling', isHeader: true },
+        { name: 'Event Types', icon: Calendar, path: '/dashboard/admin/scheduling' },
+        { name: 'Team Scheduling', icon: Users, path: '/dashboard/admin/team-scheduling' },
+        { name: 'Scheduling Analytics', icon: BarChart3, path: '/dashboard/admin/scheduling-analytics' },
+        { name: 'Scheduling Audit', icon: Shield, path: '/dashboard/admin/scheduling-audit' },
         { name: 'Consultations', icon: Calendar, path: '/dashboard/admin/consultations' },
         { name: 'Messages', icon: Inbox, path: '/dashboard/admin/contacts' },
         { name: 'Emails', icon: Send, path: '/dashboard/admin/emails' },
