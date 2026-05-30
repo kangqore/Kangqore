@@ -17,14 +17,14 @@ export function StrategyModule() {
   return (
     <div className="space-y-0">
       {/* Sub-nav */}
-      <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
+      <div className="flex items-center gap-2 border-b border-slate-200 mb-8 mt-1">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
             to={tab.path === '' ? '/os/strategy' : `/os/strategy/${tab.path}`}
             end={tab.path === ''}
             className={({ isActive }) => cn(
-              'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
+              'flex items-center gap-2.5 px-5 py-3 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
                 ? 'border-blue-600 text-blue-700'
                 : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'

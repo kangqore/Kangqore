@@ -39,19 +39,19 @@ export function StrategyOverview() {
   const totalSpent  = pillars.reduce((s, p) => s + p.spent, 0)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12 pb-16">
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
+      <div className="flex items-center justify-between flex-wrap gap-6 mb-2">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Strategy Overview</h2>
-          <p className="text-sm text-slate-400 mt-0.5">Company-wide strategic health across all pillars and OKRs</p>
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Strategy Overview</h2>
+          <p className="text-sm text-slate-400 mt-1">Company-wide strategic health across all pillars and OKRs</p>
         </div>
         <div className="flex items-center gap-2">
           {QUARTER_OPTIONS.map(q => (
             <button
               key={q}
               onClick={() => setSelectedQuarter(q)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
                 selectedQuarter === q
                   ? 'bg-slate-900 text-white shadow-sm'
                   : 'bg-white border border-slate-200 text-slate-500 hover:border-slate-300'
@@ -63,8 +63,8 @@ export function StrategyOverview() {
         </div>
       </div>
 
-      {/* KPI row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* KPI row - Spacious gap-8 */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
         <StatCard
           label="Strategic Pillars"
           value={pillars.length}
@@ -97,31 +97,33 @@ export function StrategyOverview() {
         />
       </div>
 
-      {/* OKR health + Budget */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* OKR health + Budget - Spacious gap-8 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Donut */}
-        <Card className="lg:col-span-1">
-          <CardHeader>
-            <CardTitle>OKR Health — {selectedQuarter}</CardTitle>
-            <Badge variant="neutral" size="sm">{objectives.length} objectives</Badge>
+        <Card className="lg:col-span-1" padding="lg">
+          <CardHeader className="mb-6">
+            <div className="space-y-1">
+              <CardTitle className="text-base font-bold">OKR Health</CardTitle>
+              <Badge variant="neutral" size="sm" className="font-semibold">{objectives.length} objectives</Badge>
+            </div>
           </CardHeader>
-          <div className="flex items-center gap-6">
-            <ResponsiveContainer width={100} height={100}>
+          <div className="flex items-center gap-8 py-3">
+            <ResponsiveContainer width={110} height={110}>
               <PieChart>
-                <Pie data={donutData} cx="50%" cy="50%" innerRadius={34} outerRadius={46} dataKey="value" strokeWidth={1.5}>
+                <Pie data={donutData} cx="50%" cy="50%" innerRadius={36} outerRadius={48} dataKey="value" strokeWidth={1.5}>
                   {donutData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                 </Pie>
                 <Tooltip formatter={(v, n) => [v, n]} />
               </PieChart>
             </ResponsiveContainer>
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 space-y-3">
               {donutData.map(d => (
                 <div key={d.name} className="flex items-center justify-between text-xs">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full" style={{ background: d.color }} />
-                    <span className="text-slate-500">{d.name}</span>
+                  <span className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: d.color }} />
+                    <span className="text-slate-500 font-medium">{d.name}</span>
                   </span>
-                  <span className="font-semibold text-slate-800">{d.value}</span>
+                  <span className="font-bold text-slate-800">{d.value}</span>
                 </div>
               ))}
             </div>
@@ -129,18 +131,21 @@ export function StrategyOverview() {
         </Card>
 
         {/* Budget overview */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Portfolio Budget</CardTitle>
-            <span className="text-sm font-semibold text-slate-800">
+        <Card className="lg:col-span-2" padding="lg">
+          <CardHeader className="mb-6">
+            <div className="space-y-1">
+              <CardTitle className="text-base font-bold">Portfolio Budget</CardTitle>
+              <p className="text-xs text-slate-400">Pillar spent distribution</p>
+            </div>
+            <span className="text-sm font-bold text-slate-800 bg-slate-50 px-3 py-1 rounded-md border border-slate-100/50">
               £{(totalSpent / 1000).toFixed(0)}k / £{(totalBudget / 1000).toFixed(0)}k
             </span>
           </CardHeader>
-          <div className="space-y-4">
+          <div className="space-y-5">
             {pillars.map(p => (
-              <div key={p.id} className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: p.color }} />
-                <span className="text-xs text-slate-500 w-36 truncate">{p.name}</span>
+              <div key={p.id} className="flex items-center gap-4">
+                <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: p.color }} />
+                <span className="text-xs font-semibold text-slate-600 w-36 truncate">{p.name}</span>
                 <div className="flex-1">
                   <Progress
                     value={Math.round((p.spent / p.budget) * 100)}
@@ -148,13 +153,13 @@ export function StrategyOverview() {
                     color={p.spent / p.budget > 0.85 ? 'danger' : p.spent / p.budget > 0.7 ? 'warning' : 'success'}
                   />
                 </div>
-                <span className="text-xs font-semibold text-slate-500 w-16 text-right">
+                <span className="text-xs font-bold text-slate-500 w-16 text-right">
                   {Math.round((p.spent / p.budget) * 100)}%
                 </span>
               </div>
             ))}
           </div>
-          <div className="mt-5 pt-4 border-t border-slate-100/50">
+          <div className="mt-6 pt-5 border-t border-slate-100/80">
             <Progress
               value={Math.round((totalSpent / totalBudget) * 100)}
               color="brand"
@@ -166,33 +171,36 @@ export function StrategyOverview() {
         </Card>
       </div>
 
-      {/* Pillars grid */}
+      {/* Pillars grid - Spacious gap-8 */}
       <div>
-        <h3 className="text-sm font-semibold text-slate-400 mb-4 uppercase tracking-wider">Strategic Pillars</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <h3 className="text-base font-bold text-slate-800 mb-5 tracking-tight">Strategic Pillars</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {pillars.map(p => <PillarCard key={p.id} pillar={p} />)}
         </div>
       </div>
 
       {/* Recent program activity */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Active Programs</CardTitle>
-          <Badge variant="brand" size="sm">{activePrograms} running</Badge>
+      <Card padding="lg">
+        <CardHeader className="mb-6">
+          <div className="space-y-1">
+            <CardTitle className="text-base font-bold">Active Programs</CardTitle>
+            <p className="text-xs text-slate-400">Currently executing workstreams</p>
+          </div>
+          <Badge variant="brand" size="sm" className="font-semibold">{activePrograms} running</Badge>
         </CardHeader>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {programs.filter(p => p.status === 'active').slice(0, 6).map(prog => (
-            <div key={prog.id} className="flex items-center gap-4 py-3 border-b border-slate-100/50 last:border-0">
-              <div className="w-1.5 h-8 rounded-full flex-shrink-0" style={{ background: prog.pillarColor }} />
+            <div key={prog.id} className="flex items-center gap-6 py-4 border-b border-slate-100/50 last:border-0 last:pb-0 first:pt-0">
+              <div className="w-2 h-8 rounded-full flex-shrink-0" style={{ background: prog.pillarColor }} />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-800 truncate">{prog.name}</p>
-                <p className="text-xs text-slate-400">{prog.pillarName}</p>
+                <p className="text-sm font-bold text-slate-800 truncate">{prog.name}</p>
+                <p className="text-xs text-slate-400 mt-0.5">{prog.pillarName}</p>
               </div>
-              <div className="w-28">
+              <div className="w-36">
                 <Progress value={prog.progress} size="sm" color="brand" />
-                <p className="text-[10px] text-slate-400 mt-1 text-right font-medium">{prog.progress}%</p>
+                <p className="text-[10px] text-slate-400 mt-1.5 text-right font-semibold">{prog.progress}%</p>
               </div>
-              <Avatar name={prog.owner} size="xs" />
+              <Avatar name={prog.owner} size="xs" className="ring-2 ring-slate-50" />
             </div>
           ))}
         </div>

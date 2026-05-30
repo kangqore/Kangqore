@@ -18,75 +18,81 @@ export function OKRCard({ objective }: { objective: Objective }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden bg-white border border-slate-100/80 hover:shadow-lg transition-all duration-300 relative" padding="lg">
       {/* Pillar accent */}
-      <div className="w-1 absolute left-0 top-0 bottom-0 rounded-l-2xl" style={{ background: objective.pillarColor }} />
-      <div className="pl-3">
+      <div className="w-1.5 absolute left-0 top-0 bottom-0" style={{ background: objective.pillarColor }} />
+      <div className="pl-4">
         {/* Header */}
         <div
-          className="flex items-start gap-3 cursor-pointer"
+          className="flex items-start gap-4 cursor-pointer"
           onClick={() => setExpanded(v => !v)}
         >
-          <button className="mt-0.5 text-slate-400 hover:text-slate-600 flex-shrink-0">
+          <button className="mt-1 text-slate-400 hover:text-slate-600 flex-shrink-0 transition-colors">
             {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
           </button>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <span
-                className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                style={{ background: objective.pillarColor + '20', color: objective.pillarColor }}
+                className="text-[10px] font-bold px-2.5 py-0.5 rounded-full"
+                style={{ background: objective.pillarColor + '15', color: objective.pillarColor }}
               >
                 {objective.pillarName}
               </span>
               <HealthBadge status={objective.status} />
             </div>
-            <p className="text-sm font-semibold text-slate-900 mt-1.5">{objective.title}</p>
-            <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">{objective.description}</p>
+            <p className="text-base font-bold text-slate-900 mt-2.5 tracking-tight">{objective.title}</p>
+            <p className="text-xs text-slate-500 mt-1 line-clamp-1 font-normal">{objective.description}</p>
           </div>
           <div className="flex-shrink-0 text-right">
-            <p className="text-xl font-bold text-slate-900">{objective.progress}%</p>
-            <p className="text-[10px] text-slate-400">progress</p>
+            <p className="text-2xl font-black text-slate-900 leading-none">{objective.progress}%</p>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">progress</p>
           </div>
         </div>
 
         {/* Overall progress */}
-        <div className="mt-3 ml-7">
+        <div className="mt-5 ml-8">
           <Progress
             value={objective.progress}
-            size="md"
+            size="sm"
             color={statusColor[objective.status] as 'success' | 'warning' | 'danger' | 'info'}
           />
         </div>
 
         {/* Owner */}
-        <div className="flex items-center gap-2 mt-3 ml-7">
-          <Avatar name={objective.owner} size="xs" />
-          <span className="text-xs text-slate-500">{objective.owner}</span>
+        <div className="flex items-center gap-2.5 mt-4 ml-8">
+          <Avatar name={objective.owner} size="xs" className="ring-2 ring-slate-50" />
+          <span className="text-xs text-slate-650 font-semibold">{objective.owner}</span>
         </div>
 
         {/* Key results (expanded) */}
         {expanded && (
-          <div className="mt-4 ml-7 space-y-3 border-t border-slate-100 pt-4">
-            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Key Results</p>
-            {objective.keyResults.map(kr => (
-              <div key={kr.id} className={cn('p-3 rounded-xl', 'bg-slate-50 border border-slate-100')}>
-                <div className="flex items-center justify-between gap-3 mb-2">
-                  <p className="text-xs font-medium text-slate-700 flex-1">{kr.title}</p>
-                  <HealthBadge status={kr.status} />
+          <div className="mt-6 ml-8 space-y-4 border-t border-slate-100 pt-5">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Key Results</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {objective.keyResults.map(kr => (
+                <div key={kr.id} className={cn('p-4 rounded-xl', 'bg-slate-50/50 border border-slate-100/80 flex flex-col justify-between gap-3')}>
+                  <div>
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <p className="text-xs font-bold text-slate-700 leading-relaxed flex-1">{kr.title}</p>
+                      <HealthBadge status={kr.status} />
+                    </div>
+                  </div>
+                  <div>
+                    <Progress
+                      value={kr.progress}
+                      size="sm"
+                      color={statusColor[kr.status] as 'success' | 'warning' | 'danger' | 'info'}
+                    />
+                    <p className="text-[11px] font-semibold text-slate-500 mt-2">
+                      {kr.unit === '$' || kr.unit === '£'
+                        ? `${kr.unit}${kr.current.toLocaleString()} / ${kr.unit}${kr.target.toLocaleString()}`
+                        : `${kr.current} / ${kr.target} ${kr.unit}`
+                      }
+                    </p>
+                  </div>
                 </div>
-                <Progress
-                  value={kr.progress}
-                  size="sm"
-                  color={statusColor[kr.status] as 'success' | 'warning' | 'danger' | 'info'}
-                />
-                <p className="text-[11px] text-slate-400 mt-1.5">
-                  {kr.unit === '$' || kr.unit === '£'
-                    ? `${kr.unit}${kr.current.toLocaleString()} / ${kr.unit}${kr.target.toLocaleString()}`
-                    : `${kr.current} / ${kr.target} ${kr.unit}`
-                  }
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
       </div>
