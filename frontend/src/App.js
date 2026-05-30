@@ -28,6 +28,7 @@ import BookingCancelPage from './pages/BookingCancelPage';
 import BookingReschedulePage from './pages/BookingReschedulePage';
 import AcceptInvitePage from './pages/AcceptInvitePage';
 import BookingConfirmationPage from './pages/BookingConfirmationPage';
+import BookingPage from './pages/BookingPage';
 import './App.css';
 
 /**
@@ -147,6 +148,7 @@ function AppContent() {
           <Route path="/eqore-ai" element={<EQoreAIConsole />} />
 
           {/* Public booking management — no header/footer, token-based */}
+          <Route path="/schedule/:slug" element={<BookingPage />} />
           <Route path="/booking/:id" element={<BookingConfirmationPage />} />
           <Route path="/booking/cancel/:token" element={<BookingCancelPage />} />
           <Route path="/booking/reschedule/:token" element={<BookingReschedulePage />} />

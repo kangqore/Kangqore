@@ -118,6 +118,8 @@ const ClientSteering = React.lazy(() => import('../pages/dashboards/client/Clien
 const ClientCompliance = React.lazy(() => import('../pages/dashboards/client/ClientCompliance'));
 
 
+const CalendarSettings = React.lazy(() => import('../pages/settings/CalendarSettings'));
+
 /**
  * Authentication and Dashboard Routes
  * These routes don't include the Header/Footer layout
@@ -131,6 +133,7 @@ export const authRoutes = [
   <Route key="forgot-password" path="/forgot-password" element={<ForgotPassword />} />,
   <Route key="reset-password" path="/reset-password" element={<ResetPassword />} />,
   <Route key="settings" path="/settings" element={<Navigate to="/dashboard/client/settings" replace />} />, // Should ideally use a RoleBasedRedirect component
+  <Route key="calendar-settings" path="/dashboard/calendar" element={<CalendarSettings />} />,
   <Route key="profile" path="/profile" element={<Navigate to="/dashboard/client/profile" replace />} />, // Should ideally use a RoleBasedRedirect component
   <Route key="change-password" path="/change-password" element={<ChangePassword />} />,
   <Route key="admin-dashboard-old" path="/admin/dashboard" element={<AdminDashboardOld />} />,

@@ -4,6 +4,7 @@ import { emailService } from './email.service';
 import { createError } from '../middleware/errorHandler';
 import { addMinutes, format } from 'date-fns';
 import { randomBytes } from 'crypto';
+import { CalendarSyncService } from './calendarSync.service';
 import logger from '../utils/logger';
 
 function generateToken(): string {
@@ -82,7 +83,7 @@ export class SchedulingService {
           title: `${eventType.name} with ${invitee.name}`,
           startTime: start,
           endTime: end,
-          timezone: invitee.timezone || 'Asia/Kolkata',
+          timezone: invitee.timezone || 'UTC',
           locationType: eventType.locationType,
           locationValue: joinUrl,
           joinUrl,
@@ -129,7 +130,7 @@ export class SchedulingService {
         eventTitle: result.title,
         startTime: start,
         endTime: end,
-        timezone: invitee.timezone || 'Asia/Kolkata',
+        timezone: invitee.timezone || 'UTC',
         joinUrl,
         cancelToken,
         rescheduleToken,
@@ -137,6 +138,12 @@ export class SchedulingService {
       });
     } catch (err) {
       logger.error('Failed to send booking confirmation emails', err);
+    }
+
+    try {
+      await CalendarSyncService.exportEvent(eventType.hostId, result);
+    } catch (err) {
+      logger.error('Failed to export event to external calendars', err);
     }
 
     return {
@@ -262,7 +269,7 @@ export class SchedulingService {
           title: oldEvent.title,
           startTime: newStart,
           endTime: newEnd,
-          timezone: invitee.timezone || 'Asia/Kolkata',
+          timezone: invitee.timezone || 'UTC',
           locationType: oldEvent.locationType,
           locationValue: newJoinUrl,
           joinUrl: newJoinUrl,
@@ -292,7 +299,7 @@ export class SchedulingService {
         eventTitle: `[Rescheduled] ${newEvent.title}`,
         startTime: newStart,
         endTime: newEnd,
-        timezone: invitee.timezone || 'Asia/Kolkata',
+        timezone: invitee.timezone || 'UTC',
         joinUrl: newJoinUrl,
         cancelToken: newCancelToken,
         rescheduleToken: newRescheduleToken,
@@ -300,6 +307,12 @@ export class SchedulingService {
       });
     } catch (err) {
       logger.error('Failed to send reschedule confirmation emails', err);
+    }
+
+    try {
+      await CalendarSyncService.exportEvent(oldEvent.hostId, newEvent);
+    } catch (err) {
+      logger.error('Failed to export rescheduled event to external calendars', err);
     }
 
     return {
