@@ -46,7 +46,8 @@ export class AvailabilityService {
     eventTypeId: string,
     rangeStart: Date,
     rangeEnd: Date,
-    viewerTimezone: string = 'UTC'
+    viewerTimezone: string = 'UTC',
+    requestedDuration?: number
   ): Promise<TimeSlot[]> {
     const eventType = await prisma.eventType.findUnique({
       where: { id: eventTypeId },
@@ -70,6 +71,7 @@ export class AvailabilityService {
     const hostTimezone = schedule.timezone || 'UTC';
     const rules = schedule.rules as unknown as WeeklyRule[];
     const overrides = (schedule.overrides as unknown as DateOverride[]) || [];
+    const durationToUse = requestedDuration || eventType.duration;
 
     // Get all busy events (existing booked events in the range, with buffer)
     const busyEvents = await prisma.scheduledEvent.findMany({
@@ -117,9 +119,9 @@ export class AvailabilityService {
         let currentSlotStart = toDate(`${dateStr}T${rule.startTime}:00`, { timeZone: hostTimezone });
         const ruleEnd = toDate(`${dateStr}T${rule.endTime}:00`, { timeZone: hostTimezone });
 
-        while (isBefore(addMinutes(currentSlotStart, eventType.duration), ruleEnd) ||
-               addMinutes(currentSlotStart, eventType.duration).getTime() === ruleEnd.getTime()) {
-          const slotEnd = addMinutes(currentSlotStart, eventType.duration);
+        while (isBefore(addMinutes(currentSlotStart, durationToUse), ruleEnd) ||
+               addMinutes(currentSlotStart, durationToUse).getTime() === ruleEnd.getTime()) {
+          const slotEnd = addMinutes(currentSlotStart, durationToUse);
 
           const isBusy = this.isSlotBusy(
             currentSlotStart,
@@ -155,10 +157,11 @@ export class AvailabilityService {
     eventTypeId: string,
     rangeStart: Date,
     rangeDays: number,
-    viewerTimezone: string = 'UTC'
+    viewerTimezone: string = 'UTC',
+    requestedDuration?: number
   ): Promise<DateAvailability[]> {
     const rangeEnd = addDays(rangeStart, rangeDays);
-    const slots = await this.getAvailableSlots(eventTypeId, rangeStart, rangeEnd, viewerTimezone);
+    const slots = await this.getAvailableSlots(eventTypeId, rangeStart, rangeEnd, viewerTimezone, requestedDuration);
 
     const countByDate: Record<string, number> = {};
     for (const slot of slots) {

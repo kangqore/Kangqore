@@ -26,6 +26,8 @@ import KimmpPagesPage from './pages/admin/KimmpPagesPage';
 import EQoreAIConsole from './pages/EQoreAIConsole';
 import BookingCancelPage from './pages/BookingCancelPage';
 import BookingReschedulePage from './pages/BookingReschedulePage';
+import AcceptInvitePage from './pages/AcceptInvitePage';
+import BookingConfirmationPage from './pages/BookingConfirmationPage';
 import './App.css';
 
 /**
@@ -145,8 +147,10 @@ function AppContent() {
           <Route path="/eqore-ai" element={<EQoreAIConsole />} />
 
           {/* Public booking management — no header/footer, token-based */}
+          <Route path="/booking/:id" element={<BookingConfirmationPage />} />
           <Route path="/booking/cancel/:token" element={<BookingCancelPage />} />
           <Route path="/booking/reschedule/:token" element={<BookingReschedulePage />} />
+          <Route path="/accept-invite/:token" element={<AcceptInvitePage />} />
 
           {/* Services page - defined at top level to avoid nested routes issues */}
           <Route path="/services" element={

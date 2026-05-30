@@ -3,29 +3,40 @@ import { format, addDays, startOfDay, parseISO, isSameDay } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Calendar as CalendarIcon, 
-  Clock, 
-  User, 
-  Mail, 
-  Building, 
-  MessageSquare, 
-  Check, 
-  ChevronRight, 
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  User,
+  Mail,
+  Building,
+  MessageSquare,
+  Check,
+  ChevronRight,
   ChevronLeft,
   Globe,
   ArrowRight,
-  Loader2
+  Loader2,
+  Video,
+  RefreshCw,
+  X
 } from 'lucide-react';
 import axios from 'axios';
 import { useToast } from '../../hooks/use-toast';
+
+function detectTimezone() {
+  try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; }
+  catch { return 'UTC'; }
+}
 
 const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
   const { toast } = useToast();
   const [step, setStep] = useState(1); // 1: Date/Time, 2: Form, 3: Success
   const [eventType, setEventType] = useState(null);
+  const [selectedDuration, setSelectedDuration] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [bookingResult, setBookingResult] = useState(null);
+  const [timezone] = useState(detectTimezone);
 
   // Expose control to parent (e.g., eQORE automation)
   useImperativeHandle(ref, () => ({
@@ -88,7 +99,9 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
         const url = `${BACKEND_URL}/api/scheduling/event-types/${eventTypeSlug}`;
         const response = await axios.get(url);
         if (response.data.success) {
-          setEventType(response.data.eventType);
+          const type = response.data.eventType;
+          setEventType(type);
+          setSelectedDuration(type.duration);
         } else {
           throw new Error(response.data.message || 'Failed to load event type');
         }
@@ -116,7 +129,8 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
       try {
         setLoadingSlots(true);
         const dateStr = format(selectedDate, 'yyyy-MM-dd');
-        const response = await axios.get(`${BACKEND_URL}/api/scheduling/availability/slots/${eventTypeSlug}?date=${dateStr}`);
+        const durationParam = selectedDuration ? `&duration=${selectedDuration}` : '';
+        const response = await axios.get(`${BACKEND_URL}/api/scheduling/availability/slots/${eventTypeSlug}?date=${dateStr}${durationParam}`);
         setAvailableSlots(response.data.slots);
         setSelectedSlot(null);
       } catch (error) {
@@ -127,7 +141,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
     };
 
     fetchSlots();
-  }, [selectedDate, eventType, eventTypeSlug, BACKEND_URL]);
+  }, [selectedDate, eventType, eventTypeSlug, selectedDuration, BACKEND_URL]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -138,12 +152,12 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
       const response = await axios.post(`${BACKEND_URL}/api/scheduling/events`, {
         eventTypeId: eventType.id,
         startTime: selectedSlot.startTime,
-        invitee: formData,
+        invitee: { ...formData, timezone },
         schedulingLinkId
       });
 
       if (response.data.success) {
-        setStep(3);
+        window.location.href = `/booking/${response.data.event.id}`;
       }
     } catch (error) {
       console.error('Booking error:', error);
@@ -194,8 +208,25 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
         <div className="space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-blue/10 text-brand-blue rounded-full text-xs font-bold uppercase tracking-wider">
             <Clock className="w-3 h-3" />
-            {eventType.duration} Minutes
+            {selectedDuration || eventType.duration} Minutes
           </div>
+          {eventType.durationOptions && Array.isArray(eventType.durationOptions) && eventType.durationOptions.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {[eventType.duration, ...eventType.durationOptions].filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a - b).map(d => (
+                <button
+                  key={d}
+                  onClick={() => setSelectedDuration(d)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
+                    selectedDuration === d 
+                    ? 'bg-brand-blue text-white border-brand-blue shadow-md' 
+                    : 'bg-white dark:bg-gray-800 text-gray-500 border-gray-200 dark:border-gray-700 hover:border-brand-blue hover:text-brand-blue'
+                  }`}
+                >
+                  {d} min
+                </button>
+              ))}
+            </div>
+          )}
           
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white leading-tight">
             {eventType.name}
@@ -214,7 +245,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
               </div>
               <div>
                 <p className="text-[10px] font-bold uppercase text-gray-400">Timezone</p>
-                <p className="text-sm font-medium">Asia/Kolkata (GMT+5:30)</p>
+                <p className="text-sm font-medium">{timezone}</p>
               </div>
             </div>
             
@@ -430,7 +461,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
           )}
 
           {step === 3 && (
-            <motion.div 
+            <motion.div
               key="step3"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -440,11 +471,11 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                 <Check className="w-12 h-12 text-white" />
               </div>
               <h2 className="text-4xl font-bold mb-4">You're all set!</h2>
-              <p className="text-blue-50 text-lg mb-12 max-w-md">
+              <p className="text-blue-50 text-lg mb-8 max-w-md">
                 A calendar invitation has been sent to <strong>{formData.email}</strong>. We look forward to our session!
               </p>
-              
-              <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
+
+              <div className="grid grid-cols-2 gap-4 w-full max-w-sm mb-8">
                 <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-blue-200">Date</p>
                   <p className="font-bold">{format(selectedDate, 'MMM do, yyyy')}</p>
@@ -455,9 +486,43 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                 </div>
               </div>
 
-              <button 
+              <div className="flex flex-col gap-3 w-full max-w-sm">
+                {bookingResult?.event?.joinUrl && (
+                  <a
+                    href={bookingResult.event.joinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 bg-white text-brand-blue rounded-2xl font-bold flex items-center justify-center gap-2 hover:scale-[1.02] transition-all shadow-lg"
+                  >
+                    <Video className="w-5 h-5" />
+                    Join Meeting
+                  </a>
+                )}
+                <div className="grid grid-cols-2 gap-3">
+                  {bookingResult?.event?.rescheduleToken && (
+                    <a
+                      href={`/booking/reschedule/${bookingResult.event.rescheduleToken}`}
+                      className="py-3 bg-white/10 hover:bg-white/20 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all"
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                      Reschedule
+                    </a>
+                  )}
+                  {bookingResult?.event?.cancelToken && (
+                    <a
+                      href={`/booking/cancel/${bookingResult.event.cancelToken}`}
+                      className="py-3 bg-white/10 hover:bg-white/20 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all"
+                    >
+                      <X className="w-4 h-4" />
+                      Cancel
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              <button
                 onClick={() => window.location.href = '/'}
-                className="mt-12 text-sm font-bold border-b border-white/30 hover:border-white transition-all pb-1"
+                className="mt-10 text-sm font-bold border-b border-white/30 hover:border-white transition-all pb-1"
               >
                 Back to Homepage
               </button>

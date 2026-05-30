@@ -6,6 +6,7 @@ import linkRoutes from './links';
 import organizationRoutes from './organizations';
 import routingFormRoutes from './routing-forms';
 import nlpParseRoutes from './nlp-parse';
+import acceptInviteRoutes from './accept-invite';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/links', linkRoutes);
 router.use('/org', organizationRoutes);
 router.use('/routing-forms', routingFormRoutes);
 router.use('/nlp-parse', nlpParseRoutes);
+router.use('/accept-invite', acceptInviteRoutes);
 
 export default router;

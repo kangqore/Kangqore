@@ -83,6 +83,29 @@ router.post('/reschedule/:token', async (req: Request, res: Response, next: Next
 });
 
 /**
+ * GET /api/scheduling/events/public/:id
+ * Public — get event details by ID for the confirmation page
+ */
+router.get('/public/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const event = await prisma.scheduledEvent.findUnique({
+      where: { id: req.params.id },
+      include: {
+        eventType: { select: { name: true, duration: true } },
+        host: { select: { name: true, email: true } },
+        invitees: { select: { name: true, email: true, timezone: true } }
+      }
+    });
+
+    if (!event) throw createError('Event not found', 404);
+
+    res.json({ success: true, event });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
  * GET /api/scheduling/events
  * List events for current user
  */
