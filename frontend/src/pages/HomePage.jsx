@@ -1008,16 +1008,13 @@ const TrustIntelligenceLayer = () => {
           
           {/* 1. Headline Block (Top Left - Spans 2 cols) */}
           <div className="lg:col-span-2 bg-white dark:bg-black py-12 flex flex-col justify-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl mb-10">
-              What’s your next <br />
-              <span className="bg-brand-gradient bg-clip-text text-transparent">brilliant move?</span>
-            </h2>
-            <div className="flex flex-col md:flex-row md:items-center gap-10">
-              <p className="max-w-md text-xl leading-relaxed text-gray-600 dark:text-gray-400 font-sans">
-                Game-changing work. People-powered growth. We help you think bigger, build stronger, and expand opportunity for all.
+            <div className="flex flex-col md:flex-row md:items-center gap-10 lg:pr-10">
+              <p className="max-w-2xl text-2xl md:text-3xl lg:text-4xl leading-snug md:leading-snug text-gray-900 dark:text-white font-medium tracking-tight">
+                Insights engineered for decision-makers. The ideas, research, and perspectives defining the future of intelligent enterprise infrastructure.
               </p>
-              <Link to="/insights" className="w-14 h-14 rounded-full border border-gray-200 dark:border-white/20 flex items-center justify-center group hover:bg-gray-900 dark:hover:bg-white dark:bg-gray-900 dark:border-gray-800 transition-all duration-500 shrink-0">
-                <ArrowRight className="w-6 h-6 text-gray-900 dark:text-white group-hover:text-white dark:group-hover:text-black transition-colors" />
+              <Link to="/insights" className="w-14 h-14 rounded-full bg-gray-900 dark:bg-white flex items-center justify-center group hover:scale-110 hover:shadow-[0_0_20px_rgba(37,100,234,0.3)] transition-all duration-500 shrink-0 mt-4 md:mt-0 relative overflow-hidden">
+                <div className="absolute inset-0 bg-brand-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <ArrowRight className="w-6 h-6 text-white dark:text-gray-900 group-hover:text-white relative z-10 transition-all duration-500 -rotate-45 group-hover:rotate-0 group-hover:translate-x-0.5" />
               </Link>
             </div>
           </div>
