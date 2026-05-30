@@ -485,7 +485,7 @@ const HeroCarousel = () => {
             {slide.type === 'statement' && (
               <>
                 <img 
-                  src="/images/chess_4thbg.png" 
+                  src="/images/chess_bg.png" 
                   alt="Chess Background" 
                   className="absolute inset-0 w-full h-full object-cover" 
                 />
