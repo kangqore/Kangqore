@@ -78,6 +78,8 @@ const PORT = process.env.PORT || 5050;
 // Middleware
 app.use(helmet({
   contentSecurityPolicy: false, // Disable for serving frontend
+  crossOriginEmbedderPolicy: false,
+  frameguard: false // Allow embedding in iframes for the scheduling widget
 }));
 app.use(passport.initialize());
 app.use(compression());

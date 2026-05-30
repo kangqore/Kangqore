@@ -11,6 +11,7 @@ import {
   addDays
 } from 'date-fns';
 import { toDate } from 'date-fns-tz';
+import { CalendarSyncService } from './calendarSync.service';
 
 export interface TimeSlot {
   startTime: Date;
@@ -74,7 +75,7 @@ export class AvailabilityService {
     const durationToUse = requestedDuration || eventType.duration;
 
     // Get all busy events (existing booked events in the range, with buffer)
-    const busyEvents = await prisma.scheduledEvent.findMany({
+    const internalBusyEvents = await prisma.scheduledEvent.findMany({
       where: {
         hostId: host.id,
         status: 'ACTIVE',
@@ -82,6 +83,17 @@ export class AvailabilityService {
         endTime: { lte: addMinutes(rangeEnd, eventType.bufferAfter) }
       }
     });
+
+    const externalBusySlots = await CalendarSyncService.getExternalBusySlots(host.id, rangeStart, rangeEnd);
+    
+    // Normalize busy events into a uniform array
+    const busyEvents = [
+      ...internalBusyEvents,
+      ...externalBusySlots.map(slot => ({
+        startTime: slot.start,
+        endTime: slot.end
+      }))
+    ];
 
     const daysInRange = eachDayOfInterval({ start: rangeStart, end: rangeEnd });
     const allSlots: TimeSlot[] = [];

@@ -7,6 +7,8 @@ import organizationRoutes from './organizations';
 import routingFormRoutes from './routing-forms';
 import nlpParseRoutes from './nlp-parse';
 import acceptInviteRoutes from './accept-invite';
+import calendarIntegrationRoutes from './calendar-integrations';
+import feedRoutes from './feed';
 
 const router = Router();
 
@@ -18,5 +20,7 @@ router.use('/org', organizationRoutes);
 router.use('/routing-forms', routingFormRoutes);
 router.use('/nlp-parse', nlpParseRoutes);
 router.use('/accept-invite', acceptInviteRoutes);
+router.use('/calendar-integrations', calendarIntegrationRoutes);
+router.use('/feed', feedRoutes);
 
 export default router;
