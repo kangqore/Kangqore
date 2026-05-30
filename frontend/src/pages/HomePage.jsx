@@ -1876,7 +1876,7 @@ const EqoreTypingSection = ({ bookingRef }) => {
 // REMAINING SECTIONS IMPORTED FROM ORIGINAL COMPONENTS
 // ============================================================================
 import BookingWidget from '../components/scheduling/BookingWidget';
-import ContactForm from '../components/ContactForm';
+
 import TransformCTA from '../components/TransformCTA';
 import EqoreShowSection from '../components/podcast/EqoreShowSection';
 
@@ -1931,14 +1931,14 @@ const HomePage = () => {
           <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-10">
             Choose a time that works for you and let's discuss how we can innovate your future together.
           </p>
-          <AvailabilityPulse eventTypeSlug="discovery-cmkfi" />
+          <AvailabilityPulse eventTypeSlug="discovery-call" />
         </div>
-        <BookingWidget ref={bookingRef} eventTypeSlug="discovery-cmkfi" />
+        <BookingWidget ref={bookingRef} eventTypeSlug="discovery-call" />
       </section>
 
       <EqoreTypingSection bookingRef={bookingRef} />
 
-      <ContactForm />
+
       <TransformCTA />
       <StickyMobileCTA />
     </>
