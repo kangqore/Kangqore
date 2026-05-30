@@ -427,9 +427,10 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Phone Number (Optional)</label>
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Phone Number {eventType.requirePhone ? '*' : '(Optional)'}</label>
                     <input 
                       type="tel"
+                      required={eventType.requirePhone}
                       placeholder="+1 (555) 000-0000"
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
