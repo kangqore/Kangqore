@@ -96,14 +96,16 @@ model User {
   ticketMessages             TicketMessage[]
   tickets                    Ticket[]
 
-  availabilitySchedules      AvailabilitySchedule[]     @relation("UserAvailability")
-  hostedEventTypes           EventType[]                @relation("HostedEventTypes")
-  meetingLocations           MeetingLocation[]          @relation("UserLocations")
-  orgMemberships             OrgMembership[]            @relation("UserMemberships")
-  ownedRoutingForms          RoutingForm[]              @relation("OwnedRoutingForms")
-  hostedEvents               ScheduledEvent[]           @relation("EventHost")
-  ownedSchedulingLinks       SchedulingLink[]           @relation("OwnedSchedulingLinks")
-  calendarIntegrations       CalendarIntegration[]
+  availabilitySchedules AvailabilitySchedule[] @relation("UserAvailability")
+  hostedEventTypes      EventType[]            @relation("HostedEventTypes")
+  meetingLocations      MeetingLocation[]      @relation("UserLocations")
+  orgMemberships        OrgMembership[]        @relation("UserMemberships")
+  ownedRoutingForms     RoutingForm[]          @relation("OwnedRoutingForms")
+  hostedEvents          ScheduledEvent[]       @relation("EventHost")
+  ownedSchedulingLinks  SchedulingLink[]       @relation("OwnedSchedulingLinks")
+  calendarIntegrations  CalendarIntegration[]
+  EventTypeTeamMember   EventTypeTeamMember[]
+
   @@map("users")
 }
 
@@ -1919,9 +1921,12 @@ model EventType {
   requireCompany        Boolean                @default(false)
   customQuestions       Json?
   durationOptions       Json?
+  assignmentStrategy    AssignmentStrategy     @default(SINGLE_HOST)
+  lastAssignedMemberId  String?
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
   host                  User                   @relation("HostedEventTypes", fields: [hostId], references: [id])
+  teamMembers           EventTypeTeamMember[]
   scheduledEvents       ScheduledEvent[]
   schedulingLinks       SchedulingLink[]
   availabilitySchedules AvailabilitySchedule[] @relation("AvailabilityScheduleToEventType")
@@ -1935,14 +1940,27 @@ model EventType {
   @@map("event_types")
 }
 
+model EventTypeTeamMember {
+  id          String @id @default(cuid())
+  eventTypeId String
+  userId      String
+  weight      Int    @default(1)
+
+  eventType EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventTypeId, userId])
+  @@map("event_type_team_members")
+}
+
 model EmailTemplate {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   eventTypeId String?
-  type        String    // CONFIRMATION, REMINDER_24H, REMINDER_1H, CANCELLATION, FOLLOW_UP
+  type        String // CONFIRMATION, REMINDER_24H, REMINDER_1H, CANCELLATION, FOLLOW_UP
   subject     String
-  bodyHtml    String    @db.Text
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  bodyHtml    String     @db.Text
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   eventType   EventType? @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
 
   @@unique([eventTypeId, type])
@@ -1958,9 +1976,9 @@ model Webhook {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
-  eventType   EventType? @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
-  deliveries  WebhookDelivery[]
+
+  eventType  EventType?        @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+  deliveries WebhookDelivery[]
 
   @@index([eventTypeId])
   @@map("webhooks")
@@ -1970,13 +1988,13 @@ model WebhookDelivery {
   id           String   @id @default(cuid())
   webhookId    String
   payload      Json
-  status       String   // e.g. "SUCCESS", "FAILED"
+  status       String // e.g. "SUCCESS", "FAILED"
   statusCode   Int?
   responseBody String?  @db.Text
   requestTime  DateTime @default(now())
-  responseTime Int?     // in ms
-  
-  webhook      Webhook  @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  responseTime Int? // in ms
+
+  webhook Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
 
   @@index([webhookId])
   @@map("webhook_deliveries")
@@ -1985,33 +2003,33 @@ model WebhookDelivery {
 model Workflow {
   id            String   @id @default(cuid())
   eventTypeId   String?
-  trigger       String   // e.g. "BEFORE_EVENT", "AFTER_EVENT", "ON_BOOKED"
-  offsetMinutes Int?     // e.g. -1440 for 24 hours before
-  action        String   // e.g. "SEND_EMAIL", "CALL_WEBHOOK"
+  trigger       String // e.g. "BEFORE_EVENT", "AFTER_EVENT", "ON_BOOKED"
+  offsetMinutes Int? // e.g. -1440 for 24 hours before
+  action        String // e.g. "SEND_EMAIL", "CALL_WEBHOOK"
   actionConfig  Json?
   isActive      Boolean  @default(true)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  eventType     EventType? @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
-  jobs          WorkflowJob[]
+  eventType EventType?    @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+  jobs      WorkflowJob[]
 
   @@index([eventTypeId])
   @@map("workflows")
 }
 
 model WorkflowJob {
-  id           String   @id @default(cuid())
+  id           String    @id @default(cuid())
   workflowId   String
   eventId      String
   scheduledFor DateTime?
-  status       String   @default("PENDING") // PENDING, COMPLETED, FAILED
-  resultLog    String?  @db.Text
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  status       String    @default("PENDING") // PENDING, COMPLETED, FAILED
+  resultLog    String?   @db.Text
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
-  workflow     Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
-  event        ScheduledEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  workflow Workflow       @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  event    ScheduledEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@index([workflowId])
   @@index([eventId])
@@ -2300,13 +2318,14 @@ model EqoreLead {
   lastSalesActivityAt DateTime?
 
   salesNotes      EqoreSalesNote[]
-  @@index([sessionId])
-  @@index([leadScore])
-  @@index([status])
   opportunity     EqoreSalesOpportunity?
   salesTasks      EqoreSalesTask[]
   salesActivities EqoreSalesActivity[]
   crmSyncLogs     EqoreCrmSyncLog[]
+
+  @@index([sessionId])
+  @@index([leadScore])
+  @@index([status])
   @@map("eqore_leads")
 }
 
@@ -2413,6 +2432,7 @@ model EqoreCaseStudy {
   updatedAt DateTime @updatedAt
 
   industry EqoreIndustry? @relation(fields: [industryId], references: [id])
+
   @@index([industryId])
   @@index([departmentSlug])
   @@index([proofStatus])
@@ -2550,7 +2570,8 @@ model EqoreSalesOpportunity {
   activities EqoreSalesActivity[]
   syncLogs   EqoreCrmSyncLog[]
 
-  notes      EqoreSalesNote[]
+  notes EqoreSalesNote[]
+
   @@map("eqore_sales_opportunities")
 }
 
@@ -2680,19 +2701,19 @@ model KimmpGeneratedPage {
 // opportunity for an admin to review. KIMMP never auto-creates pages.
 // ---------------------------------------------------------------------------
 model KimmpPageOpportunity {
-  id              String   @id @default(uuid())
-  title           String
-  suggestedSlug   String   @unique
-  pageType        String   @default("faq")
-  sourceModule    String   @default("eqore")
-  sourceReason    String
-  sampleQuestion  String?
-  signalCount     Int      @default(1)
-  priority        Int      @default(1)
-  priorityLabel   String   @default("Single mention")
-  status          String   @default("OPEN") // OPEN | DISMISSED | CONVERTED
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             String   @id @default(uuid())
+  title          String
+  suggestedSlug  String   @unique
+  pageType       String   @default("faq")
+  sourceModule   String   @default("eqore")
+  sourceReason   String
+  sampleQuestion String?
+  signalCount    Int      @default(1)
+  priority       Int      @default(1)
+  priorityLabel  String   @default("Single mention")
+  status         String   @default("OPEN") // OPEN | DISMISSED | CONVERTED
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@index([status])
   @@index([priority])
@@ -2751,9 +2772,9 @@ model KimmpSignal {
 model KimmpDecision {
   id                String    @id @default(uuid())
   signalId          String?
-  decisionType      String    // RESPONSE_POLICY | SALES_ALERT | CONTENT_OPPORTUNITY | MARKET_ALERT | HUMAN_HANDOFF
+  decisionType      String // RESPONSE_POLICY | SALES_ALERT | CONTENT_OPPORTUNITY | MARKET_ALERT | HUMAN_HANDOFF
   recommendedAction String
-  targetModule      String    // eqore | lead-intelligence | alis | vis | human
+  targetModule      String // eqore | lead-intelligence | alis | vis | human
   reasoning         String
   confidence        Float     @default(0)
   priority          Int       @default(1)
@@ -2761,13 +2782,13 @@ model KimmpDecision {
   conversationId    String?
   leadId            String?
   // Phase 4 governance columns
-  approvedBy        String?   // admin userId who approved
+  approvedBy        String? // admin userId who approved
   approvedAt        DateTime?
-  dismissedBy       String?   // admin userId who dismissed
+  dismissedBy       String? // admin userId who dismissed
   dismissedAt       DateTime?
-  executedBy        String?   // admin userId who marked executed (Phase 3 workflow)
+  executedBy        String? // admin userId who marked executed (Phase 3 workflow)
   executedAt        DateTime?
-  notes             String?   // human notes on the approval/dismissal decision
+  notes             String? // human notes on the approval/dismissal decision
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -2783,12 +2804,12 @@ model KimmpDecision {
 // ---------------------------------------------------------------------------
 model KimmpAuditEntry {
   id         String   @id @default(uuid())
-  actor      String   // admin userId (or "SYSTEM" for automated actions)
-  action     String   // DECISION_APPROVED | DECISION_DISMISSED | DECISION_EXECUTED | SIGNAL_DISMISSED | ENGINE_RUN | COST_RECORDED
-  targetType String   // decision | signal | engine | cost
-  targetId   String?  // ID of the artefact acted on
-  notes      String?  // admin-supplied reason or context
-  metadata   Json?    // structured context snapshot
+  actor      String // admin userId (or "SYSTEM" for automated actions)
+  action     String // DECISION_APPROVED | DECISION_DISMISSED | DECISION_EXECUTED | SIGNAL_DISMISSED | ENGINE_RUN | COST_RECORDED
+  targetType String // decision | signal | engine | cost
+  targetId   String? // ID of the artefact acted on
+  notes      String? // admin-supplied reason or context
+  metadata   Json? // structured context snapshot
   createdAt  DateTime @default(now())
 
   @@index([actor])
@@ -2804,8 +2825,8 @@ model KimmpAuditEntry {
 // ---------------------------------------------------------------------------
 model KimmpLlmCost {
   id               String   @id @default(uuid())
-  operation        String   // BEHAVIOR_TIER2 | PAGE_GENERATION | CLAIM_VALIDATION
-  model            String   // e.g. claude-haiku-4-5-20251001
+  operation        String // BEHAVIOR_TIER2 | PAGE_GENERATION | CLAIM_VALIDATION
+  model            String // e.g. claude-haiku-4-5-20251001
   inputTokens      Int      @default(0)
   outputTokens     Int      @default(0)
   estimatedCostUsd Float    @default(0)
@@ -2829,8 +2850,8 @@ model KimmpPrediction {
   id                    String   @id @default(uuid())
   leadId                String
   // v0 outputs (rules-based; replaced by ML models post-launch)
-  conversionProbability Float    @default(0)   // 0.0–1.0
-  acvEstimate           Float    @default(0)   // USD
+  conversionProbability Float    @default(0) // 0.0–1.0
+  acvEstimate           Float    @default(0) // USD
   deliveryRisk          String   @default("LOW") // LOW | MODERATE | HIGH
   modelVersion          String   @default("v0-rules")
   // Feature snapshot at prediction time (for future model training)
@@ -2852,8 +2873,8 @@ model KimmpPrediction {
 model CalendarIntegration {
   id           String   @id @default(uuid())
   userId       String
-  provider     String   // "google" or "outlook"
-  accountId    String   // The external email or account ID
+  provider     String // "google" or "outlook"
+  accountId    String // The external email or account ID
   accessToken  String
   refreshToken String
   expiresAt    DateTime
@@ -2865,4 +2886,11 @@ model CalendarIntegration {
   @@unique([userId, provider, accountId])
   @@index([userId])
   @@map("calendar_integrations")
+}
+
+enum AssignmentStrategy {
+  SINGLE_HOST
+  ROUND_ROBIN
+  COLLECTIVE
+  HOST_PICK
 }

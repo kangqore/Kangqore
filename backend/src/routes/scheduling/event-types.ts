@@ -96,6 +96,17 @@ router.get('/:slug', async (req: Request, res: Response, next: NextFunction) => 
             name: true,
             avatarUrl: true
           }
+        },
+        teamMembers: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatarUrl: true
+              }
+            }
+          }
         }
       }
     });
