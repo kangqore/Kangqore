@@ -19,7 +19,9 @@ const contactSchema = Joi.object({
   subject: Joi.string().max(200).optional().allow(''),
   message: Joi.string().min(1).max(5000).required(),
   source: Joi.string().max(50).optional(),
-  interestedServices: Joi.array().items(Joi.string()).optional()
+  interestedServices: Joi.array().items(Joi.string()).optional(),
+  city: Joi.string().optional().allow(''),
+  consent: Joi.boolean().optional()
 });
 
 /**
@@ -33,7 +35,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
       throw createError(error.details[0].message, 400);
     }
 
-    const { name, email, phone, organization, region, inquiryType, subject, message, source, interestedServices } = value;
+    const { name, email, phone, organization, region, city, inquiryType, subject, message, source, interestedServices } = value;
 
     // Create contact submission
     const contact = await prisma.contact.create({
@@ -42,7 +44,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         email,
         phone,
         organization,
-        region,
+        region: city ? `${region} (${city})` : region,
         inquiryType,
         subject: subject || inquiryType || 'New Contact Inquiry',
         message,
@@ -64,7 +66,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
             <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
               <h3 style="margin-top: 0;">Your Message:</h3>
               <p><strong>Organization:</strong> ${organization || 'N/A'}</p>
-              <p><strong>Region:</strong> ${region || 'N/A'}</p>
+              <p><strong>Region:</strong> ${region || 'N/A'} ${city ? `(${city})` : ''}</p>
               <p><strong>Inquiry Type:</strong> ${inquiryType || 'General'}</p>
               ${subject ? `<p><strong>Subject:</strong> ${subject}</p>` : ''}
               ${interestedServices && interestedServices.length > 0 ? `<p><strong>Interested Services:</strong> ${interestedServices.join(', ')}</p>` : ''}
@@ -84,7 +86,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
           <p><strong>Name:</strong> ${name}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Organization:</strong> ${organization || 'N/A'}</p>
-          <p><strong>Region:</strong> ${region || 'N/A'}</p>
+          <p><strong>Region:</strong> ${region || 'N/A'} ${city ? `(${city})` : ''}</p>
           <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
           <p><strong>Inquiry Type:</strong> ${inquiryType || 'General'}</p>
           ${subject ? `<p><strong>Subject:</strong> ${subject}</p>` : ''}
