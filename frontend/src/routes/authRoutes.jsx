@@ -23,6 +23,9 @@ const CareersDashboard = React.lazy(() => import('../pages/dashboards/careers/Ca
 const AdminDashboard = React.lazy(() => import('../pages/dashboards/admin/AdminDashboard'));
 const ConsultationsManagement = React.lazy(() => import('../pages/admin/ConsultationsManagement'));
 const SchedulingManagement = React.lazy(() => import('../pages/admin/SchedulingManagement'));
+const TeamScheduling = React.lazy(() => import('../pages/admin/TeamScheduling'));
+const SchedulingAnalytics = React.lazy(() => import('../pages/admin/SchedulingAnalytics'));
+const SchedulingAuditLog = React.lazy(() => import('../pages/admin/SchedulingAuditLog'));
 const ContactsManagement = React.lazy(() => import('../pages/admin/ContactsManagement'));
 const JobApplicationsManagement = React.lazy(() => import('../pages/admin/JobApplicationsManagement'));
 const UsersManagement = React.lazy(() => import('../pages/admin/UsersManagement'));
@@ -256,6 +259,9 @@ export const authRoutes = [
   <Route key="admin-emails" path="/dashboard/admin/emails" element={<AdminEmailTabs />} />, // NEW Consolidated
   <Route key="admin-consultations" path="/dashboard/admin/consultations" element={<ConsultationsManagement />} />,
   <Route key="admin-scheduling" path="/dashboard/admin/scheduling" element={<SchedulingManagement />} />,
+  <Route key="admin-team-scheduling" path="/dashboard/admin/team-scheduling" element={<TeamScheduling />} />,
+  <Route key="admin-scheduling-analytics" path="/dashboard/admin/scheduling-analytics" element={<SchedulingAnalytics />} />,
+  <Route key="admin-scheduling-audit" path="/dashboard/admin/scheduling-audit" element={<SchedulingAuditLog />} />,
   <Route key="admin-contacts" path="/dashboard/admin/contacts" element={<ContactsManagement />} />,
   <Route key="admin-applications" path="/dashboard/admin/applications" element={<JobApplicationsManagement />} />,
 

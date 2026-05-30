@@ -77,6 +77,29 @@ class EmailService {
     await this.send(msg);
   }
 
+  async sendEmailWithAttachment(options: { 
+    to: string; 
+    subject: string; 
+    text?: string; 
+    html?: string;
+    attachment: {
+      content: string;
+      filename: string;
+      type: string;
+      disposition: string;
+    }
+  }) {
+    const msg = {
+      to: options.to,
+      from: process.env.EMAIL_FROM || 'noreply@kangqore.com',
+      subject: options.subject,
+      text: options.text || '',
+      html: options.html || options.text || '',
+      attachments: [options.attachment]
+    };
+    await this.send(msg);
+  }
+
   async sendPasswordResetEmail(email: string, token: string) {
     const resetLink = `${process.env.CORS_ORIGINS?.split(',')[0]}/reset-password?token=${token}`;
     const msg = {

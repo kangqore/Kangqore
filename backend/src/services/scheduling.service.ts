@@ -7,6 +7,7 @@ import { randomBytes } from 'crypto';
 import { CalendarSyncService } from './calendarSync.service';
 import { webhookService } from './webhook.service';
 import { workflowService } from './workflow.service';
+import { AuditLogger } from '../utils/auditLogger';
 import logger from '../utils/logger';
 
 function generateToken(): string {
@@ -230,6 +231,9 @@ export class SchedulingService {
       logger.error('Failed to evaluate workflows', err);
     });
 
+    // Audit Log
+    AuditLogger.log('scheduling.booking.created', invitee.responses?.userId || null, 'ScheduledEvent', null, result);
+
     return {
       ...result,
       cancelLink: `${frontendUrl}/booking/cancel/${cancelToken}`,
@@ -286,6 +290,9 @@ export class SchedulingService {
     workflowService.cancelPendingJobs(eventId).catch(err => {
       logger.error('Failed to cancel pending workflows', err);
     });
+
+    // Audit Log
+    AuditLogger.log('scheduling.booking.cancelled', cancelledBy === 'host' ? event.hostId : null, 'ScheduledEvent', null, event);
 
     return event;
   }
@@ -434,6 +441,9 @@ export class SchedulingService {
 
     workflowService.cancelPendingJobs(oldEvent.id).catch(err => logger.error('Failed to cancel old workflows', err));
     workflowService.evaluateOnBookingCreated(newEvent.id).catch(err => logger.error('Failed to evaluate new workflows', err));
+
+    // Audit Log
+    AuditLogger.log('scheduling.booking.rescheduled', null, 'ScheduledEvent', oldEvent, newEvent);
 
     return {
       ...newEvent,
