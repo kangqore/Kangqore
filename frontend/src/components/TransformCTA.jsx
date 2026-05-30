@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Award, Globe, Fingerprint, HeartPulse, CreditCard, Layers } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
@@ -173,6 +173,38 @@ const TransformCTA = () => {
             <p className="text-gray-600 dark:text-gray-400 text-lg lg:text-xl leading-relaxed">
               Let’s define your next competitive advantage. Talk to Kangqore’s transformation advisors.
             </p>
+          </div>
+
+          {/* Trust & Compliance Badges */}
+          <div className="mt-16 pt-10 border-t border-gray-100 dark:border-gray-900 flex flex-wrap items-center gap-3 sm:gap-4">
+            {[
+              { name: 'SOC 2 Aligned', id: 'soc2' },
+              { name: 'ISO 27001 Oriented', id: 'iso27001' },
+              { name: 'GDPR Ready', id: 'gdpr' },
+              { name: 'DPDP Conscious', id: 'dpdp' },
+              { name: 'HIPAA Aware', id: 'hipaa' },
+              { name: 'PCI DSS Mindful', id: 'pcidss' },
+              { name: 'CMMI Practiced', id: 'cmmi' }
+            ].map(({ name, id }) => (
+              <div 
+                key={name} 
+                className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-blue-200 dark:hover:border-blue-900 transition-colors shadow-sm"
+              >
+                <img 
+                  src={`/assets/badges/${id}.png`} 
+                  alt={`${name} Logo`} 
+                  className="w-5 h-5 object-contain"
+                  onError={(e) => { 
+                    if (e.target.src.endsWith('.png')) {
+                      e.target.src = `/assets/badges/${id}.svg`;
+                    } else {
+                      e.target.style.display = 'none';
+                    }
+                  }} 
+                />
+                <span className="text-[10px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-widest">{name}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

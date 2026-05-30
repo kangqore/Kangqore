@@ -110,7 +110,7 @@ const HeroGlassCards = () => {
 
   return (
     <div
-      className="hidden lg:flex flex-col gap-8 w-[184px] xl:w-[208px] ml-auto"
+      className="hidden lg:flex flex-col gap-8 w-[184px] xl:w-[208px] ml-auto translate-x-8 xl:translate-x-12"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="rotating informational cards"
