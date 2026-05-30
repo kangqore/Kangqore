@@ -13,51 +13,56 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
 
   return (
     <Card
-      className="group cursor-pointer hover:border-slate-200/80 transition-all duration-200"
+      padding="lg"
+      className="group cursor-pointer hover:border-slate-200/80 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full bg-white border border-slate-100"
       onClick={() => navigate(`/os/strategy/pillars/${pillar.id}`)}
     >
-      {/* Muted color bar indicator */}
-      <div 
-        className="h-1 w-10 rounded-full mb-4 opacity-80" 
-        style={{ background: pillar.color }} 
-      />
+      <div>
+        {/* Muted color bar indicator */}
+        <div 
+          className="h-1.5 w-14 rounded-full mb-5" 
+          style={{ background: pillar.color }} 
+        />
 
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-slate-900 text-sm truncate">{pillar.name}</h3>
-          <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">{pillar.description}</p>
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-bold text-slate-900 text-base tracking-tight truncate">{pillar.name}</h3>
+            <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed font-normal">{pillar.description}</p>
+          </div>
+          <HealthBadge status={pillar.health} />
         </div>
-        <HealthBadge status={pillar.health} />
+
+        {/* Stats row */}
+        <div className="flex items-center gap-5 mb-5 text-xs text-slate-500 font-medium">
+          <span className="flex items-center gap-2">
+            <LayoutDashboard className="w-4 h-4 text-slate-400" />
+            {pillar.programCount} programs
+          </span>
+          <span className="flex items-center gap-2">
+            <Target className="w-4 h-4 text-slate-400" />
+            {pillar.okrCount} OKRs
+          </span>
+        </div>
       </div>
 
-      {/* Stats row */}
-      <div className="flex items-center gap-4 mb-4 text-xs text-slate-500">
-        <span className="flex items-center gap-1.5">
-          <LayoutDashboard className="w-3.5 h-3.5 text-slate-400" />
-          {pillar.programCount} programs
-        </span>
-        <span className="flex items-center gap-1.5">
-          <Target className="w-3.5 h-3.5 text-slate-400" />
-          {pillar.okrCount} OKRs
-        </span>
-      </div>
+      <div>
+        {/* Budget */}
+        <Progress
+          value={spentPct}
+          size="sm"
+          color={spentPct > 85 ? 'danger' : spentPct > 70 ? 'warning' : 'success'}
+          label={`Budget — £${(pillar.spent / 1000).toFixed(0)}k / £${(pillar.budget / 1000).toFixed(0)}k`}
+          showValue
+        />
 
-      {/* Budget */}
-      <Progress
-        value={spentPct}
-        size="sm"
-        color={spentPct > 85 ? 'danger' : spentPct > 70 ? 'warning' : 'success'}
-        label={`Budget — £${(pillar.spent / 1000).toFixed(0)}k / £${(pillar.budget / 1000).toFixed(0)}k`}
-        showValue
-      />
-
-      {/* Footer */}
-      <div className={cn('flex items-center justify-between mt-4 pt-3 border-t border-slate-100/50')}>
-        <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Avatar name={pillar.owner} size="xs" />
-          <span className="font-medium">{pillar.owner}</span>
+        {/* Footer */}
+        <div className={cn('flex items-center justify-between mt-5 pt-4 border-t border-slate-100/80')}>
+          <div className="flex items-center gap-2 text-xs text-slate-500">
+            <Avatar name={pillar.owner} size="xs" className="ring-2 ring-slate-50" />
+            <span className="font-semibold text-slate-700">{pillar.owner}</span>
+          </div>
+          <ArrowRight className="w-3.5 h-3.5 text-slate-350 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-300" />
         </div>
-        <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all" />
       </div>
     </Card>
   )
