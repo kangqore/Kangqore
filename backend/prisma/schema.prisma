@@ -1916,6 +1916,7 @@ model EventType {
   requirePhone          Boolean                @default(false)
   requireCompany        Boolean                @default(false)
   customQuestions       Json?
+  durationOptions       Json?
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
   host                  User                   @relation("HostedEventTypes", fields: [hostId], references: [id])
