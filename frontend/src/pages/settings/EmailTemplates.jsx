@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../services/api';
+import axios from 'axios';
 import { Mail, Loader2, Save, Trash2, CheckCircle2 } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { useToast } from '../../hooks/use-toast';
 
 const TEMPLATE_TYPES = [
   { value: 'CONFIRMATION', label: 'Booking Confirmation' },
@@ -20,6 +20,7 @@ const AVAILABLE_VARIABLES = [
 ];
 
 export default function EmailTemplates() {
+  const { toast } = useToast();
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -46,13 +47,17 @@ export default function EmailTemplates() {
 
   const fetchTemplates = async () => {
     try {
-      const res = await api.get('/scheduling/email-templates');
+      const token = localStorage.getItem('token');
+      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+      const res = await axios.get(`${BACKEND_URL}/api/scheduling/email-templates`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       if (res.data.success) {
         setTemplates(res.data.templates);
       }
     } catch (err) {
       console.error(err);
-      toast.error('Failed to load templates');
+      toast({ title: 'Error', description: 'Failed to load templates', variant: 'destructive' });
     } finally {
       setLoading(false);
     }
@@ -60,24 +65,28 @@ export default function EmailTemplates() {
 
   const handleSave = async () => {
     if (!subject || !bodyHtml) {
-      toast.error('Subject and body are required');
+      toast({ title: 'Error', description: 'Subject and body are required', variant: 'destructive' });
       return;
     }
 
     setSaving(true);
     try {
-      const res = await api.post('/scheduling/email-templates', {
+      const token = localStorage.getItem('token');
+      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+      const res = await axios.post(`${BACKEND_URL}/api/scheduling/email-templates`, {
         type: selectedType,
         subject,
         bodyHtml
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (res.data.success) {
-        toast.success('Template saved successfully');
+        toast({ title: 'Success', description: 'Template saved successfully' });
         fetchTemplates();
       }
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.error || 'Failed to save template');
+      toast({ title: 'Error', description: err.response?.data?.error || 'Failed to save template', variant: 'destructive' });
     } finally {
       setSaving(false);
     }
@@ -91,14 +100,18 @@ export default function EmailTemplates() {
 
     setSaving(true);
     try {
-      const res = await api.delete(`/scheduling/email-templates/${existing.id}`);
+      const token = localStorage.getItem('token');
+      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+      const res = await axios.delete(`${BACKEND_URL}/api/scheduling/email-templates/${existing.id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       if (res.data.success) {
-        toast.success('Template reset to default');
+        toast({ title: 'Success', description: 'Template reset to default' });
         fetchTemplates();
       }
     } catch (err) {
       console.error(err);
-      toast.error('Failed to reset template');
+      toast({ title: 'Error', description: 'Failed to reset template', variant: 'destructive' });
     } finally {
       setSaving(false);
     }

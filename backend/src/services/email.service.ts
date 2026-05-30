@@ -92,7 +92,7 @@ class EmailService {
   async sendBookingConfirmation(data: BookingConfirmationData) {
     const {
       inviteeName, inviteeEmail, hostName, hostEmail,
-      eventTitle, startTime, endTime, timezone,
+      eventTypeId, eventTitle, startTime, endTime, timezone,
       joinUrl, cancelToken, rescheduleToken, frontendUrl
     } = data;
 
@@ -180,7 +180,7 @@ class EmailService {
   }
 
   async sendCancelNotification(data: CancelNotificationData) {
-    const { inviteeName, inviteeEmail, hostEmail, eventTitle, startTime, cancelReason, cancelledBy } = data;
+    const { inviteeName, inviteeEmail, hostEmail, eventTypeId, eventTitle, startTime, cancelReason, cancelledBy } = data;
     const dateStr = format(startTime, 'EEEE, MMMM d, yyyy');
     const timeStr = format(startTime, 'h:mm a');
     const cancellerLabel = cancelledBy === 'host' ? 'Kangqore' : inviteeName;
@@ -230,7 +230,7 @@ class EmailService {
   }
 
   async sendReminderEmail(data: ReminderData) {
-    const { inviteeName, inviteeEmail, hostEmail, eventTitle, startTime, joinUrl, minutesBefore } = data;
+    const { inviteeName, inviteeEmail, hostEmail, eventTypeId, eventTitle, startTime, joinUrl, minutesBefore } = data;
     const dateStr = format(startTime, 'EEEE, MMMM d, yyyy');
     const timeStr = format(startTime, 'h:mm a');
     const label = minutesBefore >= 1440 ? '24 hours' : '1 hour';
