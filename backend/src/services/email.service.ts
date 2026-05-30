@@ -1,6 +1,7 @@
 import sgMail from '@sendgrid/mail';
 import { format } from 'date-fns';
 import { randomUUID } from 'crypto';
+import { prisma } from '../lib/prisma';
 import logger from '../utils/logger';
 
 interface BookingConfirmationData {
@@ -8,6 +9,7 @@ interface BookingConfirmationData {
   inviteeEmail: string;
   hostName: string;
   hostEmail: string;
+  eventTypeId: string;
   eventTitle: string;
   startTime: Date;
   endTime: Date;
@@ -22,6 +24,7 @@ interface CancelNotificationData {
   inviteeName: string;
   inviteeEmail: string;
   hostEmail: string;
+  eventTypeId: string;
   eventTitle: string;
   startTime: Date;
   cancelReason?: string;
@@ -32,6 +35,7 @@ interface ReminderData {
   inviteeName: string;
   inviteeEmail: string;
   hostEmail: string;
+  eventTypeId: string;
   eventTitle: string;
   startTime: Date;
   joinUrl?: string;
@@ -123,6 +127,10 @@ class EmailService {
       isHost: false
     });
 
+    const confirmationTemplate = await prisma.emailTemplate.findUnique({
+      where: { eventTypeId_type: { eventTypeId, type: 'CONFIRMATION' } }
+    });
+
     const hostHtml = this.bookingEmailHtml({
       name: hostName,
       guestName: inviteeName,
@@ -136,6 +144,14 @@ class EmailService {
       isHost: true
     });
 
+    const inviteeSubject = confirmationTemplate 
+      ? this.replaceTemplateVariables(confirmationTemplate.subject, data)
+      : `Confirmed: ${eventTitle} on ${dateStr}`;
+
+    const parsedInviteeHtml = confirmationTemplate
+      ? this.replaceTemplateVariables(confirmationTemplate.bodyHtml, data)
+      : inviteeHtml;
+
     const attachment = {
       content: Buffer.from(icsContent).toString('base64'),
       filename: 'invite.ics',
@@ -147,9 +163,9 @@ class EmailService {
       this.send({
         to: inviteeEmail,
         from: process.env.EMAIL_FROM || 'noreply@kangqore.com',
-        subject: `Confirmed: ${eventTitle} on ${dateStr}`,
+        subject: inviteeSubject,
         text: `Your consultation "${eventTitle}" is confirmed for ${dateStr} at ${timeStr} ${timezone}.${joinUrl ? `\n\nJoin: ${joinUrl}` : ''}\n\nCancel: ${cancelLink}\nReschedule: ${rescheduleLink}`,
-        html: inviteeHtml,
+        html: parsedInviteeHtml,
         attachments: [attachment]
       }),
       this.send({
@@ -188,6 +204,18 @@ class EmailService {
         </div>
       </div>`;
 
+    const cancelTemplate = await prisma.emailTemplate.findUnique({
+      where: { eventTypeId_type: { eventTypeId, type: 'CANCELLATION' } }
+    });
+    
+    const parsedSubject = cancelTemplate
+      ? this.replaceTemplateVariables(cancelTemplate.subject, data)
+      : subject;
+      
+    const parsedHtml = cancelTemplate
+      ? this.replaceTemplateVariables(cancelTemplate.bodyHtml, data)
+      : html;
+
     const recipients = cancelledBy === 'host'
       ? [{ to: inviteeEmail, name: inviteeName }]
       : [{ to: inviteeEmail, name: inviteeName }, { to: hostEmail, name: 'Kangqore Team' }];
@@ -195,9 +223,9 @@ class EmailService {
     await Promise.all(recipients.map(r => this.send({
       to: r.to,
       from: process.env.EMAIL_FROM || 'noreply@kangqore.com',
-      subject,
+      subject: parsedSubject,
       text: body,
-      html
+      html: parsedHtml
     })));
   }
 
@@ -221,10 +249,42 @@ class EmailService {
         </div>
       </div>`;
 
+    const reminderType = minutesBefore >= 1440 ? 'REMINDER_24H' : 'REMINDER_1H';
+    const reminderTemplate = await prisma.emailTemplate.findUnique({
+      where: { eventTypeId_type: { eventTypeId, type: reminderType } }
+    });
+    
+    const parsedSubject = reminderTemplate
+      ? this.replaceTemplateVariables(reminderTemplate.subject, data)
+      : subject;
+      
+    const parsedHtml = reminderTemplate
+      ? this.replaceTemplateVariables(reminderTemplate.bodyHtml, data)
+      : html;
+
     await Promise.all([
-      this.send({ to: inviteeEmail, from: process.env.EMAIL_FROM || 'noreply@kangqore.com', subject, text: subject, html }),
+      this.send({ to: inviteeEmail, from: process.env.EMAIL_FROM || 'noreply@kangqore.com', subject: parsedSubject, text: subject, html: parsedHtml }),
       this.send({ to: hostEmail, from: process.env.EMAIL_FROM || 'noreply@kangqore.com', subject: `${subject} (with ${inviteeName})`, text: subject, html })
     ]);
+  }
+
+  private replaceTemplateVariables(template: string, data: any): string {
+    let result = template;
+    const dateStr = data.startTime ? format(data.startTime, 'EEEE, MMMM d, yyyy') : '';
+    const timeStr = data.startTime ? format(data.startTime, 'h:mm a') : '';
+    const replacements: Record<string, string> = {
+      '{{invitee_name}}': data.inviteeName || '',
+      '{{event_name}}': data.eventTitle || '',
+      '{{date}}': dateStr,
+      '{{time}}': timeStr,
+      '{{join_url}}': data.joinUrl || '',
+      '{{host_name}}': data.hostName || ''
+    };
+
+    for (const [key, value] of Object.entries(replacements)) {
+      result = result.replace(new RegExp(key, 'g'), value);
+    }
+    return result;
   }
 
   private generateICS(params: {

@@ -31,6 +31,7 @@ export class SchedulingService {
       company?: string;
       timezone?: string;
       responses?: any;
+      smsOptIn?: boolean;
     };
     schedulingLinkId?: string;
   }) {
@@ -97,7 +98,8 @@ export class SchedulingService {
               phone: invitee.phone,
               company: invitee.company,
               timezone: invitee.timezone,
-              responses: invitee.responses
+              responses: invitee.responses,
+              smsOptIn: invitee.smsOptIn || false
             }
           }
         },
@@ -127,6 +129,7 @@ export class SchedulingService {
         inviteeEmail: invitee.email,
         hostName: result.host.name,
         hostEmail: result.host.email,
+        eventTypeId: result.eventTypeId,
         eventTitle: result.title,
         startTime: start,
         endTime: end,
@@ -175,6 +178,7 @@ export class SchedulingService {
           inviteeName: invitee.name,
           inviteeEmail: invitee.email,
           hostEmail: event.host.email,
+          eventTypeId: event.eventTypeId,
           eventTitle: event.title,
           startTime: event.startTime,
           cancelReason: reason,
@@ -282,7 +286,8 @@ export class SchedulingService {
               email: invitee.email,
               phone: invitee.phone,
               company: invitee.company,
-              timezone: invitee.timezone
+              timezone: invitee.timezone,
+              smsOptIn: invitee.smsOptIn || false
             }
           }
         },
@@ -296,6 +301,7 @@ export class SchedulingService {
         inviteeEmail: invitee.email,
         hostName: newEvent.host.name,
         hostEmail: newEvent.host.email,
+        eventTypeId: newEvent.eventTypeId,
         eventTitle: `[Rescheduled] ${newEvent.title}`,
         startTime: newStart,
         endTime: newEnd,

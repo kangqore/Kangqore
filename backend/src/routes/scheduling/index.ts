@@ -9,6 +9,7 @@ import nlpParseRoutes from './nlp-parse';
 import acceptInviteRoutes from './accept-invite';
 import calendarIntegrationRoutes from './calendar-integrations';
 import feedRoutes from './feed';
+import emailTemplateRoutes from './email-templates';
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/nlp-parse', nlpParseRoutes);
 router.use('/accept-invite', acceptInviteRoutes);
 router.use('/calendar-integrations', calendarIntegrationRoutes);
 router.use('/feed', feedRoutes);
+router.use('/email-templates', emailTemplateRoutes);
 
 export default router;

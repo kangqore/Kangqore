@@ -16,6 +16,7 @@ const bookingSchema = Joi.object({
     phone: Joi.string().optional().allow(''),
     company: Joi.string().optional().allow(''),
     timezone: Joi.string().optional().default('UTC'),
+    smsOptIn: Joi.boolean().optional().default(false),
     responses: Joi.object().optional()
   }).required(),
   schedulingLinkId: Joi.string().optional()
