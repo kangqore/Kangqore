@@ -12,6 +12,9 @@ import feedRoutes from './feed';
 import emailTemplateRoutes from './email-templates';
 import webhookRoutes from './webhooks';
 import workflowRoutes from './workflows';
+import analyticsRoutes from './analytics';
+import exportRoutes from './export';
+import auditRoutes from './audit';
 
 const router = Router();
 
@@ -28,5 +31,8 @@ router.use('/feed', feedRoutes);
 router.use('/email-templates', emailTemplateRoutes);
 router.use('/webhooks', webhookRoutes);
 router.use('/workflows', workflowRoutes);
+router.use('/analytics', analyticsRoutes);
+router.use('/export', exportRoutes);
+router.use('/audit', auditRoutes);
 
 export default router;
