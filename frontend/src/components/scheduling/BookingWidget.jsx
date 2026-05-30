@@ -58,6 +58,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
     email: '',
     company: '',
     phone: '',
+    smsOptIn: false,
     responses: {}
   });
 
@@ -434,6 +435,20 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       className="w-full px-4 py-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl focus:ring-2 focus:ring-brand-blue transition-all outline-none"
                     />
+                    {formData.phone && (
+                      <div className="flex items-center gap-2 mt-3 ml-2">
+                        <input
+                          type="checkbox"
+                          id="smsOptIn"
+                          checked={formData.smsOptIn}
+                          onChange={(e) => setFormData({...formData, smsOptIn: e.target.checked})}
+                          className="w-4 h-4 text-brand-blue rounded border-gray-300 focus:ring-brand-blue bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+                        />
+                        <label htmlFor="smsOptIn" className="text-sm text-gray-500 dark:text-gray-400">
+                          Send me SMS reminders before the meeting
+                        </label>
+                      </div>
+                    )}
                   </div>
                 </div>
 

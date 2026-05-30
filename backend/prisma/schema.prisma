@@ -1884,6 +1884,7 @@ model EventInvitee {
   company     String?
   timezone    String?
   responses   Json?
+  smsOptIn    Boolean        @default(false)
   status      InviteeStatus  @default(ACCEPTED)
   viewedAt    DateTime?
   cancelledAt DateTime?
@@ -1924,11 +1925,27 @@ model EventType {
   scheduledEvents       ScheduledEvent[]
   schedulingLinks       SchedulingLink[]
   availabilitySchedules AvailabilitySchedule[] @relation("AvailabilityScheduleToEventType")
+  emailTemplates        EmailTemplate[]
 
   @@index([hostId])
   @@index([slug])
   @@index([isActive, isPublic])
   @@map("event_types")
+}
+
+model EmailTemplate {
+  id          String    @id @default(cuid())
+  eventTypeId String?
+  type        String    // CONFIRMATION, REMINDER_24H, REMINDER_1H, CANCELLATION, FOLLOW_UP
+  subject     String
+  bodyHtml    String    @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  eventType   EventType? @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([eventTypeId, type])
+  @@index([eventTypeId])
+  @@map("email_templates")
 }
 
 model InviteeNoShow {

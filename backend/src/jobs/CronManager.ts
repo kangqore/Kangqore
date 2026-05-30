@@ -2,6 +2,7 @@ import cron from 'node-cron';
 import { prisma } from '../lib/prisma';
 import { AccountabilityService } from '../services/AccountabilityService';
 import { emailService } from '../services/email.service';
+import { smsService } from '../services/sms.service';
 import { addMinutes, addHours, addDays } from 'date-fns';
 import logger from '../utils/logger';
 
@@ -106,6 +107,7 @@ export class CronManager {
               inviteeName: invitee.name,
               inviteeEmail: invitee.email,
               hostEmail: event.host.email,
+              eventTypeId: event.eventTypeId,
               eventTitle: event.title,
               startTime: event.startTime,
               joinUrl: event.joinUrl || undefined,
@@ -115,6 +117,12 @@ export class CronManager {
               where: { id: event.id },
               data: { reminderSent24h: true }
             });
+            
+            if (invitee.phone && invitee.smsOptIn) {
+              const smsMessage = `Reminder: Your meeting "${event.title}" is in 24 hours at ${event.startTime}.`;
+              await smsService.sendReminderSms(invitee.phone, smsMessage);
+            }
+            
             logger.info(`24h reminder sent for event ${event.id}`);
           } catch (err) {
             logger.error(`Failed to send 24h reminder for event ${event.id}`, err);
@@ -142,6 +150,7 @@ export class CronManager {
               inviteeName: invitee.name,
               inviteeEmail: invitee.email,
               hostEmail: event.host.email,
+              eventTypeId: event.eventTypeId,
               eventTitle: event.title,
               startTime: event.startTime,
               joinUrl: event.joinUrl || undefined,
@@ -151,6 +160,12 @@ export class CronManager {
               where: { id: event.id },
               data: { reminderSent1h: true }
             });
+            
+            if (invitee.phone && invitee.smsOptIn) {
+              const smsMessage = `Reminder: Your meeting "${event.title}" is in 1 hour. ${event.joinUrl ? `Join: ${event.joinUrl}` : ''}`;
+              await smsService.sendReminderSms(invitee.phone, smsMessage);
+            }
+
             logger.info(`1h reminder sent for event ${event.id}`);
           } catch (err) {
             logger.error(`Failed to send 1h reminder for event ${event.id}`, err);
