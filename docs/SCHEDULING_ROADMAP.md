@@ -333,3 +333,26 @@ impact — each phase is independently shippable and delivers value on its own.
 ---
 
 _Owner: Kangqore Engineering · Status: Planning_
+
+---
+
+## Parked: Phase 5 — Integrations Implementation Plan
+
+*(Parked for future implementation)*
+
+### 1. Video Conferencing (5A)
+- **Database:** Add `locationType` choices (`ZOOM`, `GOOGLE_MEET`, `IN_PERSON`, `PHONE`).
+- **Backend:** Create `zoom.service.ts` to handle OAuth token exchange and Zoom API meeting creation.
+- **Service:** Modify `scheduling.service.ts` to call Zoom API instead of falling back to Jitsi when `locationType` is `ZOOM`.
+- **Frontend:** Update `SchedulingManagement.jsx` to include a location picker during event type creation.
+
+### 2. CRM Integrations (5B)
+- **Database:** Add `Organization` model fields for CRM integrations (`hubspotToken`, `salesforceToken`).
+- **Backend:** Create `hubspot.service.ts` to sync contacts upon booking.
+- **Service:** Trigger CRM sync asynchronously after a successful booking in `scheduling.service.ts`.
+
+### 3. Custom Domains (5D)
+- **Database:** Add `CustomDomain` model (`domain`, `organizationId`, `sslStatus`).
+- **Backend:** Create `domains.ts` API route to register custom domains.
+- **Middleware:** Modify `domainRouter.ts` to detect `req.hostname` and route to the correct white-labeled booking page.
+
