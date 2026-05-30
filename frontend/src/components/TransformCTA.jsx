@@ -169,7 +169,7 @@ const TransformCTA = () => {
           </div>
           
           {/* Bottom Description */}
-          <div className="max-w-2xl">
+          <div className="max-w-4xl">
             <p className="text-gray-600 dark:text-gray-400 text-lg lg:text-xl leading-relaxed">
               Let’s define your next competitive advantage. Talk to Kangqore’s transformation advisors.
             </p>

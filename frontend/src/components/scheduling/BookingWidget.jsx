@@ -250,7 +250,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
               </div>
               <div>
                 <p className="text-[10px] font-bold uppercase text-gray-400">Timezone</p>
-                <p className="text-sm font-medium">{timezone}</p>
+                <p className="text-sm font-medium">{timezone === 'Asia/Calcutta' || timezone === 'Asia/Kolkata' ? 'India (GMT+5:30)' : timezone}</p>
               </div>
             </div>
             
@@ -477,7 +477,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                       <input 
                         required
                         type="text"
-                        placeholder="John Doe"
+                        placeholder="Mahesh Kumar"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                         className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl focus:ring-2 focus:ring-brand-blue transition-all outline-none"
@@ -491,7 +491,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                       <input 
                         required
                         type="email"
-                        placeholder="john@example.com"
+                        placeholder="business@kangqore.com"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl focus:ring-2 focus:ring-brand-blue transition-all outline-none"
@@ -502,12 +502,13 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Company Name (Optional)</label>
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Company Name</label>
                     <div className="relative">
                       <Building className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
                       <input 
+                        required
                         type="text"
-                        placeholder="Acme Corp"
+                        placeholder="Kangqore"
                         value={formData.company}
                         onChange={(e) => setFormData({...formData, company: e.target.value})}
                         className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl focus:ring-2 focus:ring-brand-blue transition-all outline-none"
@@ -515,11 +516,11 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Phone Number {eventType.requirePhone ? '*' : '(Optional)'}</label>
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
                     <input 
                       type="tel"
-                      required={eventType.requirePhone}
-                      placeholder="+1 (555) 000-0000"
+                      required
+                      placeholder="+91 7782010696"
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       className="w-full px-4 py-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl focus:ring-2 focus:ring-brand-blue transition-all outline-none"
