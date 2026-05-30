@@ -59,7 +59,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
     company: '',
     phone: '',
     smsOptIn: false,
-    responses: {}
+    responses: { specificHostId: null }
   });
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
@@ -103,6 +103,9 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
           const type = response.data.eventType;
           setEventType(type);
           setSelectedDuration(type.duration);
+          if (type.assignmentStrategy === 'HOST_PICK') {
+            setStep(0);
+          }
         } else {
           throw new Error(response.data.message || 'Failed to load event type');
         }
@@ -131,7 +134,8 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
         setLoadingSlots(true);
         const dateStr = format(selectedDate, 'yyyy-MM-dd');
         const durationParam = selectedDuration ? `&duration=${selectedDuration}` : '';
-        const response = await axios.get(`${BACKEND_URL}/api/scheduling/availability/slots/${eventTypeSlug}?date=${dateStr}${durationParam}`);
+        const hostParam = formData.responses?.specificHostId ? `&hostId=${formData.responses.specificHostId}` : '';
+        const response = await axios.get(`${BACKEND_URL}/api/scheduling/availability/slots/${eventTypeSlug}?date=${dateStr}${durationParam}${hostParam}`);
         setAvailableSlots(response.data.slots);
         setSelectedSlot(null);
       } catch (error) {
@@ -265,16 +269,45 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
 
           {eventType.host && (
             <div className="pt-8 border-t border-gray-200 dark:border-gray-800 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-brand-gradient flex items-center justify-center shadow-lg shadow-brand-blue/20 overflow-hidden p-2">
-                <img 
-                  src="/assets/kangqore-icon-white.png" 
-                  alt="Kangqore" 
-                  className="w-full h-full object-contain filter brightness-200"
-                />
-              </div>
+              {eventType.assignmentStrategy === 'COLLECTIVE' && eventType.teamMembers?.length > 0 ? (
+                <div className="flex -space-x-4">
+                  {[eventType.host, ...eventType.teamMembers.map(tm => tm.user)].map((u, i) => (
+                    <div key={i} className="w-12 h-12 rounded-full border-2 border-white dark:border-gray-900 bg-brand-blue flex items-center justify-center overflow-hidden shadow-sm z-10 relative">
+                      {u.avatarUrl ? (
+                        <img src={u.avatarUrl} alt={u.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-white font-bold text-sm">{u.name.charAt(0)}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-brand-gradient flex items-center justify-center shadow-lg shadow-brand-blue/20 overflow-hidden">
+                  {formData.responses?.specificHostId && eventType.teamMembers?.find(tm => tm.userId === formData.responses.specificHostId)?.user.avatarUrl ? (
+                    <img 
+                      src={eventType.teamMembers.find(tm => tm.userId === formData.responses.specificHostId).user.avatarUrl} 
+                      alt="Host" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : eventType.host.avatarUrl ? (
+                    <img src={eventType.host.avatarUrl} alt="Host" className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-6 h-6 text-white" />
+                  )}
+                </div>
+              )}
+              
               <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Your Host</p>
-                <p className="font-bold text-gray-900 dark:text-white">{eventType.host.name}</p>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                  {eventType.assignmentStrategy === 'COLLECTIVE' ? 'Your Hosts' : 'Your Host'}
+                </p>
+                <p className="font-bold text-gray-900 dark:text-white">
+                  {eventType.assignmentStrategy === 'COLLECTIVE' 
+                    ? [eventType.host.name, ...eventType.teamMembers.map(tm => tm.user.name)].join(', ')
+                    : formData.responses?.specificHostId 
+                      ? eventType.teamMembers?.find(tm => tm.userId === formData.responses.specificHostId)?.user.name || eventType.host.name
+                      : eventType.host.name}
+                </p>
               </div>
             </div>
           )}
@@ -282,8 +315,63 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
       </div>
 
       {/* Right Section: Content */}
-      <div className="flex-1 bg-white dark:bg-gray-900 relative">
+      <div className="flex-1 bg-white dark:bg-gray-900 relative overflow-y-auto">
         <AnimatePresence mode="wait">
+          {step === 0 && (
+            <motion.div 
+              key="step0"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="h-full flex flex-col p-8 md:p-12 justify-center"
+            >
+              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Choose a Team Member</h3>
+              <p className="text-gray-500 mb-8">Select who you'd like to meet with, or choose "No Preference".</p>
+              
+              <div className="space-y-4">
+                <button
+                  onClick={() => {
+                    setFormData(prev => ({ ...prev, responses: { ...prev.responses, specificHostId: null } }));
+                    setStep(1);
+                  }}
+                  className="w-full text-left p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-brand-blue hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all flex items-center gap-4 group"
+                >
+                  <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                    <User className="w-6 h-6 text-gray-400 group-hover:text-brand-blue transition-colors" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-bold text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">No Preference</p>
+                    <p className="text-sm text-gray-500">Find the next available time</p>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-brand-blue" />
+                </button>
+                
+                {eventType.teamMembers?.map(tm => (
+                  <button
+                    key={tm.userId}
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, responses: { ...prev.responses, specificHostId: tm.userId } }));
+                      setStep(1);
+                    }}
+                    className="w-full text-left p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-brand-blue hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all flex items-center gap-4 group"
+                  >
+                    {tm.user.avatarUrl ? (
+                      <img src={tm.user.avatarUrl} alt={tm.user.name} className="w-12 h-12 rounded-full object-cover" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold">
+                        {tm.user.name.charAt(0)}
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <p className="font-bold text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">{tm.user.name}</p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-brand-blue" />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
           {step === 1 && (
             <motion.div 
               key="step1"

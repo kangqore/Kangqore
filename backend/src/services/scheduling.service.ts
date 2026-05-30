@@ -41,7 +41,7 @@ export class SchedulingService {
 
     const eventType = await prisma.eventType.findUnique({
       where: { id: eventTypeId },
-      include: { host: true }
+      include: { host: true, teamMembers: true }
     });
 
     if (!eventType) throw createError('Event type not found', 404);
@@ -50,17 +50,78 @@ export class SchedulingService {
     const end = addMinutes(start, eventType.duration);
 
     // Verify slot is still available
+    const specificHostId = data.invitee.responses?.specificHostId; // Extracted from custom responses if any
     const slots = await AvailabilityService.getAvailableSlots(
       eventTypeId,
       start,
       end,
-      invitee.timezone || 'UTC'
+      invitee.timezone || 'UTC',
+      eventType.duration,
+      specificHostId
     );
 
-    const isAvailable = slots.some(s => s.startTime.getTime() === start.getTime());
-    if (!isAvailable) {
+    const availableSlot = slots.find(s => s.startTime.getTime() === start.getTime());
+    if (!availableSlot) {
       throw createError('This time slot is no longer available', 400);
     }
+
+    // Determine Host Assignment
+    let assignedHostId = eventType.hostId;
+
+    if (eventType.assignmentStrategy === 'ROUND_ROBIN') {
+      const freeMembers = availableSlot.availableUserIds;
+      if (freeMembers.length > 0) {
+        // Load balancing: fewest bookings this week
+        const startOfCurrentWeek = new Date();
+        startOfCurrentWeek.setHours(0,0,0,0);
+        startOfCurrentWeek.setDate(startOfCurrentWeek.getDate() - startOfCurrentWeek.getDay());
+
+        const activeBookings = await prisma.scheduledEvent.groupBy({
+          by: ['hostId'],
+          where: {
+            hostId: { in: freeMembers },
+            status: 'ACTIVE',
+            startTime: { gte: startOfCurrentWeek }
+          },
+          _count: { id: true }
+        });
+
+        const loadMap = new Map(activeBookings.map(ab => [ab.hostId, ab._count.id]));
+
+        let minLoad = Infinity;
+        let selectedHostId = freeMembers[0];
+
+        for (const tm of eventType.teamMembers) {
+          if (!freeMembers.includes(tm.userId)) continue;
+          
+          const load = (loadMap.get(tm.userId) || 0) / (tm.weight || 1);
+          if (load < minLoad) {
+            minLoad = load;
+            selectedHostId = tm.userId;
+          }
+        }
+        
+        assignedHostId = selectedHostId;
+
+        await prisma.eventType.update({
+          where: { id: eventTypeId },
+          data: { lastAssignedMemberId: assignedHostId }
+        });
+      }
+    } else if (eventType.assignmentStrategy === 'COLLECTIVE') {
+      // Primary host is the owner, others are secondary
+      assignedHostId = eventType.hostId;
+    } else if (eventType.assignmentStrategy === 'HOST_PICK') {
+      if (specificHostId && availableSlot.availableUserIds.includes(specificHostId)) {
+        assignedHostId = specificHostId;
+      } else {
+        // fallback if "No preference" was selected
+        assignedHostId = availableSlot.availableUserIds[Math.floor(Math.random() * availableSlot.availableUserIds.length)] || eventType.hostId;
+      }
+    }
+
+    const assignedHost = await prisma.user.findUnique({ where: { id: assignedHostId } });
+    if (!assignedHost) throw createError('Assigned host not found', 500);
 
     // Check scheduling link constraints if provided
     if (schedulingLinkId) {
@@ -82,7 +143,7 @@ export class SchedulingService {
       const event = await tx.scheduledEvent.create({
         data: {
           eventTypeId,
-          hostId: eventType.hostId,
+          hostId: assignedHostId,
           title: `${eventType.name} with ${invitee.name}`,
           startTime: start,
           endTime: end,
@@ -129,8 +190,8 @@ export class SchedulingService {
       await emailService.sendBookingConfirmation({
         inviteeName: invitee.name,
         inviteeEmail: invitee.email,
-        hostName: result.host.name,
-        hostEmail: result.host.email,
+        hostName: assignedHost.name,
+        hostEmail: assignedHost.email,
         eventTypeId: result.eventTypeId,
         eventTitle: result.title,
         startTime: start,
@@ -146,7 +207,7 @@ export class SchedulingService {
     }
 
     try {
-      await CalendarSyncService.exportEvent(eventType.hostId, result);
+      await CalendarSyncService.exportEvent(assignedHostId, result);
     } catch (err) {
       logger.error('Failed to export event to external calendars', err);
     }

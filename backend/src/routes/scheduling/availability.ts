@@ -36,7 +36,7 @@ const scheduleSchema = Joi.object({
 router.get('/slots/:slug', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params;
-    const { date, timezone, duration } = req.query;
+    const { date, timezone, duration, hostId } = req.query;
 
     const eventType = await prisma.eventType.findUnique({
       where: { slug, isActive: true, isPublic: true }
@@ -51,7 +51,8 @@ router.get('/slots/:slug', async (req: Request, res: Response, next: NextFunctio
       startDate,
       addDays(startDate, 1),
       (timezone as string) || 'UTC',
-      duration ? parseInt(duration as string) : undefined
+      duration ? parseInt(duration as string) : undefined,
+      hostId as string
     );
 
     res.json({ success: true, slots });
@@ -69,7 +70,7 @@ router.get('/slots/:slug', async (req: Request, res: Response, next: NextFunctio
 router.get('/dates/:slug', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params;
-    const { timezone, days, duration } = req.query;
+    const { timezone, days, duration, hostId } = req.query;
 
     const eventType = await prisma.eventType.findUnique({
       where: { slug, isActive: true, isPublic: true }
@@ -85,7 +86,8 @@ router.get('/dates/:slug', async (req: Request, res: Response, next: NextFunctio
       rangeStart,
       rangeDays,
       (timezone as string) || 'UTC',
-      duration ? parseInt(duration as string) : undefined
+      duration ? parseInt(duration as string) : undefined,
+      hostId as string
     );
 
     res.json({ success: true, dates: dateAvailability, maxAdvanceDays: eventType.maxAdvanceDays });
