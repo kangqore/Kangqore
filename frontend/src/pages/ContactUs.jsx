@@ -160,12 +160,13 @@ const ContactUs = () => {
                   </span>
                   
                   <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-fade-in">
-                    Let's transform your business
+                    Let's transform your<br />
+                    business
                     <span className="bg-brand-gradient bg-clip-text text-transparent"> together</span>
                   </h1>
 
                   <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-2xl animate-fade-in font-medium">
-                    Connect with our global team of experts. Whether you're looking for specialized consulting or general support, we're here to help.
+                    We’re here to help! Tell us what you’re looking for and we’ll get you connected to the right people.
                   </p>
                 </div>
 
@@ -219,7 +220,7 @@ const ContactUs = () => {
                 onClick={() => setActiveTab('meeting')}
                 className={`flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
                   activeTab === 'meeting'
-                    ? 'bg-white dark:bg-gray-900 text-brand-blue shadow-md'
+                    ? 'bg-brand-gradient text-white shadow-md shadow-brand-blue/20'
                     : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
@@ -230,7 +231,7 @@ const ContactUs = () => {
                 onClick={() => setActiveTab('message')}
                 className={`flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
                   activeTab === 'message'
-                    ? 'bg-white dark:bg-gray-900 text-brand-blue shadow-md'
+                    ? 'bg-brand-gradient text-white shadow-md shadow-brand-blue/20'
                     : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
@@ -256,7 +257,7 @@ const ContactUs = () => {
                 {/* Form Left Side */}
                 <div className="md:w-5/12 flex flex-col gap-6">
                   <h2 className="text-6xl font-bold text-gray-900 dark:text-white">
-                    Get in <span className="text-brand-blue">Touch</span>
+                    Get in <span className="bg-brand-gradient bg-clip-text text-transparent">Touch</span>
                   </h2>
                   <p className="text-gray-500 text-sm leading-relaxed mb-8">
                     Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
@@ -264,25 +265,25 @@ const ContactUs = () => {
 
                   {/* Email Box */}
                   <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 flex gap-4 items-start shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-brand-gradient rounded-xl flex items-center justify-center flex-shrink-0 shadow-md shadow-brand-blue/20">
                       <Mail className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <h4 className="font-bold text-gray-900 dark:text-white">Email Us</h4>
                       <p className="text-sm text-gray-500 mb-1">Our team is here to help</p>
-                      <a href="mailto:business@kangqore.com" className="text-sm text-brand-blue font-medium hover:underline">business@kangqore.com</a>
+                      <a href="mailto:business@kangqore.com" className="text-sm text-transparent bg-clip-text bg-brand-gradient font-bold hover:opacity-80">business@kangqore.com</a>
                     </div>
                   </div>
 
                   {/* Call Box */}
                   <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 flex gap-4 items-start shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-brand-gradient rounded-xl flex items-center justify-center flex-shrink-0 shadow-md shadow-brand-blue/20">
                       <Phone className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <h4 className="font-bold text-gray-900 dark:text-white">Call Us</h4>
                       <p className="text-sm text-gray-500 mb-1">Mon-Sat from 9AM to 9PM</p>
-                      <a href="tel:+917782010696" className="text-sm text-brand-blue font-medium hover:underline">+91 7782010696</a>
+                      <a href="tel:+917782010696" className="text-sm text-transparent bg-clip-text bg-brand-gradient font-bold hover:opacity-80">+91 7782010696</a>
                     </div>
                   </div>
 
@@ -347,7 +348,7 @@ const ContactUs = () => {
                           value={formData.name}
                           onChange={handleChange}
                           className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-all outline-none"
-                          placeholder="John Doe"
+                          placeholder="Mahesh Kumar"
                         />
                       </div>
                       <div className="space-y-2">
@@ -503,36 +504,49 @@ const ContactUs = () => {
       </section>
 
 
-      {/* CTA Section */}
-      <section className="py-24">
+      {/* I'm Looking For Section */}
+      <section className="py-24 bg-white dark:bg-[#050505] border-t border-gray-100 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="relative rounded-[3rem] overflow-hidden bg-gray-900 dark:bg-gray-800 p-12 md:p-20 text-center">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-            
-            <div className="relative z-10 max-w-3xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to start your journey?</h2>
-              <p className="text-gray-400 text-lg mb-10 leading-relaxed">
-                Join hundreds of global enterprises that have transformed their digital presence with Kangqore's expertise.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button
-                  onClick={() => {
-                    setActiveTab('meeting');
-                    document.getElementById('contact-options').scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="w-full sm:w-auto px-10 py-4 bg-brand-gradient text-white font-bold rounded-2xl hover:scale-[1.03] transition-all shadow-xl shadow-brand-blue/20"
-                >
-                  Book Your Session
-                </button>
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+              I'm Looking For
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+              Please select your area of interest below. A Kangqore representative will contact you shortly after receiving your request.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12 max-w-6xl mx-auto">
+            {[
+              { label: 'Request for Services', link: '#contact-options' },
+              { label: 'Technology and Market Analyst Queries', link: '#contact-options' },
+              { label: 'eQORE-related Queries', link: '#contact-options' },
+              { label: 'Financial Analysts and Investor Queries', link: '#contact-options' },
+              { label: 'Media Queries', link: '#contact-options' },
+              { label: 'Career-related Queries', link: '/careers' },
+              { label: 'Supplier Payment Related Queries', link: '#contact-options' },
+              { label: 'BPM-related Queries', link: '#contact-options' },
+              { label: 'Website Feedback', link: '#contact-options' }
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-start">
                 <Link
-                  to="/careers"
-                  className="w-full sm:w-auto px-10 py-4 bg-white/10 text-white font-bold rounded-2xl hover:bg-white/20 transition-all border border-white/10"
+                  to={item.link}
+                  className="group inline-block"
+                  onClick={(e) => {
+                    if (item.link === '#contact-options') {
+                      e.preventDefault();
+                      setFormData(prev => ({ ...prev, inquiryType: item.label }));
+                      setActiveTab('message');
+                      document.getElementById('contact-options').scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                 >
-                  Join Our Team
+                  <span className="text-lg md:text-xl font-bold text-[#1a233a] dark:text-white border-b-2 border-[#1a233a] dark:border-white pb-1 group-hover:text-brand-blue group-hover:border-brand-blue transition-colors duration-300">
+                    {item.label}
+                  </span>
                 </Link>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
