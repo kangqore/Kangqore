@@ -20,7 +20,7 @@ sleep 10
 
 # 3. Reset Admin Credentials
 echo "🔑 Resetting Admin Credentials..."
-cd core-backend
+cd backend
 npx ts-node src/scripts/reset-admin.ts
 
 echo "✅ Done! You can now login with:"

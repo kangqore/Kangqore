@@ -128,7 +128,7 @@ impact — each phase is independently shippable and delivers value on its own.
 - `backend/src/services/email.service.ts` — template rendering
 - `frontend/src/pages/admin/EmailTemplates.jsx`
 
-### 2C — Workflow Builder
+### 2C — Workflow Builder ✅
 
 | Item | Detail |
 |---|---|
@@ -143,7 +143,7 @@ impact — each phase is independently shippable and delivers value on its own.
 - `backend/src/jobs/WorkflowExecutor.ts`
 - `frontend/src/pages/admin/WorkflowBuilder.jsx`
 
-### 2D — Outbound Webhooks
+### 2D — Outbound Webhooks ✅
 
 | Item | Detail |
 |---|---|
@@ -159,7 +159,7 @@ impact — each phase is independently shippable and delivers value on its own.
 - `backend/src/routes/scheduling/webhooks.ts`
 - `frontend/src/pages/admin/WebhooksSettings.jsx`
 
-### 2E — SMS Reminders (Twilio)
+### 2E — SMS Reminders (Twilio) ✅
 
 | Item | Detail |
 |---|---|

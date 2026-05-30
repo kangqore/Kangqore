@@ -23,3 +23,8 @@
 2026-05-04 19:00:20:020 [31merror[39m: [31mconcierge.stream.error: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011CahcL5UevxDaEwXH9NLNV"}[39m
 2026-05-04 19:08:52:852 [31merror[39m: [31mconcierge.anthropic.error: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011Cahcyrb521ePeJvv5Ezt5"}[39m
 2026-05-04 19:08:52:852 [31merror[39m: [31mconcierge.stream.error: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011Cahcyrb521ePeJvv5Ezt5"}[39m
+2026-05-29 14:43:43:4343 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m
+2026-05-29 14:44:17:4417 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m
+2026-05-29 14:46:12:4612 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m
+2026-05-29 20:09:52:952 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m
+2026-05-29 22:40:07:407 [31merror[39m: [31mconcierge.client.error: ANTHROPIC_API_KEY is not configured[39m

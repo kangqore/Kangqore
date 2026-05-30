@@ -1926,6 +1926,8 @@ model EventType {
   schedulingLinks       SchedulingLink[]
   availabilitySchedules AvailabilitySchedule[] @relation("AvailabilityScheduleToEventType")
   emailTemplates        EmailTemplate[]
+  webhooks              Webhook[]
+  workflows             Workflow[]
 
   @@index([hostId])
   @@index([slug])
@@ -1946,6 +1948,75 @@ model EmailTemplate {
   @@unique([eventTypeId, type])
   @@index([eventTypeId])
   @@map("email_templates")
+}
+
+model Webhook {
+  id          String   @id @default(cuid())
+  eventTypeId String?
+  url         String
+  secret      String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  eventType   EventType? @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+  deliveries  WebhookDelivery[]
+
+  @@index([eventTypeId])
+  @@map("webhooks")
+}
+
+model WebhookDelivery {
+  id           String   @id @default(cuid())
+  webhookId    String
+  payload      Json
+  status       String   // e.g. "SUCCESS", "FAILED"
+  statusCode   Int?
+  responseBody String?  @db.Text
+  requestTime  DateTime @default(now())
+  responseTime Int?     // in ms
+  
+  webhook      Webhook  @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId])
+  @@map("webhook_deliveries")
+}
+
+model Workflow {
+  id            String   @id @default(cuid())
+  eventTypeId   String?
+  trigger       String   // e.g. "BEFORE_EVENT", "AFTER_EVENT", "ON_BOOKED"
+  offsetMinutes Int?     // e.g. -1440 for 24 hours before
+  action        String   // e.g. "SEND_EMAIL", "CALL_WEBHOOK"
+  actionConfig  Json?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  eventType     EventType? @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+  jobs          WorkflowJob[]
+
+  @@index([eventTypeId])
+  @@map("workflows")
+}
+
+model WorkflowJob {
+  id           String   @id @default(cuid())
+  workflowId   String
+  eventId      String
+  scheduledFor DateTime?
+  status       String   @default("PENDING") // PENDING, COMPLETED, FAILED
+  resultLog    String?  @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  workflow     Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  event        ScheduledEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([workflowId])
+  @@index([eventId])
+  @@index([status, scheduledFor])
+  @@map("workflow_jobs")
 }
 
 model InviteeNoShow {
@@ -2078,6 +2149,7 @@ model ScheduledEvent {
   eventType        EventType            @relation(fields: [eventTypeId], references: [id])
   host             User                 @relation("EventHost", fields: [hostId], references: [id])
   schedulingLink   SchedulingLink?      @relation(fields: [schedulingLinkId], references: [id])
+  workflowJobs     WorkflowJob[]
 
   @@index([hostId, startTime])
   @@index([eventTypeId])

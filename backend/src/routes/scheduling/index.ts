@@ -10,6 +10,8 @@ import acceptInviteRoutes from './accept-invite';
 import calendarIntegrationRoutes from './calendar-integrations';
 import feedRoutes from './feed';
 import emailTemplateRoutes from './email-templates';
+import webhookRoutes from './webhooks';
+import workflowRoutes from './workflows';
 
 const router = Router();
 
@@ -24,5 +26,7 @@ router.use('/accept-invite', acceptInviteRoutes);
 router.use('/calendar-integrations', calendarIntegrationRoutes);
 router.use('/feed', feedRoutes);
 router.use('/email-templates', emailTemplateRoutes);
+router.use('/webhooks', webhookRoutes);
+router.use('/workflows', workflowRoutes);
 
 export default router;

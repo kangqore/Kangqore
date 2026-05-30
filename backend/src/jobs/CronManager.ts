@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma';
 import { AccountabilityService } from '../services/AccountabilityService';
 import { emailService } from '../services/email.service';
 import { smsService } from '../services/sms.service';
+import { WorkflowExecutor } from './WorkflowExecutor';
 import { addMinutes, addHours, addDays } from 'date-fns';
 import logger from '../utils/logger';
 
@@ -16,6 +17,21 @@ export class CronManager {
     this.scheduleOverdueMonitor();
     this.scheduleImpactAccrual();
     this.scheduleMeetingReminders();
+    this.scheduleWorkflowExecutor();
+  }
+
+  /**
+   * Run every 15 minutes to process workflow jobs
+   */
+  private static scheduleWorkflowExecutor() {
+    cron.schedule('*/15 * * * *', async () => {
+      try {
+        await WorkflowExecutor.run();
+      } catch (err) {
+        console.error('❌ Error in Workflow Executor:', err);
+      }
+    });
+    console.log('   -> Workflow Executor scheduled (Every 15m)');
   }
 
   /**

@@ -4,6 +4,7 @@ import { prisma } from '../../lib/prisma';
 import { createError } from '../../middleware/errorHandler';
 import { authenticate, authorize, AuthenticatedRequest as AuthRequest } from '../../middleware/auth';
 import { addDays } from 'date-fns';
+import { emailService } from '../../services/email.service';
 
 const router = Router();
 
@@ -68,6 +69,10 @@ router.post('/invitations', authenticate, async (req: AuthRequest, res, next) =>
 
     if (!membership) throw createError('Unauthorized to invite members', 403);
 
+    const organization = await prisma.organization.findUnique({
+      where: { id: membership.organizationId }
+    });
+
     const invitation = await prisma.orgInvitation.create({
       data: {
         organizationId: membership.organizationId,
@@ -77,8 +82,29 @@ router.post('/invitations', authenticate, async (req: AuthRequest, res, next) =>
       }
     });
 
-    // TODO: Send invitation email
-    
+    const frontendUrl = process.env.CORS_ORIGINS?.split(',')[0] || 'https://kangqore.com';
+    const acceptUrl = `${frontendUrl}/accept-invite/${invitation.id}`;
+    const orgName = organization?.name || 'Kangqore';
+    const inviterName = req.user!.name || 'A team member';
+
+    await emailService.sendEmail({
+      to: email,
+      subject: `You've been invited to join ${orgName} on Kangqore`,
+      text: `${inviterName} has invited you to join ${orgName} on Kangqore as a ${invitation.role}.\n\nAccept your invitation: ${acceptUrl}\n\nThis invitation expires in 7 days.`,
+      html: `
+        <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;">
+          <h2 style="margin:0 0 16px;color:#111827;">You've been invited to ${orgName}</h2>
+          <p style="color:#6b7280;margin:0 0 8px;">${inviterName} has invited you to join <strong>${orgName}</strong> on Kangqore as a <strong>${invitation.role}</strong>.</p>
+          <p style="color:#6b7280;margin:0 0 24px;">This invitation expires in 7 days.</p>
+          <a href="${acceptUrl}" style="display:inline-block;padding:12px 24px;background:#2564ea;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;">Accept Invitation</a>
+          <p style="color:#9ca3af;font-size:12px;margin:24px 0 0;">Or copy this link: ${acceptUrl}</p>
+        </div>
+      `
+    }).catch(err => {
+      // Log but don't fail the request if email delivery fails
+      console.error('Failed to send org invitation email:', err);
+    });
+
     res.status(201).json({ success: true, invitation });
   } catch (error) {
     next(error);
