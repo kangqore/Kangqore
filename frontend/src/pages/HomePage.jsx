@@ -1113,7 +1113,7 @@ const PartnerBadgesStrip = () => {
               <img
                 src={logo.src}
                 alt={logo.label}
-                className={`${logo.scale} w-auto object-contain grayscale opacity-60 group-hover:opacity-100 group-hover:brightness-0 transition-all duration-500 cursor-pointer filter`}
+                className={`${logo.scale} w-auto object-contain grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500 cursor-pointer filter`}
               />
             </div>
           ))}
