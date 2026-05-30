@@ -55,8 +55,8 @@ const heroSlides = [
     id: 1,
     type: 'video',
     tag: "ENTERPRISE TRANSFORMATION",
-    title: "Engineer the Systems That",
-    titleGradient: "Scale Your Ambition.",
+    title: "Infrastructure So Intelligent, ",
+    titleGradient: "Growth Becomes Inevitable.",
     description: "Kangqore partners with ambitious organizations to engineer intelligent digital infrastructure that modernizes operations, automates enterprise workflows, secures critical systems, and accelerates measurable growth.",
     cta: "Explore Our Capabilities",
     secondaryCta: "Schedule Your 30-min Discovery Call",
@@ -596,7 +596,7 @@ const HeroCarousel = () => {
                   ? 'max-w-[680px]' 
                   : slide.type === 'chat' 
                     ? 'max-w-2xl'
-                    : 'max-w-3xl'
+                    : 'max-w-5xl'
               } flex flex-col h-full`}>
                 
                 <div className="space-y-5 flex-shrink-0">
@@ -1116,7 +1116,7 @@ const PartnerBadgesStrip = () => {
               <img
                 src={logo.src}
                 alt={logo.label}
-                className={`${logo.scale} w-auto object-contain opacity-30 group-hover:opacity-100 transition-all duration-500 cursor-pointer filter dark:invert dark:brightness-200`}
+                className={`${logo.scale} w-auto object-contain grayscale opacity-60 group-hover:opacity-100 group-hover:brightness-0 transition-all duration-500 cursor-pointer filter`}
               />
             </div>
           ))}
@@ -1530,21 +1530,21 @@ const TestimonialCard = ({ testimonial, index }) => {
       </div>
 
       {/* Quote Text */}
-      <blockquote className="text-lg md:text-xl font-medium text-gray-800 dark:text-gray-200 leading-relaxed mb-8 relative z-10">
+      <blockquote className="text-lg md:text-xl font-medium text-gray-200 leading-relaxed mb-8 relative z-10">
         "{testimonial.quote}"
       </blockquote>
 
       {/* Author details */}
-      <div className="flex items-center gap-4 relative z-10 border-t border-gray-100 dark:border-white/10 pt-6">
+      <div className="flex items-center gap-4 relative z-10 border-t border-white/10 pt-6">
         {/* Avatar Initials */}
         <div className="w-12 h-12 rounded-full bg-brand-gradient flex items-center justify-center text-white font-bold text-sm shadow-md">
           {testimonial.initials}
         </div>
         <div>
-          <cite className="not-italic text-base font-bold text-gray-900 dark:text-white block">
+          <cite className="not-italic text-base font-bold text-white block">
             {testimonial.author}
           </cite>
-          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mt-0.5">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mt-0.5">
             {testimonial.role}
           </span>
         </div>
