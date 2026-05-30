@@ -32,7 +32,7 @@ services:
   # Node.js Core Backend
   core-backend:
     build:
-      context: ./core-backend
+      context: ./backend
       dockerfile: Dockerfile
     container_name: kangqore-core-backend
     environment:
@@ -48,7 +48,7 @@ services:
       - postgres
       - intelligence-layer
     volumes:
-      - ./core-backend/uploads:/app/uploads
+      - ./backend/uploads:/app/uploads
     networks:
       - kangqore-network
 

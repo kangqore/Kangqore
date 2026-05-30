@@ -5,6 +5,8 @@ import { createError } from '../middleware/errorHandler';
 import { addMinutes, format } from 'date-fns';
 import { randomBytes } from 'crypto';
 import { CalendarSyncService } from './calendarSync.service';
+import { webhookService } from './webhook.service';
+import { workflowService } from './workflow.service';
 import logger from '../utils/logger';
 
 function generateToken(): string {
@@ -149,6 +151,24 @@ export class SchedulingService {
       logger.error('Failed to export event to external calendars', err);
     }
 
+    // Dispatch webhook
+    webhookService.dispatchEvent(result.eventTypeId, 'booking.created', {
+      id: result.id,
+      title: result.title,
+      startTime: result.startTime,
+      endTime: result.endTime,
+      timezone: result.timezone,
+      invitee: {
+        name: invitee.name,
+        email: invitee.email,
+        phone: invitee.phone
+      }
+    });
+
+    workflowService.evaluateOnBookingCreated(result.id).catch(err => {
+      logger.error('Failed to evaluate workflows', err);
+    });
+
     return {
       ...result,
       cancelLink: `${frontendUrl}/booking/cancel/${cancelToken}`,
@@ -188,6 +208,23 @@ export class SchedulingService {
     } catch (err) {
       logger.error('Failed to send cancellation emails', err);
     }
+
+    // Dispatch webhook
+    webhookService.dispatchEvent(event.eventTypeId, 'booking.cancelled', {
+      id: event.id,
+      title: event.title,
+      cancelledBy,
+      cancelReason: reason,
+      invitee: event.invitees[0] ? {
+        name: event.invitees[0].name,
+        email: event.invitees[0].email
+      } : null
+    });
+
+    // Cancel pending workflows
+    workflowService.cancelPendingJobs(eventId).catch(err => {
+      logger.error('Failed to cancel pending workflows', err);
+    });
 
     return event;
   }
@@ -320,6 +357,22 @@ export class SchedulingService {
     } catch (err) {
       logger.error('Failed to export rescheduled event to external calendars', err);
     }
+
+    // Dispatch webhooks
+    webhookService.dispatchEvent(newEvent.eventTypeId, 'booking.rescheduled', {
+      id: newEvent.id,
+      oldEventId: oldEvent.id,
+      title: newEvent.title,
+      startTime: newEvent.startTime,
+      endTime: newEvent.endTime,
+      invitee: {
+        name: invitee.name,
+        email: invitee.email
+      }
+    });
+
+    workflowService.cancelPendingJobs(oldEvent.id).catch(err => logger.error('Failed to cancel old workflows', err));
+    workflowService.evaluateOnBookingCreated(newEvent.id).catch(err => logger.error('Failed to evaluate new workflows', err));
 
     return {
       ...newEvent,

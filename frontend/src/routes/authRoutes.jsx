@@ -120,6 +120,8 @@ const ClientCompliance = React.lazy(() => import('../pages/dashboards/client/Cli
 
 const CalendarSettings = React.lazy(() => import('../pages/settings/CalendarSettings'));
 const EmailTemplates = React.lazy(() => import('../pages/settings/EmailTemplates'));
+const WebhooksSettings = React.lazy(() => import('../pages/settings/WebhooksSettings'));
+const WorkflowBuilder = React.lazy(() => import('../pages/settings/WorkflowBuilder'));
 
 /**
  * Authentication and Dashboard Routes
@@ -136,6 +138,8 @@ export const authRoutes = [
   <Route key="settings" path="/settings" element={<Navigate to="/dashboard/client/settings" replace />} />, // Should ideally use a RoleBasedRedirect component
   <Route key="calendar-settings" path="/dashboard/calendar" element={<CalendarSettings />} />,
   <Route key="email-templates-settings" path="/dashboard/email-templates" element={<EmailTemplates />} />,
+  <Route key="webhooks-settings" path="/dashboard/webhooks" element={<WebhooksSettings />} />,
+  <Route key="workflows" path="/dashboard/workflows" element={<WorkflowBuilder />} />,
   <Route key="profile" path="/profile" element={<Navigate to="/dashboard/client/profile" replace />} />, // Should ideally use a RoleBasedRedirect component
   <Route key="change-password" path="/change-password" element={<ChangePassword />} />,
   <Route key="admin-dashboard-old" path="/admin/dashboard" element={<AdminDashboardOld />} />,
