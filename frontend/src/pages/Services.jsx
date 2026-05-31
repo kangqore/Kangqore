@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Compass, Activity, Zap, ShieldCheck, Cpu, 
   CheckCircle2, Brain, Cog, RefreshCw, Shield, Layers, TrendingUp,
@@ -311,6 +312,15 @@ const Services = () => {
       accent: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20"
     }
   ];
+
+  // Auto transition for Delivery Playbook
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % methodologySteps.length);
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [methodologySteps.length]);
 
   // Current selected department info for interactive map
   const activeDeptInfo = departmentsData[activeDept];
@@ -824,7 +834,7 @@ const Services = () => {
                     <Link
                       key={svc.slug}
                       to={`/services/${activeDept}/${svc.slug}`}
-                      className="group/svc relative rounded-2xl p-5 border border-white/5 bg-[#0a0a0c] hover:border-white/10 hover:bg-white/[0.01] transition-all duration-300 flex flex-col justify-between shadow-md"
+                      className="group/svc relative rounded-2xl p-5 border border-white/10 bg-[#222428] hover:border-white/20 hover:bg-[#2b2d31] transition-all duration-300 flex flex-col justify-between shadow-lg"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-2 gap-2">
@@ -835,13 +845,13 @@ const Services = () => {
                             <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
                           )}
                         </div>
-                        <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                        <p className="text-[11px] text-slate-300 line-clamp-2 leading-relaxed">
                           {svc.shortDescription}
                         </p>
                       </div>
 
-                      <div className="flex justify-end mt-4 pt-2 border-t border-white/[0.02]">
-                        <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover/svc:text-cyan-400 group-hover/svc:translate-x-1 transition-all" />
+                      <div className="flex justify-end mt-4 pt-2 border-t border-white/[0.05]">
+                        <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/svc:text-cyan-400 group-hover/svc:translate-x-1 transition-all" />
                       </div>
                     </Link>
                   ))}
@@ -878,10 +888,6 @@ const Services = () => {
           
           {/* Section Header */}
           <div className="mb-16 text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span className="text-xs font-bold text-slate-300 uppercase tracking-widest font-mono">Our Methodology</span>
-            </div>
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 tracking-tight">
               The Kangqore Delivery Playbook
             </h2>
@@ -915,7 +921,7 @@ const Services = () => {
                   className={`flex-1 flex items-center gap-4 p-4 rounded-2xl border transition-all duration-500 text-left relative z-10 ${
                     isActive 
                       ? 'bg-[#0e172a] border-[#2564ea]/30 text-white shadow-xl shadow-blue-900/10' 
-                      : 'bg-[#050507]/40 border-transparent text-slate-500 hover:text-slate-300 hover:bg-[#050507]/80'
+                      : 'bg-[#0a0a0c] border-transparent text-slate-500 hover:text-slate-300 hover:bg-[#121215]'
                   }`}
                 >
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-300 ${
@@ -933,63 +939,74 @@ const Services = () => {
           </div>
 
           {/* Detailed Playbook Info Card */}
-          <div className="bg-black/50 border border-white/5 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl transition-all duration-500">
-            {/* Top right phase indicator */}
-            <div className="absolute top-8 right-8 text-7xl md:text-8xl font-black font-mono text-white/5 select-none">
-              {methodologySteps[activeStep].step}
-            </div>
-
-            <div className="grid md:grid-cols-12 gap-8 items-start relative z-10">
-              
-              {/* Left Column: Summary */}
-              <div className="md:col-span-7 space-y-6">
-                <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono">
-                  {methodologySteps[activeStep].title} Focus
-                </span>
-                <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight">
-                  {methodologySteps[activeStep].headline}
-                </h3>
-                <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-                  {methodologySteps[activeStep].description}
-                </p>
-              </div>
-
-              {/* Right Column: Deliverables / Outcomes */}
-              <div className="md:col-span-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-6 pt-4 md:pt-0">
-                
-                {/* Deliverables list */}
-                <div className="space-y-3">
-                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block border-b border-white/5 pb-2">
-                    Key Deliverables
-                  </span>
-                  <div className="space-y-2">
-                    {methodologySteps[activeStep].deliverables.map((item, i) => (
-                      <div key={i} className="flex items-center gap-2.5 text-xs text-slate-400">
-                        <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
+          <div className="bg-black/50 border border-white/5 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl min-h-[400px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="w-full h-full"
+              >
+                {/* Top right phase indicator */}
+                <div className="absolute top-0 right-0 text-7xl md:text-8xl font-black font-mono text-white/5 select-none">
+                  {methodologySteps[activeStep].step}
                 </div>
 
-                {/* Outcomes list */}
-                <div className="space-y-3">
-                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block border-b border-white/5 pb-2">
-                    Milestone Outcomes
-                  </span>
-                  <div className="space-y-2">
-                    {methodologySteps[activeStep].outcomes.map((item, i) => (
-                      <div key={i} className="flex items-center gap-2.5 text-xs text-slate-400">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
+                <div className="grid md:grid-cols-12 gap-8 items-start relative z-10 pt-4">
+                  
+                  {/* Left Column: Summary */}
+                  <div className="md:col-span-7 space-y-6">
+                    <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono">
+                      {methodologySteps[activeStep].title} Focus
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight">
+                      {methodologySteps[activeStep].headline}
+                    </h3>
+                    <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+                      {methodologySteps[activeStep].description}
+                    </p>
                   </div>
+
+                  {/* Right Column: Deliverables / Outcomes */}
+                  <div className="md:col-span-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-6 pt-4 md:pt-0">
+                    
+                    {/* Deliverables list */}
+                    <div className="space-y-3">
+                      <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block border-b border-white/5 pb-2">
+                        Key Deliverables
+                      </span>
+                      <div className="space-y-2">
+                        {methodologySteps[activeStep].deliverables.map((item, i) => (
+                          <div key={i} className="flex items-center gap-2.5 text-xs text-slate-400">
+                            <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Outcomes list */}
+                    <div className="space-y-3">
+                      <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block border-b border-white/5 pb-2">
+                        Milestone Outcomes
+                      </span>
+                      <div className="space-y-2">
+                        {methodologySteps[activeStep].outcomes.map((item, i) => (
+                          <div key={i} className="flex items-center gap-2.5 text-xs text-slate-400">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                  </div>
+
                 </div>
-
-              </div>
-
-            </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
         </div>
