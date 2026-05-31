@@ -70,7 +70,7 @@ const heroSlides = [
     tag: "eQORE AI™ CONCIERGE",
     title: "Innovate Your Next Move.",
     description: "",
-    image: "/images/hero-tennis.png",
+    video: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4",
   },
   {
     id: 3,
@@ -361,10 +361,10 @@ const HeroCarousel = () => {
           }`}
         >
           <div className="absolute inset-0 bg-[#0a1228]">
-            {slide.type === 'video' && (
+            {(slide.type === 'video' || slide.video) && (
               <video
                 ref={index === 0 ? videoRef : null}
-                autoPlay={index === 0}
+                autoPlay
                 loop
                 muted
                 playsInline
@@ -375,7 +375,7 @@ const HeroCarousel = () => {
                 <source src={slide.video} type="video/mp4" />
               </video>
             )}
-            {slide.type === 'chat' && slide.image && (
+            {slide.type === 'chat' && slide.image && !slide.video && (
               <img
                 src={slide.image}
                 alt="Kangqore AI Tennis"
