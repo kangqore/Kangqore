@@ -134,6 +134,22 @@ const Header = ({ onMenuClick }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      // If clicking inside the header, don't close it immediately
+      // (the specific button clicks will handle toggling)
+      if (e.target.closest('header')) return;
+      setActiveDropdown(null);
+    };
+    
+    if (activeDropdown) {
+      document.addEventListener('click', handleClickOutside);
+    }
+    
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [activeDropdown]);
+
   // Opens the global eQORE chatbot console.
   const openEqoreChat = () => {
     navigate('/eqore-ai', {
@@ -363,9 +379,9 @@ const Header = ({ onMenuClick }) => {
                 <div
                   key={link.id}
                   className="relative group"
-                  onMouseEnter={() => setActiveDropdown(link.id)}
                 >
                   <button 
+                    onClick={() => setActiveDropdown(activeDropdown === link.id ? null : link.id)}
                     className={`flex items-center space-x-1 hover:text-brand-blue transition-colors duration-300 py-1.5 font-bold tracking-tight text-[14px] ${
                       isLightBackground ? 'text-gray-900' : 'text-white'
                     }`}
@@ -374,21 +390,10 @@ const Header = ({ onMenuClick }) => {
                     <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeDropdown === link.id ? 'rotate-180 text-brand-blue' : isLightBackground ? 'text-gray-500 group-hover:text-brand-blue' : 'text-white/60 group-hover:text-brand-blue'}`} />
                   </button>
                   
-                  {/* Bridge area to prevent menu from closing */}
-                  {activeDropdown === link.id && link.isMegaMenu && (
-                    <div 
-                      className="absolute top-full left-0 right-0 h-8 pointer-events-auto"
-                      onMouseEnter={() => setActiveDropdown(link.id)}
-                      onMouseLeave={() => setActiveDropdown(null)}
-                    />
-                  )}
-                  
                   {/* Mega Menu for Services (What We Do) */}
                   {activeDropdown === link.id && link.isMegaMenu && link.type === 'services' && (
                     <div 
                       className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bottom-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto"
-                      onMouseEnter={() => setActiveDropdown(link.id)}
-                      onMouseLeave={() => setActiveDropdown(null)}
                       style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
                     >
                       <style>{`
@@ -405,14 +410,6 @@ const Header = ({ onMenuClick }) => {
                             <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Enterprise Solutions</h3>
                             <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 font-medium">{departmentsList.length} global departments · Specialized engineering execution</p>
                           </div>
-                          <Link
-                            to="/services"
-                            onClick={() => setActiveDropdown(null)}
-                            className="flex items-center gap-2 px-6 py-3 bg-brand-gradient text-white text-sm font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-lg"
-                          >
-                            Explore All Services
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
                         </div>
                         
                         {/* Two-Panel Body */}
@@ -466,20 +463,30 @@ const Header = ({ onMenuClick }) => {
                                 const ActiveIcon = activeCat.icon;
                                 return (
                                   <>
-                                    <div className="flex items-center gap-6 mb-10 pb-8 border-b border-gray-100 dark:border-gray-800/50">
-                                      <div
-                                        className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center shadow-2xl animate-pulse-slow"
-                                        style={{ backgroundColor: activeCat.accentColor }}
+                                    <div className="flex items-start justify-between gap-6 mb-10 pb-8 border-b border-gray-100 dark:border-gray-800/50">
+                                      <div className="flex items-center gap-6">
+                                        <div
+                                          className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center shadow-2xl animate-pulse-slow shrink-0"
+                                          style={{ backgroundColor: activeCat.accentColor }}
+                                        >
+                                          <ActiveIcon className="w-8 h-8 text-white" />
+                                        </div>
+                                        <div className="flex-1">
+                                          <p className="text-[11px] uppercase tracking-[0.3em] font-black mb-1.5 opacity-60" style={{ color: activeCat.accentColor }}>
+                                            {activeCat.fullName}
+                                          </p>
+                                          <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
+                                          <p className="text-base text-gray-500 dark:text-gray-400 mt-2 font-medium max-w-2xl">{activeCat.description}</p>
+                                        </div>
+                                      </div>
+                                      <Link
+                                        to={`/services#${activeCat.slug}`}
+                                        onClick={() => setActiveDropdown(null)}
+                                        className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[13px] font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-md shrink-0 mt-2"
                                       >
-                                        <ActiveIcon className="w-8 h-8 text-white" />
-                                      </div>
-                                      <div className="flex-1">
-                                        <p className="text-[11px] uppercase tracking-[0.3em] font-black mb-1.5 opacity-60" style={{ color: activeCat.accentColor }}>
-                                          {activeCat.fullName}
-                                        </p>
-                                        <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
-                                        <p className="text-base text-gray-500 dark:text-gray-400 mt-2 font-medium max-w-2xl">{activeCat.description}</p>
-                                      </div>
+                                        Explore all the capabilities
+                                        <ArrowRight className="w-4 h-4" />
+                                      </Link>
                                     </div>
 
                                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
@@ -529,8 +536,6 @@ const Header = ({ onMenuClick }) => {
                   {activeDropdown === link.id && link.isMegaMenu && link.type === 'whoWeAre' && (
                     <div 
                       className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto"
-                      onMouseEnter={() => setActiveDropdown(link.id)}
-                      onMouseLeave={() => setActiveDropdown(null)}
                       style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
                     >
                       <div className="max-w-[1400px] mx-auto">
@@ -544,7 +549,7 @@ const Header = ({ onMenuClick }) => {
                           </Link>
                         </div>
                         
-                        <div className="grid grid-cols-5 gap-4">
+                        <div className="grid grid-cols-5 gap-2">
                           {whoWeAreItems.map((item, index) => {
                             const IconComponent = item.icon;
                             return (
@@ -552,19 +557,17 @@ const Header = ({ onMenuClick }) => {
                                 key={index}
                                 to={item.path}
                                 onClick={() => setActiveDropdown(null)}
-                                className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300"
+                                className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
                               >
-                                <div className="flex flex-col items-center text-center gap-4">
-                                  <Realistic3DIcon 
-                                    icon={IconComponent} 
-                                    className="w-14 h-14 group-hover:scale-110 transition-transform" 
-                                    iconSize="w-6 h-6" 
-                                    theme="brand" 
-                                  />
-                                  <h4 className="font-black text-[15px] text-gray-900 dark:text-white tracking-tight">
-                                    {item.name}
-                                  </h4>
-                                </div>
+                                <Realistic3DIcon 
+                                  icon={IconComponent} 
+                                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
+                                  iconSize="w-5 h-5" 
+                                  theme="brand" 
+                                />
+                                <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                                  {item.name}
+                                </h4>
                               </Link>
                             );
                           })}
@@ -577,8 +580,6 @@ const Header = ({ onMenuClick }) => {
                   {activeDropdown === link.id && link.isMegaMenu && link.type === 'industries' && (
                     <div 
                       className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto"
-                      onMouseEnter={() => setActiveDropdown(link.id)}
-                      onMouseLeave={() => setActiveDropdown(null)}
                       style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
                     >
                       <div className="max-w-[1400px] mx-auto">
@@ -592,7 +593,7 @@ const Header = ({ onMenuClick }) => {
                           </Link>
                         </div>
                         
-                        <div className="grid grid-cols-4 gap-6">
+                        <div className="grid grid-cols-4 gap-2">
                           {industriesItems.map((item, index) => {
                             const IconComponent = item.icon;
                             return (
@@ -600,15 +601,15 @@ const Header = ({ onMenuClick }) => {
                                 key={index}
                                 to={item.path}
                                 onClick={() => setActiveDropdown(null)}
-                                className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300 flex items-center gap-5"
+                                className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
                               >
                                 <Realistic3DIcon 
                                   icon={IconComponent} 
-                                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform" 
+                                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
                                   iconSize="w-5 h-5" 
                                   theme="cyan" 
                                 />
-                                <h4 className="font-black text-[16px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                                <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
                                   {item.name}
                                 </h4>
                               </Link>
@@ -623,8 +624,6 @@ const Header = ({ onMenuClick }) => {
                   {activeDropdown === link.id && link.isMegaMenu && link.type === 'insights' && (
                     <div 
                       className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto"
-                      onMouseEnter={() => setActiveDropdown(link.id)}
-                      onMouseLeave={() => setActiveDropdown(null)}
                       style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
                     >
                       <div className="max-w-[1400px] mx-auto">
@@ -638,7 +637,7 @@ const Header = ({ onMenuClick }) => {
                           </Link>
                         </div>
                         
-                        <div className="grid grid-cols-5 gap-4">
+                        <div className="grid grid-cols-5 gap-2">
                           {insightsItems.map((item, index) => {
                             const IconComponent = item.icon;
                             return (
@@ -646,19 +645,17 @@ const Header = ({ onMenuClick }) => {
                                 key={index}
                                 to={item.path}
                                 onClick={() => setActiveDropdown(null)}
-                                className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300"
+                                className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
                               >
-                                <div className="flex flex-col items-center text-center gap-4">
-                                  <Realistic3DIcon 
-                                    icon={IconComponent} 
-                                    className="w-16 h-16 group-hover:scale-110 mb-2 transition-transform" 
-                                    iconSize="w-7 h-7" 
-                                    theme="brand" 
-                                  />
-                                  <h4 className="font-black text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                                    {item.name}
-                                  </h4>
-                                </div>
+                                <Realistic3DIcon 
+                                  icon={IconComponent} 
+                                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
+                                  iconSize="w-5 h-5" 
+                                  theme="brand" 
+                                />
+                                <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                                  {item.name}
+                                </h4>
                               </Link>
                             );
                           })}
@@ -832,14 +829,6 @@ const Header = ({ onMenuClick }) => {
                       <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Enterprise Solutions</h3>
                       <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 font-medium">{departmentsList.length} global departments · Specialized engineering execution</p>
                     </div>
-                    <Link
-                      to="/services"
-                      onClick={() => setActiveDropdown(null)}
-                      className="flex items-center gap-2 px-6 py-3 bg-brand-gradient text-white text-sm font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-lg"
-                    >
-                      Explore All Services
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
                   </div>
                   
                   {/* Two-Panel Body */}
@@ -893,20 +882,30 @@ const Header = ({ onMenuClick }) => {
                           const ActiveIcon = activeCat.icon;
                           return (
                             <>
-                              <div className="flex items-center gap-6 mb-10 pb-8 border-b border-gray-100 dark:border-gray-800/50">
-                                <div
-                                  className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center shadow-2xl animate-pulse-slow"
-                                  style={{ backgroundColor: activeCat.accentColor }}
+                              <div className="flex items-start justify-between gap-6 mb-10 pb-8 border-b border-gray-100 dark:border-gray-800/50">
+                                <div className="flex items-center gap-6">
+                                  <div
+                                    className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center shadow-2xl animate-pulse-slow shrink-0"
+                                    style={{ backgroundColor: activeCat.accentColor }}
+                                  >
+                                    <ActiveIcon className="w-8 h-8 text-white" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-[11px] uppercase tracking-[0.3em] font-black mb-1.5 opacity-60" style={{ color: activeCat.accentColor }}>
+                                      {activeCat.fullName}
+                                    </p>
+                                    <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
+                                    <p className="text-base text-gray-500 dark:text-gray-400 mt-2 font-medium max-w-2xl">{activeCat.description}</p>
+                                  </div>
+                                </div>
+                                <Link
+                                  to={`/services#${activeCat.slug}`}
+                                  onClick={() => setActiveDropdown(null)}
+                                  className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[13px] font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-md shrink-0 mt-2"
                                 >
-                                  <ActiveIcon className="w-8 h-8 text-white" />
-                                </div>
-                                <div className="flex-1">
-                                  <p className="text-[11px] uppercase tracking-[0.3em] font-black mb-1.5 opacity-60" style={{ color: activeCat.accentColor }}>
-                                    {activeCat.fullName}
-                                  </p>
-                                  <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
-                                  <p className="text-base text-gray-500 dark:text-gray-400 mt-2 font-medium max-w-2xl">{activeCat.description}</p>
-                                </div>
+                                  Explore all the capabilities
+                                  <ArrowRight className="w-4 h-4" />
+                                </Link>
                               </div>
 
                               <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
@@ -973,7 +972,7 @@ const Header = ({ onMenuClick }) => {
                     </Link>
                   </div>
                   
-                  <div className="grid grid-cols-5 gap-4">
+                  <div className="grid grid-cols-5 gap-2">
                     {whoWeAreItems.map((item, index) => {
                       const IconComponent = item.icon;
                       return (
@@ -981,19 +980,17 @@ const Header = ({ onMenuClick }) => {
                           key={index}
                           to={item.path}
                           onClick={() => setActiveDropdown(null)}
-                          className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300"
+                          className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
                         >
-                          <div className="flex flex-col items-center text-center gap-4">
-                            <Realistic3DIcon 
-                              icon={IconComponent} 
-                              className="w-14 h-14 group-hover:scale-110 transition-transform" 
-                              iconSize="w-6 h-6" 
-                              theme="brand" 
-                            />
-                            <h4 className="font-black text-[15px] text-gray-900 dark:text-white tracking-tight">
-                              {item.name}
-                            </h4>
-                          </div>
+                          <Realistic3DIcon 
+                            icon={IconComponent} 
+                            className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
+                            iconSize="w-5 h-5" 
+                            theme="brand" 
+                          />
+                          <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                            {item.name}
+                          </h4>
                         </Link>
                       );
                     })}
@@ -1023,7 +1020,7 @@ const Header = ({ onMenuClick }) => {
                     </Link>
                   </div>
                   
-                  <div className="grid grid-cols-4 gap-6">
+                  <div className="grid grid-cols-4 gap-2">
                     {industriesItems.map((item, index) => {
                       const IconComponent = item.icon;
                       return (
@@ -1031,15 +1028,15 @@ const Header = ({ onMenuClick }) => {
                           key={index}
                           to={item.path}
                           onClick={() => setActiveDropdown(null)}
-                          className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300 flex items-center gap-5"
+                          className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
                         >
                           <Realistic3DIcon 
                             icon={IconComponent} 
-                            className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform" 
+                            className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
                             iconSize="w-5 h-5" 
                             theme="cyan" 
                           />
-                          <h4 className="font-black text-[16px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                          <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
                             {item.name}
                           </h4>
                         </Link>
@@ -1071,7 +1068,7 @@ const Header = ({ onMenuClick }) => {
                     </Link>
                   </div>
                   
-                  <div className="grid grid-cols-5 gap-4">
+                  <div className="grid grid-cols-5 gap-2">
                     {insightsItems.map((item, index) => {
                       const IconComponent = item.icon;
                       return (
@@ -1079,19 +1076,17 @@ const Header = ({ onMenuClick }) => {
                           key={index}
                           to={item.path}
                           onClick={() => setActiveDropdown(null)}
-                          className="group p-6 rounded-3xl bg-gray-50/50 dark:bg-white/5 hover:bg-white dark:hover:bg-gray-900 hover:shadow-2xl transition-all duration-300"
+                          className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
                         >
-                          <div className="flex flex-col items-center text-center gap-4">
-                            <Realistic3DIcon 
-                              icon={IconComponent} 
-                              className="w-16 h-16 group-hover:scale-110 mb-2 transition-transform" 
-                              iconSize="w-7 h-7" 
-                              theme="brand" 
-                            />
-                            <h4 className="font-black text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                              {item.name}
-                            </h4>
-                          </div>
+                          <Realistic3DIcon 
+                            icon={IconComponent} 
+                            className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
+                            iconSize="w-5 h-5" 
+                            theme="brand" 
+                          />
+                          <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
+                            {item.name}
+                          </h4>
                         </Link>
                       );
                     })}
