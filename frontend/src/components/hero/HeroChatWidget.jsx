@@ -115,7 +115,7 @@ const HeroChatWidget = () => {
 
   return (
     <div
-      className="relative w-full max-w-[1000px] bg-white/[0.15] backdrop-blur-2xl border border-white/30 shadow-[0_8px_32px_rgba(255,255,255,0.1)] rounded-3xl flex flex-col animate-fade-in mt-6"
+      className="relative w-full bg-white/[0.15] backdrop-blur-2xl border border-white/30 shadow-[0_8px_32px_rgba(255,255,255,0.1)] rounded-3xl flex flex-col animate-fade-in mt-6"
       style={{ minHeight: '298px', maxHeight: '440px', overflow: 'visible' }}
     >
       {/* 🎙️ Centralized Floating Mic atop the card border with realistic 3D appearance */}
