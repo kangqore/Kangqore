@@ -9,6 +9,7 @@ import FloatingButtons from './components/FloatingButtons';
 import CookieConsent from './components/CookieConsent';
 import { Toaster } from './components/ui/toaster';
 import GlobalAuthPrompt from './components/GlobalAuthPrompt';
+import GlobalFeedbackPrompt from './components/GlobalFeedbackPrompt';
 
 
 // Import modular routes
@@ -242,6 +243,7 @@ function App() {
         <ThemeProvider>
           <AuthProvider>
             <GlobalAuthPrompt />
+            <GlobalFeedbackPrompt />
             <PodcastProvider>
               <AppContent />
               <PodcastMiniPlayer />
