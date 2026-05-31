@@ -203,10 +203,9 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
       {/* New Vertical Floating Stack (eQORE AI & Menu) - Moved to LEFT */}
       <div 
-        className={`fixed left-8 z-[50] flex flex-col items-center gap-4 transition-all duration-700 ease-in-out ${
+        className={`fixed left-8 bottom-8 sm:bottom-10 z-[50] flex flex-col items-center gap-4 transition-all duration-700 ease-in-out ${
           !isVisible || isYielding || showFullMenu ? 'opacity-0 translate-y-10 pointer-events-none' : 'opacity-100 translate-y-0'
         }`}
-        style={{ bottom: '32px' }} // Aligned with the Plus button on the left (bottom-8)
       >
 
         {/* Hamburger Menu Button (Mobile Only) */}
@@ -227,7 +226,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
       {/* Unified Omni-Action Trigger - Moved to RIGHT */}
       <div 
-        className={`fixed bottom-8 right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
+        className={`fixed bottom-8 sm:bottom-10 right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
       >
         {/* Standalone Scroll to Top - Rendered first to be at the very bottom in flex-col-reverse */}
         {isVisible && (
