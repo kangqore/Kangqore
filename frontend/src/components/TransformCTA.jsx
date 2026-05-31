@@ -157,14 +157,13 @@ const TransformCTA = () => {
               />
               <DancingWord word="futures." startIndex={10} isDancing={isDancing} />
             </h2>
-            
-            {/* Get in Touch Button */}
+            {/* Get in Touch Link */}
             <Link
               to="/contact"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-brand-gradient text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105 self-start lg:self-auto whitespace-nowrap"
+              className="group inline-flex items-center gap-3 text-xl md:text-2xl font-bold text-gray-900 dark:text-white hover:text-brand-blue dark:hover:text-cyan-400 transition-colors duration-300 self-start lg:self-auto pt-4 lg:pt-2 mt-2"
             >
               Get in touch
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 transform transition-transform duration-300 group-hover:translate-x-2" />
             </Link>
           </div>
           
