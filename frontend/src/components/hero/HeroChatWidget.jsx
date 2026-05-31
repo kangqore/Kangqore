@@ -103,10 +103,12 @@ const HeroChatWidget = () => {
   };
 
   const chips = [
+    "What does Kangqore do?",
+    "How can eQORE help?",
+    "Tell me about Kangqore BIDS™",
     "Services/Capabilities",
     "What are your departments?",
-    "Which industries do you serve?",
-    "Why choose Kangqore?"
+    "Which industries do you serve?"
   ];
 
   const onChip = (text) => {
@@ -229,13 +231,13 @@ const HeroChatWidget = () => {
 
       {/* Suggested Chips — show before user starts chatting */}
       {!hasUserMessages && (
-        <div className="px-5 sm:px-7 pb-3 flex flex-wrap gap-2">
+        <div className="px-5 sm:px-7 pb-3 flex overflow-x-auto gap-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {chips.map((chip) => (
             <button
               key={chip}
               onClick={() => onChip(chip)}
               disabled={streaming}
-              className="px-3 py-1.5 rounded-lg text-[11px] font-semibold bg-white/[0.06] border border-white/[0.10] text-white/70 hover:bg-white/[0.12] hover:text-white hover:border-white/20 transition-all duration-300 disabled:opacity-40"
+              className="px-3 py-1.5 rounded-lg text-[11px] font-semibold bg-white/[0.06] border border-white/[0.10] text-white/70 hover:bg-white/[0.12] hover:text-white hover:border-white/20 transition-all duration-300 disabled:opacity-40 whitespace-nowrap flex-shrink-0"
             >
               {chip}
             </button>
