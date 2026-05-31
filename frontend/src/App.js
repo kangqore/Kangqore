@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import FloatingButtons from './components/FloatingButtons';
 import CookieConsent from './components/CookieConsent';
 import { Toaster } from './components/ui/toaster';
+import GlobalAuthPrompt from './components/GlobalAuthPrompt';
 
 
 // Import modular routes
@@ -240,6 +241,7 @@ function App() {
         <ScrollToTop />
         <ThemeProvider>
           <AuthProvider>
+            <GlobalAuthPrompt />
             <PodcastProvider>
               <AppContent />
               <PodcastMiniPlayer />
