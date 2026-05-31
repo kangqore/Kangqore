@@ -1816,6 +1816,60 @@ import EqoreShowSection from '../components/podcast/EqoreShowSection';
 
 
 // ============================================================================
+// CAREERS SECTION
+// ============================================================================
+const CareersSection = () => {
+  const { t } = useTranslation();
+  return (
+    <section className="py-24 bg-white dark:bg-black relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="bg-[#0a0a0c] rounded-[2rem] overflow-hidden shadow-2xl border border-white/[0.05]">
+          <div className="grid lg:grid-cols-2">
+            {/* Left Column: Text and CTA */}
+            <div className="p-12 lg:p-16 xl:p-24 flex flex-col justify-center">
+              <div className="inline-flex items-center gap-2 mb-8">
+                <span className="px-3 py-1 text-xs font-bold tracking-wider text-white uppercase bg-brand-blue/20 border border-brand-blue/30 rounded-full shadow-[0_0_15px_rgba(37,100,234,0.3)]">
+                  {t('careers_section.badge', 'Careers')}
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
+                {t('careers_section.heading', 'Build your future with Kangqore')}
+              </h2>
+              <p className="text-lg text-gray-400 font-medium mb-12 max-w-md leading-[1.6]">
+                {t('careers_section.description', 'The next-generation AI-first, digital-first, cloud-first partner, we stand at the forefront of business evolution.')}
+              </p>
+              
+              <div>
+                <a 
+                  href="/careers" 
+                  className="group inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-semibold text-[15px] hover:bg-gray-100 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300"
+                >
+                  {t('careers_section.cta', 'Explore Careers')}
+                  <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
+              </div>
+            </div>
+
+            {/* Right Column: Image */}
+            <div className="relative h-96 lg:h-auto overflow-hidden bg-[#111]">
+              <img 
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80" 
+                alt="Kangqore Team Collaboration"
+                className="w-full h-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105"
+              />
+              {/* Subtle inner gradient to blend edges */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0c] via-transparent to-transparent hidden lg:block" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-transparent lg:hidden" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
+// ============================================================================
 // MAIN HOMEPAGE COMPONENT
 // ============================================================================
 const HomePage = () => {
@@ -1871,7 +1925,7 @@ const HomePage = () => {
 
       <EqoreTypingSection bookingRef={bookingRef} />
 
-
+      <CareersSection />
       <TransformCTA />
       <StickyMobileCTA />
     </>
