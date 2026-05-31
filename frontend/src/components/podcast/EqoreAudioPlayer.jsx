@@ -61,7 +61,7 @@ const EqoreAudioPlayer = () => {
           <div className="absolute inset-0 flex items-center justify-center">
             <button 
               onClick={togglePlay}
-              className="w-20 h-20 rounded-full bg-black text-white flex items-center justify-center shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-white/10 z-20 group"
+              className="w-20 h-20 rounded-full bg-black text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-white/10 z-20 group"
               aria-label={isPlaying ? "Pause" : "Play"}
             >
               <div className="transform group-hover:scale-110 transition-transform">

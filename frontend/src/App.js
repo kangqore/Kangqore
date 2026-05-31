@@ -1,5 +1,5 @@
 // Frontend restart trigger: 2026-05-03T16:06:00
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
@@ -30,6 +30,21 @@ import AcceptInvitePage from './pages/AcceptInvitePage';
 import BookingConfirmationPage from './pages/BookingConfirmationPage';
 import BookingPage from './pages/BookingPage';
 import './App.css';
+
+/**
+ * Scroll to top on route change unless there is a hash anchor
+ */
+const ScrollToTop = () => {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
+  return null;
+};
 
 /**
  * Layout Component with Header and Footer
@@ -222,6 +237,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ScrollToTop />
         <ThemeProvider>
           <AuthProvider>
             <PodcastProvider>

@@ -95,17 +95,17 @@ const heroSlides = [
 
 const homeTestimonials = [
   {
-    quote: "Kangqore transformed our digital infrastructure, resulting in 40% cost reduction and 3x faster deployment cycles.",
-    author: "James Miller",
-    role: "CTO, Fortune 500 Bank",
-    initials: "JM",
-    rating: 5
-  },
-  {
     quote: "Their AI solutions helped us predict customer behavior with 95% accuracy, revolutionizing our marketing strategy.",
     author: "Sarah Chen",
     role: "VP Digital, Retail Giant",
     initials: "SC",
+    rating: 5
+  },
+  {
+    quote: "Kangqore transformed our digital infrastructure, resulting in 40% cost reduction and 3x faster deployment cycles.",
+    author: "James Miller",
+    role: "CTO, Fortune 500 Bank",
+    initials: "JM",
     rating: 5
   },
   {
@@ -1281,10 +1281,10 @@ const TrustStatementTypewriter = ({ isVisible }) => {
   };
 
   return (
-    <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl whitespace-pre-line">
+    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl whitespace-pre-line">
       {renderText()}
       {!isComplete && (
-        <span className="inline-block w-1 h-12 md:h-14 lg:h-16 bg-brand-gradient ml-1" />
+        <span className="inline-block w-1 h-8 md:h-10 lg:h-12 bg-brand-gradient ml-1" />
       )}
     </h2>
   );
@@ -1320,14 +1320,14 @@ const TrustStatementTypewriter = ({ isVisible }) => {
 
 
   return (
-    <section className="py-32 bg-white dark:bg-black overflow-hidden border-t border-gray-50 dark:border-gray-800">
+    <section id="trust-statement" className="py-32 bg-white dark:bg-black overflow-hidden border-t border-gray-50 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div 
           ref={ref}
-          className="grid lg:grid-cols-2 gap-16 lg:gap-24"
+          className="grid lg:grid-cols-2 gap-16 lg:gap-24 lg:items-start"
         >
           {/* Left Column: Heading & Context */}
-          <div className={`transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className={`transition-all duration-1000 lg:pt-8 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <TrustStatementTypewriter isVisible={visible} />
             <p className="mt-8 text-gray-500 text-lg md:text-xl leading-relaxed max-w-lg font-medium">
               At Kangqore, engagement doesn't end with delivery. We take ownership of outcomes — from strategy and execution to long-term stability and support.
@@ -1363,20 +1363,13 @@ const TrustStatementTypewriter = ({ isVisible }) => {
                   className="relative border-b border-gray-100 last:border-0 group cursor-pointer"
                 >
                   <div className="transition-all duration-500 py-8 px-0">
-                    {/* Header: Title + Arrow */}
-                    <div className="flex items-center justify-between gap-4">
+                    {/* Header: Title */}
+                    <div className="flex items-center">
                       <h3 className={`text-2xl md:text-3xl lg:text-4xl font-bold transition-all duration-500 ${
                         isActive ? 'text-gray-900 dark:text-white' : 'text-gray-400'
                       }`}>
                         {val.title}
                       </h3>
-                      
-                      {/* Arrow / Button */}
-                      <div className={`transition-all duration-500 flex-shrink-0 flex items-center justify-center rounded-full ${
-                        isActive ? 'w-12 h-12 bg-brand-blue text-white shadow-lg shadow-blue-500/20' : 'w-10 h-10 border border-gray-200 text-gray-400'
-                      }`}>
-                        <ArrowRight className={`transition-transform duration-500 ${isActive ? 'w-6 h-6 rotate-[-45deg]' : 'w-5 h-5'}`} />
-                      </div>
                     </div>
 
                     {/* Content (Description + Tags) */}
@@ -1410,50 +1403,72 @@ const TrustStatementTypewriter = ({ isVisible }) => {
 // ============================================================================
 // SECTION 5: TESTIMONIALS
 // ============================================================================
-const TestimonialCard = ({ testimonial, index }) => {
+const TestimonialCard = ({ testimonial, index, isActive, onHover }) => {
   const [cardRef, cardVisible] = useScrollAnimation({ once: true, threshold: 0.2 });
   
+  // Abstract gradients for the left image area
+  const gradients = [
+    "from-purple-600 via-pink-600 to-rose-500",
+    "from-indigo-600 via-blue-600 to-cyan-500",
+    "from-teal-600 via-emerald-500 to-cyan-500"
+  ];
+  const bgGradient = gradients[index % gradients.length];
+
   return (
     <div 
       ref={cardRef}
-      className={`group relative p-8 md:p-10 rounded-[2rem] overflow-hidden transition-all duration-700 bg-white/5 dark:bg-black/30 backdrop-blur-xl border border-white/10 dark:border-white/5 shadow-xl hover:shadow-[0_0_30px_rgba(74,182,212,0.1)] hover:border-cyan-500/30 hover:scale-[1.02] transform ${
-        cardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      onMouseEnter={onHover}
+      className={`group relative flex flex-col md:flex-row rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 shadow-2xl cursor-pointer transform origin-center w-full max-w-[85vw] md:max-w-3xl min-h-[400px] md:min-h-[500px] flex-shrink-0 ${
+        cardVisible ? 'translate-y-0' : 'translate-y-20 opacity-0'
+      } ${
+        isActive 
+          ? 'scale-100 z-30 opacity-100 mx-0 lg:mx-4 blur-none' 
+          : 'scale-[0.45] z-10 opacity-60 hover:opacity-80 -mx-[25vw] md:-mx-[220px] lg:-mx-[260px] xl:-mx-[280px] blur-[1px]'
       }`}
-      style={{ transitionDelay: `${index * 0.15}s` }}
+      style={{ transitionDelay: cardVisible ? '0s' : `${index * 0.15}s` }}
     >
-      {/* Decorative subtle background gradient on card hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-      
-      {/* Star Ratings */}
-      <div className="flex items-center gap-1 mb-6">
-        {[...Array(testimonial.rating)].map((_, i) => (
-          <Star key={i} className="w-5 h-5 fill-cyan-400 text-cyan-400" />
-        ))}
-      </div>
-
-      {/* Quote Icon */}
-      <div className="absolute top-8 right-8 opacity-10 group-hover:opacity-20 transition-opacity">
-        <Quote className="w-12 h-12 text-cyan-400" />
-      </div>
-
-      {/* Quote Text */}
-      <blockquote className="text-lg md:text-xl font-medium text-gray-200 leading-relaxed mb-8 relative z-10">
-        "{testimonial.quote}"
-      </blockquote>
-
-      {/* Author details */}
-      <div className="flex items-center gap-4 relative z-10 border-t border-white/10 pt-6">
-        {/* Avatar Initials */}
-        <div className="w-12 h-12 rounded-full bg-brand-gradient flex items-center justify-center text-white font-bold text-sm shadow-md">
-          {testimonial.initials}
+      {/* Left side: Abstract Graphic */}
+      <div className={`w-full md:w-2/5 min-h-[200px] md:min-h-full bg-gradient-to-br ${bgGradient} relative overflow-hidden flex-shrink-0`}>
+        {/* Decorative glass shapes */}
+        <div className="absolute top-1/4 -left-1/4 w-full h-full bg-white/10 backdrop-blur-md rounded-3xl transform rotate-12 group-hover:rotate-45 transition-transform duration-1000 ease-in-out" />
+        <div className="absolute -bottom-1/4 right-0 w-3/4 h-3/4 bg-black/10 backdrop-blur-md rounded-3xl transform -rotate-12 group-hover:-rotate-45 transition-transform duration-1000 ease-in-out" />
+        
+        {/* Quote watermark */}
+        <div className="absolute bottom-6 left-6 opacity-40 mix-blend-overlay">
+          <Quote className="w-16 h-16 text-white" />
         </div>
-        <div>
-          <cite className="not-italic text-base font-bold text-white block">
-            {testimonial.author}
-          </cite>
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mt-0.5">
-            {testimonial.role}
-          </span>
+      </div>
+
+      {/* Right side: Content */}
+      <div className="flex-1 p-8 md:p-10 lg:p-12 flex flex-col justify-between relative bg-[#E9EEF5] dark:bg-gray-900">
+        <div className="relative z-10">
+          {/* Star Ratings */}
+          <div className="flex items-center gap-1 mb-6">
+            {[...Array(testimonial.rating)].map((_, i) => (
+              <Star key={i} className="w-5 h-5 fill-[#020D3C] text-[#020D3C] dark:fill-brand-blue dark:text-brand-blue" />
+            ))}
+          </div>
+
+          {/* Quote Text */}
+          <blockquote className="text-xl md:text-2xl font-bold text-[#020D3C] dark:text-white leading-tight mb-10">
+            {testimonial.quote}
+          </blockquote>
+        </div>
+
+        {/* Author details */}
+        <div className="flex items-center gap-4 mt-auto relative z-10">
+          {/* Avatar Initials */}
+          <div className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-[#020D3C] dark:text-gray-300 font-bold text-sm shadow-sm border border-gray-200 dark:border-gray-700">
+            {testimonial.initials}
+          </div>
+          <div>
+            <cite className="not-italic text-base font-bold text-[#020D3C] dark:text-white block">
+              {testimonial.author}
+            </cite>
+            <span className="text-xs font-bold text-[#020D3C]/70 dark:text-gray-400 uppercase tracking-widest block mt-1">
+              {testimonial.role}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -1465,6 +1480,7 @@ const TestimonialsSection = () => {
   const [titleRef, titleVisible] = useScrollAnimation({ once: true, threshold: 0.3 });
   const sectionRef = useRef(null);
   const [parallaxOffset, setParallaxOffset] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1517,7 +1533,7 @@ const TestimonialsSection = () => {
               </span>
             </div>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
-              {t('home.case_studies.heading_prefix')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-cyan-300">{t('home.case_studies.heading_highlight')}</span>.
+              {t('home.case_studies.heading_prefix')} {t('home.case_studies.heading_highlight')}.
             </h2>
           </div>
           <Link 
@@ -1531,9 +1547,15 @@ const TestimonialsSection = () => {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-col xl:flex-row items-center justify-start overflow-hidden xl:overflow-visible -space-y-4 xl:-space-y-0 w-full pt-10 pb-20">
           {homeTestimonials.map((testimonial, index) => (
-            <TestimonialCard key={index} testimonial={testimonial} index={index} />
+            <TestimonialCard 
+              key={index} 
+              testimonial={testimonial} 
+              index={index} 
+              isActive={activeIndex === index}
+              onHover={() => setActiveIndex(index)}
+            />
           ))}
         </div>
       </div>
@@ -1593,27 +1615,31 @@ const LeadershipSection = () => {
 
           {/* Right Column: Clean Minimalist Editorial Text (Col 7) */}
           <div className="lg:col-span-7 space-y-6 lg:pl-6 text-left">
-            {/* Standalone large premium quote icon anchor */}
-            <Quote className="w-12 h-12 text-black dark:text-white opacity-100 transform -scale-x-100" />
             
-            <div className="space-y-6 text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100 leading-relaxed font-sans">
+            <div className="space-y-6 text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100 leading-[1.7] font-sans">
               <p>
-                The next era will not be defined by companies that simply use AI. It will be defined by those that use AI to amplify human imagination, ambition, and potential. Businesses don't evolve by ideas alone; they evolve through innovation. At Kangqore, we innovate futures.
+                The next era won't be defined by companies that adopt AI. It'll be defined by those that use it to amplify what only humans bring: imagination, ambition, and the will to attempt more than they once dared.
               </p>
               <p>
-                Technology can automate tasks and accelerate decisions, but only humans can create purpose, vision, and meaning. That's why we've chosen a side: human outcomes always lead. Humans set the destination; intelligent systems accelerate the journey. The future isn't AI led or human in the loop. It's human led intelligence at scale.
+                <span className="font-bold">Machines are fast. They aren't curious.</span> They can finish a sentence, but they can't decide it was worth writing. Only humans create purpose, vision, and meaning, and in an age of infinite automation, that judgment becomes the rarest thing in business.
+              </p>
+              <p>
+                <span className="font-bold">So we've chosen a side.</span> Human outcomes always lead. Humans set the destination; intelligent systems run the distance. The future won't belong to organizations that merely adopt AI. It'll belong to those whose people, sharpened by it, aim higher than they ever could alone.
+              </p>
+              <p>
+                At Kangqore, we innovate futures.
               </p>
             </div>
 
             {/* Editorial Attribution & Minimalist Links */}
-            <div className="pt-6 border-t border-gray-200 dark:border-neutral-800 space-y-4">
+            <div className="pt-6 border-t border-gray-200 dark:border-neutral-800 flex items-center justify-between mt-8">
               <div>
                 <p className="text-gray-900 dark:text-white font-semibold text-lg tracking-tight">Mahesh Kumar</p>
                 <p className="text-xs text-neutral-500 font-medium tracking-wider uppercase mt-0.5">Founder & CEO, Kangqore</p>
               </div>
 
               {/* Minimalist standalone social icons matching the reference image */}
-              <div className="flex items-center gap-6 mt-3">
+              <div className="flex items-center gap-6">
                 <a
                   href="https://in.linkedin.com/in/maheshkumario"
                   target="_blank"
