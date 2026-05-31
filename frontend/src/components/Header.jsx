@@ -701,7 +701,7 @@ const Header = ({ onMenuClick }) => {
                   {/* Top Bar */}
                   <div className="flex items-center justify-between px-10 py-6 border-b border-gray-100/50 dark:border-gray-800/50 bg-gray-50/50 dark:bg-gray-900/50 shrink-0">
                     <div>
-                      <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Kanqqore's Capabilities</h3>
+                      <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Kanqqore's Capabilities</h3>
                       <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 font-medium">{departmentsList.length} global departments · Specialized engineering execution</p>
                     </div>
                   </div>
