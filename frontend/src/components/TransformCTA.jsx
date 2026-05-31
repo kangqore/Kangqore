@@ -188,12 +188,12 @@ const TransformCTA = () => {
             ].map(({ name, id }) => (
               <div 
                 key={name} 
-                className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-blue-200 dark:hover:border-blue-900 transition-colors shadow-sm"
+                className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-gray-200/80 dark:border-gray-700/80 bg-gradient-to-b from-white to-gray-100/80 dark:from-gray-800 dark:to-gray-900 shadow-[0_4px_6px_rgba(0,0,0,0.08),inset_0_2px_1px_rgba(255,255,255,0.9),inset_0_-2px_1px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_6px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.15),inset_0_-2px_1px_rgba(0,0,0,0.4)] transform hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_8px_15px_rgba(0,0,0,0.12),inset_0_2px_1px_rgba(255,255,255,1),inset_0_-2px_1px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_8px_15px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.25),inset_0_-2px_1px_rgba(0,0,0,0.5)] transition-all duration-300 cursor-default"
               >
                 <img 
                   src={`/assets/badges/${id}.png`} 
                   alt={`${name} Logo`} 
-                  className="w-5 h-5 object-contain"
+                  className="w-5 h-5 object-contain drop-shadow-sm"
                   onError={(e) => { 
                     if (e.target.src.endsWith('.png')) {
                       e.target.src = `/assets/badges/${id}.svg`;
@@ -202,7 +202,7 @@ const TransformCTA = () => {
                     }
                   }} 
                 />
-                <span className="text-[10px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-widest">{name}</span>
+                <span className="text-[10px] sm:text-xs font-extrabold text-gray-800 dark:text-gray-200 uppercase tracking-widest">{name}</span>
               </div>
             ))}
           </div>

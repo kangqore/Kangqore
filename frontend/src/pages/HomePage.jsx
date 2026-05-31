@@ -157,150 +157,54 @@ const newsItems = [
 
 const AnimatedNumber = ({ value, duration = 2000 }) => {
   const [count, setCount] = useState(0);
-  const numericValue = parseInt(value.replace(/[^0-9]/g, ''));
-  const suffix = value.replace(/[0-9]/g, '');
+  const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
+  const suffix = value.replace(/[0-9.]/g, '');
+  const hasDecimal = value.includes('.');
 
   useEffect(() => {
     let startTimestamp = null;
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      setCount(Math.floor(progress * numericValue));
+      const currentVal = progress * numericValue;
+      setCount(hasDecimal ? currentVal.toFixed(1) : Math.floor(currentVal));
       if (progress < 1) {
         window.requestAnimationFrame(step);
       }
     };
     window.requestAnimationFrame(step);
-  }, [numericValue, duration]);
+  }, [numericValue, duration, hasDecimal]);
 
   return <>{count}{suffix}</>;
 };
 
 const heroStats = [
-  { value: '15', label: 'Departments' },
-  { value: '61+', label: 'Services' },
-  { value: '200+', label: 'Projects Delivered' },
-  { value: '98%', label: 'Client Satisfaction' }
+  { value: '6', label: 'Departments' },
+  { value: '61+', label: 'Capabilities' },
+  { value: '150+', label: 'Projects Delivered' },
+  { value: '98.4%', label: 'Client Satisfaction' }
 ];
-
-import { usePodcast } from '../context/PodcastContext';
 
 const HeroBottomStrip = () => {
   const [sectionRef, isVisible] = useScrollAnimation({ once: true, threshold: 0.1 });
-  const { isPlaying, togglePlay } = usePodcast();
 
   return (
     <div 
       ref={sectionRef}
-      className="relative z-20 w-full bg-black/40 backdrop-blur-xl overflow-hidden"
+      className="relative z-20 w-full bg-black/40 backdrop-blur-xl border-t border-white/10"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-0 items-center">
-        
-        {/* Left Zone — Company Stats */}
-        <div className="py-8 lg:py-12 lg:pr-12 grid grid-cols-2 gap-x-8 gap-y-6 lg:border-r lg:border-white/[0.06]">
-          {heroStats.map((stat, i) => (
-            <div key={i} className="group cursor-default">
-              <div className="text-2xl sm:text-3xl font-black text-white mb-1 group-hover:text-cyan-400 transition-colors duration-300 font-display">
-                {isVisible ? <AnimatedNumber value={stat.value} /> : '0'}
-              </div>
-              <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 group-hover:text-white/60 transition-colors">
-                {stat.label}
-              </div>
+      <div className="max-w-7xl mx-auto px-6 py-10 lg:py-12 flex flex-col md:flex-row flex-wrap justify-between items-center gap-10">
+        {heroStats.map((stat, i) => (
+          <div key={i} className="flex flex-col items-center sm:items-start group cursor-default">
+            <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-white group-hover:text-cyan-400 transition-colors duration-300 font-display">
+              {isVisible ? <AnimatedNumber value={stat.value} /> : '0'}
             </div>
-          ))}
-        </div>
-
-        {/* Center Zone — Featured Image (Hidden on Tablet) */}
-        <div className="hidden lg:flex items-center justify-center px-10 py-8">
-          <div className="relative w-full max-w-[280px] aspect-[16/10] group cursor-pointer transition-all duration-500">
-            <img
-              src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80"
-              alt="The Age of Agentic AI"
-              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/40 to-transparent">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400 mb-0.5">Featured</p>
-              <p className="text-white text-xs font-bold leading-tight group-hover:text-cyan-50 transition-colors">The Age of Agentic AI</p>
-            </div>
-            
-            {/* Play overlay subtle */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center ring-1 ring-white/20">
-                <Play className="w-4 h-4 text-white fill-current ml-0.5" />
-              </div>
+            <div className="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-white/50 group-hover:text-white/70 transition-colors mt-2">
+              {stat.label}
             </div>
           </div>
-        </div>
-
-        {/* Right Zone — Podcast Highlight */}
-        <div className="py-8 lg:py-12 lg:pl-12 lg:border-l lg:border-white/[0.06] flex items-center gap-6 xl:gap-8">
-          {/* Left Part — Info & Waveform */}
-          <div className="flex-1">
-            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-cyan-400 mb-2">PODCAST</p>
-            <h3 className="text-white font-bold text-base leading-tight mb-1">
-              The eQORE Show: Agentic Consent
-            </h3>
-            <p className="text-white/40 text-xs font-semibold mb-4">Episode 1 — Now Streaming</p>
-            
-            {/* Waveform with centered White Play Button */}
-            <div 
-              onClick={togglePlay}
-              className="relative flex items-center justify-center h-12 w-full max-w-[240px] group cursor-pointer"
-            >
-              <div className="flex items-center gap-1 h-6 w-full">
-                {[0.4, 0.7, 0.5, 0.9, 0.6, 0.8, 0.4, 0.7, 0.5, 0.3, 0.6, 0.8, 0.4, 0.7, 0.5, 0.9, 0.6, 0.8].map((h, i) => (
-                  <div 
-                    key={i} 
-                    className={`flex-1 rounded-full transition-all duration-500 ${
-                      isPlaying ? 'bg-cyan-400 animate-waveform-bounce' : 'bg-cyan-400/30 group-hover:bg-cyan-400/50'
-                    }`}
-                    style={{ 
-                      height: `${h * 100}%`,
-                      animationDelay: `${i * 0.05}s`
-                    }} 
-                  />
-                ))}
-              </div>
-              {/* White Play Button Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300 ring-4 ring-black/20">
-                  {isPlaying ? (
-                    <Pause className="w-4 h-4 text-black fill-current" />
-                  ) : (
-                    <Play className="w-4 h-4 text-black fill-current ml-0.5" />
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => document.getElementById('eqore-show')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex text-[11px] font-black uppercase tracking-[0.2em] text-white hover:text-cyan-400 transition-colors items-center gap-2 mt-5"
-            >
-              Listen Now <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Right Part — Cover Image */}
-          <div className="w-28 h-28 sm:w-32 sm:h-32 xl:w-40 xl:h-40 flex-shrink-0 group cursor-pointer">
-            <img 
-              src="/images/Ep-01.png" 
-              alt="The eQORE Show" 
-              className="w-full h-full object-contain transition-transform duration-700"
-            />
-          </div>
-        </div>
-
+        ))}
       </div>
-      <style>{`
-        @keyframes waveform-bounce {
-          0%, 100% { transform: scaleY(1); }
-          50% { transform: scaleY(2); }
-        }
-        .animate-waveform-bounce {
-          animation: waveform-bounce 0.8s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 };
@@ -376,14 +280,17 @@ const HeroCarousel = () => {
     };
   }, []);
 
-  // Auto-advance every 6 seconds
+  // Auto-advance with dynamic duration
   useEffect(() => {
     if (!isAutoPlaying) return;
-    const timer = setInterval(() => {
+    
+    const duration = activeSlide === 0 ? 15000 : 10000;
+    const timer = setTimeout(() => {
       setActiveSlide(prev => (prev + 1) % slideCount);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [isAutoPlaying, slideCount]);
+    }, duration);
+    
+    return () => clearTimeout(timer);
+  }, [isAutoPlaying, activeSlide, slideCount]);
 
   // Pause/play video based on active slide
   useEffect(() => {
@@ -415,6 +322,7 @@ const HeroCarousel = () => {
   const currentSlide = heroSlides[activeSlide];
 
   return (
+    <>
     <div className="w-full bg-white dark:bg-black px-2 pt-2 pb-2 relative transition-colors duration-500">
 
     <section
@@ -443,7 +351,7 @@ const HeroCarousel = () => {
       }}
     >
       {/* ── ACTUAL HERO AREA (bg + content + dots only — trust strip & HeroBottomStrip live OUTSIDE this wrapper) ── */}
-      <div className="relative min-h-[720px] sm:min-h-[760px] lg:min-h-[800px] overflow-hidden">
+      <div className="relative min-h-[720px] sm:min-h-[760px] lg:min-h-[800px] overflow-hidden pb-[0.3cm]">
       {/* ── BACKGROUND LAYERS (stacked, crossfade via opacity) ── */}
       {heroSlides.map((slide, index) => (
         <div
@@ -578,7 +486,7 @@ const HeroCarousel = () => {
                       </span>
                       {/* Line 4: "At Kangqore" & "We Innovate Futures." */}
                       <span className="flex items-baseline gap-3 sm:gap-4 -mt-1 sm:-mt-2">
-                        <span className="text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] font-bold tracking-[0.2em] text-white/50 whitespace-nowrap">At Kangqore</span>
+                        <span className="text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] font-bold tracking-[0.2em] text-white whitespace-nowrap">At Kangqore</span>
                         <span className="text-[1rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-black italic uppercase bg-brand-gradient bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(37,100,234,0.3)]">We Innovate Futures.</span>
                       </span>
                     </h1>
@@ -730,41 +638,6 @@ const HeroCarousel = () => {
         </div>
       </div>
       </div>
-
-      {/* ── Hero Trust Logo Strip ── */}
-      <div className="relative z-20 w-full bg-black/40 backdrop-blur-xl py-[calc(1.25rem+0.5cm)] sm:py-[calc(1.5rem+0.5cm)] overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-10">
-          <p className="text-[10px] sm:text-[11px] font-bold text-white/40 uppercase tracking-[0.25em] text-center mx-auto leading-relaxed whitespace-nowrap">
-            Our speed in learning and executing is unmatched, earning the trust of hundreds of organizations worldwide.
-          </p>
-        </div>
-        <div className="relative w-full overflow-hidden">
-          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-r from-black/60 to-transparent pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-l from-black/60 to-transparent pointer-events-none" />
-          <div className="flex w-max animate-[heroTrustMarquee_35s_linear_infinite] items-center gap-12 sm:gap-16 lg:gap-20 hover:[animation-play-state:paused] py-2">
-            {[...trustLogos, ...trustLogos, ...trustLogos, ...trustLogos].map((logo, index) => (
-              <div key={`${logo.name}-${index}`} className="flex flex-col items-center justify-center group shrink-0 w-28 sm:w-32">
-                <div className="h-10 sm:h-12 w-full flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity duration-300">
-                  <img src={logo.src} alt={logo.name} className="max-h-8 sm:max-h-10 w-auto object-contain filter brightness-0 invert transition-transform duration-300 group-hover:scale-105" />
-                </div>
-                <span className="mt-3 text-[9px] sm:text-[10px] font-bold text-white/30 group-hover:text-white/75 transition-colors duration-300 uppercase tracking-widest text-center">
-                  {logo.name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <style>{`
-          @keyframes heroTrustMarquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-25%); }
-          }
-        `}</style>
-      </div>
-
-      {/* ── Hero Bottom Strip ── */}
-      <HeroBottomStrip />
-
       <style>{`
         @keyframes heroPulseRing {
           0% { transform: scale(1); opacity: 0.6; }
@@ -800,7 +673,44 @@ const HeroCarousel = () => {
         }
       `}</style>
     </section>
+
+    <section className="relative w-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228] mt-2">
+
+
+      {/* ── Hero Bottom Strip ── */}
+      <HeroBottomStrip />
+    </section>
     </div>
+
+    {/* ── Hero Trust Logo Strip (Free from container) ── */}
+    <div className="relative z-20 w-full bg-transparent py-[calc(1.25rem+0.5cm)] sm:py-[calc(1.5rem+0.5cm)] overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-10">
+        <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 dark:text-white/40 uppercase tracking-[0.25em] text-center mx-auto leading-relaxed whitespace-nowrap">
+          TRUSTED BY GLOBAL ENTERPRISES TO DELIVER AT SCALE.
+        </p>
+      </div>
+      <div className="relative w-full overflow-hidden">
+        <div className="flex w-max animate-[heroTrustMarquee_35s_linear_infinite] items-center gap-12 sm:gap-16 lg:gap-20 hover:[animation-play-state:paused] py-2">
+          {[...trustLogos, ...trustLogos, ...trustLogos, ...trustLogos].map((logo, index) => (
+            <div key={`${logo.name}-${index}`} className="flex flex-col items-center justify-center group shrink-0 w-28 sm:w-32">
+              <div className="h-10 sm:h-12 w-full flex items-center justify-center opacity-100 transition-opacity duration-300">
+                <img src={logo.src} alt={logo.name} className="max-h-8 sm:max-h-10 w-auto object-contain filter brightness-0 dark:invert transition-transform duration-300 group-hover:scale-105" />
+              </div>
+              <span className="mt-3 text-[9px] sm:text-[10px] font-bold text-gray-400 dark:text-white/30 group-hover:text-gray-600 dark:group-hover:text-white/75 transition-colors duration-300 uppercase tracking-widest text-center">
+                {logo.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`
+        @keyframes heroTrustMarquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-25%); }
+        }
+      `}</style>
+    </div>
+    </>
   );
 };
 
