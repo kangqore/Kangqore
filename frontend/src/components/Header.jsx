@@ -683,7 +683,7 @@ const Header = ({ onMenuClick }) => {
             {/* Services Mega Menu */}
             {activeDropdown === link.id && link.isMegaMenu && link.type === 'services' && (
               <div 
-                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bottom-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bottom-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[1.25rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
                   showUtilityBar ? 'top-[144px]' : 'top-[104px]'
                 }`}
                 onMouseEnter={() => setActiveDropdown(link.id)}
@@ -701,7 +701,7 @@ const Header = ({ onMenuClick }) => {
                   {/* Top Bar */}
                   <div className="flex items-center justify-between px-10 py-6 border-b border-gray-100/50 dark:border-gray-800/50 bg-gray-50/50 dark:bg-gray-900/50 shrink-0">
                     <div>
-                      <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Enterprise Solutions</h3>
+                      <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Kanqqore's Capabilities</h3>
                       <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 font-medium">{departmentsList.length} global departments · Specialized engineering execution</p>
                     </div>
                   </div>
@@ -730,10 +730,10 @@ const Header = ({ onMenuClick }) => {
                               {isActive && (
                                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-blue rounded-r-md"></div>
                               )}
-                              <span className="text-[14px] font-bold tracking-tight">
+                              <span className="text-3xl font-black tracking-tight">
                                 {category.title}
                               </span>
-                              <ArrowRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0'}`} />
+                              <ArrowRight className={`w-6 h-6 transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0'}`} />
                             </button>
                           );
                         })}
@@ -798,7 +798,7 @@ const Header = ({ onMenuClick }) => {
             {/* Who We Are Mega Menu */}
             {activeDropdown === link.id && link.isMegaMenu && link.type === 'whoWeAre' && (
               <div 
-                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[1.25rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
                   showUtilityBar ? 'top-[144px]' : 'top-[104px]'
                 }`}
                 onMouseEnter={() => setActiveDropdown(link.id)}
@@ -840,7 +840,7 @@ const Header = ({ onMenuClick }) => {
             {/* Industries Mega Menu */}
             {activeDropdown === link.id && link.isMegaMenu && link.type === 'industries' && (
               <div 
-                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[1.25rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
                   showUtilityBar ? 'top-[144px]' : 'top-[104px]'
                 }`}
                 onMouseEnter={() => setActiveDropdown(link.id)}
@@ -882,7 +882,7 @@ const Header = ({ onMenuClick }) => {
             {/* Insights Mega Menu */}
             {activeDropdown === link.id && link.isMegaMenu && link.type === 'insights' && (
               <div 
-                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[1.25rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
                   showUtilityBar ? 'top-[144px]' : 'top-[104px]'
                 }`}
                 onMouseEnter={() => setActiveDropdown(link.id)}
