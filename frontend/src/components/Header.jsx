@@ -167,7 +167,13 @@ const Header = ({ onMenuClick }) => {
   // which lives canonically in Shield) — surfaced with a small cross-cut badge.
   const servicesCategories = departmentsList.map((deptSlug) => {
     const dept = departmentsData[deptSlug];
-    const heroSlugs = dept.heroServiceSlugs || dept.serviceSlugs.slice(0, 5);
+    // Combine hero services (which may include cross-department services) 
+    // and standard services, deduplicate them, and limit to 18 items to fit the screen
+    const combinedSlugs = Array.from(new Set([
+      ...(dept.heroServiceSlugs || []),
+      ...(dept.serviceSlugs || [])
+    ])).slice(0, 18);
+    
     return {
       title: dept.shortName,
       fullName: dept.name,
@@ -178,7 +184,7 @@ const Header = ({ onMenuClick }) => {
       accentColor: dept.accentColor,
       bannerBrand: dept.bannerBrand,
       serviceCount: dept.serviceCount,
-      items: heroSlugs
+      items: combinedSlugs
         .map((svcSlug) => {
           const svc = servicesData[svcSlug];
           if (!svc) return null;
@@ -532,137 +538,6 @@ const Header = ({ onMenuClick }) => {
                     </div>
                   )}
 
-                  {/* Mega Menu for Who We Are */}
-                  {activeDropdown === link.id && link.isMegaMenu && link.type === 'whoWeAre' && (
-                    <div 
-                      className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto"
-                      style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
-                    >
-                      <div className="max-w-[1400px] mx-auto">
-                        <div className="mb-10 flex items-end justify-between">
-                          <div>
-                            <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Who We Are</h3>
-                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Discover the engineering excellence and values driving global transformation.</p>
-                          </div>
-                          <Link to="/about-us" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
-                            Our Story <ArrowRight className="w-5 h-5" />
-                          </Link>
-                        </div>
-                        
-                        <div className="grid grid-cols-5 gap-2">
-                          {whoWeAreItems.map((item, index) => {
-                            const IconComponent = item.icon;
-                            return (
-                              <Link
-                                key={index}
-                                to={item.path}
-                                onClick={() => setActiveDropdown(null)}
-                                className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
-                              >
-                                <Realistic3DIcon 
-                                  icon={IconComponent} 
-                                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
-                                  iconSize="w-5 h-5" 
-                                  theme="brand" 
-                                />
-                                <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                                  {item.name}
-                                </h4>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Mega Menu for Industries */}
-                  {activeDropdown === link.id && link.isMegaMenu && link.type === 'industries' && (
-                    <div 
-                      className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto"
-                      style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
-                    >
-                      <div className="max-w-[1400px] mx-auto">
-                        <div className="mb-10 flex items-end justify-between">
-                          <div>
-                            <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Industries We Serve</h3>
-                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Domain-specific engineering execution for global leaders.</p>
-                          </div>
-                          <Link to="/contact" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
-                            Industry Consultation <ArrowRight className="w-5 h-5" />
-                          </Link>
-                        </div>
-                        
-                        <div className="grid grid-cols-4 gap-2">
-                          {industriesItems.map((item, index) => {
-                            const IconComponent = item.icon;
-                            return (
-                              <Link
-                                key={index}
-                                to={item.path}
-                                onClick={() => setActiveDropdown(null)}
-                                className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
-                              >
-                                <Realistic3DIcon 
-                                  icon={IconComponent} 
-                                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
-                                  iconSize="w-5 h-5" 
-                                  theme="cyan" 
-                                />
-                                <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                                  {item.name}
-                                </h4>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Mega Menu for Insights */}
-                  {activeDropdown === link.id && link.isMegaMenu && link.type === 'insights' && (
-                    <div 
-                      className="fixed left-4 right-4 lg:left-10 lg:right-10 top-[138px] bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto"
-                      style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
-                    >
-                      <div className="max-w-[1400px] mx-auto">
-                        <div className="mb-10 flex items-end justify-between">
-                          <div>
-                            <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Insights & Knowledge</h3>
-                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Expert perspectives on AI foundations, technical debt, and business velocity.</p>
-                          </div>
-                          <Link to="/blogs" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
-                            View All Insights <ArrowRight className="w-5 h-5" />
-                          </Link>
-                        </div>
-                        
-                        <div className="grid grid-cols-5 gap-2">
-                          {insightsItems.map((item, index) => {
-                            const IconComponent = item.icon;
-                            return (
-                              <Link
-                                key={index}
-                                to={item.path}
-                                onClick={() => setActiveDropdown(null)}
-                                className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
-                              >
-                                <Realistic3DIcon 
-                                  icon={IconComponent} 
-                                  className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
-                                  iconSize="w-5 h-5" 
-                                  theme="brand" 
-                                />
-                                <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                                  {item.name}
-                                </h4>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
               ))}
             </nav>
@@ -834,10 +709,9 @@ const Header = ({ onMenuClick }) => {
                   {/* Two-Panel Body */}
                   <div className="flex flex-1 min-h-0 overflow-hidden">
                     {/* Left Panel - Department List */}
-                    <div className="w-[380px] bg-gray-50/30 dark:bg-gray-800/20 border-r border-gray-100 dark:border-gray-800/50 overflow-y-auto shrink-0 custom-scrollbar">
-                      <div className="py-4 px-4 space-y-1">
+                    <div className="w-[380px] bg-gray-50/50 dark:bg-gray-900/30 border-r border-gray-100 dark:border-gray-800/50 overflow-y-auto shrink-0 custom-scrollbar">
+                      <div className="py-6 px-8 space-y-2">
                         {servicesCategories.map((category, index) => {
-                          const IconComponent = category.icon;
                           const isActive = activeMegaDept === index;
                           return (
                             <button
@@ -847,27 +721,19 @@ const Header = ({ onMenuClick }) => {
                                 setActiveDropdown(null);
                                 navigate(`/departments/${category.slug}`);
                               }}
-                              className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left transition-all duration-300 group ${
+                              className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-300 group relative ${
                                 isActive
-                                  ? 'bg-white dark:bg-gray-900 shadow-xl ring-1 ring-gray-100 dark:ring-gray-800'
-                                  : 'hover:bg-white/50 dark:hover:bg-gray-900/40'
+                                  ? 'text-brand-blue'
+                                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                               }`}
                             >
-                              <div
-                                className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
-                                  isActive ? 'shadow-lg scale-110' : 'bg-gray-100 dark:bg-gray-800 group-hover:bg-gray-200 dark:group-hover:bg-gray-700'
-                                }`}
-                                style={isActive ? { backgroundColor: category.accentColor } : undefined}
-                              >
-                                <IconComponent className={`w-5 h-5 transition-colors ${isActive ? 'text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700'}`} />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className={`text-[13px] font-black uppercase tracking-wider transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700'}`}>
-                                  {category.title}
-                                </p>
-                                <p className="text-[11px] text-gray-400 mt-0.5 font-medium">{category.serviceCount} Core Services</p>
-                              </div>
-                              <ArrowRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}`} style={{ color: category.accentColor }} />
+                              {isActive && (
+                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-blue rounded-r-md"></div>
+                              )}
+                              <span className="text-[14px] font-bold tracking-tight">
+                                {category.title}
+                              </span>
+                              <ArrowRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0'}`} />
                             </button>
                           );
                         })}
@@ -879,65 +745,43 @@ const Header = ({ onMenuClick }) => {
                       <div className="px-12 py-10">
                         {servicesCategories[activeMegaDept] && (() => {
                           const activeCat = servicesCategories[activeMegaDept];
-                          const ActiveIcon = activeCat.icon;
                           return (
                             <>
                               <div className="flex items-start justify-between gap-6 mb-10 pb-8 border-b border-gray-100 dark:border-gray-800/50">
-                                <div className="flex items-center gap-6">
-                                  <div
-                                    className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center shadow-2xl animate-pulse-slow shrink-0"
-                                    style={{ backgroundColor: activeCat.accentColor }}
-                                  >
-                                    <ActiveIcon className="w-8 h-8 text-white" />
-                                  </div>
-                                  <div className="flex-1">
-                                    <p className="text-[11px] uppercase tracking-[0.3em] font-black mb-1.5 opacity-60" style={{ color: activeCat.accentColor }}>
-                                      {activeCat.fullName}
-                                    </p>
-                                    <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
-                                    <p className="text-base text-gray-500 dark:text-gray-400 mt-2 font-medium max-w-2xl">{activeCat.description}</p>
-                                  </div>
+                                <div className="flex-1">
+                                  <p className="text-[11px] uppercase tracking-[0.3em] font-black mb-2" style={{ color: activeCat.accentColor }}>
+                                    {activeCat.fullName}
+                                  </p>
+                                  <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
+                                  <p className="text-[15px] text-gray-500 dark:text-gray-400 mt-3 font-medium max-w-2xl leading-relaxed">{activeCat.description}</p>
                                 </div>
                                 <Link
-                                  to={`/services#${activeCat.slug}`}
+                                  to={`/departments/${activeCat.slug}`}
                                   onClick={() => setActiveDropdown(null)}
-                                  className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[13px] font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-md shrink-0 mt-2"
+                                  className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[13px] font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-md shrink-0"
                                 >
                                   Explore all the capabilities
                                   <ArrowRight className="w-4 h-4" />
                                 </Link>
                               </div>
 
-                              <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-10 max-w-5xl">
                                 {activeCat.items.map((item, idx) => (
                                   <Link
                                     key={idx}
                                     to={`/services/${item.slug}`}
                                     onClick={() => setActiveDropdown(null)}
-                                    className="group relative p-6 rounded-[2rem] border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-2xl transition-all duration-300"
+                                    className="group flex flex-col py-1 text-gray-700 dark:text-gray-300 hover:text-brand-blue transition-colors"
                                   >
-                                    <div className="flex items-start justify-between gap-4">
-                                      <div className="flex-1 min-w-0">
-                                        <h5 className="text-[15px] font-black text-gray-900 dark:text-white transition-colors mb-2 leading-tight group-hover:text-brand-blue">
-                                          {item.name}
-                                          {item.crossDepartment && (
-                                            <span className="block mt-1 text-[10px] text-brand-blue font-black uppercase tracking-wider">
-                                              Part of {item.crossDepartment}
-                                            </span>
-                                          )}
-                                        </h5>
-                                        <p className="text-[12px] text-gray-500 dark:text-gray-400 leading-relaxed font-medium line-clamp-2">
-                                          {item.shortDescription}
-                                        </p>
-                                      </div>
-                                      <div className="mt-1 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-brand-blue group-hover:rotate-[-45deg]">
-                                        <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-white" />
-                                      </div>
+                                    <div className="flex items-center justify-between mb-1">
+                                      <span className="text-[15px] font-bold tracking-tight">{item.name}</span>
+                                      {item.crossDepartment && (
+                                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full">
+                                          {item.crossDepartment}
+                                        </span>
+                                      )}
                                     </div>
-                                    <div
-                                      className="absolute bottom-4 left-6 right-6 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-full"
-                                      style={{ backgroundColor: activeCat.accentColor }}
-                                    ></div>
+                                    <span className="w-8 h-[2px] bg-transparent group-hover:bg-brand-blue transition-colors duration-300 mt-1"></span>
                                   </Link>
                                 ))}
                               </div>
@@ -954,46 +798,40 @@ const Header = ({ onMenuClick }) => {
             {/* Who We Are Mega Menu */}
             {activeDropdown === link.id && link.isMegaMenu && link.type === 'whoWeAre' && (
               <div 
-                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto transition-all duration-500 ${
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
                   showUtilityBar ? 'top-[144px]' : 'top-[104px]'
                 }`}
                 onMouseEnter={() => setActiveDropdown(link.id)}
                 onMouseLeave={() => setActiveDropdown(null)}
                 style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
               >
-                <div className="max-w-[1400px] mx-auto">
-                  <div className="mb-10 flex items-end justify-between">
-                    <div>
-                      <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Who We Are</h3>
-                      <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Discover the engineering excellence and values driving global transformation.</p>
+                <div className="flex flex-col lg:flex-row h-full">
+                  {/* Left Sidebar */}
+                  <div className="w-full lg:w-[380px] bg-gray-50/50 dark:bg-gray-900/30 p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800/50 shrink-0">
+                    <div className="flex-1">
+                      <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">Who We Are</h3>
+                      <p className="text-[15px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Discover the engineering excellence and values driving global transformation.</p>
                     </div>
-                    <Link to="/about-us" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
-                      Our Story <ArrowRight className="w-5 h-5" />
+                    <Link to="/about-us" className="text-brand-blue font-bold flex items-center gap-2 hover:gap-3 transition-all mt-10 text-[13px] uppercase tracking-widest">
+                      Our Story <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                   
-                  <div className="grid grid-cols-5 gap-2">
-                    {whoWeAreItems.map((item, index) => {
-                      const IconComponent = item.icon;
-                      return (
+                  {/* Right Content */}
+                  <div className="flex-1 p-10 bg-white/95 dark:bg-black/95 overflow-y-auto custom-scrollbar">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-10 max-w-5xl">
+                      {whoWeAreItems.map((item, index) => (
                         <Link
                           key={index}
                           to={item.path}
                           onClick={() => setActiveDropdown(null)}
-                          className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
+                          className="group flex flex-col py-1 text-gray-700 dark:text-gray-300 hover:text-brand-blue transition-colors"
                         >
-                          <Realistic3DIcon 
-                            icon={IconComponent} 
-                            className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
-                            iconSize="w-5 h-5" 
-                            theme="brand" 
-                          />
-                          <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                            {item.name}
-                          </h4>
+                          <span className="text-[15px] font-bold tracking-tight mb-1">{item.name}</span>
+                          <span className="w-8 h-[2px] bg-transparent group-hover:bg-brand-blue transition-colors duration-300"></span>
                         </Link>
-                      );
-                    })}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1002,46 +840,40 @@ const Header = ({ onMenuClick }) => {
             {/* Industries Mega Menu */}
             {activeDropdown === link.id && link.isMegaMenu && link.type === 'industries' && (
               <div 
-                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto transition-all duration-500 ${
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
                   showUtilityBar ? 'top-[144px]' : 'top-[104px]'
                 }`}
                 onMouseEnter={() => setActiveDropdown(link.id)}
                 onMouseLeave={() => setActiveDropdown(null)}
                 style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
               >
-                <div className="max-w-[1400px] mx-auto">
-                  <div className="mb-10 flex items-end justify-between">
-                    <div>
-                      <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Industries We Serve</h3>
-                      <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Domain-specific engineering execution for global leaders.</p>
+                <div className="flex flex-col lg:flex-row h-full">
+                  {/* Left Sidebar */}
+                  <div className="w-full lg:w-[380px] bg-gray-50/50 dark:bg-gray-900/30 p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800/50 shrink-0">
+                    <div className="flex-1">
+                      <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">Industries We Serve</h3>
+                      <p className="text-[15px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Domain-specific engineering execution for global leaders.</p>
                     </div>
-                    <Link to="/contact" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
-                      Industry Consultation <ArrowRight className="w-5 h-5" />
+                    <Link to="/contact" className="text-brand-blue font-bold flex items-center gap-2 hover:gap-3 transition-all mt-10 text-[13px] uppercase tracking-widest">
+                      Industry Consultation <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                   
-                  <div className="grid grid-cols-4 gap-2">
-                    {industriesItems.map((item, index) => {
-                      const IconComponent = item.icon;
-                      return (
+                  {/* Right Content */}
+                  <div className="flex-1 p-10 bg-white/95 dark:bg-black/95 overflow-y-auto custom-scrollbar">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-10 max-w-6xl">
+                      {industriesItems.map((item, index) => (
                         <Link
                           key={index}
                           to={item.path}
                           onClick={() => setActiveDropdown(null)}
-                          className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
+                          className="group flex flex-col py-1 text-gray-700 dark:text-gray-300 hover:text-brand-blue transition-colors"
                         >
-                          <Realistic3DIcon 
-                            icon={IconComponent} 
-                            className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
-                            iconSize="w-5 h-5" 
-                            theme="cyan" 
-                          />
-                          <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                            {item.name}
-                          </h4>
+                          <span className="text-[15px] font-bold tracking-tight mb-1">{item.name}</span>
+                          <span className="w-8 h-[2px] bg-transparent group-hover:bg-brand-blue transition-colors duration-300"></span>
                         </Link>
-                      );
-                    })}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1050,46 +882,40 @@ const Header = ({ onMenuClick }) => {
             {/* Insights Mega Menu */}
             {activeDropdown === link.id && link.isMegaMenu && link.type === 'insights' && (
               <div 
-                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] p-10 pointer-events-auto transition-all duration-500 ${
+                className={`fixed left-4 right-4 lg:left-10 lg:right-10 bg-white/95 dark:bg-black/95 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.3)] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 z-[9999] overflow-hidden pointer-events-auto transition-all duration-500 ${
                   showUtilityBar ? 'top-[144px]' : 'top-[104px]'
                 }`}
                 onMouseEnter={() => setActiveDropdown(link.id)}
                 onMouseLeave={() => setActiveDropdown(null)}
                 style={{ animation: 'megaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
               >
-                <div className="max-w-[1400px] mx-auto">
-                  <div className="mb-10 flex items-end justify-between">
-                    <div>
-                      <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter">Insights & Knowledge</h3>
-                      <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Expert perspectives on AI foundations, technical debt, and business velocity.</p>
+                <div className="flex flex-col lg:flex-row h-full">
+                  {/* Left Sidebar */}
+                  <div className="w-full lg:w-[380px] bg-gray-50/50 dark:bg-gray-900/30 p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800/50 shrink-0">
+                    <div className="flex-1">
+                      <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">Insights & Knowledge</h3>
+                      <p className="text-[15px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Expert perspectives on AI foundations, technical debt, and business velocity.</p>
                     </div>
-                    <Link to="/blogs" className="text-brand-blue font-black flex items-center gap-2 hover:gap-3 transition-all mb-2">
-                      View All Insights <ArrowRight className="w-5 h-5" />
+                    <Link to="/blogs" className="text-brand-blue font-bold flex items-center gap-2 hover:gap-3 transition-all mt-10 text-[13px] uppercase tracking-widest">
+                      View All Insights <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                   
-                  <div className="grid grid-cols-5 gap-2">
-                    {insightsItems.map((item, index) => {
-                      const IconComponent = item.icon;
-                      return (
+                  {/* Right Content */}
+                  <div className="flex-1 p-10 bg-white/95 dark:bg-black/95 overflow-y-auto custom-scrollbar">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-10 max-w-5xl">
+                      {insightsItems.map((item, index) => (
                         <Link
                           key={index}
                           to={item.path}
                           onClick={() => setActiveDropdown(null)}
-                          className="group p-4 rounded-2xl hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-all duration-300 flex items-center gap-4"
+                          className="group flex flex-col py-1 text-gray-700 dark:text-gray-300 hover:text-brand-blue transition-colors"
                         >
-                          <Realistic3DIcon 
-                            icon={IconComponent} 
-                            className="w-12 h-12 shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
-                            iconSize="w-5 h-5" 
-                            theme="brand" 
-                          />
-                          <h4 className="font-bold text-[15px] text-gray-900 dark:text-white group-hover:text-brand-blue transition-colors">
-                            {item.name}
-                          </h4>
+                          <span className="text-[15px] font-bold tracking-tight mb-1">{item.name}</span>
+                          <span className="w-8 h-[2px] bg-transparent group-hover:bg-brand-blue transition-colors duration-300"></span>
                         </Link>
-                      );
-                    })}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
