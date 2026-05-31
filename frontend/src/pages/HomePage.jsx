@@ -68,7 +68,8 @@ const heroSlides = [
     id: 2,
     type: 'chat',
     tag: "eQORE AI™ CONCIERGE",
-    title: "Innovate Your Next Move.",
+    title: "Innovate ",
+    titleTypewriter: "Your Next Move.",
     description: "",
     video: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4",
   },
@@ -209,34 +210,58 @@ const HeroBottomStrip = () => {
   );
 };
 
-const HUDText = ({ text, delay = 0, isCyan = false }) => {
+const HUDText = ({ text, delay = 0, isCyan = false, startTyping = true, loop = false }) => {
   const [displayText, setDisplayText] = useState('');
   
   useEffect(() => {
-    setDisplayText('');
-    let i = 0;
+    if (!startTyping) return;
     
-    const startTimer = setTimeout(() => {
-      const timer = setInterval(() => {
-        if (i < text.length) {
-          setDisplayText(prev => text.slice(0, prev.length + 1));
-          i++;
-        } else {
-          clearInterval(timer);
-        }
-      }, 30);
-      return () => clearInterval(timer);
+    let isCancelled = false;
+    let timeout;
+    
+    const typeCycle = async () => {
+      if (isCancelled) return;
+      setDisplayText('');
+      
+      // Type out
+      for (let i = 1; i <= text.length; i++) {
+        if (isCancelled) return;
+        setDisplayText(text.slice(0, i));
+        await new Promise(r => { timeout = setTimeout(r, 60); });
+      }
+      
+      if (!loop) return;
+      
+      // Pause at the end
+      await new Promise(r => { timeout = setTimeout(r, 3000); });
+      
+      // Delete backwards
+      for (let i = text.length - 1; i >= 0; i--) {
+        if (isCancelled) return;
+        setDisplayText(text.slice(0, i));
+        await new Promise(r => { timeout = setTimeout(r, 30); });
+      }
+      
+      // Small pause before restarting
+      await new Promise(r => { timeout = setTimeout(r, 500); });
+      
+      if (!isCancelled) typeCycle();
+    };
+    
+    const startTimeout = setTimeout(() => {
+      typeCycle();
     }, delay);
     
-    return () => clearTimeout(startTimer);
-  }, [text, delay]);
+    return () => {
+      isCancelled = true;
+      clearTimeout(startTimeout);
+      clearTimeout(timeout);
+    };
+  }, [text, delay, startTyping, loop]);
 
   return (
     <span className="relative inline-flex items-center">
       {displayText}
-      {displayText.length < text.length && (
-        <span className={`inline-block w-[0.4em] h-[1em] ml-[0.1em] ${isCyan ? 'bg-cyan-400' : 'bg-white/70'} animate-[pulse_0.1s_ease-in-out_infinite]`} />
-      )}
     </span>
   );
 };
@@ -513,9 +538,12 @@ const HeroCarousel = () => {
                     key={`title-${slide.id}`}
                     className={`text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-fade-in ${
                       (slide.id === 2 || slide.id === 3) ? 'whitespace-nowrap text-[6.5vw] sm:text-[2.8rem]' : ''
-                    }`}
+                    } ${slide.id === 2 ? '-translate-y-[11px]' : ''}`}
                   >
                   {slide.title}
+                  {slide.titleTypewriter && (
+                    <HUDText text={slide.titleTypewriter} delay={300} startTyping={index === activeSlide} loop={true} />
+                  )}
                   {slide.titleGradient && (
                     <>
                       {' '}

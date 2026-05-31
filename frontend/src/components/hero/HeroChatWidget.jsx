@@ -105,7 +105,7 @@ const HeroChatWidget = () => {
   const chips = [
     "What does Kangqore do?",
     "How can eQORE help?",
-    "Tell me about BIDS™",
+    "Tell me about Kangqore BIDS™",
   ];
 
   const onChip = (text) => {
@@ -115,12 +115,13 @@ const HeroChatWidget = () => {
 
   return (
     <div
-      className="relative w-full bg-white/[0.15] backdrop-blur-2xl border border-white/30 shadow-[0_8px_32px_rgba(255,255,255,0.1)] rounded-3xl flex flex-col animate-fade-in mt-6"
+      className="relative w-full bg-black/60 backdrop-blur-3xl border-2 border-white shadow-[0_8px_32px_rgba(0,0,0,0.6)] rounded-3xl flex flex-col animate-fade-in mt-6"
       style={{ minHeight: '298px', maxHeight: '440px', overflow: 'visible' }}
     >
       {/* 🎙️ Centralized Floating Mic atop the card border with realistic 3D appearance */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-        <button
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2/3 z-20">
+        <div className="p-1 rounded-full border-[3px] border-white/90 bg-black/50 backdrop-blur-md shadow-[0_0_20px_rgba(255,255,255,0.25)]">
+          <button
           type="button"
           onClick={voice.toggle}
           disabled={streaming}
@@ -146,13 +147,14 @@ const HeroChatWidget = () => {
           aria-label={voice.listening ? 'Stop voice input' : 'Start voice input'}
         >
           {voice.listening ? (
-            <MicOff className="w-7 h-7" />
+            <MicOff className="w-7 h-7 animate-bounce" />
           ) : (
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+            <svg className="w-7 h-7 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 0 3-3V4.5a3 3 0 0 0-6 0v8.25a3 3 0 0 0 3 3Z" />
             </svg>
           )}
         </button>
+        </div>
       </div>
 
       {/* Chat Messages Area */}
@@ -260,26 +262,7 @@ const HeroChatWidget = () => {
               />
             </div>
 
-            {/* White Glassmorphic Voice mic button inline */}
-            {voice.supported && (
-              <button
-                type="button"
-                onClick={voice.toggle}
-                disabled={streaming}
-                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shrink-0 backdrop-blur-md border border-white/20 shadow-[0_4px_12px_rgba(255,255,255,0.05)] ${
-                  voice.listening
-                    ? 'bg-rose-500/80 text-white animate-pulse'
-                    : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
-                } disabled:opacity-40`}
-                aria-label={voice.listening ? 'Stop' : 'Voice input'}
-              >
-                {voice.listening ? (
-                  <MicOff className="w-4 h-4" />
-                ) : (
-                  <Mic className="w-4 h-4" />
-                )}
-              </button>
-            )}
+
 
             {/* White Glassmorphic Send / Stop button */}
             {streaming ? (
