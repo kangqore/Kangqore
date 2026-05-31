@@ -112,7 +112,7 @@ const GlobalAuthPrompt = () => {
   return (
     <div className="fixed inset-0 bg-[#06080e]/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4 transition-all duration-300">
       
-      <div className="w-full max-w-md bg-[#0e121e]/95 border border-white/10 rounded-3xl shadow-2xl p-6 sm:p-8 backdrop-blur-xl relative overflow-hidden animate-fade-in-up">
+      <div className="w-full max-w-md bg-[#141414] border border-white/10 rounded-3xl shadow-2xl p-6 sm:p-8 relative overflow-hidden animate-fade-in-up">
         
         {/* Ambient overlay details */}
         <div className="absolute -top-12 -right-12 w-28 h-28 bg-brand-cyan/20 rounded-full blur-2xl pointer-events-none" />
