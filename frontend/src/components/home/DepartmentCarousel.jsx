@@ -22,7 +22,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { departmentsData, departmentsList } from '../../data/departmentsData';
 import { servicesData } from '../../data/servicesData';
-import Realistic3DIcon from '../ui/Realistic3DIcon';
 
 // Per-slug presentation overrides. Image paths point to the 6 PNGs in
 // /public/images/departments/. `imageClass` falls back to a default when
@@ -253,6 +252,7 @@ const DepartmentCarousel = () => {
             const cardPlacement = getCardClasses(dept.slug);
             const isExpanded = !!expandedDepts[dept.slug];
             const outcome = dept.businessOutcomes && dept.businessOutcomes[0];
+            const IconComponent = dept.icon;
 
             return (
               <div
@@ -260,8 +260,8 @@ const DepartmentCarousel = () => {
                 onClick={(e) => handleCardClick(dept.slug, dept.link, e)}
                 className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)] transition-all duration-500 hover:-translate-y-1 block ${cardPlacement} ${
                   isExpanded 
-                    ? 'bg-white dark:bg-[#0c0c0e] border border-gray-200/80 dark:border-white/5' 
-                    : ''
+                    ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' 
+                    : 'border border-transparent'
                 }`}
               >
                 {/* Background Image */}
@@ -327,7 +327,7 @@ const DepartmentCarousel = () => {
 
                 {/* Detailed Content Overlay */}
                 <div
-                  className={`absolute inset-0 z-30 bg-white dark:bg-[#0c0c0e] p-6 lg:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar transition-all duration-500 ease-in-out ${
+                  className={`absolute inset-0 z-30 bg-[#0a0a0c]/98 backdrop-blur-xl p-6 lg:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar transition-all duration-500 ease-in-out border-t border-white/10 ${
                     isExpanded 
                       ? 'opacity-100 pointer-events-auto translate-y-0' 
                       : 'opacity-0 pointer-events-none translate-y-4'
@@ -336,44 +336,47 @@ const DepartmentCarousel = () => {
                   <div className="flex flex-col text-left">
                     {/* Top Row: Icon & Category badge */}
                     <div className="flex items-center justify-between mb-4">
-                      {dept.icon && (
-                        <Realistic3DIcon
-                          icon={dept.icon}
-                          className="w-11 h-11 sm:w-12 sm:h-12"
-                          iconSize="w-5.5 h-5.5 sm:w-6 sm:h-6"
-                          theme={DEPT_ICONS_THEMES[dept.slug] || 'light'}
-                        />
+                      {IconComponent && (
+                        <div 
+                          className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)] text-white relative overflow-hidden group/icon"
+                          style={{
+                            background: `linear-gradient(135deg, ${dept.accentColor} 0%, ${dept.accentColor}dd 100%)`,
+                          }}
+                        >
+                          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300" />
+                          <IconComponent className="w-5.5 h-5.5 sm:w-6 sm:h-6 relative z-10" strokeWidth={1.5} fill="currentColor" />
+                        </div>
                       )}
-                      <span className="text-[9px] sm:text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest bg-gray-100 dark:bg-white/5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-gray-200/50 dark:border-white/5 font-mono">
+                      <span className="text-[9px] sm:text-xs font-bold text-slate-300 uppercase tracking-widest bg-white/5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/10 font-mono">
                         {dept.serviceCount} Capabilities
                       </span>
                     </div>
 
                     {/* Title & Tagline */}
-                    <h4 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1 tracking-tight font-display">
+                    <h4 className="text-xl sm:text-2xl font-bold text-white mb-1 tracking-tight font-display">
                       {dept.title}
                     </h4>
-                    <p className="text-[9px] sm:text-xs font-bold text-slate-400 dark:text-slate-500 mb-4 uppercase tracking-widest font-mono">
+                    <p className="text-[9px] sm:text-xs font-bold text-slate-400 mb-4 uppercase tracking-widest font-mono">
                       {dept.subtitle}
                     </p>
 
                     {/* Outcome Badge in Glass Container */}
                     {outcome && (
-                      <div className="mb-4 p-3 rounded-2xl bg-slate-50/50 dark:bg-white/[0.01] border border-gray-200/50 dark:border-white/5 flex items-start gap-3 shadow-[inset_0_2px_4px_rgba(0,0,0,0.01)] backdrop-blur-sm">
+                      <div className="mb-4 p-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] backdrop-blur-md">
                         <span 
-                          className="text-xl sm:text-2xl font-black shrink-0 tracking-tight leading-none"
+                          className="text-xl sm:text-2xl font-black shrink-0 tracking-tight leading-none drop-shadow-md"
                           style={{ color: dept.accentColor }}
                         >
                           {outcome.metric}
                         </span>
-                        <span className="text-[10px] sm:text-xs text-gray-600 dark:text-slate-400 leading-snug font-medium">
+                        <span className="text-[10px] sm:text-xs text-slate-300 leading-snug font-medium">
                           {outcome.label}
                         </span>
                       </div>
                     )}
 
                     {/* Description */}
-                    <p className="text-xs sm:text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                       {dept.description}
                     </p>
 
@@ -382,10 +385,10 @@ const DepartmentCarousel = () => {
                   </div>
 
                   {/* Bottom Link (leaves space for close button via pr-14) */}
-                  <div className="pt-4 border-t border-gray-100 dark:border-white/5 mt-6 flex justify-between items-center pr-14">
+                  <div className="pt-4 border-t border-white/5 mt-6 flex justify-between items-center pr-14">
                     <Link
                       to={dept.link}
-                      className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-cyan-400 transition-colors group/link"
+                      className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-cyan-400 transition-colors group/link"
                     >
                       Explore Full Department
                       <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
@@ -396,10 +399,10 @@ const DepartmentCarousel = () => {
                 {/* Floating Plus/X Action Button */}
                 <button
                   onClick={(e) => toggleExpand(dept.slug, e)}
-                  className={`toggle-expand-btn absolute bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-md ${
+                  className={`toggle-expand-btn absolute bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl ${
                     isExpanded 
-                      ? 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-white/10 dark:hover:bg-white/20 dark:text-white' 
-                      : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 dark:border-white/10 hover:scale-110 active:scale-95'
+                      ? 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-110 active:scale-95' 
+                      : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 hover:scale-110 active:scale-95'
                   }`}
                   aria-label={isExpanded ? "Collapse details" : "Expand details"}
                 >
