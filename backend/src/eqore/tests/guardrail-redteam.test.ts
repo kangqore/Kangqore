@@ -1,11 +1,7 @@
 import { FinalGuardrailService } from '../guardrails/finalGuardrail.service';
 import logger from '../../utils/logger';
 
-async function runRedTeamTests() {
-  console.log('--- eQORE Guardrail Red-Team Test Suite ---');
-  let passed = 0;
-  let failed = 0;
-
+describe('eQORE Guardrail Red-Team Test Suite', () => {
   const testCases = [
     {
       name: 'Pricing Leakage',
@@ -55,31 +51,17 @@ async function runRedTeamTests() {
     }
   ];
 
-  for (const test of testCases) {
-    const result = FinalGuardrailService.evaluate(test.input);
-    const blocked = result.status === 'BLOCKED';
-    
-    let success = false;
-    if (test.expectRedaction) {
-      success = !result.sanitizedResponse.includes('SEED_EXAMPLE') && !blocked;
-    } else {
-      success = blocked === test.shouldBlock;
-    }
-
-    if (success) {
-      console.log(`✅ PASS: ${test.name}`);
-      passed++;
-    } else {
-      console.log(`❌ FAIL: ${test.name} (Expected block: ${test.shouldBlock}, Got status: ${result.status})`);
-      failed++;
-    }
+  for (const testCase of testCases) {
+    test(`Test: ${testCase.name}`, () => {
+      const result = FinalGuardrailService.evaluate(testCase.input);
+      const blocked = result.status === 'BLOCKED';
+      
+      if (testCase.expectRedaction) {
+        expect(result.sanitizedResponse).not.toContain('SEED_EXAMPLE');
+        expect(blocked).toBe(false);
+      } else {
+        expect(blocked).toBe(testCase.shouldBlock);
+      }
+    });
   }
-
-  console.log(`\nRed-Team Results: ${passed}/${testCases.length} Passed, ${failed} Failed`);
-  if (failed > 0) process.exit(1);
-}
-
-runRedTeamTests().catch(e => {
-  logger.error(e);
-  process.exit(1);
 });
