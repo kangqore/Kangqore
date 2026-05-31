@@ -503,7 +503,7 @@ const HeroCarousel = () => {
                 slide.type === 'product' 
                   ? 'max-w-[680px]' 
                   : slide.type === 'chat' 
-                    ? 'max-w-2xl'
+                    ? 'max-w-[1000px]'
                     : 'max-w-5xl'
               } flex flex-col h-full`}>
                 
