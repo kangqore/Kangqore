@@ -730,10 +730,10 @@ const Header = ({ onMenuClick }) => {
                               {isActive && (
                                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-blue rounded-r-md"></div>
                               )}
-                              <span className="text-[14px] font-bold tracking-tight">
+                              <span className="text-3xl font-black tracking-tight">
                                 {category.title}
                               </span>
-                              <ArrowRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0'}`} />
+                              <ArrowRight className={`w-6 h-6 transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0'}`} />
                             </button>
                           );
                         })}
