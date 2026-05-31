@@ -34,15 +34,35 @@ import BookingPage from './pages/BookingPage';
 import './App.css';
 
 /**
- * Scroll to top on route change unless there is a hash anchor
+ * Scroll to top on route change unless there is a hash anchor.
+ * Uses multiple scroll passes to survive AnimatePresence mode="wait"
+ * which delays new-page mount until the exit animation finishes (~300ms).
  */
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    if (!hash) {
-      window.scrollTo(0, 0);
+    if (hash) return;
+
+    // Prevent the browser from restoring the previous scroll position
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
     }
+
+    // Immediate scroll
+    window.scrollTo(0, 0);
+
+    // Re-scroll after the next paint (covers synchronous DOM updates)
+    const raf = requestAnimationFrame(() => window.scrollTo(0, 0));
+    // Re-scroll after exit animation (~300ms) and after enter starts
+    const t1 = setTimeout(() => window.scrollTo(0, 0), 100);
+    const t2 = setTimeout(() => window.scrollTo(0, 0), 400);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, [pathname, hash]);
 
   return null;
