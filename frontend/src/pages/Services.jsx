@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   ArrowRight, Compass, Activity, Zap, ShieldCheck, Cpu, 
   CheckCircle2, Brain, Cog, RefreshCw, Shield, Layers, TrendingUp,
-  UserCheck, Milestone, Sparkles
+  UserCheck, Milestone, Sparkles, Plus, X
 } from 'lucide-react';
 import { departmentsData, departmentsList } from '../data/departmentsData';
 import { servicesData } from '../data/servicesData';
 import SEO from '../components/SEO';
 import { coreSEO } from '../data/seoData';
-import Realistic3DIcon from '../components/ui/Realistic3DIcon';
 
 // Partner badges for the technology marquee
 const partnerLogos = [
@@ -79,7 +78,93 @@ const SpotlightCard = ({ children, className = "", accentColor = "#2564ea", data
   );
 };
 
+const DEPT_PRESENTATION = {
+  cognition: {
+    image: '/images/departments/dept_bg_1_1778893880482.png',
+  },
+  foundry: {
+    image: '/images/departments/dept_bg_2_1778893900884.png',
+  },
+  reimagine: {
+    image: '/images/departments/dept_bg_3_1778893917993.png',
+  },
+  shield: {
+    image: '/images/departments/dept_bg_4_1778893933258.png',
+    imageClass:
+      'object-cover object-[center_top] scale-[1.25] transition-transform duration-700 group-hover:scale-[1.35]',
+  },
+  platforms: {
+    image: '/images/departments/dept_bg_5_1778893951306.png',
+  },
+  growth: {
+    image: '/images/departments/dept_bg_6_1778893966258.png',
+    imageClass:
+      'object-cover object-[70%_top] scale-[1.25] transition-transform duration-700 group-hover:scale-[1.35]',
+  },
+};
+
+const DEFAULT_IMAGE_CLASS =
+  'object-cover transition-transform duration-700 group-hover:scale-110';
+
+const DEPT_ICONS_THEMES = {
+  cognition: 'brand',
+  foundry: 'cyan',
+  reimagine: 'dark',
+  shield: 'dark',
+  platforms: 'cyan',
+  growth: 'glass',
+};
+
+const carouselDepartments = departmentsList.map((slug) => {
+  const dept = departmentsData[slug];
+  const presentation = DEPT_PRESENTATION[slug] || {};
+  return {
+    slug,
+    title: dept.name,
+    subtitle: dept.tagline,
+    description: dept.description,
+    link: `/departments/${slug}`,
+    image: presentation.image,
+    imageClass: presentation.imageClass || DEFAULT_IMAGE_CLASS,
+    topServices: dept.heroServiceSlugs.map((s) => servicesData[s].name),
+    icon: dept.icon,
+    serviceCount: dept.serviceCount,
+    businessOutcomes: dept.businessOutcomes,
+    accentColor: dept.accentColor,
+  };
+});
+
 const Services = () => {
+  const navigate = useNavigate();
+  const [expandedDepts, setExpandedDepts] = useState({});
+
+  const toggleExpand = (slug, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setExpandedDepts((prev) => ({
+      ...prev,
+      [slug]: !prev[slug],
+    }));
+  };
+
+  const handleCardClick = (slug, link, e) => {
+    const isExpanded = !!expandedDepts[slug];
+    if (isExpanded) return;
+    if (e.target.closest('.toggle-expand-btn')) return;
+    navigate(link);
+  };
+
+  const getCardClasses = (slug) => {
+    switch (slug) {
+      case 'shield':
+        return 'col-span-1 sm:row-span-2 row-span-1 h-[380px] sm:h-[772px] lg:h-[812px]';
+      case 'growth':
+        return 'sm:col-span-2 col-span-1 row-span-1 h-[380px] lg:h-[400px]';
+      default:
+        return 'col-span-1 row-span-1 h-[380px] lg:h-[400px]';
+    }
+  };
+
   const [activeStep, setActiveStep] = useState(0);
   const [activeDept, setActiveDept] = useState('cognition');
 
@@ -358,114 +443,224 @@ const Services = () => {
       </section>
 
       {/* Section 2: 6-Department Bento Grid */}
-      <section className="py-24 bg-white dark:bg-black transition-colors duration-300 relative overflow-hidden">
-        {/* Subtle grid backdrop for visual polish */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.015] dark:opacity-[0.03] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <section className="py-24 bg-[#F5F5F7] dark:bg-[#0a0a0c] overflow-hidden relative transition-colors duration-300">
+        <style dangerouslySetInnerHTML={{__html: `
+          .bento-desc {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            visibility: visible;
+          }
+          .group:hover .bento-desc {
+            opacity: 0;
+            transform: translateY(12px);
+            visibility: hidden;
+            pointer-events: none;
+          }
+          .bento-services {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            pointer-events: none;
+            visibility: hidden;
+          }
+          .group:hover .bento-services {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            visibility: visible;
+          }
+          .no-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}} />
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
           
-          {/* Section Header with Premium Borders */}
-          <div className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-gray-100 dark:border-white/5 pb-12">
-            <div>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-brand-blue"></div>
-                <span className="text-xs font-bold text-brand-blue dark:text-cyan-400 uppercase tracking-widest font-mono">
-                  Core Capabilities
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-5xl lg:text-[3.5rem] font-display font-bold text-gray-900 dark:text-white leading-[1.1] max-w-4xl tracking-tight">
-                6 Departments. {totalServices} Capabilities. <br className="hidden md:inline" />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">One Unified Architecture.</span>
-              </h2>
+          {/* Section Header */}
+          <div className="mb-16">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-gray-400 dark:bg-gray-700"></div>
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                What we offer
+              </span>
             </div>
-            <p className="text-gray-500 dark:text-slate-400 max-w-md text-sm md:text-base leading-relaxed font-medium">
-              Explore our structured pillars of excellence, each engineered to address specific enterprise needs and drive verified business outcomes.
-            </p>
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
+                Explore <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Kangqore Capabilities</span>.
+              </h2>
+              <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed max-w-md lg:text-right">
+                6 Departments. {totalServices} Capabilities. One Execution Ecosystem.
+              </p>
+            </div>
           </div>
 
-          {/* Bento Grid (Uniform 3x2 layout of canonical departments) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {departmentsList.map((slug) => {
-              const dept = departmentsData[slug];
+          {/* Bento Grid */}
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4 sm:grid-rows-auto md:grid-rows-2 grid-cols-1">
+            {carouselDepartments.map((dept) => {
+              const cardPlacement = getCardClasses(dept.slug);
+              const isExpanded = !!expandedDepts[dept.slug];
+              const outcome = dept.businessOutcomes && dept.businessOutcomes[0];
               const IconComponent = dept.icon;
-              const outcome = dept.businessOutcomes[0]; // Primary metric outcome
-
-              // Pick icon themes dynamically
-              let iconTheme = "light";
-              if (slug === 'cognition') iconTheme = "brand";
-              else if (slug === 'foundry') iconTheme = "cyan";
-              else if (slug === 'reimagine') iconTheme = "dark";
-              else if (slug === 'shield') iconTheme = "dark";
-              else if (slug === 'platforms') iconTheme = "cyan";
-              else if (slug === 'growth') iconTheme = "glass";
 
               return (
-                <SpotlightCard 
-                  key={slug}
-                  dataTestId={`dept-card-${slug}`}
-                  accentColor={dept.accentColor}
-                  className="lg:col-span-1"
+                <div
+                  key={dept.slug}
+                  onClick={(e) => handleCardClick(dept.slug, dept.link, e)}
+                  className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)] transition-all duration-500 hover:-translate-y-1 block ${cardPlacement} ${
+                    isExpanded 
+                      ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' 
+                      : 'border border-transparent'
+                  }`}
                 >
-                  <div className="h-full flex flex-col justify-between">
+                  {/* Background Image */}
+                  <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    <img
+                      src={dept.image}
+                      alt={dept.title}
+                      className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${dept.imageClass}`}
+                    />
+                    {/* Subtle overall dark tint for contrast */}
+                    <div className="absolute inset-0 bg-black/25 z-[1] group-hover:bg-black/15 transition-colors duration-500" />
                     
-                    {/* Header Row: Icon & Category badge */}
-                    <div className="flex items-center justify-between mb-8">
-                      <Realistic3DIcon 
-                        icon={IconComponent} 
-                        className="w-12 h-12" 
-                        iconSize="w-6 h-6" 
-                        theme={iconTheme} 
-                      />
-                      <span className="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest bg-gray-100 dark:bg-white/5 px-3 py-1.5 rounded-full border border-gray-200/50 dark:border-white/5 font-mono">
-                        {dept.serviceCount} Capabilities
-                      </span>
+                    {/* Premium top gradient vignette */}
+                    <div
+                      className="absolute inset-x-0 top-0 h-1/2 z-[2]"
+                      style={{
+                        background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 100%)',
+                      }}
+                    />
+                  </div>
+
+                  {/* Hover Gradient Overlay */}
+                  {!isExpanded && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#2564ea]/90 to-[#4ab6d4]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+                  )}
+
+                  {/* Default Content Overlay */}
+                  <div className={`relative z-20 h-full flex flex-col justify-between p-8 lg:p-10 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    <div className="flex flex-col h-full">
+                      <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2 transition-transform duration-300 group-hover:translate-x-1 shrink-0">
+                        {dept.title}
+                      </h3>
+                      <p className="text-xs lg:text-sm font-semibold text-brand-cyan mb-6 group-hover:text-white transition-colors duration-300 shrink-0">
+                        {dept.subtitle}
+                      </p>
+
+                      {/* Description vs Top Services container */}
+                      <div className="relative flex-1">
+                        {/* Short Description (Visible by default, hidden on hover) */}
+                        <p className="bento-desc absolute inset-0 text-white/90 leading-relaxed text-sm lg:text-[15px]">
+                          {dept.description}
+                        </p>
+
+                        {/* Top Services List (Hidden by default, visible on hover) */}
+                        <ul className="bento-services absolute inset-0 space-y-2.5">
+                          <span className="block text-xs font-bold uppercase tracking-widest text-brand-cyan mb-2.5">Key Capabilities:</span>
+                          {dept.topServices.slice(0, 6).map((service, sIdx) => (
+                            <li key={sIdx} className="flex items-start text-white/90 text-[13px] lg:text-sm font-medium">
+                              <span className="mr-2 text-brand-cyan opacity-80">✦</span>
+                              {service}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
 
-                    {/* Bento Content */}
-                    <div className="flex flex-col">
+                    {/* Floating Action Link Button */}
+                    <div className="inline-flex items-center text-white font-bold w-fit mt-4 shrink-0 transition-all duration-300 group-hover:translate-x-1.5 text-sm lg:text-base">
+                      Learn More
+                      <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                    </div>
+                  </div>
+
+                  {/* Detailed Content Overlay */}
+                  <div
+                    className={`absolute inset-0 z-30 bg-[#0a0a0c]/98 backdrop-blur-xl p-6 lg:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar transition-all duration-500 ease-in-out border-t border-white/10 ${
+                      isExpanded 
+                        ? 'opacity-100 pointer-events-auto translate-y-0' 
+                        : 'opacity-0 pointer-events-none translate-y-4'
+                    }`}
+                  >
+                    <div className="flex flex-col text-left">
+                      {/* Top Row: Icon & Category badge */}
+                      <div className="flex items-center justify-between mb-4">
+                        {IconComponent && (
+                          <div 
+                            className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)] text-white relative overflow-hidden group/icon"
+                            style={{
+                              background: `linear-gradient(135deg, ${dept.accentColor} 0%, ${dept.accentColor}dd 100%)`,
+                            }}
+                          >
+                            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300" />
+                            <IconComponent className="w-5.5 h-5.5 sm:w-6 sm:h-6 relative z-10" strokeWidth={1.5} fill="currentColor" />
+                          </div>
+                        )}
+                        <span className="text-[9px] sm:text-xs font-bold text-slate-300 uppercase tracking-widest bg-white/5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/10 font-mono">
+                          {dept.serviceCount} Capabilities
+                        </span>
+                      </div>
+
                       {/* Title & Tagline */}
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1.5 tracking-tight">
-                        {dept.name}
-                      </h3>
-                      <p className="text-xs font-bold text-slate-400 dark:text-slate-500 mb-6 uppercase tracking-widest font-mono">
-                        {dept.tagline}
+                      <h4 className="text-xl sm:text-2xl font-bold text-white mb-1 tracking-tight font-display">
+                        {dept.title}
+                      </h4>
+                      <p className="text-[9px] sm:text-xs font-bold text-slate-400 mb-4 uppercase tracking-widest font-mono">
+                        {dept.subtitle}
                       </p>
 
                       {/* Outcome Badge in Glass Container */}
                       {outcome && (
-                        <div className="mb-6 p-4 rounded-2xl bg-slate-50/50 dark:bg-white/[0.01] border border-gray-200/50 dark:border-white/5 flex items-start gap-3 shadow-[inset_0_2px_4px_rgba(0,0,0,0.01)] backdrop-blur-sm">
+                        <div className="mb-4 p-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] backdrop-blur-md">
                           <span 
-                            className="text-2xl font-black shrink-0 tracking-tight leading-none"
+                            className="text-xl sm:text-2xl font-black shrink-0 tracking-tight leading-none drop-shadow-md"
                             style={{ color: dept.accentColor }}
                           >
                             {outcome.metric}
                           </span>
-                          <span className="text-xs text-gray-600 dark:text-slate-400 leading-snug font-medium">
+                          <span className="text-[10px] sm:text-xs text-slate-300 leading-snug font-medium">
                             {outcome.label}
                           </span>
                         </div>
                       )}
 
-                      <p className="text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
+                      {/* Description */}
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                         {dept.description}
                       </p>
 
                       {/* Custom Visual Panel Mockup */}
-                      {visualPanels[slug]}
+                      {visualPanels[dept.slug]}
                     </div>
 
-                    {/* Bottom Link */}
-                    <div className="pt-6 border-t border-gray-100 dark:border-white/5 mt-auto">
+                    {/* Bottom Link (leaves space for close button via pr-14) */}
+                    <div className="pt-4 border-t border-white/5 mt-6 flex justify-between items-center pr-14">
                       <Link
-                        to={`/departments/${slug}`}
-                        className="inline-flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white hover:text-brand-blue dark:hover:text-cyan-400 transition-colors group/link"
+                        to={dept.link}
+                        className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-cyan-400 transition-colors group/link"
                       >
                         Explore Full Department
                         <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
                       </Link>
                     </div>
                   </div>
-                </SpotlightCard>
+
+                  {/* Floating Plus/X Action Button */}
+                  <button
+                    onClick={(e) => toggleExpand(dept.slug, e)}
+                    className={`toggle-expand-btn absolute bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl ${
+                      isExpanded 
+                        ? 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-110 active:scale-95' 
+                        : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 hover:scale-110 active:scale-95'
+                    }`}
+                    aria-label={isExpanded ? "Collapse details" : "Expand details"}
+                  >
+                    {isExpanded ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                  </button>
+                </div>
               );
             })}
           </div>
