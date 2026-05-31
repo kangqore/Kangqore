@@ -1618,16 +1618,13 @@ const LeadershipSection = () => {
             
             <div className="space-y-6 text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100 leading-[1.7] font-sans">
               <p>
-                The next era won't be defined by companies that adopt AI. It'll be defined by those that use it to amplify what only humans bring: imagination, ambition, and the will to attempt more than they once dared.
+                The next era won't be defined by companies that adopt AI. It will be defined by those that use it to amplify what only humans bring: <span className="font-bold text-black dark:text-white">imagination, ambition, judgment, and the courage to pursue what once seemed impossible.</span>
               </p>
               <p>
-                <span className="font-bold">Machines are fast. They aren't curious.</span> They can finish a sentence, but they can't decide it was worth writing. Only humans create purpose, vision, and meaning, and in an age of infinite automation, that judgment becomes the rarest thing in business.
+                Machines can automate tasks and accelerate decisions, but <span className="font-bold text-black dark:text-white">they cannot create purpose, vision, or meaning.</span> That's why we've chosen a side: <span className="font-bold text-black dark:text-white">human outcomes always lead.</span> Humans set the destination; intelligent systems accelerate the journey. The future belongs to organizations that <span className="font-bold text-black dark:text-white">combine human ingenuity with intelligent systems</span> to achieve more than either could alone.
               </p>
               <p>
-                <span className="font-bold">So we've chosen a side.</span> Human outcomes always lead. Humans set the destination; intelligent systems run the distance. The future won't belong to organizations that merely adopt AI. It'll belong to those whose people, sharpened by it, aim higher than they ever could alone.
-              </p>
-              <p>
-                At Kangqore, we innovate futures.
+                <span className="font-bold text-black dark:text-white">At Kangqore, we innovate futures.</span>
               </p>
             </div>
 
