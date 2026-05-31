@@ -1190,7 +1190,7 @@ const TrustStatementTypewriter = ({ isVisible }) => {
   const [isComplete, setIsComplete] = useState(false);
 
   // Text with highlight markers
-  const fullText = `We don't sell services, We Deliver [[End-to-End Solutions]] With Accountability.`;
+  const fullText = `We Don't Deliver Projects.\nWe Deliver [[Business Outcomes]].`;
   
   // Parse text to find highlighted sections
   const parseText = (text) => {
@@ -1281,7 +1281,7 @@ const TrustStatementTypewriter = ({ isVisible }) => {
   };
 
   return (
-    <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl">
+    <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl whitespace-pre-line">
       {renderText()}
       {!isComplete && (
         <span className="inline-block w-1 h-12 md:h-14 lg:h-16 bg-brand-gradient ml-1" />
