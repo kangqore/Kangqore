@@ -11,6 +11,7 @@ const GlobalFeedbackPrompt = () => {
   const [category, setCategory] = useState('Website'); // 'Website', 'Services', 'Company', 'Other'
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [showAuthRequirement, setShowAuthRequirement] = useState(false);
 
   // Timers for showing Feedback popup (90s initial, 180s interval)
   useEffect(() => {
@@ -30,6 +31,7 @@ const GlobalFeedbackPrompt = () => {
       setSubmitSuccess(false);
       setFeedbackText('');
       setCategory('Website');
+      setShowAuthRequirement(false);
     }, 500);
 
     // Set 180s repeat timer
@@ -40,8 +42,12 @@ const GlobalFeedbackPrompt = () => {
   };
 
   const handleTriggerAuth = () => {
-    // Close feedback modal, and trigger the global auth modal
+    // Keep the feedback modal open in background or close it? The user asked for "another small pop-up".
+    // Dispatched event will open the global auth modal over this one. We can hide this one's auth requirement
+    // so when they return it's back to the form, or we can close the feedback modal entirely.
+    // Let's close the feedback modal, and trigger the global auth modal.
     setShowFeedbackModal(false);
+    setShowAuthRequirement(false);
     window.dispatchEvent(new CustomEvent('show-auth-modal', { detail: { tab: 'signin' } }));
     
     // Start the repeat timer so we don't bother them immediately again
@@ -52,7 +58,12 @@ const GlobalFeedbackPrompt = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!feedbackText.trim() || !user) return;
+    if (!feedbackText.trim()) return;
+    
+    if (!user) {
+      setShowAuthRequirement(true);
+      return;
+    }
     
     setIsSubmitting(true);
     
@@ -119,11 +130,14 @@ const GlobalFeedbackPrompt = () => {
             <h3 className="text-lg font-bold text-white">Thank You!</h3>
             <p className="text-xs text-gray-400 mt-1">Your feedback has been securely transmitted to our team.</p>
           </div>
-        ) : !user ? (
-          /* GUEST STATE: Need to sign in */
+        ) : showAuthRequirement ? (
+          /* GUEST STATE: Tried to submit without signing in */
           <div className="text-center animate-fade-in pb-4">
+            <div className="w-12 h-12 rounded-full bg-brand-blue/20 flex items-center justify-center mx-auto mb-4 border border-brand-blue/30 shadow-[0_0_15px_rgba(37,100,234,0.3)]">
+              <LogIn className="w-6 h-6 text-brand-cyan" />
+            </div>
             <p className="text-sm text-gray-300 mb-8 leading-relaxed max-w-sm mx-auto">
-              Please sign in or create an account to share your suggestions regarding our website, services, or company.
+              We value your input. Please sign in or create an account to share your feedback and suggestions.
             </p>
             
             <button 
@@ -131,17 +145,17 @@ const GlobalFeedbackPrompt = () => {
               className="w-full py-3 rounded-xl bg-gradient-to-r from-brand-blue to-brand-cyan hover:shadow-lg text-white font-bold text-sm flex items-center justify-center gap-2 transition hover:scale-[1.02]"
             >
               <LogIn className="w-4 h-4" />
-              <span>Sign In to Share Feedback</span>
+              <span>Sign In to Continue</span>
             </button>
             <button 
-              onClick={handleCloseFeedbackModal}
+              onClick={() => setShowAuthRequirement(false)}
               className="w-full py-2 mt-3 text-xs text-gray-500 hover:text-white transition font-medium"
             >
-              Maybe Later
+              Back to Edit
             </button>
           </div>
         ) : (
-          /* AUTHENTICATED STATE: Feedback Form */
+          /* DEFAULT STATE: Feedback Form */
           <form onSubmit={handleSubmit} className="space-y-4 animate-fade-in">
             
             <div>
