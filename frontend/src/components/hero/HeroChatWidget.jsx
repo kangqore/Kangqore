@@ -103,9 +103,10 @@ const HeroChatWidget = () => {
   };
 
   const chips = [
-    "What does Kangqore do?",
-    "How can eQORE help?",
-    "Tell me about Kangqore BIDS™",
+    "Services/Capabilities",
+    "What are your departments?",
+    "Which industries do you serve?",
+    "Why choose Kangqore?"
   ];
 
   const onChip = (text) => {
