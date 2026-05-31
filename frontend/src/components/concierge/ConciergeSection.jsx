@@ -233,23 +233,16 @@ const ConciergeSection = () => {
         </div>
 
         <div className="group relative rounded-2xl overflow-hidden border border-white/[0.05] w-full shadow-2xl hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)] transition-all duration-500 hover:-translate-y-1 bg-[#11131a]">
-          {/* Bento-style background image & premium vignette overlays matching Explore Kangqore Capabilities cards */}
-          <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl pointer-events-none">
-            <img
-              src="/images/departments/dept_bg_1_1778893880482.png"
-              alt="eQORE AI Background"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            {/* Subtle dark tint & glassmorphic blur to keep text perfectly legible */}
-            <div className="absolute inset-0 bg-[#0a0a0c]/85 backdrop-blur-sm z-[1] transition-colors duration-500 group-hover:bg-[#0a0a0c]/80" />
+          {/* Sleek "Glossy Black" Background */}
+          <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl pointer-events-none" style={{ background: 'linear-gradient(145deg, #181a20 0%, #000000 100%)' }}>
+            {/* Sharp diagonal gloss reflection */}
+            <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(125deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 30%, rgba(255,255,255,0) 50%)' }} />
             
-            {/* Premium top gradient vignette */}
-            <div
-              className="absolute inset-x-0 top-0 h-1/2 z-[2]"
-              style={{
-                background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 100%)',
-              }}
-            />
+            {/* Soft inner glow from the top edge */}
+            <div className="absolute inset-x-0 top-0 h-[100px] z-[2]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%)' }} />
+            
+            {/* Subtle bottom edge reflection */}
+            <div className="absolute inset-x-0 bottom-0 h-1/3 z-[1]" style={{ background: 'linear-gradient(0deg, rgba(255,255,255,0.02) 0%, transparent 100%)' }} />
           </div>
 
           <div className="relative z-10 px-6 sm:px-8 py-5 border-b border-white/5 flex items-center justify-between gap-2">
@@ -354,8 +347,8 @@ const ConciergeSection = () => {
                           isUser
                             ? 'bg-brand-blue text-white rounded-br-sm'
                             : msg.id === 'greeting'
-                            ? 'bg-[#1c202a] font-semibold rounded-bl-sm border border-white/[0.03]'
-                            : 'bg-[#1c202a] text-gray-200 rounded-bl-sm border border-white/[0.03]'
+                            ? 'bg-[#1c202a]/80 backdrop-blur-md font-semibold rounded-bl-sm border border-white/10'
+                            : 'bg-[#1c202a]/80 backdrop-blur-md text-gray-100 rounded-bl-sm border border-white/10'
                         }`}
                       >
                         {msg.id === 'greeting' ? (
@@ -539,7 +532,7 @@ const ConciergeSection = () => {
                 onChange={(e) => setInput(e.target.value)}
                 disabled={streaming}
                 placeholder={voice.listening ? 'System Listening…' : 'Engineer a query…'}
-                className="w-full pl-6 pr-28 py-[18px] rounded-full text-[15px] bg-[#1c202a] border border-white/5 text-white placeholder-slate-500 focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all"
+                className="w-full pl-6 pr-28 py-[18px] rounded-full text-[15px] bg-[#1c202a]/80 backdrop-blur-md border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all shadow-lg"
               />
               {voice.supported && (
                 <button
@@ -593,6 +586,25 @@ const ConciergeSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Dynamic Background Styles */}
+      <style>{`
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+          animation: blob 15s infinite alternate;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </section>
   );
 };

@@ -92,6 +92,9 @@ const ConversionRateOptimization = React.lazy(() => import('../pages/services/co
 const CampaignPlanning = React.lazy(() => import('../pages/services/conversion-engineering/CampaignPlanning'));
 const GrowthFunnelsConversion = React.lazy(() => import('../pages/services/conversion-engineering/GrowthFunnelsConversion'));
 
+// Other Services
+const PostDeliverySupport = React.lazy(() => import('../pages/services/other/PostDeliverySupport'));
+
 
 
 
@@ -208,7 +211,10 @@ export const serviceRoutes = [
   // Conversion Engineering (3)
   <Route key="conversion-rate" path="/services/conversion-engineering/conversion-rate-optimization" element={<ConversionRateOptimization />} />,
   <Route key="campaign-planning" path="/services/conversion-engineering/campaign-planning" element={<CampaignPlanning />} />,
-  <Route key="growth-funnels" path="/services/conversion-engineering/growth-funnels-conversion-engineering" element={<GrowthFunnelsConversion />} />
+  <Route key="growth-funnels" path="/services/conversion-engineering/growth-funnels-conversion-engineering" element={<GrowthFunnelsConversion />} />,
+  
+  // Other Services
+  <Route key="post-delivery-support" path="/services/post-delivery-support" element={<PostDeliverySupport />} />
 ];
 
 export default serviceRoutes;
