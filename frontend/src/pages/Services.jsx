@@ -340,7 +340,7 @@ const Services = () => {
 
       {/* Section 1: Premium Dark Hero */}
       <section className="relative w-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228] mt-2 mx-auto" style={{ maxWidth: 'calc(100% - 1rem)' }}>
-        <div className="relative min-h-[620px] md:min-h-[720px] lg:min-h-[800px] overflow-hidden flex items-center">
+        <div className="relative min-h-[calc(100vh-1rem)] overflow-hidden">
           
           {/* Immersive mesh & grid background */}
           <div className="absolute inset-0 bg-[#070b19] z-0 overflow-hidden">
@@ -361,22 +361,23 @@ const Services = () => {
           </div>
 
           {/* Content Layer */}
-          <div className="relative z-[2] w-full pt-[170px] pb-16 sm:pt-[200px] sm:pb-20 lg:pt-[240px] lg:pb-24 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <div className="grid lg:grid-cols-12 gap-12 items-center">
-              
-              {/* Left Content */}
-              <div className="lg:col-span-7 max-w-4xl flex flex-col h-full gap-10 mt-20">
-                <div className="space-y-10 flex-shrink-0 text-left">
-                  <span className="inline-block px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase bg-white/10 text-white border border-white/20 backdrop-blur-md">
-                    OUR SERVICES
-                  </span>
-                  
-                  <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-fade-in">
-                    Capability that <br />
-                    <span className="bg-brand-gradient bg-clip-text text-transparent font-black">
-                      compounds
+          <div className="relative z-[2] min-h-[calc(100vh-1rem)] flex flex-col justify-center">
+            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
+              <div className="grid lg:grid-cols-12 gap-12 items-center">
+                
+                {/* Left Content */}
+                <div className="lg:col-span-7 max-w-4xl flex flex-col h-full gap-10 mt-20">
+                  <div className="space-y-10 flex-shrink-0 text-left">
+                    <span className="inline-block px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase bg-white/10 text-white border border-white/20 backdrop-blur-md">
+                      OUR SERVICES
                     </span>
-                  </h1>
+                    
+                    <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-fade-in">
+                      Capability that <br />
+                      <span className="bg-brand-gradient bg-clip-text text-transparent">
+                        compounds
+                      </span>
+                    </h1>
                   
                   <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-2xl animate-fade-in font-medium">
                     The future belongs to organizations that turn change into competitive advantage through continuous innovation, adaptability, and intelligent execution.
@@ -450,7 +451,8 @@ const Services = () => {
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* Section 2: 6-Department Bento Grid */}
       <section className="py-24 bg-[#F5F5F7] dark:bg-[#0a0a0c] overflow-hidden relative transition-colors duration-300">
