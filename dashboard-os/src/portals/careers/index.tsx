@@ -1,0 +1,28 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { Briefcase, ClipboardList } from 'lucide-react'
+import { PortalNavbar }   from '../layout/PortalNavbar'
+import { CareersHome }    from './pages/CareersHome'
+import { MyApplication }  from './pages/MyApplication'
+
+const TABS = [
+  { path: '',              label: 'Open Roles',      icon: Briefcase     },
+  { path: 'my-application',label: 'My Application',  icon: ClipboardList },
+]
+
+export function CareersPortal() {
+  return (
+    <div className="flex flex-col h-screen bg-[#f8f9fb] overflow-hidden">
+      <PortalNavbar
+        portalName="Careers"
+        portalColor="bg-gradient-to-br from-[#d97706] to-[#fbbf24]"
+        tabs={TABS}
+        basePath="/portal/careers"
+      />
+      <Routes>
+        <Route index                   element={<CareersHome />}    />
+        <Route path="my-application"   element={<MyApplication />}  />
+        <Route path="*"                element={<Navigate to="/portal/careers" replace />} />
+      </Routes>
+    </div>
+  )
+}

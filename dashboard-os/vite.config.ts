@@ -21,6 +21,7 @@ export default defineConfig({
       '@pages': resolve(__dirname, 'src/pages'),
       '@store': resolve(__dirname, 'src/store'),
       '@types': resolve(__dirname, 'src/types'),
+      '@portals': resolve(__dirname, 'src/portals'),
     },
   },
   server: {
