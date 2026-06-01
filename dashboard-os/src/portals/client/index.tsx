@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { LayoutGrid, FolderOpen, FileText, Briefcase } from 'lucide-react'
-import { PortalNavbar } from '../layout/PortalNavbar'
+import { PortalNavbar }  from '../layout/PortalNavbar'
+import { ModuleShell }  from '@components/ModuleShell'
 import { ClientDashboard } from './pages/ClientDashboard'
 import { ClientProjects }  from './pages/ClientProjects'
 import { ClientInvoices }  from './pages/ClientInvoices'
@@ -22,6 +23,7 @@ export function ClientPortal() {
         tabs={TABS}
         basePath="/portal/client"
       />
+      <ModuleShell>
       <Routes>
         <Route index           element={<ClientDashboard />} />
         <Route path="projects" element={<ClientProjects />}  />
@@ -29,6 +31,7 @@ export function ClientPortal() {
         <Route path="documents"element={<ClientDocuments />} />
         <Route path="*"        element={<Navigate to="/portal/client" replace />} />
       </Routes>
+      </ModuleShell>
     </div>
   )
 }

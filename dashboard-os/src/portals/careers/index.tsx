@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { Briefcase, ClipboardList } from 'lucide-react'
-import { PortalNavbar }   from '../layout/PortalNavbar'
+import { PortalNavbar }  from '../layout/PortalNavbar'
+import { ModuleShell }  from '@components/ModuleShell'
 import { CareersHome }    from './pages/CareersHome'
 import { MyApplication }  from './pages/MyApplication'
 
@@ -18,11 +19,13 @@ export function CareersPortal() {
         tabs={TABS}
         basePath="/portal/careers"
       />
+      <ModuleShell>
       <Routes>
         <Route index                   element={<CareersHome />}    />
         <Route path="my-application"   element={<MyApplication />}  />
         <Route path="*"                element={<Navigate to="/portal/careers" replace />} />
       </Routes>
+      </ModuleShell>
     </div>
   )
 }

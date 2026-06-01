@@ -3,6 +3,8 @@ import { ChevronDown, ChevronRight, CheckSquare, Clock } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
+import { Spinner } from '@design-system/components/Spinner'
+import { useClientProjects } from '../useClientData'
 
 const PROJECTS = [
   {
@@ -56,6 +58,26 @@ const STATUS_CONFIG = {
 
 export function ClientProjects() {
   const [openId, setOpenId] = useState<string>('p1')
+  const { data: apiProjects, isLoading } = useClientProjects()
+
+  const projects = (apiProjects as Record<string, unknown>[] | undefined)?.length
+    ? (apiProjects as Record<string, unknown>[]).map(p => ({
+        id:          String(p.id),
+        name:        String(p.title ?? p.name ?? 'Untitled'),
+        status:      p.status === 'ACTIVE' ? 'in-progress' : p.status === 'COMPLETED' ? 'completed' : 'on-hold',
+        progress:    Number(p.progress ?? 0),
+        startDate:   String(p.createdAt ?? '').slice(0, 10),
+        targetDate:  '—',
+        deliveryLead: 'Kangqore',
+        techLead:    'Kangqore',
+        description: String(p.description ?? ''),
+        milestones:  (p.deliverables as Record<string,unknown>[] ?? []).map((d, i) => ({
+          name: String(d.title ?? `Milestone ${i+1}`),
+          date: '—',
+          done: d.status === 'COMPLETED',
+        })),
+      }))
+    : PROJECTS
 
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-5">
@@ -64,7 +86,13 @@ export function ClientProjects() {
         <p className="text-sm text-slate-500 mt-1">Live status of all active and completed engagements.</p>
       </div>
 
-      {PROJECTS.map(p => {
+      {isLoading && (
+        <div className="flex items-center gap-2 text-sm text-slate-500">
+          <Spinner size="sm" /> Loading projects…
+        </div>
+      )}
+
+      {projects.map(p => {
         const isOpen    = openId === p.id
         const cfg       = STATUS_CONFIG[p.status as keyof typeof STATUS_CONFIG]
         const doneMiles = p.milestones.filter(m => m.done).length

@@ -8,19 +8,29 @@ import {
   DropdownRoot, DropdownTrigger, DropdownContent,
   DropdownItem, DropdownSeparator, DropdownPortal,
 } from '@design-system/components/Dropdown'
-import { useUIStore } from '@store/ui'
+import { useUIStore }  from '@store/ui'
+import { useAuthStore } from '@store/auth'
 import { allNavItems } from '@lib/nav'
 
-const MOCK_USER = { name: 'Mahesh Kumar', email: 'admin@kangqore.com', role: 'Admin' }
+const ROLE_LABEL: Record<string, string> = {
+  ADMIN: 'Admin', CLIENT: 'Client', PARTNER: 'Partner',
+  INVESTOR: 'Investor', JOB_SEEKER: 'Applicant',
+}
+
 const UNREAD_COUNT = 3
 
 export function Topbar() {
   const { openNotificationPanel } = useUIStore()
+  const { user, logout } = useAuthStore()
   const location = useLocation()
 
   const currentModule = allNavItems.find(item =>
     location.pathname.startsWith(item.path)
   )
+
+  const displayName = user?.name  ?? 'User'
+  const displayEmail = user?.email ?? ''
+  const displayRole  = ROLE_LABEL[user?.role ?? ''] ?? user?.role ?? 'Admin'
 
   return (
     <header className="flex-shrink-0 h-16 bg-white border-b border-slate-100 flex items-center gap-4 px-8 lg:px-12 z-10">
@@ -68,10 +78,10 @@ export function Topbar() {
       <DropdownRoot>
         <DropdownTrigger asChild>
           <button className="flex items-center gap-2.5 rounded-xl px-2 py-1.5 hover:bg-slate-50 transition-colors">
-            <Avatar name={MOCK_USER.name} size="sm" />
+            <Avatar name={displayName} size="sm" />
             <div className="hidden lg:flex flex-col items-start">
-              <span className="text-sm font-medium text-slate-800 leading-none">{MOCK_USER.name}</span>
-              <Badge variant="brand" size="sm" className="mt-1">{MOCK_USER.role}</Badge>
+              <span className="text-sm font-medium text-slate-800 leading-none">{displayName}</span>
+              <Badge variant="brand" size="sm" className="mt-1">{displayRole}</Badge>
             </div>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden lg:block" />
           </button>
@@ -79,8 +89,8 @@ export function Topbar() {
         <DropdownPortal>
           <DropdownContent align="end" sideOffset={8} className="z-50 min-w-[200px] bg-white border border-slate-200 rounded-xl shadow-lg p-1 animate-in fade-in-0 zoom-in-95 duration-150">
             <div className="px-3 py-2.5 border-b border-slate-100 mb-1">
-              <p className="text-sm font-semibold text-slate-900">{MOCK_USER.name}</p>
-              <p className="text-xs text-slate-400 truncate">{MOCK_USER.email}</p>
+              <p className="text-sm font-semibold text-slate-900">{displayName}</p>
+              <p className="text-xs text-slate-400 truncate">{displayEmail}</p>
             </div>
             <DropdownItem className="flex items-center gap-2.5 px-2.5 py-2 text-sm text-slate-700 rounded-lg cursor-default outline-none focus:bg-slate-50">
               <User className="w-4 h-4 text-slate-400" />
@@ -91,7 +101,10 @@ export function Topbar() {
               Settings
             </DropdownItem>
             <DropdownSeparator className="my-1 h-px bg-slate-100" />
-            <DropdownItem className="flex items-center gap-2.5 px-2.5 py-2 text-sm text-red-600 rounded-lg cursor-default outline-none focus:bg-red-50">
+            <DropdownItem
+              onClick={logout}
+              className="flex items-center gap-2.5 px-2.5 py-2 text-sm text-red-600 rounded-lg cursor-default outline-none focus:bg-red-50"
+            >
               <LogOut className="w-4 h-4" />
               Sign out
             </DropdownItem>

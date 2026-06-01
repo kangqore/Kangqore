@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { LayoutGrid, Kanban, BarChart2, Zap, Bug } from 'lucide-react'
 import { cn } from '@design-system/cn'
-import { api } from '@lib/api'
+import { api, isDemo } from '@lib/api'
 import { toProjects } from '@lib/transforms'
 import { useProjectsStore } from './store'
 import { ProjectsOverview } from './pages/ProjectsOverview'
@@ -26,6 +26,7 @@ export function ProjectsModule() {
     queryKey: ['projects'],
     queryFn: () => api.get('/projects').then(r => r.data.projects ?? []),
     staleTime: 1000 * 60 * 5,
+    enabled: !isDemo(),
   })
   useEffect(() => { if (data) hydrate(toProjects(data)) }, [data, hydrate])
 

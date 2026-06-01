@@ -1,7 +1,7 @@
 import { FileText, Download, Eye, Lock, FolderOpen } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
-
 import { Button } from '@design-system/components/Button'
+import { useClientDocuments } from '../useClientData'
 
 type DocCategory = 'contract' | 'report' | 'design' | 'technical' | 'compliance'
 
@@ -45,6 +45,21 @@ const FOLDERS: { label: string; count: number; icon: string }[] = [
 ]
 
 export function ClientDocuments() {
+  const { data: apiDocs } = useClientDocuments()
+
+  const documents = (apiDocs as Record<string, unknown>[] | undefined)?.length
+    ? (apiDocs as Record<string, unknown>[]).map(d => ({
+        id:           String(d.id),
+        name:         String(d.name ?? d.fileName ?? d.title ?? 'Document'),
+        category:     (['contract','report','design','technical','compliance'].includes(String(d.category ?? '').toLowerCase())
+                        ? String(d.category).toLowerCase()
+                        : 'technical') as DocCategory,
+        project:      String((d.project as Record<string,unknown>)?.title ?? d.projectName ?? 'General'),
+        date:         String(d.createdAt ?? d.uploadedAt ?? '').slice(0, 10),
+        size:         String(d.fileSize ?? '—'),
+        confidential: Boolean(d.confidential ?? d.isPrivate ?? false),
+      }))
+    : DOCUMENTS
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
       <div>
@@ -68,12 +83,12 @@ export function ClientDocuments() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FolderOpen className="w-4 h-4 text-blue-500" />
-            All Documents ({DOCUMENTS.length})
+            All Documents ({documents.length})
           </CardTitle>
         </CardHeader>
         <CardBody className="p-0">
           <div className="divide-y divide-slate-100">
-            {DOCUMENTS.map(doc => {
+            {documents.map(doc => {
               const cfg = CATEGORY_CONFIG[doc.category]
               return (
                 <div key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors">
