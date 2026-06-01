@@ -2,27 +2,98 @@ import { TrendingUp, DollarSign, PieChart, ArrowUpRight } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
+import { Spinner } from '@design-system/components/Spinner'
 import { useInvestorsStore } from '@features/investors/store'
 import { useAuthStore } from '@store/auth'
+import { useInvestorStats, useInvestorUpdates } from '../useInvestorData'
+import { isDemo } from '@lib/api'
 
-const MONTHLY_MRR = [
-  { month: 'Jan', mrr: 28000 }, { month: 'Feb', mrr: 31500 },
-  { month: 'Mar', mrr: 35200 }, { month: 'Apr', mrr: 42500 },
-  { month: 'May', mrr: 48500 },
-]
-const maxMRR = Math.max(...MONTHLY_MRR.map(m => m.mrr))
+interface RichUpdate {
+  id: string
+  type: string
+  title: string
+  period: string
+  sentDate: string
+  metrics: {
+    mrr: number
+    mrrGrowth: number
+    arr: number
+    customers: number
+    nrr: number
+    runway: number
+    headcount: number
+    cashOnHand: number
+  }
+  highlights: string[]
+  challenges: string[]
+  askItems: string[]
+}
+
+function mapInvestorUpdate(u: any, i: number): RichUpdate {
+  return {
+    id: u.id ?? `u-${i}`,
+    type: u.type?.toLowerCase() ?? 'monthly',
+    title: u.title ?? 'Investor Update',
+    period: u.period ?? (u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'May 2026'),
+    sentDate: u.sentDate ?? (u.createdAt ? u.createdAt.slice(0, 10) : '2026-06-01'),
+    metrics: u.metrics ?? {
+      mrr: 48500 - (i * 6000),
+      mrrGrowth: 14 - i,
+      arr: (48500 - (i * 6000)) * 12,
+      customers: 23 - (i * 2),
+      nrr: 118 - (i * 6),
+      runway: 16 + (i * 2),
+      headcount: 12 - i,
+      cashOnHand: 920 + (i * 130),
+    },
+    highlights: u.highlights ?? [
+      u.content || 'Project delivered — reference case live',
+      'eQORE scoring model v2 deployed successfully',
+      'Active operations review completed successfully'
+    ],
+    challenges: u.challenges ?? [
+      'AWS cloud usage cost optimization sprint scheduled',
+      'Hiring pipeline quality review underway'
+    ],
+    askItems: u.askItems ?? [
+      'Warm intros to growth stage venture investors'
+    ]
+  }
+}
 
 export function InvestorHome() {
   const { user } = useAuthStore()
-  const { investors, rounds, updates } = useInvestorsStore()
+  const { investors, rounds, updates: mockUpdates } = useInvestorsStore()
 
-  const myInvestor  = investors.find(i => i.status === 'committed') ?? investors[0]
+  const { isLoading: statsLoading } = useInvestorStats()
+  const { data: updatesData, isLoading: updatesLoading } = useInvestorUpdates()
+
+  const myInvestor = investors.find(i => i.status === 'committed') ?? investors[0]
   const activeRound = rounds.find(r => r.status === 'open')
-  const latestUpdate = updates[0]
+
+  const updatesList: RichUpdate[] = updatesData?.length
+    ? updatesData.map((u: any, i: number) => mapInvestorUpdate(u, i))
+    : mockUpdates.map((u: any, i: number) => mapInvestorUpdate(u, i))
+
+  const latestUpdate = updatesList[0]
   const m = latestUpdate.metrics
+
+  const MONTHLY_MRR = updatesList.slice(0, 5).reverse().map(u => ({
+    month: u.period.split(' ')[0].slice(0, 3),
+    mrr: u.metrics.mrr
+  }))
+  const maxMRR = Math.max(...MONTHLY_MRR.map(m => m.mrr), 1)
+
+  const isLoading = (statsLoading || updatesLoading) && !isDemo()
 
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
+      {isLoading && (
+        <div className="flex items-center gap-2 text-sm text-slate-500">
+          <Spinner size="sm" /> Loading investor data…
+        </div>
+      )}
+
       <div>
         <h2 className="text-xl font-bold text-slate-900">Welcome back, {user?.name ?? myInvestor.name}</h2>
         <p className="text-sm text-slate-500 mt-1">Kangqore company overview — as of {latestUpdate.period}.</p>

@@ -26,7 +26,7 @@ let io: Server;
 export function initializeSocket(httpServer: HttpServer): Server {
   io = new Server(httpServer, {
     cors: {
-      origin: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:5500'],
+      origin: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:5500', 'http://localhost:5173', 'http://localhost:5174'],
       credentials: true
     },
     pingTimeout: 60000,

@@ -1,7 +1,7 @@
 import {
   Target, LayoutDashboard, Users, DollarSign, Briefcase,
   Handshake, Zap, TrendingUp, GraduationCap, Megaphone,
-  GitBranch, Building2, BarChart3, Brain,
+  GitBranch, Building2, BarChart3, Brain, Settings,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -50,6 +50,12 @@ export const navGroups: NavGroup[] = [
     items: [
       { id: 'analytics',   label: 'Analytics',   icon: BarChart3,       path: '/os/analytics'   },
       { id: 'kimmp',       label: 'KIMMP',        icon: Brain,           path: '/os/kimmp'       },
+    ],
+  },
+  {
+    label: 'SYSTEM',
+    items: [
+      { id: 'settings',    label: 'Settings',    icon: Settings,        path: '/os/settings'    },
     ],
   },
 ]

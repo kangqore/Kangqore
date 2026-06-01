@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Brain, TrendingUp, AlertTriangle, Lightbulb, ArrowRight, Zap, Target, BarChart3 } from 'lucide-react'
 import { Card, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
+import { Spinner } from '@design-system/components/Spinner'
+import { api, isDemo } from '@lib/api'
 
 type InsightCategory = 'revenue' | 'risk' | 'opportunity' | 'ops' | 'talent'
 
@@ -134,16 +137,68 @@ function InsightCard({ insight }: { insight: Insight }) {
   )
 }
 
-const KIMMP_STATS = [
-  { label: 'Active Insights', value: INSIGHTS.length, icon: Brain,   color: 'text-purple-600 bg-purple-50' },
-  { label: 'Critical Alerts', value: INSIGHTS.filter(i => i.priority === 'critical').length, icon: AlertTriangle, color: 'text-red-600 bg-red-50' },
-  { label: 'Revenue Opportunities', value: `£${Math.round((320000 + 45000 + 5000000) / 1000)}k+`, icon: TrendingUp, color: 'text-green-600 bg-green-50' },
-  { label: 'Modules Monitored', value: 14, icon: BarChart3, color: 'text-blue-600 bg-blue-50' },
+const KIMMP_STAT_DEFS = [
+  { label: 'Active Insights',       icon: Brain,         color: 'text-purple-600 bg-purple-50' },
+  { label: 'Critical Alerts',       icon: AlertTriangle, color: 'text-red-600 bg-red-50' },
+  { label: 'Revenue Opportunities', icon: TrendingUp,    color: 'text-green-600 bg-green-50' },
+  { label: 'Modules Monitored',     icon: BarChart3,     color: 'text-blue-600 bg-blue-50' },
 ]
+
+// Map API insight → dashboard-os Insight shape
+function toInsight(raw: Record<string, unknown>, i: number): Insight {
+  const cats: InsightCategory[] = ['revenue', 'risk', 'opportunity', 'ops', 'talent']
+  const pris = ['critical', 'high', 'medium', 'low'] as const
+
+  const rawCat = String(raw.category ?? '').toLowerCase()
+  const category: InsightCategory = cats.includes(rawCat as InsightCategory)
+    ? (rawCat as InsightCategory)
+    : 'opportunity'
+
+  const rawPri = String(raw.priority ?? 'medium').toLowerCase()
+  const priority = pris.includes(rawPri as typeof pris[number])
+    ? (rawPri as Insight['priority'])
+    : 'medium'
+
+  return {
+    id:         String(raw.id ?? `k${i}`),
+    category,
+    priority,
+    title:      String(raw.title ?? 'Untitled insight'),
+    summary:    String(raw.summary ?? raw.content ?? '').slice(0, 200),
+    detail:     String(raw.content ?? raw.detail ?? ''),
+    action:     String(raw.action ?? raw.recommendation ?? ''),
+    module:     String(raw.module ?? raw.tags ?? 'System'),
+    confidence: Number(raw.confidence ?? raw.score ?? 80),
+    impact:     String(raw.impact ?? raw.value ?? '—'),
+  }
+}
 
 export function KIMMMPage() {
   const [filter, setFilter] = useState<InsightCategory | 'all'>('all')
-  const filtered = filter === 'all' ? INSIGHTS : INSIGHTS.filter(i => i.category === filter)
+  const [insights, setInsights] = useState<Insight[]>(INSIGHTS)
+
+  const { data: apiData, isLoading: apiLoading } = useQuery({
+    queryKey: ['kimmp-insights', filter],
+    queryFn: () => api.get('/dashboard/insights', {
+      params: { category: filter === 'all' ? undefined : filter, limit: 20 }
+    }).then(r => (r.data.insights ?? r.data ?? []) as Record<string, unknown>[]),
+    enabled: !isDemo(),
+    staleTime: 1000 * 60 * 3,
+  })
+
+  useEffect(() => {
+    if (apiData?.length) setInsights(apiData.map((r, i) => toInsight(r, i)))
+    else setInsights(INSIGHTS)
+  }, [apiData])
+
+  const filtered = filter === 'all' ? insights : insights.filter(i => i.category === filter)
+
+  const kimmStats = [
+    { ...KIMMP_STAT_DEFS[0], value: insights.length },
+    { ...KIMMP_STAT_DEFS[1], value: insights.filter(i => i.priority === 'critical').length },
+    { ...KIMMP_STAT_DEFS[2], value: `£${Math.round((320000 + 45000 + 5000000) / 1000)}k+` },
+    { ...KIMMP_STAT_DEFS[3], value: 14 },
+  ]
 
   return (
     <div className="space-y-8">
@@ -153,7 +208,10 @@ export function KIMMMPage() {
           <Brain className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-slate-900">KIMMP Intelligence</h2>
+          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            KIMMP Intelligence
+            {apiLoading && <Spinner size="sm" />}
+          </h2>
           <p className="text-sm text-slate-500 mt-0.5">
             AI-powered operating intelligence. Surfaces cross-module signals, risks, and opportunities across the entire Kangqore OS.
           </p>
@@ -165,7 +223,7 @@ export function KIMMMPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {KIMMP_STATS.map(s => (
+        {kimmStats.map(s => (
           <div key={s.label} className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color}`}>
               <s.icon className="w-5 h-5" />
@@ -193,7 +251,7 @@ export function KIMMMPage() {
             {cat === 'all' ? 'All Insights' : CATEGORY_CONFIG[cat].label}
             {cat !== 'all' && (
               <span className="ml-1.5 text-xs opacity-70">
-                {INSIGHTS.filter(i => i.category === cat).length}
+                {insights.filter(i => i.category === cat).length}
               </span>
             )}
           </button>
