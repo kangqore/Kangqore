@@ -413,6 +413,13 @@ const DepartmentCarousel = () => {
           })}
         </div>
 
+        {/* Stats text below bento grid */}
+        <div className="mt-16 text-center">
+          <p className="text-xs sm:text-sm font-semibold tracking-widest text-gray-400 dark:text-gray-500 uppercase">
+            6 Departments &bull; 61+ Capabilities &bull; 150+ Projects &bull; 98.4% Client Satisfaction.
+          </p>
+        </div>
+
       </div>
     </section>
   );

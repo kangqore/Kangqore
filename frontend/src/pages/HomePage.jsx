@@ -153,62 +153,8 @@ const newsItems = [
 // ============================================================================
 // ============================================================================
 // ============================================================================
-// HERO BOTTOM STRIP — Stats / Featured / Podcast
-// ============================================================================
 
-const AnimatedNumber = ({ value, duration = 2000 }) => {
-  const [count, setCount] = useState(0);
-  const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
-  const suffix = value.replace(/[0-9.]/g, '');
-  const hasDecimal = value.includes('.');
 
-  useEffect(() => {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      const currentVal = progress * numericValue;
-      setCount(hasDecimal ? currentVal.toFixed(1) : Math.floor(currentVal));
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      }
-    };
-    window.requestAnimationFrame(step);
-  }, [numericValue, duration, hasDecimal]);
-
-  return <>{count}{suffix}</>;
-};
-
-const heroStats = [
-  { value: '6', label: 'Departments' },
-  { value: '61+', label: 'Capabilities' },
-  { value: '150+', label: 'Projects Delivered' },
-  { value: '98.4%', label: 'Client Satisfaction' }
-];
-
-const HeroBottomStrip = () => {
-  const [sectionRef, isVisible] = useScrollAnimation({ once: true, threshold: 0.1 });
-
-  return (
-    <div 
-      ref={sectionRef}
-      className="relative z-20 w-full bg-black/40 backdrop-blur-xl border-t border-white/10"
-    >
-      <div className="max-w-7xl mx-auto px-6 py-10 lg:py-12 flex flex-col md:flex-row flex-wrap justify-between items-center gap-10">
-        {heroStats.map((stat, i) => (
-          <div key={i} className="flex flex-col items-center sm:items-start group cursor-default">
-            <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-white group-hover:text-cyan-400 transition-colors duration-300 font-display">
-              {isVisible ? <AnimatedNumber value={stat.value} /> : '0'}
-            </div>
-            <div className="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-white/50 group-hover:text-white/70 transition-colors mt-2">
-              {stat.label}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 const HUDText = ({ text, delay = 0, isCyan = false, startTyping = true, loop = false }) => {
   const [displayText, setDisplayText] = useState('');
@@ -702,12 +648,8 @@ const HeroCarousel = () => {
       `}</style>
     </section>
 
-    <section className="relative w-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228] mt-2">
 
 
-      {/* ── Hero Bottom Strip ── */}
-      <HeroBottomStrip />
-    </section>
     </div>
 
     {/* ── Hero Trust Logo Strip (Free from container) ── */}
@@ -1030,8 +972,7 @@ const PartnerBadgesStrip = () => {
           </div>
 
           <Link to="/partners" className="hidden md:flex items-center gap-2 text-brand-blue font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all mb-2">
-            Many More+
-            <ArrowRight className="w-5 h-5" />
+            View Full Partner Ecosystem →
           </Link>
         </div>
       </div>
@@ -1058,11 +999,10 @@ const PartnerBadgesStrip = () => {
         </div>
       </div>
 
-      {/* Mobile "Many More+" link */}
+      {/* Mobile "View Full Partner Ecosystem" link */}
       <div className="md:hidden flex justify-center mt-8">
         <Link to="/partners" className="inline-flex items-center gap-2 text-brand-blue font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all">
-          Many More+
-          <ArrowRight className="w-5 h-5" />
+          View Full Partner Ecosystem →
         </Link>
       </div>
       
