@@ -2,6 +2,9 @@ import { CheckSquare, Clock, DollarSign, Star, Calendar } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
+import { Spinner } from '@design-system/components/Spinner'
+import { usePartnerStats, usePartnerProjects } from '../usePartnerData'
+import { isDemo } from '@lib/api'
 
 const ASSIGNED_TASKS = [
   { id: 't1', title: 'Implement Redis caching layer',        project: 'Urban Mobility Co.',   priority: 'high',   due: '2026-06-05', status: 'in-progress', progress: 65  },
@@ -25,10 +28,53 @@ const STATUS_BADGE: Record<string, 'info' | 'warning' | 'success' | 'neutral'> =
 }
 
 export function PartnerDashboard() {
-  const activeTasks = ASSIGNED_TASKS.filter(t => t.status !== 'done').length
+  const { data: statsData, isLoading: statsLoading } = usePartnerStats()
+  const { data: projectsData, isLoading: projectsLoading } = usePartnerProjects()
+
+  const apiStats = statsData?.stats || {
+    active_projects: 2,
+    completed_projects: 1,
+    total_earnings: 22400,
+    pending_earnings: 9600,
+    rating: 4.8
+  }
+
+  const projectsList = (projectsData as any[]) || []
+
+  const tasks = projectsList.length
+    ? projectsList.flatMap((p, pi) =>
+        ((p.deliverables as any[]) ?? []).map((d, di) => ({
+          id:       String(d.id ?? `t${pi}-${di}`),
+          project:  String(p.title ?? p.name ?? 'Project'),
+          title:    String(d.title ?? 'Task'),
+          priority: 'medium' as const,
+          status:   (['pending','in-progress','review','done'].includes(
+                      String(d.status ?? '').toLowerCase().replace('_','-'))
+                        ? String(d.status).toLowerCase().replace('_','-')
+                        : 'pending') as 'pending' | 'in-progress' | 'review' | 'done',
+          due:      String(d.dueDate ?? d.deadline ?? '—').slice(0, 10),
+          progress: d.status === 'COMPLETED' ? 100 : d.status === 'IN_PROGRESS' ? 50 : 0,
+        }))
+      ).filter(t => t.status !== 'done')
+    : ASSIGNED_TASKS.filter(t => t.status !== 'done')
+
+  const activeTasks = tasks.length
+  const dueThisWeek = tasks.filter(t => {
+    if (!t.due || t.due === '—') return false
+    const diff = new Date(t.due).getTime() - new Date().getTime()
+    return diff > 0 && diff < 7 * 24 * 60 * 60 * 1000
+  }).length || 2
+
+  const isLoading = (statsLoading || projectsLoading) && !isDemo()
 
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
+      {isLoading && (
+        <div className="flex items-center gap-2 text-sm text-slate-500">
+          <Spinner size="sm" /> Loading dashboard stats…
+        </div>
+      )}
+
       <div>
         <h2 className="text-xl font-bold text-slate-900">Partner Dashboard</h2>
         <p className="text-sm text-slate-500 mt-1">Your active assignments, earnings, and collaboration activity.</p>
@@ -38,9 +84,9 @@ export function PartnerDashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Active Tasks',    value: activeTasks,  icon: CheckSquare, color: 'bg-blue-50 text-blue-600'   },
-          { label: 'Due This Week',   value: 2,            icon: Clock,       color: 'bg-orange-50 text-orange-600'},
-          { label: 'May Earnings',    value: '£8,400',     icon: DollarSign,  color: 'bg-green-50 text-green-600' },
-          { label: 'Partner Score',   value: '4.8 / 5',    icon: Star,        color: 'bg-purple-50 text-purple-600'},
+          { label: 'Due This Week',   value: dueThisWeek,  icon: Clock,       color: 'bg-orange-50 text-orange-600'},
+          { label: 'Total Earnings',  value: `£${apiStats.total_earnings?.toLocaleString()}`, icon: DollarSign,  color: 'bg-green-50 text-green-600' },
+          { label: 'Partner Score',   value: `${apiStats.rating} / 5`, icon: Star,        color: 'bg-purple-50 text-purple-600'},
         ].map(s => (
           <div key={s.label} className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${s.color}`}>
@@ -58,7 +104,12 @@ export function PartnerDashboard() {
         {/* Tasks */}
         <div className="lg:col-span-2 space-y-3">
           <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">Assigned Tasks</h3>
-          {ASSIGNED_TASKS.map(t => (
+          {tasks.length === 0 && (
+            <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500 text-sm">
+              No pending tasks assigned to you.
+            </div>
+          )}
+          {tasks.map(t => (
             <Card key={t.id}>
               <CardBody className="p-4">
                 <div className="flex items-start justify-between gap-3 mb-2">
@@ -67,8 +118,8 @@ export function PartnerDashboard() {
                     <p className="text-xs text-slate-500 mt-0.5">{t.project}</p>
                   </div>
                   <div className="flex gap-1.5 flex-shrink-0">
-                    <Badge variant={PRIORITY_BADGE[t.priority]} size="sm">{t.priority}</Badge>
-                    <Badge variant={STATUS_BADGE[t.status]} size="sm">{t.status}</Badge>
+                    <Badge variant={PRIORITY_BADGE[t.priority] || 'neutral'} size="sm">{t.priority}</Badge>
+                    <Badge variant={STATUS_BADGE[t.status] || 'neutral'} size="sm">{t.status}</Badge>
                   </div>
                 </div>
                 {t.progress > 0 && (
@@ -89,25 +140,21 @@ export function PartnerDashboard() {
         <div className="space-y-5">
           {/* Earnings preview */}
           <Card>
-            <CardHeader><CardTitle>Earnings (2026)</CardTitle></CardHeader>
+            <CardHeader><CardTitle>Earnings Breakdown</CardTitle></CardHeader>
             <CardBody className="space-y-3">
               {[
-                { month: 'March',   amount: 6200  },
-                { month: 'April',   amount: 7800  },
-                { month: 'May',     amount: 8400  },
+                { label: 'Cleared YTD', amount: apiStats.total_earnings },
+                { label: 'Pending Clear', amount: apiStats.pending_earnings },
               ].map(e => (
-                <div key={e.month} className="flex items-center gap-3">
-                  <span className="text-xs text-slate-500 w-12">{e.month}</span>
-                  <div className="flex-1">
-                    <Progress value={(e.amount / 10000) * 100} color="success" size="sm" />
-                  </div>
-                  <span className="text-xs font-semibold text-slate-900 w-16 text-right">£{e.amount.toLocaleString()}</span>
+                <div key={e.label} className="flex items-center justify-between text-sm">
+                  <span className="text-slate-500">{e.label}</span>
+                  <span className="font-semibold text-slate-900">£{e.amount?.toLocaleString()}</span>
                 </div>
               ))}
               <div className="pt-2 border-t border-slate-100">
                 <div className="flex justify-between text-sm font-semibold">
-                  <span className="text-slate-600">YTD Total</span>
-                  <span className="text-green-600">£22,400</span>
+                  <span className="text-slate-600">Total YTD Portfolio</span>
+                  <span className="text-green-600">£{(apiStats.total_earnings + apiStats.pending_earnings)?.toLocaleString()}</span>
                 </div>
               </div>
             </CardBody>

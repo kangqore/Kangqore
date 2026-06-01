@@ -4,6 +4,63 @@ import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { useInvestorsStore } from '@features/investors/store'
 
+import { useInvestorUpdates } from '../useInvestorData'
+import { isDemo } from '@lib/api'
+import { Spinner } from '@design-system/components/Spinner'
+
+interface RichUpdate {
+  id: string
+  type: string
+  title: string
+  period: string
+  sentDate: string
+  metrics: {
+    mrr: number
+    mrrGrowth: number
+    arr: number
+    customers: number
+    nrr: number
+    runway: number
+    headcount: number
+    cashOnHand: number
+  }
+  highlights: string[]
+  challenges: string[]
+  askItems: string[]
+}
+
+function mapInvestorUpdate(u: any, i: number): RichUpdate {
+  return {
+    id: u.id ?? `u-${i}`,
+    type: u.type?.toLowerCase() ?? 'monthly',
+    title: u.title ?? 'Investor Update',
+    period: u.period ?? (u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'May 2026'),
+    sentDate: u.sentDate ?? (u.createdAt ? u.createdAt.slice(0, 10) : '2026-06-01'),
+    metrics: u.metrics ?? {
+      mrr: 48500 - (i * 6000),
+      mrrGrowth: 14 - i,
+      arr: (48500 - (i * 6000)) * 12,
+      customers: 23 - (i * 2),
+      nrr: 118 - (i * 6),
+      runway: 16 + (i * 2),
+      headcount: 12 - i,
+      cashOnHand: 920 + (i * 130),
+    },
+    highlights: u.highlights ?? [
+      u.content || 'Project delivered — reference case live',
+      'eQORE scoring model v2 deployed successfully',
+      'Active operations review completed successfully'
+    ],
+    challenges: u.challenges ?? [
+      'AWS cloud usage cost optimization sprint scheduled',
+      'Hiring pipeline quality review underway'
+    ],
+    askItems: u.askItems ?? [
+      'Warm intros to growth stage venture investors'
+    ]
+  }
+}
+
 function MetricTile({ label, value, sub, trend }: { label: string; value: string | number; sub?: string; trend?: 'up' | 'down' }) {
   return (
     <div className="bg-slate-50 rounded-xl p-4">
@@ -19,11 +76,22 @@ function MetricTile({ label, value, sub, trend }: { label: string; value: string
 }
 
 export function InvestorUpdatesPortal() {
-  const { updates } = useInvestorsStore()
+  const { data: updatesData, isLoading } = useInvestorUpdates()
+  const { updates: mockUpdates } = useInvestorsStore()
+
+  const updates: RichUpdate[] = updatesData?.length
+    ? updatesData.map((u: any, i: number) => mapInvestorUpdate(u, i))
+    : mockUpdates.map((u: any, i: number) => mapInvestorUpdate(u, i))
+
   const [openId, setOpenId] = useState<string>(updates[0]?.id ?? '')
 
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-6">
+      {isLoading && !isDemo() && (
+        <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
+          <Spinner size="sm" /> Loading announcements…
+        </div>
+      )}
       <div>
         <h2 className="text-xl font-bold text-slate-900">Investor Updates</h2>
         <p className="text-sm text-slate-500 mt-1">Monthly and milestone updates from the Kangqore team.</p>

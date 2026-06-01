@@ -33,8 +33,9 @@ app = FastAPI(
 
 # CORS middleware - only allow Node.js core backend
 allowed_origins = [
-    "http://localhost:3001",  # Node.js core backend
-    os.environ.get("CORE_BACKEND_URL", "http://localhost:3001")
+    "http://localhost:5050",  # Node.js core backend (actual port)
+    "http://localhost:3001",  # legacy / docker alias
+    os.environ.get("CORE_BACKEND_URL", "http://localhost:5050"),
 ]
 
 app.add_middleware(

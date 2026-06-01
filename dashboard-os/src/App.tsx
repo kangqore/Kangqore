@@ -26,6 +26,7 @@ const MarketingModule   = lazy(() => import('@features/marketing').then(m => ({ 
 const CareersModule     = lazy(() => import('@features/careers').then(m => ({ default: m.CareersModule })))
 const AnalyticsModule   = lazy(() => import('@features/analytics').then(m => ({ default: m.AnalyticsModule })))
 const KIMMMModule       = lazy(() => import('@features/kimmp').then(m => ({ default: m.KIMMMModule })))
+const SettingsModule    = lazy(() => import('@features/settings').then(m => ({ default: m.SettingsModule })))
 
 // Portals — lazy loaded (never needed by OS users)
 const ClientPortal   = lazy(() => import('@portals/client').then(m => ({ default: m.ClientPortal })))
@@ -47,7 +48,24 @@ function PageLoader() {
   )
 }
 
+import { useEffect } from 'react'
+import { useAuthStore } from '@store/auth'
+import { connectSocket, disconnectSocket } from '@lib/socket'
+
 export default function App() {
+  const { isAuthenticated, isDemo } = useAuthStore()
+
+  useEffect(() => {
+    if (isAuthenticated && !isDemo) {
+      connectSocket()
+    } else {
+      disconnectSocket()
+    }
+    return () => {
+      disconnectSocket()
+    }
+  }, [isAuthenticated, isDemo])
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -89,6 +107,9 @@ export default function App() {
               {/* Phase 4 — Intelligence */}
               <Route path="analytics/*"   element={<AnalyticsModule />}   />
               <Route path="kimmp/*"       element={<KIMMMModule />}       />
+
+              {/* Settings */}
+              <Route path="settings/*"    element={<SettingsModule />}    />
             </Route>
 
             {/* Phase 5 — External Portals */}

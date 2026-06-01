@@ -27,15 +27,15 @@ export function PartnerEarnings() {
   const { data: earningsData } = usePartnerEarnings()
 
   // Map API invoices → payment rows; fall back to PAYMENTS mock
-  const payments = (earningsData?.invoices as Record<string, unknown>[] | undefined)?.length
-    ? (earningsData.invoices as Record<string, unknown>[]).map((inv, i) => ({
-        id:      String(inv.id ?? `PAY-${i}`),
-        period:  String(inv.issueDate ?? '').slice(0, 7),
-        amount:  Number(inv.amount ?? 0),
-        project: String((inv.project as Record<string,unknown>)?.title ?? '—'),
-        date:    String(inv.paidDate ?? inv.updatedAt ?? '').slice(0, 10),
-        status:  String(inv.status ?? 'pending').toLowerCase() === 'paid' ? 'paid' : 'pending',
-        ref:     String(inv.invoiceNumber ?? '—'),
+  const payments = (earningsData?.earnings?.transactions as Record<string, any>[] | undefined)?.length
+    ? (earningsData.earnings.transactions as Record<string, any>[]).map((tx, i) => ({
+        id:      String(tx.id ?? `PAY-${i}`),
+        period:  String(tx.date ?? '').slice(0, 7),
+        amount:  Number(tx.amount ?? 0),
+        project: String(tx.description ?? '—'),
+        date:    String(tx.date ?? '').slice(0, 10),
+        status:  String(tx.status ?? 'pending').toLowerCase() === 'paid' ? 'paid' : 'pending',
+        ref:     String(tx.id ?? '—'),
       }))
     : PAYMENTS
 
