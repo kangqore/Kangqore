@@ -8,6 +8,9 @@ interface ProjectsStore {
   sprints: typeof SPRINTS
   issues: Issue[]
   selectedProjectId: string
+  isLoading: boolean
+  error: string | null
+  hydrate: (projects: Project[]) => void
   setSelectedProject: (id: string) => void
   moveTask: (taskId: string, newStatus: TaskStatus) => void
   tasksForProject: (projectId: string) => Task[]
@@ -17,6 +20,9 @@ interface ProjectsStore {
 
 export const useProjectsStore = create<ProjectsStore>((set, get) => ({
   projects: PROJECTS,
+  isLoading: false,
+  error: null,
+  hydrate: (projects) => set({ projects, isLoading: false, error: null }),
   tasks: TASKS,
   sprints: SPRINTS,
   issues: ISSUES,

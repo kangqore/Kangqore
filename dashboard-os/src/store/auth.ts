@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import { api } from '@lib/api'
 
 export type UserRole = 'ADMIN' | 'CLIENT' | 'PARTNER' | 'INVESTOR' | 'JOB_SEEKER'
@@ -9,6 +8,8 @@ export interface AuthUser {
   name: string
   email: string
   role: UserRole
+  company?: string
+  avatarUrl?: string
 }
 
 interface AuthStore {
@@ -18,11 +19,12 @@ interface AuthStore {
   isLoading: boolean
   error: string | null
 
-  login: (email: string, password: string) => Promise<void>
-  signup: (data: SignupPayload) => Promise<void>
-  loginAsDemo: () => void
-  logout: () => void
-  clearError: () => void
+  login:       (email: string, password: string) => Promise<void>
+  signup:      (data: SignupPayload) => Promise<void>
+  loginAsDemo: (role?: UserRole) => void
+  logout:      () => void
+  clearError:  () => void
+  syncFromWebsite: () => boolean   // hydrate from website session if present
 }
 
 export interface SignupPayload {
@@ -41,57 +43,105 @@ export const ROLE_REDIRECT: Record<UserRole, string> = {
   JOB_SEEKER: '/portal/careers',
 }
 
-export const useAuthStore = create<AuthStore>()(
-  persist(
-    (set) => ({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-      isLoading: false,
-      error: null,
+// Write auth state to the same localStorage keys the frontend website uses
+// so a single login works across both apps on the same domain.
+function persistToWebsiteKeys(token: string, user: AuthUser) {
+  localStorage.setItem('token', token)
+  localStorage.setItem('user', JSON.stringify(user))
+}
 
-      login: async (email, password) => {
-        set({ isLoading: true, error: null })
-        try {
-          const { data } = await api.post<{ token: string; user: AuthUser }>('/auth/login', { email, password })
-          set({ user: data.user, token: data.token, isAuthenticated: true, isLoading: false })
-        } catch (err: unknown) {
-          const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message ?? 'Invalid credentials'
-          set({ error: msg, isLoading: false })
-          throw err
-        }
-      },
+function clearWebsiteKeys() {
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+  localStorage.removeItem('refreshToken')
+}
 
-      signup: async (payload) => {
-        set({ isLoading: true, error: null })
-        try {
-          const { data } = await api.post<{ token: string; user: AuthUser }>('/auth/signup', payload)
-          set({ user: data.user, token: data.token, isAuthenticated: true, isLoading: false })
-        } catch (err: unknown) {
-          const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message ?? 'Signup failed'
-          set({ error: msg, isLoading: false })
-          throw err
-        }
-      },
+// Read a session that was established by the website (frontend/)
+function readWebsiteSession(): { token: string; user: AuthUser } | null {
+  try {
+    const token = localStorage.getItem('token')
+    const raw   = localStorage.getItem('user')
+    if (!token || !raw) return null
+    const user  = JSON.parse(raw) as AuthUser
+    if (!user?.id || !user?.role) return null
+    return { token, user }
+  } catch {
+    return null
+  }
+}
 
-      loginAsDemo: () => set({
-        user: { id: 'demo', name: 'Mahesh Kumar', email: 'admin@kangqore.com', role: 'ADMIN' },
-        token: 'demo-token',
-        isAuthenticated: true,
-        error: null,
-      }),
+export const useAuthStore = create<AuthStore>((set, _get) => {
+  // Hydrate immediately from whatever session is present (website or own)
+  const websiteSession = readWebsiteSession()
+  const initial = websiteSession
+    ? { user: websiteSession.user, token: websiteSession.token, isAuthenticated: true }
+    : { user: null, token: null, isAuthenticated: false }
 
-      logout: () => {
-        set({ user: null, token: null, isAuthenticated: false, error: null })
-        localStorage.removeItem('kangqore-auth')
-        window.location.href = '/login'
-      },
+  return {
+    ...initial,
+    isLoading: false,
+    error: null,
 
-      clearError: () => set({ error: null }),
-    }),
-    {
-      name: 'kangqore-auth',
-      partialize: s => ({ user: s.user, token: s.token, isAuthenticated: s.isAuthenticated }),
-    }
-  )
-)
+    login: async (email, password) => {
+      set({ isLoading: true, error: null })
+      try {
+        const { data } = await api.post<{ token: string; refreshToken: string; user: AuthUser }>(
+          '/auth/login', { email, password }
+        )
+        persistToWebsiteKeys(data.token, data.user)
+        set({ user: data.user, token: data.token, isAuthenticated: true, isLoading: false })
+      } catch (err: unknown) {
+        const msg = (err as { response?: { data?: { message?: string } } })
+          ?.response?.data?.message ?? 'Invalid credentials'
+        set({ error: msg, isLoading: false })
+        throw err
+      }
+    },
+
+    signup: async (payload) => {
+      set({ isLoading: true, error: null })
+      try {
+        const { data } = await api.post<{ token: string; refreshToken: string; user: AuthUser }>(
+          '/auth/register', payload
+        )
+        persistToWebsiteKeys(data.token, data.user)
+        set({ user: data.user, token: data.token, isAuthenticated: true, isLoading: false })
+      } catch (err: unknown) {
+        const msg = (err as { response?: { data?: { message?: string } } })
+          ?.response?.data?.message ?? 'Signup failed'
+        set({ error: msg, isLoading: false })
+        throw err
+      }
+    },
+
+    loginAsDemo: (role: UserRole = 'ADMIN') => {
+      const demoUsers: Record<UserRole, AuthUser> = {
+        ADMIN:      { id: 'demo-admin',    name: 'Mahesh Kumar',  email: 'admin@kangqore.com',    role: 'ADMIN'      },
+        CLIENT:     { id: 'demo-client',   name: 'Dr. Priya Rao', email: 'priya@synapsehealth.com',role: 'CLIENT'     },
+        PARTNER:    { id: 'demo-partner',  name: 'Dev Patel',     email: 'dev@kangqore.com',       role: 'PARTNER'    },
+        INVESTOR:   { id: 'demo-investor', name: 'James Whitfield',email:'james@whitfieldvc.com',  role: 'INVESTOR'   },
+        JOB_SEEKER: { id: 'demo-job',      name: 'Mia Johansson', email: 'mia.j@outlook.com',      role: 'JOB_SEEKER' },
+      }
+      const user = demoUsers[role]
+      persistToWebsiteKeys('demo-token', user)
+      set({ user, token: 'demo-token', isAuthenticated: true, error: null })
+    },
+
+    logout: () => {
+      clearWebsiteKeys()
+      set({ user: null, token: null, isAuthenticated: false, error: null })
+      window.location.href = '/login'
+    },
+
+    clearError: () => set({ error: null }),
+
+    syncFromWebsite: () => {
+      const session = readWebsiteSession()
+      if (session) {
+        set({ user: session.user, token: session.token, isAuthenticated: true })
+        return true
+      }
+      return false
+    },
+  }
+})

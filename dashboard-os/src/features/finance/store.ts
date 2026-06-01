@@ -1,12 +1,15 @@
 import { create } from 'zustand'
 import { INVOICES, BUDGET_LINES, CASH_FLOW, PROJECT_FINANCIALS } from './data'
-import type { InvoiceStatus } from './types'
+import type { Invoice, InvoiceStatus } from './types'
 
 interface FinanceStore {
   invoices:          typeof INVOICES
   budgetLines:       typeof BUDGET_LINES
   cashFlow:          typeof CASH_FLOW
   projectFinancials: typeof PROJECT_FINANCIALS
+  isLoading:         boolean
+  error:             string | null
+  hydrateInvoices:   (invoices: Invoice[]) => void
   invoicesByStatus:  (status: InvoiceStatus) => typeof INVOICES
   totalInvoiced:     () => number
   totalCollected:    () => number
@@ -15,8 +18,11 @@ interface FinanceStore {
   totalSpent:        () => number
 }
 
-export const useFinanceStore = create<FinanceStore>((_, get) => ({
+export const useFinanceStore = create<FinanceStore>((set, get) => ({
   invoices:          INVOICES,
+  isLoading:         false,
+  error:             null,
+  hydrateInvoices:   (invoices) => set({ invoices, isLoading: false, error: null }),
   budgetLines:       BUDGET_LINES,
   cashFlow:          CASH_FLOW,
   projectFinancials: PROJECT_FINANCIALS,

@@ -3,12 +3,15 @@ import { LEADS, EQORE_SIGNALS, ACTIVITIES, NURTURE_SEQUENCES } from './data'
 import type { LeadStage } from './types'
 
 interface LeadsStore {
-  leads:           typeof LEADS
-  signals:         typeof EQORE_SIGNALS
-  activities:      typeof ACTIVITIES
-  nurtureSequences:typeof NURTURE_SEQUENCES
-  selectedId:      string
-  setSelected:     (id: string) => void
+  leads:            typeof LEADS
+  signals:          typeof EQORE_SIGNALS
+  activities:       typeof ACTIVITIES
+  nurtureSequences: typeof NURTURE_SEQUENCES
+  selectedId:       string
+  isLoading:        boolean
+  error:            string | null
+  hydrate:          (leads: typeof LEADS) => void
+  setSelected:      (id: string) => void
   moveLeadStage:   (leadId: string, stage: LeadStage) => void
   leadSignals:     (id: string) => typeof EQORE_SIGNALS
   leadActivities:  (id: string) => typeof ACTIVITIES
@@ -23,6 +26,9 @@ export const useLeadsStore = create<LeadsStore>((set, get) => ({
   activities:       ACTIVITIES,
   nurtureSequences: NURTURE_SEQUENCES,
   selectedId:       'l1',
+  isLoading:        false,
+  error:            null,
+  hydrate:          (leads) => set({ leads, isLoading: false, error: null }),
 
   setSelected:    (id) => set({ selectedId: id }),
   moveLeadStage:  (leadId, stage) =>

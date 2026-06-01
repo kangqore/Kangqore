@@ -1,6 +1,11 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { LayoutDashboard, FileText, PieChart, TrendingDown } from 'lucide-react'
 import { cn } from '@design-system/cn'
+import { api } from '@lib/api'
+import { toInvoices } from '@lib/transforms'
+import { useFinanceStore } from './store'
 import { FinanceOverview } from './pages/FinanceOverview'
 import { InvoicesPage }   from './pages/InvoicesPage'
 import { BudgetTracker }  from './pages/BudgetTracker'
@@ -14,6 +19,14 @@ const TABS = [
 ]
 
 export function FinanceModule() {
+  const { hydrateInvoices } = useFinanceStore()
+  const { data } = useQuery({
+    queryKey: ['invoices'],
+    queryFn: () => api.get('/invoices').then(r => r.data.invoices ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
+  useEffect(() => { if (data) hydrateInvoices(toInvoices(data)) }, [data, hydrateInvoices])
+
   return (
     <div>
       <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
