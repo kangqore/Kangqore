@@ -263,9 +263,9 @@ const ConciergeSection = () => {
               <Link
                 to="/eqore-ai"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-white/60 hover:text-white px-3 py-2 rounded-xl bg-white/10 border border-white/10 transition-all"
-                title="Launch Standalone Full-Screen Console"
+                title="Launch Immersive Full-Screen AI Experience"
               >
-                <ExternalLink className="w-3.5 h-3.5 text-cyan-400" /> Launch Console
+                <ExternalLink className="w-3.5 h-3.5 text-cyan-400" /> Immersive AI Experience
               </Link>
               <button
                 type="button"
