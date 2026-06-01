@@ -57,6 +57,34 @@ function clearWebsiteKeys() {
   localStorage.removeItem('refreshToken')
 }
 
+/**
+ * Dev cross-port auth handoff.
+ *
+ * In production (same Nginx origin) localStorage is shared — nothing to do.
+ * In dev, DashboardRedirect.jsx threads token + user through the URL hash:
+ *   #_t=<token>&_u=<json-user>
+ *
+ * We read it once, write to localStorage, then strip the hash from the URL
+ * so it never appears in the browser history or gets shared accidentally.
+ */
+function consumeAuthHash(): void {
+  try {
+    if (!window.location.hash.startsWith('#_t=')) return
+    const params = new URLSearchParams(window.location.hash.slice(1))
+    const token  = params.get('_t')
+    const rawUser = params.get('_u')
+    if (!token || !rawUser) return
+    const user = JSON.parse(rawUser) as AuthUser
+    if (!user?.id || !user?.role) return
+    localStorage.setItem('token', token)
+    localStorage.setItem('user', rawUser)
+    // Strip hash without adding a history entry
+    window.history.replaceState(null, '', window.location.pathname + window.location.search)
+  } catch {
+    // Malformed hash — ignore silently
+  }
+}
+
 // Read a session that was established by the website (frontend/)
 function readWebsiteSession(): { token: string; user: AuthUser } | null {
   try {
@@ -72,7 +100,9 @@ function readWebsiteSession(): { token: string; user: AuthUser } | null {
 }
 
 export const useAuthStore = create<AuthStore>((set, _get) => {
-  // Hydrate immediately from whatever session is present (website or own)
+  // In dev: consume forwarded auth from URL hash before reading localStorage
+  consumeAuthHash()
+  // Hydrate from whatever session is now present (hash-forwarded, website, or own)
   const websiteSession = readWebsiteSession()
   const initial = websiteSession
     ? { user: websiteSession.user, token: websiteSession.token, isAuthenticated: true, isDemo: websiteSession.token === DEMO_TOKEN }
