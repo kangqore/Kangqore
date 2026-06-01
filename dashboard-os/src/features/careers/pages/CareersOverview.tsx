@@ -1,4 +1,5 @@
 import { GraduationCap, Users, Clock, CheckCircle2 } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { StatCard } from '@design-system/components/StatCard'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
@@ -31,6 +32,7 @@ export function CareersOverview() {
 
   return (
     <div className="space-y-8">
+      <KIMMPSignalBar module="Careers" />
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Open Roles"   value={openRoles.length}                              icon={<GraduationCap className="w-5 h-5" />} changeLabel={`${roles.filter(r => r.status === 'on-hold').length} on hold`} />
         <StatCard label="Applications" value={totalApps}                                     icon={<Users         className="w-5 h-5" />} changeLabel="All open roles" />

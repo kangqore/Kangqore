@@ -2,6 +2,7 @@ import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis,
   CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
 } from 'recharts'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { DollarSign, TrendingUp, AlertCircle, Wallet } from 'lucide-react'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
 import { StatCard } from '@design-system/components/StatCard'
@@ -36,6 +37,7 @@ export function FinanceOverview() {
 
   return (
     <div className="space-y-6">
+      <KIMMPSignalBar module="Finance" />
       <div>
         <h2 className="text-xl font-bold text-slate-900">Financial Overview</h2>
         <p className="text-sm text-slate-500 mt-0.5">Cash position · {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</p>
