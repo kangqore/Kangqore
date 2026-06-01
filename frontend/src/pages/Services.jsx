@@ -362,7 +362,7 @@ const Services = () => {
 
           {/* Content Layer */}
           <div className="relative z-[2] min-h-[calc(100vh-1rem)] flex flex-col justify-center">
-            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full pt-[1cm]">
+            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full pt-[2cm]">
               <div className="grid lg:grid-cols-12 gap-12 items-center">
                 
                 {/* Left Content */}
