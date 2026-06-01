@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, AlertTriangle, Users, DollarSign, Star } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card } from '@design-system/components/Card'
 import { StatCard } from '@design-system/components/StatCard'
 import { Badge } from '@design-system/components/Badge'
@@ -45,6 +46,7 @@ export function ClientsOverview() {
 
   return (
     <div className="space-y-6">
+      <KIMMPSignalBar module="Clients" />
       <div>
         <h2 className="text-xl font-bold text-slate-900">Clients</h2>
         <p className="text-sm text-slate-500 mt-0.5">{clients.length} clients · {activeCount} active</p>

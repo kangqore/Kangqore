@@ -1,5 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { Briefcase, CheckCircle2, AlertTriangle, Clock } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
 import { StatCard } from '@design-system/components/StatCard'
 import { Badge } from '@design-system/components/Badge'
@@ -35,6 +36,7 @@ export function ProjectsOverview() {
 
   return (
     <div className="space-y-6">
+      <KIMMPSignalBar module="Projects" />
       <div>
         <h2 className="text-xl font-bold text-slate-900">Projects</h2>
         <p className="text-sm text-slate-500 mt-0.5">{projects.length} projects · {tasks.length} tasks tracked</p>

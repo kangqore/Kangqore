@@ -68,7 +68,7 @@ export function PartnerDashboard() {
   const isLoading = (statsLoading || projectsLoading) && !isDemo()
 
   return (
-    <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
+    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
       {isLoading && (
         <div className="flex items-center gap-2 text-sm text-slate-500">
           <Spinner size="sm" /> Loading dashboard stats…
@@ -103,15 +103,15 @@ export function PartnerDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Tasks */}
         <div className="lg:col-span-2 space-y-3">
-          <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">Assigned Tasks</h3>
+          <h3 className="text-base font-semibold text-slate-900">Assigned Tasks</h3>
           {tasks.length === 0 && (
             <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500 text-sm">
               No pending tasks assigned to you.
             </div>
           )}
           {tasks.map(t => (
-            <Card key={t.id}>
-              <CardBody className="p-4">
+            <Card key={t.id} padding="none">
+              <CardBody className="p-5">
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-slate-900 truncate">{t.title}</p>

@@ -14,21 +14,23 @@ const TABS = [
 
 export function InvestorPortal() {
   return (
-    <div className="flex flex-col h-screen bg-[#f8f9fb] overflow-hidden">
+    <div className="flex flex-col h-screen bg-slate-100">
       <PortalNavbar
         portalName="Investor Portal"
         portalColor="bg-gradient-to-br from-[#7c3aed] to-[#a78bfa]"
         tabs={TABS}
         basePath="/portal/investor"
       />
+      <div className="flex-1 overflow-y-auto min-h-0">
       <ModuleShell>
       <Routes>
         <Route index           element={<InvestorHome />}          />
-        <Route path="updates"  element={<div className="flex-1 overflow-y-auto"><InvestorUpdatesPortal /></div>} />
-        <Route path="captable" element={<div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8"><CapTablePage /></div>} />
+        <Route path="updates"  element={<InvestorUpdatesPortal />} />
+        <Route path="captable" element={<div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto"><CapTablePage /></div>} />
         <Route path="*"        element={<Navigate to="/portal/investor" replace />} />
       </Routes>
       </ModuleShell>
+      </div>
     </div>
   )
 }

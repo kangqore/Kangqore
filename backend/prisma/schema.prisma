@@ -104,6 +104,9 @@ model User {
   hostedEvents          ScheduledEvent[]       @relation("EventHost")
   ownedSchedulingLinks  SchedulingLink[]       @relation("OwnedSchedulingLinks")
   calendarIntegrations  CalendarIntegration[]
+  zoomIntegration       ZoomIntegration?
+  crmIntegrations       CRMIntegration[]
+  customDomains         CustomDomain[]
   EventTypeTeamMember   EventTypeTeamMember[]
 
   @@map("users")
@@ -1917,6 +1920,7 @@ model EventType {
   isPublic              Boolean                @default(true)
   location              String?
   locationType          String                 @default("VIDEO")
+  videoProvider         String                 @default("JITSI")
   requirePhone          Boolean                @default(false)
   requireCompany        Boolean                @default(false)
   customQuestions       Json?
@@ -1970,9 +1974,12 @@ model EmailTemplate {
 
 model Webhook {
   id          String   @id @default(cuid())
+  userId      String?  // owner (null = legacy event-type-scoped)
   eventTypeId String?
   url         String
   secret      String?
+  events      Json?    // string[] — e.g. ["booking.created"]. null = all events
+  description String?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -1981,6 +1988,7 @@ model Webhook {
   deliveries WebhookDelivery[]
 
   @@index([eventTypeId])
+  @@index([userId])
   @@map("webhooks")
 }
 
@@ -2886,6 +2894,56 @@ model CalendarIntegration {
   @@unique([userId, provider, accountId])
   @@index([userId])
   @@map("calendar_integrations")
+}
+
+model ZoomIntegration {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  accountId    String
+  accessToken  String
+  refreshToken String
+  expiresAt    DateTime
+  syncStatus   String   @default("ACTIVE")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("zoom_integrations")
+}
+
+model CRMIntegration {
+  id           String   @id @default(uuid())
+  userId       String
+  provider     String   // "hubspot" | "salesforce"
+  accountId    String
+  accessToken  String
+  refreshToken String
+  expiresAt    DateTime
+  syncStatus   String   @default("ACTIVE")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, provider])
+  @@index([userId])
+  @@map("crm_integrations")
+}
+
+model CustomDomain {
+  id             String    @id @default(uuid())
+  userId         String
+  domain         String    @unique // e.g. "book.acme.com"
+  verifiedAt     DateTime?
+  status         String    @default("PENDING") // PENDING | VERIFIED | ERROR
+  verifyToken    String    @unique             // TXT record value for DNS verification
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([domain])
+  @@map("custom_domains")
 }
 
 enum AssignmentStrategy {

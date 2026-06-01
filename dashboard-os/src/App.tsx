@@ -49,25 +49,40 @@ function PageLoader() {
 }
 
 import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useAuthStore } from '@store/auth'
+import { useKIMMPStore, toInsight } from '@store/kimmp'
 import { connectSocket, disconnectSocket } from '@lib/socket'
+import { api, isDemo } from '@lib/api'
 
-export default function App() {
-  const { isAuthenticated, isDemo } = useAuthStore()
+// Inner component — lives inside QueryClientProvider so useQuery is valid here
+function AppInner() {
+  const { isAuthenticated } = useAuthStore()
+  const setInsights = useKIMMPStore(s => s.setInsights)
+
+  // Global KIMMP signal fetch — runs once on login, feeds the whole OS
+  const { data: kimmpData } = useQuery({
+    queryKey: ['kimmp-global'],
+    queryFn: () => api.get('/dashboard/insights', { params: { limit: 50 } })
+      .then(r => (r.data.insights ?? r.data ?? []) as Record<string, unknown>[]),
+    enabled: isAuthenticated && !isDemo(),
+    staleTime: 1000 * 60 * 5,
+  })
 
   useEffect(() => {
-    if (isAuthenticated && !isDemo) {
+    if (kimmpData?.length) setInsights(kimmpData.map((r, i) => toInsight(r, i)))
+  }, [kimmpData, setInsights])
+
+  useEffect(() => {
+    if (isAuthenticated && !isDemo()) {
       connectSocket()
     } else {
       disconnectSocket()
     }
-    return () => {
-      disconnectSocket()
-    }
-  }, [isAuthenticated, isDemo])
+    return () => { disconnectSocket() }
+  }, [isAuthenticated])
 
   return (
-    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -84,7 +99,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Navigate to="/os/strategy" replace />} />
+              <Route index element={<Navigate to="/os/kimmp" replace />} />
 
               {/* Phase 1 — Core Operations */}
               <Route path="strategy/*"    element={<StrategyModule />}    />
@@ -153,6 +168,13 @@ export default function App() {
         </Suspense>
         <Toaster position="top-right" />
       </BrowserRouter>
+  )
+}
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppInner />
     </QueryClientProvider>
   )
 }

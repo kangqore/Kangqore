@@ -19,6 +19,13 @@ export interface NavGroup {
 
 export const navGroups: NavGroup[] = [
   {
+    label: 'INTELLIGENCE',
+    items: [
+      { id: 'kimmp',       label: 'KIMMP',        icon: Brain,           path: '/os/kimmp'       },
+      { id: 'analytics',   label: 'Analytics',   icon: BarChart3,       path: '/os/analytics'   },
+    ],
+  },
+  {
     label: 'CORE',
     items: [
       { id: 'strategy',    label: 'Strategy',    icon: Target,          path: '/os/strategy'    },
@@ -43,13 +50,6 @@ export const navGroups: NavGroup[] = [
       { id: 'marketing',   label: 'Marketing',   icon: Megaphone,       path: '/os/marketing'   },
       { id: 'workflows',   label: 'Workflows',   icon: GitBranch,       path: '/os/workflows'   },
       { id: 'departments', label: 'Departments', icon: Building2,       path: '/os/departments' },
-    ],
-  },
-  {
-    label: 'INTELLIGENCE',
-    items: [
-      { id: 'analytics',   label: 'Analytics',   icon: BarChart3,       path: '/os/analytics'   },
-      { id: 'kimmp',       label: 'KIMMP',        icon: Brain,           path: '/os/kimmp'       },
     ],
   },
   {

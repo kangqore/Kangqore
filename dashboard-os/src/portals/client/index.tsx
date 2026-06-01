@@ -16,13 +16,14 @@ const TABS = [
 
 export function ClientPortal() {
   return (
-    <div className="flex flex-col h-screen bg-[#f8f9fb] overflow-hidden">
+    <div className="flex flex-col h-screen bg-slate-100">
       <PortalNavbar
         portalName="Client Portal"
         portalColor="bg-gradient-to-br from-[#2564ea] to-[#4ab6d4]"
         tabs={TABS}
         basePath="/portal/client"
       />
+      <div className="flex-1 overflow-y-auto min-h-0">
       <ModuleShell>
       <Routes>
         <Route index           element={<ClientDashboard />} />
@@ -32,6 +33,7 @@ export function ClientPortal() {
         <Route path="*"        element={<Navigate to="/portal/client" replace />} />
       </Routes>
       </ModuleShell>
+      </div>
     </div>
   )
 }

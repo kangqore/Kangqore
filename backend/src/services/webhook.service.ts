@@ -33,6 +33,10 @@ export class WebhookService {
 
     // Dispatch asynchronously (don't block the caller)
     for (const webhook of webhooks) {
+      // If the webhook declares an events filter, respect it
+      const allowedEvents = (webhook as any).events as string[] | null;
+      if (allowedEvents && allowedEvents.length > 0 && !allowedEvents.includes(eventName)) continue;
+
       this.sendWebhook(webhook, payload).catch(err => {
         console.error(`Failed to send webhook ${webhook.id}:`, err);
       });

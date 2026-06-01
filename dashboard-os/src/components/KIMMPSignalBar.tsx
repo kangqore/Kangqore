@@ -1,0 +1,156 @@
+import { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Brain, AlertTriangle, TrendingUp, Lightbulb, Zap, Target, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react'
+import { cn } from '@design-system/cn'
+import { useKIMMPStore, type Insight, type InsightCategory } from '@store/kimmp'
+
+const PRIORITY_ORDER: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 }
+
+interface KIMMPSignalBarProps {
+  module: string
+  className?: string
+}
+
+const CATEGORY_ICON: Record<InsightCategory, React.FC<{ className?: string }>> = {
+  revenue:     ({ className }) => <TrendingUp    className={className} />,
+  risk:        ({ className }) => <AlertTriangle className={className} />,
+  opportunity: ({ className }) => <Lightbulb     className={className} />,
+  ops:         ({ className }) => <Zap           className={className} />,
+  talent:      ({ className }) => <Target        className={className} />,
+}
+
+const PRIORITY_STYLES: Record<string, string> = {
+  critical: 'border-red-200 bg-red-50',
+  high:     'border-orange-200 bg-orange-50',
+  medium:   'border-blue-200 bg-blue-50',
+  low:      'border-slate-200 bg-slate-50',
+}
+
+const PRIORITY_ICON_COLOR: Record<string, string> = {
+  critical: 'text-red-500',
+  high:     'text-orange-500',
+  medium:   'text-blue-500',
+  low:      'text-slate-400',
+}
+
+const PRIORITY_BADGE: Record<string, string> = {
+  critical: 'bg-red-100 text-red-700',
+  high:     'bg-orange-100 text-orange-700',
+  medium:   'bg-blue-100 text-blue-700',
+  low:      'bg-slate-100 text-slate-600',
+}
+
+function SignalRow({ insight, expanded }: { insight: Insight; expanded: boolean }) {
+  const CategoryIcon = CATEGORY_ICON[insight.category]
+  return (
+    <div className={cn(
+      'rounded-xl border px-4 py-3 transition-all duration-200',
+      PRIORITY_STYLES[insight.priority]
+    )}>
+      <div className="flex items-start gap-3">
+        <CategoryIcon className={cn('w-4 h-4 mt-0.5 flex-shrink-0', PRIORITY_ICON_COLOR[insight.priority])} />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-sm font-semibold text-slate-900 leading-tight">{insight.title}</span>
+            <span className={cn('text-[10px] font-semibold px-1.5 py-0.5 rounded-md uppercase tracking-wide', PRIORITY_BADGE[insight.priority])}>
+              {insight.priority}
+            </span>
+            <span className="text-xs text-slate-400">{insight.confidence}% confidence</span>
+            <span className="text-xs font-semibold text-slate-600 ml-auto">{insight.impact}</span>
+          </div>
+          <p className="text-xs text-slate-600 mt-1 leading-relaxed">{insight.summary}</p>
+          {expanded && (
+            <div className="mt-2 pt-2 border-t border-current/10 space-y-1.5">
+              <p className="text-xs text-slate-700 leading-relaxed">{insight.detail}</p>
+              <div className="flex items-start gap-1.5 mt-1.5">
+                <ArrowRight className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" />
+                <p className="text-xs font-semibold text-blue-800">{insight.action}</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function KIMMPSignalBar({ module, className }: KIMMPSignalBarProps) {
+  const [expanded, setExpanded] = useState(false)
+  const [detailExpanded, setDetailExpanded] = useState(false)
+  const navigate = useNavigate()
+  const allInsights = useKIMMPStore(s => s.insights)
+  const signals = useMemo(
+    () => allInsights
+      .filter(i => i.module.toLowerCase() === module.toLowerCase())
+      .sort((a, b) => (PRIORITY_ORDER[a.priority] ?? 9) - (PRIORITY_ORDER[b.priority] ?? 9)),
+    [allInsights, module]
+  )
+
+  if (signals.length === 0) return null
+
+  const topSignal = signals[0]
+  const hasCritical = signals.some(s => s.priority === 'critical')
+  const rest = signals.slice(1)
+
+  return (
+    <div className={cn('mb-6', className)}>
+      {/* Header bar */}
+      <div className={cn(
+        'flex items-center gap-2.5 px-4 py-2.5 rounded-t-xl border-b-0',
+        hasCritical
+          ? 'bg-gradient-to-r from-red-950/80 to-purple-950/80 border border-red-800/40'
+          : 'bg-gradient-to-r from-purple-950/80 to-blue-950/80 border border-purple-800/40',
+        expanded ? 'rounded-t-xl' : 'rounded-xl'
+      )}>
+        <div className="flex items-center gap-2 flex-1">
+          <Brain className="w-3.5 h-3.5 text-purple-400 flex-shrink-0" />
+          <span className="text-xs font-semibold text-purple-200">KIMMP</span>
+          {hasCritical && (
+            <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
+          )}
+          <span className="text-xs text-slate-400">
+            {signals.length} signal{signals.length !== 1 ? 's' : ''} for {module}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/os/kimmp')}
+            className="text-[10px] text-purple-300 hover:text-purple-100 font-medium transition-colors"
+          >
+            View all →
+          </button>
+          <button
+            onClick={() => setExpanded(e => !e)}
+            className="text-slate-400 hover:text-slate-200 transition-colors"
+          >
+            {expanded
+              ? <ChevronUp className="w-3.5 h-3.5" />
+              : <ChevronDown className="w-3.5 h-3.5" />
+            }
+          </button>
+        </div>
+      </div>
+
+      {/* Signal content */}
+      {expanded && (
+        <div className={cn(
+          'border border-t-0 rounded-b-xl p-3 space-y-2',
+          hasCritical ? 'border-red-800/40 bg-red-950/20' : 'border-purple-800/40 bg-purple-950/20'
+        )}>
+          <SignalRow insight={topSignal} expanded={detailExpanded} />
+          {rest.length > 0 && detailExpanded && rest.map(s => (
+            <SignalRow key={s.id} insight={s} expanded={false} />
+          ))}
+          <div className="flex items-center gap-3 pt-1">
+            <button
+              onClick={() => setDetailExpanded(d => !d)}
+              className="text-xs text-purple-300 hover:text-purple-100 font-medium transition-colors"
+            >
+              {detailExpanded ? 'Show less' : `Show detail${rest.length > 0 ? ` + ${rest.length} more` : ''}`}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

@@ -4,9 +4,11 @@ import { cn } from '@design-system/cn'
 import { Tooltip } from '@design-system/components/Tooltip'
 import { navGroups } from '@lib/nav'
 import { useUIStore } from '@store/ui'
+import { useKIMMPStore } from '@store/kimmp'
 
 export function Sidebar() {
   const { sidebarCollapsed, toggleSidebar } = useUIStore()
+  const criticalCount = useKIMMPStore(s => s.criticalCount())
 
   return (
     <aside
@@ -50,14 +52,28 @@ export function Sidebar() {
                     className={({ isActive }) => cn(
                       'flex items-center gap-3 rounded-xl transition-all duration-150 group relative',
                       sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-9 px-3',
-                      isActive
-                        ? 'bg-blue-950/60 text-white before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-5 before:w-0.5 before:rounded-r before:bg-[#2564ea]'
-                        : 'text-slate-400 hover:bg-[#1a1d26] hover:text-slate-200'
+                      item.id === 'kimmp' && !isActive
+                        ? 'text-purple-400 hover:bg-purple-950/40 hover:text-purple-200'
+                        : isActive
+                          ? 'bg-blue-950/60 text-white before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-5 before:w-0.5 before:rounded-r before:bg-[#2564ea]'
+                          : 'text-slate-400 hover:bg-[#1a1d26] hover:text-slate-200'
                     )}
                   >
                     <Icon className={cn('flex-shrink-0 transition-transform group-hover:scale-105', sidebarCollapsed ? 'w-5 h-5' : 'w-4 h-4')} />
                     {!sidebarCollapsed && (
-                      <span className="text-sm font-medium truncate">{item.label}</span>
+                      <>
+                        <span className="text-sm font-medium truncate flex-1">{item.label}</span>
+                        {item.id === 'kimmp' && criticalCount > 0 && (
+                          <span className="flex-shrink-0 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+                            {criticalCount}
+                          </span>
+                        )}
+                      </>
+                    )}
+                    {sidebarCollapsed && item.id === 'kimmp' && criticalCount > 0 && (
+                      <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
+                        {criticalCount}
+                      </span>
                     )}
                   </NavLink>
                 )

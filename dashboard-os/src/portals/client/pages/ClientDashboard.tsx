@@ -53,7 +53,7 @@ export function ClientDashboard() {
     ? (actionsData.deliverables?.length ?? 0) + (actionsData.decisions?.length ?? 0)
     : 0
   return (
-    <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
+    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
       {/* Welcome */}
       <div>
         <h2 className="text-xl font-bold text-slate-900">
@@ -91,10 +91,10 @@ export function ClientDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Active projects */}
         <div className="lg:col-span-2 space-y-4">
-          <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">Active Projects</h3>
+          <h3 className="text-base font-semibold text-slate-900">Active Projects</h3>
           {projects.map(p => (
-            <Card key={p.id}>
-              <CardBody className="p-5">
+            <Card key={p.id} padding="none">
+              <CardBody className="p-6">
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div>
                     <p className="font-semibold text-slate-900">{p.name}</p>

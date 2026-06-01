@@ -87,7 +87,7 @@ export function InvestorHome() {
   const isLoading = (statsLoading || updatesLoading) && !isDemo()
 
   return (
-    <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
+    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
       {isLoading && (
         <div className="flex items-center gap-2 text-sm text-slate-500">
           <Spinner size="sm" /> Loading investor data…
@@ -102,15 +102,15 @@ export function InvestorHome() {
       {/* KPI stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'MRR',          value: `£${(m.mrr / 1000).toFixed(1)}k`,     sub: `+${m.mrrGrowth}% MoM`,       color: 'bg-blue-50 text-blue-600'   },
-          { label: 'ARR',          value: `£${(m.arr / 1000).toFixed(0)}k`,     sub: 'Annualised',                  color: 'bg-green-50 text-green-600' },
-          { label: 'NRR',          value: `${m.nrr}%`,                           sub: 'Net Revenue Retention',       color: 'bg-purple-50 text-purple-600'},
-          { label: 'Runway',       value: `${m.runway} mo`,                      sub: `£${m.cashOnHand}k cash`,      color: 'bg-orange-50 text-orange-600'},
+          { label: 'MRR',    value: `£${(m.mrr / 1000).toFixed(1)}k`, sub: `+${m.mrrGrowth}% MoM`,  bg: 'bg-blue-50',   text: 'text-blue-700'   },
+          { label: 'ARR',    value: `£${(m.arr / 1000).toFixed(0)}k`, sub: 'Annualised',             bg: 'bg-green-50',  text: 'text-green-700'  },
+          { label: 'NRR',    value: `${m.nrr}%`,                       sub: 'Net Revenue Retention',  bg: 'bg-purple-50', text: 'text-purple-700' },
+          { label: 'Runway', value: `${m.runway} mo`,                   sub: `£${m.cashOnHand}k cash`, bg: 'bg-orange-50', text: 'text-orange-700' },
         ].map(s => (
-          <div key={s.label} className={`rounded-xl p-5 ${s.color.split(' ')[1]}`}>
-            <p className="text-xs font-medium text-slate-600 mb-1">{s.label}</p>
-            <p className={`text-2xl font-bold ${s.color.split(' ')[0]}`}>{s.value}</p>
-            <p className="text-xs text-slate-500 mt-1">{s.sub}</p>
+          <div key={s.label} className={`rounded-xl border border-white/60 p-6 ${s.bg}`}>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">{s.label}</p>
+            <p className={`text-3xl font-bold ${s.text}`}>{s.value}</p>
+            <p className="text-xs text-slate-500 mt-1.5">{s.sub}</p>
           </div>
         ))}
       </div>

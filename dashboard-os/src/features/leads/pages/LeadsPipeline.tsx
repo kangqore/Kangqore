@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import {
   DndContext, DragOverlay, closestCorners,
   PointerSensor, useSensor, useSensors,
@@ -108,6 +109,7 @@ export function LeadsPipeline() {
 
   return (
     <div className="space-y-5">
+      <KIMMPSignalBar module="Leads" />
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-xl font-bold text-slate-900">Lead Pipeline</h2>

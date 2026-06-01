@@ -86,7 +86,7 @@ export function InvestorUpdatesPortal() {
   const [openId, setOpenId] = useState<string>(updates[0]?.id ?? '')
 
   return (
-    <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-6">
+    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-6">
       {isLoading && !isDemo() && (
         <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
           <Spinner size="sm" /> Loading announcements…
