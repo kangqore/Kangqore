@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { prisma } from '../lib/prisma';
 import logger from '../utils/logger';
 
@@ -23,37 +24,24 @@ export class SalesforceService {
       `${process.env.BACKEND_URL || 'http://localhost:5050'}/api/scheduling/crm/salesforce/callback`;
     const sfBase = process.env.SALESFORCE_BASE_URL || 'https://login.salesforce.com';
 
-    const res = await fetch(`${sfBase}/services/oauth2/token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
+    const { data: tokens } = await axios.post(
+      `${sfBase}/services/oauth2/token`,
+      new URLSearchParams({
         grant_type: 'authorization_code',
         client_id: process.env.SALESFORCE_CLIENT_ID || '',
         client_secret: process.env.SALESFORCE_CLIENT_SECRET || '',
         redirect_uri: redirectUri,
         code
-      })
-    });
+      }).toString(),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
 
-    if (!res.ok) throw new Error(`Salesforce token exchange failed: ${await res.text()}`);
-    const tokens = await res.json() as any;
-    const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000); // SF tokens last ~2h
+    const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000);
 
     await prisma.cRMIntegration.upsert({
       where: { userId_provider: { userId, provider: 'salesforce' } },
-      create: {
-        userId, provider: 'salesforce',
-        accountId: tokens.instance_url || '',
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token || '',
-        expiresAt, syncStatus: 'ACTIVE'
-      },
-      update: {
-        accountId: tokens.instance_url || '',
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token || '',
-        expiresAt, syncStatus: 'ACTIVE'
-      }
+      create: { userId, provider: 'salesforce', accountId: tokens.instance_url || '', accessToken: tokens.access_token, refreshToken: tokens.refresh_token || '', expiresAt, syncStatus: 'ACTIVE' },
+      update: { accountId: tokens.instance_url || '', accessToken: tokens.access_token, refreshToken: tokens.refresh_token || '', expiresAt, syncStatus: 'ACTIVE' }
     });
 
     return tokens.instance_url;
@@ -69,32 +57,31 @@ export class SalesforceService {
       return { token: integration.accessToken, instanceUrl: integration.accountId };
     }
 
-    // Refresh
     const sfBase = process.env.SALESFORCE_BASE_URL || 'https://login.salesforce.com';
-    const res = await fetch(`${sfBase}/services/oauth2/token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        client_id: process.env.SALESFORCE_CLIENT_ID || '',
-        client_secret: process.env.SALESFORCE_CLIENT_SECRET || '',
-        refresh_token: integration.refreshToken
-      })
-    });
-    if (!res.ok) {
+    try {
+      const { data: tokens } = await axios.post(
+        `${sfBase}/services/oauth2/token`,
+        new URLSearchParams({
+          grant_type: 'refresh_token',
+          client_id: process.env.SALESFORCE_CLIENT_ID || '',
+          client_secret: process.env.SALESFORCE_CLIENT_SECRET || '',
+          refresh_token: integration.refreshToken
+        }).toString(),
+        { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+      );
+      const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000);
+      await prisma.cRMIntegration.update({
+        where: { userId_provider: { userId, provider: 'salesforce' } },
+        data: { accessToken: tokens.access_token, expiresAt }
+      });
+      return { token: tokens.access_token, instanceUrl: integration.accountId };
+    } catch {
       await prisma.cRMIntegration.update({
         where: { userId_provider: { userId, provider: 'salesforce' } },
         data: { syncStatus: 'ERROR' }
       });
       throw new Error('Salesforce token refresh failed');
     }
-    const tokens = await res.json() as any;
-    const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000);
-    await prisma.cRMIntegration.update({
-      where: { userId_provider: { userId, provider: 'salesforce' } },
-      data: { accessToken: tokens.access_token, expiresAt }
-    });
-    return { token: tokens.access_token, instanceUrl: integration.accountId };
   }
 
   // ─── Sync on booking ───────────────────────────────────────────────────────
@@ -107,13 +94,10 @@ export class SalesforceService {
     try {
       const { token, instanceUrl } = await this.getTokenAndInstance(hostUserId);
       const api = `${instanceUrl}/services/data/v58.0`;
+      const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 
-      // Search for existing Contact by email
       const query = encodeURIComponent(`SELECT Id FROM Contact WHERE Email = '${invitee.email}' LIMIT 1`);
-      const searchRes = await fetch(`${api}/query?q=${query}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const searchData = await searchRes.json() as any;
+      const { data: searchData } = await axios.get(`${api}/query?q=${query}`, { headers });
       const existingId = searchData.records?.[0]?.Id;
 
       const nameParts = invitee.name.split(' ');
@@ -121,40 +105,26 @@ export class SalesforceService {
         FirstName: nameParts[0] || invitee.name,
         LastName: nameParts.slice(1).join(' ') || '.',
         Email: invitee.email,
-        Phone: invitee.phone || undefined,
-        AccountName: invitee.company || undefined
+        ...(invitee.phone && { Phone: invitee.phone }),
+        ...(invitee.company && { AccountName: invitee.company })
       };
 
       let contactId: string;
       if (existingId) {
-        await fetch(`${api}/sobjects/Contact/${existingId}`, {
-          method: 'PATCH',
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify(contactPayload)
-        });
+        await axios.patch(`${api}/sobjects/Contact/${existingId}`, contactPayload, { headers });
         contactId = existingId;
       } else {
-        const createRes = await fetch(`${api}/sobjects/Contact`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify(contactPayload)
-        });
-        const created = await createRes.json() as any;
+        const { data: created } = await axios.post(`${api}/sobjects/Contact`, contactPayload, { headers });
         contactId = created.id;
       }
 
-      // Create an Event (activity) linked to the contact
-      await fetch(`${api}/sobjects/Event`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          Subject: eventDetails.title,
-          StartDateTime: eventDetails.startTime.toISOString(),
-          EndDateTime: eventDetails.endTime.toISOString(),
-          Description: eventDetails.joinUrl ? `Join: ${eventDetails.joinUrl}` : '',
-          WhoId: contactId
-        })
-      });
+      await axios.post(`${api}/sobjects/Event`, {
+        Subject: eventDetails.title,
+        StartDateTime: eventDetails.startTime.toISOString(),
+        EndDateTime: eventDetails.endTime.toISOString(),
+        Description: eventDetails.joinUrl ? `Join: ${eventDetails.joinUrl}` : '',
+        WhoId: contactId
+      }, { headers });
 
       logger.info(`[Salesforce] Synced booking for ${invitee.email}`);
     } catch (err) {

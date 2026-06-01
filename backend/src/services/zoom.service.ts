@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { prisma } from '../lib/prisma';
 import logger from '../utils/logger';
 
@@ -28,51 +29,23 @@ export class ZoomService {
       `${process.env.ZOOM_CLIENT_ID}:${process.env.ZOOM_CLIENT_SECRET}`
     ).toString('base64');
 
-    const tokenRes = await fetch(`${ZOOM_OAUTH}/token`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${credentials}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: redirectUri
-      })
-    });
+    const { data: tokens } = await axios.post(
+      `${ZOOM_OAUTH}/token`,
+      new URLSearchParams({ grant_type: 'authorization_code', code, redirect_uri: redirectUri }).toString(),
+      { headers: { Authorization: `Basic ${credentials}`, 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
 
-    if (!tokenRes.ok) {
-      const err = await tokenRes.text();
-      throw new Error(`Zoom token exchange failed: ${err}`);
-    }
-
-    const tokens = await tokenRes.json() as any;
     const expiresAt = new Date(Date.now() + (tokens.expires_in || 3600) * 1000);
 
-    // Fetch Zoom user profile to get accountId
-    const profileRes = await fetch(`${ZOOM_API}/users/me`, {
+    const { data: profile } = await axios.get(`${ZOOM_API}/users/me`, {
       headers: { Authorization: `Bearer ${tokens.access_token}` }
     });
-    const profile = await profileRes.json() as any;
     const accountId = profile.email || profile.id || userId;
 
     await prisma.zoomIntegration.upsert({
       where: { userId },
-      create: {
-        userId,
-        accountId,
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token || '',
-        expiresAt,
-        syncStatus: 'ACTIVE'
-      },
-      update: {
-        accountId,
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token || '',
-        expiresAt,
-        syncStatus: 'ACTIVE'
-      }
+      create: { userId, accountId, accessToken: tokens.access_token, refreshToken: tokens.refresh_token || '', expiresAt, syncStatus: 'ACTIVE' },
+      update: { accountId, accessToken: tokens.access_token, refreshToken: tokens.refresh_token || '', expiresAt, syncStatus: 'ACTIVE' }
     });
 
     return accountId;
@@ -82,100 +55,56 @@ export class ZoomService {
     const integration = await prisma.zoomIntegration.findUnique({ where: { userId } });
     if (!integration) throw new Error('No Zoom integration found for user');
 
-    if (new Date(integration.expiresAt) > new Date()) {
-      return integration.accessToken;
-    }
+    if (new Date(integration.expiresAt) > new Date()) return integration.accessToken;
 
-    // Refresh the token
     const credentials = Buffer.from(
       `${process.env.ZOOM_CLIENT_ID}:${process.env.ZOOM_CLIENT_SECRET}`
     ).toString('base64');
 
-    const res = await fetch(`${ZOOM_OAUTH}/token`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${credentials}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        refresh_token: integration.refreshToken
-      })
-    });
-
-    if (!res.ok) {
+    try {
+      const { data: tokens } = await axios.post(
+        `${ZOOM_OAUTH}/token`,
+        new URLSearchParams({ grant_type: 'refresh_token', refresh_token: integration.refreshToken }).toString(),
+        { headers: { Authorization: `Basic ${credentials}`, 'Content-Type': 'application/x-www-form-urlencoded' } }
+      );
+      const expiresAt = new Date(Date.now() + (tokens.expires_in || 3600) * 1000);
       await prisma.zoomIntegration.update({
         where: { userId },
-        data: { syncStatus: 'ERROR' }
+        data: { accessToken: tokens.access_token, refreshToken: tokens.refresh_token || integration.refreshToken, expiresAt }
       });
+      return tokens.access_token;
+    } catch {
+      await prisma.zoomIntegration.update({ where: { userId }, data: { syncStatus: 'ERROR' } });
       throw new Error('Failed to refresh Zoom token');
     }
-
-    const tokens = await res.json() as any;
-    const expiresAt = new Date(Date.now() + (tokens.expires_in || 3600) * 1000);
-
-    await prisma.zoomIntegration.update({
-      where: { userId },
-      data: {
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token || integration.refreshToken,
-        expiresAt
-      }
-    });
-
-    return tokens.access_token;
   }
 
   // ─── Meeting creation ──────────────────────────────────────────────────────
 
   static async createMeeting(hostUserId: string, details: {
-    topic: string;
-    startTime: Date;
-    durationMinutes: number;
-    agenda?: string;
+    topic: string; startTime: Date; durationMinutes: number; agenda?: string;
   }): Promise<{ joinUrl: string; meetingId: string; password: string }> {
     const token = await this.getAccessToken(hostUserId);
 
-    const res = await fetch(`${ZOOM_API}/users/me/meetings`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    const { data: meeting } = await axios.post(
+      `${ZOOM_API}/users/me/meetings`,
+      {
         topic: details.topic,
-        type: 2, // Scheduled meeting
+        type: 2,
         start_time: details.startTime.toISOString(),
         duration: details.durationMinutes,
         agenda: details.agenda || '',
-        settings: {
-          host_video: true,
-          participant_video: true,
-          join_before_host: false,
-          waiting_room: true,
-          auto_recording: 'none'
-        }
-      })
-    });
+        settings: { host_video: true, participant_video: true, join_before_host: false, waiting_room: true, auto_recording: 'none' }
+      },
+      { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }
+    );
 
-    if (!res.ok) {
-      const err = await res.text();
-      logger.error('[Zoom] Failed to create meeting', err);
-      throw new Error(`Zoom meeting creation failed: ${err}`);
-    }
-
-    const meeting = await res.json() as any;
-    return {
-      joinUrl: meeting.join_url,
-      meetingId: String(meeting.id),
-      password: meeting.password || ''
-    };
+    return { joinUrl: meeting.join_url, meetingId: String(meeting.id), password: meeting.password || '' };
   }
 
   static async isConnected(userId: string): Promise<boolean> {
     const integration = await prisma.zoomIntegration.findUnique({
-      where: { userId },
-      select: { syncStatus: true }
+      where: { userId }, select: { syncStatus: true }
     });
     return integration?.syncStatus === 'ACTIVE';
   }

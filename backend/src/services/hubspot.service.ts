@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { prisma } from '../lib/prisma';
 import logger from '../utils/logger';
 
@@ -23,41 +24,25 @@ export class HubspotService {
     const redirectUri = process.env.HUBSPOT_REDIRECT_URI ||
       `${process.env.BACKEND_URL || 'http://localhost:5050'}/api/scheduling/crm/hubspot/callback`;
 
-    const res = await fetch(`${HS_API}/oauth/v1/token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
+    const { data: tokens } = await axios.post(
+      `${HS_API}/oauth/v1/token`,
+      new URLSearchParams({
         grant_type: 'authorization_code',
         client_id: process.env.HUBSPOT_CLIENT_ID || '',
         client_secret: process.env.HUBSPOT_CLIENT_SECRET || '',
         redirect_uri: redirectUri,
         code
-      })
-    });
-
-    if (!res.ok) throw new Error(`HubSpot token exchange failed: ${await res.text()}`);
-    const tokens = await res.json() as any;
+      }).toString(),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
     const expiresAt = new Date(Date.now() + (tokens.expires_in || 1800) * 1000);
 
-    // Get HubSpot portal ID
-    const infoRes = await fetch(`${HS_API}/oauth/v1/access-tokens/${tokens.access_token}`);
-    const info = await infoRes.json() as any;
+    const { data: info } = await axios.get(`${HS_API}/oauth/v1/access-tokens/${tokens.access_token}`);
 
     await prisma.cRMIntegration.upsert({
       where: { userId_provider: { userId, provider: 'hubspot' } },
-      create: {
-        userId, provider: 'hubspot',
-        accountId: String(info.hub_id || ''),
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token || '',
-        expiresAt, syncStatus: 'ACTIVE'
-      },
-      update: {
-        accountId: String(info.hub_id || ''),
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token || '',
-        expiresAt, syncStatus: 'ACTIVE'
-      }
+      create: { userId, provider: 'hubspot', accountId: String(info.hub_id || ''), accessToken: tokens.access_token, refreshToken: tokens.refresh_token || '', expiresAt, syncStatus: 'ACTIVE' },
+      update: { accountId: String(info.hub_id || ''), accessToken: tokens.access_token, refreshToken: tokens.refresh_token || '', expiresAt, syncStatus: 'ACTIVE' }
     });
 
     return info.hub_id;
@@ -71,31 +56,30 @@ export class HubspotService {
 
     if (new Date(integration.expiresAt) > new Date()) return integration.accessToken;
 
-    // Refresh
-    const res = await fetch(`${HS_API}/oauth/v1/token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        client_id: process.env.HUBSPOT_CLIENT_ID || '',
-        client_secret: process.env.HUBSPOT_CLIENT_SECRET || '',
-        refresh_token: integration.refreshToken
-      })
-    });
-    if (!res.ok) {
+    try {
+      const { data: tokens } = await axios.post(
+        `${HS_API}/oauth/v1/token`,
+        new URLSearchParams({
+          grant_type: 'refresh_token',
+          client_id: process.env.HUBSPOT_CLIENT_ID || '',
+          client_secret: process.env.HUBSPOT_CLIENT_SECRET || '',
+          refresh_token: integration.refreshToken
+        }).toString(),
+        { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+      );
+      const expiresAt = new Date(Date.now() + (tokens.expires_in || 1800) * 1000);
+      await prisma.cRMIntegration.update({
+        where: { userId_provider: { userId, provider: 'hubspot' } },
+        data: { accessToken: tokens.access_token, refreshToken: tokens.refresh_token || integration.refreshToken, expiresAt }
+      });
+      return tokens.access_token;
+    } catch {
       await prisma.cRMIntegration.update({
         where: { userId_provider: { userId, provider: 'hubspot' } },
         data: { syncStatus: 'ERROR' }
       });
       throw new Error('HubSpot token refresh failed');
     }
-    const tokens = await res.json() as any;
-    const expiresAt = new Date(Date.now() + (tokens.expires_in || 1800) * 1000);
-    await prisma.cRMIntegration.update({
-      where: { userId_provider: { userId, provider: 'hubspot' } },
-      data: { accessToken: tokens.access_token, refreshToken: tokens.refresh_token || integration.refreshToken, expiresAt }
-    });
-    return tokens.access_token;
   }
 
   // ─── Sync on booking ───────────────────────────────────────────────────────
@@ -107,16 +91,13 @@ export class HubspotService {
   }) {
     try {
       const token = await this.getToken(hostUserId);
+      const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 
-      // Search for existing contact
-      const searchRes = await fetch(`${HS_API}/crm/v3/objects/contacts/search`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          filterGroups: [{ filters: [{ propertyName: 'email', operator: 'EQ', value: invitee.email }] }]
-        })
-      });
-      const searchData = await searchRes.json() as any;
+      const { data: searchData } = await axios.post(
+        `${HS_API}/crm/v3/objects/contacts/search`,
+        { filterGroups: [{ filters: [{ propertyName: 'email', operator: 'EQ', value: invitee.email }] }] },
+        { headers }
+      );
       const existingId = searchData.results?.[0]?.id;
 
       const nameParts = invitee.name.split(' ');
@@ -130,37 +111,20 @@ export class HubspotService {
 
       let contactId: string;
       if (existingId) {
-        await fetch(`${HS_API}/crm/v3/objects/contacts/${existingId}`, {
-          method: 'PATCH',
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ properties: contactProps })
-        });
+        await axios.patch(`${HS_API}/crm/v3/objects/contacts/${existingId}`, { properties: contactProps }, { headers });
         contactId = existingId;
       } else {
-        const createRes = await fetch(`${HS_API}/crm/v3/objects/contacts`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ properties: contactProps })
-        });
-        const created = await createRes.json() as any;
+        const { data: created } = await axios.post(`${HS_API}/crm/v3/objects/contacts`, { properties: contactProps }, { headers });
         contactId = created.id;
       }
 
-      // Log meeting as an activity note
-      await fetch(`${HS_API}/crm/v3/objects/notes`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          properties: {
-            hs_note_body: `Booking: ${eventDetails.title}\nTime: ${eventDetails.startTime.toISOString()}\n${eventDetails.joinUrl ? `Join: ${eventDetails.joinUrl}` : ''}`,
-            hs_timestamp: eventDetails.startTime.getTime()
-          },
-          associations: [{
-            to: { id: contactId },
-            types: [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: 202 }]
-          }]
-        })
-      });
+      await axios.post(`${HS_API}/crm/v3/objects/notes`, {
+        properties: {
+          hs_note_body: `Booking: ${eventDetails.title}\nTime: ${eventDetails.startTime.toISOString()}\n${eventDetails.joinUrl ? `Join: ${eventDetails.joinUrl}` : ''}`,
+          hs_timestamp: eventDetails.startTime.getTime()
+        },
+        associations: [{ to: { id: contactId }, types: [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: 202 }] }]
+      }, { headers });
 
       logger.info(`[HubSpot] Synced booking for ${invitee.email}`);
     } catch (err) {
