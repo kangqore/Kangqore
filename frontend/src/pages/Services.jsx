@@ -411,37 +411,37 @@ const Services = () => {
 
               {/* Right Side Stats */}
               <div className="lg:col-span-5 hidden lg:flex justify-end relative">
-                <div className="w-full max-w-[360px] bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-3xl p-8 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_25px_50px_-12px_rgba(0,0,0,0.5)]">
+                <div className="w-full max-w-[290px] bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl p-6 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_25px_50px_-12px_rgba(0,0,0,0.5)]">
                   {/* Glowing background details */}
-                  <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#2564ea]/20 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
-                  <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-[#4ab6d4]/20 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+                  <div className="absolute -top-20 -left-20 w-40 h-40 bg-[#2564ea]/20 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+                  <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-[#4ab6d4]/20 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
                   
-                  <div className="space-y-8 relative z-10">
+                  <div className="space-y-5 relative z-10">
                     <div className="group/stat">
-                      <div className="text-5xl font-black bg-brand-gradient bg-clip-text text-transparent mb-1 transition-transform duration-300 group-hover/stat:scale-105 origin-left">
+                      <div className="text-4xl font-black bg-brand-gradient bg-clip-text text-transparent mb-0.5 transition-transform duration-300 group-hover/stat:scale-105 origin-left">
                         6
                       </div>
-                      <div className="text-xs font-bold text-white tracking-widest uppercase">Departments</div>
-                      <p className="text-xs text-slate-400 mt-1">Cognition, Foundry, Reimagine, Shield, Platforms, Growth</p>
+                      <div className="text-[10px] font-bold text-white tracking-widest uppercase">Departments</div>
+                      <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Cognition, Foundry, Reimagine, Shield, Platforms, Growth</p>
                     </div>
                     
                     <div className="h-[1px] bg-white/10" />
                     
                     <div className="group/stat">
-                      <div className="text-5xl font-black bg-brand-gradient bg-clip-text text-transparent mb-1 transition-transform duration-300 group-hover/stat:scale-105 origin-left">
+                      <div className="text-4xl font-black bg-brand-gradient bg-clip-text text-transparent mb-0.5 transition-transform duration-300 group-hover/stat:scale-105 origin-left">
                         {totalServices}
                       </div>
-                      <div className="text-xs font-bold text-white tracking-widest uppercase">Specialized Capabilities</div>
-                      <p className="text-xs text-slate-400 mt-1">Enterprise-grade capabilities mapped to buyer personas</p>
+                      <div className="text-[10px] font-bold text-white tracking-widest uppercase">Specialized Capabilities</div>
+                      <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Enterprise-grade capabilities mapped to buyer personas</p>
                     </div>
 
                     <div className="h-[1px] bg-white/10" />
 
                     <div className="group/stat">
-                      <div className="text-xl font-bold text-white mb-1 transition-transform duration-300 group-hover/stat:translate-x-1">
+                      <div className="text-base font-bold text-white mb-0.5 transition-transform duration-300 group-hover/stat:translate-x-1">
                         1 Unified Playbook
                       </div>
-                      <p className="text-xs text-slate-400">Integrated delivery framework aligned with industry compliance standards.</p>
+                      <p className="text-[11px] text-slate-400 leading-relaxed">Integrated delivery framework aligned with industry compliance standards.</p>
                     </div>
                   </div>
                 </div>
