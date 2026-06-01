@@ -1,6 +1,6 @@
 # Scheduling — Calendly + Zoho Parity Roadmap
 
-_Last updated: 2026-05-29 · Branch: `feat/dashboard-os-phase-1a`_
+_Last updated: 2026-06-01 · Branch: `main`_
 
 This roadmap closes the gap between Kangqore's current scheduling system and
 full **Calendly + Zoho Bookings feature parity**. It is sequenced by business
@@ -26,333 +26,144 @@ impact — each phase is independently shippable and delivers value on its own.
 | Reminder cron | 24h and 1h pre-meeting emails |
 | No-show tracking | Mark + undo no-show per invitee |
 | Jitsi auto-URL | Auto-generated meet link, no auth needed |
-| Org members + invitations | Roles (OWNER / ADMIN / MEMBER), 7-day invite expiry |
+| Org members + invitations | Roles (OWNER / ADMIN / MEMBER), 7-day invite expiry, invitation email |
 | eQORE AI automation | NLP scheduling intent → slot offer → booking |
 | NLP date parser | Client + server (chrono-node) |
 | Admin views | Bookings management, event type management |
+| Booking confirmation page | Public `/booking/:id` with join/reschedule/cancel links |
+| Browser timezone detection | Auto-detected and sent with every booking |
 
 ---
 
-## Phase 1 — Core Parity
+## Phase 1 — Core Parity ✅ Complete
 
-> **Goal:** eliminate the blockers that make the product feel incomplete day-to-day.
-> Unlocks: no double-bookings, embeddable anywhere, invitees can actually accept org invites.
+| Item | Status | Notes |
+|---|---|---|
+| **1A — Google Calendar OAuth + sync** | ✅ Done | Real OAuth 2.0 flow; freebusy API; exports events; token refresh |
+| **1A — Outlook / MS 365 OAuth + sync** | ✅ Done | MSAL + Graph API; getSchedule; exports events; token refresh |
+| **1A — iCal feed** | ✅ Done | `/api/scheduling/feed/:token` — read-only subscribe URL |
+| **1A — External conflict detection** | ✅ Done | Slot generator calls `CalendarSyncService.getExternalBusySlots()` per user |
+| **1B — Multiple durations** | ✅ Done | `durationOptions` on EventType; duration picker in BookingWidget |
+| **1C — Accept-invite page** | ✅ Done | `/accept-invite/:token` — validates, creates membership, redirects |
+| **1D — Embed widget** | ✅ Done | `public/embed.js` drops iframe at `/schedule/:slug` on any site |
+| **1E — Booking confirmation page** | ✅ Done | `/booking/:id` — shareable; shows join/reschedule/cancel links |
 
-### 1A — Calendar Integrations
+**Required env vars for calendar sync:**
+```
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REDIRECT_URI=https://yourdomain.com/api/scheduling/calendar-integrations/callback/google
 
-| Item | Detail |
-|---|---|
-| Google Calendar sync | OAuth 2.0 → import blocked slots, export bookings as GCal events |
-| Outlook / MS 365 sync | Microsoft Graph API → same bi-directional sync |
-| iCal feed (subscribe URL) | Read-only `.ics` feed at `/api/scheduling/feed/:token` — host subscribes any calendar app |
-| Conflict detection with external calendars | Slot generator marks slots busy if they overlap an imported external event |
-
-**Files to create/modify:**
-- `backend/src/services/googleCalendar.service.ts`
-- `backend/src/services/outlookCalendar.service.ts`
-- `backend/src/routes/scheduling/calendar-integrations.ts`
-- `backend/src/routes/scheduling/feed.ts` (iCal feed endpoint)
-- `backend/prisma/schema.prisma` — add `CalendarIntegration` model
-- `frontend/src/pages/settings/CalendarSettings.jsx`
-
-### 1B — Multiple Durations on One Event Type
-
-| Item | Detail |
-|---|---|
-| Duration options array | Host defines `[15, 30, 60]` min options on one event type |
-| Duration picker on booking page | Invitee selects duration before choosing a slot |
-| Slot generation respects selected duration | Each duration produces its own slot grid |
-
-**Files to modify:**
-- `backend/prisma/schema.prisma` — add `durationOptions` JSON to `EventType`
-- `backend/src/services/availability.service.ts` — accept `duration` param override
-- `frontend/src/components/scheduling/BookingWidget.jsx` — add duration selector step
-
-### 1C — Accept-Invite Page
-
-| Item | Detail |
-|---|---|
-| `/accept-invite/:id` route | Validates invitation ID, creates OrgMembership, marks invitation accepted |
-| Expiry + already-accepted guard | 400 if expired, 200 if already accepted |
-| Post-accept redirect | → login or dashboard depending on whether user exists |
-
-**Files to create:**
-- `frontend/src/pages/AcceptInvitePage.jsx`
-- `backend/src/routes/scheduling/accept-invite.ts`
-
-### 1D — Embed Widget
-
-| Item | Detail |
-|---|---|
-| Embeddable booking widget | `<script src="…/embed.js" data-slug="…"></script>` drops widget on any site |
-| Inline + popup modes | Inline renders in-place; popup opens on button click |
-| CORS-safe | Backend allows embed origin requests |
-
-**Files to create:**
-- `frontend/src/embed/BookingEmbed.jsx` (standalone React bundle)
-- `frontend/src/embed/embed-entry.js` (vanilla JS loader)
-- `backend/src/middleware/corsEmbedAllowlist.ts`
-
-### 1E — Booking Confirmation Public Page
-
-| Item | Detail |
-|---|---|
-| `/booking/:id` public page | Shows event details after booking (shareable URL) |
-| Links to reschedule / cancel / join | Same tokens from confirmation email |
-
-**Files to create:**
-- `frontend/src/pages/BookingConfirmationPage.jsx`
+MICROSOFT_CLIENT_ID=
+MICROSOFT_CLIENT_SECRET=
+MICROSOFT_TENANT_ID=common
+MICROSOFT_REDIRECT_URI=https://yourdomain.com/api/scheduling/calendar-integrations/callback/outlook
+```
 
 ---
 
-## Phase 2 — Monetization & Workflows
+## Phase 2 — Monetization & Workflows ✅ Complete
 
-> **Goal:** charge for time, automate follow-up, connect to external systems.
+| Item | Status | Notes |
+|---|---|---|
+| **2A — Stripe payments** | ⛔ Skipped | Booking is free — not required |
+| **2B — Custom email templates** | ✅ Done | DB model, CRUD API, template variables, per-event-type override, admin editor |
+| **2C — Workflow builder** | ✅ Done | Triggers (booking events + time offsets), actions (email + webhook), executor cron |
+| **2D — Outbound webhooks** | ✅ Done | HMAC-SHA256 signed, 3-retry backoff, delivery log, admin UI |
+| **2E — SMS reminders (Twilio)** | ✅ Done | Real Twilio integration, graceful no-creds fallback, 24h + 1h reminders |
 
-### 2A — Stripe Payment on Booking (SKIPPED)
-
-*Cancelled: Booking is free, no payment processing required.*
-
-### 2B — Custom Email Templates
-
-| Item | Detail |
-|---|---|
-| Template editor (admin) | Rich text editor for confirmation, reminder, cancellation, follow-up |
-| Template variables | `{{invitee_name}}`, `{{event_name}}`, `{{date}}`, `{{time}}`, `{{join_url}}`, etc. |
-| Per-event-type override | Each event type can have its own template or inherit default |
-| Preview mode | Send test email to host before activating template |
-
-**Files to create:**
-- `backend/prisma/schema.prisma` — add `EmailTemplate` model
-- `backend/src/routes/scheduling/email-templates.ts`
-- `backend/src/services/email.service.ts` — template rendering
-- `frontend/src/pages/admin/EmailTemplates.jsx`
-
-### 2C — Workflow Builder ✅
-
-| Item | Detail |
-|---|---|
-| Trigger events | `booking.created`, `booking.cancelled`, `booking.rescheduled`, `X hours before`, `X hours after` |
-| Actions | Send email (to invitee or host), send webhook POST |
-| Workflow model in DB | `Workflow { id, eventTypeId, trigger, offsetMinutes, action, actionConfig }` |
-| Workflow executor (cron) | Runs every 15 min, finds pending workflow jobs, executes |
-
-**Files to create:**
-- `backend/prisma/schema.prisma` — add `Workflow`, `WorkflowJob` models
-- `backend/src/services/workflow.service.ts`
-- `backend/src/jobs/WorkflowExecutor.ts`
-- `frontend/src/pages/admin/WorkflowBuilder.jsx`
-
-### 2D — Outbound Webhooks ✅
-
-| Item | Detail |
-|---|---|
-| Webhook endpoints config | Host registers URL + secret per event type or org-wide |
-| Events fired | `booking.created`, `booking.cancelled`, `booking.rescheduled`, `booking.no_show` |
-| HMAC-SHA256 signature | `X-Kangqore-Signature` header for verification |
-| Retry with backoff | 3 retries on non-2xx response |
-| Delivery log | Store last 100 delivery attempts per webhook |
-
-**Files to create:**
-- `backend/prisma/schema.prisma` — add `Webhook`, `WebhookDelivery` models
-- `backend/src/services/webhook.service.ts`
-- `backend/src/routes/scheduling/webhooks.ts`
-- `frontend/src/pages/admin/WebhooksSettings.jsx`
-
-### 2E — SMS Reminders (Twilio) ✅
-
-| Item | Detail |
-|---|---|
-| Twilio integration | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM` env vars |
-| SMS opt-in at booking | Checkbox on booking form (default opt-in) |
-| 24h + 1h SMS reminders | Parallel to email reminders in existing cron |
-| Invitee phone required | Uses `requirePhone` flag already on `EventType` |
-
-**Files to modify:**
-- `backend/src/services/sms.service.ts` (new)
-- `backend/src/jobs/CronManager.ts` — add SMS to reminder job
-- `frontend/src/components/scheduling/BookingWidget.jsx` — SMS opt-in checkbox
+**Required env vars for SMS:**
+```
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_FROM=+1...
+```
 
 ---
 
-## Phase 3 — Team Scheduling
+## Phase 3 — Team Scheduling ✅ Complete
 
-> **Goal:** distribute bookings across staff; let invitees pick who they meet.
-
-### 3A — Round-Robin Assignment
-
-| Item | Detail |
-|---|---|
-| Team event type | `EventType.assignmentStrategy: ROUND_ROBIN | COLLECTIVE | HOST_PICK` |
-| Member pool | `EventTypeTeamMember` join table (eventTypeId, userId, weight) |
-| Slot generation | Union of all members' availability; assigned to next-in-rotation member |
-| Rotation state | `lastAssignedMemberId` on event type, incremented on each booking |
-| Booking shows assigned host | Invitee sees host name + avatar on confirmation |
-
-### 3B — Collective Availability
-
-| Item | Detail |
-|---|---|
-| All-team event | Slot only shown if ALL team members are free at that time |
-| Availability intersection | Slot generator intersects each member's schedule |
-| Invitee sees all hosts on page | Sidebar shows all team members who will attend |
-
-### 3C — Load Balancing
-
-| Item | Detail |
-|---|---|
-| Fewest-bookings-first | When distributing, prefer member with fewest active bookings this week |
-| Weight-based distribution | Admin can set a weight (e.g. 2× for senior staff) |
-| Dashboard | Admin sees per-member booking count and utilization % |
-
-### 3D — Host Selection on Booking Page
-
-| Item | Detail |
-|---|---|
-| "Pick your consultant" step | Optional step on booking page to choose a specific team member |
-| Per-member availability | Slot grid updates based on selected member |
-| Skip option | "No preference" falls back to round-robin |
-
-**Files to create/modify (Phase 3 overall):**
-- `backend/prisma/schema.prisma` — add `assignmentStrategy`, `EventTypeTeamMember`, `lastAssignedMemberId`
-- `backend/src/services/availability.service.ts` — multi-member slot intersection
-- `backend/src/services/scheduling.service.ts` — assignment logic
-- `frontend/src/components/scheduling/BookingWidget.jsx` — host picker step
-- `frontend/src/pages/admin/TeamScheduling.jsx`
+| Item | Status | Notes |
+|---|---|---|
+| **3A — Round-robin + load balancing** | ✅ Done | Weight-based fewest-bookings-first assignment; `lastAssignedMemberId` updated |
+| **3B — Collective availability** | ✅ Done | Slot intersection across all team members; all hosts shown on booking page |
+| **3C — Load balancing** | ✅ Done | Part of round-robin; weight field on `EventTypeTeamMember` |
+| **3D — Host picker on booking page** | ✅ Done | "Pick your consultant" step in BookingWidget; "No preference" → round-robin fallback |
 
 ---
 
-## Phase 4 — Analytics & Admin
+## Phase 4 — Analytics & Admin ✅ Complete
 
-> **Goal:** give hosts the data to improve their scheduling operation.
-
-### 4A — Booking Analytics Dashboard
-
-| Item | Detail |
-|---|---|
-| Metrics | Total bookings, no-show rate, cancellation rate, reschedule rate |
-| Time series charts | Bookings per day/week/month |
-| Busiest days/times heatmap | 7-day × 24-hour grid coloured by booking volume |
-| Per-event-type breakdown | Metrics filtered by event type |
-| Invitee geography | Timezone distribution of invitees |
-
-### 4B — CSV Export
-
-| Item | Detail |
-|---|---|
-| Export bookings | Date range + status filter → `.csv` download |
-| Export invitees | Full invitee list with all fields + custom question responses |
-
-### 4C — Audit Log
-
-| Item | Detail |
-|---|---|
-| Events logged | booking.created, booking.cancelled, booking.rescheduled, event_type.updated, availability.updated |
-| Actor + timestamp | Who did what and when |
-| Admin view | Filterable log table in admin dashboard |
-
-**Files to create:**
-- `backend/src/routes/scheduling/analytics.ts`
-- `backend/prisma/schema.prisma` — add `AuditLog` model
-- `frontend/src/pages/admin/SchedulingAnalytics.jsx`
+| Item | Status | Notes |
+|---|---|---|
+| **4A — Booking analytics dashboard** | ✅ Done | `/dashboard/admin/scheduling-analytics` — volume, no-show rate, busiest times |
+| **4B — CSV export** | ✅ Done | `/api/scheduling/export` — date range + status filter |
+| **4C — Audit log** | ✅ Done | `AuditLog` model; `/dashboard/admin/scheduling-audit` admin view |
 
 ---
 
-## Phase 5 — Integrations
+## Phase 5 — Integrations ✅ Mostly Complete
 
-> **Goal:** connect the scheduling system to the tools teams already use.
+### 5A — Zoom / Google Meet Auto-Create ✅ Done
 
-### 5A — Zoom / Google Meet Auto-Create
+| Item | Status | Detail |
+|---|---|---|
+| Zoom OAuth + meeting creation | ✅ Done | `zoom.service.ts` — full OAuth, token refresh, meeting API |
+| Google Meet auto-create | ✅ Done | GCal export with `conferenceDataVersion=1`; Meet link stored back |
+| Per-event-type video provider | ✅ Done | `videoProvider` field (JITSI \| ZOOM \| GOOGLE_MEET) on EventType |
+| Provider picker in event type UI | ✅ Done | `SchedulingManagement.jsx` create/edit modal |
+| Jitsi fallback | ✅ Done | Used when no provider configured or Zoom call fails |
 
-| Item | Detail |
-|---|---|
-| Zoom OAuth | On booking, create Zoom meeting via API; store `joinUrl` |
-| Google Meet | Requires Google Calendar integration (Phase 1A) — meeting created alongside GCal event |
-| Per-event-type config | Host selects video provider on event type settings |
-| Jitsi remains default | If no provider is connected, Jitsi is the fallback |
+**Required env vars:**
+```
+ZOOM_CLIENT_ID=
+ZOOM_CLIENT_SECRET=
+ZOOM_REDIRECT_URI=https://yourdomain.com/api/scheduling/zoom/callback
+```
 
-### 5B — HubSpot / Salesforce Sync
+### 5B — HubSpot / Salesforce Sync ✅ Done
 
-| Item | Detail |
-|---|---|
-| Contact sync | On booking, create or update CRM contact with invitee data |
-| Activity log | Log booking as a CRM activity/deal stage update |
-| OAuth setup per org | Admin connects CRM account in Settings |
+| Item | Status | Detail |
+|---|---|---|
+| HubSpot OAuth + contact sync | ✅ Done | `hubspot.service.ts` — upsert contact, log note activity |
+| Salesforce OAuth + contact sync | ✅ Done | `salesforce.service.ts` — upsert Contact, create Event activity |
+| Auto-sync on every booking | ✅ Done | Fire-and-forget in `scheduling.service.ts` after booking created |
+| Settings UI | ✅ Done | `CalendarSettings.jsx` — unified Integrations page (calendar + video + CRM + iCal) |
 
-### 5C — Zapier / Make Webhook
+**Required env vars:**
+```
+HUBSPOT_CLIENT_ID=
+HUBSPOT_CLIENT_SECRET=
+HUBSPOT_REDIRECT_URI=https://yourdomain.com/api/scheduling/crm/hubspot/callback
 
-| Item | Detail |
-|---|---|
-| Native Zapier app | Triggers: new booking, cancellation, reschedule |
-| Generic webhook (Phase 2D) | Covers Make, n8n, and any other automation platform |
+SALESFORCE_CLIENT_ID=
+SALESFORCE_CLIENT_SECRET=
+SALESFORCE_REDIRECT_URI=https://yourdomain.com/api/scheduling/crm/salesforce/callback
+SALESFORCE_BASE_URL=https://login.salesforce.com
+```
+
+### 5C — Zapier / Make Native Trigger
+
+| Item | Status | Detail |
+|---|---|---|
+| Generic webhook (Phase 2D) | ✅ Done | Covers Make, n8n, Zapier webhooks |
+| Native Zapier partner app | ❌ Not started | Requires Zapier partner account + app review |
 
 ### 5D — Custom Domain
 
-| Item | Detail |
-|---|---|
-| `book.yourdomain.com` | CNAME → Kangqore platform |
-| SSL provisioning | Let's Encrypt via ACME on custom domain |
-| White-label booking page | Host logo, brand colours, no Kangqore branding |
-
----
-
-## Effort & Priority Matrix
-
-| Phase | Complexity | Business Impact | Ships in |
-|---|---|---|---|
-| 1A — Calendar sync | High | Critical (blocks double-booking) | ~2 weeks |
-| 1B — Multi-duration | Low | High | ~2 days |
-| 1C — Accept-invite page | Low | Medium | ~1 day |
-| 1D — Embed widget | Medium | High (distribution) | ~1 week |
-| 1E — Confirmation page | Low | Medium | ~1 day |
-| 2A — Stripe payments | Medium | High (revenue) | ~1 week |
-| 2B — Email templates | Medium | Medium | ~1 week |
-| 2C — Workflow builder | High | High | ~2 weeks |
-| 2D — Webhooks | Medium | High (integrations) | ~1 week |
-| 2E — SMS reminders | Low | Medium | ~2 days |
-| 3A — Round-robin | High | High (team use) | ~2 weeks |
-| 3B — Collective availability | Medium | Medium | ~1 week |
-| 3C — Load balancing | Medium | Medium | ~1 week |
-| 3D — Host picker | Low | Medium | ~2 days |
-| 4A — Analytics dashboard | Medium | High | ~1 week |
-| 4B — CSV export | Low | Medium | ~1 day |
-| 4C — Audit log | Low | Low-Medium | ~2 days |
-| 5A — Zoom / Meet | Medium | High | ~1 week |
-| 5B — HubSpot / Salesforce | High | Medium-High | ~2 weeks |
-| 5C — Zapier | Low | Medium | ~2 days |
-| 5D — Custom domain | High | Low-Medium | ~2 weeks |
+| Item | Status | Detail |
+|---|---|---|
+| `book.yourdomain.com` CNAME | ❌ Not started | DNS CNAME → Kangqore platform |
+| SSL provisioning | ❌ Not started | Let's Encrypt via ACME on custom hostname |
+| White-label booking page | ❌ Not started | Host logo, brand colours, no Kangqore branding |
 
 ---
 
 ## Sequencing Rule
 
-> Build Phase 1 before Phase 2. Build Phase 2 before Phase 3.
-> Phases 4 and 5 can run in parallel with Phase 3.
-> Within a phase, items labelled Low complexity should ship first to build momentum.
+> Phases 1–4 are fully shipped. Build 5A (Zoom/Meet) before 5D (custom domain).
+> 5B (CRM) can run in parallel with 5A.
 
 ---
 
-_Owner: Kangqore Engineering · Status: Planning_
-
----
-
-## Parked: Phase 5 — Integrations Implementation Plan
-
-*(Parked for future implementation)*
-
-### 1. Video Conferencing (5A)
-- **Database:** Add `locationType` choices (`ZOOM`, `GOOGLE_MEET`, `IN_PERSON`, `PHONE`).
-- **Backend:** Create `zoom.service.ts` to handle OAuth token exchange and Zoom API meeting creation.
-- **Service:** Modify `scheduling.service.ts` to call Zoom API instead of falling back to Jitsi when `locationType` is `ZOOM`.
-- **Frontend:** Update `SchedulingManagement.jsx` to include a location picker during event type creation.
-
-### 2. CRM Integrations (5B)
-- **Database:** Add `Organization` model fields for CRM integrations (`hubspotToken`, `salesforceToken`).
-- **Backend:** Create `hubspot.service.ts` to sync contacts upon booking.
-- **Service:** Trigger CRM sync asynchronously after a successful booking in `scheduling.service.ts`.
-
-### 3. Custom Domains (5D)
-- **Database:** Add `CustomDomain` model (`domain`, `organizationId`, `sslStatus`).
-- **Backend:** Create `domains.ts` API route to register custom domains.
-- **Middleware:** Modify `domainRouter.ts` to detect `req.hostname` and route to the correct white-labeled booking page.
-
+_Owner: Kangqore Engineering · Status: Phases 1–5A/5B complete · Remaining: 5C (Zapier app), 5D (custom domain)_

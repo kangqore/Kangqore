@@ -1894,3 +1894,159 @@
 2026-05-30 12:31:56:3156 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
 2026-05-30 12:31:56:3156 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
 2026-05-30 12:31:56:3156 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-05-31 16:28:14:2814 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Unauthorized specific pricing[39m
+2026-05-31 16:28:14:2814 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Internal lead score leakage[39m
+2026-05-31 16:28:14:2814 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Internal agent name exposure[39m
+2026-05-31 16:28:14:2814 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: System prompt reference in response[39m
+2026-05-31 16:28:14:2814 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Unverified ROI guarantee[39m
+2026-05-31 16:28:14:2814 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Competitor comparison claim[39m
+2026-05-31 16:29:00:290 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Unauthorized specific pricing[39m
+2026-05-31 16:29:00:290 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Internal lead score leakage[39m
+2026-05-31 16:29:00:290 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Internal agent name exposure[39m
+2026-05-31 16:29:00:290 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: System prompt reference in response[39m
+2026-05-31 16:29:00:290 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Unverified ROI guarantee[39m
+2026-05-31 16:29:00:290 [33mwarn[39m: [33mFinalGuardrail BLOCKED response: BLOCKED: Competitor comparison claim[39m
+2026-05-31 16:52:55:5255 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-05-31 16:52:56:5256 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-05-31 16:52:56:5256 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-05-31 16:52:56:5256 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-05-31 16:52:56:5256 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-05-31 16:52:56:5256 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-05-31 16:52:56:5256 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-05-31 16:52:56:5256 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-05-31 17:11:22:1122 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-05-31 17:11:22:1122 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-05-31 17:11:22:1122 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-05-31 17:11:22:1122 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-05-31 17:11:22:1122 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-05-31 17:11:22:1122 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-05-31 17:11:22:1122 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-05-31 17:11:22:1122 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 06:00:45:045 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 06:00:45:045 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 06:00:45:045 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 06:00:45:045 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 06:00:45:045 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 06:00:45:045 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 06:00:45:045 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 06:00:45:045 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:13:11:1311 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:13:11:1311 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:13:11:1311 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:13:12:1312 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:13:12:1312 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:13:12:1312 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:13:12:1312 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:13:12:1312 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:13:33:1333 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:13:34:1334 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:13:34:1334 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:13:35:1335 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:13:35:1335 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:13:35:1335 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:13:35:1335 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:13:35:1335 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:13:38:1338 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:13:39:1339 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:13:39:1339 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:13:39:1339 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:13:39:1339 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:13:39:1339 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:13:39:1339 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:13:39:1339 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:21:48:2148 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:21:49:2149 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:21:49:2149 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:21:50:2150 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:21:50:2150 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:21:50:2150 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:21:50:2150 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:21:50:2150 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:21:53:2153 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:21:54:2154 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:21:54:2154 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:21:54:2154 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:21:54:2154 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:21:54:2154 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:21:54:2154 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:21:54:2154 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:22:05:225 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:22:06:226 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:22:06:226 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:22:06:226 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:22:06:226 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:22:06:226 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:22:06:226 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:22:06:226 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:22:16:2216 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:22:16:2216 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:22:16:2216 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:22:17:2217 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:22:17:2217 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:22:17:2217 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:22:17:2217 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:22:17:2217 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:22:28:2228 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:22:29:2229 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:22:29:2229 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:22:29:2229 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:22:29:2229 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:22:29:2229 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:22:29:2229 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:22:29:2229 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:23:07:237 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:23:08:238 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:23:08:238 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:23:08:238 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:23:08:238 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:23:08:238 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:23:08:238 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:23:08:238 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:23:15:2315 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:23:16:2316 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:23:16:2316 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:23:16:2316 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:23:16:2316 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:23:16:2316 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:23:16:2316 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:23:16:2316 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:26:50:2650 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:26:51:2651 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:26:51:2651 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:26:52:2652 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:26:52:2652 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:26:52:2652 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:26:52:2652 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:26:52:2652 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:26:55:2655 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:26:55:2655 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:26:55:2655 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:26:55:2655 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:26:55:2655 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:26:55:2655 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:26:55:2655 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:26:55:2655 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:27:01:271 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:27:01:271 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:27:02:272 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:27:02:272 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:27:02:272 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:27:02:272 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:27:02:272 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:27:02:272 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:27:13:2713 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:27:14:2714 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:27:14:2714 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:27:14:2714 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:27:14:2714 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:27:14:2714 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:27:14:2714 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:27:14:2714 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-01 12:27:19:2719 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-01 12:27:19:2719 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-01 12:27:19:2719 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-01 12:27:19:2719 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-01 12:27:19:2719 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-01 12:27:19:2719 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-01 12:27:19:2719 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
+2026-06-01 12:27:19:2719 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m

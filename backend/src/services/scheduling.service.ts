@@ -2,9 +2,12 @@ import { prisma } from '../lib/prisma';
 import { AvailabilityService } from './availability.service';
 import { emailService } from './email.service';
 import { createError } from '../middleware/errorHandler';
-import { addMinutes, format } from 'date-fns';
+import { addMinutes } from 'date-fns';
 import { randomBytes } from 'crypto';
 import { CalendarSyncService } from './calendarSync.service';
+import { ZoomService } from './zoom.service';
+import { HubspotService } from './hubspot.service';
+import { SalesforceService } from './salesforce.service';
 import { webhookService } from './webhook.service';
 import { workflowService } from './workflow.service';
 import { AuditLogger } from '../utils/auditLogger';
@@ -135,9 +138,29 @@ export class SchedulingService {
     const cancelToken = generateToken();
     const rescheduleToken = generateToken();
 
-    // Generate Jitsi meet URL — created before DB insert so we can store it
-    const tempId = randomBytes(4).toString('hex');
-    const joinUrl = generateJitsiUrl(tempId);
+    // Generate video meeting URL based on event type's videoProvider
+    let joinUrl: string;
+    const provider = (eventType as any).videoProvider || 'JITSI';
+    if (provider === 'ZOOM') {
+      try {
+        const meeting = await ZoomService.createMeeting(assignedHostId, {
+          topic: `${eventType.name} with ${invitee.name}`,
+          startTime: start,
+          durationMinutes: eventType.duration,
+          agenda: eventType.description || ''
+        });
+        joinUrl = meeting.joinUrl;
+      } catch (err) {
+        logger.warn('[Zoom] Meeting creation failed, falling back to Jitsi', err);
+        joinUrl = generateJitsiUrl(randomBytes(4).toString('hex'));
+      }
+    } else if (provider === 'GOOGLE_MEET') {
+      // Google Meet links are generated when the GCal event is created after the DB insert.
+      // Store a placeholder; CalendarSyncService.exportEvent will create the real Meet link.
+      joinUrl = generateJitsiUrl(randomBytes(4).toString('hex'));
+    } else {
+      joinUrl = generateJitsiUrl(randomBytes(4).toString('hex'));
+    }
 
     // Create event and invitee in a transaction
     const result = await prisma.$transaction(async (tx) => {
@@ -208,10 +231,36 @@ export class SchedulingService {
     }
 
     try {
-      await CalendarSyncService.exportEvent(assignedHostId, result);
+      const meetLink = await CalendarSyncService.exportEvent(
+        assignedHostId,
+        { ...result, joinUrl: result.joinUrl ?? undefined },
+        provider === 'GOOGLE_MEET'
+      );
+      // If Google Meet generated a real link, update the stored joinUrl
+      if (meetLink && meetLink !== result.joinUrl) {
+        await prisma.scheduledEvent.update({
+          where: { id: result.id },
+          data: { joinUrl: meetLink, locationValue: meetLink }
+        });
+        result.joinUrl = meetLink;
+      }
     } catch (err) {
       logger.error('Failed to export event to external calendars', err);
     }
+
+    // CRM sync — fire-and-forget, never block the booking response
+    const crmPayload = {
+      title: result.title,
+      startTime: result.startTime,
+      endTime: result.endTime,
+      joinUrl: result.joinUrl ?? undefined
+    };
+    HubspotService.syncBooking(assignedHostId, invitee, crmPayload).catch(err =>
+      logger.error('HubSpot sync failed', err)
+    );
+    SalesforceService.syncBooking(assignedHostId, invitee, crmPayload).catch(err =>
+      logger.error('Salesforce sync failed', err)
+    );
 
     // Dispatch webhook
     webhookService.dispatchEvent(result.eventTypeId, 'booking.created', {
@@ -421,7 +470,7 @@ export class SchedulingService {
     }
 
     try {
-      await CalendarSyncService.exportEvent(oldEvent.hostId, newEvent);
+      await CalendarSyncService.exportEvent(oldEvent.hostId, { ...newEvent, joinUrl: newEvent.joinUrl ?? undefined });
     } catch (err) {
       logger.error('Failed to export rescheduled event to external calendars', err);
     }

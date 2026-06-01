@@ -104,6 +104,8 @@ model User {
   hostedEvents          ScheduledEvent[]       @relation("EventHost")
   ownedSchedulingLinks  SchedulingLink[]       @relation("OwnedSchedulingLinks")
   calendarIntegrations  CalendarIntegration[]
+  zoomIntegration       ZoomIntegration?
+  crmIntegrations       CRMIntegration[]
   EventTypeTeamMember   EventTypeTeamMember[]
 
   @@map("users")
@@ -1917,6 +1919,7 @@ model EventType {
   isPublic              Boolean                @default(true)
   location              String?
   locationType          String                 @default("VIDEO")
+  videoProvider         String                 @default("JITSI") // JITSI | ZOOM | GOOGLE_MEET
   requirePhone          Boolean                @default(false)
   requireCompany        Boolean                @default(false)
   customQuestions       Json?
@@ -2886,6 +2889,40 @@ model CalendarIntegration {
   @@unique([userId, provider, accountId])
   @@index([userId])
   @@map("calendar_integrations")
+}
+
+model CRMIntegration {
+  id           String   @id @default(uuid())
+  userId       String
+  provider     String   // "hubspot" | "salesforce"
+  accountId    String   // Portal ID (HubSpot) or instance URL (Salesforce)
+  accessToken  String
+  refreshToken String
+  expiresAt    DateTime
+  syncStatus   String   @default("ACTIVE") // ACTIVE | ERROR | DISCONNECTED
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, provider])
+  @@index([userId])
+  @@map("crm_integrations")
+}
+
+model ZoomIntegration {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  accountId    String   // Zoom user ID or email
+  accessToken  String
+  refreshToken String
+  expiresAt    DateTime
+  syncStatus   String   @default("ACTIVE") // ACTIVE | ERROR | DISCONNECTED
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("zoom_integrations")
 }
 
 enum AssignmentStrategy {
