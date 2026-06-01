@@ -13,10 +13,10 @@ const paddingMap = {
 }
 
 const variantMap = {
-  default:  'bg-white border border-slate-100/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]',
-  flat:     'bg-white border border-slate-200/60',
-  elevated: 'bg-white shadow-[0_4px_16px_rgba(0,0,0,0.02)] border border-slate-100/80',
-  glass:    'bg-white border border-slate-100/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]',
+  default:  'bg-white border border-slate-200 shadow-sm',
+  flat:     'bg-white border border-slate-200',
+  elevated: 'bg-white border border-slate-200 shadow-md',
+  glass:    'bg-white border border-slate-200 shadow-sm',
 }
 
 function Card({ className, variant = 'default', padding = 'md', children, ...props }: CardProps) {
