@@ -372,14 +372,14 @@ const Services = () => {
                   </span>
                   
                   <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-fade-in">
-                    Built for enterprise. <br />
+                    Capability that <br />
                     <span className="bg-brand-gradient bg-clip-text text-transparent font-black">
-                      Designed to scale.
+                      compounds
                     </span>
                   </h1>
                   
                   <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-2xl animate-fade-in font-medium">
-                    Intelligence systems, cloud architecture, and digital design — delivered as one integrated framework, not six disconnected services.
+                    The future belongs to organizations that turn change into competitive advantage through continuous innovation, adaptability, and intelligent execution.
                   </p>
                 </div>
                 
@@ -1094,7 +1094,7 @@ const Services = () => {
               </Link>
               <Link
                 to="/case-studies"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold rounded-full hover:bg-white/20 transition-all duration-300 hover:scale-[1.02] active:scale-95 group"
+                className="inline-flex items-center justify-center gap-2 text-slate-300 hover:text-white font-bold transition-colors duration-300 group"
               >
                 View Case Studies
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
