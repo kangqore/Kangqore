@@ -135,6 +135,114 @@ const carouselDepartments = departmentsList.map((slug) => {
   };
 });
 
+const departmentCaseStudies = {
+  cognition: {
+    metric: "60%",
+    label: "Reduction in manual exception-handling time using eQORE™ Autonomous Agents",
+    title: "Global Logistics AI Transformation",
+    challenge: "A global logistics giant struggled with processing high-volume shipping customs exceptions, costing millions in manual verification delays.",
+    solution: "Deployed eQORE™ Agentic AI pods to auto-resolve 82% of standard customs anomalies with human-in-the-loop fallback."
+  },
+  foundry: {
+    metric: "34%",
+    label: "Reduction in cloud infrastructure spend through optimization and Kubernetes modernization",
+    title: "Fintech Platform Infrastructure Scale",
+    challenge: "Rapid scale led to ballooning AWS infrastructure costs and slow deployment cycles for a leading payments gateway.",
+    solution: "Embedded Foundry DevOps pods migrated monoliths to serverless microservices, establishing strict FinOps pipelines."
+  },
+  reimagine: {
+    metric: "90 Days",
+    label: "To migrate legacy bank core to modern serverless APIs",
+    title: "Core Modernization for Retail Bank",
+    challenge: "A regional bank's legacy COBOL-based core transaction system was preventing integration with modern mobile banking apps.",
+    solution: "Reengineered the core into a decoupled microservices API layer with zero downtime during the database transition."
+  },
+  shield: {
+    metric: "Zero Gaps",
+    label: "SOC 2 Type II and ISO 27001 continuous posture audit mapped to SRE trust models",
+    title: "Healthcare SaaS Security Posture",
+    challenge: "A healthtech startup needed to secure enterprise hospital contracts but lacked SOC 2 compliance and SRE trust models.",
+    solution: "Implemented continuous threat monitoring, automated patch policies, and secured compliance in a fixed-bid 60-day wave."
+  },
+  platforms: {
+    metric: "3.2x ROI",
+    label: "Gain from Salesforce and ServiceNow seat consolidation and workflow automation",
+    title: "Telecom Enterprise Workflow Alignment",
+    challenge: "Disconnected Salesforce and ServiceNow instances led to customer service delays and double-licensed seat overhead.",
+    solution: "Engineered a bi-directional real-time data sync pipeline, eliminating process drift and consolidating workflows."
+  },
+  growth: {
+    metric: "+40% ROI",
+    label: "Marketing pipeline efficiency and attribution clarity",
+    title: "B2B SaaS Pipeline Optimization",
+    challenge: "A B2B software firm could not attribute sales lead origin, leading to inefficient ad spend and mismatched GEO targeting.",
+    solution: "Aligned data funnels using advanced attribution scoring models and localized geo-optimization pipelines."
+  }
+};
+
+const configuratorOptions = [
+  {
+    id: 'cognition-ai',
+    label: 'AI & Autonomous Agents',
+    dept: 'cognition',
+    desc: 'Deploy governed AI agents for exceptions and judgment-heavy workflows'
+  },
+  {
+    id: 'cognition-data',
+    label: 'Big Data & ML pipelines',
+    dept: 'cognition',
+    desc: 'Establish unified data analytics and managed MLOps pipelines'
+  },
+  {
+    id: 'foundry-cloud',
+    label: 'Cloud & Infrastructure scale',
+    dept: 'foundry',
+    desc: 'Modernize Kubernetes clusters and automate AWS/Azure/GCP scaling'
+  },
+  {
+    id: 'foundry-devops',
+    label: 'SRE & CI/CD Automation',
+    dept: 'foundry',
+    desc: 'Deploy embedded DevOps pods and secure a 99.98% uptime SLA'
+  },
+  {
+    id: 'reimagine-legacy',
+    label: 'Legacy DB & Core Migration',
+    dept: 'reimagine',
+    desc: 'Migrate legacy mainframes or COBOL databases with zero downtime'
+  },
+  {
+    id: 'reimagine-api',
+    label: 'Microservices & Serverless APIs',
+    dept: 'reimagine',
+    desc: 'Decouple monolith architectures into scalable modern API layers'
+  },
+  {
+    id: 'shield-security',
+    label: 'Penetration Testing & Scanning',
+    dept: 'shield',
+    desc: 'Establish automated continuous vulnerability scanning and patch policies'
+  },
+  {
+    id: 'shield-compliance',
+    label: 'SOC 2 & ISO compliance',
+    dept: 'shield',
+    desc: 'Map compliance controls and secure certifications within a 60-day wave'
+  },
+  {
+    id: 'platforms-crm',
+    label: 'CRM & Workflow Consolidation',
+    dept: 'platforms',
+    desc: 'Consolidate ServiceNow, Salesforce, and other platform seat license overhead'
+  },
+  {
+    id: 'growth-pipeline',
+    label: 'Attribution & Funnel Analytics',
+    dept: 'growth',
+    desc: 'Optimize geo-targeted campaigns and map multi-touch marketing funnels'
+  }
+];
+
 const Services = () => {
   const navigate = useNavigate();
   const [expandedDepts, setExpandedDepts] = useState({});
@@ -168,6 +276,76 @@ const Services = () => {
 
   const [activeStep, setActiveStep] = useState(0);
   const [activeDept, setActiveDept] = useState('cognition');
+  const [activeDetailTab, setActiveDetailTab] = useState('modules');
+
+  useEffect(() => {
+    setActiveDetailTab('modules');
+  }, [activeDept]);
+
+  const [coPilotInput, setCoPilotInput] = useState('');
+  const [coPilotOutput, setCoPilotOutput] = useState('Welcome to eQORE™ AI. Select a prompt or type your inquiry below to discover relevant capabilities.');
+  const [isTyping, setIsTyping] = useState(false);
+
+  const triggerCoPilot = (promptText, targetDept, responseText) => {
+    if (isTyping) return;
+    setCoPilotInput(promptText);
+    setIsTyping(true);
+    setActiveDept(targetDept);
+    
+    let currentText = '';
+    let index = 0;
+    setCoPilotOutput('');
+    
+    const interval = setInterval(() => {
+      if (index < responseText.length) {
+        currentText += responseText.charAt(index);
+        setCoPilotOutput(currentText);
+        index++;
+      } else {
+        clearInterval(interval);
+        setIsTyping(false);
+      }
+    }, 12);
+  };
+
+  const handleCustomInputSubmit = (e) => {
+    e.preventDefault();
+    if (!coPilotInput.trim() || isTyping) return;
+    
+    const query = coPilotInput.toLowerCase();
+    let target = 'cognition';
+    let reply = '';
+    
+    if (query.includes('security') || query.includes('compliance') || query.includes('soc') || query.includes('shield') || query.includes('audit')) {
+      target = 'shield';
+      reply = "eQORE™ AI detected security & compliance query. Focusing [Kangqore Shield]. We recommend establishing a continuous posture assessment and a 90-day diagnostic wave to map compliance controls (SOC 2, ISO 27001).";
+    } else if (query.includes('cloud') || query.includes('aws') || query.includes('infrastructure') || query.includes('devops') || query.includes('foundry') || query.includes('sre')) {
+      target = 'foundry';
+      reply = "eQORE™ AI detected cloud & infrastructure query. Focusing [Kangqore Foundry]. Our embedded foundries specialize in AWS, Azure, GCP architecture, SRE enablement, and CI/CD automation.";
+    } else if (query.includes('legacy') || query.includes('migrate') || query.includes('database') || query.includes('modern') || query.includes('reimagine') || query.includes('api')) {
+      target = 'reimagine';
+      reply = "eQORE™ AI detected core modernization query. Focusing [Kangqore Reimagine]. We reengineer legacy COBOL cores, decouple monoliths into serverless APIs, and automate migration with zero downtime.";
+    } else if (query.includes('salesforce') || query.includes('servicenow') || query.includes('crm') || query.includes('platform') || query.includes('integration')) {
+      target = 'platforms';
+      reply = "eQORE™ AI detected platform integration query. Focusing [Kangqore Platforms]. We optimize workflow alignment, Salesforce & ServiceNow seat footprint, and design cross-system sync engines.";
+    } else if (query.includes('marketing') || query.includes('growth') || query.includes('sales') || query.includes('funnel') || query.includes('roi') || query.includes('attribution')) {
+      target = 'growth';
+      reply = "eQORE™ AI detected pipeline & growth query. Focusing [Kangqore Growth]. We engineer high-conversion B2B sales pipelines, implement multi-touch marketing attribution, and optimize geo-targeted campaigns.";
+    } else {
+      target = 'cognition';
+      reply = `eQORE™ AI parsed your query: "${coPilotInput}". Focusing [Kangqore Cognition] to review intelligent agent workflows, big data pipelines, and MLOps capability layers.`;
+    }
+    
+    triggerCoPilot(coPilotInput, target, reply);
+  };
+
+  const [selectedCapabilities, setSelectedCapabilities] = useState([]);
+
+  const toggleCapability = (id) => {
+    setSelectedCapabilities((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
 
   // Calculate total services across canonical 6 departments
   const totalServices = Object.values(departmentsData).reduce(
@@ -327,6 +505,8 @@ const Services = () => {
   const activeDeptServices = Object.values(servicesData).filter(
     (svc) => svc.departmentSlug === activeDept
   );
+
+  const configuratorUrl = `/contact?config=${encodeURIComponent(selectedCapabilities.map(id => configuratorOptions.find(o => o.id === id)?.label).join(', '))}`;
 
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300" data-testid="services-page">
@@ -699,6 +879,91 @@ const Services = () => {
             </p>
           </div>
 
+          {/* eQORE AI Co-Pilot Console */}
+          <div className="mb-12 bg-black border border-white/10 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+            {/* Glowing background highlights */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400/5 rounded-full blur-[80px] pointer-events-none" />
+            
+            <div className="grid lg:grid-cols-12 gap-8 items-center">
+              {/* Left Column: Terminal console output */}
+              <div className="lg:col-span-7 space-y-4">
+                <div className="flex items-center justify-between border-b border-white/5 pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-red-500/80" />
+                    <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                    <span className="w-3 h-3 rounded-full bg-green-500/80" />
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">eQORE™ AI v2.5 Console</span>
+                </div>
+                
+                <div className="min-h-[100px] font-mono text-xs text-cyan-400 space-y-2 leading-relaxed bg-black/50 p-4 rounded-xl border border-white/5 relative">
+                  <div className="flex items-start gap-2">
+                    <span className="text-slate-600 select-none">&gt;</span>
+                    <p className="text-slate-200">{coPilotOutput}<span className={`${isTyping ? 'animate-pulse' : ''} text-cyan-400`}>_</span></p>
+                  </div>
+                </div>
+
+                {/* Custom Search Form */}
+                <form onSubmit={handleCustomInputSubmit} className="flex gap-2 relative">
+                  <input
+                    type="text"
+                    value={coPilotInput}
+                    onChange={(e) => setCoPilotInput(e.target.value)}
+                    disabled={isTyping}
+                    placeholder="Ask eQORE AI to find capabilities (e.g. 'SOC 2 compliance' or 'AWS migrations')..."
+                    className="flex-1 bg-white/5 border border-white/10 hover:border-white/20 focus:border-cyan-400 text-white rounded-xl px-4 py-2.5 text-xs font-medium placeholder-slate-500 focus:outline-none transition-all disabled:opacity-50"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isTyping || !coPilotInput.trim()}
+                    className="px-4 py-2.5 bg-cyan-500 text-black font-bold rounded-xl text-xs hover:bg-cyan-400 active:scale-95 transition-all disabled:opacity-50"
+                  >
+                    Analyze
+                  </button>
+                </form>
+              </div>
+
+              {/* Right Column: Prompt Bubbles */}
+              <div className="lg:col-span-5 space-y-3">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest font-mono block">Recommended Prompts</span>
+                <div className="flex flex-col gap-2">
+                  {[
+                    { 
+                      text: "How do we automate manual data processing?", 
+                      dept: "cognition",
+                      reply: "Analyzing request... Initializing eQORE™ Cognitive Agent pipelines. Mapped to department [Kangqore Cognition]. Key capabilities: Agentic AI, Intelligent Process Automation, and ML models. Select tabs below to explore available modules."
+                    },
+                    { 
+                      text: "We need to migrate our legacy database without downtime.", 
+                      dept: "reimagine",
+                      reply: "Analyzing request... Accessing Legacy Modernization and SRE architecture nodes. Mapped to department [Kangqore Reimagine]. Key capabilities: Legacy Core Decoupling, Mainframe Migration, and Zero-Downtime DB Sync."
+                    },
+                    { 
+                      text: "We need SOC 2 compliance and SRE trust models.", 
+                      dept: "shield",
+                      reply: "Analyzing request... Invoking continuous posture scanner & SOC 2 compliance audit nodes. Mapped to department [Kangqore Shield]. Key capabilities: Security Posture Assessment, Penetration Testing, and SLA-backed trust systems."
+                    },
+                    { 
+                      text: "How do we optimize Salesforce and ServiceNow ROI?", 
+                      dept: "platforms",
+                      reply: "Analyzing request... Pulling SaaS enterprise license models and workflow integrations. Mapped to department [Kangqore Platforms]. Key capabilities: ServiceNow Automation, Salesforce Consolidation, and Cross-Platform Synced Pipelines."
+                    }
+                  ].map((p, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      disabled={isTyping}
+                      onClick={() => triggerCoPilot(p.text, p.dept, p.reply)}
+                      className="text-left bg-white/5 border border-white/5 hover:border-white/10 hover:bg-white/[0.08] text-white text-xs font-medium py-2 px-3.5 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 leading-snug"
+                    >
+                      ✦ {p.text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Ecosystem Grid Console */}
           <div className="w-full bg-[#0a0a0c] border border-gray-200/50 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row min-h-[640px] relative">
             
@@ -784,9 +1049,74 @@ const Services = () => {
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
                   {activeDeptInfo.heroBody}
                 </p>
+              </div>
 
-                {/* CX Persona Tags & Delivery Approach */}
-                <div className="grid sm:grid-cols-2 gap-6 pt-4">
+              {/* Tabs Selector */}
+              <div className="flex gap-2 border-b border-white/5 mb-6 overflow-x-auto no-scrollbar">
+                {[
+                  { id: 'modules', label: 'Available Modules' },
+                  { id: 'blueprint', label: 'Engagement Blueprint' },
+                  { id: 'impact', label: 'Real-world Impact' }
+                ].map((tab) => {
+                  const isActive = activeDetailTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveDetailTab(tab.id)}
+                      style={{
+                        borderBottomColor: isActive ? activeDeptInfo.accentColor : 'transparent'
+                      }}
+                      className={`px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider border-b-2 transition-all duration-300 whitespace-nowrap ${
+                        isActive
+                          ? 'text-white bg-white/[0.01]'
+                          : 'text-slate-500 hover:text-slate-300'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Tab Content Panels */}
+              {activeDetailTab === 'modules' && (
+                <div className="space-y-4 mb-8 animate-fade-in">
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-widest font-mono block">
+                    Available Modules
+                  </span>
+                  
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {activeDeptServices.map((svc) => (
+                      <Link
+                        key={svc.slug}
+                        to={`/services/${activeDept}/${svc.slug}`}
+                        className="group/svc relative rounded-2xl p-5 border border-white/10 bg-[#222428] hover:border-white/20 hover:bg-[#2b2d31] transition-all duration-300 flex flex-col justify-between shadow-lg"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-2 gap-2">
+                            <h4 className="text-white font-bold text-sm group-hover/svc:text-cyan-400 transition-colors">
+                              {svc.name}
+                            </h4>
+                            {svc.featured && (
+                              <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
+                            )}
+                          </div>
+                          <p className="text-[11px] text-slate-300 line-clamp-2 leading-relaxed">
+                            {svc.shortDescription}
+                          </p>
+                        </div>
+
+                        <div className="flex justify-end mt-4 pt-2 border-t border-white/[0.05]">
+                          <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/svc:text-cyan-400 group-hover/svc:translate-x-1 transition-all" />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeDetailTab === 'blueprint' && (
+                <div className="grid sm:grid-cols-2 gap-6 pt-4 animate-fade-in mb-8">
                   {/* Personas */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-slate-400">
@@ -811,48 +1141,60 @@ const Services = () => {
                       <Milestone className="w-4 h-4 text-emerald-400" />
                       <span className="text-xs font-bold uppercase tracking-wider font-mono">Engagement Blueprint</span>
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed font-medium">
+                    <p className="text-xs text-slate-300 leading-relaxed font-medium">
                       {activeDeptInfo.deliveryApproach}
                     </p>
                   </div>
                 </div>
+              )}
 
-              </div>
-
-              {/* Middle: Services Grid Catalog */}
-              <div className="space-y-4 mb-8">
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest font-mono block">
-                  Available Modules
-                </span>
-                
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {activeDeptServices.map((svc) => (
-                    <Link
-                      key={svc.slug}
-                      to={`/services/${activeDept}/${svc.slug}`}
-                      className="group/svc relative rounded-2xl p-5 border border-white/10 bg-[#222428] hover:border-white/20 hover:bg-[#2b2d31] transition-all duration-300 flex flex-col justify-between shadow-lg"
-                    >
+              {activeDetailTab === 'impact' && (() => {
+                const study = departmentCaseStudies[activeDept];
+                return (
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 space-y-6 animate-fade-in mb-8 relative overflow-hidden">
+                    {/* Subtle decorative glow */}
+                    <div 
+                      className="absolute -top-12 -right-12 w-28 h-28 rounded-full blur-2xl opacity-20 pointer-events-none" 
+                      style={{ backgroundColor: activeDeptInfo.accentColor }}
+                    />
+                    
+                    <div className="flex items-start gap-4">
+                      <div 
+                        className="text-3xl font-black shrink-0 tracking-tight leading-none"
+                        style={{ color: activeDeptInfo.accentColor }}
+                      >
+                        {study.metric}
+                      </div>
                       <div>
-                        <div className="flex items-center justify-between mb-2 gap-2">
-                          <h4 className="text-white font-bold text-sm group-hover/svc:text-cyan-400 transition-colors">
-                            {svc.name}
-                          </h4>
-                          {svc.featured && (
-                            <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
-                          )}
-                        </div>
-                        <p className="text-[11px] text-slate-300 line-clamp-2 leading-relaxed">
-                          {svc.shortDescription}
-                        </p>
+                        <div className="text-xs font-bold uppercase tracking-wider text-white font-mono">{study.title}</div>
+                        <p className="text-[11px] text-slate-400 mt-1 leading-normal">{study.label}</p>
                       </div>
+                    </div>
 
-                      <div className="flex justify-end mt-4 pt-2 border-t border-white/[0.05]">
-                        <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/svc:text-cyan-400 group-hover/svc:translate-x-1 transition-all" />
+                    <div className="space-y-4 pt-2 border-t border-white/5">
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono block">The Challenge</span>
+                        <p className="text-xs text-slate-300 leading-relaxed">{study.challenge}</p>
                       </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono block">The Solution</span>
+                        <p className="text-xs text-slate-300 leading-relaxed">{study.solution}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end pt-2">
+                      <Link 
+                        to="/case-studies"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold transition-all hover:opacity-80"
+                        style={{ color: activeDeptInfo.accentColor }}
+                      >
+                        Read Full Case Study
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* Bottom: Department CTA */}
               <div className="pt-6 border-t border-white/5 flex items-center justify-between flex-wrap gap-4 mt-auto">
@@ -1003,6 +1345,161 @@ const Services = () => {
                 </div>
               </motion.div>
             </AnimatePresence>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Capability Configurator Section */}
+      <section className="py-24 bg-gray-50 dark:bg-[#050505] transition-colors duration-300 border-t border-gray-100 dark:border-white/5 relative overflow-hidden">
+        {/* Glow accent */}
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-cyan/5 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+          
+          {/* Header */}
+          <div className="mb-16 text-center max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
+              Wave 1 Plan <span className="bg-brand-gradient bg-clip-text text-transparent">Configurator</span>
+            </h2>
+            <p className="text-gray-500 dark:text-slate-400 text-base md:text-lg leading-relaxed">
+              De-risk your engineering roadmap. Select your target capabilities below to build a dynamic Wave 1 Diagnostic and execution blueprint.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+            {/* Left Panel: Capabilities Selection */}
+            <div className="lg:col-span-7 bg-[#0a0a0c] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest font-mono block border-b border-white/5 pb-3">
+                Select Target Capabilities
+              </span>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                {configuratorOptions.map((opt) => {
+                  const isSelected = selectedCapabilities.includes(opt.id);
+                  const deptInfo = departmentsData[opt.dept];
+                  return (
+                    <button
+                      key={opt.id}
+                      onClick={() => toggleCapability(opt.id)}
+                      className={`text-left p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between h-[120px] active:scale-[0.98] ${
+                        isSelected
+                          ? 'bg-[#111827] border-cyan-400 shadow-xl shadow-cyan-900/5'
+                          : 'bg-black/50 border-white/5 hover:border-white/10 hover:bg-white/[0.02]'
+                      }`}
+                    >
+                      <div className="w-full">
+                        <div className="flex justify-between items-center gap-2 mb-1">
+                          <span 
+                            className="text-[9px] font-bold uppercase tracking-wider font-mono px-2 py-0.5 rounded"
+                            style={{ 
+                              color: isSelected ? '#22d3ee' : deptInfo.accentColor,
+                              backgroundColor: isSelected ? 'rgba(34,211,238,0.1)' : `${deptInfo.accentColor}10`
+                            }}
+                          >
+                            {deptInfo.shortName}
+                          </span>
+                          {isSelected && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
+                          )}
+                        </div>
+                        <h4 className="text-white font-bold text-xs leading-snug">{opt.label}</h4>
+                      </div>
+                      <p className="text-[10px] text-slate-400 line-clamp-2 leading-relaxed mt-1">
+                        {opt.desc}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right Panel: Plan Blueprint Compilation */}
+            <div className="lg:col-span-5 bg-black border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden">
+              {/* Subtle background glow */}
+              <div className="absolute -top-12 -left-12 w-32 h-32 bg-cyan-400/5 rounded-full blur-2xl pointer-events-none" />
+
+              <div className="space-y-6 relative z-10 w-full">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest font-mono block border-b border-white/5 pb-3">
+                  Wave 1 Blueprint Preview
+                </span>
+
+                {selectedCapabilities.length === 0 ? (
+                  <div className="py-12 text-center space-y-4">
+                    <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center mx-auto text-slate-500 font-mono text-xl animate-pulse">
+                      ?
+                    </div>
+                    <p className="text-xs text-slate-400 max-w-[240px] mx-auto leading-relaxed">
+                      Select one or more capabilities from the configuration panel to generate your custom Wave 1 roadmap preview.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-5 animate-fade-in">
+                    {/* Diagnostic Scope */}
+                    <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 space-y-3">
+                      <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider font-mono">Engagement Parameters</div>
+                      <div className="grid grid-cols-2 gap-4 font-mono text-[10px] text-slate-300">
+                        <div>
+                          <span className="text-slate-500 block text-[9px] uppercase">Est. SRE Audit</span>
+                          <span className="text-white font-bold text-sm">{selectedCapabilities.length * 15} Hours</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block text-[9px] uppercase">Codebase Evaluation</span>
+                          <span className="text-white font-bold text-sm">{selectedCapabilities.length * 12} Files</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block text-[9px] uppercase">Compliance Mapping</span>
+                          <span className="text-white font-bold text-sm">{selectedCapabilities.some(id => id.includes('compliance')) ? 'Required' : 'Optional'}</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block text-[9px] uppercase">Timeline Phase</span>
+                          <span className="text-white font-bold text-sm">90-Day Diagnostic</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Wave 1 Deliverables */}
+                    <div className="space-y-3">
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-mono">Dynamic Deliverables</div>
+                      <div className="space-y-2">
+                        {selectedCapabilities.map((id) => {
+                          let deliv = '';
+                          if (id === 'cognition-ai') deliv = "eQORE™ Autonomous Agent trust boundaries & process maps";
+                          else if (id === 'cognition-data') deliv = "Unified MLOps pipeline structure & model drift analysis";
+                          else if (id === 'foundry-cloud') deliv = "FinOps cloud footprint audit & AWS/Azure optimization report";
+                          else if (id === 'foundry-devops') deliv = "DevOps workflow assessment & SRE baseline telemetry";
+                          else if (id === 'reimagine-legacy') deliv = "COBOL transaction mapping & zero-downtime database sync blueprint";
+                          else if (id === 'reimagine-api') deliv = "Serverless microservices API layout & legacy decoupling map";
+                          else if (id === 'shield-security') deliv = "Threat surface scanning reports & patch automation plans";
+                          else if (id === 'shield-compliance') deliv = "SOC 2 Type II control compliance checklist";
+                          else if (id === 'platforms-crm') deliv = "ServiceNow & Salesforce integration logic & consolidation roadmap";
+                          else if (id === 'growth-pipeline') deliv = "Sales pipeline geo-tracking attribution scoring rules";
+                          
+                          return (
+                            <div key={id} className="flex items-start gap-2 text-xs text-slate-300 leading-snug">
+                              <span className="text-emerald-400 shrink-0 mt-0.5">✓</span>
+                              <span>{deliv}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {selectedCapabilities.length > 0 && (
+                <div className="pt-6 border-t border-white/5 mt-8 animate-fade-in relative z-10">
+                  <Link
+                    to={configuratorUrl}
+                    className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white text-slate-900 font-bold rounded-2xl hover:bg-slate-100 active:scale-[0.98] transition-all text-xs shadow-xl"
+                  >
+                    Submit Custom Configuration
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
 
         </div>
