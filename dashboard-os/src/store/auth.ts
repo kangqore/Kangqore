@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { api } from '@lib/api'
+import { api, DEMO_TOKEN } from '@lib/api'
 
 export type UserRole = 'ADMIN' | 'CLIENT' | 'PARTNER' | 'INVESTOR' | 'JOB_SEEKER'
 
@@ -16,6 +16,7 @@ interface AuthStore {
   user: AuthUser | null
   token: string | null
   isAuthenticated: boolean
+  isDemo: boolean
   isLoading: boolean
   error: string | null
 
@@ -74,8 +75,8 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
   // Hydrate immediately from whatever session is present (website or own)
   const websiteSession = readWebsiteSession()
   const initial = websiteSession
-    ? { user: websiteSession.user, token: websiteSession.token, isAuthenticated: true }
-    : { user: null, token: null, isAuthenticated: false }
+    ? { user: websiteSession.user, token: websiteSession.token, isAuthenticated: true, isDemo: websiteSession.token === DEMO_TOKEN }
+    : { user: null, token: null, isAuthenticated: false, isDemo: false }
 
   return {
     ...initial,
@@ -89,7 +90,7 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
           '/auth/login', { email, password }
         )
         persistToWebsiteKeys(data.token, data.user)
-        set({ user: data.user, token: data.token, isAuthenticated: true, isLoading: false })
+        set({ user: data.user, token: data.token, isAuthenticated: true, isDemo: false, isLoading: false })
       } catch (err: unknown) {
         const msg = (err as { response?: { data?: { message?: string } } })
           ?.response?.data?.message ?? 'Invalid credentials'
@@ -105,7 +106,7 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
           '/auth/register', payload
         )
         persistToWebsiteKeys(data.token, data.user)
-        set({ user: data.user, token: data.token, isAuthenticated: true, isLoading: false })
+        set({ user: data.user, token: data.token, isAuthenticated: true, isDemo: false, isLoading: false })
       } catch (err: unknown) {
         const msg = (err as { response?: { data?: { message?: string } } })
           ?.response?.data?.message ?? 'Signup failed'
@@ -123,8 +124,8 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
         JOB_SEEKER: { id: 'demo-job',      name: 'Mia Johansson', email: 'mia.j@outlook.com',      role: 'JOB_SEEKER' },
       }
       const user = demoUsers[role]
-      persistToWebsiteKeys('demo-token', user)
-      set({ user, token: 'demo-token', isAuthenticated: true, error: null })
+      persistToWebsiteKeys(DEMO_TOKEN, user)
+      set({ user, token: DEMO_TOKEN, isAuthenticated: true, isDemo: true, error: null })
     },
 
     logout: () => {

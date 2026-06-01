@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { LayoutGrid, KanbanSquare, Mail, Brain } from 'lucide-react'
 import { cn } from '@design-system/cn'
-import { api } from '@lib/api'
+import { api, isDemo } from '@lib/api'
 import { useLeadsStore } from './store'
 import { LeadsPipeline } from './pages/LeadsPipeline'
 import { LeadProfile }   from './pages/LeadProfile'
@@ -57,6 +57,7 @@ export function LeadsModule() {
       (r.data.leads ?? r.data ?? []) as Record<string, unknown>[]
     ),
     staleTime: 1000 * 60 * 5,
+    enabled: !isDemo(),
   })
   useEffect(() => {
     if (data?.length) hydrate(data.map((e, i) => toLead(e, i)))

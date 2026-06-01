@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { LayoutDashboard, FileText, PieChart, TrendingDown } from 'lucide-react'
 import { cn } from '@design-system/cn'
-import { api } from '@lib/api'
+import { api, isDemo } from '@lib/api'
 import { toInvoices } from '@lib/transforms'
 import { useFinanceStore } from './store'
 import { FinanceOverview } from './pages/FinanceOverview'
@@ -24,6 +24,7 @@ export function FinanceModule() {
     queryKey: ['invoices'],
     queryFn: () => api.get('/invoices').then(r => r.data.invoices ?? []),
     staleTime: 1000 * 60 * 5,
+    enabled: !isDemo(),
   })
   useEffect(() => { if (data) hydrateInvoices(toInvoices(data)) }, [data, hydrateInvoices])
 

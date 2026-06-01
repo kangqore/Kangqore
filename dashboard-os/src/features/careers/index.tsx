@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { LayoutGrid, KanbanSquare } from 'lucide-react'
 import { cn } from '@design-system/cn'
-import { api } from '@lib/api'
+import { api, isDemo } from '@lib/api'
 import { useCareersStore } from './store'
 import { CareersOverview } from './pages/CareersOverview'
 import { PipelinePage }    from './pages/PipelinePage'
@@ -45,6 +45,7 @@ export function CareersModule() {
       (r.data.applications ?? r.data ?? []) as Record<string, unknown>[]
     ),
     staleTime: 1000 * 60 * 5,
+    enabled: !isDemo(),
   })
   useEffect(() => {
     if (applications?.length) hydrateCandidates(applications.map((a, i) => toCandidate(a, i)))

@@ -2,6 +2,7 @@ import { FileText, CheckCircle2, Clock, AlertCircle, Download } from 'lucide-rea
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
+import { useClientInvoices } from '../useClientData'
 
 const INVOICES = [
   { id: 'INV-2026-041', project: 'Patient Portal v2 — Sprint 11-12',        date: '2026-05-20', due: '2026-06-04', amount: 42000, status: 'overdue'  },
@@ -20,8 +21,23 @@ const STATUS_CONFIG = {
 }
 
 export function ClientInvoices() {
-  const paid     = INVOICES.filter(i => i.status === 'paid').reduce((s, i) => s + i.amount, 0)
-  const outstanding = INVOICES.filter(i => i.status === 'overdue' || i.status === 'pending').reduce((s, i) => s + i.amount, 0)
+  const { data: apiInvoices } = useClientInvoices()
+
+  const invoices = (apiInvoices as Record<string, unknown>[] | undefined)?.length
+    ? (apiInvoices as Record<string, unknown>[]).map(i => ({
+        id:      String(i.invoiceNumber ?? i.id ?? '—'),
+        project: String((i.project as Record<string,unknown>)?.title ?? i.projectName ?? '—'),
+        date:    String(i.issueDate ?? i.createdAt ?? '').slice(0, 10),
+        due:     String(i.dueDate ?? '').slice(0, 10),
+        amount:  Number(i.amount ?? 0),
+        status:  (['paid','overdue','pending','upcoming','cancelled'].includes(String(i.status ?? '').toLowerCase())
+                  ? String(i.status).toLowerCase()
+                  : 'pending') as string,
+      }))
+    : INVOICES
+
+  const paid         = invoices.filter(i => i.status === 'paid').reduce((s, i) => s + i.amount, 0)
+  const outstanding  = invoices.filter(i => i.status === 'overdue' || i.status === 'pending').reduce((s, i) => s + i.amount, 0)
 
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
@@ -35,7 +51,7 @@ export function ClientInvoices() {
         {[
           { label: 'Total Paid',       value: `£${(paid / 1000).toFixed(0)}k`,        color: 'text-green-600 bg-green-50' },
           { label: 'Outstanding',      value: outstanding > 0 ? `£${(outstanding / 1000).toFixed(0)}k` : '£0', color: outstanding > 0 ? 'text-red-600 bg-red-50' : 'text-slate-600 bg-slate-100' },
-          { label: 'Total Engagement', value: `£${(INVOICES.filter(i => i.status !== 'upcoming').reduce((s, i) => s + i.amount, 0) / 1000).toFixed(0)}k`, color: 'text-blue-600 bg-blue-50' },
+          { label: 'Total Engagement', value: `£${(invoices.filter(i => i.status !== 'upcoming').reduce((s, i) => s + i.amount, 0) / 1000).toFixed(0)}k`, color: 'text-blue-600 bg-blue-50' },
         ].map(s => (
           <div key={s.label} className={`rounded-xl p-5 ${s.color.split(' ')[1]}`}>
             <p className="text-xs font-medium text-slate-600 mb-1">{s.label}</p>
@@ -64,7 +80,7 @@ export function ClientInvoices() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {INVOICES.map(inv => {
+              {invoices.map(inv => {
                 const cfg = STATUS_CONFIG[inv.status as keyof typeof STATUS_CONFIG]
                 const Icon = cfg.icon
                 return (

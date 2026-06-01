@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { CheckSquare, Clock, ChevronDown, ChevronRight } from 'lucide-react'
-
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
+import { usePartnerProjects } from '../usePartnerData'
 
 type TaskStatus = 'pending' | 'in-progress' | 'review' | 'done'
 
@@ -30,6 +30,26 @@ const PRIORITY_COLOR: Record<string, string> = {
 
 export function PartnerTasks() {
   const [openId, setOpenId] = useState<string | null>(null)
+  const { data: apiProjects } = usePartnerProjects()
+
+  // Flatten deliverables from real projects into tasks; fall back to ALL_TASKS
+  const tasks = (apiProjects as Record<string, unknown>[] | undefined)?.length
+    ? (apiProjects as Record<string, unknown>[]).flatMap((p, pi) =>
+        ((p.deliverables as Record<string, unknown>[]) ?? []).map((d, di) => ({
+          id:       String(d.id ?? `t${pi}-${di}`),
+          project:  String(p.title ?? p.name ?? 'Project'),
+          title:    String(d.title ?? 'Task'),
+          priority: 'medium' as const,
+          status:   (['pending','in-progress','review','done'].includes(
+                      String(d.status ?? '').toLowerCase().replace('_','-'))
+                        ? String(d.status).toLowerCase().replace('_','-')
+                        : 'pending') as TaskStatus,
+          due:      String(d.dueDate ?? d.deadline ?? '—').slice(0, 10),
+          progress: d.status === 'COMPLETED' ? 100 : d.status === 'IN_PROGRESS' ? 50 : 0,
+          desc:     String(d.description ?? ''),
+        }))
+      )
+    : ALL_TASKS
 
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-6">
@@ -41,17 +61,17 @@ export function PartnerTasks() {
       <div className="overflow-x-auto pb-4">
         <div className="flex gap-4 min-w-[800px]">
           {STATUS_COLS.map(col => {
-            const tasks = ALL_TASKS.filter(t => t.status === col.id)
+            const colTasks = tasks.filter(t => t.status === col.id)
             return (
               <div key={col.id} className="flex-1">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: col.color }} />
                   <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">{col.label}</span>
-                  <span className="ml-auto text-xs bg-slate-100 text-slate-500 rounded-full px-1.5 py-0.5">{tasks.length}</span>
+                  <span className="ml-auto text-xs bg-slate-100 text-slate-500 rounded-full px-1.5 py-0.5">{colTasks.length}</span>
                 </div>
 
                 <div className="space-y-2">
-                  {tasks.map(t => (
+                  {colTasks.map(t => (
                     <div
                       key={t.id}
                       className={`bg-white border border-slate-200 border-l-4 rounded-xl shadow-sm cursor-pointer hover:border-blue-200 transition-all ${PRIORITY_COLOR[t.priority]}`}
@@ -96,7 +116,7 @@ export function PartnerTasks() {
                     </div>
                   ))}
 
-                  {tasks.length === 0 && (
+                  {colTasks.length === 0 && (
                     <div className="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center">
                       <p className="text-xs text-slate-400">No tasks</p>
                     </div>

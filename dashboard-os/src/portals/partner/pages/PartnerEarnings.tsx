@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
 import { Progress } from '@design-system/components/Progress'
+import { usePartnerEarnings } from '../usePartnerData'
 
 const PAYMENTS = [
   { id: 'PAY-026', period: 'May 2026',      amount: 8400,  project: 'Urban Mobility + GreenSpark',   date: '2026-05-28', status: 'paid',    ref: 'BACS-44129' },
@@ -23,8 +24,23 @@ const MONTHLY = [
 const maxEarning = Math.max(...MONTHLY.map(m => m.amount))
 
 export function PartnerEarnings() {
-  const totalPaid    = PAYMENTS.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0)
-  const totalPending = PAYMENTS.filter(p => p.status === 'pending').reduce((s, p) => s + p.amount, 0)
+  const { data: earningsData } = usePartnerEarnings()
+
+  // Map API invoices → payment rows; fall back to PAYMENTS mock
+  const payments = (earningsData?.invoices as Record<string, unknown>[] | undefined)?.length
+    ? (earningsData.invoices as Record<string, unknown>[]).map((inv, i) => ({
+        id:      String(inv.id ?? `PAY-${i}`),
+        period:  String(inv.issueDate ?? '').slice(0, 7),
+        amount:  Number(inv.amount ?? 0),
+        project: String((inv.project as Record<string,unknown>)?.title ?? '—'),
+        date:    String(inv.paidDate ?? inv.updatedAt ?? '').slice(0, 10),
+        status:  String(inv.status ?? 'pending').toLowerCase() === 'paid' ? 'paid' : 'pending',
+        ref:     String(inv.invoiceNumber ?? '—'),
+      }))
+    : PAYMENTS
+
+  const totalPaid    = payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0)
+  const totalPending = payments.filter(p => p.status === 'pending').reduce((s, p) => s + p.amount, 0)
 
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
@@ -111,7 +127,7 @@ export function PartnerEarnings() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {PAYMENTS.map(p => (
+              {payments.map(p => (
                 <tr key={p.id} className="hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5 font-mono text-xs text-slate-500">{p.id}</td>
                   <td className="px-5 py-3.5 font-medium text-slate-900">{p.period}</td>

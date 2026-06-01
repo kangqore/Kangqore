@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { LayoutGrid, CheckSquare, DollarSign } from 'lucide-react'
-import { PortalNavbar }      from '../layout/PortalNavbar'
+import { PortalNavbar }  from '../layout/PortalNavbar'
+import { ModuleShell }  from '@components/ModuleShell'
 import { PartnerDashboard }  from './pages/PartnerDashboard'
 import { PartnerTasks }      from './pages/PartnerTasks'
 import { PartnerEarnings }   from './pages/PartnerEarnings'
@@ -20,12 +21,14 @@ export function PartnerPortal() {
         tabs={TABS}
         basePath="/portal/partner"
       />
+      <ModuleShell>
       <Routes>
         <Route index           element={<PartnerDashboard />} />
         <Route path="tasks"    element={<PartnerTasks />}     />
         <Route path="earnings" element={<PartnerEarnings />}  />
         <Route path="*"        element={<Navigate to="/portal/partner" replace />} />
       </Routes>
+      </ModuleShell>
     </div>
   )
 }
