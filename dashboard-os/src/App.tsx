@@ -1,29 +1,30 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
-import { OSLayout } from '@components/shell/OSLayout'
-import { ProtectedRoute } from '@components/auth/ProtectedRoute'
-import { LoginPage } from '@pages/auth/LoginPage'
-import { SignupPage } from '@pages/auth/SignupPage'
-import { PlaceholderPage } from '@pages/PlaceholderPage'
-import { StrategyModule }   from '@features/strategy'
-import { ProjectsModule }   from '@features/projects'
-import { ResourcesModule }  from '@features/resources'
-import { FinanceModule }    from '@features/finance'
+import { OSLayout }        from '@components/shell/OSLayout'
+import { ProtectedRoute }  from '@components/auth/ProtectedRoute'
+import { LoginPage }       from '@pages/auth/LoginPage'
+import { SignupPage }      from '@pages/auth/SignupPage'
+import { StrategyModule }  from '@features/strategy'
+import { ProjectsModule }  from '@features/projects'
+import { ResourcesModule } from '@features/resources'
+import { FinanceModule }   from '@features/finance'
 import { ClientsModule }   from '@features/clients'
 import { PartnersModule }  from '@features/partners'
+import { LeadsModule }     from '@features/leads'
+import { InvestorsModule } from '@features/investors'
+import { DepartmentsModule } from '@features/departments'
+import { WorkflowsModule }   from '@features/workflows'
+import { MarketingModule }   from '@features/marketing'
+import { CareersModule }     from '@features/careers'
+import { AnalyticsModule }   from '@features/analytics'
+import { KIMMMModule }       from '@features/kimmp'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { staleTime: 1000 * 60 * 5, retry: 1 },
   },
 })
-
-const PLACEHOLDER_MODULES = [
-  'leads', 'investors',
-  'careers', 'marketing', 'workflows', 'departments',
-  'analytics', 'kimmp',
-]
 
 export default function App() {
   return (
@@ -45,28 +46,27 @@ export default function App() {
           >
             <Route index element={<Navigate to="/os/strategy" replace />} />
 
-            {/* Phase 1a — Strategy */}
-            <Route path="strategy/*" element={<StrategyModule />} />
+            {/* Phase 1 — Core Operations */}
+            <Route path="strategy/*"    element={<StrategyModule />}    />
+            <Route path="projects/*"    element={<ProjectsModule />}    />
+            <Route path="resources/*"   element={<ResourcesModule />}   />
+            <Route path="finance/*"     element={<FinanceModule />}     />
 
-            {/* Phase 1b — Projects & Agile */}
-            <Route path="projects/*"  element={<ProjectsModule />}  />
+            {/* Phase 2 — CRM */}
+            <Route path="clients/*"     element={<ClientsModule />}     />
+            <Route path="partners/*"    element={<PartnersModule />}    />
+            <Route path="leads/*"       element={<LeadsModule />}       />
+            <Route path="investors/*"   element={<InvestorsModule />}   />
 
-            {/* Phase 1c — Resources & Team */}
-            <Route path="resources/*" element={<ResourcesModule />} />
+            {/* Phase 3 — Operations */}
+            <Route path="departments/*" element={<DepartmentsModule />} />
+            <Route path="workflows/*"   element={<WorkflowsModule />}   />
+            <Route path="marketing/*"   element={<MarketingModule />}   />
+            <Route path="careers/*"     element={<CareersModule />}     />
 
-            {/* Phase 1d — Financial Operations */}
-            <Route path="finance/*"   element={<FinanceModule />}   />
-
-            {/* Phase 2a — Client Management */}
-            <Route path="clients/*"   element={<ClientsModule />}   />
-
-            {/* Phase 2b — Partner Management */}
-            <Route path="partners/*"  element={<PartnersModule />}  />
-
-            {/* Remaining modules — placeholder until their phase */}
-            {PLACEHOLDER_MODULES.map(mod => (
-              <Route key={mod} path={`${mod}/*`} element={<PlaceholderPage />} />
-            ))}
+            {/* Phase 4 — Intelligence */}
+            <Route path="analytics/*"   element={<AnalyticsModule />}   />
+            <Route path="kimmp/*"       element={<KIMMMModule />}       />
           </Route>
 
           <Route path="/" element={<Navigate to="/login" replace />} />
