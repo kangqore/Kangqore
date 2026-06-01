@@ -452,6 +452,8 @@ export const CONCIERGE_SUGGESTED_PROMPTS = [
   'I want to build an app',
   'I need AI automation',
   'Compare Kangqore services',
+  'What is your approach to SAP S/4HANA migration?',
+  'Do you have SOC 2 Type II?',
   'Book a consultation',
 ];
 

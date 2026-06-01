@@ -511,6 +511,8 @@ const ConciergeSection = () => {
                   "How does your GCC model work?",
                   "What is your approach to Agentic AI?",
                   "How do you ensure data security?",
+                  "What is your approach to SAP S/4HANA migration?",
+                  "Do you have SOC 2 Type II?",
                   "Schedule Your Consultation",
                   "Contact Us...",
                 ].map((p) => (
