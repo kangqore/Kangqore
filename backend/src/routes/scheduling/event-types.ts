@@ -23,6 +23,9 @@ const eventTypeSchema = Joi.object({
   isPublic: Joi.boolean().default(true),
   location: Joi.string().max(500).optional().allow(''),
   locationType: Joi.string().valid('VIDEO', 'IN_PERSON', 'PHONE', 'CUSTOM').default('VIDEO'),
+  videoProvider: Joi.string().valid('JITSI', 'ZOOM', 'GOOGLE_MEET').default('JITSI'),
+  assignmentStrategy: Joi.string().valid('SINGLE_HOST', 'ROUND_ROBIN', 'COLLECTIVE', 'HOST_PICK').default('SINGLE_HOST'),
+  durationOptions: Joi.array().items(Joi.number().integer().min(5).max(480)).optional().allow(null),
   requirePhone: Joi.boolean().default(false),
   requireCompany: Joi.boolean().default(false),
   customQuestions: Joi.array().items(
@@ -229,6 +232,64 @@ router.delete('/:id', authenticate, async (req: AuthRequest, res: Response, next
   } catch (error) {
     next(error);
   }
+});
+
+/**
+ * GET /api/scheduling/event-types/:id/members
+ * List team members for an event type
+ */
+router.get('/:id/members', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) return res.sendStatus(401);
+    const members = await prisma.eventTypeTeamMember.findMany({
+      where: { eventTypeId: req.params.id },
+      include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } }
+    });
+    res.json({ success: true, members });
+  } catch (error) { next(error); }
+});
+
+/**
+ * POST /api/scheduling/event-types/:id/members
+ * Add a user to the team for this event type
+ * Body: { userId, weight? }
+ */
+router.post('/:id/members', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) return res.sendStatus(401);
+    const { userId, weight = 1 } = req.body;
+    if (!userId) throw createError('userId is required', 400);
+
+    const eventType = await prisma.eventType.findUnique({ where: { id: req.params.id } });
+    if (!eventType) throw createError('Event type not found', 404);
+    if (eventType.hostId !== req.user.id && req.user.role !== 'ADMIN') throw createError('Unauthorized', 403);
+
+    const member = await prisma.eventTypeTeamMember.upsert({
+      where: { eventTypeId_userId: { eventTypeId: req.params.id, userId } },
+      create: { eventTypeId: req.params.id, userId, weight: Number(weight) },
+      update: { weight: Number(weight) },
+      include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } }
+    });
+    res.status(201).json({ success: true, member });
+  } catch (error) { next(error); }
+});
+
+/**
+ * DELETE /api/scheduling/event-types/:id/members/:userId
+ * Remove a user from the team
+ */
+router.delete('/:id/members/:userId', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) return res.sendStatus(401);
+    const eventType = await prisma.eventType.findUnique({ where: { id: req.params.id } });
+    if (!eventType) throw createError('Event type not found', 404);
+    if (eventType.hostId !== req.user.id && req.user.role !== 'ADMIN') throw createError('Unauthorized', 403);
+
+    await prisma.eventTypeTeamMember.deleteMany({
+      where: { eventTypeId: req.params.id, userId: req.params.userId }
+    });
+    res.json({ success: true });
+  } catch (error) { next(error); }
 });
 
 export default router;

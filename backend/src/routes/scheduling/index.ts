@@ -15,6 +15,10 @@ import workflowRoutes from './workflows';
 import analyticsRoutes from './analytics';
 import exportRoutes from './export';
 import auditRoutes from './audit';
+import zoomRoutes from './zoom';
+import crmRoutes from './crm';
+import customDomainRoutes from './custom-domains';
+import zapierRoutes from './zapier';
 
 const router = Router();
 
@@ -34,5 +38,9 @@ router.use('/workflows', workflowRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/export', exportRoutes);
 router.use('/audit', auditRoutes);
+router.use('/zoom', zoomRoutes);
+router.use('/crm', crmRoutes);
+router.use('/custom-domains', customDomainRoutes);
+router.use('/zapier', zapierRoutes);
 
 export default router;

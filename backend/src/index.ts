@@ -57,6 +57,7 @@ import { authenticate, authorize } from './middleware/auth';
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
 import { legacyRedirectsMiddleware } from './middleware/legacyRedirects';
+import { customDomainRouter } from './middleware/customDomainRouter';
 import { initializeSocket, getIO } from './socket';
 
 
@@ -89,6 +90,9 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ extended: true, limit: '500mb' }));
+
+// Custom domain detection — attaches req.customDomain for white-label booking pages
+app.use(customDomainRouter);
 
 // Rate limiting
 app.use(rateLimiter);
