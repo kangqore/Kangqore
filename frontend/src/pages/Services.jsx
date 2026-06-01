@@ -1089,7 +1089,7 @@ const Services = () => {
                     {activeDeptServices.map((svc) => (
                       <Link
                         key={svc.slug}
-                        to={`/services/${activeDept}/${svc.slug}`}
+                        to={`/services/${svc.slug}`}
                         className="group/svc relative rounded-2xl p-5 border border-white/10 bg-[#222428] hover:border-white/20 hover:bg-[#2b2d31] transition-all duration-300 flex flex-col justify-between shadow-lg"
                       >
                         <div>
