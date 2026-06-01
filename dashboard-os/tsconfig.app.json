@@ -32,7 +32,8 @@
       "@lib/*":            ["./src/lib/*"],
       "@pages/*":          ["./src/pages/*"],
       "@store/*":          ["./src/store/*"],
-      "@types/*":          ["./src/types/*"]
+      "@types/*":          ["./src/types/*"],
+      "@portals/*":        ["./src/portals/*"]
     }
   },
   "include": ["src"]

@@ -5,20 +5,24 @@ import { OSLayout }        from '@components/shell/OSLayout'
 import { ProtectedRoute }  from '@components/auth/ProtectedRoute'
 import { LoginPage }       from '@pages/auth/LoginPage'
 import { SignupPage }      from '@pages/auth/SignupPage'
-import { StrategyModule }  from '@features/strategy'
-import { ProjectsModule }  from '@features/projects'
-import { ResourcesModule } from '@features/resources'
-import { FinanceModule }   from '@features/finance'
-import { ClientsModule }   from '@features/clients'
-import { PartnersModule }  from '@features/partners'
-import { LeadsModule }     from '@features/leads'
-import { InvestorsModule } from '@features/investors'
+import { StrategyModule }    from '@features/strategy'
+import { ProjectsModule }    from '@features/projects'
+import { ResourcesModule }   from '@features/resources'
+import { FinanceModule }     from '@features/finance'
+import { ClientsModule }     from '@features/clients'
+import { PartnersModule }    from '@features/partners'
+import { LeadsModule }       from '@features/leads'
+import { InvestorsModule }   from '@features/investors'
 import { DepartmentsModule } from '@features/departments'
 import { WorkflowsModule }   from '@features/workflows'
 import { MarketingModule }   from '@features/marketing'
 import { CareersModule }     from '@features/careers'
 import { AnalyticsModule }   from '@features/analytics'
 import { KIMMMModule }       from '@features/kimmp'
+import { ClientPortal }      from '@portals/client'
+import { PartnerPortal }     from '@portals/partner'
+import { InvestorPortal }    from '@portals/investor'
+import { CareersPortal }     from '@portals/careers'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,11 +39,11 @@ export default function App() {
           <Route path="/login"  element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
 
-          {/* Protected OS */}
+          {/* Internal OS — ADMIN only */}
           <Route
             path="/os"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['ADMIN']}>
                 <OSLayout />
               </ProtectedRoute>
             }
@@ -68,6 +72,40 @@ export default function App() {
             <Route path="analytics/*"   element={<AnalyticsModule />}   />
             <Route path="kimmp/*"       element={<KIMMMModule />}       />
           </Route>
+
+          {/* Phase 5 — External Portals */}
+          <Route
+            path="/portal/client/*"
+            element={
+              <ProtectedRoute allowedRoles={['CLIENT', 'ADMIN']}>
+                <ClientPortal />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/portal/partner/*"
+            element={
+              <ProtectedRoute allowedRoles={['PARTNER', 'ADMIN']}>
+                <PartnerPortal />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/portal/investor/*"
+            element={
+              <ProtectedRoute allowedRoles={['INVESTOR', 'ADMIN']}>
+                <InvestorPortal />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/portal/careers/*"
+            element={
+              <ProtectedRoute allowedRoles={['JOB_SEEKER', 'ADMIN']}>
+                <CareersPortal />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="*" element={<Navigate to="/login" replace />} />

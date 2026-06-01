@@ -158,13 +158,37 @@ export function LoginPage() {
             </div>
           </div>
 
-          <button
-            onClick={() => { loginAsDemo(); navigate('/os/strategy', { replace: true }) }}
-            className="w-full flex items-center justify-center gap-2 h-9 rounded-xl border-2 border-dashed border-blue-200 text-sm font-semibold text-blue-600 hover:bg-blue-50 hover:border-blue-400 transition-all duration-150"
-          >
-            <Zap className="w-4 h-4" />
-            Continue as Demo (no login required)
-          </button>
+          <div className="space-y-2">
+            <button
+              onClick={() => { loginAsDemo(); navigate('/os/strategy', { replace: true }) }}
+              className="w-full flex items-center justify-center gap-2 h-9 rounded-xl border-2 border-dashed border-blue-200 text-sm font-semibold text-blue-600 hover:bg-blue-50 hover:border-blue-400 transition-all duration-150"
+            >
+              <Zap className="w-4 h-4" />
+              Demo — Admin OS
+            </button>
+            <div className="grid grid-cols-2 gap-2">
+              {([
+                { label: 'Client Portal',   role: 'CLIENT',     path: '/portal/client',   color: 'border-blue-200 text-blue-500 hover:bg-blue-50'   },
+                { label: 'Partner Portal',  role: 'PARTNER',    path: '/portal/partner',  color: 'border-green-200 text-green-600 hover:bg-green-50'  },
+                { label: 'Investor Portal', role: 'INVESTOR',   path: '/portal/investor', color: 'border-purple-200 text-purple-600 hover:bg-purple-50'},
+                { label: 'Careers Portal',  role: 'JOB_SEEKER', path: '/portal/careers',  color: 'border-orange-200 text-orange-600 hover:bg-orange-50'},
+              ] as const).map(d => (
+                <button
+                  key={d.role}
+                  onClick={() => {
+                    useAuthStore.setState({
+                      user: { id: `demo-${d.role.toLowerCase()}`, name: 'Demo User', email: `demo@kangqore.com`, role: d.role },
+                      token: 'demo-token', isAuthenticated: true, error: null,
+                    })
+                    navigate(d.path, { replace: true })
+                  }}
+                  className={`flex items-center justify-center gap-1.5 h-8 rounded-xl border border-dashed text-xs font-semibold transition-all ${d.color}`}
+                >
+                  {d.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Don't have an account?{' '}

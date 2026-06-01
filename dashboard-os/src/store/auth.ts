@@ -35,10 +35,10 @@ export interface SignupPayload {
 
 export const ROLE_REDIRECT: Record<UserRole, string> = {
   ADMIN:      '/os/strategy',
-  CLIENT:     '/os/strategy',   // Phase 5a will become /portal/client
-  PARTNER:    '/os/strategy',   // Phase 5b will become /portal/partner
-  INVESTOR:   '/os/strategy',   // Phase 5c will become /portal/investor
-  JOB_SEEKER: '/os/strategy',   // Phase 5d will become /portal/careers
+  CLIENT:     '/portal/client',
+  PARTNER:    '/portal/partner',
+  INVESTOR:   '/portal/investor',
+  JOB_SEEKER: '/portal/careers',
 }
 
 export const useAuthStore = create<AuthStore>()(
