@@ -6,23 +6,21 @@ export const api = axios.create({
   withCredentials: true,
 })
 
-// Attach JWT on every request
+// Read the JWT written by either the website (key: 'token') or
+// dashboard-os own login (also writes 'token' — see auth store).
 api.interceptors.request.use(config => {
-  const raw = localStorage.getItem('kangqore-auth')
-  if (raw) {
-    try {
-      const { state } = JSON.parse(raw) as { state: { token: string } }
-      if (state?.token) config.headers.Authorization = `Bearer ${state.token}`
-    } catch { /* ignore */ }
-  }
+  const token = localStorage.getItem('token')
+  if (token) config.headers.Authorization = `Bearer ${token}`
   return config
 })
 
-// On 401, clear auth and redirect to login
+// On 401 clear both token formats and redirect to login
 api.interceptors.response.use(
   res => res,
   err => {
     if (err.response?.status === 401) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
       localStorage.removeItem('kangqore-auth')
       window.location.href = '/login'
     }

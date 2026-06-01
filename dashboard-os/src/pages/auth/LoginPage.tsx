@@ -7,6 +7,7 @@ import { Eye, EyeOff, ArrowRight, Target, LayoutDashboard, Brain, Zap } from 'lu
 import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
 import { useAuthStore, ROLE_REDIRECT } from '@store/auth'
+import type { UserRole } from '@store/auth'
 import { cn } from '@design-system/cn'
 
 const schema = z.object({
@@ -38,7 +39,8 @@ export function LoginPage() {
     try {
       await login(data.email, data.password)
       const user = useAuthStore.getState().user
-      navigate(from ?? (user ? ROLE_REDIRECT[user.role] : '/os/strategy'), { replace: true })
+      const role = (user?.role ?? 'ADMIN') as UserRole
+      navigate(from ?? ROLE_REDIRECT[role], { replace: true })
     } catch { /* error shown from store */ }
   }
 
@@ -160,7 +162,7 @@ export function LoginPage() {
 
           <div className="space-y-2">
             <button
-              onClick={() => { loginAsDemo(); navigate('/os/strategy', { replace: true }) }}
+              onClick={() => { loginAsDemo('ADMIN'); navigate(ROLE_REDIRECT['ADMIN'], { replace: true }) }}
               className="w-full flex items-center justify-center gap-2 h-9 rounded-xl border-2 border-dashed border-blue-200 text-sm font-semibold text-blue-600 hover:bg-blue-50 hover:border-blue-400 transition-all duration-150"
             >
               <Zap className="w-4 h-4" />
@@ -168,20 +170,14 @@ export function LoginPage() {
             </button>
             <div className="grid grid-cols-2 gap-2">
               {([
-                { label: 'Client Portal',   role: 'CLIENT',     path: '/portal/client',   color: 'border-blue-200 text-blue-500 hover:bg-blue-50'   },
-                { label: 'Partner Portal',  role: 'PARTNER',    path: '/portal/partner',  color: 'border-green-200 text-green-600 hover:bg-green-50'  },
-                { label: 'Investor Portal', role: 'INVESTOR',   path: '/portal/investor', color: 'border-purple-200 text-purple-600 hover:bg-purple-50'},
-                { label: 'Careers Portal',  role: 'JOB_SEEKER', path: '/portal/careers',  color: 'border-orange-200 text-orange-600 hover:bg-orange-50'},
-              ] as const).map(d => (
+                { label: 'Client Portal',   role: 'CLIENT'     as const, color: 'border-blue-200 text-blue-500 hover:bg-blue-50'    },
+                { label: 'Partner Portal',  role: 'PARTNER'    as const, color: 'border-green-200 text-green-600 hover:bg-green-50'  },
+                { label: 'Investor Portal', role: 'INVESTOR'   as const, color: 'border-purple-200 text-purple-600 hover:bg-purple-50'},
+                { label: 'Careers Portal',  role: 'JOB_SEEKER' as const, color: 'border-orange-200 text-orange-600 hover:bg-orange-50'},
+              ]).map(d => (
                 <button
                   key={d.role}
-                  onClick={() => {
-                    useAuthStore.setState({
-                      user: { id: `demo-${d.role.toLowerCase()}`, name: 'Demo User', email: `demo@kangqore.com`, role: d.role },
-                      token: 'demo-token', isAuthenticated: true, error: null,
-                    })
-                    navigate(d.path, { replace: true })
-                  }}
+                  onClick={() => { loginAsDemo(d.role); navigate(ROLE_REDIRECT[d.role], { replace: true }) }}
                   className={`flex items-center justify-center gap-1.5 h-8 rounded-xl border border-dashed text-xs font-semibold transition-all ${d.color}`}
                 >
                   {d.label}

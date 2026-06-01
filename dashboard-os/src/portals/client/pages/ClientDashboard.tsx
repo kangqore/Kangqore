@@ -2,8 +2,11 @@ import { CheckCircle2, AlertTriangle, FileText, TrendingUp, Calendar } from 'luc
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
+import { Spinner } from '@design-system/components/Spinner'
+import { useClientProjects, useClientActions } from '../useClientData'
+import { useAuthStore } from '@store/auth'
 
-const ACTIVE_PROJECTS = [
+const MOCK_PROJECTS = [
   { id: 'p1', name: 'Patient Portal v2',      phase: 'Development',  progress: 68, status: 'on-track',   nextMilestone: 'Beta release', milestoneDate: '2026-06-20', deliveryLead: 'Ravi Nair' },
   { id: 'p2', name: 'HIPAA Compliance Layer', phase: 'QA & Testing', progress: 91, status: 'on-track',   nextMilestone: 'Sign-off',     milestoneDate: '2026-06-10', deliveryLead: 'Omar Khalid' },
   { id: 'p3', name: 'Analytics Dashboard',    phase: 'Design',       progress: 32, status: 'at-risk',    nextMilestone: 'Design review',milestoneDate: '2026-06-08', deliveryLead: 'Anika Roy' },
@@ -28,21 +31,50 @@ const STATUS_BADGE: Record<string, 'success' | 'warning' | 'danger'> = {
 }
 
 export function ClientDashboard() {
+  const { user } = useAuthStore()
+  const { data: apiProjects, isLoading } = useClientProjects()
+  const { data: actionsData } = useClientActions()
+
+  // Map API projects → display shape; fall back to mock if no real data yet
+  const projects = (apiProjects as Record<string, unknown>[] | undefined)?.length
+    ? (apiProjects as Record<string, unknown>[]).map(p => ({
+        id:            String(p.id),
+        name:          String(p.title ?? p.name ?? 'Untitled'),
+        phase:         String(p.status ?? 'Active'),
+        progress:      Number(p.progress ?? 0),
+        status:        p.status === 'ACTIVE' ? 'on-track' : ('at-risk' as const),
+        nextMilestone: '—',
+        milestoneDate: '—',
+        deliveryLead:  'Kangqore',
+      }))
+    : MOCK_PROJECTS
+
+  const pendingActions: number = actionsData
+    ? (actionsData.deliverables?.length ?? 0) + (actionsData.decisions?.length ?? 0)
+    : 0
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
       {/* Welcome */}
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Good morning, Dr. Rao</h2>
-        <p className="text-sm text-slate-500 mt-1">Here's the latest on your Kangqore engagement — updated as of today.</p>
+        <h2 className="text-xl font-bold text-slate-900">
+          Welcome back, {user?.name ?? 'there'}
+        </h2>
+        <p className="text-sm text-slate-500 mt-1">Here's the latest on your Kangqore engagement.</p>
       </div>
+
+      {isLoading && (
+        <div className="flex items-center gap-2 text-sm text-slate-500">
+          <Spinner size="sm" /> Loading live data…
+        </div>
+      )}
 
       {/* Summary stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Active Projects', value: 3,       icon: TrendingUp,   color: 'bg-blue-50 text-blue-600'   },
-          { label: 'Open Invoices',   value: '£42k',  icon: FileText,     color: 'bg-orange-50 text-orange-600'},
-          { label: 'SLA Compliance',  value: '96%',   icon: CheckCircle2, color: 'bg-green-50 text-green-600' },
-          { label: 'Next Milestone',  value: 'Jun 8', icon: Calendar,     color: 'bg-purple-50 text-purple-600'},
+          { label: 'Active Projects', value: projects.filter(p => p.status === 'on-track').length || projects.length, icon: TrendingUp,   color: 'bg-blue-50 text-blue-600'   },
+          { label: 'Pending Actions', value: pendingActions || 0,                                                      icon: FileText,     color: 'bg-orange-50 text-orange-600'},
+          { label: 'SLA Compliance',  value: '96%',                                                                    icon: CheckCircle2, color: 'bg-green-50 text-green-600' },
+          { label: 'Next Milestone',  value: projects[0]?.milestoneDate ?? '—',                                        icon: Calendar,     color: 'bg-purple-50 text-purple-600'},
         ].map(s => (
           <div key={s.label} className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${s.color}`}>
@@ -60,7 +92,7 @@ export function ClientDashboard() {
         {/* Active projects */}
         <div className="lg:col-span-2 space-y-4">
           <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">Active Projects</h3>
-          {ACTIVE_PROJECTS.map(p => (
+          {projects.map(p => (
             <Card key={p.id}>
               <CardBody className="p-5">
                 <div className="flex items-start justify-between gap-3 mb-3">

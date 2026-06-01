@@ -1,6 +1,11 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { LayoutGrid, Kanban, BarChart2, Zap, Bug } from 'lucide-react'
 import { cn } from '@design-system/cn'
+import { api } from '@lib/api'
+import { toProjects } from '@lib/transforms'
+import { useProjectsStore } from './store'
 import { ProjectsOverview } from './pages/ProjectsOverview'
 import { KanbanBoard }      from './pages/KanbanBoard'
 import { GanttPage }        from './pages/GanttPage'
@@ -16,6 +21,14 @@ const TABS = [
 ]
 
 export function ProjectsModule() {
+  const { hydrate } = useProjectsStore()
+  const { data } = useQuery({
+    queryKey: ['projects'],
+    queryFn: () => api.get('/projects').then(r => r.data.projects ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
+  useEffect(() => { if (data) hydrate(toProjects(data)) }, [data, hydrate])
+
   return (
     <div>
       <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">

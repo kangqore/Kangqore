@@ -8,6 +8,9 @@ interface ClientsStore {
   milestones:   typeof MILESTONES
   governance:   typeof GOVERNANCE
   selectedId:   string
+  isLoading:    boolean
+  error:        string | null
+  hydrate:      (clients: typeof CLIENTS) => void
   setSelected:  (id: string) => void
   selectedClient: () => typeof CLIENTS[0] | undefined
   clientInteractions: (id: string) => typeof INTERACTIONS
@@ -17,7 +20,10 @@ interface ClientsStore {
 }
 
 export const useClientsStore = create<ClientsStore>((set, get) => ({
-  clients:      CLIENTS,
+  clients:   CLIENTS,
+  isLoading: false,
+  error:     null,
+  hydrate:   (clients) => set({ clients, isLoading: false, error: null }),
   interactions: INTERACTIONS,
   slaMetrics:   SLA_METRICS,
   milestones:   MILESTONES,
