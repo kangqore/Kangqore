@@ -1298,15 +1298,15 @@ const TrustStatementTypewriter = ({ isVisible }) => {
           <div className={`transition-all duration-1000 lg:pt-8 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <TrustStatementTypewriter isVisible={visible} />
             <p className="mt-8 text-gray-500 text-lg md:text-xl leading-relaxed max-w-lg font-medium">
-              At Kangqore, engagement doesn't end with delivery. We take ownership of outcomes — from strategy and execution to long-term stability and support.
+              Most firms hand off a deliverable and move on. We stay embedded — owning performance, stability, and continuous improvement long after go-live.
             </p>
             
             <div className="mt-12">
               <Link 
-                to="/services/post-delivery-support"
+                to="/services"
                 className="group inline-flex items-center gap-3 text-gray-900 dark:text-white font-bold uppercase tracking-widest text-xs hover:text-brand-blue transition-colors"
               >
-                Understand Post-Delivery Support
+                Explore How We Deliver
                 <div className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-all">
                   <ArrowRight className="w-4 h-4" />
                 </div>
@@ -1314,7 +1314,7 @@ const TrustStatementTypewriter = ({ isVisible }) => {
             </div>
           </div>
 
-          {/* Right Column: Interactive List */}
+          {/* Right Column: Interactive List — hover on desktop, tap on mobile */}
           <div 
             className="flex flex-col"
             onMouseLeave={() => {
@@ -1328,16 +1328,20 @@ const TrustStatementTypewriter = ({ isVisible }) => {
                 <div 
                   key={idx}
                   onMouseEnter={() => setActiveIndex(idx)}
+                  onClick={() => setActiveIndex(prev => prev === idx ? null : idx)}
                   className="relative border-b border-gray-100 last:border-0 group cursor-pointer"
                 >
                   <div className="transition-all duration-500 py-8 px-0">
-                    {/* Header: Title */}
-                    <div className="flex items-center">
+                    {/* Header: Title + Chevron for mobile affordance */}
+                    <div className="flex items-center justify-between">
                       <h3 className={`text-2xl md:text-3xl lg:text-4xl font-bold transition-all duration-500 ${
                         isActive ? 'text-gray-900 dark:text-white' : 'text-gray-400'
                       }`}>
                         {val.title}
                       </h3>
+                      <ChevronDown className={`w-5 h-5 lg:hidden text-gray-400 transition-transform duration-500 ${
+                        isActive ? 'rotate-180 text-gray-900 dark:text-white' : ''
+                      }`} />
                     </div>
 
                     {/* Content (Description + Tags) */}
