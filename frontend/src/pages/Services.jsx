@@ -342,20 +342,13 @@ const Services = () => {
       <section className="relative w-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228] mt-2 mx-auto" style={{ maxWidth: 'calc(100% - 1rem)' }}>
         <div className="relative min-h-[calc(100vh-1rem)] overflow-hidden">
           
-          {/* Immersive mesh & grid background */}
-          <div className="absolute inset-0 bg-[#070b19] z-0 overflow-hidden">
-            {/* Dark grid pattern */}
-            <div className="absolute inset-0 opacity-[0.05]" style={{
-              backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
-              backgroundSize: '28px 28px'
-            }} />
-            
-            {/* Floating blurred glow meshes */}
-            <div className="absolute -top-40 -left-40 w-96 h-96 bg-[#2564ea] rounded-full blur-[140px] opacity-40 animate-[floatGlow_12s_ease-in-out_infinite]" />
-            <div className="absolute top-1/2 right-10 w-[500px] h-[500px] bg-[#4ab6d4] rounded-full blur-[160px] opacity-25 animate-[floatGlow_16s_ease-in-out_infinite_2s]" />
-            <div className="absolute -bottom-40 left-1/3 w-80 h-80 bg-purple-600/20 rounded-full blur-[130px] opacity-35 animate-[floatGlow_14s_ease-in-out_infinite_4s]" />
-            
-            {/* Ambient overlays */}
+          {/* Background Layers */}
+          <div className="absolute inset-0 z-0 bg-[#0a1228]">
+            <img 
+              src="/images/lotus_bg.png" 
+              alt="Services Hero Background" 
+              className="absolute inset-0 w-full h-full object-cover object-center opacity-60"
+            />
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-[1]" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 z-[1]" />
           </div>
