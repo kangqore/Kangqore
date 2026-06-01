@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+
 import { 
-  ArrowRight, Compass, Activity, Zap, ShieldCheck, Cpu, 
-  CheckCircle2, Brain, Cog, RefreshCw, Shield, Layers, TrendingUp,
-  UserCheck, Milestone, Sparkles, Plus, X
+  ArrowRight, CheckCircle2, Brain, Cog, RefreshCw, Shield, Layers, TrendingUp,
+  UserCheck, Milestone, Plus, X
 } from 'lucide-react';
 import { departmentsData, departmentsList } from '../data/departmentsData';
 import { servicesData } from '../data/servicesData';
@@ -180,68 +179,7 @@ const departmentCaseStudies = {
   }
 };
 
-const configuratorOptions = [
-  {
-    id: 'cognition-ai',
-    label: 'AI & Autonomous Agents',
-    dept: 'cognition',
-    desc: 'Deploy governed AI agents for exceptions and judgment-heavy workflows'
-  },
-  {
-    id: 'cognition-data',
-    label: 'Big Data & ML pipelines',
-    dept: 'cognition',
-    desc: 'Establish unified data analytics and managed MLOps pipelines'
-  },
-  {
-    id: 'foundry-cloud',
-    label: 'Cloud & Infrastructure scale',
-    dept: 'foundry',
-    desc: 'Modernize Kubernetes clusters and automate AWS/Azure/GCP scaling'
-  },
-  {
-    id: 'foundry-devops',
-    label: 'SRE & CI/CD Automation',
-    dept: 'foundry',
-    desc: 'Deploy embedded DevOps pods and secure a 99.98% uptime SLA'
-  },
-  {
-    id: 'reimagine-legacy',
-    label: 'Legacy DB & Core Migration',
-    dept: 'reimagine',
-    desc: 'Migrate legacy mainframes or COBOL databases with zero downtime'
-  },
-  {
-    id: 'reimagine-api',
-    label: 'Microservices & Serverless APIs',
-    dept: 'reimagine',
-    desc: 'Decouple monolith architectures into scalable modern API layers'
-  },
-  {
-    id: 'shield-security',
-    label: 'Penetration Testing & Scanning',
-    dept: 'shield',
-    desc: 'Establish automated continuous vulnerability scanning and patch policies'
-  },
-  {
-    id: 'shield-compliance',
-    label: 'SOC 2 & ISO compliance',
-    dept: 'shield',
-    desc: 'Map compliance controls and secure certifications within a 60-day wave'
-  },
-  {
-    id: 'platforms-crm',
-    label: 'CRM & Workflow Consolidation',
-    dept: 'platforms',
-    desc: 'Consolidate ServiceNow, Salesforce, and other platform seat license overhead'
-  },
-  {
-    id: 'growth-pipeline',
-    label: 'Attribution & Funnel Analytics',
-    dept: 'growth',
-    desc: 'Optimize geo-targeted campaigns and map multi-touch marketing funnels'
-  }
-];
+
 
 const Services = () => {
   const navigate = useNavigate();
@@ -274,7 +212,7 @@ const Services = () => {
     }
   };
 
-  const [activeStep, setActiveStep] = useState(0);
+
   const [activeDept, setActiveDept] = useState('cognition');
   const [activeDetailTab, setActiveDetailTab] = useState('modules');
 
@@ -339,13 +277,7 @@ const Services = () => {
     triggerCoPilot(coPilotInput, target, reply);
   };
 
-  const [selectedCapabilities, setSelectedCapabilities] = useState([]);
 
-  const toggleCapability = (id) => {
-    setSelectedCapabilities((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-    );
-  };
 
   // Calculate total services across canonical 6 departments
   const totalServices = Object.values(departmentsData).reduce(
@@ -447,58 +379,7 @@ const Services = () => {
     })
   };
 
-  // Playbook methodology steps content
-  const methodologySteps = [
-    {
-      step: "01",
-      title: "Discover & Frame",
-      headline: "Establish Alignment & Map Value Pools",
-      description: "Collaborative, design-led workshops to evaluate organizational architecture, uncover optimization hubs, and design a customized capability matrix.",
-      deliverables: ["Capability alignment report", "Stakeholder buy-in blueprint", "Value pool ROI analysis"],
-      outcomes: ["Clear capability roadmap", "Identified risk areas", "Agreed Wave 1 deliverables"],
-      icon: Compass,
-      accent: "text-blue-500 bg-blue-500/10 border-blue-500/20"
-    },
-    {
-      step: "02",
-      title: "90-Day Diagnostic",
-      headline: "Deep Code, SRE & Cloud Posture Audits",
-      description: "Rigorous technical diagnostic mapping legacy codebases, validating AI pipelines, assessing cybersecurity gaps, and auditing cloud spend models.",
-      deliverables: ["Legacy codebase dependency map", "FinOps cloud spend audit", "Trust & AI governance checklist"],
-      outcomes: ["Prioritized remediation backlog", "Uptime baseline established", "Immediate cloud cost savings (15%+)"],
-      icon: Activity,
-      accent: "text-cyan-500 bg-cyan-500/10 border-cyan-500/20"
-    },
-    {
-      step: "03",
-      title: "Fixed-Bid Wave 1",
-      headline: "De-risk Execution with Sprint Milestones",
-      description: "Mitigate execution risk by delivering a high-priority product slice or platform integration in a fixed-bid, rapid-deployment initial wave.",
-      deliverables: ["Production-ready MVP slice", "Embedded team provisioning", "SLA baseline parameters"],
-      outcomes: ["Tangible product demo", "Proof of delivery speed", "Established working cadence"],
-      icon: Zap,
-      accent: "text-purple-500 bg-purple-500/10 border-purple-500/20"
-    },
-    {
-      step: "04",
-      title: "SLA-Backed Run",
-      headline: "Continuous Optimization & Managed Ops",
-      description: "Seamless handover to high-performance, SLA-backed managed operations, continuous security scanning, and platform optimization.",
-      deliverables: ["24/7 SRE monitoring console", "SLA compliance reports", "Quarterly optimization roadmap"],
-      outcomes: ["99.9% SRE uptime", "Zero process drift guarantee", "Performance-linked scaling models"],
-      icon: ShieldCheck,
-      accent: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20"
-    }
-  ];
 
-  // Auto transition for Delivery Playbook
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % methodologySteps.length);
-    }, 3000);
-    
-    return () => clearInterval(interval);
-  }, [methodologySteps.length]);
 
   // Current selected department info for interactive map
   const activeDeptInfo = departmentsData[activeDept];
@@ -506,7 +387,7 @@ const Services = () => {
     (svc) => svc.departmentSlug === activeDept
   );
 
-  const configuratorUrl = `/contact?config=${encodeURIComponent(selectedCapabilities.map(id => configuratorOptions.find(o => o.id === id)?.label).join(', '))}`;
+
 
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300" data-testid="services-page">
@@ -613,10 +494,10 @@ const Services = () => {
 
                     <div className="group/stat">
                       <div className="text-4xl font-black bg-brand-gradient bg-clip-text text-transparent mb-0.5 transition-transform duration-300 group-hover/stat:scale-105 origin-left">
-                        4
+                        99.9%
                       </div>
-                      <div className="text-[10px] font-bold text-white tracking-widest uppercase">Playbook Phases</div>
-                      <p className="text-[11px] text-slate-300 mt-0.5 leading-relaxed">Discover, Diagnostic, Fixed-Bid Sprint, and SLA-Backed Run</p>
+                      <div className="text-[10px] font-bold text-white tracking-widest uppercase">SLA Guarantee</div>
+                      <p className="text-[11px] text-slate-300 mt-0.5 leading-relaxed">Production uptime and milestone delivery guarantees</p>
                     </div>
                   </div>
                 </div>
@@ -1217,293 +1098,7 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Section 4: Delivery Methodology - World Class Interactive Timeline */}
-      <section className="py-24 bg-[#0a0a0c] border-y border-white/5 text-white relative overflow-hidden">
-        {/* Glow accent */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#2564ea]/5 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-          
-          {/* Section Header */}
-          <div className="mb-16 text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 tracking-tight">
-              The Kangqore Delivery Playbook
-            </h2>
-            <p className="text-slate-400 text-base md:text-lg leading-relaxed">
-              We take the risk out of enterprise operations and cloud transformation. Our engagement model guarantees measurable milestones at every phase.
-            </p>
-          </div>
-
-          {/* Interactive Steps Selection Row */}
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch border border-white/5 bg-black/40 rounded-3xl p-4 mb-8 relative">
-            
-            {/* Desktop timeline line backdrop */}
-            <div className="hidden md:block absolute top-1/2 left-[8%] right-[8%] h-[2px] bg-white/5 -translate-y-1/2 z-0" />
-            
-            {/* Desktop active highlight line */}
-            <div 
-              className="hidden md:block absolute top-1/2 h-[2px] bg-brand-gradient -translate-y-1/2 transition-all duration-500 ease-out z-0"
-              style={{
-                left: `${8 + activeStep * 28}%`,
-                width: `${activeStep < 3 ? '28%' : '0%'}`
-              }}
-            />
-
-            {methodologySteps.map((step, idx) => {
-              const StepIcon = step.icon;
-              const isActive = activeStep === idx;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => setActiveStep(idx)}
-                  className={`flex-1 flex items-center gap-4 p-4 rounded-2xl border transition-all duration-500 text-left relative z-10 ${
-                    isActive 
-                      ? 'bg-[#0e172a] border-[#2564ea]/30 text-white shadow-xl shadow-blue-900/10' 
-                      : 'bg-[#0a0a0c] border-transparent text-slate-500 hover:text-slate-300 hover:bg-[#121215]'
-                  }`}
-                >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-300 ${
-                    isActive ? step.accent : 'bg-white/5 border-white/10'
-                  }`}>
-                    <StepIcon className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-mono font-bold text-cyan-400 tracking-wider block">PHASE {step.step}</span>
-                    <span className="text-sm font-bold tracking-tight block">{step.title}</span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Detailed Playbook Info Card */}
-          <div className="bg-black/50 border border-white/5 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl min-h-[400px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeStep}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="w-full h-full"
-              >
-                {/* Top right phase indicator */}
-                <div className="absolute top-0 right-0 text-7xl md:text-8xl font-black font-mono text-white/5 select-none">
-                  {methodologySteps[activeStep].step}
-                </div>
-
-                <div className="grid md:grid-cols-12 gap-8 items-start relative z-10 pt-4">
-                  
-                  {/* Left Column: Summary */}
-                  <div className="md:col-span-7 space-y-6">
-                    <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono">
-                      {methodologySteps[activeStep].title} Focus
-                    </span>
-                    <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight">
-                      {methodologySteps[activeStep].headline}
-                    </h3>
-                    <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-                      {methodologySteps[activeStep].description}
-                    </p>
-                  </div>
-
-                  {/* Right Column: Deliverables / Outcomes */}
-                  <div className="md:col-span-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-6 pt-4 md:pt-0">
-                    
-                    {/* Deliverables list */}
-                    <div className="space-y-3">
-                      <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block border-b border-white/5 pb-2">
-                        Key Deliverables
-                      </span>
-                      <div className="space-y-2">
-                        {methodologySteps[activeStep].deliverables.map((item, i) => (
-                          <div key={i} className="flex items-center gap-2.5 text-xs text-slate-400">
-                            <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
-                            <span>{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Outcomes list */}
-                    <div className="space-y-3">
-                      <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block border-b border-white/5 pb-2">
-                        Milestone Outcomes
-                      </span>
-                      <div className="space-y-2">
-                        {methodologySteps[activeStep].outcomes.map((item, i) => (
-                          <div key={i} className="flex items-center gap-2.5 text-xs text-slate-400">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                            <span>{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-        </div>
-      </section>
-
-      {/* Capability Configurator Section */}
-      <section className="py-24 bg-gray-50 dark:bg-[#050505] transition-colors duration-300 border-t border-gray-100 dark:border-white/5 relative overflow-hidden">
-        {/* Glow accent */}
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-cyan/5 rounded-full blur-[120px] pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-          
-          {/* Header */}
-          <div className="mb-16 text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
-              Wave 1 Plan <span className="bg-brand-gradient bg-clip-text text-transparent">Configurator</span>
-            </h2>
-            <p className="text-gray-500 dark:text-slate-400 text-base md:text-lg leading-relaxed">
-              De-risk your engineering roadmap. Select your target capabilities below to build a dynamic Wave 1 Diagnostic and execution blueprint.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-12 gap-8 items-stretch">
-            {/* Left Panel: Capabilities Selection */}
-            <div className="lg:col-span-7 bg-[#0a0a0c] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest font-mono block border-b border-white/5 pb-3">
-                Select Target Capabilities
-              </span>
-
-              <div className="grid sm:grid-cols-2 gap-4">
-                {configuratorOptions.map((opt) => {
-                  const isSelected = selectedCapabilities.includes(opt.id);
-                  const deptInfo = departmentsData[opt.dept];
-                  return (
-                    <button
-                      key={opt.id}
-                      onClick={() => toggleCapability(opt.id)}
-                      className={`text-left p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between h-[120px] active:scale-[0.98] ${
-                        isSelected
-                          ? 'bg-[#111827] border-cyan-400 shadow-xl shadow-cyan-900/5'
-                          : 'bg-black/50 border-white/5 hover:border-white/10 hover:bg-white/[0.02]'
-                      }`}
-                    >
-                      <div className="w-full">
-                        <div className="flex justify-between items-center gap-2 mb-1">
-                          <span 
-                            className="text-[9px] font-bold uppercase tracking-wider font-mono px-2 py-0.5 rounded"
-                            style={{ 
-                              color: isSelected ? '#22d3ee' : deptInfo.accentColor,
-                              backgroundColor: isSelected ? 'rgba(34,211,238,0.1)' : `${deptInfo.accentColor}10`
-                            }}
-                          >
-                            {deptInfo.shortName}
-                          </span>
-                          {isSelected && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
-                          )}
-                        </div>
-                        <h4 className="text-white font-bold text-xs leading-snug">{opt.label}</h4>
-                      </div>
-                      <p className="text-[10px] text-slate-400 line-clamp-2 leading-relaxed mt-1">
-                        {opt.desc}
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Right Panel: Plan Blueprint Compilation */}
-            <div className="lg:col-span-5 bg-black border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden">
-              {/* Subtle background glow */}
-              <div className="absolute -top-12 -left-12 w-32 h-32 bg-cyan-400/5 rounded-full blur-2xl pointer-events-none" />
-
-              <div className="space-y-6 relative z-10 w-full">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest font-mono block border-b border-white/5 pb-3">
-                  Wave 1 Blueprint Preview
-                </span>
-
-                {selectedCapabilities.length === 0 ? (
-                  <div className="py-12 text-center space-y-4">
-                    <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center mx-auto text-slate-500 font-mono text-xl animate-pulse">
-                      ?
-                    </div>
-                    <p className="text-xs text-slate-400 max-w-[240px] mx-auto leading-relaxed">
-                      Select one or more capabilities from the configuration panel to generate your custom Wave 1 roadmap preview.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-5 animate-fade-in">
-                    {/* Diagnostic Scope */}
-                    <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 space-y-3">
-                      <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider font-mono">Engagement Parameters</div>
-                      <div className="grid grid-cols-2 gap-4 font-mono text-[10px] text-slate-300">
-                        <div>
-                          <span className="text-slate-500 block text-[9px] uppercase">Est. SRE Audit</span>
-                          <span className="text-white font-bold text-sm">{selectedCapabilities.length * 15} Hours</span>
-                        </div>
-                        <div>
-                          <span className="text-slate-500 block text-[9px] uppercase">Codebase Evaluation</span>
-                          <span className="text-white font-bold text-sm">{selectedCapabilities.length * 12} Files</span>
-                        </div>
-                        <div>
-                          <span className="text-slate-500 block text-[9px] uppercase">Compliance Mapping</span>
-                          <span className="text-white font-bold text-sm">{selectedCapabilities.some(id => id.includes('compliance')) ? 'Required' : 'Optional'}</span>
-                        </div>
-                        <div>
-                          <span className="text-slate-500 block text-[9px] uppercase">Timeline Phase</span>
-                          <span className="text-white font-bold text-sm">90-Day Diagnostic</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Wave 1 Deliverables */}
-                    <div className="space-y-3">
-                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-mono">Dynamic Deliverables</div>
-                      <div className="space-y-2">
-                        {selectedCapabilities.map((id) => {
-                          let deliv = '';
-                          if (id === 'cognition-ai') deliv = "eQORE™ Autonomous Agent trust boundaries & process maps";
-                          else if (id === 'cognition-data') deliv = "Unified MLOps pipeline structure & model drift analysis";
-                          else if (id === 'foundry-cloud') deliv = "FinOps cloud footprint audit & AWS/Azure optimization report";
-                          else if (id === 'foundry-devops') deliv = "DevOps workflow assessment & SRE baseline telemetry";
-                          else if (id === 'reimagine-legacy') deliv = "COBOL transaction mapping & zero-downtime database sync blueprint";
-                          else if (id === 'reimagine-api') deliv = "Serverless microservices API layout & legacy decoupling map";
-                          else if (id === 'shield-security') deliv = "Threat surface scanning reports & patch automation plans";
-                          else if (id === 'shield-compliance') deliv = "SOC 2 Type II control compliance checklist";
-                          else if (id === 'platforms-crm') deliv = "ServiceNow & Salesforce integration logic & consolidation roadmap";
-                          else if (id === 'growth-pipeline') deliv = "Sales pipeline geo-tracking attribution scoring rules";
-                          
-                          return (
-                            <div key={id} className="flex items-start gap-2 text-xs text-slate-300 leading-snug">
-                              <span className="text-emerald-400 shrink-0 mt-0.5">✓</span>
-                              <span>{deliv}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {selectedCapabilities.length > 0 && (
-                <div className="pt-6 border-t border-white/5 mt-8 animate-fade-in relative z-10">
-                  <Link
-                    to={configuratorUrl}
-                    className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white text-slate-900 font-bold rounded-2xl hover:bg-slate-100 active:scale-[0.98] transition-all text-xs shadow-xl"
-                  >
-                    Submit Custom Configuration
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-
-        </div>
-      </section>
 
       {/* Section 5: Technology Partnerships */}
       <section className="py-24 bg-white dark:bg-black transition-colors duration-300 border-b border-gray-100 dark:border-gray-800/50">
