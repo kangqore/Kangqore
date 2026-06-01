@@ -33,7 +33,7 @@ export function Topbar() {
   const displayRole  = ROLE_LABEL[user?.role ?? ''] ?? user?.role ?? 'Admin'
 
   return (
-    <header className="flex-shrink-0 h-16 bg-white border-b border-slate-100 flex items-center gap-4 px-8 lg:px-12 z-10">
+    <header className="flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex items-center gap-4 px-8 lg:px-8 z-10">
       {/* Page title */}
       <div className="flex-1 min-w-0">
         <h1 className="text-sm font-semibold text-slate-900 truncate">
