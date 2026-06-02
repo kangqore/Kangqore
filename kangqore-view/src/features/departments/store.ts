@@ -1,12 +1,14 @@
 import { create } from 'zustand'
 import { DEPARTMENTS, ORG_NODES, DEPT_BUDGETS } from './data'
+import type { Department, OrgNode, DeptBudget } from './types'
 
 interface DepartmentsStore {
-  departments: typeof DEPARTMENTS
-  orgNodes:    typeof ORG_NODES
-  budgets:     typeof DEPT_BUDGETS
+  departments: Department[]
+  orgNodes:    OrgNode[]
+  budgets:     DeptBudget[]
   selectedId:  string
-  setSelected: (id: string) => void
+  hydrate:        (data: { departments: Department[]; orgNodes: OrgNode[]; budgets: DeptBudget[] }) => void
+  setSelected:    (id: string) => void
   totalHeadcount: () => number
   totalBudget:    () => number
   totalSpent:     () => number
@@ -18,6 +20,7 @@ export const useDepartmentsStore = create<DepartmentsStore>((set, get) => ({
   budgets:     DEPT_BUDGETS,
   selectedId:  'd1',
 
+  hydrate:     (data) => set({ departments: data.departments, orgNodes: data.orgNodes, budgets: data.budgets }),
   setSelected: (id) => set({ selectedId: id }),
 
   totalHeadcount: () => get().departments.reduce((s, d) => s + d.headcount, 0),

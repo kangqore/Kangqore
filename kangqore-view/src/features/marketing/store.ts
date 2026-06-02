@@ -1,20 +1,24 @@
 import { create } from 'zustand'
 import { CAMPAIGNS, CONTENT_PIECES, MONTHLY_METRICS } from './data'
+import type { Campaign, ContentPiece, MarketingMetrics } from './types'
 
 interface MarketingStore {
-  campaigns:  typeof CAMPAIGNS
-  content:    typeof CONTENT_PIECES
-  metrics:    typeof MONTHLY_METRICS
+  campaigns: Campaign[]
+  content:   ContentPiece[]
+  metrics:   MarketingMetrics[]
+  hydrate:      (data: { campaigns: Campaign[]; content: ContentPiece[]; metrics: MarketingMetrics[] }) => void
   totalSpend:   () => number
   totalMQLs:    () => number
   totalRevenue: () => number
   avgCPL:       () => number
 }
 
-export const useMarketingStore = create<MarketingStore>((_set, get) => ({
+export const useMarketingStore = create<MarketingStore>((set, get) => ({
   campaigns: CAMPAIGNS,
   content:   CONTENT_PIECES,
   metrics:   MONTHLY_METRICS,
+
+  hydrate: (data) => set({ campaigns: data.campaigns, content: data.content, metrics: data.metrics }),
 
   totalSpend:   () => get().campaigns.reduce((s, c) => s + c.spent, 0),
   totalMQLs:    () => get().campaigns.reduce((s, c) => s + c.mqls, 0),
