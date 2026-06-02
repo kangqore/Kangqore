@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { EmptyState } from '@design-system/components/EmptyState'
 import {
   Search, Phone, Mail, Building2, Calendar,
   MessageSquare, Clock, ExternalLink, AlertCircle,
@@ -416,7 +417,11 @@ export function ConsultationsQueue() {
           </tbody>
         </table>
         {visible.length === 0 && (
-          <div className="py-14 text-center text-sm text-slate-400">No consultations match your filters.</div>
+          <EmptyState
+            icon={<Search className="w-6 h-6" />}
+            title="No consultations match"
+            description="Try adjusting your status filter or search term."
+          />
         )}
       </Card>
 
