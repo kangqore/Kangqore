@@ -32,3 +32,35 @@ export function useClientDocuments() {
     staleTime: 1000 * 60 * 5,
   })
 }
+
+export function useClientMeetings() {
+  return useQuery({
+    queryKey: ['client', 'meetings'],
+    queryFn: () => api.get('/meetings/client').then(r => r.data),
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
+export function useClientTickets() {
+  return useQuery({
+    queryKey: ['client', 'tickets'],
+    queryFn: () => api.get('/tickets').then(r => r.data.tickets ?? []),
+    staleTime: 1000 * 60 * 2,
+  })
+}
+
+export function useClientChangeRequests() {
+  return useQuery({
+    queryKey: ['client', 'change-requests'],
+    queryFn: () => api.get('/change-requests').then(r => r.data.changeRequests ?? []),
+    staleTime: 1000 * 60 * 3,
+  })
+}
+
+export function useClientFeedback() {
+  return useQuery({
+    queryKey: ['client', 'feedback'],
+    queryFn: () => api.get('/feedback').then(r => r.data ?? []),
+    staleTime: 1000 * 60 * 10,
+  })
+}
