@@ -26,7 +26,7 @@ export function DepartmentsModule() {
   })
 
   useEffect(() => {
-    if (data) hydrate(data)
+    if (data?.departments?.length) hydrate(data)
   }, [data, hydrate])
 
   return (

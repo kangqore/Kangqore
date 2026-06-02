@@ -22,7 +22,7 @@ export function MarketingModule() {
   })
 
   useEffect(() => {
-    if (data) hydrate(data)
+    if (data?.campaigns?.length) hydrate(data)
   }, [data, hydrate])
 
   return (
