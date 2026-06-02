@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { PROJECTS, TASKS, SPRINTS, ISSUES } from './data'
-import type { Project, Task, TaskStatus, Issue } from './types'
+import type { Project, Task, TaskStatus, ProjectStatus, HealthStatus, Issue } from './types'
 
 interface ProjectsStore {
   projects: Project[]
@@ -12,6 +12,9 @@ interface ProjectsStore {
   error: string | null
   hydrate: (projects: Project[]) => void
   setSelectedProject: (id: string) => void
+  updateProjectStatus: (id: string, status: ProjectStatus) => void
+  updateProjectHealth: (id: string, health: HealthStatus) => void
+  updateProject:       (id: string, patch: Partial<Project>) => void
   moveTask: (taskId: string, newStatus: TaskStatus) => void
   tasksForProject: (projectId: string) => Task[]
   issuesForProject: (projectId: string) => Issue[]
@@ -29,6 +32,15 @@ export const useProjectsStore = create<ProjectsStore>((set, get) => ({
   selectedProjectId: 'pj1',
 
   setSelectedProject: (id) => set({ selectedProjectId: id }),
+
+  updateProjectStatus: (id, status) =>
+    set(s => ({ projects: s.projects.map(p => p.id === id ? { ...p, status } : p) })),
+
+  updateProjectHealth: (id, health) =>
+    set(s => ({ projects: s.projects.map(p => p.id === id ? { ...p, health } : p) })),
+
+  updateProject: (id, patch) =>
+    set(s => ({ projects: s.projects.map(p => p.id === id ? { ...p, ...patch } : p) })),
 
   moveTask: (taskId, newStatus) =>
     set(s => ({
