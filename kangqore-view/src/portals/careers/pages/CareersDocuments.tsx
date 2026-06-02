@@ -1,6 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
 import { FileText, Download, Eye, FolderOpen, Lock } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
+import { api } from '@lib/api'
 
 const DOCUMENTS = [
   {
@@ -36,9 +38,29 @@ const fmtDate = (s: string | null) => s
   ? new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
   : 'Not yet available'
 
+type DocItem = typeof DOCUMENTS[0]['docs'][0]
+
 export function CareersDocuments() {
-  const total = DOCUMENTS.reduce((s, f) => s + f.docs.length, 0)
-  const available = DOCUMENTS.reduce((s, f) => s + f.docs.filter(d => d.date).length, 0)
+  const { data: liveDocs } = useQuery({
+    queryKey: ['careers', 'documents'],
+    queryFn: () => api.get('/documents/my-documents').then(r => r.data.documents ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const folders = liveDocs?.length
+    ? [{ folder: 'Shared Documents', docs: (liveDocs as Record<string, unknown>[]).map((d): DocItem => ({
+        id:         String(d.id),
+        title:      String(d.title ?? ''),
+        type:       String(d.type ?? 'FILE').toUpperCase(),
+        format:     'PDF',
+        size:       String(d.size ?? '—'),
+        date:       String(d.createdAt ?? d.date ?? new Date().toISOString()).slice(0, 10),
+        restricted: false,
+      })) }]
+    : DOCUMENTS
+
+  const total     = folders.reduce((s, f) => s + f.docs.length, 0)
+  const available = folders.reduce((s, f) => s + f.docs.filter((d: DocItem) => d.date).length, 0)
 
   return (
     <div className="space-y-6 max-w-2xl">
@@ -47,7 +69,7 @@ export function CareersDocuments() {
         <p className="text-sm text-slate-500 mt-0.5">{available} of {total} documents available</p>
       </div>
 
-      {DOCUMENTS.map(folder => (
+      {folders.map(folder => (
         <div key={folder.folder}>
           <div className="flex items-center gap-2 mb-3">
             <FolderOpen className="w-4 h-4 text-slate-400" />

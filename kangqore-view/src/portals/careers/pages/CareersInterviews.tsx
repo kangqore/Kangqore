@@ -1,9 +1,11 @@
+import { useQuery } from '@tanstack/react-query'
 import { Video, Phone, Users, MapPin, Clock, ExternalLink, CheckSquare, Square, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
 import { cn } from '@design-system/cn'
+import { api } from '@lib/api'
 
 const INTERVIEWS = [
   {
@@ -98,13 +100,37 @@ function PrepChecklist({ items }: { items: typeof INTERVIEWS[0]['prep'] }) {
   )
 }
 
+type Interview = typeof INTERVIEWS[0]
+
 export function CareersInterviews() {
-  const [expanded, setExpanded] = useState<string | null>('i2')
+  const [expanded, setExpanded] = useState<string | null>(null)
 
-  const upcoming = INTERVIEWS.filter(i => i.status !== 'completed')
-  const past     = INTERVIEWS.filter(i => i.status === 'completed')
+  const { data: liveMeetings } = useQuery({
+    queryKey: ['careers', 'interviews'],
+    queryFn: () => api.get('/meetings/job-seeker').then(r => r.data.meetings ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
 
-  const renderCard = (interview: typeof INTERVIEWS[0]) => {
+  const interviews: Interview[] = liveMeetings?.length
+    ? (liveMeetings as Record<string, unknown>[]).map((m): Interview => ({
+        id:              String(m.id),
+        stage:           String(m.title ?? 'Interview'),
+        status:          String(m.status ?? 'SCHEDULED') === 'COMPLETED' ? 'completed' : new Date(String(m.startTime)) > new Date() ? 'upcoming' : 'completed',
+        format:          String(m.type ?? 'VIDEO'),
+        interviewer:     String(m.host ?? 'Kangqore Team'),
+        interviewerRole: 'Interviewer',
+        date:            String(m.startTime),
+        duration:        m.endTime ? Math.round((new Date(String(m.endTime)).getTime() - new Date(String(m.startTime)).getTime()) / 60000) : 60,
+        joinLink:        m.joinLink ? String(m.joinLink) : null,
+        notes:           '',
+        prep:            [],
+      }))
+    : INTERVIEWS
+
+  const upcoming = interviews.filter(i => i.status !== 'completed')
+  const past     = interviews.filter(i => i.status === 'completed')
+
+  const renderCard = (interview: Interview) => {
     const isOpen  = expanded === interview.id
     const isPast  = interview.status === 'completed'
     const isNext  = interview.status === 'upcoming'
