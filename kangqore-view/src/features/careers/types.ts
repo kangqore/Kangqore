@@ -13,6 +13,7 @@ export interface JobRole {
   remote: boolean
   salaryMin: number   // £k
   salaryMax: number   // £k
+  salaryRange?: string
   postedDate: string
   targetStartDate?: string
   hiringManager: string

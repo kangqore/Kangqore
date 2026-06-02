@@ -653,6 +653,8 @@ model Job {
   location     String?
   type         String
   status       String           @default("OPEN")
+  salaryRange  String?
+  requirements String[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   applications JobApplication[]

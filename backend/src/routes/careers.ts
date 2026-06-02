@@ -29,7 +29,23 @@ const applicationSchema = Joi.object({
  * POST /api/careers/apply
  * Submit a job application (public)
  */
-// GET /api/careers/jobs — public list of open roles
+function shapeJob(j: Awaited<ReturnType<typeof prisma.job.findMany>>[0] & { _count?: { applications: number } }) {
+  return {
+    id:           j.id,
+    title:        j.title,
+    department:   j.department ?? 'general',
+    type:         j.type,
+    location:     j.location ?? 'Remote',
+    description:  j.description,
+    status:       j.status.toLowerCase(),
+    salaryRange:  j.salaryRange ?? '',
+    requirements: j.requirements,
+    applications: j._count?.applications ?? 0,
+    createdAt:    j.createdAt.toISOString().slice(0, 10),
+  }
+}
+
+// GET /api/careers/jobs — list of open roles (public)
 router.get('/jobs', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const jobs = await prisma.job.findMany({
@@ -37,17 +53,59 @@ router.get('/jobs', async (_req: Request, res: Response, next: NextFunction) => 
       orderBy: { createdAt: 'desc' },
       include: { _count: { select: { applications: true } } },
     })
-    res.json({ jobs: jobs.map(j => ({
-      id:          j.id,
-      title:       j.title,
-      department:  j.department ?? 'General',
-      type:        j.type,
-      location:    j.location ?? 'Remote',
-      description: j.description,
-      status:      j.status.toLowerCase(),
-      applicants:  j._count.applications,
-      createdAt:   j.createdAt.toISOString().slice(0, 10),
-    })) })
+    res.json({ jobs: jobs.map(shapeJob) })
+  } catch (err) {
+    next(err)
+  }
+})
+
+// GET /api/careers/jobs/all — all jobs including non-open (admin only)
+router.get('/jobs/all', requireAuth, requireRole(['ADMIN']), async (_req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const jobs = await prisma.job.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: { _count: { select: { applications: true } } },
+    })
+    res.json({ jobs: jobs.map(shapeJob) })
+  } catch (err) {
+    next(err)
+  }
+})
+
+// POST /api/careers/jobs — create a job (admin only)
+router.post('/jobs', requireAuth, requireRole(['ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { title, description, department, location, type, salaryRange, requirements } = req.body
+    if (!title || !description || !type) return res.status(400).json({ message: 'title, description, type are required' })
+    const job = await prisma.job.create({
+      data: { title, description, department: department ?? 'general', location: location ?? 'Remote', type, salaryRange: salaryRange ?? '', requirements: requirements ?? [], status: 'OPEN' },
+      include: { _count: { select: { applications: true } } },
+    })
+    res.status(201).json(shapeJob(job))
+  } catch (err) {
+    next(err)
+  }
+})
+
+// PATCH /api/careers/jobs/:id — update a job (admin only)
+router.patch('/jobs/:id', requireAuth, requireRole(['ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { title, description, department, location, type, status, salaryRange, requirements } = req.body
+    const job = await prisma.job.update({
+      where: { id: req.params.id },
+      data: {
+        ...(title        !== undefined && { title }),
+        ...(description  !== undefined && { description }),
+        ...(department   !== undefined && { department }),
+        ...(location     !== undefined && { location }),
+        ...(type         !== undefined && { type }),
+        ...(status       !== undefined && { status: status.toUpperCase() }),
+        ...(salaryRange  !== undefined && { salaryRange }),
+        ...(requirements !== undefined && { requirements }),
+      },
+      include: { _count: { select: { applications: true } } },
+    })
+    res.json(shapeJob(job))
   } catch (err) {
     next(err)
   }
