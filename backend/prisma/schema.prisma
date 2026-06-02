@@ -3069,3 +3069,125 @@ model StaffAllocation {
   @@index([projectId])
   @@map("staff_allocations")
 }
+
+// ─── Departments ──────────────────────────────────────────────────────────────
+
+model Department {
+  id           String        @id @default(cuid())
+  name         String
+  head         String
+  headTitle    String
+  status       String        @default("active")
+  headcount    Int           @default(0)
+  openRoles    Int           @default(0)
+  budget       Float         @default(0)
+  spent        Float         @default(0)
+  budgetStatus String        @default("on-track")
+  costCenter   String
+  description  String
+  tags         String[]
+  kpis         Json          @default("[]")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  budgetRows   DeptBudget[]
+  orgNodes     OrgNode[]
+
+  @@map("departments")
+}
+
+model OrgNode {
+  id           String      @id @default(cuid())
+  name         String
+  title        String
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  deptName     String
+  reportsTo    String?
+  level        Int         @default(1)
+  headcount    Int?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([departmentId])
+  @@map("org_nodes")
+}
+
+model DeptBudget {
+  id           String     @id @default(cuid())
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  annual       Float
+  q1           Float      @default(0)
+  q1Spent      Float      @default(0)
+  q2           Float      @default(0)
+  q2Spent      Float      @default(0)
+  q3           Float      @default(0)
+  q3Budget     Float      @default(0)
+  q4           Float      @default(0)
+  q4Budget     Float      @default(0)
+  categories   Json       @default("[]")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([departmentId])
+  @@map("dept_budgets")
+}
+
+// ─── Marketing ────────────────────────────────────────────────────────────────
+
+model Campaign {
+  id          String   @id @default(cuid())
+  name        String
+  channel     String
+  status      String   @default("draft")
+  startDate   DateTime
+  endDate     DateTime?
+  budget      Float    @default(0)
+  spent       Float    @default(0)
+  impressions Int      @default(0)
+  clicks      Int      @default(0)
+  leads       Int      @default(0)
+  mqls        Int      @default(0)
+  sqls        Int      @default(0)
+  revenue     Float    @default(0)
+  owner       String
+  description String
+  tags        String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("campaigns")
+}
+
+model ContentPiece {
+  id          String    @id @default(cuid())
+  title       String
+  type        String
+  status      String    @default("draft")
+  publishDate DateTime?
+  author      String
+  views       Int       @default(0)
+  leads       Int       @default(0)
+  url         String?
+  tags        String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("content_pieces")
+}
+
+model MarketingMetric {
+  id             String   @id @default(cuid())
+  month          String   @unique
+  spend          Float    @default(0)
+  mqls           Int      @default(0)
+  sqls           Int      @default(0)
+  websiteVisits  Int      @default(0)
+  conversionRate Float    @default(0)
+  cpl            Float    @default(0)
+  cac            Float    @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("marketing_metrics")
+}

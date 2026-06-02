@@ -184,9 +184,13 @@ app.use('/api/services', servicesRoutes);
 import reportsRoutes from './routes/reports'; // Gap 5
 import strategyRoutes from './routes/strategy';
 import resourcesRoutes from './routes/resources';
+import departmentsRoutes from './routes/departments';
+import marketingRoutes from './routes/marketing';
 app.use('/api/reports', reportsRoutes);
 app.use('/api/strategy', strategyRoutes);
 app.use('/api/resources', resourcesRoutes);
+app.use('/api/departments', departmentsRoutes);
+app.use('/api/marketing', marketingRoutes);
 
 // ─── KangqoreVis — Kangqore Visibility Intelligence System ────────────────────────────
 // Packaged framework. Sources connect later. Mounted before static frontend so

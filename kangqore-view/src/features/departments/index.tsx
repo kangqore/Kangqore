@@ -1,6 +1,10 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { Building2, GitBranch, DollarSign } from 'lucide-react'
 import { cn } from '@design-system/cn'
+import { api, isDemo } from '@lib/api'
+import { useDepartmentsStore } from './store'
 import { DepartmentsOverview } from './pages/DepartmentsOverview'
 import { OrgChartPage }        from './pages/OrgChartPage'
 import { DeptBudgetPage }      from './pages/DeptBudgetPage'
@@ -12,6 +16,19 @@ const TABS = [
 ]
 
 export function DepartmentsModule() {
+  const hydrate = useDepartmentsStore(s => s.hydrate)
+
+  const { data } = useQuery({
+    queryKey: ['departments'],
+    queryFn: () => api.get('/departments').then(r => r.data),
+    enabled: !isDemo(),
+    staleTime: 1000 * 60 * 5,
+  })
+
+  useEffect(() => {
+    if (data) hydrate(data)
+  }, [data, hydrate])
+
   return (
     <div>
       <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
