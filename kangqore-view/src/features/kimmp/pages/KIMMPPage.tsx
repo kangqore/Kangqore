@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -9,7 +9,7 @@ import {
 import { Badge } from '@design-system/components/Badge'
 import { Spinner } from '@design-system/components/Spinner'
 import { api, isDemo } from '@lib/api'
-import { useKIMMPStore, type Insight, type InsightCategory } from '@store/kimmp'
+import { useKIMMPStore, toInsight, type Insight, type InsightCategory } from '@store/kimmp'
 
 // ─── Category config ──────────────────────────────────────────────────────────
 
@@ -144,17 +144,19 @@ function InsightCard({ insight }: { insight: Insight }) {
 
 export function KIMMMPage() {
   const [filter, setFilter] = useState<InsightCategory | 'all'>('all')
-  const { insights, criticalCount } = useKIMMPStore()
+  const { insights, criticalCount, setInsights } = useKIMMPStore()
 
-  // Re-fetch on this page too (with filter param)
-  const { isLoading } = useQuery({
-    queryKey: ['kimmp-insights', filter],
-    queryFn: () => api.get('/dashboard/insights', {
-      params: { category: filter === 'all' ? undefined : filter, limit: 20 }
-    }).then(r => (r.data.insights ?? r.data ?? []) as Record<string, unknown>[]),
+  const { data: rawInsights, isLoading } = useQuery({
+    queryKey: ['kimmp-insights'],
+    queryFn: () => api.get('/dashboard/insights', { params: { limit: 50 } })
+      .then(r => (r.data.insights ?? r.data ?? []) as Record<string, unknown>[]),
     enabled: !isDemo(),
     staleTime: 1000 * 60 * 3,
   })
+
+  useEffect(() => {
+    if (rawInsights?.length) setInsights(rawInsights.map((r, i) => toInsight(r, i)))
+  }, [rawInsights, setInsights])
 
   const filtered = filter === 'all' ? insights : insights.filter(i => i.category === filter)
   const criticalInsights = insights.filter(i => i.priority === 'critical')

@@ -1,41 +1,77 @@
+import { useQuery } from '@tanstack/react-query'
 import { CheckCircle2, Clock, Circle, MessageSquare, Calendar, User } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
+import { Spinner } from '@design-system/components/Spinner'
+import { api } from '@lib/api'
 
-const MY_APPLICATION = {
-  role: 'Senior Backend Engineer',
-  company: 'Kangqore',
-  appliedDate: '2026-05-08',
-  currentStage: 'technical',
-  hiringManager: 'Dev Patel',
-  recruiter: 'Anika Roy',
-  salary: '£80k–£100k',
-  location: 'London, UK / Remote',
+// ─── Status → stage mapping ───────────────────────────────────────────────────
 
-  stages: [
-    { id: 'applied',   label: 'Applied',                 done: true,  date: '2026-05-08', note: 'Application received. KIMMP CV score: 79/100.'             },
-    { id: 'screening', label: 'Screening Call',          done: true,  date: '2026-05-14', note: '30-min call with Anika Roy. Strong culture fit confirmed.'  },
-    { id: 'technical', label: 'Technical Interview',     done: false, date: '2026-05-28', note: 'System design + live coding. Scheduled with Dev Patel.'     },
-    { id: 'final',     label: 'Final Interview',         done: false, date: null,         note: 'Panel interview with CTO and Head of Delivery.'             },
-    { id: 'offer',     label: 'Offer',                   done: false, date: null,         note: ''                                                           },
-  ],
-
-  messages: [
-    { from: 'Anika Roy',  date: '2026-05-14', text: 'Great speaking with you today! Moving you to the technical round — Dev will reach out to schedule.'   },
-    { from: 'You',        date: '2026-05-15', text: 'Thanks Anika! Looking forward to it. Happy anytime from Monday.'                                       },
-    { from: 'Dev Patel',  date: '2026-05-20', text: 'Hi! I\'ve scheduled the technical interview for 28 May at 10:00 BST. A Zoom link is in your calendar.' },
-    { from: 'You',        date: '2026-05-20', text: 'Perfect, confirmed. Thanks Dev!'                                                                       },
-  ],
+const STATUS_TO_STAGE: Record<string, string> = {
+  RECEIVED:     'applied',
+  REVIEWING:    'screening',
+  SHORTLISTED:  'screening',
+  INTERVIEWING: 'technical',
+  OFFERED:      'offer',
+  REJECTED:     'final',
+  WITHDRAWN:    'final',
 }
 
+const STAGES = [
+  { id: 'applied',   label: 'Applied'             },
+  { id: 'screening', label: 'Screening Call'       },
+  { id: 'technical', label: 'Technical Interview'  },
+  { id: 'final',     label: 'Final Interview'      },
+  { id: 'offer',     label: 'Offer'                },
+]
+
+const MOCK_APP = {
+  role: 'Senior Backend Engineer', appliedDate: '2026-05-08', status: 'INTERVIEWING',
+  location: 'London, UK / Remote', salary: '£80k–£100k', notes: '', interviewedAt: '2026-05-28',
+}
+
+const MOCK_MESSAGES = [
+  { from: 'Anika Roy', date: '2026-05-14', text: 'Great speaking with you today! Moving you to the technical round.' },
+  { from: 'You',       date: '2026-05-15', text: 'Thanks! Looking forward to it. Happy anytime from Monday.'         },
+]
+
 export function MyApplication() {
-  const currentIdx = MY_APPLICATION.stages.findIndex(s => s.id === MY_APPLICATION.currentStage)
+  const { data: app, isLoading } = useQuery({
+    queryKey: ['careers', 'my-application'],
+    queryFn: () => api.get('/careers/my-application').then(r => r.data).catch(() => null),
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const { data: emails } = useQuery({
+    queryKey: ['careers', 'emails'],
+    queryFn: () => api.get('/careers/emails').then(r => r.data ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const application = app ?? MOCK_APP
+  const currentStage = STATUS_TO_STAGE[application.status] ?? 'applied'
+  const currentIdx   = STAGES.findIndex(s => s.id === currentStage)
+  const messages     = (emails as {from?: string; senderName?: string; body?: string; createdAt?: string}[])?.length
+    ? emails.map((e: {from?: string; senderName?: string; body?: string; createdAt?: string}) => ({
+        from: e.from ?? e.senderName ?? 'Team',
+        date: e.createdAt ? new Date(e.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—',
+        text: e.body ?? '',
+      }))
+    : MOCK_MESSAGES
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center gap-2 text-sm text-slate-500 px-6 lg:px-10 py-10">
+        <Spinner size="sm" /> Loading your application…
+      </div>
+    )
+  }
 
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
       <div>
         <h2 className="text-xl font-bold text-slate-900">My Application</h2>
-        <p className="text-sm text-slate-500 mt-1">Track your application progress for {MY_APPLICATION.role} at Kangqore.</p>
+        <p className="text-sm text-slate-500 mt-1">Track your application progress for {application.role} at Kangqore.</p>
       </div>
 
       {/* Role card */}
@@ -43,17 +79,16 @@ export function MyApplication() {
         <CardBody className="p-6">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
-              <h3 className="text-lg font-bold text-slate-900">{MY_APPLICATION.role}</h3>
-              <p className="text-sm text-slate-500 mt-1">{MY_APPLICATION.location} · {MY_APPLICATION.salary}</p>
+              <h3 className="text-lg font-bold text-slate-900">{application.role}</h3>
+              <p className="text-sm text-slate-500 mt-1">{application.location} · {application.salary}</p>
             </div>
             <Badge variant="info" size="sm" dot>In Progress</Badge>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-5">
             {[
-              { label: 'Applied',         value: MY_APPLICATION.appliedDate    },
-              { label: 'Hiring Manager',  value: MY_APPLICATION.hiringManager  },
-              { label: 'Recruiter',       value: MY_APPLICATION.recruiter      },
-              { label: 'Current Stage',   value: MY_APPLICATION.stages.find(s => s.id === MY_APPLICATION.currentStage)?.label ?? '—' },
+              { label: 'Applied',       value: application.appliedDate                     },
+              { label: 'Current Stage', value: STAGES.find(s => s.id === currentStage)?.label ?? '—' },
+              { label: 'Salary',        value: application.salary                           },
             ].map(item => (
               <div key={item.label} className="bg-slate-50 rounded-xl p-3">
                 <p className="text-xs text-slate-500 mb-0.5">{item.label}</p>
@@ -69,42 +104,41 @@ export function MyApplication() {
         <Card>
           <CardHeader><CardTitle>Application Progress</CardTitle></CardHeader>
           <CardBody className="space-y-4">
-            {MY_APPLICATION.stages.map((stage, i) => {
-              const isActive  = stage.id === MY_APPLICATION.currentStage
-              const isFuture  = i > currentIdx
+            {STAGES.map((stage, i) => {
+              const isDone   = i < currentIdx
+              const isActive = stage.id === currentStage
+              const isFuture = i > currentIdx
 
               return (
                 <div key={stage.id} className="flex gap-4">
-                  {/* Timeline node */}
                   <div className="flex flex-col items-center">
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      stage.done ? 'bg-green-100' : isActive ? 'bg-blue-100' : 'bg-slate-100'
+                      isDone ? 'bg-green-100' : isActive ? 'bg-blue-100' : 'bg-slate-100'
                     }`}>
-                      {stage.done
+                      {isDone
                         ? <CheckCircle2 className="w-4 h-4 text-green-600" />
                         : isActive
                           ? <Clock className="w-4 h-4 text-blue-600" />
                           : <Circle className="w-4 h-4 text-slate-300" />
                       }
                     </div>
-                    {i < MY_APPLICATION.stages.length - 1 && (
-                      <div className={`w-px flex-1 my-1 ${stage.done ? 'bg-green-200' : 'bg-slate-200'}`} style={{ minHeight: '16px' }} />
+                    {i < STAGES.length - 1 && (
+                      <div className={`w-px flex-1 my-1 ${isDone ? 'bg-green-200' : 'bg-slate-200'}`} style={{ minHeight: '16px' }} />
                     )}
                   </div>
 
-                  {/* Content */}
                   <div className={`pb-4 flex-1 ${isFuture ? 'opacity-50' : ''}`}>
                     <div className="flex items-center gap-2">
                       <p className={`text-sm font-semibold ${isActive ? 'text-blue-700' : 'text-slate-900'}`}>{stage.label}</p>
                       {isActive && <Badge variant="info" size="sm" dot>Current</Badge>}
                     </div>
-                    {stage.date && (
+                    {isActive && application.interviewedAt && (
                       <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />{stage.date}
+                        <Calendar className="w-3 h-3" />{application.interviewedAt}
                       </p>
                     )}
-                    {stage.note && (
-                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">{stage.note}</p>
+                    {isActive && application.notes && (
+                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">{application.notes}</p>
                     )}
                   </div>
                 </div>
@@ -122,7 +156,7 @@ export function MyApplication() {
             </CardTitle>
           </CardHeader>
           <CardBody className="space-y-4">
-            {MY_APPLICATION.messages.map((msg, i) => {
+            {messages.map((msg: { from: string; date: string; text: string }, i: number) => {
               const isMe = msg.from === 'You'
               return (
                 <div key={i} className={`flex gap-3 ${isMe ? 'flex-row-reverse' : ''}`}>
