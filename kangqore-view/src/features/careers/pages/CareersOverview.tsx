@@ -1,9 +1,16 @@
-import { GraduationCap, Users, Clock, CheckCircle2 } from 'lucide-react'
+import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { GraduationCap, Users, Clock, CheckCircle2, Plus } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { StatCard } from '@design-system/components/StatCard'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Avatar } from '@design-system/components/Avatar'
+import { Button } from '@design-system/components/Button'
+import { Input } from '@design-system/components/Input'
+import { Textarea } from '@design-system/components/Textarea'
+import { Modal } from '@design-system/components/Modal'
+import { api } from '@lib/api'
 import { useCareersStore } from '../store'
 
 const STATUS_BADGE: Record<string, 'success' | 'info' | 'warning' | 'neutral' | 'danger'> = {
@@ -24,20 +31,72 @@ const DEPT_COLOR: Record<string, string> = {
   design: 'bg-pink-50 text-pink-700',
 }
 
+const EMPTY_FORM = { title: '', department: 'engineering', type: 'full-time', location: 'London, UK / Remote', description: '', salaryRange: '', requirements: '' }
+
 export function CareersOverview() {
   const { roles, candidates, setSelectedRole } = useCareersStore()
-  const openRoles    = roles.filter(r => ['open', 'interview', 'offer'].includes(r.status))
-  const totalApps    = roles.reduce((s, r) => s + r.applications, 0)
-  const activeOffer  = candidates.filter(c => c.stage === 'offer')
+  const queryClient = useQueryClient()
+  const [showNew, setShowNew] = useState(false)
+  const [form, setForm] = useState(EMPTY_FORM)
+  const set = (k: keyof typeof EMPTY_FORM, v: string) => setForm(f => ({ ...f, [k]: v }))
+
+  const { mutate: createJob, isPending } = useMutation({
+    mutationFn: () => api.post('/careers/jobs', {
+      ...form,
+      requirements: form.requirements.split('\n').map(r => r.trim()).filter(Boolean),
+    }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['jobs-all'] })
+      setShowNew(false)
+      setForm(EMPTY_FORM)
+    },
+  })
+
+  const openRoles   = roles.filter(r => ['open', 'interview', 'offer'].includes(r.status))
+  const totalApps   = roles.reduce((s, r) => s + r.applications, 0)
+  const activeOffer = candidates.filter(c => c.stage === 'offer')
 
   return (
     <div className="space-y-8">
       <KIMMPSignalBar module="Careers" />
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Open Roles"   value={openRoles.length}                              icon={<GraduationCap className="w-5 h-5" />} changeLabel={`${roles.filter(r => r.status === 'on-hold').length} on hold`} />
-        <StatCard label="Applications" value={totalApps}                                     icon={<Users         className="w-5 h-5" />} changeLabel="All open roles" />
-        <StatCard label="In Pipeline"  value={roles.reduce((s, r) => s + r.inPipeline, 0)}  icon={<Clock         className="w-5 h-5" />} changeLabel="Active candidates" />
-        <StatCard label="Offers Out"   value={activeOffer.length}                            icon={<CheckCircle2  className="w-5 h-5" />} changeLabel="Awaiting response" />
+
+      {/* New role modal */}
+      <Modal open={showNew} onClose={() => setShowNew(false)} title="Post a new role" size="md">
+        <div className="space-y-4 p-6">
+          <Input label="Job title" value={form.title} onChange={e => set('title', e.target.value)} placeholder="e.g. Senior Backend Engineer" />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 mb-1.5">Department</label>
+              <select value={form.department} onChange={e => set('department', e.target.value)} className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30">
+                {['engineering','product','sales','delivery','ops','design'].map(d => <option key={d} value={d}>{d}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 mb-1.5">Type</label>
+              <select value={form.type} onChange={e => set('type', e.target.value)} className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30">
+                {['full-time','part-time','contract','freelance'].map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
+          </div>
+          <Input label="Location" value={form.location} onChange={e => set('location', e.target.value)} placeholder="London, UK / Remote" />
+          <Input label="Salary range (optional)" value={form.salaryRange} onChange={e => set('salaryRange', e.target.value)} placeholder="e.g. £80k–£100k" />
+          <Textarea label="Description" value={form.description} onChange={e => set('description', e.target.value)} rows={3} placeholder="Role overview…" />
+          <Textarea label="Requirements (one per line)" value={form.requirements} onChange={e => set('requirements', e.target.value)} rows={4} placeholder={"5+ years Node.js\nPostgreSQL experience\nRemote working experience"} />
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="secondary" size="sm" onClick={() => setShowNew(false)}>Cancel</Button>
+            <Button variant="primary" size="sm" loading={isPending} disabled={!form.title || !form.description} onClick={() => createJob()}>Post role</Button>
+          </div>
+        </div>
+      </Modal>
+
+      <div className="flex items-center justify-between">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 flex-1">
+          <StatCard label="Open Roles"   value={openRoles.length}                              icon={<GraduationCap className="w-5 h-5" />} changeLabel={`${roles.filter(r => r.status === 'on-hold').length} on hold`} />
+          <StatCard label="Applications" value={totalApps}                                     icon={<Users         className="w-5 h-5" />} changeLabel="All open roles" />
+          <StatCard label="In Pipeline"  value={roles.reduce((s, r) => s + r.inPipeline, 0)}  icon={<Clock         className="w-5 h-5" />} changeLabel="Active candidates" />
+          <StatCard label="Offers Out"   value={activeOffer.length}                            icon={<CheckCircle2  className="w-5 h-5" />} changeLabel="Awaiting response" />
+        </div>
+        <Button variant="primary" size="sm" leftIcon={<Plus className="w-3.5 h-3.5" />} onClick={() => setShowNew(true)}>Post a role</Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

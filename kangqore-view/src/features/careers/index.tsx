@@ -7,7 +7,7 @@ import { api, isDemo } from '@lib/api'
 import { useCareersStore } from './store'
 import { CareersOverview } from './pages/CareersOverview'
 import { PipelinePage }    from './pages/PipelinePage'
-import type { Candidate } from './types'
+import type { Candidate, JobRole } from './types'
 
 const TABS = [
   { path: '',         label: 'Overview', icon: LayoutGrid    },
@@ -36,8 +36,49 @@ function toCandidate(a: Record<string, unknown>, i: number): Candidate {
   }
 }
 
+function toRole(j: Record<string, unknown>, i: number): JobRole {
+  const VALID_DEPTS = ['engineering','product','sales','delivery','ops','design']
+  const VALID_TYPES = ['full-time','part-time','contract','freelance']
+  const VALID_STATUSES = ['open','interview','offer','closed','on-hold']
+  return {
+    id:            String(j.id ?? `jr${i}`),
+    title:         String(j.title ?? ''),
+    department:    (VALID_DEPTS.includes(String(j.department ?? '').toLowerCase())
+                     ? String(j.department).toLowerCase()
+                     : 'engineering') as JobRole['department'],
+    type:          (VALID_TYPES.includes(String(j.type ?? '').toLowerCase())
+                     ? String(j.type).toLowerCase()
+                     : 'full-time') as JobRole['type'],
+    location:      String(j.location ?? 'Remote'),
+    remote:        String(j.location ?? '').toLowerCase().includes('remote'),
+    salaryMin:     0,
+    salaryMax:     0,
+    salaryRange:   String(j.salaryRange ?? ''),
+    description:   String(j.description ?? ''),
+    requirements:  (j.requirements as string[]) ?? [],
+    status:        (VALID_STATUSES.includes(String(j.status ?? '').toLowerCase())
+                     ? String(j.status).toLowerCase()
+                     : 'open') as JobRole['status'],
+    applications:  Number(j.applications ?? 0),
+    inPipeline:    0,
+    hiringManager: '',
+    tags:          [],
+    postedDate:    String(j.createdAt ?? '').slice(0, 10),
+  }
+}
+
 export function CareersModule() {
-  const { hydrateCandidates } = useCareersStore()
+  const { hydrateCandidates, hydrateRoles } = useCareersStore()
+
+  const { data: jobs } = useQuery({
+    queryKey: ['jobs-all'],
+    queryFn: () => api.get('/careers/jobs/all').then(r => (r.data.jobs ?? []) as Record<string, unknown>[]),
+    staleTime: 1000 * 60 * 5,
+    enabled: !isDemo(),
+  })
+  useEffect(() => {
+    if (jobs?.length) hydrateRoles(jobs.map((j, i) => toRole(j, i)))
+  }, [jobs, hydrateRoles])
 
   const { data: applications } = useQuery({
     queryKey: ['job-applications'],
