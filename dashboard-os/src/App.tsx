@@ -19,6 +19,7 @@ const FinanceModule     = lazy(() => import('@features/finance').then(m => ({ de
 const ConsultationsModule = lazy(() => import('@features/consultations').then(m => ({ default: m.ConsultationsModule })))
 const DeliveryModule      = lazy(() => import('@features/delivery').then(m => ({ default: m.DeliveryModule })))
 const GovernanceModule    = lazy(() => import('@features/governance').then(m => ({ default: m.GovernanceModule })))
+const CommsModule         = lazy(() => import('@features/comms').then(m => ({ default: m.CommsModule })))
 const ClientsModule     = lazy(() => import('@features/clients').then(m => ({ default: m.ClientsModule })))
 const PartnersModule    = lazy(() => import('@features/partners').then(m => ({ default: m.PartnersModule })))
 const LeadsModule       = lazy(() => import('@features/leads').then(m => ({ default: m.LeadsModule })))
@@ -114,6 +115,7 @@ function AppInner() {
               <Route path="consultations/*" element={<ConsultationsModule />} />
               <Route path="delivery/*"      element={<DeliveryModule />}      />
               <Route path="governance/*"    element={<GovernanceModule />}    />
+              <Route path="comms/*"         element={<CommsModule />}         />
               <Route path="clients/*"       element={<ClientsModule />}       />
               <Route path="partners/*"    element={<PartnersModule />}    />
               <Route path="leads/*"       element={<LeadsModule />}       />

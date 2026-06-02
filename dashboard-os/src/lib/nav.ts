@@ -1,7 +1,7 @@
 import {
   Target, LayoutDashboard, Users, DollarSign, Briefcase,
   Handshake, Zap, TrendingUp, GraduationCap, Megaphone,
-  GitBranch, Building2, BarChart3, Brain, Settings, CalendarClock, Activity, Scale,
+  GitBranch, Building2, BarChart3, Brain, Settings, CalendarClock, Activity, Scale, Inbox,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -40,6 +40,7 @@ export const navGroups: NavGroup[] = [
     label: 'CRM',
     items: [
       { id: 'consultations', label: 'Consultations', icon: CalendarClock,   path: '/os/consultations' },
+      { id: 'comms',         label: 'Comms',         icon: Inbox,           path: '/os/comms'         },
       { id: 'clients',       label: 'Clients',       icon: Briefcase,       path: '/os/clients'       },
       { id: 'partners',      label: 'Partners',      icon: Handshake,       path: '/os/partners'      },
       { id: 'leads',         label: 'Leads',         icon: Zap,             path: '/os/leads'         },
