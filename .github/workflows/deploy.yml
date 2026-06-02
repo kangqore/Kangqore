@@ -77,3 +77,27 @@ jobs:
       run: npx craco test --testPathPattern=dataArchitecture --watchAll=false
       env:
         CI: true
+
+  dashboard-os-build:
+    name: Dashboard OS — TypeScript + Vite build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: dashboard-os/package-lock.json
+
+    - name: Install dashboard-os dependencies
+      working-directory: dashboard-os
+      run: npm ci
+
+    # tsc -b + vite build — catches type errors and bundling failures.
+    # This gate would have caught the CareersPortfolio lucide import bug
+    # before it reached main.
+    - name: Build dashboard-os (TypeScript + Vite)
+      working-directory: dashboard-os
+      run: npm run build
