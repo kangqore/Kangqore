@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, AlertTriangle, Users, DollarSign, Star } from 'lucide-react'
+import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card } from '@design-system/components/Card'
 import { StatCard } from '@design-system/components/StatCard'
@@ -71,9 +72,10 @@ export function ClientsOverview() {
       </div>
 
       {/* Client cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <StaggerList className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {visible.map(client => (
-          <Card key={client.id} className="hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer" onClick={() => openClient(client.id)}>
+          <StaggerItem key={client.id}>
+          <Card className="hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer h-full" onClick={() => openClient(client.id)}>
             <div className="flex items-start gap-4">
               {/* Logo */}
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0">
@@ -135,8 +137,9 @@ export function ClientsOverview() {
               </div>
             </div>
           </Card>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerList>
     </div>
   )
 }

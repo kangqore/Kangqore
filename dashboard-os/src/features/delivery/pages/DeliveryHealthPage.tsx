@@ -5,6 +5,7 @@ import {
 } from 'recharts'
 import { Activity, TrendingDown, AlertTriangle, CheckCircle2, ChevronDown } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
+import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
 import { StatCard } from '@design-system/components/StatCard'
 import { Badge } from '@design-system/components/Badge'
@@ -248,9 +249,9 @@ export function DeliveryHealthPage() {
           <p className="text-sm font-semibold text-slate-700">Project deep-dive</p>
           <p className="text-xs text-slate-400">Click dimensions for detail</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          {displayed.map(p => <ProjectRadarCard key={p.id} project={p} />)}
-        </div>
+        <StaggerList className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          {displayed.map(p => <StaggerItem key={p.id}><ProjectRadarCard project={p} /></StaggerItem>)}
+        </StaggerList>
         {activeProjects.length > 4 && (
           <button
             onClick={() => setShowAll(v => !v)}
