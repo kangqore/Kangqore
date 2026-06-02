@@ -3,6 +3,7 @@ import { Flag, CheckCircle2, Clock, Circle } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { cn } from '@design-system/cn'
+import { useClientTasks } from '../useClientData'
 
 // Tasks are read-only from the client's perspective — they show tasks
 // assigned to their projects that need client action (decisions, reviews, sign-offs)
@@ -36,15 +37,18 @@ const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'n
 const isOverdue = (s: string, status: string) => status !== 'completed' && new Date(s) < new Date()
 
 type Filter = 'all' | 'pending' | 'in-progress' | 'completed'
+type Task = typeof MOCK_TASKS[0]
 
 export function ClientTasks() {
   const [filter, setFilter] = useState<Filter>('all')
+  const { data: liveTasks } = useClientTasks()
+  const tasks: Task[] = (liveTasks?.length ? liveTasks : MOCK_TASKS) as Task[]
 
-  const visible = MOCK_TASKS.filter(t => filter === 'all' || t.status === filter)
+  const visible  = tasks.filter(t => filter === 'all' || t.status === filter)
   const projects = [...new Set(visible.map(t => t.projectName))]
 
-  const pending   = MOCK_TASKS.filter(t => t.status === 'pending').length
-  const overdue   = MOCK_TASKS.filter(t => isOverdue(t.dueDate, t.status)).length
+  const pending = tasks.filter(t => t.status === 'pending').length
+  const overdue = tasks.filter(t => isOverdue(t.dueDate, t.status)).length
 
   return (
     <div className="space-y-6 max-w-3xl">

@@ -40,3 +40,11 @@ export function usePartnerDocuments() {
     staleTime: 1000 * 60 * 5,
   })
 }
+
+export function usePartnerMeetings() {
+  return useQuery({
+    queryKey: ['partner', 'meetings'],
+    queryFn: () => api.get('/meetings/partner').then(r => r.data.meetings ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
+}

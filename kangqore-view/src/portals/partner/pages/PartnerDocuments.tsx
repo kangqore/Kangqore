@@ -1,6 +1,7 @@
 import { FileText, Download, Eye, FolderOpen } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
+import { usePartnerDocuments } from '../usePartnerData'
 
 const MOCK_DOCUMENTS = [
   { id: 'doc1', title: 'Partner Agreement — Urban Mobility Co.',       type: 'CONTRACT',  size: '284 KB', project: 'Urban Mobility Platform',    sharedAt: '2026-03-01T10:00:00Z', format: 'PDF'  },
@@ -19,19 +20,38 @@ const TYPE_VARIANT: Record<string, 'info' | 'success' | 'warning' | 'neutral' | 
 
 const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 
+type Doc = typeof MOCK_DOCUMENTS[0]
+
+function shapeDoc(d: Record<string, unknown>): Doc {
+  const mime = typeof d.mimeType === 'string' ? d.mimeType.split('/')[1]?.toUpperCase() ?? 'FILE' : 'FILE'
+  return {
+    id:       String(d.id),
+    title:    String(d.title ?? d.name ?? ''),
+    type:     String(d.type ?? d.category ?? 'FILE').toUpperCase(),
+    size:     String(d.size ?? d.fileSize ?? '—'),
+    project:  typeof d.project === 'string' ? d.project : typeof d.projectName === 'string' ? d.projectName : null,
+    sharedAt: String(d.sharedAt ?? d.createdAt ?? d.uploadedAt ?? new Date().toISOString()),
+    format:   String(d.format ?? mime),
+  }
+}
+
 export function PartnerDocuments() {
-  const projects = [...new Set(MOCK_DOCUMENTS.map(d => d.project).filter(Boolean))]
+  const { data: liveDocs } = usePartnerDocuments()
+  const documents: Doc[] = liveDocs?.length
+    ? (liveDocs as Record<string, unknown>[]).map(shapeDoc)
+    : MOCK_DOCUMENTS
+  const projects = [...new Set(documents.map(d => d.project).filter(Boolean))]
 
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
         <h2 className="text-xl font-bold text-slate-900">Documents</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{MOCK_DOCUMENTS.length} files shared with you</p>
+        <p className="text-sm text-slate-500 mt-0.5">{documents.length} files shared with you</p>
       </div>
 
       {/* Group by project */}
       {[...projects, null].map(proj => {
-        const docs = MOCK_DOCUMENTS.filter(d => d.project === proj)
+        const docs = documents.filter(d => d.project === proj)
         if (!docs.length) return null
         return (
           <div key={proj ?? 'general'}>
