@@ -1,7 +1,7 @@
 import {
   Target, LayoutDashboard, Users, DollarSign, Briefcase,
   Handshake, Zap, TrendingUp, GraduationCap, Megaphone,
-  GitBranch, Building2, BarChart3, Brain, Settings,
+  GitBranch, Building2, BarChart3, Brain, Settings, CalendarClock,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -37,10 +37,11 @@ export const navGroups: NavGroup[] = [
   {
     label: 'CRM',
     items: [
-      { id: 'clients',     label: 'Clients',     icon: Briefcase,       path: '/os/clients'     },
-      { id: 'partners',    label: 'Partners',    icon: Handshake,       path: '/os/partners'    },
-      { id: 'leads',       label: 'Leads',       icon: Zap,             path: '/os/leads'       },
-      { id: 'investors',   label: 'Investors',   icon: TrendingUp,      path: '/os/investors'   },
+      { id: 'consultations', label: 'Consultations', icon: CalendarClock,   path: '/os/consultations' },
+      { id: 'clients',       label: 'Clients',       icon: Briefcase,       path: '/os/clients'       },
+      { id: 'partners',      label: 'Partners',      icon: Handshake,       path: '/os/partners'      },
+      { id: 'leads',         label: 'Leads',         icon: Zap,             path: '/os/leads'         },
+      { id: 'investors',     label: 'Investors',     icon: TrendingUp,      path: '/os/investors'     },
     ],
   },
   {
