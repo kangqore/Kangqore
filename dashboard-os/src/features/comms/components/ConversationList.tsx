@@ -1,4 +1,5 @@
-import { Search } from 'lucide-react'
+import { Search, MessageSquare } from 'lucide-react'
+import { EmptyState } from '@design-system/components/EmptyState'
 import { Avatar } from '@design-system/components/Avatar'
 import { cn } from '@design-system/cn'
 import type { EmailConversation, InternalConversation } from '../types'
@@ -75,7 +76,12 @@ export function ConversationList({
           </div>
         )}
         {!loading && filtered.length === 0 && (
-          <div className="p-6 text-center text-xs text-slate-400">No conversations found.</div>
+          <EmptyState
+            icon={<MessageSquare className="w-5 h-5" />}
+            title="No conversations"
+            description="Messages will appear here once contacts reach out."
+            className="py-10"
+          />
         )}
         {!loading && filtered.map(c => {
           const user      = getUser(c)

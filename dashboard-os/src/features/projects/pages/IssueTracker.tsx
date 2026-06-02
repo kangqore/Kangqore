@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Bug, Zap, CheckSquare, Layers, Search, Flag } from 'lucide-react'
+import { EmptyState } from '@design-system/components/EmptyState'
 import { Badge } from '@design-system/components/Badge'
 import { Avatar } from '@design-system/components/Avatar'
 import { Input } from '@design-system/components/Input'
@@ -162,7 +163,11 @@ export function IssueTracker() {
           </tbody>
         </table>
         {visible.length === 0 && (
-          <div className="py-12 text-center text-sm text-slate-400">No issues match your filters.</div>
+          <EmptyState
+            icon={<Bug className="w-6 h-6" />}
+            title="No issues match"
+            description="Try a different status, type, or priority filter."
+          />
         )}
       </div>
     </div>

@@ -95,6 +95,16 @@ h1, h2, h3, .font-display {
   flex-direction: column;
 }
 
+/* ─── Typography utilities ───────────────────────────────────────────────── */
+
+/* Explicit display class — Figtree 800, tighter tracking than h2 default */
+.text-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
 /* ─── Skeleton shimmer ───────────────────────────────────────────────────── */
 @keyframes shimmer {
   0%   { background-position: -400px 0; }
