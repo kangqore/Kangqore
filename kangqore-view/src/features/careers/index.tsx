@@ -7,7 +7,7 @@ import { api, isDemo } from '@lib/api'
 import { useCareersStore } from './store'
 import { CareersOverview } from './pages/CareersOverview'
 import { PipelinePage }    from './pages/PipelinePage'
-import type { Candidate } from './types'
+import type { Candidate, JobRole } from './types'
 
 const TABS = [
   { path: '',         label: 'Overview', icon: LayoutGrid    },
@@ -15,11 +15,16 @@ const TABS = [
 ]
 
 // Backend JobApplication → kangqore-view Candidate
-function toCandidate(a: Record<string, unknown>, i: number): Candidate {
+// roleMap: lowercase job title → job id, built from live or static roles
+function toCandidate(a: Record<string, unknown>, i: number, roleMap: Map<string, string>): Candidate {
   const stages: Candidate['stage'][] = ['applied','screening','technical','final','offer','hired','rejected']
+  const position = String(a.position ?? a.title ?? '').toLowerCase().trim()
+  const roleId = roleMap.get(position)
+    ?? [...roleMap.entries()].find(([k]) => k.includes(position) || position.includes(k))?.[1]
+    ?? 'j1'
   return {
     id:           String(a.id ?? `ca${i}`),
-    roleId:       'j1',   // mapped by position below
+    roleId,
     name:         String(a.name ?? ''),
     email:        String(a.email ?? ''),
     location:     String(a.location ?? 'Unknown'),
@@ -36,8 +41,52 @@ function toCandidate(a: Record<string, unknown>, i: number): Candidate {
   }
 }
 
+function toRole(j: Record<string, unknown>, i: number): JobRole {
+  const VALID_DEPTS = ['engineering','product','sales','delivery','ops','design']
+  const VALID_TYPES = ['full-time','part-time','contract','freelance']
+  const VALID_STATUSES = ['open','interview','offer','closed','on-hold']
+  return {
+    id:            String(j.id ?? `jr${i}`),
+    title:         String(j.title ?? ''),
+    department:    (VALID_DEPTS.includes(String(j.department ?? '').toLowerCase())
+                     ? String(j.department).toLowerCase()
+                     : 'engineering') as JobRole['department'],
+    type:          (VALID_TYPES.includes(String(j.type ?? '').toLowerCase())
+                     ? String(j.type).toLowerCase()
+                     : 'full-time') as JobRole['type'],
+    location:      String(j.location ?? 'Remote'),
+    remote:        String(j.location ?? '').toLowerCase().includes('remote'),
+    salaryMin:     0,
+    salaryMax:     0,
+    salaryRange:   String(j.salaryRange ?? ''),
+    description:   String(j.description ?? ''),
+    requirements:  (j.requirements as string[]) ?? [],
+    status:        (VALID_STATUSES.includes(String(j.status ?? '').toLowerCase())
+                     ? String(j.status).toLowerCase()
+                     : 'open') as JobRole['status'],
+    applications:  Number(j.applications ?? 0),
+    inPipeline:    0,
+    hiringManager: '',
+    tags:          [],
+    postedDate:    String(j.createdAt ?? '').slice(0, 10),
+  }
+}
+
 export function CareersModule() {
-  const { hydrateCandidates } = useCareersStore()
+  const { hydrateCandidates, hydrateRoles, roles } = useCareersStore()
+
+  // Build title → id map from whatever roles are in the store (static or live)
+  const roleMap = new Map(roles.map(r => [r.title.toLowerCase().trim(), r.id]))
+
+  const { data: jobs } = useQuery({
+    queryKey: ['jobs-all'],
+    queryFn: () => api.get('/careers/jobs/all').then(r => (r.data.jobs ?? []) as Record<string, unknown>[]),
+    staleTime: 1000 * 60 * 5,
+    enabled: !isDemo(),
+  })
+  useEffect(() => {
+    if (jobs?.length) hydrateRoles(jobs.map((j, i) => toRole(j, i)))
+  }, [jobs, hydrateRoles])
 
   const { data: applications } = useQuery({
     queryKey: ['job-applications'],
@@ -48,8 +97,8 @@ export function CareersModule() {
     enabled: !isDemo(),
   })
   useEffect(() => {
-    if (applications?.length) hydrateCandidates(applications.map((a, i) => toCandidate(a, i)))
-  }, [applications, hydrateCandidates])
+    if (applications?.length) hydrateCandidates(applications.map((a, i) => toCandidate(a, i, roleMap)))
+  }, [applications, hydrateCandidates, roles])
 
   return (
     <div>
