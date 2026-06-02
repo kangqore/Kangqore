@@ -1,6 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
 import { FileText, Download, Eye, Lock, FolderOpen } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
+import { api } from '@lib/api'
 
 const DATA_ROOM = [
   {
@@ -43,8 +45,32 @@ const TYPE_V: Record<string, 'danger' | 'info' | 'success' | 'warning' | 'neutra
 
 const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 
+type Doc = typeof DATA_ROOM[0]['docs'][0]
+
+function shapeDoc(d: Record<string, unknown>): Doc {
+  return {
+    id:         String(d.id),
+    title:      String(d.title ?? ''),
+    type:       String(d.type ?? 'FILE').toUpperCase(),
+    format:     String(d.format ?? d.mimeType ?? 'FILE').toUpperCase().split('/').pop() ?? 'FILE',
+    size:       String(d.size ?? '—'),
+    date:       String(d.createdAt ?? d.date ?? new Date().toISOString()).slice(0, 10),
+    restricted: Boolean(d.restricted ?? false),
+  }
+}
+
 export function InvestorDocuments() {
-  const totalDocs = DATA_ROOM.reduce((s, f) => s + f.docs.length, 0)
+  const { data: liveDocs } = useQuery({
+    queryKey: ['investor', 'documents'],
+    queryFn: () => api.get('/documents/my-documents').then(r => r.data.documents ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const dataRoom = liveDocs?.length
+    ? [{ folder: 'Shared Documents', docs: (liveDocs as Record<string, unknown>[]).map(shapeDoc) }]
+    : DATA_ROOM
+
+  const totalDocs = dataRoom.reduce((s: number, f: typeof DATA_ROOM[0]) => s + f.docs.length, 0)
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -53,7 +79,7 @@ export function InvestorDocuments() {
         <p className="text-sm text-slate-500 mt-0.5">{totalDocs} documents · confidential investor access</p>
       </div>
 
-      {DATA_ROOM.map(folder => (
+      {dataRoom.map((folder: typeof DATA_ROOM[0]) => (
         <div key={folder.folder}>
           <div className="flex items-center gap-2 mb-3">
             <FolderOpen className="w-4 h-4 text-slate-400" />
@@ -62,7 +88,7 @@ export function InvestorDocuments() {
           </div>
           <Card padding="none">
             <ul className="divide-y divide-slate-50">
-              {folder.docs.map(doc => (
+              {folder.docs.map((doc: Doc) => (
                 <li key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors group">
                   <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0">
                     <FileText className="w-4 h-4 text-violet-500" />
