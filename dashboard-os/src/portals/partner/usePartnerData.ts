@@ -24,3 +24,19 @@ export function usePartnerEarnings() {
     staleTime: 1000 * 60 * 5,
   })
 }
+
+export function usePartnerDeliverables() {
+  return useQuery({
+    queryKey: ['partner', 'deliverables'],
+    queryFn: () => api.get('/partner/deliverables').then(r => r.data.deliverables ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
+export function usePartnerDocuments() {
+  return useQuery({
+    queryKey: ['partner', 'documents'],
+    queryFn: () => api.get('/documents').then(r => r.data.documents ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
+}

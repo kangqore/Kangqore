@@ -16,3 +16,11 @@ export function useInvestorUpdates() {
     staleTime: 1000 * 60 * 5,
   })
 }
+
+export function useInvestorMeetings() {
+  return useQuery({
+    queryKey: ['investor', 'meetings'],
+    queryFn: () => api.get('/investor/meetings').then(r => r.data),
+    staleTime: 1000 * 60 * 5,
+  })
+}
