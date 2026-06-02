@@ -56,6 +56,11 @@ export function CareersOverview() {
   const totalApps   = roles.reduce((s, r) => s + r.applications, 0)
   const activeOffer = candidates.filter(c => c.stage === 'offer')
 
+  const pipelineByRole = candidates.reduce<Record<string, number>>((acc, c) => {
+    if (!['rejected', 'hired'].includes(c.stage)) acc[c.roleId] = (acc[c.roleId] ?? 0) + 1
+    return acc
+  }, {})
+
   return (
     <div className="space-y-8">
       <KIMMPSignalBar module="Careers" />
@@ -93,7 +98,7 @@ export function CareersOverview() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 flex-1">
           <StatCard label="Open Roles"   value={openRoles.length}                              icon={<GraduationCap className="w-5 h-5" />} changeLabel={`${roles.filter(r => r.status === 'on-hold').length} on hold`} />
           <StatCard label="Applications" value={totalApps}                                     icon={<Users         className="w-5 h-5" />} changeLabel="All open roles" />
-          <StatCard label="In Pipeline"  value={roles.reduce((s, r) => s + r.inPipeline, 0)}  icon={<Clock         className="w-5 h-5" />} changeLabel="Active candidates" />
+          <StatCard label="In Pipeline"  value={Object.values(pipelineByRole).reduce((s, n) => s + n, 0) || roles.reduce((s, r) => s + r.inPipeline, 0)} icon={<Clock className="w-5 h-5" />} changeLabel="Active candidates" />
           <StatCard label="Offers Out"   value={activeOffer.length}                            icon={<CheckCircle2  className="w-5 h-5" />} changeLabel="Awaiting response" />
         </div>
         <Button variant="primary" size="sm" leftIcon={<Plus className="w-3.5 h-3.5" />} onClick={() => setShowNew(true)}>Post a role</Button>
@@ -118,7 +123,10 @@ export function CareersOverview() {
                       </span>
                     </div>
                     <p className="text-xs text-slate-500 mt-1">
-                      {role.location} · {role.remote ? 'Remote OK' : 'On-site'} · {role.type} · £{role.salaryMin}k–£{role.salaryMax}k
+                      {role.location} · {role.remote ? 'Remote OK' : 'On-site'} · {role.type}
+                      {(role.salaryRange || role.salaryMin > 0) && (
+                        <> · {role.salaryRange || `£${role.salaryMin}k–£${role.salaryMax}k`}</>
+                      )}
                     </p>
                   </div>
                   <Badge variant={STATUS_BADGE[role.status]} size="sm" dot>
@@ -131,7 +139,7 @@ export function CareersOverview() {
                 <div className="flex items-center justify-between text-xs text-slate-500">
                   <div className="flex gap-4">
                     <span><span className="font-semibold text-slate-800">{role.applications}</span> applications</span>
-                    <span><span className="font-semibold text-slate-800">{role.inPipeline}</span> in pipeline</span>
+                    <span><span className="font-semibold text-slate-800">{pipelineByRole[role.id] ?? role.inPipeline}</span> in pipeline</span>
                     {role.targetStartDate && (
                       <span>Target start: <span className="font-semibold text-slate-800">{role.targetStartDate}</span></span>
                     )}

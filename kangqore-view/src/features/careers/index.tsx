@@ -15,11 +15,16 @@ const TABS = [
 ]
 
 // Backend JobApplication → kangqore-view Candidate
-function toCandidate(a: Record<string, unknown>, i: number): Candidate {
+// roleMap: lowercase title → id, built from live or static roles
+function toCandidate(a: Record<string, unknown>, i: number, roleMap: Map<string, string>): Candidate {
   const stages: Candidate['stage'][] = ['applied','screening','technical','final','offer','hired','rejected']
+  const position = String(a.position ?? a.title ?? '').toLowerCase().trim()
+  const roleId = roleMap.get(position)
+    ?? [...roleMap.entries()].find(([k]) => k.includes(position) || position.includes(k))?.[1]
+    ?? 'j1'
   return {
     id:           String(a.id ?? `ca${i}`),
-    roleId:       'j1',   // mapped by position below
+    roleId,
     name:         String(a.name ?? ''),
     email:        String(a.email ?? ''),
     location:     String(a.location ?? 'Unknown'),
@@ -68,7 +73,8 @@ function toRole(j: Record<string, unknown>, i: number): JobRole {
 }
 
 export function CareersModule() {
-  const { hydrateCandidates, hydrateRoles } = useCareersStore()
+  const { hydrateCandidates, hydrateRoles, roles } = useCareersStore()
+  const roleMap = new Map(roles.map(r => [r.title.toLowerCase().trim(), r.id]))
 
   const { data: jobs } = useQuery({
     queryKey: ['jobs-all'],
@@ -89,8 +95,8 @@ export function CareersModule() {
     enabled: !isDemo(),
   })
   useEffect(() => {
-    if (applications?.length) hydrateCandidates(applications.map((a, i) => toCandidate(a, i)))
-  }, [applications, hydrateCandidates])
+    if (applications?.length) hydrateCandidates(applications.map((a, i) => toCandidate(a, i, roleMap)))
+  }, [applications, hydrateCandidates, roles])
 
   return (
     <div>
