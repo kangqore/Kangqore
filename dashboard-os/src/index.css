@@ -112,6 +112,30 @@ h1, h2, h3, .font-display {
   animation: shimmer 1.4s ease-in-out infinite;
 }
 
+/* ─── Drawer exit animation (Radix Dialog data-state) ───────────────────── */
+/*
+ * Radix waits for the animation to finish before removing the DOM node,
+ * so this gives EditDrawer a slide-out matching its slide-in entrance.
+ */
+@keyframes drawer-slide-out {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes overlay-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+[data-radix-dialog-content][data-state="closed"] {
+  animation: drawer-slide-out 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+  pointer-events: none;
+}
+
+[data-radix-dialog-overlay][data-state="closed"] {
+  animation: overlay-fade-out 0.18s ease-in forwards;
+}
+
 /* ─── Scrollbar ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar        { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track  { background: transparent; }

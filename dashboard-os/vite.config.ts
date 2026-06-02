@@ -47,6 +47,7 @@ export default defineConfig({
         manualChunks(id: string) {
           if (!id.includes('node_modules')) return undefined
           if (id.includes('recharts'))          return 'vendor-charts'
+          if (id.includes('framer-motion'))     return 'vendor-motion'
           if (id.includes('socket.io-client'))  return 'vendor-socket'
           if (id.includes('@tanstack/'))         return 'vendor-query'
           if (id.includes('@radix-ui/') || id.includes('class-variance-authority') || id.includes('clsx') || id.includes('tailwind-merge')) return 'vendor-ui'

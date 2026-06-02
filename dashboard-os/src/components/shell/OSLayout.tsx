@@ -3,6 +3,7 @@ import { Sidebar }           from './Sidebar'
 import { Topbar }            from './Topbar'
 import { NotificationPanel } from './NotificationPanel'
 import { ModuleShell }       from '@components/ModuleShell'
+import { PageTransition }    from '@components/animations/PageTransition'
 
 export function OSLayout() {
   return (
@@ -12,9 +13,11 @@ export function OSLayout() {
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Topbar />
         <main className="flex-1 overflow-y-auto px-8 py-8 lg:px-12 lg:py-10 pb-16">
-          <ModuleShell>
-            <Outlet />
-          </ModuleShell>
+          <PageTransition>
+            <ModuleShell>
+              <Outlet />
+            </ModuleShell>
+          </PageTransition>
         </main>
       </div>
 

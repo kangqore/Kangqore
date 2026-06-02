@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Search, MapPin, Mail, Users, AlertTriangle } from 'lucide-react'
+import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { Card } from '@design-system/components/Card'
 import { StatCard } from '@design-system/components/StatCard'
 import { Badge } from '@design-system/components/Badge'
@@ -73,11 +74,12 @@ export function TeamOverview() {
       </div>
 
       {/* Member cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <StaggerList className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {visible.map(member => {
           const allocs = allocationsForMember(member.id)
           return (
-            <Card key={member.id} className="hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer">
+            <StaggerItem key={member.id}>
+            <Card className="hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer h-full">
               {/* Header */}
               <div className="flex items-start gap-3 mb-4">
                 <Avatar name={member.name} size="lg" status={member.status === 'active' ? 'online' : member.status === 'on-leave' ? 'away' : 'busy'} />
@@ -141,9 +143,10 @@ export function TeamOverview() {
                 £{member.billableRate}/hr · £{(member.billableRate * member.availability).toLocaleString()}/wk
               </div>
             </Card>
+            </StaggerItem>
           )
         })}
-      </div>
+      </StaggerList>
     </div>
   )
 }
