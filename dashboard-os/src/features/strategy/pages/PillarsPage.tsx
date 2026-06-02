@@ -70,7 +70,7 @@ export function PillarsPage() {
           const spentPct = Math.round((pillar.spent / pillar.budget) * 100)
 
           return (
-            <Card key={pillar.id} padding="lg" className="overflow-hidden border border-slate-100 hover:border-slate-200/80 hover:shadow-xl transition-all duration-300">
+            <Card key={pillar.id} padding="lg" health={pillar.health as 'on-track' | 'at-risk' | 'behind' | 'completed'} className="overflow-hidden hover:shadow-xl transition-all duration-300">
               <div className="h-1.5 rounded-full mb-6 w-20" style={{ background: pillar.color }} />
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">

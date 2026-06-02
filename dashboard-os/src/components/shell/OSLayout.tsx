@@ -6,7 +6,7 @@ import { ModuleShell }       from '@components/ModuleShell'
 
 export function OSLayout() {
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex h-screen overflow-hidden" style={{ background: 'var(--color-surface-50)' }}>
       <Sidebar />
 
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">

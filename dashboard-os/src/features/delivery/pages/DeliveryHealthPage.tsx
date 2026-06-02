@@ -96,8 +96,10 @@ function ProjectRadarCard({ project }: { project: Project }) {
     fullMark: 100,
   }))
 
+  const cardHealth = overall >= 78 ? 'on-track' : overall >= 55 ? 'at-risk' : 'behind'
+
   return (
-    <Card className="flex flex-col gap-3">
+    <Card health={cardHealth} className="flex flex-col gap-3">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="flex items-center gap-2 mb-0.5 flex-wrap">
