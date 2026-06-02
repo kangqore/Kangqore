@@ -17,6 +17,7 @@ const ProjectsModule    = lazy(() => import('@features/projects').then(m => ({ d
 const ResourcesModule   = lazy(() => import('@features/resources').then(m => ({ default: m.ResourcesModule })))
 const FinanceModule     = lazy(() => import('@features/finance').then(m => ({ default: m.FinanceModule })))
 const ConsultationsModule = lazy(() => import('@features/consultations').then(m => ({ default: m.ConsultationsModule })))
+const DeliveryModule      = lazy(() => import('@features/delivery').then(m => ({ default: m.DeliveryModule })))
 const ClientsModule     = lazy(() => import('@features/clients').then(m => ({ default: m.ClientsModule })))
 const PartnersModule    = lazy(() => import('@features/partners').then(m => ({ default: m.PartnersModule })))
 const LeadsModule       = lazy(() => import('@features/leads').then(m => ({ default: m.LeadsModule })))
@@ -110,6 +111,7 @@ function AppInner() {
 
               {/* Phase 2 — CRM */}
               <Route path="consultations/*" element={<ConsultationsModule />} />
+              <Route path="delivery/*"      element={<DeliveryModule />}      />
               <Route path="clients/*"       element={<ClientsModule />}       />
               <Route path="partners/*"    element={<PartnersModule />}    />
               <Route path="leads/*"       element={<LeadsModule />}       />
