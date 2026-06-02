@@ -7,6 +7,7 @@ import {
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { InlineSelect } from '@components/InlineSelect'
 import { EditDrawer } from '@components/EditDrawer'
+import { EmptyState } from '@design-system/components/EmptyState'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
@@ -307,7 +308,13 @@ export function ChangeControlPage() {
             ))}
           </tbody>
         </table>
-        {visible.length === 0 && <div className="py-14 text-center text-sm text-slate-400">No change requests match your filters.</div>}
+        {visible.length === 0 && (
+          <EmptyState
+            icon={<GitPullRequest className="w-6 h-6" />}
+            title="No change requests match"
+            description="Adjust the status filter or submit a new change request."
+          />
+        )}
       </Card>
 
       {openCR && <CRDetailDrawer cr={openCR} onPatch={onPatch} onClose={() => setOpenId(null)} />}

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Search, Shield, AlertTriangle, CheckCircle2, GitPullRequest, Package } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
+import { EmptyState } from '@design-system/components/EmptyState'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Input } from '@design-system/components/Input'
@@ -182,10 +183,11 @@ export function AuditLogPage() {
         ))}
 
         {Object.keys(grouped).length === 0 && (
-          <div className="py-16 text-center">
-            <Shield className="w-8 h-8 text-slate-200 mx-auto mb-3" />
-            <p className="text-sm text-slate-400">No events match your filters.</p>
-          </div>
+          <EmptyState
+            icon={<Shield className="w-6 h-6" />}
+            title="No audit events match"
+            description="Try a different date range or event category."
+          />
         )}
       </div>
     </div>
