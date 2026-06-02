@@ -57,6 +57,7 @@ import { authenticate, authorize } from './middleware/auth';
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
 import { legacyRedirectsMiddleware } from './middleware/legacyRedirects';
+import { dashboardRedirectMiddleware } from './middleware/dashboardRedirect';
 import { customDomainRouter } from './middleware/customDomainRouter';
 import { initializeSocket, getIO } from './socket';
 
@@ -215,6 +216,10 @@ if (process.env.PRERENDER_TOKEN) {
 // Data source: backend/src/data/legacyRedirects.generated.json
 //   (canonical authoring source: shared/legacyRedirects.json at repo root)
 app.use(legacyRedirectsMiddleware);
+
+// ─── Dashboard → OS permanent redirect ─────────────────────────────────────
+// /dashboard/* → 301 → /os/*  (deep links survive the migration)
+app.use(dashboardRedirectMiddleware);
 
 // Serve Frontend Static Files
 const frontendBuildPath = path.join(__dirname, '../../frontend/build');

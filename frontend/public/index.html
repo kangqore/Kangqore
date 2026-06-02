@@ -95,6 +95,38 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <!-- ─── Legacy dashboard read-only notice ────────────────────────────
+         Only shown on /dashboard/* paths. Dismissible via localStorage.
+         The OS at /os/ is the system of record — this UI is read-only.  -->
+    <script>
+      (function () {
+        if (!window.location.pathname.startsWith('/dashboard')) return;
+        if (localStorage.getItem('kq-legacy-dismissed')) return;
+        var bar = document.createElement('div');
+        bar.setAttribute('id', 'kq-legacy-notice');
+        bar.innerHTML =
+          '<span>This dashboard is <strong>read-only</strong> and will be removed in 60 days.</span>' +
+          '<a href="/os/" style="color:#fff;font-weight:600;margin-left:12px;text-decoration:underline;">Switch to the OS →</a>' +
+          '<button id="kq-legacy-dismiss" aria-label="Dismiss">Dismiss</button>';
+        bar.style.cssText =
+          'position:fixed;top:0;left:0;right:0;z-index:99999;' +
+          'background:#b91c1c;color:#fff;font-family:system-ui,sans-serif;' +
+          'font-size:13px;padding:9px 16px;display:flex;align-items:center;gap:4px;' +
+          'box-shadow:0 2px 6px rgba(0,0,0,0.25);';
+        document.addEventListener('DOMContentLoaded', function () {
+          document.body.prepend(bar);
+          document.getElementById('kq-legacy-dismiss').style.cssText =
+            'margin-left:auto;background:none;border:1px solid rgba(255,255,255,0.45);' +
+            'color:#fff;cursor:pointer;border-radius:4px;padding:3px 10px;font-size:12px;';
+          document.getElementById('kq-legacy-dismiss').onclick = function () {
+            bar.style.display = 'none';
+            localStorage.setItem('kq-legacy-dismissed', '1');
+          };
+        });
+      })();
+    </script>
+
     <script>
       // Unregister any service workers to prevent caching issues
       if ('serviceWorker' in navigator) {
