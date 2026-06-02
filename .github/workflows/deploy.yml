@@ -79,7 +79,7 @@ jobs:
       env:
         CI: true
 
-  dashboard-os-build:
+  kangqore-view-build:
     name: Dashboard OS — TypeScript + Vite build
     runs-on: ubuntu-latest
 
@@ -90,15 +90,15 @@ jobs:
       with:
         node-version: '20'
         cache: 'npm'
-        cache-dependency-path: dashboard-os/package-lock.json
+        cache-dependency-path: kangqore-view/package-lock.json
 
-    - name: Install dashboard-os dependencies
-      working-directory: dashboard-os
+    - name: Install kangqore-view dependencies
+      working-directory: kangqore-view
       run: npm ci
 
     # tsc -b + vite build — catches type errors and bundling failures.
     # This gate would have caught the CareersPortfolio lucide import bug
     # before it reached main.
-    - name: Build dashboard-os (TypeScript + Vite)
-      working-directory: dashboard-os
+    - name: Build kangqore-view (TypeScript + Vite)
+      working-directory: kangqore-view
       run: npm run build

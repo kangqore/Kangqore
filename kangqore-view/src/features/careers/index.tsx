@@ -14,7 +14,7 @@ const TABS = [
   { path: 'pipeline', label: 'Pipeline', icon: KanbanSquare  },
 ]
 
-// Backend JobApplication → dashboard-os Candidate
+// Backend JobApplication → kangqore-view Candidate
 function toCandidate(a: Record<string, unknown>, i: number): Candidate {
   const stages: Candidate['stage'][] = ['applied','screening','technical','final','offer','hired','rejected']
   return {
