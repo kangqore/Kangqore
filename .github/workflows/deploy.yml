@@ -12,7 +12,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        # Node 18 dropped: react-router-dom@7.x requires node>=20.0.0
+        node-version: [20.x]
 
     steps:
     - uses: actions/checkout@v3
