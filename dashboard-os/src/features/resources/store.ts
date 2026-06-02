@@ -11,6 +11,7 @@ interface ResourcesStore {
   allocationsForMember: (memberId: string) => Allocation[]
   allocationsForProject: (projectId: string) => Allocation[]
   memberById: (id: string) => TeamMember | undefined
+  hydrate: (data: { team: TeamMember[]; allocations: Allocation[] }) => void
 }
 
 export const useResourcesStore = create<ResourcesStore>((set, get) => ({
@@ -29,4 +30,6 @@ export const useResourcesStore = create<ResourcesStore>((set, get) => ({
 
   memberById: (id) =>
     get().team.find(m => m.id === id),
+
+  hydrate: (data) => set({ team: data.team, allocations: data.allocations }),
 }))

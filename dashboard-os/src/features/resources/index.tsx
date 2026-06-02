@@ -1,6 +1,10 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { Users, CalendarDays, GitBranch, BarChart3, Layers, FlaskConical, UserPlus } from 'lucide-react'
 import { cn } from '@design-system/cn'
+import { api, isDemo } from '@lib/api'
+import { useResourcesStore } from './store'
 import { TeamOverview }          from './pages/TeamOverview'
 import { CapacityPage }          from './pages/CapacityPage'
 import { AssignmentsPage }       from './pages/AssignmentsPage'
@@ -20,6 +24,19 @@ const TABS = [
 ]
 
 export function ResourcesModule() {
+  const { hydrate } = useResourcesStore()
+
+  const { data } = useQuery({
+    queryKey: ['resources'],
+    queryFn:  () => api.get('/resources').then(r => r.data),
+    enabled:  !isDemo(),
+    staleTime: 1000 * 60 * 5,
+  })
+
+  useEffect(() => {
+    if (data?.team?.length) hydrate(data)
+  }, [data, hydrate])
+
   return (
     <div>
       <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
