@@ -17,26 +17,25 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Check if user is already logged in and redirect to their dashboard
+  // Check if user is already logged in and redirect to their portal
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userString = localStorage.getItem('user');
-    
+
     if (token && userString) {
       try {
         const user = JSON.parse(userString);
+        const base = process.env.REACT_APP_DASHBOARD_OS_URL || '';
         const roleRoutes = {
-          'CLIENT': '/dashboard/client',
-          'PARTNER': '/dashboard/partner',
-          'INVESTOR': '/dashboard/investor',
-          'JOB_SEEKER': '/dashboard/careers',
-          'ADMIN': '/dashboard/admin'
+          'CLIENT':     `${base}/portal/client`,
+          'PARTNER':    `${base}/portal/partner`,
+          'INVESTOR':   `${base}/portal/investor`,
+          'JOB_SEEKER': `${base}/portal/careers`,
+          'ADMIN':      `${base}/os/kimmp`,
         };
-        
-        const redirectPath = roleRoutes[user.role] || '/';
-        navigate(redirectPath, { replace: true });
+        const dest = roleRoutes[user.role];
+        if (dest) window.location.replace(dest);
       } catch (err) {
-        // Invalid user data, clear it
         localStorage.removeItem('token');
         localStorage.removeItem('user');
       }
@@ -155,17 +154,18 @@ const Login = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Redirect based on role
+      // Redirect to kangqore-view based on role
+      const base = process.env.REACT_APP_DASHBOARD_OS_URL || '';
       const roleRoutes = {
-        'client': '/dashboard/client',
-        'partner': '/dashboard/partner',
-        'investor': '/dashboard/investor',
-        'job_seeker': '/dashboard/careers',
-        'admin': '/dashboard/admin'
+        'client':     `${base}/portal/client`,
+        'partner':    `${base}/portal/partner`,
+        'investor':   `${base}/portal/investor`,
+        'job_seeker': `${base}/portal/careers`,
+        'admin':      `${base}/os/kimmp`,
       };
 
       const userRole = data.user.role.toLowerCase();
-      navigate(roleRoutes[userRole] || '/');
+      window.location.href = roleRoutes[userRole] || `${base}/os/kimmp`;
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {

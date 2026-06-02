@@ -2,6 +2,7 @@ import { Video, Clock, User, ExternalLink } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
+import { usePartnerMeetings } from '../usePartnerData'
 
 const MOCK_MEETINGS = [
   {
@@ -36,14 +37,18 @@ const duration = (start: string, end: string) => {
   return mins >= 60 ? `${Math.floor(mins / 60)}h` : `${mins}m`
 }
 
+type Meeting = typeof MOCK_MEETINGS[0]
+
 export function PartnerMeetings() {
+  const { data: liveMeetings } = usePartnerMeetings()
+  const meetings: Meeting[] = (liveMeetings?.length ? liveMeetings : MOCK_MEETINGS) as Meeting[]
   const now = new Date()
-  const upcoming = MOCK_MEETINGS.filter(m => new Date(m.startTime) >= now)
+  const upcoming = meetings.filter(m => new Date(m.startTime) >= now)
     .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
-  const past = MOCK_MEETINGS.filter(m => new Date(m.startTime) < now)
+  const past = meetings.filter(m => new Date(m.startTime) < now)
     .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
 
-  const renderMeeting = (m: typeof MOCK_MEETINGS[0]) => {
+  const renderMeeting = (m: typeof meetings[0]) => {
     const isPast = new Date(m.startTime) < now
     return (
       <Card key={m.id} className="hover:shadow-md transition-all duration-200">
@@ -84,7 +89,7 @@ export function PartnerMeetings() {
     <div className="space-y-8 max-w-2xl">
       <div>
         <h2 className="text-xl font-bold text-slate-900">Meetings</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{MOCK_MEETINGS.length} total · {upcoming.length} upcoming</p>
+        <p className="text-sm text-slate-500 mt-0.5">{meetings.length} total · {upcoming.length} upcoming</p>
       </div>
 
       <div>

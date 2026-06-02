@@ -43,6 +43,30 @@ router.get('/client', authenticate, authorize(['CLIENT']), async (req: Authentic
   }
 });
 
+// GET /api/meetings/partner (List partner's meetings)
+router.get('/partner', authenticate, authorize(['PARTNER', 'ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const meetings = await prisma.meeting.findMany({
+      where: { partnerId: req.user!.id },
+      orderBy: { startTime: 'asc' },
+      include: { creator: { select: { name: true, email: true } } },
+    })
+    res.json({ meetings: meetings.map(m => ({
+      id:        m.id,
+      title:     m.title,
+      type:      m.type,
+      platform:  m.platform ?? 'ZOOM',
+      startTime: m.startTime.toISOString(),
+      endTime:   m.endTime.toISOString(),
+      status:    m.status,
+      joinLink:  m.joinLink ?? null,
+      host:      m.creator.name,
+    })) })
+  } catch (err) {
+    next(err)
+  }
+})
+
 // GET /api/meetings/:id (Detail view)
 router.get('/:id', authenticate, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {

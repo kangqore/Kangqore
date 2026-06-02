@@ -64,3 +64,22 @@ export function useClientFeedback() {
     staleTime: 1000 * 60 * 10,
   })
 }
+
+export function useClientTasks() {
+  return useQuery({
+    queryKey: ['client', 'tasks'],
+    queryFn: () => api.get('/tickets').then(r =>
+      (r.data.tickets ?? []).map((t: Record<string, unknown>) => ({
+        id:          String(t.id),
+        projectName: String(t.projectName ?? t.subject ?? ''),
+        title:       String(t.subject ?? t.title ?? ''),
+        status:      String(t.status ?? 'pending').toLowerCase().replace('open', 'pending').replace('resolved', 'completed'),
+        priority:    String(t.priority ?? 'medium').toLowerCase(),
+        assignee:    String((t.client as Record<string, unknown>)?.name ?? 'Client'),
+        dueDate:     t.dueDate ? String(t.dueDate).slice(0, 10) : new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10),
+        category:    String(t.category ?? 'Review'),
+      }))
+    ),
+    staleTime: 1000 * 60 * 2,
+  })
+}
