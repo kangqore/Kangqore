@@ -265,8 +265,9 @@ export function DecisionLogPage() {
   const openDecision = decisions.find(d => d.id === openId)
 
   const { mutate: patchDecision } = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<Decision> }) =>
-      isDemo() ? Promise.resolve() : api.patch(`/decisions/${id}/status`, data),
+    mutationFn: async ({ id, data }: { id: string; data: Partial<Decision> }) => {
+      if (!isDemo()) await api.patch(`/decisions/${id}/status`, data)
+    },
     onSuccess: (_, { id, data }) => {
       updateDecision(id, data)
       queryClient.invalidateQueries({ queryKey: ['governance', 'decisions'] })
@@ -275,7 +276,7 @@ export function DecisionLogPage() {
 
   const { mutate: createDecision } = useMutation({
     mutationFn: (data: Partial<Decision>) =>
-      isDemo() ? Promise.resolve({ data: { id: `d${Date.now()}` } }) : api.post('/decisions', data),
+      (isDemo() ? Promise.resolve({ data: { id: `d${Date.now()}` } }) : api.post('/decisions', data)) as Promise<{ data: { id: string } }>,
     onSuccess: (res, data) => {
       const id = (res as any)?.data?.id ?? `d${Date.now()}`
       addDecision({ ...data, id, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } as Decision)

@@ -110,9 +110,8 @@ export function EmailInbox({ tab }: Props) {
 
   // Reply mutation
   const { mutate: sendReply, isPending } = useMutation({
-    mutationFn: (content: string) => {
-      if (isDemo()) return Promise.resolve()
-      return api.post(tab.replyApi, {
+    mutationFn: async (content: string) => {
+      if (!isDemo()) await api.post(tab.replyApi, {
         [tab.idField]: selectedId,
         content,
         subject: `Re: ${threadEmails[threadEmails.length - 1]?.subject ?? ''}`,

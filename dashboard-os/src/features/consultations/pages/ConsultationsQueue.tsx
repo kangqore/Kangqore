@@ -274,8 +274,9 @@ export function ConsultationsQueue() {
 
   // Mutation — PATCH /api/consultations/:id
   const { mutate: patchConsultation } = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) =>
-      isDemo() ? Promise.resolve() : api.patch(`/consultations/${id}`, data),
+    mutationFn: async ({ id, data }: { id: string; data: Record<string, unknown> }) => {
+      if (!isDemo()) await api.patch(`/consultations/${id}`, data)
+    },
     onSuccess: (_, { id, data }) => {
       updateConsultation(id, data as Partial<Consultation>)
       queryClient.invalidateQueries({ queryKey: ['consultations'] })

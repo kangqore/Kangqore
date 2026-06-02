@@ -68,7 +68,7 @@ export function InvestorReports() {
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f3f7" />
             <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} tickFormatter={v => `£${v}k`} />
-            <Tooltip formatter={(v: number, n: string) => [`£${v}k`, n.toUpperCase()]} contentStyle={{ borderRadius: 10, fontSize: 12, border: '1px solid #e4e8f0' }} />
+            <Tooltip formatter={(v: unknown, n?: unknown) => [`£${v ?? 0}k`, `${n ?? ''}`.toUpperCase()] as [string, string]} contentStyle={{ borderRadius: 10, fontSize: 12, border: '1px solid #e4e8f0' }} />
             <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
             <Line type="monotone" dataKey="arr" stroke="#7c3aed" strokeWidth={2.5} dot={{ r: 4, fill: '#7c3aed' }} name="ARR" />
             <Line type="monotone" dataKey="mrr" stroke="#a78bfa" strokeWidth={2} dot={{ r: 3, fill: '#a78bfa' }} name="MRR" strokeDasharray="4 2" />
@@ -84,7 +84,7 @@ export function InvestorReports() {
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f3f7" />
             <XAxis dataKey="cohort" tick={{ fontSize: 10, fill: '#9aaabf' }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} domain={[0, 100]} tickFormatter={v => `${v}%`} />
-            <Tooltip formatter={(v: number) => [`${v}%`]} contentStyle={{ borderRadius: 10, fontSize: 12, border: '1px solid #e4e8f0' }} />
+            <Tooltip formatter={(v: unknown) => [`${v ?? 0}%`] as [string]} contentStyle={{ borderRadius: 10, fontSize: 12, border: '1px solid #e4e8f0' }} />
             <Bar dataKey="retained" fill="#7c3aed" radius={[6, 6, 0, 0]} name="Retained" />
           </BarChart>
         </ResponsiveContainer>

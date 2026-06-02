@@ -1,4 +1,4 @@
-import { Video, Calendar, Clock, User, ExternalLink, FileText } from 'lucide-react'
+import { Video, Clock, User, ExternalLink, FileText } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
@@ -39,7 +39,6 @@ const TYPE_V: Record<string, 'brand' | 'info'> = {
   BOARD: 'brand', CHECK_IN: 'info',
 }
 
-const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
 const fmtTime = (s: string) => new Date(s).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
 const duration = (s: string, e: string) => {
   const mins = (new Date(e).getTime() - new Date(s).getTime()) / 60000

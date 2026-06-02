@@ -16,10 +16,6 @@ function getTime(c: AnyConversation): string {
   if ('emails' in c) return c.lastMessage.createdAt
   return c.lastMessage.createdAt
 }
-function getDirection(c: AnyConversation): 'inbound' | 'outbound' | 'mine' {
-  if ('emails' in c) return c.lastMessage.direction
-  return c.lastMessage.senderId === 'me' ? 'mine' : 'mine'
-}
 
 const fmtTime = (s: string) => {
   const d = new Date(s)

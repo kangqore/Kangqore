@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Star, Send, CheckCircle2 } from 'lucide-react'
+import { Send, CheckCircle2 } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
@@ -65,9 +65,9 @@ export function ClientFeedback() {
   const [submitted,  setSubmitted]  = useState(false)
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => isDemo()
-      ? Promise.resolve()
-      : api.post('/feedback', { projectId, npsScore: nps, comment }),
+    mutationFn: async () => {
+      if (!isDemo()) await api.post('/feedback', { projectId, npsScore: nps, comment })
+    },
     onSuccess: () => {
       setSubmitted(true)
       queryClient.invalidateQueries({ queryKey: ['client', 'feedback'] })

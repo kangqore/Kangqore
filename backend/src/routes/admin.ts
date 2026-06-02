@@ -1387,4 +1387,30 @@ router.post('/projects/:id/override-progress', authenticate, authorize(['ADMIN']
   }
 });
 
+// ─── Lead inline editing ───────────────────────────────────────────────────
+// PATCH /api/admin/leads/:id  — update EqoreLead status and fields via JWT auth
+router.patch('/leads/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const { status, companyName, name, role, email, phone } = req.body;
+
+    const lead = await prisma.eqoreLead.update({
+      where: { id },
+      data: {
+        ...(status      && { status: status.toUpperCase() }),
+        ...(companyName !== undefined && { companyName }),
+        ...(name        !== undefined && { name }),
+        ...(role        !== undefined && { role }),
+        ...(email       !== undefined && { email }),
+        ...(phone       !== undefined && { phone }),
+        updatedAt: new Date(),
+      },
+    });
+
+    res.json({ lead });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

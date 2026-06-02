@@ -15,8 +15,6 @@ import { useLeadsStore } from '@features/leads/store'
 const HOURS_PER_10K_GBP = 8
 // Assumed win rate for forecasting
 const WIN_RATE_PCT = 0.35
-// Billing weeks per year
-const BILLING_WEEKS = 46
 
 // Recommended hire profiles — needed skills + seniority
 const HIRE_RECOMMENDATIONS: {
@@ -62,7 +60,7 @@ const fmt = (n: number) => `£${Math.round(n).toLocaleString()}`
 function buildProjectionChart(
   currentCapacityHrs: number,
   pipelineHrsNeeded: number,
-  teamSize: number,
+  _teamSize: number,
 ) {
   const months = ['Now', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   // Existing capacity stays flat (no hires modelled yet)
@@ -108,9 +106,6 @@ export function HiringCalculatorPage() {
     () => buildProjectionChart(totalCapacityHrs, demandHrsPerWeek * 24, team.length),
     [totalCapacityHrs, demandHrsPerWeek, team.length]
   )
-
-  const engineeringTeam = team.filter(m => m.department === 'Engineering')
-  const engAvgUtil = Math.round(engineeringTeam.reduce((s, m) => s + m.utilization, 0) / engineeringTeam.length)
 
   return (
     <div className="space-y-6">
@@ -167,7 +162,7 @@ export function HiringCalculatorPage() {
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f3f7" />
             <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} />
-            <Tooltip contentStyle={{ borderRadius: 10, fontSize: 12, border: '1px solid #e4e8f0' }} formatter={(v: number, n: string) => [`${v}h`, n]} />
+            <Tooltip contentStyle={{ borderRadius: 10, fontSize: 12, border: '1px solid #e4e8f0' }} formatter={(v: unknown, n?: unknown) => [`${v ?? 0}h`, `${n ?? ''}`] as [string, string]} />
             <ReferenceLine y={totalCapacityHrs} stroke="#ef4444" strokeDasharray="4 2" label={{ value: 'Max capacity', position: 'insideTopRight', fontSize: 10, fill: '#ef4444' }} />
             <Bar dataKey="capacity" fill="#22c55e" radius={[4,4,0,0]} name="Available" />
             <Bar dataKey="demand"   fill="#2564ea" radius={[4,4,0,0]} name="Demand" opacity={0.7} />

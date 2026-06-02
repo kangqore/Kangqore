@@ -204,8 +204,9 @@ export function ChangeControlPage() {
   const openCR = changeRequests.find(c => c.id === openId)
 
   const { mutate: patchCR } = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<ChangeRequest> }) =>
-      isDemo() ? Promise.resolve() : api.patch(`/change-requests/${id}/status`, data),
+    mutationFn: async ({ id, data }: { id: string; data: Partial<ChangeRequest> }) => {
+      if (!isDemo()) await api.patch(`/change-requests/${id}/status`, data)
+    },
     onSuccess: (_, { id, data }) => {
       updateChangeRequest(id, data)
       queryClient.invalidateQueries({ queryKey: ['governance', 'changes'] })

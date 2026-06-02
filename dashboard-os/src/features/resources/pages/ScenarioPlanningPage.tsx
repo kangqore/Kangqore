@@ -1,15 +1,14 @@
 import { useState, useMemo } from 'react'
-import { Plus, Trash2, Lightbulb, AlertTriangle, CheckCircle2, Users } from 'lucide-react'
+import { Trash2, Lightbulb, AlertTriangle, CheckCircle2 } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Avatar } from '@design-system/components/Avatar'
-import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
 import { Progress } from '@design-system/components/Progress'
-import { Divider } from '@design-system/components/Divider'
 import { cn } from '@design-system/cn'
 import { useResourcesStore } from '../store'
+import type { TeamMember } from '../types'
 
 // ─── preset scenarios ─────────────────────────────────────────────────────────
 
@@ -38,7 +37,7 @@ const EMPTY: ScenarioConfig = { name: '', hoursPerWeek: 16, duration: 12, skills
 
 // ─── analysis engine ──────────────────────────────────────────────────────────
 
-function analyseScenario(team: ReturnType<typeof useResourcesStore>['team'], cfg: ScenarioConfig) {
+function analyseScenario(team: TeamMember[], cfg: ScenarioConfig) {
   const neededSkills = cfg.skills
 
   return team.map(member => {
@@ -75,12 +74,10 @@ function analyseScenario(team: ReturnType<typeof useResourcesStore>['team'], cfg
 
 export function ScenarioPlanningPage() {
   const { team } = useResourcesStore()
-  const [cfg, setCfg]     = useState<ScenarioConfig>({ ...EMPTY })
-  const [analysed, setAnalysed] = useState(false)
+  const [cfg, setCfg] = useState<ScenarioConfig>({ ...EMPTY })
 
   const set = <K extends keyof ScenarioConfig>(k: K, v: ScenarioConfig[K]) => {
     setCfg(c => ({ ...c, [k]: v }))
-    setAnalysed(false)
   }
 
   const toggleSkill = (skill: string) => {
@@ -102,7 +99,6 @@ export function ScenarioPlanningPage() {
 
   function applyPreset(p: typeof PRESETS[0]) {
     setCfg({ name: p.label, hoursPerWeek: p.hoursPerWeek, duration: p.duration, skills: p.skills })
-    setAnalysed(false)
   }
 
   return (

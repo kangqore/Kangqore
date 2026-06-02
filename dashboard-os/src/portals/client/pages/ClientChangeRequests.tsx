@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, GitPullRequest, Clock, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react'
+import { Plus, Clock, CheckCircle2, XCircle } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
@@ -191,10 +191,12 @@ function SubmitCRDrawer({ onClose }: { onClose: () => void }) {
   const set = (k: keyof typeof form, v: string) => setForm(f => ({ ...f, [k]: v }))
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => isDemo() ? Promise.resolve() : api.post('/change-requests', {
-      ...form,
-      costImpact: form.costImpact ? Number(form.costImpact) : null,
-    }),
+    mutationFn: async () => {
+      if (!isDemo()) await api.post('/change-requests', {
+        ...form,
+        costImpact: form.costImpact ? Number(form.costImpact) : null,
+      })
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['client', 'change-requests'] })
       onClose()
