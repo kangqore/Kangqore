@@ -88,7 +88,9 @@ export function CareersHome() {
                     </div>
                     <div className="flex flex-wrap gap-3 text-xs text-slate-500 mt-1">
                       <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{role.location}</span>
-                      <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" />£{role.salaryMin}k–£{role.salaryMax}k</span>
+                      {role.salaryMin > 0 && (
+                        <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" />£{role.salaryMin}k–£{role.salaryMax}k</span>
+                      )}
                       <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{role.type}</span>
                     </div>
                     <p className="text-sm text-slate-600 mt-2 line-clamp-2">{role.description}</p>
