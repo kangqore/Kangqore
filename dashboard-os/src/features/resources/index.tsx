@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Users, CalendarDays, GitBranch, BarChart3, Layers, FlaskConical, UserPlus } from 'lucide-react'
 import { cn } from '@design-system/cn'
+import { SkeletonCard } from '@design-system/components/Skeleton'
 import { api, isDemo } from '@lib/api'
 import { useResourcesStore } from './store'
 import { TeamOverview }          from './pages/TeamOverview'
@@ -26,7 +27,7 @@ const TABS = [
 export function ResourcesModule() {
   const { hydrate } = useResourcesStore()
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['resources'],
     queryFn:  () => api.get('/resources').then(r => r.data),
     enabled:  !isDemo(),
@@ -36,6 +37,15 @@ export function ResourcesModule() {
   useEffect(() => {
     if (data?.team?.length) hydrate(data)
   }, [data, hydrate])
+
+  if (isLoading && !isDemo()) {
+    return (
+      <div className="space-y-4">
+        <SkeletonCard rows={4} />
+        <SkeletonCard rows={3} />
+      </div>
+    )
+  }
 
   return (
     <div>

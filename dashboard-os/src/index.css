@@ -1,3 +1,13 @@
+/* ─── Fonts (bundled — no CDN dependency) ─────────────────────────────────── */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/figtree/500.css";
+@import "@fontsource/figtree/600.css";
+@import "@fontsource/figtree/700.css";
+@import "@fontsource/figtree/800.css";
+
 @import "tailwindcss";
 
 :root {
@@ -12,13 +22,13 @@
   --color-brand-700: #1440a8;
   --color-brand-800: #0f2f80;
   --color-brand-900: #0a1f58;
-  --color-brand-gradient: linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%);
+  --color-brand-gradient: linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%);
 
   /* Surface */
   --color-surface-0:   #ffffff;
-  --color-surface-50:  #f8f9fb;
-  --color-surface-100: #f1f3f7;
-  --color-surface-200: #e4e8f0;
+  --color-surface-50:  #f5f7fa;
+  --color-surface-100: #eef1f6;
+  --color-surface-200: #e2e7f0;
   --color-surface-300: #c8d0e0;
   --color-surface-400: #9aaabf;
   --color-surface-500: #6b7a99;
@@ -30,12 +40,26 @@
   --color-text-inverse:   #ffffff;
 
   /* Status */
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-danger:  #ef4444;
-  --color-info:    #3b82f6;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-danger:  #dc2626;
+  --color-info:    #2563eb;
 
-  /* Sidebar */
+  /* Health card tints */
+  --health-on-track-border: #16a34a;
+  --health-on-track-bg:     #f0fdf4;
+  --health-at-risk-border:  #d97706;
+  --health-at-risk-bg:      #fffbeb;
+  --health-behind-border:   #dc2626;
+  --health-behind-bg:       #fef2f2;
+  --health-completed-border:#64748b;
+  --health-completed-bg:    #f8fafc;
+
+  /* Typography */
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Figtree', system-ui, -apple-system, sans-serif;
+
+  /* Layout */
   --sidebar-width: 210px;
   --sidebar-collapsed-width: 64px;
   --topbar-height: 60px;
@@ -53,11 +77,17 @@ html, body, #root {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
   background: var(--color-surface-50);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Heading font — applied to h1-h3 and any .font-display element */
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 #root {
@@ -65,6 +95,24 @@ body {
   flex-direction: column;
 }
 
+/* ─── Skeleton shimmer ───────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-100) 25%,
+    var(--color-surface-50)  50%,
+    var(--color-surface-100) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar        { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track  { background: transparent; }
 ::-webkit-scrollbar-thumb  { background: var(--color-surface-300); border-radius: 3px; }

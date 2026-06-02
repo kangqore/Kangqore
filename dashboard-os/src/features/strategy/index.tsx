@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Target, LayoutDashboard, TrendingUp, Map } from 'lucide-react'
 import { cn } from '@design-system/cn'
+import { SkeletonStatCard } from '@design-system/components/Skeleton'
 import { api, isDemo } from '@lib/api'
 import { useStrategyStore } from './store'
 import { StrategyOverview } from './pages/StrategyOverview'
@@ -20,7 +21,7 @@ const TABS = [
 export function StrategyModule() {
   const { hydrate } = useStrategyStore()
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['strategy'],
     queryFn:  () => api.get('/strategy').then(r => r.data),
     enabled:  !isDemo(),
@@ -30,6 +31,16 @@ export function StrategyModule() {
   useEffect(() => {
     if (data?.pillars?.length) hydrate(data)
   }, [data, hydrate])
+
+  if (isLoading && !isDemo()) {
+    return (
+      <div className="space-y-6">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          {Array.from({ length: 5 }).map((_, i) => <SkeletonStatCard key={i} />)}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-0">
