@@ -1,14 +1,20 @@
 import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { Users, CalendarDays, GitBranch, BarChart3 } from 'lucide-react'
+import { Users, CalendarDays, GitBranch, BarChart3, Layers, FlaskConical, UserPlus } from 'lucide-react'
 import { cn } from '@design-system/cn'
-import { TeamOverview }     from './pages/TeamOverview'
-import { CapacityPage }     from './pages/CapacityPage'
-import { AssignmentsPage }  from './pages/AssignmentsPage'
-import { UtilizationPage }  from './pages/UtilizationPage'
+import { TeamOverview }          from './pages/TeamOverview'
+import { CapacityPage }          from './pages/CapacityPage'
+import { AssignmentsPage }       from './pages/AssignmentsPage'
+import { UtilizationPage }       from './pages/UtilizationPage'
+import { SkillsMatrixPage }      from './pages/SkillsMatrixPage'
+import { ScenarioPlanningPage }  from './pages/ScenarioPlanningPage'
+import { HiringCalculatorPage }  from './pages/HiringCalculatorPage'
 
 const TABS = [
   { path: '',             label: 'Team',        icon: Users        },
   { path: 'capacity',     label: 'Capacity',    icon: CalendarDays },
+  { path: 'skills',       label: 'Skills',      icon: Layers       },
+  { path: 'scenarios',    label: 'Scenarios',   icon: FlaskConical },
+  { path: 'hiring',       label: 'Hiring',      icon: UserPlus     },
   { path: 'assignments',  label: 'Assignments', icon: GitBranch    },
   { path: 'utilization',  label: 'Utilization', icon: BarChart3    },
 ]
@@ -36,10 +42,13 @@ export function ResourcesModule() {
       </div>
 
       <Routes>
-        <Route index                element={<TeamOverview />}    />
-        <Route path="capacity"      element={<CapacityPage />}    />
-        <Route path="assignments"   element={<AssignmentsPage />} />
-        <Route path="utilization"   element={<UtilizationPage />} />
+        <Route index                element={<TeamOverview />}         />
+        <Route path="capacity"      element={<CapacityPage />}         />
+        <Route path="skills"        element={<SkillsMatrixPage />}     />
+        <Route path="scenarios"     element={<ScenarioPlanningPage />} />
+        <Route path="hiring"        element={<HiringCalculatorPage />} />
+        <Route path="assignments"   element={<AssignmentsPage />}      />
+        <Route path="utilization"   element={<UtilizationPage />}      />
         <Route path="*"             element={<Navigate to="/os/resources" replace />} />
       </Routes>
     </div>
