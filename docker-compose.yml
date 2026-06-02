@@ -67,20 +67,22 @@ services:
     networks:
       - kangqore-network
 
-  # Frontend (if needed)
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   container_name: kangqore-frontend
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     REACT_APP_API_URL: http://localhost:3000
-  #   depends_on:
-  #     - core-backend
-  #   networks:
-  #     - kangqore-network
+  # Nginx — public entry point
+  # Routes /os/* and /portal/* to dashboard-os static files.
+  # Proxies everything else (API + legacy frontend) to core-backend.
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: kangqore-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - core-backend
+    networks:
+      - kangqore-network
+    restart: unless-stopped
 
 volumes:
   postgres_data:

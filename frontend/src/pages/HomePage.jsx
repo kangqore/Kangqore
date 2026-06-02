@@ -484,7 +484,7 @@ const HeroCarousel = () => {
                     key={`title-${slide.id}`}
                     className={`text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-fade-in ${
                       (slide.id === 2 || slide.id === 3) ? 'whitespace-nowrap text-[6.5vw] sm:text-[2.8rem]' : ''
-                    } ${slide.id === 2 ? '-translate-y-[11px]' : ''}`}
+                    } ${slide.id === 2 ? '-translate-y-[22px]' : ''}`}
                   >
                   {slide.title}
                   {slide.titleTypewriter && (
