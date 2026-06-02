@@ -10,6 +10,7 @@ interface StrategyStore {
   setSelectedQuarter: (q: Quarter) => void
   filteredObjectives: (pillarId?: string) => Objective[]
   filteredPrograms: (pillarId?: string) => Program[]
+  hydrate: (data: { pillars: Pillar[]; objectives: Objective[]; programs: Program[] }) => void
 }
 
 export const useStrategyStore = create<StrategyStore>((set, get) => ({
@@ -31,4 +32,6 @@ export const useStrategyStore = create<StrategyStore>((set, get) => ({
     const { programs } = get()
     return programs.filter(p => !pillarId || p.pillarId === pillarId)
   },
+
+  hydrate: (data) => set({ pillars: data.pillars, objectives: data.objectives, programs: data.programs }),
 }))

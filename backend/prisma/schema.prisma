@@ -2952,3 +2952,120 @@ enum AssignmentStrategy {
   COLLECTIVE
   HOST_PICK
 }
+
+// ─── Strategy — OKRs ──────────────────────────────────────────────────────────
+
+model StrategicPillar {
+  id          String               @id @default(cuid())
+  name        String
+  description String
+  color       String               @default("#2564ea")
+  owner       String
+  health      String               @default("on-track")
+  budget      Float                @default(0)
+  spent       Float                @default(0)
+  objectives  StrategicObjective[]
+  programs    StrategicProgram[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@map("strategic_pillars")
+}
+
+model StrategicObjective {
+  id          String           @id @default(cuid())
+  pillarId    String
+  pillar      StrategicPillar  @relation(fields: [pillarId], references: [id], onDelete: Cascade)
+  quarter     String
+  title       String
+  description String
+  owner       String
+  status      String           @default("on-track")
+  progress    Int              @default(0)
+  keyResults  KeyResult[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([pillarId])
+  @@index([quarter])
+  @@map("strategic_objectives")
+}
+
+model KeyResult {
+  id          String             @id @default(cuid())
+  objectiveId String
+  objective   StrategicObjective @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  title       String
+  current     Float              @default(0)
+  target      Float
+  unit        String
+  status      String             @default("on-track")
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([objectiveId])
+  @@map("key_results")
+}
+
+model StrategicProgram {
+  id          String          @id @default(cuid())
+  pillarId    String
+  pillar      StrategicPillar @relation(fields: [pillarId], references: [id], onDelete: Cascade)
+  name        String
+  description String
+  status      String          @default("active")
+  health      String          @default("on-track")
+  owner       String
+  budget      Float           @default(0)
+  spent       Float           @default(0)
+  progress    Int             @default(0)
+  teamSize    Int             @default(0)
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([pillarId])
+  @@map("strategic_programs")
+}
+
+// ─── Resources — Team & Capacity ─────────────────────────────────────────────
+
+model StaffMember {
+  id           String           @id @default(cuid())
+  name         String
+  role         String
+  department   String
+  email        String           @unique
+  location     String
+  skills       String[]
+  status       String           @default("active")
+  utilization  Int              @default(0)
+  availability Int              @default(40)
+  billableRate Float            @default(0)
+  joinDate     DateTime
+  allocations  StaffAllocation[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@map("staff_members")
+}
+
+model StaffAllocation {
+  id            String      @id @default(cuid())
+  memberId      String
+  member        StaffMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  projectId     String
+  projectName   String
+  projectColor  String      @default("#2564ea")
+  hoursPerWeek  Float
+  allocationPct Int
+  startDate     DateTime
+  endDate       DateTime
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([memberId])
+  @@index([projectId])
+  @@map("staff_allocations")
+}
