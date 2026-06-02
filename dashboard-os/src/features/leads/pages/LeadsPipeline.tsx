@@ -13,6 +13,7 @@ import { Badge } from '@design-system/components/Badge'
 import { StatCard } from '@design-system/components/StatCard'
 import { Input } from '@design-system/components/Input'
 import { cn } from '@design-system/cn'
+import { InlineSelect } from '@components/InlineSelect'
 import { useLeadsStore } from '../store'
 import type { Lead, LeadStage } from '../types'
 
@@ -23,6 +24,15 @@ const STAGES: { id: LeadStage; label: string; color: string }[] = [
   { id: 'negotiation', label: 'Negotiation', color: '#8b5cf6' },
   { id: 'won',         label: 'Won',         color: '#22c55e' },
   { id: 'lost',        label: 'Lost',        color: '#ef4444' },
+]
+
+const STAGE_OPTIONS: { value: LeadStage; label: string; variant: 'neutral' | 'info' | 'warning' | 'brand' | 'success' | 'danger' }[] = [
+  { value: 'new',         label: 'New',         variant: 'neutral' },
+  { value: 'qualified',   label: 'Qualified',   variant: 'info'    },
+  { value: 'proposal',    label: 'Proposal',    variant: 'warning' },
+  { value: 'negotiation', label: 'Negotiation', variant: 'brand'   },
+  { value: 'won',         label: 'Won',         variant: 'success' },
+  { value: 'lost',        label: 'Lost',        variant: 'danger'  },
 ]
 
 const SOURCE_BADGE = {
@@ -40,7 +50,11 @@ function ScoreDot({ score }: { score: number }) {
   )
 }
 
-function LeadCard({ lead, dragging = false, onClick }: { lead: Lead; dragging?: boolean; onClick: () => void }) {
+function LeadCard({
+  lead, dragging = false, onClick, onStageChange,
+}: {
+  lead: Lead; dragging?: boolean; onClick: () => void; onStageChange: (stage: LeadStage) => void
+}) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: lead.id })
   return (
     <div
@@ -72,6 +86,15 @@ function LeadCard({ lead, dragging = false, onClick }: { lead: Lead; dragging?: 
       <div className="flex items-center gap-1.5 flex-wrap">
         <Badge variant={SOURCE_BADGE[lead.source]} size="sm">{lead.source}</Badge>
         <span className="text-[10px] text-slate-400">{lead.probability}% win</span>
+      </div>
+
+      <div className="mt-2 pt-2 border-t border-slate-100">
+        <InlineSelect
+          value={lead.stage}
+          options={STAGE_OPTIONS}
+          onChange={onStageChange}
+          size="sm"
+        />
       </div>
     </div>
   )
@@ -148,7 +171,12 @@ export function LeadsPipeline() {
                   )}>
                     {stageLeads.length === 0 && <p className="text-xs text-slate-300 py-4">Drop here</p>}
                     {stageLeads.map(lead => (
-                      <LeadCard key={lead.id} lead={lead} onClick={() => openLead(lead.id)} />
+                      <LeadCard
+                        key={lead.id}
+                        lead={lead}
+                        onClick={() => openLead(lead.id)}
+                        onStageChange={stage => moveLeadStage(lead.id, stage)}
+                      />
                     ))}
                   </div>
                 </SortableContext>
@@ -157,7 +185,7 @@ export function LeadsPipeline() {
           })}
         </div>
         <DragOverlay>
-          {activeLead && <LeadCard lead={activeLead} dragging onClick={() => {}} />}
+          {activeLead && <LeadCard lead={activeLead} dragging onClick={() => {}} onStageChange={() => {}} />}
         </DragOverlay>
       </DndContext>
     </div>

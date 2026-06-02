@@ -1,22 +1,22 @@
 import { useState } from 'react'
 import { Search, FileText, Download } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
-import { Badge } from '@design-system/components/Badge'
 import { Input } from '@design-system/components/Input'
 import { Button } from '@design-system/components/Button'
 import { StatCard } from '@design-system/components/StatCard'
 import { Modal } from '@design-system/components/Modal'
 import { Divider } from '@design-system/components/Divider'
+import { InlineSelect } from '@components/InlineSelect'
 import { useFinanceStore } from '../store'
 import type { InvoiceStatus } from '../types'
 
-const STATUS_VARIANT: Record<InvoiceStatus, 'success' | 'info' | 'warning' | 'danger' | 'neutral'> = {
-  paid:      'success',
-  sent:      'info',
-  draft:     'neutral',
-  overdue:   'danger',
-  cancelled: 'neutral',
-}
+const STATUS_OPTIONS: { value: InvoiceStatus; label: string; variant: 'success' | 'info' | 'warning' | 'danger' | 'neutral' }[] = [
+  { value: 'draft',     label: 'Draft',     variant: 'neutral' },
+  { value: 'sent',      label: 'Sent',      variant: 'info'    },
+  { value: 'paid',      label: 'Paid',      variant: 'success' },
+  { value: 'overdue',   label: 'Overdue',   variant: 'danger'  },
+  { value: 'cancelled', label: 'Cancelled', variant: 'neutral' },
+]
 
 const fmt  = (n: number) => `£${n.toLocaleString()}`
 const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -24,7 +24,7 @@ const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'n
 const STATUS_FILTERS: (InvoiceStatus | 'all')[] = ['all', 'paid', 'sent', 'overdue', 'draft']
 
 export function InvoicesPage() {
-  const { invoices, totalInvoiced, totalCollected, totalOverdue } = useFinanceStore()
+  const { invoices, totalInvoiced, totalCollected, totalOverdue, updateInvoiceStatus } = useFinanceStore()
   const [search, setSearch]       = useState('')
   const [statusFilter, setStatus] = useState<InvoiceStatus | 'all'>('all')
   const [selectedId, setSelected] = useState<string | null>(null)
@@ -113,7 +113,12 @@ export function InvoicesPage() {
                   </span>
                 </td>
                 <td className="px-5 py-3.5">
-                  <Badge variant={STATUS_VARIANT[inv.status]} dot size="sm">{inv.status}</Badge>
+                  <InlineSelect
+                    value={inv.status}
+                    options={STATUS_OPTIONS}
+                    onChange={status => updateInvoiceStatus(inv.id, status)}
+                    dot
+                  />
                 </td>
                 <td className="px-5 py-3.5">
                   <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100" onClick={e => { e.stopPropagation(); setSelected(inv.id) }}>
@@ -154,7 +159,13 @@ export function InvoicesPage() {
                 <p className="text-xs text-slate-400">Due</p>
                 <p className="text-sm font-medium text-slate-700">{fmtDate(selected.dueDate)}</p>
               </div>
-              <Badge variant={STATUS_VARIANT[selected.status]} dot size="md">{selected.status}</Badge>
+              <InlineSelect
+                value={selected.status}
+                options={STATUS_OPTIONS}
+                onChange={status => updateInvoiceStatus(selected.id, status)}
+                size="md"
+                dot
+              />
             </div>
 
             <Divider />
