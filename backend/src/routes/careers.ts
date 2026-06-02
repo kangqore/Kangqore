@@ -120,6 +120,35 @@ router.post('/apply', async (req: Request, res: Response, next: NextFunction) =>
 });
 
 /**
+ * GET /api/careers/my-application
+ * Get the authenticated job seeker's own application (matched by email)
+ */
+router.get('/my-application', requireAuth, requireRole(['JOB_SEEKER', 'ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const application = await prisma.jobApplication.findFirst({
+      where: { email: req.user!.email },
+      orderBy: { createdAt: 'desc' },
+      include: { job: { select: { title: true, department: true, location: true } } },
+    })
+
+    if (!application) return res.status(404).json({ message: 'No application found' })
+
+    res.json({
+      id:             application.id,
+      role:           application.position,
+      appliedDate:    application.createdAt.toISOString().slice(0, 10),
+      status:         application.status,
+      location:       application.job?.location ?? application.location ?? '—',
+      salary:         application.expectedSalary ?? '—',
+      notes:          application.notes ?? '',
+      interviewedAt:  application.interviewedAt?.toISOString().slice(0, 10) ?? null,
+    })
+  } catch (err) {
+    next(err)
+  }
+})
+
+/**
  * GET /api/careers/applications
  * Get all job applications (admin only)
  */
