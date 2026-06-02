@@ -100,8 +100,9 @@ export function InternalMessages() {
 
   // Send message
   const { mutate: sendMsg, isPending } = useMutation({
-    mutationFn: (content: string) =>
-      isDemo() ? Promise.resolve() : api.post('/messages', { content, receiverId: selectedId }),
+    mutationFn: async (content: string) => {
+      if (!isDemo()) await api.post('/messages', { content, receiverId: selectedId })
+    },
     onSuccess: (_, content) => {
       const msg: InternalMessage = {
         id:        `local-${Date.now()}`,

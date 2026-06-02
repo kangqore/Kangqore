@@ -77,8 +77,9 @@ function TicketDetail({ ticket, onClose }: { ticket: Ticket; onClose: () => void
   const queryClient = useQueryClient()
 
   const { mutate: sendReply, isPending } = useMutation({
-    mutationFn: (content: string) =>
-      isDemo() ? Promise.resolve() : api.post(`/tickets/${ticket.id}/reply`, { content }),
+    mutationFn: async (content: string) => {
+      if (!isDemo()) await api.post(`/tickets/${ticket.id}/reply`, { content })
+    },
     onSuccess: () => {
       setReply('')
       queryClient.invalidateQueries({ queryKey: ['client', 'tickets'] })
@@ -160,7 +161,9 @@ function RaiseTicketDrawer({ onClose }: { onClose: () => void }) {
   const set = (k: keyof typeof form, v: string) => setForm(f => ({ ...f, [k]: v }))
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => isDemo() ? Promise.resolve() : api.post('/tickets', form),
+    mutationFn: async () => {
+      if (!isDemo()) await api.post('/tickets', form)
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['client', 'tickets'] })
       onClose()

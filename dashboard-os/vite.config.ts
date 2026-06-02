@@ -10,6 +10,7 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths(),
   ],
+
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -24,12 +25,35 @@ export default defineConfig({
       '@portals': resolve(__dirname, 'src/portals'),
     },
   },
+
   server: {
     port: 5174,
     proxy: {
       '/api': {
         target: process.env.VITE_API_URL ?? 'http://localhost:5050',
         changeOrigin: true,
+      },
+    },
+  },
+
+  build: {
+    // Raise the warning threshold — 500 KB is aggressive for an enterprise SPA
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        // Stable, cache-friendly vendor chunks
+        // Each chunk changes only when its specific deps update — not on every deploy
+        // Rolldown requires manualChunks as a function (not object)
+        manualChunks(id: string) {
+          if (!id.includes('node_modules')) return undefined
+          if (id.includes('recharts'))          return 'vendor-charts'
+          if (id.includes('socket.io-client'))  return 'vendor-socket'
+          if (id.includes('@tanstack/'))         return 'vendor-query'
+          if (id.includes('@radix-ui/') || id.includes('class-variance-authority') || id.includes('clsx') || id.includes('tailwind-merge')) return 'vendor-ui'
+          if (id.includes('/react-dom/') || id.includes('/react-router') || id.includes('/react-hook-form') || id.includes('/react-hot-toast')) return 'vendor-react'
+          if (id.includes('/react/'))             return 'vendor-react'
+          return undefined
+        },
       },
     },
   },

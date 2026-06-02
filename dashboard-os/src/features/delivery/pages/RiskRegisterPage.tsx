@@ -387,8 +387,9 @@ export function RiskRegisterPage() {
   const openRisk = risks.find(r => r.id === openId)
 
   const { mutate: patchRisk } = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<Risk> }) =>
-      isDemo() ? Promise.resolve() : api.patch(`/risks/${id}`, data),
+    mutationFn: async ({ id, data }: { id: string; data: Partial<Risk> }) => {
+      if (!isDemo()) await api.patch(`/risks/${id}`, data)
+    },
     onSuccess: (_, { id, data }) => {
       updateRisk(id, data)
       queryClient.invalidateQueries({ queryKey: ['risks'] })
@@ -396,8 +397,9 @@ export function RiskRegisterPage() {
   })
 
   const { mutate: escalateRisk } = useMutation({
-    mutationFn: (id: string) =>
-      isDemo() ? Promise.resolve() : api.post(`/risks/${id}/escalate`, {}),
+    mutationFn: async (id: string) => {
+      if (!isDemo()) await api.post(`/risks/${id}/escalate`, {})
+    },
     onSuccess: (_, id) => {
       updateRisk(id, { status: 'ESCALATED' })
       queryClient.invalidateQueries({ queryKey: ['risks'] })
@@ -406,7 +408,7 @@ export function RiskRegisterPage() {
 
   const { mutate: createRisk } = useMutation({
     mutationFn: (data: Partial<Risk>) =>
-      isDemo() ? Promise.resolve({ data: { id: `r${Date.now()}` } }) : api.post('/risks', data),
+      (isDemo() ? Promise.resolve({ data: { id: `r${Date.now()}` } }) : api.post('/risks', data)) as Promise<{ data: { id: string } }>,
     onSuccess: (res, data) => {
       const id = (res as any)?.data?.id ?? `r${Date.now()}`
       addRisk({ ...data, id, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } as Risk)

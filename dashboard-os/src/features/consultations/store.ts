@@ -12,7 +12,7 @@ interface ConsultationsStore {
   updateConsultation: (id: string, patch: Partial<Consultation>) => void
 }
 
-export const useConsultationsStore = create<ConsultationsStore>((set, get) => ({
+export const useConsultationsStore = create<ConsultationsStore>((set) => ({
   consultations: CONSULTATIONS,
   stats:         MOCK_STATS,
   isLoading:     false,

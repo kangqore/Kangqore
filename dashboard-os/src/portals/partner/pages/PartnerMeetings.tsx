@@ -1,4 +1,4 @@
-import { Video, Calendar, Clock, User, ExternalLink } from 'lucide-react'
+import { Video, Clock, User, ExternalLink } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
@@ -30,7 +30,6 @@ const MOCK_MEETINGS = [
   },
 ]
 
-const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })
 const fmtTime = (s: string) => new Date(s).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
 const duration = (start: string, end: string) => {
   const mins = (new Date(end).getTime() - new Date(start).getTime()) / 60000

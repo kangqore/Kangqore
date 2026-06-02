@@ -128,7 +128,7 @@ function ProjectRadarCard({ project }: { project: Project }) {
             strokeWidth={2}
           />
           <Tooltip
-            formatter={(v: number) => [`${v}/100`, 'Score']}
+            formatter={(v: unknown) => [`${v ?? 0}/100`, 'Score'] as [string, string]}
             contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', fontSize: 12 }}
           />
         </RadarChart>

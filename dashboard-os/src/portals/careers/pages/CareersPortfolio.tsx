@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Github, Linkedin, Globe, FileText, Plus, ExternalLink, Check } from 'lucide-react'
+import { GitBranch, Link2, Globe, FileText, Plus, ExternalLink, Check } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
 import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
@@ -88,14 +88,14 @@ export function CareersPortfolio() {
         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Links</p>
         <div className="space-y-3">
           <LinkField icon={<FileText className="w-3.5 h-3.5" />}  label="CV / Resume"   value={form.cvUrl}        onChange={v => set('cvUrl', v)}        placeholder="https://drive.google.com/…" />
-          <LinkField icon={<Linkedin className="w-3.5 h-3.5" />}  label="LinkedIn"      value={form.linkedinUrl}  onChange={v => set('linkedinUrl', v)}  placeholder="https://linkedin.com/in/…" />
-          <LinkField icon={<Github   className="w-3.5 h-3.5" />}  label="GitHub"        value={form.githubUrl}    onChange={v => set('githubUrl', v)}    placeholder="https://github.com/…" />
+          <LinkField icon={<Link2 className="w-3.5 h-3.5" />}  label="LinkedIn"      value={form.linkedinUrl}  onChange={v => set('linkedinUrl', v)}  placeholder="https://linkedin.com/in/…" />
+          <LinkField icon={<GitBranch   className="w-3.5 h-3.5" />}  label="GitHub"        value={form.githubUrl}    onChange={v => set('githubUrl', v)}    placeholder="https://github.com/…" />
           <LinkField icon={<Globe    className="w-3.5 h-3.5" />}  label="Portfolio site" value={form.portfolioUrl} onChange={v => set('portfolioUrl', v)} placeholder="https://yoursite.com" />
         </div>
         <div className="flex items-center gap-4 mt-4 pt-4 border-t border-slate-100 flex-wrap">
           {[
-            { url: form.linkedinUrl,  icon: <Linkedin className="w-4 h-4" />, label: 'LinkedIn'  },
-            { url: form.githubUrl,    icon: <Github   className="w-4 h-4" />, label: 'GitHub'    },
+            { url: form.linkedinUrl,  icon: <Link2 className="w-4 h-4" />, label: 'LinkedIn'  },
+            { url: form.githubUrl,    icon: <GitBranch   className="w-4 h-4" />, label: 'GitHub'    },
             { url: form.portfolioUrl, icon: <Globe    className="w-4 h-4" />, label: 'Portfolio' },
             { url: form.cvUrl,        icon: <FileText className="w-4 h-4" />, label: 'CV'        },
           ].filter(l => l.url).map(l => (

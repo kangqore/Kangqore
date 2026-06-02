@@ -52,13 +52,12 @@ export function CareersMessages() {
   }, [emails.length])
 
   const { mutate: sendReply, isPending } = useMutation({
-    mutationFn: (content: string) =>
-      isDemo()
-        ? Promise.resolve()
-        : api.post('/careers/emails/reply', {
-            subject:  `Re: ${emails[emails.length - 1]?.subject ?? 'Your application'}`,
-            content,
-          }),
+    mutationFn: async (content: string) => {
+      if (!isDemo()) await api.post('/careers/emails/reply', {
+        subject:  `Re: ${emails[emails.length - 1]?.subject ?? 'Your application'}`,
+        content,
+      })
+    },
     onSuccess: () => {
       setDraft('')
       queryClient.invalidateQueries({ queryKey: ['careers', 'emails'] })
