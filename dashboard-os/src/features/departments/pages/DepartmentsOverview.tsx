@@ -1,4 +1,5 @@
 import { Building2, Users, DollarSign, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { StatCard } from '@design-system/components/StatCard'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
@@ -34,11 +35,12 @@ export function DepartmentsOverview() {
         <StatCard label="Departments"     value={departments.length}                             icon={<Building2  className="w-5 h-5" />} changeLabel={`${departments.filter(d => d.status === 'scaling').length} scaling`} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <StaggerList className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {departments.map(dept => {
           const budgetPct = Math.round((dept.spent / (dept.budget * 0.5)) * 100)
           return (
-            <Card key={dept.id}>
+            <StaggerItem key={dept.id}>
+            <Card>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
@@ -106,9 +108,10 @@ export function DepartmentsOverview() {
                 </div>
               </CardBody>
             </Card>
+            </StaggerItem>
           )
         })}
-      </div>
+      </StaggerList>
     </div>
   )
 }

@@ -14,6 +14,7 @@ import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
 import { Textarea } from '@design-system/components/Textarea'
 import { Divider } from '@design-system/components/Divider'
+import { StaggerTableBody, StaggerRow } from '@components/animations/Stagger'
 import { api, isDemo } from '@lib/api'
 import { useDeliveryStore } from '../store'
 import type { Risk, RiskStatus, RiskSeverity, RiskProbability, RiskImpact } from '../types'
@@ -500,12 +501,12 @@ export function RiskRegisterPage() {
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <StaggerTableBody className="divide-y divide-slate-50">
             {visible.map(r => {
               const score = riskScore(r)
               const scoreV = riskScoreVariant(score)
               return (
-                <tr
+                <StaggerRow
                   key={r.id}
                   className="hover:bg-slate-50 transition-colors cursor-pointer group"
                   onClick={() => setOpenId(r.id)}
@@ -546,10 +547,10 @@ export function RiskRegisterPage() {
                       </button>
                     )}
                   </td>
-                </tr>
+                </StaggerRow>
               )
             })}
-          </tbody>
+          </StaggerTableBody>
         </table>
         {visible.length === 0 && (
           <div className="py-14 text-center text-sm text-slate-400">No risks match your filters.</div>

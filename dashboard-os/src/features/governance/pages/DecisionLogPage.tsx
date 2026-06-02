@@ -14,6 +14,8 @@ import { Input } from '@design-system/components/Input'
 import { Textarea } from '@design-system/components/Textarea'
 import { StatCard } from '@design-system/components/StatCard'
 import { Divider } from '@design-system/components/Divider'
+import { StaggerTableBody, StaggerRow } from '@components/animations/Stagger'
+import { EmptyState } from '@design-system/components/EmptyState'
 import { api, isDemo } from '@lib/api'
 import { useGovernanceStore } from '../store'
 import type { Decision, DecisionStatus, Priority } from '../types'
@@ -352,9 +354,9 @@ export function DecisionLogPage() {
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <StaggerTableBody className="divide-y divide-slate-50">
             {visible.map(d => (
-              <tr key={d.id} className="hover:bg-slate-50 transition-colors cursor-pointer group" onClick={() => setOpenId(d.id)}>
+              <StaggerRow key={d.id} className="hover:bg-slate-50 transition-colors cursor-pointer group" onClick={() => setOpenId(d.id)}>
                 <td className="px-4 py-3.5 max-w-[240px]">
                   <div className="flex items-start gap-2">
                     {STATUS_ICON[d.status]}
@@ -378,11 +380,17 @@ export function DecisionLogPage() {
                   <InlineSelect value={d.status} options={STATUS_OPTIONS} onChange={status => onPatch(d.id, { status })} dot />
                 </td>
                 <td className="px-4 py-3.5 text-xs text-slate-400 whitespace-nowrap">{fmtDate(d.createdAt)}</td>
-              </tr>
+              </StaggerRow>
             ))}
-          </tbody>
+          </StaggerTableBody>
         </table>
-        {visible.length === 0 && <div className="py-14 text-center text-sm text-slate-400">No decisions match your filters.</div>}
+        {visible.length === 0 && (
+          <EmptyState
+            icon={<CheckCircle2 className="w-6 h-6" />}
+            title="No decisions match"
+            description="Try a different status filter."
+          />
+        )}
       </Card>
 
       {openDecision && <DecisionDrawer decision={openDecision} onPatch={onPatch} onClose={() => setOpenId(null)} />}

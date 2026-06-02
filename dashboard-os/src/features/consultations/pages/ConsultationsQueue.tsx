@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { StaggerTableBody, StaggerRow } from '@components/animations/Stagger'
 import { EmptyState } from '@design-system/components/EmptyState'
 import {
   Search, Phone, Mail, Building2, Calendar,
@@ -367,11 +368,11 @@ export function ConsultationsQueue() {
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <StaggerTableBody className="divide-y divide-slate-50">
             {visible.map(c => {
               const overdue = isOverdue(c)
               return (
-                <tr
+                <StaggerRow
                   key={c.id}
                   className="hover:bg-slate-50 transition-colors cursor-pointer group"
                   onClick={() => setOpenId(c.id)}
@@ -411,10 +412,10 @@ export function ConsultationsQueue() {
                       </div>
                     )}
                   </td>
-                </tr>
+                </StaggerRow>
               )
             })}
-          </tbody>
+          </StaggerTableBody>
         </table>
         {visible.length === 0 && (
           <EmptyState
