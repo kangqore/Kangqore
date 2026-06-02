@@ -29,6 +29,30 @@ const applicationSchema = Joi.object({
  * POST /api/careers/apply
  * Submit a job application (public)
  */
+// GET /api/careers/jobs — public list of open roles
+router.get('/jobs', async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const jobs = await prisma.job.findMany({
+      where: { status: 'OPEN' },
+      orderBy: { createdAt: 'desc' },
+      include: { _count: { select: { applications: true } } },
+    })
+    res.json({ jobs: jobs.map(j => ({
+      id:          j.id,
+      title:       j.title,
+      department:  j.department ?? 'General',
+      type:        j.type,
+      location:    j.location ?? 'Remote',
+      description: j.description,
+      status:      j.status.toLowerCase(),
+      applicants:  j._count.applications,
+      createdAt:   j.createdAt.toISOString().slice(0, 10),
+    })) })
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/apply', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { error, value } = applicationSchema.validate(req.body);

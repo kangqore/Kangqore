@@ -1,8 +1,10 @@
+import { useQuery } from '@tanstack/react-query'
 import { MapPin, Clock, DollarSign, Wifi, ChevronRight } from 'lucide-react'
 import { Card, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
 import { JOB_ROLES } from '@features/careers/data'
+import { api } from '@lib/api'
 
 const DEPT_COLOR: Record<string, string> = {
   engineering: 'bg-blue-50 text-blue-700', product: 'bg-purple-50 text-purple-700',
@@ -20,7 +22,30 @@ const PERKS = [
 ]
 
 export function CareersHome() {
-  const openRoles = JOB_ROLES.filter(r => ['open', 'interview'].includes(r.status))
+  const { data: liveJobs } = useQuery({
+    queryKey: ['careers', 'jobs'],
+    queryFn: () => api.get('/careers/jobs').then(r => r.data.jobs ?? []),
+    staleTime: 1000 * 60 * 10,
+  })
+
+  const mockRoles = JOB_ROLES.filter(r => ['open', 'interview'].includes(r.status))
+
+  // Map live jobs to the shape the template expects
+  const openRoles = liveJobs?.length
+    ? (liveJobs as Record<string, unknown>[]).map(j => ({
+        id:           String(j.id),
+        title:        String(j.title ?? ''),
+        department:   String(j.department ?? 'engineering').toLowerCase(),
+        type:         String(j.type ?? 'full-time'),
+        location:     String(j.location ?? 'Remote'),
+        description:  String(j.description ?? ''),
+        status:       'open' as const,
+        remote:       String(j.location ?? '').toLowerCase().includes('remote'),
+        salaryMin:    0,
+        salaryMax:    0,
+        requirements: [] as string[],
+      }))
+    : mockRoles
 
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-10">
