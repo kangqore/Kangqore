@@ -11,8 +11,8 @@ REACT_APP_BACKEND_URL="" npm run build
 cd ..
 
 # 2. Build Dashboard OS (Vite)
-echo "Building dashboard-os..."
-cd dashboard-os
+echo "Building kangqore-view..."
+cd kangqore-view
 if [ ! -d "node_modules" ]; then npm ci; fi
 npm run build
 cd ..
@@ -31,7 +31,7 @@ echo "Docker Compose (recommended):"
 echo "  docker compose up --build"
 echo ""
 echo "Bare-metal:"
-echo "  Copy dashboard-os/dist/ to /var/www/dashboard-os/"
+echo "  Copy kangqore-view/dist/ to /var/www/kangqore-view/"
 echo "  Copy nginx/kangqore.conf to /etc/nginx/conf.d/"
 echo "  nginx -t && nginx -s reload"
 echo "  cd backend && npm start"

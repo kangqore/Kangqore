@@ -1,4 +1,4 @@
-// Maps backend API shapes → dashboard-os types.
+// Maps backend API shapes → kangqore-view types.
 // Backend field names don't always match the OS types, so every
 // module store goes through a transform before hydrating.
 

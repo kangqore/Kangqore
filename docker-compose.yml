@@ -68,7 +68,7 @@ services:
       - kangqore-network
 
   # Nginx — public entry point
-  # Routes /os/* and /portal/* to dashboard-os static files.
+  # Routes /os/* and /portal/* to kangqore-view static files.
   # Proxies everything else (API + legacy frontend) to core-backend.
   nginx:
     build:

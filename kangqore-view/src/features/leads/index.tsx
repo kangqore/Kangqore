@@ -18,7 +18,7 @@ const TABS = [
   { path: 'scoring', label: 'Scoring',  icon: Brain        },
 ]
 
-// Map eQORE backend lead → dashboard-os Lead type
+// Map eQORE backend lead → kangqore-view Lead type
 function toLead(e: Record<string, unknown>, i: number): Lead {
   const stages: Lead['stage'][] = ['new', 'qualified', 'proposal', 'negotiation', 'won', 'lost']
   return {
