@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Search, Filter } from 'lucide-react'
+import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
@@ -64,13 +65,14 @@ export function PillarsPage() {
       </div>
 
       {/* Pillar detail cards with spacious list gaps */}
-      <div className="space-y-8">
+      <StaggerList className="space-y-8">
         {visible.map(pillar => {
           const programs = filteredPrograms(pillar.id)
           const spentPct = Math.round((pillar.spent / pillar.budget) * 100)
 
           return (
-            <Card key={pillar.id} padding="lg" health={pillar.health as 'on-track' | 'at-risk' | 'behind' | 'completed'} className="overflow-hidden hover:shadow-xl transition-all duration-300">
+            <StaggerItem key={pillar.id}>
+            <Card padding="lg" health={pillar.health as 'on-track' | 'at-risk' | 'behind' | 'completed'} className="overflow-hidden hover:shadow-xl transition-all duration-300">
               <div className="h-1.5 rounded-full mb-6 w-20" style={{ background: pillar.color }} />
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -150,9 +152,10 @@ export function PillarsPage() {
                 </div>
               </div>
             </Card>
+            </StaggerItem>
           )
         })}
-      </div>
+      </StaggerList>
     </div>
   )
 }
