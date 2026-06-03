@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client'
 
-// Port 3000 = served via CRA dev proxy; 517x = direct Vite dev server
-const DEV_PORTS = ['3000', '5173', '5174', '5175', '5176']
+// Any local dev port — connect socket to backend at 5050
+const DEV_PORTS = ['3000', '3001', '5173', '5174', '5175', '5176']
 const SOCKET_URL = DEV_PORTS.includes(window.location.port) ? 'http://localhost:5050' : window.location.origin
 
 let socket: Socket | null = null
