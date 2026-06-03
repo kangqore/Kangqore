@@ -19,10 +19,14 @@ module.exports = function (app) {
   app.use('/assets', kvProxy);  // Vite built assets
 
   // Vite dev server internals (only needed in dev)
-  app.use('/@vite',          kvProxy);
-  app.use('/@react-refresh', kvProxy);
-  app.use('/@id',            kvProxy);
-  app.use('/src',            kvProxy);  // Vite serves source files directly
+  // IMPORTANT: /node_modules/.vite must be proxied — without it CRA's SPA
+  // fallback returns index.html for Vite's pre-bundled ESM deps, causing a
+  // silent parse failure that leaves the page blank.
+  app.use('/node_modules/.vite', kvProxy);
+  app.use('/@vite',              kvProxy);
+  app.use('/@react-refresh',     kvProxy);
+  app.use('/@id',                kvProxy);
+  app.use('/src',                kvProxy);  // Vite serves source files directly
 
   // Backend + SEO routes + WebSocket
   app.use('/socket.io',   backendProxy);
