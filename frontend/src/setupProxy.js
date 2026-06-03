@@ -24,7 +24,8 @@ module.exports = function (app) {
   app.use('/@id',            kvProxy);
   app.use('/src',            kvProxy);  // Vite serves source files directly
 
-  // Backend + SEO routes
+  // Backend + SEO routes + WebSocket
+  app.use('/socket.io',   backendProxy);
   app.use('/api',         backendProxy);
   app.use('/sitemap.xml', backendProxy);
   app.use('/robots.txt',  backendProxy);
