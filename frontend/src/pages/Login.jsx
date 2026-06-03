@@ -34,7 +34,12 @@ const Login = () => {
           'ADMIN':      `${base}/os/kimmp`,
         };
         const dest = roleRoutes[user.role];
-        if (dest) window.location.replace(dest);
+        if (dest) {
+          const hash = base
+            ? `#_t=${encodeURIComponent(token)}&_u=${encodeURIComponent(userString)}`
+            : '';
+          window.location.replace(dest + hash);
+        }
       } catch (err) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -154,7 +159,9 @@ const Login = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Redirect to kangqore-view based on role
+      // Redirect to kangqore-view based on role.
+      // In dev (different ports) thread token + user through the URL hash so
+      // kangqore-view's auth store can read them across the port boundary.
       const base = process.env.REACT_APP_DASHBOARD_OS_URL || '';
       const roleRoutes = {
         'client':     `${base}/portal/client`,
@@ -165,7 +172,14 @@ const Login = () => {
       };
 
       const userRole = data.user.role.toLowerCase();
-      window.location.href = roleRoutes[userRole] || `${base}/os/kimmp`;
+      const dest = roleRoutes[userRole] || `${base}/os/kimmp`;
+
+      // Append hash handoff only when crossing ports (dev). In prod base is
+      // empty so same-origin localStorage is already shared — no hash needed.
+      const hash = base
+        ? `#_t=${encodeURIComponent(data.token)}&_u=${encodeURIComponent(JSON.stringify(data.user))}`
+        : '';
+      window.location.href = dest + hash;
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {
