@@ -8,20 +8,31 @@ import {
   DropdownRoot, DropdownTrigger, DropdownContent,
   DropdownItem, DropdownSeparator, DropdownPortal,
 } from '@design-system/components/Dropdown'
+import { useQuery } from '@tanstack/react-query'
 import { useUIStore }  from '@store/ui'
 import { useAuthStore } from '@store/auth'
 import { allNavItems } from '@lib/nav'
+import { api, isDemo } from '@lib/api'
 
 const ROLE_LABEL: Record<string, string> = {
   ADMIN: 'Admin', CLIENT: 'Client', PARTNER: 'Partner',
   INVESTOR: 'Investor', JOB_SEEKER: 'Applicant',
 }
 
-const UNREAD_COUNT = 3
-
 export function Topbar() {
   const { openNotificationPanel } = useUIStore()
   const { user, logout } = useAuthStore()
+
+  const { data: notifData } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: () => api.get('/notifications?limit=20').then(r => r.data.notifications ?? []),
+    enabled: !isDemo(),
+    staleTime: 1000 * 30,
+    refetchInterval: 1000 * 60,
+  })
+  const unreadCount: number = Array.isArray(notifData)
+    ? notifData.filter((n: { read: boolean }) => !n.read).length
+    : 0
   const location = useLocation()
 
   const currentModule = allNavItems.find(item =>
@@ -66,9 +77,9 @@ export function Topbar() {
           className="relative h-8 w-8 rounded-xl flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors"
         >
           <Bell className="w-4 h-4" />
-          {UNREAD_COUNT > 0 && (
+          {unreadCount > 0 && (
             <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">
-              {UNREAD_COUNT}
+              {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
         </button>
