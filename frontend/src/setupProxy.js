@@ -6,12 +6,21 @@
  */
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const TARGET = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND       = process.env.REACT_APP_BACKEND_URL     || 'http://localhost:5050';
+const KANGQORE_VIEW = process.env.REACT_APP_DASHBOARD_OS_URL || 'http://localhost:5174';
 
 module.exports = function (app) {
-  const proxy = createProxyMiddleware({ target: TARGET, changeOrigin: true });
-  app.use('/api', proxy);
-  app.use('/sitemap.xml', proxy);
-  app.use('/robots.txt', proxy);
-  app.use('/llms.txt', proxy);
+  const backendProxy = createProxyMiddleware({ target: BACKEND,       changeOrigin: true });
+  const kvProxy      = createProxyMiddleware({ target: KANGQORE_VIEW, changeOrigin: true, ws: true });
+
+  // kangqore-view routes — mirrors nginx production routing
+  app.use('/os',     kvProxy);
+  app.use('/portal', kvProxy);
+  app.use('/assets', kvProxy);  // Vite hash-named JS/CSS bundles
+
+  // Backend + SEO routes
+  app.use('/api',         backendProxy);
+  app.use('/sitemap.xml', backendProxy);
+  app.use('/robots.txt',  backendProxy);
+  app.use('/llms.txt',    backendProxy);
 };

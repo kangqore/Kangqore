@@ -25,21 +25,15 @@ const Login = () => {
     if (token && userString) {
       try {
         const user = JSON.parse(userString);
-        const base = process.env.REACT_APP_DASHBOARD_OS_URL || '';
         const roleRoutes = {
-          'CLIENT':     `${base}/portal/client`,
-          'PARTNER':    `${base}/portal/partner`,
-          'INVESTOR':   `${base}/portal/investor`,
-          'JOB_SEEKER': `${base}/portal/careers`,
-          'ADMIN':      `${base}/os/kimmp`,
+          'CLIENT':     '/portal/client',
+          'PARTNER':    '/portal/partner',
+          'INVESTOR':   '/portal/investor',
+          'JOB_SEEKER': '/portal/careers',
+          'ADMIN':      '/os/kimmp',
         };
         const dest = roleRoutes[user.role];
-        if (dest) {
-          const hash = base
-            ? `#_t=${encodeURIComponent(token)}&_u=${encodeURIComponent(userString)}`
-            : '';
-          window.location.replace(dest + hash);
-        }
+        if (dest) window.location.replace(dest);
       } catch (err) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -159,27 +153,18 @@ const Login = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Redirect to kangqore-view based on role.
-      // In dev (different ports) thread token + user through the URL hash so
-      // kangqore-view's auth store can read them across the port boundary.
-      const base = process.env.REACT_APP_DASHBOARD_OS_URL || '';
+      // Redirect to kangqore-view routes — proxied via CRA dev server in dev,
+      // served by nginx on the same origin in production. No port switching.
       const roleRoutes = {
-        'client':     `${base}/portal/client`,
-        'partner':    `${base}/portal/partner`,
-        'investor':   `${base}/portal/investor`,
-        'job_seeker': `${base}/portal/careers`,
-        'admin':      `${base}/os/kimmp`,
+        'client':     '/portal/client',
+        'partner':    '/portal/partner',
+        'investor':   '/portal/investor',
+        'job_seeker': '/portal/careers',
+        'admin':      '/os/kimmp',
       };
 
       const userRole = data.user.role.toLowerCase();
-      const dest = roleRoutes[userRole] || `${base}/os/kimmp`;
-
-      // Append hash handoff only when crossing ports (dev). In prod base is
-      // empty so same-origin localStorage is already shared — no hash needed.
-      const hash = base
-        ? `#_t=${encodeURIComponent(data.token)}&_u=${encodeURIComponent(JSON.stringify(data.user))}`
-        : '';
-      window.location.href = dest + hash;
+      window.location.href = roleRoutes[userRole] || '/os/kimmp';
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {
