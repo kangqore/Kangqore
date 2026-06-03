@@ -16,7 +16,13 @@ module.exports = function (app) {
   // kangqore-view routes — mirrors nginx production routing
   app.use('/os',     kvProxy);
   app.use('/portal', kvProxy);
-  app.use('/assets', kvProxy);  // Vite hash-named JS/CSS bundles
+  app.use('/assets', kvProxy);  // Vite built assets
+
+  // Vite dev server internals (only needed in dev)
+  app.use('/@vite',          kvProxy);
+  app.use('/@react-refresh', kvProxy);
+  app.use('/@id',            kvProxy);
+  app.use('/src',            kvProxy);  // Vite serves source files directly
 
   // Backend + SEO routes
   app.use('/api',         backendProxy);
