@@ -46,9 +46,10 @@ export const ROLE_REDIRECT: Record<UserRole, string> = {
 
 // Write auth state to the same localStorage keys the frontend website uses
 // so a single login works across both apps on the same domain.
-function persistToWebsiteKeys(token: string, user: AuthUser) {
+function persistToWebsiteKeys(token: string, user: AuthUser, refreshToken?: string) {
   localStorage.setItem('token', token)
   localStorage.setItem('user', JSON.stringify(user))
+  if (refreshToken) localStorage.setItem('refreshToken', refreshToken)
 }
 
 function clearWebsiteKeys() {
@@ -119,7 +120,7 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
         const { data } = await api.post<{ token: string; refreshToken: string; user: AuthUser }>(
           '/auth/login', { email, password }
         )
-        persistToWebsiteKeys(data.token, data.user)
+        persistToWebsiteKeys(data.token, data.user, data.refreshToken)
         set({ user: data.user, token: data.token, isAuthenticated: true, isDemo: false, isLoading: false })
       } catch (err: unknown) {
         const msg = (err as { response?: { data?: { message?: string } } })
@@ -135,7 +136,7 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
         const { data } = await api.post<{ token: string; refreshToken: string; user: AuthUser }>(
           '/auth/register', payload
         )
-        persistToWebsiteKeys(data.token, data.user)
+        persistToWebsiteKeys(data.token, data.user, data.refreshToken)
         set({ user: data.user, token: data.token, isAuthenticated: true, isDemo: false, isLoading: false })
       } catch (err: unknown) {
         const msg = (err as { response?: { data?: { message?: string } } })
