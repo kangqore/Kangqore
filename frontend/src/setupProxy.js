@@ -22,7 +22,8 @@ module.exports = function (app) {
   // IMPORTANT: /node_modules/.vite must be proxied — without it CRA's SPA
   // fallback returns index.html for Vite's pre-bundled ESM deps, causing a
   // silent parse failure that leaves the page blank.
-  app.use('/node_modules/.vite', kvProxy);
+  app.use('/node_modules/.vite', kvProxy);  // Vite pre-bundled deps
+  app.use('/node_modules/vite',  kvProxy);  // @vite/client imports env.mjs from here
   app.use('/@vite',              kvProxy);
   app.use('/@react-refresh',     kvProxy);
   app.use('/@id',                kvProxy);

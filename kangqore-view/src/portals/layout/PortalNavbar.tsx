@@ -8,6 +8,7 @@ import {
   DropdownItem, DropdownSeparator, DropdownPortal,
 } from '@design-system/components/Dropdown'
 import { useAuthStore } from '@store/auth'
+import { SiteNav } from '@components/shell/SiteNav'
 import type { LucideIcon } from 'lucide-react'
 
 interface NavTab {
@@ -32,6 +33,8 @@ export function PortalNavbar({ portalName, portalColor, tabs, basePath }: Portal
   const navigate = useNavigate()
 
   return (
+    <>
+    <SiteNav />
     <header className="bg-white border-b border-slate-100 z-10 flex-shrink-0">
       {/* Top bar */}
       <div className="flex items-center gap-4 px-6 lg:px-10 h-14">
@@ -101,5 +104,6 @@ export function PortalNavbar({ portalName, portalColor, tabs, basePath }: Portal
         ))}
       </div>
     </header>
+    </>
   )
 }
