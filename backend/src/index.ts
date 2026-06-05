@@ -195,8 +195,10 @@ app.use('/api/marketing', marketingRoutes);
 import osWorkflowsRoutes from './routes/os-workflows';
 app.use('/api/os-workflows', osWorkflowsRoutes);
 
-import adminClientsCrmRoutes from './routes/admin-clients-crm';
-app.use('/api/admin/crm/clients', adminClientsCrmRoutes);
+import adminClientsCrmRoutes  from './routes/admin-clients-crm';
+import adminPartnersCrmRoutes from './routes/admin-partners-crm';
+app.use('/api/admin/crm/clients',  adminClientsCrmRoutes);
+app.use('/api/admin/crm/partners', adminPartnersCrmRoutes);
 
 // ─── KangqoreVis — Kangqore Visibility Intelligence System ────────────────────────────
 // Packaged framework. Sources connect later. Mounted before static frontend so

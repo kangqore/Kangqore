@@ -1,14 +1,16 @@
 import { create } from 'zustand'
 import { PARTNERS, PARTNER_TASKS, DELIVERABLES, PAYMENTS, NOTES } from './data'
+import type { Partner } from './types'
 
 interface PartnersStore {
-  partners:    typeof PARTNERS
-  tasks:       typeof PARTNER_TASKS
-  deliverables:typeof DELIVERABLES
-  payments:    typeof PAYMENTS
-  notes:       typeof NOTES
-  selectedId:  string
-  setSelected: (id: string) => void
+  partners:     typeof PARTNERS
+  tasks:        typeof PARTNER_TASKS
+  deliverables: typeof DELIVERABLES
+  payments:     typeof PAYMENTS
+  notes:        typeof NOTES
+  selectedId:   string
+  setSelected:        (id: string)      => void
+  hydratePartners:    (p: Partner[])    => void
   partnerTasks:        (id: string) => typeof PARTNER_TASKS
   partnerDeliverables: (id: string) => typeof DELIVERABLES
   partnerPayments:     (id: string) => typeof PAYMENTS
@@ -23,7 +25,8 @@ export const usePartnersStore = create<PartnersStore>((set, get) => ({
   notes:        NOTES,
   selectedId:   'pt1',
 
-  setSelected: (id) => set({ selectedId: id }),
+  setSelected:     (id) => set({ selectedId: id }),
+  hydratePartners: (p)  => set({ partners: p, selectedId: p[0]?.id ?? 'pt1' }),
 
   partnerTasks:        (id) => get().tasks.filter(t => t.partnerId === id),
   partnerDeliverables: (id) => get().deliverables.filter(d => d.partnerId === id),
