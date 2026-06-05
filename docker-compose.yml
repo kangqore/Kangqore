@@ -32,8 +32,8 @@ services:
   # Node.js Core Backend
   core-backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: kangqore-core-backend
     environment:
       NODE_ENV: production

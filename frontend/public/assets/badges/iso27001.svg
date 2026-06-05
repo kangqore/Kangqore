@@ -1,1 +1,15 @@
-File not found: /v1/AUTH_mw/wikipedia-commons-local-public.b3/b/b3/ISO_IEC_27001_Logo.svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <circle cx="50" cy="50" r="46" fill="url(#isoGrad)" stroke="#10b981" stroke-width="2"/>
+  <defs>
+    <linearGradient id="isoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+  </defs>
+  <rect x="38" y="42" width="24" height="18" rx="2" fill="#10b981"/>
+  <path d="M43 42 V35 A7 7 0 0 1 57 35 V42" stroke="#10b981" stroke-width="3" fill="none"/>
+  <circle cx="50" cy="50" r="2" fill="#022c22"/>
+  <path d="M50 52 V56" stroke="#022c22" stroke-width="2"/>
+  <text x="50" y="76" font-family="'Inter', sans-serif" font-weight="800" font-size="9" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">ISO 27001</text>
+  <text x="50" y="86" font-family="'Inter', sans-serif" font-weight="600" font-size="7" fill="#10b981" text-anchor="middle" letter-spacing="0.5">CERTIFIED</text>
+</svg>
