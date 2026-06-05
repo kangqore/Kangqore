@@ -294,10 +294,10 @@ const HeroCarousel = () => {
 
   return (
     <>
-    <div className="w-full bg-white dark:bg-black px-2 pt-2 pb-2 relative transition-colors duration-500">
+    <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
 
     <section
-      className="relative w-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228]"
+      className="relative w-full h-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228]"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={(e) => {
@@ -322,7 +322,7 @@ const HeroCarousel = () => {
       }}
     >
       {/* ── ACTUAL HERO AREA (bg + content + dots only — trust strip & HeroBottomStrip live OUTSIDE this wrapper) ── */}
-      <div className="relative min-h-[720px] sm:min-h-[760px] lg:min-h-[800px] overflow-hidden pb-[0.3cm]">
+      <div className="relative h-full overflow-hidden pb-[0.3cm]">
       {/* ── BACKGROUND LAYERS (stacked, crossfade via opacity) ── */}
       {heroSlides.map((slide, index) => (
         <div
@@ -384,7 +384,7 @@ const HeroCarousel = () => {
       ))}
 
       {/* ── CONTENT LAYERS (stacked, crossfade) ── */}
-      <div className="relative z-[2] min-h-[720px] sm:min-h-[760px] lg:min-h-[800px]">
+      <div className="relative z-[2] h-full">
         {heroSlides.map((slide, index) => (
           <div
             key={`content-${slide.id}`}
