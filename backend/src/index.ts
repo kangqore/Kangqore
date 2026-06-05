@@ -192,6 +192,9 @@ app.use('/api/resources', resourcesRoutes);
 app.use('/api/departments', departmentsRoutes);
 app.use('/api/marketing', marketingRoutes);
 
+import osWorkflowsRoutes from './routes/os-workflows';
+app.use('/api/os-workflows', osWorkflowsRoutes);
+
 // ─── KangqoreVis — Kangqore Visibility Intelligence System ────────────────────────────
 // Packaged framework. Sources connect later. Mounted before static frontend so
 // dynamic /sitemap.xml, /robots.txt, /llms.txt take precedence.

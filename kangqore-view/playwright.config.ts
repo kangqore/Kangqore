@@ -10,8 +10,8 @@ export default defineConfig({
   reporter: process.env.CI ? 'github' : 'list',
 
   use: {
+    // Default: test directly against Vite (fast, no CRA proxy needed for smoke tests)
     baseURL: 'http://localhost:5174',
-    // Capture a screenshot on every failure for easy post-mortem
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
   },
@@ -27,6 +27,19 @@ export default defineConfig({
   },
 
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    // Primary: smoke tests via Vite (fast, isolated, no backend needed)
+    { name: 'chromium',      use: { ...devices['Desktop Chrome'] } },
+
+    // Proxy smoke: same tests but routed through the CRA dev proxy at :3000.
+    // Catches proxy config regressions (e.g. missing /node_modules/vite rule).
+    // Only runs when PROXY_SMOKE=1 — kept off by default to avoid requiring
+    // two running dev servers in normal CI.
+    ...(process.env.PROXY_SMOKE ? [{
+      name: 'chromium-via-proxy',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:3000',
+      },
+    }] : []),
   ],
 })

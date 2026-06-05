@@ -1015,6 +1015,53 @@ model EmailLog {
   @@map("email_logs")
 }
 
+// ── OS Automation Workflows ────────────────────────────────────────────────────
+// Separate from the calendar Workflow model (which handles scheduling triggers).
+// These are business-process automation workflows displayed in /os/workflows.
+
+model OsWorkflow {
+  id            String          @id @default(cuid())
+  name          String
+  description   String          @db.Text
+  category      String          // sales | delivery | hr | finance | ops | marketing
+  status        String          @default("draft") // active | paused | draft | archived
+  triggerType   String          // manual | schedule | event | webhook | form
+  triggerConfig String
+  steps         Json            // WorkflowStep[]
+  lastRun       DateTime?
+  nextRun       DateTime?
+  runsTotal     Int             @default(0)
+  runsSuccess   Int             @default(0)
+  runsFailed    Int             @default(0)
+  avgDuration   Float           @default(0) // minutes
+  owner         String
+  tags          String[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  runs          OsWorkflowRun[]
+
+  @@map("os_workflows")
+}
+
+model OsWorkflowRun {
+  id             String      @id @default(cuid())
+  workflowId     String
+  workflowName   String
+  status         String      // running | completed | failed | skipped
+  startedAt      DateTime    @default(now())
+  completedAt    DateTime?
+  duration       Int?        // seconds
+  triggeredBy    String
+  stepsCompleted Int         @default(0)
+  stepsTotal     Int         @default(0)
+  errorMessage   String?
+  workflow       OsWorkflow  @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+
+  @@index([workflowId])
+  @@index([status, startedAt])
+  @@map("os_workflow_runs")
+}
+
 model InvestorUpdate {
   id        String   @id @default(cuid())
   title     String

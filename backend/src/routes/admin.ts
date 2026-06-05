@@ -1413,4 +1413,63 @@ router.patch('/leads/:id', authenticate, authorize(['ADMIN']), async (req: Authe
   }
 });
 
+// =====================================================
+// ADMIN INVESTORS — list + updates
+// =====================================================
+
+/**
+ * GET /api/admin/investors
+ * Returns all INVESTOR-role users for the admin investors module.
+ */
+router.get('/investors', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const investors = await prisma.user.findMany({
+      where: { role: 'INVESTOR' },
+      select: {
+        id: true, name: true, email: true, company: true,
+        phone: true, status: true, createdAt: true, lastLoginAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json({ investors });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * GET /api/admin/investors/updates
+ * Returns all InvestorUpdate records (announcements sent to investors).
+ */
+router.get('/investors/updates', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const updates = await prisma.investorUpdate.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
+    res.json({ updates });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * POST /api/admin/investors/updates
+ * Create a new investor update / announcement.
+ */
+router.post('/investors/updates', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { title, content, type = 'announcement', isPublic = true } = req.body;
+    if (!title || !content) {
+      return res.status(400).json({ error: 'title and content are required' });
+    }
+    const update = await prisma.investorUpdate.create({
+      data: { title, content, type, isPublic },
+    });
+    res.status(201).json({ update });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

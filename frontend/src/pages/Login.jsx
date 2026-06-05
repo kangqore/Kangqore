@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Building2, Handshake, TrendingUp, Briefcase, Shield, Lock as LockIcon, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff, Building2, Handshake, TrendingUp, Briefcase, Shield, Lock as LockIcon, ArrowLeft, CheckCircle, User, Phone, Building, Clock } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [selectedRole, setSelectedRole] = useState(null);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    role: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '', role: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const [signupMode, setSignupMode] = useState(searchParams.get('mode') === 'signup');
+  const [signupData, setSignupData] = useState({ name: '', email: '', company: '', phone: '', password: '', confirmPassword: '' });
+  const [signupLoading, setSignupLoading] = useState(false);
+  const [signupError, setSignupError] = useState('');
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
   // Check if user is already logged in and redirect to their portal
   useEffect(() => {
@@ -114,6 +117,52 @@ const Login = () => {
     setSelectedRole(null);
     setFormData({ email: '', password: '', role: '' });
     setError('');
+    setSignupData({ name: '', email: '', company: '', phone: '', password: '', confirmPassword: '' });
+    setSignupError('');
+    setSignupSuccess(false);
+  };
+
+  const handleSignupSubmit = async (e) => {
+    e.preventDefault();
+    setSignupError('');
+
+    if (signupData.password !== signupData.confirmPassword) {
+      setSignupError('Passwords do not match');
+      return;
+    }
+    if (signupData.password.length < 6) {
+      setSignupError('Password must be at least 6 characters');
+      return;
+    }
+
+    setSignupLoading(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: signupData.email,
+          password: signupData.password,
+          name: signupData.name,
+          role: selectedRole.id.toUpperCase(),
+          phone: signupData.phone || null,
+          company: signupData.company || null,
+        }),
+      });
+
+      const text = await response.text();
+      let data;
+      try { data = text ? JSON.parse(text) : {}; } catch { throw new Error('Server returned an invalid response'); }
+
+      if (!response.ok) {
+        throw new Error(data?.error?.message || data?.detail || 'Registration failed');
+      }
+      setSignupSuccess(true);
+    } catch (err) {
+      setSignupError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setSignupLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -281,9 +330,9 @@ const Login = () => {
               <div className="text-center pt-4 border-t border-gray-200">
                 <p className="text-gray-600 dark:text-gray-400">
                   Don't have an account?{' '}
-                  <Link to="/register" className="text-brand-blue hover:text-blue-700 font-semibold">
+                  <button onClick={() => setSignupMode(true)} className="text-brand-blue hover:text-blue-700 font-semibold">
                     Sign up now
-                  </Link>
+                  </button>
                 </p>
               </div>
 
@@ -336,7 +385,106 @@ const Login = () => {
                 </div>
               </div>
 
+              {/* Mode Toggle */}
+              <div className="flex rounded-xl overflow-hidden border border-gray-200">
+                <button
+                  onClick={() => { setSignupMode(false); setSignupError(''); }}
+                  className={`flex-1 py-3 text-sm font-semibold transition-colors ${!signupMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 hover:bg-gray-50 dark:bg-gray-900 dark:text-gray-400'}`}
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => { setSignupMode(true); setError(''); setSignupSuccess(false); }}
+                  className={`flex-1 py-3 text-sm font-semibold transition-colors ${signupMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 hover:bg-gray-50 dark:bg-gray-900 dark:text-gray-400'}`}
+                >
+                  Create Account
+                </button>
+              </div>
+
+              {/* Signup Success */}
+              {signupMode && signupSuccess && (
+                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 text-center">
+                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Clock className="w-8 h-8 text-amber-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Account Created!</h3>
+                  <p className="text-gray-500 text-sm mb-6">Your account is ready. Sign in to access your portal.</p>
+                  <button
+                    onClick={() => { setSignupMode(false); setSignupSuccess(false); setSignupData({ name: '', email: '', company: '', phone: '', password: '', confirmPassword: '' }); }}
+                    className="w-full bg-gray-900 text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition-all"
+                  >
+                    Go to Sign In
+                  </button>
+                </div>
+              )}
+
+              {/* Signup Form */}
+              {signupMode && !signupSuccess && (
+                <div className="bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl shadow-lg p-8">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Create Your Account</h3>
+                  <p className="text-gray-500 text-sm mb-6">{selectedRole.description}</p>
+
+                  {signupError && (
+                    <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 rounded-xl">
+                      <p className="text-red-600 text-sm">{signupError}</p>
+                    </div>
+                  )}
+
+                  <form onSubmit={handleSignupSubmit} className="space-y-5">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name *</label>
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input type="text" value={signupData.name} onChange={(e) => setSignupData({ ...signupData, name: e.target.value })} className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="John Doe" required />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address *</label>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input type="email" value={signupData.email} onChange={(e) => setSignupData({ ...signupData, email: e.target.value })} className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="you@company.com" required />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Company / Organization</label>
+                      <div className="relative">
+                        <Building className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input type="text" value={signupData.company} onChange={(e) => setSignupData({ ...signupData, company: e.target.value })} className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Your Company" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
+                      <div className="relative">
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input type="tel" value={signupData.phone} onChange={(e) => setSignupData({ ...signupData, phone: e.target.value })} className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="+1 (555) 000-0000" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password *</label>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input type={showPassword ? 'text' : 'password'} value={signupData.password} onChange={(e) => setSignupData({ ...signupData, password: e.target.value })} className="w-full pl-12 pr-12 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="••••••••" required />
+                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                          {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirm Password *</label>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input type={showPassword ? 'text' : 'password'} value={signupData.confirmPassword} onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })} className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="••••••••" required />
+                      </div>
+                    </div>
+                    <button type="submit" disabled={signupLoading} className="w-full bg-gray-900 text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl mt-6">
+                      {signupLoading ? 'Creating Account...' : 'Sign Up Now'}
+                    </button>
+                  </form>
+                </div>
+              )}
+
               {/* Login Form */}
+              {!signupMode && (
               <div className="bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl shadow-lg p-8">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Sign In</h3>
                 <p className="text-gray-500 text-sm mb-6">{selectedRole.microtext}</p>
@@ -446,16 +594,8 @@ const Login = () => {
                   </button>
                 </form>
 
-                {/* Register Link */}
-                <div className="mt-6 text-center">
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
-                    Don't have an account?{' '}
-                    <Link to="/register" className="text-brand-blue hover:text-blue-700 font-semibold">
-                      Sign up now
-                    </Link>
-                  </p>
-                </div>
               </div>
+              )}
 
               {/* Security Badge */}
               <div className="flex items-center justify-center gap-2 text-gray-500 text-sm">

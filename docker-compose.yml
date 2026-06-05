@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_DB: kangqore_core
       POSTGRES_USER: kangqore_user
-      POSTGRES_PASSWORD: kangqore_password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kangqore_password}
     ports:
       - "5432:5432"
     volumes:
@@ -38,10 +38,10 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-      DATABASE_URL: postgresql://kangqore_user:kangqore_password@postgres:5432/kangqore_core
-      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      DATABASE_URL: postgresql://kangqore_user:${POSTGRES_PASSWORD:-kangqore_password}@postgres:5432/kangqore_core
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
       PYTHON_SERVICE_URL: http://intelligence-layer:8000
-      CORS_ORIGINS: http://localhost:3000,http://localhost:5173
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:80,http://localhost}
     ports:
       - "3000:3000"
     depends_on:
