@@ -11,15 +11,17 @@ ENV REACT_APP_BACKEND_URL=""
 RUN npx craco build
 
 # Stage 2: Production Runner — tsx runs TypeScript directly, no compile step needed
-FROM node:20-alpine
-WORKDIR /app
-RUN apk add --no-cache make gcc g++ python3
+# node:20-slim (Debian) used here — Alpine lacks libssl.so.1.1 which Prisma requires
+FROM node:20-slim
+WORKDIR /app/backend
+RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
 COPY backend/package*.json ./
 RUN npm install --ignore-scripts
-COPY backend/src      ./src
 COPY backend/prisma   ./prisma
+RUN npx prisma generate
+COPY backend/src      ./src
 COPY backend/tsconfig.json ./
-COPY --from=frontend-builder /app/frontend/build ./frontend/build
+COPY --from=frontend-builder /app/frontend/build /app/frontend/build
 ENV NODE_ENV=production
 ENV PORT=3000
 EXPOSE 3000

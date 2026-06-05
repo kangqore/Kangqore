@@ -65,34 +65,36 @@
   --topbar-height: 60px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-html, body, #root {
-  height: 100%;
-  width: 100%;
-}
+  html, body, #root {
+    height: 100%;
+    width: 100%;
+  }
 
-body {
-  font-family: var(--font-body);
-  background: var(--color-surface-50);
-  color: var(--color-text-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  body {
+    font-family: var(--font-body);
+    background: var(--color-surface-50);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-/* Heading font — applied to h1-h3 and any .font-display element */
-h1, h2, h3, .font-display {
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
-}
+  /* Heading font — applied to h1-h3 and any .font-display element */
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
 
-#root {
-  display: flex;
-  flex-direction: column;
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 /* ─── Typography utilities ───────────────────────────────────────────────── */

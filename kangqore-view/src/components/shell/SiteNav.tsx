@@ -68,7 +68,7 @@ export function SiteNav() {
   return (
     <div
       ref={navRef}
-      className="fixed left-0 right-0 z-[10000] pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-[10000] pointer-events-none"
     >
       {/* ── Utility bar ── */}
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto mt-3">

@@ -40,15 +40,17 @@ services:
       PORT: 3000
       DATABASE_URL: postgresql://kangqore_user:${POSTGRES_PASSWORD:-kangqore_password}@postgres:5432/kangqore_core
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      REDIS_URL: redis://kangqore-redis:6379
       PYTHON_SERVICE_URL: http://intelligence-layer:8000
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:80,http://localhost}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:80,http://localhost,http://localhost:3001}
     ports:
       - "3000:3000"
     depends_on:
       - postgres
+      - redis
       - intelligence-layer
     volumes:
-      - ./backend/uploads:/app/uploads
+      - ./backend/uploads:/app/backend/uploads
     networks:
       - kangqore-network
 
