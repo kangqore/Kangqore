@@ -19,18 +19,18 @@ const CATEGORY_CONFIG: Record<InsightCategory, {
   dot: string
   Icon: React.FC<{ className?: string }>
 }> = {
-  revenue:     { label: 'Revenue',     color: 'bg-green-50 text-green-700 border-green-200',   dot: 'bg-green-500',  Icon: ({ className }) => <TrendingUp    className={className ?? 'w-4 h-4'} /> },
-  risk:        { label: 'Risk',        color: 'bg-red-50 text-red-700 border-red-200',          dot: 'bg-red-500',    Icon: ({ className }) => <AlertTriangle className={className ?? 'w-4 h-4'} /> },
-  opportunity: { label: 'Opportunity', color: 'bg-blue-50 text-blue-700 border-blue-200',       dot: 'bg-blue-500',   Icon: ({ className }) => <Lightbulb     className={className ?? 'w-4 h-4'} /> },
-  ops:         { label: 'Operations',  color: 'bg-orange-50 text-orange-700 border-orange-200', dot: 'bg-orange-500', Icon: ({ className }) => <Zap           className={className ?? 'w-4 h-4'} /> },
-  talent:      { label: 'Talent',      color: 'bg-purple-50 text-purple-700 border-purple-200', dot: 'bg-purple-500', Icon: ({ className }) => <Target        className={className ?? 'w-4 h-4'} /> },
+  revenue:     { label: 'Revenue',     color: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)]',   dot: 'bg-[#00c875]',  Icon: ({ className }) => <TrendingUp    className={className ?? 'w-4 h-4'} /> },
+  risk:        { label: 'Risk',        color: 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)]',    dot: 'bg-[#e2445c]',  Icon: ({ className }) => <AlertTriangle className={className ?? 'w-4 h-4'} /> },
+  opportunity: { label: 'Opportunity', color: 'bg-[#0073ea] text-white shadow-[0_2px_8px_rgba(0,115,234,0.25)]',   dot: 'bg-[#0073ea]',  Icon: ({ className }) => <Lightbulb     className={className ?? 'w-4 h-4'} /> },
+  ops:         { label: 'Operations',  color: 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.25)]',   dot: 'bg-[#fdab3d]',  Icon: ({ className }) => <Zap           className={className ?? 'w-4 h-4'} /> },
+  talent:      { label: 'Talent',      color: 'bg-[#7f53f9] text-white shadow-[0_2px_8px_rgba(127,83,249,0.25)]',   dot: 'bg-[#7f53f9]',  Icon: ({ className }) => <Target        className={className ?? 'w-4 h-4'} /> },
 }
 
 const PRIORITY_BORDER: Record<string, string> = {
-  critical: 'border-l-red-500',
-  high:     'border-l-orange-400',
-  medium:   'border-l-blue-400',
-  low:      'border-l-slate-300',
+  critical: 'border-l-[#e2445c]',
+  high:     'border-l-[#fdab3d]',
+  medium:   'border-l-[#0073ea]',
+  low:      'border-l-[#c4c4c4]',
 }
 
 const PRIORITY_BADGE: Record<string, 'danger' | 'warning' | 'info' | 'neutral'> = {
@@ -56,32 +56,32 @@ function ModulePulse({ module, insights }: { module: string; insights: Insight[]
   const high     = insights.filter(i => i.priority === 'high').length
   const Icon = MODULE_ICONS[module] ?? (({ className }) => <Brain className={className} />)
 
-  const statusColor = critical > 0 ? 'border-red-200 bg-red-50' :
-                      high > 0     ? 'border-orange-200 bg-orange-50' :
-                      insights.length > 0 ? 'border-blue-200 bg-blue-50' :
-                      'border-slate-200 bg-white'
+  const cardBorder = critical > 0 ? 'border-l-4 border-l-[#e2445c] border-y border-r border-slate-200 bg-white' :
+                     high > 0     ? 'border-l-4 border-l-[#fdab3d] border-y border-r border-slate-200 bg-white' :
+                     insights.length > 0 ? 'border-l-4 border-l-[#0073ea] border-y border-r border-slate-200 bg-white' :
+                     'border-slate-200 bg-white'
 
-  const dotColor = critical > 0 ? 'bg-red-500' :
-                   high > 0     ? 'bg-orange-400' :
-                   insights.length > 0 ? 'bg-blue-400' : 'bg-slate-300'
+  const iconBg = critical > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_6px_rgba(226,68,92,0.2)]' :
+                 high > 0     ? 'bg-[#fdab3d] text-white shadow-[0_2px_6px_rgba(253,171,61,0.2)]' :
+                 insights.length > 0 ? 'bg-[#0073ea] text-white shadow-[0_2px_6px_rgba(0,115,234,0.2)]' :
+                 'bg-slate-100 text-slate-400'
 
   const path = `/os/${module.toLowerCase()}`
 
   return (
     <button
       onClick={() => navigate(path)}
-      className={`flex items-center gap-3 p-3 rounded-xl border transition-all hover:shadow-sm text-left ${statusColor}`}
+      className={`flex items-center gap-3 p-3 rounded-xl transition-all hover:shadow-md text-left cursor-pointer hover:border-slate-300 ${cardBorder}`}
     >
-      <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${critical > 0 ? 'bg-red-100' : high > 0 ? 'bg-orange-100' : 'bg-slate-100'}`}>
-        <Icon className={`w-3.5 h-3.5 ${critical > 0 ? 'text-red-600' : high > 0 ? 'text-orange-600' : 'text-slate-500'}`} />
+      <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${iconBg}`}>
+        <Icon className="w-3.5 h-3.5" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-semibold text-slate-800">{module}</p>
-        <p className="text-[10px] text-slate-500 mt-0.5">
+        <p className="text-xs font-semibold text-slate-800 leading-none">{module}</p>
+        <p className="text-[10px] text-slate-500 mt-1.5 leading-none">
           {insights.length === 0 ? 'No signals' : `${insights.length} signal${insights.length > 1 ? 's' : ''}`}
         </p>
       </div>
-      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${dotColor} ${critical > 0 ? 'animate-pulse' : ''}`} />
     </button>
   )
 }
@@ -97,7 +97,7 @@ function InsightCard({ insight }: { insight: Insight }) {
       <div className="p-5">
         <div className="flex items-start justify-between gap-3 mb-2.5">
           <div className="flex items-start gap-3">
-            <div className={`mt-0.5 w-8 h-8 rounded-lg border flex items-center justify-center flex-shrink-0 ${config.color}`}>
+            <div className={`mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${config.color}`}>
               <config.Icon className="w-4 h-4" />
             </div>
             <div>
@@ -111,7 +111,7 @@ function InsightCard({ insight }: { insight: Insight }) {
               </div>
             </div>
           </div>
-          <span className={`text-xs font-semibold px-2 py-1 rounded-lg border ${config.color} flex-shrink-0`}>
+          <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wider ${config.color} flex-shrink-0`}>
             {insight.impact}
           </span>
         </div>
@@ -194,27 +194,27 @@ export function KIMMMPage() {
 
       {/* Priority Action Queue — critical items only, always visible */}
       {criticalInsights.length > 0 && (
-        <div className="rounded-2xl border border-red-200 bg-gradient-to-br from-red-50 to-orange-50 p-5 space-y-3">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3 border-l-4 border-l-[#e2445c] shadow-sm">
           <div className="flex items-center gap-2 mb-1">
-            <AlertTriangle className="w-4 h-4 text-red-600" />
-            <h3 className="text-sm font-bold text-red-900 uppercase tracking-wide">Priority Action Queue</h3>
-            <span className="ml-auto text-xs text-red-600 font-semibold">{criticalInsights.length} critical</span>
+            <AlertTriangle className="w-4 h-4 text-[#e2445c]" />
+            <h3 className="text-xs font-bold text-slate-800 uppercase tracking-[0.12em]">Priority Action Queue</h3>
+            <span className="ml-auto text-xs px-2.5 py-0.5 rounded-full bg-[#e2445c] text-white font-extrabold shadow-sm">{criticalInsights.length} critical</span>
           </div>
           {criticalInsights.map(insight => (
-            <div key={insight.id} className="bg-white rounded-xl border border-red-200 p-4 shadow-sm">
+            <div key={insight.id} className="bg-white rounded-xl border border-slate-100 p-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
-                  <AlertTriangle className="w-4 h-4 text-red-600" />
+                <div className="w-8 h-8 rounded-lg bg-[#e2445c] text-white flex items-center justify-center flex-shrink-0 shadow-[0_2px_8px_rgba(226,68,92,0.3)]">
+                  <AlertTriangle className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-slate-900 text-sm">{insight.title}</p>
-                  <p className="text-xs text-slate-600 mt-0.5">{insight.summary}</p>
-                  <div className="flex items-start gap-1.5 mt-2 bg-red-50 rounded-lg p-2">
-                    <ArrowRight className="w-3.5 h-3.5 text-red-500 flex-shrink-0 mt-0.5" />
-                    <p className="text-xs font-semibold text-red-800">{insight.action}</p>
+                  <p className="text-xs text-slate-600 mt-1 leading-normal">{insight.summary}</p>
+                  <div className="flex items-start gap-2 mt-2.5 bg-slate-50 border border-slate-200/60 rounded-xl p-2.5">
+                    <ArrowRight className="w-3.5 h-3.5 text-[#e2445c] flex-shrink-0 mt-0.5" />
+                    <p className="text-xs font-semibold text-slate-700">{insight.action}</p>
                   </div>
                 </div>
-                <span className="text-xs font-bold text-red-700 flex-shrink-0">{insight.impact}</span>
+                <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-[#e2445c]/10 text-[#e2445c] flex-shrink-0">{insight.impact}</span>
               </div>
             </div>
           ))}
