@@ -1015,6 +1015,37 @@ model EmailLog {
   @@map("email_logs")
 }
 
+// ── Partner CRM ───────────────────────────────────────────────────────────────
+// Company-level CRM records for delivery/tech partners. Separate from User accounts.
+
+model PartnerCRM {
+  id                 String   @id @default(cuid())
+  name               String
+  type               String   @default("agency")        // subcontractor|agency|freelancer|consultancy
+  tier               String   @default("associate")     // platinum|gold|silver|associate
+  status             String   @default("active")        // active|onboarding|paused|offboarded
+  country            String?
+  specialisms        String[]
+  rating             Float    @default(0)               // 0–5
+  contactName        String?
+  contactRole        String?
+  contactEmail       String?
+  contactPhone       String?
+  joinDate           DateTime?
+  totalEarned        Float    @default(0)
+  pendingPayment     Float    @default(0)
+  activeTasks        Int      @default(0)
+  completedProjects  Int      @default(0)
+  description        String?  @db.Text
+  logo               String?
+  hourlyRate         Float    @default(0)
+  projectIds         String[] @default([])
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("partner_crm")
+}
+
 // ── Client CRM ────────────────────────────────────────────────────────────────
 // Company-level CRM records. Separate from User/ClientProfile (which tracks
 // individual login accounts and compliance data).
