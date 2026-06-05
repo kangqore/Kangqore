@@ -24,7 +24,7 @@ async function main() {
       name:     'Mahesh Kumar',
       password: passwordHash,
       role:     'ADMIN',
-      status:   'active',
+      status:   'ACTIVE',
     },
   })
   console.log('Admin:', admin.email)
