@@ -50,13 +50,13 @@ export function BudgetTracker() {
       {/* Summary strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Total Budget',  value: fmt(totalAllocated),  color: 'bg-blue-100 text-blue-700' },
-          { label: 'Spent',         value: fmt(totalSpent),      color: 'bg-red-100 text-red-700'       },
-          { label: 'Committed',     value: fmt(totalCommitted),  color: 'bg-amber-100 text-amber-700'   },
-          { label: 'Remaining',     value: fmt(totalRemaining),  color: 'bg-green-100 text-green-700'   },
+          { label: 'Total Budget',  value: fmt(totalAllocated),  color: 'bg-[#0073ea] text-white shadow-[0_2px_8px_rgba(0,115,234,0.25)]' },
+          { label: 'Spent',         value: fmt(totalSpent),      color: 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)]' },
+          { label: 'Committed',     value: fmt(totalCommitted),  color: 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.25)]' },
+          { label: 'Remaining',     value: fmt(totalRemaining),  color: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)]' },
         ].map(c => (
           <div key={c.label} className={`${c.color} rounded-2xl p-4`}>
-            <p className="text-xs font-semibold opacity-70 mb-1">{c.label}</p>
+            <p className="text-xs font-semibold opacity-85 mb-1">{c.label}</p>
             <p className="text-2xl font-bold">{c.value}</p>
           </div>
         ))}
@@ -154,8 +154,8 @@ export function BudgetTracker() {
                   </td>
                   <td className="px-5 py-3.5 font-semibold text-slate-800">{fmt(b.allocated)}</td>
                   <td className="px-5 py-3.5 text-slate-600">{fmt(b.spent)}</td>
-                  <td className="px-5 py-3.5 text-amber-600">{fmt(b.committed)}</td>
-                  <td className="px-5 py-3.5 font-semibold" style={{ color: remaining < 0 ? '#ef4444' : '#15803d' }}>
+                  <td className="px-5 py-3.5 text-[#fdab3d] font-semibold">{fmt(b.committed)}</td>
+                  <td className="px-5 py-3.5 font-bold" style={{ color: remaining < 0 ? '#e2445c' : '#00c875' }}>
                     {fmt(remaining)}
                   </td>
                   <td className="px-5 py-3.5">

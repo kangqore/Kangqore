@@ -20,24 +20,24 @@ const CATEGORY_ICON: Record<InsightCategory, React.FC<{ className?: string }>> =
 }
 
 const PRIORITY_STYLES: Record<string, string> = {
-  critical: 'border-red-200 bg-red-50',
-  high:     'border-orange-200 bg-orange-50',
-  medium:   'border-blue-200 bg-blue-50',
-  low:      'border-slate-200 bg-slate-50',
+  critical: 'border-l-4 border-l-[#e2445c] bg-white border-y border-r border-slate-200 shadow-[0_2px_12px_rgba(0,0,0,0.03)]',
+  high:     'border-l-4 border-l-[#fdab3d] bg-white border-y border-r border-slate-200 shadow-[0_2px_12px_rgba(0,0,0,0.03)]',
+  medium:   'border-l-4 border-l-[#0073ea] bg-white border-y border-r border-slate-200 shadow-[0_2px_12px_rgba(0,0,0,0.03)]',
+  low:      'border-l-4 border-l-slate-400 bg-white border-y border-r border-slate-200 shadow-[0_2px_12px_rgba(0,0,0,0.03)]',
 }
 
 const PRIORITY_ICON_COLOR: Record<string, string> = {
-  critical: 'text-red-500',
-  high:     'text-orange-500',
-  medium:   'text-blue-500',
+  critical: 'text-[#e2445c]',
+  high:     'text-[#fdab3d]',
+  medium:   'text-[#0073ea]',
   low:      'text-slate-400',
 }
 
 const PRIORITY_BADGE: Record<string, string> = {
-  critical: 'bg-red-100 text-red-700',
-  high:     'bg-orange-100 text-orange-700',
-  medium:   'bg-blue-100 text-blue-700',
-  low:      'bg-slate-100 text-slate-600',
+  critical: 'bg-[#e2445c] text-white font-extrabold shadow-sm',
+  high:     'bg-[#fdab3d] text-white font-extrabold shadow-sm',
+  medium:   'bg-[#0073ea] text-white font-extrabold shadow-sm',
+  low:      'bg-slate-200 text-slate-700 font-extrabold shadow-sm',
 }
 
 function SignalRow({ insight, expanded }: { insight: Insight; expanded: boolean }) {
@@ -52,7 +52,7 @@ function SignalRow({ insight, expanded }: { insight: Insight; expanded: boolean 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm font-semibold text-slate-900 leading-tight">{insight.title}</span>
-            <span className={cn('text-[10px] font-semibold px-1.5 py-0.5 rounded-md uppercase tracking-wide', PRIORITY_BADGE[insight.priority])}>
+            <span className={cn('text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wide', PRIORITY_BADGE[insight.priority])}>
               {insight.priority}
             </span>
             <span className="text-xs text-slate-400">{insight.confidence}% confidence</span>
@@ -60,11 +60,11 @@ function SignalRow({ insight, expanded }: { insight: Insight; expanded: boolean 
           </div>
           <p className="text-xs text-slate-600 mt-1 leading-relaxed">{insight.summary}</p>
           {expanded && (
-            <div className="mt-2 pt-2 border-t border-current/10 space-y-1.5">
+            <div className="mt-2 pt-2 border-t border-slate-100 space-y-1.5">
               <p className="text-xs text-slate-700 leading-relaxed">{insight.detail}</p>
-              <div className="flex items-start gap-1.5 mt-1.5">
-                <ArrowRight className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" />
-                <p className="text-xs font-semibold text-blue-800">{insight.action}</p>
+              <div className="flex items-start gap-2 mt-2.5 bg-slate-50 border border-slate-200/60 rounded-xl p-2.5">
+                <ArrowRight className="w-3.5 h-3.5 text-[#0073ea] flex-shrink-0 mt-0.5" />
+                <p className="text-xs font-semibold text-slate-700">{insight.action}</p>
               </div>
             </div>
           )}
@@ -133,10 +133,7 @@ export function KIMMPSignalBar({ module, className }: KIMMPSignalBarProps) {
 
       {/* Signal content */}
       {expanded && (
-        <div className={cn(
-          'border border-t-0 rounded-b-xl p-3 space-y-2',
-          hasCritical ? 'border-red-800/40 bg-red-950/20' : 'border-purple-800/40 bg-purple-950/20'
-        )}>
+        <div className="border border-t-0 border-slate-200 bg-slate-50/50 rounded-b-xl p-3 space-y-2">
           <SignalRow insight={topSignal} expanded={detailExpanded} />
           {rest.length > 0 && detailExpanded && rest.map(s => (
             <SignalRow key={s.id} insight={s} expanded={false} />

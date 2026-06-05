@@ -24,10 +24,10 @@ const variantMap = {
 
 // Left-border stripe + background tint — the whole card communicates health
 const healthMap: Record<Health, string> = {
-  'on-track':  'border-l-4 border-l-green-500  bg-green-50/40',
-  'at-risk':   'border-l-4 border-l-amber-500  bg-amber-50/40',
-  'behind':    'border-l-4 border-l-red-500    bg-red-50/40',
-  'completed': 'border-l-4 border-l-slate-400  bg-slate-50/60',
+  'on-track':  'border-l-4 border-l-[#00c875]  bg-white',
+  'at-risk':   'border-l-4 border-l-[#fdab3d]  bg-white',
+  'behind':    'border-l-4 border-l-[#e2445c]    bg-white',
+  'completed': 'border-l-4 border-l-[#c4c4c4]  bg-white',
 }
 
 function Card({ className, variant = 'default', padding = 'md', health, children, ...props }: CardProps) {

@@ -2,22 +2,22 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../cn'
 
 const badge = cva(
-  'inline-flex items-center gap-1.5 font-medium rounded-full border',
+  'inline-flex items-center gap-1.5 font-bold rounded-full border border-transparent shadow-sm',
   {
     variants: {
       variant: {
-        success: 'bg-green-50  text-green-700  border-green-200',
-        warning: 'bg-amber-50  text-amber-700  border-amber-200',
-        danger:  'bg-red-50    text-red-700    border-red-200',
-        info:    'bg-blue-50   text-blue-700   border-blue-200',
-        neutral: 'bg-slate-50  text-slate-600  border-slate-200',
-        brand:   'bg-blue-50 text-blue-700 border-blue-200',
-        dark:    'bg-slate-800 text-white       border-transparent',
+        success: 'bg-[#00c875]  text-white',
+        warning: 'bg-[#fdab3d]  text-white',
+        danger:  'bg-[#e2445c]  text-white',
+        info:    'bg-[#0073ea]  text-white',
+        neutral: 'bg-slate-100  text-slate-700',
+        brand:   'bg-[#2564ea]  text-white',
+        dark:    'bg-slate-800  text-white',
       },
       size: {
-        sm: 'px-2 py-0.5 text-xs',
-        md: 'px-2.5 py-1 text-xs',
-        lg: 'px-3 py-1 text-sm',
+        sm: 'px-2 py-0.5 text-[10px] tracking-wide',
+        md: 'px-2.5 py-1 text-[11px] tracking-wide',
+        lg: 'px-3 py-1.5 text-xs tracking-wide',
       },
     },
     defaultVariants: {
@@ -28,13 +28,13 @@ const badge = cva(
 )
 
 const dotColors: Record<string, string> = {
-  success: 'bg-green-500',
-  warning: 'bg-amber-500',
-  danger:  'bg-red-500',
-  info:    'bg-blue-500',
+  success: 'bg-white',
+  warning: 'bg-white',
+  danger:  'bg-white',
+  info:    'bg-white',
   neutral: 'bg-slate-400',
-  brand:   'bg-blue-500',
-  dark:    'bg-slate-300',
+  brand:   'bg-white',
+  dark:    'bg-white',
 }
 
 interface BadgeProps

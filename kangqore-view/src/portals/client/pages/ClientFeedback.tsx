@@ -29,19 +29,19 @@ const PROJECTS_FOR_FEEDBACK = [
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
 function npsLabel(score: number) {
-  if (score >= 9) return { label: 'Promoter',  color: 'text-green-600',  bg: 'bg-green-50'  }
-  if (score >= 7) return { label: 'Passive',   color: 'text-amber-600',  bg: 'bg-amber-50'  }
-  return               { label: 'Detractor', color: 'text-red-600',    bg: 'bg-red-50'    }
+  if (score >= 9) return { label: 'Promoter',  color: 'text-[#00c875]',  bg: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.2)]'  }
+  if (score >= 7) return { label: 'Passive',   color: 'text-[#fdab3d]',  bg: 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.2)]'  }
+  return               { label: 'Detractor', color: 'text-[#e2445c]',    bg: 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.2)]'    }
 }
 
 function NpsButton({ score, selected, onSelect }: { score: number; selected: boolean; onSelect: () => void }) {
-  const { color, bg } = npsLabel(score)
+  const { bg } = npsLabel(score)
   return (
     <button
       onClick={onSelect}
-      className={`w-9 h-9 rounded-xl text-sm font-bold border-2 transition-all ${
+      className={`w-9 h-9 rounded-xl text-sm font-bold border transition-all ${
         selected
-          ? `${bg} ${color} border-current scale-110 shadow-sm`
+          ? `${bg} border-transparent scale-110 shadow-md`
           : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
       }`}
     >
@@ -151,7 +151,7 @@ export function ClientFeedback() {
 
           {nps !== null && (
             <div className={`mt-3 p-2.5 rounded-xl ${npsLabel(nps).bg}`}>
-              <p className={`text-xs font-semibold ${npsLabel(nps).color}`}>
+              <p className="text-xs font-bold text-white">
                 {nps >= 9 ? 'You\'re a Promoter — thank you!' : nps >= 7 ? 'You\'re Passive — help us improve.' : 'You\'re a Detractor — please tell us more.'}
               </p>
             </div>
@@ -188,15 +188,15 @@ export function ClientFeedback() {
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Previous submissions</p>
           <div className="space-y-3">
             {feedbacks.map(f => {
-              const { label, color, bg } = npsLabel(f.npsScore)
+              const { label, bg } = npsLabel(f.npsScore)
               return (
-                <Card key={f.id}>
-                  <div className="flex items-start gap-4">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg ${bg} ${color} flex-shrink-0`}>
-                      {f.npsScore}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
+                 <Card key={f.id}>
+                   <div className="flex items-start gap-4">
+                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg ${bg} flex-shrink-0`}>
+                       {f.npsScore}
+                     </div>
+                     <div className="flex-1 min-w-0">
+                       <div className="flex items-center gap-2 mb-1">
                         <Badge variant={f.npsScore >= 9 ? 'success' : f.npsScore >= 7 ? 'warning' : 'danger'} size="sm">{label}</Badge>
                         <span className="text-xs text-slate-400">{f.project?.title}</span>
                       </div>

@@ -13,16 +13,20 @@ const HEALTH_VARIANT: Record<ClientHealth, 'success' | 'warning' | 'danger' | 'i
   excellent: 'info', good: 'success', 'at-risk': 'warning', critical: 'danger',
 }
 const TIER_COLOR: Record<RelationshipTier, string> = {
-  strategic: 'bg-[#2564ea]/10 text-[#2564ea]', enterprise: 'bg-violet-50 text-violet-700',
-  standard: 'bg-slate-100 text-slate-600', starter: 'bg-slate-50 text-slate-400',
+  strategic: 'bg-[#0073ea] text-white shadow-sm font-bold',
+  enterprise: 'bg-[#7f53f9] text-white shadow-sm font-bold',
+  standard: 'bg-slate-100 text-slate-700 font-bold',
+  starter: 'bg-slate-50 text-slate-500 font-bold',
 }
 const INTERACTION_ICON: Record<InteractionType, React.ElementType> = {
   call: Phone, email: Mail, meeting: Video, note: MessageSquare, milestone: Star,
 }
 const INTERACTION_COLOR: Record<InteractionType, string> = {
-  call: 'bg-green-100 text-green-600', email: 'bg-blue-100 text-blue-600',
-  meeting: 'bg-purple-100 text-purple-600', note: 'bg-amber-100 text-amber-600',
-  milestone: 'bg-[#2564ea]/10 text-[#2564ea]',
+  call: 'bg-[#00c875] text-white shadow-[0_2px_6px_rgba(0,200,117,0.2)]',
+  email: 'bg-[#0073ea] text-white shadow-[0_2px_6px_rgba(0,115,234,0.2)]',
+  meeting: 'bg-[#7f53f9] text-white shadow-[0_2px_6px_rgba(127,83,249,0.2)]',
+  note: 'bg-[#fdab3d] text-white shadow-[0_2px_6px_rgba(253,171,61,0.2)]',
+  milestone: 'bg-[#2564ea] text-white shadow-[0_2px_6px_rgba(37,100,234,0.2)]',
 }
 const fmt = (n: number) => `£${(n / 1000).toFixed(0)}k`
 
@@ -135,14 +139,14 @@ export function ClientProfile() {
                   <p className="text-xs text-slate-400 truncate">{ct.email}</p>
                 </div>
                 <div className="flex gap-1.5">
-                  <button className="w-7 h-7 rounded-lg bg-slate-50 hover:bg-[#2564ea]/10 flex items-center justify-center transition-all duration-300">
-                    <Mail className="w-3.5 h-3.5 text-slate-500" />
-                  </button>
-                  {ct.phone && (
-                    <button className="w-7 h-7 rounded-lg bg-slate-50 hover:bg-green-50 flex items-center justify-center transition-all duration-300">
-                      <Phone className="w-3.5 h-3.5 text-slate-500" />
-                    </button>
-                  )}
+                   <button className="w-7 h-7 rounded-lg bg-slate-50 hover:bg-[#2564ea]/10 hover:text-[#2564ea] flex items-center justify-center transition-all duration-300">
+                     <Mail className="w-3.5 h-3.5 text-slate-500" />
+                   </button>
+                   {ct.phone && (
+                     <button className="w-7 h-7 rounded-lg bg-slate-50 hover:bg-[#00c875]/10 hover:text-[#00c875] flex items-center justify-center transition-all duration-300">
+                       <Phone className="w-3.5 h-3.5 text-slate-500" />
+                     </button>
+                   )}
                 </div>
               </div>
             ))}

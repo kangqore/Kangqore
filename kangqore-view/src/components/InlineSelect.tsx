@@ -23,32 +23,42 @@ interface InlineSelectProps<T extends string = string> {
 }
 
 const variantClasses: Record<Variant, string> = {
-  success: 'bg-green-50  text-green-700  border-green-200  hover:bg-green-100',
-  warning: 'bg-amber-50  text-amber-700  border-amber-200  hover:bg-amber-100',
-  danger:  'bg-red-50    text-red-700    border-red-200    hover:bg-red-100',
-  info:    'bg-blue-50   text-blue-700   border-blue-200   hover:bg-blue-100',
-  neutral: 'bg-slate-50  text-slate-600  border-slate-200  hover:bg-slate-100',
-  brand:   'bg-blue-50   text-blue-700   border-blue-200   hover:bg-blue-100',
-  dark:    'bg-slate-800 text-white       border-transparent hover:bg-slate-700',
+  success: 'bg-[#00c875]  text-white border-transparent hover:bg-[#00c875]/90 shadow-sm',
+  warning: 'bg-[#fdab3d]  text-white border-transparent hover:bg-[#fdab3d]/90 shadow-sm',
+  danger:  'bg-[#e2445c]  text-white border-transparent hover:bg-[#e2445c]/90 shadow-sm',
+  info:    'bg-[#0073ea]  text-white border-transparent hover:bg-[#0073ea]/90 shadow-sm',
+  neutral: 'bg-slate-100  text-slate-700 border-slate-200  hover:bg-slate-200',
+  brand:   'bg-[#2564ea]  text-white border-transparent hover:bg-[#2564ea]/90 shadow-sm',
+  dark:    'bg-slate-800 text-white       border-transparent hover:bg-slate-700 shadow-sm',
 }
 
 const dotColors: Record<Variant, string> = {
-  success: 'bg-green-500',
-  warning: 'bg-amber-500',
-  danger:  'bg-red-500',
-  info:    'bg-blue-500',
+  success: 'bg-white',
+  warning: 'bg-white',
+  danger:  'bg-white',
+  info:    'bg-white',
   neutral: 'bg-slate-400',
-  brand:   'bg-blue-500',
-  dark:    'bg-slate-300',
+  brand:   'bg-white',
+  dark:    'bg-white',
+}
+
+const itemDotColors: Record<Variant, string> = {
+  success: 'bg-[#00c875]',
+  warning: 'bg-[#fdab3d]',
+  danger:  'bg-[#e2445c]',
+  info:    'bg-[#0073ea]',
+  neutral: 'bg-slate-400',
+  brand:   'bg-[#2564ea]',
+  dark:    'bg-slate-800',
 }
 
 const itemHover: Record<Variant, string> = {
-  success: 'focus:bg-green-50  text-green-700',
-  warning: 'focus:bg-amber-50  text-amber-700',
-  danger:  'focus:bg-red-50    text-red-700',
-  info:    'focus:bg-blue-50   text-blue-700',
+  success: 'focus:bg-[#00c875]/10  text-[#00c875]',
+  warning: 'focus:bg-[#fdab3d]/10  text-[#fdab3d]',
+  danger:  'focus:bg-[#e2445c]/10  text-[#e2445c]',
+  info:    'focus:bg-[#0073ea]/10  text-[#0073ea]',
   neutral: 'focus:bg-slate-50  text-slate-700',
-  brand:   'focus:bg-blue-50   text-blue-700',
+  brand:   'focus:bg-[#2564ea]/10  text-[#2564ea]',
   dark:    'focus:bg-slate-700 text-white',
 }
 
@@ -74,7 +84,7 @@ export function InlineSelect<T extends string = string>({
           disabled={disabled}
           onClick={e => e.stopPropagation()}
           className={cn(
-            'inline-flex items-center font-medium rounded-full border transition-all duration-150 outline-none',
+            'inline-flex items-center font-bold rounded-full border transition-all duration-150 outline-none',
             'cursor-pointer select-none',
             disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
             variantClasses[variant],
@@ -107,7 +117,7 @@ export function InlineSelect<T extends string = string>({
                   itemHover[v],
                 )}
               >
-                <span className={cn('w-2 h-2 rounded-full flex-shrink-0', dotColors[v])} />
+                <span className={cn('w-2 h-2 rounded-full flex-shrink-0', itemDotColors[v])} />
                 <span className="flex-1 capitalize font-medium">{opt.label}</span>
                 {isSelected && <Check className="w-3.5 h-3.5 opacity-70" />}
               </DropdownItem>

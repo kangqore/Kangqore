@@ -49,13 +49,13 @@ export function ClientInvoices() {
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {[
-          { label: 'Total Paid',       value: `£${(paid / 1000).toFixed(0)}k`,        color: 'text-green-600 bg-green-50' },
-          { label: 'Outstanding',      value: outstanding > 0 ? `£${(outstanding / 1000).toFixed(0)}k` : '£0', color: outstanding > 0 ? 'text-red-600 bg-red-50' : 'text-slate-600 bg-slate-100' },
-          { label: 'Total Engagement', value: `£${(invoices.filter(i => i.status !== 'upcoming').reduce((s, i) => s + i.amount, 0) / 1000).toFixed(0)}k`, color: 'text-blue-600 bg-blue-50' },
+          { label: 'Total Paid',       value: `£${(paid / 1000).toFixed(0)}k`,        color: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)]' },
+          { label: 'Outstanding',      value: outstanding > 0 ? `£${(outstanding / 1000).toFixed(0)}k` : '£0', color: outstanding > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)]' : 'bg-slate-800 text-white' },
+          { label: 'Total Engagement', value: `£${(invoices.filter(i => i.status !== 'upcoming').reduce((s, i) => s + i.amount, 0) / 1000).toFixed(0)}k`, color: 'bg-[#0073ea] text-white shadow-[0_2px_8px_rgba(0,115,234,0.25)]' },
         ].map(s => (
-          <div key={s.label} className={`rounded-xl p-5 ${s.color.split(' ')[1]}`}>
-            <p className="text-xs font-medium text-slate-600 mb-1">{s.label}</p>
-            <p className={`text-2xl font-bold ${s.color.split(' ')[0]}`}>{s.value}</p>
+          <div key={s.label} className={`rounded-xl p-5 ${s.color}`}>
+            <p className="text-xs font-semibold opacity-85 mb-1">{s.label}</p>
+            <p className="text-2xl font-bold">{s.value}</p>
           </div>
         ))}
       </div>
@@ -91,14 +91,14 @@ export function ClientInvoices() {
                     </td>
                     <td className="px-5 py-3.5 text-slate-500 whitespace-nowrap">{inv.date}</td>
                     <td className="px-5 py-3.5 whitespace-nowrap">
-                      <span className={inv.status === 'overdue' ? 'text-red-600 font-semibold' : 'text-slate-500'}>
+                      <span className={inv.status === 'overdue' ? 'text-[#e2445c] font-bold' : 'text-slate-500'}>
                         {inv.due}
                       </span>
                     </td>
                     <td className="px-5 py-3.5 font-semibold text-slate-900 whitespace-nowrap">£{inv.amount.toLocaleString()}</td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-1.5">
-                        <Icon className={`w-3.5 h-3.5 ${inv.status === 'paid' ? 'text-green-500' : inv.status === 'overdue' ? 'text-red-500' : 'text-slate-400'}`} />
+                        <Icon className={`w-3.5 h-3.5 ${inv.status === 'paid' ? 'text-[#00c875]' : inv.status === 'overdue' ? 'text-[#e2445c]' : 'text-slate-400'}`} />
                         <Badge variant={cfg.variant} size="sm">{cfg.label}</Badge>
                       </div>
                     </td>

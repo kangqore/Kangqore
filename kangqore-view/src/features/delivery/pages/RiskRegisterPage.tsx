@@ -205,13 +205,13 @@ function RiskDrawer({
         {risk.clientAcceptedBy && (
           <>
             <Divider />
-            <div className="p-3 bg-green-50 border border-green-200 rounded-xl">
-              <p className="text-xs text-green-700 font-medium">
+            <div className="p-3 bg-white border-l-4 border-l-[#00c875] border-y border-r border-slate-200 rounded-xl">
+              <p className="text-xs text-slate-750 font-semibold">
                 Accepted by {risk.clientAcceptedBy}
                 {risk.clientAcceptedAt && ` on ${new Date(risk.clientAcceptedAt).toLocaleDateString('en-GB')}`}
               </p>
               {risk.clientResponse && (
-                <p className="text-xs text-green-600 mt-1">{risk.clientResponse}</p>
+                <p className="text-xs text-slate-500 mt-1">{risk.clientResponse}</p>
               )}
             </div>
           </>
@@ -326,10 +326,10 @@ function ImpactMatrix({ risks }: { risks: Risk[] }) {
 
   const cellColor = (p: string, i: string) => {
     const s = LEVEL_SCORE[p] * LEVEL_SCORE[i]
-    if (s >= 12) return 'bg-red-100 border-red-200 text-red-700'
-    if (s >= 6)  return 'bg-amber-100 border-amber-200 text-amber-700'
-    if (s >= 3)  return 'bg-blue-50 border-blue-200 text-blue-700'
-    return 'bg-slate-50 border-slate-200 text-slate-500'
+    if (s >= 12) return 'bg-[#e2445c] text-white border-transparent shadow-[0_2px_8px_rgba(226,68,92,0.25)]'
+    if (s >= 6)  return 'bg-[#fdab3d] text-white border-transparent shadow-[0_2px_8px_rgba(253,171,61,0.25)]'
+    if (s >= 3)  return 'bg-[#0073ea] text-white border-transparent shadow-[0_2px_8px_rgba(0,115,234,0.25)]'
+    return 'bg-[#00c875] text-white border-transparent shadow-[0_2px_8px_rgba(0,200,117,0.25)]'
   }
 
   return (
@@ -364,10 +364,10 @@ function ImpactMatrix({ risks }: { risks: Risk[] }) {
           </tbody>
         </table>
         <div className="flex items-center gap-4 mt-3 text-[11px]">
-          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-red-100 border border-red-200 inline-block" /> Critical (≥12)</span>
-          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-amber-100 border border-amber-200 inline-block" /> High (6–11)</span>
-          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-blue-50 border border-blue-200 inline-block" /> Medium (3–5)</span>
-          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-slate-50 border border-slate-200 inline-block" /> Low (1–2)</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[#e2445c] shadow-[0_2px_6px_rgba(226,68,92,0.25)] inline-block" /> Critical (≥12)</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[#fdab3d] shadow-[0_2px_6px_rgba(253,171,61,0.25)] inline-block" /> High (6–11)</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[#0073ea] shadow-[0_2px_6px_rgba(0,115,234,0.25)] inline-block" /> Medium (3–5)</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[#00c875] shadow-[0_2px_6px_rgba(0,200,117,0.25)] inline-block" /> Low (1–2)</span>
         </div>
       </div>
     </Card>

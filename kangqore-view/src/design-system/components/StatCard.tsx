@@ -14,6 +14,26 @@ interface StatCardProps {
   className?: string
 }
 
+const resolvePremiumIconColor = (color: string) => {
+  const c = color.toLowerCase();
+  if (c.includes('red') || c.includes('danger') || c.includes('e2445c')) {
+    return 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)]';
+  }
+  if (c.includes('green') || c.includes('success') || c.includes('00c875')) {
+    return 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)]';
+  }
+  if (c.includes('blue') || c.includes('info') || c.includes('brand') || c.includes('0073ea') || c.includes('2564ea')) {
+    return 'bg-[#0073ea] text-white shadow-[0_2px_8px_rgba(0,115,234,0.25)]';
+  }
+  if (c.includes('orange') || c.includes('amber') || c.includes('yellow') || c.includes('warning') || c.includes('fdab3d')) {
+    return 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.25)]';
+  }
+  if (c.includes('purple') || c.includes('violet') || c.includes('indigo') || c.includes('7f53f9')) {
+    return 'bg-[#7f53f9] text-white shadow-[0_2px_8px_rgba(127,83,249,0.25)]';
+  }
+  return color;
+}
+
 function StatCard({
   label, value, change, changeLabel, icon,
   iconColor = 'bg-blue-50 text-blue-600',
@@ -53,7 +73,7 @@ function StatCard({
         {icon && (
           <div className={cn(
             'p-3 rounded-xl flex-shrink-0 group-hover:scale-110 transition-transform duration-200',
-            iconColor
+            resolvePremiumIconColor(iconColor)
           )}>
             {icon}
           </div>
@@ -68,8 +88,8 @@ function StatCard({
             </span>
           ) : (
             <span className={cn(
-              'inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium text-xs',
-              isPositive ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+              'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-extrabold text-[10px] tracking-wide uppercase shadow-sm',
+              isPositive ? 'bg-[#00c875] text-white shadow-[0_2px_6px_rgba(0,200,117,0.2)]' : 'bg-[#e2445c] text-white shadow-[0_2px_6px_rgba(226,68,92,0.2)]'
             )}>
               {isPositive
                 ? <ArrowUpRight className="w-3 h-3" />

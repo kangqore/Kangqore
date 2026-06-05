@@ -135,19 +135,19 @@ export function HiringCalculatorPage() {
             <p className="text-xl font-bold text-slate-800">{fmt(pipelineValue)}</p>
             <p className="text-[11px] text-slate-400 mt-0.5">{WIN_RATE_PCT * 100}% assumed win rate</p>
           </div>
-          <div className="p-4 bg-blue-50 rounded-xl">
-            <p className="text-xs text-blue-600 mb-1 flex items-center gap-1.5"><DollarSign className="w-3.5 h-3.5" />Expected wins</p>
-            <p className="text-xl font-bold text-blue-700">{fmt(expectedWins)}</p>
-            <p className="text-[11px] text-blue-500 mt-0.5">Across {leads.filter(l => !['won','lost'].includes(l.stage)).length} active leads</p>
+          <div className="p-4 bg-white border-l-4 border-l-[#0073ea] border-y border-r border-slate-200 rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+            <p className="text-xs text-[#0073ea] font-semibold mb-1.5 flex items-center gap-1.5"><DollarSign className="w-3.5 h-3.5" />Expected wins</p>
+            <p className="text-xl font-bold text-slate-800">{fmt(expectedWins)}</p>
+            <p className="text-[11px] text-slate-400 mt-1">Across {leads.filter(l => !['won','lost'].includes(l.stage)).length} active leads</p>
           </div>
-          <div className={`p-4 rounded-xl ${capacityGap > 0 ? 'bg-red-50' : 'bg-green-50'}`}>
-            <p className={`text-xs mb-1 flex items-center gap-1.5 ${capacityGap > 0 ? 'text-red-600' : 'text-green-600'}`}>
+          <div className={`p-4 rounded-xl border-y border-r border-slate-200 border-l-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] bg-white ${capacityGap > 0 ? 'border-l-[#e2445c]' : 'border-l-[#00c875]'}`}>
+            <p className={`text-xs font-semibold mb-1.5 flex items-center gap-1.5 ${capacityGap > 0 ? 'text-[#e2445c]' : 'text-[#00c875]'}`}>
               <AlertTriangle className="w-3.5 h-3.5" />Demand vs capacity
             </p>
-            <p className={`text-xl font-bold ${capacityGap > 0 ? 'text-red-700' : 'text-green-700'}`}>
+            <p className="text-xl font-bold text-slate-800">
               {capacityGap > 0 ? `+${capacityGap}h` : 'Covered'} / wk
             </p>
-            <p className={`text-[11px] mt-0.5 ${capacityGap > 0 ? 'text-red-500' : 'text-green-500'}`}>
+            <p className="text-[11px] text-slate-400 mt-1">
               {capacityGap > 0 ? `${hiresNeeded} hire${hiresNeeded !== 1 ? 's' : ''} needed` : 'Current team can absorb pipeline'}
             </p>
           </div>
@@ -210,7 +210,7 @@ export function HiringCalculatorPage() {
             <div key={i}>
               {i > 0 && <div className="h-px bg-slate-100 mb-4" />}
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0 text-blue-600 font-bold text-sm">
+                <div className="w-8 h-8 rounded-xl bg-[#0073ea] flex items-center justify-center flex-shrink-0 text-white font-extrabold text-sm shadow-[0_2px_6px_rgba(0,115,234,0.2)]">
                   {i + 1}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -229,8 +229,8 @@ export function HiringCalculatorPage() {
         </div>
 
         {hiresNeeded > 0 && (
-          <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
-            <p className="text-xs text-amber-700 font-medium">
+          <div className="mt-4 p-3 bg-white border-l-4 border-l-[#fdab3d] border-y border-r border-slate-200 rounded-xl">
+            <p className="text-xs text-slate-700 font-medium">
               At current pipeline conversion rate, start hiring now — average time-to-hire is {monthsToFill} months.
               Delaying risks capacity crunch in Q3.
             </p>

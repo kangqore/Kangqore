@@ -10,7 +10,7 @@ const STATUS_VARIANT: Record<SLAStatus, 'success' | 'warning' | 'danger'> = {
   met: 'success', 'at-risk': 'warning', breached: 'danger',
 }
 const TREND_ICON = { up: TrendingUp, down: TrendingDown, stable: Minus }
-const TREND_COLOR = { up: 'text-green-500', down: 'text-red-500', stable: 'text-slate-400' }
+const TREND_COLOR = { up: 'text-[#00c875]', down: 'text-[#e2445c]', stable: 'text-slate-400' }
 
 export function SLADashboard() {
   const { clients, slaMetrics } = useClientsStore()
@@ -48,11 +48,11 @@ export function SLADashboard() {
       {/* Status chips */}
       <div className="flex items-center gap-3">
         {[
-          { label: `${met} Met`,       color: 'bg-green-50 text-green-700 border-green-200'   },
-          { label: `${atRisk} At Risk`, color: 'bg-amber-50 text-amber-700 border-amber-200'  },
-          { label: `${breached} Breached`, color: breached > 0 ? 'bg-red-50 text-red-700 border-red-200' : 'bg-slate-50 text-slate-500 border-slate-200' },
+          { label: `${met} Met`,       color: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)] border-transparent'   },
+          { label: `${atRisk} At Risk`, color: 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.25)] border-transparent'  },
+          { label: `${breached} Breached`, color: breached > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)] border-transparent' : 'bg-slate-200 text-slate-700 border-transparent' },
         ].map(c => (
-          <span key={c.label} className={`text-sm font-semibold px-4 py-2 rounded-xl border ${c.color}`}>{c.label}</span>
+          <span key={c.label} className={`text-sm font-bold px-4 py-2 rounded-xl border ${c.color}`}>{c.label}</span>
         ))}
       </div>
 
