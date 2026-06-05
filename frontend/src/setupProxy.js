@@ -5,6 +5,8 @@
  * Dev: CRA runs on :3000, backend on :5050 — proxy KangqoreVis public + API routes.
  */
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const fs = require('fs');
+const path = require('path');
 
 const BACKEND       = process.env.REACT_APP_BACKEND_URL     || 'http://localhost:5050';
 const KANGQORE_VIEW = process.env.REACT_APP_DASHBOARD_OS_URL || 'http://localhost:5174';
@@ -16,7 +18,15 @@ module.exports = function (app) {
   // kangqore-view routes — mirrors nginx production routing
   app.use('/os',     kvProxy);
   app.use('/portal', kvProxy);
-  app.use('/assets', kvProxy);  // Vite built assets
+  
+  // Conditionally proxy /assets to Vite dev server or serve locally
+  app.use('/assets', (req, res, next) => {
+    const localPath = path.join(__dirname, '../public/assets', req.path);
+    if (fs.existsSync(localPath) && fs.statSync(localPath).isFile()) {
+      return next(); // serve locally via CRA dev server
+    }
+    return kvProxy(req, res, next); // proxy to Vite
+  });
 
   // Vite dev server internals (only needed in dev)
   // IMPORTANT: /node_modules/.vite must be proxied — without it CRA's SPA

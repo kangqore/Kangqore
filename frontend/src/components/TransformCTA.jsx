@@ -175,35 +175,44 @@ const TransformCTA = () => {
           </div>
 
           {/* Trust & Compliance Badges */}
-          <div className="mt-16 pt-10 border-t border-gray-100 dark:border-gray-900 flex flex-wrap items-center gap-3 sm:gap-4">
-            {[
-              { name: 'SOC 2 Aligned', id: 'soc2' },
-              { name: 'ISO 27001 Oriented', id: 'iso27001' },
-              { name: 'GDPR Ready', id: 'gdpr' },
-              { name: 'DPDP Conscious', id: 'dpdp' },
-              { name: 'HIPAA Aware', id: 'hipaa' },
-              { name: 'PCI DSS Mindful', id: 'pcidss' },
-              { name: 'CMMI Practiced', id: 'cmmi' }
-            ].map(({ name, id }) => (
-              <div 
-                key={name} 
-                className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-gray-200/80 dark:border-gray-700/80 bg-gradient-to-b from-white to-gray-100/80 dark:from-gray-800 dark:to-gray-900 shadow-[0_4px_6px_rgba(0,0,0,0.08),inset_0_2px_1px_rgba(255,255,255,0.9),inset_0_-2px_1px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_6px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.15),inset_0_-2px_1px_rgba(0,0,0,0.4)] transform hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_8px_15px_rgba(0,0,0,0.12),inset_0_2px_1px_rgba(255,255,255,1),inset_0_-2px_1px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_8px_15px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.25),inset_0_-2px_1px_rgba(0,0,0,0.5)] transition-all duration-300 cursor-default"
-              >
-                <img 
-                  src={`/assets/badges/${id}.png`} 
-                  alt={`${name} Logo`} 
-                  className="w-5 h-5 object-contain drop-shadow-sm"
-                  onError={(e) => { 
-                    if (e.target.src.endsWith('.png')) {
-                      e.target.src = `/assets/badges/${id}.svg`;
-                    } else {
-                      e.target.style.display = 'none';
-                    }
-                  }} 
-                />
-                <span className="text-[10px] sm:text-xs font-extrabold text-gray-800 dark:text-gray-200 uppercase tracking-widest">{name}</span>
-              </div>
-            ))}
+          <div className="mt-16 pt-10 border-t border-gray-100 dark:border-gray-900">
+            <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-8 cursor-default">
+              Our Security & Compliance Posture
+            </p>
+            <div className="flex flex-wrap gap-6 justify-start">
+              {[
+                { name: 'SOC 2 Aligned', id: 'soc2' },
+                { name: 'ISO 27001 Oriented', id: 'iso27001' },
+                { name: 'GDPR Ready', id: 'gdpr' },
+                { name: 'DPDP Conscious', id: 'dpdp' },
+                { name: 'HIPAA Aware', id: 'hipaa' },
+                { name: 'PCI DSS Mindful', id: 'pcidss' },
+                { name: 'CMMI Practiced', id: 'cmmi' }
+              ].map(({ name, id }) => (
+                <div 
+                  key={name} 
+                  className="flex flex-col items-center justify-between p-6 rounded-2xl w-[150px] min-h-[170px] border border-gray-200/60 dark:border-gray-800/80 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900/40 dark:to-gray-950/40 shadow-sm hover:shadow-xl transform hover:-translate-y-2 transition-all duration-500 cursor-default"
+                >
+                  <div className="flex-1 flex items-center justify-center mb-4">
+                    <img 
+                      src={`/assets/badges/${id}.png`} 
+                      alt={`${name} Logo`} 
+                      className="w-14 h-14 object-contain drop-shadow-md transition-transform duration-500 hover:scale-110"
+                      onError={(e) => { 
+                        if (e.target.src.endsWith('.png')) {
+                          e.target.src = `/assets/badges/${id}.svg`;
+                        } else {
+                          e.target.style.display = 'none';
+                        }
+                      }} 
+                    />
+                  </div>
+                  <span className="text-[10px] sm:text-[11px] font-extrabold text-gray-700 dark:text-gray-300 uppercase tracking-widest text-center leading-tight">
+                    {name}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
