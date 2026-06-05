@@ -1015,6 +1015,47 @@ model EmailLog {
   @@map("email_logs")
 }
 
+// ── Client CRM ────────────────────────────────────────────────────────────────
+// Company-level CRM records. Separate from User/ClientProfile (which tracks
+// individual login accounts and compliance data).
+
+model ClientCRM {
+  id                String          @id @default(cuid())
+  name              String          // company name
+  industry          String?
+  country           String?
+  tier              String          @default("standard")   // strategic|enterprise|standard|starter
+  status            String          @default("active")     // active|onboarding|paused|churned
+  health            String          @default("good")       // excellent|good|at-risk|critical
+  arr               Float           @default(0)            // Annual Recurring Revenue £
+  contractStart     DateTime?
+  contractEnd       DateTime?
+  accountManager    String?
+  satisfactionScore Int             @default(0)            // 0–100
+  description       String?         @db.Text
+  logo              String?         // 2-letter initials
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  contacts          ClientContact[]
+  projectIds        String[]        @default([])
+
+  @@map("client_crm")
+}
+
+model ClientContact {
+  id        String    @id @default(cuid())
+  clientId  String
+  name      String
+  role      String
+  email     String
+  phone     String?
+  isPrimary Boolean   @default(false)
+  client    ClientCRM @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@map("client_contacts")
+}
+
 // ── OS Automation Workflows ────────────────────────────────────────────────────
 // Separate from the calendar Workflow model (which handles scheduling triggers).
 // These are business-process automation workflows displayed in /os/workflows.
