@@ -1,22 +1,27 @@
 import { create } from 'zustand'
 import { WORKFLOWS, WORKFLOW_RUNS } from './data'
+import type { Workflow, WorkflowRun } from './types'
 
 interface WorkflowsStore {
-  workflows: typeof WORKFLOWS
-  runs:      typeof WORKFLOW_RUNS
+  workflows:  typeof WORKFLOWS
+  runs:       typeof WORKFLOW_RUNS
   selectedId: string
-  setSelected: (id: string) => void
+  setSelected:       (id: string)          => void
+  hydrateWorkflows:  (wf: Workflow[])      => void
+  hydrateRuns:       (runs: WorkflowRun[]) => void
   totalRuns:    () => number
   successRate:  () => number
   activeCount:  () => number
 }
 
 export const useWorkflowsStore = create<WorkflowsStore>((set, get) => ({
-  workflows:   WORKFLOWS,
-  runs:        WORKFLOW_RUNS,
-  selectedId:  'wf1',
+  workflows:  WORKFLOWS,
+  runs:       WORKFLOW_RUNS,
+  selectedId: 'wf1',
 
-  setSelected: (id) => set({ selectedId: id }),
+  setSelected:      (id)    => set({ selectedId: id }),
+  hydrateWorkflows: (wf)    => set({ workflows: wf, selectedId: wf[0]?.id ?? 'wf1' }),
+  hydrateRuns:      (runs)  => set({ runs }),
 
   totalRuns:   () => get().workflows.reduce((s, w) => s + w.runsTotal, 0),
   successRate: () => {

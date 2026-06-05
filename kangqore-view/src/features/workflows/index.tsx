@@ -1,6 +1,11 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useQuery }   from '@tanstack/react-query'
 import { LayoutGrid, GitBranch } from 'lucide-react'
-import { cn } from '@design-system/cn'
+import { cn }         from '@design-system/cn'
+import { api, isDemo } from '@lib/api'
+import { useWorkflowsStore } from './store'
+import type { Workflow, WorkflowRun } from './types'
 import { WorkflowsOverview } from './pages/WorkflowsOverview'
 import { WorkflowBuilder }   from './pages/WorkflowBuilder'
 
@@ -9,7 +14,71 @@ const TABS = [
   { path: 'builder', label: 'Builder',  icon: GitBranch  },
 ]
 
+// Map DB row → frontend Workflow type.
+// steps is stored as Json in the DB so cast it through.
+function toWorkflow(r: Record<string, unknown>): Workflow {
+  return {
+    id:            String(r.id ?? ''),
+    name:          String(r.name ?? ''),
+    description:   String(r.description ?? ''),
+    category:      (r.category as Workflow['category']) ?? 'ops',
+    status:        (r.status   as Workflow['status'])   ?? 'draft',
+    triggerType:   (r.triggerType as Workflow['triggerType']) ?? 'manual',
+    triggerConfig: String(r.triggerConfig ?? ''),
+    steps:         Array.isArray(r.steps) ? r.steps as Workflow['steps'] : [],
+    lastRun:       r.lastRun ? String(r.lastRun).slice(0, 19).replace('T', ' ') : undefined,
+    nextRun:       r.nextRun ? String(r.nextRun).slice(0, 19).replace('T', ' ') : undefined,
+    runsTotal:     Number(r.runsTotal   ?? 0),
+    runsSuccess:   Number(r.runsSuccess ?? 0),
+    runsFailed:    Number(r.runsFailed  ?? 0),
+    avgDuration:   Number(r.avgDuration ?? 0),
+    owner:         String(r.owner ?? ''),
+    createdAt:     String(r.createdAt ?? '').slice(0, 10),
+    tags:          Array.isArray(r.tags) ? r.tags as string[] : [],
+  }
+}
+
+function toRun(r: Record<string, unknown>): WorkflowRun {
+  return {
+    id:             String(r.id ?? ''),
+    workflowId:     String(r.workflowId ?? ''),
+    workflowName:   String(r.workflowName ?? ''),
+    status:         (r.status as WorkflowRun['status']) ?? 'completed',
+    startedAt:      String(r.startedAt ?? '').slice(0, 19).replace('T', ' '),
+    completedAt:    r.completedAt ? String(r.completedAt).slice(0, 19).replace('T', ' ') : undefined,
+    duration:       r.duration ? Number(r.duration) : undefined,
+    triggeredBy:    String(r.triggeredBy ?? ''),
+    stepsCompleted: Number(r.stepsCompleted ?? 0),
+    stepsTotal:     Number(r.stepsTotal ?? 0),
+    errorMessage:   r.errorMessage ? String(r.errorMessage) : undefined,
+  }
+}
+
 export function WorkflowsModule() {
+  const { hydrateWorkflows, hydrateRuns } = useWorkflowsStore()
+
+  const { data: wfData } = useQuery({
+    queryKey:  ['os-workflows'],
+    queryFn:   () => api.get('/os-workflows').then(r => r.data.workflows ?? []),
+    enabled:   !isDemo(),
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const { data: runsData } = useQuery({
+    queryKey:  ['os-workflows', 'runs'],
+    queryFn:   () => api.get('/os-workflows/runs?limit=20').then(r => r.data.runs ?? []),
+    enabled:   !isDemo(),
+    staleTime: 1000 * 60 * 2,
+  })
+
+  useEffect(() => {
+    if (wfData?.length)   hydrateWorkflows((wfData   as Record<string, unknown>[]).map(toWorkflow))
+  }, [wfData,   hydrateWorkflows])
+
+  useEffect(() => {
+    if (runsData?.length) hydrateRuns((runsData as Record<string, unknown>[]).map(toRun))
+  }, [runsData, hydrateRuns])
+
   return (
     <div>
       <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
