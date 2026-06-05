@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { INVESTORS, CAP_TABLE, INVESTOR_UPDATES, FUNDRAISING_ROUNDS } from './data'
-import type { Investor, InvestorUpdate } from './types'
+import type { Investor, CapTable, InvestorUpdate, FundraisingRound } from './types'
 
 interface InvestorsStore {
   investors:        typeof INVESTORS
@@ -8,9 +8,11 @@ interface InvestorsStore {
   updates:          typeof INVESTOR_UPDATES
   rounds:           typeof FUNDRAISING_ROUNDS
   selectedId:       string
-  setSelected:      (id: string) => void
-  hydrateInvestors: (investors: Investor[]) => void
-  hydrateUpdates:   (updates: InvestorUpdate[]) => void
+  setSelected:      (id: string)                  => void
+  hydrateInvestors: (investors: Investor[])        => void
+  hydrateUpdates:   (updates: InvestorUpdate[])    => void
+  hydrateCapTable:  (rows: CapTable[])             => void
+  hydrateRounds:    (rows: FundraisingRound[])     => void
   activeRound:      () => typeof FUNDRAISING_ROUNDS[0] | undefined
   totalCommitted:   () => number
   totalOwnership:   () => number
@@ -23,9 +25,11 @@ export const useInvestorsStore = create<InvestorsStore>((set, get) => ({
   rounds:      FUNDRAISING_ROUNDS,
   selectedId:  'i1',
 
-  setSelected:      (id) => set({ selectedId: id }),
+  setSelected:      (id)      => set({ selectedId: id }),
   hydrateInvestors: (investors) => set({ investors }),
   hydrateUpdates:   (updates)   => set({ updates }),
+  hydrateCapTable:  (capTable)  => set({ capTable }),
+  hydrateRounds:    (rounds)    => set({ rounds }),
 
   activeRound: () => get().rounds.find(r => r.status === 'open' || r.status === 'planning'),
 

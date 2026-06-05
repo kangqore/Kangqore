@@ -5,7 +5,7 @@ import { LayoutGrid, UserCircle, CheckSquare, DollarSign } from 'lucide-react'
 import { cn }        from '@design-system/cn'
 import { api, isDemo } from '@lib/api'
 import { usePartnersStore } from './store'
-import type { Partner, PartnerContact } from './types'
+import type { Partner, PartnerContact, PartnerTask, Deliverable, PartnerPayment, PartnerNote } from './types'
 import { PartnersOverview } from './pages/PartnersOverview'
 import { PartnerProfile }   from './pages/PartnerProfile'
 import { TasksPage }        from './pages/TasksPage'
@@ -47,19 +47,67 @@ function toPartner(r: Record<string, unknown>): Partner {
   }
 }
 
+function toTask(r: Record<string,unknown>): PartnerTask {
+  return {
+    id: String(r.id??''), partnerId: String(r.partnerId??''), partnerName: String(r.partnerName??''),
+    projectId: String(r.projectId??''), projectName: String(r.projectName??''),
+    title: String(r.title??''), description: String(r.description??''),
+    status:   (r.status   as PartnerTask['status'])   ?? 'assigned',
+    priority: (r.priority as PartnerTask['priority']) ?? 'medium',
+    assignedDate:  String(r.assignedDate  ?? '').slice(0,10),
+    dueDate:       String(r.dueDate       ?? '').slice(0,10),
+    completedDate: r.completedDate ? String(r.completedDate).slice(0,10) : undefined,
+    storyPoints: Number(r.storyPoints ?? 0),
+    fee: Number(r.fee ?? 0),
+  }
+}
+function toDeliverable(r: Record<string,unknown>): Deliverable {
+  return {
+    id: String(r.id??''), partnerId: String(r.partnerId??''), partnerName: String(r.partnerName??''),
+    projectId: String(r.projectId??''), projectName: String(r.projectName??''),
+    title: String(r.title??''), description: String(r.description??''),
+    status:        (r.status as Deliverable['status']) ?? 'not-started',
+    dueDate:       String(r.dueDate       ?? '').slice(0,10),
+    submittedDate: r.submittedDate ? String(r.submittedDate).slice(0,10) : undefined,
+    approvedDate:  r.approvedDate  ? String(r.approvedDate).slice(0,10)  : undefined,
+    fee:      Number(r.fee ?? 0),
+    feedback: r.feedback ? String(r.feedback) : undefined,
+  }
+}
+function toPayment(r: Record<string,unknown>): PartnerPayment {
+  return {
+    id: String(r.id??''), partnerId: String(r.partnerId??''), partnerName: String(r.partnerName??''),
+    invoiceNumber: String(r.invoiceNumber??''), description: String(r.description??''),
+    amount: Number(r.amount ?? 0),
+    status: (r.status as PartnerPayment['status']) ?? 'pending',
+    issuedDate: String(r.issuedDate ?? '').slice(0,10),
+    dueDate:    String(r.dueDate    ?? '').slice(0,10),
+    paidDate:   r.paidDate ? String(r.paidDate).slice(0,10) : undefined,
+  }
+}
+function toNote(r: Record<string,unknown>): PartnerNote {
+  return {
+    id: String(r.id??''), partnerId: String(r.partnerId??''),
+    content: String(r.content??''), author: String(r.author??''),
+    date: String(r.date??'').slice(0,10),
+    type: (r.type as PartnerNote['type']) ?? 'general',
+  }
+}
+
 export function PartnersModule() {
-  const { hydratePartners } = usePartnersStore()
+  const { hydratePartners, hydrateTasks, hydrateDeliverables, hydratePayments, hydrateNotes } = usePartnersStore()
 
-  const { data } = useQuery({
-    queryKey:  ['admin', 'crm', 'partners'],
-    queryFn:   () => api.get('/admin/crm/partners').then(r => r.data.partners ?? []),
-    enabled:   !isDemo(),
-    staleTime: 1000 * 60 * 5,
-  })
+  const { data }        = useQuery({ queryKey: ['admin','crm','partners'],              queryFn: () => api.get('/admin/crm/partners').then(r => r.data.partners ?? []),                      enabled: !isDemo(), staleTime: 1000*60*5 })
+  const { data: tData } = useQuery({ queryKey: ['admin','crm','partner-tasks'],         queryFn: () => api.get('/admin/crm/partner-tasks').then(r => r.data.tasks ?? []),                    enabled: !isDemo(), staleTime: 1000*60*5 })
+  const { data: dData } = useQuery({ queryKey: ['admin','crm','partner-deliverables'],  queryFn: () => api.get('/admin/crm/partner-deliverables').then(r => r.data.deliverables ?? []),      enabled: !isDemo(), staleTime: 1000*60*5 })
+  const { data: pData } = useQuery({ queryKey: ['admin','crm','partner-payments'],      queryFn: () => api.get('/admin/crm/partner-payments').then(r => r.data.payments ?? []),              enabled: !isDemo(), staleTime: 1000*60*5 })
+  const { data: nData } = useQuery({ queryKey: ['admin','crm','partner-notes'],         queryFn: () => api.get('/admin/crm/partner-notes').then(r => r.data.notes ?? []),                    enabled: !isDemo(), staleTime: 1000*60*5 })
 
-  useEffect(() => {
-    if (data?.length) hydratePartners((data as Record<string, unknown>[]).map(toPartner))
-  }, [data, hydratePartners])
+  useEffect(() => { if (data?.length)  hydratePartners((data as Record<string,unknown>[]).map(toPartner))          }, [data,  hydratePartners])
+  useEffect(() => { if (tData?.length) hydrateTasks((tData as Record<string,unknown>[]).map(toTask))                }, [tData, hydrateTasks])
+  useEffect(() => { if (dData?.length) hydrateDeliverables((dData as Record<string,unknown>[]).map(toDeliverable)) }, [dData, hydrateDeliverables])
+  useEffect(() => { if (pData?.length) hydratePayments((pData as Record<string,unknown>[]).map(toPayment))         }, [pData, hydratePayments])
+  useEffect(() => { if (nData?.length) hydrateNotes((nData as Record<string,unknown>[]).map(toNote))               }, [nData, hydrateNotes])
 
   return (
     <div>

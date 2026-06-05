@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { PARTNERS, PARTNER_TASKS, DELIVERABLES, PAYMENTS, NOTES } from './data'
-import type { Partner } from './types'
+import type { Partner, PartnerTask, Deliverable, PartnerPayment, PartnerNote } from './types'
 
 interface PartnersStore {
   partners:     typeof PARTNERS
@@ -9,8 +9,12 @@ interface PartnersStore {
   payments:     typeof PAYMENTS
   notes:        typeof NOTES
   selectedId:   string
-  setSelected:        (id: string)      => void
-  hydratePartners:    (p: Partner[])    => void
+  setSelected:         (id: string)           => void
+  hydratePartners:     (p: Partner[])         => void
+  hydrateTasks:        (rows: PartnerTask[])  => void
+  hydrateDeliverables: (rows: Deliverable[])  => void
+  hydratePayments:     (rows: PartnerPayment[]) => void
+  hydrateNotes:        (rows: PartnerNote[])  => void
   partnerTasks:        (id: string) => typeof PARTNER_TASKS
   partnerDeliverables: (id: string) => typeof DELIVERABLES
   partnerPayments:     (id: string) => typeof PAYMENTS
@@ -25,8 +29,12 @@ export const usePartnersStore = create<PartnersStore>((set, get) => ({
   notes:        NOTES,
   selectedId:   'pt1',
 
-  setSelected:     (id) => set({ selectedId: id }),
-  hydratePartners: (p)  => set({ partners: p, selectedId: p[0]?.id ?? 'pt1' }),
+  setSelected:         (id)    => set({ selectedId: id }),
+  hydratePartners:     (p)     => set({ partners: p, selectedId: p[0]?.id ?? 'pt1' }),
+  hydrateTasks:        (tasks)        => set({ tasks }),
+  hydrateDeliverables: (deliverables) => set({ deliverables }),
+  hydratePayments:     (payments)     => set({ payments }),
+  hydrateNotes:        (notes)        => set({ notes }),
 
   partnerTasks:        (id) => get().tasks.filter(t => t.partnerId === id),
   partnerDeliverables: (id) => get().deliverables.filter(d => d.partnerId === id),

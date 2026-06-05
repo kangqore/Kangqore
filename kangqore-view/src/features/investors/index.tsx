@@ -5,7 +5,7 @@ import { LayoutGrid, PieChart, Send, UserCircle } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { api, isDemo } from '@lib/api'
 import { useInvestorsStore } from './store'
-import type { Investor, InvestorUpdate } from './types'
+import type { Investor, InvestorUpdate, CapTable, FundraisingRound } from './types'
 import { InvestorsOverview } from './pages/InvestorsOverview'
 import { CapTablePage }      from './pages/CapTablePage'
 import { UpdatesPage }       from './pages/UpdatesPage'
@@ -63,34 +63,51 @@ function toUpdate(u: Record<string, unknown>): InvestorUpdate {
   }
 }
 
+function toCapTable(r: Record<string, unknown>): CapTable {
+  return {
+    id:           String(r.id ?? ''),
+    investorId:   String(r.id ?? ''),   // no FK — use record id as stable ref
+    investorName: String(r.investorName ?? ''),
+    firm:         String(r.firm ?? ''),
+    round:        (r.round as CapTable['round']) ?? 'seed',
+    amount:       Number(r.amount ?? 0),
+    ownership:    Number(r.ownership ?? 0),
+    shareClass:   String(r.shareClass ?? 'Ordinary'),
+    date:         String(r.date ?? '').slice(0, 10),
+    proRataRights: Boolean(r.proRataRights),
+    boardSeat:     Boolean(r.boardSeat),
+  }
+}
+
+function toRound(r: Record<string, unknown>): FundraisingRound {
+  return {
+    id:              String(r.id ?? ''),
+    name:            String(r.name ?? ''),
+    stage:           (r.stage as FundraisingRound['stage']) ?? 'seed',
+    targetAmount:    Number(r.targetAmount ?? 0),
+    raisedAmount:    Number(r.raisedAmount ?? 0),
+    status:          (r.status as FundraisingRound['status']) ?? 'planning',
+    openDate:        String(r.openDate  ?? '').slice(0, 10),
+    closeDate:       r.closeDate ? String(r.closeDate).slice(0, 10) : undefined,
+    leadInvestorId:  r.leadInvestorName ? String(r.leadInvestorName) : undefined,
+    investors:       Array.isArray(r.investorNames) ? r.investorNames as string[] : [],
+    useOfFunds:      Array.isArray(r.useOfFunds)    ? r.useOfFunds    as FundraisingRound['useOfFunds'] : [],
+    valuation:       Number(r.valuation ?? 0),
+  }
+}
+
 export function InvestorsModule() {
-  const { hydrateInvestors, hydrateUpdates } = useInvestorsStore()
+  const { hydrateInvestors, hydrateUpdates, hydrateCapTable, hydrateRounds } = useInvestorsStore()
 
-  const { data: investorsData } = useQuery({
-    queryKey: ['admin', 'investors'],
-    queryFn:  () => api.get('/admin/investors').then(r => r.data.investors ?? []),
-    enabled:  !isDemo(),
-    staleTime: 1000 * 60 * 5,
-  })
+  const { data: investorsData } = useQuery({ queryKey: ['admin','investors'],         queryFn: () => api.get('/admin/investors').then(r => r.data.investors ?? []),                enabled: !isDemo(), staleTime: 1000*60*5 })
+  const { data: updatesData }   = useQuery({ queryKey: ['admin','investors','updates'],queryFn: () => api.get('/admin/investors/updates').then(r => r.data.updates ?? []),          enabled: !isDemo(), staleTime: 1000*60*5 })
+  const { data: ctData }        = useQuery({ queryKey: ['admin','crm','cap-table'],    queryFn: () => api.get('/admin/crm/cap-table').then(r => r.data.capTable ?? []),              enabled: !isDemo(), staleTime: 1000*60*10 })
+  const { data: rnData }        = useQuery({ queryKey: ['admin','crm','rounds'],       queryFn: () => api.get('/admin/crm/fundraising-rounds').then(r => r.data.rounds ?? []),      enabled: !isDemo(), staleTime: 1000*60*10 })
 
-  const { data: updatesData } = useQuery({
-    queryKey: ['admin', 'investors', 'updates'],
-    queryFn:  () => api.get('/admin/investors/updates').then(r => r.data.updates ?? []),
-    enabled:  !isDemo(),
-    staleTime: 1000 * 60 * 5,
-  })
-
-  useEffect(() => {
-    if (investorsData?.length) {
-      hydrateInvestors((investorsData as Record<string, unknown>[]).map(toInvestor))
-    }
-  }, [investorsData, hydrateInvestors])
-
-  useEffect(() => {
-    if (updatesData?.length) {
-      hydrateUpdates((updatesData as Record<string, unknown>[]).map(toUpdate))
-    }
-  }, [updatesData, hydrateUpdates])
+  useEffect(() => { if (investorsData?.length) hydrateInvestors((investorsData as Record<string,unknown>[]).map(toInvestor)) }, [investorsData, hydrateInvestors])
+  useEffect(() => { if (updatesData?.length)   hydrateUpdates((updatesData as Record<string,unknown>[]).map(toUpdate))       }, [updatesData,   hydrateUpdates])
+  useEffect(() => { if (ctData?.length)        hydrateCapTable((ctData as Record<string,unknown>[]).map(toCapTable))         }, [ctData,         hydrateCapTable])
+  useEffect(() => { if (rnData?.length)        hydrateRounds((rnData as Record<string,unknown>[]).map(toRound))              }, [rnData,         hydrateRounds])
 
   return (
     <div>
