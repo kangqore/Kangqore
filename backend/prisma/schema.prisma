@@ -1015,6 +1015,181 @@ model EmailLog {
   @@map("email_logs")
 }
 
+// ── Cap Table & Fundraising ───────────────────────────────────────────────────
+
+model CapTableEntry {
+  id              String   @id @default(cuid())
+  investorName    String
+  firm            String
+  round           String   // pre-seed|seed|series-a|series-b|growth|bridge
+  amount          Float    @default(0)   // £k invested
+  ownership       Float    @default(0)   // % equity
+  shareClass      String   @default("Ordinary")
+  date            DateTime
+  proRataRights   Boolean  @default(false)
+  boardSeat       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  @@map("cap_table_entries")
+}
+
+model FundraisingRound {
+  id              String   @id @default(cuid())
+  name            String
+  stage           String   // pre-seed|seed|series-a|series-b|growth|bridge
+  targetAmount    Float    @default(0)   // £k
+  raisedAmount    Float    @default(0)   // £k
+  status          String   @default("planning") // planning|open|closing|closed
+  openDate        DateTime
+  closeDate       DateTime?
+  leadInvestorName String?
+  investorNames   String[]
+  valuation       Float    @default(0)   // £k post-money
+  useOfFunds      Json     @default("[]") // { category, amount, percentage }[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("fundraising_rounds")
+}
+
+// ── Client CRM sub-entities ───────────────────────────────────────────────────
+
+model ClientInteraction {
+  id        String    @id @default(cuid())
+  clientId  String
+  type      String    // call|email|meeting|note|milestone
+  title     String
+  summary   String    @db.Text
+  date      DateTime
+  owner     String
+  client    ClientCRM @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@map("client_interactions")
+}
+
+model ClientSLA {
+  id        String    @id @default(cuid())
+  clientId  String
+  metric    String
+  target    Float
+  current   Float
+  unit      String
+  period    String
+  status    String    // met|at-risk|breached
+  trend     String    @default("stable") // up|down|stable
+  client    ClientCRM @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@map("client_slas")
+}
+
+model ClientMilestone {
+  id             String    @id @default(cuid())
+  clientId       String
+  projectId      String    @default("")
+  title          String
+  description    String    @db.Text
+  dueDate        DateTime
+  completedDate  DateTime?
+  status         String    // completed|in-progress|upcoming|delayed
+  owner          String
+  client         ClientCRM @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@map("client_milestones")
+}
+
+model ClientGovernanceItem {
+  id          String    @id @default(cuid())
+  clientId    String
+  type        String    // decision|change-request|steering|escalation
+  title       String
+  description String    @db.Text
+  status      String    // open|approved|rejected|pending|closed
+  owner       String
+  date        DateTime
+  priority    String    // critical|high|medium|low
+  resolution  String?   @db.Text
+  client      ClientCRM @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@map("client_governance")
+}
+
+// ── Partner CRM sub-entities ──────────────────────────────────────────────────
+
+model CrmPartnerTask {
+  id            String     @id @default(cuid())
+  partnerId     String
+  partnerName   String
+  projectId     String     @default("")
+  projectName   String     @default("")
+  title         String
+  description   String     @db.Text
+  status        String     // assigned|in-progress|review|completed|overdue
+  priority      String     // critical|high|medium|low
+  assignedDate  DateTime
+  dueDate       DateTime
+  completedDate DateTime?
+  storyPoints   Int        @default(0)
+  fee           Float      @default(0)
+  partner       PartnerCRM @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([partnerId])
+  @@map("crm_partner_tasks")
+}
+
+model CrmPartnerDeliverable {
+  id             String     @id @default(cuid())
+  partnerId      String
+  partnerName    String
+  projectId      String     @default("")
+  projectName    String     @default("")
+  title          String
+  description    String     @db.Text
+  status         String     // not-started|in-progress|submitted|approved|revision
+  dueDate        DateTime
+  submittedDate  DateTime?
+  approvedDate   DateTime?
+  fee            Float      @default(0)
+  feedback       String?    @db.Text
+  partner        PartnerCRM @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([partnerId])
+  @@map("crm_partner_deliverables")
+}
+
+model CrmPartnerPayment {
+  id            String     @id @default(cuid())
+  partnerId     String
+  partnerName   String
+  invoiceNumber String
+  description   String
+  amount        Float      @default(0)
+  status        String     // pending|paid|overdue|processing
+  issuedDate    DateTime
+  dueDate       DateTime
+  paidDate      DateTime?
+  partner       PartnerCRM @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([partnerId])
+  @@map("crm_partner_payments")
+}
+
+model CrmPartnerNote {
+  id        String     @id @default(cuid())
+  partnerId String
+  content   String     @db.Text
+  author    String
+  date      DateTime
+  type      String     @default("general") // general|performance|issue|praise
+  partner   PartnerCRM @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([partnerId])
+  @@map("crm_partner_notes")
+}
+
 // ── Partner CRM ───────────────────────────────────────────────────────────────
 // Company-level CRM records for delivery/tech partners. Separate from User accounts.
 
@@ -1042,6 +1217,10 @@ model PartnerCRM {
   projectIds         String[] @default([])
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  tasks              CrmPartnerTask[]
+  deliverables       CrmPartnerDeliverable[]
+  payments           CrmPartnerPayment[]
+  notes              CrmPartnerNote[]
 
   @@map("partner_crm")
 }
@@ -1068,6 +1247,10 @@ model ClientCRM {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   contacts          ClientContact[]
+  interactions      ClientInteraction[]
+  slas              ClientSLA[]
+  milestones        ClientMilestone[]
+  governance        ClientGovernanceItem[]
   projectIds        String[]        @default([])
 
   @@map("client_crm")
