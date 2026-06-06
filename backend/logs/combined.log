@@ -1894,3 +1894,123 @@
 2026-05-30 12:31:56:3156 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
 2026-05-30 12:31:56:3156 [32minfo[39m: [32mretrieval.index.loaded chunks=0[39m
 2026-05-30 12:31:56:3156 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-06 09:08:10:810 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-06 09:08:13:813 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-06 09:08:13:813 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-06 09:08:14:814 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-06 09:08:14:814 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-06 09:08:14:814 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-06 09:08:14:814 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-06 09:08:18:818 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-06 09:08:19:819 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-06 09:08:20:820 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-06 09:08:20:820 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-06 09:08:20:820 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-06 09:08:20:820 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-06 09:08:20:820 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-06 09:09:31:931 [31merror[39m: [31mKIMMP Page Factory DB error: [39m
+[31mInvalid `any).kimmpGeneratedPage.findFirst()` invocation in[39m
+[31m/Users/maheshkumar/Kangqore/backend/src/kangqore-immp/page-factory/pageStore.service.ts:54:47[39m
+
+[31m  51 [39m
+[31m  52 /** Only returns PUBLISHED pages — used by the public renderer endpoint. */[39m
+[31m  53 static getPublishedBySlug(slug: string) {[39m
+[31m→ 54   return (prisma as any).kimmpGeneratedPage.findFirst([39m
+[31mAuthentication failed against database server at `localhost`, the provided database credentials for `kangqore_user` are not valid.[39m
+
+[31mPlease make sure to provide valid database credentials for the database server at `localhost`.[39m
+2026-06-06 09:15:00:150 [31merror[39m: [31m[WorkflowExecutor] Error running batch: [39m
+[31mInvalid `prisma.workflowJob.findMany()` invocation in[39m
+[31m/Users/maheshkumar/Kangqore/backend/src/jobs/WorkflowExecutor.ts:12:52[39m
+
+[31m   9  */[39m
+[31m  10 static async run() {[39m
+[31m  11   try {[39m
+[31m→ 12     const pendingJobs = await prisma.workflowJob.findMany([39m
+[31mAuthentication failed against database server at `localhost`, the provided database credentials for `kangqore_user` are not valid.[39m
+
+[31mPlease make sure to provide valid database credentials for the database server at `localhost`.[39m
+2026-06-06 09:15:00:150 [31merror[39m: [31mError in Meeting Reminder job [39m
+[31mInvalid `prisma.scheduledEvent.findMany()` invocation in[39m
+[31m/Users/maheshkumar/Kangqore/backend/src/jobs/CronManager.ts:106:57[39m
+
+[31m  103 const now = new Date();[39m
+[31m  104 [39m
+[31m  105 // Find events that start within 23h45m – 24h15m (24h window, ±15 min)[39m
+[31m→ 106 const upcoming24h = await prisma.scheduledEvent.findMany([39m
+[31mAuthentication failed against database server at `localhost`, the provided database credentials for `kangqore_user` are not valid.[39m
+
+[31mPlease make sure to provide valid database credentials for the database server at `localhost`.[39m
+2026-06-06 09:23:00:230 [33mwarn[39m: [33mEmailService: SENDGRID_API_KEY missing. Using MOCK mode (logging emails).[39m
+2026-06-06 09:23:01:231 [32minfo[39m: [32mBullMQ Queues initialized with DLQ and Exponential Backoff.[39m
+2026-06-06 09:23:01:231 [33mwarn[39m: [33mTwilio SMS service disabled. Missing TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, or TWILIO_FROM[39m
+2026-06-06 09:23:01:231 [32minfo[39m: [32mKB loaded: 303 chunks across 13 files (303 public/populated, 36 forbidden substrings)[39m
+2026-06-06 09:23:01:231 [33mwarn[39m: [33mretrieval.index.skip — VOYAGE_API_KEY not configured; KnowledgeChunk table will not be populated. Concierge will fall back to stuffing the full KB into the prompt.[39m
+2026-06-06 09:23:01:231 [32minfo[39m: [32mConnected to Redis for eQORE Queues[39m
+2026-06-06 09:23:01:231 [32minfo[39m: [32mkb.watcher.started watching=/Users/maheshkumar/Kangqore/backend/knowledge-base/*.md[39m
+2026-06-06 09:28:14:2814 [31merror[39m: [31mKIMMP Page Factory DB error: [39m
+[31mInvalid `any).kimmpGeneratedPage.findFirst()` invocation in[39m
+[31m/Users/maheshkumar/Kangqore/backend/src/kangqore-immp/page-factory/pageStore.service.ts:54:47[39m
+
+[31m  51 [39m
+[31m  52 /** Only returns PUBLISHED pages — used by the public renderer endpoint. */[39m
+[31m  53 static getPublishedBySlug(slug: string) {[39m
+[31m→ 54   return (prisma as any).kimmpGeneratedPage.findFirst([39m
+[31mAuthentication failed against database server at `localhost`, the provided database credentials for `kangqore_user` are not valid.[39m
+
+[31mPlease make sure to provide valid database credentials for the database server at `localhost`.[39m
+2026-06-06 09:28:14:2814 [31merror[39m: [31mKIMMP Page Factory DB error: [39m
+[31mInvalid `any).kimmpGeneratedPage.findFirst()` invocation in[39m
+[31m/Users/maheshkumar/Kangqore/backend/src/kangqore-immp/page-factory/pageStore.service.ts:54:47[39m
+
+[31m  51 [39m
+[31m  52 /** Only returns PUBLISHED pages — used by the public renderer endpoint. */[39m
+[31m  53 static getPublishedBySlug(slug: string) {[39m
+[31m→ 54   return (prisma as any).kimmpGeneratedPage.findFirst([39m
+[31mAuthentication failed against database server at `localhost`, the provided database credentials for `kangqore_user` are not valid.[39m
+
+[31mPlease make sure to provide valid database credentials for the database server at `localhost`.[39m
+2026-06-06 09:30:00:300 [31merror[39m: [31mError in Meeting Reminder job [39m
+[31mInvalid `prisma.scheduledEvent.findMany()` invocation in[39m
+[31m/Users/maheshkumar/Kangqore/backend/src/jobs/CronManager.ts:106:57[39m
+
+[31m  103 const now = new Date();[39m
+[31m  104 [39m
+[31m  105 // Find events that start within 23h45m – 24h15m (24h window, ±15 min)[39m
+[31m→ 106 const upcoming24h = await prisma.scheduledEvent.findMany([39m
+[31mAuthentication failed against database server at `localhost`, the provided database credentials for `kangqore_user` are not valid.[39m
+
+[31mPlease make sure to provide valid database credentials for the database server at `localhost`.[39m
+2026-06-06 09:30:00:300 [31merror[39m: [31m[WorkflowExecutor] Error running batch: [39m
+[31mInvalid `prisma.workflowJob.findMany()` invocation in[39m
+[31m/Users/maheshkumar/Kangqore/backend/src/jobs/WorkflowExecutor.ts:12:52[39m
+
+[31m   9  */[39m
+[31m  10 static async run() {[39m
+[31m  11   try {[39m
+[31m→ 12     const pendingJobs = await prisma.workflowJob.findMany([39m
+[31mAuthentication failed against database server at `localhost`, the provided database credentials for `kangqore_user` are not valid.[39m
+
+[31mPlease make sure to provide valid database credentials for the database server at `localhost`.[39m
+2026-06-06 09:45:00:450 [31merror[39m: [31m[WorkflowExecutor] Error running batch: [39m
+[31mInvalid `prisma.workflowJob.findMany()` invocation in[39m
+[31m/Users/maheshkumar/Kangqore/backend/src/jobs/WorkflowExecutor.ts:12:52[39m
+
+[31m   9  */[39m
+[31m  10 static async run() {[39m
+[31m  11   try {[39m
+[31m→ 12     const pendingJobs = await prisma.workflowJob.findMany([39m
+[31mAuthentication failed against database server at `localhost`, the provided database credentials for `kangqore_user` are not valid.[39m
+
+[31mPlease make sure to provide valid database credentials for the database server at `localhost`.[39m
+2026-06-06 09:45:00:450 [31merror[39m: [31mError in Meeting Reminder job [39m
+[31mInvalid `prisma.scheduledEvent.findMany()` invocation in[39m
+[31m/Users/maheshkumar/Kangqore/backend/src/jobs/CronManager.ts:106:57[39m
+
+[31m  103 const now = new Date();[39m
+[31m  104 [39m
+[31m  105 // Find events that start within 23h45m – 24h15m (24h window, ±15 min)[39m
+[31m→ 106 const upcoming24h = await prisma.scheduledEvent.findMany([39m
+[31mAuthentication failed against database server at `localhost`, the provided database credentials for `kangqore_user` are not valid.[39m
+
+[31mPlease make sure to provide valid database credentials for the database server at `localhost`.[39m
