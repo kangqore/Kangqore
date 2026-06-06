@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight, Target, Users, Landmark, Factory, Briefcase, Star,
   TrendingUp, Globe, Cpu, Cloud, BarChart3, Bot, Zap, Lock,
-  Scale, Sparkles, ShieldCheck, RefreshCw, CheckCircle, Activity,
+  Scale, Sparkles, RefreshCw, CheckCircle, Activity,
   Database, Award, Layers, Shield
 } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -112,7 +112,7 @@ export default function BIDSPage() {
   const [ctaRef, ctaVisible]           = useScrollAnimation({ once: true, threshold: 0.2 });
 
   return (
-    <div className="bg-[#06090f] text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white">
+    <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#06090f' }}>
       <SEO
         title="Kangqore BIDS™ — Business Diagnostic Intelligence System™"
         description="The Enterprise MRI for Business, Technology, Operations, AI, Security, and Growth. 16 diagnostic pillars. 5 intelligence engines. One complete diagnostic."
@@ -122,7 +122,7 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── HERO ─────────────────────── */}
       <section className="relative min-h-screen flex items-end overflow-hidden pb-32">
-        <VisualBackground />
+        <VisualBackground forceDark={true} />
         
         {/* Subtle top glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[500px] bg-brand-blue/20 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
@@ -145,11 +145,26 @@ export default function BIDSPage() {
               <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">BIDS™</span>
             </h1>
             <p className="text-xl sm:text-2xl text-cyan-50 font-semibold tracking-wide mb-4 flex items-center gap-3">
-              Business Diagnostic Intelligence System™
+              Kangqore Business Diagnostic Intelligence System™
             </p>
-            <p className="text-lg sm:text-xl text-white/60 leading-relaxed max-w-2xl mb-12 font-medium">
+            <p className="text-lg sm:text-xl text-white/60 leading-relaxed max-w-2xl mb-10 font-medium">
               The Enterprise MRI for Business, Technology, Operations, AI, Security, and Growth. Reveal hidden constraints before they become critical failures.
             </p>
+
+            {/* Outcome framing */}
+            <div className="flex flex-col sm:flex-row gap-px rounded-2xl overflow-hidden border border-white/10 mb-12 bg-white/5 backdrop-blur-md max-w-2xl">
+              {[
+                { stat: '8–14', label: 'Hidden constraints found per engagement on average' },
+                { stat: '3×',   label: 'Higher transformation success when diagnosis comes first' },
+                { stat: '100%', label: 'Of engagements surface at least one critical blind spot' },
+              ].map((s, i) => (
+                <div key={i} className="flex-1 px-6 py-5 border-r last:border-r-0 border-white/10">
+                  <p className="text-2xl font-black bg-brand-gradient bg-clip-text text-transparent mb-1">{s.stat}</p>
+                  <p className="text-[11px] text-white/40 font-semibold leading-snug tracking-wide">{s.label}</p>
+                </div>
+              ))}
+            </div>
+
             <div className="flex flex-col sm:flex-row items-center gap-5">
               <Link
                 to="/contact"
@@ -171,18 +186,18 @@ export default function BIDSPage() {
           </div>
         </div>
 
-        {/* Stats strip - glassmorphic */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl">
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6 grid grid-cols-2 sm:grid-cols-4 gap-6">
+        {/* Mobile-only Stats Grid */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
+          <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 gap-4">
             {[
-              { value: '16', label: 'Intelligence Pillars' },
-              { value: '5',  label: 'Intelligence Engines' },
+              { value: '16', label: 'Pillars' },
+              { value: '5',  label: 'Engines' },
               { value: '10', label: 'Deliverables' },
-              { value: '10', label: 'Industry Editions' },
+              { value: '10', label: 'Editions' },
             ].map(s => (
-              <div key={s.label} className="text-center group cursor-default">
-                <p className="text-3xl sm:text-4xl font-black text-white group-hover:text-cyan-300 transition-colors duration-300 drop-shadow-lg">{s.value}</p>
-                <p className="text-[11px] text-cyan-400/80 font-bold tracking-widest uppercase mt-2">{s.label}</p>
+              <div key={s.label} className="text-center">
+                <p className="text-2xl font-black text-white drop-shadow-lg">{s.value}</p>
+                <p className="text-[10px] text-cyan-400/80 font-bold tracking-widest uppercase mt-1">{s.label}</p>
               </div>
             ))}
           </div>
@@ -249,7 +264,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── DEFINITION ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden bg-[#03050a] border-y border-white/5">
+      <section className="py-32 relative overflow-hidden border-y border-white/5" style={{ backgroundColor: '#03050a' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-blue/10 rounded-full blur-[150px]" />
         </div>
@@ -306,6 +321,102 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── HOW IT WORKS ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden border-y border-white/5" style={{ backgroundColor: '#03050a' }}>
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="text-center mb-20">
+            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE PROCESS</p>
+            <h2 className="text-4xl sm:text-5xl font-black tracking-[-0.03em] text-white mb-4">
+              How{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">BIDS™ Works</span>
+            </h2>
+            <p className="text-white/50 max-w-xl mx-auto text-lg font-medium">
+              Three stages. Typically 4–6 weeks from first call to executive delivery.
+            </p>
+          </div>
+
+          {/* Steps */}
+          <div className="relative">
+            {/* Connector line — desktop only */}
+            <div className="hidden lg:block absolute top-[52px] left-[calc(16.66%+28px)] right-[calc(16.66%+28px)] h-px bg-gradient-to-r from-cyan-500/30 via-brand-blue/50 to-violet-500/30" />
+
+            <div className="grid lg:grid-cols-3 gap-6 lg:gap-10">
+              {[
+                {
+                  step: '01',
+                  label: 'REQUEST',
+                  title: 'Discovery Briefing',
+                  duration: '~30 minutes',
+                  color: 'from-cyan-400 to-blue-500',
+                  glow: 'rgba(34,211,238,0.25)',
+                  points: [
+                    'Scope your industry and edition',
+                    'Identify key stakeholders',
+                    'Align on strategic objectives',
+                    'Confirm engagement timeline',
+                  ],
+                },
+                {
+                  step: '02',
+                  label: 'DIAGNOSE',
+                  title: '16-Pillar Assessment',
+                  duration: '2–4 weeks',
+                  color: 'from-brand-blue to-violet-500',
+                  glow: 'rgba(37,100,234,0.25)',
+                  points: [
+                    'Deep-dive across all 16 pillars',
+                    'Stakeholder interviews + data review',
+                    'Five intelligence engines activated',
+                    'Constraints mapped and scored',
+                  ],
+                },
+                {
+                  step: '03',
+                  label: 'BLUEPRINT',
+                  title: 'Executive Delivery',
+                  duration: '1–2 weeks',
+                  color: 'from-violet-400 to-purple-600',
+                  glow: 'rgba(167,139,250,0.25)',
+                  points: [
+                    'Diagnostic Scorecard™ presented',
+                    'Transformation Blueprint™ delivered',
+                    '30/60/90/180-Day Roadmap™',
+                    'Executive Workshop™ facilitated',
+                  ],
+                },
+              ].map((s) => (
+                <div
+                  key={s.step}
+                  className="relative rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-xl p-8 hover:bg-white/[0.07] hover:border-white/20 transition-all duration-500 group"
+                  style={{ boxShadow: `0 20px 60px ${s.glow}` }}
+                >
+                  {/* Step number badge */}
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${s.color} flex items-center justify-center mb-8 shadow-2xl ring-2 ring-white/10 group-hover:scale-110 transition-transform duration-500`}>
+                    <span className="text-white font-black text-lg">{s.step}</span>
+                  </div>
+
+                  <p className={`text-[10px] font-black tracking-[0.3em] uppercase bg-gradient-to-r ${s.color} bg-clip-text text-transparent mb-2`}>{s.label}</p>
+                  <h3 className="text-white font-black text-2xl mb-1 tracking-tight">{s.title}</h3>
+                  <p className="text-white/40 text-sm font-bold tracking-widest uppercase mb-8">{s.duration}</p>
+
+                  <ul className="space-y-3">
+                    {s.points.map(pt => (
+                      <li key={pt} className="flex items-start gap-3">
+                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${s.color} mt-2 flex-shrink-0`} />
+                        <span className="text-white/60 text-sm font-semibold leading-relaxed">{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── 16 PILLARS ─────────────────────── */}
       <section id="pillars" className="py-32 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
@@ -323,7 +434,7 @@ export default function BIDSPage() {
               <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_20px_rgba(37,100,234,0.3)]">Pillars™</span>
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto text-lg sm:text-xl font-medium">
-              Every pillar generates a proprietary intelligence score. Together, they form a complete, irrefutable picture of your enterprise.
+              Every pillar generates a proprietary intelligence score benchmarked against industry peers. Together, they form a complete, irrefutable picture of where you stand — and where to move first.
             </p>
           </div>
 
@@ -357,7 +468,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── 5 ENGINES ─────────────────────── */}
-      <section className="py-32 relative bg-[#03050a] border-y border-white/5 overflow-hidden">
+      <section className="py-32 relative border-y border-white/5 overflow-hidden" style={{ backgroundColor: '#03050a' }}>
         {/* Dynamic mesh background */}
         <div className="absolute inset-0 pointer-events-none opacity-20" 
              style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
@@ -455,8 +566,131 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── SAMPLE SCORECARD ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden border-y border-white/5" style={{ backgroundColor: '#03050a' }}>
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-brand-blue/8 rounded-full blur-[180px]" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+
+            {/* Left — copy */}
+            <div>
+              <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">SAMPLE OUTPUT</p>
+              <h2 className="text-4xl sm:text-5xl font-black tracking-[-0.03em] text-white mb-6">
+                This is what you{' '}
+                <span className="bg-brand-gradient bg-clip-text text-transparent">receive.</span>
+              </h2>
+              <p className="text-white/60 text-lg leading-relaxed mb-10">
+                Every engagement produces a Diagnostic Scorecard™ — a precise, pillar-by-pillar breakdown of your enterprise health, scored and benchmarked against industry peers.
+              </p>
+              <div className="space-y-4">
+                {[
+                  { color: 'bg-emerald-400', label: 'Strong (75–100)', desc: 'Operating at or above benchmark' },
+                  { color: 'bg-cyan-400',    label: 'Good (60–74)',    desc: 'Performing well, targeted improvements available' },
+                  { color: 'bg-amber-400',   label: 'Moderate (40–59)', desc: 'Meaningful gaps with quantifiable impact' },
+                  { color: 'bg-red-500',     label: 'Critical (0–39)', desc: 'Active constraint limiting performance' },
+                ].map(b => (
+                  <div key={b.label} className="flex items-center gap-4">
+                    <div className={`w-3 h-3 rounded-full ${b.color} flex-shrink-0 shadow-lg`} />
+                    <span className="text-white font-bold text-sm w-36 flex-shrink-0">{b.label}</span>
+                    <span className="text-white/40 text-sm">{b.desc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — scorecard mockup */}
+            <div className="relative">
+              {/* Glow behind card */}
+              <div className="absolute -inset-4 bg-brand-blue/10 rounded-3xl blur-2xl" />
+              <div className="relative rounded-2xl border border-white/15 bg-[#0a0f1e] overflow-hidden shadow-2xl">
+
+                {/* Card header */}
+                <div className="px-6 pt-6 pb-5 border-b border-white/8">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-md bg-brand-gradient flex items-center justify-center">
+                        <BarChart3 className="w-3.5 h-3.5 text-white" strokeWidth={2} />
+                      </div>
+                      <span className="text-[11px] font-black tracking-[0.2em] text-white/60 uppercase">BIDS™ Diagnostic Scorecard™</span>
+                    </div>
+                    <span className="text-[10px] text-white/30 font-semibold">CONFIDENTIAL</span>
+                  </div>
+                  <div className="flex items-end justify-between mt-4">
+                    <div>
+                      <p className="text-white font-black text-lg">Acme Corporation</p>
+                      <p className="text-white/40 text-[11px] font-semibold tracking-wide">Enterprise Edition™ · June 2026</p>
+                    </div>
+                    {/* Overall score ring */}
+                    <div className="text-right">
+                      <p className="text-[11px] text-white/40 font-semibold uppercase tracking-widest mb-1">Enterprise Health Score</p>
+                      <div className="flex items-baseline gap-1 justify-end">
+                        <span className="text-5xl font-black bg-brand-gradient bg-clip-text text-transparent">63</span>
+                        <span className="text-white/30 text-xl font-bold">/100</span>
+                      </div>
+                      <div className="flex items-center gap-3 mt-1 justify-end">
+                        <span className="text-[10px] text-white/30 font-semibold">Industry avg <span className="text-white/50">58</span></span>
+                        <span className="text-[10px] text-white/30 font-semibold">Top quartile <span className="text-emerald-400">84</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pillar scores */}
+                <div className="px-6 py-5 space-y-3">
+                  {[
+                    { name: 'Business Strategy',    score: 78, status: 'Strong',   color: 'bg-emerald-400', w: 'w-[78%]' },
+                    { name: 'AI Readiness',          score: 41, status: 'Critical', color: 'bg-red-500',     w: 'w-[41%]' },
+                    { name: 'Cybersecurity',         score: 58, status: 'Moderate', color: 'bg-amber-400',   w: 'w-[58%]' },
+                    { name: 'Technology Maturity',   score: 74, status: 'Good',     color: 'bg-cyan-400',    w: 'w-[74%]' },
+                    { name: 'Operational Efficiency',score: 35, status: 'Critical', color: 'bg-red-500',     w: 'w-[35%]' },
+                    { name: 'Data Intelligence',     score: 66, status: 'Good',     color: 'bg-cyan-400',    w: 'w-[66%]' },
+                    { name: 'Financial Health',      score: 81, status: 'Strong',   color: 'bg-emerald-400', w: 'w-[81%]' },
+                    { name: 'Transformation',        score: 47, status: 'Moderate', color: 'bg-amber-400',   w: 'w-[47%]' },
+                  ].map(p => (
+                    <div key={p.name} className="flex items-center gap-3">
+                      <span className="text-[11px] text-white/50 font-semibold w-44 flex-shrink-0 truncate">{p.name}</span>
+                      <div className="flex-1 h-1.5 bg-white/8 rounded-full overflow-hidden">
+                        <div className={`h-full ${p.color} ${p.w} rounded-full`} />
+                      </div>
+                      <span className="text-[11px] font-black text-white/80 w-6 text-right flex-shrink-0">{p.score}</span>
+                      <span className={`text-[9px] font-black tracking-wide uppercase px-2 py-0.5 rounded-full flex-shrink-0 ${
+                        p.status === 'Critical' ? 'bg-red-500/20 text-red-400' :
+                        p.status === 'Moderate' ? 'bg-amber-500/20 text-amber-400' :
+                        p.status === 'Strong'   ? 'bg-emerald-500/20 text-emerald-400' :
+                        'bg-cyan-500/20 text-cyan-400'
+                      }`}>{p.status}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Card footer */}
+                <div className="px-6 py-4 border-t border-white/8 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    {[
+                      { color: 'bg-red-500',     label: '2 Critical' },
+                      { color: 'bg-amber-400',   label: '2 Moderate' },
+                      { color: 'bg-cyan-400',    label: '2 Good' },
+                      { color: 'bg-emerald-400', label: '2 Strong' },
+                    ].map(b => (
+                      <div key={b.label} className="flex items-center gap-1.5">
+                        <div className={`w-2 h-2 rounded-full ${b.color}`} />
+                        <span className="text-[10px] text-white/40 font-semibold">{b.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <span className="text-[9px] text-white/20 font-bold tracking-widest uppercase">Sample · Not real data</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── PHILOSOPHY ─────────────────────── */}
-      <section className="py-32 bg-[#03050a] border-y border-white/5 relative">
+      <section className="py-32 border-y border-white/5 relative" style={{ backgroundColor: '#03050a' }}>
         <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center relative z-10">
           <p className="text-xs font-bold tracking-[0.3em] text-cyan-500 uppercase mb-12 drop-shadow-md">THE KANGQORE DIFFERENCE</p>
           <div className="grid md:grid-cols-3 gap-6">
@@ -506,7 +740,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── CTA ─────────────────────── */}
-      <section className="relative py-40 overflow-hidden bg-[#03050a] border-t border-white/5">
+      <section className="relative py-40 overflow-hidden border-t border-white/5" style={{ backgroundColor: '#03050a' }}>
         <div className="absolute inset-0 pointer-events-none">
           {/* Animated glowing mesh / radial */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(37,100,234,0.15)_0%,transparent_70%)] animate-pulse" style={{ animationDuration: '4s' }} />
