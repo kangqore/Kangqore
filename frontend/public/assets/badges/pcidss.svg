@@ -1,7 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="30 30 36 36" width="100" height="100">
-  <rect x="34" y="32" width="32" height="20" rx="3" fill="#6366f1"/>
-  <rect x="34" y="36" width="32" height="4" fill="#1e1b4b"/>
-  <rect x="38" y="42" width="6" height="5" rx="1" fill="#fbbf24"/>
-  <path d="M58 46 C61 46 63 44 63 44 V53 C63 58 61 62 58 64 C55 62 53 58 53 53 V44 C53 44 55 46 58 46 Z" fill="#10b981"/>
-  <path d="M56 52 L57.5 54 L61 50" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect x="5" y="15" width="90" height="70" rx="6" fill="#1e293b" stroke="#94a3b8" stroke-width="2" />
+  
+  <rect x="5" y="30" width="90" height="15" fill="#e11d48" />
+  
+  <text x="50" y="65" font-family="'Arial Black', Arial, sans-serif" font-size="28" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="3">PCI</text>
+  <text x="50" y="78" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#94a3b8" text-anchor="middle" letter-spacing="2">DSS COMPLIANT</text>
+  
+  <path d="M 80 55 A 10 10 0 0 1 70 65 A 10 10 0 0 1 80 75 A 10 10 0 0 0 80 55" fill="#facc15" />
+  <path d="M 75 55 A 10 10 0 0 1 85 65 A 10 10 0 0 1 75 75 A 10 10 0 0 0 75 55" fill="#ef4444" opacity="0.8" />
 </svg>

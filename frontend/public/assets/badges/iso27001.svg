@@ -1,6 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="35 30 30 33" width="100" height="100">
-  <rect x="38" y="42" width="24" height="18" rx="2" fill="#10b981"/>
-  <path d="M43 42 V35 A7 7 0 0 1 57 35 V42" stroke="#10b981" stroke-width="3" fill="none"/>
-  <circle cx="50" cy="50" r="2" fill="#022c22"/>
-  <path d="M50 52 V56" stroke="#022c22" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="iso-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f0f0f0" />
+    </linearGradient>
+  </defs>
+  <rect x="5" y="5" width="90" height="90" rx="8" fill="url(#iso-grad)" stroke="#cc0000" stroke-width="4" />
+  
+  <!-- Globe -->
+  <circle cx="35" cy="40" r="15" fill="none" stroke="#113366" stroke-width="2" />
+  <ellipse cx="35" cy="40" rx="6" ry="15" fill="none" stroke="#113366" stroke-width="1.5" />
+  <path d="M 20 40 L 50 40" fill="none" stroke="#113366" stroke-width="1.5" />
+  <path d="M 24 30 L 46 30 M 24 50 L 46 50" fill="none" stroke="#113366" stroke-width="1" />
+  
+  <text x="58" y="48" font-family="'Arial Black', Arial, sans-serif" font-size="24" font-weight="900" fill="#113366" text-anchor="start" letter-spacing="1">ISO</text>
+  
+  <rect x="15" y="65" width="70" height="20" fill="#cc0000" />
+  <text x="50" y="80" font-family="'Arial Black', Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="2">27001:2022</text>
 </svg>
