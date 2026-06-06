@@ -179,7 +179,7 @@ const TransformCTA = () => {
             <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-8 cursor-default">
               Our Security & Compliance Posture
             </p>
-            <div className="flex flex-wrap gap-6 justify-start">
+            <div className="flex flex-wrap gap-x-12 gap-y-10 justify-start items-start">
               {[
                 { name: 'SOC 2 Aligned', id: 'soc2' },
                 { name: 'ISO 27001 Oriented', id: 'iso27001' },
@@ -191,13 +191,13 @@ const TransformCTA = () => {
               ].map(({ name, id }) => (
                 <div 
                   key={name} 
-                  className="flex flex-col items-center justify-between p-6 rounded-2xl w-[150px] min-h-[170px] border border-gray-200/60 dark:border-gray-800/80 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900/40 dark:to-gray-950/40 shadow-sm hover:shadow-xl transform hover:-translate-y-2 transition-all duration-500 cursor-default"
+                  className="flex flex-col items-center gap-4 w-[110px] sm:w-[120px] transition-transform duration-300 hover:-translate-y-1.5 cursor-default"
                 >
-                  <div className="flex-1 flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 flex items-center justify-center">
                     <img 
                       src={`/assets/badges/${id}.png`} 
                       alt={`${name} Logo`} 
-                      className="w-14 h-14 object-contain drop-shadow-md transition-transform duration-500 hover:scale-110"
+                      className="w-14 h-14 object-contain filter dark:brightness-110"
                       onError={(e) => { 
                         if (e.target.src.endsWith('.png')) {
                           e.target.src = `/assets/badges/${id}.svg`;
@@ -207,7 +207,7 @@ const TransformCTA = () => {
                       }} 
                     />
                   </div>
-                  <span className="text-[10px] sm:text-[11px] font-extrabold text-gray-700 dark:text-gray-300 uppercase tracking-widest text-center leading-tight">
+                  <span className="text-[10px] sm:text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest text-center leading-tight">
                     {name}
                   </span>
                 </div>

@@ -1,14 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-  <circle cx="50" cy="50" r="46" fill="url(#soc2Grad)" stroke="#2564ea" stroke-width="2"/>
-  <defs>
-    <linearGradient id="soc2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0f172a"/>
-      <stop offset="100%" stop-color="#1e293b"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="30 15 40 55" width="100" height="100">
   <path d="M50 22 C59 22 66 18 66 18 V42 C66 54 59 64 50 68 C41 64 34 54 34 42 V18 C34 18 41 22 50 22 Z" fill="#2564ea" opacity="0.8"/>
   <path d="M50 25 C57 25 63 21 63 21 V42 C63 52 57 61 50 65 C43 61 37 52 37 42 V21 C37 21 43 25 50 25 Z" fill="#3b82f6"/>
   <path d="M45 49 L48 52 L55 45" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <text x="50" y="82" font-family="'Inter', sans-serif" font-weight="800" font-size="10" fill="#ffffff" text-anchor="middle" letter-spacing="1">SOC 2</text>
-  <text x="50" y="91" font-family="'Inter', sans-serif" font-weight="600" font-size="7" fill="#3b82f6" text-anchor="middle" letter-spacing="0.5">COMPLIANT</text>
 </svg>
