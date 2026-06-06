@@ -7,7 +7,7 @@ import {
   Sparkles, Calendar, ShieldCheck, Lightbulb
 } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api/admin/alis`;
 
 const TABS = [

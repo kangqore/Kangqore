@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Save, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const EditProjectModal = ({ project, onClose, onSuccess }) => {
     const [formData, setFormData] = useState({

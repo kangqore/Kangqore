@@ -85,7 +85,7 @@ const UsersManagement = () => {
   const [userProjects, setUserProjects] = useState([]);
   const [userDocuments, setUserDocuments] = useState([]);
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   useEffect(() => {
     fetchUsers();

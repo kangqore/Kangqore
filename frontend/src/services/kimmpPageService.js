@@ -8,7 +8,7 @@
 
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api/admin/kangqore-immp/page-factory`;
 
 /** Public — fetch a PUBLISHED page by slug (used by the renderer). */

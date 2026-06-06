@@ -7,7 +7,7 @@ const RescheduledCard = ({ consultation, onAction, roleColor = "brand-blue" }) =
   const [userNotes, setUserNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   const handleAction = async (action) => {
     setIsSubmitting(true);

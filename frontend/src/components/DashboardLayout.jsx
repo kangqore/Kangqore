@@ -52,7 +52,7 @@ const DashboardLayout = ({ children, role, title, subtitle, headerActions }) => 
     queryKey: ['notifications-count'],
     queryFn: async () => {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/notifications/unread-count`, {
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/notifications/unread-count`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       return res.data;
@@ -84,7 +84,7 @@ const DashboardLayout = ({ children, role, title, subtitle, headerActions }) => 
     queryKey: ['notifications-list'],
     queryFn: async () => {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/notifications?limit=5`, {
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/notifications?limit=5`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       return res.data;
@@ -95,7 +95,7 @@ const DashboardLayout = ({ children, role, title, subtitle, headerActions }) => 
   const markReadMutation = useMutation({
     mutationFn: async (id) => {
       const token = localStorage.getItem('token');
-      await axios.patch(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/notifications/${id}/read`, {}, {
+      await axios.patch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/notifications/${id}/read`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
     },

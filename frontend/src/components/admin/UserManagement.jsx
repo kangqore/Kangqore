@@ -31,7 +31,7 @@ const UserManagement = ({
   const [localStats, setLocalStats] = useState(null);
   const [localLoading, setLocalLoading] = useState(false);
   
-  const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const API_URL = process.env.REACT_APP_BACKEND_URL || '';
   const getToken = () => localStorage.getItem('token');
 
   // Action handlers
@@ -130,7 +130,7 @@ const UserManagement = ({
   const fetchUsers = async () => {
     setLocalLoading(true);
     try {
-      const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+      const API_URL = process.env.REACT_APP_BACKEND_URL || '';
       const token = localStorage.getItem('token');
       
       const queryParams = new URLSearchParams({
@@ -156,7 +156,7 @@ const UserManagement = ({
 
   const fetchStats = async () => {
     try {
-      const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+      const API_URL = process.env.REACT_APP_BACKEND_URL || '';
       const token = localStorage.getItem('token');
       const res = await fetch(`${API_URL}/api/admin/stats`, {
         headers: { 'Authorization': `Bearer ${token}` }

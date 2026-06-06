@@ -21,7 +21,7 @@ import {
 
 import { useClientDecisions } from '../../../hooks/useDashboardData';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const ClientDecisions = ({ isTabContent = false }) => {
   const { data: decisions, isLoading, error } = useClientDecisions();

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Shield, AlertTriangle, XPromise } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const ProgressOverrideModal = ({ projectId, currentProgress, onClose, onSuccess }) => {
     const [progress, setProgress] = useState(currentProgress || 0);

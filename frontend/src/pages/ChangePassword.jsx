@@ -7,7 +7,7 @@ import {
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const ChangePassword = () => {
   const navigate = useNavigate();

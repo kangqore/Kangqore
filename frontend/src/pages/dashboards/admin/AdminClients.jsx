@@ -26,7 +26,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import ServiceSelector from '../../../components/common/ServiceSelector';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const AddClientModal = ({ onClose, onSuccess }) => {
     const { toast } = useToast();

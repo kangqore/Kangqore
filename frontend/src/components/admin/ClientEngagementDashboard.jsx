@@ -47,7 +47,7 @@ import {
 import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useToast } from '../../hooks/use-toast';
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const ClientEngagementDashboard = ({ clientId }) => {
   const navigate = useNavigate();

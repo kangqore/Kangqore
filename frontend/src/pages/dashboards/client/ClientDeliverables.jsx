@@ -20,7 +20,7 @@ import { toast } from 'sonner';
 const ClientDeliverables = ({ isTabContent = false }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const queryClient = useQueryClient();
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   // 1. Fetch Deliverables
   const { data: deliverables = [], isLoading } = useQuery({

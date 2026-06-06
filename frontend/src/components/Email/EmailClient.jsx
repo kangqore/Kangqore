@@ -10,7 +10,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import RichTextEditor from './RichTextEditor';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const EmailClient = ({ role }) => {
   // State

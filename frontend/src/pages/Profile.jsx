@@ -15,7 +15,7 @@ const Profile = ({ startEditing = false }) => {
   const [success, setSuccess] = useState('');
   const [editMode, setEditMode] = useState(startEditing);
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   // Form state
   const [formData, setFormData] = useState({

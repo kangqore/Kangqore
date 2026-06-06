@@ -21,7 +21,7 @@ import ResourceAllocationChart from '../charts/ResourceAllocationChart';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const ClientStrategicHub = ({ profile, clientUser, stats, clientId }) => {
   const [activeTab, setActiveTab] = useState('profile');

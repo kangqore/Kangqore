@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import DashboardLayout from '../../components/DashboardLayout';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const AdminProjectsManagement = () => {
     const [view, setView] = useState('list'); // 'list' | 'detail' | 'create'

@@ -16,7 +16,7 @@ const VendorDashboard = () => {
   const { data: statsData, isLoading: loadingStats } = useQuery({
     queryKey: ['vendor-stats'],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/admin/vendors/stats`);
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/vendors/stats`);
       return res.data;
     },
     refetchInterval: 30000
@@ -26,7 +26,7 @@ const VendorDashboard = () => {
   const { data: vendors, isLoading: loadingVendors } = useQuery({
     queryKey: ['vendors-list'],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/admin/vendors`);
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/vendors`);
       return res.data;
     },
     refetchInterval: 30000

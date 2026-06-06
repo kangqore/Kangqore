@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Calendar, Clock, Check, ChevronRight, Zap, Loader2 } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const SlotPicker = ({ leadId, slots, onBooked }) => {
   const [selectedId, setSelectedId] = useState(null);

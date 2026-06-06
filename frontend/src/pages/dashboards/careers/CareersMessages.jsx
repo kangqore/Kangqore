@@ -12,7 +12,7 @@ const CareersMessages = () => {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = React.useRef(null);
   const messagesEndRef = React.useRef(null);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   const fetchMessages = async () => {
     try {
