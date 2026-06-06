@@ -16,7 +16,10 @@ const projectSchema = Joi.object({
   visionWorkflows: Joi.object().optional(),
   visionStatus: Joi.string().valid('PENDING', 'APPROVED', 'REVISION_REQUESTED').optional(),
   visionClientFeedback: Joi.string().allow('', null).optional(),
-  slaMetrics: Joi.object().optional()
+  slaMetrics: Joi.object().optional(),
+  budget: Joi.number().min(0).optional(),
+  spend: Joi.number().min(0).optional(),
+  progress: Joi.number().min(0).max(100).optional()
 });
 
 // Get all projects for authenticated user

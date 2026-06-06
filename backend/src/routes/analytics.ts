@@ -30,9 +30,7 @@ router.post('/track', async (req: Request, res: Response, next: NextFunction) =>
         referrer,
         device,
         browser,
-        userAgent: userAgent.substring(0, 500),
-        // Geo-location would happen here in a real app (e.g. maxmind)
-      } as any
+      }
     });
 
     res.json({ success: true });
