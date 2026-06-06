@@ -24,6 +24,7 @@ const Location = React.lazy(() => import('../pages/Location'));
 const Team = React.lazy(() => import('../pages/Team'));
 const BrandIdentity = React.lazy(() => import('../pages/BrandIdentity'));
 const OurCulture = React.lazy(() => import('../pages/OurCulture'));
+const BIDSPage = React.lazy(() => import('../pages/BIDSPage'));
 
 // Legal & Compliance pages
 const PrivacyPolicy = React.lazy(() => import('../pages/legal/PrivacyPolicy'));
@@ -40,6 +41,9 @@ const Sitemap = React.lazy(() => import('../pages/legal/Sitemap'));
 export const publicRoutes = [
   // Scheduling pages
   <Route key="booking" path="/book/:slug" element={<BookingPage />} />,
+
+  // BIDS™ page
+  <Route key="bids" path="/bids" element={<BIDSPage />} />,
 
   // General pages
   <Route key="contact" path="/contact" element={<ContactUs />} />,
