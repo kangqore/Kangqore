@@ -73,25 +73,6 @@ const heroSlides = [
     description: "",
     video: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4",
   },
-  {
-    id: 3,
-    type: 'product',
-    tag: "PROPRIETARY INTELLIGENCE",
-    title: "Kangqore BIDS™",
-    description: "Kangqore BIDS™ is a proprietary intelligence framework that diagnoses operational bottlenecks, maps growth opportunities, and recommends data-backed transformation priorities across technology, operations, marketing, security, and business systems.",
-    cta: "Request a Diagnostic Assessment",
-    secondaryCta: "Explore BIDS™",
-    link: "/contact",
-    secondaryLink: "/bids",
-    background: "/images/imgbg3.png",
-  },
-  {
-    id: 4,
-    type: 'statement',
-    tag: "OUR PHILOSOPHY",
-    title: "",
-    description: "",
-  },
 ];
 
 const homeTestimonials = [
@@ -354,31 +335,8 @@ const HeroCarousel = () => {
                 style={{ objectPosition: 'center calc(50% + 38px)' }}
               />
             )}
-            {slide.type === 'product' && slide.background && (
-              <img
-                src={slide.background}
-                alt="Kangqore BIDS Dashboard"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            )}
-            {slide.type === 'statement' && (
-              <>
-                <img 
-                  src="/images/chess_bg.png" 
-                  alt="Chess Background" 
-                  className="absolute inset-0 w-full h-full object-cover" 
-                />
-                {/* Subtle dark overlay to ensure the text remains legible over the image */}
-                <div className="absolute inset-0 bg-black/40" />
-              </>
-            )}
-            {/* Gradient overlays — skip for statement slide to keep it bright */}
-            {slide.type !== 'statement' && (
-              <>
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-              </>
-            )}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
           </div>
         </div>
       ))}
@@ -402,89 +360,15 @@ const HeroCarousel = () => {
               )}
 
 
-              {/* ── Statement slide: matched to reference design ── */}
-              {slide.type === 'statement' ? (
-                <div className="w-full h-full relative">
-                  {/* Centered text block — matching reference placement */}
-                  <div className="absolute inset-0 flex items-center justify-center animate-fade-in">
-                    <div className="flex items-start gap-4 sm:gap-6 lg:gap-8 translate-x-[40px] sm:translate-x-[60px] md:translate-x-[90px] lg:translate-x-[120px] xl:translate-x-[160px]">
-                      {/* Rotating circle badge — matching reference */}
-                      <Link 
-                        to="/about-us" 
-                        className="relative w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] md:w-[80px] md:h-[80px] lg:w-[90px] lg:h-[90px] flex-shrink-0 mt-1 sm:mt-2 block cursor-pointer group hover:scale-110 transition-transform duration-300 z-10"
-                      >
-                        <div className="absolute inset-0 w-full h-full animate-[spin_12s_linear_infinite]">
-                          {/* Outer ring with gradient border */}
-                          <div className="absolute inset-0 rounded-full p-[2px] bg-brand-gradient">
-                            <div className="w-full h-full rounded-full bg-[#0a1228] opacity-80" />
-                          </div>
-                          {/* Rotating text */}
-                          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
-                            <defs>
-                              <path id="circlePath4" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
-                              <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#4ab6d4" />
-                                <stop offset="100%" stopColor="#2564ea" />
-                              </linearGradient>
-                            </defs>
-                            <text fill="#ffffff" fontSize="10.5" fontWeight="700" letterSpacing="3.5">
-                              <textPath href="#circlePath4">KNOW ABOUT KANGQORE • ★ ★ ★ • </textPath>
-                            </text>
-                          </svg>
-                          {/* Center arrow */}
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white -rotate-45" strokeWidth={3} />
-                          </div>
-                        </div>
-                      </Link>
-                    <h1 className="leading-[1.12] tracking-[-0.02em] text-white mb-0 select-none text-left">
-                      {/* Line 1: "Companies don't evolve" */}
-                      <span className="block">
-                        <span className="text-[1rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-black italic uppercase">Companies</span>
-                        <span className="text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] font-bold lowercase ml-1.5 sm:ml-2 opacity-90">don't evolve</span>
-                      </span>
-                      {/* Line 2: "by ideas alone. They evolve" */}
-                      <span className="block">
-                        <span className="text-[1rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-black italic uppercase">By Ideas Alone.</span>
-                        <span className="text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] font-bold normal-case ml-1.5 sm:ml-2 opacity-90">They evolve</span>
-                      </span>
-                      {/* Line 3: "through innovation." */}
-                      <span className="block">
-                        <span className="text-[1rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-black italic uppercase">Through</span>
-                        <span className="ml-1.5 sm:ml-2">
-                          <span className="text-[1.1rem] sm:text-[1.6rem] md:text-[2.1rem] lg:text-[2.6rem] xl:text-[2.9rem] font-black italic uppercase bg-brand-gradient bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(37,100,234,0.3)]">Innovation.</span>
-                        </span>
-                      </span>
-                      {/* Line 4: "At Kangqore" & "We Innovate Futures." */}
-                      <span className="flex items-baseline gap-3 sm:gap-4 -mt-1 sm:-mt-2">
-                        <span className="text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] font-bold tracking-[0.2em] text-white whitespace-nowrap">At Kangqore</span>
-                        <span className="text-[1rem] sm:text-[1.5rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-black italic uppercase bg-brand-gradient bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(37,100,234,0.3)]">We Innovate Futures.</span>
-                      </span>
-                    </h1>
-                    </div>
-                  </div>
+              <div className={`${slide.type === 'chat' ? 'w-full' : 'max-w-5xl'} flex flex-col h-full`}>
 
-                  {/* Subline — anchored bottom-left, matching the reference */}
-                  <p className="absolute bottom-0 left-[40px] text-[0.55rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] text-white/70 leading-[1.65] max-w-2xl animate-fade-in font-bold">
-                    AI, Engineering, Cloud, Cybersecurity, and Intelligent Transformation,<br className="hidden sm:block" /> building future-ready systems for the next generation of business.
-                  </p>
-                </div>
-              ) : (
-              <div className={`${
-                slide.type === 'product' 
-                  ? 'max-w-[680px]' 
-                  : slide.type === 'chat' 
-                    ? 'w-full'
-                    : 'max-w-5xl'
-              } flex flex-col h-full`}>
-                
                 <div className="space-y-5 flex-shrink-0">
 
                   <h1
                     key={`title-${slide.id}`}
                     className={`text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-fade-in ${
-                      (slide.id === 2 || slide.id === 3) ? 'whitespace-nowrap text-[6.5vw] sm:text-[2.8rem]' : ''
-                    } ${slide.id === 2 ? '-translate-y-6' : ''}`}
+                      slide.id === 2 ? '-translate-y-6' : ''
+                    }`}
                   >
                   {slide.title}
                   {slide.titleTypewriter && (
@@ -497,13 +381,6 @@ const HeroCarousel = () => {
                     </>
                   )}
                 </h1>
-
-                {/* Trademark badge for BIDS slide */}
-                {slide.trademark && (
-                  <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-brand-gradient shadow-lg shadow-blue-500/20">
-                    <span className="text-[13px] font-bold text-white tracking-wide">{slide.trademark}</span>
-                  </div>
-                )}
 
                 {slide.description && (
                   <p
@@ -558,7 +435,6 @@ const HeroCarousel = () => {
                   </div>
                 )}
               </div>
-              )}
             </div>
           </div>
         ))}
@@ -949,6 +825,92 @@ const partnerLogos = [
   { label: "Power BI", src: "/assets/badges/powerbi.svg", scale: "h-10 sm:h-12" },
   { label: "Google Cloud", src: "/assets/badges/gcp.svg", scale: "h-10 sm:h-12" },
 ];
+
+// ============================================================================
+// BIDS + PHILOSOPHY — two-panel split card layout
+// ============================================================================
+const BIDSSection = () => null;
+const PhilosophySection = () => null;
+
+const BIDSPhilosophySection = () => (
+  <section className="bg-[#f5f5f5] dark:bg-black px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <div className="flex flex-col md:flex-row gap-4 max-w-[1600px] mx-auto">
+
+      {/* ── Left card — Kangqore BIDS™ ── */}
+      <div className="relative flex-1 rounded-2xl overflow-hidden min-h-[640px] flex flex-col">
+        {/* Full-bleed image background */}
+        <img
+          src="/images/imgbg3.png"
+          alt="Kangqore BIDS Dashboard"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Gradient — transparent at top, deep black at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/90" />
+
+        {/* Content pinned to bottom */}
+        <div className="relative z-10 mt-auto p-8 sm:p-10">
+          {/* Icon badge */}
+          <div className="w-10 h-10 rounded-full border border-white/30 backdrop-blur-sm flex items-center justify-center mb-6">
+            <BarChart3 className="w-4 h-4 text-white" strokeWidth={2} />
+          </div>
+
+          <h2 className="text-[2rem] sm:text-[2.4rem] lg:text-[2.8rem] font-bold leading-[1.1] tracking-[-0.03em] text-white mb-4">
+            Kangqore BIDS™
+          </h2>
+          <p className="text-white/65 text-sm sm:text-base leading-relaxed mb-8 max-w-sm">
+            A proprietary intelligence framework that diagnoses bottlenecks, maps growth
+            opportunities, and recommends data-backed transformation priorities.
+          </p>
+          <Link
+            to="/bids"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 active:scale-[0.97] transition-all duration-200"
+          >
+            Explore BIDS™
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+
+      {/* ── Right card — Our Philosophy ── */}
+      <div className="relative flex-1 rounded-2xl overflow-hidden min-h-[640px] bg-white flex flex-col">
+        {/* Chess image bleeds in from the top — decorative, fades to white */}
+        <div className="absolute top-0 left-0 right-0 h-[65%] overflow-hidden">
+          <img
+            src="/images/chess_bg.png"
+            alt=""
+            className="w-full h-full object-cover object-top"
+          />
+          {/* Fade to white at bottom edge */}
+          <div className="absolute bottom-0 left-0 right-0 h-[55%] bg-gradient-to-b from-transparent to-white" />
+        </div>
+
+        {/* Content pinned to bottom */}
+        <div className="relative z-10 mt-auto p-8 sm:p-10">
+          {/* Icon badge */}
+          <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center mb-6">
+            <Sparkles className="w-4 h-4 text-gray-700" strokeWidth={2} />
+          </div>
+
+          <h2 className="text-[2rem] sm:text-[2.4rem] lg:text-[2.8rem] font-bold leading-[1.1] tracking-[-0.03em] text-gray-900 mb-4">
+            We Innovate<br />Futures.
+          </h2>
+          <p className="text-gray-500 text-sm sm:text-base leading-relaxed mb-8 max-w-sm">
+            Companies don't evolve by ideas alone. They evolve through innovation —
+            building future-ready systems for the next generation of business.
+          </p>
+          <Link
+            to="/about-us"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-semibold text-sm hover:bg-gray-800 active:scale-[0.97] transition-all duration-200"
+          >
+            Our Philosophy
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+
+    </div>
+  </section>
+);
 
 const PartnerBadgesStrip = () => {
   // Triple the logos to ensure seamless infinite scroll
@@ -1878,6 +1840,7 @@ const HomePage = () => {
       <IndustriesWeServe />
       <TrustStatementSection />
       <PartnerBadgesStrip />
+      <BIDSPhilosophySection />
       <TestimonialsSection />
       <LeadershipSection />
       <EqoreShowSection />
