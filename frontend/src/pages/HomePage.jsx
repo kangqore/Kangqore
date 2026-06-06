@@ -833,7 +833,7 @@ const BIDSSection = () => null;
 const PhilosophySection = () => null;
 
 const BIDSPhilosophySection = () => (
-  <section className="bg-[#f5f5f5] dark:bg-black px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+  <section className="bg-white dark:bg-black px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
     <div className="flex flex-col md:flex-row gap-4 max-w-[1600px] mx-auto">
 
       {/* ── Left card — Kangqore BIDS™ ── */}
@@ -892,7 +892,7 @@ const BIDSPhilosophySection = () => (
           </div>
 
           <h2 className="text-[2rem] sm:text-[2.4rem] lg:text-[2.8rem] font-bold leading-[1.1] tracking-[-0.03em] text-gray-900 mb-4">
-            We Innovate<br />Futures.
+            We Innovate Futures.
           </h2>
           <p className="text-gray-500 text-sm sm:text-base leading-relaxed mb-8 max-w-sm">
             Companies don't evolve by ideas alone. They evolve through innovation —
@@ -917,7 +917,7 @@ const PartnerBadgesStrip = () => {
   const marqueeLogos = [...partnerLogos, ...partnerLogos, ...partnerLogos];
 
   return (
-    <section className="w-full bg-white dark:bg-black py-24 sm:py-28 border-y border-gray-100 dark:border-gray-800/50">
+    <section className="w-full bg-white dark:bg-black py-24 sm:py-28 border-t border-gray-100 dark:border-gray-800/50">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Left-aligned heading block — exact match to "Explore our services" */}
         <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
