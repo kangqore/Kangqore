@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import {
   Brain, TrendingUp, AlertTriangle, Lightbulb, Zap, Target,
   ArrowRight, ChevronDown, ChevronUp, BarChart3,
   Briefcase, DollarSign, Users, GraduationCap, Building2,
+  RefreshCw,
 } from 'lucide-react'
 import { Badge } from '@design-system/components/Badge'
 import { Spinner } from '@design-system/components/Spinner'
@@ -108,6 +109,12 @@ function InsightCard({ insight }: { insight: Insight }) {
                 </Badge>
                 <Badge variant="neutral" size="sm">{insight.module}</Badge>
                 <span className="text-xs text-slate-400">{insight.confidence}% confidence</span>
+                {insight.createdAt && (
+                  <span className="text-xs text-slate-300">·</span>
+                )}
+                {insight.createdAt && (
+                  <span className="text-xs text-slate-400">{formatRelative(insight.createdAt)}</span>
+                )}
               </div>
             </div>
           </div>
@@ -116,7 +123,7 @@ function InsightCard({ insight }: { insight: Insight }) {
           </span>
         </div>
 
-        <p className="text-sm text-slate-600 mb-3 ml-11">{insight.summary}</p>
+        <p className="text-sm text-slate-600 leading-relaxed mb-4 ml-11">{insight.summary}</p>
 
         {expanded && (
           <div className="ml-11 space-y-3 mb-3 pt-3 border-t border-slate-100">
@@ -140,19 +147,50 @@ function InsightCard({ insight }: { insight: Insight }) {
   )
 }
 
+function formatRelative(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const m = Math.floor(diff / 60000)
+  if (m < 1)   return 'just now'
+  if (m < 60)  return `${m}m ago`
+  const h = Math.floor(m / 60)
+  if (h < 24)  return `${h}h ago`
+  const d = Math.floor(h / 24)
+  return `${d}d ago`
+}
+
 // ─── Main command center ──────────────────────────────────────────────────────
+
+function useRelativeTime(ts: number | undefined) {
+  const [label, setLabel] = useState('')
+  const compute = useCallback(() => {
+    if (!ts) return ''
+    const diff = Math.floor((Date.now() - ts) / 60000)
+    if (diff < 1) return 'just now'
+    if (diff === 1) return '1m ago'
+    return `${diff}m ago`
+  }, [ts])
+  useEffect(() => {
+    setLabel(compute())
+    const id = setInterval(() => setLabel(compute()), 30000)
+    return () => clearInterval(id)
+  }, [compute])
+  return label
+}
 
 export function KIMMMPage() {
   const [filter, setFilter] = useState<InsightCategory | 'all'>('all')
   const { insights, criticalCount, setInsights } = useKIMMPStore()
 
-  const { data: rawInsights, isLoading } = useQuery({
+  const { data: rawInsights, isLoading, isFetching, refetch, dataUpdatedAt } = useQuery({
     queryKey: ['kimmp-insights'],
     queryFn: () => api.get('/dashboard/insights', { params: { limit: 50 } })
       .then(r => (r.data.insights ?? r.data ?? []) as Record<string, unknown>[]),
     enabled: !isDemo(),
     staleTime: 1000 * 60 * 3,
+    refetchInterval: 1000 * 60 * 3,
   })
+
+  const lastUpdated = useRelativeTime(dataUpdatedAt || undefined)
 
   useEffect(() => {
     if (rawInsights?.length) setInsights(rawInsights.map((r, i) => toInsight(r, i)))
@@ -189,7 +227,20 @@ export function KIMMMPage() {
             Cross-module AI signals, risks, and opportunities — the operating brain of the OS.
           </p>
         </div>
-        <Badge variant="success" size="sm" dot>Live</Badge>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {lastUpdated && (
+            <span className="text-[11px] text-slate-400">Updated {lastUpdated}</span>
+          )}
+          <button
+            onClick={() => refetch()}
+            disabled={isFetching}
+            className="h-7 w-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors disabled:opacity-40"
+            title="Refresh signals"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
+          </button>
+          <Badge variant="success" size="sm" dot>Live</Badge>
+        </div>
       </div>
 
       {/* Priority Action Queue — critical items only, always visible */}
@@ -229,6 +280,19 @@ export function KIMMMPage() {
             <ModulePulse key={m} module={m} insights={moduleSignals[m] ?? []} />
           ))}
         </div>
+        <div className="flex items-center gap-5 mt-2.5">
+          {[
+            { color: 'bg-[#e2445c]', label: 'Critical' },
+            { color: 'bg-[#fdab3d]', label: 'High' },
+            { color: 'bg-[#0073ea]', label: 'Active' },
+            { color: 'bg-slate-200',  label: 'No signals' },
+          ].map(({ color, label }) => (
+            <span key={label} className="flex items-center gap-1.5 text-[10px] text-slate-400">
+              <span className={`w-2 h-2 rounded-sm flex-shrink-0 ${color}`} />
+              {label}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Stats row */}
@@ -259,14 +323,16 @@ export function KIMMMPage() {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
                 filter === cat
                   ? 'bg-slate-900 text-white border-slate-900'
                   : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'
               }`}
             >
               {cat === 'all' ? 'All Signals' : CATEGORY_CONFIG[cat].label}
-              <span className="ml-1.5 text-xs opacity-70">{count}</span>
+              <span className={`inline-flex items-center justify-center min-w-[1.1rem] h-[1.1rem] px-1 rounded-full text-[10px] font-bold ${
+                filter === cat ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
+              }`}>{count}</span>
             </button>
           )
         })}
@@ -274,13 +340,37 @@ export function KIMMMPage() {
 
       {/* Full signal feed */}
       <div className="space-y-4">
-        {filtered
-          .sort((a, b) => {
-            const order: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 }
-            return (order[a.priority] ?? 9) - (order[b.priority] ?? 9)
-          })
-          .map(insight => <InsightCard key={insight.id} insight={insight} />)
-        }
+        {filtered.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-2xl border border-slate-200">
+            <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+              {filter === 'all'
+                ? <Brain className="w-6 h-6 text-slate-400" />
+                : (() => { const Ic = CATEGORY_CONFIG[filter].Icon; return <Ic className="w-6 h-6 text-slate-400" /> })()
+              }
+            </div>
+            <p className="text-sm font-semibold text-slate-700">
+              No {filter === 'all' ? '' : `${CATEGORY_CONFIG[filter].label} `}signals right now
+            </p>
+            <p className="text-xs text-slate-400 mt-1 max-w-xs">
+              All clear in this category — check back later or widen the filter.
+            </p>
+            {filter !== 'all' && (
+              <button
+                onClick={() => setFilter('all')}
+                className="mt-4 text-xs text-blue-600 font-medium hover:text-blue-800 transition-colors"
+              >
+                View all signals →
+              </button>
+            )}
+          </div>
+        ) : (
+          filtered
+            .sort((a, b) => {
+              const order: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 }
+              return (order[a.priority] ?? 9) - (order[b.priority] ?? 9)
+            })
+            .map(insight => <InsightCard key={insight.id} insight={insight} />)
+        )}
       </div>
     </div>
   )
