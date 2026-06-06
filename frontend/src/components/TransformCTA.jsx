@@ -195,15 +195,11 @@ const TransformCTA = () => {
                 >
                   <div className="w-16 h-16 flex items-center justify-center">
                     <img 
-                      src={`/assets/badges/${id}.png`} 
+                      src={`/assets/badges/${id}.svg?v=2`} 
                       alt={`${name} Logo`} 
                       className="w-14 h-14 object-contain filter dark:brightness-110"
                       onError={(e) => { 
-                        if (e.target.src.endsWith('.png')) {
-                          e.target.src = `/assets/badges/${id}.svg`;
-                        } else {
-                          e.target.style.display = 'none';
-                        }
+                        e.target.style.display = 'none';
                       }} 
                     />
                   </div>
