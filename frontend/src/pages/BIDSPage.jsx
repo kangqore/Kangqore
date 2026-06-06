@@ -121,26 +121,27 @@ export default function BIDSPage() {
       />
 
       {/* ─────────────────────── HERO ─────────────────────── */}
-      <section className="relative min-h-screen flex items-end overflow-hidden pb-32">
-        <VisualBackground forceDark={true} />
+      <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
+        <section className="relative w-full h-full flex items-end overflow-hidden pb-20 rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#06090f]">
+          <VisualBackground forceDark={true} />
         
         {/* Subtle top glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[500px] bg-brand-blue/20 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
 
-        {/* Content */}
         <div
           ref={heroRef}
           className={`relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-48 transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
+          {/* Removed translate-y-10 as we are moving it downwards by reducing pb-32 to pb-20 on the parent section */}
           <div className="max-w-4xl">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
               <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
               <p className="text-xs font-bold tracking-[0.2em] text-cyan-300 uppercase">
-                Proprietary Intelligence
+                Every organization has visible problems and invisible constraints.
               </p>
             </div>
             
-            <h1 className="text-[3.5rem] sm:text-[5rem] lg:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white mb-6 drop-shadow-2xl">
+            <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white mb-6 drop-shadow-2xl">
               Kangqore{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">BIDS™</span>
             </h1>
@@ -153,38 +154,38 @@ export default function BIDSPage() {
 
             {/* Outcome framing */}
             <div className="flex flex-col sm:flex-row gap-px rounded-2xl overflow-hidden border border-white/10 mb-12 bg-white/5 backdrop-blur-md max-w-2xl">
-              {[
-                { stat: '8–14', label: 'Hidden constraints found per engagement on average' },
-                { stat: '3×',   label: 'Higher transformation success when diagnosis comes first' },
-                { stat: '100%', label: 'Of engagements surface at least one critical blind spot' },
-              ].map((s, i) => (
-                <div key={i} className="flex-1 px-6 py-5 border-r last:border-r-0 border-white/10">
-                  <p className="text-2xl font-black bg-brand-gradient bg-clip-text text-transparent mb-1">{s.stat}</p>
-                  <p className="text-[11px] text-white/40 font-semibold leading-snug tracking-wide">{s.label}</p>
-                </div>
-              ))}
-            </div>
+                {[
+                  { stat: '8–14', label: 'Hidden constraints found per engagement on average' },
+                  { stat: '3×',   label: 'Higher transformation success when diagnosis comes first' },
+                  { stat: '100%', label: 'Of engagements surface at least one critical blind spot' },
+                ].map((s, i) => (
+                  <div key={i} className="flex-1 px-6 py-5 border-r last:border-r-0 border-white/10">
+                    <p className="text-2xl font-black bg-brand-gradient bg-clip-text text-transparent mb-1">{s.stat}</p>
+                    <p className="text-[11px] text-white/40 font-semibold leading-snug tracking-wide">{s.label}</p>
+                  </div>
+                ))}
+              </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-5">
-              <Link
-                to="/contact"
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_40px_rgba(37,100,234,0.2)] hover:shadow-[0_0_60px_rgba(37,100,234,0.4)] hover:bg-white/20"
-              >
-                <span className="relative z-10 font-bold text-sm tracking-wide">Request a Diagnostic</span>
-                <div className="relative w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center group-hover:bg-white transition-colors duration-300 z-10">
-                  <ArrowRight className="w-4 h-4 text-white group-hover:text-brand-blue" />
-                </div>
-              </Link>
-              <a
-                href="#pillars"
-                className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
-              >
-                Explore the 16 Pillars
-                <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
-              </a>
+              <div className="flex flex-col sm:flex-row items-center gap-5">
+                <Link
+                  to="/contact"
+                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_40px_rgba(37,100,234,0.2)] hover:shadow-[0_0_60px_rgba(37,100,234,0.4)] hover:bg-white/20"
+                >
+                  <span className="relative z-10 font-bold text-sm tracking-wide">Request a Diagnostic</span>
+                  <div className="relative w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center group-hover:bg-white transition-colors duration-300 z-10">
+                    <ArrowRight className="w-4 h-4 text-white group-hover:text-brand-blue" />
+                  </div>
+                </Link>
+                <a
+                  href="#pillars"
+                  className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
+                >
+                  Explore the 16 Pillars
+                  <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
+                </a>
+              </div>
             </div>
           </div>
-        </div>
 
         {/* Mobile-only Stats Grid */}
         <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
@@ -203,6 +204,7 @@ export default function BIDSPage() {
           </div>
         </div>
       </section>
+      </div>
 
       {/* ─────────────────────── PROBLEM ─────────────────────── */}
       <section className="py-32 relative">
