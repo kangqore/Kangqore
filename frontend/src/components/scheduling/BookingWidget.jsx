@@ -211,8 +211,8 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
       {/* Left Sidebar: Event Info */}
       <div className="md:w-1/3 bg-gray-50 dark:bg-black/20 p-8 md:p-12 border-r border-gray-100 dark:border-gray-800">
         <div className="space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-blue/10 text-brand-blue rounded-full text-xs font-bold uppercase tracking-wider">
-            <Clock className="w-3 h-3" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-gradient text-white rounded-full text-[11px] font-extrabold uppercase tracking-widest shadow-md shadow-brand-blue/20 border border-white/10 hover:scale-[1.03] transition-all">
+            <Clock className="w-3.5 h-3.5 text-white/90" />
             {selectedDuration || eventType.duration} Minutes
           </div>
           {eventType.durationOptions && Array.isArray(eventType.durationOptions) && eventType.durationOptions.length > 0 && (
@@ -282,18 +282,12 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                   ))}
                 </div>
               ) : (
-                <div className="w-12 h-12 rounded-full bg-brand-gradient flex items-center justify-center shadow-lg shadow-brand-blue/20 overflow-hidden">
-                  {formData.responses?.specificHostId && eventType.teamMembers?.find(tm => tm.userId === formData.responses.specificHostId)?.user.avatarUrl ? (
-                    <img 
-                      src={eventType.teamMembers.find(tm => tm.userId === formData.responses.specificHostId).user.avatarUrl} 
-                      alt="Host" 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : eventType.host.avatarUrl ? (
-                    <img src={eventType.host.avatarUrl} alt="Host" className="w-full h-full object-cover" />
-                  ) : (
-                    <User className="w-6 h-6 text-white" />
-                  )}
+                <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shadow-lg shadow-brand-blue/20 overflow-hidden">
+                  <img 
+                    src="/assets/kangqore-icon-white.png" 
+                    alt="Kangqore Executive" 
+                    className="w-8 h-8 object-contain"
+                  />
                 </div>
               )}
               
@@ -304,9 +298,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                 <p className="font-bold text-gray-900 dark:text-white">
                   {eventType.assignmentStrategy === 'COLLECTIVE' 
                     ? [eventType.host.name, ...eventType.teamMembers.map(tm => tm.user.name)].join(', ')
-                    : formData.responses?.specificHostId 
-                      ? eventType.teamMembers?.find(tm => tm.userId === formData.responses.specificHostId)?.user.name || eventType.host.name
-                      : eventType.host.name}
+                    : "Kangqore Executive"}
                 </p>
               </div>
             </div>

@@ -122,8 +122,16 @@ export default function BookingConfirmationPage() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">Host</p>
-                  <p className="font-semibold text-gray-900 dark:text-gray-100">{event.host?.name}</p>
-                  <p className="text-xs text-gray-500">{event.host?.email}</p>
+                  <p className="font-semibold text-gray-900 dark:text-gray-100">
+                    {event.eventType.assignmentStrategy === 'COLLECTIVE' 
+                      ? event.host?.name 
+                      : 'Kangqore Executive'}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {event.eventType.assignmentStrategy === 'COLLECTIVE' 
+                      ? event.host?.email 
+                      : 'executive@kangqore.com'}
+                  </p>
                 </div>
               </div>
             </div>
