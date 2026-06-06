@@ -8,7 +8,7 @@ const DecisionLogsDashboard = () => {
   const { data: decisionsData, isLoading } = useQuery({
     queryKey: ['admin-decisions'],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/admin/decisions`, {
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/decisions`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return res.data;

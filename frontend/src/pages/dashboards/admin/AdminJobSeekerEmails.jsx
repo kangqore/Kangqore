@@ -25,7 +25,7 @@ const AdminJobSeekerEmails = ({ embedded = false, folder = 'inbox' }) => {
   const [attachments, setAttachments] = useState([]);
   const fileInputRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   // Handle file upload
   const handleFileUpload = async (e) => {

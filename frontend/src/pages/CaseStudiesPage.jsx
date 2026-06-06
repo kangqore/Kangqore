@@ -30,7 +30,7 @@ const CaseStudiesPage = () => {
           ...(searchQuery && { search: searchQuery })
         });
 
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/content?${params.toString()}`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/content?${params.toString()}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch case studies');

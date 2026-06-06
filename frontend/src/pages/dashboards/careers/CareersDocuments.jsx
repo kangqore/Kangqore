@@ -6,7 +6,7 @@ import axios from 'axios';
 const CareersDocuments = () => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   useEffect(() => {
     const fetchDocuments = async () => {

@@ -7,7 +7,7 @@ const PartnerTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedTask, setExpandedTask] = useState(null);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   const [updating, setUpdating] = useState(null);
 

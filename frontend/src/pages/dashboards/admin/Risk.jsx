@@ -15,7 +15,7 @@ const Risk = () => {
     queryFn: async () => {
       // Filter by type: Risk, Assumption, Issue, Dependency
       const type = activeTab.slice(0, -1); // "Risks" -> "Risk"
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/admin/raid?type=${type}`, {
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/raid?type=${type}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return res.data;

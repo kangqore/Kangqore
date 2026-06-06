@@ -25,7 +25,7 @@ const AdminClientEmails = ({ embedded = false, folder = 'inbox' }) => {
   const [attachments, setAttachments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 
     const [isNotice, setIsNotice] = useState(false); // Gap 6: Formal Notices

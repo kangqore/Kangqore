@@ -11,7 +11,7 @@ const ComposeEmailModal = ({ isOpen, onClose }) => {
   const [attachments, setAttachments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = React.useRef(null);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   const [formData, setFormData] = useState({
     to: '',

@@ -74,7 +74,7 @@ const ClientProductVersions = () => {
     const fetchVersions = async () => {
       try {
         const token = localStorage.getItem('token');
-        const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+        const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
         // const response = await axios.get(`${BACKEND_URL}/api/client/mvps`, {
         //   headers: { Authorization: `Bearer ${token}` }
         // });

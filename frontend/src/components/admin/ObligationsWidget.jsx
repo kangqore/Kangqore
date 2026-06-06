@@ -9,7 +9,7 @@ const ObligationsWidget = () => {
     queryKey: ['admin-overdue-obligations'],
     queryFn: async () => {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/admin/accountability/obligations/overdue`, {
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/accountability/obligations/overdue`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       return res.data.obligations;

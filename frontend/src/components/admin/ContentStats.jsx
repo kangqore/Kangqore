@@ -38,7 +38,7 @@ const ContentStats = ({ onCreateNew }) => {
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState('all');
   
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   useEffect(() => {
     fetchAllData();

@@ -10,7 +10,7 @@ import ServiceSelector from './common/ServiceSelector';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useToast } from '../hooks/use-toast';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 // Common timezones for the selector
 const COMMON_TIMEZONES = [

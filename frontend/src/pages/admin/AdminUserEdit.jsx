@@ -22,7 +22,7 @@ const AdminUserEdit = () => {
   const [success, setSuccess] = useState('');
   const [activeTab, setActiveTab] = useState('profile');
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   const [formData, setFormData] = useState({
     name: '', company: '', phone: '', location: '', purpose: '',

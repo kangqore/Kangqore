@@ -13,7 +13,7 @@ import ClientFeedbackList from '../../../components/admin/ClientFeedbackList';
 import LatestFeedbackBanner from '../../../components/admin/LatestFeedbackBanner';
 import ClientEngagementDashboard from '../../../components/admin/ClientEngagementDashboard';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 const AdminClientProfile = () => {
     const { clientId } = useParams();

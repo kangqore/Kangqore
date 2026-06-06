@@ -11,7 +11,7 @@ const PartnerDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   // Use environment variable for backend URL
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   const fetchStats = async () => {
     setLoading(true);

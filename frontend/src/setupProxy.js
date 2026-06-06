@@ -8,7 +8,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require('fs');
 const path = require('path');
 
-const BACKEND       = process.env.REACT_APP_BACKEND_URL     || 'http://localhost:5050';
+const BACKEND       = process.env.REACT_APP_BACKEND_URL     || '';
 const KANGQORE_VIEW = process.env.REACT_APP_DASHBOARD_OS_URL || 'http://localhost:5174';
 
 module.exports = function (app) {

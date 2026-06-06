@@ -13,7 +13,7 @@ const WhitePaper = () => {
     const fetchPapers = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5050'}/api/content?type=WHITE_PAPER`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/content?type=WHITE_PAPER`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch white papers');
