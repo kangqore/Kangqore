@@ -268,7 +268,7 @@ export default function BIDSPage() {
                 </p>
                 <div className="p-6 mt-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
                   <p className="font-black text-white text-xl tracking-wide">
-                    This is why Kangqore engineered BIDS™.
+                    This is why we engineered Kangqore BIDS™.
                   </p>
                 </div>
               </div>
@@ -326,7 +326,7 @@ export default function BIDSPage() {
             ))}
           </div>
           <p className="text-2xl sm:text-3xl font-black text-cyan-400 max-w-3xl leading-snug">
-            BIDS™ quantifies these costs before they become business failures.
+            Kangqore BIDS™ quantifies these costs before they become business failures.
           </p>
         </div>
       </section>
@@ -339,7 +339,7 @@ export default function BIDSPage() {
         >
           {/* Top — eyebrow + oversized headline */}
           <div className="mb-20 lg:mb-24">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS BIDS™</p>
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS KANGQORE BIDS™</p>
             <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white max-w-6xl">
               The complete enterprise<br />
               diagnostic{' '}
@@ -394,7 +394,7 @@ export default function BIDSPage() {
                 Questions every<br />executive should<br />be able to answer.
               </h2>
               <p className="text-white/40 text-lg font-medium leading-relaxed">
-                If these answers are unclear, decisions are made on assumptions — not intelligence. That is where value is lost. BIDS™ exists for exactly this reason.
+                If these answers are unclear, decisions are made on assumptions — not intelligence. That is where value is lost. Kangqore BIDS™ exists for exactly this reason.
               </p>
             </div>
             <div className="space-y-8 lg:pt-16">
@@ -423,7 +423,7 @@ export default function BIDSPage() {
           <div className="mb-20">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
             <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
-              The BIDS™<br />
+              The Kangqore BIDS™<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">Diagnostic Process.</span>
             </h2>
             <p className="text-white/40 text-lg font-medium mt-6">
@@ -541,7 +541,7 @@ export default function BIDSPage() {
             ))}
           </div>
           <p className="text-xl sm:text-2xl font-black text-white/60 max-w-3xl leading-snug">
-            This is where BIDS™ transforms from a report into a{' '}
+            This is where Kangqore BIDS™ transforms from a report into a{' '}
             <span className="text-white">revenue engine</span> — mapping every constraint directly to a Kangqore service prescription.
           </p>
         </div>
@@ -766,7 +766,7 @@ export default function BIDSPage() {
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-24">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">AFTER BIDS™</p>
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">AFTER KANGQORE BIDS™</p>
             <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
               Organizations gain<br />
               <span className="text-white/25">clarity, velocity,</span><br />
@@ -835,7 +835,7 @@ export default function BIDSPage() {
                       <div className="w-6 h-6 rounded-md bg-brand-gradient flex items-center justify-center">
                         <BarChart3 className="w-3.5 h-3.5 text-white" strokeWidth={2} />
                       </div>
-                      <span className="text-[11px] font-black tracking-[0.2em] text-white/60 uppercase">BIDS™ Diagnostic Scorecard™</span>
+                      <span className="text-[11px] font-black tracking-[0.2em] text-white/60 uppercase">Kangqore BIDS™ Diagnostic Scorecard™</span>
                     </div>
                     <span className="text-[10px] text-white/30 font-semibold">CONFIDENTIAL</span>
                   </div>
@@ -930,7 +930,7 @@ export default function BIDSPage() {
                 They fail because they solve the wrong problems.
               </p>
               <p className="text-white/50 text-lg leading-relaxed max-w-3xl">
-                BIDS™ was engineered to identify the constraints, risks, inefficiencies, and opportunities hidden beneath the surface of an organization — before major investments are made.
+                Kangqore BIDS™ was engineered to identify the constraints, risks, inefficiencies, and opportunities hidden beneath the surface of an organization — before major investments are made.
               </p>
               <div className="pt-6 space-y-3">
                 <p className="text-white/70 text-xl font-semibold">Only after diagnosis comes prescription.</p>
@@ -1010,10 +1010,10 @@ export default function BIDSPage() {
 
             {/* Right — BIDS™ differentiators */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">BIDS™ APPROACH</p>
+              <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">KANGQORE BIDS™ APPROACH</p>
               <div className="space-y-10">
                 {[
-                  { n: '01', label: 'The diagnosis is the product', desc: 'No platform to push. No implementation to sell. BIDS™ is vendor-agnostic — the deliverable is the insight, not a proposal for more services.' },
+                  { n: '01', label: 'The diagnosis is the product', desc: 'No platform to push. No implementation to sell. Kangqore BIDS™ is vendor-agnostic — the deliverable is the insight, not a proposal for more services.' },
                   { n: '02', label: 'Scored and indexed, not qualitative', desc: 'Every pillar produces a quantified score. You receive a Diagnostic Scorecard™ and 9 additional deliverables — measurable, benchmarked, accountable.' },
                   { n: '03', label: 'Full ecosystem scope', desc: 'Business, technology, operations, AI, security, and growth examined as one interconnected system across 16 diagnostic intelligence pillars.' },
                   { n: '04', label: 'Zero conflict of interest', desc: "We don't sell the cloud. We don't sell the platform. We sell the truth about your organization — then you decide what to do with it." },
