@@ -456,9 +456,9 @@ export default function BIDSPage() {
             </h2>
           </div>
 
-          <div className="grid lg:grid-cols-2 lg:gap-24">
-            {/* Left — interactive list */}
-            <div>
+          <div className="grid lg:grid-cols-2 lg:gap-24 lg:h-[700px]">
+            {/* Left — scrollable list within section */}
+            <div className="overflow-y-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
               {pillars.map((p, i) => {
                 const active = activePillar === i;
                 return (
@@ -476,9 +476,9 @@ export default function BIDSPage() {
               })}
             </div>
 
-            {/* Right — sticky detail panel */}
-            <div className="hidden lg:block">
-              <div className="sticky top-32">
+            {/* Right — floats in place within the section */}
+            <div className="hidden lg:flex items-start pt-2">
+              <div className="w-full">
                 <p className="text-[10px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">PILLAR {pillars[activePillar].n}</p>
                 <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">
                   {pillars[activePillar].name}
