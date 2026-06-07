@@ -36,39 +36,52 @@ const pillars = [
 
 const engines = [
   {
-    name: 'Business Health Engine™',
-    icon: Activity,
+    dept: 'Cognition',
+    name: 'Cognition Intelligence Engine™',
+    icon: Bot,
     color: 'from-cyan-400 to-blue-500',
-    glow: 'rgba(34,211,238,0.3)',
-    items: ['Organizational health', 'Enterprise maturity', 'Performance effectiveness'],
+    glow: 'rgba(34,211,238,0.25)',
+    items: ['AI & GenAI readiness score', 'Data maturity for AI', 'Automation potential index', 'AI governance maturity'],
   },
   {
-    name: 'Risk Intelligence Engine™',
+    dept: 'Foundry',
+    name: 'Foundry Intelligence Engine™',
+    icon: Cloud,
+    color: 'from-sky-400 to-blue-600',
+    glow: 'rgba(56,189,248,0.25)',
+    items: ['Infrastructure health score', 'Cloud readiness index', 'Engineering maturity assessment', 'Platform resilience posture'],
+  },
+  {
+    dept: 'Reimagine',
+    name: 'Reimagine Intelligence Engine™',
+    icon: RefreshCw,
+    color: 'from-violet-400 to-purple-600',
+    glow: 'rgba(167,139,250,0.25)',
+    items: ['Modernization priority index', 'Legacy debt exposure', 'Transformation readiness score', 'Change execution capability'],
+  },
+  {
+    dept: 'Shield',
+    name: 'Shield Intelligence Engine™',
     icon: Shield,
     color: 'from-rose-400 to-red-600',
     glow: 'rgba(244,63,94,0.3)',
-    items: ['Business risk exposure', 'Technology risk exposure', 'Cybersecurity risk exposure', 'Operational risk exposure'],
+    items: ['Security posture score', 'Risk & compliance gap', 'AI governance coverage', 'Operational trust readiness'],
   },
   {
-    name: 'Opportunity Intelligence Engine™',
-    icon: Sparkles,
+    dept: 'Platforms',
+    name: 'Platforms Intelligence Engine™',
+    icon: Layers,
     color: 'from-amber-400 to-orange-500',
     glow: 'rgba(251,146,60,0.3)',
-    items: ['Revenue opportunities', 'Automation opportunities', 'AI opportunities', 'Efficiency opportunities'],
+    items: ['Enterprise platform utilization', 'Integration complexity score', 'Operational process maturity', 'Platform consolidation opportunity'],
   },
   {
+    dept: 'Growth',
     name: 'Growth Intelligence Engine™',
     icon: TrendingUp,
     color: 'from-emerald-400 to-green-600',
     glow: 'rgba(52,211,153,0.3)',
-    items: ['Growth constraints', 'Visibility limitations', 'Conversion bottlenecks'],
-  },
-  {
-    name: 'Transformation Intelligence Engine™',
-    icon: Layers,
-    color: 'from-violet-400 to-purple-600',
-    glow: 'rgba(167,139,250,0.3)',
-    items: ['Modernization priorities', 'Transformation readiness', 'Strategic execution pathways'],
+    items: ['Revenue engine score', 'Marketing performance gaps', 'Conversion bottleneck index', 'Digital visibility assessment'],
   },
 ];
 
@@ -192,7 +205,7 @@ export default function BIDSPage() {
           <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 gap-4">
             {[
               { value: '16', label: 'Pillars' },
-              { value: '5',  label: 'Engines' },
+              { value: '6',  label: 'Engines' },
               { value: '10', label: 'Deliverables' },
               { value: '10', label: 'Editions' },
             ].map(s => (
@@ -482,15 +495,15 @@ export default function BIDSPage() {
           <div className="text-center mb-20">
             <p className="text-xs font-bold tracking-[0.3em] text-cyan-500 uppercase mb-5 drop-shadow-md">UNDER THE HOOD</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white mb-6 drop-shadow-2xl">
-              5 Intelligence{' '}
+              6 Intelligence{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Engines™</span>
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto text-lg sm:text-xl font-medium">
-              Every engagement is powered by five integrated intelligence engines that synthesize pillar findings into actionable business intelligence.
+              Every engagement is powered by six integrated intelligence engines that synthesize pillar findings into actionable business intelligence.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {engines.map((e, i) => {
               const Icon = e.icon;
               return (
@@ -511,6 +524,7 @@ export default function BIDSPage() {
                   <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-br ${e.color} flex items-center justify-center mb-8 shadow-2xl ring-2 ring-white/10 group-hover:scale-110 transition-transform duration-500`}>
                     <Icon className="w-7 h-7 text-white drop-shadow-md" strokeWidth={2} />
                   </div>
+                  <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 bg-gradient-to-r ${e.color} bg-clip-text text-transparent`}>Kangqore {e.dept}</p>
                   <p className="text-white font-black text-lg sm:text-xl leading-snug mb-6 drop-shadow-sm">{e.name}</p>
                   <ul className="space-y-4">
                     {e.items.map(item => (
