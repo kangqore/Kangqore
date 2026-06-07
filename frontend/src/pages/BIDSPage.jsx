@@ -366,78 +366,54 @@ export default function BIDSPage() {
           </div>
 
           {/* Steps */}
-          <div className="relative">
-
-            <div className="grid lg:grid-cols-3 gap-6 lg:gap-10">
-              {[
-                {
-                  step: '01',
-                  label: 'REQUEST',
-                  title: 'Discovery Briefing',
-                  duration: '~30 minutes',
-                  color: 'from-cyan-400 to-blue-500',
-                  glow: 'rgba(34,211,238,0.25)',
-                  points: [
-                    'Scope your industry and edition',
-                    'Identify key stakeholders',
-                    'Align on strategic objectives',
-                    'Confirm engagement timeline',
-                  ],
-                },
-                {
-                  step: '02',
-                  label: 'DIAGNOSE',
-                  title: '16-Pillar Assessment',
-                  duration: '2–4 weeks',
-                  color: 'from-brand-blue to-violet-500',
-                  glow: 'rgba(37,100,234,0.25)',
-                  points: [
-                    'Deep-dive across all 16 pillars',
-                    'Stakeholder interviews + data review',
-                    'Five intelligence engines activated',
-                    'Constraints mapped and scored',
-                  ],
-                },
-                {
-                  step: '03',
-                  label: 'BLUEPRINT',
-                  title: 'Executive Delivery',
-                  duration: '1–2 weeks',
-                  color: 'from-violet-400 to-purple-600',
-                  glow: 'rgba(167,139,250,0.25)',
-                  points: [
-                    'Diagnostic Scorecard™ presented',
-                    'Transformation Blueprint™ delivered',
-                    '30/60/90/180-Day Roadmap™',
-                    'Executive Workshop™ facilitated',
-                  ],
-                },
-              ].map((s) => (
+          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8 lg:items-start">
+            {[
+              {
+                step: '01', label: 'REQUEST', title: 'Discovery Briefing', duration: '~30 minutes',
+                color: 'from-cyan-400 to-blue-600', icon: Target,
+                points: ['Scope your industry and edition', 'Identify key stakeholders', 'Align on strategic objectives', 'Confirm engagement timeline'],
+              },
+              {
+                step: '02', label: 'DIAGNOSE', title: '16-Pillar Assessment', duration: '2–4 weeks',
+                color: 'from-brand-blue to-violet-600', icon: BarChart3,
+                points: ['Deep-dive across all 16 pillars', 'Stakeholder interviews + data review', 'Six intelligence engines activated', 'Constraints mapped and scored'],
+              },
+              {
+                step: '03', label: 'BLUEPRINT', title: 'Executive Delivery', duration: '1–2 weeks',
+                color: 'from-violet-400 to-purple-700', icon: Award,
+                points: ['Diagnostic Scorecard™ presented', 'Transformation Blueprint™ delivered', '30/60/90/180-Day Roadmap™', 'Executive Workshop™ facilitated'],
+              },
+            ].map((s, i) => {
+              const Icon = s.icon;
+              return (
                 <div
                   key={s.step}
-                  className="relative rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-xl p-8 hover:bg-white/[0.07] hover:border-white/20 transition-all duration-500 group"
-                  style={{ boxShadow: `0 20px 60px ${s.glow}` }}
+                  className={`flex flex-col rounded-3xl overflow-hidden${i === 1 ? ' lg:-translate-y-8' : ''}`}
                 >
-                  {/* Step number badge */}
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${s.color} flex items-center justify-center mb-8 shadow-2xl ring-2 ring-white/10 group-hover:scale-110 transition-transform duration-500`}>
-                    <span className="text-white font-black text-lg">{s.step}</span>
+                  {/* Top — gradient visual */}
+                  <div className={`relative h-64 bg-gradient-to-br ${s.color} flex items-center justify-center overflow-hidden flex-shrink-0`}>
+                    <span className="absolute text-[180px] font-black text-white/[0.07] leading-none select-none">{s.step}</span>
+                    <div className="relative w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center">
+                      <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
+                    </div>
                   </div>
-
-                  <p className={`text-[10px] font-black tracking-[0.3em] uppercase bg-gradient-to-r ${s.color} bg-clip-text text-transparent mb-2`}>{s.label}</p>
-                  <h3 className="text-white font-black text-2xl mb-1 tracking-tight">{s.title}</h3>
-                  <p className="text-white/40 text-sm font-bold tracking-widest uppercase mb-8">{s.duration}</p>
-
-                  <ul className="space-y-3">
-                    {s.points.map(pt => (
-                      <li key={pt} className="flex items-start gap-3">
-                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${s.color} mt-2 flex-shrink-0`} />
-                        <span className="text-white/60 text-sm font-semibold leading-relaxed">{pt}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Bottom — content */}
+                  <div className="flex-1 bg-[#111111] border border-white/10 border-t-0 rounded-b-3xl p-8">
+                    <p className={`text-[10px] font-black tracking-[0.3em] uppercase mb-3 bg-gradient-to-r ${s.color} bg-clip-text text-transparent`}>{s.label}</p>
+                    <h3 className="text-2xl font-black text-white mb-1 tracking-tight">{s.title}</h3>
+                    <p className="text-white/30 text-xs font-bold tracking-widest uppercase mb-6">{s.duration}</p>
+                    <ul className="space-y-3">
+                      {s.points.map(pt => (
+                        <li key={pt} className="flex items-start gap-3">
+                          <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${s.color} mt-2 flex-shrink-0`} />
+                          <span className="text-white/60 text-sm font-semibold leading-relaxed">{pt}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>
