@@ -337,50 +337,88 @@ export default function BIDSPage() {
           ref={defRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
-          {/* Top — eyebrow + oversized headline */}
-          <div className="mb-20 lg:mb-24">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS KANGQORE BIDS™</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white max-w-6xl">
-              The complete enterprise<br />
-              diagnostic{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span><br />
-              framework.
-            </h2>
-          </div>
-
-          {/* Bottom — 2-col */}
-          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
-            {/* Left — description + numbered list */}
+          {/* Top — heading + visual */}
+          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start mb-20">
             <div>
-              <p className="text-white/50 text-xl leading-relaxed mb-16 font-medium">
-                Kangqore BIDS™ evaluates, benchmarks, scores, and analyzes an entire organization as an interconnected ecosystem — examining the complete enterprise landscape, not isolated departments.
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS KANGQORE BIDS™</p>
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+                The complete enterprise<br />
+                diagnostic{' '}
+                <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span><br />
+                framework.
+              </h2>
+              <p className="text-white/50 text-lg leading-relaxed mb-14 font-medium max-w-xl">
+                Kangqore BIDS™ evaluates, benchmarks, scores, and analyzes an entire organization as an interconnected ecosystem — diagnosing the full enterprise before any transformation investment is made.
               </p>
-
-              <div className="space-y-10">
+              {/* Stats strip */}
+              <div className="grid grid-cols-4 gap-6 pt-10 border-t border-white/[0.08]">
                 {[
-                  { n: '01', text: 'Identifies hidden constraints across all vectors' },
-                  { n: '02', text: 'Quantifies their measurable business impact' },
-                  { n: '03', text: 'Prioritizes transformation and AI opportunities' },
-                  { n: '04', text: 'Generates a strategic roadmap for intelligent growth' },
-                ].map((item) => (
-                  <div key={item.n} className="flex items-start gap-8">
-                    <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0 w-6">{item.n}</span>
-                    <p className="text-white text-xl font-semibold leading-snug">{item.text}</p>
+                  { value: '16', label: 'Diagnostic\nPillars' },
+                  { value: '6',  label: 'Intelligence\nEngines' },
+                  { value: '10', label: 'Executive\nDeliverables' },
+                  { value: '10', label: 'Industry\nEditions' },
+                ].map(s => (
+                  <div key={s.label}>
+                    <p className="text-4xl font-black text-white tracking-tight mb-1">{s.value}</p>
+                    <p className="text-white/30 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{s.label}</p>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* Right — visual + pull quote */}
-            <div className="flex flex-col gap-16">
-              <div className="flex justify-center lg:justify-end">
-                <BIDSProductVisual isActive={defVisible} />
-              </div>
-              <p className="text-2xl sm:text-3xl font-black text-white leading-snug">
-                "What is preventing this organization from achieving its full potential?"
-              </p>
+            {/* Right — product visual */}
+            <div className="flex justify-center lg:justify-end">
+              <BIDSProductVisual isActive={defVisible} />
             </div>
           </div>
+
+          {/* Capability cards — Evaluate · Score · Prescribe · Transform */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+            {[
+              {
+                n: '01', title: 'Evaluate',
+                desc: 'Assess the entire enterprise — business, technology, operations, AI, security, and growth — as one interconnected system, not isolated departments.',
+                icon: Target,
+              },
+              {
+                n: '02', title: 'Score',
+                desc: 'Quantify performance, risk, and opportunity across 16 diagnostic intelligence pillars with precision scoring, classification, and benchmarking.',
+                icon: BarChart3,
+              },
+              {
+                n: '03', title: 'Prescribe',
+                desc: 'Map every identified root cause to targeted Kangqore service interventions — synthesized by eQORE AI™. No guesswork. No generic recommendations.',
+                icon: Sparkles,
+              },
+              {
+                n: '04', title: 'Transform',
+                desc: 'Execute with a 30/60/90/180-day roadmap, executive workshops, and benchmarks that hold transformation progress quantifiably accountable.',
+                icon: Award,
+              },
+            ].map((c) => {
+              const Icon = c.icon;
+              return (
+                <div key={c.n} className="bg-[#080808] border border-white/[0.08] rounded-2xl p-7 flex flex-col">
+                  <div className="flex items-center justify-between mb-8">
+                    <span className="text-[9px] font-black tracking-widest text-white/20 uppercase">{c.n}</span>
+                    <Icon className="w-5 h-5 text-cyan-400/50" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-white font-black text-2xl mb-4 tracking-tight">{c.title}</h3>
+                  <p className="text-white/35 text-sm leading-relaxed flex-1">{c.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Pull quote */}
+          <div className="border-l-2 border-white/10 pl-8">
+            <p className="text-xl sm:text-2xl font-black text-white/40 leading-snug max-w-4xl">
+              "What is preventing this organization from achieving its full potential?"
+            </p>
+            <p className="text-lg font-black text-white mt-3">
+              Kangqore BIDS™ exists to answer this — precisely, quantifiably, and without conflict of interest.
+            </p>
+          </div>
+
         </div>
       </section>
 
