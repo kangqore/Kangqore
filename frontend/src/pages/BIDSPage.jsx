@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Target, Users, Landmark, Factory, Briefcase, Star,
@@ -104,6 +104,25 @@ const editions = [
   'Government Edition™', 'Startup Edition™', 'Enterprise Edition™', 'Non-Profit Edition™',
 ];
 
+const pillarDetails = [
+  { tagline: 'Align strategy to market reality.', desc: 'Evaluate strategic coherence, competitive positioning, and growth readiness across business units and leadership alignment.' },
+  { tagline: 'Lead with intelligence.', desc: 'Measure executive effectiveness, decision velocity, and organizational alignment from the top down.' },
+  { tagline: 'Understand your financial health.', desc: 'Diagnose financial performance, capital efficiency, and investment allocation gaps across the enterprise.' },
+  { tagline: 'Remove operational drag.', desc: 'Surface inefficiencies, process bottlenecks, and execution gaps that silently constrain performance.' },
+  { tagline: 'Build the workforce of the future.', desc: 'Assess talent readiness, skills gaps, and workforce capability against transformation demands.' },
+  { tagline: 'Earn loyalty through intelligence.', desc: 'Measure customer experience maturity, satisfaction drivers, and retention risk across every touchpoint.' },
+  { tagline: 'Unlock revenue performance.', desc: 'Diagnose pipeline health, conversion efficiency, and revenue engine constraints from top to bottom of funnel.' },
+  { tagline: 'Accelerate digital growth.', desc: 'Identify digital channel performance gaps, growth constraints, and untapped revenue opportunities.' },
+  { tagline: 'Future-proof your technology.', desc: 'Benchmark technology maturity, stack fragmentation, and technical debt against industry standards.' },
+  { tagline: 'Scale with confidence.', desc: 'Assess cloud readiness, infrastructure resilience, and platform scalability for enterprise growth.' },
+  { tagline: 'Turn data into a strategic asset.', desc: 'Evaluate data quality, governance maturity, and analytics capability across the enterprise.' },
+  { tagline: 'Deploy AI that delivers.', desc: 'Measure AI readiness, GenAI maturity, and the organizational capacity to adopt and govern AI systems.' },
+  { tagline: 'Automate intelligently.', desc: 'Identify automation opportunities, RPA/DPA readiness, and workflow orchestration gaps across the enterprise.' },
+  { tagline: 'Build a resilient security posture.', desc: 'Quantify cyber exposure, vulnerability surface, and incident readiness across systems and teams.' },
+  { tagline: 'Govern with confidence.', desc: 'Assess governance frameworks, risk management maturity, and regulatory compliance posture across the organization.' },
+  { tagline: 'Execute transformation that sticks.', desc: 'Measure transformation readiness, change management capability, and strategic execution velocity.' },
+];
+
 const symptoms = [
   'Slower growth', 'Rising operational costs', 'Reduced productivity',
   'Customer friction', 'Technology complexity', 'Security concerns',
@@ -123,6 +142,7 @@ export default function BIDSPage() {
   const [delivRef, delivVisible]       = useScrollAnimation({ once: true, threshold: 0.05 });
   const [editionsRef, editionsVisible] = useScrollAnimation({ once: true, threshold: 0.1 });
   const [ctaRef, ctaVisible]           = useScrollAnimation({ once: true, threshold: 0.2 });
+  const [activePillar, setActivePillar] = useState(0);
 
   return (
     <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
@@ -423,42 +443,54 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── 16 PILLARS ─────────────────────── */}
-      <section id="pillars" className="py-32 relative overflow-hidden">
+      <section id="pillars" className="py-32 relative">
         <div
           ref={pillarsRef}
-          className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${pillarsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+          className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${pillarsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
-          <div className="text-center mb-20">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5 drop-shadow-md">THE FRAMEWORK</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white mb-6 drop-shadow-2xl">
+          <div className="mb-16">
+            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE FRAMEWORK</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white">
               16 Diagnostic Intelligence{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_20px_rgba(37,100,234,0.3)]">Pillars™</span>
+              <span className="bg-brand-gradient bg-clip-text text-transparent">Pillars™</span>
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto text-lg sm:text-xl font-medium">
-              Every pillar generates a proprietary intelligence score benchmarked against industry peers. Together, they form a complete, irrefutable picture of where you stand — and where to move first.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 border border-white/10 rounded-2xl overflow-hidden">
-            {pillars.map((p, i) => {
-              const Icon = p.icon;
-              return (
-                <div
-                  key={p.n}
-                  className="group flex items-center gap-6 px-8 py-5 border-b border-r-0 sm:odd:border-r border-white/10 last:border-b-0 sm:[&:nth-last-child(2):nth-child(odd)]:border-b-0 hover:bg-white/[0.04] transition-colors duration-300"
-                  style={{ transitionDelay: pillarsVisible ? `${i * 30}ms` : '0ms' }}
-                >
-                  <span className="text-xs font-black tracking-widest text-cyan-400/60 w-7 flex-shrink-0">{p.n}</span>
-                  <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-4 h-4 text-white/40 group-hover:text-cyan-300 transition-colors duration-300" strokeWidth={1.5} />
+          <div className="grid lg:grid-cols-2 lg:gap-24">
+            {/* Left — interactive list */}
+            <div>
+              {pillars.map((p, i) => {
+                const active = activePillar === i;
+                return (
+                  <div
+                    key={p.n}
+                    onMouseEnter={() => setActivePillar(i)}
+                    className="group flex items-center gap-5 py-5 border-b border-white/[0.06] cursor-default"
+                  >
+                    <span className={`w-2.5 h-2.5 flex-shrink-0 transition-colors duration-200 ${active ? 'bg-cyan-400' : 'bg-transparent'}`} />
+                    <span className={`text-xl sm:text-2xl lg:text-3xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/25 group-hover:text-white/55'}`}>
+                      {p.name}
+                    </span>
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-white font-semibold text-sm leading-snug">{p.name}</p>
-                    <p className="text-[11px] text-white/35 font-semibold tracking-wide mt-0.5 truncate">{p.score}</p>
-                  </div>
+                );
+              })}
+            </div>
+
+            {/* Right — sticky detail panel */}
+            <div className="hidden lg:block">
+              <div className="sticky top-32">
+                <p className="text-[10px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">PILLAR {pillars[activePillar].n}</p>
+                <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">
+                  {pillars[activePillar].name}
+                </h3>
+                <p className="text-white/70 text-lg font-semibold mb-4">{pillarDetails[activePillar].tagline}</p>
+                <p className="text-white/40 text-base leading-relaxed mb-10">{pillarDetails[activePillar].desc}</p>
+                <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-white/10">
+                  {(() => { const Icon = pillars[activePillar].icon; return <Icon className="w-4 h-4 text-cyan-400" strokeWidth={1.5} />; })()}
+                  <span className="text-white/50 text-sm font-semibold tracking-wide">{pillars[activePillar].score}</span>
                 </div>
-              );
-            })}
+              </div>
+            </div>
           </div>
         </div>
       </section>
