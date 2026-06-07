@@ -515,9 +515,9 @@ export default function BIDSPage() {
               },
               {
                 step: '04', color: 'from-emerald-400 to-green-600',
-                title: 'Mapped Kangqore Services',
-                items: ['61 services across 6 departments', 'Matched to root causes', 'Sequenced for execution', 'Scoped for ROI'],
-                note: 'The front door to all of Kangqore',
+                title: 'Prescribed Services',
+                items: ['Digital Transformation', 'Strategy Consulting', 'Application Modernization', 'Enterprise Platform Integration'],
+                note: 'Sample — drawn from 61 Kangqore services across 6 departments',
               },
             ].map((phase, i) => (
               <div key={phase.step} className="relative lg:px-6 first:lg:pl-0 last:lg:pr-0">
@@ -541,8 +541,9 @@ export default function BIDSPage() {
             ))}
           </div>
           <p className="text-xl sm:text-2xl font-black text-white/60 max-w-3xl leading-snug">
-            This is where Kangqore BIDS™ transforms from a report into a{' '}
-            <span className="text-white">revenue engine</span> — mapping every constraint directly to a Kangqore service prescription.
+            This is where Kangqore BIDS™ — synthesized by{' '}
+            <span className="text-cyan-400">eQORE AI™</span> — transforms from a diagnostic report into a{' '}
+            <span className="text-white">revenue engine</span>, mapping every identified constraint directly to a Kangqore service prescription.
           </p>
         </div>
       </section>
@@ -663,23 +664,33 @@ export default function BIDSPage() {
               <span className="bg-brand-gradient bg-clip-text text-transparent">How you compare.</span>
             </h2>
           </div>
+          {/* Launch announcement panel */}
+          <div className="mb-20 flex items-center gap-4">
+            <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
+            <p className="text-sm font-black tracking-[0.2em] text-cyan-400 uppercase">Launching Q4 2026</p>
+          </div>
+
+          <p className="text-white/50 text-xl font-medium leading-relaxed max-w-3xl mb-20">
+            Kangqore is building the first vendor-agnostic enterprise diagnostic benchmark dataset — aggregating anonymized Kangqore BIDS™ engagement data across industries, sectors, and geographies. Organizations that complete a Kangqore BIDS™ engagement today will be among the first to receive benchmark intelligence when it launches.
+          </p>
+
           <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
-            {/* Left — comparison tiers */}
+            {/* Left — what it will include */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">COMPARE AGAINST</p>
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">WHAT IT WILL INCLUDE</p>
               <div className="space-y-8">
                 {[
-                  { tier: 'Industry Average',      desc: 'Where you stand relative to the sector median across all 16 pillars' },
-                  { tier: 'Industry Leaders',       desc: 'The gap between you and the top performers in your space' },
-                  { tier: 'Regional Peers',         desc: 'Performance against organizations operating in your region' },
-                  { tier: 'National Competitors',   desc: 'National market position mapped across business and technology dimensions' },
-                  { tier: 'Global Best Performers', desc: 'How far ahead or behind the global frontier your organization sits' },
+                  { tier: 'Industry Average',       desc: 'Where you stand relative to the sector median across all 16 pillars' },
+                  { tier: 'Industry Leaders',        desc: 'The gap between you and the top performers in your space' },
+                  { tier: 'Regional Peers',          desc: 'Performance against organizations operating in your region' },
+                  { tier: 'National Competitors',    desc: 'National market position mapped across business and technology dimensions' },
+                  { tier: 'Global Best Performers',  desc: 'How far ahead or behind the global frontier your organization sits' },
                 ].map((t) => (
                   <div key={t.tier} className="flex items-start gap-6">
-                    <div className="w-2 h-2 rounded-full bg-cyan-400 mt-2 flex-shrink-0" />
+                    <div className="w-2 h-2 rounded-full bg-white/20 mt-2 flex-shrink-0" />
                     <div>
-                      <p className="text-white font-bold text-base mb-1">{t.tier}</p>
-                      <p className="text-white/35 text-sm font-medium leading-relaxed">{t.desc}</p>
+                      <p className="text-white/60 font-bold text-base mb-1">{t.tier}</p>
+                      <p className="text-white/25 text-sm font-medium leading-relaxed">{t.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -687,7 +698,7 @@ export default function BIDSPage() {
             </div>
             {/* Right — outputs */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">INTELLIGENCE OUTPUTS</p>
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">PLANNED OUTPUTS</p>
               <div className="space-y-10">
                 {[
                   { n: '01', label: 'Percentile Ranking™', desc: 'Your organization scored in the Nth percentile — precision positioning across every pillar, not vague commentary.' },
@@ -697,8 +708,8 @@ export default function BIDSPage() {
                   <div key={d.n} className="flex items-start gap-8">
                     <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{d.n}</span>
                     <div>
-                      <p className="text-white font-bold text-lg mb-2">{d.label}</p>
-                      <p className="text-white/40 text-sm leading-relaxed">{d.desc}</p>
+                      <p className="text-white/50 font-bold text-lg mb-2">{d.label}</p>
+                      <p className="text-white/30 text-sm leading-relaxed">{d.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -1029,6 +1040,29 @@ export default function BIDSPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────── SCALE STRIP ─────────────────────── */}
+      <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <p className="text-[10px] font-black tracking-[0.45em] text-white/25 uppercase mb-12">BUILT ON KANGQORE'S FULL PRACTICE</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-12">
+            {[
+              { value: '61',   label: 'Specialized Services' },
+              { value: '6',    label: 'Practice Departments' },
+              { value: '10',   label: 'Industry Editions' },
+              { value: '16',   label: 'Diagnostic Pillars' },
+            ].map((s) => (
+              <div key={s.label}>
+                <p className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-2">{s.value}</p>
+                <p className="text-white/35 text-sm font-semibold tracking-wide">{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-14 text-white/25 text-sm font-medium max-w-xl leading-relaxed">
+            Kangqore BIDS™ is backed by the full depth of the Kangqore practice — AI, cloud, engineering, security, modernization, and growth — all available for prescription the moment diagnosis is complete.
+          </p>
         </div>
       </section>
 
