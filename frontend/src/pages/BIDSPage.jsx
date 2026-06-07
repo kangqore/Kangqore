@@ -807,118 +807,159 @@ export default function BIDSPage() {
       {/* ─────────────────────── SAMPLE SCORECARD ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-            {/* Left — copy */}
+          {/* Section header */}
+          <div className="grid lg:grid-cols-2 gap-16 items-end mb-16">
             <div>
               <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">SAMPLE OUTPUT</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white mb-6">
                 This is what you{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">receive.</span>
               </h2>
-              <p className="text-white/60 text-lg leading-relaxed mb-10">
-                Every engagement produces a Diagnostic Scorecard™ — a precise, pillar-by-pillar breakdown of your enterprise health, scored and benchmarked against industry peers.
+              <p className="text-white/50 text-lg leading-relaxed">
+                Every Kangqore BIDS™ engagement produces a full Diagnostic Scorecard™ — all 16 pillars scored, classified, and benchmarked. Delivered as part of 10 executive-grade deliverables.
               </p>
-              <div className="space-y-4">
+            </div>
+            <div className="space-y-3">
+              {[
+                { color: 'bg-emerald-400', range: '75–100', label: 'Strong',   desc: 'Operating at or above benchmark' },
+                { color: 'bg-cyan-400',    range: '60–74',  label: 'Good',     desc: 'Performing well — targeted improvements available' },
+                { color: 'bg-amber-400',   range: '40–59',  label: 'Moderate', desc: 'Meaningful gaps with quantifiable business impact' },
+                { color: 'bg-red-500',     range: '0–39',   label: 'Critical', desc: 'Active constraint limiting organizational performance' },
+              ].map(b => (
+                <div key={b.label} className="flex items-center gap-4">
+                  <div className={`w-2.5 h-2.5 rounded-full ${b.color} flex-shrink-0`} />
+                  <span className="text-white/60 font-bold text-sm w-20 flex-shrink-0">{b.label} <span className="text-white/25 font-normal">({b.range})</span></span>
+                  <span className="text-white/30 text-sm">{b.desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Scorecard — executive summary bar */}
+          <div className="rounded-2xl border border-white/10 bg-[#080808] overflow-hidden mb-4">
+            <div className="px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-white/[0.06]">
+              <div className="flex items-center gap-4">
+                <div className="w-8 h-8 rounded-lg bg-brand-gradient flex items-center justify-center flex-shrink-0">
+                  <BarChart3 className="w-4 h-4 text-white" strokeWidth={2} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black tracking-[0.25em] text-white/30 uppercase">Kangqore BIDS™ Diagnostic Scorecard™</p>
+                  <p className="text-white font-black text-base mt-0.5">Acme Corporation <span className="text-white/30 font-semibold text-sm">· Enterprise Edition™ · June 2026</span></p>
+                </div>
+              </div>
+              <div className="flex items-center gap-10 flex-shrink-0">
+                <div className="text-center">
+                  <p className="text-[9px] text-white/25 font-black tracking-[0.25em] uppercase mb-1">Industry Avg</p>
+                  <p className="text-white/50 font-black text-2xl">58</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-[9px] text-white/25 font-black tracking-[0.25em] uppercase mb-1">Sector Leader</p>
+                  <p className="text-emerald-400 font-black text-2xl">84</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-[9px] text-white/25 font-black tracking-[0.25em] uppercase mb-1">Health Score</p>
+                  <div className="flex items-baseline gap-0.5 justify-center">
+                    <span className="text-3xl font-black bg-brand-gradient bg-clip-text text-transparent">61</span>
+                    <span className="text-white/25 text-base font-bold">/100</span>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-[9px] text-white/25 font-black tracking-[0.25em] uppercase mb-1">Classification</p>
+                  <p className="text-amber-400 font-black text-sm tracking-widest uppercase">Moderate</p>
+                </div>
+                <span className="text-[9px] text-white/15 font-bold tracking-widest uppercase hidden lg:block">CONFIDENTIAL</span>
+              </div>
+            </div>
+
+            {/* 16-pillar full breakdown */}
+            <div className="px-8 py-7">
+              <p className="text-[9px] font-black tracking-[0.35em] text-white/20 uppercase mb-6">16 DIAGNOSTIC INTELLIGENCE PILLARS™</p>
+              <div className="grid sm:grid-cols-2 gap-x-12 gap-y-3">
                 {[
-                  { color: 'bg-emerald-400', label: 'Strong (75–100)', desc: 'Operating at or above benchmark' },
-                  { color: 'bg-cyan-400',    label: 'Good (60–74)',    desc: 'Performing well, targeted improvements available' },
-                  { color: 'bg-amber-400',   label: 'Moderate (40–59)', desc: 'Meaningful gaps with quantifiable impact' },
-                  { color: 'bg-red-500',     label: 'Critical (0–39)', desc: 'Active constraint limiting performance' },
-                ].map(b => (
-                  <div key={b.label} className="flex items-center gap-4">
-                    <div className={`w-3 h-3 rounded-full ${b.color} flex-shrink-0 shadow-lg`} />
-                    <span className="text-white font-bold text-sm w-36 flex-shrink-0">{b.label}</span>
-                    <span className="text-white/40 text-sm">{b.desc}</span>
+                  { name: 'Business Strategy',      score: 78, c: 'bg-emerald-400', s: 'Strong'   },
+                  { name: 'Leadership',              score: 62, c: 'bg-cyan-400',    s: 'Good'     },
+                  { name: 'Financial Health',        score: 81, c: 'bg-emerald-400', s: 'Strong'   },
+                  { name: 'Operational Efficiency',  score: 35, c: 'bg-red-500',     s: 'Critical' },
+                  { name: 'Workforce',               score: 58, c: 'bg-amber-400',   s: 'Moderate' },
+                  { name: 'Customer',                score: 71, c: 'bg-cyan-400',    s: 'Good'     },
+                  { name: 'Sales',                   score: 44, c: 'bg-amber-400',   s: 'Moderate' },
+                  { name: 'Growth',                  score: 67, c: 'bg-cyan-400',    s: 'Good'     },
+                  { name: 'Technology Maturity',     score: 74, c: 'bg-cyan-400',    s: 'Good'     },
+                  { name: 'Cloud & Infrastructure',  score: 55, c: 'bg-amber-400',   s: 'Moderate' },
+                  { name: 'Data Intelligence',       score: 66, c: 'bg-cyan-400',    s: 'Good'     },
+                  { name: 'AI Readiness',            score: 38, c: 'bg-red-500',     s: 'Critical' },
+                  { name: 'Automation',              score: 59, c: 'bg-amber-400',   s: 'Moderate' },
+                  { name: 'Cybersecurity',           score: 58, c: 'bg-amber-400',   s: 'Moderate' },
+                  { name: 'Governance & Risk',       score: 72, c: 'bg-cyan-400',    s: 'Good'     },
+                  { name: 'Transformation',          score: 47, c: 'bg-amber-400',   s: 'Moderate' },
+                ].map(p => (
+                  <div key={p.name} className="flex items-center gap-3">
+                    <span className="text-[11px] text-white/40 font-semibold w-40 flex-shrink-0 truncate">{p.name}</span>
+                    <div className="flex-1 h-1 bg-white/[0.06] rounded-full overflow-hidden">
+                      <div className={`h-full ${p.c} rounded-full`} style={{ width: `${p.score}%` }} />
+                    </div>
+                    <span className="text-[11px] font-black text-white/70 w-7 text-right flex-shrink-0">{p.score}</span>
+                    <span className={`text-[8px] font-black tracking-wide uppercase w-14 flex-shrink-0 ${
+                      p.s === 'Critical' ? 'text-red-400' :
+                      p.s === 'Moderate' ? 'text-amber-400' :
+                      p.s === 'Strong'   ? 'text-emerald-400' :
+                      'text-cyan-400'
+                    }`}>{p.s}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Right — scorecard mockup */}
-            <div className="relative">
-              <div className="relative rounded-2xl border border-white/15 bg-black overflow-hidden shadow-2xl">
-
-                {/* Card header */}
-                <div className="px-6 pt-6 pb-5 border-b border-white/8">
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-md bg-brand-gradient flex items-center justify-center">
-                        <BarChart3 className="w-3.5 h-3.5 text-white" strokeWidth={2} />
-                      </div>
-                      <span className="text-[11px] font-black tracking-[0.2em] text-white/60 uppercase">Kangqore BIDS™ Diagnostic Scorecard™</span>
-                    </div>
-                    <span className="text-[10px] text-white/30 font-semibold">CONFIDENTIAL</span>
+            {/* Footer summary */}
+            <div className="px-8 py-5 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-6">
+                {[
+                  { color: 'bg-red-500',     label: '2 Critical' },
+                  { color: 'bg-amber-400',   label: '6 Moderate' },
+                  { color: 'bg-cyan-400',    label: '6 Good' },
+                  { color: 'bg-emerald-400', label: '2 Strong' },
+                ].map(b => (
+                  <div key={b.label} className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${b.color}`} />
+                    <span className="text-[10px] text-white/35 font-bold">{b.label}</span>
                   </div>
-                  <div className="flex items-end justify-between mt-4">
-                    <div>
-                      <p className="text-white font-black text-lg">Acme Corporation</p>
-                      <p className="text-white/40 text-[11px] font-semibold tracking-wide">Enterprise Edition™ · June 2026</p>
-                    </div>
-                    {/* Overall score ring */}
-                    <div className="text-right">
-                      <p className="text-[11px] text-white/40 font-semibold uppercase tracking-widest mb-1">Enterprise Health Score</p>
-                      <div className="flex items-baseline gap-1 justify-end">
-                        <span className="text-5xl font-black bg-brand-gradient bg-clip-text text-transparent">63</span>
-                        <span className="text-white/30 text-xl font-bold">/100</span>
-                      </div>
-                      <div className="flex items-center gap-3 mt-1 justify-end">
-                        <span className="text-[10px] text-white/30 font-semibold">Industry avg <span className="text-white/50">58</span></span>
-                        <span className="text-[10px] text-white/30 font-semibold">Top quartile <span className="text-emerald-400">84</span></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Pillar scores */}
-                <div className="px-6 py-5 space-y-3">
-                  {[
-                    { name: 'Business Strategy',    score: 78, status: 'Strong',   color: 'bg-emerald-400', w: 'w-[78%]' },
-                    { name: 'AI Readiness',          score: 41, status: 'Critical', color: 'bg-red-500',     w: 'w-[41%]' },
-                    { name: 'Cybersecurity',         score: 58, status: 'Moderate', color: 'bg-amber-400',   w: 'w-[58%]' },
-                    { name: 'Technology Maturity',   score: 74, status: 'Good',     color: 'bg-cyan-400',    w: 'w-[74%]' },
-                    { name: 'Operational Efficiency',score: 35, status: 'Critical', color: 'bg-red-500',     w: 'w-[35%]' },
-                    { name: 'Data Intelligence',     score: 66, status: 'Good',     color: 'bg-cyan-400',    w: 'w-[66%]' },
-                    { name: 'Financial Health',      score: 81, status: 'Strong',   color: 'bg-emerald-400', w: 'w-[81%]' },
-                    { name: 'Transformation',        score: 47, status: 'Moderate', color: 'bg-amber-400',   w: 'w-[47%]' },
-                  ].map(p => (
-                    <div key={p.name} className="flex items-center gap-3">
-                      <span className="text-[11px] text-white/50 font-semibold w-44 flex-shrink-0 truncate">{p.name}</span>
-                      <div className="flex-1 h-1.5 bg-white/8 rounded-full overflow-hidden">
-                        <div className={`h-full ${p.color} ${p.w} rounded-full`} />
-                      </div>
-                      <span className="text-[11px] font-black text-white/80 w-6 text-right flex-shrink-0">{p.score}</span>
-                      <span className={`text-[9px] font-black tracking-wide uppercase px-2 py-0.5 rounded-full flex-shrink-0 ${
-                        p.status === 'Critical' ? 'bg-red-500/20 text-red-400' :
-                        p.status === 'Moderate' ? 'bg-amber-500/20 text-amber-400' :
-                        p.status === 'Strong'   ? 'bg-emerald-500/20 text-emerald-400' :
-                        'bg-cyan-500/20 text-cyan-400'
-                      }`}>{p.status}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Card footer */}
-                <div className="px-6 py-4 border-t border-white/8 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    {[
-                      { color: 'bg-red-500',     label: '2 Critical' },
-                      { color: 'bg-amber-400',   label: '2 Moderate' },
-                      { color: 'bg-cyan-400',    label: '2 Good' },
-                      { color: 'bg-emerald-400', label: '2 Strong' },
-                    ].map(b => (
-                      <div key={b.label} className="flex items-center gap-1.5">
-                        <div className={`w-2 h-2 rounded-full ${b.color}`} />
-                        <span className="text-[10px] text-white/40 font-semibold">{b.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <span className="text-[9px] text-white/20 font-bold tracking-widest uppercase">Sample · Not real data</span>
-                </div>
+                ))}
               </div>
+              <p className="text-[9px] text-white/15 font-bold tracking-widest uppercase">Sample Output · Anonymized · Not Real Client Data · Kangqore BIDS™</p>
             </div>
-
           </div>
+
+          {/* Immediate priorities strip */}
+          <div className="rounded-2xl border border-white/10 bg-[#080808] overflow-hidden">
+            <div className="px-8 py-5 border-b border-white/[0.06]">
+              <p className="text-[9px] font-black tracking-[0.35em] text-white/20 uppercase">IMMEDIATE PRIORITIES — TOP 3 CRITICAL FINDINGS</p>
+            </div>
+            <div className="grid sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06]">
+              {[
+                { rank: '01', pillar: 'Operational Efficiency', score: 35, status: 'Critical', impact: 'Elevated operating costs across fragmented processes', action: 'Business Process Reengineering' },
+                { rank: '02', pillar: 'AI Readiness',            score: 38, status: 'Critical', impact: 'Significant competitive exposure as peers accelerate AI adoption', action: 'AI & Cognitive Computing Strategy' },
+                { rank: '03', pillar: 'Sales Intelligence',      score: 44, status: 'Moderate', impact: 'Revenue pipeline underperforming against market potential', action: 'Growth Funnels & Conversion Engineering' },
+              ].map(f => (
+                <div key={f.rank} className="px-7 py-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-[9px] font-black tracking-widest text-white/20">{f.rank}</span>
+                    <span className={`text-[8px] font-black tracking-wide uppercase px-2 py-0.5 rounded-full ${
+                      f.status === 'Critical' ? 'bg-red-500/15 text-red-400' : 'bg-amber-500/15 text-amber-400'
+                    }`}>{f.status}</span>
+                  </div>
+                  <p className="text-white font-black text-base mb-1">{f.pillar}</p>
+                  <p className="text-white/25 font-black text-3xl mb-3">{f.score}<span className="text-sm font-normal">/100</span></p>
+                  <p className="text-white/35 text-xs font-medium leading-relaxed mb-4">{f.impact}</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
+                    <p className="text-cyan-400/70 text-xs font-bold">{f.action}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </section>
 
