@@ -757,27 +757,25 @@ export default function BIDSPage() {
           {/* Two-col */}
           <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
 
-            {/* Left — competitors */}
+            {/* Left — conventional approach (generic) */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">INDUSTRY PLATFORMS</p>
-              <div className="space-y-8">
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">THE CONVENTIONAL APPROACH</p>
+              <div className="space-y-10">
                 {[
-                  { firm: 'TCS',           platforms: 'AI.Cloud, WisdomNext' },
-                  { firm: 'Infosys',       platforms: 'Topaz, Cobalt' },
-                  { firm: 'Wipro',         platforms: 'ai360, Wipro Intelligence' },
-                  { firm: 'Cognizant',     platforms: 'Neuro AI' },
-                  { firm: 'HCLTech',       platforms: 'Digital transformation frameworks' },
-                  { firm: 'Tech Mahindra', platforms: 'AI & enterprise modernization' },
-                ].map((c) => (
-                  <div key={c.firm} className="flex items-start gap-8">
-                    <span className="text-white/30 font-black text-sm tracking-wide w-36 flex-shrink-0">{c.firm}</span>
-                    <span className="text-white/25 text-sm font-medium">{c.platforms}</span>
+                  { label: 'Assessments that justify the next sale', desc: 'Most diagnostic engagements are pre-sales motions — designed to recommend the consulting firm\'s own platform or services.' },
+                  { label: 'Platform-first, not problem-first', desc: 'The technology stack is already chosen before the diagnosis begins. The assessment exists to validate the sale, not the strategy.' },
+                  { label: 'Siloed and technology-centric', desc: 'Evaluations that focus on cloud, AI, or security in isolation — without connecting technology health to business performance and growth.' },
+                  { label: 'Qualitative outputs with no accountability', desc: 'Recommendations delivered as slide decks. No scores. No benchmarks. No way to measure progress or hold anyone accountable.' },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-start gap-4">
+                    <div className="w-1 h-1 rounded-full bg-white/20 mt-2.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-white/30 font-bold text-base mb-1">{item.label}</p>
+                      <p className="text-white/20 text-sm leading-relaxed">{item.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>
-              <p className="mt-14 text-white/30 text-sm font-medium leading-relaxed max-w-sm">
-                Every platform on this list is built to be sold. Their "assessment" is a pre-sales motion designed to justify their next engagement — not yours.
-              </p>
             </div>
 
             {/* Right — BIDS™ differentiators */}
@@ -785,9 +783,9 @@ export default function BIDSPage() {
               <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">BIDS™ APPROACH</p>
               <div className="space-y-10">
                 {[
-                  { n: '01', label: 'The diagnosis is the product', desc: 'No platform to push. No implementation to sell. BIDS™ is vendor-agnostic — the deliverable is the insight.' },
-                  { n: '02', label: 'Scored and indexed, not qualitative', desc: 'Every pillar produces a quantified score. You receive a Diagnostic Scorecard™ and 9 other deliverables — not a slide deck of suggestions.' },
-                  { n: '03', label: 'Full ecosystem scope', desc: 'Business, technology, operations, AI, security, and growth examined as one interconnected system across 16 pillars.' },
+                  { n: '01', label: 'The diagnosis is the product', desc: 'No platform to push. No implementation to sell. BIDS™ is vendor-agnostic — the deliverable is the insight, not a proposal for more services.' },
+                  { n: '02', label: 'Scored and indexed, not qualitative', desc: 'Every pillar produces a quantified score. You receive a Diagnostic Scorecard™ and 9 additional deliverables — measurable, benchmarked, accountable.' },
+                  { n: '03', label: 'Full ecosystem scope', desc: 'Business, technology, operations, AI, security, and growth examined as one interconnected system across 16 diagnostic intelligence pillars.' },
                   { n: '04', label: 'Zero conflict of interest', desc: "We don't sell the cloud. We don't sell the platform. We sell the truth about your organization — then you decide what to do with it." },
                 ].map((d) => (
                   <div key={d.n} className="flex items-start gap-8">
