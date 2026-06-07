@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight, Target, Users, Landmark, Factory, Briefcase, Star,
   TrendingUp, Globe, Cpu, Cloud, BarChart3, Bot, Zap, Lock,
-  Scale, Sparkles, RefreshCw, CheckCircle, Activity,
+  Scale, Sparkles, RefreshCw, Activity,
   Database, Award, Layers, Shield
 } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -303,50 +303,48 @@ export default function BIDSPage() {
           ref={defRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            {/* Left */}
+          {/* Top — eyebrow + oversized headline */}
+          <div className="mb-20 lg:mb-24">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS BIDS™</p>
+            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white max-w-6xl">
+              The complete enterprise<br />
+              diagnostic{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span><br />
+              framework.
+            </h2>
+          </div>
+
+          {/* Bottom — 2-col */}
+          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
+            {/* Left — description + numbered list */}
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
-                <Cpu className="w-4 h-4 text-cyan-400" />
-                <p className="text-[10px] font-bold tracking-[0.3em] text-cyan-400 uppercase">WHAT IS BIDS™</p>
-              </div>
-              
-              <h2 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8 drop-shadow-xl">
-                The complete enterprise diagnostic <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence framework.</span>
-              </h2>
-              <p className="text-white/60 leading-relaxed mb-10 text-lg sm:text-xl font-medium">
-                Kangqore BIDS™ evaluates, benchmarks, scores, and analyzes an entire organization as an interconnected ecosystem. Unlike traditional assessments that focus on isolated departments, BIDS™ examines the complete enterprise landscape.
+              <p className="text-white/50 text-xl leading-relaxed mb-16 font-medium">
+                Kangqore BIDS™ evaluates, benchmarks, scores, and analyzes an entire organization as an interconnected ecosystem — examining the complete enterprise landscape, not isolated departments.
               </p>
-              <div className="space-y-4">
+
+              <div className="space-y-10">
                 {[
-                  'Identifies hidden constraints across all vectors',
-                  'Quantifies their measurable business impact',
-                  'Prioritizes transformation and AI opportunities',
-                  'Generates a strategic roadmap for intelligent growth',
-                ].map((item, i) => (
-                  <div 
-                    key={item} 
-                    className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-300"
-                    style={{ transitionDelay: defVisible ? `${i * 100}ms` : '0ms' }}
-                  >
-                    <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="w-4 h-4 text-cyan-400" />
-                    </div>
-                    <span className="text-white/90 text-sm sm:text-base font-bold tracking-wide">{item}</span>
+                  { n: '01', text: 'Identifies hidden constraints across all vectors' },
+                  { n: '02', text: 'Quantifies their measurable business impact' },
+                  { n: '03', text: 'Prioritizes transformation and AI opportunities' },
+                  { n: '04', text: 'Generates a strategic roadmap for intelligent growth' },
+                ].map((item) => (
+                  <div key={item.n} className="flex items-start gap-8">
+                    <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0 w-6">{item.n}</span>
+                    <p className="text-white text-xl font-semibold leading-snug">{item.text}</p>
                   </div>
                 ))}
               </div>
-
-              <blockquote className="mt-12 p-6 rounded-2xl bg-gradient-to-r from-brand-blue/10 to-transparent border-l-4 border-cyan-400 backdrop-blur-md">
-                <p className="text-white font-black text-xl italic tracking-wide drop-shadow-md">
-                  "What is preventing this organization from achieving its full potential?"
-                </p>
-              </blockquote>
             </div>
 
-            {/* Right — BIDSProductVisual */}
-            <div className="flex justify-center lg:justify-end">
-              <BIDSProductVisual isActive={defVisible} />
+            {/* Right — visual + pull quote */}
+            <div className="flex flex-col gap-16">
+              <div className="flex justify-center lg:justify-end">
+                <BIDSProductVisual isActive={defVisible} />
+              </div>
+              <p className="text-2xl sm:text-3xl font-black text-white leading-snug">
+                "What is preventing this organization from achieving its full potential?"
+              </p>
             </div>
           </div>
         </div>
