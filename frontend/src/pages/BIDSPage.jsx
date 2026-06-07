@@ -221,7 +221,6 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── PROBLEM ─────────────────────── */}
       <section className="py-32 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(244,63,94,0.05)_0%,transparent_50%)] pointer-events-none" />
         <div
           ref={problemRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${problemVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -229,8 +228,7 @@ export default function BIDSPage() {
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             {/* Left */}
             <div>
-              <p className="text-xs font-bold tracking-[0.3em] text-red-400 uppercase mb-5 flex items-center gap-3">
-                <span className="w-8 h-px bg-red-400/50" />
+              <p className="text-xs font-bold tracking-[0.3em] text-red-400 uppercase mb-5">
                 The Problem
               </p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
@@ -270,7 +268,7 @@ export default function BIDSPage() {
                   </div>
                 ))}
               </div>
-              <p className="mt-10 text-sm text-white/40 font-medium leading-relaxed bg-black/50 p-6 rounded-2xl border border-white/5">
+              <p className="mt-10 text-sm text-white/40 font-medium leading-relaxed p-6">
                 These symptoms are rarely the root problem. The underlying causes exist across interconnected systems, functions, teams, and decision-making structures.
               </p>
             </div>
@@ -280,9 +278,6 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── DEFINITION ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-blue/10 rounded-full blur-[150px]" />
-        </div>
         <div
           ref={defRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -338,9 +333,6 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── HOW IT WORKS ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
-        </div>
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="text-center mb-20">
             <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE PROCESS</p>
@@ -355,8 +347,6 @@ export default function BIDSPage() {
 
           {/* Steps */}
           <div className="relative">
-            {/* Connector line — desktop only */}
-            <div className="hidden lg:block absolute top-[52px] left-[calc(16.66%+28px)] right-[calc(16.66%+28px)] h-px bg-gradient-to-r from-cyan-500/30 via-brand-blue/50 to-violet-500/30" />
 
             <div className="grid lg:grid-cols-3 gap-6 lg:gap-10">
               {[
@@ -434,10 +424,6 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── 16 PILLARS ─────────────────────── */}
       <section id="pillars" className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[120px]" />
-        </div>
         <div
           ref={pillarsRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${pillarsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -479,10 +465,6 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── 5 ENGINES ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        {/* Dynamic mesh background */}
-        <div className="absolute inset-0 pointer-events-none opacity-20" 
-             style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-             
         <div
           ref={enginesRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${enginesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -538,9 +520,6 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── DELIVERABLES ─────────────────────── */}
       <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-brand-blue/5 rounded-full blur-[200px]" />
-        </div>
         <div
           ref={delivRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${delivVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -579,9 +558,6 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── SAMPLE SCORECARD ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-brand-blue/8 rounded-full blur-[180px]" />
-        </div>
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
 
@@ -613,8 +589,6 @@ export default function BIDSPage() {
 
             {/* Right — scorecard mockup */}
             <div className="relative">
-              {/* Glow behind card */}
-              <div className="absolute -inset-4 bg-brand-blue/10 rounded-3xl blur-2xl" />
               <div className="relative rounded-2xl border border-white/15 bg-black overflow-hidden shadow-2xl">
 
                 {/* Card header */}
@@ -752,11 +726,6 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── CTA ─────────────────────── */}
       <section className="relative py-40 overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Animated glowing mesh / radial */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(37,100,234,0.15)_0%,transparent_70%)] animate-pulse" style={{ animationDuration: '4s' }} />
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50" />
-        </div>
         <div
           ref={ctaRef}
           className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-8 text-center transition-all duration-1000 ${ctaVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'}`}
