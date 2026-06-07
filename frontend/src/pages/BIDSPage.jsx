@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Target, Users, Landmark, Factory, Briefcase, Star,
   TrendingUp, Globe, Cpu, Cloud, BarChart3, Bot, Zap, Lock,
   Scale, Sparkles, RefreshCw, Activity,
-  Database, Award, Layers, Shield
+  Database, Award, Layers, Shield, Send, ChevronRight
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
@@ -144,6 +144,8 @@ export default function BIDSPage() {
   const [ctaRef, ctaVisible]           = useScrollAnimation({ once: true, threshold: 0.2 });
   const [activePillar, setActivePillar] = useState(0);
   const [activeDeliverable, setActiveDeliverable] = useState(0);
+  const [eqoreQuery, setEqoreQuery] = useState('');
+  const [eqoreSubmitted, setEqoreSubmitted] = useState(false);
 
   return (
     <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
@@ -238,6 +240,26 @@ export default function BIDSPage() {
           </div>
         </div>
       </section>
+      </div>
+
+      {/* ─────────────────────── STICKY SUB-NAV ─────────────────────── */}
+      <div className="sticky top-16 z-30 bg-black/95 backdrop-blur-xl border-b border-white/[0.07]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between h-12">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              <span className="text-[10px] font-black tracking-[0.25em] text-white/50 uppercase">Kangqore BIDS™</span>
+            </div>
+            <span className="text-white/15 hidden sm:block text-[10px] font-bold tracking-widest uppercase">Enterprise Diagnostic Intelligence Framework</span>
+          </div>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:bg-white/10 transition-all duration-300"
+          >
+            <span className="text-[10px] font-black tracking-[0.2em] text-white/70 uppercase">Request a Diagnostic Assessment</span>
+            <ArrowRight className="w-3 h-3 text-cyan-400" />
+          </Link>
+        </div>
       </div>
 
       {/* ─────────────────────── PROBLEM ─────────────────────── */}
@@ -586,6 +608,67 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── ENGAGEMENT OVERVIEW ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
+
+            {/* Left — timeline + commercial framing */}
+            <div>
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENGAGEMENT OVERVIEW</p>
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
+                From first call to<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">executive delivery.</span>
+              </h2>
+              <p className="text-white/40 text-lg font-medium leading-relaxed mb-14">
+                Typical Kangqore BIDS™ engagements run 4–6 weeks. Investment varies by organization size, complexity, and edition selected. Every engagement concludes with a full executive delivery session.
+              </p>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group"
+              >
+                <span className="text-white font-black text-sm tracking-wide">Request a Scoping Call</span>
+                <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
+              </Link>
+            </div>
+
+            {/* Right — timeline breakdown + methodology tease */}
+            <div className="space-y-0">
+              {/* Timeline phases */}
+              {[
+                { week: 'Week 1–2',    phase: 'Discover',   desc: 'Stakeholder interviews, documentation review, systems analysis, scope alignment' },
+                { week: 'Week 2–4',    phase: 'Diagnose',   desc: '16-pillar assessment, 6 intelligence engines, enterprise scoring, constraint mapping' },
+                { week: 'Week 4–5',    phase: 'Prescribe',  desc: 'Risk Register™, Opportunity Register™, Service Prescription Matrix™, roadmap drafting' },
+                { week: 'Week 5–6',    phase: 'Transform',  desc: 'Executive Delivery, Board Presentation™, Workshop™, 30/60/90/180-Day Roadmap™' },
+              ].map((t, i) => (
+                <div key={t.phase} className="flex gap-6 pb-8">
+                  <div className="flex flex-col items-center">
+                    <div className="w-2 h-2 rounded-full bg-cyan-400 mt-1.5 flex-shrink-0" />
+                    {i < 3 && <div className="w-px flex-1 bg-white/[0.08] mt-2" />}
+                  </div>
+                  <div className="pb-2">
+                    <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase mb-1">{t.week}</p>
+                    <p className="text-white font-black text-lg mb-1">{t.phase}</p>
+                    <p className="text-white/35 text-sm font-medium leading-relaxed">{t.desc}</p>
+                  </div>
+                </div>
+              ))}
+
+              {/* Methodology tease */}
+              <div className="mt-4 pt-8 border-t border-white/[0.06]">
+                <p className="text-[9px] font-black tracking-[0.35em] text-white/20 uppercase mb-3">PROPRIETARY METHODOLOGY</p>
+                <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
+                  The Kangqore BIDS™ scoring methodology — including pillar weightings, data point inputs, and cross-engine synthesis logic — is proprietary. A methodology overview is available upon request for qualified engagements.
+                </p>
+                <Link to="/contact" className="inline-flex items-center gap-2 text-cyan-400/70 hover:text-cyan-400 transition-colors duration-200 text-sm font-bold">
+                  Request Methodology Overview <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── 16 PILLARS ─────────────────────── */}
       <section id="pillars" className="py-32 relative">
         <div
@@ -688,71 +771,6 @@ export default function BIDSPage() {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────── BENCHMARK INTELLIGENCE ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="mb-24">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">BENCHMARK INTELLIGENCE™</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
-              Not just how you score.<br />
-              <span className="bg-brand-gradient bg-clip-text text-transparent">How you compare.</span>
-            </h2>
-          </div>
-          {/* Launch announcement panel */}
-          <div className="mb-20 flex items-center gap-4">
-            <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
-            <p className="text-sm font-black tracking-[0.2em] text-cyan-400 uppercase">Launching Q4 2026</p>
-          </div>
-
-          <p className="text-white/50 text-xl font-medium leading-relaxed max-w-3xl mb-20">
-            Kangqore is building the first vendor-agnostic enterprise diagnostic benchmark dataset — aggregating anonymized Kangqore BIDS™ engagement data across industries, sectors, and geographies. Organizations that complete a Kangqore BIDS™ engagement today will be among the first to receive benchmark intelligence when it launches.
-          </p>
-
-          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
-            {/* Left — what it will include */}
-            <div>
-              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">WHAT IT WILL INCLUDE</p>
-              <div className="space-y-8">
-                {[
-                  { tier: 'Industry Average',       desc: 'Where you stand relative to the sector median across all 16 pillars' },
-                  { tier: 'Industry Leaders',        desc: 'The gap between you and the top performers in your space' },
-                  { tier: 'Regional Peers',          desc: 'Performance against organizations operating in your region' },
-                  { tier: 'National Competitors',    desc: 'National market position mapped across business and technology dimensions' },
-                  { tier: 'Global Best Performers',  desc: 'How far ahead or behind the global frontier your organization sits' },
-                ].map((t) => (
-                  <div key={t.tier} className="flex items-start gap-6">
-                    <div className="w-2 h-2 rounded-full bg-white/20 mt-2 flex-shrink-0" />
-                    <div>
-                      <p className="text-white/60 font-bold text-base mb-1">{t.tier}</p>
-                      <p className="text-white/25 text-sm font-medium leading-relaxed">{t.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* Right — outputs */}
-            <div>
-              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">PLANNED OUTPUTS</p>
-              <div className="space-y-10">
-                {[
-                  { n: '01', label: 'Percentile Ranking™', desc: 'Your organization scored in the Nth percentile — precision positioning across every pillar, not vague commentary.' },
-                  { n: '02', label: 'Competitive Position Index™', desc: 'A composite score mapping your relative competitive strength across business, technology, and operations.' },
-                  { n: '03', label: 'Industry Gap Analysis™', desc: 'The specific pillars where you trail competitors — ranked by business impact and transformation priority.' },
-                ].map((d) => (
-                  <div key={d.n} className="flex items-start gap-8">
-                    <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{d.n}</span>
-                    <div>
-                      <p className="text-white/50 font-bold text-lg mb-2">{d.label}</p>
-                      <p className="text-white/30 text-sm leading-relaxed">{d.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -1122,6 +1140,107 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── eQORE AI ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12">
+          <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">eQORE AI™</p>
+          <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-6">
+            Ask eQORE.<br />
+            <span className="bg-brand-gradient bg-clip-text text-transparent">Get answers.</span>
+          </h2>
+          <p className="text-white/35 text-lg font-medium leading-relaxed max-w-2xl mb-20">
+            eQORE AI™ is Kangqore's intelligence core — powering the Prescription Engine™ inside every BIDS™ engagement. Ask about the diagnostic process, our service areas, or request an assessment.
+          </p>
+
+          {!eqoreSubmitted ? (
+            <div className="flex flex-col md:flex-row items-center gap-10">
+              {/* Avatar */}
+              <div className="relative shrink-0">
+                <div className="absolute inset-0 rounded-full border border-cyan-400/40 animate-pulse" style={{ animationDuration: '3s' }} />
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl bg-black relative z-10">
+                  <img src="/images/eqore-avatar.png" alt="eQORE AI" className="w-full h-full object-cover" />
+                </div>
+                <div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-cyan-400 border-2 border-black rounded-full shadow-[0_0_12px_rgba(34,211,238,0.8)] z-20" />
+              </div>
+
+              {/* Input */}
+              <div className="flex-1 w-full relative">
+                {!eqoreQuery && (
+                  <div className="absolute inset-0 pointer-events-none flex items-center overflow-hidden whitespace-nowrap z-0">
+                    <style>{`
+                      @keyframes bids-placeholder-scroll {
+                        0% { transform: translateX(0); }
+                        100% { transform: translateX(-50%); }
+                      }
+                      .animate-bids-placeholder { animation: bids-placeholder-scroll 28s linear infinite; }
+                    `}</style>
+                    <div className="flex animate-bids-placeholder">
+                      <span className="text-xl md:text-3xl font-light tracking-tight text-white/20 pr-16">
+                        Ask about Kangqore BIDS™, our diagnostic process, or request an assessment.
+                      </span>
+                      <span className="text-xl md:text-3xl font-light tracking-tight text-white/20 pr-16">
+                        Ask about Kangqore BIDS™, our diagnostic process, or request an assessment.
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!eqoreQuery.trim()) return;
+                    setEqoreSubmitted(true);
+                  }}
+                  className="relative group z-10"
+                >
+                  <input
+                    type="text"
+                    value={eqoreQuery}
+                    onChange={(e) => setEqoreQuery(e.target.value)}
+                    placeholder=""
+                    className="w-full bg-transparent border-b border-white/10 px-0 py-5 text-xl md:text-3xl font-light tracking-tight text-white placeholder-transparent focus:outline-none focus:border-cyan-400 transition-all duration-500"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!eqoreQuery.trim()}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 p-3 text-cyan-400 hover:text-white hover:scale-125 active:scale-95 transition-all duration-300 disabled:opacity-0"
+                  >
+                    <Send className="w-6 h-6" />
+                  </button>
+                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-cyan-400 transition-all duration-700 group-focus-within:w-full group-hover:w-full opacity-50 shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
+                </form>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col md:flex-row items-start gap-10">
+              {/* Avatar */}
+              <div className="relative shrink-0">
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-cyan-400/30 shadow-2xl bg-black">
+                  <img src="/images/eqore-avatar.png" alt="eQORE AI" className="w-full h-full object-cover" />
+                </div>
+                <div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-cyan-400 border-2 border-black rounded-full shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
+              </div>
+              {/* Response */}
+              <div className="flex-1">
+                <p className="text-[9px] font-black tracking-[0.35em] text-cyan-400/60 uppercase mb-4">eQORE AI™ · Response</p>
+                <p className="text-white text-xl font-medium leading-relaxed mb-2">
+                  "{eqoreQuery}"
+                </p>
+                <p className="text-white/50 text-base leading-relaxed mb-8">
+                  I've received your query. For a full diagnostic conversation and to explore how Kangqore BIDS™ applies to your organization, a member of our team will respond directly.
+                </p>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-cyan-400/10 border border-cyan-400/30 hover:bg-cyan-400/20 hover:border-cyan-400/60 transition-all duration-300 group"
+                >
+                  <span className="text-cyan-400 font-black text-sm tracking-wide">Connect with Our Team</span>
+                  <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* ─────────────────────── SCALE STRIP ─────────────────────── */}
       <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -1142,6 +1261,25 @@ export default function BIDSPage() {
           <p className="mt-14 text-white/25 text-sm font-medium max-w-xl leading-relaxed">
             Kangqore BIDS™ is backed by the full depth of the Kangqore practice — AI, cloud, engineering, security, modernization, and growth — all available for prescription the moment diagnosis is complete.
           </p>
+        </div>
+      </section>
+
+      {/* ─────────────────────── WHAT'S COMING ─────────────────────── */}
+      <section className="py-20 relative overflow-hidden border-t border-white/[0.04]" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div className="flex items-center gap-5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/50 animate-pulse" />
+                <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase">COMING Q4 2026</p>
+              </div>
+              <div className="w-px h-4 bg-white/10" />
+              <p className="text-white/40 text-sm font-bold">Benchmark Intelligence™</p>
+            </div>
+            <p className="text-white/25 text-sm font-medium max-w-lg leading-relaxed">
+              Kangqore is building the first vendor-agnostic enterprise diagnostic benchmark dataset — percentile rankings, competitive position indices, and industry gap analysis across all 16 pillars. Organizations that complete a BIDS™ engagement today will be among the first to receive benchmark intelligence when it launches.
+            </p>
+          </div>
         </div>
       </section>
 
