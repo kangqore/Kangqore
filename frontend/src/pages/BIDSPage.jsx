@@ -274,22 +274,18 @@ export default function BIDSPage() {
               </div>
             </div>
 
-            {/* Right — symptoms glass pills */}
+            {/* Right — symptoms plain list */}
             <div className="lg:pt-10">
               <p className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase mb-8">FAMILIAR SYMPTOMS</p>
-              <div className="flex flex-wrap gap-4">
-                {symptoms.map((s, i) => (
-                  <div 
-                    key={s} 
-                    className="flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 hover:border-red-400/30 hover:-translate-y-1 transition-all duration-300"
-                    style={{ transitionDelay: problemVisible ? `${i * 50}ms` : '0ms' }}
-                  >
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)] flex-shrink-0 animate-pulse" />
-                    <span className="text-white/80 text-sm font-semibold tracking-wide">{s}</span>
+              <div className="space-y-5">
+                {symptoms.map((s) => (
+                  <div key={s} className="flex items-center gap-4">
+                    <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                    <span className="text-white/70 text-base font-semibold">{s}</span>
                   </div>
                 ))}
               </div>
-              <p className="mt-10 text-sm text-white/40 font-medium leading-relaxed p-6">
+              <p className="mt-10 text-sm text-white/40 font-medium leading-relaxed">
                 These symptoms are rarely the root problem. The underlying causes exist across interconnected systems, functions, teams, and decision-making structures.
               </p>
             </div>
