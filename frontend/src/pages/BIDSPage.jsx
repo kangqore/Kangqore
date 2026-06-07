@@ -252,7 +252,7 @@ export default function BIDSPage() {
               <p className="text-xs font-bold tracking-[0.3em] text-red-400 uppercase mb-5">
                 The Problem
               </p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
                 Organizations rarely fail because they lack{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-600 filter drop-shadow-[0_0_20px_rgba(225,29,72,0.3)]">ambition.</span>
               </h2>
@@ -298,7 +298,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
             <p className="text-[10px] font-black tracking-[0.45em] text-red-400 uppercase mb-8">THE REAL COST</p>
-            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
               Every hidden constraint<br />
               has a <span className="text-red-400">measurable cost.</span>
             </h2>
@@ -340,7 +340,7 @@ export default function BIDSPage() {
           {/* Top — eyebrow + oversized headline */}
           <div className="mb-20 lg:mb-24">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS KANGQORE BIDS™</p>
-            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white max-w-6xl">
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white max-w-6xl">
               The complete enterprise<br />
               diagnostic{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span><br />
@@ -390,7 +390,7 @@ export default function BIDSPage() {
           <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">EXECUTIVE CLARITY</p>
-              <h2 className="text-5xl sm:text-6xl lg:text-[5rem] font-black leading-[1.0] tracking-[-0.04em] text-white mb-10">
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
                 Questions every<br />executive should<br />be able to answer.
               </h2>
               <p className="text-white/40 text-lg font-medium leading-relaxed">
@@ -422,7 +422,7 @@ export default function BIDSPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
-            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
               The Kangqore BIDS™<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">Diagnostic Process.</span>
             </h2>
@@ -487,7 +487,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PRESCRIPTION ENGINE™</p>
-            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white max-w-5xl">
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white max-w-5xl">
               From score to<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">strategic action.</span>
             </h2>
@@ -658,7 +658,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-24">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">BENCHMARK INTELLIGENCE™</p>
-            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
               Not just how you score.<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">How you compare.</span>
             </h2>
@@ -767,7 +767,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-24">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">AFTER KANGQORE BIDS™</p>
-            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
               Organizations gain<br />
               <span className="text-white/25">clarity, velocity,</span><br />
               <span className="text-white/25">and advantage.</span>
@@ -801,7 +801,7 @@ export default function BIDSPage() {
             {/* Left — copy */}
             <div>
               <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">SAMPLE OUTPUT</p>
-              <h2 className="text-4xl sm:text-5xl font-black tracking-[-0.03em] text-white mb-6">
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white mb-6">
                 This is what you{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">receive.</span>
               </h2>
@@ -952,7 +952,7 @@ export default function BIDSPage() {
         >
           <div className="text-center mb-16">
             <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5 drop-shadow-md">TAILORED TO YOUR SECTOR</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-[-0.03em] text-white drop-shadow-xl">
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white">
               10 Industry{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Editions™</span>
             </h2>
@@ -978,7 +978,7 @@ export default function BIDSPage() {
           {/* Header */}
           <div className="mb-24">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE DIFFERENCE</p>
-            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
               Built to diagnose.<br />
               <span className="text-white/25">Not to sell.</span>
             </h2>
@@ -1042,7 +1042,7 @@ export default function BIDSPage() {
             <Target className="w-8 h-8 text-cyan-400 animate-pulse" />
           </div>
           
-          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.05] tracking-[-0.04em] text-white mb-8 drop-shadow-2xl">
+          <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8 drop-shadow-2xl">
             Diagnose the Enterprise.<br />
             <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">Unlock the Potential.</span>
           </h2>
