@@ -477,7 +477,7 @@ export default function BIDSPage() {
             </div>
 
             {/* Right — floats in place within the section */}
-            <div className="hidden lg:flex items-start pt-2">
+            <div className="hidden lg:flex items-center">
               <div className="w-full">
                 <p className="text-[10px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">PILLAR {pillars[activePillar].n}</p>
                 <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">
