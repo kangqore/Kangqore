@@ -143,6 +143,7 @@ export default function BIDSPage() {
   const [editionsRef, editionsVisible] = useScrollAnimation({ once: true, threshold: 0.1 });
   const [ctaRef, ctaVisible]           = useScrollAnimation({ once: true, threshold: 0.2 });
   const [activePillar, setActivePillar] = useState(0);
+  const [activeDeliverable, setActiveDeliverable] = useState(0);
 
   return (
     <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
@@ -530,34 +531,50 @@ export default function BIDSPage() {
           ref={delivRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${delivVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
-          <div className="text-center mb-20">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5 drop-shadow-md">WHAT YOU RECEIVE</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white mb-6 drop-shadow-2xl">
+          <div className="mb-16">
+            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">WHAT YOU RECEIVE</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white">
               Every Engagement{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Delivers</span>
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto text-lg sm:text-xl font-medium">
-              Ten proprietary deliverables. Each designed to give leadership teams the intelligence and tools to act decisively.
-            </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            {deliverables.map((d, i) => {
-              const Icon = d.icon;
-              return (
-                <div
-                  key={d.name}
-                  className="bg-white/5 border border-white/10 backdrop-blur-lg rounded-2xl p-7 group hover:bg-white/10 hover:border-cyan-400/40 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(34,211,238,0.1)] transition-all duration-500"
-                  style={{ transitionDelay: delivVisible ? `${i * 40}ms` : '0ms' }}
-                >
-                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:border-cyan-400/50 group-hover:bg-cyan-400/10 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all duration-500">
-                    <Icon className="w-6 h-6 text-white/50 group-hover:text-cyan-300 transition-colors duration-500" strokeWidth={1.5} />
+          <div className="grid lg:grid-cols-2 lg:gap-24 lg:h-[500px]">
+            {/* Left — scrollable list */}
+            <div className="overflow-y-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+              {deliverables.map((d, i) => {
+                const active = activeDeliverable === i;
+                return (
+                  <div
+                    key={d.name}
+                    onMouseEnter={() => setActiveDeliverable(i)}
+                    className="group flex items-center gap-5 py-5 border-b border-white/[0.06] cursor-default"
+                  >
+                    <span className={`w-2.5 h-2.5 flex-shrink-0 transition-colors duration-200 ${active ? 'bg-cyan-400' : 'bg-transparent'}`} />
+                    <span className={`text-xl sm:text-2xl lg:text-3xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/25 group-hover:text-white/55'}`}>
+                      {d.name}
+                    </span>
                   </div>
-                  <p className="text-white font-bold text-base leading-snug mb-3 drop-shadow-md">{d.name}</p>
-                  <p className="text-xs text-white/50 leading-relaxed font-medium">{d.desc}</p>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+
+            {/* Right — floating detail */}
+            <div className="hidden lg:flex items-center">
+              <div className="w-full">
+                {(() => { const Icon = deliverables[activeDeliverable].icon; return (
+                  <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8">
+                    <Icon className="w-10 h-10 text-cyan-400" strokeWidth={1.5} />
+                  </div>
+                ); })()}
+                <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">
+                  {deliverables[activeDeliverable].name}
+                </h3>
+                <p className="text-white/50 text-lg leading-relaxed">
+                  {deliverables[activeDeliverable].desc}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
