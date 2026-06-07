@@ -293,6 +293,44 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── CONSTRAINT COST ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="mb-20">
+            <p className="text-[10px] font-black tracking-[0.45em] text-red-400 uppercase mb-8">THE REAL COST</p>
+            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+              Every hidden constraint<br />
+              has a <span className="text-red-400">measurable cost.</span>
+            </h2>
+          </div>
+          {/* Table */}
+          <div className="mb-20">
+            <div className="grid grid-cols-2 pb-5 mb-2">
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/25 uppercase">CONSTRAINT</p>
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/25 uppercase">BUSINESS IMPACT</p>
+            </div>
+            {[
+              { constraint: 'Poor Processes',           impact: 'Increased operational costs' },
+              { constraint: 'Technology Debt',          impact: 'Slower innovation velocity' },
+              { constraint: 'Weak Cybersecurity',       impact: 'Higher breach exposure' },
+              { constraint: 'Low AI Readiness',         impact: 'Lost competitive advantage' },
+              { constraint: 'Data Silos',               impact: 'Poor decision quality' },
+              { constraint: 'Workforce Inefficiencies', impact: 'Reduced productivity' },
+              { constraint: 'Fragmented Systems',       impact: 'Lower ROI on technology' },
+              { constraint: 'Governance Gaps',          impact: 'Compliance and regulatory risk' },
+            ].map((row) => (
+              <div key={row.constraint} className="grid grid-cols-2 py-6 border-t border-white/[0.06]">
+                <p className="text-white font-bold text-lg">{row.constraint}</p>
+                <p className="text-white/45 font-medium text-lg">{row.impact}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-2xl sm:text-3xl font-black text-cyan-400 max-w-3xl leading-snug">
+            BIDS™ quantifies these costs before they become business failures.
+          </p>
+        </div>
+      </section>
+
       {/* ─────────────────────── DEFINITION ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div
@@ -346,57 +384,88 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── CEO QUESTIONS ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
+            <div>
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">EXECUTIVE CLARITY</p>
+              <h2 className="text-5xl sm:text-6xl lg:text-[5rem] font-black leading-[1.0] tracking-[-0.04em] text-white mb-10">
+                Questions every<br />executive should<br />be able to answer.
+              </h2>
+              <p className="text-white/40 text-lg font-medium leading-relaxed">
+                If these answers are unclear, decisions are made on assumptions — not intelligence. That is where value is lost. BIDS™ exists for exactly this reason.
+              </p>
+            </div>
+            <div className="space-y-8 lg:pt-16">
+              {[
+                'What is limiting our growth?',
+                'Where is our highest business risk?',
+                'Which investments generate the greatest return?',
+                'Are we ready for AI?',
+                'Are we secure?',
+                'Are we scalable?',
+                'Are we transformation-ready?',
+              ].map((q, i) => (
+                <div key={q} className="flex items-start gap-6 border-b border-white/[0.06] pb-8">
+                  <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="text-white text-xl font-semibold leading-snug">{q}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── HOW IT WORKS ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="text-center mb-20">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE PROCESS</p>
-            <h2 className="text-4xl sm:text-5xl font-black tracking-[-0.03em] text-white mb-4">
-              How{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">BIDS™ Works</span>
+          <div className="mb-20">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
+            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+              The BIDS™<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">Diagnostic Process.</span>
             </h2>
-            <p className="text-white/50 max-w-xl mx-auto text-lg font-medium">
-              Three stages. Typically 4–6 weeks from first call to executive delivery.
+            <p className="text-white/40 text-lg font-medium mt-6">
+              Four phases. Typically 4–6 weeks from first call to executive delivery.
             </p>
           </div>
-
-          {/* Steps */}
-          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8 lg:items-start">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:items-start">
             {[
               {
-                step: '01', label: 'REQUEST', title: 'Discovery Briefing', duration: '~30 minutes',
-                color: 'from-cyan-400 to-blue-600', icon: Target,
-                points: ['Scope your industry and edition', 'Identify key stakeholders', 'Align on strategic objectives', 'Confirm engagement timeline'],
+                step: '01', label: 'PHASE ONE', title: 'Discover',
+                color: 'from-cyan-400 to-blue-500', icon: Target,
+                points: ['Stakeholder interviews', 'Documentation review', 'Systems analysis', 'Scope alignment'],
               },
               {
-                step: '02', label: 'DIAGNOSE', title: '16-Pillar Assessment', duration: '2–4 weeks',
+                step: '02', label: 'PHASE TWO', title: 'Diagnose',
                 color: 'from-brand-blue to-violet-600', icon: BarChart3,
-                points: ['Deep-dive across all 16 pillars', 'Stakeholder interviews + data review', 'Six intelligence engines activated', 'Constraints mapped and scored'],
+                points: ['16 Intelligence Pillars activated', '6 Intelligence Engines running', 'Enterprise scoring completed', 'Constraints mapped'],
               },
               {
-                step: '03', label: 'BLUEPRINT', title: 'Executive Delivery', duration: '1–2 weeks',
-                color: 'from-violet-400 to-purple-700', icon: Award,
-                points: ['Diagnostic Scorecard™ presented', 'Transformation Blueprint™ delivered', '30/60/90/180-Day Roadmap™', 'Executive Workshop™ facilitated'],
+                step: '03', label: 'PHASE THREE', title: 'Prescribe',
+                color: 'from-violet-400 to-purple-700', icon: Sparkles,
+                points: ['Risk Register™ compiled', 'Opportunity Register™ built', 'Service Prescription Matrix™', 'Priority roadmap drafted'],
+              },
+              {
+                step: '04', label: 'PHASE FOUR', title: 'Transform',
+                color: 'from-emerald-400 to-green-600', icon: Award,
+                points: ['30/60/90/180-Day Roadmap™', 'Executive Workshop™', 'Execution planning', 'Progress benchmarks set'],
               },
             ].map((s, i) => {
               const Icon = s.icon;
+              const elevated = i === 1 || i === 3;
               return (
-                <div
-                  key={s.step}
-                  className={`flex flex-col rounded-3xl overflow-hidden${i === 1 ? ' lg:-translate-y-8' : ''}`}
-                >
-                  {/* Top — gradient visual */}
-                  <div className={`relative h-64 bg-gradient-to-br ${s.color} flex items-center justify-center overflow-hidden flex-shrink-0`}>
-                    <span className="absolute text-[180px] font-black text-white/[0.07] leading-none select-none">{s.step}</span>
-                    <div className="relative w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center">
-                      <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
+                <div key={s.step} className={`flex flex-col rounded-3xl overflow-hidden${elevated ? ' lg:-translate-y-8' : ''}`}>
+                  <div className={`relative h-52 bg-gradient-to-br ${s.color} flex items-center justify-center overflow-hidden flex-shrink-0`}>
+                    <span className="absolute text-[140px] font-black text-white/[0.07] leading-none select-none">{s.step}</span>
+                    <div className="relative w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
+                      <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
                     </div>
                   </div>
-                  {/* Bottom — content */}
-                  <div className="flex-1 bg-[#111111] border border-white/10 border-t-0 rounded-b-3xl p-8">
+                  <div className="flex-1 bg-[#111111] border border-white/10 border-t-0 rounded-b-3xl p-7">
                     <p className={`text-[10px] font-black tracking-[0.3em] uppercase mb-3 bg-gradient-to-r ${s.color} bg-clip-text text-transparent`}>{s.label}</p>
-                    <h3 className="text-2xl font-black text-white mb-1 tracking-tight">{s.title}</h3>
-                    <p className="text-white/30 text-xs font-bold tracking-widest uppercase mb-6">{s.duration}</p>
+                    <h3 className="text-2xl font-black text-white mb-5 tracking-tight">{s.title}</h3>
                     <ul className="space-y-3">
                       {s.points.map(pt => (
                         <li key={pt} className="flex items-start gap-3">
@@ -410,6 +479,71 @@ export default function BIDSPage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────── PRESCRIPTION ENGINE ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="mb-20">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PRESCRIPTION ENGINE™</p>
+            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white max-w-5xl">
+              From score to<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">strategic action.</span>
+            </h2>
+          </div>
+          {/* Flow — 4 columns with connector arrows */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 mb-16">
+            {[
+              {
+                step: '01', color: 'from-cyan-400 to-blue-500',
+                title: 'Diagnostic Score',
+                items: ['Business Strategy: 42', 'Technology Maturity: 58', 'AI Readiness: 31', 'Security Posture: 67'],
+                note: 'Scored across all 16 pillars',
+              },
+              {
+                step: '02', color: 'from-brand-blue to-violet-600',
+                title: 'Root Causes Identified',
+                items: ['Leadership bottlenecks', 'Poor operational visibility', 'Technology fragmentation', 'Data architecture gaps'],
+                note: 'Mapped to specific pillar findings',
+              },
+              {
+                step: '03', color: 'from-violet-400 to-purple-700',
+                title: 'Recommended Actions',
+                items: ['Digital Transformation Strategy', 'Business Process Reengineering', 'Enterprise Dashboard OS', 'Data Intelligence Modernization'],
+                note: 'Ranked by impact and urgency',
+              },
+              {
+                step: '04', color: 'from-emerald-400 to-green-600',
+                title: 'Mapped Kangqore Services',
+                items: ['61 services across 6 departments', 'Matched to root causes', 'Sequenced for execution', 'Scoped for ROI'],
+                note: 'The front door to all of Kangqore',
+              },
+            ].map((phase, i) => (
+              <div key={phase.step} className="relative lg:px-6 first:lg:pl-0 last:lg:pr-0">
+                {i < 3 && (
+                  <div className="hidden lg:block absolute top-5 right-0 translate-x-1/2 z-10">
+                    <ArrowRight className="w-4 h-4 text-white/15" />
+                  </div>
+                )}
+                <p className={`text-[10px] font-black tracking-[0.4em] uppercase mb-5 bg-gradient-to-r ${phase.color} bg-clip-text text-transparent`}>{phase.step}</p>
+                <h3 className="text-white font-black text-xl mb-5 leading-tight">{phase.title}</h3>
+                <ul className="space-y-3 mb-4">
+                  {phase.items.map(item => (
+                    <li key={item} className="flex items-start gap-3">
+                      <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${phase.color} mt-2 flex-shrink-0`} />
+                      <span className="text-white/50 text-sm font-medium leading-snug">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-white/20 text-xs font-bold tracking-wide">{phase.note}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xl sm:text-2xl font-black text-white/60 max-w-3xl leading-snug">
+            This is where BIDS™ transforms from a report into a{' '}
+            <span className="text-white">revenue engine</span> — mapping every constraint directly to a Kangqore service prescription.
+          </p>
         </div>
       </section>
 
@@ -519,6 +653,61 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── BENCHMARK INTELLIGENCE ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="mb-24">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">BENCHMARK INTELLIGENCE™</p>
+            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+              Not just how you score.<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">How you compare.</span>
+            </h2>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
+            {/* Left — comparison tiers */}
+            <div>
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">COMPARE AGAINST</p>
+              <div className="space-y-8">
+                {[
+                  { tier: 'Industry Average',      desc: 'Where you stand relative to the sector median across all 16 pillars' },
+                  { tier: 'Industry Leaders',       desc: 'The gap between you and the top performers in your space' },
+                  { tier: 'Regional Peers',         desc: 'Performance against organizations operating in your region' },
+                  { tier: 'National Competitors',   desc: 'National market position mapped across business and technology dimensions' },
+                  { tier: 'Global Best Performers', desc: 'How far ahead or behind the global frontier your organization sits' },
+                ].map((t) => (
+                  <div key={t.tier} className="flex items-start gap-6">
+                    <div className="w-2 h-2 rounded-full bg-cyan-400 mt-2 flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-bold text-base mb-1">{t.tier}</p>
+                      <p className="text-white/35 text-sm font-medium leading-relaxed">{t.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Right — outputs */}
+            <div>
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">INTELLIGENCE OUTPUTS</p>
+              <div className="space-y-10">
+                {[
+                  { n: '01', label: 'Percentile Ranking™', desc: 'Your organization scored in the Nth percentile — precision positioning across every pillar, not vague commentary.' },
+                  { n: '02', label: 'Competitive Position Index™', desc: 'A composite score mapping your relative competitive strength across business, technology, and operations.' },
+                  { n: '03', label: 'Industry Gap Analysis™', desc: 'The specific pillars where you trail competitors — ranked by business impact and transformation priority.' },
+                ].map((d) => (
+                  <div key={d.n} className="flex items-start gap-8">
+                    <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{d.n}</span>
+                    <div>
+                      <p className="text-white font-bold text-lg mb-2">{d.label}</p>
+                      <p className="text-white/40 text-sm leading-relaxed">{d.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── DELIVERABLES ─────────────────────── */}
       <section className="py-32 relative overflow-hidden">
         <div
@@ -569,6 +758,37 @@ export default function BIDSPage() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────── OUTCOMES ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="mb-24">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">AFTER BIDS™</p>
+            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+              Organizations gain<br />
+              <span className="text-white/25">clarity, velocity,</span><br />
+              <span className="text-white/25">and advantage.</span>
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-12">
+            {[
+              { n: '01', text: 'Clear visibility into every hidden constraint' },
+              { n: '02', text: 'Prioritized transformation initiatives' },
+              { n: '03', text: 'Reduced risk exposure across the enterprise' },
+              { n: '04', text: 'Higher operational efficiency' },
+              { n: '05', text: 'Stronger technology foundations' },
+              { n: '06', text: 'Greater AI readiness' },
+              { n: '07', text: 'Faster, smarter execution' },
+              { n: '08', text: 'Measurable growth opportunities' },
+            ].map((item) => (
+              <div key={item.n} className="flex items-start gap-5">
+                <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{item.n}</span>
+                <p className="text-white text-lg font-semibold leading-snug">{item.text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -691,25 +911,35 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── PHILOSOPHY ─────────────────────── */}
+      {/* ─────────────────────── WHY WE BUILT BIDS™ ─────────────────────── */}
       <section className="py-32 relative" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center relative z-10">
-          <p className="text-xs font-bold tracking-[0.3em] text-cyan-500 uppercase mb-12 drop-shadow-md">THE KANGQORE DIFFERENCE</p>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { before: 'Most consulting firms begin with', after: 'solutions.', kq: 'Kangqore begins with diagnosis.' },
-              { before: 'Most providers ask:', after: '"What would you like to purchase?"', kq: 'Kangqore asks: "What is limiting the performance of this organization?"' },
-              { before: 'Before transformation comes', after: 'understanding.', kq: 'Before investment comes intelligence. Before execution comes diagnosis.' },
-            ].map((block, i) => (
-              <div key={i} className="group rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl p-10 hover:bg-white/10 hover:border-white/20 transition-all duration-500">
-                <p className="text-white/50 text-base font-medium leading-relaxed mb-6">
-                  {block.before} <span className="text-white font-bold">{block.after}</span>
-                </p>
-                <p className="text-transparent bg-clip-text bg-gradient-to-br from-white to-white/70 font-black text-xl lg:text-2xl leading-relaxed tracking-tight group-hover:from-cyan-100 group-hover:to-brand-blue transition-all duration-500">
-                  {block.kq}
-                </p>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="max-w-4xl">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-14">WHY KANGQORE CREATED BIDS™</p>
+            <div className="space-y-8 font-medium leading-relaxed">
+              <p className="text-white/40 text-xl sm:text-2xl">Most consulting firms start with a service.</p>
+              <p className="text-white/40 text-xl sm:text-2xl">Most technology firms start with a product.</p>
+              <p className="text-white/40 text-xl sm:text-2xl">Most agencies start with a campaign.</p>
+              <p className="text-white font-black text-4xl sm:text-5xl lg:text-[3.5rem] tracking-[-0.03em] leading-[1.1] py-4">
+                Kangqore starts with diagnosis.
+              </p>
+              <p className="text-white/50 text-xl sm:text-2xl">
+                Because organizations rarely fail because they lack solutions.
+              </p>
+              <p className="text-white text-xl sm:text-2xl font-semibold">
+                They fail because they solve the wrong problems.
+              </p>
+              <p className="text-white/50 text-lg leading-relaxed max-w-3xl">
+                BIDS™ was engineered to identify the constraints, risks, inefficiencies, and opportunities hidden beneath the surface of an organization — before major investments are made.
+              </p>
+              <div className="pt-6 space-y-3">
+                <p className="text-white/70 text-xl font-semibold">Only after diagnosis comes prescription.</p>
+                <p className="text-white/70 text-xl font-semibold">Only after prescription comes transformation.</p>
               </div>
-            ))}
+              <p className="text-cyan-400 font-black text-3xl sm:text-4xl tracking-tight pt-4">
+                That is the philosophy behind Kangqore BIDS™.
+              </p>
+            </div>
           </div>
         </div>
       </section>
