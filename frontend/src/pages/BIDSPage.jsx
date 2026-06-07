@@ -279,7 +279,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── DEFINITION ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden border-y border-white/5" style={{ backgroundColor: '#000000' }}>
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-blue/10 rounded-full blur-[150px]" />
         </div>
@@ -337,7 +337,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── HOW IT WORKS ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden border-y border-white/5" style={{ backgroundColor: '#000000' }}>
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
         </div>
@@ -478,7 +478,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── 5 ENGINES ─────────────────────── */}
-      <section className="py-32 relative border-y border-white/5 overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         {/* Dynamic mesh background */}
         <div className="absolute inset-0 pointer-events-none opacity-20" 
              style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
@@ -578,7 +578,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── SAMPLE SCORECARD ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden border-y border-white/5" style={{ backgroundColor: '#000000' }}>
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-brand-blue/8 rounded-full blur-[180px]" />
         </div>
@@ -701,7 +701,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── PHILOSOPHY ─────────────────────── */}
-      <section className="py-32 border-y border-white/5 relative" style={{ backgroundColor: '#000000' }}>
+      <section className="py-32 relative" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center relative z-10">
           <p className="text-xs font-bold tracking-[0.3em] text-cyan-500 uppercase mb-12 drop-shadow-md">THE KANGQORE DIFFERENCE</p>
           <div className="grid md:grid-cols-3 gap-6">
@@ -751,7 +751,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── CTA ─────────────────────── */}
-      <section className="relative py-40 overflow-hidden border-t border-white/5" style={{ backgroundColor: '#000000' }}>
+      <section className="relative py-40 overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="absolute inset-0 pointer-events-none">
           {/* Animated glowing mesh / radial */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(37,100,234,0.15)_0%,transparent_70%)] animate-pulse" style={{ animationDuration: '4s' }} />
