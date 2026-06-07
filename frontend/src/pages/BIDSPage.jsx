@@ -453,27 +453,22 @@ export default function BIDSPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 border border-white/10 rounded-2xl overflow-hidden">
             {pillars.map((p, i) => {
               const Icon = p.icon;
               return (
                 <div
                   key={p.n}
-                  className="group relative bg-white/[0.03] backdrop-blur-xl rounded-2xl border border-white/10 p-7 hover:bg-white/[0.08] hover:border-cyan-400/50 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(34,211,238,0.15)] transition-all duration-500 overflow-hidden cursor-default"
-                  style={{ transitionDelay: pillarsVisible ? `${i * 40}ms` : '0ms' }}
+                  className="group flex items-center gap-6 px-8 py-5 border-b border-r-0 sm:odd:border-r border-white/10 last:border-b-0 sm:[&:nth-last-child(2):nth-child(odd)]:border-b-0 hover:bg-white/[0.04] transition-colors duration-300"
+                  style={{ transitionDelay: pillarsVisible ? `${i * 30}ms` : '0ms' }}
                 >
-                  {/* Hover gradient background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/0 to-cyan-400/0 group-hover:from-cyan-400/5 group-hover:to-brand-blue/5 transition-all duration-500" />
-                  
-                  <div className="relative z-10">
-                    <div className="flex items-start justify-between mb-6">
-                      <span className="text-sm font-black tracking-widest text-cyan-400 drop-shadow-md">{p.n}</span>
-                      <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/40 group-hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-500">
-                        <Icon className="w-5 h-5 text-white/50 group-hover:text-cyan-300 transition-colors duration-500" strokeWidth={1.5} />
-                      </div>
-                    </div>
-                    <p className="text-white font-bold text-base sm:text-lg leading-snug mb-3 drop-shadow-md">{p.name}</p>
-                    <p className="text-xs text-white/50 leading-relaxed font-semibold tracking-wide uppercase">{p.score}</p>
+                  <span className="text-xs font-black tracking-widest text-cyan-400/60 w-7 flex-shrink-0">{p.n}</span>
+                  <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-4 h-4 text-white/40 group-hover:text-cyan-300 transition-colors duration-300" strokeWidth={1.5} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-white font-semibold text-sm leading-snug">{p.name}</p>
+                    <p className="text-[11px] text-white/35 font-semibold tracking-wide mt-0.5 truncate">{p.score}</p>
                   </div>
                 </div>
               );
