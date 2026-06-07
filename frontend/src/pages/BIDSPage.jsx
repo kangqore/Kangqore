@@ -741,6 +741,69 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── COMPETITIVE COMPARISON ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+
+          {/* Header */}
+          <div className="mb-24">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE DIFFERENCE</p>
+            <h2 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.0] tracking-[-0.04em] text-white">
+              Built to diagnose.<br />
+              <span className="text-white/25">Not to sell.</span>
+            </h2>
+          </div>
+
+          {/* Two-col */}
+          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
+
+            {/* Left — competitors */}
+            <div>
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">INDUSTRY PLATFORMS</p>
+              <div className="space-y-8">
+                {[
+                  { firm: 'TCS',           platforms: 'AI.Cloud, WisdomNext' },
+                  { firm: 'Infosys',       platforms: 'Topaz, Cobalt' },
+                  { firm: 'Wipro',         platforms: 'ai360, Wipro Intelligence' },
+                  { firm: 'Cognizant',     platforms: 'Neuro AI' },
+                  { firm: 'HCLTech',       platforms: 'Digital transformation frameworks' },
+                  { firm: 'Tech Mahindra', platforms: 'AI & enterprise modernization' },
+                ].map((c) => (
+                  <div key={c.firm} className="flex items-start gap-8">
+                    <span className="text-white/30 font-black text-sm tracking-wide w-36 flex-shrink-0">{c.firm}</span>
+                    <span className="text-white/25 text-sm font-medium">{c.platforms}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-14 text-white/30 text-sm font-medium leading-relaxed max-w-sm">
+                Every platform on this list is built to be sold. Their "assessment" is a pre-sales motion designed to justify their next engagement — not yours.
+              </p>
+            </div>
+
+            {/* Right — BIDS™ differentiators */}
+            <div>
+              <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">BIDS™ APPROACH</p>
+              <div className="space-y-10">
+                {[
+                  { n: '01', label: 'The diagnosis is the product', desc: 'No platform to push. No implementation to sell. BIDS™ is vendor-agnostic — the deliverable is the insight.' },
+                  { n: '02', label: 'Scored and indexed, not qualitative', desc: 'Every pillar produces a quantified score. You receive a Diagnostic Scorecard™ and 9 other deliverables — not a slide deck of suggestions.' },
+                  { n: '03', label: 'Full ecosystem scope', desc: 'Business, technology, operations, AI, security, and growth examined as one interconnected system across 16 pillars.' },
+                  { n: '04', label: 'Zero conflict of interest', desc: "We don't sell the cloud. We don't sell the platform. We sell the truth about your organization — then you decide what to do with it." },
+                ].map((d) => (
+                  <div key={d.n} className="flex items-start gap-8">
+                    <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{d.n}</span>
+                    <div>
+                      <p className="text-white font-bold text-lg mb-2">{d.label}</p>
+                      <p className="text-white/40 text-sm leading-relaxed">{d.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── CTA ─────────────────────── */}
       <section className="relative py-40 overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div
