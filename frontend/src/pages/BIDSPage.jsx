@@ -1053,28 +1053,57 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── INDUSTRY EDITIONS ─────────────────────── */}
-      <section className="py-28 relative overflow-hidden">
+      <section className="py-28 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div
           ref={editionsRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${editionsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5 drop-shadow-md">TAILORED TO YOUR SECTOR</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white">
-              10 Industry{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">Editions™</span>
-            </h2>
+          {/* Header — 2-col split */}
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 mb-20">
+            <div>
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-8 h-px bg-white/30" />
+                <p className="text-[10px] font-black tracking-[0.45em] text-white/50 uppercase">INDUSTRY EDITIONS™</p>
+              </div>
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+                Deep Domain Expertise<br />
+                Across Major{' '}
+                <span className="bg-brand-gradient bg-clip-text text-transparent">Industries</span>
+                <span className="text-white"> .</span>
+              </h2>
+            </div>
+            <div className="flex lg:items-end lg:pb-3">
+              <p className="text-white/40 text-lg font-medium leading-relaxed max-w-lg">
+                Kangqore BIDS™ calibrates its diagnostic pillars, scoring benchmarks, and prescription logic to the specific complexity of your industry — not a generic framework applied uniformly.
+              </p>
+            </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-4">
+
+          {/* Grid — 4 columns, border-top rows */}
+          <div className="grid grid-cols-2 sm:grid-cols-4">
             {editions.map((e, i) => (
               <div
                 key={e}
-                className="px-6 py-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-sm text-white/70 font-bold tracking-wide hover:border-cyan-400/50 hover:text-white hover:bg-cyan-400/10 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:-translate-y-1 transition-all duration-300 cursor-default"
-                style={{ transitionDelay: editionsVisible ? `${i * 30}ms` : '0ms' }}
+                className="border-t border-white/[0.08] py-7 pr-6 group cursor-default"
+                style={{ transitionDelay: editionsVisible ? `${i * 40}ms` : '0ms' }}
               >
-                {e}
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black tracking-[0.28em] text-white/45 uppercase group-hover:text-white transition-colors duration-300">
+                    {e.replace(' Edition™', '')}
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-white/15 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 ml-2" />
+                </div>
               </div>
             ))}
+            {/* CTA cell */}
+            <div className="border-t border-white/[0.08] py-7 pr-6">
+              <Link to="/contact" className="flex items-center justify-between group">
+                <span className="text-[10px] font-black tracking-[0.28em] text-cyan-400 uppercase leading-snug">
+                  EXPLORE BIDS™<br />EDITIONS
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0 ml-2" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
