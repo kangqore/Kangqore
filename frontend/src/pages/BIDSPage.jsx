@@ -488,37 +488,35 @@ export default function BIDSPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-start">
             {engines.map((e, i) => {
               const Icon = e.icon;
+              const elevated = i === 1 || i === 4;
               return (
                 <div
                   key={e.name}
-                  className="group relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 hover:border-white/20 hover:-translate-y-2 hover:bg-white/10 transition-all duration-500 overflow-hidden"
-                  style={{ 
-                    transitionDelay: enginesVisible ? `${i * 100}ms` : '0ms',
-                    boxShadow: enginesVisible ? `0 10px 40px ${e.glow}` : 'none'
-                  }}
+                  className={`flex flex-col rounded-3xl overflow-hidden${elevated ? ' lg:-translate-y-8' : ''}`}
                 >
-                  {/* Accent top bar */}
-                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${e.color} opacity-50 group-hover:opacity-100 transition-opacity duration-500`} />
-                  
-                  {/* Glow orb behind icon */}
-                  <div className={`absolute top-10 left-10 w-16 h-16 bg-gradient-to-br ${e.color} rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500`} />
-
-                  <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-br ${e.color} flex items-center justify-center mb-8 shadow-2xl ring-2 ring-white/10 group-hover:scale-110 transition-transform duration-500`}>
-                    <Icon className="w-7 h-7 text-white drop-shadow-md" strokeWidth={2} />
+                  {/* Top — gradient visual */}
+                  <div className={`relative h-52 bg-gradient-to-br ${e.color} flex items-center justify-center overflow-hidden flex-shrink-0`}>
+                    <span className="absolute text-[140px] font-black text-white/[0.07] leading-none select-none">{String(i + 1).padStart(2, '0')}</span>
+                    <div className="relative w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
+                      <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
+                    </div>
                   </div>
-                  <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 bg-gradient-to-r ${e.color} bg-clip-text text-transparent`}>Kangqore {e.dept}</p>
-                  <p className="text-white font-black text-lg sm:text-xl leading-snug mb-6 drop-shadow-sm">{e.name}</p>
-                  <ul className="space-y-4">
-                    {e.items.map(item => (
-                      <li key={item} className="flex items-start gap-3">
-                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${e.color} mt-2 flex-shrink-0 shadow-lg`} />
-                        <span className="text-sm text-white/70 font-semibold leading-relaxed tracking-wide">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Bottom — content */}
+                  <div className="flex-1 bg-[#111111] border border-white/10 border-t-0 rounded-b-3xl p-7">
+                    <p className={`text-[10px] font-black tracking-[0.25em] uppercase mb-3 bg-gradient-to-r ${e.color} bg-clip-text text-transparent`}>Kangqore {e.dept}</p>
+                    <p className="text-white font-black text-lg leading-snug mb-5">{e.name}</p>
+                    <ul className="space-y-3">
+                      {e.items.map(item => (
+                        <li key={item} className="flex items-start gap-3">
+                          <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${e.color} mt-2 flex-shrink-0`} />
+                          <span className="text-sm text-white/60 font-semibold leading-relaxed">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               );
             })}
