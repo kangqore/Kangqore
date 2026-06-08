@@ -9,20 +9,13 @@ const BIDSProductVisual = ({ isActive = false }) => {
           : 'opacity-0 translate-y-12 scale-90'
       }`}
     >
-      {/* Intense glow effect behind the card */}
-      <div className="absolute -inset-10 bg-gradient-to-br from-brand-blue/30 via-cyan-400/20 to-transparent rounded-full blur-3xl opacity-80 animate-pulse mix-blend-screen" style={{ animationDuration: '4s' }} />
-      <div className="absolute -inset-4 bg-gradient-to-tr from-cyan-500/20 to-purple-500/20 rounded-3xl blur-2xl opacity-60" />
-      
-      {/* Dashboard image card with 3D float */}
-      <div 
-        className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/20 ring-1 ring-white/10 animate-float backdrop-blur-sm bg-white/5"
-        style={{ transformStyle: 'preserve-3d' }}
+      {/* Dashboard image card */}
+      <div
+        className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
       >
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-50 z-10 pointer-events-none" />
-        
         <img
-          src="/images/hero-bids-dashboard.png"
-          alt="Kangqore BIDS™ — Business Intelligence Diagnostic System Dashboard"
+          src="/images/capabilities/data-analytics.png"
+          alt="Kangqore BIDS™ — Data Analytics Intelligence"
           className="w-full h-auto object-cover relative z-0"
           loading="lazy"
         />
