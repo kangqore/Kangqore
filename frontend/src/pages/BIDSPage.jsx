@@ -40,49 +40,43 @@ const engines = [
     dept: 'Cognition',
     name: 'Cognition Intelligence Engine™',
     icon: Bot,
-    color: 'from-cyan-400 to-blue-500',
-    glow: 'rgba(34,211,238,0.25)',
-    items: ['AI & GenAI readiness score', 'Data maturity for AI', 'Automation potential index', 'AI governance maturity'],
+    color: 'from-cyan-400 via-sky-400 to-blue-500',
+    desc: 'Diagnoses AI readiness, GenAI adoption potential, data maturity for intelligence workloads, and automation opportunity across the enterprise.',
   },
   {
     dept: 'Foundry',
     name: 'Foundry Intelligence Engine™',
     icon: Cloud,
-    color: 'from-sky-400 to-blue-600',
-    glow: 'rgba(56,189,248,0.25)',
-    items: ['Infrastructure health score', 'Cloud readiness index', 'Engineering maturity assessment', 'Platform resilience posture'],
+    color: 'from-blue-400 via-indigo-400 to-blue-600',
+    desc: 'Evaluates infrastructure health, cloud migration readiness, engineering platform maturity, and technology resilience against operational demands.',
   },
   {
     dept: 'Reimagine',
     name: 'Reimagine Intelligence Engine™',
     icon: RefreshCw,
-    color: 'from-violet-400 to-purple-600',
-    glow: 'rgba(167,139,250,0.25)',
-    items: ['Modernization priority index', 'Legacy debt exposure', 'Transformation readiness score', 'Change execution capability'],
+    color: 'from-violet-400 via-purple-400 to-fuchsia-500',
+    desc: 'Identifies modernization priorities, legacy system exposure, digital transformation readiness, and change execution capability.',
   },
   {
     dept: 'Shield',
     name: 'Shield Intelligence Engine™',
     icon: Shield,
-    color: 'from-rose-400 to-red-600',
-    glow: 'rgba(244,63,94,0.3)',
-    items: ['Security posture score', 'Risk & compliance gap', 'AI governance coverage', 'Operational trust readiness'],
+    color: 'from-rose-400 via-pink-400 to-red-500',
+    desc: 'Assesses cybersecurity posture, compliance gap exposure, AI governance coverage, and operational trust maturity across business systems.',
   },
   {
     dept: 'Platforms',
     name: 'Platforms Intelligence Engine™',
     icon: Layers,
-    color: 'from-amber-400 to-orange-500',
-    glow: 'rgba(251,146,60,0.3)',
-    items: ['Enterprise platform utilization', 'Integration complexity score', 'Operational process maturity', 'Platform consolidation opportunity'],
+    color: 'from-amber-400 via-orange-400 to-orange-500',
+    desc: 'Diagnoses enterprise platform utilization, integration complexity, process maturity, and consolidation opportunities across technology stacks.',
   },
   {
     dept: 'Growth',
     name: 'Growth Intelligence Engine™',
     icon: TrendingUp,
-    color: 'from-emerald-400 to-green-600',
-    glow: 'rgba(52,211,153,0.3)',
-    items: ['Revenue engine score', 'Marketing performance gaps', 'Conversion bottleneck index', 'Digital visibility assessment'],
+    color: 'from-emerald-400 via-teal-400 to-green-500',
+    desc: 'Maps revenue engine performance, marketing execution gaps, conversion bottlenecks, and digital visibility against growth potential.',
   },
 ];
 
@@ -745,27 +739,29 @@ export default function BIDSPage() {
               return (
                 <div
                   key={e.name}
-                  className={`flex flex-col rounded-3xl overflow-hidden${elevated ? ' lg:-translate-y-8' : ''}`}
+                  className={`flex flex-col rounded-3xl overflow-hidden bg-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl${elevated ? ' lg:-translate-y-10' : ''}`}
                 >
                   {/* Top — gradient visual */}
-                  <div className={`relative h-52 bg-gradient-to-br ${e.color} flex items-center justify-center overflow-hidden flex-shrink-0`}>
-                    <span className="absolute text-[140px] font-black text-white/[0.07] leading-none select-none">{String(i + 1).padStart(2, '0')}</span>
-                    <div className="relative w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
-                      <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
+                  <div className={`relative h-[280px] bg-gradient-to-br ${e.color} flex items-center justify-center overflow-hidden flex-shrink-0`}>
+                    <span className="absolute text-[200px] font-black text-white/[0.08] leading-none select-none tracking-tighter">{String(i + 1).padStart(2, '0')}</span>
+                    <div className="relative flex flex-col items-center gap-4">
+                      <div className="w-20 h-20 rounded-3xl bg-white/25 backdrop-blur-sm flex items-center justify-center shadow-lg">
+                        <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
+                      </div>
                     </div>
                   </div>
-                  {/* Bottom — content */}
-                  <div className="flex-1 bg-[#111111] border border-white/10 border-t-0 rounded-b-3xl p-7">
-                    <p className={`text-[10px] font-black tracking-[0.25em] uppercase mb-3 bg-gradient-to-r ${e.color} bg-clip-text text-transparent`}>Kangqore {e.dept}</p>
-                    <p className="text-white font-black text-lg leading-snug mb-5">{e.name}</p>
-                    <ul className="space-y-3">
-                      {e.items.map(item => (
-                        <li key={item} className="flex items-start gap-3">
-                          <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${e.color} mt-2 flex-shrink-0`} />
-                          <span className="text-sm text-white/60 font-semibold leading-relaxed">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  {/* Bottom — white content */}
+                  <div className="flex-1 bg-white p-7 flex flex-col">
+                    <p className="text-gray-900 font-black text-xl leading-snug mb-3">{e.name}</p>
+                    <p className="text-gray-500 text-sm font-medium leading-relaxed flex-1">{e.desc}</p>
+                    <div className="mt-6 pt-5 border-t border-gray-100">
+                      <Link
+                        to="/contact"
+                        className="inline-flex items-center gap-1.5 text-sm font-bold text-gray-900 underline underline-offset-4 decoration-gray-300 hover:decoration-gray-900 transition-all duration-200"
+                      >
+                        Learn More <span className="text-base">↗</span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );
