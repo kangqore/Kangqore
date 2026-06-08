@@ -88,7 +88,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-white dark:bg-black text-[#2d3148] dark:text-gray-300" style={{ padding: '48px 24px 0', fontFamily: "'DM Sans', sans-serif" }}>
+    <footer className="bg-white dark:bg-black text-[#2d3148] dark:text-gray-300" style={{ padding: '86px 24px 0', fontFamily: "'DM Sans', sans-serif" }}>
       {/* Two-Card Grid */}
       <div style={{ maxWidth: 1150, margin: '0 auto', display: 'grid', gridTemplateColumns: '350px 1fr', gap: 16, alignItems: 'stretch' }} className="footer-grid-wrapper">
 
