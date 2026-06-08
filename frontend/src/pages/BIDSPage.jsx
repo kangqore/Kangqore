@@ -218,15 +218,18 @@ export default function BIDSPage() {
               <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
                 {[
                   { n: '01', label: 'Submit your request' },
-                  { n: '02', label: '30-min scoping call' },
-                  { n: '03', label: 'Receive a tailored proposal' },
-                  { n: '04', label: 'Engagement begins within 2 weeks' },
-                ].map((step, i) => (
+                  { n: '02', label: '30-min scoping call for Root Causes Identifications' },
+                  { n: '03', label: 'Evaluate' },
+                  { n: '04', label: 'Score' },
+                  { n: '05', label: 'Receive a tailored Diagnose proposal' },
+                  { n: '06', label: 'Engagement begins within 2 weeks' },
+                  { n: '07', label: 'Transform' },
+                ].map((step, i, arr) => (
                   <React.Fragment key={step.n}>
                     <span className="text-[11px] text-white/30 font-medium tracking-wide">
                       <span className="text-white/15 font-black mr-1.5">{step.n}</span>{step.label}
                     </span>
-                    {i < 3 && <span className="text-white/15 text-[10px]">→</span>}
+                    {i < arr.length - 1 && <span className="text-white/15 text-[10px]">→</span>}
                   </React.Fragment>
                 ))}
               </div>
@@ -416,12 +419,13 @@ export default function BIDSPage() {
                 Kangqore BIDS™ evaluates, benchmarks, scores, and analyzes an entire organization as an interconnected ecosystem — diagnosing the full enterprise before any transformation investment is made.
               </p>
               {/* Stats strip */}
-              <div className="grid grid-cols-4 gap-6 pt-10 border-t border-white/[0.08]">
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-6 pt-10 border-t border-white/[0.08]">
                 {[
                   { value: '16', label: 'Diagnostic\nPillars' },
                   { value: '6',  label: 'Intelligence\nEngines' },
                   { value: '10', label: 'Executive\nDeliverables' },
                   { value: '10', label: 'Industry\nEditions' },
+                  { value: '61', label: 'Specialized\nServices' },
                 ].map(s => (
                   <div key={s.label}>
                     <p className="text-4xl font-black text-white tracking-tight mb-1">{s.value}</p>
