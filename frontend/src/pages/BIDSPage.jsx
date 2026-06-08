@@ -217,13 +217,13 @@ export default function BIDSPage() {
               {/* What happens next */}
               <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
                 {[
-                  { n: '01', label: 'Submit your request',                           color: '#22d3ee' },
-                  { n: '02', label: '30-min scoping call for Root Causes Identifications', color: '#38bdf8' },
-                  { n: '03', label: 'Evaluate',                                      color: '#60a5fa' },
-                  { n: '04', label: 'Score',                                         color: '#818cf8' },
-                  { n: '05', label: 'Receive a tailored Diagnose proposal',          color: '#a78bfa' },
-                  { n: '06', label: 'Engagement begins within 2 weeks',              color: '#c084fc' },
-                  { n: '07', label: 'Transform',                                     color: '#e879f9' },
+                  { n: '01', label: 'Submit your request',                           color: '#FFAD8A' },
+                  { n: '02', label: '30-min scoping call for Root Causes Identifications', color: '#FB923C' },
+                  { n: '03', label: 'Evaluate',                                      color: '#86EFAC' },
+                  { n: '04', label: 'Score',                                         color: '#FDE047' },
+                  { n: '05', label: 'Receive a tailored Diagnose proposal',          color: '#F472B6' },
+                  { n: '06', label: 'Engagement begins within 2 weeks',              color: '#22D3EE' },
+                  { n: '07', label: 'Transform',                                     color: '#A78BFA' },
                 ].map((step, i, arr) => (
                   <React.Fragment key={step.n}>
                     <span className="text-[11px] font-medium tracking-wide" style={{ color: step.color + '99' }}>
@@ -444,15 +444,15 @@ export default function BIDSPage() {
           <div className="mb-10 space-y-3">
             {[
               [
-                { n: '01', label: 'Submit your request',                                color: '#22d3ee' },
-                { n: '02', label: '30-min scoping call for Root Causes Identifications', color: '#38bdf8' },
-                { n: '03', label: 'Evaluate',                                           color: '#60a5fa' },
-                { n: '04', label: 'Score',                                              color: '#818cf8' },
+                { n: '01', label: 'Submit your request',                                color: '#FFAD8A' },
+                { n: '02', label: '30-min scoping call for Root Causes Identifications', color: '#FB923C' },
+                { n: '03', label: 'Evaluate',                                           color: '#86EFAC' },
+                { n: '04', label: 'Score',                                              color: '#FDE047' },
               ],
               [
-                { n: '05', label: 'Receive a tailored Diagnose proposal',               color: '#a78bfa' },
-                { n: '06', label: 'Engagement begins within 2 weeks',                   color: '#c084fc' },
-                { n: '07', label: 'Transform',                                          color: '#e879f9' },
+                { n: '05', label: 'Receive a tailored Diagnose proposal',               color: '#F472B6' },
+                { n: '06', label: 'Engagement begins within 2 weeks',                   color: '#22D3EE' },
+                { n: '07', label: 'Transform',                                          color: '#A78BFA' },
               ],
             ].map((row, rowIdx) => (
               <div key={rowIdx} className="flex items-center gap-x-3">
