@@ -52,7 +52,7 @@ const VisualBackground = ({ forceDark = false }) => {
 
             {/* Inner Ring - Top Right */}
             <div className="absolute flex items-center gap-4 bg-[#0a0f1a]/60 backdrop-blur-md border border-blue-500/30 p-3 pr-6 shadow-[0_0_20px_rgba(96,165,250,0.1)] hover:bg-[#0a0f1a]/80 hover:border-blue-400/50 transition-all duration-500 z-20 cursor-default group" 
-                 style={{ top: '140px', left: '440px', transform: 'translate(-50%, -50%)', clipPath: 'polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}>
+                 style={{ top: '80px', left: '440px', transform: 'translate(-50%, -50%)', clipPath: 'polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}>
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-blue-400 opacity-70"></div>
               <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-blue-400 opacity-70"></div>
               <div className="w-10 h-10 border border-blue-500/30 flex items-center justify-center shrink-0 group-hover:bg-blue-500/10 transition-colors duration-500 relative bg-[#0a0f1a]">
@@ -66,7 +66,7 @@ const VisualBackground = ({ forceDark = false }) => {
 
             {/* Inner Ring - Bottom Left */}
             <div className="absolute flex items-center gap-4 bg-[#0a0f1a]/60 backdrop-blur-md border border-blue-500/30 p-3 pr-6 shadow-[0_0_20px_rgba(96,165,250,0.1)] hover:bg-[#0a0f1a]/80 hover:border-blue-400/50 transition-all duration-500 z-20 cursor-default group" 
-                 style={{ top: '360px', left: '440px', transform: 'translate(-50%, -50%)', clipPath: 'polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}>
+                 style={{ top: '420px', left: '440px', transform: 'translate(-50%, -50%)', clipPath: 'polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}>
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-blue-400 opacity-70"></div>
               <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-blue-400 opacity-70"></div>
               <div className="w-10 h-10 border border-blue-500/30 flex items-center justify-center shrink-0 group-hover:bg-blue-500/10 transition-colors duration-500 relative bg-[#0a0f1a]">
