@@ -308,6 +308,39 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── WHY WE BUILT BIDS™ ─────────────────────── */}
+      <section className="py-24 relative" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="max-w-4xl">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-14">WHY KANGQORE CREATED BIDS™</p>
+            <div className="space-y-8 font-medium leading-relaxed">
+              <p className="text-white/40 text-xl sm:text-2xl">Most consulting firms start with a service.</p>
+              <p className="text-white/40 text-xl sm:text-2xl">Most technology firms start with a product.</p>
+              <p className="text-white/40 text-xl sm:text-2xl">Most agencies start with a campaign.</p>
+              <p className="text-white font-black text-4xl sm:text-5xl lg:text-[3.5rem] tracking-[-0.03em] leading-[1.1] py-4">
+                Kangqore starts with diagnosis.
+              </p>
+              <p className="text-white/50 text-xl sm:text-2xl">
+                Because organizations rarely fail because they lack solutions.
+              </p>
+              <p className="text-white text-xl sm:text-2xl font-semibold">
+                They fail because they solve the wrong problems.
+              </p>
+              <p className="text-white/50 text-lg leading-relaxed max-w-3xl">
+                Kangqore BIDS™ was engineered to identify the constraints, risks, inefficiencies, and opportunities hidden beneath the surface of an organization — before major investments are made.
+              </p>
+              <div className="pt-6 space-y-3">
+                <p className="text-white/70 text-xl font-semibold">Only after diagnosis comes prescription.</p>
+                <p className="text-white/70 text-xl font-semibold">Only after prescription comes transformation.</p>
+              </div>
+              <p className="text-cyan-400 font-black text-3xl sm:text-4xl tracking-tight pt-4">
+                That is the philosophy behind Kangqore BIDS™.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── CONSTRAINT COST ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -1027,39 +1060,6 @@ export default function BIDSPage() {
             </div>
           </div>
 
-        </div>
-      </section>
-
-      {/* ─────────────────────── WHY WE BUILT BIDS™ ─────────────────────── */}
-      <section className="py-32 relative" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="max-w-4xl">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-14">WHY KANGQORE CREATED BIDS™</p>
-            <div className="space-y-8 font-medium leading-relaxed">
-              <p className="text-white/40 text-xl sm:text-2xl">Most consulting firms start with a service.</p>
-              <p className="text-white/40 text-xl sm:text-2xl">Most technology firms start with a product.</p>
-              <p className="text-white/40 text-xl sm:text-2xl">Most agencies start with a campaign.</p>
-              <p className="text-white font-black text-4xl sm:text-5xl lg:text-[3.5rem] tracking-[-0.03em] leading-[1.1] py-4">
-                Kangqore starts with diagnosis.
-              </p>
-              <p className="text-white/50 text-xl sm:text-2xl">
-                Because organizations rarely fail because they lack solutions.
-              </p>
-              <p className="text-white text-xl sm:text-2xl font-semibold">
-                They fail because they solve the wrong problems.
-              </p>
-              <p className="text-white/50 text-lg leading-relaxed max-w-3xl">
-                Kangqore BIDS™ was engineered to identify the constraints, risks, inefficiencies, and opportunities hidden beneath the surface of an organization — before major investments are made.
-              </p>
-              <div className="pt-6 space-y-3">
-                <p className="text-white/70 text-xl font-semibold">Only after diagnosis comes prescription.</p>
-                <p className="text-white/70 text-xl font-semibold">Only after prescription comes transformation.</p>
-              </div>
-              <p className="text-cyan-400 font-black text-3xl sm:text-4xl tracking-tight pt-4">
-                That is the philosophy behind Kangqore BIDS™.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
