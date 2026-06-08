@@ -1169,7 +1169,9 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── eQORE AI CONCIERGE ─────────────────────── */}
-      <ConciergeSection />
+      <div className="dark">
+        <ConciergeSection />
+      </div>
 
       {/* ─────────────────────── SCALE STRIP ─────────────────────── */}
       <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
