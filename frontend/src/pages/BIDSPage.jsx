@@ -138,6 +138,7 @@ export default function BIDSPage() {
   const [editionsRef, editionsVisible] = useScrollAnimation({ once: true, threshold: 0.1 });
   const [ctaRef, ctaVisible]           = useScrollAnimation({ once: true, threshold: 0.2 });
   const [activePillar, setActivePillar] = useState(0);
+  const [expandedPillar, setExpandedPillar] = useState(null);
   const [activeDeliverable, setActiveDeliverable] = useState(0);
 
   return (
@@ -575,6 +576,36 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── eQORE AI ROLE ─────────────────────── */}
+      <section className="py-20 relative overflow-hidden border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div>
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-6">KANGQORE'S OFFICIAL AI ASSISTANT</p>
+              <h3 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-6">
+                What is <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI™?</span>
+              </h3>
+              <p className="text-white/50 text-lg leading-relaxed font-medium">
+                eQORE AI™ is Kangqore's proprietary artificial intelligence assistant — embedded across every BIDS™ engagement to synthesize diagnostic findings, cross-reference intelligence pillar outputs, identify non-obvious constraint patterns, and generate the Service Prescription Matrix™.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { label: 'Synthesizes', desc: 'Cross-pillar diagnostic findings into coherent constraint narratives' },
+                { label: 'Identifies', desc: 'Non-obvious patterns across business, technology, and operational data' },
+                { label: 'Prescribes', desc: 'Targeted Kangqore service interventions ranked by impact and urgency' },
+                { label: 'Generates', desc: 'The Service Prescription Matrix™ and 30/60/90/180-Day Roadmap™' },
+              ].map(item => (
+                <div key={item.label} className="p-5 border border-white/[0.07] bg-white/[0.02] rounded-xl">
+                  <p className="text-cyan-400 text-xs font-black tracking-widest uppercase mb-2">{item.label}</p>
+                  <p className="text-white/45 text-sm font-medium leading-snug">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── ENGAGEMENT OVERVIEW ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -655,16 +686,33 @@ export default function BIDSPage() {
             <div className="overflow-y-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
               {pillars.map((p, i) => {
                 const active = activePillar === i;
+                const expanded = expandedPillar === i;
                 return (
-                  <div
-                    key={p.n}
-                    onMouseEnter={() => setActivePillar(i)}
-                    className="group flex items-center gap-5 py-5 border-b border-white/[0.06] cursor-default"
-                  >
-                    <span className={`w-2.5 h-2.5 flex-shrink-0 transition-colors duration-200 ${active ? 'bg-cyan-400' : 'bg-transparent'}`} />
-                    <span className={`text-xl sm:text-2xl lg:text-3xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/25 group-hover:text-white/55'}`}>
-                      {p.name}
-                    </span>
+                  <div key={p.n} className="border-b border-white/[0.06]">
+                    <div
+                      onMouseEnter={() => setActivePillar(i)}
+                      onClick={() => setExpandedPillar(expanded ? null : i)}
+                      className="group flex items-center justify-between gap-5 py-5 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-5">
+                        <span className={`w-2.5 h-2.5 flex-shrink-0 transition-colors duration-200 ${active ? 'bg-cyan-400' : 'bg-transparent'}`} />
+                        <span className={`text-xl sm:text-2xl lg:text-3xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/25 group-hover:text-white/55'}`}>
+                          {p.name}
+                        </span>
+                      </div>
+                      <ChevronRight className={`lg:hidden w-4 h-4 text-white/20 flex-shrink-0 transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`} />
+                    </div>
+                    {/* Mobile tap-to-expand detail */}
+                    {expanded && (
+                      <div className="lg:hidden pb-6 pl-7 pr-2">
+                        <p className="text-[9px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">PILLAR {p.n}</p>
+                        <p className="text-white/70 text-base font-semibold mb-2">{pillarDetails[i].tagline}</p>
+                        <p className="text-white/40 text-sm leading-relaxed mb-4">{pillarDetails[i].desc}</p>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10">
+                          <span className="text-white/50 text-xs font-semibold tracking-wide">{p.score}</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -829,7 +877,7 @@ export default function BIDSPage() {
                   { label: 'Data & AI Evaluation', color: '#FDE047' },
                   { label: 'Security Assessment', color: '#F472B6' },
                   { label: 'Growth Assessment', color: '#A78BFA' },
-                ].map((node, i) => (
+                ].map((node) => (
                   <div key={node.label} className="flex flex-col items-center">
                     <div className="w-full flex items-center gap-3 px-4 py-2.5 border border-white/[0.08] bg-white/[0.03] rounded-lg">
                       <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: node.color }} />
@@ -887,6 +935,33 @@ export default function BIDSPage() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Integration & Scope Clarity */}
+            <div className="mt-16 pt-16 border-t border-white/[0.06]">
+              <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-6">SCOPE & SYSTEM ACCESS</p>
+              <h3 className="text-2xl sm:text-3xl font-black text-white mb-6 tracking-tight">Does BIDS™ require access to your systems?</h3>
+              <p className="text-white/50 text-lg leading-relaxed font-medium mb-10 max-w-3xl">
+                Both. Kangqore BIDS™ is designed to operate across two engagement modes — and the depth of diagnostic output scales accordingly.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
+                  <div className="w-5 h-0.5 rounded-full bg-cyan-400 mb-4" />
+                  <p className="text-white font-black text-base mb-3">Interview & Document Mode</p>
+                  <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
+                    No system credentials required. Diagnostic is conducted through executive interviews, leadership workshops, documentation review, and process mapping sessions.
+                  </p>
+                  <p className="text-white/25 text-xs font-bold tracking-wide">Minimum requirement — available to all organizations</p>
+                </div>
+                <div className="p-6 border border-cyan-500/20 bg-cyan-500/[0.03] rounded-2xl">
+                  <div className="w-5 h-0.5 rounded-full bg-cyan-400 mb-4" />
+                  <p className="text-white font-black text-base mb-3">System-Integrated Mode</p>
+                  <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
+                    Optional read-only access to platforms (SAP, Salesforce, Azure, Workday, and others) allows the diagnostic to incorporate live operational data — producing higher-precision scores and more specific prescriptions.
+                  </p>
+                  <p className="text-cyan-400/50 text-xs font-bold tracking-wide">Enhanced mode — deeper diagnostic precision</p>
+                </div>
+              </div>
             </div>
 
             {/* Closing statement */}
@@ -1283,59 +1358,156 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── WHAT'S COMING ─────────────────────── */}
-      <section className="py-20 relative overflow-hidden border-t border-white/[0.04]" style={{ backgroundColor: '#000000' }}>
+      {/* ─────────────────────── DATA SECURITY ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden border-t border-white/10" style={{ backgroundColor: '#040404' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <div className="flex items-center gap-5">
-              <div className="flex items-center gap-2.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/50 animate-pulse" />
-                <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase">COMING Q4 2026</p>
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
+            <div>
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">DATA HANDLING & TRUST</p>
+              <h2 className="text-4xl sm:text-5xl font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+                What data does<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">BIDS™ collect?</span>
+              </h2>
+              <p className="text-white/50 text-lg leading-relaxed font-medium mb-8">
+                Every Kangqore BIDS™ engagement operates under a signed Non-Disclosure Agreement before any information is exchanged. Data collected is scoped strictly to what is necessary for the diagnostic — no data is retained beyond the engagement without explicit written consent.
+              </p>
+              <div className="space-y-4">
+                {[
+                  { q: 'What is collected?', a: 'Organizational documents, process maps, architecture diagrams, interview transcripts, financial summaries, and system inventories — only what you share.' },
+                  { q: 'How is it stored?', a: 'Engagement data is stored in encrypted, access-controlled environments. Client data is logically isolated and never commingled.' },
+                  { q: 'Who has access?', a: 'Only the assigned Kangqore engagement team and the client. No third parties. No subcontractors without prior disclosure.' },
+                  { q: 'Is it anonymized?', a: 'Benchmark data contributed to the Kangqore Intelligence Database™ is fully anonymized and aggregated before analysis.' },
+                ].map(item => (
+                  <div key={item.q} className="border-l-2 border-white/10 pl-5">
+                    <p className="text-white/70 text-sm font-black mb-1">{item.q}</p>
+                    <p className="text-white/35 text-sm font-medium leading-relaxed">{item.a}</p>
+                  </div>
+                ))}
               </div>
-              <div className="w-px h-4 bg-white/10" />
-              <p className="text-white/40 text-sm font-bold">Benchmark Intelligence™</p>
             </div>
-            <p className="text-white/25 text-sm font-medium max-w-lg leading-relaxed">
-              Kangqore is building the first vendor-agnostic enterprise diagnostic benchmark dataset — percentile rankings, competitive position indices, and industry gap analysis across all 16 pillars. Organizations that complete a BIDS™ engagement today will be among the first to receive benchmark intelligence when it launches.
-            </p>
+            <div className="space-y-4">
+              <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-6">COMPLIANCE & GOVERNANCE POSTURE</p>
+              {[
+                { label: 'NDA Required',        desc: 'Every engagement begins with a signed mutual NDA.',                               color: '#22D3EE' },
+                { label: 'GDPR Ready',          desc: 'Data handling aligned to GDPR principles for EU-resident data subjects.',         color: '#86EFAC' },
+                { label: 'CCPA Conscious',      desc: 'California Consumer Privacy Act compliance considerations applied.',              color: '#60A5FA' },
+                { label: 'SOC 2 Aligned',       desc: 'Security, availability, and confidentiality controls aligned to SOC 2 Trust principles.', color: '#A78BFA' },
+                { label: 'Data Minimization',   desc: 'Only data necessary for the diagnostic scope is requested and processed.',        color: '#FDE047' },
+                { label: 'Right to Deletion',   desc: 'Client data is deleted upon engagement close or at any time upon written request.', color: '#F472B6' },
+              ].map(item => (
+                <div key={item.label} className="flex items-start gap-4 p-4 border border-white/[0.07] bg-white/[0.02] rounded-xl">
+                  <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: item.color }} />
+                  <div>
+                    <p className="text-white/80 text-sm font-black mb-0.5" style={{ color: item.color }}>{item.label}</p>
+                    <p className="text-white/35 text-sm font-medium leading-snug">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+              <p className="text-white/20 text-xs font-medium leading-relaxed pt-2">
+                A full Data Processing Agreement (DPA) is available upon request for enterprise engagements requiring formal compliance documentation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────── BENCHMARK INTELLIGENCE ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden border-t border-white/10" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+            <div>
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400 uppercase">Coming Q4 2026</p>
+              </div>
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+                Benchmark<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">Intelligence™</span>
+              </h2>
+              <p className="text-white/50 text-lg leading-relaxed font-medium mb-10">
+                Kangqore is building the first vendor-agnostic enterprise diagnostic benchmark dataset — percentile rankings, competitive position indices, and industry-gap analysis across all 16 diagnostic pillars.
+              </p>
+              <p className="text-white/35 text-base leading-relaxed mb-12">
+                Organizations that complete a BIDS™ engagement today will be among the first to receive Benchmark Intelligence™ reports — showing how their enterprise diagnostic scores compare against industry peers, sector medians, and global top performers.
+              </p>
+              <Link
+                to="/contact"
+                className="group inline-flex items-center gap-3 px-7 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
+              >
+                Join the Benchmark Waitlist
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+              </Link>
+            </div>
+            <div className="space-y-4">
+              {[
+                { n: '01', title: 'Percentile Rankings',          desc: 'See where your enterprise scores fall across every diagnostic pillar relative to your industry peer group.' },
+                { n: '02', title: 'Competitive Position Index™',  desc: 'A composite benchmark score positioning your organization against sector leaders, medians, and laggards.' },
+                { n: '03', title: 'Industry Gap Analysis',         desc: 'Identify the specific pillar gaps widest relative to your industry — prioritized by competitive exposure.' },
+                { n: '04', title: 'Longitudinal Tracking',         desc: 'Track diagnostic score movement over time — measuring transformation progress against a live benchmark.' },
+              ].map(item => (
+                <div key={item.n} className="flex items-start gap-5 p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
+                  <span className="text-[9px] font-black tracking-widest text-white/20 mt-0.5 flex-shrink-0">{item.n}</span>
+                  <div>
+                    <p className="text-white font-black text-base mb-2">{item.title}</p>
+                    <p className="text-white/40 text-sm font-medium leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ─────────────────────── CTA ─────────────────────── */}
-      <section className="relative py-40 overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div
-          ref={ctaRef}
-          className={`relative z-10 max-w-4xl mx-auto px-6 sm:px-8 text-center transition-all duration-1000 ${ctaVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'}`}
-        >
-          <div className="inline-flex items-center justify-center p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md mb-8 shadow-2xl">
-            <Target className="w-8 h-8 text-cyan-400 animate-pulse" />
-          </div>
-          
-          <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8 drop-shadow-2xl">
-            Diagnose the Enterprise.<br />
-            <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">Unlock the Potential.</span>
-          </h2>
-          <p className="text-white/60 text-lg sm:text-2xl font-medium leading-relaxed max-w-3xl mx-auto mb-16">
-            Every organization has visible problems and invisible constraints. Kangqore BIDS™ identifies those constraints, quantifies their impact, and delivers a transformation blueprint.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+      <section
+        ref={ctaRef}
+        className={`py-28 md:py-36 lg:py-44 relative overflow-hidden transition-all duration-1000 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        style={{ backgroundColor: '#000000' }}
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 mb-20">
+            <h2 className="text-5xl md:text-6xl lg:text-8xl font-bold text-white leading-tight max-w-4xl tracking-[-0.03em]">
+              Diagnose the<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">Enterprise.</span>
+            </h2>
             <Link
               to="/contact"
-              className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white text-gray-900 shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.4)]"
+              className="group inline-flex items-center gap-3 text-xl md:text-2xl font-bold text-white hover:text-cyan-400 transition-colors duration-300 self-start lg:self-auto pt-4 lg:pt-6"
             >
-              <span className="relative z-10 font-black text-base tracking-wide">Request a Diagnostic</span>
-              <div className="relative w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center group-hover:bg-brand-blue transition-colors duration-300 z-10">
-                <ArrowRight className="w-5 h-5 text-white" />
-              </div>
+              Request a Diagnostic Assessment
+              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 transform transition-transform duration-300 group-hover:translate-x-2" />
             </Link>
-            <Link
-              to="/services"
-              className="group inline-flex items-center gap-3 px-8 py-5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl text-white hover:bg-white/10 text-base font-bold tracking-wide transition-all duration-300"
-            >
-              Explore All Services
-              <ArrowRight className="w-5 h-5 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
+          </div>
+          <div className="max-w-4xl mb-16">
+            <p className="text-white/50 text-lg lg:text-xl leading-relaxed">
+              Every organization has visible problems and invisible constraints. Kangqore BIDS™ identifies those constraints, quantifies their impact, and delivers a transformation blueprint — before a single investment is made.
+            </p>
+          </div>
+          <div className="pt-10 border-t border-white/10">
+            <p className="text-xs font-bold text-white/25 uppercase tracking-[0.2em] mb-8">Our Security & Compliance Posture</p>
+            <div className="flex flex-wrap gap-x-12 gap-y-8 items-start">
+              {[
+                { name: 'SOC 2 Aligned',   id: 'soc2' },
+                { name: 'ISO 27001',        id: 'iso27001' },
+                { name: 'GDPR Ready',       id: 'gdpr' },
+                { name: 'DPDP Conscious',   id: 'dpdp' },
+                { name: 'HIPAA Aware',      id: 'hipaa' },
+                { name: 'PCI DSS Mindful',  id: 'pcidss' },
+                { name: 'CMMI Practiced',   id: 'cmmi' },
+              ].map(({ name, id }) => (
+                <div key={name} className="flex flex-col items-center gap-3 w-[100px]">
+                  <div className="w-14 h-14 flex items-center justify-center">
+                    <img
+                      src={`/assets/badges/${id}.svg?v=2`}
+                      alt={name}
+                      className="w-12 h-12 object-contain brightness-110"
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                    />
+                  </div>
+                  <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest text-center leading-tight">{name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
