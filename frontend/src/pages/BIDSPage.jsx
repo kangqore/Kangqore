@@ -214,25 +214,6 @@ export default function BIDSPage() {
                 </a>
               </div>
 
-              {/* What happens next */}
-              <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
-                {[
-                  { n: '01', label: 'Submit your request',                           color: '#FFAD8A' },
-                  { n: '02', label: '30-min scoping call for Root Causes Identifications', color: '#FB923C' },
-                  { n: '03', label: 'Evaluate',                                      color: '#86EFAC' },
-                  { n: '04', label: 'Score',                                         color: '#FDE047' },
-                  { n: '05', label: 'Receive a tailored Diagnose proposal',          color: '#F472B6' },
-                  { n: '06', label: 'Engagement begins within 2 weeks',              color: '#22D3EE' },
-                  { n: '07', label: 'Transform',                                     color: '#A78BFA' },
-                ].map((step, i, arr) => (
-                  <React.Fragment key={step.n}>
-                    <span className="text-[11px] font-medium tracking-wide" style={{ color: step.color + '99' }}>
-                      <span className="font-black mr-1.5" style={{ color: step.color + '55' }}>{step.n}</span>{step.label}
-                    </span>
-                    {i < arr.length - 1 && <span className="text-white/15 text-[10px]">→</span>}
-                  </React.Fragment>
-                ))}
-              </div>
             </div>
           </div>
 
