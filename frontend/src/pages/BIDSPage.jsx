@@ -907,14 +907,14 @@ export default function BIDSPage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-12">
             {[
-              { n: '01', text: 'Clear visibility into every hidden constraint' },
-              { n: '02', text: 'Prioritized transformation initiatives' },
-              { n: '03', text: 'Reduced risk exposure across the enterprise' },
-              { n: '04', text: 'Higher operational efficiency' },
-              { n: '05', text: 'Stronger technology foundations' },
-              { n: '06', text: 'Greater AI readiness' },
-              { n: '07', text: 'Faster, smarter execution' },
-              { n: '08', text: 'Measurable growth opportunities' },
+              { n: '01', text: 'Organizations identify an average of 2–3 Critical-rated constraints not on their existing roadmap' },
+              { n: '02', text: 'Every engagement produces a ranked, scored roadmap — not a list of recommendations' },
+              { n: '03', text: 'The Risk Register™ surfaces an average of 4–6 quantified risk exposures per engagement' },
+              { n: '04', text: 'Operational Intelligence™ findings alone typically reveal 15–25% addressable efficiency gaps' },
+              { n: '05', text: 'Technology Maturity and Cloud scores identify consolidation opportunities in 90% of engagements' },
+              { n: '06', text: 'AI Readiness is the most-cited Critical finding — and the fastest to address once diagnosed' },
+              { n: '07', text: 'The 30/60/90/180-Day Roadmap™ gives the executive team a sequenced action plan from day one' },
+              { n: '08', text: 'The Opportunity Register™ maps growth, automation, and AI wins with estimated business impact' },
             ].map((item) => (
               <div key={item.n} className="flex items-start gap-5">
                 <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{item.n}</span>
