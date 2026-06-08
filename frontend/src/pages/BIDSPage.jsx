@@ -584,11 +584,11 @@ export default function BIDSPage() {
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
-                Four phases.<br />
+                Seven steps.<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Four to six weeks.</span>
               </h2>
               <p className="text-white/40 text-lg font-medium leading-relaxed mb-14">
-                Every Kangqore BIDS™ engagement follows the same four-phase diagnostic methodology — Discover, Diagnose, Prescribe, Transform — concluding with a full executive delivery session.
+                Every Kangqore BIDS™ engagement follows a structured seven-step process — from your first request through scoping, evaluation, scoring, proposal, engagement start, and transformation.
               </p>
               <Link
                 to="/contact"
