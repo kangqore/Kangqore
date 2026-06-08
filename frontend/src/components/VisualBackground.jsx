@@ -78,11 +78,11 @@ const VisualBackground = ({ forceDark = false }) => {
               </div>
             </div>
 
-            {/* Left Side - 61 Services */}
+            {/* Right Middle - 61 Services (between Engines and Deliverables) */}
             <div className="absolute flex items-center gap-4 bg-[#0a0f1a]/60 backdrop-blur-md border border-cyan-500/30 p-3 pr-6 shadow-[0_0_20px_rgba(34,211,238,0.1)] hover:bg-[#0a0f1a]/80 hover:border-cyan-400/50 transition-all duration-500 z-20 cursor-default group"
-                 style={{ top: '250px', left: '80px', transform: 'translate(-50%, -50%)', clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))' }}>
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan-400 opacity-70"></div>
-              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan-400 opacity-70"></div>
+                 style={{ top: '250px', left: '440px', transform: 'translate(-50%, -50%)', clipPath: 'polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}>
+              <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-cyan-400 opacity-70"></div>
+              <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-cyan-400 opacity-70"></div>
               <div className="w-10 h-10 border border-cyan-500/30 flex items-center justify-center shrink-0 group-hover:bg-cyan-500/10 transition-colors duration-500 relative bg-[#0a0f1a]">
                 <div className="w-1.5 h-1.5 bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
               </div>
