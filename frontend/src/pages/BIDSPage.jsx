@@ -509,71 +509,6 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── HOW IT WORKS ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="mb-20">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
-              The Kangqore BIDS™<br />
-              <span className="bg-brand-gradient bg-clip-text text-transparent">Diagnostic Process.</span>
-            </h2>
-            <p className="text-white/40 text-lg font-medium mt-6">
-              Four phases. Typically 4–6 weeks from first call to executive delivery.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:items-start">
-            {[
-              {
-                step: '01', label: 'PHASE ONE', title: 'Discover',
-                color: 'from-cyan-400 to-blue-500', icon: Target,
-                points: ['Stakeholder interviews', 'Documentation review', 'Systems analysis', 'Scope alignment'],
-              },
-              {
-                step: '02', label: 'PHASE TWO', title: 'Diagnose',
-                color: 'from-brand-blue to-violet-600', icon: BarChart3,
-                points: ['16 Intelligence Pillars activated', '6 Intelligence Engines running', 'Enterprise scoring completed', 'Constraints mapped'],
-              },
-              {
-                step: '03', label: 'PHASE THREE', title: 'Prescribe',
-                color: 'from-violet-400 to-purple-700', icon: Sparkles,
-                points: ['Risk Register™ compiled', 'Opportunity Register™ built', 'Service Prescription Matrix™', 'Priority roadmap drafted'],
-              },
-              {
-                step: '04', label: 'PHASE FOUR', title: 'Transform',
-                color: 'from-emerald-400 to-green-600', icon: Award,
-                points: ['30/60/90/180-Day Roadmap™', 'Executive Workshop™', 'Execution planning', 'Progress benchmarks set'],
-              },
-            ].map((s, i) => {
-              const Icon = s.icon;
-              const elevated = i === 1 || i === 3;
-              return (
-                <div key={s.step} className={`flex flex-col rounded-3xl overflow-hidden${elevated ? ' lg:-translate-y-8' : ''}`}>
-                  <div className={`relative h-52 bg-gradient-to-br ${s.color} flex items-center justify-center overflow-hidden flex-shrink-0`}>
-                    <span className="absolute text-[140px] font-black text-white/[0.07] leading-none select-none">{s.step}</span>
-                    <div className="relative w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
-                      <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
-                    </div>
-                  </div>
-                  <div className="flex-1 bg-[#111111] border border-white/10 border-t-0 rounded-b-3xl p-7">
-                    <p className={`text-[10px] font-black tracking-[0.3em] uppercase mb-3 bg-gradient-to-r ${s.color} bg-clip-text text-transparent`}>{s.label}</p>
-                    <h3 className="text-2xl font-black text-white mb-5 tracking-tight">{s.title}</h3>
-                    <ul className="space-y-3">
-                      {s.points.map(pt => (
-                        <li key={pt} className="flex items-start gap-3">
-                          <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${s.color} mt-2 flex-shrink-0`} />
-                          <span className="text-white/60 text-sm font-semibold leading-relaxed">{pt}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* ─────────────────────── PRESCRIPTION ENGINE ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -647,13 +582,13 @@ export default function BIDSPage() {
 
             {/* Left — timeline + commercial framing */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENGAGEMENT OVERVIEW</p>
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
-                From first call to<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">executive delivery.</span>
+                Four phases.<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">Four to six weeks.</span>
               </h2>
               <p className="text-white/40 text-lg font-medium leading-relaxed mb-14">
-                Typical Kangqore BIDS™ engagements run 4–6 weeks. Investment varies by organization size, complexity, and edition selected. Every engagement concludes with a full executive delivery session.
+                Every Kangqore BIDS™ engagement follows the same four-phase diagnostic methodology — Discover, Diagnose, Prescribe, Transform — concluding with a full executive delivery session.
               </p>
               <Link
                 to="/contact"
