@@ -209,7 +209,7 @@ export default function BIDSPage() {
                   href="#pillars"
                   className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
                 >
-                  Explore our Diagnostic Intelligence Pillars
+                  Explore our Diagnostic Intelligence
                   <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
                 </a>
               </div>
