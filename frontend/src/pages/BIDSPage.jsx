@@ -236,8 +236,8 @@ export default function BIDSPage() {
       </section>
       </div>
 
-      {/* ─────────────────────── STICKY SUB-NAV ─────────────────────── */}
-      <div className="sticky top-16 z-30 bg-black/95 backdrop-blur-xl border-b border-white/[0.07]">
+      {/* ─────────────────────── SUB-NAV BAR ─────────────────────── */}
+      <div className="bg-black/95 backdrop-blur-xl border-b border-white/[0.07]">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between h-12">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2.5">
