@@ -236,25 +236,7 @@ export default function BIDSPage() {
       </section>
       </div>
 
-      {/* ─────────────────────── SUB-NAV BAR ─────────────────────── */}
-      <div className="bg-black/95 backdrop-blur-xl border-b border-white/[0.07]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between h-12">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span className="text-[10px] font-black tracking-[0.25em] text-white/50 uppercase">Kangqore BIDS™</span>
-            </div>
-            <span className="text-white/15 hidden sm:block text-[10px] font-bold tracking-widest uppercase">Enterprise Diagnostic Intelligence Framework</span>
-          </div>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:bg-white/10 transition-all duration-300"
-          >
-            <span className="text-[10px] font-black tracking-[0.2em] text-white/70 uppercase">Request a Diagnostic Assessment</span>
-            <ArrowRight className="w-3 h-3 text-cyan-400" />
-          </Link>
-        </div>
-      </div>
+
 
       {/* ─────────────────────── PROBLEM ─────────────────────── */}
       <section className="py-32 relative">
