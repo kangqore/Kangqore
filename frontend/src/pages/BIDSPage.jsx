@@ -744,6 +744,161 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── HOW BIDS WORKS ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+
+          {/* Header */}
+          <div className="mb-20 max-w-4xl">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">HOW IT'S CONDUCTED</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+              How Kangqore BIDS™<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">conducts enterprise diagnosis.</span>
+            </h2>
+            <p className="text-white/50 text-lg leading-relaxed font-medium max-w-3xl">
+              Kangqore BIDS™ is not a questionnaire, survey, or checklist-based assessment. Every engagement combines qualitative, quantitative, operational, and technical intelligence inputs across all sixteen diagnostic pillars.
+            </p>
+          </div>
+
+          {/* Two columns: methodology inputs left, visual flow right */}
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 mb-24">
+
+            {/* Left — 6 methodology categories */}
+            <div className="space-y-10">
+              {[
+                {
+                  label: 'Leadership & Stakeholder Intelligence',
+                  color: '#22D3EE',
+                  points: ['Executive interviews', 'Leadership workshops', 'Strategic objective reviews', 'Organizational structure analysis'],
+                },
+                {
+                  label: 'Business & Operational Intelligence',
+                  color: '#FB923C',
+                  points: ['Process mapping', 'Workflow analysis', 'SOP review', 'Operational maturity assessment'],
+                },
+                {
+                  label: 'Technology Intelligence',
+                  color: '#60A5FA',
+                  points: ['Architecture review', 'Application portfolio assessment', 'Infrastructure evaluation', 'Integration analysis', 'Technical debt assessment'],
+                },
+                {
+                  label: 'Data & AI Intelligence',
+                  color: '#86EFAC',
+                  points: ['Data maturity review', 'Analytics capability assessment', 'AI readiness evaluation', 'Automation opportunity analysis'],
+                },
+                {
+                  label: 'Security & Governance Intelligence',
+                  color: '#F472B6',
+                  points: ['Security posture review', 'Governance assessment', 'Compliance readiness analysis', 'Risk evaluation'],
+                },
+                {
+                  label: 'Growth & Commercial Intelligence',
+                  color: '#FDE047',
+                  points: ['Revenue operations review', 'Sales funnel analysis', 'Customer journey evaluation', 'Digital visibility assessment'],
+                },
+              ].map((cat) => (
+                <div key={cat.label} className="flex gap-5">
+                  <div className="w-0.5 flex-shrink-0 mt-1 rounded-full" style={{ backgroundColor: cat.color + '60', minHeight: '100%' }} />
+                  <div>
+                    <p className="text-sm font-black text-white mb-3 tracking-tight" style={{ color: cat.color }}>{cat.label}</p>
+                    <ul className="space-y-1.5">
+                      {cat.points.map(pt => (
+                        <li key={pt} className="flex items-start gap-2.5">
+                          <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: cat.color + '80' }} />
+                          <span className="text-white/45 text-sm font-medium leading-snug">{pt}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Right — visual flow diagram */}
+            <div className="flex flex-col items-center">
+              <div className="w-full max-w-sm mx-auto">
+                {/* Inputs label */}
+                <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase text-center mb-6">ENTERPRISE DIAGNOSTIC INPUTS™</p>
+
+                {/* Input nodes */}
+                {[
+                  { label: 'Leadership Interviews', color: '#22D3EE' },
+                  { label: 'Documentation Review', color: '#FB923C' },
+                  { label: 'Technology Assessment', color: '#60A5FA' },
+                  { label: 'Operational Analysis', color: '#86EFAC' },
+                  { label: 'Data & AI Evaluation', color: '#FDE047' },
+                  { label: 'Security Assessment', color: '#F472B6' },
+                  { label: 'Growth Assessment', color: '#A78BFA' },
+                ].map((node, i) => (
+                  <div key={node.label} className="flex flex-col items-center">
+                    <div className="w-full flex items-center gap-3 px-4 py-2.5 border border-white/[0.08] bg-white/[0.03] rounded-lg">
+                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: node.color }} />
+                      <span className="text-white/60 text-sm font-semibold">{node.label}</span>
+                    </div>
+                    <div className="w-px h-4 bg-white/10" />
+                  </div>
+                ))}
+
+                {/* Engine */}
+                <div className="w-full px-5 py-4 bg-brand-gradient rounded-xl text-center mb-0">
+                  <p className="text-white font-black text-sm tracking-wide">Kangqore BIDS™ Intelligence Engine</p>
+                </div>
+                <div className="w-px h-4 bg-white/10 mx-auto" />
+
+                {/* Outputs */}
+                <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase text-center mb-4">OUTPUTS</p>
+                <div className="space-y-2">
+                  {[
+                    'Business Health Score™',
+                    'Constraint Analysis™',
+                    'Benchmark Intelligence™',
+                    'Transformation Blueprint™',
+                  ].map(out => (
+                    <div key={out} className="flex items-center gap-3 px-4 py-2.5 border border-cyan-500/20 bg-cyan-500/[0.04] rounded-lg">
+                      <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
+                      <span className="text-cyan-100/80 text-sm font-semibold">{out}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Multi-Layer Diagnostic Architecture */}
+          <div className="border-t border-white/[0.06] pt-20">
+            <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-3">PROPRIETARY FRAMEWORK</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-white mb-12 tracking-tight">Multi-Layer Diagnostic Architecture™</h3>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { n: '01', layer: 'Executive Intelligence',      color: '#22D3EE' },
+                { n: '02', layer: 'Operational Intelligence',    color: '#FB923C' },
+                { n: '03', layer: 'Technology Intelligence',     color: '#60A5FA' },
+                { n: '04', layer: 'Data & AI Intelligence',      color: '#86EFAC' },
+                { n: '05', layer: 'Security & Risk Intelligence',color: '#F472B6' },
+                { n: '06', layer: 'Growth Intelligence',         color: '#FDE047' },
+                { n: '07', layer: 'Benchmark Intelligence',      color: '#A78BFA' },
+                { n: '08', layer: 'Prescription Intelligence',   color: '#E8614A' },
+              ].map((l) => (
+                <div key={l.n} className="flex items-start gap-4 p-5 border border-white/[0.07] bg-white/[0.02] rounded-xl">
+                  <span className="text-[9px] font-black tracking-widest mt-0.5 flex-shrink-0" style={{ color: l.color + '60' }}>{l.n}</span>
+                  <div>
+                    <div className="w-5 h-0.5 rounded-full mb-3" style={{ backgroundColor: l.color }} />
+                    <p className="text-white/80 text-sm font-bold leading-snug">{l.layer}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Closing statement */}
+            <p className="mt-16 text-xl sm:text-2xl font-black text-white/50 max-w-4xl leading-snug">
+              The findings are processed through the{' '}
+              <span className="text-white">Kangqore BIDS™ Intelligence Framework™</span>, producing enterprise scores, constraint analysis, benchmark insights, opportunity mapping, and transformation recommendations.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
       {/* ─────────────────────── DELIVERABLES ─────────────────────── */}
       <section className="py-32 relative overflow-hidden">
         <div
