@@ -440,42 +440,40 @@ export default function BIDSPage() {
             </div>
           </div>
 
-          {/* Capability cards — Evaluate · Score · Prescribe · Transform */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+          {/* Process strip */}
+          <div className="mb-10 flex flex-wrap items-center gap-x-3 gap-y-2">
             {[
-              {
-                n: '01', title: 'Evaluate',
-                desc: 'Assess the entire enterprise — business, technology, operations, AI, security, and growth — as one interconnected system, not isolated departments.',
-                icon: Target,
-              },
-              {
-                n: '02', title: 'Score',
-                desc: 'Quantify performance, risk, and opportunity across 16 diagnostic intelligence pillars with precision scoring, classification, and benchmarking.',
-                icon: BarChart3,
-              },
-              {
-                n: '03', title: 'Prescribe',
-                desc: 'Map every identified root cause to targeted Kangqore service interventions — synthesized by eQORE AI™. No guesswork. No generic recommendations.',
-                icon: Sparkles,
-              },
-              {
-                n: '04', title: 'Transform',
-                desc: 'Execute with a 30/60/90/180-day roadmap, executive workshops, and benchmarks that hold transformation progress quantifiably accountable.',
-                icon: Award,
-              },
-            ].map((c) => {
-              const Icon = c.icon;
-              return (
-                <div key={c.n} className="bg-[#080808] border border-white/[0.08] rounded-2xl p-7 flex flex-col">
-                  <div className="flex items-center justify-between mb-8">
-                    <span className="text-[9px] font-black tracking-widest text-white/20 uppercase">{c.n}</span>
-                    <Icon className="w-5 h-5 text-cyan-400/50" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="text-white font-black text-2xl mb-4 tracking-tight">{c.title}</h3>
-                  <p className="text-white/35 text-sm leading-relaxed flex-1">{c.desc}</p>
-                </div>
-              );
-            })}
+              { n: '01', label: 'Submit your request' },
+              { n: '02', label: '30-min scoping call for Root Causes Identifications' },
+              { n: '03', label: 'Evaluate' },
+              { n: '04', label: 'Score' },
+              { n: '05', label: 'Receive a tailored Diagnose proposal' },
+              { n: '06', label: 'Engagement begins within 2 weeks' },
+              { n: '07', label: 'Transform' },
+            ].map((step, i, arr) => (
+              <React.Fragment key={step.n}>
+                <span className="text-[11px] text-white/40 font-medium tracking-wide">
+                  <span className="text-white/20 font-black mr-1.5">{step.n}</span>{step.label}
+                </span>
+                {i < arr.length - 1 && <span className="text-white/15 text-[10px]">→</span>}
+              </React.Fragment>
+            ))}
+          </div>
+
+          {/* Brand footer bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 px-8 bg-[#080808] border border-white/[0.08] rounded-2xl mb-16">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+              <span className="text-white font-black text-lg tracking-tight">Kangqore BIDS™</span>
+              <span className="hidden sm:block w-px h-5 bg-white/10" />
+              <span className="text-white/35 text-sm font-medium">Kangqore Business Diagnostic Intelligence System</span>
+            </div>
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200 flex-shrink-0"
+            >
+              Request a Diagnostic Assessment
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+            </Link>
           </div>
 
           {/* Pull quote */}
