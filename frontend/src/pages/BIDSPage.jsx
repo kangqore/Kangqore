@@ -437,6 +437,22 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── eQORE AI CONCIERGE ─────────────────────── */}
+      <ConciergeSection inverted suggestedPrompts={[
+        'What is Kangqore BIDS™?',
+        'What are the 16 diagnostic pillars?',
+        'How does a BIDS™ engagement work?',
+        'What deliverables do I receive?',
+        'How long does an engagement take?',
+        'What is the Prescription Engine™?',
+        'Which industry edition fits us?',
+        'How is BIDS™ different from consulting?',
+        'What is Benchmark Intelligence™?',
+        'What is the eQORE AI™ role in BIDS™?',
+        'What does a BIDS™ scorecard look like?',
+        'Request a Diagnostic Assessment',
+      ]} />
+
       {/* ─────────────────────── CEO QUESTIONS ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -1186,22 +1202,6 @@ export default function BIDSPage() {
           </p>
         </div>
       </section>
-
-      {/* ─────────────────────── eQORE AI CONCIERGE ─────────────────────── */}
-      <ConciergeSection inverted suggestedPrompts={[
-        'What is Kangqore BIDS™?',
-        'What are the 16 diagnostic pillars?',
-        'How does a BIDS™ engagement work?',
-        'What deliverables do I receive?',
-        'How long does an engagement take?',
-        'What is the Prescription Engine™?',
-        'Which industry edition fits us?',
-        'How is BIDS™ different from consulting?',
-        'What is Benchmark Intelligence™?',
-        'What is the eQORE AI™ role in BIDS™?',
-        'What does a BIDS™ scorecard look like?',
-        'Request a Diagnostic Assessment',
-      ]} />
 
       {/* ─────────────────────── WHAT'S COMING ─────────────────────── */}
       <section className="py-20 relative overflow-hidden border-t border-white/[0.04]" style={{ backgroundColor: '#000000' }}>
