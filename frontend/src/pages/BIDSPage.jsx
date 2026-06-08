@@ -529,7 +529,7 @@ export default function BIDSPage() {
                 note: 'Scored across all 16 pillars',
               },
               {
-                step: '02', color: 'from-brand-blue to-violet-600', dotColor: '#FFAD8A',
+                step: '02', color: 'from-brand-blue to-violet-600', dotColor: '#E8614A', numColor: '#E8614A',
                 title: 'Root Causes Identified',
                 items: ['Leadership bottlenecks', 'Poor operational visibility', 'Technology fragmentation', 'Data architecture gaps'],
                 note: 'Mapped to specific pillar findings',
@@ -553,7 +553,7 @@ export default function BIDSPage() {
                     <ArrowRight className="w-4 h-4 text-white/15" />
                   </div>
                 )}
-                <p className={`text-[10px] font-black tracking-[0.4em] uppercase mb-5 bg-gradient-to-r ${phase.color} bg-clip-text text-transparent`}>{phase.step}</p>
+                <p className={`text-[10px] font-black tracking-[0.4em] uppercase mb-5 ${phase.numColor ? '' : `bg-gradient-to-r ${phase.color} bg-clip-text text-transparent`}`} style={phase.numColor ? { color: phase.numColor } : undefined}>{phase.step}</p>
                 <h3 className="text-white font-black text-xl mb-5 leading-tight">{phase.title}</h3>
                 <ul className="space-y-3 mb-4">
                   {phase.items.map(item => (
