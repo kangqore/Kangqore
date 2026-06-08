@@ -98,7 +98,7 @@ function renderFormattedText(text) {
   });
 }
 
-const ConciergeSection = () => {
+const ConciergeSection = ({ inverted = false }) => {
   const {
     messages,
     streaming,
@@ -210,31 +210,30 @@ const ConciergeSection = () => {
   return (
     <section
       id="eqore-ai-concierge"
-      className="relative w-full bg-white dark:bg-black py-24 sm:py-32 overflow-hidden"
+      className={`relative w-full py-24 sm:py-32 overflow-hidden ${inverted ? 'bg-black' : 'bg-white dark:bg-black'}`}
       aria-labelledby="eqore-ai-heading"
     >
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="mb-12">
           <div className="flex items-center gap-4 mb-4">
-            <div className="h-[1px] w-12 bg-gray-400 dark:bg-gray-600"></div>
-            <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+            <div className={`h-[1px] w-12 ${inverted ? 'bg-gray-600' : 'bg-gray-400 dark:bg-gray-600'}`}></div>
+            <span className={`text-sm font-semibold uppercase tracking-widest ${inverted ? 'text-gray-400' : 'text-gray-500 dark:text-gray-400'}`}>
             eQORE AI<sup className="text-[10px] ml-0.5 opacity-70">™</sup> Assistant
             </span>
           </div>
           <h2
             id="eqore-ai-heading"
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-5xl"
+            className={`text-4xl md:text-5xl lg:text-6xl font-bold leading-tight max-w-5xl ${inverted ? 'text-white' : 'text-gray-900 dark:text-white'}`}
           >
             From Business Questions to Solution Direction — Ask <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI</span><sup className="bg-brand-gradient bg-clip-text text-transparent text-[0.45em] ml-0.5">™</sup>
           </h2>
-          <p className="mt-6 text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
+          <p className={`mt-6 text-lg leading-relaxed max-w-3xl ${inverted ? 'text-gray-300' : 'text-gray-600 dark:text-gray-400'}`}>
             eQORE helps leaders identify relevant Kangqore capabilities, understand possible solution paths, and connect with the right team for deeper consultation.
           </p>
         </div>
 
-        <div className="group relative rounded-2xl overflow-hidden border border-white/[0.05] w-full shadow-2xl hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)] transition-all duration-500 hover:-translate-y-1 bg-[#11131a]">
-          {/* Sleek "Glossy Black" Background */}
-          <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl pointer-events-none" style={{ background: 'linear-gradient(145deg, #181a20 0%, #000000 100%)' }}>
+        <div className={`group relative rounded-2xl overflow-hidden w-full shadow-2xl hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)] transition-all duration-500 hover:-translate-y-1 ${inverted ? 'border border-gray-200 bg-white' : 'border border-white/[0.05] bg-[#11131a]'}`}>
+          <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl pointer-events-none" style={{ background: inverted ? 'linear-gradient(145deg, #f8fafc 0%, #ffffff 100%)' : 'linear-gradient(145deg, #181a20 0%, #000000 100%)' }}>
             {/* Sharp diagonal gloss reflection */}
             <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(125deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 30%, rgba(255,255,255,0) 50%)' }} />
             
@@ -245,13 +244,13 @@ const ConciergeSection = () => {
             <div className="absolute inset-x-0 bottom-0 h-1/3 z-[1]" style={{ background: 'linear-gradient(0deg, rgba(255,255,255,0.02) 0%, transparent 100%)' }} />
           </div>
 
-          <div className="relative z-10 px-6 sm:px-8 py-5 border-b border-white/5 flex items-center justify-between gap-2">
+          <div className={`relative z-10 px-6 sm:px-8 py-5 border-b flex items-center justify-between gap-2 ${inverted ? 'border-gray-100' : 'border-white/5'}`}>
             <div className="flex items-center gap-4">
-              <div className="w-11 h-11 rounded-full bg-slate-800 overflow-hidden flex items-center justify-center shrink-0">
+              <div className={`w-11 h-11 rounded-full overflow-hidden flex items-center justify-center shrink-0 ${inverted ? 'bg-gray-100' : 'bg-slate-800'}`}>
                 <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
               </div>
               <div>
-                <p className="text-[15px] font-semibold text-white tracking-tight">
+                <p className={`text-[15px] font-semibold tracking-tight ${inverted ? 'text-gray-900' : 'text-white'}`}>
                   eQORE
                 </p>
                 <p className="text-[10px] uppercase tracking-widest font-bold text-brand-cyan mt-0.5">
@@ -262,7 +261,7 @@ const ConciergeSection = () => {
             <div className="flex items-center gap-2">
               <Link
                 to="/eqore-ai"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-white/60 hover:text-white px-3 py-2 rounded-xl bg-white/10 border border-white/10 transition-all"
+                className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${inverted ? 'bg-gray-100 text-gray-600 hover:text-gray-900 border-gray-200' : 'bg-white/10 text-white/60 hover:text-white border-white/10'}`}
                 title="Launch Immersive Full-Screen AI Experience"
               >
                 <ExternalLink className="w-3.5 h-3.5 text-cyan-400" /> Immersive AI Experience
@@ -277,8 +276,10 @@ const ConciergeSection = () => {
                   }
                 }}
                 className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${
-                  isVoiceEnabled 
-                    ? 'bg-cyan-400/20 text-cyan-400 border-cyan-400/30' 
+                  isVoiceEnabled
+                    ? 'bg-cyan-400/20 text-cyan-400 border-cyan-400/30'
+                    : inverted
+                    ? 'bg-gray-100 text-gray-600 hover:text-gray-900 border-gray-200'
                     : 'bg-white/10 text-white/60 hover:text-white border-white/10'
                 }`}
                 title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
@@ -290,7 +291,7 @@ const ConciergeSection = () => {
                 <button
                   type="button"
                   onClick={reset}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-white/60 hover:text-white px-3 py-2 rounded-xl bg-white/10 border border-white/10 transition-all"
+                  className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${inverted ? 'bg-gray-100 text-gray-600 hover:text-gray-900 border-gray-200' : 'bg-white/10 text-white/60 hover:text-white border-white/10'}`}
                   title="Start a new conversation"
                 >
                   <MessageSquarePlus className="w-3.5 h-3.5" /> New Session
@@ -304,7 +305,7 @@ const ConciergeSection = () => {
             className="relative z-10 px-6 sm:px-8 py-8 max-h-[520px] overflow-y-auto custom-scrollbar bg-transparent scroll-smooth"
           >
             {restoring && (
-              <div className="text-[10px] uppercase tracking-widest font-bold text-slate-400 dark:text-slate-500 mb-3 flex items-center gap-2">
+              <div className={`text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center gap-2 ${inverted ? 'text-gray-500' : 'text-slate-400 dark:text-slate-500'}`}>
                 <RefreshCw className="w-3 h-3 animate-spin" /> Restoring previous conversation
               </div>
             )}
@@ -327,9 +328,7 @@ const ConciergeSection = () => {
                     >
                       <div
                         className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 overflow-hidden ${
-                          isUser
-                            ? ''
-                            : 'bg-slate-800'
+                          isUser ? '' : inverted ? 'bg-gray-200' : 'bg-slate-800'
                         }`}
                         style={isUser ? {
                           background: 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)',
@@ -347,7 +346,11 @@ const ConciergeSection = () => {
                           isUser
                             ? 'bg-brand-blue text-white rounded-br-sm'
                             : msg.id === 'greeting'
-                            ? 'bg-[#1c202a]/80 backdrop-blur-md font-semibold rounded-bl-sm border border-white/10'
+                            ? inverted
+                              ? 'bg-gray-100 font-semibold rounded-bl-sm border border-gray-200 text-gray-900'
+                              : 'bg-[#1c202a]/80 backdrop-blur-md font-semibold rounded-bl-sm border border-white/10'
+                            : inverted
+                            ? 'bg-gray-100 text-gray-800 rounded-bl-sm border border-gray-200'
                             : 'bg-[#1c202a]/80 backdrop-blur-md text-gray-100 rounded-bl-sm border border-white/10'
                         }`}
                       >
@@ -366,7 +369,7 @@ const ConciergeSection = () => {
 
                     {!isUser && msg.done && msg.citations && msg.citations.length > 0 && (
                       <div className="flex flex-wrap items-center gap-1.5 ml-10">
-                        <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400 dark:text-slate-500">
+                        <span className={`text-[10px] uppercase tracking-widest font-bold ${inverted ? 'text-gray-500' : 'text-slate-400 dark:text-slate-500'}`}>
                           Sources:{' '}
                           <a 
                             href="https://kangqore.com" 
@@ -388,7 +391,7 @@ const ConciergeSection = () => {
                         <button
                           type="button"
                           onClick={() => copyMessage(msg)}
-                          className="inline-flex items-center gap-1 text-[10px] text-white/50 hover:text-white px-1.5 py-0.5 rounded transition-colors"
+                          className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded transition-colors ${inverted ? 'text-gray-400 hover:text-gray-900' : 'text-white/50 hover:text-white'}`}
                           title="Copy"
                         >
                           {copiedId === msg.id ? (
@@ -405,7 +408,7 @@ const ConciergeSection = () => {
                           type="button"
                           onClick={() => retry(msg.id)}
                           disabled={streaming}
-                          className="inline-flex items-center gap-1 text-[10px] text-white/50 hover:text-white disabled:opacity-50 px-1.5 py-0.5 rounded transition-colors"
+                          className={`inline-flex items-center gap-1 text-[10px] disabled:opacity-50 px-1.5 py-0.5 rounded transition-colors ${inverted ? 'text-gray-400 hover:text-gray-900' : 'text-white/50 hover:text-white'}`}
                           title="Retry this answer"
                         >
                           <RotateCcw className="w-3 h-3" /> Retry
@@ -417,7 +420,7 @@ const ConciergeSection = () => {
                           className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                             msg.feedback === 'up'
                               ? 'text-brand-cyan'
-                              : 'text-white/50 hover:text-white'
+                              : inverted ? 'text-gray-400 hover:text-gray-900' : 'text-white/50 hover:text-white'
                           } disabled:opacity-50`}
                           title="Helpful"
                         >
@@ -430,7 +433,7 @@ const ConciergeSection = () => {
                           className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                             msg.feedback === 'down'
                               ? 'text-rose-400'
-                              : 'text-white/50 hover:text-white'
+                              : inverted ? 'text-gray-400 hover:text-gray-900' : 'text-white/50 hover:text-white'
                           } disabled:opacity-50`}
                           title="Not helpful"
                         >
@@ -470,7 +473,7 @@ const ConciergeSection = () => {
                         <button
                           type="button"
                           onClick={() => setShowLeadFor(msg.id)}
-                          className="text-xs font-bold text-white hover:text-gray-200 hover:underline flex items-center gap-1.5 transition-colors"
+                          className={`text-xs font-bold hover:underline flex items-center gap-1.5 transition-colors ${inverted ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
                         >
                           <span>&rarr;</span> Talk to a Kangqore consultant
                         </button>
@@ -495,7 +498,7 @@ const ConciergeSection = () => {
             </div>
           </div>
 
-          <div className="relative z-10 px-6 sm:px-8 py-6 border-t border-white/5 bg-transparent">
+          <div className={`relative z-10 px-6 sm:px-8 py-6 border-t bg-transparent ${inverted ? 'border-gray-100' : 'border-white/5'}`}>
             {!hasUserMessages && (
               <div className="mb-6 -mx-1 flex flex-wrap gap-2">
                 {[
@@ -534,7 +537,7 @@ const ConciergeSection = () => {
                 onChange={(e) => setInput(e.target.value)}
                 disabled={streaming}
                 placeholder={voice.listening ? 'System Listening…' : 'Engineer a query…'}
-                className="w-full pl-6 pr-28 py-[18px] rounded-full text-[15px] bg-[#1c202a]/80 backdrop-blur-md border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all shadow-lg"
+                className={`w-full pl-6 pr-28 py-[18px] rounded-full text-[15px] focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all shadow-lg ${inverted ? 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-[#1c202a]/80 backdrop-blur-md border border-white/10 text-white placeholder-slate-400'}`}
               />
               {voice.supported && (
                 <button
@@ -544,6 +547,8 @@ const ConciergeSection = () => {
                   className={`absolute right-[52px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
                     voice.listening
                       ? 'bg-rose-500 text-white animate-pulse'
+                      : inverted
+                      ? 'bg-gray-900 text-gray-100 hover:bg-gray-800'
                       : 'bg-[#f8fafc] hover:bg-white dark:bg-gray-900 dark:border-gray-800 text-slate-700 dark:text-gray-300'
                   } disabled:opacity-40 disabled:cursor-not-allowed shadow-sm`}
                   aria-label={voice.listening ? 'Stop voice input' : 'Start voice input'}
@@ -560,7 +565,7 @@ const ConciergeSection = () => {
                 <button
                   type="button"
                   onClick={stop}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-700 text-white flex items-center justify-center hover:bg-slate-600 transition-all shadow-sm"
+                  className={`absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm ${inverted ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-slate-700 text-white hover:bg-slate-600'}`}
                   aria-label="Stop generating"
                   title="Stop"
                 >
@@ -582,7 +587,7 @@ const ConciergeSection = () => {
               <p className="mt-2 text-xs text-red-500 dark:text-red-400">{error}</p>
             )}
 
-            <p className="mt-3 text-[11px] text-slate-400 dark:text-slate-500 text-center">
+            <p className={`mt-3 text-[11px] text-center ${inverted ? 'text-gray-500' : 'text-slate-400 dark:text-slate-500'}`}>
               eQORE provides guidance based on Kangqore’s service knowledge. Final scope, pricing, and commitments are confirmed by our consultants.
             </p>
           </div>
