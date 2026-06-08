@@ -440,23 +440,31 @@ export default function BIDSPage() {
             </div>
           </div>
 
-          {/* Process strip */}
-          <div className="mb-10 flex flex-wrap items-center gap-x-3 gap-y-2">
+          {/* Process strip — 2 rows */}
+          <div className="mb-10 space-y-3">
             {[
-              { n: '01', label: 'Submit your request',                           color: '#22d3ee' },
-              { n: '02', label: '30-min scoping call for Root Causes Identifications', color: '#38bdf8' },
-              { n: '03', label: 'Evaluate',                                      color: '#60a5fa' },
-              { n: '04', label: 'Score',                                         color: '#818cf8' },
-              { n: '05', label: 'Receive a tailored Diagnose proposal',          color: '#a78bfa' },
-              { n: '06', label: 'Engagement begins within 2 weeks',              color: '#c084fc' },
-              { n: '07', label: 'Transform',                                     color: '#e879f9' },
-            ].map((step, i, arr) => (
-              <React.Fragment key={step.n}>
-                <span className="text-[11px] font-medium tracking-wide" style={{ color: step.color }}>
-                  <span className="font-black mr-1.5" style={{ color: step.color + '80' }}>{step.n}</span>{step.label}
-                </span>
-                {i < arr.length - 1 && <span className="text-white/15 text-[10px]">→</span>}
-              </React.Fragment>
+              [
+                { n: '01', label: 'Submit your request',                                color: '#22d3ee' },
+                { n: '02', label: '30-min scoping call for Root Causes Identifications', color: '#38bdf8' },
+                { n: '03', label: 'Evaluate',                                           color: '#60a5fa' },
+                { n: '04', label: 'Score',                                              color: '#818cf8' },
+              ],
+              [
+                { n: '05', label: 'Receive a tailored Diagnose proposal',               color: '#a78bfa' },
+                { n: '06', label: 'Engagement begins within 2 weeks',                   color: '#c084fc' },
+                { n: '07', label: 'Transform',                                          color: '#e879f9' },
+              ],
+            ].map((row, rowIdx) => (
+              <div key={rowIdx} className="flex items-center gap-x-3">
+                {row.map((step, i) => (
+                  <React.Fragment key={step.n}>
+                    <span className="text-[13px] font-medium tracking-wide whitespace-nowrap" style={{ color: step.color }}>
+                      <span className="font-black mr-1.5" style={{ color: step.color + '80' }}>{step.n}</span>{step.label}
+                    </span>
+                    {i < row.length - 1 && <span className="text-white/15 text-[11px]">→</span>}
+                  </React.Fragment>
+                ))}
+              </div>
             ))}
           </div>
 
