@@ -1169,7 +1169,20 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── eQORE AI CONCIERGE ─────────────────────── */}
-      <ConciergeSection inverted />
+      <ConciergeSection inverted suggestedPrompts={[
+        'What is Kangqore BIDS™?',
+        'What are the 16 diagnostic pillars?',
+        'How does a BIDS™ engagement work?',
+        'What deliverables do I receive?',
+        'How long does an engagement take?',
+        'What is the Prescription Engine™?',
+        'Which industry edition fits us?',
+        'How is BIDS™ different from consulting?',
+        'What is Benchmark Intelligence™?',
+        'What is the eQORE AI™ role in BIDS™?',
+        'What does a BIDS™ scorecard look like?',
+        'Request a Diagnostic Assessment',
+      ]} />
 
       {/* ─────────────────────── SCALE STRIP ─────────────────────── */}
       <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>

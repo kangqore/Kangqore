@@ -18,7 +18,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useConcierge, CONCIERGE_SUGGESTED_PROMPTS } from '../../hooks/useConcierge';
+import { useConcierge } from '../../hooks/useConcierge';
 import { useVoiceInput } from '../../hooks/useVoiceInput';
 import CitationBadge from './CitationBadge';
 import SuggestedPromptChip from './SuggestedPromptChip';
@@ -98,7 +98,27 @@ function renderFormattedText(text) {
   });
 }
 
-const ConciergeSection = ({ inverted = false }) => {
+const DEFAULT_PROMPTS = [
+  "What is Kangqore?",
+  "Services/Capabilities",
+  "What are your departments?",
+  "Which industries do you serve?",
+  "Why choose Kangqore?",
+  "What services does Kangqore offer?",
+  "Who is the founder and CEO of the company?",
+  "who is eQORE in Kangqore?",
+  "Tell me about your success stories.",
+  "How does your GCC model work?",
+  "What is your approach to Agentic AI?",
+  "How do you ensure data security?",
+  "What is your approach to SAP S/4HANA migration?",
+  "Do you have SOC 2 Type II?",
+  "Schedule Your Consultation",
+  "Contact Us...",
+];
+
+const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
+  const prompts = suggestedPrompts || DEFAULT_PROMPTS;
   const {
     messages,
     streaming,
@@ -246,7 +266,7 @@ const ConciergeSection = ({ inverted = false }) => {
 
           <div className={`relative z-10 px-6 sm:px-8 py-5 border-b flex items-center justify-between gap-2 ${inverted ? 'border-white/20' : 'border-white/5'}`}>
             <div className="flex items-center gap-4">
-              <div className={`w-11 h-11 rounded-full overflow-hidden flex items-center justify-center shrink-0 ${inverted ? 'bg-white/20' : 'bg-slate-800'}`}>
+              <div className={`w-11 h-11 rounded-full overflow-hidden flex items-center justify-center shrink-0 ${inverted ? 'bg-white/30' : 'bg-slate-800'}`}>
                 <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
               </div>
               <div>
@@ -261,7 +281,7 @@ const ConciergeSection = ({ inverted = false }) => {
             <div className="flex items-center gap-2">
               <Link
                 to="/eqore-ai"
-                className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${inverted ? 'bg-white/20 text-white hover:bg-white/30 border-white/20' : 'bg-white/10 text-white/60 hover:text-white border-white/10'}`}
+                className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${inverted ? 'bg-white/25 text-white hover:bg-white/40 border-white/40' : 'bg-white/10 text-white/60 hover:text-white border-white/10'}`}
                 title="Launch Immersive Full-Screen AI Experience"
               >
                 <ExternalLink className="w-3.5 h-3.5 text-cyan-400" /> Immersive AI Experience
@@ -291,7 +311,7 @@ const ConciergeSection = ({ inverted = false }) => {
                 <button
                   type="button"
                   onClick={reset}
-                  className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${inverted ? 'bg-white/20 text-white hover:bg-white/30 border-white/20' : 'bg-white/10 text-white/60 hover:text-white border-white/10'}`}
+                  className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${inverted ? 'bg-white/25 text-white hover:bg-white/40 border-white/40' : 'bg-white/10 text-white/60 hover:text-white border-white/10'}`}
                   title="Start a new conversation"
                 >
                   <MessageSquarePlus className="w-3.5 h-3.5" /> New Session
@@ -328,7 +348,7 @@ const ConciergeSection = ({ inverted = false }) => {
                     >
                       <div
                         className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 overflow-hidden ${
-                          isUser ? '' : inverted ? 'bg-white/20' : 'bg-slate-800'
+                          isUser ? '' : inverted ? 'bg-white/30' : 'bg-slate-800'
                         }`}
                         style={isUser ? {
                           background: 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)',
@@ -347,10 +367,10 @@ const ConciergeSection = ({ inverted = false }) => {
                             ? 'bg-brand-blue text-white rounded-br-sm'
                             : msg.id === 'greeting'
                             ? inverted
-                              ? 'bg-white/20 font-semibold rounded-bl-sm border border-white/20 text-white'
+                              ? 'bg-white/35 font-semibold rounded-bl-sm border border-white/50 text-white'
                               : 'bg-[#1c202a]/80 backdrop-blur-md font-semibold rounded-bl-sm border border-white/10'
                             : inverted
-                            ? 'bg-white/20 text-white rounded-bl-sm border border-white/20'
+                            ? 'bg-white/35 text-white rounded-bl-sm border border-white/50'
                             : 'bg-[#1c202a]/80 backdrop-blur-md text-gray-100 rounded-bl-sm border border-white/10'
                         }`}
                       >
@@ -450,6 +470,7 @@ const ConciergeSection = ({ inverted = false }) => {
                             prompt={q}
                             onSelect={onChip}
                             disabled={streaming}
+                            inverted={inverted}
                           />
                         ))}
                       </div>
@@ -501,29 +522,13 @@ const ConciergeSection = ({ inverted = false }) => {
           <div className={`relative z-10 px-6 sm:px-8 py-6 border-t bg-transparent ${inverted ? 'border-white/20' : 'border-white/5'}`}>
             {!hasUserMessages && (
               <div className="mb-6 -mx-1 flex flex-wrap gap-2">
-                {[
-                  "What is Kangqore?",
-                  "Services/Capabilities",
-                  "What are your departments?",
-                  "Which industries do you serve?",
-                  "Why choose Kangqore?",
-                  "What services does Kangqore offer?",
-                  "Who is the founder and CEO of the company?",
-                  "who is eQORE in Kangqore?",
-                  "Tell me about your success stories.",
-                  "How does your GCC model work?",
-                  "What is your approach to Agentic AI?",
-                  "How do you ensure data security?",
-                  "What is your approach to SAP S/4HANA migration?",
-                  "Do you have SOC 2 Type II?",
-                  "Schedule Your Consultation",
-                  "Contact Us...",
-                ].map((p) => (
+                {prompts.map((p) => (
                   <SuggestedPromptChip
                     key={p}
                     prompt={p}
                     onSelect={onChip}
                     disabled={streaming}
+                    inverted={inverted}
                   />
                 ))}
               </div>
@@ -537,7 +542,7 @@ const ConciergeSection = ({ inverted = false }) => {
                 onChange={(e) => setInput(e.target.value)}
                 disabled={streaming}
                 placeholder={voice.listening ? 'System Listening…' : 'Engineer a query…'}
-                className={`w-full pl-6 pr-28 py-[18px] rounded-full text-[15px] focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all shadow-lg ${inverted ? 'bg-white/20 border border-white/20 text-white placeholder-white/50' : 'bg-[#1c202a]/80 backdrop-blur-md border border-white/10 text-white placeholder-slate-400'}`}
+                className={`w-full pl-6 pr-28 py-[18px] rounded-full text-[15px] focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all shadow-lg ${inverted ? 'bg-white/30 border border-white/50 text-white placeholder-white/75' : 'bg-[#1c202a]/80 backdrop-blur-md border border-white/10 text-white placeholder-slate-400'}`}
               />
               {voice.supported && (
                 <button
@@ -565,7 +570,7 @@ const ConciergeSection = ({ inverted = false }) => {
                 <button
                   type="button"
                   onClick={stop}
-                  className={`absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm ${inverted ? 'bg-white/20 text-white hover:bg-white/30' : 'bg-slate-700 text-white hover:bg-slate-600'}`}
+                  className={`absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm ${inverted ? 'bg-white/30 text-white hover:bg-white/45' : 'bg-slate-700 text-white hover:bg-slate-600'}`}
                   aria-label="Stop generating"
                   title="Stop"
                 >
