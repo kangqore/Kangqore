@@ -792,6 +792,156 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── INTELLIGENCE BEHIND BIDS ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+
+          {/* Header + Intro */}
+          <div className="mb-24 max-w-4xl">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE INTELLIGENCE BEHIND KANGQORE BIDS™</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
+              Enterprise diagnosis requires<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">rigor, structure, and evidence.</span>
+            </h2>
+            <div className="space-y-5 text-white/45 text-lg leading-relaxed font-medium max-w-3xl">
+              <p>
+                Kangqore BIDS™ is a comprehensive enterprise diagnostic intelligence framework designed to evaluate organizations through a multidimensional lens spanning strategy, operations, technology, data, artificial intelligence, cybersecurity, governance, growth, and transformation.
+              </p>
+              <p>
+                The framework synthesizes globally recognized standards, maturity models, operational methodologies, and industry best practices into a unified diagnostic architecture. Every engagement combines executive insight, organizational evidence, operational analysis, technical assessment, and intelligence-driven evaluation across sixteen interconnected enterprise pillars.
+              </p>
+              <p className="text-white/60 font-semibold">
+                The result is a structured, objective, and evidence-based view of organizational health, capability maturity, risk exposure, growth potential, and transformation readiness.
+              </p>
+            </div>
+          </div>
+
+          {/* Global Frameworks */}
+          <div className="mb-24">
+            <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-4">BUILT UPON ESTABLISHED GLOBAL FRAMEWORKS</p>
+            <p className="text-white/50 text-base font-medium mb-14 max-w-2xl">
+              Kangqore BIDS™ draws upon internationally recognized standards and methodologies to ensure consistency, credibility, and analytical rigor.
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  label: 'Cybersecurity, Governance & Risk',
+                  color: '#F472B6',
+                  items: ['NIST Cybersecurity Framework (CSF 2.0)', 'NIST AI Risk Management Framework (AI RMF)', 'ISO/IEC 27001 Information Security Management', 'CIS Critical Security Controls', 'Enterprise Risk Management Principles'],
+                },
+                {
+                  label: 'Artificial Intelligence & Responsible Innovation',
+                  color: '#A78BFA',
+                  items: ['ISO/IEC 42001 AI Management Systems', 'Responsible AI & AI Governance Frameworks', 'AI Maturity and Adoption Models', 'Enterprise Automation Methodologies'],
+                },
+                {
+                  label: 'Cloud, Technology & Architecture',
+                  color: '#60A5FA',
+                  items: ['AWS Cloud Adoption Framework (CAF)', 'Cloud Well-Architected Principles', 'Enterprise Architecture Practices', 'Platform Engineering and Modernization Frameworks'],
+                },
+                {
+                  label: 'Data, Analytics & Intelligence',
+                  color: '#22D3EE',
+                  items: ['Data Governance Frameworks', 'Analytics and BI Maturity Models', 'Decision Intelligence Methodologies', 'Information Management Best Practices'],
+                },
+                {
+                  label: 'Operations, Engineering & Performance',
+                  color: '#86EFAC',
+                  items: ['DevOps and Platform Engineering Practices', 'DORA Performance Metrics', 'Operational Excellence Frameworks', 'Process Optimization and Continuous Improvement Models'],
+                },
+                {
+                  label: 'Strategy, Growth & Transformation',
+                  color: '#FDE047',
+                  items: ['Digital Maturity Methodologies', 'Enterprise Transformation Models', 'Organizational Change Management Frameworks', 'Strategic Growth and Capability Development Practices'],
+                },
+              ].map(cat => (
+                <div key={cat.label} className="p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl flex flex-col gap-5">
+                  <div>
+                    <div className="w-6 h-0.5 rounded-full mb-4" style={{ backgroundColor: cat.color }} />
+                    <p className="text-sm font-black text-white leading-snug" style={{ color: cat.color }}>{cat.label}</p>
+                  </div>
+                  <ul className="space-y-2">
+                    {cat.items.map(item => (
+                      <li key={item} className="flex items-start gap-2.5">
+                        <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: cat.color + '60' }} />
+                        <span className="text-white/40 text-sm font-medium leading-snug">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 8-Layer Architecture — detailed descriptions */}
+          <div className="mb-24 border-t border-white/[0.06] pt-20">
+            <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-4">MULTI-LAYER DIAGNOSTIC ARCHITECTURE™</p>
+            <p className="text-white/50 text-base font-medium mb-14 max-w-2xl">
+              Kangqore BIDS™ evaluates organizations through eight interconnected intelligence layers, providing a holistic understanding of enterprise performance and readiness.
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[
+                { n: '01', layer: 'Executive Intelligence™',      color: '#22D3EE', desc: 'Evaluates strategic alignment, leadership effectiveness, governance maturity, decision-making structures, and organizational direction.' },
+                { n: '02', layer: 'Operational Intelligence™',    color: '#FB923C', desc: 'Assesses workflows, execution capability, operational resilience, process maturity, productivity, and scalability.' },
+                { n: '03', layer: 'Technology Intelligence™',     color: '#60A5FA', desc: 'Examines architecture, applications, infrastructure, integrations, modernization readiness, and technical debt.' },
+                { n: '04', layer: 'Data & AI Intelligence™',      color: '#86EFAC', desc: 'Measures data maturity, analytics capability, AI readiness, automation potential, and governance controls.' },
+                { n: '05', layer: 'Security & Risk Intelligence™',color: '#F472B6', desc: 'Evaluates cybersecurity posture, compliance readiness, resilience capability, risk exposure, and control effectiveness.' },
+                { n: '06', layer: 'Growth Intelligence™',         color: '#FDE047', desc: 'Assesses customer acquisition, customer experience, revenue operations, market visibility, retention, and growth efficiency.' },
+                { n: '07', layer: 'Benchmark Intelligence™',      color: '#A78BFA', desc: 'Compares organizational maturity, capability performance, and strategic readiness against industry and peer benchmarks.' },
+                { n: '08', layer: 'Prescription Intelligence™',   color: '#E8614A', desc: 'Transforms findings into prioritized recommendations, transformation initiatives, execution roadmaps, and service prescriptions.' },
+              ].map(l => (
+                <div key={l.n} className="p-5 border border-white/[0.07] bg-white/[0.02] rounded-xl flex flex-col gap-4">
+                  <div>
+                    <span className="text-[9px] font-black tracking-widest" style={{ color: l.color + '60' }}>{l.n}</span>
+                    <div className="w-5 h-0.5 rounded-full mt-2" style={{ backgroundColor: l.color }} />
+                  </div>
+                  <p className="text-white/80 text-sm font-black leading-snug">{l.layer}</p>
+                  <p className="text-white/35 text-xs font-medium leading-relaxed">{l.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Intelligence Before Investment™ */}
+          <div className="border-t border-white/[0.06] pt-20">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">INTELLIGENCE BEFORE INVESTMENT™</p>
+            <div className="grid lg:grid-cols-2 gap-16 items-start">
+              <div className="space-y-5 text-white/45 text-lg leading-relaxed font-medium">
+                <p>
+                  Organizations frequently commit significant resources to technology modernization, artificial intelligence initiatives, cybersecurity programs, cloud adoption, automation projects, and transformation efforts before establishing a clear understanding of the constraints limiting performance.
+                </p>
+                <p className="text-white font-black text-2xl sm:text-3xl tracking-tight leading-snug">
+                  Kangqore BIDS™ reverses that sequence.
+                </p>
+                <p>
+                  By creating an objective, evidence-based understanding of enterprise health before major investment decisions are made, organizations can prioritize with confidence, allocate resources more effectively, reduce transformation risk, and maximize long-term value creation.
+                </p>
+              </div>
+              <div className="flex flex-col justify-center gap-1">
+                {[
+                  { label: 'Prioritize with confidence', color: '#22D3EE' },
+                  { label: 'Allocate resources more effectively', color: '#60A5FA' },
+                  { label: 'Reduce transformation risk', color: '#A78BFA' },
+                  { label: 'Maximize long-term value creation', color: '#E8614A' },
+                ].map((item, i, arr) => (
+                  <div key={item.label}>
+                    <div className="flex items-center gap-4 py-5">
+                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
+                      <p className="text-white/70 text-lg font-semibold">{item.label}</p>
+                    </div>
+                    {i < arr.length - 1 && <div className="w-px h-4 ml-[2.75px] bg-white/[0.06]" />}
+                  </div>
+                ))}
+                <p className="mt-8 text-cyan-400 font-black text-xl sm:text-2xl tracking-tight pt-2 border-t border-white/[0.06]">
+                  Because sustainable transformation begins with intelligent diagnosis.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* ─────────────────────── HOW BIDS WORKS ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
