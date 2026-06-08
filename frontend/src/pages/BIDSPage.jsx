@@ -213,6 +213,23 @@ export default function BIDSPage() {
                   <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
                 </a>
               </div>
+
+              {/* What happens next */}
+              <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
+                {[
+                  { n: '01', label: 'Submit your request' },
+                  { n: '02', label: '30-min scoping call' },
+                  { n: '03', label: 'Receive a tailored proposal' },
+                  { n: '04', label: 'Engagement begins within 2 weeks' },
+                ].map((step, i) => (
+                  <React.Fragment key={step.n}>
+                    <span className="text-[11px] text-white/30 font-medium tracking-wide">
+                      <span className="text-white/15 font-black mr-1.5">{step.n}</span>{step.label}
+                    </span>
+                    {i < 3 && <span className="text-white/15 text-[10px]">→</span>}
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
           </div>
 
