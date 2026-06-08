@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Target, Users, Landmark, Factory, Briefcase, Star,
   TrendingUp, Globe, Cpu, Cloud, BarChart3, Bot, Zap, Lock,
   Scale, Sparkles, RefreshCw, Activity,
-  Database, Award, Layers, Shield, Send, ChevronRight
+  Database, Award, Layers, Shield, ChevronRight
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import BIDSProductVisual from '../components/hero/BIDSProductVisual';
 import VisualBackground from '../components/VisualBackground';
+import ConciergeSection from '../components/concierge/ConciergeSection';
 
 // ─────────────────────────────────────────────
 // DATA
@@ -144,8 +145,6 @@ export default function BIDSPage() {
   const [ctaRef, ctaVisible]           = useScrollAnimation({ once: true, threshold: 0.2 });
   const [activePillar, setActivePillar] = useState(0);
   const [activeDeliverable, setActiveDeliverable] = useState(0);
-  const [eqoreQuery, setEqoreQuery] = useState('');
-  const [eqoreSubmitted, setEqoreSubmitted] = useState(false);
 
   return (
     <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
@@ -1169,106 +1168,8 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── eQORE AI ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12">
-          <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">eQORE AI™</p>
-          <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-6">
-            Ask eQORE.<br />
-            <span className="bg-brand-gradient bg-clip-text text-transparent">Get answers.</span>
-          </h2>
-          <p className="text-white/35 text-lg font-medium leading-relaxed max-w-2xl mb-20">
-            eQORE AI™ is Kangqore's intelligence core — powering the Prescription Engine™ inside every BIDS™ engagement. Ask about the diagnostic process, our service areas, or request an assessment.
-          </p>
-
-          {!eqoreSubmitted ? (
-            <div className="flex flex-col md:flex-row items-center gap-10">
-              {/* Avatar */}
-              <div className="relative shrink-0">
-                <div className="absolute inset-0 rounded-full border border-cyan-400/40 animate-pulse" style={{ animationDuration: '3s' }} />
-                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl bg-black relative z-10">
-                  <img src="/images/eqore-avatar.png" alt="eQORE AI" className="w-full h-full object-cover" />
-                </div>
-                <div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-cyan-400 border-2 border-black rounded-full shadow-[0_0_12px_rgba(34,211,238,0.8)] z-20" />
-              </div>
-
-              {/* Input */}
-              <div className="flex-1 w-full relative">
-                {!eqoreQuery && (
-                  <div className="absolute inset-0 pointer-events-none flex items-center overflow-hidden whitespace-nowrap z-0">
-                    <style>{`
-                      @keyframes bids-placeholder-scroll {
-                        0% { transform: translateX(0); }
-                        100% { transform: translateX(-50%); }
-                      }
-                      .animate-bids-placeholder { animation: bids-placeholder-scroll 28s linear infinite; }
-                    `}</style>
-                    <div className="flex animate-bids-placeholder">
-                      <span className="text-xl md:text-3xl font-light tracking-tight text-white/20 pr-16">
-                        Ask about Kangqore BIDS™, our diagnostic process, or request an assessment.
-                      </span>
-                      <span className="text-xl md:text-3xl font-light tracking-tight text-white/20 pr-16">
-                        Ask about Kangqore BIDS™, our diagnostic process, or request an assessment.
-                      </span>
-                    </div>
-                  </div>
-                )}
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    if (!eqoreQuery.trim()) return;
-                    setEqoreSubmitted(true);
-                  }}
-                  className="relative group z-10"
-                >
-                  <input
-                    type="text"
-                    value={eqoreQuery}
-                    onChange={(e) => setEqoreQuery(e.target.value)}
-                    placeholder=""
-                    className="w-full bg-transparent border-b border-white/10 px-0 py-5 text-xl md:text-3xl font-light tracking-tight text-white placeholder-transparent focus:outline-none focus:border-cyan-400 transition-all duration-500"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!eqoreQuery.trim()}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 p-3 text-cyan-400 hover:text-white hover:scale-125 active:scale-95 transition-all duration-300 disabled:opacity-0"
-                  >
-                    <Send className="w-6 h-6" />
-                  </button>
-                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-cyan-400 transition-all duration-700 group-focus-within:w-full group-hover:w-full opacity-50 shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
-                </form>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col md:flex-row items-start gap-10">
-              {/* Avatar */}
-              <div className="relative shrink-0">
-                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-cyan-400/30 shadow-2xl bg-black">
-                  <img src="/images/eqore-avatar.png" alt="eQORE AI" className="w-full h-full object-cover" />
-                </div>
-                <div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-cyan-400 border-2 border-black rounded-full shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
-              </div>
-              {/* Response */}
-              <div className="flex-1">
-                <p className="text-[9px] font-black tracking-[0.35em] text-cyan-400/60 uppercase mb-4">eQORE AI™ · Response</p>
-                <p className="text-white text-xl font-medium leading-relaxed mb-2">
-                  "{eqoreQuery}"
-                </p>
-                <p className="text-white/50 text-base leading-relaxed mb-8">
-                  I've received your query. For a full diagnostic conversation and to explore how Kangqore BIDS™ applies to your organization, a member of our team will respond directly.
-                </p>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-cyan-400/10 border border-cyan-400/30 hover:bg-cyan-400/20 hover:border-cyan-400/60 transition-all duration-300 group"
-                >
-                  <span className="text-cyan-400 font-black text-sm tracking-wide">Connect with Our Team</span>
-                  <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
+      {/* ─────────────────────── eQORE AI CONCIERGE ─────────────────────── */}
+      <ConciergeSection />
 
       {/* ─────────────────────── SCALE STRIP ─────────────────────── */}
       <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
