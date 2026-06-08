@@ -200,7 +200,7 @@ export default function BIDSPage() {
                   to="/contact"
                   className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_40px_rgba(37,100,234,0.2)] hover:shadow-[0_0_60px_rgba(37,100,234,0.4)] hover:bg-white/20"
                 >
-                  <span className="relative z-10 font-bold text-sm tracking-wide">Request a Diagnostic</span>
+                  <span className="relative z-10 font-bold text-sm tracking-wide">Request a Diagnostic Assessment</span>
                   <div className="relative w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center group-hover:bg-white transition-colors duration-300 z-10">
                     <ArrowRight className="w-4 h-4 text-white group-hover:text-brand-blue" />
                   </div>
@@ -209,7 +209,7 @@ export default function BIDSPage() {
                   href="#pillars"
                   className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
                 >
-                  Explore the 16 Pillars
+                  Explore our Diagnostic Intelligence Pillars
                   <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
                 </a>
               </div>
