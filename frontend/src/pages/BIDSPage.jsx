@@ -274,29 +274,19 @@ export default function BIDSPage() {
               </p>
             </div>
             <div className="lg:pt-14">
-              <div className="p-8 border border-amber-500/20 bg-amber-500/[0.03] rounded-2xl">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse flex-shrink-0" />
-                  <p className="text-[9px] font-black tracking-[0.4em] text-amber-400/80 uppercase">Diagnostic Capacity</p>
-                </div>
+              <div className="p-8 border border-white/[0.08] bg-white/[0.02] rounded-2xl">
+                <p className="text-[9px] font-black tracking-[0.4em] text-white/30 uppercase mb-6">ENGAGEMENT AVAILABILITY</p>
                 <h3 className="text-white font-black text-xl mb-4 leading-tight">
-                  Limited intake to ensure engagement quality.
+                  Currently accepting Q3–Q4 2026 discovery and transformation engagements.
                 </h3>
-                <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
-                  Diagnostic engagements are intentionally limited to ensure senior-level involvement, diagnostic rigor, and executive collaboration throughout the assessment process.
+                <p className="text-white/40 text-sm font-medium leading-relaxed mb-8">
+                  Each engagement involves direct senior-specialist involvement throughout the assessment — from executive scoping through to findings delivery. We accept new diagnostic engagements on an ongoing basis and respond to all scoping requests within 24–48 business hours.
                 </p>
-                <p className="text-white/40 text-sm font-medium leading-relaxed mb-6">
-                  Only a limited number of new engagements are accepted each quarter.
-                </p>
-                <div className="border-t border-white/[0.06] pt-5 mb-6">
-                  <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase mb-2">Current Intake</p>
-                  <p className="text-white font-black text-base">Q3–Q4 2026 Scoping &amp; Discovery Requests</p>
-                </div>
                 <Link
                   to="/contact"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
                 >
-                  Request a Scoping Session
+                  Start a Scoping Conversation
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
