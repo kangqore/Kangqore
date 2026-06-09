@@ -42,9 +42,9 @@ services:
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
       REDIS_URL: redis://kangqore-redis:6379
       PYTHON_SERVICE_URL: http://intelligence-layer:8000
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:80,http://localhost,http://localhost:3001}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:80,http://localhost,http://localhost:3000}
     ports:
-      - "3000:3000"
+      - "5050:3000"
     depends_on:
       - postgres
       - redis

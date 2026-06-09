@@ -376,11 +376,7 @@ const Header = ({ onMenuClick }) => {
             </div>
 
             {/* Desktop Navigation - Nested Pill Content */}
-            <nav className={`hidden lg:flex items-center space-x-4 rounded-full px-5 py-0.5 border transition-colors duration-500 backdrop-blur-md ${
-              isLightBackground
-                ? 'bg-white/70 border-white/20 shadow-sm'
-                : 'bg-black/70 border-white/10 shadow-sm'
-            }`}>
+            <nav className="hidden lg:flex items-center space-x-4 rounded-full px-5 py-0.5 border transition-colors duration-500 backdrop-blur-md bg-white/95 border-white/20 shadow-sm">
               {navLinks.map((link) => (
                 <div
                   key={link.id}
@@ -388,12 +384,10 @@ const Header = ({ onMenuClick }) => {
                 >
                   <button 
                     onClick={() => setActiveDropdown(activeDropdown === link.id ? null : link.id)}
-                    className={`flex items-center space-x-1 hover:text-brand-blue transition-colors duration-300 py-1.5 font-bold tracking-tight text-[14px] ${
-                      isLightBackground ? 'text-gray-900' : 'text-white'
-                    }`}
+                    className="flex items-center space-x-1 hover:text-brand-blue transition-colors duration-300 py-1.5 font-bold tracking-tight text-[14px] text-black"
                   >
                     <span>{link.name}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeDropdown === link.id ? 'rotate-180 text-brand-blue' : isLightBackground ? 'text-gray-500 group-hover:text-brand-blue' : 'text-white/60 group-hover:text-brand-blue'}`} />
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeDropdown === link.id ? 'rotate-180 text-brand-blue' : 'text-gray-500 group-hover:text-brand-blue'}`} />
                   </button>
                   
                   {/* Mega Menu for Services (What We Do) */}

@@ -45,6 +45,7 @@ const engines = [
     color: 'from-cyan-400 via-sky-400 to-blue-500',
     hex: '#22D3EE',
     desc: 'Diagnoses AI readiness, GenAI adoption potential, data maturity for intelligence workloads, and automation opportunity across the enterprise.',
+    image: '/assets/engines/engine1.png'
   },
   {
     dept: 'Foundry',
@@ -53,6 +54,7 @@ const engines = [
     color: 'from-blue-400 via-indigo-400 to-blue-600',
     hex: '#60A5FA',
     desc: 'Evaluates infrastructure health, cloud migration readiness, engineering platform maturity, and technology resilience against operational demands.',
+    image: '/assets/engines/engine2.png'
   },
   {
     dept: 'Reimagine',
@@ -61,6 +63,7 @@ const engines = [
     color: 'from-violet-400 via-purple-400 to-fuchsia-500',
     hex: '#A78BFA',
     desc: 'Identifies modernization priorities, legacy system exposure, digital transformation readiness, and change execution capability.',
+    image: '/assets/engines/engine3.png'
   },
   {
     dept: 'Shield',
@@ -69,6 +72,7 @@ const engines = [
     color: 'from-rose-400 via-pink-400 to-red-500',
     hex: '#FB7185',
     desc: 'Assesses cybersecurity posture, compliance gap exposure, AI governance coverage, and operational trust maturity across business systems.',
+    image: '/assets/engines/engine4.png'
   },
   {
     dept: 'Platforms',
@@ -77,6 +81,7 @@ const engines = [
     color: 'from-amber-400 via-orange-400 to-orange-500',
     hex: '#FBBF24',
     desc: 'Diagnoses enterprise platform utilization, integration complexity, process maturity, and consolidation opportunities across technology stacks.',
+    image: '/assets/engines/engine5.png'
   },
   {
     dept: 'Growth',
@@ -85,6 +90,7 @@ const engines = [
     color: 'from-emerald-400 via-teal-400 to-green-500',
     hex: '#34D399',
     desc: 'Maps revenue engine performance, marketing execution gaps, conversion bottlenecks, and digital visibility against growth potential.',
+    image: '/assets/engines/engine6.png'
   },
 ];
 
@@ -259,13 +265,13 @@ export default function BIDSPage() {
           <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start mb-20">
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS KANGQORE BIDS™</p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 The complete enterprise<br />
                 diagnostic{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span><br />
                 framework.
               </h2>
-              <p className="text-white/50 text-lg leading-relaxed mb-14 font-medium max-w-xl">
+              <p className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-14 font-light max-w-xl">
                 The framework evaluates, benchmarks, scores, and analyzes an entire organization as an interconnected ecosystem — diagnosing the full enterprise before any transformation investment is made.
               </p>
               {/* Stats strip */}
@@ -406,8 +412,8 @@ export default function BIDSPage() {
           {/* Header */}
           <div className="max-w-3xl mb-16">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">EXECUTIVE CLARITY CHECK</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-6">
-              Questions every<br />executive should<br />be able to answer.
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
+              Questions every<br />executive should<br /><span className="bg-brand-gradient bg-clip-text text-transparent">be able to answer.</span>
             </h2>
             <p className="text-white/40 text-lg font-medium leading-relaxed">
               Rate your organization's current clarity on each question. The results indicate where diagnostic intelligence delivers the highest value.
@@ -594,7 +600,7 @@ export default function BIDSPage() {
           <div className="mb-20">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PRESCRIPTION ENGINE™</p>
             <div className="grid lg:grid-cols-2 gap-16 items-end">
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 From score to<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">strategic action.</span>
               </h2>
@@ -674,8 +680,8 @@ export default function BIDSPage() {
           <div className="grid lg:grid-cols-2 gap-20 items-start">
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHO THIS IS DESIGNED FOR</p>
-              <h2 className="text-3xl sm:text-4xl font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
-                Built for organizations<br />preparing for significant change.
+              <h2 className="text-3xl sm:text-4xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
+                Built for organizations<br /><span className="bg-brand-gradient bg-clip-text text-transparent">preparing for significant change.</span>
               </h2>
               <p className="text-white/40 text-base font-medium leading-relaxed mb-10">Typical engagements include:</p>
               <div className="space-y-0">
@@ -700,7 +706,7 @@ export default function BIDSPage() {
               </p>
             </div>
             <div className="lg:pt-14">
-              <div className="p-8 border border-white/[0.08] bg-white/[0.02] rounded-2xl">
+              <div className="p-8 border border-white/[0.08] bg-[#111111] rounded-2xl">
                 <p className="text-[9px] font-black tracking-[0.4em] text-white/30 uppercase mb-6">ENGAGEMENT AVAILABILITY</p>
                 <h3 className="text-white font-black text-xl mb-4 leading-tight">
                   Currently accepting Q3–Q4 2026 discovery and transformation engagements.
@@ -728,7 +734,7 @@ export default function BIDSPage() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 The Diagnostic<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Engagement Process</span>
               </h2>
@@ -847,7 +853,7 @@ export default function BIDSPage() {
         >
           <div className="mb-16">
             <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE FRAMEWORK</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               16 Diagnostic Intelligence{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Pillars</span>
             </h2>
@@ -868,7 +874,7 @@ export default function BIDSPage() {
                     >
                       <div className="flex items-center gap-5">
                         <span className={`w-2.5 h-2.5 flex-shrink-0 transition-colors duration-200 ${active ? 'bg-cyan-400' : 'bg-transparent'}`} />
-                        <span className={`text-xl sm:text-2xl lg:text-3xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/25 group-hover:text-white/55'}`}>
+                        <span className={`text-base sm:text-lg lg:text-xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/25 group-hover:text-white/55'}`}>
                           {p.name}
                         </span>
                       </div>
@@ -910,58 +916,48 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── 6 ENGINES ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section className="py-32 relative overflow-hidden bg-black">
         <div
           ref={enginesRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${enginesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
-          <div className="text-center mb-20">
+          <div className="mb-20">
             <p className="text-xs font-bold tracking-[0.3em] text-cyan-500 uppercase mb-5 drop-shadow-md">UNDER THE HOOD</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white mb-6 drop-shadow-2xl">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 drop-shadow-2xl">
               6 Intelligence{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Engines</span>
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto text-lg sm:text-xl font-medium">
+            <p className="text-white/60 max-w-2xl text-lg sm:text-xl font-medium">
               Every engagement is powered by six integrated intelligence engines that synthesize pillar findings into actionable business intelligence.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-start">
             {engines.map((e, i) => {
-              const Icon = e.icon;
               const elevated = i === 1 || i === 4;
               return (
                 <div
                   key={e.name}
-                  className={`flex flex-col rounded-2xl overflow-hidden border border-white/[0.07] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.15]${elevated ? ' lg:-translate-y-6' : ''}`}
+                  className={`group relative flex flex-col transition-all duration-500 hover:-translate-y-2 ${elevated ? 'lg:-translate-y-4' : ''}`}
                 >
-                  {/* Gradient accent bar at top */}
-                  <div className={`h-0.5 bg-gradient-to-r ${e.color} flex-shrink-0`} />
-                  {/* Card content */}
-                  <div className="relative p-7 flex flex-col flex-1">
-                    {/* Ghost number */}
-                    <span className="absolute top-5 right-6 text-7xl font-black text-white/[0.035] leading-none select-none tracking-tighter pointer-events-none">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    {/* Icon */}
-                    <div className="relative w-12 h-12 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center mb-6">
-                      <Icon className="w-5 h-5" style={{ color: e.hex }} strokeWidth={1.5} />
-                    </div>
-                    {/* Dept label */}
-                    <p className="text-[9px] font-black tracking-[0.4em] uppercase mb-2" style={{ color: e.hex + 'aa' }}>{e.dept}</p>
-                    {/* Name */}
-                    <p className="text-white font-black text-lg leading-snug mb-4">{e.name}</p>
-                    {/* Description */}
-                    <p className="text-white/40 text-sm font-medium leading-relaxed flex-1">{e.desc}</p>
-                    {/* Link */}
-                    <div className="mt-6 pt-5 border-t border-white/[0.06]">
-                      <Link
-                        to="/contact"
-                        className="inline-flex items-center gap-1.5 text-sm font-bold text-white/25 hover:text-white transition-colors duration-200"
-                      >
-                        Learn More <span className="text-base">↗</span>
-                      </Link>
-                    </div>
+                  {/* Top Image Area */}
+                  <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 shadow-lg">
+                    {e.image ? (
+                      <img src={e.image} alt={e.dept} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    ) : (
+                      <div className={`w-full h-full bg-gradient-to-br ${e.color} opacity-80 transition-opacity duration-500 group-hover:opacity-100`} />
+                    )}
+                  </div>
+                  
+                  {/* Bottom Dark Card Area */}
+                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#111111]">
+                    <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">
+                      {e.dept}
+                    </h3>
+                    
+                    <p className="text-white/60 text-sm leading-relaxed">
+                      <span className="text-white font-medium">{e.name.split(' ')[0]} :</span> {e.desc}
+                    </p>
                   </div>
                 </div>
               );
@@ -977,7 +973,7 @@ export default function BIDSPage() {
           {/* Header */}
           <div className="mb-20 max-w-4xl">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE DIAGNOSTIC METHODOLOGY</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-6">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
               How Kangqore BIDS™<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">conducts enterprise diagnosis.</span>
             </h2>
@@ -997,47 +993,57 @@ export default function BIDSPage() {
                 {
                   label: 'Cybersecurity, Governance & Risk',
                   color: '#F472B6',
+                  image: '/assets/frameworks/cyber.png',
                   items: ['NIST Cybersecurity Framework (CSF 2.0)', 'NIST AI Risk Management Framework (AI RMF)', 'ISO/IEC 27001 Information Security Management', 'CIS Critical Security Controls', 'Enterprise Risk Management Principles'],
                 },
                 {
                   label: 'Artificial Intelligence & Responsible Innovation',
                   color: '#A78BFA',
+                  image: '/assets/frameworks/ai.png',
                   items: ['ISO/IEC 42001 AI Management Systems', 'Responsible AI & AI Governance Frameworks', 'AI Maturity and Adoption Models', 'Enterprise Automation Methodologies'],
                 },
                 {
                   label: 'Cloud, Technology & Architecture',
                   color: '#60A5FA',
+                  image: '/assets/frameworks/cloud.png',
                   items: ['AWS Cloud Adoption Framework (CAF)', 'Cloud Well-Architected Principles', 'Enterprise Architecture Practices', 'Platform Engineering and Modernization Frameworks'],
                 },
                 {
                   label: 'Data, Analytics & Intelligence',
                   color: '#22D3EE',
+                  image: '/assets/frameworks/data.png',
                   items: ['Data Governance Frameworks', 'Analytics and BI Maturity Models', 'Decision Intelligence Methodologies', 'Information Management Best Practices'],
                 },
                 {
                   label: 'Operations, Engineering & Performance',
                   color: '#86EFAC',
+                  image: '/assets/frameworks/ops.png',
                   items: ['DevOps and Platform Engineering Practices', 'DORA Performance Metrics', 'Operational Excellence Frameworks', 'Process Optimization and Continuous Improvement Models'],
                 },
                 {
                   label: 'Strategy, Growth & Transformation',
                   color: '#FDE047',
+                  image: '/assets/frameworks/strategy.png',
                   items: ['Digital Maturity Methodologies', 'Enterprise Transformation Models', 'Organizational Change Management Frameworks', 'Strategic Growth and Capability Development Practices'],
                 },
-              ].map(cat => (
-                <div key={cat.label} className="p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl flex flex-col gap-5">
-                  <div>
-                    <div className="w-6 h-0.5 rounded-full mb-4" style={{ backgroundColor: cat.color }} />
-                    <p className="text-sm font-black text-white leading-snug" style={{ color: cat.color }}>{cat.label}</p>
+              ].map((cat, i) => (
+                <div key={cat.label} className="group relative flex flex-col transition-all duration-500 hover:-translate-y-2">
+                  <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 shadow-lg">
+                    <img src={cat.image} alt={cat.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
-                  <ul className="space-y-2">
-                    {cat.items.map(item => (
-                      <li key={item} className="flex items-start gap-2.5">
-                        <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: cat.color + '60' }} />
-                        <span className="text-white/40 text-sm font-medium leading-snug">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  
+                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#111111] flex flex-col flex-1">
+                    <div className="w-6 h-0.5 rounded-full mb-4" style={{ backgroundColor: cat.color }} />
+                    <h3 className="text-white font-bold text-lg sm:text-xl leading-tight mb-5">{cat.label}</h3>
+                    <ul className="space-y-3">
+                      {cat.items.map(item => (
+                        <li key={item} className="flex items-start gap-3">
+                          <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: cat.color }} />
+                          <span className="text-white/60 text-sm font-medium leading-relaxed">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               ))}
             </div>
@@ -1060,7 +1066,7 @@ export default function BIDSPage() {
                 { n: '07', layer: 'Benchmark Intelligence',      color: '#A78BFA', desc: 'Compares organizational maturity, capability performance, and strategic readiness against industry and peer benchmarks.' },
                 { n: '08', layer: 'Prescription Intelligence',   color: '#E8614A', desc: 'Transforms findings into prioritized recommendations, transformation initiatives, execution roadmaps, and service prescriptions.' },
               ].map(l => (
-                <div key={l.n} className="p-5 border border-white/[0.07] bg-white/[0.02] rounded-xl flex flex-col gap-4">
+                <div key={l.n} className="p-5 border border-white/[0.07] bg-[#111111] rounded-xl flex flex-col gap-4">
                   <div>
                     <span className="text-[9px] font-black tracking-widest" style={{ color: l.color + '60' }}>{l.n}</span>
                     <div className="w-5 h-0.5 rounded-full mt-2" style={{ backgroundColor: l.color }} />
@@ -1184,21 +1190,38 @@ export default function BIDSPage() {
               Both. The framework operates across two engagement modes — and the depth of diagnostic output scales accordingly.
             </p>
             <div className="grid sm:grid-cols-2 gap-6">
-              <div className="p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
-                <div className="w-5 h-0.5 rounded-full bg-cyan-400 mb-4" />
-                <p className="text-white font-black text-base mb-3">Interview & Document Mode</p>
-                <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
-                  No system credentials required. Diagnostic is conducted through executive interviews, leadership workshops, documentation review, and process mapping sessions.
-                </p>
-                <p className="text-white/25 text-xs font-bold tracking-wide">Minimum requirement — available to all organizations</p>
+              {/* Card 1 */}
+              <div className="group relative flex flex-col transition-all duration-500 hover:-translate-y-2">
+                <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 shadow-lg">
+                  <img src="/assets/scope/interview.png" alt="Interview Mode" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                </div>
+                
+                <div className="relative w-[92%] mx-auto -mt-12 bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#111111]">
+                  <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">
+                    Interview & Document Mode
+                  </h3>
+                  <p className="text-white/60 text-sm leading-relaxed mb-4">
+                    <span className="text-white font-medium">No system credentials required.</span> Diagnostic is conducted through executive interviews, leadership workshops, documentation review, and process mapping sessions.
+                  </p>
+                  <p className="text-white/30 text-xs font-bold tracking-wide uppercase mt-auto pt-4 border-t border-white/5">Minimum requirement</p>
+                </div>
               </div>
-              <div className="p-6 border border-cyan-500/20 bg-cyan-500/[0.03] rounded-2xl">
-                <div className="w-5 h-0.5 rounded-full bg-cyan-400 mb-4" />
-                <p className="text-white font-black text-base mb-3">System-Integrated Mode</p>
-                <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
-                  Optional read-only access to platforms (SAP, Salesforce, Azure, Workday, and others) allows the diagnostic to incorporate live operational data — producing higher-precision scores and more specific prescriptions.
-                </p>
-                <p className="text-cyan-400/50 text-xs font-bold tracking-wide">Enhanced mode — deeper diagnostic precision</p>
+
+              {/* Card 2 */}
+              <div className="group relative flex flex-col transition-all duration-500 hover:-translate-y-2">
+                <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 shadow-lg">
+                  <img src="/assets/scope/integrated.png" alt="System Integrated Mode" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                </div>
+                
+                <div className="relative w-[92%] mx-auto -mt-12 bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#111111]">
+                  <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">
+                    System-Integrated Mode
+                  </h3>
+                  <p className="text-white/60 text-sm leading-relaxed mb-4">
+                    <span className="text-white font-medium">Optional read-only access</span> to platforms (SAP, Salesforce, Azure, Workday, and others) allows the diagnostic to incorporate live operational data — producing higher-precision scores.
+                  </p>
+                  <p className="text-cyan-400/70 text-xs font-bold tracking-wide uppercase mt-auto pt-4 border-t border-white/5">Enhanced Mode</p>
+                </div>
               </div>
             </div>
           </div>
@@ -1214,7 +1237,7 @@ export default function BIDSPage() {
         >
           <div className="mb-16">
             <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">WHAT YOU RECEIVE</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               Every Engagement{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Delivers</span>
             </h2>
@@ -1265,10 +1288,10 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-24">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">AFTER KANGQORE BIDS™</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               Organizations gain<br />
-              <span className="text-white/25">clarity, velocity,</span><br />
-              <span className="text-white/25">and advantage.</span>
+              <span className="bg-brand-gradient bg-clip-text text-transparent">clarity, velocity,</span><br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">and advantage.</span>
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-12">
@@ -1296,7 +1319,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20 max-w-4xl">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">REPRESENTATIVE DIAGNOSTIC FINDINGS</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-6">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
               What the diagnostic<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">typically surfaces.</span>
             </h2>
@@ -1337,7 +1360,7 @@ export default function BIDSPage() {
                 outcome: 'Improved pipeline visibility, conversion efficiency, and forecasting accuracy.',
               },
             ].map(example => (
-              <div key={example.industry} className="flex flex-col p-7 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
+              <div key={example.industry} className="flex flex-col p-7 border border-white/[0.07] bg-[#111111] rounded-2xl">
                 <div className="mb-6">
                   <div className="w-6 h-0.5 rounded-full mb-5" style={{ backgroundColor: example.color }} />
                   <p className="font-black text-white text-lg mb-1">{example.industry}</p>
@@ -1372,7 +1395,7 @@ export default function BIDSPage() {
           <div className="grid lg:grid-cols-2 gap-16 items-end mb-16">
             <div>
               <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">REPRESENTATIVE OUTPUT</p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white mb-6">
+              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
                 This is what you{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">receive.</span>
               </h2>
@@ -1536,7 +1559,7 @@ export default function BIDSPage() {
                 <div className="w-8 h-px bg-white/30" />
                 <p className="text-[10px] font-black tracking-[0.45em] text-white/50 uppercase">INDUSTRY EDITIONS</p>
               </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 Deep Domain Expertise<br />
                 Across Major{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Industries</span>
@@ -1586,9 +1609,9 @@ export default function BIDSPage() {
           {/* Header */}
           <div className="mb-24">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE DIFFERENCE</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               Built to diagnose.<br />
-              <span className="text-white/25">Not to sell.</span>
+              <span className="bg-brand-gradient bg-clip-text text-transparent">Not to sell.</span>
             </h2>
           </div>
 
@@ -1646,7 +1669,7 @@ export default function BIDSPage() {
           <div className="mb-20">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENGAGEMENT MODELS</p>
             <div className="grid lg:grid-cols-2 gap-16 items-end">
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 Choose the right<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">engagement scope.</span>
               </h2>
@@ -1682,7 +1705,7 @@ export default function BIDSPage() {
             ].map(tier => (
               <div
                 key={tier.name}
-                className={`flex flex-col p-7 rounded-2xl border ${tier.featured ? 'border-white/20 bg-white/[0.04]' : 'border-white/[0.07] bg-white/[0.02]'}`}
+                className={`flex flex-col p-7 rounded-2xl border ${tier.featured ? 'border-white/20 bg-[#161616]' : 'border-white/[0.07] bg-[#111111]'}`}
               >
                 <div className="mb-6">
                   <div className="w-6 h-0.5 rounded-full mb-5" style={{ backgroundColor: tier.color }} />
@@ -1746,7 +1769,7 @@ export default function BIDSPage() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">DATA HANDLING & TRUST</p>
-              <h2 className="text-4xl sm:text-5xl font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+              <h2 className="text-4xl sm:text-5xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 What data does<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Kangqore BIDS™ collect?</span>
               </h2>
@@ -1806,7 +1829,7 @@ export default function BIDSPage() {
                 <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                 <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400 uppercase">Coming Q4 2026</p>
               </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 Benchmark<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Intelligence</span>
               </h2>
@@ -1831,7 +1854,7 @@ export default function BIDSPage() {
                 { n: '03', title: 'Industry Gap Analysis',         desc: 'Identify the specific pillar gaps widest relative to your industry — prioritized by competitive exposure.' },
                 { n: '04', title: 'Longitudinal Tracking',         desc: 'Track diagnostic score movement over time — measuring transformation progress against a live benchmark.' },
               ].map(item => (
-                <div key={item.n} className="flex items-start gap-5 p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
+                <div key={item.n} className="flex items-start gap-5 p-6 border border-white/[0.07] bg-[#111111] rounded-2xl">
                   <span className="text-[9px] font-black tracking-widest text-white/20 mt-0.5 flex-shrink-0">{item.n}</span>
                   <div>
                     <p className="text-white font-black text-base mb-2">{item.title}</p>
@@ -1852,7 +1875,7 @@ export default function BIDSPage() {
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 mb-20">
-            <h2 className="text-5xl md:text-6xl lg:text-8xl font-bold text-white leading-tight max-w-4xl tracking-[-0.03em]">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
               Diagnose the<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">Enterprise.</span>
             </h2>

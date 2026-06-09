@@ -249,9 +249,21 @@ export class CalendarSyncService {
   static async getExternalBusySlots(userId: string, startDate: Date, endDate: Date) {
     const integrations = await prisma.calendarIntegration.findMany({ where: { userId, syncStatus: 'ACTIVE' } });
     const busySlots: { start: Date; end: Date; source: string }[] = [];
+    const timeout = <T>(ms: number, promise: Promise<T>): Promise<T> =>
+      Promise.race([promise, new Promise<T>((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))]);
+
     for (const integration of integrations) {
-      if (integration.provider === 'google') busySlots.push(...await this.getGoogleBusySlots(integration, startDate, endDate));
-      else if (integration.provider === 'outlook') busySlots.push(...await this.getOutlookBusySlots(integration, startDate, endDate));
+      try {
+        let slots: { start: Date; end: Date; source: string }[] = [];
+        if (integration.provider === 'google') {
+          slots = await timeout(8000, this.getGoogleBusySlots(integration, startDate, endDate));
+        } else if (integration.provider === 'outlook') {
+          slots = await timeout(8000, this.getOutlookBusySlots(integration, startDate, endDate));
+        }
+        busySlots.push(...slots);
+      } catch (err) {
+        logger.warn(`[CalendarSync] Skipping ${integration.provider} integration ${integration.id}: ${(err as Error).message}`);
+      }
     }
     return busySlots;
   }

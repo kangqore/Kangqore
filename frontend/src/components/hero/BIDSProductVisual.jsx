@@ -14,7 +14,7 @@ const BIDSProductVisual = ({ isActive = false }) => {
         className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
       >
         <img
-          src="/images/capabilities/data-analytics.png"
+          src="/images/capabilities/data-analytics-new.png"
           alt="Kangqore BIDS™ — Data Analytics Intelligence"
           className="w-full h-auto object-cover relative z-0"
           loading="lazy"
