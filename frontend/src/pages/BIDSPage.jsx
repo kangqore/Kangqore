@@ -693,8 +693,9 @@ export default function BIDSPage() {
             </p>
           </div>
           <p className="text-xl sm:text-2xl font-black text-white/60 max-w-3xl leading-snug">
-            This is where the diagnostic — synthesized by{' '}
-            <span className="text-cyan-400">eQORE AI™</span> — translates from scored findings into a prioritized action plan, mapping each identified constraint to the capability area best positioned to address it.
+            This is where{' '}
+            <span className="text-cyan-400">Kangqore BIDS™</span>{' '}
+            translates scored findings into a prioritized action plan, mapping each identified constraint to the capability area best positioned to address it.
           </p>
         </div>
       </section>
