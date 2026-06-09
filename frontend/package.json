@@ -111,16 +111,15 @@
       "/events",
       "/brochures"
     ],
-    "minifyHtml": {
-      "collapseWhitespace": true,
-      "removeComments": true
-    },
+    "minifyHtml": false,
     "puppeteerArgs": [
       "--no-sandbox",
       "--disable-setuid-sandbox"
     ]
   },
   "overrides": {
+    "eslint": "^9.27.0",
+    "@tootallnate/once": "^2.0.1",
     "minimist": "^1.2.8",
     "nth-check": "^2.0.1",
     "underscore": "^1.13.7",
@@ -134,11 +133,11 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@craco/craco": "^7.1.0",
-    "@eslint/js": "9.23.0",
+    "@eslint/js": "^9.27.0",
     "ajv": "^8.17.1",
     "ajv-keywords": "^5.1.0",
     "autoprefixer": "^10.4.20",
-    "eslint": "9.23.0",
+    "eslint": "^9.27.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.4",
