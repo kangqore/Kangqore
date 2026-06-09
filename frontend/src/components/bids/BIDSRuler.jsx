@@ -49,8 +49,8 @@ export default function BIDSRuler() {
 
   return (
     <div
-      className={`bids-ruler hidden lg:block fixed z-40 ${theme}`}
-      style={{ left: '28px', top: '50%', transform: 'translateY(-50%)', '--progress': progress }}
+      className={`bids-ruler ${theme}`}
+      style={{ '--progress': progress }}
     >
       <div className="relative flex flex-col">
         <div className="spine" />

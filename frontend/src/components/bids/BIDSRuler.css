@@ -1,12 +1,19 @@
 /* ─── BIDSRuler — advanced adaptive floating nav ─────────────────────────── */
 
-/* ── Base — ensures ruler is never collapsed or invisible ── */
+/* ── Base ── */
 .bids-ruler {
-  position: fixed;
-  left: 28px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 40;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .bids-ruler {
+    display: block;
+    position: fixed !important;
+    left: 28px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 9999 !important;
+  }
 }
 
 /* ── Theme tokens ── */
