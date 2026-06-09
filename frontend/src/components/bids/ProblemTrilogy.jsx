@@ -82,16 +82,16 @@ export default function ProblemTrilogy() {
   // ─── Shared panel content (used in both desktop/mobile) ──────────────────
 
   const Panel1Content = () => (
-    <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+    <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
       <div>
-        <p className="text-xs font-bold tracking-[0.3em] text-red-400 uppercase mb-5">The Problem</p>
-        <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-7">
+        <p className="text-xs font-bold tracking-[0.3em] text-red-400 uppercase mb-8">The Problem</p>
+        <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
           Organizations rarely fail because they lack{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-600 filter drop-shadow-[0_0_20px_rgba(225,29,72,0.3)]">
             ambition.
           </span>
         </h2>
-        <div className="space-y-5 text-white/60 leading-relaxed text-base sm:text-lg font-medium">
+        <div className="space-y-7 text-white/60 leading-relaxed text-base sm:text-lg font-medium">
           <p>
             They struggle because critical constraints remain{' '}
             <span className="font-bold text-white">hidden beneath the surface</span> of the business.
@@ -104,7 +104,7 @@ export default function ProblemTrilogy() {
             Without a comprehensive diagnosis, organizations risk investing in solutions that address{' '}
             <em className="text-white/80">symptoms</em> rather than <em className="text-white/80">causes</em>.
           </p>
-          <div className="p-5 mt-6 rounded-2xl bg-white/5 border border-white/10">
+          <div className="p-6 mt-8 rounded-2xl bg-white/5 border border-white/10">
             <p className="font-black text-white text-lg tracking-wide">
               This is why we engineered Kangqore BIDS™.
             </p>
@@ -112,16 +112,16 @@ export default function ProblemTrilogy() {
         </div>
       </div>
       <div className="lg:pt-8">
-        <p className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase mb-7">FAMILIAR SYMPTOMS</p>
-        <div className="space-y-4">
+        <p className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase mb-8">FAMILIAR SYMPTOMS</p>
+        <div className="space-y-5">
           {symptoms.map((s) => (
-            <div key={s} className="flex items-center gap-4">
+            <div key={s} className="flex items-center gap-5">
               <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
               <span className="text-white/70 text-sm font-semibold">{s}</span>
             </div>
           ))}
         </div>
-        <p className="mt-8 text-sm text-white/35 font-medium leading-relaxed">
+        <p className="mt-10 text-sm text-white/35 font-medium leading-relaxed">
           These symptoms are rarely the root problem. The underlying causes exist across interconnected
           systems, functions, teams, and decision-making structures.
         </p>
@@ -130,16 +130,16 @@ export default function ProblemTrilogy() {
   );
 
   const Panel2Content = () => (
-    <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+    <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
       <div>
-        <p className="text-[10px] font-black tracking-[0.45em] text-red-400 uppercase mb-7">THE ECONOMIC REALITY</p>
-        <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+        <p className="text-[10px] font-black tracking-[0.45em] text-red-400 uppercase mb-8">THE ECONOMIC REALITY</p>
+        <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
           The cost of<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-600">
             not knowing.
           </span>
         </h2>
-        <div className="space-y-5 text-white/50 text-base sm:text-lg leading-relaxed font-medium">
+        <div className="space-y-7 text-white/50 text-base sm:text-lg leading-relaxed font-medium">
           <p>
             Organizations rarely fail because they lack investment. They fail because investments
             are directed toward the wrong priorities.
@@ -156,13 +156,13 @@ export default function ProblemTrilogy() {
         </div>
       </div>
       <div className="lg:pt-16">
-        <p className="text-[10px] font-black tracking-[0.45em] text-white/25 uppercase mb-7">
+        <p className="text-[10px] font-black tracking-[0.45em] text-white/25 uppercase mb-8">
           WITHOUT DIAGNOSTIC INTELLIGENCE
         </p>
         <div className="space-y-0">
           {costItems.map((item, i, arr) => (
             <div key={item.text}>
-              <div className="flex items-center gap-5 py-4">
+              <div className="flex items-center gap-5 py-5">
                 <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
                 <p className="text-white/65 text-sm font-semibold leading-snug">{item.text}</p>
               </div>
@@ -172,7 +172,7 @@ export default function ProblemTrilogy() {
             </div>
           ))}
         </div>
-        <div className="mt-6 p-5 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
+        <div className="mt-8 p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
           <p className="text-white font-black text-base leading-snug">
             Every major investment decision made without a diagnostic baseline carries a hidden
             cost that compounds over time.
@@ -183,14 +183,14 @@ export default function ProblemTrilogy() {
   );
 
   const Panel3Content = () => (
-    <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+    <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
       <div>
-        <p className="text-[10px] font-black tracking-[0.45em] text-red-400 uppercase mb-7">THE REAL COST</p>
-        <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+        <p className="text-[10px] font-black tracking-[0.45em] text-red-400 uppercase mb-8">THE REAL COST</p>
+        <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
           Every hidden constraint<br />
           has a <span className="text-red-400">measurable cost.</span>
         </h2>
-        <p className="text-white/40 text-base font-medium leading-relaxed mb-8">
+        <p className="text-white/40 text-base font-medium leading-relaxed mb-10">
           Every constraint that goes undiagnosed has a compounding business cost. The question is
           not whether these costs exist — but whether your organization has measured them.
         </p>
@@ -204,7 +204,7 @@ export default function ProblemTrilogy() {
           <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase">BUSINESS IMPACT</p>
         </div>
         {constraints.map((row) => (
-          <div key={row.constraint} className="grid grid-cols-2 py-3.5 border-t border-white/[0.06]">
+          <div key={row.constraint} className="grid grid-cols-2 py-5 border-t border-white/[0.06]">
             <p className="text-white font-bold text-sm">{row.constraint}</p>
             <p className="text-white/45 font-medium text-sm">{row.impact}</p>
           </div>
