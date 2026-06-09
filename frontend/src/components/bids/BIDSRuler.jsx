@@ -48,7 +48,7 @@ export default function BIDSRuler() {
 
   return ReactDOM.createPortal(
     <div
-      className="bids-ruler dark"
+      className="bids-ruler"
       style={{ '--progress': progress }}
     >
       <div className="relative flex flex-col">

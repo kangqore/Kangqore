@@ -1,6 +1,12 @@
-/* ─── BIDSRuler — advanced adaptive floating nav ─────────────────────────── */
+/* ─── BIDSRuler — colour-adaptive via mix-blend-mode: difference ─────────── */
+/*
+   All foreground elements use pure white.
+   mix-blend-mode: difference on the container means:
+     white on black  → white  (dark sections)
+     white on white  → black  (light sections)
+   Fully adaptive on any background.
+*/
 
-/* ── Base ── */
 .bids-ruler {
   display: none;
 }
@@ -13,41 +19,8 @@
     top: 50% !important;
     transform: translateY(-50%) !important;
     z-index: 9999 !important;
+    mix-blend-mode: difference;
   }
-}
-
-/* ── Theme tokens ── */
-.bids-ruler.dark,
-.bids-ruler:not(.light) {
-  --spine:        rgba(255, 255, 255, 0.18);
-  --tick:         rgba(255, 255, 255, 0.30);
-  --accent:       #22D3EE;
-  --accent-r:     34;
-  --accent-g:     211;
-  --accent-b:     238;
-  --num:          rgba(255, 255, 255, 0.38);
-  --num-visited:  rgba(255, 255, 255, 0.55);
-  --num-hover:    rgba(255, 255, 255, 0.70);
-  --num-active:   rgba(255, 255, 255, 0.95);
-  --label:        rgba(255, 255, 255, 0.80);
-  --label-hover:  rgba(255, 255, 255, 0.50);
-  --tick-hover:   rgba(255, 255, 255, 0.45);
-}
-
-.bids-ruler.light {
-  --spine:        rgba(15, 23, 42, 0.25);
-  --tick:         rgba(15, 23, 42, 0.30);
-  --accent:       #2563EB;
-  --accent-r:     37;
-  --accent-g:     99;
-  --accent-b:     235;
-  --num:          rgba(15, 23, 42, 0.45);
-  --num-visited:  rgba(15, 23, 42, 0.62);
-  --num-hover:    rgba(15, 23, 42, 0.75);
-  --num-active:   rgba(15, 23, 42, 0.92);
-  --label:        rgba(15, 23, 42, 0.80);
-  --label-hover:  rgba(15, 23, 42, 0.50);
-  --tick-hover:   rgba(15, 23, 42, 0.45);
 }
 
 /* ── Spine ── */
@@ -60,14 +33,14 @@
   background: linear-gradient(
     to bottom,
     transparent,
-    var(--spine) 12%,
-    var(--spine) 88%,
+    rgba(255, 255, 255, 0.28) 12%,
+    rgba(255, 255, 255, 0.28) 88%,
     transparent
   );
   pointer-events: none;
 }
 
-/* Progress fill — grows as the user scrolls */
+/* Progress fill — grows as user scrolls */
 .bids-ruler .spine::after {
   content: '';
   position: absolute;
@@ -75,11 +48,7 @@
   top: 12%;
   width: 1px;
   height: calc(var(--progress, 0) * 76%);
-  background: linear-gradient(
-    to bottom,
-    rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.60),
-    rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.10)
-  );
+  background: linear-gradient(to bottom, white, rgba(255, 255, 255, 0.4));
   transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 1px;
 }
@@ -93,69 +62,53 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--accent);
-  box-shadow:
-    0 0 0 3px  rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.15),
-    0 0 8px    rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.70),
-    0 0 20px   rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.25);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12), 0 0 10px white;
   z-index: 10;
   animation: rulerDotPulse 2.8s ease-in-out infinite;
 }
 
 @keyframes rulerDotPulse {
-  0%, 100% {
-    box-shadow:
-      0 0 0 3px  rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.15),
-      0 0 8px    rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.70),
-      0 0 20px   rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.25);
-  }
-  50% {
-    box-shadow:
-      0 0 0 5px  rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.08),
-      0 0 14px   rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.55),
-      0 0 30px   rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.18);
-  }
+  0%, 100% { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12), 0 0 10px  white; }
+  50%       { box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.06), 0 0 18px  white; }
 }
 
 /* ── Tick ── */
 .bids-ruler .tick {
   flex-shrink: 0;
   height: 1px;
-  background: var(--tick);
-  transition:
-    width      0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.30s ease,
-    box-shadow 0.30s ease;
+  background: rgba(255, 255, 255, 0.32);
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.28s ease;
 }
 
 .bids-ruler .ruler-item.active .tick {
-  background: var(--accent);
-  box-shadow: 4px 0 10px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.45);
+  background: white;
+  box-shadow: 3px 0 8px rgba(255, 255, 255, 0.5);
 }
 
 .bids-ruler .ruler-item:hover:not(.active) .tick {
-  background: var(--tick-hover) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   width: 13px !important;
 }
 
 /* ── Number ── */
 .bids-ruler .num {
-  color: var(--num);
+  color: rgba(255, 255, 255, 0.38);
   font-variant-numeric: tabular-nums;
   transition: color 0.28s ease, letter-spacing 0.28s ease;
 }
 
 .bids-ruler .ruler-item.visited .num {
-  color: var(--num-visited);
+  color: rgba(255, 255, 255, 0.60);
 }
 
 .bids-ruler .ruler-item.active .num {
-  color: var(--num-active);
+  color: white;
   letter-spacing: 0.36em;
 }
 
 .bids-ruler .ruler-item:hover:not(.active) .num {
-  color: var(--num-hover);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 /* ── Label ── */
@@ -173,13 +126,13 @@
 .bids-ruler .ruler-item.active .label {
   max-width: 130px;
   opacity: 1;
-  color: var(--label);
+  color: white;
 }
 
 .bids-ruler .ruler-item:hover:not(.active) .label {
   max-width: 130px;
   opacity: 1;
-  color: var(--label-hover);
+  color: rgba(255, 255, 255, 0.58);
 }
 
 /* ── Item shift on hover / active ── */
