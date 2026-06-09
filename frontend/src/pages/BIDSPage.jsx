@@ -292,6 +292,58 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── COST OF NOT KNOWING ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 items-start">
+            <div>
+              <p className="text-[10px] font-black tracking-[0.45em] text-red-400 uppercase mb-8">THE ECONOMIC REALITY</p>
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
+                The cost of<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-600">not knowing.</span>
+              </h2>
+              <div className="space-y-5 text-white/50 text-lg leading-relaxed font-medium">
+                <p>
+                  Organizations rarely fail because they lack investment. They fail because investments are directed toward the wrong priorities.
+                </p>
+                <p>
+                  Without diagnostic intelligence, operational inefficiencies compound, technology debt accumulates, security exposure increases, and growth opportunities remain undiscovered — while transformation budgets produce diminishing returns.
+                </p>
+                <p className="text-white/75 font-semibold">
+                  The cost of misdiagnosis is often significantly greater than the cost of transformation itself.
+                </p>
+              </div>
+            </div>
+            <div className="lg:pt-20">
+              <p className="text-[10px] font-black tracking-[0.45em] text-white/25 uppercase mb-8">WITHOUT DIAGNOSTIC INTELLIGENCE</p>
+              <div className="space-y-0">
+                {[
+                  { text: 'Operational inefficiencies compound over time',     color: '#FB923C' },
+                  { text: 'Technology debt accumulates undetected',            color: '#F472B6' },
+                  { text: 'Security exposure increases without visibility',    color: '#E8614A' },
+                  { text: 'Growth opportunities remain undiscovered',          color: '#FDE047' },
+                  { text: 'Transformation budgets produce lower returns',      color: '#A78BFA' },
+                  { text: 'Capital is allocated to symptoms, not root causes', color: '#22D3EE' },
+                ].map((item, i, arr) => (
+                  <div key={item.text}>
+                    <div className="flex items-center gap-5 py-5">
+                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
+                      <p className="text-white/65 text-base font-semibold leading-snug">{item.text}</p>
+                    </div>
+                    {i < arr.length - 1 && <div className="w-px h-3 ml-[2.75px] bg-white/[0.05]" />}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
+                <p className="text-white font-black text-lg leading-snug">
+                  Every major investment decision made without a diagnostic baseline carries a hidden cost that compounds over time.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── WHY WE BUILT BIDS™ ─────────────────────── */}
       <section className="py-24 relative" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -311,14 +363,14 @@ export default function BIDSPage() {
                 They fail because they solve the wrong problems.
               </p>
               <p className="text-white/50 text-lg leading-relaxed max-w-3xl">
-                Kangqore BIDS™ was engineered to identify the constraints, risks, inefficiencies, and opportunities hidden beneath the surface of an organization — before major investments are made.
+                The framework was engineered to identify the constraints, risks, inefficiencies, and opportunities hidden beneath the surface of an organization — before major investments are made.
               </p>
               <div className="pt-6 space-y-3">
                 <p className="text-white/70 text-xl font-semibold">Only after diagnosis comes prescription.</p>
                 <p className="text-white/70 text-xl font-semibold">Only after prescription comes transformation.</p>
               </div>
               <p className="text-cyan-400 font-black text-3xl sm:text-4xl tracking-tight pt-4">
-                That is the philosophy behind Kangqore BIDS™.
+                That is the Kangqore philosophy.
               </p>
             </div>
           </div>
@@ -358,7 +410,7 @@ export default function BIDSPage() {
             ))}
           </div>
           <p className="text-2xl sm:text-3xl font-black text-cyan-400 max-w-3xl leading-snug">
-            Kangqore BIDS™ quantifies these costs before they become business failures.
+            The diagnostic quantifies these costs before they become business failures.
           </p>
         </div>
       </section>
@@ -380,7 +432,7 @@ export default function BIDSPage() {
                 framework.
               </h2>
               <p className="text-white/50 text-lg leading-relaxed mb-14 font-medium max-w-xl">
-                Kangqore BIDS™ evaluates, benchmarks, scores, and analyzes an entire organization as an interconnected ecosystem — diagnosing the full enterprise before any transformation investment is made.
+                The framework evaluates, benchmarks, scores, and analyzes an entire organization as an interconnected ecosystem — diagnosing the full enterprise before any transformation investment is made.
               </p>
               {/* Stats strip */}
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-6 pt-10 border-t border-white/[0.08]">
@@ -404,32 +456,16 @@ export default function BIDSPage() {
             </div>
           </div>
 
-          {/* Process strip — 2 rows */}
-          <div className="mb-10 space-y-3">
-            {[
-              [
-                { n: '01', label: 'Submit your request',                                color: '#FFAD8A' },
-                { n: '02', label: '30-min scoping call for Root Causes Identifications', color: '#FB923C' },
-                { n: '03', label: 'Evaluate',                                           color: '#86EFAC' },
-                { n: '04', label: 'Score',                                              color: '#FDE047' },
-              ],
-              [
-                { n: '05', label: 'Receive a tailored Diagnose proposal',               color: '#F472B6' },
-                { n: '06', label: 'Engagement begins within 2 weeks',                   color: '#22D3EE' },
-                { n: '07', label: 'Transform',                                          color: '#A78BFA' },
-              ],
-            ].map((row, rowIdx) => (
-              <div key={rowIdx} className="flex items-center gap-x-3">
-                {row.map((step, i) => (
-                  <React.Fragment key={step.n}>
-                    <span className="text-[13px] font-medium tracking-wide whitespace-nowrap" style={{ color: step.color }}>
-                      <span className="font-black mr-1.5" style={{ color: step.color + '80' }}>{step.n}</span>{step.label}
-                    </span>
-                    {i < row.length - 1 && <span className="text-white/15 text-[11px]">→</span>}
-                  </React.Fragment>
-                ))}
-              </div>
-            ))}
+          {/* Process teaser */}
+          <div className="mb-10 flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="text-[10px] font-black tracking-[0.35em] text-white/25 uppercase">Engagement Process</span>
+            <span className="text-white/10 text-sm">·</span>
+            <span className="text-[13px] font-medium text-white/45">10 structured steps</span>
+            <span className="text-white/10 text-sm">·</span>
+            <span className="text-[13px] font-medium text-white/45">2–12 weeks depending on scope</span>
+            <a href="#process" className="ml-auto inline-flex items-center gap-1.5 text-[11px] font-black text-cyan-400/70 hover:text-cyan-400 tracking-widest uppercase transition-colors duration-200">
+              View Full Process <ArrowRight className="w-3 h-3" />
+            </a>
           </div>
 
           {/* Brand footer bar */}
@@ -454,7 +490,7 @@ export default function BIDSPage() {
               "What is preventing this organization from achieving its full potential?"
             </p>
             <p className="text-lg font-black text-white mt-3">
-              Kangqore BIDS™ exists to answer this — precisely, quantifiably, and without conflict of interest.
+              The diagnostic framework exists to answer this — precisely, quantifiably, and without conflict of interest.
             </p>
           </div>
 
@@ -487,7 +523,7 @@ export default function BIDSPage() {
                 Questions every<br />executive should<br />be able to answer.
               </h2>
               <p className="text-white/40 text-lg font-medium leading-relaxed">
-                If these answers are unclear, decisions are made on assumptions — not intelligence. That is where value is lost. Kangqore BIDS™ exists for exactly this reason.
+                If these answers are unclear, decisions are made on assumptions — not intelligence. That is where value is lost. The diagnostic exists for exactly this reason.
               </p>
             </div>
             <div className="space-y-8 lg:pt-16">
@@ -569,7 +605,7 @@ export default function BIDSPage() {
             ))}
           </div>
           <p className="text-xl sm:text-2xl font-black text-white/60 max-w-3xl leading-snug">
-            This is where Kangqore BIDS™ — synthesized by{' '}
+            This is where the diagnostic — synthesized by{' '}
             <span className="text-cyan-400">eQORE AI™</span> — transforms from a diagnostic report into a{' '}
             <span className="text-white">revenue engine</span>, mapping every identified constraint directly to a Kangqore service prescription.
           </p>
@@ -586,7 +622,7 @@ export default function BIDSPage() {
                 What is <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI™?</span>
               </h3>
               <p className="text-white/50 text-lg leading-relaxed font-medium">
-                eQORE AI™ is Kangqore's proprietary artificial intelligence assistant — embedded across every BIDS™ engagement to synthesize diagnostic findings, cross-reference intelligence pillar outputs, identify non-obvious constraint patterns, and generate the Service Prescription Matrix™.
+                eQORE AI™ is Kangqore's proprietary artificial intelligence assistant — embedded across every diagnostic engagement to synthesize findings, cross-reference intelligence pillar outputs, identify non-obvious constraint patterns, and generate the Service Prescription Matrix™.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -606,63 +642,119 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── ENGAGEMENT OVERVIEW ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      {/* ─────────────────────── DIAGNOSTIC ENGAGEMENT PROCESS ─────────────────────── */}
+      <section id="process" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
-
-            {/* Left — timeline + commercial framing */}
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
-                Seven steps.<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">Four to six weeks.</span>
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+                The Diagnostic<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">Engagement Process™</span>
               </h2>
-              <p className="text-white/40 text-lg font-medium leading-relaxed mb-14">
-                Every Kangqore BIDS™ engagement follows a structured seven-step process — from your first request through scoping, evaluation, scoring, proposal, engagement start, and transformation.
+            </div>
+            <div className="lg:pb-3">
+              <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
+                A structured, ten-step process from initial request through executive delivery — designed to match the pace of how executive teams actually make decisions.
               </p>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group"
               >
-                <span className="text-white font-black text-sm tracking-wide">Request a Scoping Call</span>
+                <span className="text-white font-black text-sm tracking-wide">Request a Scoping Session</span>
                 <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </div>
+          </div>
 
-            {/* Right — timeline breakdown + methodology tease */}
-            <div className="space-y-0">
-              {/* Timeline phases */}
-              {[
-                { week: 'Week 1–2',    phase: 'Discover',   desc: 'Stakeholder interviews, documentation review, systems analysis, scope alignment' },
-                { week: 'Week 2–4',    phase: 'Diagnose',   desc: '16-pillar assessment, 6 intelligence engines, enterprise scoring, constraint mapping' },
-                { week: 'Week 4–5',    phase: 'Prescribe',  desc: 'Risk Register™, Opportunity Register™, Service Prescription Matrix™, roadmap drafting' },
-                { week: 'Week 5–6',    phase: 'Transform',  desc: 'Executive Delivery, Board Presentation™, Workshop™, 30/60/90/180-Day Roadmap™' },
-              ].map((t, i) => (
-                <div key={t.phase} className="flex gap-6 pb-8">
-                  <div className="flex flex-col items-center">
-                    <div className="w-2 h-2 rounded-full bg-cyan-400 mt-1.5 flex-shrink-0" />
-                    {i < 3 && <div className="w-px flex-1 bg-white/[0.08] mt-2" />}
-                  </div>
-                  <div className="pb-2">
-                    <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase mb-1">{t.week}</p>
-                    <p className="text-white font-black text-lg mb-1">{t.phase}</p>
-                    <p className="text-white/35 text-sm font-medium leading-relaxed">{t.desc}</p>
-                  </div>
+          <div className="grid sm:grid-cols-2 gap-x-16 lg:gap-x-24">
+            {[
+              {
+                n: '01',
+                name: 'Request Submitted',
+                desc: 'Submit your diagnostic request along with key business, technology, operational, or transformation objectives.',
+                color: '#22D3EE',
+              },
+              {
+                n: '02',
+                name: 'Initial Review',
+                desc: 'The Kangqore team performs a preliminary review of your requirements and organizational context.',
+                color: '#FB923C',
+                sla: 'Response within 24–48 business hours.',
+              },
+              {
+                n: '03',
+                name: 'Executive Scoping Session',
+                desc: 'A 30–60 minute executive discovery session focused on business objectives, strategic priorities, current challenges, growth constraints, and transformation goals.',
+                color: '#60A5FA',
+              },
+              {
+                n: '04',
+                name: 'Root Cause Identification™',
+                desc: 'The initial diagnostic phase identifies potential areas of concern, hidden constraints, operational bottlenecks, technology gaps, risk exposure, and transformation opportunities.',
+                color: '#F472B6',
+              },
+              {
+                n: '05',
+                name: 'Diagnostic Proposal & Scope Definition',
+                desc: 'Receive a tailored engagement proposal outlining assessment scope, stakeholder involvement, diagnostic pillars, timeline, deliverables, and engagement structure.',
+                color: '#FDE047',
+              },
+              {
+                n: '06',
+                name: 'Enterprise Evaluation™',
+                desc: 'The organization is evaluated across the diagnostic framework using leadership interviews, documentation reviews, technology assessments, operational analysis, data and AI evaluations, security and governance reviews, and growth assessments.',
+                color: '#86EFAC',
+              },
+              {
+                n: '07',
+                name: 'Intelligence Scoring & Findings',
+                desc: 'The assessment is processed through the Intelligence Engines to generate the Business Health Score™, Constraint Analysis™, Risk Register™, Opportunity Register™, Benchmark Insights™, and Transformation Priorities™.',
+                color: '#A78BFA',
+              },
+              {
+                n: '08',
+                name: 'Executive Findings Presentation',
+                desc: 'Leadership teams receive a detailed presentation of findings, root causes, risks, opportunities, and strategic recommendations.',
+                color: '#E8614A',
+              },
+              {
+                n: '09',
+                name: 'Transformation Blueprint™',
+                desc: 'Receive a prioritized 30/60/90/180-Day roadmap designed to improve performance, resilience, growth, operational efficiency, technology maturity, and AI readiness.',
+                color: '#22D3EE',
+              },
+              {
+                n: '10',
+                name: 'Transformation Engagement',
+                desc: "Organizations may proceed with implementation through Kangqore's transformation ecosystem — spanning strategy, technology, AI, cybersecurity, modernization, cloud, automation, platform, and growth services.",
+                color: '#60A5FA',
+              },
+            ].map((step) => (
+              <div key={step.n} className="flex gap-6 py-8 border-t border-white/[0.06]">
+                <span className="text-[9px] font-black tracking-widest mt-1 flex-shrink-0 w-6" style={{ color: step.color }}>{step.n}</span>
+                <div>
+                  <p className="text-white font-black text-base mb-2 leading-tight">{step.name}</p>
+                  <p className="text-white/40 text-sm font-medium leading-relaxed">{step.desc}</p>
+                  {step.sla && (
+                    <div className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full border border-cyan-500/20 bg-cyan-500/[0.04]">
+                      <div className="w-1 h-1 rounded-full bg-cyan-400 flex-shrink-0" />
+                      <span className="text-cyan-400/80 text-xs font-bold">{step.sla}</span>
+                    </div>
+                  )}
                 </div>
-              ))}
-
-              {/* Methodology tease */}
-              <div className="mt-4 pt-8 border-t border-white/[0.06]">
-                <p className="text-[9px] font-black tracking-[0.35em] text-white/20 uppercase mb-3">PROPRIETARY METHODOLOGY</p>
-                <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
-                  The Kangqore BIDS™ scoring methodology — including pillar weightings, data point inputs, and cross-engine synthesis logic — is proprietary. A methodology overview is available upon request for qualified engagements.
-                </p>
-                <Link to="/contact" className="inline-flex items-center gap-2 text-cyan-400/70 hover:text-cyan-400 transition-colors duration-200 text-sm font-bold">
-                  Request Methodology Overview <ChevronRight className="w-4 h-4" />
-                </Link>
               </div>
-            </div>
+            ))}
+          </div>
+
+          <div className="mt-4 pt-10 border-t border-white/[0.06]">
+            <p className="text-[9px] font-black tracking-[0.35em] text-white/20 uppercase mb-3">PROPRIETARY METHODOLOGY</p>
+            <p className="text-white/40 text-sm font-medium leading-relaxed mb-4 max-w-2xl">
+              The scoring methodology — including pillar weightings, data point inputs, and cross-engine synthesis logic — is proprietary. A methodology overview is available upon request for qualified engagements.
+            </p>
+            <Link to="/contact" className="inline-flex items-center gap-2 text-cyan-400/70 hover:text-cyan-400 transition-colors duration-200 text-sm font-bold">
+              Request Methodology Overview <ChevronRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -911,7 +1003,7 @@ export default function BIDSPage() {
                   Organizations frequently commit significant resources to technology modernization, artificial intelligence initiatives, cybersecurity programs, cloud adoption, automation projects, and transformation efforts before establishing a clear understanding of the constraints limiting performance.
                 </p>
                 <p className="text-white font-black text-2xl sm:text-3xl tracking-tight leading-snug">
-                  Kangqore BIDS™ reverses that sequence.
+                  The diagnostic framework reverses that sequence.
                 </p>
                 <p>
                   By creating an objective, evidence-based understanding of enterprise health before major investment decisions are made, organizations can prioritize with confidence, allocate resources more effectively, reduce transformation risk, and maximize long-term value creation.
@@ -954,7 +1046,7 @@ export default function BIDSPage() {
               <span className="bg-brand-gradient bg-clip-text text-transparent">conducts enterprise diagnosis.</span>
             </h2>
             <p className="text-white/50 text-lg leading-relaxed font-medium max-w-3xl">
-              Kangqore BIDS™ is not a questionnaire, survey, or checklist-based assessment. Every engagement combines qualitative, quantitative, operational, and technical intelligence inputs across all sixteen diagnostic pillars.
+              This is not a questionnaire, survey, or checklist-based assessment. Every engagement combines qualitative, quantitative, operational, and technical intelligence inputs across all sixteen diagnostic pillars.
             </p>
           </div>
 
@@ -1090,9 +1182,9 @@ export default function BIDSPage() {
             {/* Integration & Scope Clarity */}
             <div className="mt-16 pt-16 border-t border-white/[0.06]">
               <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-6">SCOPE & SYSTEM ACCESS</p>
-              <h3 className="text-2xl sm:text-3xl font-black text-white mb-6 tracking-tight">Does BIDS™ require access to your systems?</h3>
+              <h3 className="text-2xl sm:text-3xl font-black text-white mb-6 tracking-tight">Does the diagnostic require access to your systems?</h3>
               <p className="text-white/50 text-lg leading-relaxed font-medium mb-10 max-w-3xl">
-                Both. Kangqore BIDS™ is designed to operate across two engagement modes — and the depth of diagnostic output scales accordingly.
+                Both. The framework operates across two engagement modes — and the depth of diagnostic output scales accordingly.
               </p>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
@@ -1117,7 +1209,7 @@ export default function BIDSPage() {
             {/* Closing statement */}
             <p className="mt-16 text-xl sm:text-2xl font-black text-white/50 max-w-4xl leading-snug">
               The findings are processed through the{' '}
-              <span className="text-white">Kangqore BIDS™ Intelligence Framework™</span>, producing enterprise scores, constraint analysis, benchmark insights, opportunity mapping, and transformation recommendations.
+              <span className="text-white">Intelligence Framework™</span>, producing enterprise scores, constraint analysis, benchmark insights, opportunity mapping, and transformation recommendations.
             </p>
           </div>
 
@@ -1209,6 +1301,79 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── REPRESENTATIVE FINDINGS ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="mb-20 max-w-4xl">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">REPRESENTATIVE DIAGNOSTIC FINDINGS</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-6">
+              What the diagnostic<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">typically surfaces.</span>
+            </h2>
+            <p className="text-white/40 text-lg font-medium leading-relaxed">
+              The following examples are representative of diagnostic patterns across engagement types. They are illustrative, not attributable to specific organizations or engagements.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-8 mb-8">
+            {[
+              {
+                industry: 'Manufacturing Organization',
+                color: '#FB923C',
+                findings: [
+                  'Fragmented production reporting across three disconnected systems',
+                  'Manual quality-control workflows introducing delays and inconsistency',
+                  'Limited operational visibility at supervisory and management levels',
+                ],
+                outcome: 'Improved decision velocity and operational efficiency through workflow modernization and data integration.',
+              },
+              {
+                industry: 'SaaS Organization',
+                color: '#22D3EE',
+                findings: [
+                  'Rising infrastructure costs driven by unoptimized cloud resource allocation',
+                  'Underutilized automation opportunities across customer onboarding workflows',
+                  'Security governance gaps across third-party integrations and access controls',
+                ],
+                outcome: 'Improved scalability, cost optimization, and stronger operational resilience.',
+              },
+              {
+                industry: 'Professional Services Firm',
+                color: '#A78BFA',
+                findings: [
+                  'Revenue leakage across lead-to-client conversion workflows',
+                  'Inconsistent CRM adoption reducing pipeline visibility and forecasting accuracy',
+                  'Limited business intelligence infrastructure for performance tracking',
+                ],
+                outcome: 'Improved pipeline visibility, conversion efficiency, and forecasting accuracy.',
+              },
+            ].map(example => (
+              <div key={example.industry} className="flex flex-col p-7 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
+                <div className="mb-6">
+                  <div className="w-6 h-0.5 rounded-full mb-5" style={{ backgroundColor: example.color }} />
+                  <p className="font-black text-white text-lg mb-1">{example.industry}</p>
+                  <p className="text-[9px] font-black tracking-[0.35em] uppercase mb-5" style={{ color: example.color + '80' }}>IDENTIFIED</p>
+                </div>
+                <ul className="space-y-3 flex-1 mb-8">
+                  {example.findings.map((f, fi) => (
+                    <li key={fi} className="flex items-start gap-3">
+                      <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: example.color + '70' }} />
+                      <span className="text-white/50 text-sm font-medium leading-snug">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="border-t border-white/[0.06] pt-5">
+                  <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase mb-2">POTENTIAL OUTCOME</p>
+                  <p className="text-white/60 text-sm font-semibold leading-relaxed">{example.outcome}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-white/20 text-xs font-medium leading-relaxed">
+            Illustrative examples only. Not attributable to specific organizations or engagements.
+          </p>
+        </div>
+      </section>
+
       {/* ─────────────────────── SAMPLE SCORECARD ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -1222,7 +1387,7 @@ export default function BIDSPage() {
                 <span className="bg-brand-gradient bg-clip-text text-transparent">receive.</span>
               </h2>
               <p className="text-white/50 text-lg leading-relaxed">
-                Every Kangqore BIDS™ engagement produces a full Diagnostic Scorecard™ — all 16 pillars scored, classified, and benchmarked. Delivered as part of 10 executive-grade deliverables.
+                Every engagement produces a full Diagnostic Scorecard™ — all 16 pillars scored, classified, and benchmarked. Delivered as part of 10 executive-grade deliverables.
               </p>
             </div>
             <div className="space-y-3">
@@ -1390,7 +1555,7 @@ export default function BIDSPage() {
             </div>
             <div className="flex lg:items-end lg:pb-3">
               <p className="text-white/40 text-lg font-medium leading-relaxed max-w-lg">
-                Kangqore BIDS™ calibrates its diagnostic pillars, scoring benchmarks, and prescription logic to the specific complexity of your industry — not a generic framework applied uniformly.
+                The framework calibrates diagnostic pillars, scoring benchmarks, and prescription logic to the specific complexity of your industry — not a generic template applied uniformly.
               </p>
             </div>
           </div>
@@ -1466,7 +1631,7 @@ export default function BIDSPage() {
               <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">KANGQORE BIDS™ APPROACH</p>
               <div className="space-y-10">
                 {[
-                  { n: '01', label: 'The diagnosis is the product', desc: 'No platform to push. No implementation to sell. Kangqore BIDS™ is vendor-agnostic — the deliverable is the insight, not a proposal for more services.' },
+                  { n: '01', label: 'The diagnosis is the product', desc: 'No platform to push. No implementation to sell. The assessment is vendor-agnostic — the deliverable is the insight, not a proposal for more services.' },
                   { n: '02', label: 'Scored and indexed, not qualitative', desc: 'Every pillar produces a quantified score. You receive a Diagnostic Scorecard™ and 9 additional deliverables — measurable, benchmarked, accountable.' },
                   { n: '03', label: 'Full ecosystem scope', desc: 'Business, technology, operations, AI, security, and growth examined as one interconnected system across 16 diagnostic intelligence pillars.' },
                   { n: '04', label: 'Zero conflict of interest', desc: "We don't sell the cloud. We don't sell the platform. We sell the truth about your organization — then you decide what to do with it." },
@@ -1482,6 +1647,83 @@ export default function BIDSPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────── ENGAGEMENT MODELS ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden border-t border-white/10" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="mb-20">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENGAGEMENT MODELS</p>
+            <div className="grid lg:grid-cols-2 gap-16 items-end">
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+                Choose the right<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">engagement scope.</span>
+              </h2>
+              <p className="text-white/40 text-lg font-medium leading-relaxed">
+                Each model is calibrated to organizational complexity, scope, and strategic objectives. Investment is determined by complexity, scope, geography, and stakeholder requirements.
+              </p>
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-6 mb-10">
+            {[
+              {
+                name: 'Executive Diagnostic™',
+                audience: 'Designed for growth-stage organizations and business units.',
+                duration: '2–3 Weeks',
+                color: '#22D3EE',
+                points: ['Core pillar assessment', 'Executive scoping session', 'Diagnostic Scorecard™', 'Transformation Blueprint™', 'Priority findings presentation'],
+              },
+              {
+                name: 'Enterprise Diagnostic™',
+                audience: 'Designed for mid-market and multi-department organizations.',
+                duration: '4–6 Weeks',
+                color: '#A78BFA',
+                featured: true,
+                points: ['Full 16-pillar assessment', 'All 6 intelligence engines', 'Complete 10 deliverables', 'System-integrated mode available', 'Executive Board Presentation™', 'ROI Projection Report™'],
+              },
+              {
+                name: 'Strategic Transformation Diagnostic™',
+                audience: 'Designed for enterprise-scale organizations, regulated industries, and complex operating environments.',
+                duration: '6–12 Weeks',
+                color: '#FB923C',
+                points: ['Extended multi-site assessment', 'Regulatory and compliance depth', 'Multi-stakeholder engagement', 'Full benchmark analysis', 'Executive workshop series', 'Full transformation roadmap'],
+              },
+            ].map(tier => (
+              <div
+                key={tier.name}
+                className={`flex flex-col p-7 rounded-2xl border ${tier.featured ? 'border-white/20 bg-white/[0.04]' : 'border-white/[0.07] bg-white/[0.02]'}`}
+              >
+                <div className="mb-6">
+                  <div className="w-6 h-0.5 rounded-full mb-5" style={{ backgroundColor: tier.color }} />
+                  <p className="text-white font-black text-xl mb-3 leading-tight">{tier.name}</p>
+                  <p className="text-white/40 text-sm font-medium leading-relaxed mb-5">{tier.audience}</p>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border" style={{ borderColor: tier.color + '30' }}>
+                    <span className="text-xs font-black tracking-wide" style={{ color: tier.color }}>Duration: {tier.duration}</span>
+                  </div>
+                </div>
+                <ul className="space-y-2.5 flex-1">
+                  {tier.points.map(pt => (
+                    <li key={pt} className="flex items-start gap-3">
+                      <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: tier.color + '60' }} />
+                      <span className="text-white/50 text-sm font-medium leading-snug">{pt}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/contact"
+                  className="mt-8 inline-flex items-center gap-2 text-sm font-bold group"
+                  style={{ color: tier.color + 'cc' }}
+                >
+                  Request a Scoping Call
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200" />
+                </Link>
+              </div>
+            ))}
+          </div>
+          <p className="text-white/25 text-sm font-medium max-w-2xl leading-relaxed">
+            All engagements begin with a complimentary scoping session. Investment is confirmed following scope definition and stakeholder alignment.
+          </p>
         </div>
       </section>
 
@@ -1503,7 +1745,7 @@ export default function BIDSPage() {
             ))}
           </div>
           <p className="mt-14 text-white/25 text-sm font-medium max-w-xl leading-relaxed">
-            Kangqore BIDS™ is backed by the full depth of the Kangqore practice — AI, cloud, engineering, security, modernization, and growth — all available for prescription the moment diagnosis is complete.
+            The diagnostic is backed by the full depth of the Kangqore practice — AI, cloud, engineering, security, modernization, and growth — all available for prescription the moment diagnosis is complete.
           </p>
         </div>
       </section>
@@ -1519,7 +1761,7 @@ export default function BIDSPage() {
                 <span className="bg-brand-gradient bg-clip-text text-transparent">BIDS™ collect?</span>
               </h2>
               <p className="text-white/50 text-lg leading-relaxed font-medium mb-8">
-                Every Kangqore BIDS™ engagement operates under a signed Non-Disclosure Agreement before any information is exchanged. Data collected is scoped strictly to what is necessary for the diagnostic — no data is retained beyond the engagement without explicit written consent.
+                Every engagement operates under a signed Non-Disclosure Agreement before any information is exchanged. Data collected is scoped strictly to what is necessary for the diagnostic — no data is retained beyond the engagement without explicit written consent.
               </p>
               <div className="space-y-4">
                 {[
@@ -1578,7 +1820,7 @@ export default function BIDSPage() {
                 Kangqore is building the first vendor-agnostic enterprise diagnostic benchmark dataset — percentile rankings, competitive position indices, and industry-gap analysis across all 16 diagnostic pillars.
               </p>
               <p className="text-white/35 text-base leading-relaxed mb-12">
-                Organizations that complete a BIDS™ engagement today will be among the first to receive Benchmark Intelligence™ reports — showing how their enterprise diagnostic scores compare against industry peers, sector medians, and global top performers.
+                Organizations that complete a diagnostic engagement today will be among the first to receive Benchmark Intelligence™ reports — showing how their enterprise diagnostic scores compare against industry peers, sector medians, and global top performers.
               </p>
               <Link
                 to="/contact"
@@ -1630,7 +1872,7 @@ export default function BIDSPage() {
           </div>
           <div className="max-w-4xl mb-16">
             <p className="text-white/50 text-lg lg:text-xl leading-relaxed">
-              Every organization has visible problems and invisible constraints. Kangqore BIDS™ identifies those constraints, quantifies their impact, and delivers a transformation blueprint — before a single investment is made.
+              Every organization has visible problems and invisible constraints. The framework identifies those constraints, quantifies their impact, and delivers a transformation blueprint — before a single investment is made.
             </p>
           </div>
           <div className="pt-10 border-t border-white/10">
