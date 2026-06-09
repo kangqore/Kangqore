@@ -245,60 +245,6 @@ export default function BIDSPage() {
 
 
 
-      {/* ─────────────────────── WHO THIS IS FOR ─────────────────────── */}
-      <section className="py-24 relative overflow-hidden border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-20 items-start">
-            <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHO THIS IS DESIGNED FOR</p>
-              <h2 className="text-3xl sm:text-4xl font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
-                Built for organizations<br />preparing for significant change.
-              </h2>
-              <p className="text-white/40 text-base font-medium leading-relaxed mb-10">Typical engagements include:</p>
-              <div className="space-y-0">
-                {[
-                  'Growth-stage companies scaling beyond founder-led operations',
-                  'Mid-market organizations modernizing systems, processes, and technology',
-                  'Multi-location businesses seeking operational visibility and efficiency',
-                  'Enterprises preparing for large transformation programs',
-                  'Organizations evaluating AI, cloud, automation, cybersecurity, or modernization investments',
-                ].map((item, i, arr) => (
-                  <div key={item}>
-                    <div className="flex items-start gap-4 py-4">
-                      <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mt-2 flex-shrink-0" />
-                      <p className="text-white/60 text-base font-medium leading-snug">{item}</p>
-                    </div>
-                    {i < arr.length - 1 && <div className="w-px h-2 ml-[2.75px] bg-white/[0.04]" />}
-                  </div>
-                ))}
-              </div>
-              <p className="mt-8 text-white/25 text-sm font-medium leading-relaxed max-w-xl">
-                Most valuable when leadership teams are making high-impact decisions and require objective intelligence before committing significant resources.
-              </p>
-            </div>
-            <div className="lg:pt-14">
-              <div className="p-8 border border-white/[0.08] bg-white/[0.02] rounded-2xl">
-                <p className="text-[9px] font-black tracking-[0.4em] text-white/30 uppercase mb-6">ENGAGEMENT AVAILABILITY</p>
-                <h3 className="text-white font-black text-xl mb-4 leading-tight">
-                  Currently accepting Q3–Q4 2026 discovery and transformation engagements.
-                </h3>
-                <p className="text-white/40 text-sm font-medium leading-relaxed mb-8">
-                  Each engagement involves direct senior-specialist involvement throughout the assessment — from executive scoping through to findings delivery. We accept new diagnostic engagements on an ongoing basis and respond to all scoping requests within 24–48 business hours.
-                </p>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
-                >
-                  Start a Scoping Conversation
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
       {/* ─────────────────────── PROBLEM TRILOGY (GSAP ScrollTrigger) ─────────────────────── */}
       <div id="problem"><ProblemTrilogy /></div>
 
@@ -718,6 +664,60 @@ export default function BIDSPage() {
             <span className="text-cyan-400">Kangqore BIDS™</span>{' '}
             translates scored findings into a prioritized action plan, mapping each identified constraint to the capability area best positioned to address it.
           </p>
+        </div>
+      </section>
+
+
+      {/* ─────────────────────── WHO THIS IS FOR ─────────────────────── */}
+      <section className="py-24 relative overflow-hidden border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 items-start">
+            <div>
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHO THIS IS DESIGNED FOR</p>
+              <h2 className="text-3xl sm:text-4xl font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+                Built for organizations<br />preparing for significant change.
+              </h2>
+              <p className="text-white/40 text-base font-medium leading-relaxed mb-10">Typical engagements include:</p>
+              <div className="space-y-0">
+                {[
+                  'Growth-stage companies scaling beyond founder-led operations',
+                  'Mid-market organizations modernizing systems, processes, and technology',
+                  'Multi-location businesses seeking operational visibility and efficiency',
+                  'Enterprises preparing for large transformation programs',
+                  'Organizations evaluating AI, cloud, automation, cybersecurity, or modernization investments',
+                ].map((item, i, arr) => (
+                  <div key={item}>
+                    <div className="flex items-start gap-4 py-4">
+                      <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mt-2 flex-shrink-0" />
+                      <p className="text-white/60 text-base font-medium leading-snug">{item}</p>
+                    </div>
+                    {i < arr.length - 1 && <div className="w-px h-2 ml-[2.75px] bg-white/[0.04]" />}
+                  </div>
+                ))}
+              </div>
+              <p className="mt-8 text-white/25 text-sm font-medium leading-relaxed max-w-xl">
+                Most valuable when leadership teams are making high-impact decisions and require objective intelligence before committing significant resources.
+              </p>
+            </div>
+            <div className="lg:pt-14">
+              <div className="p-8 border border-white/[0.08] bg-white/[0.02] rounded-2xl">
+                <p className="text-[9px] font-black tracking-[0.4em] text-white/30 uppercase mb-6">ENGAGEMENT AVAILABILITY</p>
+                <h3 className="text-white font-black text-xl mb-4 leading-tight">
+                  Currently accepting Q3–Q4 2026 discovery and transformation engagements.
+                </h3>
+                <p className="text-white/40 text-sm font-medium leading-relaxed mb-8">
+                  Each engagement involves direct senior-specialist involvement throughout the assessment — from executive scoping through to findings delivery. We accept new diagnostic engagements on an ongoing basis and respond to all scoping requests within 24–48 business hours.
+                </p>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
+                >
+                  Start a Scoping Conversation
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
