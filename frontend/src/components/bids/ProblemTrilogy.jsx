@@ -85,7 +85,7 @@ export default function ProblemTrilogy() {
     <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
       <div>
         <p className="text-xs font-bold tracking-[0.3em] text-red-400 uppercase mb-8">The Problem</p>
-        <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black leading-[1.15] tracking-[-0.03em] text-white mb-10">
+        <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black leading-[1.35] tracking-[-0.03em] text-white mb-10">
           Organizations rarely fail<br />
           because they lack{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-600 filter drop-shadow-[0_0_20px_rgba(225,29,72,0.3)]">
