@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { useTheme } from '../../context/ThemeContext';
 import './BIDSRuler.css';
 
@@ -47,7 +48,7 @@ export default function BIDSRuler() {
   const activeIndex = NAV_ITEMS.findIndex(item => item.id === active);
   const progress = activeIndex >= 0 ? activeIndex / (NAV_ITEMS.length - 1) : 0;
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className={`bids-ruler ${theme}`}
       style={{ '--progress': progress }}
@@ -56,8 +57,8 @@ export default function BIDSRuler() {
         <div className="spine" />
 
         {NAV_ITEMS.map(({ id, num, label }, index) => {
-          const isActive   = active === id;
-          const isVisited  = activeIndex > -1 && index < activeIndex;
+          const isActive  = active === id;
+          const isVisited = activeIndex > -1 && index < activeIndex;
 
           return (
             <button
@@ -80,6 +81,7 @@ export default function BIDSRuler() {
           );
         })}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
