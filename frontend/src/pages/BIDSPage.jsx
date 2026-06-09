@@ -11,6 +11,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import BIDSProductVisual from '../components/hero/BIDSProductVisual';
 import VisualBackground from '../components/VisualBackground';
 import ConciergeSection from '../components/concierge/ConciergeSection';
+import ProblemTrilogy from '../components/bids/ProblemTrilogy';
 
 // ─────────────────────────────────────────────
 // DATA
@@ -118,19 +119,12 @@ const pillarDetails = [
   { tagline: 'Execute transformation that sticks.', desc: 'Measure transformation readiness, change management capability, and strategic execution velocity.' },
 ];
 
-const symptoms = [
-  'Slower growth', 'Rising operational costs', 'Reduced productivity',
-  'Customer friction', 'Technology complexity', 'Security concerns',
-  'Inconsistent execution', 'Poor return on investment', 'Transformation initiatives that fail to deliver',
-];
-
 // ─────────────────────────────────────────────
 // PAGE
 // ─────────────────────────────────────────────
 
 export default function BIDSPage() {
   const [heroRef, heroVisible]         = useScrollAnimation({ once: true, threshold: 0.1 });
-  const [problemRef, problemVisible]   = useScrollAnimation({ once: true, threshold: 0.1 });
   const [defRef, defVisible]           = useScrollAnimation({ once: true, threshold: 0.1 });
   const [pillarsRef, pillarsVisible]   = useScrollAnimation({ once: true, threshold: 0.05 });
   const [enginesRef, enginesVisible]   = useScrollAnimation({ once: true, threshold: 0.05 });
@@ -306,59 +300,6 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── PROBLEM ─────────────────────── */}
-      <section className="py-32 relative">
-        <div
-          ref={problemRef}
-          className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${problemVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-        >
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            {/* Left */}
-            <div>
-              <p className="text-xs font-bold tracking-[0.3em] text-red-400 uppercase mb-5">
-                The Problem
-              </p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
-                Organizations rarely fail because they lack{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-600 filter drop-shadow-[0_0_20px_rgba(225,29,72,0.3)]">ambition.</span>
-              </h2>
-              <div className="space-y-6 text-white/60 leading-relaxed text-lg sm:text-xl font-medium">
-                <p>
-                  They struggle because critical constraints remain <span className="font-bold text-white">hidden beneath the surface</span> of the business.
-                </p>
-                <p>
-                  Operational inefficiencies accumulate unnoticed. Technology environments become fragmented. Growth engines underperform. Security risks increase. Decision-making slows.
-                </p>
-                <p>
-                  Without a comprehensive diagnosis, organizations risk investing in solutions that address <em className="text-white/80">symptoms</em> rather than <em className="text-white/80">causes</em>.
-                </p>
-                <div className="p-6 mt-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-                  <p className="font-black text-white text-xl tracking-wide">
-                    This is why we engineered Kangqore BIDS™.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right — symptoms plain list */}
-            <div className="lg:pt-10">
-              <p className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase mb-8">FAMILIAR SYMPTOMS</p>
-              <div className="space-y-5">
-                {symptoms.map((s) => (
-                  <div key={s} className="flex items-center gap-4">
-                    <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
-                    <span className="text-white/70 text-base font-semibold">{s}</span>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-10 text-sm text-white/40 font-medium leading-relaxed">
-                These symptoms are rarely the root problem. The underlying causes exist across interconnected systems, functions, teams, and decision-making structures.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ─────────────────────── PATTERN INTERRUPT ─────────────────────── */}
       <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -379,57 +320,8 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── COST OF NOT KNOWING ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-20 items-start">
-            <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-red-400 uppercase mb-8">THE ECONOMIC REALITY</p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
-                The cost of<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-600">not knowing.</span>
-              </h2>
-              <div className="space-y-5 text-white/50 text-lg leading-relaxed font-medium">
-                <p>
-                  Organizations rarely fail because they lack investment. They fail because investments are directed toward the wrong priorities.
-                </p>
-                <p>
-                  Without diagnostic intelligence, operational inefficiencies compound, technology debt accumulates, security exposure increases, and growth opportunities remain undiscovered — while transformation budgets produce diminishing returns.
-                </p>
-                <p className="text-white/75 font-semibold">
-                  The cost of misdiagnosis is often significantly greater than the cost of transformation itself.
-                </p>
-              </div>
-            </div>
-            <div className="lg:pt-20">
-              <p className="text-[10px] font-black tracking-[0.45em] text-white/25 uppercase mb-8">WITHOUT DIAGNOSTIC INTELLIGENCE</p>
-              <div className="space-y-0">
-                {[
-                  { text: 'Operational inefficiencies compound over time',     color: '#FB923C' },
-                  { text: 'Technology debt accumulates undetected',            color: '#F472B6' },
-                  { text: 'Security exposure increases without visibility',    color: '#E8614A' },
-                  { text: 'Growth opportunities remain undiscovered',          color: '#FDE047' },
-                  { text: 'Transformation budgets produce lower returns',      color: '#A78BFA' },
-                  { text: 'Capital is allocated to symptoms, not root causes', color: '#22D3EE' },
-                ].map((item, i, arr) => (
-                  <div key={item.text}>
-                    <div className="flex items-center gap-5 py-5">
-                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
-                      <p className="text-white/65 text-base font-semibold leading-snug">{item.text}</p>
-                    </div>
-                    {i < arr.length - 1 && <div className="w-px h-3 ml-[2.75px] bg-white/[0.05]" />}
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
-                <p className="text-white font-black text-lg leading-snug">
-                  Every major investment decision made without a diagnostic baseline carries a hidden cost that compounds over time.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ─────────────────────── PROBLEM TRILOGY (GSAP ScrollTrigger) ─────────────────────── */}
+      <ProblemTrilogy />
 
       {/* ─────────────────────── WHY WE BUILT BIDS™ ─────────────────────── */}
       <section className="py-24 relative" style={{ backgroundColor: '#000000' }}>
@@ -461,44 +353,6 @@ export default function BIDSPage() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────── CONSTRAINT COST ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="mb-20">
-            <p className="text-[10px] font-black tracking-[0.45em] text-red-400 uppercase mb-8">THE REAL COST</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
-              Every hidden constraint<br />
-              has a <span className="text-red-400">measurable cost.</span>
-            </h2>
-          </div>
-          {/* Table */}
-          <div className="mb-20">
-            <div className="grid grid-cols-2 pb-5 mb-2">
-              <p className="text-[10px] font-black tracking-[0.4em] text-white/25 uppercase">CONSTRAINT</p>
-              <p className="text-[10px] font-black tracking-[0.4em] text-white/25 uppercase">BUSINESS IMPACT</p>
-            </div>
-            {[
-              { constraint: 'Poor Processes',           impact: 'Increased operational costs' },
-              { constraint: 'Technology Debt',          impact: 'Slower innovation velocity' },
-              { constraint: 'Weak Cybersecurity',       impact: 'Higher breach exposure' },
-              { constraint: 'Low AI Readiness',         impact: 'Lost competitive advantage' },
-              { constraint: 'Data Silos',               impact: 'Poor decision quality' },
-              { constraint: 'Workforce Inefficiencies', impact: 'Reduced productivity' },
-              { constraint: 'Fragmented Systems',       impact: 'Lower ROI on technology' },
-              { constraint: 'Governance Gaps',          impact: 'Compliance and regulatory risk' },
-            ].map((row) => (
-              <div key={row.constraint} className="grid grid-cols-2 py-6 border-t border-white/[0.06]">
-                <p className="text-white font-bold text-lg">{row.constraint}</p>
-                <p className="text-white/45 font-medium text-lg">{row.impact}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-2xl sm:text-3xl font-black text-cyan-400 max-w-3xl leading-snug">
-            The diagnostic quantifies these costs before they become business failures.
-          </p>
         </div>
       </section>
 
