@@ -12,6 +12,7 @@ import BIDSProductVisual from '../components/hero/BIDSProductVisual';
 import VisualBackground from '../components/VisualBackground';
 import ConciergeSection from '../components/concierge/ConciergeSection';
 import ProblemTrilogy from '../components/bids/ProblemTrilogy';
+import BIDSRuler from '../components/bids/BIDSRuler';
 
 // ─────────────────────────────────────────────
 // DATA
@@ -152,6 +153,8 @@ export default function BIDSPage() {
         keywords="Kangqore BIDS, Business Diagnostic Intelligence System, enterprise diagnostic, transformation blueprint, AI readiness, cybersecurity assessment"
         url="/bids"
       />
+
+      <BIDSRuler />
 
       {/* ─────────────────────── HERO ─────────────────────── */}
       <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
@@ -452,7 +455,7 @@ export default function BIDSPage() {
       </div>
 
       {/* ─────────────────────── CEO QUESTIONS (INTERACTIVE) ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="ceo-assessment" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           {/* Header */}
           <div className="max-w-3xl mb-16">
@@ -640,7 +643,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── PRESCRIPTION ENGINE ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="prescription" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PRESCRIPTION ENGINE™</p>
@@ -968,7 +971,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── DIAGNOSTIC METHODOLOGY ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="methodology" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
           {/* Header */}
@@ -1204,7 +1207,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── DELIVERABLES ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden">
+      <section id="deliverables" className="py-32 relative overflow-hidden">
         <div
           ref={delivRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${delivVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -1362,7 +1365,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── SAMPLE SCORECARD ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="scorecard" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
           {/* Section header */}
@@ -1577,7 +1580,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── COMPETITIVE COMPARISON ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="competitive" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
           {/* Header */}
@@ -1638,7 +1641,7 @@ export default function BIDSPage() {
       </section>
 
       {/* ─────────────────────── ENGAGEMENT MODELS ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden border-t border-white/10" style={{ backgroundColor: '#000000' }}>
+      <section id="engagement" className="py-32 relative overflow-hidden border-t border-white/10" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENGAGEMENT MODELS</p>
