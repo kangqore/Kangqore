@@ -19,35 +19,35 @@
 /* ── Theme tokens ── */
 .bids-ruler.dark,
 .bids-ruler:not(.light) {
-  --spine:        rgba(255, 255, 255, 0.06);
-  --tick:         rgba(255, 255, 255, 0.10);
+  --spine:        rgba(255, 255, 255, 0.18);
+  --tick:         rgba(255, 255, 255, 0.30);
   --accent:       #22D3EE;
   --accent-r:     34;
   --accent-g:     211;
   --accent-b:     238;
-  --num:          rgba(255, 255, 255, 0.14);
-  --num-visited:  rgba(255, 255, 255, 0.28);
-  --num-hover:    rgba(255, 255, 255, 0.38);
-  --num-active:   rgba(255, 255, 255, 0.82);
-  --label:        rgba(255, 255, 255, 0.58);
-  --label-hover:  rgba(255, 255, 255, 0.26);
-  --tick-hover:   rgba(255, 255, 255, 0.20);
+  --num:          rgba(255, 255, 255, 0.38);
+  --num-visited:  rgba(255, 255, 255, 0.55);
+  --num-hover:    rgba(255, 255, 255, 0.70);
+  --num-active:   rgba(255, 255, 255, 0.95);
+  --label:        rgba(255, 255, 255, 0.80);
+  --label-hover:  rgba(255, 255, 255, 0.50);
+  --tick-hover:   rgba(255, 255, 255, 0.45);
 }
 
 .bids-ruler.light {
-  --spine:        rgba(15, 23, 42, 0.09);
-  --tick:         rgba(15, 23, 42, 0.12);
+  --spine:        rgba(15, 23, 42, 0.25);
+  --tick:         rgba(15, 23, 42, 0.30);
   --accent:       #2563EB;
   --accent-r:     37;
   --accent-g:     99;
   --accent-b:     235;
-  --num:          rgba(15, 23, 42, 0.18);
-  --num-visited:  rgba(15, 23, 42, 0.36);
-  --num-hover:    rgba(15, 23, 42, 0.48);
-  --num-active:   rgba(15, 23, 42, 0.82);
-  --label:        rgba(15, 23, 42, 0.62);
-  --label-hover:  rgba(15, 23, 42, 0.30);
-  --tick-hover:   rgba(15, 23, 42, 0.22);
+  --num:          rgba(15, 23, 42, 0.45);
+  --num-visited:  rgba(15, 23, 42, 0.62);
+  --num-hover:    rgba(15, 23, 42, 0.75);
+  --num-active:   rgba(15, 23, 42, 0.92);
+  --label:        rgba(15, 23, 42, 0.80);
+  --label-hover:  rgba(15, 23, 42, 0.50);
+  --tick-hover:   rgba(15, 23, 42, 0.45);
 }
 
 /* ── Spine ── */
