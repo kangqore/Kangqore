@@ -57,9 +57,10 @@ export default function ProblemTrilogy() {
         scrollTrigger: {
           trigger: outerRef.current,
           pin: true,
+          anticipatePin: 1,
           start: 'top top',
-          end: '+=200%',
-          scrub: 1.4,
+          end: '+=120%',
+          scrub: 0.8,
         },
       });
 

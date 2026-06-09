@@ -49,11 +49,6 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/os':             { target: KANGQORE_VIEW, changeOrigin: true, ws: true },
         '/portal':         { target: KANGQORE_VIEW, changeOrigin: true, ws: true },
-        '/@vite':          { target: KANGQORE_VIEW, changeOrigin: true },
-        '/@react-refresh': { target: KANGQORE_VIEW, changeOrigin: true },
-        '/@id':            { target: KANGQORE_VIEW, changeOrigin: true },
-        '/src':            { target: KANGQORE_VIEW, changeOrigin: true },
-        '/node_modules/.vite': { target: KANGQORE_VIEW, changeOrigin: true },
         '/socket.io':      { target: BACKEND, changeOrigin: true, ws: true },
         '/api':            { target: BACKEND, changeOrigin: true },
         '/sitemap.xml':    { target: BACKEND, changeOrigin: true },
