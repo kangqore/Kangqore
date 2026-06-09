@@ -231,19 +231,21 @@ export default function ProblemTrilogy() {
             style={{ background: 'linear-gradient(to bottom, transparent, rgba(239,68,68,0.15), transparent)' }}
           />
 
-          {/* ── Progress indicator — bottom left ─────────────────────── */}
-          <div className="absolute bottom-8 left-6 sm:left-8 lg:left-12 z-30 flex items-center gap-7">
-            <div ref={seg1Ref} className="flex items-center gap-3">
-              <div className="w-7 h-px bg-white rounded-full" />
-              <span className="text-[8px] font-black tracking-[0.35em] text-white uppercase">The Problem</span>
-            </div>
-            <div ref={seg2Ref} className="flex items-center gap-3">
-              <div className="w-7 h-px bg-white rounded-full" />
-              <span className="text-[8px] font-black tracking-[0.35em] text-white uppercase">Economic Reality</span>
-            </div>
-            <div ref={seg3Ref} className="flex items-center gap-3">
-              <div className="w-7 h-px bg-white rounded-full" />
-              <span className="text-[8px] font-black tracking-[0.35em] text-white uppercase">The Real Cost</span>
+          {/* ── Progress indicator — bottom, aligned to content ──────── */}
+          <div className="absolute bottom-8 left-0 right-0 z-30">
+            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center gap-7">
+              <div ref={seg1Ref} className="flex items-center gap-3">
+                <div className="w-7 h-px bg-white rounded-full" />
+                <span className="text-[8px] font-black tracking-[0.35em] text-white uppercase">The Problem</span>
+              </div>
+              <div ref={seg2Ref} className="flex items-center gap-3">
+                <div className="w-7 h-px bg-white rounded-full" />
+                <span className="text-[8px] font-black tracking-[0.35em] text-white uppercase">Economic Reality</span>
+              </div>
+              <div ref={seg3Ref} className="flex items-center gap-3">
+                <div className="w-7 h-px bg-white rounded-full" />
+                <span className="text-[8px] font-black tracking-[0.35em] text-white uppercase">The Real Cost</span>
+              </div>
             </div>
           </div>
 
