@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 const NAV_ITEMS = [
-  { id: 'ceo-assessment', num: '01', label: 'Self-Assessment'  },
-  { id: 'deliverables',   num: '02', label: 'Deliverables'     },
-  { id: 'prescription',   num: '03', label: 'Prescription'     },
-  { id: 'competitive',    num: '04', label: 'Competitive'      },
-  { id: 'engagement',     num: '05', label: 'Engagement'       },
-  { id: 'methodology',    num: '06', label: 'Methodology'      },
-  { id: 'scorecard',      num: '07', label: 'Scorecard'        },
+  { id: 'problem',        num: '01', label: 'The Problem'      },
+  { id: 'definition',     num: '02', label: 'What Is BIDS™'   },
+  { id: 'ceo-assessment', num: '03', label: 'Self-Assessment'  },
+  { id: 'deliverables',   num: '04', label: 'Deliverables'     },
+  { id: 'prescription',   num: '05', label: 'Prescription'     },
+  { id: 'competitive',    num: '06', label: 'Competitive'      },
+  { id: 'engagement',     num: '07', label: 'Engagement'       },
+  { id: 'methodology',    num: '08', label: 'Methodology'      },
+  { id: 'scorecard',      num: '09', label: 'Scorecard'        },
 ];
 
 export default function BIDSRuler() {

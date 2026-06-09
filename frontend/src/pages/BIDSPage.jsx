@@ -300,11 +300,11 @@ export default function BIDSPage() {
 
 
       {/* ─────────────────────── PROBLEM TRILOGY (GSAP ScrollTrigger) ─────────────────────── */}
-      <ProblemTrilogy />
+      <div id="problem"><ProblemTrilogy /></div>
 
 
       {/* ─────────────────────── DEFINITION ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="definition" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div
           ref={defRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
