@@ -386,18 +386,20 @@ export default function BIDSPage() {
       <div className="border-t border-b border-white/[0.05] py-10" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <p className="text-[8px] font-black tracking-[0.45em] text-white/18 uppercase mb-7 text-center">BUILT UPON GLOBALLY RECOGNIZED STANDARDS</p>
-          <div className="flex flex-nowrap items-center justify-center gap-2.5 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+          <div className="flex flex-nowrap items-center justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
             {[
               'NIST CSF 2.0', 'NIST AI RMF', 'ISO/IEC 27001', 'ISO/IEC 42001',
               'AWS Cloud Adoption Framework', 'CIS Critical Controls',
               'DORA Metrics', 'TOGAF', 'Enterprise Risk Management',
-            ].map(f => (
-              <span
-                key={f}
-                className="flex-shrink-0 px-4 py-2 rounded-full border border-white/[0.07] bg-white/[0.02] text-white/30 text-[10px] font-bold tracking-wide whitespace-nowrap"
-              >
-                {f}
-              </span>
+            ].map((f, i, arr) => (
+              <React.Fragment key={f}>
+                <span className="flex-shrink-0 text-white/25 text-[10px] font-bold tracking-[0.12em] whitespace-nowrap">
+                  {f}
+                </span>
+                {i < arr.length - 1 && (
+                  <span className="flex-shrink-0 mx-4 text-white/10 text-xs select-none">·</span>
+                )}
+              </React.Fragment>
             ))}
           </div>
         </div>
