@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: [
+          '"DM Sans"',
           'Inter',
           '-apple-system',
           'BlinkMacSystemFont',
@@ -22,6 +23,7 @@ module.exports = {
           '"Segoe UI Symbol"',
         ],
         display: [
+          '"DM Sans"',
           'Inter',
           '-apple-system',
           'BlinkMacSystemFont',
