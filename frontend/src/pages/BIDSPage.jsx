@@ -141,6 +141,8 @@ export default function BIDSPage() {
   const [expandedPillar, setExpandedPillar] = useState(null);
   const [activeDeliverable, setActiveDeliverable] = useState(0);
   const [execAnswers, setExecAnswers] = useState({});
+  const [assessmentEmail, setAssessmentEmail] = useState('');
+  const [assessmentEmailSent, setAssessmentEmailSent] = useState(false);
 
   return (
     <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
@@ -303,25 +305,6 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── PATTERN INTERRUPT ─────────────────────── */}
-      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="max-w-5xl">
-            <p className="text-[10px] font-black tracking-[0.45em] text-white/20 uppercase mb-12">THE DIAGNOSTIC GAP</p>
-            <p className="text-4xl sm:text-5xl lg:text-[4.5rem] xl:text-[5rem] font-black leading-[1.05] tracking-[-0.04em] text-white">
-              Most transformation<br />
-              <span className="text-white/20">failures begin before</span><br />
-              <span className="text-white/20">implementation.</span>
-            </p>
-            <div className="mt-12 max-w-2xl space-y-4">
-              <p className="text-white/40 text-lg font-medium leading-relaxed">
-                Not during execution. Not from technical failure. Before the first decision is made — when priorities are set without a complete picture of what is actually constraining the organization.
-              </p>
-              <p className="text-cyan-400 font-black text-xl">That is the diagnostic gap.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ─────────────────────── PROBLEM TRILOGY (GSAP ScrollTrigger) ─────────────────────── */}
       <ProblemTrilogy />
@@ -409,6 +392,27 @@ export default function BIDSPage() {
         </div>
       </section>
 
+      {/* ─────────────────────── FRAMEWORK BADGE STRIP ─────────────────────── */}
+      <div className="border-t border-b border-white/[0.05] py-10" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <p className="text-[8px] font-black tracking-[0.45em] text-white/18 uppercase mb-7 text-center">BUILT UPON GLOBALLY RECOGNIZED STANDARDS</p>
+          <div className="flex flex-wrap items-center justify-center gap-2.5">
+            {[
+              'NIST CSF 2.0', 'NIST AI RMF', 'ISO/IEC 27001', 'ISO/IEC 42001',
+              'AWS Cloud Adoption Framework', 'CIS Critical Controls',
+              'DORA Metrics', 'TOGAF', 'Enterprise Risk Management',
+            ].map(f => (
+              <span
+                key={f}
+                className="px-4 py-2 rounded-full border border-white/[0.07] bg-white/[0.02] text-white/30 text-[10px] font-bold tracking-wide"
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* ─────────────────────── eQORE AI CONCIERGE ─────────────────────── */}
       <ConciergeSection inverted suggestedPrompts={[
         'What is Kangqore BIDS™?',
@@ -424,6 +428,36 @@ export default function BIDSPage() {
         'What does a Kangqore BIDS™ scorecard look like?',
         'Request a Diagnostic Assessment',
       ]} />
+
+      {/* ─────────────────────── MID-FUNNEL BRIDGE ─────────────────────── */}
+      <div className="py-14 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 p-8 rounded-2xl border border-white/[0.07] bg-white/[0.02]">
+            <div>
+              <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-3">NOT READY FOR A FULL ASSESSMENT?</p>
+              <p className="text-white font-black text-xl leading-snug mb-2">Start with a 20-minute discovery call.</p>
+              <p className="text-white/35 text-sm font-medium leading-relaxed max-w-xl">
+                Walk through the Kangqore BIDS™ framework with a senior specialist. No commitment, no pitch — a clear picture of how the diagnostic works and whether it fits your current priorities.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-cyan-400/30 text-cyan-400 font-black text-sm tracking-wide hover:bg-cyan-400/10 transition-colors duration-200"
+              >
+                Book a Discovery Call
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <a
+                href="#deliverables"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] text-white/35 font-black text-sm tracking-wide hover:text-white/60 hover:border-white/[0.15] transition-all duration-200"
+              >
+                See What's Delivered
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* ─────────────────────── CEO QUESTIONS (INTERACTIVE) ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
@@ -571,13 +605,37 @@ export default function BIDSPage() {
                           <p className="text-sm font-semibold leading-snug" style={{ color: profile.color }}>{profile.signal}</p>
                         </div>
                         {answered >= 5 && (
-                          <Link
-                            to="/contact"
-                            className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
-                          >
-                            Request a Diagnostic Assessment
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
+                          assessmentEmailSent ? (
+                            <div className="p-4 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] text-center">
+                              <p className="text-emerald-400 font-black text-sm">Profile sent to {assessmentEmail}</p>
+                              <p className="text-white/30 text-xs mt-1.5">We'll follow up within 24 business hours.</p>
+                            </div>
+                          ) : (
+                            <div>
+                              <p className="text-[9px] font-black tracking-[0.35em] text-white/30 uppercase mb-3">GET YOUR READINESS PROFILE</p>
+                              <div className="flex gap-2 mb-3">
+                                <input
+                                  type="email"
+                                  value={assessmentEmail}
+                                  onChange={e => setAssessmentEmail(e.target.value)}
+                                  placeholder="your@email.com"
+                                  className="flex-1 min-w-0 px-4 py-2.5 rounded-full bg-white/[0.05] border border-white/[0.12] text-white text-sm placeholder-white/20 focus:outline-none focus:border-cyan-400/40 transition-colors"
+                                />
+                                <button
+                                  onClick={() => assessmentEmail.includes('@') && setAssessmentEmailSent(true)}
+                                  className="flex-shrink-0 px-4 py-2.5 rounded-full bg-white text-gray-900 font-black text-sm hover:bg-white/90 transition-colors duration-200"
+                                >
+                                  Send
+                                </button>
+                              </div>
+                              <p className="text-white/20 text-xs text-center">
+                                Or{' '}
+                                <Link to="/contact" className="text-cyan-400/70 hover:text-cyan-400 transition-colors">
+                                  book a scoping call
+                                </Link>
+                              </p>
+                            </div>
+                          )
                         )}
                       </div>
                     )}
