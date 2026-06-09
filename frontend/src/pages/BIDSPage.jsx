@@ -178,8 +178,12 @@ export default function BIDSPage() {
             <p className="text-xl sm:text-2xl text-cyan-50 font-semibold tracking-wide mb-4 flex items-center gap-3">
               Kangqore Business Diagnostic Intelligence System™
             </p>
-            <p className="text-lg sm:text-xl text-white/60 leading-relaxed max-w-2xl mb-10 font-medium">
-              The Enterprise MRI for Business, Technology, Operations, AI, Security, and Growth. Reveal hidden constraints before they become critical failures.
+            <p className="text-lg sm:text-xl text-white/80 font-black mb-2 tracking-tight">
+              Most firms begin with solutions.{' '}
+              <span className="text-cyan-400">Kangqore begins with diagnosis.</span>
+            </p>
+            <p className="text-base text-white/45 leading-relaxed max-w-2xl mb-10 font-medium">
+              The Enterprise MRI for Business, Technology, Operations, AI, Security, and Growth — revealing hidden constraints before they become critical failures.
             </p>
 
             {/* Outcome framing */}
@@ -239,6 +243,69 @@ export default function BIDSPage() {
 
 
 
+      {/* ─────────────────────── WHO THIS IS FOR ─────────────────────── */}
+      <section className="py-24 relative overflow-hidden border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 items-start">
+            <div>
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHO THIS IS DESIGNED FOR</p>
+              <h2 className="text-3xl sm:text-4xl font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
+                Built for organizations<br />preparing for significant change.
+              </h2>
+              <p className="text-white/40 text-base font-medium leading-relaxed mb-10">Typical engagements include:</p>
+              <div className="space-y-0">
+                {[
+                  'Growth-stage companies scaling beyond founder-led operations',
+                  'Mid-market organizations modernizing systems, processes, and technology',
+                  'Multi-location businesses seeking operational visibility and efficiency',
+                  'Enterprises preparing for large transformation programs',
+                  'Organizations evaluating AI, cloud, automation, cybersecurity, or modernization investments',
+                ].map((item, i, arr) => (
+                  <div key={item}>
+                    <div className="flex items-start gap-4 py-4">
+                      <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mt-2 flex-shrink-0" />
+                      <p className="text-white/60 text-base font-medium leading-snug">{item}</p>
+                    </div>
+                    {i < arr.length - 1 && <div className="w-px h-2 ml-[2.75px] bg-white/[0.04]" />}
+                  </div>
+                ))}
+              </div>
+              <p className="mt-8 text-white/25 text-sm font-medium leading-relaxed max-w-xl">
+                Most valuable when leadership teams are making high-impact decisions and require objective intelligence before committing significant resources.
+              </p>
+            </div>
+            <div className="lg:pt-14">
+              <div className="p-8 border border-amber-500/20 bg-amber-500/[0.03] rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse flex-shrink-0" />
+                  <p className="text-[9px] font-black tracking-[0.4em] text-amber-400/80 uppercase">Diagnostic Capacity</p>
+                </div>
+                <h3 className="text-white font-black text-xl mb-4 leading-tight">
+                  Limited intake to ensure engagement quality.
+                </h3>
+                <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
+                  Diagnostic engagements are intentionally limited to ensure senior-level involvement, diagnostic rigor, and executive collaboration throughout the assessment process.
+                </p>
+                <p className="text-white/40 text-sm font-medium leading-relaxed mb-6">
+                  Only a limited number of new engagements are accepted each quarter.
+                </p>
+                <div className="border-t border-white/[0.06] pt-5 mb-6">
+                  <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase mb-2">Current Intake</p>
+                  <p className="text-white font-black text-base">Q3–Q4 2026 Scoping &amp; Discovery Requests</p>
+                </div>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
+                >
+                  Request a Scoping Session
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────────────── PROBLEM ─────────────────────── */}
       <section className="py-32 relative">
         <div
@@ -287,6 +354,26 @@ export default function BIDSPage() {
               <p className="mt-10 text-sm text-white/40 font-medium leading-relaxed">
                 These symptoms are rarely the root problem. The underlying causes exist across interconnected systems, functions, teams, and decision-making structures.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────── PATTERN INTERRUPT ─────────────────────── */}
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="max-w-5xl">
+            <p className="text-[10px] font-black tracking-[0.45em] text-white/20 uppercase mb-12">THE DIAGNOSTIC GAP</p>
+            <p className="text-4xl sm:text-5xl lg:text-[4.5rem] xl:text-[5rem] font-black leading-[1.05] tracking-[-0.04em] text-white">
+              Most transformation<br />
+              <span className="text-white/20">failures begin before</span><br />
+              <span className="text-white/20">implementation.</span>
+            </p>
+            <div className="mt-12 max-w-2xl space-y-4">
+              <p className="text-white/40 text-lg font-medium leading-relaxed">
+                Not during execution. Not from technical failure. Before the first decision is made — when priorities are set without a complete picture of what is actually constraining the organization.
+              </p>
+              <p className="text-cyan-400 font-black text-xl">That is the diagnostic gap.</p>
             </div>
           </div>
         </div>
@@ -475,13 +562,13 @@ export default function BIDSPage() {
               <span className="hidden sm:block w-px h-5 bg-white/10" />
               <span className="text-white/35 text-sm font-medium">Kangqore Business Diagnostic Intelligence System</span>
             </div>
-            <Link
-              to="/contact"
+            <a
+              href="#process"
               className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200 flex-shrink-0"
             >
-              Request a Diagnostic Assessment
+              View the Engagement Process
               <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
-            </Link>
+            </a>
           </div>
 
           {/* Pull quote */}
@@ -615,25 +702,36 @@ export default function BIDSPage() {
       {/* ─────────────────────── eQORE AI ROLE ─────────────────────── */}
       <section className="py-20 relative overflow-hidden border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-6">KANGQORE'S OFFICIAL AI ASSISTANT</p>
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-6">eQORE AI™ INTELLIGENCE LAYER</p>
               <h3 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-6">
                 What is <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI™?</span>
               </h3>
-              <p className="text-white/50 text-lg leading-relaxed font-medium">
-                eQORE AI™ is Kangqore's proprietary artificial intelligence assistant — embedded across every diagnostic engagement to synthesize findings, cross-reference intelligence pillar outputs, identify non-obvious constraint patterns, and generate the Service Prescription Matrix™.
+              <p className="text-white/50 text-lg leading-relaxed font-medium mb-8">
+                eQORE AI™ serves as the orchestration and intelligence layer within the BIDS™ diagnostic process — not as a replacement for human expertise, but as an enhancement to analytical consistency and cross-pillar coherence.
               </p>
+              <div className="space-y-4 border-t border-white/[0.06] pt-6">
+                <p className="text-white/40 text-sm font-medium leading-relaxed">
+                  All diagnostic conclusions, scoring decisions, recommendations, and service prescriptions are reviewed and validated by Kangqore specialists before delivery.
+                </p>
+                <p className="text-white/40 text-sm font-medium leading-relaxed">
+                  Client data is never used to train public AI models. Engagement information remains logically isolated and governed according to project-specific confidentiality requirements.
+                </p>
+                <p className="text-white/40 text-sm font-medium leading-relaxed">
+                  eQORE AI™ enhances analytical efficiency while maintaining human oversight, auditability, and professional accountability throughout the diagnostic process.
+                </p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { label: 'Synthesizes', desc: 'Cross-pillar diagnostic findings into coherent constraint narratives' },
-                { label: 'Identifies', desc: 'Non-obvious patterns across business, technology, and operational data' },
-                { label: 'Prescribes', desc: 'Targeted Kangqore service interventions ranked by impact and urgency' },
-                { label: 'Generates', desc: 'The Service Prescription Matrix™ and 30/60/90/180-Day Roadmap™' },
+                { label: 'Organizes', color: 'text-cyan-400', desc: 'Diagnostic findings across all sixteen intelligence pillars into coherent constraint narratives' },
+                { label: 'Identifies', color: 'text-cyan-400', desc: 'Cross-functional relationships and non-obvious patterns across business, technology, and operational data' },
+                { label: 'Supports Consistency', color: 'text-cyan-400', desc: 'Analytical consistency across engagements by applying methodology frameworks to emerging findings' },
+                { label: 'Human-Validated', color: 'text-emerald-400', desc: 'Every output is reviewed, challenged, and confirmed by senior Kangqore specialists before client delivery' },
               ].map(item => (
                 <div key={item.label} className="p-5 border border-white/[0.07] bg-white/[0.02] rounded-xl">
-                  <p className="text-cyan-400 text-xs font-black tracking-widest uppercase mb-2">{item.label}</p>
+                  <p className={`text-xs font-black tracking-widest uppercase mb-2 ${item.color}`}>{item.label}</p>
                   <p className="text-white/45 text-sm font-medium leading-snug">{item.desc}</p>
                 </div>
               ))}
@@ -1381,13 +1479,13 @@ export default function BIDSPage() {
           {/* Section header */}
           <div className="grid lg:grid-cols-2 gap-16 items-end mb-16">
             <div>
-              <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">SAMPLE OUTPUT</p>
+              <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">REPRESENTATIVE OUTPUT</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white mb-6">
                 This is what you{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">receive.</span>
               </h2>
               <p className="text-white/50 text-lg leading-relaxed">
-                Every engagement produces a full Diagnostic Scorecard™ — all 16 pillars scored, classified, and benchmarked. Delivered as part of 10 executive-grade deliverables.
+                The following is a representative example of a Diagnostic Scorecard™ — showing how 16 pillars are scored, classified, and benchmarked against sector standards. Final deliverables are formatted to this standard.
               </p>
             </div>
             <div className="space-y-3">
@@ -1414,8 +1512,8 @@ export default function BIDSPage() {
                   <BarChart3 className="w-4 h-4 text-white" strokeWidth={2} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black tracking-[0.25em] text-white/30 uppercase">Kangqore BIDS™ Diagnostic Scorecard™</p>
-                  <p className="text-white font-black text-base mt-0.5">Acme Corporation <span className="text-white/30 font-semibold text-sm">· Enterprise Edition™ · June 2026</span></p>
+                  <p className="text-[10px] font-black tracking-[0.25em] text-white/30 uppercase">Representative Diagnostic Scorecard™</p>
+                  <p className="text-white font-black text-base mt-0.5">Representative Organization <span className="text-white/30 font-semibold text-sm">· Enterprise Edition™ · Illustrative</span></p>
                 </div>
               </div>
               <div className="flex items-center gap-10 flex-shrink-0">
@@ -1496,7 +1594,7 @@ export default function BIDSPage() {
                   </div>
                 ))}
               </div>
-              <p className="text-[9px] text-white/15 font-bold tracking-widest uppercase">Sample Output · Anonymized · Not Real Client Data · Kangqore BIDS™</p>
+              <p className="text-[9px] text-white/15 font-bold tracking-widest uppercase">Representative Deliverable Preview™ · Illustrative Only · Not Client Data</p>
             </div>
           </div>
 
@@ -1778,19 +1876,23 @@ export default function BIDSPage() {
               </div>
             </div>
             <div className="space-y-4">
-              <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-6">COMPLIANCE & GOVERNANCE POSTURE</p>
+              <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-6">SECURITY & COMPLIANCE ROADMAP</p>
               {[
-                { label: 'NDA Required',        desc: 'Every engagement begins with a signed mutual NDA.',                               color: '#22D3EE' },
-                { label: 'GDPR Ready',          desc: 'Data handling aligned to GDPR principles for EU-resident data subjects.',         color: '#86EFAC' },
-                { label: 'CCPA Conscious',      desc: 'California Consumer Privacy Act compliance considerations applied.',              color: '#60A5FA' },
-                { label: 'SOC 2 Aligned',       desc: 'Security, availability, and confidentiality controls aligned to SOC 2 Trust principles.', color: '#A78BFA' },
-                { label: 'Data Minimization',   desc: 'Only data necessary for the diagnostic scope is requested and processed.',        color: '#FDE047' },
-                { label: 'Right to Deletion',   desc: 'Client data is deleted upon engagement close or at any time upon written request.', color: '#F472B6' },
+                { label: 'NDA Executed',                status: 'Active',      statusColor: '#86EFAC', color: '#22D3EE', desc: 'Every engagement begins with a signed mutual Non-Disclosure Agreement before any information is exchanged.' },
+                { label: 'Client Data Isolation',       status: 'Active',      statusColor: '#86EFAC', color: '#22D3EE', desc: 'Engagement data is logically isolated and access-controlled throughout the full assessment lifecycle.' },
+                { label: 'Data Minimization Controls',  status: 'Active',      statusColor: '#86EFAC', color: '#60A5FA', desc: 'Only data necessary for the diagnostic scope is requested, processed, and retained.' },
+                { label: 'Right to Deletion Policy',    status: 'Active',      statusColor: '#86EFAC', color: '#FDE047', desc: 'Client data is deleted upon engagement close or at any time upon written request.' },
+                { label: 'GDPR-Aligned Data Handling',  status: 'Active',      statusColor: '#86EFAC', color: '#F472B6', desc: 'Data handling practices aligned to GDPR principles for EU-resident data subjects.' },
+                { label: 'ISO 27001 Alignment',         status: 'In Progress', statusColor: '#FDE047', color: '#A78BFA', desc: 'Security management systems being aligned to ISO/IEC 27001 information security standard.' },
+                { label: 'SOC 2 Type II Certification', status: 'Planned',     statusColor: '#FB923C', color: '#A78BFA', desc: 'Independent third-party audit for security, availability, and confidentiality controls.' },
               ].map(item => (
                 <div key={item.label} className="flex items-start gap-4 p-4 border border-white/[0.07] bg-white/[0.02] rounded-xl">
                   <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: item.color }} />
-                  <div>
-                    <p className="text-white/80 text-sm font-black mb-0.5" style={{ color: item.color }}>{item.label}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between gap-3 mb-0.5">
+                      <p className="text-sm font-black" style={{ color: item.color }}>{item.label}</p>
+                      <span className="text-[8px] font-black tracking-wide uppercase px-2 py-0.5 rounded-full flex-shrink-0" style={{ color: item.statusColor, backgroundColor: item.statusColor + '18' }}>{item.status}</span>
+                    </div>
                     <p className="text-white/35 text-sm font-medium leading-snug">{item.desc}</p>
                   </div>
                 </div>
@@ -1826,7 +1928,7 @@ export default function BIDSPage() {
                 to="/contact"
                 className="group inline-flex items-center gap-3 px-7 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
               >
-                Join the Benchmark Waitlist
+                Join Founding Benchmark Program™
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
               </Link>
             </div>
@@ -1872,7 +1974,7 @@ export default function BIDSPage() {
           </div>
           <div className="max-w-4xl mb-16">
             <p className="text-white/50 text-lg lg:text-xl leading-relaxed">
-              Every organization has visible problems and invisible constraints. The framework identifies those constraints, quantifies their impact, and delivers a transformation blueprint — before a single investment is made.
+              Before investing in transformation, diagnose the enterprise. Every organization has visible problems and invisible constraints. The framework identifies those constraints, quantifies their impact, and delivers a transformation blueprint — before a single investment is made.
             </p>
           </div>
           <div className="pt-10 border-t border-white/10">
