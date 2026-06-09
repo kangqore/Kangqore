@@ -413,15 +413,15 @@ export default function BIDSPage() {
       <ConciergeSection inverted suggestedPrompts={[
         'What is Kangqore BIDS™?',
         'What are the 16 diagnostic pillars?',
-        'How does a BIDS™ engagement work?',
+        'How does a Kangqore BIDS™ engagement work?',
         'What deliverables do I receive?',
         'How long does an engagement take?',
         'What is the Prescription Engine™?',
         'Which industry edition fits us?',
-        'How is BIDS™ different from consulting?',
+        'How is Kangqore BIDS™ different from consulting?',
         'What is Benchmark Intelligence?',
-        'What is the eQORE AI™ role in BIDS™?',
-        'What does a BIDS™ scorecard look like?',
+        'What is the eQORE AI™ role in Kangqore BIDS™?',
+        'What does a Kangqore BIDS™ scorecard look like?',
         'Request a Diagnostic Assessment',
       ]} />
 
@@ -1517,7 +1517,7 @@ export default function BIDSPage() {
             <div className="border-t border-white/[0.08] py-7 pr-6">
               <Link to="/contact" className="flex items-center justify-between group">
                 <span className="text-[10px] font-black tracking-[0.28em] text-cyan-400 uppercase leading-snug">
-                  EXPLORE BIDS™<br />EDITIONS
+                  EXPLORE KANGQORE BIDS™<br />EDITIONS
                 </span>
                 <ArrowRight className="w-3.5 h-3.5 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0 ml-2" />
               </Link>
@@ -1695,7 +1695,7 @@ export default function BIDSPage() {
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">DATA HANDLING & TRUST</p>
               <h2 className="text-4xl sm:text-5xl font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
                 What data does<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">BIDS™ collect?</span>
+                <span className="bg-brand-gradient bg-clip-text text-transparent">Kangqore BIDS™ collect?</span>
               </h2>
               <p className="text-white/50 text-lg leading-relaxed font-medium mb-8">
                 Every engagement operates under a signed Non-Disclosure Agreement before any information is exchanged. Data collected is scoped strictly to what is necessary for the diagnostic — no data is retained beyond the engagement without explicit written consent.
