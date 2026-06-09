@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Target, Users, Landmark, Factory, Briefcase, Star,
@@ -13,6 +13,31 @@ import VisualBackground from '../components/VisualBackground';
 import ConciergeSection from '../components/concierge/ConciergeSection';
 import ProblemTrilogy from '../components/bids/ProblemTrilogy';
 import BIDSRuler from '../components/bids/BIDSRuler';
+
+
+const TypewriterText = ({ text, start = true, delay = 30 }) => {
+  const [currentText, setCurrentText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (start && currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setCurrentText(prevText => prevText + text[currentIndex]);
+        setCurrentIndex(prevIndex => prevIndex + 1);
+      }, delay);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, delay, start, text]);
+
+  return (
+    <span className="relative inline-block">
+      <span className="opacity-0">{text}</span>
+      <span className="absolute left-0 top-0 whitespace-nowrap">
+        {currentText}
+      </span>
+    </span>
+  );
+};
 
 // ─────────────────────────────────────────────
 // DATA
@@ -179,7 +204,7 @@ export default function BIDSPage() {
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
               <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
               <p className="text-xs font-bold tracking-[0.2em] text-cyan-300 uppercase">
-                Every organization has visible problems and invisible constraints.
+                <TypewriterText text="Every organization has visible problems and invisible constraints." start={heroVisible} />
               </p>
             </div>
             
