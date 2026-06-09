@@ -1,0 +1,182 @@
+/* ─── BIDSRuler — advanced adaptive floating nav ─────────────────────────── */
+
+/* ── Theme tokens ── */
+.bids-ruler.dark,
+.bids-ruler:not(.light) {
+  --spine:        rgba(255, 255, 255, 0.06);
+  --tick:         rgba(255, 255, 255, 0.10);
+  --accent:       #22D3EE;
+  --accent-r:     34;
+  --accent-g:     211;
+  --accent-b:     238;
+  --num:          rgba(255, 255, 255, 0.14);
+  --num-visited:  rgba(255, 255, 255, 0.28);
+  --num-hover:    rgba(255, 255, 255, 0.38);
+  --num-active:   rgba(255, 255, 255, 0.82);
+  --label:        rgba(255, 255, 255, 0.58);
+  --label-hover:  rgba(255, 255, 255, 0.26);
+  --tick-hover:   rgba(255, 255, 255, 0.20);
+}
+
+.bids-ruler.light {
+  --spine:        rgba(15, 23, 42, 0.09);
+  --tick:         rgba(15, 23, 42, 0.12);
+  --accent:       #2563EB;
+  --accent-r:     37;
+  --accent-g:     99;
+  --accent-b:     235;
+  --num:          rgba(15, 23, 42, 0.18);
+  --num-visited:  rgba(15, 23, 42, 0.36);
+  --num-hover:    rgba(15, 23, 42, 0.48);
+  --num-active:   rgba(15, 23, 42, 0.82);
+  --label:        rgba(15, 23, 42, 0.62);
+  --label-hover:  rgba(15, 23, 42, 0.30);
+  --tick-hover:   rgba(15, 23, 42, 0.22);
+}
+
+/* ── Spine ── */
+.bids-ruler .spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--spine) 12%,
+    var(--spine) 88%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* Progress fill — grows as the user scrolls */
+.bids-ruler .spine::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12%;
+  width: 1px;
+  height: calc(var(--progress, 0) * 76%);
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.60),
+    rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.10)
+  );
+  transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1px;
+}
+
+/* ── Active dot ── */
+.bids-ruler .dot {
+  position: absolute;
+  left: -3.5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 3px  rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.15),
+    0 0 8px    rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.70),
+    0 0 20px   rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.25);
+  z-index: 10;
+  animation: rulerDotPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes rulerDotPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px  rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.15),
+      0 0 8px    rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.70),
+      0 0 20px   rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px  rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.08),
+      0 0 14px   rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.55),
+      0 0 30px   rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.18);
+  }
+}
+
+/* ── Tick ── */
+.bids-ruler .tick {
+  flex-shrink: 0;
+  height: 1px;
+  background: var(--tick);
+  transition:
+    width      0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.30s ease,
+    box-shadow 0.30s ease;
+}
+
+.bids-ruler .ruler-item.active .tick {
+  background: var(--accent);
+  box-shadow: 4px 0 10px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.45);
+}
+
+.bids-ruler .ruler-item:hover:not(.active) .tick {
+  background: var(--tick-hover) !important;
+  width: 13px !important;
+}
+
+/* ── Number ── */
+.bids-ruler .num {
+  color: var(--num);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.28s ease, letter-spacing 0.28s ease;
+}
+
+.bids-ruler .ruler-item.visited .num {
+  color: var(--num-visited);
+}
+
+.bids-ruler .ruler-item.active .num {
+  color: var(--num-active);
+  letter-spacing: 0.36em;
+}
+
+.bids-ruler .ruler-item:hover:not(.active) .num {
+  color: var(--num-hover);
+}
+
+/* ── Label ── */
+.bids-ruler .label {
+  max-width: 0;
+  opacity: 0;
+  color: transparent;
+  transition:
+    max-width 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity   0.32s ease,
+    color     0.28s ease;
+  pointer-events: none;
+}
+
+.bids-ruler .ruler-item.active .label {
+  max-width: 130px;
+  opacity: 1;
+  color: var(--label);
+}
+
+.bids-ruler .ruler-item:hover:not(.active) .label {
+  max-width: 130px;
+  opacity: 1;
+  color: var(--label-hover);
+}
+
+/* ── Item shift on hover / active ── */
+.bids-ruler .ruler-item {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.20s ease;
+}
+
+.bids-ruler .ruler-item:hover {
+  transform: translateX(2px);
+}
+
+.bids-ruler .ruler-item.active {
+  transform: translateX(3px);
+}

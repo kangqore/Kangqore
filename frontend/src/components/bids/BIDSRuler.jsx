@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '../../context/ThemeContext';
+import './BIDSRuler.css';
 
 const NAV_ITEMS = [
-  { id: 'problem',        num: '01', label: 'The Problem'      },
-  { id: 'definition',     num: '02', label: 'What Is BIDS™'   },
-  { id: 'concierge',      num: '03', label: 'eQORE AI™'       },
-  { id: 'ceo-assessment', num: '04', label: 'Self-Assessment'  },
-  { id: 'deliverables',   num: '05', label: 'Deliverables'     },
-  { id: 'prescription',   num: '06', label: 'Prescription'     },
-  { id: 'competitive',    num: '07', label: 'Competitive'      },
-  { id: 'engagement',     num: '08', label: 'Engagement'       },
-  { id: 'methodology',    num: '09', label: 'Methodology'      },
-  { id: 'scorecard',      num: '10', label: 'Scorecard'        },
+  { id: 'problem',        num: '01', label: 'The Problem'     },
+  { id: 'definition',     num: '02', label: 'What Is BIDS™'  },
+  { id: 'concierge',      num: '03', label: 'eQORE AI™'      },
+  { id: 'ceo-assessment', num: '04', label: 'Self-Assessment' },
+  { id: 'deliverables',   num: '05', label: 'Deliverables'    },
+  { id: 'prescription',   num: '06', label: 'Prescription'    },
+  { id: 'competitive',    num: '07', label: 'Competitive'     },
+  { id: 'engagement',     num: '08', label: 'Engagement'      },
+  { id: 'methodology',    num: '09', label: 'Methodology'     },
+  { id: 'scorecard',      num: '10', label: 'Scorecard'       },
 ];
 
 export default function BIDSRuler() {
+  const { theme } = useTheme();
   const [active, setActive] = useState(null);
 
   useEffect(() => {
     const ratios = new Map(NAV_ITEMS.map(({ id }) => [id, 0]));
-
     const observers = NAV_ITEMS.map(({ id }) => {
       const el = document.getElementById(id);
       if (!el) return null;
-
       const obs = new IntersectionObserver(
         ([entry]) => {
           ratios.set(id, entry.isIntersecting ? entry.intersectionRatio : 0);
@@ -35,7 +36,6 @@ export default function BIDSRuler() {
       obs.observe(el);
       return obs;
     });
-
     return () => observers.forEach(o => o?.disconnect());
   }, []);
 
@@ -44,87 +44,38 @@ export default function BIDSRuler() {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const isVisible = active !== null;
+  const activeIndex = NAV_ITEMS.findIndex(item => item.id === active);
+  const progress = activeIndex >= 0 ? activeIndex / (NAV_ITEMS.length - 1) : 0;
 
   return (
     <div
-      className="hidden xl:block fixed z-40"
-      style={{ left: '28px', top: '50%', transform: 'translateY(-50%)' }}
+      className={`bids-ruler hidden xl:block fixed z-40 ${theme}`}
+      style={{ left: '28px', top: '50%', transform: 'translateY(-50%)', '--progress': progress }}
     >
-      {/* Ruler — outer wrapper */}
       <div className="relative flex flex-col">
+        <div className="spine" />
 
-        {/* Vertical spine line */}
-        <div
-          className="absolute left-0 top-0 bottom-0 w-px"
-          style={{ background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.07) 15%, rgba(255,255,255,0.07) 85%, transparent)' }}
-        />
-
-        {NAV_ITEMS.map(({ id, num, label }) => {
-          const isActive = active === id;
+        {NAV_ITEMS.map(({ id, num, label }, index) => {
+          const isActive   = active === id;
+          const isVisited  = activeIndex > -1 && index < activeIndex;
 
           return (
             <button
               key={id}
               onClick={() => scrollTo(id)}
-              className="group relative flex items-center py-[13px] cursor-pointer focus:outline-none"
+              className={`ruler-item group flex items-center py-[11px] focus:outline-none
+                ${isActive  ? 'active'  : ''}
+                ${isVisited ? 'visited' : ''}`}
               aria-label={`Jump to ${label}`}
             >
-              {/* Active dot on spine */}
-              {isActive && (
-                <div
-                  className="absolute left-[-3px] w-[7px] h-[7px] rounded-full border border-white/40 bg-black z-10 transition-all duration-500"
-                  style={{ top: '50%', transform: 'translateY(-50%)' }}
-                />
-              )}
-
-              {/* Tick mark extending right from spine */}
-              <div
-                className="flex-shrink-0 h-px transition-all duration-300"
-                style={{
-                  width: isActive ? '18px' : '8px',
-                  backgroundColor: isActive
-                    ? 'rgba(255,255,255,0.45)'
-                    : 'rgba(255,255,255,0.12)',
-                  marginLeft: '0px',
-                }}
-              />
-
-              {/* Number */}
-              <span
-                className="ml-2.5 font-mono text-[8px] font-black tracking-[0.3em] transition-colors duration-300 flex-shrink-0"
-                style={{ color: isActive ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.15)' }}
-              >
+              {isActive && <div className="dot" />}
+              <div className="tick" style={{ width: isActive ? '20px' : '8px' }} />
+              <span className="num ml-2.5 font-mono text-[8px] font-black tracking-[0.3em]">
                 {num}
               </span>
-
-              {/* Label — always mounted, opacity controlled */}
-              <span
-                className="ml-2 text-[9px] font-bold tracking-[0.14em] uppercase whitespace-nowrap transition-all duration-300 overflow-hidden"
-                style={{
-                  color: isActive
-                    ? 'rgba(255,255,255,0.65)'
-                    : 'rgba(255,255,255,0.0)',
-                  maxWidth: isActive ? '90px' : '0px',
-                  opacity: isActive ? 1 : 0,
-                }}
-              >
+              <span className="label ml-2 text-[9px] font-bold tracking-[0.14em] uppercase whitespace-nowrap overflow-hidden">
                 {label}
               </span>
-
-              {/* Hover label — only when not active */}
-              {!isActive && (
-                <span
-                  className="ml-2 text-[9px] font-bold tracking-[0.14em] uppercase whitespace-nowrap overflow-hidden
-                             opacity-0 group-hover:opacity-100 transition-all duration-200"
-                  style={{
-                    color: 'rgba(255,255,255,0.30)',
-                    maxWidth: '90px',
-                  }}
-                >
-                  {label}
-                </span>
-              )}
             </button>
           );
         })}
