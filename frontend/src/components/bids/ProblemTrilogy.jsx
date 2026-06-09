@@ -48,7 +48,7 @@ export default function ProblemTrilogy() {
   useEffect(() => {
     const mm = gsap.matchMedia();
 
-    mm.add('(min-width: 768px)', () => {
+    mm.add('(min-width: 1024px)', () => {
       gsap.set([p2Ref.current, p3Ref.current], { opacity: 0, y: 56 });
       gsap.set(seg2Ref.current, { opacity: 0.2 });
       gsap.set(seg3Ref.current, { opacity: 0.2 });
@@ -220,7 +220,7 @@ export default function ProblemTrilogy() {
       {/* ═══════════════════════ DESKTOP: GSAP pinned ═══════════════════════ */}
       <div
         ref={outerRef}
-        className="hidden md:block"
+        className="hidden lg:block"
         style={{ backgroundColor: '#000000' }}
       >
         {/* Inner: this is what GSAP pins — must be 100vh tall */}
@@ -275,20 +275,20 @@ export default function ProblemTrilogy() {
       </div>
 
       {/* ═══════════════════════ MOBILE: stacked ════════════════════════════ */}
-      <div className="md:hidden" style={{ backgroundColor: '#000000' }}>
+      <div className="lg:hidden" style={{ backgroundColor: '#000000' }}>
 
         {/* Panel 1 */}
-        <div className="py-24 px-6 border-t border-white/[0.05]">
+        <div className="py-16 px-5 sm:py-24 sm:px-6 border-t border-white/[0.05]">
           <Panel1Content />
         </div>
 
         {/* Panel 2 */}
-        <div className="py-24 px-6 border-t border-white/[0.06]">
+        <div className="py-16 px-5 sm:py-24 sm:px-6 border-t border-white/[0.06]">
           <Panel2Content />
         </div>
 
         {/* Panel 3 */}
-        <div className="py-24 px-6 border-t border-white/[0.06]">
+        <div className="py-16 px-5 sm:py-24 sm:px-6 border-t border-white/[0.06]">
           <Panel3Content />
         </div>
 

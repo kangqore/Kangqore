@@ -4,7 +4,7 @@ import {
   ArrowRight, Target, Users, Landmark, Factory, Briefcase, Star,
   TrendingUp, Globe, Cpu, Cloud, BarChart3, Bot, Zap, Lock,
   Scale, Sparkles, RefreshCw, Activity,
-  Database, Award, Layers, Shield, ChevronRight
+  Database, Award, Layers, Shield, ChevronRight, Download, FileText, CheckCircle
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
@@ -189,7 +189,7 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── HERO ─────────────────────── */}
       <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
-        <section className="relative w-full h-full flex items-end overflow-hidden pb-20 rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#06090f]">
+        <section className="relative w-full h-full flex items-end overflow-hidden pb-44 rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#06090f]">
           <VisualBackground forceDark={true} />
         
         {/* Subtle top glow */}
@@ -200,38 +200,26 @@ export default function BIDSPage() {
           className={`relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-48 transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           {/* Removed translate-y-10 as we are moving it downwards by reducing pb-32 to pb-20 on the parent section */}
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12">
               <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
               <p className="text-xs font-bold tracking-[0.2em] text-cyan-300 uppercase">
                 <TypewriterText text="Every organization has visible problems and invisible constraints." start={heroVisible} />
               </p>
             </div>
-            
-            <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white mb-6 drop-shadow-2xl">
+
+            <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white mb-8 drop-shadow-2xl">
               Kangqore{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">BIDS™</span>
             </h1>
-            <p className="text-xl sm:text-2xl text-cyan-50 font-semibold tracking-wide mb-4 flex items-center gap-3">
+
+            <p className="text-lg sm:text-xl text-cyan-50/80 font-semibold tracking-normal mb-6">
               Kangqore Business Diagnostic Intelligence System
             </p>
-            <p className="text-base text-white/45 leading-relaxed max-w-2xl mb-10 font-medium">
+
+            <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
               The Enterprise MRI for Business, Technology, Operations, AI, Security, and Growth — revealing hidden constraints before they become critical failures.
             </p>
-
-            {/* Outcome framing */}
-            <div className="flex flex-col sm:flex-row gap-px rounded-2xl overflow-hidden border border-white/10 mb-12 bg-white/5 backdrop-blur-md max-w-2xl">
-                {[
-                  { stat: '8–14', label: 'Hidden constraints found per engagement on average' },
-                  { stat: '3×',   label: 'Higher transformation success when diagnosis comes first' },
-                  { stat: '100%', label: 'Of engagements surface at least one critical blind spot' },
-                ].map((s, i) => (
-                  <div key={i} className="flex-1 px-6 py-5 border-r last:border-r-0 border-white/10">
-                    <p className="text-2xl font-black bg-brand-gradient bg-clip-text text-transparent mb-1">{s.stat}</p>
-                    <p className="text-[11px] text-white/40 font-semibold leading-snug tracking-wide">{s.label}</p>
-                  </div>
-                ))}
-              </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-5">
                 <Link
@@ -630,7 +618,7 @@ export default function BIDSPage() {
                 <span className="bg-brand-gradient bg-clip-text text-transparent">strategic action.</span>
               </h2>
               <p className="text-white/35 text-base font-medium leading-relaxed lg:pb-2">
-                The Prescription Engine™ translates diagnostic findings into a prioritized action plan. The resulting Service Prescription Matrix identifies capability areas that any provider — Kangqore or otherwise — can fulfill. Diagnostic deliverables are provided independently of any downstream engagement decision.
+                The Prescription Engine™ translates diagnostic findings into a prioritized action plan. Because Kangqore both diagnoses and delivers — across AI, engineering, cloud, security, and growth — the prescription maps directly to execution-ready capability. No translation loss. No second opinion needed.
               </p>
             </div>
           </div>
@@ -659,7 +647,7 @@ export default function BIDSPage() {
                 step: '04', color: 'from-emerald-400 to-green-600',
                 title: 'Service Prescription Matrix',
                 items: ['Digital Transformation', 'Strategy Consulting', 'Application Modernization', 'Enterprise Platform Integration'],
-                note: 'Illustrative — mapped to capability areas, not to a required Kangqore engagement',
+                note: 'Mapped to Kangqore capability areas — execution-ready from day one',
               },
             ].map((phase, i) => (
               <div key={phase.step} className="relative lg:px-6 first:lg:pl-0 last:lg:pr-0">
@@ -687,7 +675,7 @@ export default function BIDSPage() {
             <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
             <p className="text-white/50 text-sm font-medium leading-relaxed">
               The diagnostic findings — scorecard, risk register, transformation blueprint, and all deliverables — are provided as a{' '}
-              <span className="text-white font-semibold">standalone product</span>, independent of whether any Kangqore service is subsequently engaged. The Service Prescription Matrix maps identified needs to capability areas. Organizations may engage Kangqore, their existing partners, or any provider they choose.
+              <span className="text-white font-semibold">complete intelligence product</span>. The Service Prescription Matrix maps every identified constraint to a Kangqore capability area, so the path from diagnosis to execution is immediate — no re-scoping, no second engagement, no translation loss.
             </p>
           </div>
           <p className="text-xl sm:text-2xl font-black text-white/60 max-w-3xl leading-snug">
@@ -838,7 +826,7 @@ export default function BIDSPage() {
               {
                 n: '10',
                 name: 'Transformation Engagement',
-                desc: "Organizations may proceed with implementation through Kangqore's transformation ecosystem — spanning strategy, technology, AI, cybersecurity, modernization, cloud, automation, platform, and growth services.",
+                desc: "The diagnostic prescription maps directly to Kangqore's transformation ecosystem — spanning strategy, technology, AI, cybersecurity, modernization, cloud, automation, platform, and growth services. Execution begins where diagnosis ends.",
                 color: '#60A5FA',
               },
             ].map((step) => (
@@ -1321,12 +1309,12 @@ export default function BIDSPage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-12">
             {[
-              { n: '01', text: 'Organizations identify an average of 2–3 Critical-rated constraints not on their existing roadmap' },
+              { n: '01', text: 'Critical constraints — operational, technological, and strategic — are identified, scored, and ranked by business impact' },
               { n: '02', text: 'Every engagement produces a ranked, scored roadmap — not a list of recommendations' },
-              { n: '03', text: 'The Risk Register surfaces an average of 4–6 quantified risk exposures per engagement' },
-              { n: '04', text: 'Operational Intelligence findings alone typically reveal 15–25% addressable efficiency gaps' },
-              { n: '05', text: 'Technology Maturity and Cloud scores identify consolidation opportunities in 90% of engagements' },
-              { n: '06', text: 'AI Readiness is the most-cited Critical finding — and the fastest to address once diagnosed' },
+              { n: '03', text: 'The Risk Register identifies and quantifies organizational, technology, cybersecurity, and operational risk exposures' },
+              { n: '04', text: 'Operational Intelligence findings surface inefficiencies, bottlenecks, and process gaps with measurable business impact' },
+              { n: '05', text: 'Technology Maturity and Cloud scores identify consolidation opportunities, cost exposure, and modernization priorities' },
+              { n: '06', text: 'AI Readiness is consistently one of the highest-priority findings — and the fastest to address once diagnosed' },
               { n: '07', text: 'The 30/60/90/180-Day Roadmap gives the executive team a sequenced action plan from day one' },
               { n: '08', text: 'The Opportunity Register maps growth, automation, and AI wins with estimated business impact' },
             ].map((item) => (
@@ -1568,6 +1556,80 @@ export default function BIDSPage() {
             </div>
           </div>
 
+          {/* Download CTA */}
+          <div className="mt-10 rounded-2xl border border-white/[0.08] bg-gradient-to-r from-white/[0.03] to-transparent p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-brand-gradient flex items-center justify-center flex-shrink-0 mt-0.5">
+                <FileText className="w-5 h-5 text-white" strokeWidth={1.8} />
+              </div>
+              <div>
+                <p className="text-white font-black text-base mb-1">Sample Engagement Scorecard</p>
+                <p className="text-white/40 text-sm leading-relaxed max-w-lg">
+                  A real-format scorecard from a completed BIDS™ engagement — anonymised, with findings, pillar scores, priorities, and the executive summary structure your leadership team will receive.
+                </p>
+              </div>
+            </div>
+            <a
+              href="/assets/bids-sample-scorecard.pdf"
+              download="BIDS-Sample-Engagement-Scorecard.pdf"
+              className="group flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/20 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/30 transition-all duration-300 flex-shrink-0"
+            >
+              <Download className="w-4 h-4 text-cyan-400 group-hover:translate-y-0.5 transition-transform duration-300" strokeWidth={2} />
+              <span className="text-white font-bold text-sm tracking-wide">Download Sample Scorecard</span>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ─────────────────────── ENGAGEMENT TRUST ─────────────────────── */}
+      <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#030303' }}>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-[1fr_1.6fr] gap-16 items-start">
+
+            {/* Left: heading */}
+            <div>
+              <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">ENGAGEMENT INTEGRITY</p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold leading-[1.2] tracking-tight text-white mb-4">
+                How we access your organisation.<br />
+                <span className="text-white/30">And how we don't.</span>
+              </h2>
+              <p className="text-white/40 text-base leading-relaxed">
+                Enterprise buyers ask the right questions. We answer them upfront — before the engagement begins, not buried in an SOW on page 38.
+              </p>
+            </div>
+
+            {/* Right: trust grid */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              {[
+                {
+                  title: 'No persistent system access',
+                  body: 'Our diagnostic protocol is structured-interview and evidence-led. We do not require live API access, system credentials, or ongoing integration hooks to complete an engagement.',
+                },
+                {
+                  title: 'NDA-first, always',
+                  body: 'Mutual NDA is executed before any discovery session, document review, or data sharing. Confidentiality is a pre-condition of the engagement, not an afterthought.',
+                },
+                {
+                  title: 'Data handling & retention',
+                  body: 'All client data, supporting documentation, and findings artefacts are returned or securely deleted within 30 days of final deliverable sign-off. We retain no client data beyond the engagement scope.',
+                },
+                {
+                  title: 'Proprietary diagnostic framework',
+                  body: 'The BIDS™ methodology — how we structure assessments, synthesise findings, and score pillars — is Kangqore\'s proprietary intellectual property. The framework is not disclosed, licensed, or shared with third parties.',
+                },
+              ].map(item => (
+                <div key={item.title} className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-6">
+                  <div className="flex items-start gap-3 mb-3">
+                    <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                    <p className="text-white font-bold text-sm">{item.title}</p>
+                  </div>
+                  <p className="text-white/35 text-sm leading-relaxed pl-7">{item.body}</p>
+                </div>
+              ))}
+            </div>
+
+          </div>
         </div>
       </section>
 
@@ -1635,23 +1697,35 @@ export default function BIDSPage() {
           <div className="mb-24">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE DIFFERENCE</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
-              Built to diagnose.<br />
-              <span className="bg-brand-gradient bg-clip-text text-transparent">Not to sell.</span>
+              No platform to push.<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">No outcome pre-engineered.</span>
             </h2>
           </div>
 
           {/* Two-col */}
           <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
 
-            {/* Left — conventional approach (generic) */}
+            {/* Left — conventional approach */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">THE CONVENTIONAL APPROACH</p>
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-10">HOW MOST DIAGNOSTICS ACTUALLY WORK</p>
               <div className="space-y-10">
                 {[
-                  { label: 'Assessments that justify the next sale', desc: 'Most diagnostic engagements are pre-sales motions — designed to recommend the consulting firm\'s own platform or services.' },
-                  { label: 'Platform-first, not problem-first', desc: 'The technology stack is already chosen before the diagnosis begins. The assessment exists to validate the sale, not the strategy.' },
-                  { label: 'Siloed and technology-centric', desc: 'Evaluations that focus on cloud, AI, or security in isolation — without connecting technology health to business performance and growth.' },
-                  { label: 'Qualitative outputs with no accountability', desc: 'Recommendations delivered as slide decks. No scores. No benchmarks. No way to measure progress or hold anyone accountable.' },
+                  {
+                    label: 'The finding follows the product',
+                    desc: 'Infosys Cobalt leads to cloud migration. Accenture MyWizard leads to automation contracts. TCS Ignio leads to TCS managed services. The platform is decided before the diagnosis begins — the assessment exists to validate the sale, not surface the truth.',
+                  },
+                  {
+                    label: 'Loss leader, not a real product',
+                    desc: 'Big 4 diagnostic engagements are priced low or given free because the real revenue is the $5M–$50M implementation that follows. The diagnostic has no commercial integrity of its own — it is a funnel, not a deliverable.',
+                  },
+                  {
+                    label: 'Siloed by the firm\'s own capability',
+                    desc: 'A cloud-native firm diagnoses your cloud maturity. A security firm finds security gaps. A CRM integrator finds CRM gaps. The scope of the diagnostic is bounded by what the firm can sell — not by what the business actually needs.',
+                  },
+                  {
+                    label: 'Slide decks with no accountability',
+                    desc: 'Qualitative recommendations. No pillar scores. No benchmarks. No ranked constraint list. No way to measure whether the advice was right or whether anything improved.',
+                  },
                 ].map((item) => (
                   <div key={item.label} className="flex items-start gap-4">
                     <div className="w-1 h-1 rounded-full bg-white/20 mt-2.5 flex-shrink-0" />
@@ -1666,13 +1740,29 @@ export default function BIDSPage() {
 
             {/* Right — BIDS™ differentiators */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">KANGQORE BIDS™ APPROACH</p>
+              <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">WHY KANGQORE BIDS™ IS STRUCTURALLY DIFFERENT</p>
               <div className="space-y-10">
                 {[
-                  { n: '01', label: 'The diagnostic deliverable stands alone', desc: 'The scorecard, risk register, and transformation blueprint are delivered as a complete standalone product. A Service Prescription Matrix identifies capability areas — which any provider can fulfill. Engaging Kangqore for implementation is always optional, never the condition for receiving the findings.' },
-                  { n: '02', label: 'Scored and indexed, not qualitative', desc: 'Every pillar produces a quantified score. You receive a Diagnostic Scorecard and 9 additional deliverables — measurable, benchmarked, accountable.' },
-                  { n: '03', label: 'Full ecosystem scope', desc: 'Business, technology, operations, AI, security, and growth examined as one interconnected system across 16 diagnostic intelligence pillars.' },
-                  { n: '04', label: 'Diagnostic independence', desc: "We don't sell the cloud. We don't sell the platform. Findings are delivered as a standalone product — completely independent of whether any Kangqore service is subsequently engaged. The diagnostic tells you what is constraining your organization. What you do with that intelligence, and with whom, is your decision." },
+                  {
+                    n: '01',
+                    label: 'Kangqore owns no platform to sell you',
+                    desc: 'We are not resellers of AWS, Azure, Salesforce, SAP, or any third-party platform. There is no referral revenue influencing the findings. The diagnostic is designed to surface what is true — not what is profitable for us to recommend.',
+                  },
+                  {
+                    n: '02',
+                    label: 'The diagnostic is the product — not the funnel',
+                    desc: 'BIDS™ is a priced, scoped, standalone intelligence engagement. The scorecard, risk register, transformation blueprint, and all 10 deliverables are the commercial output — not a pre-sales motion for a larger contract.',
+                  },
+                  {
+                    n: '03',
+                    label: 'Scored across every dimension, not just the one we sell',
+                    desc: 'Business strategy, operations, AI readiness, cybersecurity, growth, and technology — all 16 pillars assessed with equal rigour. No pillar is skipped because it falls outside our service line.',
+                  },
+                  {
+                    n: '04',
+                    label: 'Diagnosis and execution without translation loss',
+                    desc: 'Because Kangqore holds execution capability across every pillar — AI, engineering, cloud, security, operations, and growth — the moment diagnosis is complete, implementation can begin. The same team that found it can fix it. No re-scoping, no second firm, no gap between the finding and the fix.',
+                  },
                 ].map((d) => (
                   <div key={d.n} className="flex items-start gap-8">
                     <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{d.n}</span>
