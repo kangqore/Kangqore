@@ -409,7 +409,7 @@ export default function BIDSPage() {
       </div>
 
       {/* ─────────────────────── eQORE AI CONCIERGE ─────────────────────── */}
-      <ConciergeSection inverted suggestedPrompts={[
+      <div id="concierge"><ConciergeSection inverted suggestedPrompts={[
         'What is Kangqore BIDS™?',
         'What are the 16 diagnostic pillars?',
         'How does a Kangqore BIDS™ engagement work?',
@@ -422,7 +422,7 @@ export default function BIDSPage() {
         'What is the eQORE AI™ role in Kangqore BIDS™?',
         'What does a Kangqore BIDS™ scorecard look like?',
         'Request a Diagnostic Assessment',
-      ]} />
+      ]} /></div>
 
       {/* ─────────────────────── MID-FUNNEL BRIDGE ─────────────────────── */}
       <div className="py-14 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
