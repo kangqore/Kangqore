@@ -23,7 +23,7 @@ const AdminItemsPage = ({ type }) => {
   const config = ITEM_TYPE_CONFIG[type] || ITEM_TYPE_CONFIG.important;
   const IconComponent = config.icon;
   
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
   useEffect(() => {
     fetchItems();

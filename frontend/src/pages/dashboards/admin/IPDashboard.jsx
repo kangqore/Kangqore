@@ -14,7 +14,7 @@ const IPDashboard = () => {
     queryKey: ['admin-ip', filterType],
     queryFn: async () => {
       const typeParam = filterType !== 'All' ? `?type=${filterType.toUpperCase()}` : '';
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/ip${typeParam}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || ''}/api/admin/ip${typeParam}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return res.data;

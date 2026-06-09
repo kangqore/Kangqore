@@ -3,7 +3,7 @@ import { Calendar, Clock, RefreshCw, Sparkles, ArrowRight, Zap } from 'lucide-re
 import axios from 'axios';
 import { format } from 'date-fns';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 /**
  * InlineSchedulingCard

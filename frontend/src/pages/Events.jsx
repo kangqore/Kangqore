@@ -15,7 +15,7 @@ const Events = () => {
         setLoading(true);
         // Ensure we fetch events. We might want to sort by date, but API sort is mostly createdAt.
         // If we want real date sorting, we need backend support or client-side sort.
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/content?type=EVENT&limit=50`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/content?type=EVENT&limit=50`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch events');

@@ -63,7 +63,7 @@ const GlobalAuthPrompt = () => {
 
   // Google OAuth redirect
   const handleGoogleAuth = () => {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
     window.location.href = `${backendUrl}/api/oauth/google?role=CLIENT`;
   };
 

@@ -4,7 +4,7 @@ import { Globe, Plus, Trash2, RefreshCw, Check, AlertCircle, Clock, Copy, X } fr
 import { useToast } from '../../hooks/use-toast';
 import DashboardLayout from '../../components/DashboardLayout';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 function StatusBadge({ status }) {
   const map = {
@@ -23,7 +23,7 @@ function StatusBadge({ status }) {
 
 function InstructionsPanel({ domain, onClose }) {
   const { toast } = useToast();
-  const bookingHost = process.env.REACT_APP_BOOKING_HOST || 'book.kangqore.com';
+  const bookingHost = import.meta.env.VITE_BOOKING_HOST || 'book.kangqore.com';
   const copy = (text) => { navigator.clipboard.writeText(text); toast({ title: 'Copied' }); };
 
   return (

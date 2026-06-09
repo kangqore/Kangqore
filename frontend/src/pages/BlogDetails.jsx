@@ -22,7 +22,7 @@ const BlogDetails = () => {
         // Ensure slug is valid
         if (!slug) return;
 
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/content/${slug}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/content/${slug}`);
         
         if (!response.ok) {
           if (response.status === 404) {
@@ -39,7 +39,7 @@ const BlogDetails = () => {
           // Check local storage to prevent duplicate view counting in same session
           const viewedKey = `viewed_${data.id}`;
           if (!sessionStorage.getItem(viewedKey)) {
-             await axios.post(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/content/track/view`, {
+             await axios.post(`${import.meta.env.VITE_BACKEND_URL || ''}/api/admin/content/track/view`, {
                contentId: data.id,
                referrer: document.referrer
              });

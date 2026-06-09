@@ -15,7 +15,7 @@ const ServicePerformanceDashboard = () => {
   const { data: services, isLoading } = useQuery({
     queryKey: ['services'],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/services`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || ''}/api/admin/services`);
       return res.data;
     },
     refetchInterval: 60000 // Refresh every minute

@@ -8,7 +8,7 @@ const ClientIntentSignals = ({ clientId }) => {
   const { data: signals, isLoading } = useQuery({
     queryKey: ['client-signals', clientId],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/client-signals/${clientId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/client-signals/${clientId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return res.data;

@@ -13,7 +13,7 @@ import { CheckCircle2, ArrowRight } from 'lucide-react';
 import NotFound from './NotFound';
 import { getRenderedPage } from '../services/kimmpPageService';
 
-const SITE_URL = process.env.REACT_APP_SITE_URL || 'https://kangqore.com';
+const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://kangqore.com';
 
 function PageSection({ section }) {
   const { type, heading, body, items, buttonLabel } = section || {};

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GitBranch, Folder, Github, Activity, Clock, UploadCloud, Play, CheckCircle, AlertTriangle } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 export default function DeliveryConnector({ deliverableId, projectContext }) {
   const [resources, setResources] = useState([]);

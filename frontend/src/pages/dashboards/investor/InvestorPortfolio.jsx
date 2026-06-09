@@ -60,7 +60,7 @@ const InvestorPortfolio = () => {
   const fetchPortfolio = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/investor/portfolio`, {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/investor/portfolio`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPortfolio(response.data);

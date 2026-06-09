@@ -28,7 +28,7 @@ const ClientDocuments = ({ isTabContent = false }) => {
       queryKey: ['client-documents'],
       queryFn: async () => {
           const token = localStorage.getItem('token');
-          const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/documents/my-documents`, {
+          const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/documents/my-documents`, {
              headers: { Authorization: `Bearer ${token}` }
           });
           return res.data.documents;
@@ -47,7 +47,7 @@ const ClientDocuments = ({ isTabContent = false }) => {
         formData.append('clientId', user.id);
 
         const token = localStorage.getItem('token');
-        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/documents/upload`, formData, {
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/documents/upload`, formData, {
             headers: { 
                 'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${token}` 

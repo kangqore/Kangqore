@@ -8,7 +8,7 @@ const ClientActionLedger = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['client-actions'],
     queryFn: async () => {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/client/actions`, {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/client/actions`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return response.data.actions;

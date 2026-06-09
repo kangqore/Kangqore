@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getPageContext } from './pageContextMap';
 
-const BASE = process.env.REACT_APP_BACKEND_URL || '';
+const BASE = import.meta.env.VITE_BACKEND_URL || '';
 const ENDPOINT = `${BASE}/api/ai/concierge`;
 const HISTORY_ENDPOINT = (id) =>
   `${BASE}/api/ai/concierge/conversations/${encodeURIComponent(id)}`;

@@ -6,7 +6,7 @@
 import { io } from 'socket.io-client';
 
 // Get backend URL from environment or default
-const SOCKET_URL = process.env.REACT_APP_BACKEND_URL || '';
+const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 let socket = null;
 

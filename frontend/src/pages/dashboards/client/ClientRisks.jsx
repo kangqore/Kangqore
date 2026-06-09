@@ -52,7 +52,7 @@ const ClientRisks = () => {
     setIsSubmitting(true);
     try {
         const token = localStorage.getItem('token');
-        await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/risks/${selectedRisk.id}/accept`, {
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/risks/${selectedRisk.id}/accept`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({ signature, note })
@@ -267,7 +267,7 @@ const ClientRisks = () => {
                                                     const response = prompt("Log your mitigation action or response:");
                                                     if (response) {
                                                         // In a real app, use a proper modal. For MVP quick action:
-                                                        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/risks/${risk.id}/response`, {
+                                                        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/risks/${risk.id}/response`, {
                                                             method: 'POST',
                                                             headers: { 
                                                                 'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ const ConsultationsManagement = () => {
   const [stats, setStats] = useState(null);
   const [viewMode, setViewMode] = useState('board'); // 'table' or 'board'
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
   useEffect(() => {
     fetchConsultations();

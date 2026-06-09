@@ -237,7 +237,7 @@ export function timeRangeToTimeStr(range) {
 }
 
 // ─── Backend NLP API URL ─────────────────────────────────────────────────────
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 /**
  * Async NLP parser — calls the backend chrono-node endpoint.

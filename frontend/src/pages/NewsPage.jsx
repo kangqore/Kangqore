@@ -27,7 +27,7 @@ const NewsPage = () => {
           ...(searchQuery && { search: searchQuery })
         });
 
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/content?${params.toString()}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/content?${params.toString()}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch news articles');

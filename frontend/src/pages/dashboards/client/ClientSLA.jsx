@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Activity, Clock, Server, Zap, Shield, Globe, TrendingUp, BarChart3, AlertCircle, Wifi, ArrowUpRight, ArrowDownRight, CheckCircle } from 'lucide-react';
 import DashboardLayout from '../../../components/DashboardLayout';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 const ClientSLA = ({ isTabContent = false }) => {
     const [project, setProject] = useState(null);

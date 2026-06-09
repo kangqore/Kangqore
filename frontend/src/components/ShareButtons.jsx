@@ -11,7 +11,7 @@ const SHARE_PLATFORMS = [
 ];
 
 const ShareButtons = ({ contentId, title, url }) => {
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
   const trackShare = async (platform) => {
     if (!contentId) return;

@@ -23,7 +23,7 @@ const AnalyticsManagement = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+      const API_URL = import.meta.env.VITE_BACKEND_URL || '';
       const token = localStorage.getItem('token');
       const res = await fetch(`${API_URL}/api/admin/analytics`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -57,7 +57,7 @@ const AnalyticsManagement = () => {
 
   const fetchVisitorStats = async () => {
     try {
-      const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+      const API_URL = import.meta.env.VITE_BACKEND_URL || '';
       const token = localStorage.getItem('token');
       const res = await fetch(`${API_URL}/api/admin/analytics/traffic`, {
         headers: { 'Authorization': `Bearer ${token}` }

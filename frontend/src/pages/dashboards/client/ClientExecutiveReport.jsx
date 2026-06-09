@@ -13,7 +13,7 @@ const ClientExecutiveReport = () => {
     const { data: reportData, isLoading } = useQuery({
         queryKey: ['client-weekly-report'],
         queryFn: async () => {
-             const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/client/reports/weekly`, {
+             const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/client/reports/weekly`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             return res.data.report;

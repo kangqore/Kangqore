@@ -10,7 +10,7 @@ const CareersApplications = () => {
     const fetchApps = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/dashboard/careers/applications`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/dashboard/careers/applications`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {

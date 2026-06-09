@@ -9,7 +9,7 @@ import { MessageSquare, Star, Send, ThumbsUp, Heart, Award, Quote, Upload, Build
 import { useToast } from '../../../hooks/use-toast';
 import DashboardLayout from '../../../components/DashboardLayout';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 // --- 3D Background Components ---
 

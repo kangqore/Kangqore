@@ -41,7 +41,7 @@ const ClientSupport = () => {
     queryKey: ['support-tickets'],
     queryFn: async () => {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/tickets`, {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/tickets`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return res.data.tickets;
@@ -52,7 +52,7 @@ const ClientSupport = () => {
   const ticketMutation = useMutation({
     mutationFn: async (data) => {
         const token = localStorage.getItem('token');
-        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/tickets`, data, {
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/tickets`, data, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return res.data;

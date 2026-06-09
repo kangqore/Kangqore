@@ -33,7 +33,7 @@ const Settings = () => {
   const [success, setSuccess] = useState('');
   const [securityScore, setSecurityScore] = useState(90);
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
   // Fetch active sessions
   const fetchSessions = async () => {

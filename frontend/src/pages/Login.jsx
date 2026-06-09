@@ -137,7 +137,7 @@ const Login = () => {
 
     setSignupLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -171,7 +171,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -498,7 +498,7 @@ const Login = () => {
                 {/* Social Login Options */}
                 <div className="space-y-3 mb-6">
                   <button
-                    onClick={() => window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/oauth/google?role=${selectedRole.id.toUpperCase()}`}
+                    onClick={() => window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/oauth/google?role=${selectedRole.id.toUpperCase()}`}
                     className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 py-3 border border-gray-300 rounded-xl font-medium hover:bg-gray-50 transition-all font-sans"
                   >
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="Google" />
@@ -506,7 +506,7 @@ const Login = () => {
                   </button>
                   
                   <button
-                    onClick={() => window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/oauth/linkedin?role=${selectedRole.id.toUpperCase()}`}
+                    onClick={() => window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/oauth/linkedin?role=${selectedRole.id.toUpperCase()}`}
                     className="w-full flex items-center justify-center gap-3 bg-[#0A66C2] text-white py-3 border border-transparent rounded-xl font-medium hover:bg-[#004182] transition-all font-sans"
                   >
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -514,7 +514,7 @@ const Login = () => {
                   </button>
 
                   <button
-                    onClick={() => window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/oauth/apple?role=${selectedRole.id.toUpperCase()}`}
+                    onClick={() => window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/oauth/apple?role=${selectedRole.id.toUpperCase()}`}
                     className="w-full flex items-center justify-center gap-3 bg-black text-white py-3 border border-transparent rounded-xl font-medium hover:bg-gray-800 transition-all font-sans"
                   >
                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.74 1.18 0 2.21-.93 3.69-.74 1.55.19 2.58.91 3.25 1.91-2.9 1.83-2.39 5.56.55 6.78-.65 1.66-1.55 3.32-2.57 4.28zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>

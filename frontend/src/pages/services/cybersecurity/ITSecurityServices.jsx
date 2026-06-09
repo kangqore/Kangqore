@@ -15,7 +15,6 @@ import {
   ArrowRight, 
   ChevronRight, 
   Cpu, 
-  ShieldCircle,
   Network
 } from 'lucide-react';
 import { Link } from 'react-router-dom';

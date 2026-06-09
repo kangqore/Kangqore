@@ -7,7 +7,6 @@ import {
   SalesforceDeliveryModel,
   SalesforcePhilosophyBackground,
   SalesforceDiamondCoESection,
-  SalesforceArchitectureShowcase,
   SalesforceExecutionEcosystem,
   SalesforceFutureReadySection
 } from '../../../components/services/platforms/SalesforceCustomSections';

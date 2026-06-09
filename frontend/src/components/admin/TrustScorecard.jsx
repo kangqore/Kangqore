@@ -9,7 +9,7 @@ const TrustScorecard = ({ clientId }) => {
         queryKey: ['admin-strategy', clientId],
         queryFn: async () => {
             const token = localStorage.getItem('token');
-            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/clients/${clientId}/strategy`, {
+            const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/clients/${clientId}/strategy`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             return res.data;

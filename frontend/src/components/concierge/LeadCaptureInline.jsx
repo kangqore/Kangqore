@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Check, Loader2, Send } from 'lucide-react';
 
-const LEAD_ENDPOINT = `${process.env.REACT_APP_BACKEND_URL || ''}/api/ai/concierge/lead`;
+const LEAD_ENDPOINT = `${import.meta.env.VITE_BACKEND_URL || ''}/api/ai/concierge/lead`;
 
 const LeadCaptureInline = ({ conversationId, defaultIntent, onSubmitted }) => {
   const [name, setName] = useState('');

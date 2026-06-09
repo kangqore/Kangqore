@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Quote, Star, Award, TrendingUp, User, Building2 } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 const LatestFeedbackBanner = ({ clientId }) => {
     const { data: feedback = null, isLoading } = useQuery({

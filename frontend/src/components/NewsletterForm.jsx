@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Mail, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 const NewsletterForm = ({ source = 'sidebar', variant = 'default' }) => {
   const [email, setEmail] = useState('');

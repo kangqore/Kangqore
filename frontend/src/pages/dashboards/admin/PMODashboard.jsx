@@ -18,7 +18,7 @@ const PMODashboard = () => {
   const { data: statsData, isLoading: loadingStats } = useQuery({
     queryKey: ['pmo-stats'],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/pmo/stats`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || ''}/api/admin/pmo/stats`);
       return res.data;
     }
   });
@@ -27,7 +27,7 @@ const PMODashboard = () => {
   const { data: projects, isLoading: loadingProjects } = useQuery({
     queryKey: ['pmo-projects'],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/admin/pmo/projects`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || ''}/api/admin/pmo/projects`);
       return res.data;
     }
   });

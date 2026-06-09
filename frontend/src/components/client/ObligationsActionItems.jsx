@@ -10,7 +10,7 @@ const ObligationsActionItems = () => {
     queryKey: ['obligations', 'client'],
     queryFn: async () => {
       const token = localStorage.getItem('token');
-      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
       const res = await axios.get(`${backendUrl}/api/client/obligations`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -21,7 +21,7 @@ const ObligationsActionItems = () => {
   const resolveMutation = useMutation({
     mutationFn: async (id) => {
       const token = localStorage.getItem('token');
-      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
       await axios.patch(`${backendUrl}/api/client/obligations/${id}/resolve`, {}, { // Need client endpoint or admin? Admin only in admin.ts. Client needs specific route if self-resolving is allowed.
         // Wait, accountability service has createObligation/resolveObligation.
         // I only added POST /api/admin/accountability/obligations/:id/resolve.

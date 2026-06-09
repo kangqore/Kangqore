@@ -16,7 +16,7 @@ const VelocityChart = () => {
         queryFn: async () => {
              // We can Reuse the /metrics/health or add a specific one. 
              // Let's add /metrics/velocity to backend for cleanliness.
-             const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/client/metrics/velocity`, {
+             const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/client/metrics/velocity`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
               });
               return res.data;

@@ -21,7 +21,7 @@ const DelayAttributionChart = ({ projectId }) => {
     queryKey: ['delay-attribution', projectId],
     queryFn: async () => {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL || ''}/api/client/projects/${projectId}/impact-attribution`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || ''}/api/client/projects/${projectId}/impact-attribution`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log("Attribution Data:", res.data);

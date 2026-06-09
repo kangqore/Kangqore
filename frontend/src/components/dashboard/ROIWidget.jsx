@@ -8,7 +8,7 @@ const ROIWidget = () => {
   const { data: roi, isLoading } = useQuery({
     queryKey: ['client-roi'],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/client/metrics/roi`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/client/metrics/roi`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return res.data;
@@ -18,7 +18,7 @@ const ROIWidget = () => {
   const { data: health } = useQuery({
     queryKey: ['client-health'],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/client/metrics/health`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/client/metrics/health`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       return res.data;

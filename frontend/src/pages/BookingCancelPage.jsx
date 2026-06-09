@@ -4,7 +4,7 @@ import axios from 'axios';
 import { X, Check, Calendar, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+const API_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 export default function BookingCancelPage() {
   const { token } = useParams();

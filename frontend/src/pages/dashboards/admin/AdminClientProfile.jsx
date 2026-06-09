@@ -13,7 +13,7 @@ import ClientFeedbackList from '../../../components/admin/ClientFeedbackList';
 import LatestFeedbackBanner from '../../../components/admin/LatestFeedbackBanner';
 import ClientEngagementDashboard from '../../../components/admin/ClientEngagementDashboard';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 const AdminClientProfile = () => {
     const { clientId } = useParams();

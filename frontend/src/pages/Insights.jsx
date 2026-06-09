@@ -14,8 +14,8 @@ const Insights = () => {
       try {
         setLoading(true);
         const [blogsRes, casesRes] = await Promise.all([
-          fetch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/content?type=blog&limit=3`),
-          fetch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/content?type=case_study&limit=3`)
+          fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/content?type=blog&limit=3`),
+          fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/content?type=case_study&limit=3`)
         ]);
 
         const blogsData = await blogsRes.json();

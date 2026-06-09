@@ -5,7 +5,7 @@ import {
   Clock, CheckCircle2, ChevronRight, BrainCircuit 
 } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API_BASE_URL = `${BACKEND_URL}/api`;
 
 const renderBoldText = (text) => {

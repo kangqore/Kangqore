@@ -18,7 +18,7 @@ const NotificationsPage = () => {
     queryFn: async () => {
       const token = localStorage.getItem('token');
       const res = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL || ''}/api/notifications`,
+        `${import.meta.env.VITE_BACKEND_URL || ''}/api/notifications`,
         {
           params: { page, limit },
           headers: { Authorization: `Bearer ${token}` }
@@ -33,7 +33,7 @@ const NotificationsPage = () => {
     mutationFn: async (id) => {
       const token = localStorage.getItem('token');
       await axios.patch(
-        `${process.env.REACT_APP_BACKEND_URL || ''}/api/notifications/${id}/read`,
+        `${import.meta.env.VITE_BACKEND_URL || ''}/api/notifications/${id}/read`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -49,7 +49,7 @@ const NotificationsPage = () => {
     mutationFn: async () => {
       const token = localStorage.getItem('token');
       await axios.patch(
-        `${process.env.REACT_APP_BACKEND_URL || ''}/api/notifications/mark-all-read`,
+        `${import.meta.env.VITE_BACKEND_URL || ''}/api/notifications/mark-all-read`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

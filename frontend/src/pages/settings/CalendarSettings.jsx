@@ -8,7 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../hooks/use-toast';
 import DashboardLayout from '../../components/DashboardLayout';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 function StatusBadge({ status }) {
   const colour = status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600';

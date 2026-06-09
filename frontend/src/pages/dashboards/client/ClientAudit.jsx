@@ -90,7 +90,7 @@ const ClientAudit = ({ isTabContent = false }) => {
     const { data: events, isLoading } = useQuery({
         queryKey: ['client-audit-story'],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/client/audit-story`, {
+            const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/client/audit-story`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             return res.data.events;

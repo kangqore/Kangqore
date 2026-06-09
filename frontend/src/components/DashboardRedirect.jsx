@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const OS_URL = process.env.REACT_APP_DASHBOARD_OS_URL || '';
+const OS_URL = import.meta.env.VITE_DASHBOARD_OS_URL || '';
 
 /**
  * Maps a /dashboard/... path from the old frontend to its

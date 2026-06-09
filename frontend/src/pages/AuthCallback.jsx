@@ -27,7 +27,7 @@ const AuthCallback = () => {
         try {
           // Fetch user details to populate localStorage and Context
           // We need to decode the token or fetch from API. Fetching is safer.
-          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/profile/me`, {
+          const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/profile/me`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           

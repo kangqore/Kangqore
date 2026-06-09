@@ -12,7 +12,7 @@ const CareersDashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const API_URL = process.env.REACT_APP_BACKEND_URL;
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     fetchDashboardData();

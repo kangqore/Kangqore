@@ -6,7 +6,6 @@ import ServicePageTemplate from '../../../components/ServicePageTemplate';
 
 import { 
   TrustStrip, 
-  WhyAPISection, 
   ValueWeDeliverSection, 
   DeliveryModelTimelline,
   APIDiamondCoESection,

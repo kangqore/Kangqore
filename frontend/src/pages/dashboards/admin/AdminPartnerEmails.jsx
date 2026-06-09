@@ -26,7 +26,7 @@ const AdminPartnerEmails = ({ embedded = false, folder = 'inbox' }) => {
   const [attachments, setAttachments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
   // Handle file upload
   const handleFileUpload = async (e) => {

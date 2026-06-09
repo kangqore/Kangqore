@@ -4,7 +4,6 @@ import ServicePageTemplate from '../../../components/ServicePageTemplate';
 
 import {
   PerformanceChallengesSection,
-  WhyPerformanceMattersSection,
   FivePhaseGrowthMethod,
   GrowthPodSection,
   KPIReportingSection,

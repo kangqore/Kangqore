@@ -8,7 +8,7 @@ const MyAgreements = () => {
     queryKey: ['clientAccountability'],
     queryFn: async () => {
       const token = localStorage.getItem('token');
-      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
       const res = await axios.get(`${backendUrl}/api/client/accountability`, {
         headers: { Authorization: `Bearer ${token}` }
       });

@@ -32,7 +32,7 @@ const AdminDashboard = () => {
     queryKey: ['admin-consultations-stats'],
     queryFn: async () => {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/consultations/stats`, {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/consultations/stats`, {
              headers: { Authorization: `Bearer ${token}` }
         });
         return res.data.stats;

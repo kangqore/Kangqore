@@ -16,7 +16,7 @@ export default function AcceptInvitePage() {
   const [error, setError] = useState(null);
   const [accepting, setAccepting] = useState(false);
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
   useEffect(() => {
     const fetchDetails = async () => {

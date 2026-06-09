@@ -13,7 +13,7 @@ const PartnerMeetings = () => {
   const [filter, setFilter] = useState('All');
   const [expandedId, setExpandedId] = useState(null); // Keeping for legacy reference, but unused for sidebar
   const [viewMode, setViewMode] = useState(() => localStorage.getItem('partnerMeetingView') || 'grid');
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
   useEffect(() => {
     localStorage.setItem('partnerMeetingView', viewMode);

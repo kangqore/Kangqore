@@ -14,7 +14,7 @@ const ContactsManagement = () => {
   const [selectedContact, setSelectedContact] = useState(null);
   const [stats, setStats] = useState(null);
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
  // Restart 123
 
 

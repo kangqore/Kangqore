@@ -36,7 +36,7 @@ const ClientMeetingsList = ({ isTabContent = false }) => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No authentication token');
       
-      const apiUrl = `${process.env.REACT_APP_BACKEND_URL || ''}/api/meetings/client`;
+      const apiUrl = `${import.meta.env.VITE_BACKEND_URL || ''}/api/meetings/client`;
       const res = await axios.get(apiUrl, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -359,7 +359,7 @@ const ClientMeetingsList = ({ isTabContent = false }) => {
                             onClick={async () => {
                               try {
                                 const token = localStorage.getItem('token');
-                                await axios.post(`${process.env.REACT_APP_BACKEND_URL || ''}/api/consultations/${selectedMeeting.id}/action-reschedule`, {
+                                await axios.post(`${import.meta.env.VITE_BACKEND_URL || ''}/api/consultations/${selectedMeeting.id}/action-reschedule`, {
                                   action: 'CONFIRM',
                                   notes: 'Client confirmed the rescheduled meeting'
                                 }, { headers: { Authorization: `Bearer ${token}` } });
@@ -378,7 +378,7 @@ const ClientMeetingsList = ({ isTabContent = false }) => {
                             onClick={async () => {
                               try {
                                 const token = localStorage.getItem('token');
-                                await axios.post(`${process.env.REACT_APP_BACKEND_URL || ''}/api/consultations/${selectedMeeting.id}/action-reschedule`, {
+                                await axios.post(`${import.meta.env.VITE_BACKEND_URL || ''}/api/consultations/${selectedMeeting.id}/action-reschedule`, {
                                   action: 'MODIFY',
                                   notes: 'Client requested to modify the schedule'
                                 }, { headers: { Authorization: `Bearer ${token}` } });

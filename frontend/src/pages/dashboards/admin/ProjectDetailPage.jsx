@@ -42,7 +42,7 @@ import ImpactAnalyticsChart from '../../../components/charts/ImpactAnalyticsChar
 import DelayAttributionChart from '../../../components/charts/DelayAttributionChart';
 import ClientFeedbackList from '../../../components/admin/ClientFeedbackList';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 const ProjectDetailPage = () => {
   const { projectId } = useParams();

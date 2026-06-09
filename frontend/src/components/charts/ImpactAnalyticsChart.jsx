@@ -10,7 +10,7 @@ const ImpactAnalyticsChart = () => {
     queryFn: async () => {
       const token = localStorage.getItem('token');
       // Fetch both summary and history
-      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
       const [historyRes, summaryRes] = await Promise.all([
         axios.get(`${backendUrl}/api/client/analytics/impact-history`, { headers: { Authorization: `Bearer ${token}` } }),
         axios.get(`${backendUrl}/api/client/analytics/impact-distribution`, { headers: { Authorization: `Bearer ${token}` } })

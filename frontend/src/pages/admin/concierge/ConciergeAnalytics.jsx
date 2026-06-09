@@ -28,7 +28,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+const API_URL = import.meta.env.VITE_BACKEND_URL || '';
 const COLORS = ['#2564ea', '#4ab6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#64748b'];
 
 const StatCard = ({ icon: Icon, label, value, sublabel }) => (

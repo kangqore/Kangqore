@@ -42,7 +42,7 @@ const ApplicationModal = ({ job, onClose }) => {
     setUploadProgress(10); // Start progress
 
     try {
-      const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+      const API_URL = import.meta.env.VITE_BACKEND_URL || '';
       let resumeUrl = formData.resumeUrl;
 
       // 1. Upload Resume if file selected

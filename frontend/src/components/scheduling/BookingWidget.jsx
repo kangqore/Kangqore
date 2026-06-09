@@ -62,7 +62,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
     responses: { specificHostId: null }
   });
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
   // Automation Effect: When slots load, if we have a pending request, try to fulfill it
   useEffect(() => {

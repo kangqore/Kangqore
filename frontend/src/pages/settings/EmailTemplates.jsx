@@ -48,7 +48,7 @@ export default function EmailTemplates() {
   const fetchTemplates = async () => {
     try {
       const token = localStorage.getItem('token');
-      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
       const res = await axios.get(`${BACKEND_URL}/api/scheduling/email-templates`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -72,7 +72,7 @@ export default function EmailTemplates() {
     setSaving(true);
     try {
       const token = localStorage.getItem('token');
-      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
       const res = await axios.post(`${BACKEND_URL}/api/scheduling/email-templates`, {
         type: selectedType,
         subject,
@@ -101,7 +101,7 @@ export default function EmailTemplates() {
     setSaving(true);
     try {
       const token = localStorage.getItem('token');
-      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
       const res = await axios.delete(`${BACKEND_URL}/api/scheduling/email-templates/${existing.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });

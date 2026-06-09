@@ -208,7 +208,7 @@ const ClientDashboard = () => {
                                             const newScore = parseInt(e.target.value);
                                             // Simulated API Call
                                             const token = localStorage.getItem('token');
-                                            fetch(`${process.env.REACT_APP_BACKEND_URL}/api/projects/${projects[0].id}/pulse/client`, {
+                                            fetch(`${import.meta.env.VITE_BACKEND_URL}/api/projects/${projects[0].id}/pulse/client`, {
                                                 method: 'POST',
                                                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                                                 body: JSON.stringify({ score: newScore })

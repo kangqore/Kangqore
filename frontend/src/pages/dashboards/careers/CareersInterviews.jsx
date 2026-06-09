@@ -12,7 +12,7 @@ const CareersInterviews = () => {
   const [filter, setFilter] = useState('All');
   const [viewMode, setViewMode] = useState(() => localStorage.getItem('careersMeetingView') || 'grid');
   const [selectedMeeting, setSelectedMeeting] = useState(null);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
   useEffect(() => {
     localStorage.setItem('careersMeetingView', viewMode);

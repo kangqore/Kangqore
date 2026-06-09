@@ -42,7 +42,7 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+    const API_URL = import.meta.env.VITE_BACKEND_URL || '';
     
     try {
       const response = await fetch(`${API_URL}/api/contact`, {

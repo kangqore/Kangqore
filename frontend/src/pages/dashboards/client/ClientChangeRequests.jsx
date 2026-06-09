@@ -21,28 +21,28 @@ const ClientChangeRequests = ({ isTabContent = false }) => {
 
   // 1. API Helpers
   const fetchChangeRequests = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/change-requests`, {
+    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/change-requests`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     return res.data.changeRequests;
   };
 
   const createChangeRequest = async (data) => {
-    const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/change-requests`, data, {
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/change-requests`, data, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     return res.data;
   };
 
   const updateChangeRequestStatus = async ({ id, status }) => {
-    const res = await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/change-requests/${id}/status`, { status }, {
+    const res = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/api/change-requests/${id}/status`, { status }, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     return res.data;
   };
 
   const fetchProjects = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/projects`, {
+    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/projects`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     return res.data.projects;

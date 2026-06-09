@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Sparkles, Loader2 } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 const ContentRecommendations = ({ contentId, limit = 4 }) => {
   const [recommendations, setRecommendations] = useState([]);

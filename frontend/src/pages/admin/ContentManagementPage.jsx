@@ -17,7 +17,7 @@ const ContentManagementPage = () => {
   });
   const [actionLoading, setActionLoading] = useState(null);
 
-  const API_URL = process.env.REACT_APP_BACKEND_URL;
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
 
   // Data Hooks
   const contentListQuery = useAdminContent(contentFilter);

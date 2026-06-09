@@ -39,14 +39,14 @@ const AdminDashboard = () => {
     try {
       // ... same logic
       // Fetch stats
-      const statsRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/dashboard/admin/stats`, {
+      const statsRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/dashboard/admin/stats`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const statsData = await statsRes.json();
       setStats(statsData);
 
       // Fetch users
-      const usersRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/admin/users`, {
+      const usersRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/admin/users`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const usersData = await usersRes.json();
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
     const token = localStorage.getItem('token');
     
     try {
-      await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/admin/users/${userId}/status?is_active=${!currentStatus}`, {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/admin/users/${userId}/status?is_active=${!currentStatus}`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });

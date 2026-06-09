@@ -22,7 +22,7 @@ const MediaLibrary = ({ onSelectMedia, selectionMode = false }) => {
   const [uploadForm, setUploadForm] = useState({ title: '', alt_text: '', folder: '' });
   const fileInputRef = useRef(null);
   
-  const API_URL = process.env.REACT_APP_BACKEND_URL;
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     fetchMedia();
