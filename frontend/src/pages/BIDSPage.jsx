@@ -18,28 +18,28 @@ import ProblemTrilogy from '../components/bids/ProblemTrilogy';
 // ─────────────────────────────────────────────
 
 const pillars = [
-  { n: '01', icon: Target,      name: 'Business Strategy Intelligence™',       score: 'Strategy Maturity Score™ · Growth Readiness Index™' },
-  { n: '02', icon: Users,       name: 'Leadership Intelligence™',              score: 'Leadership Effectiveness Score™' },
-  { n: '03', icon: Landmark,    name: 'Financial Intelligence™',               score: 'Financial Health Score™' },
-  { n: '04', icon: Factory,     name: 'Operational Intelligence™',             score: 'Operational Efficiency Score™' },
-  { n: '05', icon: Briefcase,   name: 'Workforce Intelligence™',               score: 'Workforce Readiness Score™' },
-  { n: '06', icon: Star,        name: 'Customer Intelligence™',                score: 'Customer Experience Score™' },
-  { n: '07', icon: TrendingUp,  name: 'Sales Intelligence™',                   score: 'Revenue Engine Score™' },
-  { n: '08', icon: Globe,       name: 'Growth Intelligence™',                  score: 'Digital Growth Score™' },
-  { n: '09', icon: Cpu,         name: 'Technology Intelligence™',              score: 'Technology Maturity Score™' },
-  { n: '10', icon: Cloud,       name: 'Cloud & Infrastructure Intelligence™',  score: 'Infrastructure Readiness Score™' },
-  { n: '11', icon: Database,    name: 'Data Intelligence™',                    score: 'Data Maturity Score™' },
-  { n: '12', icon: Bot,         name: 'AI Intelligence™',                      score: 'AI Readiness Score™' },
-  { n: '13', icon: Zap,         name: 'Automation Intelligence™',              score: 'Automation Maturity Score™' },
-  { n: '14', icon: Lock,        name: 'Cybersecurity Intelligence™',           score: 'Cyber Resilience Score™' },
-  { n: '15', icon: Scale,       name: 'Governance & Risk Intelligence™',       score: 'Governance Maturity Score™' },
-  { n: '16', icon: Sparkles,    name: 'Transformation Intelligence™',          score: 'Transformation Readiness Score™' },
+  { n: '01', icon: Target,      name: 'Business Strategy Intelligence',       score: 'Strategy Maturity Score · Growth Readiness Index' },
+  { n: '02', icon: Users,       name: 'Leadership Intelligence',              score: 'Leadership Effectiveness Score' },
+  { n: '03', icon: Landmark,    name: 'Financial Intelligence',               score: 'Financial Health Score' },
+  { n: '04', icon: Factory,     name: 'Operational Intelligence',             score: 'Operational Efficiency Score' },
+  { n: '05', icon: Briefcase,   name: 'Workforce Intelligence',               score: 'Workforce Readiness Score' },
+  { n: '06', icon: Star,        name: 'Customer Intelligence',                score: 'Customer Experience Score' },
+  { n: '07', icon: TrendingUp,  name: 'Sales Intelligence',                   score: 'Revenue Engine Score' },
+  { n: '08', icon: Globe,       name: 'Growth Intelligence',                  score: 'Digital Growth Score' },
+  { n: '09', icon: Cpu,         name: 'Technology Intelligence',              score: 'Technology Maturity Score' },
+  { n: '10', icon: Cloud,       name: 'Cloud & Infrastructure Intelligence',  score: 'Infrastructure Readiness Score' },
+  { n: '11', icon: Database,    name: 'Data Intelligence',                    score: 'Data Maturity Score' },
+  { n: '12', icon: Bot,         name: 'AI Intelligence',                      score: 'AI Readiness Score' },
+  { n: '13', icon: Zap,         name: 'Automation Intelligence',              score: 'Automation Maturity Score' },
+  { n: '14', icon: Lock,        name: 'Cybersecurity Intelligence',           score: 'Cyber Resilience Score' },
+  { n: '15', icon: Scale,       name: 'Governance & Risk Intelligence',       score: 'Governance Maturity Score' },
+  { n: '16', icon: Sparkles,    name: 'Transformation Intelligence',          score: 'Transformation Readiness Score' },
 ];
 
 const engines = [
   {
     dept: 'Cognition',
-    name: 'Cognition Intelligence Engine™',
+    name: 'Cognition Intelligence Engine',
     icon: Bot,
     color: 'from-cyan-400 via-sky-400 to-blue-500',
     hex: '#22D3EE',
@@ -47,7 +47,7 @@ const engines = [
   },
   {
     dept: 'Foundry',
-    name: 'Foundry Intelligence Engine™',
+    name: 'Foundry Intelligence Engine',
     icon: Cloud,
     color: 'from-blue-400 via-indigo-400 to-blue-600',
     hex: '#60A5FA',
@@ -55,7 +55,7 @@ const engines = [
   },
   {
     dept: 'Reimagine',
-    name: 'Reimagine Intelligence Engine™',
+    name: 'Reimagine Intelligence Engine',
     icon: RefreshCw,
     color: 'from-violet-400 via-purple-400 to-fuchsia-500',
     hex: '#A78BFA',
@@ -63,7 +63,7 @@ const engines = [
   },
   {
     dept: 'Shield',
-    name: 'Shield Intelligence Engine™',
+    name: 'Shield Intelligence Engine',
     icon: Shield,
     color: 'from-rose-400 via-pink-400 to-red-500',
     hex: '#FB7185',
@@ -71,7 +71,7 @@ const engines = [
   },
   {
     dept: 'Platforms',
-    name: 'Platforms Intelligence Engine™',
+    name: 'Platforms Intelligence Engine',
     icon: Layers,
     color: 'from-amber-400 via-orange-400 to-orange-500',
     hex: '#FBBF24',
@@ -79,7 +79,7 @@ const engines = [
   },
   {
     dept: 'Growth',
-    name: 'Growth Intelligence Engine™',
+    name: 'Growth Intelligence Engine',
     icon: TrendingUp,
     color: 'from-emerald-400 via-teal-400 to-green-500',
     hex: '#34D399',
@@ -88,22 +88,22 @@ const engines = [
 ];
 
 const deliverables = [
-  { icon: BarChart3,   name: 'Diagnostic Scorecard™',          desc: 'Enterprise-wide scoring across all sixteen intelligence pillars.' },
-  { icon: Award,       name: 'Executive Intelligence Report™',  desc: 'Comprehensive executive-level findings and recommendations.' },
-  { icon: Layers,      name: 'Transformation Blueprint™',       desc: 'Prioritized transformation strategy and execution roadmap.' },
-  { icon: Shield,      name: 'Risk Register™',                  desc: 'Identified organizational, technology, operational, and cybersecurity risks.' },
-  { icon: Sparkles,    name: 'Opportunity Register™',           desc: 'High-value growth, efficiency, AI, automation, and modernization opportunities.' },
-  { icon: Target,      name: 'Service Prescription Matrix™',    desc: 'Recommended Kangqore capabilities aligned to identified needs.' },
-  { icon: RefreshCw,   name: '30/60/90/180-Day Roadmap™',       desc: 'A phased transformation execution plan.' },
-  { icon: Users,       name: 'Executive Board Presentation™',   desc: 'Boardroom-ready strategic findings presentation.' },
-  { icon: Activity,    name: 'Executive Workshop™',             desc: 'Leadership alignment and transformation planning session.' },
-  { icon: TrendingUp,  name: 'ROI Projection Report™',          desc: 'Estimated value creation, efficiency gains, risk reduction, and growth potential.' },
+  { icon: BarChart3,   name: 'Diagnostic Scorecard',          desc: 'Enterprise-wide scoring across all sixteen intelligence pillars.' },
+  { icon: Award,       name: 'Executive Intelligence Report',  desc: 'Comprehensive executive-level findings and recommendations.' },
+  { icon: Layers,      name: 'Transformation Blueprint',       desc: 'Prioritized transformation strategy and execution roadmap.' },
+  { icon: Shield,      name: 'Risk Register',                  desc: 'Identified organizational, technology, operational, and cybersecurity risks.' },
+  { icon: Sparkles,    name: 'Opportunity Register',           desc: 'High-value growth, efficiency, AI, automation, and modernization opportunities.' },
+  { icon: Target,      name: 'Service Prescription Matrix',    desc: 'Recommended capability areas aligned to identified needs.' },
+  { icon: RefreshCw,   name: '30/60/90/180-Day Roadmap',       desc: 'A phased transformation execution plan.' },
+  { icon: Users,       name: 'Executive Board Presentation',   desc: 'Boardroom-ready strategic findings presentation.' },
+  { icon: Activity,    name: 'Executive Workshop',             desc: 'Leadership alignment and transformation planning session.' },
+  { icon: TrendingUp,  name: 'ROI Projection Report',          desc: 'Estimated value creation, efficiency gains, risk reduction, and growth potential.' },
 ];
 
 const editions = [
-  'Manufacturing Edition™', 'Education Edition™', 'Healthcare Edition™',
-  'Financial Services Edition™', 'Retail & Commerce Edition™', 'SaaS & Technology Edition™',
-  'Government Edition™', 'Startup Edition™', 'Enterprise Edition™', 'Non-Profit Edition™',
+  'Manufacturing Edition', 'Education Edition', 'Healthcare Edition',
+  'Financial Services Edition', 'Retail & Commerce Edition', 'SaaS & Technology Edition',
+  'Government Edition', 'Startup Edition', 'Enterprise Edition', 'Non-Profit Edition',
 ];
 
 const pillarDetails = [
@@ -177,7 +177,7 @@ export default function BIDSPage() {
               <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">BIDS™</span>
             </h1>
             <p className="text-xl sm:text-2xl text-cyan-50 font-semibold tracking-wide mb-4 flex items-center gap-3">
-              Kangqore Business Diagnostic Intelligence System™
+              Kangqore Business Diagnostic Intelligence System
             </p>
             <p className="text-base text-white/45 leading-relaxed max-w-2xl mb-10 font-medium">
               The Enterprise MRI for Business, Technology, Operations, AI, Security, and Growth — revealing hidden constraints before they become critical failures.
@@ -326,38 +326,6 @@ export default function BIDSPage() {
       {/* ─────────────────────── PROBLEM TRILOGY (GSAP ScrollTrigger) ─────────────────────── */}
       <ProblemTrilogy />
 
-      {/* ─────────────────────── WHY WE BUILT BIDS™ ─────────────────────── */}
-      <section className="py-24 relative" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="max-w-4xl">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-14">WHY KANGQORE CREATED BIDS™</p>
-            <div className="space-y-8 font-medium leading-relaxed">
-              <p className="text-white/40 text-xl sm:text-2xl">Most consulting firms start with a service.</p>
-              <p className="text-white/40 text-xl sm:text-2xl">Most technology firms start with a product.</p>
-              <p className="text-white/40 text-xl sm:text-2xl">Most agencies start with a campaign.</p>
-              <p className="text-white font-black text-4xl sm:text-5xl lg:text-[3.5rem] tracking-[-0.03em] leading-[1.1] py-4">
-                Kangqore starts with diagnosis.
-              </p>
-              <p className="text-white/50 text-xl sm:text-2xl">
-                Because organizations rarely fail because they lack solutions.
-              </p>
-              <p className="text-white text-xl sm:text-2xl font-semibold">
-                They fail because they solve the wrong problems.
-              </p>
-              <p className="text-white/50 text-lg leading-relaxed max-w-3xl">
-                The framework was engineered to identify the constraints, risks, inefficiencies, and opportunities hidden beneath the surface of an organization — before major investments are made.
-              </p>
-              <div className="pt-6 space-y-3">
-                <p className="text-white/70 text-xl font-semibold">Only after diagnosis comes prescription.</p>
-                <p className="text-white/70 text-xl font-semibold">Only after prescription comes transformation.</p>
-              </div>
-              <p className="text-cyan-400 font-black text-3xl sm:text-4xl tracking-tight pt-4">
-                That is the Kangqore philosophy.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ─────────────────────── DEFINITION ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
@@ -451,7 +419,7 @@ export default function BIDSPage() {
         'What is the Prescription Engine™?',
         'Which industry edition fits us?',
         'How is BIDS™ different from consulting?',
-        'What is Benchmark Intelligence™?',
+        'What is Benchmark Intelligence?',
         'What is the eQORE AI™ role in BIDS™?',
         'What does a BIDS™ scorecard look like?',
         'Request a Diagnostic Assessment',
@@ -632,7 +600,7 @@ export default function BIDSPage() {
                 <span className="bg-brand-gradient bg-clip-text text-transparent">strategic action.</span>
               </h2>
               <p className="text-white/35 text-base font-medium leading-relaxed lg:pb-2">
-                The Prescription Engine™ translates diagnostic findings into a prioritized action plan. The resulting Service Prescription Matrix™ identifies capability areas that any provider — Kangqore or otherwise — can fulfill. Diagnostic deliverables are provided independently of any downstream engagement decision.
+                The Prescription Engine™ translates diagnostic findings into a prioritized action plan. The resulting Service Prescription Matrix identifies capability areas that any provider — Kangqore or otherwise — can fulfill. Diagnostic deliverables are provided independently of any downstream engagement decision.
               </p>
             </div>
           </div>
@@ -659,7 +627,7 @@ export default function BIDSPage() {
               },
               {
                 step: '04', color: 'from-emerald-400 to-green-600',
-                title: 'Service Prescription Matrix™',
+                title: 'Service Prescription Matrix',
                 items: ['Digital Transformation', 'Strategy Consulting', 'Application Modernization', 'Enterprise Platform Integration'],
                 note: 'Illustrative — mapped to capability areas, not to a required Kangqore engagement',
               },
@@ -689,7 +657,7 @@ export default function BIDSPage() {
             <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
             <p className="text-white/50 text-sm font-medium leading-relaxed">
               The diagnostic findings — scorecard, risk register, transformation blueprint, and all deliverables — are provided as a{' '}
-              <span className="text-white font-semibold">standalone product</span>, independent of whether any Kangqore service is subsequently engaged. The Service Prescription Matrix™ maps identified needs to capability areas. Organizations may engage Kangqore, their existing partners, or any provider they choose.
+              <span className="text-white font-semibold">standalone product</span>, independent of whether any Kangqore service is subsequently engaged. The Service Prescription Matrix maps identified needs to capability areas. Organizations may engage Kangqore, their existing partners, or any provider they choose.
             </p>
           </div>
           <p className="text-xl sm:text-2xl font-black text-white/60 max-w-3xl leading-snug">
@@ -709,7 +677,7 @@ export default function BIDSPage() {
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
                 The Diagnostic<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">Engagement Process™</span>
+                <span className="bg-brand-gradient bg-clip-text text-transparent">Engagement Process</span>
               </h2>
             </div>
             <div className="lg:pb-3">
@@ -749,7 +717,7 @@ export default function BIDSPage() {
               },
               {
                 n: '04',
-                name: 'Root Cause Identification™',
+                name: 'Root Cause Identification',
                 desc: 'The initial diagnostic phase identifies potential areas of concern, hidden constraints, operational bottlenecks, technology gaps, risk exposure, and transformation opportunities.',
                 color: '#F472B6',
               },
@@ -761,14 +729,14 @@ export default function BIDSPage() {
               },
               {
                 n: '06',
-                name: 'Enterprise Evaluation™',
+                name: 'Enterprise Evaluation',
                 desc: 'The organization is evaluated across the diagnostic framework using leadership interviews, documentation reviews, technology assessments, operational analysis, data and AI evaluations, security and governance reviews, and growth assessments.',
                 color: '#86EFAC',
               },
               {
                 n: '07',
                 name: 'Intelligence Scoring & Findings',
-                desc: 'The assessment is processed through the Intelligence Engines to generate the Business Health Score™, Constraint Analysis™, Risk Register™, Opportunity Register™, Benchmark Insights™, and Transformation Priorities™.',
+                desc: 'The assessment is processed through the Intelligence Engines to generate the Business Health Score, Constraint Analysis, Risk Register, Opportunity Register, Benchmark Insights, and Transformation Priorities.',
                 color: '#A78BFA',
               },
               {
@@ -779,8 +747,8 @@ export default function BIDSPage() {
               },
               {
                 n: '09',
-                name: 'Transformation Blueprint™',
-                desc: 'Receive a prioritized 30/60/90/180-Day roadmap designed to improve performance, resilience, growth, operational efficiency, technology maturity, and AI readiness.',
+                name: 'Transformation Blueprint',
+                desc: 'Receive a prioritized 30/60/90/180-day roadmap designed to improve performance, resilience, growth, operational efficiency, technology maturity, and AI readiness.',
                 color: '#22D3EE',
               },
               {
@@ -828,7 +796,7 @@ export default function BIDSPage() {
             <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE FRAMEWORK</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white">
               16 Diagnostic Intelligence{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">Pillars™</span>
+              <span className="bg-brand-gradient bg-clip-text text-transparent">Pillars</span>
             </h2>
           </div>
 
@@ -898,7 +866,7 @@ export default function BIDSPage() {
             <p className="text-xs font-bold tracking-[0.3em] text-cyan-500 uppercase mb-5 drop-shadow-md">UNDER THE HOOD</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-[-0.03em] text-white mb-6 drop-shadow-2xl">
               6 Intelligence{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">Engines™</span>
+              <span className="bg-brand-gradient bg-clip-text text-transparent">Engines</span>
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto text-lg sm:text-xl font-medium">
               Every engagement is powered by six integrated intelligence engines that synthesize pillar findings into actionable business intelligence.
@@ -1024,20 +992,20 @@ export default function BIDSPage() {
 
           {/* 8-Layer Architecture — detailed descriptions */}
           <div className="mb-24 border-t border-white/[0.06] pt-20">
-            <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-4">MULTI-LAYER DIAGNOSTIC ARCHITECTURE™</p>
+            <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-4">MULTI-LAYER DIAGNOSTIC ARCHITECTURE</p>
             <p className="text-white/50 text-base font-medium mb-14 max-w-2xl">
               Kangqore BIDS™ evaluates organizations through eight interconnected intelligence layers, providing a holistic understanding of enterprise performance and readiness.
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {[
-                { n: '01', layer: 'Executive Intelligence™',      color: '#22D3EE', desc: 'Evaluates strategic alignment, leadership effectiveness, governance maturity, decision-making structures, and organizational direction.' },
-                { n: '02', layer: 'Operational Intelligence™',    color: '#FB923C', desc: 'Assesses workflows, execution capability, operational resilience, process maturity, productivity, and scalability.' },
-                { n: '03', layer: 'Technology Intelligence™',     color: '#60A5FA', desc: 'Examines architecture, applications, infrastructure, integrations, modernization readiness, and technical debt.' },
-                { n: '04', layer: 'Data & AI Intelligence™',      color: '#86EFAC', desc: 'Measures data maturity, analytics capability, AI readiness, automation potential, and governance controls.' },
-                { n: '05', layer: 'Security & Risk Intelligence™',color: '#F472B6', desc: 'Evaluates cybersecurity posture, compliance readiness, resilience capability, risk exposure, and control effectiveness.' },
-                { n: '06', layer: 'Growth Intelligence™',         color: '#FDE047', desc: 'Assesses customer acquisition, customer experience, revenue operations, market visibility, retention, and growth efficiency.' },
-                { n: '07', layer: 'Benchmark Intelligence™',      color: '#A78BFA', desc: 'Compares organizational maturity, capability performance, and strategic readiness against industry and peer benchmarks.' },
-                { n: '08', layer: 'Prescription Intelligence™',   color: '#E8614A', desc: 'Transforms findings into prioritized recommendations, transformation initiatives, execution roadmaps, and service prescriptions.' },
+                { n: '01', layer: 'Executive Intelligence',      color: '#22D3EE', desc: 'Evaluates strategic alignment, leadership effectiveness, governance maturity, decision-making structures, and organizational direction.' },
+                { n: '02', layer: 'Operational Intelligence',    color: '#FB923C', desc: 'Assesses workflows, execution capability, operational resilience, process maturity, productivity, and scalability.' },
+                { n: '03', layer: 'Technology Intelligence',     color: '#60A5FA', desc: 'Examines architecture, applications, infrastructure, integrations, modernization readiness, and technical debt.' },
+                { n: '04', layer: 'Data & AI Intelligence',      color: '#86EFAC', desc: 'Measures data maturity, analytics capability, AI readiness, automation potential, and governance controls.' },
+                { n: '05', layer: 'Security & Risk Intelligence',color: '#F472B6', desc: 'Evaluates cybersecurity posture, compliance readiness, resilience capability, risk exposure, and control effectiveness.' },
+                { n: '06', layer: 'Growth Intelligence',         color: '#FDE047', desc: 'Assesses customer acquisition, customer experience, revenue operations, market visibility, retention, and growth efficiency.' },
+                { n: '07', layer: 'Benchmark Intelligence',      color: '#A78BFA', desc: 'Compares organizational maturity, capability performance, and strategic readiness against industry and peer benchmarks.' },
+                { n: '08', layer: 'Prescription Intelligence',   color: '#E8614A', desc: 'Transforms findings into prioritized recommendations, transformation initiatives, execution roadmaps, and service prescriptions.' },
               ].map(l => (
                 <div key={l.n} className="p-5 border border-white/[0.07] bg-white/[0.02] rounded-xl flex flex-col gap-4">
                   <div>
@@ -1109,7 +1077,7 @@ export default function BIDSPage() {
             <div className="flex flex-col items-center">
               <div className="w-full max-w-sm mx-auto">
                 {/* Inputs label */}
-                <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase text-center mb-6">ENTERPRISE DIAGNOSTIC INPUTS™</p>
+                <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase text-center mb-6">ENTERPRISE DIAGNOSTIC INPUTS</p>
 
                 {/* Input nodes */}
                 {[
@@ -1140,10 +1108,10 @@ export default function BIDSPage() {
                 <p className="text-[9px] font-black tracking-[0.35em] text-white/25 uppercase text-center mb-4">OUTPUTS</p>
                 <div className="space-y-2">
                   {[
-                    'Business Health Score™',
-                    'Constraint Analysis™',
-                    'Benchmark Intelligence™',
-                    'Transformation Blueprint™',
+                    'Business Health Score',
+                    'Constraint Analysis',
+                    'Benchmark Intelligence',
+                    'Transformation Blueprint',
                   ].map(out => (
                     <div key={out} className="flex items-center gap-3 px-4 py-2.5 border border-cyan-500/20 bg-cyan-500/[0.04] rounded-lg">
                       <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
@@ -1254,12 +1222,12 @@ export default function BIDSPage() {
             {[
               { n: '01', text: 'Organizations identify an average of 2–3 Critical-rated constraints not on their existing roadmap' },
               { n: '02', text: 'Every engagement produces a ranked, scored roadmap — not a list of recommendations' },
-              { n: '03', text: 'The Risk Register™ surfaces an average of 4–6 quantified risk exposures per engagement' },
-              { n: '04', text: 'Operational Intelligence™ findings alone typically reveal 15–25% addressable efficiency gaps' },
+              { n: '03', text: 'The Risk Register surfaces an average of 4–6 quantified risk exposures per engagement' },
+              { n: '04', text: 'Operational Intelligence findings alone typically reveal 15–25% addressable efficiency gaps' },
               { n: '05', text: 'Technology Maturity and Cloud scores identify consolidation opportunities in 90% of engagements' },
               { n: '06', text: 'AI Readiness is the most-cited Critical finding — and the fastest to address once diagnosed' },
-              { n: '07', text: 'The 30/60/90/180-Day Roadmap™ gives the executive team a sequenced action plan from day one' },
-              { n: '08', text: 'The Opportunity Register™ maps growth, automation, and AI wins with estimated business impact' },
+              { n: '07', text: 'The 30/60/90/180-Day Roadmap gives the executive team a sequenced action plan from day one' },
+              { n: '08', text: 'The Opportunity Register maps growth, automation, and AI wins with estimated business impact' },
             ].map((item) => (
               <div key={item.n} className="flex items-start gap-5">
                 <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{item.n}</span>
@@ -1356,7 +1324,7 @@ export default function BIDSPage() {
                 <span className="bg-brand-gradient bg-clip-text text-transparent">receive.</span>
               </h2>
               <p className="text-white/50 text-lg leading-relaxed">
-                The following is a representative example of a Diagnostic Scorecard™ — showing how 16 pillars are scored, classified, and benchmarked against sector standards. Final deliverables are formatted to this standard.
+                The following is a representative example of a Diagnostic Scorecard — showing how 16 pillars are scored, classified, and benchmarked against sector standards. Final deliverables are formatted to this standard.
               </p>
             </div>
             <div className="space-y-3">
@@ -1383,8 +1351,8 @@ export default function BIDSPage() {
                   <BarChart3 className="w-4 h-4 text-white" strokeWidth={2} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black tracking-[0.25em] text-white/30 uppercase">Representative Diagnostic Scorecard™</p>
-                  <p className="text-white font-black text-base mt-0.5">Representative Organization <span className="text-white/30 font-semibold text-sm">· Enterprise Edition™ · Illustrative</span></p>
+                  <p className="text-[10px] font-black tracking-[0.25em] text-white/30 uppercase">Representative Diagnostic Scorecard</p>
+                  <p className="text-white font-black text-base mt-0.5">Representative Organization <span className="text-white/30 font-semibold text-sm">· Enterprise Edition · Illustrative</span></p>
                 </div>
               </div>
               <div className="flex items-center gap-10 flex-shrink-0">
@@ -1413,7 +1381,7 @@ export default function BIDSPage() {
 
             {/* 16-pillar full breakdown */}
             <div className="px-8 py-7">
-              <p className="text-[9px] font-black tracking-[0.35em] text-white/20 uppercase mb-6">16 DIAGNOSTIC INTELLIGENCE PILLARS™</p>
+              <p className="text-[9px] font-black tracking-[0.35em] text-white/20 uppercase mb-6">16 DIAGNOSTIC INTELLIGENCE PILLARS</p>
               <div className="grid sm:grid-cols-2 gap-x-12 gap-y-3">
                 {[
                   { name: 'Business Strategy',      score: 78, c: 'bg-emerald-400', s: 'Strong'   },
@@ -1465,7 +1433,7 @@ export default function BIDSPage() {
                   </div>
                 ))}
               </div>
-              <p className="text-[9px] text-white/15 font-bold tracking-widest uppercase">Representative Deliverable Preview™ · Illustrative Only · Not Client Data</p>
+              <p className="text-[9px] text-white/15 font-bold tracking-widest uppercase">Representative Deliverable Preview · Illustrative Only · Not Client Data</p>
             </div>
           </div>
 
@@ -1513,7 +1481,7 @@ export default function BIDSPage() {
             <div>
               <div className="flex items-center gap-4 mb-10">
                 <div className="w-8 h-px bg-white/30" />
-                <p className="text-[10px] font-black tracking-[0.45em] text-white/50 uppercase">INDUSTRY EDITIONS™</p>
+                <p className="text-[10px] font-black tracking-[0.45em] text-white/50 uppercase">INDUSTRY EDITIONS</p>
               </div>
               <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
                 Deep Domain Expertise<br />
@@ -1539,7 +1507,7 @@ export default function BIDSPage() {
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-black tracking-[0.28em] text-white/45 uppercase group-hover:text-white transition-colors duration-300">
-                    {e.replace(' Edition™', '')}
+                    {e}
                   </span>
                   <ArrowRight className="w-3.5 h-3.5 text-white/15 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 ml-2" />
                 </div>
@@ -1600,8 +1568,8 @@ export default function BIDSPage() {
               <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">KANGQORE BIDS™ APPROACH</p>
               <div className="space-y-10">
                 {[
-                  { n: '01', label: 'The diagnostic deliverable stands alone', desc: 'The scorecard, risk register, and transformation blueprint are delivered as a complete standalone product. A Service Prescription Matrix™ identifies capability areas — which any provider can fulfill. Engaging Kangqore for implementation is always optional, never the condition for receiving the findings.' },
-                  { n: '02', label: 'Scored and indexed, not qualitative', desc: 'Every pillar produces a quantified score. You receive a Diagnostic Scorecard™ and 9 additional deliverables — measurable, benchmarked, accountable.' },
+                  { n: '01', label: 'The diagnostic deliverable stands alone', desc: 'The scorecard, risk register, and transformation blueprint are delivered as a complete standalone product. A Service Prescription Matrix identifies capability areas — which any provider can fulfill. Engaging Kangqore for implementation is always optional, never the condition for receiving the findings.' },
+                  { n: '02', label: 'Scored and indexed, not qualitative', desc: 'Every pillar produces a quantified score. You receive a Diagnostic Scorecard and 9 additional deliverables — measurable, benchmarked, accountable.' },
                   { n: '03', label: 'Full ecosystem scope', desc: 'Business, technology, operations, AI, security, and growth examined as one interconnected system across 16 diagnostic intelligence pillars.' },
                   { n: '04', label: 'Diagnostic independence', desc: "We don't sell the cloud. We don't sell the platform. Findings are delivered as a standalone product — completely independent of whether any Kangqore service is subsequently engaged. The diagnostic tells you what is constraining your organization. What you do with that intelligence, and with whom, is your decision." },
                 ].map((d) => (
@@ -1637,22 +1605,22 @@ export default function BIDSPage() {
           <div className="grid sm:grid-cols-3 gap-6 mb-10">
             {[
               {
-                name: 'Executive Diagnostic™',
+                name: 'Executive Diagnostic',
                 audience: 'Designed for growth-stage organizations and business units.',
                 duration: '2–3 Weeks',
                 color: '#22D3EE',
-                points: ['Core pillar assessment', 'Executive scoping session', 'Diagnostic Scorecard™', 'Transformation Blueprint™', 'Priority findings presentation'],
+                points: ['Core pillar assessment', 'Executive scoping session', 'Diagnostic Scorecard', 'Transformation Blueprint', 'Priority findings presentation'],
               },
               {
-                name: 'Enterprise Diagnostic™',
+                name: 'Enterprise Diagnostic',
                 audience: 'Designed for mid-market and multi-department organizations.',
                 duration: '4–6 Weeks',
                 color: '#A78BFA',
                 featured: true,
-                points: ['Full 16-pillar assessment', 'All 6 intelligence engines', 'Complete 10 deliverables', 'System-integrated mode available', 'Executive Board Presentation™', 'ROI Projection Report™'],
+                points: ['Full 16-pillar assessment', 'All 6 intelligence engines', 'Complete 10 deliverables', 'System-integrated mode available', 'Executive Board Presentation', 'ROI Projection Report'],
               },
               {
-                name: 'Strategic Transformation Diagnostic™',
+                name: 'Strategic Transformation Diagnostic',
                 audience: 'Designed for enterprise-scale organizations, regulated industries, and complex operating environments.',
                 duration: '6–12 Weeks',
                 color: '#FB923C',
@@ -1737,7 +1705,7 @@ export default function BIDSPage() {
                   { q: 'What is collected?', a: 'Organizational documents, process maps, architecture diagrams, interview transcripts, financial summaries, and system inventories — only what you share.' },
                   { q: 'How is it stored?', a: 'Engagement data is stored in encrypted, access-controlled environments. Client data is logically isolated and never commingled.' },
                   { q: 'Who has access?', a: 'Only the assigned Kangqore engagement team and the client. No third parties. No subcontractors without prior disclosure.' },
-                  { q: 'Is it anonymized?', a: 'Benchmark data contributed to the Kangqore Intelligence Database™ is fully anonymized and aggregated before analysis.' },
+                  { q: 'Is it anonymized?', a: 'Benchmark data contributed to the Kangqore Intelligence Database is fully anonymized and aggregated before analysis.' },
                 ].map(item => (
                   <div key={item.q} className="border-l-2 border-white/10 pl-5">
                     <p className="text-white/70 text-sm font-black mb-1">{item.q}</p>
@@ -1787,26 +1755,26 @@ export default function BIDSPage() {
               </div>
               <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
                 Benchmark<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">Intelligence™</span>
+                <span className="bg-brand-gradient bg-clip-text text-transparent">Intelligence</span>
               </h2>
               <p className="text-white/50 text-lg leading-relaxed font-medium mb-10">
                 Kangqore is building the first vendor-agnostic enterprise diagnostic benchmark dataset — percentile rankings, competitive position indices, and industry-gap analysis across all 16 diagnostic pillars.
               </p>
               <p className="text-white/35 text-base leading-relaxed mb-12">
-                Organizations that complete a diagnostic engagement today will be among the first to receive Benchmark Intelligence™ reports — showing how their enterprise diagnostic scores compare against industry peers, sector medians, and global top performers.
+                Organizations that complete a diagnostic engagement today will be among the first to receive Benchmark Intelligence reports — showing how their enterprise diagnostic scores compare against industry peers, sector medians, and global top performers.
               </p>
               <Link
                 to="/contact"
                 className="group inline-flex items-center gap-3 px-7 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
               >
-                Join Founding Benchmark Program™
+                Join Founding Benchmark Program
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
               </Link>
             </div>
             <div className="space-y-4">
               {[
                 { n: '01', title: 'Percentile Rankings',          desc: 'See where your enterprise scores fall across every diagnostic pillar relative to your industry peer group.' },
-                { n: '02', title: 'Competitive Position Index™',  desc: 'A composite benchmark score positioning your organization against sector leaders, medians, and laggards.' },
+                { n: '02', title: 'Competitive Position Index',  desc: 'A composite benchmark score positioning your organization against sector leaders, medians, and laggards.' },
                 { n: '03', title: 'Industry Gap Analysis',         desc: 'Identify the specific pillar gaps widest relative to your industry — prioritized by competitive exposure.' },
                 { n: '04', title: 'Longitudinal Tracking',         desc: 'Track diagnostic score movement over time — measuring transformation progress against a live benchmark.' },
               ].map(item => (
