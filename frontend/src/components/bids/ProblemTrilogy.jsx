@@ -49,29 +49,27 @@ export default function ProblemTrilogy() {
     const mm = gsap.matchMedia();
 
     mm.add('(min-width: 1024px)', () => {
-      gsap.set([p2Ref.current, p3Ref.current], { opacity: 0, y: 56 });
+      gsap.set([p2Ref.current, p3Ref.current], { opacity: 0, y: 40 });
       gsap.set(seg2Ref.current, { opacity: 0.2 });
       gsap.set(seg3Ref.current, { opacity: 0.2 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: outerRef.current,
-          pin: true,
-          anticipatePin: 1,
           start: 'top top',
-          end: '+=120%',
-          scrub: 0.8,
+          end: 'bottom bottom',
+          scrub: 0.6,
         },
       });
 
       // Panel 1 → Panel 2
-      tl.to(p1Ref.current,  { opacity: 0, y: -56, ease: 'none', duration: 0.32 }, 0)
+      tl.to(p1Ref.current,  { opacity: 0, y: -40, ease: 'none', duration: 0.32 }, 0)
         .to(p2Ref.current,  { opacity: 1, y: 0,   ease: 'none', duration: 0.32 }, 0.18)
         .to(seg1Ref.current, { opacity: 0.2,       ease: 'none', duration: 0.12 }, 0.1)
         .to(seg2Ref.current, { opacity: 1,         ease: 'none', duration: 0.14 }, 0.18);
 
       // Panel 2 → Panel 3
-      tl.to(p2Ref.current,  { opacity: 0, y: -56, ease: 'none', duration: 0.32 }, 0.5)
+      tl.to(p2Ref.current,  { opacity: 0, y: -40, ease: 'none', duration: 0.32 }, 0.5)
         .to(p3Ref.current,  { opacity: 1, y: 0,   ease: 'none', duration: 0.32 }, 0.68)
         .to(seg2Ref.current, { opacity: 0.2,       ease: 'none', duration: 0.12 }, 0.6)
         .to(seg3Ref.current, { opacity: 1,         ease: 'none', duration: 0.14 }, 0.68);
@@ -218,14 +216,14 @@ export default function ProblemTrilogy() {
   return (
     <div style={{ backgroundColor: '#000000' }}>
 
-      {/* ═══════════════════════ DESKTOP: GSAP pinned ═══════════════════════ */}
+      {/* ═══════════════════════ DESKTOP: CSS sticky (no GSAP pin) ═══════════════════════ */}
       <div
         ref={outerRef}
         className="hidden lg:block"
-        style={{ backgroundColor: '#000000' }}
+        style={{ backgroundColor: '#000000', height: '280vh' }}
       >
-        {/* Inner: this is what GSAP pins — must be 100vh tall */}
-        <div className="h-screen overflow-hidden relative border-t border-white/[0.05]">
+        {/* Sticky inner — browser-native, trackpad momentum fully preserved */}
+        <div className="sticky top-0 h-screen overflow-hidden relative border-t border-white/[0.05]">
 
           {/* ── Left accent line ─────────────────────────────────────── */}
           <div
