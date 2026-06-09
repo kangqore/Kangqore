@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { useTheme } from '../../context/ThemeContext';
 import './BIDSRuler.css';
 
 const NAV_ITEMS = [
@@ -17,7 +16,6 @@ const NAV_ITEMS = [
 ];
 
 export default function BIDSRuler() {
-  const { theme } = useTheme();
   const [active, setActive] = useState(null);
 
   useEffect(() => {
@@ -50,7 +48,7 @@ export default function BIDSRuler() {
 
   return ReactDOM.createPortal(
     <div
-      className={`bids-ruler ${theme}`}
+      className="bids-ruler dark"
       style={{ '--progress': progress }}
     >
       <div className="relative flex flex-col">
