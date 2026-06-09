@@ -42,6 +42,7 @@ const engines = [
     name: 'Cognition Intelligence Engine™',
     icon: Bot,
     color: 'from-cyan-400 via-sky-400 to-blue-500',
+    hex: '#22D3EE',
     desc: 'Diagnoses AI readiness, GenAI adoption potential, data maturity for intelligence workloads, and automation opportunity across the enterprise.',
   },
   {
@@ -49,6 +50,7 @@ const engines = [
     name: 'Foundry Intelligence Engine™',
     icon: Cloud,
     color: 'from-blue-400 via-indigo-400 to-blue-600',
+    hex: '#60A5FA',
     desc: 'Evaluates infrastructure health, cloud migration readiness, engineering platform maturity, and technology resilience against operational demands.',
   },
   {
@@ -56,6 +58,7 @@ const engines = [
     name: 'Reimagine Intelligence Engine™',
     icon: RefreshCw,
     color: 'from-violet-400 via-purple-400 to-fuchsia-500',
+    hex: '#A78BFA',
     desc: 'Identifies modernization priorities, legacy system exposure, digital transformation readiness, and change execution capability.',
   },
   {
@@ -63,6 +66,7 @@ const engines = [
     name: 'Shield Intelligence Engine™',
     icon: Shield,
     color: 'from-rose-400 via-pink-400 to-red-500',
+    hex: '#FB7185',
     desc: 'Assesses cybersecurity posture, compliance gap exposure, AI governance coverage, and operational trust maturity across business systems.',
   },
   {
@@ -70,6 +74,7 @@ const engines = [
     name: 'Platforms Intelligence Engine™',
     icon: Layers,
     color: 'from-amber-400 via-orange-400 to-orange-500',
+    hex: '#FBBF24',
     desc: 'Diagnoses enterprise platform utilization, integration complexity, process maturity, and consolidation opportunities across technology stacks.',
   },
   {
@@ -77,6 +82,7 @@ const engines = [
     name: 'Growth Intelligence Engine™',
     icon: TrendingUp,
     color: 'from-emerald-400 via-teal-400 to-green-500',
+    hex: '#34D399',
     desc: 'Maps revenue engine performance, marketing execution gaps, conversion bottlenecks, and digital visibility against growth potential.',
   },
 ];
@@ -134,6 +140,7 @@ export default function BIDSPage() {
   const [activePillar, setActivePillar] = useState(0);
   const [expandedPillar, setExpandedPillar] = useState(null);
   const [activeDeliverable, setActiveDeliverable] = useState(0);
+  const [execAnswers, setExecAnswers] = useState({});
 
   return (
     <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
@@ -171,10 +178,6 @@ export default function BIDSPage() {
             </h1>
             <p className="text-xl sm:text-2xl text-cyan-50 font-semibold tracking-wide mb-4 flex items-center gap-3">
               Kangqore Business Diagnostic Intelligence System™
-            </p>
-            <p className="text-lg sm:text-xl text-white/80 font-black mb-2 tracking-tight">
-              Most firms begin with solutions.{' '}
-              <span className="text-cyan-400">Kangqore begins with diagnosis.</span>
             </p>
             <p className="text-base text-white/45 leading-relaxed max-w-2xl mb-10 font-medium">
               The Enterprise MRI for Business, Technology, Operations, AI, Security, and Growth — revealing hidden constraints before they become critical failures.
@@ -454,20 +457,23 @@ export default function BIDSPage() {
         'Request a Diagnostic Assessment',
       ]} />
 
-      {/* ─────────────────────── CEO QUESTIONS ─────────────────────── */}
+      {/* ─────────────────────── CEO QUESTIONS (INTERACTIVE) ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
-            <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">EXECUTIVE CLARITY</p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
-                Questions every<br />executive should<br />be able to answer.
-              </h2>
-              <p className="text-white/40 text-lg font-medium leading-relaxed">
-                If these answers are unclear, decisions are made on assumptions — not intelligence. That is where value is lost. The diagnostic exists for exactly this reason.
-              </p>
-            </div>
-            <div className="space-y-8 lg:pt-16">
+          {/* Header */}
+          <div className="max-w-3xl mb-16">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">EXECUTIVE CLARITY CHECK</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-6">
+              Questions every<br />executive should<br />be able to answer.
+            </h2>
+            <p className="text-white/40 text-lg font-medium leading-relaxed">
+              Rate your organization's current clarity on each question. The results indicate where diagnostic intelligence delivers the highest value.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-[1fr_360px] gap-10 lg:gap-14 items-start">
+            {/* Left — interactive questions */}
+            <div className="space-y-2.5">
               {[
                 'What is limiting our growth?',
                 'Where is our highest business risk?',
@@ -476,12 +482,140 @@ export default function BIDSPage() {
                 'Are we secure?',
                 'Are we scalable?',
                 'Are we transformation-ready?',
-              ].map((q, i) => (
-                <div key={q} className="flex items-start gap-6 border-b border-white/[0.06] pb-8">
-                  <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                  <p className="text-white text-xl font-semibold leading-snug">{q}</p>
-                </div>
-              ))}
+              ].map((q, i) => {
+                const answer = execAnswers[i];
+                return (
+                  <div
+                    key={q}
+                    className={`p-5 rounded-2xl border transition-all duration-200 ${answer ? 'border-white/[0.12] bg-white/[0.03]' : 'border-white/[0.05] bg-white/[0.01]'}`}
+                  >
+                    <div className="flex items-start gap-4 mb-4">
+                      <span className="text-[9px] font-black tracking-widest text-white/20 mt-1 flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                      <p className={`font-semibold text-base leading-snug transition-colors duration-200 ${answer ? 'text-white' : 'text-white/55'}`}>{q}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2 pl-8">
+                      {[
+                        { value: 'clear',   label: 'Clear',       color: '#34D399', bg: 'rgba(52,211,153,0.10)',  border: 'rgba(52,211,153,0.30)'  },
+                        { value: 'partial', label: 'Partial',     color: '#22D3EE', bg: 'rgba(34,211,238,0.08)',  border: 'rgba(34,211,238,0.25)'  },
+                        { value: 'unclear', label: 'Unclear',     color: '#FBBF24', bg: 'rgba(251,191,36,0.08)',  border: 'rgba(251,191,36,0.25)'  },
+                        { value: 'unknown', label: "Don't Know",  color: '#FB7185', bg: 'rgba(251,113,133,0.08)', border: 'rgba(251,113,133,0.25)' },
+                      ].map(opt => {
+                        const selected = answer === opt.value;
+                        return (
+                          <button
+                            key={opt.value}
+                            onClick={() => setExecAnswers(prev => ({ ...prev, [i]: opt.value }))}
+                            className="px-3 py-1.5 rounded-full text-[10px] font-black tracking-wide uppercase transition-all duration-150 cursor-pointer border"
+                            style={{
+                              color:           selected ? opt.color : 'rgba(255,255,255,0.22)',
+                              backgroundColor: selected ? opt.bg    : 'transparent',
+                              borderColor:     selected ? opt.border : 'rgba(255,255,255,0.07)',
+                            }}
+                          >
+                            {opt.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Right — sticky readiness signal */}
+            <div className="lg:sticky lg:top-8">
+              {(() => {
+                const answered     = Object.keys(execAnswers).length;
+                const clearCount   = Object.values(execAnswers).filter(v => v === 'clear').length;
+
+                const getProfile = () => {
+                  if (answered === 0) return null;
+                  if (clearCount >= 5) return {
+                    label:   'Strong Baseline',
+                    color:   '#34D399',
+                    message: 'You have solid executive visibility. The diagnostic will validate your current picture and surface the blind spots your existing data doesn\'t reach.',
+                    signal:  'The diagnostic sharpens — it does not rebuild — your strategic view.',
+                  };
+                  if (clearCount >= 3) return {
+                    label:   'Partial Visibility',
+                    color:   '#22D3EE',
+                    message: 'You have clear answers in some areas but meaningful gaps elsewhere. This is the most common diagnostic profile — exactly where structured assessment delivers high value.',
+                    signal:  'The diagnostic will surface specific constraints in your unclear areas.',
+                  };
+                  return {
+                    label:   'High Diagnostic Value',
+                    color:   '#FB923C',
+                    message: 'Organizations with limited executive clarity derive the strongest impact from structured diagnosis. The gaps you cannot see are exactly what the framework surfaces.',
+                    signal:  'This is precisely the scenario Kangqore BIDS™ was engineered for.',
+                  };
+                };
+
+                const profile = getProfile();
+
+                return (
+                  <div className="p-7 rounded-2xl border border-white/[0.07] bg-white/[0.02]">
+                    <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase mb-6">DIAGNOSTIC READINESS PROFILE</p>
+
+                    {/* Progress bar */}
+                    <div className="mb-7">
+                      <div className="flex items-center justify-between mb-2.5">
+                        <span className="text-xs font-black text-white/30 tracking-wide">{answered}/7 answered</span>
+                        {answered > 0 && <span className="text-xs font-black text-white/30 tracking-wide">{clearCount} clear</span>}
+                      </div>
+                      <div className="h-0.5 bg-white/[0.06] rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-500"
+                          style={{
+                            width:           `${(answered / 7) * 100}%`,
+                            backgroundColor: profile ? profile.color : '#374151',
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {!profile ? (
+                      <div>
+                        <p className="text-white/20 text-sm font-medium leading-relaxed mb-8">
+                          Rate each question to generate your diagnostic readiness profile.
+                        </p>
+                        <div className="space-y-2.5">
+                          {[
+                            { color: '#34D399', label: 'Clear — I can answer this precisely' },
+                            { color: '#22D3EE', label: 'Partial — I have an answer but it lacks depth' },
+                            { color: '#FBBF24', label: 'Unclear — I know this is a gap' },
+                            { color: '#FB7185', label: "Don't Know — I don't have visibility" },
+                          ].map(hint => (
+                            <div key={hint.label} className="flex items-center gap-3">
+                              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: hint.color }} />
+                              <span className="text-white/20 text-xs font-medium">{hint.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="mb-5">
+                          <p className="text-[9px] font-black tracking-widest uppercase mb-2" style={{ color: profile.color }}>Profile</p>
+                          <p className="text-white font-black text-2xl leading-tight">{profile.label}</p>
+                        </div>
+                        <p className="text-white/45 text-sm font-medium leading-relaxed mb-6">{profile.message}</p>
+                        <div className="p-4 rounded-xl border mb-6" style={{ borderColor: profile.color + '30', backgroundColor: profile.color + '0a' }}>
+                          <p className="text-sm font-semibold leading-snug" style={{ color: profile.color }}>{profile.signal}</p>
+                        </div>
+                        {answered >= 5 && (
+                          <Link
+                            to="/contact"
+                            className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
+                          >
+                            Request a Diagnostic Assessment
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -817,25 +951,31 @@ export default function BIDSPage() {
               return (
                 <div
                   key={e.name}
-                  className={`flex flex-col rounded-3xl overflow-hidden bg-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl${elevated ? ' lg:-translate-y-10' : ''}`}
+                  className={`flex flex-col rounded-2xl overflow-hidden border border-white/[0.07] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.15]${elevated ? ' lg:-translate-y-6' : ''}`}
                 >
-                  {/* Top — gradient visual */}
-                  <div className={`relative h-[280px] bg-gradient-to-br ${e.color} flex items-center justify-center overflow-hidden flex-shrink-0`}>
-                    <span className="absolute text-[200px] font-black text-white/[0.08] leading-none select-none tracking-tighter">{String(i + 1).padStart(2, '0')}</span>
-                    <div className="relative flex flex-col items-center gap-4">
-                      <div className="w-20 h-20 rounded-3xl bg-white/25 backdrop-blur-sm flex items-center justify-center shadow-lg">
-                        <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
-                      </div>
+                  {/* Gradient accent bar at top */}
+                  <div className={`h-0.5 bg-gradient-to-r ${e.color} flex-shrink-0`} />
+                  {/* Card content */}
+                  <div className="relative p-7 flex flex-col flex-1">
+                    {/* Ghost number */}
+                    <span className="absolute top-5 right-6 text-7xl font-black text-white/[0.035] leading-none select-none tracking-tighter pointer-events-none">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    {/* Icon */}
+                    <div className="relative w-12 h-12 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center mb-6">
+                      <Icon className="w-5 h-5" style={{ color: e.hex }} strokeWidth={1.5} />
                     </div>
-                  </div>
-                  {/* Bottom — white content */}
-                  <div className="flex-1 bg-white p-7 flex flex-col">
-                    <p className="text-gray-900 font-black text-xl leading-snug mb-3">{e.name}</p>
-                    <p className="text-gray-500 text-sm font-medium leading-relaxed flex-1">{e.desc}</p>
-                    <div className="mt-6 pt-5 border-t border-gray-100">
+                    {/* Dept label */}
+                    <p className="text-[9px] font-black tracking-[0.4em] uppercase mb-2" style={{ color: e.hex + 'aa' }}>{e.dept}</p>
+                    {/* Name */}
+                    <p className="text-white font-black text-lg leading-snug mb-4">{e.name}</p>
+                    {/* Description */}
+                    <p className="text-white/40 text-sm font-medium leading-relaxed flex-1">{e.desc}</p>
+                    {/* Link */}
+                    <div className="mt-6 pt-5 border-t border-white/[0.06]">
                       <Link
                         to="/contact"
-                        className="inline-flex items-center gap-1.5 text-sm font-bold text-gray-900 underline underline-offset-4 decoration-gray-300 hover:decoration-gray-900 transition-all duration-200"
+                        className="inline-flex items-center gap-1.5 text-sm font-bold text-white/25 hover:text-white transition-colors duration-200"
                       >
                         Learn More <span className="text-base">↗</span>
                       </Link>
@@ -848,28 +988,20 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── INTELLIGENCE BEHIND BIDS ─────────────────────── */}
+      {/* ─────────────────────── DIAGNOSTIC METHODOLOGY ─────────────────────── */}
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
-          {/* Header + Intro */}
-          <div className="mb-24 max-w-4xl">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE INTELLIGENCE BEHIND KANGQORE BIDS™</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-10">
-              Enterprise diagnosis requires<br />
-              <span className="bg-brand-gradient bg-clip-text text-transparent">rigor, structure, and evidence.</span>
+          {/* Header */}
+          <div className="mb-20 max-w-4xl">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE DIAGNOSTIC METHODOLOGY</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-6">
+              How Kangqore BIDS™<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">conducts enterprise diagnosis.</span>
             </h2>
-            <div className="space-y-5 text-white/45 text-lg leading-relaxed font-medium max-w-3xl">
-              <p>
-                Kangqore BIDS™ is a comprehensive enterprise diagnostic intelligence framework designed to evaluate organizations through a multidimensional lens spanning strategy, operations, technology, data, artificial intelligence, cybersecurity, governance, growth, and transformation.
-              </p>
-              <p>
-                The framework synthesizes globally recognized standards, maturity models, operational methodologies, and industry best practices into a unified diagnostic architecture. Every engagement combines executive insight, organizational evidence, operational analysis, technical assessment, and intelligence-driven evaluation across sixteen interconnected enterprise pillars.
-              </p>
-              <p className="text-white/60 font-semibold">
-                The result is a structured, objective, and evidence-based view of organizational health, capability maturity, risk exposure, growth potential, and transformation readiness.
-              </p>
-            </div>
+            <p className="text-white/45 text-lg leading-relaxed font-medium max-w-3xl">
+              Not a questionnaire, survey, or checklist. Every engagement combines qualitative, quantitative, operational, and technical intelligence across sixteen diagnostic pillars — synthesizing globally recognized standards into a single evidence-based view.
+            </p>
           </div>
 
           {/* Global Frameworks */}
@@ -956,62 +1088,6 @@ export default function BIDSPage() {
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Intelligence Before Investment™ */}
-          <div className="border-t border-white/[0.06] pt-20">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">INTELLIGENCE BEFORE INVESTMENT™</p>
-            <div className="grid lg:grid-cols-2 gap-16 items-start">
-              <div className="space-y-5 text-white/45 text-lg leading-relaxed font-medium">
-                <p>
-                  Organizations frequently commit significant resources to technology modernization, artificial intelligence initiatives, cybersecurity programs, cloud adoption, automation projects, and transformation efforts before establishing a clear understanding of the constraints limiting performance.
-                </p>
-                <p className="text-white font-black text-2xl sm:text-3xl tracking-tight leading-snug">
-                  The diagnostic framework reverses that sequence.
-                </p>
-                <p>
-                  By creating an objective, evidence-based understanding of enterprise health before major investment decisions are made, organizations can prioritize with confidence, allocate resources more effectively, reduce transformation risk, and maximize long-term value creation.
-                </p>
-              </div>
-              <div className="flex flex-col justify-center gap-1">
-                {[
-                  { label: 'Prioritize with confidence', color: '#22D3EE' },
-                  { label: 'Allocate resources more effectively', color: '#60A5FA' },
-                  { label: 'Reduce transformation risk', color: '#A78BFA' },
-                  { label: 'Maximize long-term value creation', color: '#E8614A' },
-                ].map((item, i, arr) => (
-                  <div key={item.label}>
-                    <div className="flex items-center gap-4 py-5">
-                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
-                      <p className="text-white/70 text-lg font-semibold">{item.label}</p>
-                    </div>
-                    {i < arr.length - 1 && <div className="w-px h-4 ml-[2.75px] bg-white/[0.06]" />}
-                  </div>
-                ))}
-                <p className="mt-8 text-cyan-400 font-black text-xl sm:text-2xl tracking-tight pt-2 border-t border-white/[0.06]">
-                  Because sustainable transformation begins with intelligent diagnosis.
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ─────────────────────── HOW BIDS WORKS ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-
-          {/* Header */}
-          <div className="mb-20 max-w-4xl">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">HOW IT'S CONDUCTED</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white mb-8">
-              How Kangqore BIDS™<br />
-              <span className="bg-brand-gradient bg-clip-text text-transparent">conducts enterprise diagnosis.</span>
-            </h2>
-            <p className="text-white/50 text-lg leading-relaxed font-medium max-w-3xl">
-              This is not a questionnaire, survey, or checklist-based assessment. Every engagement combines qualitative, quantitative, operational, and technical intelligence inputs across all sixteen diagnostic pillars.
-            </p>
           </div>
 
           {/* Two columns: methodology inputs left, visual flow right */}
@@ -1118,63 +1194,31 @@ export default function BIDSPage() {
             </div>
           </div>
 
-          {/* Multi-Layer Diagnostic Architecture */}
+          {/* Scope & System Access */}
           <div className="border-t border-white/[0.06] pt-20">
-            <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-3">PROPRIETARY FRAMEWORK</p>
-            <h3 className="text-2xl sm:text-3xl font-black text-white mb-12 tracking-tight">Multi-Layer Diagnostic Architecture™</h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                { n: '01', layer: 'Executive Intelligence',      color: '#22D3EE' },
-                { n: '02', layer: 'Operational Intelligence',    color: '#FB923C' },
-                { n: '03', layer: 'Technology Intelligence',     color: '#60A5FA' },
-                { n: '04', layer: 'Data & AI Intelligence',      color: '#86EFAC' },
-                { n: '05', layer: 'Security & Risk Intelligence',color: '#F472B6' },
-                { n: '06', layer: 'Growth Intelligence',         color: '#FDE047' },
-                { n: '07', layer: 'Benchmark Intelligence',      color: '#A78BFA' },
-                { n: '08', layer: 'Prescription Intelligence',   color: '#E8614A' },
-              ].map((l) => (
-                <div key={l.n} className="flex items-start gap-4 p-5 border border-white/[0.07] bg-white/[0.02] rounded-xl">
-                  <span className="text-[9px] font-black tracking-widest mt-0.5 flex-shrink-0" style={{ color: l.color + '60' }}>{l.n}</span>
-                  <div>
-                    <div className="w-5 h-0.5 rounded-full mb-3" style={{ backgroundColor: l.color }} />
-                    <p className="text-white/80 text-sm font-bold leading-snug">{l.layer}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Integration & Scope Clarity */}
-            <div className="mt-16 pt-16 border-t border-white/[0.06]">
-              <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-6">SCOPE & SYSTEM ACCESS</p>
-              <h3 className="text-2xl sm:text-3xl font-black text-white mb-6 tracking-tight">Does the diagnostic require access to your systems?</h3>
-              <p className="text-white/50 text-lg leading-relaxed font-medium mb-10 max-w-3xl">
-                Both. The framework operates across two engagement modes — and the depth of diagnostic output scales accordingly.
-              </p>
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div className="p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
-                  <div className="w-5 h-0.5 rounded-full bg-cyan-400 mb-4" />
-                  <p className="text-white font-black text-base mb-3">Interview & Document Mode</p>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
-                    No system credentials required. Diagnostic is conducted through executive interviews, leadership workshops, documentation review, and process mapping sessions.
-                  </p>
-                  <p className="text-white/25 text-xs font-bold tracking-wide">Minimum requirement — available to all organizations</p>
-                </div>
-                <div className="p-6 border border-cyan-500/20 bg-cyan-500/[0.03] rounded-2xl">
-                  <div className="w-5 h-0.5 rounded-full bg-cyan-400 mb-4" />
-                  <p className="text-white font-black text-base mb-3">System-Integrated Mode</p>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
-                    Optional read-only access to platforms (SAP, Salesforce, Azure, Workday, and others) allows the diagnostic to incorporate live operational data — producing higher-precision scores and more specific prescriptions.
-                  </p>
-                  <p className="text-cyan-400/50 text-xs font-bold tracking-wide">Enhanced mode — deeper diagnostic precision</p>
-                </div>
+            <p className="text-[10px] font-black tracking-[0.45em] text-white/30 uppercase mb-6">SCOPE & SYSTEM ACCESS</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-white mb-6 tracking-tight">Does the diagnostic require access to your systems?</h3>
+            <p className="text-white/50 text-lg leading-relaxed font-medium mb-10 max-w-3xl">
+              Both. The framework operates across two engagement modes — and the depth of diagnostic output scales accordingly.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div className="p-6 border border-white/[0.07] bg-white/[0.02] rounded-2xl">
+                <div className="w-5 h-0.5 rounded-full bg-cyan-400 mb-4" />
+                <p className="text-white font-black text-base mb-3">Interview & Document Mode</p>
+                <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
+                  No system credentials required. Diagnostic is conducted through executive interviews, leadership workshops, documentation review, and process mapping sessions.
+                </p>
+                <p className="text-white/25 text-xs font-bold tracking-wide">Minimum requirement — available to all organizations</p>
+              </div>
+              <div className="p-6 border border-cyan-500/20 bg-cyan-500/[0.03] rounded-2xl">
+                <div className="w-5 h-0.5 rounded-full bg-cyan-400 mb-4" />
+                <p className="text-white font-black text-base mb-3">System-Integrated Mode</p>
+                <p className="text-white/40 text-sm font-medium leading-relaxed mb-4">
+                  Optional read-only access to platforms (SAP, Salesforce, Azure, Workday, and others) allows the diagnostic to incorporate live operational data — producing higher-precision scores and more specific prescriptions.
+                </p>
+                <p className="text-cyan-400/50 text-xs font-bold tracking-wide">Enhanced mode — deeper diagnostic precision</p>
               </div>
             </div>
-
-            {/* Closing statement */}
-            <p className="mt-16 text-xl sm:text-2xl font-black text-white/50 max-w-4xl leading-snug">
-              The findings are processed through the{' '}
-              <span className="text-white">Intelligence Framework™</span>, producing enterprise scores, constraint analysis, benchmark insights, opportunity mapping, and transformation recommendations.
-            </p>
           </div>
 
         </div>
