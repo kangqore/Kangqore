@@ -700,46 +700,6 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── eQORE AI ROLE ─────────────────────── */}
-      <section className="py-20 relative overflow-hidden border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
-            <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-6">eQORE AI™ INTELLIGENCE LAYER</p>
-              <h3 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-6">
-                What is <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI™?</span>
-              </h3>
-              <p className="text-white/50 text-lg leading-relaxed font-medium mb-8">
-                eQORE AI™ serves as the orchestration and intelligence layer within the BIDS™ diagnostic process — not as a replacement for human expertise, but as an enhancement to analytical consistency and cross-pillar coherence.
-              </p>
-              <div className="space-y-4 border-t border-white/[0.06] pt-6">
-                <p className="text-white/40 text-sm font-medium leading-relaxed">
-                  All diagnostic conclusions, scoring decisions, recommendations, and service prescriptions are reviewed and validated by Kangqore specialists before delivery.
-                </p>
-                <p className="text-white/40 text-sm font-medium leading-relaxed">
-                  Client data is never used to train public AI models. Engagement information remains logically isolated and governed according to project-specific confidentiality requirements.
-                </p>
-                <p className="text-white/40 text-sm font-medium leading-relaxed">
-                  eQORE AI™ enhances analytical efficiency while maintaining human oversight, auditability, and professional accountability throughout the diagnostic process.
-                </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: 'Organizes', color: 'text-cyan-400', desc: 'Diagnostic findings across all sixteen intelligence pillars into coherent constraint narratives' },
-                { label: 'Identifies', color: 'text-cyan-400', desc: 'Cross-functional relationships and non-obvious patterns across business, technology, and operational data' },
-                { label: 'Supports Consistency', color: 'text-cyan-400', desc: 'Analytical consistency across engagements by applying methodology frameworks to emerging findings' },
-                { label: 'Human-Validated', color: 'text-emerald-400', desc: 'Every output is reviewed, challenged, and confirmed by senior Kangqore specialists before client delivery' },
-              ].map(item => (
-                <div key={item.label} className="p-5 border border-white/[0.07] bg-white/[0.02] rounded-xl">
-                  <p className={`text-xs font-black tracking-widest uppercase mb-2 ${item.color}`}>{item.label}</p>
-                  <p className="text-white/45 text-sm font-medium leading-snug">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ─────────────────────── DIAGNOSTIC ENGAGEMENT PROCESS ─────────────────────── */}
       <section id="process" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
