@@ -492,10 +492,15 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
             <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PRESCRIPTION ENGINE™</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white max-w-5xl">
-              From score to<br />
-              <span className="bg-brand-gradient bg-clip-text text-transparent">strategic action.</span>
-            </h2>
+            <div className="grid lg:grid-cols-2 gap-16 items-end">
+              <h2 className="text-4xl sm:text-5xl lg:text-[4rem] font-black leading-[1.1] tracking-[-0.03em] text-white">
+                From score to<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">strategic action.</span>
+              </h2>
+              <p className="text-white/35 text-base font-medium leading-relaxed lg:pb-2">
+                The Prescription Engine™ translates diagnostic findings into a prioritized action plan. The resulting Service Prescription Matrix™ identifies capability areas that any provider — Kangqore or otherwise — can fulfill. Diagnostic deliverables are provided independently of any downstream engagement decision.
+              </p>
+            </div>
           </div>
           {/* Flow — 4 columns with connector arrows */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 mb-16">
@@ -520,9 +525,9 @@ export default function BIDSPage() {
               },
               {
                 step: '04', color: 'from-emerald-400 to-green-600',
-                title: 'Prescribed Services',
+                title: 'Service Prescription Matrix™',
                 items: ['Digital Transformation', 'Strategy Consulting', 'Application Modernization', 'Enterprise Platform Integration'],
-                note: 'Sample — drawn from 61 Kangqore services across 6 departments',
+                note: 'Illustrative — mapped to capability areas, not to a required Kangqore engagement',
               },
             ].map((phase, i) => (
               <div key={phase.step} className="relative lg:px-6 first:lg:pl-0 last:lg:pr-0">
@@ -545,10 +550,17 @@ export default function BIDSPage() {
               </div>
             ))}
           </div>
+          {/* Independence statement */}
+          <div className="mb-10 p-5 border border-white/[0.07] bg-white/[0.02] rounded-2xl flex items-start gap-4 max-w-3xl">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
+            <p className="text-white/50 text-sm font-medium leading-relaxed">
+              The diagnostic findings — scorecard, risk register, transformation blueprint, and all deliverables — are provided as a{' '}
+              <span className="text-white font-semibold">standalone product</span>, independent of whether any Kangqore service is subsequently engaged. The Service Prescription Matrix™ maps identified needs to capability areas. Organizations may engage Kangqore, their existing partners, or any provider they choose.
+            </p>
+          </div>
           <p className="text-xl sm:text-2xl font-black text-white/60 max-w-3xl leading-snug">
             This is where the diagnostic — synthesized by{' '}
-            <span className="text-cyan-400">eQORE AI™</span> — transforms from a diagnostic report into a{' '}
-            <span className="text-white">revenue engine</span>, mapping every identified constraint directly to a Kangqore service prescription.
+            <span className="text-cyan-400">eQORE AI™</span> — translates from scored findings into a prioritized action plan, mapping each identified constraint to the capability area best positioned to address it.
           </p>
         </div>
       </section>
@@ -1583,10 +1595,10 @@ export default function BIDSPage() {
               <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">KANGQORE BIDS™ APPROACH</p>
               <div className="space-y-10">
                 {[
-                  { n: '01', label: 'The diagnosis is the product', desc: 'No platform to push. No implementation to sell. The assessment is vendor-agnostic — the deliverable is the insight, not a proposal for more services.' },
+                  { n: '01', label: 'The diagnostic deliverable stands alone', desc: 'The scorecard, risk register, and transformation blueprint are delivered as a complete standalone product. A Service Prescription Matrix™ identifies capability areas — which any provider can fulfill. Engaging Kangqore for implementation is always optional, never the condition for receiving the findings.' },
                   { n: '02', label: 'Scored and indexed, not qualitative', desc: 'Every pillar produces a quantified score. You receive a Diagnostic Scorecard™ and 9 additional deliverables — measurable, benchmarked, accountable.' },
                   { n: '03', label: 'Full ecosystem scope', desc: 'Business, technology, operations, AI, security, and growth examined as one interconnected system across 16 diagnostic intelligence pillars.' },
-                  { n: '04', label: 'Zero conflict of interest', desc: "We don't sell the cloud. We don't sell the platform. We sell the truth about your organization — then you decide what to do with it." },
+                  { n: '04', label: 'Diagnostic independence', desc: "We don't sell the cloud. We don't sell the platform. Findings are delivered as a standalone product — completely independent of whether any Kangqore service is subsequently engaged. The diagnostic tells you what is constraining your organization. What you do with that intelligence, and with whom, is your decision." },
                 ].map((d) => (
                   <div key={d.n} className="flex items-start gap-8">
                     <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{d.n}</span>
