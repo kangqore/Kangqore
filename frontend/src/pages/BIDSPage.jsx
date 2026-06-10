@@ -189,7 +189,7 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── HERO ─────────────────────── */}
       <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
-        <section className="relative w-full h-full flex items-end overflow-hidden pb-44 rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#06090f]">
+        <section className="relative w-full h-full flex items-end overflow-hidden pb-36 rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#06090f]">
           <VisualBackground forceDark={true} />
         
         {/* Subtle top glow */}
@@ -322,7 +322,7 @@ export default function BIDSPage() {
           </div>
 
           {/* Brand footer bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 px-8 bg-[#080808] border border-white/[0.08] rounded-2xl mb-16">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 px-8 bg-[#06090f] border border-white/[0.08] rounded-2xl mb-16">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
               <span className="text-white font-black text-lg tracking-tight">Kangqore BIDS™</span>
               <span className="hidden sm:block w-px h-5 bg-white/10" />
@@ -392,7 +392,7 @@ export default function BIDSPage() {
       {/* ─────────────────────── MID-FUNNEL BRIDGE ─────────────────────── */}
       <div className="py-14 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 p-8 rounded-2xl border border-white/[0.07] bg-white/[0.02]">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 p-8 rounded-2xl border border-white/[0.07] bg-[#06090f]">
             <div>
               <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-3">NOT READY FOR A FULL ASSESSMENT?</p>
               <p className="text-white font-black text-xl leading-snug mb-2">Start with a 20-minute discovery call.</p>
@@ -449,7 +449,7 @@ export default function BIDSPage() {
                 return (
                   <div
                     key={q}
-                    className={`p-5 rounded-2xl border transition-all duration-200 ${answer ? 'border-white/[0.12] bg-white/[0.03]' : 'border-white/[0.05] bg-white/[0.01]'}`}
+                    className={`p-5 rounded-2xl border transition-all duration-200 ${answer ? 'border-white/[0.14] bg-[#06090f]' : 'border-white/[0.07] bg-[#06090f]'}`}
                   >
                     <div className="flex items-start gap-4 mb-4">
                       <span className="text-[9px] font-black tracking-widest text-white/20 mt-1 flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
@@ -457,10 +457,10 @@ export default function BIDSPage() {
                     </div>
                     <div className="flex flex-wrap gap-2 pl-8">
                       {[
-                        { value: 'clear',   label: 'Clear',       color: '#34D399', bg: 'rgba(52,211,153,0.10)',  border: 'rgba(52,211,153,0.30)'  },
-                        { value: 'partial', label: 'Partial',     color: '#22D3EE', bg: 'rgba(34,211,238,0.08)',  border: 'rgba(34,211,238,0.25)'  },
-                        { value: 'unclear', label: 'Unclear',     color: '#FBBF24', bg: 'rgba(251,191,36,0.08)',  border: 'rgba(251,191,36,0.25)'  },
-                        { value: 'unknown', label: "Don't Know",  color: '#FB7185', bg: 'rgba(251,113,133,0.08)', border: 'rgba(251,113,133,0.25)' },
+                        { value: 'clear',   label: 'Clear',       color: '#34D399', bg: 'rgba(52,211,153,0.12)',  border: 'rgba(52,211,153,0.35)',  dimBg: 'rgba(52,211,153,0.04)',  dimBorder: 'rgba(52,211,153,0.18)',  dimColor: 'rgba(52,211,153,0.50)'  },
+                        { value: 'partial', label: 'Partial',     color: '#22D3EE', bg: 'rgba(34,211,238,0.10)',  border: 'rgba(34,211,238,0.30)',  dimBg: 'rgba(34,211,238,0.04)',  dimBorder: 'rgba(34,211,238,0.16)',  dimColor: 'rgba(34,211,238,0.50)'  },
+                        { value: 'unclear', label: 'Unclear',     color: '#FBBF24', bg: 'rgba(251,191,36,0.10)',  border: 'rgba(251,191,36,0.30)',  dimBg: 'rgba(251,191,36,0.04)',  dimBorder: 'rgba(251,191,36,0.16)',  dimColor: 'rgba(251,191,36,0.50)'  },
+                        { value: 'unknown', label: "Don't Know",  color: '#FB7185', bg: 'rgba(251,113,133,0.10)', border: 'rgba(251,113,133,0.30)', dimBg: 'rgba(251,113,133,0.04)', dimBorder: 'rgba(251,113,133,0.16)', dimColor: 'rgba(251,113,133,0.50)' },
                       ].map(opt => {
                         const selected = answer === opt.value;
                         return (
@@ -469,9 +469,9 @@ export default function BIDSPage() {
                             onClick={() => setExecAnswers(prev => ({ ...prev, [i]: opt.value }))}
                             className="px-3 py-1.5 rounded-full text-[10px] font-black tracking-wide uppercase transition-all duration-150 cursor-pointer border"
                             style={{
-                              color:           selected ? opt.color : 'rgba(255,255,255,0.22)',
-                              backgroundColor: selected ? opt.bg    : 'transparent',
-                              borderColor:     selected ? opt.border : 'rgba(255,255,255,0.07)',
+                              color:           selected ? opt.color      : opt.dimColor,
+                              backgroundColor: selected ? opt.bg         : opt.dimBg,
+                              borderColor:     selected ? opt.border     : opt.dimBorder,
                             }}
                           >
                             {opt.label}
@@ -515,7 +515,7 @@ export default function BIDSPage() {
                 const profile = getProfile();
 
                 return (
-                  <div className="p-7 rounded-2xl border border-white/[0.07] bg-white/[0.02]">
+                  <div className="p-7 rounded-2xl border border-white/[0.07] bg-[#06090f]">
                     <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase mb-6">DIAGNOSTIC READINESS PROFILE</p>
 
                     {/* Progress bar */}
@@ -719,7 +719,7 @@ export default function BIDSPage() {
               </p>
             </div>
             <div className="lg:pt-14">
-              <div className="p-8 border border-white/[0.08] bg-[#111111] rounded-2xl">
+              <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
                 <p className="text-[9px] font-black tracking-[0.4em] text-white/30 uppercase mb-6">ENGAGEMENT AVAILABILITY</p>
                 <h3 className="text-white font-black text-xl mb-4 leading-tight">
                   Currently accepting Q3–Q4 2026 discovery and transformation engagements.
@@ -963,7 +963,7 @@ export default function BIDSPage() {
                   </div>
                   
                   {/* Bottom Dark Card Area */}
-                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#111111]">
+                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#06090f]">
                     <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">
                       {e.dept}
                     </h3>
@@ -1045,7 +1045,7 @@ export default function BIDSPage() {
                     <img src={cat.image} alt={cat.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
                   
-                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#111111] flex flex-col flex-1">
+                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#06090f] flex flex-col flex-1">
                     <div className="w-6 h-0.5 rounded-full mb-4" style={{ backgroundColor: cat.color }} />
                     <h3 className="text-white font-bold text-lg sm:text-xl leading-tight mb-5">{cat.label}</h3>
                     <ul className="space-y-3">
@@ -1079,7 +1079,7 @@ export default function BIDSPage() {
                 { n: '07', layer: 'Benchmark Intelligence',      color: '#A78BFA', desc: 'Compares organizational maturity, capability performance, and strategic readiness against industry and peer benchmarks.' },
                 { n: '08', layer: 'Prescription Intelligence',   color: '#E8614A', desc: 'Transforms findings into prioritized recommendations, transformation initiatives, execution roadmaps, and service prescriptions.' },
               ].map(l => (
-                <div key={l.n} className="p-5 border border-white/[0.07] bg-[#111111] rounded-xl flex flex-col gap-4">
+                <div key={l.n} className="p-5 border border-white/[0.07] bg-[#06090f] rounded-xl flex flex-col gap-4">
                   <div>
                     <span className="text-[9px] font-black tracking-widest" style={{ color: l.color + '60' }}>{l.n}</span>
                     <div className="w-5 h-0.5 rounded-full mt-2" style={{ backgroundColor: l.color }} />
@@ -1209,7 +1209,7 @@ export default function BIDSPage() {
                   <img src="/assets/scope/interview.png" alt="Interview Mode" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 </div>
                 
-                <div className="relative w-[92%] mx-auto -mt-12 bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#111111]">
+                <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#06090f]">
                   <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">
                     Interview & Document Mode
                   </h3>
@@ -1226,7 +1226,7 @@ export default function BIDSPage() {
                   <img src="/assets/scope/integrated.png" alt="System Integrated Mode" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 </div>
                 
-                <div className="relative w-[92%] mx-auto -mt-12 bg-[#0a0a0a] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#111111]">
+                <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#06090f]">
                   <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">
                     System-Integrated Mode
                   </h3>
@@ -1373,7 +1373,7 @@ export default function BIDSPage() {
                 outcome: 'Improved pipeline visibility, conversion efficiency, and forecasting accuracy.',
               },
             ].map(example => (
-              <div key={example.industry} className="flex flex-col p-7 border border-white/[0.07] bg-[#111111] rounded-2xl">
+              <div key={example.industry} className="flex flex-col p-7 border border-white/[0.07] bg-[#06090f] rounded-2xl">
                 <div className="mb-6">
                   <div className="w-6 h-0.5 rounded-full mb-5" style={{ backgroundColor: example.color }} />
                   <p className="font-black text-white text-lg mb-1">{example.industry}</p>
@@ -1557,7 +1557,7 @@ export default function BIDSPage() {
           </div>
 
           {/* Download CTA */}
-          <div className="mt-10 rounded-2xl border border-white/[0.08] bg-gradient-to-r from-white/[0.03] to-transparent p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="mt-10 rounded-2xl border border-white/[0.08] bg-[#06090f] p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-xl bg-brand-gradient flex items-center justify-center flex-shrink-0 mt-0.5">
                 <FileText className="w-5 h-5 text-white" strokeWidth={1.8} />
@@ -1619,7 +1619,7 @@ export default function BIDSPage() {
                   body: 'The BIDS™ methodology — how we structure assessments, synthesise findings, and score pillars — is Kangqore\'s proprietary intellectual property. The framework is not disclosed, licensed, or shared with third parties.',
                 },
               ].map(item => (
-                <div key={item.title} className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-6">
+                <div key={item.title} className="rounded-xl border border-white/[0.07] bg-[#06090f] p-6">
                   <div className="flex items-start gap-3 mb-3">
                     <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
                     <p className="text-white font-bold text-sm">{item.title}</p>
@@ -1820,7 +1820,7 @@ export default function BIDSPage() {
             ].map(tier => (
               <div
                 key={tier.name}
-                className={`flex flex-col p-7 rounded-2xl border ${tier.featured ? 'border-white/20 bg-[#161616]' : 'border-white/[0.07] bg-[#111111]'}`}
+                className={`flex flex-col p-7 rounded-2xl border ${tier.featured ? 'border-white/20 bg-[#06090f]' : 'border-white/[0.07] bg-[#06090f]'}`}
               >
                 <div className="mb-6">
                   <div className="w-6 h-0.5 rounded-full mb-5" style={{ backgroundColor: tier.color }} />
@@ -1916,7 +1916,7 @@ export default function BIDSPage() {
                 { label: 'ISO 27001 Alignment',         status: 'In Progress', statusColor: '#FDE047', color: '#A78BFA', desc: 'Security management systems being aligned to ISO/IEC 27001 information security standard.' },
                 { label: 'SOC 2 Type II Certification', status: 'Planned',     statusColor: '#FB923C', color: '#A78BFA', desc: 'Independent third-party audit for security, availability, and confidentiality controls.' },
               ].map(item => (
-                <div key={item.label} className="flex items-start gap-4 p-4 border border-white/[0.07] bg-white/[0.02] rounded-xl">
+                <div key={item.label} className="flex items-start gap-4 p-4 border border-white/[0.07] bg-[#06090f] rounded-xl">
                   <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: item.color }} />
                   <div className="flex-1">
                     <div className="flex items-center justify-between gap-3 mb-0.5">
@@ -1935,53 +1935,6 @@ export default function BIDSPage() {
         </div>
       </section>
 
-      {/* ─────────────────────── BENCHMARK INTELLIGENCE ─────────────────────── */}
-      <section className="py-32 relative overflow-hidden border-t border-white/10" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-            <div>
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400 uppercase">Coming Q4 2026</p>
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
-                Benchmark<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">Intelligence</span>
-              </h2>
-              <p className="text-white/50 text-lg leading-relaxed font-medium mb-10">
-                Kangqore is building the first vendor-agnostic enterprise diagnostic benchmark dataset — percentile rankings, competitive position indices, and industry-gap analysis across all 16 diagnostic pillars.
-              </p>
-              <p className="text-white/35 text-base leading-relaxed mb-12">
-                Organizations that complete a diagnostic engagement today will be among the first to receive Benchmark Intelligence reports — showing how their enterprise diagnostic scores compare against industry peers, sector medians, and global top performers.
-              </p>
-              <Link
-                to="/contact"
-                className="group inline-flex items-center gap-3 px-7 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
-              >
-                Join Founding Benchmark Program
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
-              </Link>
-            </div>
-            <div className="space-y-4">
-              {[
-                { n: '01', title: 'Percentile Rankings',          desc: 'See where your enterprise scores fall across every diagnostic pillar relative to your industry peer group.' },
-                { n: '02', title: 'Competitive Position Index',  desc: 'A composite benchmark score positioning your organization against sector leaders, medians, and laggards.' },
-                { n: '03', title: 'Industry Gap Analysis',         desc: 'Identify the specific pillar gaps widest relative to your industry — prioritized by competitive exposure.' },
-                { n: '04', title: 'Longitudinal Tracking',         desc: 'Track diagnostic score movement over time — measuring transformation progress against a live benchmark.' },
-              ].map(item => (
-                <div key={item.n} className="flex items-start gap-5 p-6 border border-white/[0.07] bg-[#111111] rounded-2xl">
-                  <span className="text-[9px] font-black tracking-widest text-white/20 mt-0.5 flex-shrink-0">{item.n}</span>
-                  <div>
-                    <p className="text-white font-black text-base mb-2">{item.title}</p>
-                    <p className="text-white/40 text-sm font-medium leading-relaxed">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ─────────────────────── CTA ─────────────────────── */}
       <section
         ref={ctaRef}
@@ -1990,9 +1943,8 @@ export default function BIDSPage() {
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 mb-20">
-            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
-              Diagnose the<br />
-              <span className="bg-brand-gradient bg-clip-text text-transparent">Enterprise.</span>
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8 lg:max-w-[50%]">
+              Most transformation programmes fail because the enterprise was <span className="bg-brand-gradient bg-clip-text text-transparent">never fully diagnosed.</span>
             </h2>
             <Link
               to="/contact"
@@ -2004,7 +1956,7 @@ export default function BIDSPage() {
           </div>
           <div className="max-w-4xl mb-16">
             <p className="text-white/50 text-lg lg:text-xl leading-relaxed">
-              Before investing in transformation, diagnose the enterprise. Every organization has visible problems and invisible constraints. The framework identifies those constraints, quantifies their impact, and delivers a transformation blueprint — before a single investment is made.
+              Kangqore BIDS™ is the diagnostic intelligence framework built to close that gap. It surfaces hidden constraints across operations, technology, security, and growth systems — quantifies their compounding cost — and delivers a prioritised transformation blueprint before a single investment is committed.
             </p>
           </div>
           <div className="pt-10 border-t border-white/10">
