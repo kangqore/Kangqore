@@ -275,17 +275,22 @@ export default function BIDSPage() {
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           {/* Top — heading + visual */}
+          <div className="mb-14">
+            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS KANGQORE BIDS™</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
+              The complete enterprise diagnostic{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span><br />
+              framework.
+            </h2>
+          </div>
           <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start mb-20">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS KANGQORE BIDS™</p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
-                The complete enterprise<br />
-                diagnostic{' '}
-                <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span><br />
-                framework.
-              </h2>
-              <p className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-14 font-light max-w-xl">
+              <p className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-10 font-light max-w-xl">
                 The framework evaluates, benchmarks, scores, and analyzes an entire organization as an interconnected ecosystem — diagnosing the full enterprise before any transformation investment is made.
+              </p>
+              <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-xl text-white/60 mb-14">
+                The enterprises that diagnose before they invest don't just reduce risk.{' '}
+                <span className="text-white">They outgrow everyone who didn't.</span>
               </p>
               {/* Stats strip */}
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-6 pt-10 border-t border-white/[0.08]">
@@ -304,8 +309,11 @@ export default function BIDSPage() {
               </div>
             </div>
             {/* Right — product visual */}
-            <div className="flex justify-center lg:justify-end">
-              <BIDSProductVisual isActive={defVisible} />
+            <div className="lg:-mt-[282px]">
+              <BIDSProductVisual
+                isActive={defVisible}
+                className="aspect-[4/5]"
+              />
             </div>
           </div>
 

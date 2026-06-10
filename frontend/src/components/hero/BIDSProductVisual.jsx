@@ -1,22 +1,22 @@
 import React from 'react';
 
-const BIDSProductVisual = ({ isActive = false }) => {
+const BIDSProductVisual = ({ isActive = false, className = '' }) => {
   return (
-    <div 
-      className={`relative w-full max-w-[400px] xl:max-w-[480px] transition-all duration-1000 ${
-        isActive 
-          ? 'opacity-100 translate-y-0 scale-100' 
+    <div
+      className={`relative w-full transition-all duration-1000 ${className} ${
+        isActive
+          ? 'opacity-100 translate-y-0 scale-100'
           : 'opacity-0 translate-y-12 scale-90'
       }`}
     >
       {/* Dashboard image card */}
       <div
-        className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
+        className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 h-full"
       >
         <img
           src="/images/capabilities/data-analytics-new.png"
           alt="Kangqore BIDS™ — Data Analytics Intelligence"
-          className="w-full h-auto object-cover relative z-0"
+          className="w-full h-full object-cover relative z-0"
           loading="lazy"
         />
         
