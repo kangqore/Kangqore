@@ -1859,12 +1859,13 @@ export default function BIDSPage() {
       <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <p className="text-[10px] font-black tracking-[0.45em] text-white/25 uppercase mb-12">BUILT ON KANGQORE'S FULL PRACTICE</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-12">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-12">
             {[
-              { value: '61',   label: 'Specialized Services' },
-              { value: '6',    label: 'Practice Departments' },
-              { value: '10',   label: 'Industry Editions' },
               { value: '16',   label: 'Diagnostic Pillars' },
+              { value: '6',    label: 'Intelligence Engines' },
+              { value: '10',   label: 'Executive Deliverables' },
+              { value: '10',   label: 'Industry Editions' },
+              { value: '61',   label: 'Specialized Services' },
             ].map((s) => (
               <div key={s.label}>
                 <p className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-2">{s.value}</p>
@@ -1959,9 +1960,10 @@ export default function BIDSPage() {
               Kangqore BIDS™ is the diagnostic intelligence framework built to close that gap. It surfaces hidden constraints across operations, technology, security, and growth systems — quantifies their compounding cost — and delivers a prioritised transformation blueprint before a single investment is committed.
             </p>
           </div>
-          <div className="pt-10 border-t border-white/10">
-            <p className="text-xs font-bold text-white/25 uppercase tracking-[0.2em] mb-8">Our Security & Compliance Posture</p>
-            <div className="flex flex-wrap gap-x-12 gap-y-8 items-start">
+          {/* Compliance badges — trust footnote */}
+          <div className="pt-10 border-t border-white/[0.06]">
+            <p className="text-[9px] font-bold text-white/15 uppercase tracking-[0.2em] mb-6">Security & Compliance Posture</p>
+            <div className="flex flex-wrap gap-x-8 gap-y-4 items-center">
               {[
                 { name: 'SOC 2 Aligned',   id: 'soc2' },
                 { name: 'ISO 27001',        id: 'iso27001' },
@@ -1971,19 +1973,25 @@ export default function BIDSPage() {
                 { name: 'PCI DSS Mindful',  id: 'pcidss' },
                 { name: 'CMMI Practiced',   id: 'cmmi' },
               ].map(({ name, id }) => (
-                <div key={name} className="flex flex-col items-center gap-3 w-[100px]">
-                  <div className="w-14 h-14 flex items-center justify-center">
-                    <img
-                      src={`/assets/badges/${id}.svg?v=2`}
-                      alt={name}
-                      className="w-12 h-12 object-contain brightness-110"
-                      onError={(e) => { e.target.style.display = 'none'; }}
-                    />
-                  </div>
-                  <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest text-center leading-tight">{name}</span>
+                <div key={name} className="flex items-center gap-2 opacity-30">
+                  <img
+                    src={`/assets/badges/${id}.svg?v=2`}
+                    alt={name}
+                    className="w-5 h-5 object-contain"
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                  <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest">{name}</span>
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Closing statement */}
+          <div className="mt-28">
+            <p className="text-2xl sm:text-3xl lg:text-[2.5rem] font-black leading-[1.25] text-white/40 max-w-3xl">
+              The enterprises that diagnose before they invest don't just reduce risk.{' '}
+              <span className="text-white">They outgrow everyone who didn't.</span>
+            </p>
           </div>
         </div>
       </section>
