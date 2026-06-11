@@ -1,0 +1,142 @@
+/* ─── PSEDRuler — colour-adaptive via mix-blend-mode: difference ─── */
+.psed-ruler {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .psed-ruler {
+    display: block;
+    position: fixed !important;
+    left: 28px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 9999 !important;
+    mix-blend-mode: difference;
+  }
+}
+
+/* ── Spine ── */
+.psed-ruler .spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.28) 12%,
+    rgba(255, 255, 255, 0.28) 88%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.psed-ruler .spine::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12%;
+  width: 1px;
+  height: calc(var(--progress, 0) * 76%);
+  background: linear-gradient(to bottom, white, rgba(255, 255, 255, 0.4));
+  transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1px;
+}
+
+/* ── Active dot ── */
+.psed-ruler .dot {
+  position: absolute;
+  left: -3.5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12), 0 0 10px white;
+  z-index: 10;
+  animation: psedDotPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes psedDotPulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12), 0 0 10px white; }
+  50%       { box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.06), 0 0 18px white; }
+}
+
+/* ── Tick ── */
+.psed-ruler .tick {
+  flex-shrink: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.32);
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.28s ease;
+}
+
+.psed-ruler .ruler-item.active .tick {
+  background: white;
+  box-shadow: 3px 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.psed-ruler .ruler-item:hover:not(.active) .tick {
+  background: rgba(255, 255, 255, 0.55) !important;
+  width: 13px !important;
+}
+
+/* ── Number ── */
+.psed-ruler .num {
+  color: rgba(255, 255, 255, 0.38);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.28s ease, letter-spacing 0.28s ease;
+}
+
+.psed-ruler .ruler-item.visited .num {
+  color: rgba(255, 255, 255, 0.60);
+}
+
+.psed-ruler .ruler-item.active .num {
+  color: white;
+  letter-spacing: 0.36em;
+}
+
+.psed-ruler .ruler-item:hover:not(.active) .num {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* ── Label ── */
+.psed-ruler .label {
+  max-width: 0;
+  opacity: 0;
+  color: transparent;
+  transition:
+    max-width 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity   0.32s ease,
+    color     0.28s ease;
+  pointer-events: none;
+}
+
+.psed-ruler .ruler-item.active .label {
+  max-width: 130px;
+  opacity: 1;
+  color: white;
+}
+
+.psed-ruler .ruler-item:hover:not(.active) .label {
+  max-width: 130px;
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+/* ── Item shift on hover / active ── */
+.psed-ruler .ruler-item {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.20s ease;
+}
+
+.psed-ruler .ruler-item:hover {
+  transform: translateX(2px);
+}
+
+.psed-ruler .ruler-item.active {
+  transform: translateX(3px);
+}

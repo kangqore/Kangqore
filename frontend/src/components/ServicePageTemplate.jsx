@@ -826,8 +826,8 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
   }));
 
   // Button Config
-  const primaryButton = service.primaryButton || { text: 'Get Started', link: '/contact' };
-  const secondaryButton = service.secondaryButton === null ? null : (service.secondaryButton || { text: `Back to ${department.name}`, link: `/departments/${department.slug}` });
+  const primaryButton = service.primaryButton || { text: 'Schedule Your 30-min Discovery Call', link: '/contact' };
+  const secondaryButton = service.secondaryButton === null ? null : (service.secondaryButton || { text: 'Explore Our Capabilities', link: `/departments/${department.slug}` });
 
   // ─── JSON-LD SCHEMA GENERATION (SEO/AEO/GEO) ────────────────────────────────
   const baseUrl = "https://kangqore.com";
@@ -948,7 +948,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
       )}
 
       {/* Overview Section */}
-      <section className="py-20 bg-white dark:bg-black">
+      {!service.hideOverview && <section className="py-20 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {service.fullWidthCustomOverview && service.customOverview ? (
             <div className="w-full">
@@ -1214,7 +1214,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
             </div>
           )}
         </div>
-      </section>
+      </section>}
 
       {/* Custom Full-Width Sections (between Overview and Capabilities) */}
       {service.customSections && service.customSections}
@@ -1333,7 +1333,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
       {service.preWhyKangqoreSections && service.preWhyKangqoreSections}
 
     {/* Why Kangqore */}
-      <section 
+      {whyKangqore && whyKangqore.length > 0 && <section
         ref={whyKangqoreRef}
         className={`pt-24 lg:pt-32 pb-32 lg:pb-40 bg-[#FEFFFC] reveal-on-scroll relative overflow-hidden ${whyKangqoreVisible ? 'is-visible' : ''}`}
       >
@@ -1358,13 +1358,13 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
           </div>
           <WhyKangqoreCarousel items={whyKangqore} />
         </div>
-      </section>
+      </section>}
 
       {/* Custom sections injected after Why Kangqore */}
       {service.postWhyKangqoreSections && service.postWhyKangqoreSections}
 
       {/* Industry Expertise */}
-      <section 
+      {industries && industries.length > 0 && <section
         ref={industriesRef}
         className={`py-24 lg:py-32 bg-[#FEFFFC] reveal-on-scroll relative overflow-hidden ${industriesVisible ? 'is-visible' : ''}`}
       >
@@ -1435,13 +1435,13 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
             })}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Custom Sections after Industry (e.g., for Related Offerings) */}
       {service.postIndustrySections && service.postIndustrySections}
 
       {/* FAQ */}
-      <section 
+      {faqs && faqs.length > 0 && <section
         ref={faqRef}
         className={`py-20 bg-[#FEFFFC] reveal-on-scroll ${faqVisible ? 'is-visible' : ''}`}
       >
@@ -1477,14 +1477,14 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Custom Sections after FAQ */}
       {service.postFAQSections && service.postFAQSections}
 
 
       {/* Technologies - Redesigned (Premium Apple Aesthetic) */}
-      <section 
+      {technologies && technologies.length > 0 && <section
         ref={technologiesRef}
         className={`py-24 lg:py-32 bg-[#FEFFFC] reveal-on-scroll ${technologiesVisible ? 'is-visible' : ''}`}
       >
@@ -1555,7 +1555,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
             )}
           </div>
         </div>
-      </section>
+      </section>}
       {/* CTA Section */}
       {service.finalCtaSection ? service.finalCtaSection : (
         <section className="py-24 bg-white dark:bg-black">

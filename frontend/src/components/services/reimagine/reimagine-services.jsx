@@ -21,6 +21,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ProductStrategyBIDSPage from './ProductStrategyBIDSPage';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -2870,139 +2871,18 @@ const psedExecutionEcosystem = (
 );
 
 const productStrategyExperienceDesign = {
-  titleLine1: 'Product Strategy &',
-  titleHighlight: 'Design.',
-  videoBackground: '/videos/engineering-rd-bg.mp4',
-  description: 'Design what matters. Build what wins.',
-  fullDescription: (
-    <div className="space-y-4">
-      <p className="font-light tracking-tight leading-snug opacity-80">
-        Kangqore helps organizations define better products, design stronger user experiences, and turn ideas into execution-ready outcomes.
-      </p>
-    </div>
-  ),
-  image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&q=80',
-  primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
-  secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
-
+  heroSection: <ProductStrategyBIDSPage />,
+  hideOverview: true,
+  capabilities: [],
+  trustPillars: [],
+  whyKangqore: [],
+  industries: [],
+  technologies: [],
+  customFAQs: [],
+  finalCtaSection: <></>,
+  hideEqoreCTA: true,
   hideGenericMidPageCta: true,
   hideGenericFaq: true,
-
-  stats: [
-    { value: 'Define', label: 'Stronger product direction & value clarity', color: 'text-cyan-400' },
-    { value: 'Design', label: 'Smarter user journeys & digital experiences', color: 'text-blue-400' },
-    { value: 'Accelerate', label: 'Concept-to-launch speed', color: 'text-emerald-400' },
-    { value: 'Scale', label: 'System adoption & maturity', color: 'text-purple-400' },
-  ],
-
-  ctaTitle: 'Ready to define a sharper product and a stronger experience?',
-  ctaDescription: "Let's shape the right product strategy, design the right experience, and create the execution-ready foundation needed to move faster with confidence.",
-  ctaSecondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
-
-  trustStripText: 'Helping enterprises, digital product teams, and growth-stage businesses shape better products, stronger experiences, and clearer paths from idea to launch.',
-
-  highFidelity: {
-    narrative: {
-      badge: 'UX_STRAT :: 2026',
-      titleLine1: 'Product Strategy &',
-      titleHighlight: 'Design.',
-      titleLine2: '',
-      description: 'Kangqore combines strategic product thinking with execution realism. We help organizations move from customer understanding to product clarity to design systems and launch-ready direction — without breaking continuity between strategy, design, and build.',
-      bottleneckLabel: 'The Challenge',
-      bottleneckText: 'A product can be engineered well and still fail if the strategy and experience are weak.',
-      requirementLabel: 'The Solution',
-      requirementText: 'Kangqore helps businesses connect business intent, user needs, and execution realities — so product teams make better choices earlier and build with greater confidence.',
-      image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80',
-      statusLabel: 'Engagement Tier',
-      statusValue: 'STRATEGIC',
-    },
-    philosophy: {
-      icon: <Lightbulb className="w-7 h-7 text-gray-900 dark:text-white" />,
-      title: 'Design What Matters.',
-      titleHighlight: 'Build What Wins.',
-      description: 'We unify business intent, user needs, and execution realities so you can build with greater confidence.',
-      pills: ['Strategy', 'Research', 'Design', 'Prototypes'],
-      features: [
-        { title: 'Strategy', label: 'Product Strategy', icon: <Target className="w-5 h-5 text-gray-400" />, content: 'Define where the product should go, why it matters, and how it should create value through strategic prioritization.' },
-        { title: 'Design', label: 'Product & UX/UI Design', icon: <LayoutTemplate className="w-5 h-5 text-gray-400" />, content: 'Shape experiences that are intuitive, usable, and accessible, aligned perfectly with your brand and business goals.' },
-        { title: 'Prototyping', label: 'Innovation & Rapid Prototyping', icon: <Zap className="w-5 h-5 text-gray-400" />, content: 'Bring ideas to life quickly so teams can test, refine, and align on direction before committing to full build.' },
-        { title: 'Systems', label: 'Design Systems', icon: <Layers className="w-5 h-5 text-gray-400" />, content: 'Create a scalable experience foundation that improves consistency, speed, and governance across all touchpoints.' },
-      ],
-    },
-    matrix: {
-      engineId: 'Engine :: Strat_V1',
-      title: 'Our Execution Matrix.',
-      subtext: 'A connected system for moving from customer understanding to product clarity to launch-ready direction.',
-      layers: [],
-    },
-    schematic: {
-      titleLine1: 'Strategic Vision. ',
-      titleHighlight: 'Flawless Experience.',
-      description: 'Your product strategy should connect user needs with execution realities.',
-    },
-  },
-
-  capabilitiesTitle: 'Our Capabilities.',
-  capabilitiesDescription: "Kangqore's design enablement capabilities are structured to help enterprises build cohesive, flawless, and scalable digital experiences from the ground up.",
-  capabilities: [
-    { title: 'Product Strategy', description: 'Start with strategy to validate product-market fit, accelerate transformation, and ensure long-term success. We&rsquo;ll partner to uncover growth opportunities, align products with business goals, and create tailored, user-validated plans.', bgImage: '/images/capabilities/business-strategy.png', items: ['Uncover expansion opportunities and growth levers', 'Align product-engineering pods with business North Stars', 'Create tailored, user-validated execution roadmaps', "Strategic prioritization of 'Must-Win' product features"], micro: 'Aligning product vision with enterprise growth levers.' },
-    { title: 'Product and UX/UI Design', description: 'User wireframes, user flows, sitemaps, component libraries, and more to design the product experience. This includes crafting the structure, look, and functionality, while considering the medium, brand, accessibility, and best practices.', bgImage: '/images/capabilities/ux-design.png', items: ['High-fidelity user journeys and sitemap orchestration', 'Unified interaction systems for multi-platform cohesion', 'Inclusive, accessibility-first design architectures', 'Performance-optimized UI components for rapid adoption'], micro: 'Designing experiences that naturally convert.' },
-    { title: 'Design Systems', description: 'Create a single source of truth to help your team and partners deliver seamless, consistent digital experiences at every touchpoint. Your design system could contain patterns, components, guidelines, and other core UX and brand elements.', bgImage: '/images/capabilities/ux-design.png', items: ['Scalable pattern libraries and tokenized UI governance', 'Reusable component architectures for engineering velocity', 'Brand-aligned style guides and global experience standards', 'Cross-functional documentation for design-build continuity'], micro: 'Scaling foundations for global digital consistency.' },
-    { title: 'Innovation and Rapid Prototyping', description: 'Refine concepts, reduce risks, and bring market-ready products to users faster. Together, we&rsquo;ll build a realistic, limited-functionality representation of your proposed experience for testing, iteration, socialization, and spec creation.', bgImage: '/images/capabilities/software-engineering.png', items: ['Realistic, limited-functionality models for early testing', 'Stakeholder socialization and specular concept creation', 'High-velocity iteration loops to reduce build uncertainty', 'Technical de-risking through functional proof-of-concepts'], micro: 'Testing market-readiness before heavy build investment.' },
-    { title: 'User and Market Research', description: 'Gather data, then turn it into insights and actionable plans. Using quantitative, qualitative, and algorithmic techniques, we help you deeply understand your market and audience to drive product-market fit, growth, and user satisfaction.', bgImage: '/images/capabilities/business-strategy.png', items: ['Algorithmic audience profiling and market trend synthesis', 'In-depth usability testing and behavioral signal analysis', 'Competitive benchmarking and category-defining research', 'Clear, data-backed recommendations for product evolution'], micro: 'Evidence-led decisions for category dominance.' },
-    { title: 'Product Launch and Adoption', description: "Just because you build it doesn't mean users will come. Prepare for a smooth launch and drive adoption by partnering with Kangqore on change management and strategic launch plans that consider your users, culture, constraints, and more.", bgImage: '/images/capabilities/business-strategy.png', items: ['Strategic product launch and adoption roadmaps', 'Experience continuity planning across phased rollout', 'Human-centric change management and user-enablement', 'Adoption monitoring and post-launch experience tuning'], micro: 'Ensuring real-world success at the moment of launch.' },
-    { title: 'Modern Product Digital Maturity Assessment', description: 'Lower costs, drive innovation, and build thriving teams with our Modern Product Digital Maturity Assessment. We&rsquo;ll help spot opportunities and enhance execution across product, design, and tech through team assessments and upskilling.', bgImage: '/images/capabilities/business-strategy.png', items: ['Deep-dive assessment of product, design, and tech stacks', 'Capability gap identification and talent uplift roadmaps', 'Team-level assessment for innovation-readiness', 'Roadmaps to reduce operational drag and improve velocity'], micro: 'Unlocking enterprise velocity through maturity review.' },
-    { title: 'Strategic Design-to-Build Alignment', description: 'Architect the handoff between design vision and engineering execution to ensure what is designed is what is shipped. We close the gap between strategy and code to ensure no loss in intent during technical implementation.', bgImage: '/images/capabilities/ux-design.png', items: ['Collaborative design-engineering pods for continuity', 'Strategy-led technical feasibility assessments', 'Seamless asset handoff and implementation governance', 'Execution confidence through strategy-to-code alignment'], micro: 'Bridging the gap between vision and shipped code.' },
-  ],
-
-  trustPillars: [
-    { title: 'Data-driven over opinion-led', tag: 'Intelligence', description: 'Transform qualitative and quantitative insights into hardened product strategy frameworks.' },
-    { title: 'Flawless across every touchpoint', tag: 'Consistency', description: 'Ensure the user experience remains intuitively perfect across web, mobile, and emerging interfaces.' },
-    { title: 'Built to scale effortlessly', tag: 'Architecture', description: 'Leverage robust design systems that allow component reuse and rapid UI evolution.' },
-    { title: 'Validation before heavy engineering', tag: 'Prototyping', description: 'Test interactive, high-fidelity prototypes to confirm market resonance before writing code.' },
-    { title: 'Aligned with business outcomes', tag: 'Strategy', description: 'Design decisions are tightly coupled with the core metrics that drive your business forward.' },
-    { title: 'Accelerated time-to-value', tag: 'Velocity', description: 'Streamline the gap between concept and launch with optimized design-to-development workflows.' },
-  ],
-
-  whyKangqore: [
-    { title: 'Integrated Strategic Design and Development', description: 'We connect product thinking, experience design, and delivery planning so decisions stay coherent from concept to execution.' },
-    { title: 'Concierge Thinking, Scalable Delivery', description: 'You get high-touch collaboration with a model designed to support enterprise speed, consistency, and growth.' },
-    { title: 'Organizational Enablement', description: 'We work with your team, not around it — helping improve product thinking, design maturity, and internal capability through collaboration.' },
-  ],
-
-  industriesTitle: 'Where Experience Strategy Adds Most Value',
-  industriesDescription: 'Product Strategy & Design is relevant across new products, experience redesigns, and large-scale portfolios.',
-  industries: [
-    { name: 'New Digital Products', description: 'Define the right opportunity, validate direction, and shape a usable, differentiated first experience.' },
-    { name: 'Product Modernization', description: 'Reimagine outdated product journeys, interface systems, and design logic for modern expectations.' },
-    { name: 'Growth-Stage Product Scaling', description: 'Build reusable design foundations and sharper roadmap decisions as product complexity grows.' },
-    { name: 'Enterprise Experience Transformation', description: 'Improve customer and internal digital experiences through stronger strategy, design governance, and adoption thinking.' },
-    { name: 'Innovation Programs', description: 'Use rapid prototyping and research to test new ideas before full commitment.' },
-    { name: 'Platform & Multi-Touchpoint Ecosystems', description: 'Create consistency across products, channels, and customer interaction layers.' },
-  ],
-
-  technologiesTitle: 'Tools & Technologies for Strategic Design.',
-  technologiesDescription: 'We leverage industry-leading design, prototyping, and research tools to execute high-fidelity product strategy and seamless engineering handoffs.',
-  technologies: [
-    { category: 'Strategy & Research', items: ['Qualitative & Quantitative Tools', 'Insight Synthesis', 'Market Analysis', 'Opportunity Mapping'] },
-    { category: 'Design & Prototyping', items: ['Figma', 'Sketch', 'Rapid Prototyping', 'Concept Modeling'] },
-    { category: 'Systems & Governance', items: ['Design Systems', 'Component Libraries', 'Standards', 'UI Governance'] },
-    { category: 'Launch & Maturity', items: ['Launch Planning', 'Adoption Tracking', 'Product Maturity Assessment', 'Execution Review'] },
-  ],
-
-  customFAQs: [
-    { question: 'How are product strategy and experience design connected?', answer: 'Product strategy defines what should be built, why it matters, and how it should create value. Experience design turns that direction into journeys, interactions, and product behavior users can actually understand and adopt.' },
-    { question: 'What does Kangqore include in this service?', answer: 'It can include product strategy, UX/UI design, design systems, rapid prototyping, launch readiness, product maturity assessments, and user and market research.' },
-    { question: 'Do you only work on early-stage products?', answer: 'No. This service is relevant across new products, growth-stage products, experience redesigns, modernization initiatives, and large-scale enterprise product portfolios.' },
-    { question: 'Can you support both strategy and downstream execution?', answer: 'Yes. The source page&rsquo;s strongest idea is the connection between design and build; Kangqore keeps that same continuity and extends it into execution-ready delivery planning.' },
-    { question: 'What is the role of research in this engagement?', answer: 'Research helps validate assumptions, reveal customer needs, understand the market, and improve product decisions with stronger evidence.' },
-    { question: 'What is a product digital maturity assessment?', answer: 'It is a structured way to evaluate how well your teams execute across product, design, and technology — and where capability or process improvements can unlock better outcomes.' },
-    { question: 'How does this help launch and adoption?', answer: 'Because designing a product is not enough. Products need launch planning, user understanding, and adoption thinking to succeed in real-world environments.' },
-  ],
-
-  preMatrixSection: psedPreMatrixSection,
-  postCapabilitiesSections: <ProductStrategyAnimatedSections />,
-  postFAQSections: psedExecutionEcosystem,
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════

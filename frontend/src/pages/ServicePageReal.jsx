@@ -152,13 +152,7 @@ const ServicePage = () => {
     </Helmet>
   );
 
-  const accentBand = (
-    <div
-      className="h-1 w-full"
-      style={{ backgroundColor: dept.accentColor }}
-      aria-hidden="true"
-    />
-  );
+
 
   // ─── Premium path ──────────────────────────────────────────────────────────
   // When a slug is registered in PREMIUM_REGISTRY, render via the lifted
@@ -196,7 +190,6 @@ const ServicePage = () => {
     return (
       <>
         {canonicalHelmet}
-        {accentBand}
         <ServicePageTemplate
           service={premiumService}
           department={premiumDept}
@@ -210,7 +203,6 @@ const ServicePage = () => {
   return (
     <>
       {canonicalHelmet}
-      {accentBand}
 
       <article className="max-w-4xl mx-auto px-6 py-12">
         <Breadcrumb
@@ -237,13 +229,21 @@ const ServicePage = () => {
           <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
             {svc.shortDescription}
           </p>
-          <div className="mt-6">
+          <div className="mt-6 flex flex-wrap gap-3">
             <Link
               to="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-white font-medium hover:opacity-90 transition-opacity"
               style={{ backgroundColor: dept.accentColor }}
             >
-              Talk to an expert
+              Schedule Your 30-min Discovery Call
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to={`/departments/${dept.slug}`}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-md border font-medium hover:opacity-80 transition-opacity"
+              style={{ borderColor: dept.accentColor, color: dept.accentColor }}
+            >
+              Explore Our Capabilities
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -335,20 +335,30 @@ const ServicePage = () => {
         {/* FINAL CTA */}
         <section className="mt-16 pt-10 border-t border-gray-200 dark:border-gray-800 text-center">
           <h2 className="text-2xl font-bold mb-3">
-            Talk to an expert about {svc.name}
+            Ready to get started with {svc.name}?
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
             Book a 30-minute call with a {dept.shortName} practice lead.
             Fixed agenda. No sales pitch.
           </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-white font-semibold hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: dept.accentColor }}
-          >
-            Book a call
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-white font-semibold hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: dept.accentColor }}
+            >
+              Schedule Your 30-min Discovery Call
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to={`/departments/${dept.slug}`}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-md border font-semibold hover:opacity-80 transition-opacity"
+              style={{ borderColor: dept.accentColor, color: dept.accentColor }}
+            >
+              Explore Our Capabilities
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </section>
       </article>
     </>

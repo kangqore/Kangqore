@@ -1,19 +1,21 @@
+// Standalone BIDS-style render for /services/product-strategy-experience-design
+// Injected as heroSection into ServicePageTemplate — all other template sections
+// are zeroed out so only this component renders. Uses gsap.context() scoped to
+// sectionRef for safe cleanup during navigation.
+
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Rocket, Zap, Target, Layers, Search, BarChart3,
-  LayoutTemplate, MonitorSmartphone, Server, CalendarDays,
-  CheckCircle2, Cpu, Radar, ArrowRight, ChevronRight,
-  TrendingUp, Activity, Users, ShieldCheck, Workflow,
-  Lightbulb, LineChart, Shield, Gauge, Palette,
-  Compass, BrainCircuit, Package, Settings, Cloud,
-  Briefcase, RefreshCw, ChevronDown
+  Rocket, Zap, Target, Layers, Search, Palette,
+  Cpu, Radar, ArrowRight, ChevronRight,
+  TrendingUp, Users, Compass, BrainCircuit,
+  CheckCircle2, ChevronDown
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
-import VisualBackground from '../../../components/VisualBackground';
-import SEO from '../../../components/SEO';
+import ConciergeSection from '../../concierge/ConciergeSection';
+import PSEDRuler from './PSEDRuler';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,76 +43,36 @@ const TypewriterText = ({ text, start = true, delay = 30 }) => {
 // ─── DATA ──────────────────────────────────────────────────────────────────────
 
 const capabilities = [
-  {
-    n: '01', color: '#22D3EE',
-    title: 'Product Strategy',
-    desc: 'Start with strategy to validate product-market fit, accelerate transformation, and ensure long-term success. We partner to uncover growth opportunities, align products with business goals, and create tailored, user-validated plans.',
-    items: ['Uncover expansion opportunities and growth levers', 'Align product-engineering pods with business North Stars', 'Create tailored, user-validated execution roadmaps', 'Strategic prioritization of "Must-Win" product features'],
-  },
-  {
-    n: '02', color: '#60A5FA',
-    title: 'Product and UX/UI Design',
-    desc: 'User wireframes, user flows, sitemaps, component libraries, and more to design the product experience — crafting the structure, look, and functionality while considering the medium, brand, accessibility, and best practices.',
-    items: ['High-fidelity user journeys and sitemap orchestration', 'Unified interaction systems for multi-platform cohesion', 'Inclusive, accessibility-first design architectures', 'Performance-optimized UI components for rapid adoption'],
-  },
-  {
-    n: '03', color: '#A78BFA',
-    title: 'Design Systems',
-    desc: 'Create a single source of truth to help your team and partners deliver seamless, consistent digital experiences at every touchpoint — patterns, components, guidelines, and core UX and brand elements.',
-    items: ['Scalable pattern libraries and tokenized UI governance', 'Reusable component architectures for engineering velocity', 'Brand-aligned style guides and global experience standards', 'Cross-functional documentation for design-build continuity'],
-  },
-  {
-    n: '04', color: '#FB923C',
-    title: 'Innovation and Rapid Prototyping',
-    desc: 'Refine concepts, reduce risks, and bring market-ready products to users faster. We build realistic, limited-functionality representations of your proposed experience for testing, iteration, socialization, and spec creation.',
-    items: ['Realistic, limited-functionality models for early testing', 'Stakeholder socialization and specular concept creation', 'High-velocity iteration loops to reduce build uncertainty', 'Technical de-risking through functional proof-of-concepts'],
-  },
-  {
-    n: '05', color: '#34D399',
-    title: 'User and Market Research',
-    desc: 'Gather data, then turn it into insights and actionable plans. Using quantitative, qualitative, and algorithmic techniques, we help you understand your market and audience to drive product-market fit, growth, and user satisfaction.',
-    items: ['Algorithmic audience profiling and market trend synthesis', 'In-depth usability testing and behavioral signal analysis', 'Competitive benchmarking and category-defining research', 'Clear, data-backed recommendations for product evolution'],
-  },
-  {
-    n: '06', color: '#F472B6',
-    title: 'Product Launch and Adoption',
-    desc: "Just because you build it doesn't mean users will come. Prepare for a smooth launch and drive adoption by partnering with Kangqore on change management and strategic launch plans that consider your users, culture, and constraints.",
-    items: ['Strategic product launch and adoption roadmaps', 'Experience continuity planning across phased rollout', 'Human-centric change management and user-enablement', 'Adoption monitoring and post-launch experience tuning'],
-  },
-  {
-    n: '07', color: '#FDE047',
-    title: 'Modern Product Digital Maturity Assessment',
-    desc: 'Lower costs, drive innovation, and build thriving teams with our Modern Product Digital Maturity Assessment. We help spot opportunities and enhance execution across product, design, and tech through team assessments and upskilling.',
-    items: ['Deep-dive assessment of product, design, and tech stacks', 'Capability gap identification and talent uplift roadmaps', 'Team-level assessment for innovation-readiness', 'Roadmaps to reduce operational drag and improve velocity'],
-  },
-  {
-    n: '08', color: '#E8614A',
-    title: 'Strategic Design-to-Build Alignment',
-    desc: 'Architect the handoff between design vision and engineering execution to ensure what is designed is what is shipped. We close the gap between strategy and code to ensure no loss in intent during technical implementation.',
-    items: ['Collaborative design-engineering pods for continuity', 'Strategy-led technical feasibility assessments', 'Seamless asset handoff and implementation governance', 'Execution confidence through strategy-to-code alignment'],
-  },
+  { n: '01', color: '#22D3EE', title: 'Product Strategy', desc: 'Start with strategy to validate product-market fit, accelerate transformation, and ensure long-term success. We partner to uncover growth opportunities, align products with business goals, and create tailored, user-validated plans.', items: ['Uncover expansion opportunities and growth levers', 'Align product-engineering pods with business North Stars', 'Create tailored, user-validated execution roadmaps', "Strategic prioritization of 'Must-Win' product features"] },
+  { n: '02', color: '#60A5FA', title: 'Product and UX/UI Design', desc: 'User wireframes, user flows, sitemaps, component libraries, and more to design the product experience — crafting the structure, look, and functionality while considering the medium, brand, accessibility, and best practices.', items: ['High-fidelity user journeys and sitemap orchestration', 'Unified interaction systems for multi-platform cohesion', 'Inclusive, accessibility-first design architectures', 'Performance-optimized UI components for rapid adoption'] },
+  { n: '03', color: '#A78BFA', title: 'Design Systems', desc: 'Create a single source of truth to help your team and partners deliver seamless, consistent digital experiences at every touchpoint — patterns, components, guidelines, and core UX and brand elements.', items: ['Scalable pattern libraries and tokenized UI governance', 'Reusable component architectures for engineering velocity', 'Brand-aligned style guides and global experience standards', 'Cross-functional documentation for design-build continuity'] },
+  { n: '04', color: '#FB923C', title: 'Innovation and Rapid Prototyping', desc: 'Refine concepts, reduce risks, and bring market-ready products to users faster. We build realistic, limited-functionality representations of your proposed experience for testing, iteration, socialization, and spec creation.', items: ['Realistic, limited-functionality models for early testing', 'Stakeholder socialization and specular concept creation', 'High-velocity iteration loops to reduce build uncertainty', 'Technical de-risking through functional proof-of-concepts'] },
+  { n: '05', color: '#34D399', title: 'User and Market Research', desc: 'Gather data, then turn it into insights and actionable plans. Using quantitative, qualitative, and algorithmic techniques, we help you understand your market and audience to drive product-market fit, growth, and user satisfaction.', items: ['Algorithmic audience profiling and market trend synthesis', 'In-depth usability testing and behavioral signal analysis', 'Competitive benchmarking and category-defining research', 'Clear, data-backed recommendations for product evolution'] },
+  { n: '06', color: '#F472B6', title: 'Product Launch and Adoption', desc: "Just because you build it doesn't mean users will come. Prepare for a smooth launch and drive adoption by partnering with Kangqore on change management and strategic launch plans that consider your users, culture, and constraints.", items: ['Strategic product launch and adoption roadmaps', 'Experience continuity planning across phased rollout', 'Human-centric change management and user-enablement', 'Adoption monitoring and post-launch experience tuning'] },
+  { n: '07', color: '#FDE047', title: 'Modern Product Digital Maturity Assessment', desc: 'Lower costs, drive innovation, and build thriving teams with our Modern Product Digital Maturity Assessment. We help spot opportunities and enhance execution across product, design, and tech through team assessments and upskilling.', items: ['Deep-dive assessment of product, design, and tech stacks', 'Capability gap identification and talent uplift roadmaps', 'Team-level assessment for innovation-readiness', 'Roadmaps to reduce operational drag and improve velocity'] },
+  { n: '08', color: '#E8614A', title: 'Strategic Design-to-Build Alignment', desc: 'Architect the handoff between design vision and engineering execution to ensure what is designed is what is shipped. We close the gap between strategy and code to ensure no loss in intent during technical implementation.', items: ['Collaborative design-engineering pods for continuity', 'Strategy-led technical feasibility assessments', 'Seamless asset handoff and implementation governance', 'Execution confidence through strategy-to-code alignment'] },
 ];
 
 const journeyPhases = [
-  { n: '01', phase: 'DISCOVER', color: '#94A3B8', title: 'Understand Ambition', desc: 'Understand business goals, customer needs, market context, and product ambition.' },
-  { n: '02', phase: 'FRAME', color: '#60A5FA', title: 'Define Opportunity', desc: 'Define the opportunity, priorities, journeys, solution direction, and experience principles.', kangqore: true },
-  { n: '03', phase: 'DESIGN', color: '#2564EA', title: 'Create Systems', desc: 'Create prototypes, UX/UI systems, design language, and reusable patterns for execution.', kangqore: true },
-  { n: '04', phase: 'ACTIVATE', color: '#10B981', title: 'Launch & Evolve', desc: 'Prepare for launch, adoption, design-to-engineering continuity, and next-phase evolution.', kangqore: true },
+  { n: '01', phase: 'DISCOVER', color: '#94A3B8', title: 'Understand Ambition', desc: 'Understand business goals, customer needs, market context, and product ambition.', Icon: Search },
+  { n: '02', phase: 'FRAME', color: '#60A5FA', title: 'Define Opportunity', desc: 'Define the opportunity, priorities, journeys, solution direction, and experience principles.', kangqore: true, Icon: Target },
+  { n: '03', phase: 'DESIGN', color: '#2564EA', title: 'Create Systems', desc: 'Create prototypes, UX/UI systems, design language, and reusable patterns for execution.', kangqore: true, Icon: Palette },
+  { n: '04', phase: 'ACTIVATE', color: '#10B981', title: 'Launch & Evolve', desc: 'Prepare for launch, adoption, design-to-engineering continuity, and next-phase evolution.', kangqore: true, Icon: Rocket },
 ];
 
 const trustPillars = [
-  { tag: 'Intelligence', title: 'Data-driven over opinion-led', desc: 'Transform qualitative and quantitative insights into hardened product strategy frameworks.' },
-  { tag: 'Consistency', title: 'Flawless across every touchpoint', desc: 'Ensure the user experience remains intuitively perfect across web, mobile, and emerging interfaces.' },
-  { tag: 'Architecture', title: 'Built to scale effortlessly', desc: 'Leverage robust design systems that allow component reuse and rapid UI evolution.' },
-  { tag: 'Prototyping', title: 'Validation before heavy engineering', desc: 'Test interactive, high-fidelity prototypes to confirm market resonance before writing code.' },
-  { tag: 'Strategy', title: 'Aligned with business outcomes', desc: 'Design decisions are tightly coupled with the core metrics that drive your business forward.' },
-  { tag: 'Velocity', title: 'Accelerated time-to-value', desc: 'Streamline the gap between concept and launch with optimized design-to-development workflows.' },
+  { tag: 'Intelligence', color: '#22D3EE', title: 'Data-driven over opinion-led', desc: 'Transform qualitative and quantitative insights into hardened product strategy frameworks.' },
+  { tag: 'Consistency', color: '#60A5FA', title: 'Flawless across every touchpoint', desc: 'Ensure the user experience remains intuitively perfect across web, mobile, and emerging interfaces.' },
+  { tag: 'Architecture', color: '#A78BFA', title: 'Built to scale effortlessly', desc: 'Leverage robust design systems that allow component reuse and rapid UI evolution.' },
+  { tag: 'Prototyping', color: '#FB923C', title: 'Validation before heavy engineering', desc: 'Test interactive, high-fidelity prototypes to confirm market resonance before writing code.' },
+  { tag: 'Strategy', color: '#34D399', title: 'Aligned with business outcomes', desc: 'Design decisions are tightly coupled with the core metrics that drive your business forward.' },
+  { tag: 'Velocity', color: '#F472B6', title: 'Accelerated time-to-value', desc: 'Streamline the gap between concept and launch with optimized design-to-development workflows.' },
 ];
 
 const whyKangqore = [
-  { icon: Layers, title: 'Integrated Strategic Design and Development', desc: 'We connect product thinking, experience design, and delivery planning so decisions stay coherent from concept to execution.' },
-  { icon: Users, title: 'Concierge Thinking, Scalable Delivery', desc: 'You get high-touch collaboration with a model designed to support enterprise speed, consistency, and growth.' },
-  { icon: TrendingUp, title: 'Organizational Enablement', desc: 'We work with your team, not around it — helping improve product thinking, design maturity, and internal capability through collaboration.' },
+  { Icon: Layers, color: '#22D3EE', title: 'Integrated Strategic Design and Development', desc: 'We connect product thinking, experience design, and delivery planning so decisions stay coherent from concept to execution.' },
+  { Icon: Users, color: '#60A5FA', title: 'Concierge Thinking, Scalable Delivery', desc: 'You get high-touch collaboration with a model designed to support enterprise speed, consistency, and growth.' },
+  { Icon: TrendingUp, color: '#34D399', title: 'Organizational Enablement', desc: 'We work with your team, not around it — helping improve product thinking, design maturity, and internal capability through collaboration.' },
 ];
 
 const industries = [
@@ -133,7 +95,7 @@ const faqs = [
   { q: 'How are product strategy and experience design connected?', a: 'Product strategy defines what should be built, why it matters, and how it should create value. Experience design turns that direction into journeys, interactions, and product behavior users can actually understand and adopt.' },
   { q: 'What does Kangqore include in this service?', a: 'It can include product strategy, UX/UI design, design systems, rapid prototyping, launch readiness, product maturity assessments, and user and market research.' },
   { q: 'Do you only work on early-stage products?', a: 'No. This service is relevant across new products, growth-stage products, experience redesigns, modernization initiatives, and large-scale enterprise product portfolios.' },
-  { q: 'Can you support both strategy and downstream execution?', a: "Yes. Kangqore keeps continuity from design vision through execution-ready delivery planning — strategy, design, and build stay coherent without translation loss." },
+  { q: 'Can you support both strategy and downstream execution?', a: 'Yes. Kangqore keeps continuity from design vision through execution-ready delivery planning — strategy, design, and build stay coherent without translation loss.' },
   { q: 'What is the role of research in this engagement?', a: 'Research helps validate assumptions, reveal customer needs, understand the market, and improve product decisions with stronger evidence.' },
   { q: 'What is a product digital maturity assessment?', a: 'It is a structured way to evaluate how well your teams execute across product, design, and technology — and where capability or process improvements can unlock better outcomes.' },
   { q: 'How does this help launch and adoption?', a: 'Because designing a product is not enough. Products need launch planning, user understanding, and adoption thinking to succeed in real-world environments.' },
@@ -147,172 +109,214 @@ const differentiators = [
   { num: 5, title: 'Maturity Assessments', text: 'We help identify where teams can improve their product, design, and technology execution.' },
 ];
 
+const HERO_CAPS = [
+  { label: 'Product Strategy',          color: '#22D3EE' },
+  { label: 'UX / UI Design',            color: '#60A5FA' },
+  { label: 'Design Systems',            color: '#A78BFA' },
+  { label: 'Rapid Prototyping',         color: '#FB923C' },
+  { label: 'User & Market Research',    color: '#34D399' },
+  { label: 'Launch & Adoption',         color: '#F472B6' },
+  { label: 'Maturity Assessment',       color: '#FDE047' },
+  { label: 'Design-to-Build Alignment', color: '#E8614A' },
+];
+const HERO_STRIP = [...HERO_CAPS, ...HERO_CAPS, ...HERO_CAPS];
+
 const relatedServices = [
-  { name: 'Digital Process Automation', link: '/services/digital-process-automation', icon: Compass, desc: 'Automate complex operational workflows via scaled platforms.' },
-  { name: 'Product Digital Engineering', link: '/services/digital-engineering/product-digital-engineering', icon: Cpu, desc: 'Enterprise-grade platform development at scale.' },
-  { name: 'MVP Acceleration', link: '/services/digital-engineering/mvp-acceleration', icon: Server, desc: 'Rapid velocity engineering and scale-ready launch models.' },
+  { name: 'Digital Process Automation', link: '/services/digital-process-automation', Icon: Compass, desc: 'Automate complex operational workflows via scaled platforms.' },
+  { name: 'Product Digital Engineering', link: '/services/product-digital-engineering', Icon: Cpu, desc: 'Enterprise-grade platform development at scale.' },
+  { name: 'MVP Acceleration', link: '/services/mvp-acceleration', Icon: Rocket, desc: 'Rapid velocity engineering and scale-ready launch models.' },
 ];
 
-// ─── PAGE ──────────────────────────────────────────────────────────────────────
-export default function ProductStrategyExperienceDesign() {
-  const [activeFeature, setActiveFeature]   = useState(0);
-  const [openFaq, setOpenFaq]               = useState(null);
+const phaseGradients = ['from-slate-600 to-slate-800', 'from-blue-500 to-blue-700', 'from-brand-blue to-indigo-600', 'from-emerald-500 to-emerald-700'];
+
+// ─── COMPONENT ─────────────────────────────────────────────────────────────────
+export default function ProductStrategyBIDSPage() {
+  const [activeFeature, setActiveFeature]     = useState(0);
+  const [openFaq, setOpenFaq]                 = useState(null);
   const [activeCapability, setActiveCapability] = useState(0);
 
-  // Scroll animation refs
-  const [heroRef,     heroVisible]     = useScrollAnimation({ once: true, threshold: 0.1 });
-  const [defRef,      defVisible]      = useScrollAnimation({ once: true, threshold: 0.1 });
-  const [phaseRef,    phaseVisible]    = useScrollAnimation({ once: true, threshold: 0.05 });
-  const [capRef,      capVisible]      = useScrollAnimation({ once: true, threshold: 0.05 });
-  const [pillarsRef,  pillarsVisible]  = useScrollAnimation({ once: true, threshold: 0.05 });
-  const [whyRef,      whyVisible]      = useScrollAnimation({ once: true, threshold: 0.1 });
-  const [indRef,      indVisible]      = useScrollAnimation({ once: true, threshold: 0.1 });
-  const [techRef,     techVisible]     = useScrollAnimation({ once: true, threshold: 0.1 });
-  const [faqRef,      faqVisible]      = useScrollAnimation({ once: true, threshold: 0.1 });
-  const [ctaRef,      ctaVisible]      = useScrollAnimation({ once: true, threshold: 0.2 });
+  const [defRef,     defVisible]     = useScrollAnimation({ once: true, threshold: 0.1 });
+  const [phaseRef,   phaseVisible]   = useScrollAnimation({ once: true, threshold: 0.05 });
+  const [capRef,     capVisible]     = useScrollAnimation({ once: true, threshold: 0.05 });
+  const [pillarsRef, pillarsVisible] = useScrollAnimation({ once: true, threshold: 0.05 });
+  const [whyRef,     whyVisible]     = useScrollAnimation({ once: true, threshold: 0.1 });
+  const [techRef,    techVisible]    = useScrollAnimation({ once: true, threshold: 0.1 });
+  const [faqRef,     faqVisible]     = useScrollAnimation({ once: true, threshold: 0.1 });
+  const [ctaRef,     ctaVisible]     = useScrollAnimation({ once: true, threshold: 0.2 });
 
-  // GSAP refs
+  const sectionRef       = useRef(null);
   const diamondRef       = useRef(null);
   const differentiatorRef = useRef(null);
   const journeyRef       = useRef(null);
 
   useEffect(() => {
-    // Diamond entrance
-    if (diamondRef.current) {
-      gsap.fromTo(diamondRef.current,
-        { opacity: 0, scale: 0.8, y: 60 },
-        { opacity: 1, scale: 1, y: 0, duration: 1.2, ease: 'power3.out',
-          scrollTrigger: { trigger: diamondRef.current, start: 'top 80%', once: true } }
-      );
-      gsap.to(diamondRef.current, {
-        y: -30, ease: 'none',
-        scrollTrigger: { trigger: diamondRef.current, start: 'top bottom', end: 'bottom top', scrub: 1 }
-      });
-    }
-
-    // Differentiators stagger
-    if (differentiatorRef.current) {
-      const items = differentiatorRef.current.querySelectorAll('.diff-item');
-      gsap.fromTo(items,
-        { opacity: 0, y: 30, x: -20 },
-        { opacity: 1, y: 0, x: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out',
-          scrollTrigger: { trigger: differentiatorRef.current, start: 'top 80%', once: true } }
-      );
-    }
-
-    // Journey timeline path animation
-    if (journeyRef.current) {
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: journeyRef.current, start: 'top 75%', end: 'bottom 60%', scrub: 0.8 },
-      });
-      const pathEl = journeyRef.current.querySelector('.journey-curve-path');
-      if (pathEl) {
-        const len = pathEl.getTotalLength();
-        gsap.set(pathEl, { strokeDasharray: len, strokeDashoffset: len });
-        tl.to(pathEl, { strokeDashoffset: 0, duration: 1, ease: 'none' }, 0);
+    const ctx = gsap.context(() => {
+      if (diamondRef.current) {
+        gsap.fromTo(diamondRef.current,
+          { opacity: 0, scale: 0.8, y: 60 },
+          { opacity: 1, scale: 1, y: 0, duration: 1.2, ease: 'power3.out',
+            scrollTrigger: { trigger: diamondRef.current, start: 'top 80%', once: true } }
+        );
+        gsap.to(diamondRef.current, {
+          y: -30, ease: 'none',
+          scrollTrigger: { trigger: diamondRef.current, start: 'top bottom', end: 'bottom top', scrub: 1 },
+        });
       }
-      const glowEl = journeyRef.current.querySelector('.journey-curve-glow');
-      if (glowEl) {
-        const gl = glowEl.getTotalLength();
-        gsap.set(glowEl, { strokeDasharray: gl, strokeDashoffset: gl });
-        tl.to(glowEl, { strokeDashoffset: 0, duration: 1, ease: 'none' }, 0);
+      if (differentiatorRef.current) {
+        const items = differentiatorRef.current.querySelectorAll('.diff-item');
+        gsap.fromTo(items,
+          { opacity: 0, y: 30, x: -20 },
+          { opacity: 1, y: 0, x: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out',
+            scrollTrigger: { trigger: differentiatorRef.current, start: 'top 80%', once: true } }
+        );
       }
-      const nodes = journeyRef.current.querySelectorAll('.journey-node');
-      nodes.forEach((node, i) => {
-        tl.fromTo(node, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.15, ease: 'back.out(2)' }, i * 0.2);
-      });
-      const cards = journeyRef.current.querySelectorAll('.journey-card');
-      gsap.fromTo(cards, { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out',
-          scrollTrigger: { trigger: journeyRef.current, start: 'top 60%', once: true } }
-      );
-    }
+      if (journeyRef.current) {
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: journeyRef.current, start: 'top 75%', end: 'bottom 60%', scrub: 0.8 },
+        });
+        const pathEl = journeyRef.current.querySelector('.psed-journey-path');
+        if (pathEl) {
+          const len = pathEl.getTotalLength();
+          gsap.set(pathEl, { strokeDasharray: len, strokeDashoffset: len });
+          tl.to(pathEl, { strokeDashoffset: 0, duration: 1, ease: 'none' }, 0);
+        }
+        const glowEl = journeyRef.current.querySelector('.psed-journey-glow');
+        if (glowEl) {
+          const gl = glowEl.getTotalLength();
+          gsap.set(glowEl, { strokeDasharray: gl, strokeDashoffset: gl });
+          tl.to(glowEl, { strokeDashoffset: 0, duration: 1, ease: 'none' }, 0);
+        }
+        const nodes = journeyRef.current.querySelectorAll('.psed-journey-node');
+        nodes.forEach((node, i) => {
+          tl.fromTo(node, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.15, ease: 'back.out(2)' }, i * 0.2);
+        });
+        const cards = journeyRef.current.querySelectorAll('.psed-journey-card');
+        gsap.fromTo(cards, { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out',
+            scrollTrigger: { trigger: journeyRef.current, start: 'top 60%', once: true } }
+        );
+      }
+    }, sectionRef);
 
-    return () => { ScrollTrigger.getAll().forEach(t => t.kill()); };
+    return () => ctx.revert();
   }, []);
 
+  const featureLabels = ['Product Strategy', 'Product & UX/UI Design', 'Innovation & Rapid Prototyping', 'Design Systems'];
+  const featureTitles = ['Strategy', 'Design', 'Prototyping', 'Systems'];
+  const featureContents = [
+    'Define where the product should go, why it matters, and how it should create value through strategic prioritization.',
+    'Shape experiences that are intuitive, usable, and accessible, aligned perfectly with your brand and business goals.',
+    'Bring ideas to life quickly so teams can test, refine, and align on direction before committing to full build.',
+    'Create a scalable experience foundation that improves consistency, speed, and governance across all touchpoints.',
+  ];
+  const featureMicros = [
+    'Aligning product vision with enterprise growth levers.',
+    'Designing experiences that naturally convert.',
+    'Testing market-readiness before heavy build investment.',
+    'Scaling foundations for global digital consistency.',
+  ];
+  const featureIcons = [Target, Palette, Zap, Layers];
+
+  const safeCapIdx = activeCapability >= 0 ? activeCapability : 0;
+
   return (
-    <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
-      <SEO
-        title="Product Strategy & Experience Design — Reimagine | Kangqore"
-        description="Kangqore helps organizations define better products, design stronger user experiences, and turn ideas into execution-ready outcomes. Design what matters. Build what wins."
-        keywords="product strategy, UX design, experience design, design systems, rapid prototyping, user research, product launch"
-        url="/services/product-strategy-experience-design"
-      />
+    <div ref={sectionRef} className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
+
+      <PSEDRuler />
 
       {/* ─────────────────── HERO ─────────────────── */}
-      <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
-        <section className="relative w-full h-full flex items-end overflow-hidden pb-36 rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#06090f]">
-          <VisualBackground forceDark={true} />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[500px] bg-brand-blue/20 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
+      <div id="psed-hero" className="p-2 h-screen" style={{ backgroundColor: 'var(--page-bg)' }}>
+        <div className="relative w-full h-full overflow-hidden rounded-xl text-white">
 
-          <div
-            ref={heroRef}
-            className={`relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-48 transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-          >
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12">
-                <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                <p className="text-xs font-bold tracking-[0.2em] text-cyan-300 uppercase">
-                  <TypewriterText text="Design what matters. Build what wins." start={heroVisible} />
+          {/* Full-bleed background image */}
+          <img
+            src="/images/happy_team.png"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+
+          {/* Left-to-right gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/10 pointer-events-none" />
+
+          {/* Top/bottom vignette */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60 pointer-events-none" />
+
+          {/* Hero content */}
+          <div className="relative z-10 h-full flex flex-col justify-center">
+            <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-16">
+              <div className="max-w-[62%] mt-[1cm]">
+
+                {/* Typewriter badge */}
+                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-10">
+                  <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
+                  <p className="text-xs font-bold tracking-[0.2em] text-cyan-300 uppercase">
+                    <TypewriterText text="Design what matters. Build what wins." start={true} />
+                  </p>
+                </div>
+
+                {/* H1 */}
+                <h1 className="text-[2.6rem] sm:text-[3.4rem] lg:text-[4.4rem] xl:text-[5.2rem] font-extrabold leading-[1.05] tracking-[-0.04em] text-white mb-5 drop-shadow-2xl">
+                  Product Strategy &{' '}
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">Design.</span>
+                </h1>
+
+                {/* Description */}
+                <p className="text-base sm:text-lg text-white/50 leading-[1.8] max-w-[520px] mb-12 font-medium">
+                  Kangqore helps organizations define better products, design stronger
+                  user experiences, and turn ideas into execution-ready outcomes.
                 </p>
-              </div>
 
-              <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white mb-8 drop-shadow-2xl">
-                Product Strategy &{' '}
-                <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">Design.</span>
-              </h1>
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <Link
+                    to="/contact"
+                    className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+                  >
+                    Talk To Our Experts
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+                  </Link>
+                  <a
+                    href="#psed-capabilities"
+                    className="group inline-flex items-center gap-2 px-6 py-4 text-white/55 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
+                  >
+                    Explore Capabilities
+                    <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
+                  </a>
+                </div>
 
-              <p className="text-lg sm:text-xl text-cyan-50/80 font-semibold tracking-normal mb-6">
-                Reimagine — Digital Experience Practice
-              </p>
-
-              <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
-                Kangqore helps organizations define better products, design stronger user experiences, and turn ideas into execution-ready outcomes.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center gap-5">
-                <Link
-                  to="/contact"
-                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_40px_rgba(37,100,234,0.2)] hover:shadow-[0_0_60px_rgba(37,100,234,0.4)] hover:bg-white/20"
-                >
-                  <span className="relative z-10 font-bold text-sm tracking-wide">Talk To Our Experts</span>
-                  <div className="relative w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center group-hover:bg-white transition-colors duration-300 z-10">
-                    <ArrowRight className="w-4 h-4 text-white group-hover:text-brand-blue" />
-                  </div>
-                </Link>
-                <a
-                  href="#capabilities"
-                  className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
-                >
-                  Explore Capabilities
-                  <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
-                </a>
               </div>
             </div>
           </div>
 
-          {/* Hero stats strip — mobile */}
-          <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
-            <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 gap-4">
-              {[
-                { value: 'Define', label: 'Stronger product direction' },
-                { value: 'Design', label: 'Smarter user journeys' },
-                { value: 'Accelerate', label: 'Concept-to-launch speed' },
-                { value: 'Scale', label: 'System adoption & maturity' },
-              ].map(s => (
-                <div key={s.label} className="text-center">
-                  <p className="text-xl font-black text-white drop-shadow-lg">{s.value}</p>
-                  <p className="text-[10px] text-cyan-400/80 font-bold tracking-widest uppercase mt-1">{s.label}</p>
+          {/* Capability strip — same visual line as "+" FAB */}
+          <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-white/[0.08] bg-black/50 backdrop-blur-xl overflow-hidden">
+            <div
+              className="flex items-center"
+              style={{ animation: 'psed-strip-scroll 32s linear infinite', width: 'max-content' }}
+            >
+              {HERO_STRIP.map((cap, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 px-7 py-4 border-r border-white/[0.07] flex-shrink-0 cursor-default group"
+                >
+                  <div
+                    className="w-1.5 h-1.5 rounded-full flex-shrink-0 transition-all duration-300 group-hover:scale-150"
+                    style={{ backgroundColor: cap.color, boxShadow: `0 0 6px ${cap.color}` }}
+                  />
+                  <span className="text-[11px] font-bold tracking-[0.12em] text-white/40 uppercase whitespace-nowrap group-hover:text-white/80 transition-colors duration-200">
+                    {cap.label}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
-        </section>
+
+        </div>
       </div>
 
-      {/* ─────────────────── CHALLENGE BRIDGE ─────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      {/* ─────────────────── DEFINITION / OVERVIEW ─────────────────── */}
+      <section id="psed-what" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div
           ref={defRef}
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -335,24 +339,16 @@ export default function ProductStrategyExperienceDesign() {
                 A product can be engineered well and still fail if the strategy and experience are weak.{' '}
                 <span className="text-white">Kangqore closes that gap.</span>
               </p>
-
-              {/* Stats strip */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-10 border-t border-white/[0.08]">
-                {[
-                  { value: '8', label: 'Capability\nAreas' },
-                  { value: '4', label: 'Engagement\nPhases' },
-                  { value: '6', label: 'Industry\nContexts' },
-                  { value: '4', label: 'Tool\nCategories' },
-                ].map(s => (
-                  <div key={s.label}>
-                    <p className="text-4xl font-black text-white tracking-tight mb-1">{s.value}</p>
-                    <p className="text-white/30 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{s.label}</p>
+                {[['8', 'Capability\nAreas'], ['4', 'Engagement\nPhases'], ['6', 'Industry\nContexts'], ['4', 'Tool\nCategories']].map(([v, l]) => (
+                  <div key={l}>
+                    <p className="text-4xl font-black text-white tracking-tight mb-1">{v}</p>
+                    <p className="text-white/30 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{l}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Right — challenge/solution cards */}
             <div className="space-y-4">
               <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
                 <p className="text-[9px] font-black tracking-[0.4em] text-amber-400/70 uppercase mb-4">THE CHALLENGE</p>
@@ -369,23 +365,18 @@ export default function ProductStrategyExperienceDesign() {
             </div>
           </div>
 
-          {/* Brand footer bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 px-8 bg-[#06090f] border border-white/[0.08] rounded-2xl mb-16">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
               <span className="text-white font-black text-lg tracking-tight">Product Strategy & Design</span>
               <span className="hidden sm:block w-px h-5 bg-white/10" />
               <span className="text-white/35 text-sm font-medium">Reimagine — Digital Experience Practice</span>
             </div>
-            <a
-              href="#capabilities"
-              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200 flex-shrink-0"
-            >
+            <a href="#psed-capabilities" className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200 flex-shrink-0">
               View All Capabilities
               <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
             </a>
           </div>
 
-          {/* Pull quote */}
           <div className="border-l-2 border-white/10 pl-8">
             <p className="text-xl sm:text-2xl font-black text-white/40 leading-snug max-w-4xl">
               "Design What Matters. Build What Wins."
@@ -428,34 +419,28 @@ export default function ProductStrategyExperienceDesign() {
             </div>
           </div>
 
-          {/* Feature accordion */}
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             <div className="space-y-2.5">
-              {[
-                { title: 'Strategy', label: 'Product Strategy', icon: Target, content: 'Define where the product should go, why it matters, and how it should create value through strategic prioritization.' },
-                { title: 'Design', label: 'Product & UX/UI Design', icon: Palette, content: 'Shape experiences that are intuitive, usable, and accessible, aligned perfectly with your brand and business goals.' },
-                { title: 'Prototyping', label: 'Innovation & Rapid Prototyping', icon: Zap, content: 'Bring ideas to life quickly so teams can test, refine, and align on direction before committing to full build.' },
-                { title: 'Systems', label: 'Design Systems', icon: Layers, content: 'Create a scalable experience foundation that improves consistency, speed, and governance across all touchpoints.' },
-              ].map((f, i) => {
+              {featureLabels.map((label, i) => {
                 const isOpen = activeFeature === i;
-                const Icon = f.icon;
+                const FeatureIcon = featureIcons[i];
                 return (
                   <div
-                    key={f.title}
+                    key={label}
                     onClick={() => setActiveFeature(isOpen ? -1 : i)}
                     className={`p-5 rounded-2xl border transition-all duration-200 cursor-pointer ${isOpen ? 'border-white/[0.14] bg-[#06090f]' : 'border-white/[0.07] bg-[#06090f]'}`}
                   >
                     <div className="flex items-center justify-between gap-4 mb-2">
                       <div className="flex items-center gap-4">
-                        <Icon className={`w-4 h-4 flex-shrink-0 transition-colors ${isOpen ? 'text-cyan-400' : 'text-white/25'}`} />
-                        <p className={`font-black text-base leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55'}`}>{f.title}</p>
+                        <FeatureIcon className={`w-4 h-4 flex-shrink-0 transition-colors ${isOpen ? 'text-cyan-400' : 'text-white/25'}`} />
+                        <p className={`font-black text-base leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55'}`}>{featureTitles[i]}</p>
                       </div>
                       <ChevronDown className={`w-4 h-4 text-white/20 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
                     </div>
                     {isOpen && (
                       <div className="pl-8 pt-1">
-                        <p className="text-[9px] font-black tracking-[0.3em] text-cyan-400/70 uppercase mb-2">{f.label}</p>
-                        <p className="text-white/55 text-sm font-medium leading-relaxed">{f.content}</p>
+                        <p className="text-[9px] font-black tracking-[0.3em] text-cyan-400/70 uppercase mb-2">{label}</p>
+                        <p className="text-white/55 text-sm font-medium leading-relaxed">{featureContents[i]}</p>
                       </div>
                     )}
                   </div>
@@ -463,28 +448,14 @@ export default function ProductStrategyExperienceDesign() {
               })}
             </div>
 
-            {/* Right — sticky active feature detail */}
             <div className="lg:sticky lg:top-8">
               <div className="p-8 rounded-2xl border border-white/[0.07] bg-[#06090f]">
                 <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase mb-6">DESIGN INTELLIGENCE PROFILE</p>
-                <p className="text-[10px] font-black tracking-widest uppercase mb-2 text-cyan-400">
-                  {['Product Strategy', 'Product & UX/UI Design', 'Innovation & Rapid Prototyping', 'Design Systems'][activeFeature] || 'Select a Feature'}
-                </p>
-                <p className="text-white font-black text-2xl leading-tight mb-5">
-                  {['Strategy', 'Design', 'Prototyping', 'Systems'][activeFeature] || '—'}
-                </p>
-                <p className="text-white/45 text-sm font-medium leading-relaxed mb-6">
-                  {[
-                    'Define where the product should go, why it matters, and how it should create value through strategic prioritization.',
-                    'Shape experiences that are intuitive, usable, and accessible, aligned perfectly with your brand and business goals.',
-                    'Bring ideas to life quickly so teams can test, refine, and align on direction before committing to full build.',
-                    'Create a scalable experience foundation that improves consistency, speed, and governance across all touchpoints.',
-                  ][activeFeature] || 'Select a feature to explore its role in the product design framework.'}
-                </p>
+                <p className="text-[10px] font-black tracking-widest uppercase mb-2 text-cyan-400">{featureLabels[activeFeature] || 'Select a Feature'}</p>
+                <p className="text-white font-black text-2xl leading-tight mb-5">{featureTitles[activeFeature] || '—'}</p>
+                <p className="text-white/45 text-sm font-medium leading-relaxed mb-6">{featureContents[activeFeature] || 'Select a feature to explore its role in the product design framework.'}</p>
                 <div className="p-4 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.04]">
-                  <p className="text-sm font-semibold leading-snug text-cyan-400">
-                    {['Aligning product vision with enterprise growth levers.', 'Designing experiences that naturally convert.', 'Testing market-readiness before heavy build investment.', 'Scaling foundations for global digital consistency.'][activeFeature] || 'Strategy, Design, Prototyping, and Systems — four layers of the same vision.'}
-                  </p>
+                  <p className="text-sm font-semibold leading-snug text-cyan-400">{featureMicros[activeFeature] || 'Strategy, Design, Prototyping, and Systems — four layers of the same vision.'}</p>
                 </div>
                 <div className="mt-8">
                   <Link to="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
@@ -510,17 +481,11 @@ export default function ProductStrategyExperienceDesign() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-cyan-400/30 text-cyan-400 font-black text-sm tracking-wide hover:bg-cyan-400/10 transition-colors duration-200"
-              >
+              <Link to="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-cyan-400/30 text-cyan-400 font-black text-sm tracking-wide hover:bg-cyan-400/10 transition-colors duration-200">
                 Book a Discovery Call
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <a
-                href="#capabilities"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] text-white/35 font-black text-sm tracking-wide hover:text-white/60 hover:border-white/[0.15] transition-all duration-200"
-              >
+              <a href="#psed-capabilities" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] text-white/35 font-black text-sm tracking-wide hover:text-white/60 hover:border-white/[0.15] transition-all duration-200">
                 See Our Capabilities
               </a>
             </div>
@@ -528,8 +493,26 @@ export default function ProductStrategyExperienceDesign() {
         </div>
       </div>
 
+      {/* ─────────────────── eQORE AI CONCIERGE ─────────────────── */}
+      <div id="psed-concierge">
+        <ConciergeSection inverted suggestedPrompts={[
+          'What is Product Strategy & Experience Design?',
+          'What capabilities does Kangqore offer for product strategy?',
+          'How does the design engagement process work?',
+          'What deliverables will I receive?',
+          'How long does a product strategy engagement take?',
+          'What is a design system and why does it matter?',
+          'How does rapid prototyping reduce risk?',
+          'Can Kangqore support both strategy and engineering?',
+          'What is a Modern Product Digital Maturity Assessment?',
+          'How does Kangqore approach UX/UI design?',
+          'Which industries does this service apply to?',
+          'Request a Product Strategy Discovery Call',
+        ]} />
+      </div>
+
       {/* ─────────────────── 4 ENGAGEMENT PHASES ─────────────────── */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="psed-phases" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div
           ref={phaseRef}
           className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${phaseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -546,10 +529,7 @@ export default function ProductStrategyExperienceDesign() {
               <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
                 A connected system for moving from customer understanding to product clarity to design systems and launch-ready direction.
               </p>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group"
-              >
+              <Link to="/contact" className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group">
                 <span className="text-white font-black text-sm tracking-wide">Request a Scoping Session</span>
                 <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
@@ -570,7 +550,7 @@ export default function ProductStrategyExperienceDesign() {
                       </div>
                     )}
                   </div>
-                  <p className="text-white font-semibold text-sm mb-2" style={{ color: step.color }}>{step.title}</p>
+                  <p className="text-sm font-semibold mb-2" style={{ color: step.color }}>{step.title}</p>
                   <p className="text-white/40 text-sm font-medium leading-relaxed">{step.desc}</p>
                 </div>
               </div>
@@ -579,17 +559,12 @@ export default function ProductStrategyExperienceDesign() {
         </div>
       </section>
 
-      {/* ─────────────────── BRAND EQUITY / INSIGHT QUOTE ─────────────────── */}
+      {/* ─────────────────── BRAND EQUITY / QUOTE ─────────────────── */}
       <section className="py-32 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          {/* Large quote */}
           <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center mb-24">
             <div className="relative rounded-[3rem] overflow-hidden aspect-square bg-[#06090f] border border-white/[0.08]">
-              <img
-                src="/images/happy_team.png"
-                alt="Happy Startup Team"
-                className="w-full h-full object-cover opacity-70 hover:opacity-90 transition-opacity duration-700"
-              />
+              <img src="/images/happy_team.png" alt="Happy Startup Team" className="w-full h-full object-cover opacity-70 hover:opacity-90 transition-opacity duration-700" />
             </div>
             <div>
               <div className="text-7xl font-serif text-white/[0.05] leading-none select-none mb-2">"</div>
@@ -600,7 +575,6 @@ export default function ProductStrategyExperienceDesign() {
             </div>
           </div>
 
-          {/* Brand equity insight */}
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE STRATEGIC IMPERATIVE</p>
@@ -631,7 +605,7 @@ export default function ProductStrategyExperienceDesign() {
       </section>
 
       {/* ─────────────────── 8 CAPABILITIES ─────────────────── */}
-      <section id="capabilities" className="py-32 relative" style={{ backgroundColor: '#000000' }}>
+      <section id="psed-capabilities" className="py-32 relative" style={{ backgroundColor: '#000000' }}>
         <div
           ref={capRef}
           className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${capVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -645,7 +619,6 @@ export default function ProductStrategyExperienceDesign() {
           </div>
 
           <div className="grid lg:grid-cols-2 lg:gap-24 lg:h-[700px]">
-            {/* Left — scrollable list */}
             <div className="overflow-y-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
               {capabilities.map((c, i) => {
                 const active = activeCapability === i;
@@ -658,13 +631,10 @@ export default function ProductStrategyExperienceDesign() {
                     >
                       <div className="flex items-center gap-5">
                         <span className={`w-2.5 h-2.5 flex-shrink-0 transition-colors duration-200 ${active ? 'bg-cyan-400' : 'bg-transparent'}`} />
-                        <span className={`text-base sm:text-lg lg:text-xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/25 group-hover:text-white/55'}`}>
-                          {c.title}
-                        </span>
+                        <span className={`text-base sm:text-lg lg:text-xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/25 group-hover:text-white/55'}`}>{c.title}</span>
                       </div>
                       <ChevronRight className={`lg:hidden w-4 h-4 text-white/20 flex-shrink-0 transition-transform duration-200 ${active ? 'rotate-90' : ''}`} />
                     </div>
-                    {/* Mobile tap-to-expand */}
                     {active && (
                       <div className="lg:hidden pb-6 pl-7 pr-2">
                         <p className="text-[9px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">CAPABILITY {c.n}</p>
@@ -673,7 +643,7 @@ export default function ProductStrategyExperienceDesign() {
                           {c.items.map(item => (
                             <li key={item} className="flex items-start gap-3">
                               <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: c.color }} />
-                              <span className="text-white/45 text-xs font-medium leading-relaxed">{item}</span>
+                              <span className="text-white/45 text-xs font-medium">{item}</span>
                             </li>
                           ))}
                         </ul>
@@ -684,22 +654,15 @@ export default function ProductStrategyExperienceDesign() {
               })}
             </div>
 
-            {/* Right — floats in place */}
             <div className="hidden lg:flex items-start pt-5">
               <div className="w-full sticky top-8">
-                <p className="text-[10px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">
-                  CAPABILITY {capabilities[activeCapability >= 0 ? activeCapability : 0].n}
-                </p>
-                <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">
-                  {capabilities[activeCapability >= 0 ? activeCapability : 0].title}
-                </h3>
-                <p className="text-white/60 text-base leading-relaxed mb-8 max-w-lg">
-                  {capabilities[activeCapability >= 0 ? activeCapability : 0].desc}
-                </p>
+                <p className="text-[10px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">CAPABILITY {capabilities[safeCapIdx].n}</p>
+                <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">{capabilities[safeCapIdx].title}</h3>
+                <p className="text-white/60 text-base leading-relaxed mb-8 max-w-lg">{capabilities[safeCapIdx].desc}</p>
                 <ul className="space-y-3">
-                  {capabilities[activeCapability >= 0 ? activeCapability : 0].items.map(item => (
+                  {capabilities[safeCapIdx].items.map(item => (
                     <li key={item} className="flex items-start gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: capabilities[activeCapability >= 0 ? activeCapability : 0].color }} />
+                      <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: capabilities[safeCapIdx].color }} />
                       <span className="text-white/55 text-sm font-medium leading-snug">{item}</span>
                     </li>
                   ))}
@@ -710,11 +673,11 @@ export default function ProductStrategyExperienceDesign() {
         </div>
       </section>
 
-      {/* ─────────────────── ENTERPRISE DESIGN COE ─────────────────── */}
+      {/* ─────────────────── ENTERPRISE DESIGN COE + DIFFERENTIATORS ─────────────────── */}
       <section className="py-24 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
-            <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
+            <div className="w-full lg:w-[40%] xl:w-[35%]">
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENTERPRISE DESIGN COE</p>
               <p className="text-white/60 text-lg leading-relaxed font-light mb-5">
                 Our <strong className="text-white">Enterprise Design CoE</strong> provides a high-velocity strategic blueprint, surrounding your product idea with four critical layers of UX validation.
@@ -724,90 +687,65 @@ export default function ProductStrategyExperienceDesign() {
               </p>
             </div>
 
-            {/* Diamond visual */}
             <div className="w-full lg:w-[60%] xl:w-[65%] relative flex justify-center lg:justify-end">
               <div ref={diamondRef} className="hidden lg:block relative lg:w-[550px] lg:h-[330px] xl:w-[750px] xl:h-[450px]">
                 <div className="absolute top-0 left-[50%] lg:left-0 -translate-x-1/2 lg:-translate-x-0 w-[1000px] h-[600px] lg:origin-top-left flex items-center justify-center lg:scale-[0.55] xl:scale-[0.75]">
                   <svg className="absolute w-[600px] h-[600px] pointer-events-none z-0" viewBox="0 0 600 600">
                     <defs>
-                      <linearGradient id="mvp-blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <linearGradient id="psed-blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#2564ea" />
                         <stop offset="100%" stopColor="#4ab6d4" />
                       </linearGradient>
                     </defs>
-                    <circle cx="300" cy="40" r="7" fill="url(#mvp-blue-grad)" style={{ animation: 'dot-ping 3s ease-in-out infinite' }} />
-                    <path d="M 300 40 L 300 85 L 195 190" fill="none" stroke="url(#mvp-blue-grad)" strokeWidth="3" strokeDasharray="200" style={{ animation: 'connector-draw 2s ease-out forwards' }} />
-                    <circle cx="40" cy="300" r="7" fill="url(#mvp-blue-grad)" style={{ animation: 'dot-ping 3s ease-in-out infinite 0.5s' }} />
-                    <path d="M 40 300 L 85 300 L 190 405" fill="none" stroke="url(#mvp-blue-grad)" strokeWidth="3" strokeDasharray="200" style={{ animation: 'connector-draw 2s ease-out 0.3s forwards' }} />
-                    <circle cx="300" cy="560" r="7" fill="url(#mvp-blue-grad)" style={{ animation: 'dot-ping 3s ease-in-out infinite 1s' }} />
-                    <path d="M 300 560 L 300 515 L 405 410" fill="none" stroke="url(#mvp-blue-grad)" strokeWidth="3" strokeDasharray="200" style={{ animation: 'connector-draw 2s ease-out 0.6s forwards' }} />
-                    <circle cx="560" cy="300" r="7" fill="url(#mvp-blue-grad)" style={{ animation: 'dot-ping 3s ease-in-out infinite 1.5s' }} />
-                    <path d="M 560 300 L 515 300 L 410 195" fill="none" stroke="url(#mvp-blue-grad)" strokeWidth="3" strokeDasharray="200" style={{ animation: 'connector-draw 2s ease-out 0.9s forwards' }} />
+                    {[{ cx: 300, cy: 40, delay: '0s' }, { cx: 40, cy: 300, delay: '0.5s' }, { cx: 300, cy: 560, delay: '1s' }, { cx: 560, cy: 300, delay: '1.5s' }].map(({ cx, cy, delay }, idx) => {
+                      const paths = ['M 300 40 L 300 85 L 195 190', 'M 40 300 L 85 300 L 190 405', 'M 300 560 L 300 515 L 405 410', 'M 560 300 L 515 300 L 410 195'];
+                      return (
+                        <g key={idx}>
+                          <circle cx={cx} cy={cy} r="7" fill="url(#psed-blue-grad)" style={{ animation: `dot-ping 3s ease-in-out infinite ${delay}` }} />
+                          <path d={paths[idx]} fill="none" stroke="url(#psed-blue-grad)" strokeWidth="3" strokeDasharray="200" style={{ animation: `connector-draw 2s ease-out ${idx * 0.3}s forwards` }} />
+                        </g>
+                      );
+                    })}
                   </svg>
                   <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                     <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'diamond-float-3d 6s ease-in-out infinite' }}>
                       <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}>
-                          <div className="-rotate-45 text-center text-white font-bold text-[15px]">Lean<br />Discovery</div>
-                        </div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}>
-                          <div className="-rotate-45 text-center text-white font-bold text-[15px]">Strategic<br />Roadmap</div>
-                        </div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}>
-                          <div className="-rotate-45 text-center text-white font-bold text-[15px]">Flawless<br />UI/UX</div>
-                        </div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}>
-                          <div className="-rotate-45 text-center text-white font-bold text-[15px]">Architected<br />Scalability</div>
-                        </div>
+                        {[['from-blue-600 to-blue-800', 'Lean\nDiscovery', '6px'], ['from-blue-400 to-blue-600', 'Strategic\nRoadmap', '4px'], ['from-blue-900 to-slate-900', 'Flawless\nUI/UX', '2px'], ['from-cyan-500 to-cyan-700', 'Architected\nScalability', '3px']].map(([grad, label, z], idx) => (
+                          <div key={idx} className={`relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br ${grad}`} style={{ transform: `translateZ(${z})` }}>
+                            <div className="-rotate-45 text-center text-white font-bold text-[15px] whitespace-pre-line">{label}</div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
                   <div className="absolute top-[60px] right-1/2 mr-[165px] w-[320px] z-20">
                     <ul className="space-y-1 text-sm text-white/35 text-right">
-                      <li>Ethnographic research •</li>
-                      <li>Competitive teardowns •</li>
-                      <li>Behavior tracking •</li>
-                      <li>User intent mapping •</li>
+                      <li>Ethnographic research •</li><li>Competitive teardowns •</li><li>Behavior tracking •</li><li>User intent mapping •</li>
                     </ul>
                   </div>
                   <div className="absolute top-[120px] left-1/2 ml-[180px] w-[320px] z-20">
                     <ul className="space-y-1 text-sm text-white/35 text-left">
-                      <li>• MVP feature slicing</li>
-                      <li>• Workflow logic trees</li>
-                      <li>• ROI metric definitions</li>
-                      <li>• Go-to-market orchestration</li>
+                      <li>• MVP feature slicing</li><li>• Workflow logic trees</li><li>• ROI metric definitions</li><li>• Go-to-market orchestration</li>
                     </ul>
                   </div>
                   <div className="absolute bottom-[100px] right-1/2 mr-[165px] w-[320px] z-20">
                     <ul className="space-y-1 text-sm text-white/35 text-right">
-                      <li>Transcendental interfaces •</li>
-                      <li>Zero-friction interactions •</li>
-                      <li>Micro-animation logic •</li>
-                      <li>Deep brand embedding •</li>
+                      <li>Transcendental interfaces •</li><li>Zero-friction interactions •</li><li>Micro-animation logic •</li><li>Deep brand embedding •</li>
                     </ul>
                   </div>
                   <div className="absolute bottom-[60px] left-1/2 ml-[165px] w-[320px] z-20">
                     <ul className="space-y-1 text-sm text-white/35 text-left">
-                      <li>• React/Figma single truth</li>
-                      <li>• Centralized token governance</li>
-                      <li>• Multi-platform logic paths</li>
-                      <li>• Agile developer handoff</li>
+                      <li>• React/Figma single truth</li><li>• Centralized token governance</li><li>• Multi-platform logic paths</li><li>• Agile developer handoff</li>
                     </ul>
                   </div>
                 </div>
               </div>
 
               {/* Mobile CoE cards */}
-              <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-5 w-full">
-                {[
-                  { title: 'Lean Discovery', items: ['UX Research', 'Behavioral mapping'], gradient: 'from-blue-600 to-blue-800' },
-                  { title: 'Strategic Roadmap', items: ['Feature slicing', 'ROI metrics'], gradient: 'from-blue-400 to-blue-600' },
-                  { title: 'Flawless UI/UX', items: ['Pixel perfection', 'Interactive models'], gradient: 'from-blue-900 to-slate-900' },
-                  { title: 'Architected Scalability', items: ['Token governance', 'Zero-friction handoff'], gradient: 'from-cyan-500 to-cyan-700' },
-                ].map((q, idx) => (
+              <div className="lg:hidden grid grid-cols-2 gap-4 w-full">
+                {[['from-blue-600 to-blue-800', 'Lean Discovery'], ['from-blue-400 to-blue-600', 'Strategic Roadmap'], ['from-blue-900 to-slate-900', 'Flawless UI/UX'], ['from-cyan-500 to-cyan-700', 'Architected Scalability']].map(([grad, title], idx) => (
                   <div key={idx} className="bg-[#06090f] border border-white/[0.08] rounded-2xl overflow-hidden">
-                    <div className={`bg-gradient-to-r ${q.gradient} p-4 text-white font-bold text-sm`}>{q.title}</div>
-                    <div className="p-4"><ul className="space-y-1 text-xs text-white/40">{q.items.map((item, k) => <li key={k}>• {item}</li>)}</ul></div>
+                    <div className={`bg-gradient-to-r ${grad} p-4 text-white font-bold text-sm`}>{title}</div>
                   </div>
                 ))}
               </div>
@@ -841,35 +779,28 @@ export default function ProductStrategyExperienceDesign() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={journeyRef}>
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
-
-            {/* LEFT — Animated SVG + vertical phase cards */}
             <div className="w-full lg:w-[55%] relative">
               <div className="hidden lg:block absolute left-[14px] top-0 bottom-0 w-[30px]" style={{ zIndex: 1 }}>
                 <svg className="w-full h-full" viewBox="0 0 30 1000" preserveAspectRatio="none" fill="none">
                   <defs>
-                    <linearGradient id="journey-grad-v" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#94a3b8" />
-                      <stop offset="25%" stopColor="#3b82f6" />
-                      <stop offset="50%" stopColor="#2564ea" />
-                      <stop offset="75%" stopColor="#10b981" />
-                      <stop offset="100%" stopColor="#a855f7" />
+                    <linearGradient id="psed-journey-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#94a3b8" /><stop offset="25%" stopColor="#3b82f6" /><stop offset="50%" stopColor="#2564ea" /><stop offset="75%" stopColor="#10b981" /><stop offset="100%" stopColor="#a855f7" />
                     </linearGradient>
-                    <filter id="journey-glow-v">
-                      <feGaussianBlur stdDeviation="2" result="blur" />
-                      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    <filter id="psed-journey-glow">
+                      <feGaussianBlur stdDeviation="2" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                     </filter>
                   </defs>
                   <path d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="rgba(255,255,255,0.08)" strokeWidth="2" fill="none" />
-                  <path className="journey-curve-glow" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#journey-grad-v)" strokeWidth="3" strokeLinecap="round" fill="none" filter="url(#journey-glow-v)" opacity="0.4" />
-                  <path className="journey-curve-path" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#journey-grad-v)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                  <path className="psed-journey-glow" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#psed-journey-grad)" strokeWidth="3" strokeLinecap="round" fill="none" filter="url(#psed-journey-glow)" opacity="0.4" />
+                  <path className="psed-journey-path" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#psed-journey-grad)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
                   {[125, 375, 625, 875].map((cy, i) => (
-                    <g key={i} className="journey-node" style={{ transformOrigin: `15px ${cy}px` }}>
-                      <circle cx="15" cy={cy} r="9" fill="none" stroke="url(#journey-grad-v)" strokeWidth="0.8" opacity="0.2">
+                    <g key={i} className="psed-journey-node" style={{ transformOrigin: `15px ${cy}px` }}>
+                      <circle cx="15" cy={cy} r="9" fill="none" stroke="url(#psed-journey-grad)" strokeWidth="0.8" opacity="0.2">
                         <animate attributeName="r" values="9;13;9" dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.2;0.08;0.2" dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
                       </circle>
-                      <circle cx="15" cy={cy} r="7" fill="#06090f" stroke="url(#journey-grad-v)" strokeWidth="1.5" />
-                      <circle cx="15" cy={cy} r="3" fill="url(#journey-grad-v)" opacity="0.7">
+                      <circle cx="15" cy={cy} r="7" fill="#06090f" stroke="url(#psed-journey-grad)" strokeWidth="1.5" />
+                      <circle cx="15" cy={cy} r="3" fill="url(#psed-journey-grad)" opacity="0.7">
                         <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
                       </circle>
                     </g>
@@ -879,14 +810,12 @@ export default function ProductStrategyExperienceDesign() {
 
               <div className="space-y-6 lg:pl-[55px]">
                 {journeyPhases.map((item, idx) => {
-                  const gradients = ['from-slate-600 to-slate-800', 'from-blue-500 to-blue-700', 'from-brand-blue to-indigo-600', 'from-emerald-500 to-emerald-700'];
-                  const icons = [Search, Target, Palette, Rocket];
-                  const Icon = icons[idx];
+                  const { Icon } = item;
                   return (
-                    <div key={idx} className="journey-card group">
+                    <div key={idx} className="psed-journey-card group">
                       <div className="relative bg-[#06090f] border border-white/[0.08] rounded-3xl p-6 lg:p-8 hover:border-white/[0.18] transition-all duration-500 hover:-translate-y-1 flex items-start gap-6">
-                        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${gradients[idx]} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-700`} />
-                        <div className={`relative z-10 w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br ${gradients[idx]} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-all duration-500`}>
+                        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${phaseGradients[idx]} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-700`} />
+                        <div className={`relative z-10 w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br ${phaseGradients[idx]} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-all duration-500`}>
                           <Icon className="w-7 h-7" />
                         </div>
                         <div className="relative z-10 flex-1 min-w-0">
@@ -909,7 +838,6 @@ export default function ProductStrategyExperienceDesign() {
               </div>
             </div>
 
-            {/* RIGHT — heading + orbital graphic + stats */}
             <div className="w-full lg:w-[45%] lg:sticky lg:top-32">
               <div className="space-y-10">
                 <div>
@@ -918,28 +846,20 @@ export default function ProductStrategyExperienceDesign() {
                     <span className="text-xs font-bold tracking-[0.3em] text-brand-blue uppercase">Design-to-Build Journey</span>
                   </div>
                   <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
-                    From Ambition to <br />
+                    From Ambition to<br />
                     <span className="bg-brand-gradient bg-clip-text text-transparent">Market Ready.</span>
                   </h2>
                   <p className="text-white/40 text-lg font-light leading-relaxed max-w-lg">
                     A connected system for moving from customer understanding to product clarity to design systems and launch-ready direction.
                   </p>
                 </div>
-
-                {/* Stats summary */}
                 <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/[0.08]">
-                  <div>
-                    <div className="font-mono text-[10px] text-white/20 tracking-widest uppercase font-bold mb-2">Phases</div>
-                    <div className="text-2xl font-black text-white">04</div>
-                  </div>
-                  <div>
-                    <div className="font-mono text-[10px] text-white/20 tracking-widest uppercase font-bold mb-2">Timeline</div>
-                    <div className="text-2xl font-black text-white">4-12<span className="text-sm text-white/30 ml-1">wks</span></div>
-                  </div>
-                  <div>
-                    <div className="font-mono text-[10px] text-white/20 tracking-widest uppercase font-bold mb-2">Confidence</div>
-                    <div className="text-2xl font-black bg-brand-gradient bg-clip-text text-transparent">100%</div>
-                  </div>
+                  {[['Phases', '04'], ['Timeline', '4-12 wks'], ['Confidence', '100%']].map(([label, val], i) => (
+                    <div key={label}>
+                      <div className="font-mono text-[10px] text-white/20 tracking-widest uppercase font-bold mb-2">{label}</div>
+                      <div className={`text-2xl font-black ${i === 2 ? 'bg-brand-gradient bg-clip-text text-transparent' : 'text-white'}`}>{val}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -947,7 +867,7 @@ export default function ProductStrategyExperienceDesign() {
         </div>
       </section>
 
-      {/* ─────────────────── TRUST PILLARS ─────────────────── */}
+      {/* ─────────────────── 6 TRUST PILLARS ─────────────────── */}
       <section className="py-32 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div
           ref={pillarsRef}
@@ -960,31 +880,26 @@ export default function ProductStrategyExperienceDesign() {
               <span className="bg-brand-gradient bg-clip-text text-transparent">Intelligence Pillars</span>
             </h2>
           </div>
-
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trustPillars.map((p, i) => {
-              const colors = ['#22D3EE', '#60A5FA', '#A78BFA', '#FB923C', '#34D399', '#F472B6'];
-              const color = colors[i];
-              return (
-                <div key={p.tag} className="p-6 border border-white/[0.07] bg-[#06090f] rounded-xl flex flex-col gap-4">
-                  <div>
-                    <span className="text-[9px] font-black tracking-widest" style={{ color: color + '60' }}>0{i + 1}</span>
-                    <div className="w-5 h-0.5 rounded-full mt-2" style={{ backgroundColor: color }} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black tracking-[0.3em] uppercase mb-2" style={{ color }}>{p.tag}</p>
-                    <p className="text-white/80 text-base font-black leading-snug">{p.title}</p>
-                  </div>
-                  <p className="text-white/35 text-sm font-medium leading-relaxed">{p.desc}</p>
+            {trustPillars.map((p, i) => (
+              <div key={p.tag} className="p-6 border border-white/[0.07] bg-[#06090f] rounded-xl flex flex-col gap-4">
+                <div>
+                  <span className="text-[9px] font-black tracking-widest" style={{ color: p.color + '60' }}>0{i + 1}</span>
+                  <div className="w-5 h-0.5 rounded-full mt-2" style={{ backgroundColor: p.color }} />
                 </div>
-              );
-            })}
+                <div>
+                  <p className="text-[10px] font-black tracking-[0.3em] uppercase mb-2" style={{ color: p.color }}>{p.tag}</p>
+                  <p className="text-white/80 text-base font-black leading-snug">{p.title}</p>
+                </div>
+                <p className="text-white/35 text-sm font-medium leading-relaxed">{p.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─────────────────── WHY KANGQORE ─────────────────── */}
-      <section className="py-32 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      {/* ─────────────────── WHY KANGQORE + INDUSTRIES ─────────────────── */}
+      <section id="psed-why" className="py-32 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div
           ref={whyRef}
           className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${whyVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -997,14 +912,13 @@ export default function ProductStrategyExperienceDesign() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {whyKangqore.map((item, i) => {
-              const Icon = item.icon;
-              const colors = ['#22D3EE', '#60A5FA', '#34D399'];
+          <div className="grid md:grid-cols-3 gap-6 mb-20">
+            {whyKangqore.map((item) => {
+              const { Icon } = item;
               return (
                 <div key={item.title} className="group p-8 border border-white/[0.07] bg-[#06090f] rounded-2xl hover:border-white/[0.18] transition-all duration-300">
-                  <div className="w-12 h-12 rounded-xl border mb-6 flex items-center justify-center" style={{ borderColor: colors[i] + '30', backgroundColor: colors[i] + '0a' }}>
-                    <Icon className="w-5 h-5" style={{ color: colors[i] }} />
+                  <div className="w-12 h-12 rounded-xl border mb-6 flex items-center justify-center" style={{ borderColor: item.color + '30', backgroundColor: item.color + '0a' }}>
+                    <Icon className="w-5 h-5" style={{ color: item.color }} />
                   </div>
                   <h3 className="text-white font-black text-lg leading-snug mb-4">{item.title}</h3>
                   <p className="text-white/40 text-sm font-medium leading-relaxed">{item.desc}</p>
@@ -1013,8 +927,7 @@ export default function ProductStrategyExperienceDesign() {
             })}
           </div>
 
-          {/* Who this is for */}
-          <div className="mt-20 grid lg:grid-cols-2 gap-20 items-start pt-16 border-t border-white/[0.05]">
+          <div className="grid lg:grid-cols-2 gap-20 items-start pt-16 border-t border-white/[0.05]">
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHERE EXPERIENCE STRATEGY ADDS MOST VALUE</p>
               <h3 className="text-3xl sm:text-4xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
@@ -1023,21 +936,19 @@ export default function ProductStrategyExperienceDesign() {
               </h3>
               <p className="text-white/40 text-base font-medium leading-relaxed">Typical engagements include:</p>
             </div>
-            <div>
-              <div className="space-y-0">
-                {industries.map((item, i) => (
-                  <div key={item.name}>
-                    <div className="flex items-start gap-4 py-4">
-                      <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mt-2 flex-shrink-0" />
-                      <div>
-                        <p className="text-white font-semibold text-base leading-snug">{item.name}</p>
-                        <p className="text-white/40 text-sm font-light mt-1 leading-relaxed">{item.desc}</p>
-                      </div>
+            <div className="space-y-0">
+              {industries.map((item, i) => (
+                <div key={item.name}>
+                  <div className="flex items-start gap-4 py-4">
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mt-2 flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-semibold text-base leading-snug">{item.name}</p>
+                      <p className="text-white/40 text-sm font-light mt-1 leading-relaxed">{item.desc}</p>
                     </div>
-                    {i < industries.length - 1 && <div className="w-px h-2 ml-[2.75px] bg-white/[0.04]" />}
                   </div>
-                ))}
-              </div>
+                  {i < industries.length - 1 && <div className="w-px h-2 ml-[2.75px] bg-white/[0.04]" />}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -1059,7 +970,6 @@ export default function ProductStrategyExperienceDesign() {
               We leverage industry-leading design, prototyping, and research tools to execute high-fidelity product strategy and seamless engineering handoffs.
             </p>
           </div>
-
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {technologies.map((tech) => (
               <div key={tech.category} className="p-6 border border-white/[0.07] bg-[#06090f] rounded-xl flex flex-col gap-4">
@@ -1082,7 +992,7 @@ export default function ProductStrategyExperienceDesign() {
       </section>
 
       {/* ─────────────────── FAQ ─────────────────── */}
-      <section className="py-32 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="psed-faq" className="py-32 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div
           ref={faqRef}
           className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${faqVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -1099,10 +1009,7 @@ export default function ProductStrategyExperienceDesign() {
               <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
                 Still have questions? Our specialists are available for a no-obligation discovery call.
               </p>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group"
-              >
+              <Link to="/contact" className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group">
                 <span className="text-white font-black text-sm tracking-wide">Book a Discovery Call</span>
                 <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
@@ -1114,17 +1021,12 @@ export default function ProductStrategyExperienceDesign() {
               const isOpen = openFaq === i;
               return (
                 <div key={i} className="border-t border-white/[0.06]">
-                  <button
-                    onClick={() => setOpenFaq(isOpen ? null : i)}
-                    className="w-full flex items-start justify-between gap-8 py-7 text-left group"
-                  >
-                    <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white/80'}`}>
-                      {faq.q}
-                    </span>
+                  <button onClick={() => setOpenFaq(isOpen ? null : i)} className="w-full flex items-start justify-between gap-8 py-7 text-left group">
+                    <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white/80'}`}>{faq.q}</span>
                     <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-400' : ''}`} />
                   </button>
                   {isOpen && (
-                    <div className="pb-7 pr-12 pl-0">
+                    <div className="pb-7 pr-12">
                       <p className="text-white/50 text-base font-medium leading-relaxed">{faq.a}</p>
                     </div>
                   )}
@@ -1136,7 +1038,7 @@ export default function ProductStrategyExperienceDesign() {
         </div>
       </section>
 
-      {/* ─────────────────── RELATED ENGINEERING EXPERTISE ─────────────────── */}
+      {/* ─────────────────── RELATED SERVICES ─────────────────── */}
       <section className="py-24 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
@@ -1152,7 +1054,7 @@ export default function ProductStrategyExperienceDesign() {
             </div>
             <div className="space-y-4">
               {relatedServices.map((e) => {
-                const Icon = e.icon;
+                const { Icon } = e;
                 return (
                   <Link key={e.name} to={e.link} className="group flex items-start gap-5 p-6 bg-[#06090f] border border-white/[0.07] rounded-2xl hover:border-white/[0.18] transition-all">
                     <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-cyan-400 group-hover:bg-cyan-400/10 transition-all flex-shrink-0">
@@ -1189,17 +1091,11 @@ export default function ProductStrategyExperienceDesign() {
                 Let's shape the right product strategy, design the right experience, and create the execution-ready foundation needed to move faster with confidence.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-                <Link
-                  to="/contact"
-                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300"
-                >
+                <Link to="/contact" className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300">
                   Talk To Our Experts
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                 </Link>
-                <a
-                  href="#capabilities"
-                  className="inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
-                >
+                <a href="#psed-capabilities" className="inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200">
                   Explore Capabilities
                   <ArrowRight className="w-4 h-4 text-cyan-400" />
                 </a>
@@ -1223,7 +1119,13 @@ export default function ProductStrategyExperienceDesign() {
           50% { transform: scale(3); opacity: 0; }
           100% { transform: scale(1); opacity: 0; }
         }
-        .stat-counter-text { font-variant-numeric: tabular-nums; }
+        @keyframes psed-strip-scroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          @keyframes psed-strip-scroll { 0%, 100% { transform: translateX(0); } }
+        }
       `}} />
     </div>
   );

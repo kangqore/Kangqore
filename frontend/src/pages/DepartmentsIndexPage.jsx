@@ -8,13 +8,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 import { departmentsData, departmentsList } from '../data/departmentsData';
 import { servicesData } from '../data/servicesData';
 import { coreSEO } from '../data/seoData';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import VisualBackground from '../components/VisualBackground';
+import ConciergeSection from '../components/concierge/ConciergeSection';
 
 const SITE_URL = 'https://kangqore.com';
 const ORG_NAME = 'Kangqore';
+
+// Single brand gradient — linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)
+const BRAND_GRADIENT = 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)';
 
 const DepartmentsIndexPage = () => {
   const seo = coreSEO.departments || {};
@@ -24,6 +30,11 @@ const DepartmentsIndexPage = () => {
     seo.description ||
     '6 Kangqore departments · 61 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.';
   const ogImage = `${SITE_URL}/og/default.png`;
+
+  const [heroRef, heroVisible]   = useScrollAnimation({ once: true, threshold: 0.1 });
+  const [introRef, introVisible] = useScrollAnimation({ once: true, threshold: 0.1 });
+  const [cardsRef, cardsVisible] = useScrollAnimation({ once: true, threshold: 0.05 });
+  const [ctaRef, ctaVisible]     = useScrollAnimation({ once: true, threshold: 0.2 });
 
   // JSON-LD: CollectionPage that lists the 6 departments + BreadcrumbList.
   const jsonLd = {
@@ -69,141 +80,352 @@ const DepartmentsIndexPage = () => {
   };
 
   return (
-    <>
+    <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         {seo.keywords && <meta name="keywords" content={seo.keywords} />}
         <link rel="canonical" href={pageUrl} />
-
-        {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={pageUrl} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:image" content={ogImage} />
         <meta property="og:site_name" content={ORG_NAME} />
-
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={pageUrl} />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDescription} />
         <meta name="twitter:image" content={ogImage} />
-
-        {/* JSON-LD: CollectionPage + BreadcrumbList */}
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        {/* Header */}
-        <header className="mb-14 max-w-3xl">
-          <p className="text-sm uppercase tracking-widest text-brand-blue mb-3">
-            Kangqore
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5">
-            6 Departments · 61 Services
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-            One intelligence-led execution ecosystem, organised across six
-            specialised departments. Each department owns a clear capability
-            domain — AI, cloud, modernization, trust, enterprise platforms,
-            and growth.
-          </p>
-        </header>
+      {/* ─── HERO ─── */}
+      <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
+        <section className="relative w-full h-full flex items-end overflow-hidden pb-36 rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#06090f]">
+          <VisualBackground forceDark={true} />
 
-        {/* 6-card grid */}
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {departmentsList.map((slug) => {
-            const d = departmentsData[slug];
-            const Icon = d.icon;
-            const top3 = (d.heroServiceSlugs || d.serviceSlugs.slice(0, 3))
-              .slice(0, 3)
-              .map((s) => servicesData[s])
-              .filter(Boolean);
+          {/* Top glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[500px] bg-brand-blue/20 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
 
-            return (
-              <li key={slug}>
+          <div
+            ref={heroRef}
+            className={`relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-48 transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          >
+            <div className="max-w-3xl">
+              {/* Animated badge */}
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12">
+                <div className="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" />
+                <p className="text-xs font-bold tracking-[0.2em] text-brand-cyan uppercase">
+                  One intelligence-led execution ecosystem
+                </p>
+              </div>
+
+              <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white mb-8 drop-shadow-2xl">
+                6 Departments{' '}
+                <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">· 61 Services</span>
+              </h1>
+
+              <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
+                Organised across six specialised departments — each owning a clear capability domain. AI, cloud, modernization, trust, enterprise platforms, and growth.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center gap-5">
                 <Link
-                  to={`/departments/${slug}`}
-                  className="block h-full border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-600 transition-colors group"
+                  to="/contact"
+                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_40px_rgba(37,100,234,0.2)] hover:shadow-[0_0_60px_rgba(37,100,234,0.4)] hover:bg-white/20"
                 >
-                  {/* Accent bar */}
-                  <div
-                    className="h-1.5 w-full"
-                    style={{ backgroundColor: d.accentColor }}
-                    aria-hidden="true"
-                  />
+                  <span className="relative z-10 font-bold text-sm tracking-wide">Schedule Your 30-min Discovery Call</span>
+                  <div className="relative w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center group-hover:bg-white transition-colors duration-300 z-10">
+                    <ArrowRight className="w-4 h-4 text-white group-hover:text-brand-blue" />
+                  </div>
+                </Link>
+                <a
+                  href="#departments"
+                  className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
+                >
+                  Explore All Departments
+                  <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 transition-transform duration-200" />
+                </a>
+              </div>
+            </div>
+          </div>
 
-                  <div className="p-6">
-                    {/* Eyebrow + icon */}
-                    <div className="flex items-center gap-2 mb-3">
-                      {Icon && (
-                        <Icon
-                          className="w-5 h-5"
-                          style={{ color: d.accentColor }}
-                          aria-hidden="true"
-                        />
-                      )}
-                      <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold">
-                        Kangqore
-                      </p>
+          {/* Mobile stats strip */}
+          <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
+            <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-3 gap-4">
+              {[
+                { value: '6',  label: 'Departments' },
+                { value: '61', label: 'Services' },
+                { value: '5',  label: 'Engines' },
+              ].map(s => (
+                <div key={s.label} className="text-center">
+                  <p className="text-2xl font-black text-white drop-shadow-lg">{s.value}</p>
+                  <p className="text-[10px] text-brand-cyan/80 font-bold tracking-widest uppercase mt-1">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ─── INTRO / STATS STRIP ─── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div
+          ref={introRef}
+          className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${introVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+        >
+          <div className="mb-14">
+            <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">WHAT WE DO</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
+              One ecosystem.{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">Six specialisations.</span>
+            </h2>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start mb-20">
+            <div>
+              <p className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-10 font-light max-w-xl">
+                Each department owns a distinct capability domain — so expertise runs deep, accountability is clear, and every engagement draws on the right specialists.
+              </p>
+              <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-xl text-white/60 mb-14">
+                The departments don't operate in silos.{' '}
+                <span className="text-white">They cross-pollinate — and so does the value they deliver.</span>
+              </p>
+              {/* Stats strip */}
+              <div className="grid grid-cols-3 gap-6 pt-10 border-t border-white/[0.08]">
+                {[
+                  { value: '6',  label: 'Specialised\nDepartments' },
+                  { value: '61', label: 'Canonical\nServices'       },
+                  { value: '5',  label: 'Branded\nMethodologies'    },
+                ].map(s => (
+                  <div key={s.label}>
+                    <p className="text-4xl font-black text-white tracking-tight mb-1">{s.value}</p>
+                    <p className="text-white/30 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — department name tags */}
+            <div className="grid grid-cols-2 gap-3">
+              {departmentsList.map((slug) => {
+                const d = departmentsData[slug];
+                const Icon = d.icon;
+                return (
+                  <Link
+                    key={slug}
+                    to={`/departments/${slug}`}
+                    className="group flex items-center gap-3 p-4 rounded-xl border border-white/[0.07] bg-[#06090f] hover:border-white/20 transition-all duration-300"
+                  >
+                    {Icon && (
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ backgroundColor: 'rgba(74,182,212,0.10)' }}
+                      >
+                        <Icon className="w-4 h-4 text-brand-cyan" />
+                      </div>
+                    )}
+                    <div>
+                      <p className="text-white font-black text-sm leading-tight">{d.shortName}</p>
+                      <p className="text-white/35 text-[10px] font-medium mt-0.5">{d.serviceCount} services</p>
                     </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-white/15 group-hover:text-white/40 ml-auto flex-shrink-0 transition-colors duration-200" />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
 
-                    {/* Name + tagline */}
-                    <h2 className="text-2xl font-bold mb-1">{d.shortName}</h2>
-                    <p className="text-sm font-medium mb-3" style={{ color: d.accentColor }}>
+          {/* Brand footer bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 px-8 bg-[#06090f] border border-white/[0.08] rounded-2xl">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+              <span className="text-white font-black text-lg tracking-tight">Kangqore</span>
+              <span className="hidden sm:block w-px h-5 bg-white/10" />
+              <span className="text-white/35 text-sm font-medium">6 Departments · 61 Services · One Ecosystem</span>
+            </div>
+            <a
+              href="#departments"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200 flex-shrink-0"
+            >
+              Explore All Departments
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── eQORE AI CONCIERGE ─── */}
+      <ConciergeSection inverted suggestedPrompts={[
+        'What departments does Kangqore have?',
+        'Which department handles AI and automation?',
+        'What is Kangqore Cognition?',
+        'What is Kangqore Foundry?',
+        'What is Kangqore Reimagine?',
+        'What is Kangqore Shield?',
+        'What is Kangqore Platforms?',
+        'What is Kangqore Growth?',
+        'Which department is right for my company?',
+        'What services does each department offer?',
+        'How do the departments work together?',
+        'Schedule a discovery call',
+      ]} />
+
+      {/* ─── 6 DEPARTMENTS GRID ─── */}
+      <section id="departments" className="py-32 relative overflow-hidden bg-black">
+        <div
+          ref={cardsRef}
+          className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${cardsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+        >
+          <div className="mb-20">
+            <p className="text-xs font-bold tracking-[0.3em] text-brand-cyan uppercase mb-5">OUR DEPARTMENTS</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
+              Six capability{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">domains</span>
+            </h2>
+            <p className="text-white/60 max-w-2xl text-lg sm:text-xl font-medium">
+              Each department delivers a distinct, enterprise-grade capability — with its own methodology, branded framework, and specialist team.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-start">
+            {departmentsList.map((slug, i) => {
+              const d = departmentsData[slug];
+              const Icon = d.icon;
+              const elevated = i === 1 || i === 4;
+              const top3 = (d.heroServiceSlugs || d.serviceSlugs.slice(0, 3))
+                .slice(0, 3)
+                .map((s) => servicesData[s])
+                .filter(Boolean);
+
+              return (
+                <Link
+                  key={slug}
+                  to={`/departments/${slug}`}
+                  className={`group relative flex flex-col transition-all duration-500 hover:-translate-y-2 ${elevated ? 'lg:-translate-y-4' : ''}`}
+                >
+                  {/* Top brand gradient area */}
+                  <div
+                    className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 relative"
+                    style={{ background: BRAND_GRADIENT }}
+                  >
+                    {/* Subtle icon watermark */}
+                    {Icon && (
+                      <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                        <Icon className="w-32 h-32 text-white" strokeWidth={0.75} />
+                      </div>
+                    )}
+                    {/* Overlay for depth */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30" />
+                    {/* Dept label */}
+                    <div className="absolute bottom-5 left-6">
+                      <p className="text-white/40 text-[9px] font-black tracking-[0.35em] uppercase">Kangqore</p>
+                      <p className="text-white font-black text-xl leading-tight drop-shadow-lg">{d.shortName}</p>
+                    </div>
+                  </div>
+
+                  {/* Dark overlap card */}
+                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20">
+                    {/* Tagline */}
+                    <p className="text-[10px] font-black tracking-[0.3em] text-brand-cyan uppercase mb-3">
                       {d.tagline}
                     </p>
 
                     {/* Description */}
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                    <p className="text-white/60 text-sm leading-relaxed mb-5">
                       {d.description}
                     </p>
 
-                    {/* Banner brand badge */}
-                    <p className="text-xs text-gray-500 mb-4">
-                      Featured: <span className="font-semibold text-gray-700 dark:text-gray-200">{d.bannerBrand}</span>
-                      {' · '}
-                      {d.serviceCount} services
-                    </p>
-
-                    {/* Top 3 services */}
+                    {/* Top services */}
                     {top3.length > 0 && (
-                      <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 mb-5">
+                      <ul className="space-y-1.5 mb-5">
                         {top3.map((svc) => (
-                          <li key={svc.slug}>· {svc.name}</li>
+                          <li key={svc.slug} className="flex items-center gap-2">
+                            <span className="w-1 h-1 rounded-full bg-brand-cyan flex-shrink-0" />
+                            <span className="text-white/40 text-xs font-medium">{svc.name}</span>
+                          </li>
                         ))}
                       </ul>
                     )}
 
-                    {/* CTA */}
-                    <p
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-2.5 transition-all"
-                      style={{ color: d.accentColor }}
-                    >
-                      Explore {d.shortName.toUpperCase()}
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </p>
+                    {/* Footer row */}
+                    <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
+                      <p className="text-white/25 text-[10px] font-semibold">
+                        {d.serviceCount} services · <span className="text-brand-cyan/70">{d.bannerBrand}</span>
+                      </p>
+                      <span className="inline-flex items-center gap-1 text-xs font-black text-brand-cyan group-hover:gap-2 transition-all duration-200">
+                        Explore
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
                   </div>
                 </Link>
-              </li>
-            );
-          })}
-        </ul>
+              );
+            })}
+          </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center pt-8 border-t border-gray-200 dark:border-gray-800">
-          <Link
-            to="/services"
-            className="inline-flex items-center gap-2 text-base font-semibold text-brand-blue hover:underline"
-          >
-            Explore all 61 services
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          {/* All services link */}
+          <div className="mt-16 pt-10 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+              <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase mb-2">FULL CATALOGUE</p>
+              <p className="text-white/50 text-sm font-medium">All 61 services across 6 departments — indexed and browsable.</p>
+            </div>
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 hover:border-brand-cyan/50 hover:bg-white/5 transition-all duration-300 group flex-shrink-0"
+            >
+              <span className="text-white font-black text-sm tracking-wide">Explore all 61 services</span>
+              <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 transition-transform duration-300" />
+            </Link>
+          </div>
         </div>
-      </div>
-    </>
+      </section>
+
+      {/* ─── FINAL CTA ─── */}
+      <section
+        ref={ctaRef}
+        className={`py-28 md:py-36 lg:py-44 relative overflow-hidden transition-all duration-1000 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        style={{ backgroundColor: '#000000' }}
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 mb-20">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8 lg:max-w-[50%]">
+              The right department for every{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">transformation challenge.</span>
+            </h2>
+            <div className="flex flex-col sm:flex-row gap-4 self-start lg:self-auto pt-4 lg:pt-6">
+              <Link
+                to="/contact"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300 hover:scale-[1.02]"
+              >
+                Schedule Your 30-min Discovery Call
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+              </Link>
+              <Link
+                to="/bids"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-white/15 text-white font-black text-sm tracking-wide hover:border-brand-cyan/50 hover:bg-white/5 transition-all duration-300"
+              >
+                Explore BIDS™ Diagnostic
+                <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-0.5 transition-transform duration-200" />
+              </Link>
+            </div>
+          </div>
+          <div className="max-w-4xl mb-16">
+            <p className="text-white/50 text-lg lg:text-xl leading-relaxed">
+              Kangqore's six departments work as one intelligence-led ecosystem — from AI and cloud to security, modernization, platforms, and growth. The right specialists are already here; the question is where to begin.
+            </p>
+          </div>
+
+          {/* Closing statement */}
+          <div className="mt-16 pt-10 border-t border-white/[0.06]">
+            <p className="text-2xl sm:text-3xl lg:text-[2.5rem] font-black leading-[1.25] text-white/40 max-w-3xl">
+              The enterprises that build the right capabilities before they need them don't just grow.{' '}
+              <span className="text-white">They dominate the curve.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 

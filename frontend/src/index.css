@@ -2,8 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Outside @layer — wins over all Tailwind rules in dark mode */
+html.dark,
+html.dark body {
+  background-color: #000000 !important;
+  border: none !important;
+  outline: none !important;
+}
+
+
 @layer base {
   :root {
+    --page-bg: #ffffff;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -27,6 +37,7 @@
   }
 
   .dark {
+    --page-bg: #000000;
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -50,11 +61,12 @@
 
   html {
     scroll-behavior: smooth;
+    background-color: var(--page-bg);
   }
   
   body {
     @apply antialiased tracking-tight;
-    background-color: hsl(var(--background));
+    background-color: var(--page-bg);
     color: hsl(var(--foreground));
     transition: background-color 0.3s ease, color 0.3s ease;
   }
@@ -68,6 +80,9 @@
 
   /* — Backgrounds — */
   .dark .bg-white { background-color: #111827 !important; } /* gray-900 */
+  /* Prevent the bg-white override from clobbering elements that also carry dark:bg-black */
+  .dark .bg-black,
+  .dark .dark\:bg-black { background-color: #000000 !important; }
   .dark .bg-gray-50 { background-color: #1f2937 !important; } /* gray-800 */
   .dark .bg-gray-100 { background-color: #1f2937 !important; }
   .dark .bg-\[\#F5F5F7\],
@@ -454,3 +469,5 @@ input[type='range']::-webkit-slider-thumb:hover {
 .transition-slow {
   transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+html, body, #root { border-top: none !important; box-shadow: none !important; }

@@ -33,6 +33,9 @@ import BookingConfirmationPage from './pages/BookingConfirmationPage';
 import BookingPage from './pages/BookingPage';
 import './App.css';
 
+const BIDSTataSteel = React.lazy(() => import('./pages/BIDSTataSteel'));
+const HeroDemo = React.lazy(() => import('./pages/HeroDemo'));
+
 /**
  * Scroll to top on route change unless there is a hash anchor.
  * Uses multiple scroll passes to survive AnimatePresence mode="wait"
@@ -80,9 +83,9 @@ function MainLayout({ children, showFullMenu, setShowFullMenu, handleMenuClick }
       <AnimatePresence mode="wait">
         <motion.main
           key={location.pathname}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -15 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className="min-h-screen"
         >
@@ -104,7 +107,7 @@ import WebVitalsReporter from './kangqore-vis/components/WebVitalsReporter';
  * Loading Fallback
  */
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black relative overflow-hidden">
+  <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'var(--page-bg)' }}>
     <div className="relative flex flex-col items-center justify-center w-full max-w-lg mx-auto">
       
       {/* Center Wrapper to guarantee rings and logo share the exact same center */}
@@ -169,7 +172,7 @@ function AppContent() {
   };
 
   return (
-    <div className="App min-h-screen bg-background text-foreground parallax-container">
+    <div className="App min-h-screen text-foreground parallax-container" style={{ backgroundColor: 'var(--page-bg)' }}>
       <GlobalScrollAnimations />
       <WebVitalsReporter />
       <Suspense fallback={<PageLoader />}>
@@ -183,6 +186,10 @@ function AppContent() {
           {/* Auth & Dashboard Routes (no Header/Footer) */}
           {authRoutes}
           <Route path="/eqore-ai" element={<EQoreAIConsole />} />
+
+          {/* Standalone document pages — no Header/Footer (optimised for print/PDF) */}
+          <Route path="/bids/tata-steel" element={<BIDSTataSteel />} />
+          <Route path="/demo/hero" element={<HeroDemo />} />
 
           {/* Public booking management — no header/footer, token-based */}
           <Route path="/schedule/:slug" element={<BookingPage />} />

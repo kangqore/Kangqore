@@ -16,13 +16,6 @@ export default defineConfig(({ mode }) => {
 
   const extraPlugins = []
 
-  if (isDev) {
-    try {
-      const { visualEditsPlugin } = require('./plugins/visual-edits/vite-plugin.cjs')
-      extraPlugins.push(visualEditsPlugin())
-    } catch (_) { /* not available in this environment */ }
-  }
-
   if (env.ENABLE_HEALTH_CHECK === 'true') {
     try {
       const { healthCheckPlugin } = require('./plugins/health-check/vite-plugin.cjs')

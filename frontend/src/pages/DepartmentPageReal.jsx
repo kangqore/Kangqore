@@ -1,48 +1,53 @@
-// ─── /departments/:slug — Real template (Phase D) ─────────────────────────────
-// Replaces the Phase C placeholder. Indexable (no robots noindex).
-//
-// Structure per plan Section 21.4:
-//   Hero → Overview (3 cols) → Banner brand band → Service grid →
-//   Business outcomes → Related departments → Final CTA
-//
-// All copy reads from departmentsData.js + servicesData.js — non-engineers
-// can edit content without touching this component.
+// ─── /departments/:slug — BIDS-inspired department page ──────────────────────
+// Same data sources, completely redesigned UI to match the BIDS page aesthetic:
+// pure-black bg · dark cards · brand gradient accents · scroll-reveal.
 // ────────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { ArrowRight, Users, Wrench, Target } from 'lucide-react';
+import { ArrowRight, ChevronRight, Users, Target, Wrench } from 'lucide-react';
 
-import {
-  departmentsData,
-  departmentsList,
-} from '../data/departmentsData';
+import { departmentsData, departmentsList } from '../data/departmentsData';
 import { servicesData } from '../data/servicesData';
 import { departmentSEO } from '../data/seoData';
-import Breadcrumb from '../components/Breadcrumb';
 import NotFound from './NotFound';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import VisualBackground from '../components/VisualBackground';
+import ConciergeSection from '../components/concierge/ConciergeSection';
 
 const SITE_URL = 'https://kangqore.com';
-const ORG_NAME = 'Kangqore';
+const ORG_NAME  = 'Kangqore';
 
-const DepartmentPage = () => {
+// Single brand accent — matches linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)
+const BRAND_HEX  = '#4ab6d4';
+const BRAND_GLOW = 'rgba(37,100,234,0.20)';
+
+export default function DepartmentPageReal() {
   const { slug } = useParams();
 
-  if (!slug || !departmentsList.includes(slug)) {
-    return <NotFound />;
-  }
+  // All hooks before any conditional return (React rules)
+  const [heroRef,     heroVisible]     = useScrollAnimation({ once: true, threshold: 0.1  });
+  const [overviewRef, overviewVisible] = useScrollAnimation({ once: true, threshold: 0.1  });
+  const [servicesRef, servicesVisible] = useScrollAnimation({ once: true, threshold: 0.05 });
+  const [outcomesRef, outcomesVisible] = useScrollAnimation({ once: true, threshold: 0.1  });
+  const [processRef,  processVisible]  = useScrollAnimation({ once: true, threshold: 0.1  });
+  const [relatedRef,  relatedVisible]  = useScrollAnimation({ once: true, threshold: 0.1  });
+  const [ctaRef,      ctaVisible]      = useScrollAnimation({ once: true, threshold: 0.2  });
 
-  const d = departmentsData[slug];
-  const seo = departmentSEO[slug] || {};
+  if (!slug || !departmentsList.includes(slug)) return <NotFound />;
+
+  const d    = departmentsData[slug];
+  const seo  = departmentSEO[slug] || {};
   const Icon = d.icon;
 
-  const pageUrl = `${SITE_URL}/departments/${slug}`;
-  const pageTitle = seo.title || `${d.name} — ${d.tagline} | Kangqore`;
+  const pageUrl         = `${SITE_URL}/departments/${slug}`;
+  const pageTitle       = seo.title       || `${d.name} — ${d.tagline} | Kangqore`;
   const pageDescription = seo.description || d.description;
-  const ogImage = `${SITE_URL}/og/default.png`; // per-department images can be wired later
+  const ogImage         = `${SITE_URL}/og/default.png`;
 
-  // JSON-LD: Service schema for this department + BreadcrumbList for crawlers.
+  const deliverySteps = d.deliveryApproach.split(' → ');
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -51,21 +56,11 @@ const DepartmentPage = () => {
         '@id': pageUrl,
         name: d.name,
         description: d.description,
-        provider: {
-          '@type': 'Organization',
-          name: ORG_NAME,
-          url: SITE_URL,
-        },
+        provider: { '@type': 'Organization', name: ORG_NAME, url: SITE_URL },
         serviceType: d.tagline,
         url: pageUrl,
-        brand: {
-          '@type': 'Brand',
-          name: d.bannerBrand.replace(/[™®]/g, '').trim(),
-        },
-        audience: {
-          '@type': 'BusinessAudience',
-          audienceType: d.buyerPersonas.primary,
-        },
+        brand: { '@type': 'Brand', name: d.bannerBrand.replace(/[™®]/g, '').trim() },
+        audience: { '@type': 'BusinessAudience', audienceType: d.buyerPersonas.primary },
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
           name: `${d.shortName} services`,
@@ -86,273 +81,487 @@ const DepartmentPage = () => {
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 1, name: 'Home',        item: SITE_URL },
           { '@type': 'ListItem', position: 2, name: 'Departments', item: `${SITE_URL}/departments` },
-          { '@type': 'ListItem', position: 3, name: d.shortName, item: pageUrl },
+          { '@type': 'ListItem', position: 3, name: d.shortName,   item: pageUrl },
         ],
       },
     ],
   };
 
   return (
-    <>
+    <div
+      className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white"
+      style={{ backgroundColor: '#000000' }}
+    >
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         {seo.keywords && <meta name="keywords" content={seo.keywords} />}
         <link rel="canonical" href={pageUrl} />
-
-        {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={pageUrl} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:site_name" content={ORG_NAME} />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={pageUrl} />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        <meta name="twitter:image" content={ogImage} />
-
-        {/* JSON-LD: Service + BreadcrumbList */}
+        <meta property="og:type"         content="website" />
+        <meta property="og:url"          content={pageUrl} />
+        <meta property="og:title"        content={pageTitle} />
+        <meta property="og:description"  content={pageDescription} />
+        <meta property="og:image"        content={ogImage} />
+        <meta property="og:site_name"    content={ORG_NAME} />
+        <meta name="twitter:card"         content="summary_large_image" />
+        <meta name="twitter:url"          content={pageUrl} />
+        <meta name="twitter:title"        content={pageTitle} />
+        <meta name="twitter:description"  content={pageDescription} />
+        <meta name="twitter:image"        content={ogImage} />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
-      {/* Top accent band */}
-      <div
-        className="h-1.5 w-full"
-        style={{ backgroundColor: d.accentColor }}
-        aria-hidden="true"
-      />
+      {/* ─────────────────────── HERO ─────────────────────── */}
+      <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
+        <section className="relative w-full h-full flex items-end overflow-hidden pb-36 rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#06090f]">
+          <VisualBackground forceDark={true} />
 
-      <article className="max-w-6xl mx-auto px-6 py-12">
-        <Breadcrumb
-          items={[
-            { name: 'Home', href: '/' },
-            { name: 'Departments', href: '/departments' },
-            { name: d.shortName },
+          {/* Brand glow */}
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[500px] blur-[120px] rounded-full pointer-events-none mix-blend-screen"
+            style={{ backgroundColor: BRAND_GLOW }}
+          />
+
+          <div
+            ref={heroRef}
+            className={`relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-48 transition-all duration-1000 ${
+              heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="max-w-3xl">
+              {/* Dept badge */}
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12">
+                <div className="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" />
+                <p className="text-xs font-bold tracking-[0.2em] text-brand-cyan uppercase">
+                  {d.name}
+                </p>
+              </div>
+
+              <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white mb-8 drop-shadow-2xl">
+                {d.tagline}
+              </h1>
+
+              <p className="text-lg sm:text-xl font-semibold tracking-normal mb-6 text-brand-cyan/80">
+                {d.description}
+              </p>
+
+              <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
+                {d.heroBody}
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                <Link
+                  to="/contact"
+                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_40px_rgba(37,100,234,0.2)] hover:shadow-[0_0_60px_rgba(37,100,234,0.4)] hover:bg-white/20"
+                >
+                  <span className="relative z-10 font-bold text-sm tracking-wide">Schedule Your 30-min Discovery Call</span>
+                  <div className="relative w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center group-hover:bg-white transition-colors duration-300 z-10">
+                    <ArrowRight className="w-4 h-4 text-white group-hover:text-brand-blue" />
+                  </div>
+                </Link>
+                <Link
+                  to="/departments"
+                  className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
+                >
+                  Explore Our Capabilities
+                  <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 transition-transform duration-200" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile stats strip */}
+          <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
+            <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 gap-4">
+              {[
+                { value: d.serviceCount,            label: 'Services'     },
+                { value: d.businessOutcomes.length, label: 'Key Outcomes' },
+              ].map(s => (
+                <div key={s.label} className="text-center">
+                  <p className="text-2xl font-black text-white drop-shadow-lg">{s.value}</p>
+                  <p className="text-[10px] text-brand-cyan/80 font-bold tracking-widest uppercase mt-1">
+                    {s.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ─────────────────────── OVERVIEW ─────────────────────── */}
+      <section id="overview" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div
+          ref={overviewRef}
+          className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${
+            overviewVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="mb-14">
+            <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">
+              WHAT {d.shortName.toUpperCase()} DELIVERS
+            </p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
+              The complete{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                {d.tagline}
+              </span>{' '}
+              practice.
+            </h2>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start mb-20">
+            {/* Left — body + stats strip */}
+            <div>
+              <p className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-10 font-light max-w-xl">
+                {d.heroBody}
+              </p>
+
+              <div className="grid grid-cols-3 gap-6 pt-10 border-t border-white/[0.08]">
+                {[
+                  { value: d.serviceCount,
+                    label: 'Specialized\nServices' },
+                  { value: d.businessOutcomes.length,
+                    label: 'Key\nOutcomes' },
+                  { value: [d.buyerPersonas.primary, ...d.buyerPersonas.secondary].length,
+                    label: 'Buyer\nPersonas' },
+                ].map(s => (
+                  <div key={s.label}>
+                    <p className="text-4xl font-black text-white tracking-tight mb-1">{s.value}</p>
+                    <p className="text-white/30 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">
+                      {s.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — 3 overview cards */}
+            <div className="space-y-4">
+              {[
+                { Icon: Target, label: 'What this department does', body: d.description },
+                { Icon: Users,  label: "Who it's for",              body: `${d.buyerPersonas.primary} · ${d.buyerPersonas.secondary.join(' · ')}` },
+                { Icon: Wrench, label: 'How we deliver',            body: d.deliveryApproach },
+              ].map(({ Icon: ItemIcon, label, body }) => (
+                <div
+                  key={label}
+                  className="p-6 border border-white/[0.07] bg-[#06090f] rounded-2xl flex gap-4"
+                >
+                  <div className="w-8 h-8 rounded-lg border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <ItemIcon className="w-4 h-4 text-brand-cyan" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black tracking-[0.3em] text-white/30 uppercase mb-2">{label}</p>
+                    <p className="text-white/70 text-sm font-medium leading-relaxed">{body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pull quote */}
+          <div className="border-l-2 border-white/10 pl-8">
+            <p className="text-xl sm:text-2xl font-black text-white/40 leading-snug max-w-4xl">
+              "{d.description}"
+            </p>
+            <p className="text-lg font-black text-white mt-3">
+              {d.buyerPersonas.primary}-ready. Execution-first. Backed by the full Kangqore practice.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────── eQORE AI CONCIERGE ─────────────────────── */}
+      <div>
+        <ConciergeSection
+          inverted
+          suggestedPrompts={[
+            `What is ${d.name}?`,
+            `What services does ${d.shortName} offer?`,
+            `Who is ${d.shortName} designed for?`,
+            `How does a ${d.shortName} engagement work?`,
+            `What are the business outcomes from ${d.shortName}?`,
+            `What is ${d.bannerBrand}?`,
+            `How long does a ${d.shortName} engagement take?`,
+            `Book a ${d.shortName} diagnostic`,
           ]}
         />
+      </div>
 
-        {/* HERO */}
-        <header className="mb-16">
-          <div className="flex items-center gap-3 mb-4">
-            {Icon && (
-              <Icon
-                className="w-7 h-7"
-                style={{ color: d.accentColor }}
-                aria-hidden="true"
-              />
-            )}
-            <p
-              className="text-sm uppercase tracking-widest font-semibold"
-              style={{ color: d.accentColor }}
-            >
-              {d.name}
-            </p>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-5 tracking-tight">
-            {d.tagline}
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-3 max-w-3xl">
-            {d.description}
-          </p>
-          <p className="text-base text-gray-600 dark:text-gray-400 mb-8 max-w-3xl leading-relaxed">
-            {d.heroBody}
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-white font-medium hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: d.accentColor }}
-            >
-              Book a 30-min diagnostic
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to="/case-studies"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-md border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-500 transition-colors"
-            >
-              See case studies
-            </Link>
-          </div>
-        </header>
-
-        {/* OVERVIEW (3-col) */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 pb-16 border-b border-gray-200 dark:border-gray-800">
-          <div>
-            <Target className="w-6 h-6 mb-3" style={{ color: d.accentColor }} aria-hidden="true" />
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-2">
-              What this department does
-            </h2>
-            <p className="text-base text-gray-700 dark:text-gray-300">
-              {d.description}
-            </p>
-          </div>
-          <div>
-            <Users className="w-6 h-6 mb-3" style={{ color: d.accentColor }} aria-hidden="true" />
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-2">
-              Who it&apos;s for
-            </h2>
-            <p className="text-base text-gray-700 dark:text-gray-300 mb-1">
-              <span className="font-semibold">{d.buyerPersonas.primary}</span>
-            </p>
-            <p className="text-sm text-gray-500">
-              {d.buyerPersonas.secondary.join(' · ')}
-            </p>
-          </div>
-          <div>
-            <Wrench className="w-6 h-6 mb-3" style={{ color: d.accentColor }} aria-hidden="true" />
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-2">
-              How we deliver
-            </h2>
-            <p className="text-base text-gray-700 dark:text-gray-300">
-              {d.deliveryApproach}
-            </p>
-          </div>
-        </section>
-
-        {/* BANNER BRAND BAND */}
-        <section
-          className="-mx-6 px-6 md:px-12 py-10 mb-16 rounded-lg"
-          style={{ backgroundColor: d.accentColor + '0D' /* ~5% tint */ }}
+      {/* ─────────────────────── SERVICES ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden bg-black">
+        <div
+          ref={servicesRef}
+          className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${
+            servicesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
         >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div>
-              <p
-                className="text-xs uppercase tracking-widest font-semibold mb-2"
-                style={{ color: d.accentColor }}
-              >
-                Featured Brand
-              </p>
-              <p className="text-2xl md:text-3xl font-bold">{d.bannerBrand}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                The productized methodology that powers {d.shortName} engagements.
-              </p>
-            </div>
-            <Link
-              to={`/solutions/${d.bannerBrandSlug}`}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-white font-medium hover:opacity-90 transition-opacity self-start md:self-auto"
-              style={{ backgroundColor: d.accentColor }}
-            >
-              Learn more about {d.bannerBrand}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+          <div className="mb-20">
+            <p className="text-xs font-bold tracking-[0.3em] text-brand-cyan uppercase mb-5">
+              SERVICES IN {d.shortName.toUpperCase()}
+            </p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
+              {d.serviceCount}{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                Specialized Services
+              </span>
+            </h2>
+            <p className="text-white/60 max-w-2xl text-lg sm:text-xl font-medium">
+              Every service in {d.shortName} is built for{' '}
+              {d.buyerPersonas.primary}-level outcomes — from initial engagement through to managed delivery.
+            </p>
           </div>
-        </section>
 
-        {/* SERVICE GRID */}
-        <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">
-            Services in {d.shortName}
-            <span className="text-base font-normal text-gray-500 ml-3">
-              {d.serviceCount} services
-            </span>
-          </h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {d.serviceSlugs.map((svcSlug) => {
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-start">
+            {d.serviceSlugs.map((svcSlug, i) => {
               const svc = servicesData[svcSlug];
               if (!svc) return null;
+              const elevated = i === 1 || i === 4;
               return (
-                <li key={svcSlug}>
-                  <Link
-                    to={`/services/${svcSlug}`}
-                    className="block h-full p-5 border border-gray-200 dark:border-gray-800 rounded-md hover:border-gray-400 dark:hover:border-gray-600 transition-colors group"
-                  >
-                    <h3 className="font-semibold mb-1 group-hover:underline">
+                <Link
+                  key={svcSlug}
+                  to={`/services/${svcSlug}`}
+                  className={`group relative flex flex-col transition-all duration-500 hover:-translate-y-2 ${
+                    elevated ? 'lg:-translate-y-4' : ''
+                  }`}
+                >
+                  {/* Brand gradient top */}
+                  <div
+                    className="w-full h-36 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-44 shadow-lg"
+                    style={{ background: 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)', opacity: 0.65 }}
+                  />
+                  {/* Dark card */}
+                  <div className="relative w-[92%] mx-auto -mt-10 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-7 shadow-2xl transition-all duration-500 group-hover:border-white/20">
+                    <div className="w-5 h-0.5 rounded-full mb-4 bg-brand-cyan" />
+                    <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">
                       {svc.name}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-white/55 text-sm leading-relaxed mb-4">
                       {svc.shortDescription}
                     </p>
-                  </Link>
-                </li>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-brand-cyan/80">Explore service</span>
+                      <ArrowRight className="w-3 h-3 text-brand-cyan/80 group-hover:translate-x-0.5 transition-transform duration-200" />
+                    </div>
+                  </div>
+                </Link>
               );
             })}
-          </ul>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        {/* BUSINESS OUTCOMES */}
-        <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold mb-8">Business outcomes</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* ─────────────────────── BUSINESS OUTCOMES ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div
+          ref={outcomesRef}
+          className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${
+            outcomesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="mb-24">
+            <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">
+              AFTER {d.shortName.toUpperCase()}
+            </p>
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
+              {d.shortName} clients gain{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                measurable advantage.
+              </span>
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-8">
             {d.businessOutcomes.map((o, i) => (
               <div
                 key={i}
-                className="p-6 border border-gray-200 dark:border-gray-800 rounded-md"
+                className="p-7 border border-white/[0.07] bg-[#06090f] rounded-2xl flex flex-col"
               >
-                <p
-                  className="text-3xl md:text-4xl font-bold mb-2"
-                  style={{ color: d.accentColor }}
-                >
-                  {o.metric}
-                </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  {o.label}
-                </p>
+                <div className="flex items-start gap-5 mb-5">
+                  <span className="text-[9px] font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <p className="text-4xl md:text-5xl font-black tracking-tight leading-none text-brand-cyan">
+                    {o.metric}
+                  </p>
+                </div>
+                <p className="text-white/60 text-base font-medium leading-snug pl-8">{o.label}</p>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* RELATED DEPARTMENTS */}
-        {d.relatedDepartments && d.relatedDepartments.length > 0 && (
-          <section className="mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">
-              {d.shortName} pairs well with
-            </h2>
-            <ul className="flex flex-wrap gap-3">
+      {/* ─────────────────────── ENGAGEMENT PROCESS ─────────────────────── */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <div
+          ref={processRef}
+          className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${
+            processVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
+            <div>
+              <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">
+                THE PROCESS
+              </p>
+              <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
+                The {d.shortName}{' '}
+                <span className="bg-brand-gradient bg-clip-text text-transparent">
+                  Engagement Process
+                </span>
+              </h2>
+            </div>
+            <div className="lg:pb-3">
+              <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
+                A structured, phased engagement from initial scoping through to managed delivery — designed to match
+                the pace of how {d.buyerPersonas.primary}-led organizations actually make decisions.
+              </p>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-brand-cyan/50 hover:bg-white/5 transition-all duration-300 group"
+              >
+                <span className="text-white font-black text-sm tracking-wide">Request a Scoping Session</span>
+                <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 transition-transform duration-300" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-x-16 lg:gap-x-24">
+            {deliverySteps.map((step, i) => (
+              <div key={step} className="flex gap-6 py-8 border-t border-white/[0.06]">
+                <span className="text-[9px] font-black tracking-widest mt-1 flex-shrink-0 w-6 text-brand-cyan">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <p className="text-white font-black text-base leading-tight">{step.trim()}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────── RELATED DEPARTMENTS ─────────────────────── */}
+      {d.relatedDepartments && d.relatedDepartments.length > 0 && (
+        <section className="py-28 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+          <div
+            ref={relatedRef}
+            className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${
+              relatedVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 mb-20">
+              <div>
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="w-8 h-px bg-white/30" />
+                  <p className="text-[10px] font-black tracking-[0.45em] text-white/50 uppercase">
+                    RELATED DEPARTMENTS
+                  </p>
+                </div>
+                <h2 className="text-4xl sm:text-5xl font-extrabold leading-[1.2] tracking-tight text-white">
+                  {d.shortName} pairs well<br />
+                  with these{' '}
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">
+                    departments.
+                  </span>
+                </h2>
+              </div>
+              <div className="flex lg:items-end lg:pb-3">
+                <p className="text-white/40 text-lg font-medium leading-relaxed max-w-lg">
+                  Kangqore departments are designed to work in combination — each capable of standalone delivery,
+                  and more powerful when paired for broader transformation programs.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-6">
               {d.relatedDepartments.map((relSlug) => {
-                const rel = departmentsData[relSlug];
+                const rel     = departmentsData[relSlug];
+                const RelIcon = rel?.icon;
                 if (!rel) return null;
                 return (
-                  <li key={relSlug}>
-                    <Link
-                      to={`/departments/${relSlug}`}
-                      className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full hover:border-gray-500 dark:hover:border-gray-500 transition-colors"
-                    >
-                      <span
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: rel.accentColor }}
-                        aria-hidden="true"
-                      />
-                      <span className="font-medium">{rel.shortName}</span>
-                      <span className="text-sm text-gray-500">— {rel.tagline}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-gray-400" />
-                    </Link>
-                  </li>
+                  <Link
+                    key={relSlug}
+                    to={`/departments/${relSlug}`}
+                    className="group flex flex-col p-7 border border-white/[0.08] bg-[#06090f] rounded-2xl hover:border-white/20 transition-all duration-300 hover:-translate-y-1"
+                  >
+                    <div className="flex items-center gap-3 mb-5">
+                      {RelIcon && (
+                        <div className="w-9 h-9 rounded-xl border border-white/10 flex items-center justify-center">
+                          <RelIcon className="w-4 h-4 text-brand-cyan" strokeWidth={1.5} />
+                        </div>
+                      )}
+                      <div className="w-2 h-2 rounded-full bg-brand-cyan/40" />
+                    </div>
+                    <p className="text-white font-black text-2xl mb-2">{rel.shortName}</p>
+                    <p className="text-white/45 text-sm font-medium leading-relaxed flex-1 mb-6">
+                      {rel.tagline}
+                    </p>
+                    <div className="flex items-center gap-2 pt-4 border-t border-white/[0.06]">
+                      <span className="text-xs font-bold text-brand-cyan/80">
+                        Explore {rel.shortName}
+                      </span>
+                      <ChevronRight className="w-3.5 h-3.5 text-brand-cyan/80 group-hover:translate-x-0.5 transition-transform duration-200" />
+                    </div>
+                  </Link>
                 );
               })}
-            </ul>
-          </section>
-        )}
-
-        {/* FINAL CTA */}
-        <section
-          className="-mx-6 px-6 md:px-12 py-10 rounded-lg text-center"
-          style={{ backgroundColor: d.accentColor }}
-        >
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-            Ready to talk about {d.shortName}?
-          </h2>
-          <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-            Book a 30-minute architecture diagnostic with a named practice lead.
-            Fixed agenda. No sales pitch.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-white text-gray-900 font-semibold hover:bg-gray-100 transition-colors"
-          >
-            Book a diagnostic
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+            </div>
+          </div>
         </section>
-      </article>
-    </>
-  );
-};
+      )}
 
-export default DepartmentPage;
+      {/* ─────────────────────── FINAL CTA ─────────────────────── */}
+      <section
+        ref={ctaRef}
+        className={`py-28 md:py-36 lg:py-44 relative overflow-hidden transition-all duration-1000 ${
+          ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+        style={{ backgroundColor: '#000000' }}
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 mb-20">
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8 lg:max-w-[50%]">
+              Ready to talk about{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                {d.shortName}?
+              </span>
+            </h2>
+            <div className="flex flex-col sm:flex-row gap-4 self-start lg:self-auto pt-4 lg:pt-6">
+              <Link
+                to="/contact"
+                className="group inline-flex items-center gap-3 px-7 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
+              >
+                Schedule Your 30-min Discovery Call
+                <ArrowRight className="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+              <Link
+                to="/departments"
+                className="group inline-flex items-center gap-3 px-7 py-4 rounded-full border border-white/15 hover:border-brand-cyan/50 hover:bg-white/5 text-white font-black text-sm tracking-wide transition-all duration-200"
+              >
+                Explore Our Capabilities
+                <ArrowRight className="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="max-w-4xl mb-16">
+            <p className="text-white/50 text-lg lg:text-xl leading-relaxed">
+              Book a 30-minute architecture diagnostic with a named practice lead. Fixed agenda. No sales pitch.{' '}
+              {d.shortName} engagements begin with clear scoping and move to delivery at the pace your
+              organization requires.
+            </p>
+          </div>
+
+          <div className="mt-10 pt-10 border-t border-white/[0.06]">
+            <p className="text-2xl sm:text-3xl lg:text-[2.5rem] font-black leading-[1.25] text-white/40 max-w-3xl">
+              {d.shortName} transformation, diagnosed and delivered.{' '}
+              <span className="text-white">From first conversation to production.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

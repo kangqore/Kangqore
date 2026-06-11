@@ -4,8 +4,8 @@
 
 ### Default Admin Account
 ```
-Email:    admin@kangqore.com
-Password: Admin@123
+Email:    mahesh@kangqore.com
+Password: Admin@123456
 ```
 
 **⚠️ IMPORTANT: Change this password immediately after first login!**

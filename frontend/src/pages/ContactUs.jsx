@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Send, Clock, Globe, ArrowRight, Sparkles, MessageSquare, Calendar, Share2, Linkedin, Twitter, Facebook, Instagram, Youtube } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
+import { useAuth } from '../context/AuthContext';
 import BookingWidget from '../components/scheduling/BookingWidget';
 import ServiceSelector from '../components/common/ServiceSelector';
 import PageHero from '../components/PageHero';
@@ -10,7 +11,18 @@ import { coreSEO } from '../data/seoData';
 
 const ContactUs = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('meeting'); // 'meeting' or 'message'
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  useEffect(() => {
+    if (window.location.hash === '#send-message') {
+      setActiveTab('message');
+      setTimeout(() => {
+        document.getElementById('send-message')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, []);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -89,10 +101,7 @@ const ContactUs = () => {
         throw new Error(data.error?.message || data.message || 'Failed to send message');
       }
 
-      toast({
-        title: "Message Sent Successfully",
-        description: "Thank you for contacting us. We'll be in touch soon.",
-      });
+      setSubmitSuccess(true);
 
       setFormData({
         name: '',
@@ -174,7 +183,7 @@ const ContactUs = () => {
                   <button
                     onClick={() => {
                       setActiveTab('meeting');
-                      document.getElementById('contact-options').scrollIntoView({ behavior: 'smooth' });
+                      document.getElementById('send-message')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                     className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/70 backdrop-blur-xl text-gray-900 shadow-xl"
                   >
@@ -190,7 +199,7 @@ const ContactUs = () => {
                   <button
                     onClick={() => {
                       setActiveTab('message');
-                      document.getElementById('contact-options').scrollIntoView({ behavior: 'smooth' });
+                      document.getElementById('send-message')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                     className="group inline-flex items-center gap-2 px-4 py-2 hover:opacity-80 transition-opacity duration-300"
                   >
@@ -207,7 +216,7 @@ const ContactUs = () => {
       </section>
 
       {/* Main Interaction Area */}
-      <section id="contact-options" className="py-20 relative overflow-hidden">
+      <section id="send-message" className="py-20 relative overflow-hidden">
         {/* Background Accents */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue/5 rounded-full blur-[120px] -z-10" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-cyan-400/5 rounded-full blur-[100px] -z-10" />
@@ -337,6 +346,52 @@ const ContactUs = () => {
 
                 {/* Form Right Side */}
                 <div className="md:w-7/12 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-8 md:p-10 shadow-2xl">
+                  {submitSuccess ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
+                      <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mb-6">
+                        <svg className="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Thank you for your feedback.</h3>
+                      {user ? (
+                        <>
+                          <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-sm">
+                            Your message has been received and will help us improve Kangqore.
+                          </p>
+                          <button onClick={() => setSubmitSuccess(false)} className="mt-8 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition underline underline-offset-2">
+                            Send another message
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-sm">
+                            Would you like to create a Kangqore account to:
+                          </p>
+                          <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-2 text-left mb-8">
+                            <li className="flex items-start gap-2"><span className="text-brand-cyan">•</span>Track your inquiries</li>
+                            <li className="flex items-start gap-2"><span className="text-brand-cyan">•</span>Receive updates on your feedback</li>
+                            <li className="flex items-start gap-2"><span className="text-brand-cyan">•</span>Access future community and platform features</li>
+                          </ul>
+                          <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
+                            <button
+                              onClick={() => window.dispatchEvent(new CustomEvent('show-auth-modal', { detail: { tab: 'signup' } }))}
+                              className="flex-1 py-3 bg-brand-gradient text-white rounded-xl font-bold text-sm hover:shadow-lg hover:shadow-brand-blue/20 hover:scale-[1.02] transition-all"
+                            >
+                              Create Account
+                            </button>
+                            <button
+                              onClick={() => window.dispatchEvent(new CustomEvent('show-auth-modal', { detail: { tab: 'signin' } }))}
+                              className="flex-1 py-3 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                            >
+                              Sign In
+                            </button>
+                          </div>
+                          <button onClick={() => setSubmitSuccess(false)} className="mt-4 text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition font-medium">
+                            Maybe Later
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
@@ -496,6 +551,7 @@ const ContactUs = () => {
                       )}
                     </button>
                   </form>
+                  )}
                 </div>
               </div>
             )}
@@ -518,26 +574,26 @@ const ContactUs = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12 max-w-6xl mx-auto">
             {[
-              { label: 'Request for Services', link: '#contact-options' },
-              { label: 'Technology and Market Analyst Queries', link: '#contact-options' },
-              { label: 'eQORE-related Queries', link: '#contact-options' },
-              { label: 'Financial Analysts and Investor Queries', link: '#contact-options' },
-              { label: 'Media Queries', link: '#contact-options' },
+              { label: 'Request for Services', link: '#send-message' },
+              { label: 'Technology and Market Analyst Queries', link: '#send-message' },
+              { label: 'eQORE-related Queries', link: '#send-message' },
+              { label: 'Financial Analysts and Investor Queries', link: '#send-message' },
+              { label: 'Media Queries', link: '#send-message' },
               { label: 'Career-related Queries', link: '/careers' },
-              { label: 'Supplier Payment Related Queries', link: '#contact-options' },
-              { label: 'BPM-related Queries', link: '#contact-options' },
-              { label: 'Website Feedback', link: '#contact-options' }
+              { label: 'Supplier Payment Related Queries', link: '#send-message' },
+              { label: 'BPM-related Queries', link: '#send-message' },
+              { label: 'Website Feedback', link: '#send-message' }
             ].map((item, idx) => (
               <div key={idx} className="flex items-start">
                 <Link
                   to={item.link}
                   className="group inline-block"
                   onClick={(e) => {
-                    if (item.link === '#contact-options') {
+                    if (item.link === '#send-message') {
                       e.preventDefault();
                       setFormData(prev => ({ ...prev, inquiryType: item.label }));
                       setActiveTab('message');
-                      document.getElementById('contact-options').scrollIntoView({ behavior: 'smooth' });
+                      document.getElementById('send-message')?.scrollIntoView({ behavior: 'smooth' });
                     }
                   }}
                 >
