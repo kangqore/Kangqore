@@ -1,6 +1,34 @@
 import React from 'react';
 import { Zap, Search, Layers, Activity, ShieldCheck, Brain, Network, Cpu, Shield, Sparkles } from 'lucide-react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
+import SEO from '../../../components/SEO';
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What if the GenAI model gives wrong or hallucinated answers?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Hallucinations are a deployment problem, not a model problem. Kangqore grounds every GenAI system in your enterprise data using secure RAG architectures — so the model only answers from verified, scoped sources. We also add LLMOps confidence scoring and human-in-the-loop escalation for high-stakes outputs." }
+    },
+    {
+      "@type": "Question",
+      "name": "Will our proprietary data be used to train public AI models?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. All deployments run in isolated, private cloud environments. Your data never leaves your security perimeter and is never used for model training by any third-party provider. We implement strict RBAC, PII masking, and data residency controls from day one." }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does it take to go from pilot to production GenAI?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Our structured delivery framework moves from use-case identification to a governed production pilot in 8 weeks. Full enterprise-wide deployment typically follows within 3–6 months depending on integration complexity and change management scope." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you control GenAI token costs as usage scales?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We implement LLMOps gateways that monitor token consumption in real-time, cache frequent responses, route queries to the most cost-efficient model per task, and set hard usage budgets per team or workflow. Clients typically see 30–50% cost reduction versus unmanaged LLM usage." }
+    }
+  ]
+};
 
 import {
   AIChallengesSection,
@@ -28,7 +56,7 @@ const GenAIBusinessServices = () => {
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
     hideGenericMidPageCta: true,
-    hideGenericFaq: true,
+    hideGenericFaq: false,
 
     breadcrumb: [
       { label: 'Home', link: '/' },
@@ -311,7 +339,14 @@ const GenAIBusinessServices = () => {
 
   return (
     <div className="ai-cognitive-page-override">
-      <ServicePageTemplate service={pageData.service} department={pageData.department} />
+      <SEO
+        title="GenAI Business Services — Enterprise Generative AI Solutions"
+        description="Kangqore designs and deploys production-grade Generative AI solutions — from secure RAG systems and enterprise copilots to LLMOps monitoring and agentic workflows — with governance and measurable ROI built in."
+        keywords="generative AI business services, enterprise GenAI, RAG implementation, LLMOps, AI copilots, GenAI consulting, production GenAI deployment, governed generative AI, GenAI enterprise strategy, LLM integration services"
+        url="https://kangqore.com/services/genai-business-services"
+        schemas={[FAQ_SCHEMA]}
+      />
+      <ServicePageTemplate service={pageData.service} department={pageData.department} disableSEO />
     </div>
   );
 };

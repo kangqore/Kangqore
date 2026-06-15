@@ -1,6 +1,34 @@
 import React from 'react';
 import { Activity, BrainCircuit, ShieldCheck, RefreshCw, Zap, Database, TrendingUp, Cloud, Shield, Lock } from 'lucide-react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
+import SEO from '../../../components/SEO';
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What happens when a model drifts silently in production?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Silent drift is the most dangerous failure mode in production ML. Our MLOps frameworks deploy continuous telemetry that monitors data distribution, prediction confidence, and business KPI alignment in real-time. When drift exceeds defined thresholds, automated alerts trigger and retraining pipelines execute — without waiting for a human to notice a degrading metric." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does MLOps require us to replace our existing data infrastructure?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. We design MLOps pipelines to be platform-agnostic and integrate with your existing stack — whether that's AWS SageMaker, Azure ML, GCP Vertex, Databricks, or on-premise Kubernetes. We start with a workflow audit and select tooling that reduces friction, not adds it." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do we ensure reproducibility across training and serving environments?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Reproducibility requires versioning at every layer: data, code, hyperparameters, and environment. We implement comprehensive experiment tracking (MLflow, W&B), dataset versioning, and containerized training environments so any experiment can be reproduced exactly — months or years later." }
+    },
+    {
+      "@type": "Question",
+      "name": "How quickly will we see ROI from an MLOps implementation?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Most clients see measurable ROI within the first 60 days — primarily through deployment speed (models that took weeks to ship now take hours) and reduced operational overhead (eliminating manual monitoring, retraining, and incident response). Our benchmark: 90% reduction in time-to-production and 50% reduction in ML infrastructure costs." }
+    }
+  ]
+};
 
 import {
   AIChallengesSection,
@@ -28,7 +56,7 @@ const MLOps = () => {
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
     hideGenericMidPageCta: true,
-    hideGenericFaq: true,
+    hideGenericFaq: false,
 
     breadcrumb: [
       { label: 'Home', link: '/' },
@@ -293,7 +321,14 @@ const MLOps = () => {
 
   return (
     <div className="ai-cognitive-page-override">
-      <ServicePageTemplate service={pageData.service} department={pageData.department} />
+      <SEO
+        title="MLOps Services — Enterprise ML Pipeline Automation & Governance"
+        description="Kangqore engineers industrial-grade MLOps pipelines that bridge experimental data science and production-critical software — with automated CI/CD, drift detection, model monitoring, and closed-loop retraining."
+        keywords="MLOps services, ML pipeline automation, model drift detection, CI/CD for machine learning, model deployment, ML monitoring, model registry, experiment tracking, auto-retraining, enterprise MLOps consulting"
+        url="https://kangqore.com/services/mlops"
+        schemas={[FAQ_SCHEMA]}
+      />
+      <ServicePageTemplate service={pageData.service} department={pageData.department} disableSEO />
     </div>
   );
 };

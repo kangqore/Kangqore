@@ -1,6 +1,34 @@
 import React from 'react';
 import { Zap, Search, Layers, Activity, ShieldCheck, Brain, DollarSign, Target, TrendingUp } from 'lucide-react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
+import SEO from '../../../components/SEO';
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is cognitive computing different from standard machine learning or GenAI?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Standard ML predicts outcomes from structured data. GenAI generates content from language prompts. Cognitive computing goes further — it perceives, understands, and reasons across unstructured inputs like images, audio, video, and text simultaneously. It is the layer that allows an enterprise system to understand context, not just patterns." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can cognitive AI systems work with our existing enterprise data and applications?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our cognitive systems are designed to integrate with existing enterprise stacks via API-first architecture. We connect to your ERP, CRM, document repositories, and operational systems — extracting intelligence from data that already exists, rather than requiring a full data infrastructure replacement." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are cognitive AI decisions explainable and auditable for compliance purposes?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Explainability is a first-class requirement in every cognitive system we build. We implement SHAP-based feature attribution, confidence scoring, and decision audit trails so compliance teams can trace exactly why the system produced a given output. This is non-negotiable for regulated industries like healthcare, financial services, and insurance." }
+    },
+    {
+      "@type": "Question",
+      "name": "Which industries see the fastest ROI from cognitive computing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Healthcare and life sciences see the fastest ROI through clinical decision support and medical imaging automation. Manufacturing follows closely with computer vision quality control systems that reduce defect rates by 30–60%. Financial services benefit significantly from document intelligence for KYC, contract analysis, and regulatory reporting automation." }
+    }
+  ]
+};
 
 import {
   AIChallengesSection,
@@ -28,7 +56,7 @@ const AICognitiveComputing = () => {
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
     hideGenericMidPageCta: true,
-    hideGenericFaq: true,
+    hideGenericFaq: false,
 
     breadcrumb: [
       { label: 'Home', link: '/' },
@@ -304,7 +332,14 @@ const AICognitiveComputing = () => {
 
   return (
     <div className="ai-cognitive-page-override">
-      <ServicePageTemplate service={pageData.service} department={pageData.department} />
+      <SEO
+        title="AI & Cognitive Computing Services — Intelligent Enterprise Systems"
+        description="Kangqore deploys AI and cognitive computing systems that perceive, understand, learn, and reason — embedding intelligence into enterprise operations through computer vision, NLP, predictive modeling, and explainable AI."
+        keywords="AI cognitive computing, cognitive AI services, computer vision enterprise, NLP solutions, natural language understanding, explainable AI, enterprise AI systems, cognitive intelligence, image processing AI, machine learning enterprise"
+        url="https://kangqore.com/services/ai-cognitive-computing"
+        schemas={[FAQ_SCHEMA]}
+      />
+      <ServicePageTemplate service={pageData.service} department={pageData.department} disableSEO />
     </div>
   );
 };

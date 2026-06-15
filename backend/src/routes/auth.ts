@@ -21,7 +21,7 @@ const registerSchema = Joi.object<RegisterRequest>({
   name: Joi.string().min(2).required(),
   company: Joi.string().optional(),
   phone: Joi.string().optional(),
-  role: Joi.string().valid('ADMIN', 'CLIENT', 'PARTNER', 'INVESTOR', 'JOB_SEEKER', 'VISITOR').default('CLIENT')
+  role: Joi.string().valid('ADMIN', 'CLIENT', 'PARTNER', 'INVESTOR', 'JOB_SEEKER', 'JOURNALIST', 'ANALYST', 'VISITOR').default('CLIENT')
 });
 
 const loginSchema = Joi.object<LoginRequest>({

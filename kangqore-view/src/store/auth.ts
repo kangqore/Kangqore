@@ -37,7 +37,7 @@ export interface SignupPayload {
 }
 
 export const ROLE_REDIRECT: Record<UserRole, string> = {
-  ADMIN:      '/os/kimmp',
+  ADMIN:      '/kangqore-view/kimmp',
   CLIENT:     '/portal/client',
   PARTNER:    '/portal/partner',
   INVESTOR:   '/portal/investor',

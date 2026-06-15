@@ -30,7 +30,16 @@ export default defineConfig(({ mode }) => {
     ],
 
     resolve: {
-      alias: { '@': path.resolve(__dirname, 'src') },
+      alias: {
+        '@':              path.resolve(__dirname, 'src'),
+        '@features':      path.resolve(__dirname, 'src/os/features'),
+        '@components':    path.resolve(__dirname, 'src/os/components'),
+        '@store':         path.resolve(__dirname, 'src/os/store'),
+        '@lib':           path.resolve(__dirname, 'src/os/lib'),
+        '@design-system': path.resolve(__dirname, 'src/os/design-system'),
+        '@pages':         path.resolve(__dirname, 'src/os/pages'),
+        '@portals':       path.resolve(__dirname, 'src/os/portals'),
+      },
     },
 
     define: {
@@ -40,13 +49,11 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       proxy: {
-        '/os':             { target: KANGQORE_VIEW, changeOrigin: true, ws: true },
-        '/portal':         { target: KANGQORE_VIEW, changeOrigin: true, ws: true },
-        '/socket.io':      { target: BACKEND, changeOrigin: true, ws: true },
-        '/api':            { target: BACKEND, changeOrigin: true },
-        '/sitemap.xml':    { target: BACKEND, changeOrigin: true },
-        '/robots.txt':     { target: BACKEND, changeOrigin: true },
-        '/llms.txt':       { target: BACKEND, changeOrigin: true },
+        '/socket.io':   { target: BACKEND, changeOrigin: true, ws: true },
+        '/api':         { target: BACKEND, changeOrigin: true },
+        '/sitemap.xml': { target: BACKEND, changeOrigin: true },
+        '/robots.txt':  { target: BACKEND, changeOrigin: true },
+        '/llms.txt':    { target: BACKEND, changeOrigin: true },
       },
     },
 

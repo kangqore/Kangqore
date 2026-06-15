@@ -96,14 +96,14 @@ function AppInner() {
 
             {/* Internal OS — ADMIN only */}
             <Route
-              path="/os"
+              path="/kangqore-view"
               element={
                 <ProtectedRoute allowedRoles={['ADMIN']}>
                   <OSLayout />
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Navigate to="/os/kimmp" replace />} />
+              <Route index element={<Navigate to="/kangqore-view/kimmp" replace />} />
 
               {/* Phase 1 — Core Operations */}
               <Route path="strategy/*"    element={<StrategyModule />}    />

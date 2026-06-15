@@ -1,53 +1,76 @@
 import React from 'react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
-import { 
-  Database, 
-  BrainCircuit, 
-  Workflow, 
-  Gauge, 
-  RefreshCw, 
-  TrendingUp, 
-  BarChart3, 
-  Settings2, 
-  Search, 
-  Share2, 
-  ShieldCheck, 
-  Globe, 
-  LineChart, 
-  Zap,
-  Layers,
-  Activity,
-  Box,
-  Cpu,
-  Eye,
-  Lock
-} from 'lucide-react';
+import SEO from '../../../components/SEO';
+import { Database, BrainCircuit, Layers, LineChart, TrendingUp, Zap, Search, Activity } from 'lucide-react';
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "We have dashboards but nobody actually uses them — what's wrong?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Low dashboard adoption is almost always a design problem, not a data problem. Analytics built for the analyst rather than the decision-maker produces outputs that look comprehensive but answer no specific question. Kangqore designs analytics around decision flows — what does this person need to decide, how often, and with what confidence? That shift alone typically doubles engagement within the first 30 days of a redesigned deployment." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you ensure analytics outputs are accurate when our underlying data quality is poor?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Inaccurate analytics is worse than no analytics — it creates confident wrong decisions. We begin every engagement with a data quality assessment before a single report is designed. Our frameworks include validation pipelines, lineage tracking, anomaly detection, and governance controls so that what reaches a decision-maker has been verified, not just aggregated." }
+    },
+    {
+      "@type": "Question",
+      "name": "How quickly can we move from raw data to production analytics that drive real decisions?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Our accelerated delivery model targets a first meaningful dashboard within 3–4 weeks. This is not a prototype — it's a production deployment covering 2–3 critical decision domains, with governance, data pipeline, and KPI alignment in place. Full enterprise-wide analytics programs follow in phased sprints, each delivering measurable business impact before the next phase begins." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can your analytics platform handle real-time streaming data alongside historical reporting?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We design unified analytics architectures that process both real-time event streams (using Kafka, Kinesis, or Flink) and batch historical data within the same platform. This means your operational dashboards update in seconds while your strategic reports draw on the same governed, integrated data layer — no duplication, no reconciliation overhead." }
+    }
+  ]
+};
+
+import {
+  AIChallengesSection,
+  AILogoTrustSection,
+  AIArchitectureDiagram,
+  UseCasesMagnificationList,
+  AIAcceleratorRoadmap,
+  AIMetricsSection,
+  AITransformationMagnet
+} from '../../../components/services/cognition/AICustomSections';
 
 const Analytics = () => {
-  // ============================================
-  // SERVICE INFORMATION
-  // ============================================
-  
   const service = {
-    name: 'Analytics',
+    name: 'Analytics & Business Intelligence.',
+    titleLine1: 'Analytics & BI',
+    titleHighlight: 'That Drive Decisions.',
     slug: 'analytics',
-    shortDescription: 'Unlock the Value of Data to Drive Smarter, Faster Decisions',
-    fullDescription: (
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-white">Engineering Decision Systems for the Modern Enterprise</h2>
-        <p>Transform raw data into actionable intelligence through modern analytics architectures, predictive modeling, and AI-powered insights — engineered for scale, governance, and business impact.</p>
-        <div className="bg-white dark:bg-gray-900 dark:border-gray-800/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
-          <p className="font-bold text-cyan-300 mb-1">We don’t just build dashboards.</p>
-          <p className="font-medium text-white italic">We build decision systems.</p>
-        </div>
-      </div>
-    ),
-    stats: [
-      { value: '5X', label: 'Faster Insights', color: 'text-cyan-400' },
-      { value: '10X', label: 'Model Performance', color: 'text-blue-400' },
-      { value: '30%', label: 'Cost Savings', color: 'text-emerald-400' },
-      { value: 'Governed', label: 'Decision Systems', color: 'text-purple-400' },
+    shortDescription: 'Transform raw data into governed decision intelligence — from executive KPI command centers and predictive models to real-time streaming analytics engineered for measurable business impact.',
+    description: 'Transform raw data into governed decision intelligence — from executive KPI command centers and predictive models to real-time streaming analytics engineered for measurable business impact.',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80',
+    videoBackground: '/videos/business-meeting-6774639.mp4',
+
+    primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
+    secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+    hideGenericMidPageCta: true,
+    hideGenericFaq: false,
+
+    breadcrumb: [
+      { label: 'Home', link: '/' },
+      { label: 'Services', link: '/services' },
+      { label: 'Analytics & Insights', link: '/department/analytics-insights' },
+      { label: 'Analytics' }
     ],
+
+    stats: [
+      { value: 'Faster', label: 'Decision Velocity', color: 'text-brand-blue' },
+      { value: '3x', label: 'Dashboard Adoption', color: 'text-cyan-400' },
+      { value: 'Real-time', label: 'Streaming Analytics', color: 'text-brand-blue' },
+      { value: 'Governed', label: 'Decision Systems', color: 'text-cyan-400' },
+    ],
+
     highFidelity: {
       narrative: {
         badge: 'Strategic Intelligence :: 2026',
@@ -91,7 +114,203 @@ const Analytics = () => {
           { label: 'Velocity', val: 'EXPONENTIAL' }
         ]
       }
-    }
+    },
+
+    customSections: (
+      <>
+        <AILogoTrustSection />
+
+        <AIChallengesSection
+          title="The Cost of"
+          subtitle="Disconnected Analytics."
+          challenges={[
+            {
+              problem: 'Dashboards nobody uses.',
+              fix: 'We redesign analytics around decision flows — what to decide, how often, and with what confidence — turning passive reports into active intelligence.'
+            },
+            {
+              problem: 'Data siloes that prevent a single truth.',
+              fix: 'Our unified semantic layer eliminates fragmentation, giving every stakeholder access to the same governed, reconciled data in real time.'
+            },
+            {
+              problem: 'Delayed decisions from batch-only pipelines.',
+              fix: 'Real-time streaming architectures (Kafka, Kinesis, Flink) mean your operational dashboards update in seconds — not overnight.'
+            }
+          ]}
+        />
+
+        <AIArchitectureDiagram
+          title="The Analytics Intelligence Stack."
+          nodes={[
+            {
+              title: 'Data Ingestion',
+              description: 'Multi-source, multi-modal data capture with validation and lineage tracking from day one.',
+              features: ['Batch & Streaming Pipelines', 'API Connectors', 'Data Quality Validation'],
+              icon: Database
+            },
+            {
+              title: 'Semantic Layer',
+              description: 'A governed business logic layer that ensures every metric means the same thing to every consumer.',
+              features: ['Unified Metric Definitions', 'dbt Transformations', 'Data Catalog Integration'],
+              icon: Layers
+            },
+            {
+              title: 'Analytics & BI',
+              description: 'Descriptive, diagnostic, predictive, and prescriptive analytics delivered to decision-makers where they work.',
+              features: ['Executive KPI Dashboards', 'Self-Service BI', 'Predictive Forecasting'],
+              icon: TrendingUp
+            },
+            {
+              title: 'Cognitive Intelligence',
+              description: 'AI-augmented modules that embed NLP, graph analytics, and ML-driven pattern detection into your analytics workflows.',
+              features: ['NLP Document Intelligence', 'Anomaly Detection', 'ML-Powered Insights'],
+              icon: BrainCircuit
+            }
+          ]}
+        />
+
+        <UseCasesMagnificationList
+          title="Analytics Across Industries."
+          useCases={[
+            {
+              industry: 'Analytics for Banking & Financial Services',
+              description: 'Real-time fraud detection, risk scoring engines, credit analytics, and regulatory reporting dashboards that give financial institutions a governed, auditable view of risk.',
+              tags: ['Fraud Analytics', 'Risk Scoring', 'Credit Modeling', 'Regulatory Reporting']
+            },
+            {
+              industry: 'Retail & E-commerce Demand Intelligence',
+              description: 'Time-series demand forecasting, customer 360 segmentation, pricing optimization, and marketing attribution to maximize revenue and reduce inventory waste.',
+              tags: ['Demand Forecasting', 'Customer Segmentation', 'Pricing Optimization', 'ROAS Analytics']
+            },
+            {
+              industry: 'Manufacturing OEE & Quality Analytics',
+              description: 'Operational efficiency dashboards, predictive maintenance signals, quality defect root cause analysis, and supply chain analytics to minimize downtime and cost.',
+              tags: ['OEE Monitoring', 'Predictive Maintenance', 'Quality Analytics', 'Supply Chain BI']
+            },
+            {
+              industry: 'Healthcare Clinical & Outcome Analytics',
+              description: 'Patient risk stratification, clinical outcome forecasting, readmission prediction, and population health dashboards built on compliant, governed data architectures.',
+              tags: ['Clinical Analytics', 'Patient Risk Modeling', 'Outcome Forecasting', 'Population Health']
+            }
+          ]}
+        />
+
+        <AIAcceleratorRoadmap
+          title="From Data to Decisions."
+          phases={[
+            {
+              num: '01',
+              title: 'Assessment & Architecture',
+              desc: 'We audit your current data estate, identify decision gaps, and design the target analytics architecture with governance built in.',
+              deliverables: ['Data Quality Assessment', 'Decision Flow Mapping', 'Architecture Blueprint']
+            },
+            {
+              num: '02',
+              title: 'Data & Semantic Layer',
+              desc: 'Build governed ingestion pipelines, semantic models, and a unified data platform that becomes the single source of truth.',
+              deliverables: ['Ingestion Pipelines', 'Semantic Data Models', 'Data Catalog Setup']
+            },
+            {
+              num: '03',
+              title: 'Analytics & Dashboards',
+              desc: 'Deploy production BI dashboards, self-service analytics, and predictive models aligned to the decision flows identified in Phase 1.',
+              deliverables: ['Executive KPI Dashboards', 'Self-Service BI Rollout', 'Predictive Models']
+            },
+            {
+              num: '04',
+              title: 'Intelligence & Optimization',
+              desc: 'Layer in cognitive analytics, real-time streaming, and continuous model monitoring to maintain accuracy as data volumes grow.',
+              deliverables: ['Real-time Streaming', 'Cognitive Analytics Modules', 'Model Monitoring & Drift Detection']
+            }
+          ]}
+        />
+
+        <AIMetricsSection
+          metrics={[
+            {
+              title: 'Decision Speed',
+              desc: 'Faster time-to-insight across executive and operational decision layers after deploying unified analytics architectures.',
+              prefix: '',
+              value: '40',
+              suffix: '%',
+              metricLabel: 'Faster Decisions',
+              icon: Zap
+            },
+            {
+              title: 'Dashboard Adoption',
+              desc: 'Increase in active dashboard usage when analytics are redesigned around decision flows rather than data availability.',
+              prefix: '',
+              value: '3',
+              suffix: 'x',
+              metricLabel: 'Higher Engagement',
+              icon: TrendingUp
+            },
+            {
+              title: 'Forecast Accuracy',
+              desc: 'Improvement in demand and risk forecast accuracy after deploying governed ML pipelines with continuous monitoring.',
+              prefix: '',
+              value: '35',
+              suffix: '%',
+              metricLabel: 'Accuracy Gain',
+              icon: Search
+            },
+            {
+              title: 'Data Pipeline Latency',
+              desc: 'End-to-end pipeline latency achieved with event-driven streaming architectures replacing nightly batch jobs.',
+              prefix: '',
+              value: 'Real',
+              suffix: '-time',
+              metricLabel: 'Processing',
+              icon: Activity
+            }
+          ]}
+        />
+
+        <AITransformationMagnet />
+      </>
+    ),
+
+    capabilitiesTitle: 'Our Capabilities.',
+    capabilities: [
+      {
+        title: 'Descriptive & Diagnostic',
+        bgImage: '/images/capabilities/business-strategy.png',
+        items: [
+          {
+            heading: 'Descriptive Analytics',
+            description: 'Understand what happened. Exploratory data analysis, KPI tracking, and executive reporting to provide visibility.'
+          },
+          {
+            heading: 'Diagnostic Analytics',
+            description: 'Understand why it happened. Root cause analysis, variance tracking, and segmentation to enable corrective actions.'
+          }
+        ]
+      },
+      {
+        title: 'Predictive & Prescriptive',
+        bgImage: '/images/capabilities/business-strategy.png',
+        items: [
+          {
+            heading: 'Predictive Analytics',
+            description: 'Understand what is likely to happen. Time-series forecasting and ML models for proactive business strategy.'
+          },
+          {
+            heading: 'Prescriptive Solutions',
+            description: 'Understand what action to take. Optimization modeling and decision engines to move from insight to execution.'
+          }
+        ]
+      },
+      {
+        title: 'Cognitive Intelligence',
+        bgImage: '/images/capabilities/ai-cognitive.png',
+        items: [
+          {
+            heading: 'Cognitive Analytics',
+            description: 'AI-augmented systems using NLP, Graph analytics, and pattern detection to embed AI into analytics workflows.'
+          }
+        ]
+      }
+    ]
   };
 
   const department = {
@@ -100,190 +319,23 @@ const Analytics = () => {
     description: 'Transform your business with cutting-edge analytics & insights solutions.'
   };
 
-  // Technologies (categorised lookup)
-  const technologies = [
-    {
-      category: 'Data Platforms & Lakehouse',
-      items: ['Snowflake', 'Databricks', 'BigQuery', 'Redshift', 'Azure Synapse']
-    },
-    {
-      category: 'ETL / ELT & Orchestration',
-      items: ['Airflow', 'dbt', 'Fivetran', 'Azure Data Factory', 'Talend']
-    },
-    {
-      category: 'Real-Time & Streaming',
-      items: ['Kafka', 'Kinesis', 'Spark Streaming', 'Flink', 'Pub/Sub']
-    },
-    {
-      category: 'BI & Visualization',
-      items: ['Power BI', 'Tableau', 'Looker', 'Superset', 'Metabase']
-    },
-    {
-      category: 'ML & Predictive Analytics',
-      items: ['Scikit-learn', 'XGBoost', 'PyTorch', 'TensorFlow', 'Prophet']
-    },
-    {
-      category: 'Governance & Observability',
-      items: ['Great Expectations', 'Collibra', 'Monte Carlo', 'Purview', 'OpenLineage']
-    }
-  ];
-
-  // Capabilities (Implementing 5 core types)
-  const capabilities = [
-    {
-      title: 'Descriptive & Diagnostic',
-      bgImage: '/images/capabilities/business-strategy.png',
-      items: [
-        { 
-          heading: 'Descriptive Analytics', 
-          description: `Understand what happened. Exploratory data analysis, KPI tracking, and executive reporting to provide visibility.` 
-        },
-        { 
-          heading: 'Diagnostic Analytics', 
-          description: `Understand why it happened. Root cause analysis, variance tracking, and segmentation to enable corrective actions.` 
-        }
-      ]
-    },
-    {
-      title: 'Predictive & Prescriptive',
-      bgImage: '/images/capabilities/business-strategy.png',
-      items: [
-        { 
-          heading: 'Predictive Analytics', 
-          description: `Understand what is likely to happen. Time-series forecasting and ML models for proactive business strategy.` 
-        },
-        { 
-          heading: 'Prescriptive Solutions', 
-          description: `Understand what action to take. Optimization modeling and decision engines to move from insight to execution.` 
-        }
-      ]
-    },
-    {
-      title: 'Cognitive Intelligence',
-      bgImage: '/images/capabilities/ai-cognitive.png',
-      items: [
-        { 
-          heading: 'Cognitive Analytics', 
-          description: `AI-augmented systems using NLP, Graph analytics, and pattern detection to embed AI into analytics workflows.` 
-        }
-      ]
-    }
-  ];
-
-  // Custom FAQs
-  const customFAQs = [
-    {
-      question: `What is Analytics?`,
-      answer: `Analytics is the process of transforming data into insights through statistical analysis, modeling, and visualization to support better decision-making.`
-    },
-    {
-      question: `What are the types of analytics?`,
-      answer: `We specialize in Descriptive (what happened), Diagnostic (why it happened), Predictive (likelyhood), Prescriptive (actions to take), and Cognitive (AI-augmented intelligence).`
-    },
-    {
-      question: `What is Cognitive Analytics?`,
-      answer: `AI-augmented analytics using NLP, ML, graph systems, and semantic intelligence to extract deeper contextual meaning from data.`
-    },
-    {
-      question: `How does Kangqore ensure data quality?`,
-      answer: `Through data validation pipelines, governance frameworks, lineage tracking, and continuous monitoring systems.`
-    },
-    {
-      question: `Do you support real-time analytics?`,
-      answer: `Yes. We design streaming architectures using event-driven pipelines (Kafka/Kinesis) and real-time dashboards.`
-    }
-  ];
-
-  // Use Case Carousel Data
-  const trustPillars = [
-    {
-      title: 'Executive KPI Command Center',
-      tag: 'Decision Velocity',
-      description: 'Real-time C-level dashboards and business health metrics with drill-down intelligence for strategic oversight.'
-    },
-    {
-      title: 'Customer 360 & Segmentation',
-      tag: 'Growth Intelligence',
-      description: 'Unified customer profiles and cohort analysis paired with CLV and churn prediction for personalized marketing.'
-    },
-    {
-      title: 'Demand Forecasting',
-      tag: 'Predictive Analytics',
-      description: 'Time-series modeling and inventory optimization using scenario simulations for resilient supply chains.'
-    },
-    {
-      title: 'Operational Efficiency Analytics',
-      tag: 'Operational Excellence',
-      description: 'SLA tracking and bottleneck identification to eliminate cost leakage and improve process throughput.'
-    },
-    {
-      title: 'Fraud & Risk Analytics',
-      tag: 'Risk Intelligence',
-      description: 'Anomaly detection and risk scoring engines providing real-time alerts for enterprise security.'
-    },
-    {
-      title: 'Marketing Attribution & ROI',
-      tag: 'Revenue Analytics',
-      description: 'Multi-touch attribution and campaign performance tracking to optimize CAC and maximize ROAS.'
-    },
-    {
-      title: 'Real-Time Streaming Analytics',
-      tag: 'Real-Time Systems',
-      description: 'Event streaming dashboards and live triggers for high-frequency operational intelligence.'
-    },
-    {
-      title: 'Cognitive Analytics Modules',
-      tag: 'AI-Augmented Analytics',
-      description: 'Document intelligence and sentiment analysis using knowledge graphs for deeper contextual insights.'
-    }
-  ];
-
-  // Why Kangqore Content
-  const whyKangqoreIntro = `Kangqore is an AI-driven digital engineering company building the next generation of intelligent, autonomous, and scalable enterprise systems. We move analytics from reporting → prediction → intelligent automation.`;
-
-  const whyKangqore = [
-    { title: 'Engineering-first design', description: 'Analytics architected for technical precision and performance.' },
-    { title: 'Governance by default', description: 'Security, compliance, and lineage are embedded at the core.' },
-    { title: 'AI-ready architecture', description: 'Built to seamlessly integrate with ML models and cognitive agents.' },
-    { title: 'Industry-aligned frameworks', description: 'Tailored solutions that speak the language of your specific sector.' },
-    { title: 'Business-outcome focus', description: 'We measure success by the impact on your bottom line.' },
-    { title: 'Scalable & secure', description: 'Enterprise-grade implementations designed to grow with your data.' }
-  ];
-
-  const industryIntro = `We design industry-specific analytics solutions that address real-world business challenges:`;
-
-  const industries = [
-    { name: 'BFSI', description: 'Risk scoring, fraud analytics, credit modeling.' },
-    { name: 'Retail & E-commerce', description: 'Demand forecasting, customer segmentation, pricing optimization.' },
-    { name: 'Manufacturing', description: 'Predictive maintenance, OEE monitoring, quality analytics.' },
-    { name: 'Healthcare', description: 'Clinical analytics, patient risk modeling, outcome forecasting.' },
-    { name: 'Public Sector', description: 'Data modernization, citizen service intelligence, performance monitoring.' }
-  ];
-
   const pageData = {
-    service: {
-      ...service,
-      technologies,
-      capabilities,
-      customFAQs,
-      trustPillars,
-      whyKangqoreIntro,
-      whyKangqore,
-      industryIntro,
-      industries,
-      trustPillarsRightTitle: 'Analytics Systems Built for Speed, Accuracy & Governance',
-      trustPillarsRightDescription: 'Kangqore builds modern analytics ecosystems that turn fragmented data into trusted insights. From data ingestion to BI to predictive modeling, we architect scalable pipelines, semantic layers, and governance controls — so leaders get faster decisions without compromising accuracy, privacy, or compliance.',
-      trustPillarsRightButton: 'Get an Analytics Assessment',
-      primaryButton: { text: "Talk To Our Experts", link: "/contact" },
-      secondaryButton: { text: "Explore Capabilities", link: "#capabilities" },
-      ctaTitle: 'Build a Scalable Analytics Foundation',
-      ctaSubtitle: 'Turn your data into a strategic advantage.',
-      ctaButtonText: 'Request a Consultation'
-    },
+    service,
     department
   };
 
-  return <ServicePageTemplate service={pageData.service} department={department} />;
+  return (
+    <div className="ai-cognitive-page-override">
+      <SEO
+        title="Analytics Services — Enterprise Business Intelligence & Predictive Analytics"
+        description="Kangqore designs and deploys enterprise analytics solutions — from executive KPI dashboards and predictive models to real-time streaming analytics and cognitive intelligence — engineered to drive measurable decisions."
+        keywords="analytics services, business intelligence, enterprise analytics, predictive analytics, data visualization, real-time analytics, cognitive analytics, KPI dashboards, data-driven decisions, analytics consulting"
+        url="https://kangqore.com/services/analytics"
+        schemas={[FAQ_SCHEMA]}
+      />
+      <ServicePageTemplate service={pageData.service} department={department} disableSEO />
+    </div>
+  );
 };
 
 export default Analytics;

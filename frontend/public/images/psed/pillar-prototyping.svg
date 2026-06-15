@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#06090f"/>
+  <radialGradient id="g4" cx="50%" cy="45%" r="55%">
+    <stop offset="0%" stop-color="#FB923C" stop-opacity="0.16"/>
+    <stop offset="100%" stop-color="#06090f" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="400" height="250" fill="url(#g4)"/>
+  <!-- Wireframe browser/device frame -->
+  <rect x="80" y="35" width="240" height="175" rx="10" stroke="#FB923C" stroke-opacity="0.4" stroke-width="1.5" fill="#FB923C" fill-opacity="0.03"/>
+  <!-- Browser chrome bar -->
+  <rect x="80" y="35" width="240" height="28" rx="10" fill="#FB923C" fill-opacity="0.06" stroke="none"/>
+  <line x1="80" y1="63" x2="320" y2="63" stroke="#FB923C" stroke-opacity="0.25" stroke-width="1"/>
+  <!-- Traffic lights -->
+  <circle cx="100" cy="49" r="4" stroke="#FB923C" stroke-opacity="0.5" stroke-width="1" fill="#FB923C" fill-opacity="0.08"/>
+  <circle cx="116" cy="49" r="4" stroke="#FB923C" stroke-opacity="0.5" stroke-width="1" fill="#FB923C" fill-opacity="0.08"/>
+  <circle cx="132" cy="49" r="4" stroke="#FB923C" stroke-opacity="0.5" stroke-width="1" fill="#FB923C" fill-opacity="0.08"/>
+  <!-- URL bar -->
+  <rect x="148" y="42" width="112" height="14" rx="7" stroke="#FB923C" stroke-opacity="0.2" stroke-width="1" fill="none"/>
+  <!-- Content wireframe blocks -->
+  <!-- Hero block placeholder -->
+  <rect x="100" y="78" width="200" height="55" rx="4" stroke="#FB923C" stroke-opacity="0.2" stroke-width="1" fill="#FB923C" fill-opacity="0.04"/>
+  <!-- X through placeholder (wireframe convention) -->
+  <line x1="100" y1="78" x2="300" y2="133" stroke="#FB923C" stroke-opacity="0.12" stroke-width="0.8"/>
+  <line x1="300" y1="78" x2="100" y2="133" stroke="#FB923C" stroke-opacity="0.12" stroke-width="0.8"/>
+  <!-- Card row -->
+  <rect x="100" y="143" width="58" height="42" rx="4" stroke="#FB923C" stroke-opacity="0.35" stroke-width="1" fill="#FB923C" fill-opacity="0.06"/>
+  <rect x="171" y="143" width="58" height="42" rx="4" stroke="#FB923C" stroke-opacity="0.25" stroke-width="1" fill="#FB923C" fill-opacity="0.03"/>
+  <rect x="242" y="143" width="58" height="42" rx="4" stroke="#FB923C" stroke-opacity="0.25" stroke-width="1" fill="#FB923C" fill-opacity="0.03"/>
+  <!-- Lines inside cards -->
+  <rect x="108" y="151" width="30" height="4" rx="2" fill="#FB923C" fill-opacity="0.6"/>
+  <rect x="108" y="159" width="42" height="3" rx="1.5" fill="#FB923C" fill-opacity="0.2"/>
+  <rect x="108" y="165" width="36" height="3" rx="1.5" fill="#FB923C" fill-opacity="0.2"/>
+  <rect x="179" y="151" width="30" height="4" rx="2" fill="#FB923C" fill-opacity="0.25"/>
+  <rect x="179" y="159" width="42" height="3" rx="1.5" fill="#FB923C" fill-opacity="0.12"/>
+  <rect x="250" y="151" width="30" height="4" rx="2" fill="#FB923C" fill-opacity="0.25"/>
+  <rect x="250" y="159" width="42" height="3" rx="1.5" fill="#FB923C" fill-opacity="0.12"/>
+  <!-- Annotation arrow -->
+  <line x1="108" y1="101" x2="52" y2="68" stroke="#FB923C" stroke-opacity="0.45" stroke-width="1" stroke-dasharray="3,3"/>
+  <circle cx="52" cy="68" r="3" fill="#FB923C" fill-opacity="0.6"/>
+  <rect x="20" y="55" width="24" height="10" rx="3" fill="#FB923C" fill-opacity="0.12" stroke="#FB923C" stroke-opacity="0.35" stroke-width="0.8"/>
+</svg>

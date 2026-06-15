@@ -1,6 +1,34 @@
 import React from 'react';
 import { Database, TrendingUp, Activity, ShieldCheck, Zap, Search, Layers, Brain, BarChart3, Cloud, Target } from 'lucide-react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
+import SEO from '../../../components/SEO';
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What if we don't have enough clean data to build reliable models?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Every engagement begins with a data readiness audit. If your data is insufficient, incomplete, or poorly structured, we address that first — building ingestion pipelines, applying data quality frameworks, and identifying supplementary data sources before any modeling begins. We will not build models on data that cannot support them." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you ensure your models are not biased or unfair?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We apply responsible AI practices at every stage: bias detection during feature engineering, fairness metrics during evaluation, and explainability frameworks (SHAP, LIME) in production. Every model comes with a model card documenting known limitations, training data provenance, and recommended use cases." }
+    },
+    {
+      "@type": "Question",
+      "name": "Who owns the models and intellectual property you build?",
+      "acceptedAnswer": { "@type": "Answer", "text": "You do. All models, code, pipelines, and documentation produced during an engagement are fully transferred to the client at project completion. Kangqore retains no licensing rights, usage rights, or access to your models or data after the engagement concludes." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do we measure whether a data science engagement actually delivered value?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We define success metrics before any technical work begins — specific business KPIs tied to the model's output, not generic accuracy scores. Every engagement includes a value realization report comparing pre-deployment baselines against post-deployment measurements, so the business impact is unambiguous and auditable." }
+    }
+  ]
+};
 
 import {
   AIChallengesSection,
@@ -28,7 +56,7 @@ const DataScienceAI = () => {
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
     hideGenericMidPageCta: true,
-    hideGenericFaq: true,
+    hideGenericFaq: false,
 
     breadcrumb: [
       { label: 'Home', link: '/' },
@@ -311,7 +339,14 @@ const DataScienceAI = () => {
 
   return (
     <div className="ai-cognitive-page-override">
-      <ServicePageTemplate service={pageData.service} department={pageData.department} />
+      <SEO
+        title="Data Science & AI Services — Predictive Intelligence for Enterprise"
+        description="Kangqore designs and deploys enterprise AI systems — from advanced analytics and machine learning to generative AI and MLOps — engineered for scale, governance, and measurable business impact."
+        keywords="data science services, enterprise AI, machine learning consulting, predictive analytics, MLOps implementation, responsible AI, data engineering, AI model development, forecasting models, AI governance framework"
+        url="https://kangqore.com/services/data-science-ai"
+        schemas={[FAQ_SCHEMA]}
+      />
+      <ServicePageTemplate service={pageData.service} department={pageData.department} disableSEO />
     </div>
   );
 };

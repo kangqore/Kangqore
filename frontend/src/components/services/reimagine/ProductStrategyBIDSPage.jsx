@@ -61,18 +61,18 @@ const journeyPhases = [
 ];
 
 const trustPillars = [
-  { tag: 'Intelligence', color: '#22D3EE', title: 'Data-driven over opinion-led', desc: 'Transform qualitative and quantitative insights into hardened product strategy frameworks.' },
-  { tag: 'Consistency', color: '#60A5FA', title: 'Flawless across every touchpoint', desc: 'Ensure the user experience remains intuitively perfect across web, mobile, and emerging interfaces.' },
-  { tag: 'Architecture', color: '#A78BFA', title: 'Built to scale effortlessly', desc: 'Leverage robust design systems that allow component reuse and rapid UI evolution.' },
-  { tag: 'Prototyping', color: '#FB923C', title: 'Validation before heavy engineering', desc: 'Test interactive, high-fidelity prototypes to confirm market resonance before writing code.' },
-  { tag: 'Strategy', color: '#34D399', title: 'Aligned with business outcomes', desc: 'Design decisions are tightly coupled with the core metrics that drive your business forward.' },
-  { tag: 'Velocity', color: '#F472B6', title: 'Accelerated time-to-value', desc: 'Streamline the gap between concept and launch with optimized design-to-development workflows.' },
+  { tag: 'Intelligence', color: '#22D3EE', image: '/images/psed/pillar-intelligence.svg', title: 'Data-driven over opinion-led', desc: 'Transform qualitative and quantitative insights into hardened product strategy frameworks.' },
+  { tag: 'Consistency', color: '#60A5FA', image: '/images/psed/pillar-consistency.svg', title: 'Flawless across every touchpoint', desc: 'Ensure the user experience remains intuitively perfect across web, mobile, and emerging interfaces.' },
+  { tag: 'Architecture', color: '#A78BFA', image: '/images/psed/pillar-architecture.svg', title: 'Built to scale effortlessly', desc: 'Leverage robust design systems that allow component reuse and rapid UI evolution.' },
+  { tag: 'Prototyping', color: '#FB923C', image: '/images/psed/pillar-prototyping.svg', title: 'Validation before heavy engineering', desc: 'Test interactive, high-fidelity prototypes to confirm market resonance before writing code.' },
+  { tag: 'Strategy', color: '#34D399', image: '/images/psed/pillar-strategy.svg', title: 'Aligned with business outcomes', desc: 'Design decisions are tightly coupled with the core metrics that drive your business forward.' },
+  { tag: 'Velocity', color: '#F472B6', image: '/images/psed/pillar-velocity.svg', title: 'Accelerated time-to-value', desc: 'Streamline the gap between concept and launch with optimized design-to-development workflows.' },
 ];
 
 const whyKangqore = [
-  { Icon: Layers, color: '#22D3EE', title: 'Integrated Strategic Design and Development', desc: 'We connect product thinking, experience design, and delivery planning so decisions stay coherent from concept to execution.' },
-  { Icon: Users, color: '#60A5FA', title: 'Concierge Thinking, Scalable Delivery', desc: 'You get high-touch collaboration with a model designed to support enterprise speed, consistency, and growth.' },
-  { Icon: TrendingUp, color: '#34D399', title: 'Organizational Enablement', desc: 'We work with your team, not around it — helping improve product thinking, design maturity, and internal capability through collaboration.' },
+  { Icon: Layers, color: '#22D3EE', image: '/images/psed/why-integrated.svg', title: 'Integrated Strategic Design and Development', desc: 'We connect product thinking, experience design, and delivery planning so decisions stay coherent from concept to execution.' },
+  { Icon: Users, color: '#60A5FA', image: '/images/psed/why-concierge.svg', title: 'Concierge Thinking, Scalable Delivery', desc: 'You get high-touch collaboration with a model designed to support enterprise speed, consistency, and growth.' },
+  { Icon: TrendingUp, color: '#34D399', image: '/images/psed/why-enablement.svg', title: 'Organizational Enablement', desc: 'We work with your team, not around it — helping improve product thinking, design maturity, and internal capability through collaboration.' },
 ];
 
 const industries = [
@@ -110,14 +110,14 @@ const differentiators = [
 ];
 
 const HERO_CAPS = [
-  { label: 'Product Strategy',          color: '#22D3EE' },
-  { label: 'UX / UI Design',            color: '#60A5FA' },
-  { label: 'Design Systems',            color: '#A78BFA' },
-  { label: 'Rapid Prototyping',         color: '#FB923C' },
-  { label: 'User & Market Research',    color: '#34D399' },
-  { label: 'Launch & Adoption',         color: '#F472B6' },
-  { label: 'Maturity Assessment',       color: '#FDE047' },
-  { label: 'Design-to-Build Alignment', color: '#E8614A' },
+  { label: 'Product Strategy',          color: '#22D3EE', icon: Target },
+  { label: 'UX / UI Design',            color: '#60A5FA', icon: Palette },
+  { label: 'Design Systems',            color: '#A78BFA', icon: Layers },
+  { label: 'Rapid Prototyping',         color: '#FB923C', icon: Zap },
+  { label: 'User & Market Research',    color: '#34D399', icon: Search },
+  { label: 'Launch & Adoption',         color: '#F472B6', icon: Rocket },
+  { label: 'Maturity Assessment',       color: '#FDE047', icon: Radar },
+  { label: 'Design-to-Build Alignment', color: '#E8614A', icon: Cpu },
 ];
 const HERO_STRIP = [...HERO_CAPS, ...HERO_CAPS, ...HERO_CAPS];
 
@@ -289,26 +289,35 @@ export default function ProductStrategyBIDSPage() {
             </div>
           </div>
 
-          {/* Capability strip — same visual line as "+" FAB */}
-          <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-white/[0.08] bg-black/50 backdrop-blur-xl overflow-hidden">
+          {/* Capability strip — Superside inspired floating pill cards */}
+          <div 
+            className="absolute bottom-6 left-0 right-0 z-20 overflow-hidden" 
+            style={{ 
+              maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)', 
+              WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' 
+            }}
+          >
             <div
-              className="flex items-center"
-              style={{ animation: 'psed-strip-scroll 32s linear infinite', width: 'max-content' }}
+              className="flex items-center gap-4 w-max"
+              style={{ animation: 'psed-strip-scroll 40s linear infinite' }}
             >
-              {HERO_STRIP.map((cap, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 px-7 py-4 border-r border-white/[0.07] flex-shrink-0 cursor-default group"
-                >
+              {HERO_STRIP.map((cap, i) => {
+                const Icon = cap.icon;
+                return (
                   <div
-                    className="w-1.5 h-1.5 rounded-full flex-shrink-0 transition-all duration-300 group-hover:scale-150"
-                    style={{ backgroundColor: cap.color, boxShadow: `0 0 6px ${cap.color}` }}
-                  />
-                  <span className="text-[11px] font-bold tracking-[0.12em] text-white/40 uppercase whitespace-nowrap group-hover:text-white/80 transition-colors duration-200">
-                    {cap.label}
-                  </span>
-                </div>
-              ))}
+                    key={i}
+                    className="flex items-center gap-4 bg-[#0a0a0c] border border-white/10 rounded-2xl p-1.5 pr-6 shadow-2xl flex-shrink-0 cursor-default hover:-translate-y-1 transition-transform duration-300"
+                  >
+                    <div className="w-14 h-12 rounded-xl flex items-center justify-center bg-white/5 shadow-inner relative overflow-hidden">
+                      <div className="absolute inset-0 opacity-20" style={{ background: `linear-gradient(135deg, ${cap.color}, transparent)` }} />
+                      {Icon && <Icon className="w-5 h-5 relative z-10" style={{ color: cap.color }} />}
+                    </div>
+                    <span className="text-[14px] font-semibold text-white/90 tracking-tight whitespace-nowrap">
+                      {cap.label}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -350,40 +359,50 @@ export default function ProductStrategyBIDSPage() {
             </div>
 
             <div className="space-y-4">
-              <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
-                <p className="text-[9px] font-black tracking-[0.4em] text-amber-400/70 uppercase mb-4">THE CHALLENGE</p>
-                <p className="text-white font-semibold text-lg leading-snug">
-                  A product can be engineered well and still fail if the strategy and experience are weak.
-                </p>
+              <div className="group p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl relative overflow-hidden hover:border-transparent transition-all duration-500">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+                <div className="relative z-10">
+                  <p className="text-[9px] font-black tracking-[0.4em] text-amber-400/70 group-hover:text-white/70 uppercase mb-4 transition-colors duration-500">THE CHALLENGE</p>
+                  <p className="text-white font-semibold text-lg leading-snug">
+                    A product can be engineered well and still fail if the strategy and experience are weak.
+                  </p>
+                </div>
               </div>
-              <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
-                <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-4">THE SOLUTION</p>
-                <p className="text-white font-semibold text-lg leading-snug">
-                  Kangqore helps businesses connect business intent, user needs, and execution realities — so product teams make better choices earlier and build with greater confidence.
-                </p>
+              <div className="group p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl relative overflow-hidden hover:border-transparent transition-all duration-500">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+                <div className="relative z-10">
+                  <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 group-hover:text-white/70 uppercase mb-4 transition-colors duration-500">THE SOLUTION</p>
+                  <p className="text-white font-semibold text-lg leading-snug">
+                    Kangqore helps businesses connect business intent, user needs, and execution realities — so product teams make better choices earlier and build with greater confidence.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 px-8 bg-[#06090f] border border-white/[0.08] rounded-2xl mb-16">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+          <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 px-8 bg-[#06090f] border border-white/[0.08] rounded-2xl mb-16 relative overflow-hidden hover:border-transparent transition-all duration-500">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
               <span className="text-white font-black text-lg tracking-tight">Product Strategy & Design</span>
               <span className="hidden sm:block w-px h-5 bg-white/10" />
-              <span className="text-white/35 text-sm font-medium">Reimagine — Digital Experience Practice</span>
+              <span className="text-white/35 group-hover:text-white text-sm font-medium transition-colors duration-500">Reimagine — Digital Experience Practice</span>
             </div>
-            <a href="#psed-capabilities" className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200 flex-shrink-0">
+            <a href="#psed-capabilities" className="relative z-10 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200 flex-shrink-0">
               View All Capabilities
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+              <ChevronRight className="w-4 h-4" />
             </a>
           </div>
 
-          <div className="border-l-2 border-white/10 pl-8">
-            <p className="text-xl sm:text-2xl font-black text-white/40 leading-snug max-w-4xl">
-              "Design What Matters. Build What Wins."
-            </p>
-            <p className="text-lg font-black text-white mt-3">
-              We unify business intent, user needs, and execution realities so you can build with greater confidence.
-            </p>
+          <div className="group border-l-2 border-white/10 pl-8 py-6 pr-8 rounded-r-2xl bg-[#06090f] relative overflow-hidden hover:border-transparent transition-all duration-500">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+            <div className="relative z-10">
+              <p className="text-xl sm:text-2xl font-black text-white/40 group-hover:text-white leading-snug max-w-4xl transition-colors duration-500">
+                "Design What Matters. Build What Wins."
+              </p>
+              <p className="text-lg font-black text-white mt-3">
+                We unify business intent, user needs, and execution realities so you can build with greater confidence.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -449,19 +468,22 @@ export default function ProductStrategyBIDSPage() {
             </div>
 
             <div className="lg:sticky lg:top-8">
-              <div className="p-8 rounded-2xl border border-white/[0.07] bg-[#06090f]">
-                <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase mb-6">DESIGN INTELLIGENCE PROFILE</p>
-                <p className="text-[10px] font-black tracking-widest uppercase mb-2 text-cyan-400">{featureLabels[activeFeature] || 'Select a Feature'}</p>
-                <p className="text-white font-black text-2xl leading-tight mb-5">{featureTitles[activeFeature] || '—'}</p>
-                <p className="text-white/45 text-sm font-medium leading-relaxed mb-6">{featureContents[activeFeature] || 'Select a feature to explore its role in the product design framework.'}</p>
-                <div className="p-4 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.04]">
-                  <p className="text-sm font-semibold leading-snug text-cyan-400">{featureMicros[activeFeature] || 'Strategy, Design, Prototyping, and Systems — four layers of the same vision.'}</p>
-                </div>
-                <div className="mt-8">
-                  <Link to="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
-                    Talk To Our Experts
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
+              <div className="group p-8 rounded-2xl border border-white/[0.07] bg-[#06090f] relative overflow-hidden hover:border-transparent transition-all duration-500">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+                <div className="relative z-10">
+                  <p className="text-[9px] font-black tracking-[0.4em] text-white/25 group-hover:text-white/60 uppercase mb-6 transition-colors duration-500">DESIGN INTELLIGENCE PROFILE</p>
+                  <p className="text-[10px] font-black tracking-widest uppercase mb-2 text-cyan-400 group-hover:text-white transition-colors duration-500">{featureLabels[activeFeature] || 'Select a Feature'}</p>
+                  <p className="text-white font-black text-2xl leading-tight mb-5">{featureTitles[activeFeature] || '—'}</p>
+                  <p className="text-white/45 group-hover:text-white text-sm font-medium leading-relaxed mb-6 transition-colors duration-500">{featureContents[activeFeature] || 'Select a feature to explore its role in the product design framework.'}</p>
+                  <div className="p-4 rounded-xl border border-cyan-400/20 group-hover:border-white/25 bg-cyan-400/[0.04] group-hover:bg-white/10 transition-colors duration-500">
+                    <p className="text-sm font-semibold leading-snug text-cyan-400 group-hover:text-white transition-colors duration-500">{featureMicros[activeFeature] || 'Strategy, Design, Prototyping, and Systems — four layers of the same vision.'}</p>
+                  </div>
+                  <div className="mt-8">
+                    <Link to="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
+                      Talk To Our Experts
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -472,20 +494,21 @@ export default function ProductStrategyBIDSPage() {
       {/* ─────────────────── MID-FUNNEL BRIDGE ─────────────────── */}
       <div className="py-14 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 p-8 rounded-2xl border border-white/[0.07] bg-[#06090f]">
-            <div>
-              <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-3">READY TO EXPLORE A DESIGN ENGAGEMENT?</p>
+          <div className="group flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 p-8 rounded-2xl border border-white/[0.07] bg-[#06090f] relative overflow-hidden hover:border-transparent transition-all duration-500">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+            <div className="relative z-10">
+              <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 group-hover:text-white/70 uppercase mb-3 transition-colors duration-500">READY TO EXPLORE A DESIGN ENGAGEMENT?</p>
               <p className="text-white font-black text-xl leading-snug mb-2">Start with a 30-minute discovery call.</p>
-              <p className="text-white/35 text-sm font-medium leading-relaxed max-w-xl">
+              <p className="text-white/35 group-hover:text-white text-sm font-medium leading-relaxed max-w-xl transition-colors duration-500">
                 Walk through the Kangqore Product Strategy & Design approach with a senior specialist. No commitment — a clear picture of how the engagement works and whether it fits your current priorities.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-              <Link to="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-cyan-400/30 text-cyan-400 font-black text-sm tracking-wide hover:bg-cyan-400/10 transition-colors duration-200">
+            <div className="relative z-10 flex flex-col sm:flex-row gap-3 flex-shrink-0">
+              <Link to="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/40 text-white font-black text-sm tracking-wide hover:bg-white/10 transition-colors duration-200">
                 Book a Discovery Call
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <a href="#psed-capabilities" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] text-white/35 font-black text-sm tracking-wide hover:text-white/60 hover:border-white/[0.15] transition-all duration-200">
+              <a href="#psed-capabilities" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/20 text-white/70 font-black text-sm tracking-wide hover:text-white hover:border-white/40 transition-all duration-200">
                 See Our Capabilities
               </a>
             </div>
@@ -587,17 +610,23 @@ export default function ProductStrategyBIDSPage() {
               </p>
             </div>
             <div className="space-y-4">
-              <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
-                <p className="text-[9px] font-black tracking-[0.4em] text-brand-blue uppercase mb-3">THE FOUNDATION</p>
-                <p className="text-white/60 text-base font-light leading-relaxed italic">
-                  "An Enterprise Design Architecture prevents scaling debt and ensures that new feature development takes days, not months."
-                </p>
+              <div className="group p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl relative overflow-hidden hover:border-transparent transition-all duration-500">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+                <div className="relative z-10">
+                  <p className="text-[9px] font-black tracking-[0.4em] text-brand-blue group-hover:text-white/70 uppercase mb-3 transition-colors duration-500">THE FOUNDATION</p>
+                  <p className="text-white/60 group-hover:text-white text-base font-light leading-relaxed italic transition-colors duration-500">
+                    "An Enterprise Design Architecture prevents scaling debt and ensures that new feature development takes days, not months."
+                  </p>
+                </div>
               </div>
-              <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
-                <p className="text-[9px] font-black tracking-[0.4em] text-emerald-400 uppercase mb-3">THE STRATEGY</p>
-                <p className="text-white/60 text-base font-light leading-relaxed italic">
-                  "When algorithmic user intelligence is merged with high-fidelity design, customer adoption accelerates exponentially."
-                </p>
+              <div className="group p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl relative overflow-hidden hover:border-transparent transition-all duration-500">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+                <div className="relative z-10">
+                  <p className="text-[9px] font-black tracking-[0.4em] text-emerald-400 group-hover:text-white/70 uppercase mb-3 transition-colors duration-500">THE STRATEGY</p>
+                  <p className="text-white/60 group-hover:text-white text-base font-light leading-relaxed italic transition-colors duration-500">
+                    "When algorithmic user intelligence is merged with high-fidelity design, customer adoption accelerates exponentially."
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -752,20 +781,57 @@ export default function ProductStrategyBIDSPage() {
             </div>
           </div>
 
-          {/* Differentiators */}
-          <div ref={differentiatorRef} className="max-w-5xl mx-auto">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHY THIS APPROACH</p>
-            <div className="space-y-3">
-              {differentiators.map((d) => (
-                <div key={d.num} className="diff-item group flex items-start gap-5 p-6 bg-[#06090f] rounded-2xl border border-white/[0.07] hover:border-white/[0.15] transition-all duration-300 relative overflow-hidden">
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-blue to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-l-2xl" />
-                  <div className="w-11 h-11 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0 group-hover:bg-brand-blue/20 group-hover:border-brand-blue/40 transition-colors">{d.num}</div>
-                  <div>
-                    <h4 className="font-black text-lg text-white mb-1 group-hover:text-cyan-400 transition-colors">{d.title}</h4>
-                    <p className="text-white/40 text-sm leading-relaxed">{d.text}</p>
+          {/* Differentiators — editorial ledger */}
+          <div ref={differentiatorRef}>
+            <div className="flex items-center justify-between mb-12">
+              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase">WHY THIS APPROACH</p>
+              <div className="hidden lg:grid grid-cols-[1fr_1fr] gap-10 text-[9px] font-black tracking-[0.3em] text-white/15 uppercase pr-1">
+                <span>Reason</span>
+                <span>Detail</span>
+              </div>
+            </div>
+            <div>
+              {differentiators.map((d) => {
+                const DIFF_COLORS = ['#22D3EE', '#60A5FA', '#A78BFA', '#FB923C', '#34D399'];
+                const DIFF_ICONS  = [Target, Zap, Layers, Search, Cpu];
+                const dColor = DIFF_COLORS[(d.num - 1) % DIFF_COLORS.length];
+                const DIcon  = DIFF_ICONS[(d.num - 1) % DIFF_ICONS.length];
+                return (
+                  <div key={d.num} className="diff-item group relative border-t border-white/[0.06] last:border-b last:border-white/[0.06]">
+                    {/* Left grow bar */}
+                    <div
+                      className="absolute left-0 top-0 bottom-0 w-[2px] origin-top transition-transform duration-500 scale-y-0 group-hover:scale-y-100"
+                      style={{ backgroundColor: dColor }}
+                    />
+                    <div className="grid grid-cols-1 lg:grid-cols-[72px_1fr_1fr] items-start gap-x-10 gap-y-3 py-8 pl-5">
+                      {/* Number + icon */}
+                      <div className="flex lg:flex-col items-center lg:items-start gap-3 lg:gap-1.5">
+                        <span
+                          className="text-[2.6rem] font-black leading-none tabular-nums transition-opacity duration-300 group-hover:opacity-100"
+                          style={{ color: dColor, opacity: 0.55 }}
+                        >
+                          {String(d.num).padStart(2, '0')}
+                        </span>
+                        <DIcon
+                          className="w-3.5 h-3.5 transition-opacity duration-300 group-hover:opacity-70"
+                          style={{ color: dColor, opacity: 0.3 }}
+                        />
+                      </div>
+                      {/* Title */}
+                      <h4
+                        className="font-black text-xl lg:text-2xl leading-snug tracking-tight"
+                        style={{ color: 'rgba(255,255,255,0.55)' }}
+                      >
+                        <span className="group-hover:text-white transition-colors duration-300">{d.title}</span>
+                      </h4>
+                      {/* Description */}
+                      <p className="text-white/30 group-hover:text-white/58 text-sm leading-relaxed transition-colors duration-300 lg:pt-1">
+                        {d.text}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -813,23 +879,23 @@ export default function ProductStrategyBIDSPage() {
                   const { Icon } = item;
                   return (
                     <div key={idx} className="psed-journey-card group">
-                      <div className="relative bg-[#06090f] border border-white/[0.08] rounded-3xl p-6 lg:p-8 hover:border-white/[0.18] transition-all duration-500 hover:-translate-y-1 flex items-start gap-6">
-                        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${phaseGradients[idx]} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-700`} />
+                      <div className="relative bg-[#06090f] border border-white/[0.08] rounded-3xl p-6 lg:p-8 hover:border-transparent transition-all duration-500 hover:-translate-y-1 flex items-start gap-6 overflow-hidden">
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
                         <div className={`relative z-10 w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br ${phaseGradients[idx]} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-all duration-500`}>
                           <Icon className="w-7 h-7" />
                         </div>
                         <div className="relative z-10 flex-1 min-w-0">
                           <div className="flex items-center gap-3 mb-2">
-                            <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/20 uppercase">{item.phase}</div>
+                            <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/20 group-hover:text-white/50 uppercase transition-colors duration-500">{item.phase}</div>
                             {item.kangqore && (
-                              <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full">
-                                <div className="w-1 h-1 bg-brand-blue rounded-full animate-pulse" />
-                                <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
+                              <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 group-hover:bg-white/15 border border-brand-blue/20 group-hover:border-white/30 rounded-full transition-colors duration-500">
+                                <div className="w-1 h-1 bg-brand-blue group-hover:bg-white rounded-full animate-pulse transition-colors duration-500" />
+                                <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue group-hover:text-white uppercase transition-colors duration-500">Kangqore</span>
                               </div>
                             )}
                           </div>
-                          <h4 className="text-lg font-black text-white mb-1 group-hover:text-cyan-400 transition-colors duration-300">{item.title}</h4>
-                          <p className="text-sm text-white/40 font-light leading-relaxed">{item.desc}</p>
+                          <h4 className="text-lg font-black text-white mb-1">{item.title}</h4>
+                          <p className="text-sm text-white/40 group-hover:text-white font-light leading-relaxed transition-colors duration-500">{item.desc}</p>
                         </div>
                       </div>
                     </div>
@@ -880,20 +946,34 @@ export default function ProductStrategyBIDSPage() {
               <span className="bg-brand-gradient bg-clip-text text-transparent">Intelligence Pillars</span>
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trustPillars.map((p, i) => (
-              <div key={p.tag} className="p-6 border border-white/[0.07] bg-[#06090f] rounded-xl flex flex-col gap-4">
-                <div>
-                  <span className="text-[9px] font-black tracking-widest" style={{ color: p.color + '60' }}>0{i + 1}</span>
-                  <div className="w-5 h-0.5 rounded-full mt-2" style={{ backgroundColor: p.color }} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-start">
+            {trustPillars.map((p, i) => {
+              const elevated = i === 1 || i === 4;
+              return (
+                <div key={p.tag}
+                  className={`group relative flex flex-col transition-all duration-500 hover:-translate-y-2 ${elevated ? 'lg:-translate-y-4' : ''}`}
+                >
+                  <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 shadow-lg relative">
+                    <img src={p.image} alt={p.tag} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute inset-0" style={{ background: `linear-gradient(160deg, ${p.color}28 0%, transparent 60%, #06090f60 100%)` }} />
+                    <div className="absolute inset-0 flex flex-col justify-between p-6">
+                      <span className="text-[11px] font-black tracking-widest opacity-60" style={{ color: p.color }}>0{i + 1}</span>
+                      <div>
+                        <div className="w-8 h-0.5 rounded-full mb-3" style={{ backgroundColor: p.color }} />
+                        <p className="text-[10px] font-black tracking-[0.3em] uppercase" style={{ color: p.color }}>{p.tag}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-transparent overflow-hidden">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+                    <div className="relative z-10">
+                      <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">{p.title}</h3>
+                      <p className="text-white/60 group-hover:text-white text-sm leading-relaxed transition-colors duration-500">{p.desc}</p>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[10px] font-black tracking-[0.3em] uppercase mb-2" style={{ color: p.color }}>{p.tag}</p>
-                  <p className="text-white/80 text-base font-black leading-snug">{p.title}</p>
-                </div>
-                <p className="text-white/35 text-sm font-medium leading-relaxed">{p.desc}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -912,16 +992,24 @@ export default function ProductStrategyBIDSPage() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-20">
+          <div className="grid md:grid-cols-3 gap-6 mb-20 lg:items-start">
             {whyKangqore.map((item) => {
               const { Icon } = item;
               return (
-                <div key={item.title} className="group p-8 border border-white/[0.07] bg-[#06090f] rounded-2xl hover:border-white/[0.18] transition-all duration-300">
-                  <div className="w-12 h-12 rounded-xl border mb-6 flex items-center justify-center" style={{ borderColor: item.color + '30', backgroundColor: item.color + '0a' }}>
-                    <Icon className="w-5 h-5" style={{ color: item.color }} />
+                <div key={item.title}
+                  className="group relative flex flex-col transition-all duration-500 hover:-translate-y-2"
+                >
+                  <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 shadow-lg relative">
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute inset-0" style={{ background: `linear-gradient(160deg, ${item.color}28 0%, transparent 60%, #06090f60 100%)` }} />
                   </div>
-                  <h3 className="text-white font-black text-lg leading-snug mb-4">{item.title}</h3>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed">{item.desc}</p>
+                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-transparent overflow-hidden">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+                    <div className="relative z-10">
+                      <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">{item.title}</h3>
+                      <p className="text-white/60 group-hover:text-white text-sm leading-relaxed transition-colors duration-500">{item.desc}</p>
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -950,43 +1038,6 @@ export default function ProductStrategyBIDSPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────── TOOLS & TECHNOLOGIES ─────────────────── */}
-      <section className="py-32 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div
-          ref={techRef}
-          className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${techVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-        >
-          <div className="mb-16">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE TOOLKIT</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white max-w-3xl">
-              Tools & Technologies for Strategic{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">Design.</span>
-            </h2>
-            <p className="text-white/40 text-base font-medium leading-relaxed mt-6 max-w-2xl">
-              We leverage industry-leading design, prototyping, and research tools to execute high-fidelity product strategy and seamless engineering handoffs.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {technologies.map((tech) => (
-              <div key={tech.category} className="p-6 border border-white/[0.07] bg-[#06090f] rounded-xl flex flex-col gap-4">
-                <div>
-                  <div className="w-5 h-0.5 rounded-full mb-4" style={{ backgroundColor: tech.color }} />
-                  <h3 className="text-white font-black text-base leading-snug">{tech.category}</h3>
-                </div>
-                <ul className="space-y-2.5">
-                  {tech.items.map(item => (
-                    <li key={item} className="flex items-start gap-3">
-                      <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: tech.color }} />
-                      <span className="text-white/50 text-sm font-medium leading-relaxed">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -1056,15 +1107,16 @@ export default function ProductStrategyBIDSPage() {
               {relatedServices.map((e) => {
                 const { Icon } = e;
                 return (
-                  <Link key={e.name} to={e.link} className="group flex items-start gap-5 p-6 bg-[#06090f] border border-white/[0.07] rounded-2xl hover:border-white/[0.18] transition-all">
-                    <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-cyan-400 group-hover:bg-cyan-400/10 transition-all flex-shrink-0">
+                  <Link key={e.name} to={e.link} className="group relative flex items-start gap-5 p-6 bg-[#06090f] border border-white/[0.07] rounded-2xl hover:border-transparent transition-all overflow-hidden">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+                    <div className="relative z-10 w-12 h-12 bg-white/5 group-hover:bg-white/15 rounded-2xl flex items-center justify-center text-white flex-shrink-0 transition-colors duration-500">
                       <Icon className="w-5 h-5" />
                     </div>
-                    <div>
-                      <span className="font-black text-lg text-white block mb-1 group-hover:text-cyan-400 transition-colors">{e.name}</span>
-                      <p className="text-white/40 text-sm">{e.desc}</p>
+                    <div className="relative z-10">
+                      <span className="font-black text-lg text-white block mb-1">{e.name}</span>
+                      <p className="text-white/40 group-hover:text-white text-sm transition-colors duration-500">{e.desc}</p>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all mt-1 flex-shrink-0 ml-auto" />
+                    <ArrowRight className="relative z-10 w-4 h-4 text-white/20 group-hover:text-white group-hover:translate-x-1 transition-all mt-1 flex-shrink-0 ml-auto" />
                   </Link>
                 );
               })}
@@ -1079,25 +1131,36 @@ export default function ProductStrategyBIDSPage() {
           ref={ctaRef}
           className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
-          <div className="p-10 lg:p-16 rounded-3xl border border-white/[0.08] bg-[#06090f] relative overflow-hidden text-center">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] h-[300px] bg-brand-blue/15 blur-[100px] rounded-full pointer-events-none" />
-            <div className="relative z-10">
+          <div className="relative rounded-[32px] p-10 lg:p-16 overflow-hidden text-center shadow-2xl">
+            {/* Background image */}
+            <div
+              className="absolute -inset-20 z-0"
+              style={{
+                backgroundImage: 'url("/images/happy_team.png")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            {/* Dark overlay — no mix-blend, no teal */}
+            <div className="absolute inset-0 bg-black/70 z-10" />
+            <div className="absolute inset-0 bg-[#2564ea]/40 z-10" />
+            <div className="relative z-20">
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">READY TO GET STARTED?</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-3xl mx-auto">
                 Ready to define a sharper product and a{' '}
-                <span className="bg-brand-gradient bg-clip-text text-transparent">stronger experience?</span>
+                <span className="text-cyan-300">stronger experience?</span>
               </h2>
-              <p className="text-white/40 text-lg font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
+              <p className="text-white/70 text-lg font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
                 Let's shape the right product strategy, design the right experience, and create the execution-ready foundation needed to move faster with confidence.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-                <Link to="/contact" className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300">
+                <Link to="/contact" className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300 shadow-xl">
                   Talk To Our Experts
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                 </Link>
-                <a href="#psed-capabilities" className="inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200">
+                <a href="#psed-capabilities" className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/30 text-white font-black text-sm tracking-wide hover:bg-white/10 transition-all duration-200">
                   Explore Capabilities
-                  <ArrowRight className="w-4 h-4 text-cyan-400" />
+                  <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
             </div>

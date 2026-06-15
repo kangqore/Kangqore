@@ -191,7 +191,7 @@ const DepartmentCarousel = () => {
   };
 
   return (
-    <section className="py-24 bg-[#F5F5F7] dark:bg-[#0a0a0c] overflow-hidden relative">
+    <section className="py-24 bg-white dark:bg-[#0a0a0c] overflow-hidden relative">
       <style dangerouslySetInnerHTML={{__html: `
         .bento-desc {
           opacity: 1;

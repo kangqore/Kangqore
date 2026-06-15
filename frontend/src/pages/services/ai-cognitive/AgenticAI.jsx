@@ -1,6 +1,34 @@
 import React from 'react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
-import { Brain, Zap, ShieldCheck, Search, Layers, Activity, Cpu, Network, Target, DollarSign, TrendingUp } from 'lucide-react';
+import SEO from '../../../components/SEO';
+import { Brain, Zap, ShieldCheck, Search, Network, Target, TrendingUp } from 'lucide-react';
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is agentic AI?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Agentic AI refers to AI systems that can autonomously reason, plan, and execute multi-step tasks toward a goal — without requiring step-by-step human instructions." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is agentic AI different from traditional automation?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Traditional automation follows fixed rules and breaks at edge cases. Agentic AI systems reason dynamically, adapt to new information, and self-correct — making them suitable for complex, unpredictable enterprise workflows." }
+    },
+    {
+      "@type": "Question",
+      "name": "What industries benefit most from agentic AI?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Financial services, supply chain, healthcare, and software engineering see the highest ROI — primarily through autonomous fraud investigation, inventory management, clinical data processing, and DevOps automation." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is agentic AI safe for enterprise use?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, when built with governance-first architecture. Kangqore's approach includes human-in-the-loop (HITL) oversight, immutable audit trails, and policy enforcement layers in every deployment." }
+    }
+  ]
+};
 
 import {
   AIChallengesSection,
@@ -14,12 +42,12 @@ import {
 
 const AgenticAI = () => {
   const service = {
-    name: 'Agentic AI.',
-    titleLine1: 'Agentic',
-    titleHighlight: 'AI.',
+    name: 'Agentic AI Services.',
+    titleLine1: 'Agentic AI Services',
+    titleHighlight: 'That Own the Outcome.',
     slug: 'agentic-ai',
-    shortDescription: 'Build autonomous AI agents that can reason, plan, and execute complex tasks',
-    description: 'Deploy intelligent AI agents that reason, plan, and act — autonomously and responsibly — across your business.',
+    shortDescription: 'Deploy production-grade AI agents that reason, plan, and execute complex multi-step workflows autonomously — with governance, audit trails, and human oversight built in.',
+    description: 'Deploy production-grade AI agents that reason, plan, and execute complex multi-step workflows autonomously — with governance, audit trails, and human oversight built in.',
     image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80',
     videoBackground: '/videos/business-meeting-6774639.mp4',
     
@@ -27,7 +55,7 @@ const AgenticAI = () => {
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
     
     hideGenericMidPageCta: true,
-    hideGenericFaq: true,
+    hideGenericFaq: false,
 
     breadcrumb: [
       { label: 'Home', link: '/' },
@@ -45,10 +73,10 @@ const AgenticAI = () => {
 
     highFidelity: {
       narrative: {
-        badge: 'Autonomous Intelligence :: 2026',
-        titleLine1: 'Engineer',
-        titleHighlight: 'Autonomy.',
-        titleLine2: 'Operate at Scale.',
+        badge: 'Agentic AI Development Services · 2026',
+        titleLine1: 'Enterprise',
+        titleHighlight: 'Agentic AI.',
+        titleLine2: 'Governed by Design.',
         description: 'Traditional automation breaks at scale. We engineer agentic AI systems that reason, plan, and execute complex multi-step workflows autonomously — with governance and human oversight built in from day one.',
         bottleneckLabel: 'The Impediment',
         bottleneckText: 'Rule-based automation that breaks at complexity and scale.',
@@ -77,8 +105,8 @@ const AgenticAI = () => {
         ]
       },
       schematic: {
-        titleLine1: 'Scale',
-        titleHighlight: 'Intelligence.',
+        titleLine1: 'Multi-Agent Orchestration',
+        titleHighlight: 'at Enterprise Scale.',
         description: 'Your enterprise should run on intelligence, not instructions. We build the foundations for exponential autonomous operations.',
         stats: [
           { label: 'Autonomy', val: 'ABSOLUTE' },
@@ -92,9 +120,9 @@ const AgenticAI = () => {
       <>
         <AILogoTrustSection />
         
-        <AIChallengesSection 
-          title="The Limits of"
-          subtitle="Traditional Automation."
+        <AIChallengesSection
+          title="Why Traditional Automation Fails at Scale —"
+          subtitle="And How Agentic AI Fixes It."
           challenges={[
             {
               problem: 'Rules break at scale.',
@@ -111,8 +139,8 @@ const AgenticAI = () => {
           ]}
         />
         
-        <AIArchitectureDiagram 
-          title="Governed Agentic Architecture."
+        <AIArchitectureDiagram
+          title="How Agentic AI Works: Our 4-Layer Architecture."
           nodes={[
             {
               title: 'Perception Layer',
@@ -123,7 +151,7 @@ const AgenticAI = () => {
             {
               title: 'Cognitive Engine',
               description: 'LLM-powered reasoning for planning, tool selection, and goal decomposition.',
-              features: ['Multi-step Planning', 'Memory Management', 'Self-Correction'],
+              features: ['Multi-step Planning', 'Memory Management', 'Self-Correction', 'LangGraph Orchestration'],
               icon: Brain
             },
             {
@@ -141,34 +169,39 @@ const AgenticAI = () => {
           ]}
         />
         
-        <UseCasesMagnificationList 
-          title="Where Agents Create Alpha."
+        <UseCasesMagnificationList
+          title="Agentic AI Use Cases Across Industries."
           useCases={[
             {
-              industry: 'Financial Services',
+              industry: 'Agentic AI for Banking & Financial Services',
               description: 'Autonomous agents for complex fraud investigation, dynamic risk modeling, and hyper-personalized wealth advisory.',
-              tags: ['Risk Modeling', 'Fraud Detection', 'Wealth Advisory']
+              tags: ['Agentic AI Banking', 'Risk Modeling', 'Fraud Detection', 'Wealth Advisory']
             },
             {
-              industry: 'Supply Chain & Logistics',
+              industry: 'AI Agents for Supply Chain Automation',
               description: 'Multi-agent systems that negotiate with suppliers, re-route shipments dynamically, and optimize inventory without manual intervention.',
-              tags: ['Inventory Ops', 'Supplier Negotiation', 'Route Optimization']
+              tags: ['AI Agents Supply Chain', 'Inventory Ops', 'Supplier Negotiation', 'Route Optimization']
             },
             {
-              industry: 'Software Engineering',
+              industry: 'Agentic AI for Healthcare',
+              description: 'Agents that process clinical data, automate prior authorizations, and coordinate multi-step patient workflows — with strict compliance and HITL oversight.',
+              tags: ['Agentic AI Healthcare', 'Clinical Automation', 'Prior Authorization', 'Patient Workflow']
+            },
+            {
+              industry: 'Agentic AI for DevOps & Software Engineering',
               description: 'DevOps agents that autonomously triage bugs, write tests, and deploy fixes to production with human oversight.',
-              tags: ['Automated QA', 'Bug Triage', 'DevOps Ops']
+              tags: ['Agentic AI DevOps', 'Automated QA', 'Bug Triage', 'CI/CD Automation']
             },
             {
-              industry: 'Customer Operations',
+              industry: 'Autonomous AI Agents for Customer Support',
               description: 'Level 2/3 support agents that resolve complex, multi-step customer issues by querying databases and updating systems.',
-              tags: ['L3 Support', 'Issue Resolution', 'Account Management']
+              tags: ['AI Agents Customer Support', 'L3 Support', 'Issue Resolution', 'Account Management']
             }
           ]}
         />
         
-        <AIAcceleratorRoadmap 
-          title="From Pilot to Production."
+        <AIAcceleratorRoadmap
+          title="How We Build & Deploy Agentic AI: From Design to Governed Production."
           phases={[
             {
               num: '01',
@@ -197,43 +230,43 @@ const AgenticAI = () => {
           ]}
         />
         
-        <AIMetricsSection 
+        <AIMetricsSection
           metrics={[
             {
-              title: 'Operational Velocity',
-              desc: 'Faster execution of complex, multi-step workflows.',
+              title: 'Vendor Onboarding',
+              desc: 'Faster enterprise vendor qualification using an autonomous AI agent for supply chain workflows.',
               prefix: '',
-              value: '40',
+              value: '50',
               suffix: '%',
-              metricLabel: 'Increase in Speed',
+              metricLabel: 'Faster Cycle Time',
               icon: Zap
             },
             {
-              title: 'Error Reduction',
-              desc: 'Decrease in human error for repetitive tasks.',
+              title: 'Information Access',
+              desc: 'Reduction in clicks to find answers — RAG-powered AI agents surface knowledge in one query.',
               prefix: '',
-              value: '99',
+              value: '90',
               suffix: '%',
-              metricLabel: 'Accuracy Rate',
-              icon: Target
+              metricLabel: 'Fewer Clicks',
+              icon: Search
             },
             {
-              title: 'Cost Efficiency',
-              desc: 'Reduction in operational overhead and manual labor.',
+              title: 'Customer Satisfaction',
+              desc: 'CSAT improvement from autonomous AI agents for customer support powered by sentiment analysis.',
               prefix: '',
-              value: '60',
+              value: '35',
               suffix: '%',
-              metricLabel: 'Cost Savings',
-              icon: DollarSign
-            },
-            {
-              title: 'Scalability',
-              desc: 'Ability to handle workload spikes without adding headcount.',
-              prefix: '',
-              value: '10',
-              suffix: 'x',
-              metricLabel: 'Capacity Increase',
+              metricLabel: 'CSAT Increase',
               icon: TrendingUp
+            },
+            {
+              title: 'Call Wait Time',
+              desc: 'Reduction in wait time by centralizing incident resolution data into a governed agentic AI platform.',
+              prefix: '',
+              value: '20',
+              suffix: '%',
+              metricLabel: 'Wait Time Reduced',
+              icon: Target
             }
           ]}
         />
@@ -245,7 +278,7 @@ const AgenticAI = () => {
     capabilities: [
       {
         title: 'Autonomous Goal Execution',
-        bgImage: '/images/capabilities/ai-cognitive.png',
+        bgImage: '/images/capabilities/agentic-goal-execution.png',
         items: [
           { heading: 'Multi-step Planning', description: 'Agents dynamically break down high-level goals into actionable tasks.' },
           { heading: 'Self-Correction', description: 'Built-in logic for agents to detect failures and automatically adjust their strategy.' },
@@ -255,7 +288,7 @@ const AgenticAI = () => {
       },
       {
         title: 'Multi-Agent Orchestration',
-        bgImage: '/images/capabilities/data-analytics.png',
+        bgImage: '/images/capabilities/agentic-multi-agent.png',
         items: [
           { heading: 'Agent Collaboration', description: 'Deploy swarms of specialized agents that collaborate to solve enterprise challenges.' },
           { heading: 'Task Handoffs', description: 'Seamless transitions between specialized agents for continuous workflow execution.' },
@@ -265,7 +298,7 @@ const AgenticAI = () => {
       },
       {
         title: 'Governed Autonomy',
-        bgImage: '/images/capabilities/cybersecurity.png',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
           { heading: 'Human-in-the-Loop', description: 'Strategic escalation pathways ensuring humans remain in control of high-stakes actions.' },
           { heading: 'Audit Trails', description: 'Immutable logs detailing every decision, tool call, and reasoning step taken by an agent.' },
@@ -290,7 +323,14 @@ const AgenticAI = () => {
 
   return (
     <div className="ai-cognitive-page-override">
-      <ServicePageTemplate service={pageData.service} department={pageData.department} />
+      <SEO
+        title="Agentic AI Services — Autonomous AI Agents for Enterprise"
+        description="Kangqore builds production-grade agentic AI systems that reason, plan, and execute complex enterprise workflows autonomously — with human-in-the-loop oversight, audit trails, and governance by design."
+        keywords="agentic AI services, autonomous AI agents, enterprise AI agent development, AI workflow automation, multi-agent orchestration, human-in-the-loop AI, LLM agents, governed AI agents, agentic AI consulting, LLM agent orchestration, RAG-powered agents"
+        url="https://kangqore.com/services/agentic-ai"
+        schemas={[FAQ_SCHEMA]}
+      />
+      <ServicePageTemplate service={pageData.service} department={pageData.department} disableSEO />
     </div>
   );
 };

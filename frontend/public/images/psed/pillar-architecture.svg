@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#06090f"/>
+  <radialGradient id="g3" cx="50%" cy="60%" r="55%">
+    <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.18"/>
+    <stop offset="100%" stop-color="#06090f" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="400" height="250" fill="url(#g3)"/>
+  <!-- Isometric stacked blocks -->
+  <!-- Base layer (widest) -->
+  <polygon points="200,195 310,160 310,178 200,213 90,178 90,160" fill="#A78BFA" fill-opacity="0.12" stroke="#A78BFA" stroke-opacity="0.35" stroke-width="1"/>
+  <polygon points="200,177 310,142 200,107 90,142" fill="#A78BFA" fill-opacity="0.08" stroke="#A78BFA" stroke-opacity="0.25" stroke-width="1"/>
+  <line x1="200" y1="177" x2="200" y2="195" stroke="#A78BFA" stroke-opacity="0.3" stroke-width="1"/>
+  <line x1="310" y1="160" x2="310" y2="178" stroke="#A78BFA" stroke-opacity="0.2" stroke-width="1"/>
+  <line x1="90" y1="160" x2="90" y2="178" stroke="#A78BFA" stroke-opacity="0.2" stroke-width="1"/>
+
+  <!-- Middle layer -->
+  <polygon points="200,155 290,124 290,142 200,173 110,142 110,124" fill="#A78BFA" fill-opacity="0.15" stroke="#A78BFA" stroke-opacity="0.45" stroke-width="1"/>
+  <polygon points="200,137 290,106 200,75 110,106" fill="#A78BFA" fill-opacity="0.1" stroke="#A78BFA" stroke-opacity="0.3" stroke-width="1"/>
+  <line x1="200" y1="137" x2="200" y2="155" stroke="#A78BFA" stroke-opacity="0.35" stroke-width="1"/>
+  <line x1="290" y1="124" x2="290" y2="142" stroke="#A78BFA" stroke-opacity="0.25" stroke-width="1"/>
+  <line x1="110" y1="124" x2="110" y2="142" stroke="#A78BFA" stroke-opacity="0.25" stroke-width="1"/>
+
+  <!-- Top layer (smallest, brightest) -->
+  <polygon points="200,115 270,88 270,106 200,133 130,106 130,88" fill="#A78BFA" fill-opacity="0.22" stroke="#A78BFA" stroke-opacity="0.65" stroke-width="1.5"/>
+  <polygon points="200,97 270,70 200,43 130,70" fill="#A78BFA" fill-opacity="0.18" stroke="#A78BFA" stroke-opacity="0.5" stroke-width="1.5"/>
+  <line x1="200" y1="97" x2="200" y2="115" stroke="#A78BFA" stroke-opacity="0.5" stroke-width="1.5"/>
+  <line x1="270" y1="88" x2="270" y2="106" stroke="#A78BFA" stroke-opacity="0.35" stroke-width="1"/>
+  <line x1="130" y1="88" x2="130" y2="106" stroke="#A78BFA" stroke-opacity="0.35" stroke-width="1"/>
+
+  <!-- Glow dot at top -->
+  <circle cx="200" cy="43" r="4" fill="#A78BFA" fill-opacity="0.9"/>
+  <circle cx="200" cy="43" r="9" stroke="#A78BFA" stroke-opacity="0.35" stroke-width="1" fill="none"/>
+  <circle cx="200" cy="43" r="16" stroke="#A78BFA" stroke-opacity="0.15" stroke-width="1" fill="none"/>
+</svg>

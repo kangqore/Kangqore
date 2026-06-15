@@ -1,6 +1,34 @@
 import React from 'react';
 import { ShieldCheck, Search, Layers, Activity, Brain, Shield, AlertTriangle, Lock } from 'lucide-react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
+import SEO from '../../../components/SEO';
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What if our AI system makes a biased or discriminatory decision?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Bias in AI decisions is a governance failure, not an AI failure. Kangqore embeds bias detection at every layer — during training data validation, feature engineering, model evaluation, and live production monitoring. We use SHAP-based explainability and fairness metrics to identify disparate impact before deployment. If bias emerges post-launch, automated alerts trigger human review before the decision propagates at scale." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do we comply with the EU AI Act if we don't have an inventory of our AI systems?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Most enterprises don't. That is exactly where our AI Governance engagement begins — with a comprehensive AI system inventory, risk classification against EU AI Act tiers, and a remediation roadmap. We have a structured methodology for identifying, cataloguing, and assigning risk categories to every AI and automated decision system in your organization, regardless of how informally they were deployed." }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if an autonomous AI agent takes an unauthorized action in production?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Agentic AI without guardrails is an operational liability. Kangqore implements pre-action approval gates, action scope restrictions, and hard kill-switches into every agentic deployment. Our governance architecture includes human-in-the-loop workflows for high-stakes decisions, audit logging of every agent action, and anomaly detection that triggers automatic escalation when agent behavior deviates from defined policy boundaries." }
+    },
+    {
+      "@type": "Question",
+      "name": "Will AI governance slow down our AI development and deployment velocity?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ungoverned AI slows you down more — through compliance incidents, model failures, and stakeholder distrust. Our governance frameworks are designed as engineering guardrails, not bureaucratic gates. We automate compliance checks into CI/CD pipelines, standardize model documentation, and establish clear approval workflows so teams ship faster with confidence rather than slower with caution." }
+    }
+  ]
+};
 
 import {
   AIChallengesSection,
@@ -28,7 +56,7 @@ const AIGovernance = () => {
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
     hideGenericMidPageCta: true,
-    hideGenericFaq: true,
+    hideGenericFaq: false,
 
     breadcrumb: [
       { label: 'Home', link: '/' },
@@ -309,7 +337,14 @@ const AIGovernance = () => {
 
   return (
     <div className="ai-cognitive-page-override">
-      <ServicePageTemplate service={pageData.service} department={pageData.department} />
+      <SEO
+        title="AI Governance Services — Responsible AI & Compliance Frameworks"
+        description="Kangqore builds enterprise AI governance frameworks that embed explainability, bias detection, EU AI Act compliance, and agentic AI controls — enabling organizations to scale AI responsibly without slowing innovation."
+        keywords="AI governance, responsible AI, EU AI Act compliance, AI bias detection, explainable AI, model risk management, AI ethics, agentic AI governance, AI audit trails, enterprise AI controls"
+        url="https://kangqore.com/services/ai-governance"
+        schemas={[FAQ_SCHEMA]}
+      />
+      <ServicePageTemplate service={pageData.service} department={pageData.department} disableSEO />
     </div>
   );
 };

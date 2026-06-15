@@ -243,7 +243,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
           </div>
           <h2
             id="eqore-ai-heading"
-            className={`text-4xl md:text-5xl lg:text-6xl font-bold leading-tight max-w-5xl ${inverted ? 'text-white' : 'text-gray-900 dark:text-white'}`}
+            className={`text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight max-w-5xl ${inverted ? 'text-white' : 'text-gray-900 dark:text-white'}`}
           >
             From Business Questions to Solution Direction — Ask <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI</span><sup className="bg-brand-gradient bg-clip-text text-transparent text-[0.45em] ml-0.5">™</sup>
           </h2>

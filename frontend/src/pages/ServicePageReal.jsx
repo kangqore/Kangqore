@@ -21,38 +21,26 @@
 // ────────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 import { servicesData, servicesList } from '../data/servicesData';
 import { departmentsData } from '../data/departmentsData';
 import { serviceSEO } from '../data/seoData';
-import Breadcrumb from '../components/Breadcrumb';
 import ServicePageTemplate from '../components/ServicePageTemplate';
-import { COGNITION_SECTIONS } from '../components/services/cognition/sections';
-import { FOUNDRY_SECTIONS } from '../components/services/foundry/sections';
 import { REIMAGINE_SECTIONS } from '../components/services/reimagine/sections';
-import { SHIELD_SECTIONS } from '../components/services/shield/sections';
-import { PLATFORMS_SECTIONS } from '../components/services/platforms/sections';
-import { GROWTH_SECTIONS } from '../components/services/growth/sections';
+import UniversalServicePage from '../components/services/shared/UniversalServicePage';
 import NotFound from './NotFound';
 
 const SITE_URL = 'https://kangqore.com';
 const ORG_NAME = 'Kangqore';
 
-// Per-service premium content registry, namespaced by dept. Each entry is a
-// presentation-layer object that merges over the canonical base service to
-// produce the legacy-template-compatible shape (highFidelity, capabilities,
-// customSections JSX, hero customization, stats, etc.). Future phases (G4
-// Growth, G5 Platforms, G6 Foundry) add their own modules and spread them in.
-const PREMIUM_REGISTRY = {
-  ...COGNITION_SECTIONS,
-  ...FOUNDRY_SECTIONS,
-  ...REIMAGINE_SECTIONS,
-  ...SHIELD_SECTIONS,
-  ...PLATFORMS_SECTIONS,
-  ...GROWTH_SECTIONS,
+// PSED-only registry — product-strategy-experience-design keeps its bespoke
+// ProductStrategyBIDSPage design (it is the reference for all other pages).
+// All 60 other services (including all other reimagine slugs) go through
+// UniversalServicePage below.
+const PSED_REGISTRY = {
+  'product-strategy-experience-design': REIMAGINE_SECTIONS['product-strategy-experience-design'],
 };
 
 const ServicePage = () => {
@@ -154,213 +142,32 @@ const ServicePage = () => {
 
 
 
-  // ─── Premium path ──────────────────────────────────────────────────────────
-  // When a slug is registered in PREMIUM_REGISTRY, render via the lifted
-  // ServicePageTemplate with canonical department metadata. The premium
-  // service object merges:
-  //   1. Base identity fields from canonical servicesData (preserved verbatim)
-  //   2. The dept-module's presentation layer (highFidelity, capabilities,
-  //      customSections JSX, hero customization, stats — all resolved at
-  //      module load, including lucide icons that data files don't import)
-  const premiumExtras = PREMIUM_REGISTRY[slug];
-  if (premiumExtras) {
-    // Spread order matters: presentation layer first, then identity fields
-    // re-asserted from canonical base so dept modules CANNOT accidentally
-    // override name/slug/shortDescription (DoD #3 enforcement). The dept
-    // module IS allowed to override fullDescription and image — the hero
-    // description and visuals are presentation choices.
-    const premiumService = {
+  // ─── PSED: keep bespoke ProductStrategyBIDSPage (the reference design) ───────
+  const psedExtras = PSED_REGISTRY[slug];
+  if (psedExtras) {
+    const psedService = {
       fullDescription: svc.fullDescription,
       image: svc.image,
-      ...premiumExtras,
+      ...psedExtras,
       name: svc.name,
       slug: svc.slug,
       shortDescription: svc.shortDescription,
     };
-
-    // Canonical 6-dept metadata for the template — uses shortName so the
-    // breadcrumb reads "Home > Services > Cognition > Agentic AI", NOT
-    // "AI & Cognitive". URL pattern is /departments/<slug> (plural).
-    const premiumDept = {
-      name: dept.shortName,
-      slug: dept.slug,
-      description: dept.description,
-    };
-
+    const psedDept = { name: dept.shortName, slug: dept.slug, description: dept.description };
     return (
       <>
         {canonicalHelmet}
-        <ServicePageTemplate
-          service={premiumService}
-          department={premiumDept}
-          disableSEO
-        />
+        <ServicePageTemplate service={psedService} department={psedDept} disableSEO />
       </>
     );
   }
 
-  // ─── Skeleton path (unchanged from Phase D) ────────────────────────────────
+  // ─── Universal path: all 60 other services → PSED-style template ───────────
+  const universalDept = { name: dept.shortName, slug: dept.slug };
   return (
     <>
       {canonicalHelmet}
-
-      <article className="max-w-4xl mx-auto px-6 py-12">
-        <Breadcrumb
-          items={[
-            { name: 'Home', href: '/' },
-            { name: 'Departments', href: '/departments' },
-            { name: dept.shortName, href: `/departments/${dept.slug}` },
-            { name: svc.name },
-          ]}
-        />
-
-        {/* HERO */}
-        <header className="mb-12">
-          <Link
-            to={`/departments/${dept.slug}`}
-            className="text-sm uppercase tracking-widest font-semibold hover:underline inline-block mb-3"
-            style={{ color: dept.accentColor }}
-          >
-            {dept.name}
-          </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-            {svc.name}
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-            {svc.shortDescription}
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-white font-medium hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: dept.accentColor }}
-            >
-              Schedule Your 30-min Discovery Call
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to={`/departments/${dept.slug}`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-md border font-medium hover:opacity-80 transition-opacity"
-              style={{ borderColor: dept.accentColor, color: dept.accentColor }}
-            >
-              Explore Our Capabilities
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </header>
-
-        {/* PROBLEM IT SOLVES (uses fullDescription) */}
-        <section className="mb-12">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-3">
-            What it solves
-          </h2>
-          <p className="text-lg text-gray-700 dark:text-gray-200 leading-relaxed">
-            {svc.fullDescription}
-          </p>
-        </section>
-
-        {/* WHAT KANGQORE DELIVERS (keyFeatures) */}
-        {svc.keyFeatures && svc.keyFeatures.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-4">
-              What Kangqore delivers
-            </h2>
-            <ul className="space-y-2.5">
-              {svc.keyFeatures.map((feat) => (
-                <li key={feat} className="flex items-start gap-3">
-                  <CheckCircle2
-                    className="w-5 h-5 mt-0.5 shrink-0"
-                    style={{ color: dept.accentColor }}
-                    aria-hidden="true"
-                  />
-                  <span className="text-base text-gray-700 dark:text-gray-200">
-                    {feat}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {/* DELIVERY APPROACH (inherits from department) */}
-        <section className="mb-12 p-6 border-l-4 rounded-md bg-gray-50 dark:bg-gray-900" style={{ borderColor: dept.accentColor }}>
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-2">
-            Delivery approach
-          </h2>
-          <p className="text-base text-gray-800 dark:text-gray-100 leading-relaxed">
-            {dept.deliveryApproach}
-          </p>
-          <p className="text-sm text-gray-500 mt-3">
-            Under <span className="font-semibold">{svc.bannerBrand}</span>
-          </p>
-        </section>
-
-        {/* RELATED SERVICES (cap at 3) */}
-        {svc.relatedServiceSlugs && svc.relatedServiceSlugs.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-4">
-              Related services
-            </h2>
-            <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {svc.relatedServiceSlugs.slice(0, 3).map((relSlug) => {
-                const rel = servicesData[relSlug];
-                if (!rel) return null;
-                const relDept = departmentsData[rel.departmentSlug];
-                return (
-                  <li key={relSlug}>
-                    <Link
-                      to={`/services/${relSlug}`}
-                      className="block h-full p-4 border border-gray-200 dark:border-gray-800 rounded-md hover:border-gray-400 dark:hover:border-gray-600 transition-colors group"
-                    >
-                      <p
-                        className="text-xs uppercase tracking-wider font-semibold mb-1"
-                        style={{ color: relDept.accentColor }}
-                      >
-                        {relDept.shortName}
-                      </p>
-                      <p className="font-semibold group-hover:underline mb-1">
-                        {rel.name}
-                      </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {rel.shortDescription}
-                      </p>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        )}
-
-        {/* FINAL CTA */}
-        <section className="mt-16 pt-10 border-t border-gray-200 dark:border-gray-800 text-center">
-          <h2 className="text-2xl font-bold mb-3">
-            Ready to get started with {svc.name}?
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
-            Book a 30-minute call with a {dept.shortName} practice lead.
-            Fixed agenda. No sales pitch.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-white font-semibold hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: dept.accentColor }}
-            >
-              Schedule Your 30-min Discovery Call
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to={`/departments/${dept.slug}`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-md border font-semibold hover:opacity-80 transition-opacity"
-              style={{ borderColor: dept.accentColor, color: dept.accentColor }}
-            >
-              Explore Our Capabilities
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </section>
-      </article>
+      <UniversalServicePage service={svc} department={universalDept} />
     </>
   );
 };

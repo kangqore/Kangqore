@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 // Industry pages
+import IndustriesIndexPage from '../pages/IndustriesIndexPage';
 import Banking from '../pages/industries/Banking';
 import Insurance from '../pages/industries/Insurance';
 import EdTech from '../pages/industries/EdTech';
@@ -18,6 +19,7 @@ import ConsumerGoods from '../pages/industries/ConsumerGoods';
  * Industry Routes
  */
 export const industryRoutes = [
+  <Route key="industries-index" path="/industries" element={<IndustriesIndexPage />} />,
   <Route key="banking" path="/industries/banking" element={<Banking />} />,
   <Route key="insurance" path="/industries/insurance" element={<Insurance />} />,
   <Route key="edtech" path="/industries/edtech" element={<EdTech />} />,

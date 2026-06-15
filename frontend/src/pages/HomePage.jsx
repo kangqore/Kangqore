@@ -46,6 +46,7 @@ import SecondaryButton from '../components/ui/SecondaryButton';
 import ExploreServices from '../components/ExploreServices';
 import DepartmentsGrid from '../components/DepartmentsGrid';
 import DepartmentCarousel from '../components/home/DepartmentCarousel';
+import HomeRuler from '../components/home/HomeRuler';
 
 // ============================================================================
 // MOCK DATA
@@ -489,6 +490,9 @@ const HeroCarousel = () => {
       </div>
       </div>
       <style>{`
+        @media (prefers-reduced-motion: reduce) {
+          @keyframes trust-logo-scroll { 0%, 100% { transform: translateX(0); } }
+        }
         @keyframes heroPulseRing {
           0% { transform: scale(1); opacity: 0.6; }
           70% { transform: scale(1.35); opacity: 0; }
@@ -1466,8 +1470,8 @@ const TestimonialsSection = () => {
                 TESTIMONIALS
               </span>
             </div>
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
-              {t('home.case_studies.heading_prefix')} {t('home.case_studies.heading_highlight')}.
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+              {t('home.case_studies.heading_prefix')} <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">{t('home.case_studies.heading_highlight')}</span>.
             </h2>
           </div>
           <Link 
@@ -1828,19 +1832,90 @@ const HomePage = () => {
           }
         }]}
       />
+      <HomeRuler />
       <HeroCarousel />
       <TrustIntelligenceLayer />
-      <Suspense fallback={<div className="w-full h-[200px]" aria-hidden="true" />}>
-        <ConciergeSection />
-      </Suspense>
+      <div id="home-concierge">
+        <Suspense fallback={<div className="w-full h-[200px]" aria-hidden="true" />}>
+          <ConciergeSection />
+        </Suspense>
+      </div>
+      {/* ── Intelligent Solutions 3-card section ── */}
+      <section className="py-20 bg-black overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white mb-16 max-w-3xl">
+            Intelligent solutions that power up your <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">business</span>.
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+            {[
+              {
+                title: 'Industries',
+                description: 'Select your industry. Discover our impact.',
+                image: '/images/chess_bg.png',
+                link: '/',
+                scrollTo: 'home-industries',
+                raise: false,
+              },
+              {
+                title: 'Services',
+                description: 'Experience our services. Transform your business.',
+                image: '/images/hybrid-it-reality-7793698.jpg',
+                link: '/services',
+                raise: true,
+              },
+              {
+                title: 'Kangqore BIDS™',
+                description: 'Explore our intelligence platform. Accelerate your performance.',
+                image: '/images/imgbg3.png',
+                link: '/bids',
+                raise: false,
+              },
+            ].map((card) => (
+              <Link
+                key={card.title}
+                to={card.link}
+                onClick={card.scrollTo ? (e) => { e.preventDefault(); document.getElementById(card.scrollTo)?.scrollIntoView({ behavior: 'smooth' }); } : undefined}
+                className={`group relative block${card.raise ? ' md:-translate-y-10' : ''}`}
+              >
+                {/* Image */}
+                <div className="relative rounded-2xl overflow-hidden h-64 sm:h-72">
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+
+                {/* Overlapping dark content panel */}
+                <div className="relative -mt-16 mx-3 bg-[#0d0d0d] rounded-2xl px-6 pt-6 pb-7 z-10 group-hover:bg-[#131313] transition-colors duration-300">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-2xl font-extrabold text-white mb-3 tracking-tight">{card.title}</h3>
+                      <p className="text-sm text-gray-300 leading-relaxed">
+                        <span className="font-bold text-white">{card.title} : </span>
+                        {card.description}
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-brand-blue to-brand-cyan flex items-center justify-center shadow-lg shadow-brand-blue/30 group-hover:scale-110 transition-transform duration-300">
+                      <ArrowRight className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Phase D — 6-department canonical grid replaces the legacy 15-dept carousel.
           ExploreServices is no longer rendered (kept in repo only as fallback during transition;
           deletion scheduled for the cleanup PR after Phase F). */}
-      <DepartmentCarousel />
-      <IndustriesWeServe />
+      <div id="home-services"><DepartmentCarousel /></div>
+      <div id="home-industries"><IndustriesWeServe /></div>
       <TrustStatementSection />
       <PartnerBadgesStrip />
-      <BIDSPhilosophySection />
+      <div id="home-bids"><BIDSPhilosophySection /></div>
       <TestimonialsSection />
       <LeadershipSection />
       <EqoreShowSection />

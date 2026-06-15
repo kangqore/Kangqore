@@ -46,17 +46,17 @@ function mapPath(pathname) {
   for (const role of ['client', 'partner', 'investor', 'careers']) {
     const prefix = `/dashboard/${role}`;
     if (p === prefix || p.startsWith(prefix + '/')) {
-      return `/portal/${role}${p.slice(prefix.length) || '/'}`;
+      return `/kangqore-view/${role}${p.slice(prefix.length) || '/'}`;
     }
   }
 
   // ── Settings routes (non-admin dashboard pages) ───────────────────────────
   const settingsMap = {
-    '/dashboard/calendar':        '/os/settings/calendar',
-    '/dashboard/webhooks':        '/os/settings/webhooks',
-    '/dashboard/workflows':       '/os/settings/workflows',
-    '/dashboard/email-templates': '/os/settings/email-templates',
-    '/dashboard/custom-domains':  '/os/settings/custom-domains',
+    '/dashboard/calendar':        '/kangqore-view/admin/settings/calendar',
+    '/dashboard/webhooks':        '/kangqore-view/admin/settings/webhooks',
+    '/dashboard/workflows':       '/kangqore-view/admin/settings/workflows',
+    '/dashboard/email-templates': '/kangqore-view/admin/settings/email-templates',
+    '/dashboard/custom-domains':  '/kangqore-view/admin/settings/custom-domains',
   };
   if (settingsMap[p]) return settingsMap[p];
 
@@ -65,23 +65,23 @@ function mapPath(pathname) {
   if (p === adminPrefix || p.startsWith(adminPrefix + '/')) {
     const sub = p.slice(adminPrefix.length + 1); // e.g. "leads", "clients/123"
     const adminModuleMap = {
-      'leads':       '/os/leads',
-      'clients':     '/os/clients',
-      'partners':    '/os/partners',
-      'analytics':   '/os/analytics',
-      'kpi':         '/os/analytics',
-      'finance':     '/os/finance',
-      'billing':     '/os/finance',
-      'careers':     '/os/careers',
-      'projects':    '/os/projects',
-      'resources':   '/os/resources',
-      'departments': '/os/departments',
-      'marketing':   '/os/marketing',
-      'kimmp-pages': '/os/kimmp',
-      'kimmp':       '/os/kimmp',
-      'investors':   '/os/investors',
-      'strategy':    '/os/strategy',
-      'workflows':   '/os/workflows',
+      'leads':       '/kangqore-view/admin/leads',
+      'clients':     '/kangqore-view/admin/clients',
+      'partners':    '/kangqore-view/admin/partners',
+      'analytics':   '/kangqore-view/admin/analytics',
+      'kpi':         '/kangqore-view/admin/analytics',
+      'finance':     '/kangqore-view/admin/finance',
+      'billing':     '/kangqore-view/admin/finance',
+      'careers':     '/kangqore-view/admin/careers',
+      'projects':    '/kangqore-view/admin/projects',
+      'resources':   '/kangqore-view/admin/resources',
+      'departments': '/kangqore-view/admin/departments',
+      'marketing':   '/kangqore-view/admin/marketing',
+      'kimmp-pages': '/kangqore-view/admin/kimmp',
+      'kimmp':       '/kangqore-view/admin/kimmp',
+      'investors':   '/kangqore-view/admin/investors',
+      'strategy':    '/kangqore-view/admin/strategy',
+      'workflows':   '/kangqore-view/admin/workflows',
     };
 
     const firstSegment = sub.split('/')[0];
@@ -90,11 +90,11 @@ function mapPath(pathname) {
       return adminModuleMap[firstSegment] + rest;
     }
 
-    return '/os/strategy';
+    return '/kangqore-view/admin/kimmp';
   }
 
   // ── Fallback ──────────────────────────────────────────────────────────────
-  return '/os/strategy';
+  return '/kangqore-view/admin';
 }
 
 /**

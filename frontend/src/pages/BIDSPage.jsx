@@ -168,6 +168,7 @@ export default function BIDSPage() {
   const [enginesRef, enginesVisible]   = useScrollAnimation({ once: true, threshold: 0.05 });
   const [delivRef, delivVisible]       = useScrollAnimation({ once: true, threshold: 0.05 });
   const [editionsRef, editionsVisible] = useScrollAnimation({ once: true, threshold: 0.1 });
+  const [processRef, processVisible]   = useScrollAnimation({ once: true, threshold: 0.05 });
   const [ctaRef, ctaVisible]           = useScrollAnimation({ once: true, threshold: 0.2 });
   const [activePillar, setActivePillar] = useState(0);
   const [expandedPillar, setExpandedPillar] = useState(null);
@@ -190,8 +191,20 @@ export default function BIDSPage() {
       {/* ─────────────────────── HERO ─────────────────────── */}
       <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
         <section className="relative w-full h-full flex items-end overflow-hidden pb-36 rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#06090f]">
-          <VisualBackground forceDark={true} />
-        
+          {/* Full-bleed background image with layered dark gradient overlays */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/images/imgbg3.png"
+              alt=""
+              aria-hidden="true"
+              className="w-full h-full object-cover object-center"
+            />
+            {/* Bottom-up: heaviest at the text/CTA zone */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20" />
+            {/* Left-side: darkens the content column */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
+          </div>
+
         {/* Subtle top glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[500px] bg-brand-blue/20 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
 
@@ -243,20 +256,31 @@ export default function BIDSPage() {
             </div>
           </div>
 
-        {/* Mobile-only Stats Grid */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
-          <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 gap-4">
-            {[
-              { value: '16', label: 'Pillars' },
-              { value: '6',  label: 'Engines' },
-              { value: '10', label: 'Deliverables' },
-              { value: '10', label: 'Editions' },
-            ].map(s => (
-              <div key={s.label} className="text-center">
-                <p className="text-2xl font-black text-white drop-shadow-lg">{s.value}</p>
-                <p className="text-[10px] text-cyan-400/80 font-bold tracking-widest uppercase mt-1">{s.label}</p>
-              </div>
-            ))}
+        {/* Scrolling Pillars Strip — same pattern as UniversalServicePage hero */}
+        <div
+          className="absolute bottom-6 left-0 right-0 z-20 overflow-hidden"
+          style={{
+            maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+          }}
+        >
+          <div
+            className="flex items-center gap-4 w-max"
+            style={{ animation: 'bids-strip-scroll 55s linear infinite' }}
+          >
+            {[...pillars, ...pillars, ...pillars].map((p, i) => {
+              const Icon = p.icon;
+              const color = i % 2 === 0 ? '#2564ea' : '#22d3ee';
+              return (
+                <div key={i} className="flex items-center gap-4 bg-[#0a0a0c] border border-white/10 rounded-2xl p-1.5 pr-6 shadow-2xl flex-shrink-0 cursor-default hover:-translate-y-1 transition-transform duration-300">
+                  <div className="w-14 h-12 rounded-xl flex items-center justify-center bg-white/5 shadow-inner relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-20" style={{ background: `linear-gradient(135deg, ${color}, transparent)` }} />
+                    <Icon className="w-5 h-5 relative z-10" style={{ color }} />
+                  </div>
+                  <span className="text-[14px] font-semibold text-white/90 tracking-tight whitespace-nowrap">{p.name}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -308,12 +332,14 @@ export default function BIDSPage() {
                 ))}
               </div>
             </div>
-            {/* Right — product visual */}
-            <div className="lg:-mt-[282px]">
-              <BIDSProductVisual
-                isActive={defVisible}
-                className="aspect-[4/5]"
-              />
+            {/* Right — product visual (80% of column = 20% smaller) */}
+            <div className="lg:-mt-[226px]">
+              <div className="max-w-[80%] ml-auto">
+                <BIDSProductVisual
+                  isActive={defVisible}
+                  className="aspect-[4/5]"
+                />
+              </div>
             </div>
           </div>
 
@@ -751,7 +777,10 @@ export default function BIDSPage() {
 
       {/* ─────────────────────── DIAGNOSTIC ENGAGEMENT PROCESS ─────────────────────── */}
       <section id="process" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div
+          ref={processRef}
+          className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${processVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+        >
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
             <div>
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
@@ -2003,6 +2032,16 @@ export default function BIDSPage() {
           </div>
         </div>
       </section>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes bids-strip-scroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          @keyframes bids-strip-scroll { 0%, 100% { transform: translateX(0); } }
+        }
+      ` }} />
     </div>
   );
 }

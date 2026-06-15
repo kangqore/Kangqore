@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#06090f"/>
+  <radialGradient id="g8" cx="50%" cy="45%" r="60%">
+    <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.16"/>
+    <stop offset="100%" stop-color="#06090f" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="400" height="250" fill="url(#g8)"/>
+
+  <!-- Person A (client, left) -->
+  <circle cx="130" cy="90" r="22" stroke="#60A5FA" stroke-opacity="0.55" stroke-width="1.5" fill="#60A5FA" fill-opacity="0.07"/>
+  <circle cx="130" cy="85" r="10" fill="#60A5FA" fill-opacity="0.4"/>
+  <path d="M104,122 Q130,108 156,122" stroke="#60A5FA" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+
+  <!-- Person B (Kangqore, right) -->
+  <circle cx="270" cy="90" r="22" stroke="#60A5FA" stroke-opacity="0.55" stroke-width="1.5" fill="#60A5FA" fill-opacity="0.07"/>
+  <circle cx="270" cy="85" r="10" fill="#60A5FA" fill-opacity="0.65"/>
+  <path d="M244,122 Q270,108 296,122" stroke="#60A5FA" stroke-opacity="0.55" stroke-width="1.5" fill="none"/>
+
+  <!-- Bridge / handshake connection -->
+  <path d="M156,115 Q200,95 244,115" stroke="#60A5FA" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+  <!-- Hand icons -->
+  <circle cx="200" cy="106" r="6" fill="#60A5FA" fill-opacity="0.7"/>
+  <circle cx="200" cy="106" r="12" stroke="#60A5FA" stroke-opacity="0.3" stroke-width="1" fill="none"/>
+
+  <!-- Service/delivery tiers (horizontal layers below) representing scale -->
+  <rect x="80" y="145" width="240" height="10" rx="5" fill="#60A5FA" fill-opacity="0.18" stroke="#60A5FA" stroke-opacity="0.3" stroke-width="0.8"/>
+  <rect x="95" y="161" width="210" height="10" rx="5" fill="#60A5FA" fill-opacity="0.12" stroke="#60A5FA" stroke-opacity="0.2" stroke-width="0.8"/>
+  <rect x="110" y="177" width="180" height="10" rx="5" fill="#60A5FA" fill-opacity="0.07" stroke="#60A5FA" stroke-opacity="0.15" stroke-width="0.8"/>
+  <rect x="125" y="193" width="150" height="10" rx="5" fill="#60A5FA" fill-opacity="0.04" stroke="#60A5FA" stroke-opacity="0.1" stroke-width="0.8"/>
+
+  <!-- Scale labels -->
+  <text x="82" y="153" font-size="7" fill="#60A5FA" fill-opacity="0.65" font-family="monospace">HIGH-TOUCH COLLABORATION</text>
+  <text x="97" y="169" font-size="7" fill="#60A5FA" fill-opacity="0.45" font-family="monospace">ENTERPRISE SPEED</text>
+  <text x="112" y="185" font-size="7" fill="#60A5FA" fill-opacity="0.3" font-family="monospace">CONSISTENCY</text>
+  <text x="127" y="201" font-size="7" fill="#60A5FA" fill-opacity="0.2" font-family="monospace">GROWTH</text>
+
+  <!-- Decorative corner marks -->
+  <line x1="30" y1="30" x2="50" y2="30" stroke="#60A5FA" stroke-opacity="0.18" stroke-width="1"/>
+  <line x1="30" y1="30" x2="30" y2="50" stroke="#60A5FA" stroke-opacity="0.18" stroke-width="1"/>
+  <line x1="370" y1="220" x2="350" y2="220" stroke="#60A5FA" stroke-opacity="0.18" stroke-width="1"/>
+  <line x1="370" y1="220" x2="370" y2="200" stroke="#60A5FA" stroke-opacity="0.18" stroke-width="1"/>
+</svg>

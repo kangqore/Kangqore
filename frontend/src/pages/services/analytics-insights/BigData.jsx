@@ -1,62 +1,76 @@
 import React from 'react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
-import { 
-  Database, 
-  Layers, 
-  Zap, 
-  Workflow, 
-  RefreshCw, 
-  Activity, 
-  Search, 
-  ShieldCheck, 
-  Globe, 
-  LineChart, 
-  Box, 
-  Cpu, 
-  Eye, 
-  Lock,
-  ArrowRight,
-  ChevronRight,
-  Download,
-  MessageSquare,
-  BrainCircuit,
-  BarChart3
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
+import SEO from '../../../components/SEO';
+import { Database, Layers, Zap, RefreshCw, Activity, Search, ShieldCheck, Cpu, LineChart, BarChart3, BrainCircuit } from 'lucide-react';
+
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Our data volumes are exploding — how do we scale without infrastructure costs spiraling out of control?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Unarchitected scale is the most expensive Big Data mistake. Kangqore designs lakehouse architectures with tiered storage, intelligent data lifecycle policies, and compute-storage separation so your infrastructure scales with actual usage patterns — not worst-case estimates. Clients typically see 40–60% reduction in per-TB storage costs within 12 months of architecture modernization." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do we govern and secure petabyte-scale data without creating analytics bottlenecks?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Governance at scale requires automation, not manual oversight. We implement data catalogues, automated classification, role-based access controls, and column-level encryption that operate transparently within your analytics workflows. Analysts see the data they're authorized to see, instantly — without submitting access tickets or waiting for manual approvals." }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to our existing data investments if we modernize to a lakehouse architecture?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We design migration paths that preserve existing investments while eliminating technical debt. Our RDBMS-to-lakehouse migrations maintain full data lineage, historical continuity, and zero downtime for active reporting. We do not recommend rip-and-replace — we replace incrementally, proving value at each stage before decommissioning legacy infrastructure." }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does it take to build a production-ready Big Data platform?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A foundational data platform — ingestion pipelines, lakehouse storage, governance layer, and first analytics workloads — can be production-ready in 8–12 weeks using our accelerated delivery framework. Enterprise-wide programs are structured in phased sprints, with each phase delivering operational capability before the next begins." }
+    }
+  ]
+};
+
+import {
+  AIChallengesSection,
+  AILogoTrustSection,
+  AIArchitectureDiagram,
+  UseCasesMagnificationList,
+  AIAcceleratorRoadmap,
+  AIMetricsSection,
+  AITransformationMagnet
+} from '../../../components/services/cognition/AICustomSections';
 
 const BigData = () => {
-  // ============================================
-  // SERVICE INFORMATION
-  // ============================================
-  
   const service = {
-    name: 'Big Data',
+    name: 'Big Data Engineering.',
+    titleLine1: 'Big Data Platforms',
+    titleHighlight: 'Built for Intelligence.',
     slug: 'big-data',
-    shortDescription: 'DATA. SCALE. INTELLIGENCE.',
-    fullDescription: (
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-white">Build Scalable Data Foundations That Power Intelligent Enterprises</h2>
-        <p>Design, modernize, and operationalize enterprise-grade data ecosystems that enable real-time intelligence, advanced analytics, and AI-driven growth.</p>
-      </div>
-    ),
+    shortDescription: 'Design, modernize, and operationalize enterprise-grade data ecosystems — from lakehouses and stream processing to governed migrations — that enable real-time intelligence and AI-driven growth at scale.',
+    description: 'Design, modernize, and operationalize enterprise-grade data ecosystems — from lakehouses and stream processing to governed migrations — that enable real-time intelligence and AI-driven growth at scale.',
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200',
-    imageClassName: 'aspect-[4/5]',
-    fullWidthCustomOverview: true, // Enabled for MNC-grade wide layout
-    keyFeatures: [
-      'Enterprise Data Warehouse Optimization',
-      'Data Lakes & Lakehouse Architecture',
-      'Real-Time Stream Processing',
-      'Automated RDBMS to NoSQL Migration',
-      'Hadoop Ecosystem Modernization'
-    ],
+    videoBackground: '/videos/business-meeting-6774639.mp4',
+
     primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
-    secondaryButton: { text: "Explore Capabilities", link: "#capabilities" },
-    stats: [
-      { value: 'PB+', label: 'Data Managed', color: 'text-cyan-400' },
-      { value: 'Real-time', label: 'Processing', color: 'text-blue-400' },
-      { value: 'Zero', label: 'Migration Errors', color: 'text-emerald-400' },
-      { value: '99.9%', label: 'Uptime', color: 'text-purple-400' },
+    secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
+
+    hideGenericMidPageCta: true,
+    hideGenericFaq: false,
+
+    breadcrumb: [
+      { label: 'Home', link: '/' },
+      { label: 'Services', link: '/services' },
+      { label: 'Analytics & Insights', link: '/department/analytics-insights' },
+      { label: 'Big Data' }
     ],
+
+    stats: [
+      { value: '40%', label: 'Storage Cost Reduction', color: 'text-brand-blue' },
+      { value: '10x', label: 'Query Performance', color: 'text-cyan-400' },
+      { value: 'Real-time', label: 'Data Ingestion', color: 'text-brand-blue' },
+      { value: '99.9%', label: 'Platform Uptime', color: 'text-cyan-400' },
+    ],
+
     highFidelity: {
       narrative: {
         badge: 'Market Disruption :: 2026',
@@ -100,7 +114,244 @@ const BigData = () => {
           { label: 'Security', val: 'ABSOLUTE' }
         ]
       }
-    }
+    },
+
+    customSections: (
+      <>
+        <AILogoTrustSection />
+
+        <AIChallengesSection
+          title="The Limits of"
+          subtitle="Legacy Data Infrastructure."
+          challenges={[
+            {
+              problem: 'Data lakes without governance become data swamps.',
+              fix: 'Our lakehouse architectures combine the scale of data lakes with the structure of warehouses — giving you governed, queryable data at petabyte scale without the chaos.'
+            },
+            {
+              problem: 'ETL bottlenecks that make data stale before it reaches analysts.',
+              fix: 'We replace batch ETL with event-driven streaming pipelines (Kafka, Flink, Kinesis) so data is fresh, continuous, and available the moment it matters.'
+            },
+            {
+              problem: 'No real-time visibility into operations, risk, or customer behavior.',
+              fix: 'Modern stream processing architectures enable sub-second operational dashboards and live alerting — replacing overnight reports with live intelligence.'
+            }
+          ]}
+        />
+
+        <AIArchitectureDiagram
+          title="The Enterprise Data Platform."
+          nodes={[
+            {
+              title: 'Ingestion & Integration',
+              description: 'High-throughput, multi-source data ingestion across batch and streaming channels with built-in validation.',
+              features: ['Kafka & Kinesis Streaming', 'REST & CDC Connectors', 'Schema Registry & Validation'],
+              icon: RefreshCw
+            },
+            {
+              title: 'Storage & Lakehouse',
+              description: 'Open-format lakehouse architecture with tiered storage, compute-storage separation, and ACID transaction support.',
+              features: ['Delta Lake / Iceberg Format', 'Tiered Storage Policies', 'Compute-Storage Separation'],
+              icon: Database
+            },
+            {
+              title: 'Processing & Compute',
+              description: 'Distributed compute for batch transformations, real-time aggregations, and AI/ML workloads at enterprise scale.',
+              features: ['Apache Spark & Flink', 'dbt Transformations', 'ML Feature Engineering'],
+              icon: Cpu
+            },
+            {
+              title: 'Governance & Observability',
+              description: 'Automated data cataloguing, column-level access controls, lineage tracking, and quality monitoring baked in.',
+              features: ['Data Catalog & Lineage', 'Role-Based Access Control', 'Data Quality Monitoring'],
+              icon: ShieldCheck
+            }
+          ]}
+        />
+
+        <UseCasesMagnificationList
+          title="Big Data Across Industries."
+          useCases={[
+            {
+              industry: 'Big Data for Banking & Financial Services',
+              description: 'Petabyte-scale regulatory data lakes, real-time transaction monitoring, Basel III/IV reporting pipelines, and governed data platforms that meet audit and compliance requirements without analyst bottlenecks.',
+              tags: ['Regulatory Data Lake', 'Transaction Monitoring', 'Basel Reporting', 'Compliance Governance']
+            },
+            {
+              industry: 'Manufacturing IoT & Operational Data',
+              description: 'High-frequency sensor data ingestion from factory floor IoT devices, real-time OEE monitoring, predictive maintenance pipelines, and unified operational data platforms across multi-site facilities.',
+              tags: ['IoT Data Ingestion', 'OEE Analytics', 'Predictive Maintenance', 'Multi-site Data Platform']
+            },
+            {
+              industry: 'Retail Personalization at Scale',
+              description: 'Unified customer data platforms that reconcile online, in-store, and loyalty data — enabling real-time personalization engines, recommendation systems, and cross-channel attribution at petabyte scale.',
+              tags: ['Customer Data Platform', 'Real-time Personalization', 'Recommendation Engine', 'Cross-channel Attribution']
+            },
+            {
+              industry: 'Healthcare Patient Data & Interoperability',
+              description: 'FHIR-compliant data lakehouses that unify EHR, claims, genomics, and wearables data — enabling clinical research, population health analytics, and AI model training on governed, de-identified datasets.',
+              tags: ['FHIR Data Lakehouse', 'EHR Integration', 'Population Health', 'Clinical Research Data']
+            }
+          ]}
+        />
+
+        <AIAcceleratorRoadmap
+          title="The Data Modernization Journey."
+          phases={[
+            {
+              num: '01',
+              title: 'Assessment & Architecture',
+              desc: 'Audit your current data estate — platforms, pipelines, quality, and governance gaps — and design the target state architecture with a phased migration plan.',
+              deliverables: ['Data Estate Audit', 'Architecture Blueprint', 'Migration Roadmap']
+            },
+            {
+              num: '02',
+              title: 'Data Platform Build',
+              desc: 'Provision and configure the lakehouse platform, establish ingestion pipelines, streaming infrastructure, and the foundational governance layer.',
+              deliverables: ['Lakehouse Setup', 'Streaming Pipelines', 'Governance Layer Foundation']
+            },
+            {
+              num: '03',
+              title: 'Migration & Integration',
+              desc: 'Migrate legacy RDBMS, data warehouses, and silos into the new platform with full lineage, zero downtime, and validated data integrity at every step.',
+              deliverables: ['RDBMS Migration', 'Data Integrity Validation', 'Zero-downtime Cutover']
+            },
+            {
+              num: '04',
+              title: 'Governance & Optimization',
+              desc: 'Activate automated data cataloguing, quality monitoring, access controls, and continuous cost optimization to make the platform self-sustaining.',
+              deliverables: ['Data Catalog Activation', 'Automated Quality Monitoring', 'Cost Optimization Policies']
+            }
+          ]}
+        />
+
+        <AIMetricsSection
+          metrics={[
+            {
+              title: 'Storage Cost',
+              desc: 'Reduction in per-TB infrastructure cost achieved through tiered storage and compute-storage separation in lakehouse architectures.',
+              prefix: '',
+              value: '40',
+              suffix: '%',
+              metricLabel: 'Cost Reduction',
+              icon: BarChart3
+            },
+            {
+              title: 'Query Performance',
+              desc: 'Improvement in analytical query speed after migrating from legacy RDBMS to columnar lakehouse formats with optimized compute.',
+              prefix: '',
+              value: '10',
+              suffix: 'x',
+              metricLabel: 'Query Speed',
+              icon: Zap
+            },
+            {
+              title: 'Data Freshness',
+              desc: 'End-to-end latency from event generation to dashboard visibility using event-driven streaming pipelines replacing nightly batch jobs.',
+              prefix: '',
+              value: 'Real',
+              suffix: '-time',
+              metricLabel: 'Ingestion',
+              icon: Activity
+            },
+            {
+              title: 'Pipeline Reliability',
+              desc: 'Platform uptime maintained across enterprise data pipelines with automated monitoring, failover, and managed operations.',
+              prefix: '',
+              value: '99.9',
+              suffix: '%',
+              metricLabel: 'Uptime',
+              icon: ShieldCheck
+            }
+          ]}
+        />
+
+        <AITransformationMagnet />
+      </>
+    ),
+
+    capabilitiesTitle: 'Our Capabilities.',
+    capabilities: [
+      {
+        title: 'EDW Optimization',
+        bgImage: '/images/capabilities/data-analytics.png',
+        description: 'Equip your Enterprise Data Warehouse to tackle the growing demands of big data. Build a central data repository that unifies heterogeneous sources, maintains data quality, and gives you access to the information you need — when you need it.',
+        items: [
+          { heading: 'Modernization of legacy warehouses', description: 'Migrate aging data warehouse environments to modern cloud-native or hybrid architectures — improving query performance, reducing maintenance overhead, and eliminating end-of-life risk.' },
+          { heading: 'ELT / Offload Architecture', description: 'Redesign data pipelines to leverage cloud compute for transformations, offloading heavy processing from legacy warehouse engines to scalable, cost-efficient compute layers.' },
+          { heading: 'Data Archiving Solutions', description: 'Implement tiered data archiving strategies that move cold data to low-cost storage while keeping it queryable — reducing warehouse storage costs without sacrificing analytical access.' },
+          { heading: 'Datastore, Governance & Security Management', description: 'Enforce data quality, access controls, lineage tracking, and security policies across the warehouse environment — with automated governance that scales with data volume.' },
+          { heading: 'Self Service BI / Discovery Enablement', description: 'Design semantic layers, curated data marts, and governed data products that empower analysts to self-serve insights without IT dependency or raw data access.' }
+        ]
+      },
+      {
+        title: 'Lakehouse Architecture',
+        bgImage: '/images/capabilities/software-engineering.png',
+        description: 'Define, design, and develop the capabilities of dealing with data of any size, shape, and speed. Empower developers, data scientists, and analysts with the right tools to leverage enterprise-scale data assets.',
+        items: [
+          { heading: 'Strategy & Roadmap Development', description: 'Define the business case, technology choices, and phased migration plan for moving to a lakehouse architecture — grounded in your existing data estate and target analytics use cases.' },
+          { heading: 'Prototyping & Tool Evaluation', description: 'Run structured proof-of-concepts across Delta Lake, Apache Iceberg, and Hudi to validate performance, compatibility, and governance capabilities before committing to a platform.' },
+          { heading: 'Data Integration, Access & Services', description: 'Design and implement ingestion pipelines, API access layers, and data product catalogues that make lakehouse data accessible to every consumer — from BI tools to ML notebooks.' },
+          { heading: 'Scalable Storage & Processing Architecture', description: 'Engineer compute-storage separation, partitioning strategies, and tiered storage policies that scale cost-efficiently with data volume and query concurrency.' },
+          { heading: 'Construction & Go-Live Enablement', description: 'Build and validate the complete lakehouse stack — ingestion, storage, transformation, governance — and manage the go-live transition with zero-downtime cutover.' }
+        ]
+      },
+      {
+        title: 'Stream & Real-Time',
+        bgImage: '/images/capabilities/business-strategy.png',
+        description: 'Redefine real-time processing with event-driven stream analytics. Garner insights from data streams across disparate sources the moment events occur — replacing overnight reports with live operational intelligence.',
+        items: [
+          { heading: 'Real-time Data Ingestion', description: 'Deploy Kafka, Kinesis, and Flink-based ingestion pipelines that capture events from IoT devices, transactional systems, and digital channels at sub-second latency.' },
+          { heading: 'Scalable Data Processing & Storage', description: 'Design stream processing topologies with elastic compute that scale automatically with event volume — without manual cluster management or capacity pre-provisioning.' },
+          { heading: 'Event-driven Architecture & Flow', description: 'Engineer event-driven microservices and workflow triggers that react to data state changes in real time — enabling automated decisions, escalations, and downstream actions.' },
+          { heading: 'Dashboards, Alerting & Monitoring Systems', description: 'Build real-time operational dashboards and intelligent alerting systems that surface anomalies, SLA breaches, and business KPI movements the moment they happen.' }
+        ]
+      },
+      {
+        title: 'Migration & Integration',
+        bgImage: '/images/capabilities/digital-transformation.png',
+        description: 'Platform consolidation and large-scale data absorption across multi-source environments. We ensure seamless transitions and data integrity during complex enterprise transformation initiatives.',
+        items: [
+          { heading: 'Large-scale data absorption & ingestion', description: 'Design and operate high-throughput ingestion frameworks that absorb petabyte-scale datasets from multiple source systems with built-in validation and error handling.' },
+          { heading: 'Platform consolidation & unification', description: 'Merge fragmented data platforms — warehouses, lakes, marts — into a unified architecture with shared governance, consistent schemas, and a single lineage graph.' },
+          { heading: 'Multi-source integration frameworks', description: 'Build reusable connector libraries and integration layers that standardize data extraction across ERP, CRM, SaaS, legacy, and streaming sources into the target platform.' },
+          { heading: 'Structured & unstructured data handling', description: 'Ingest, parse, and normalize both structured relational data and unstructured content — documents, logs, images, and telemetry — within a unified data platform.' }
+        ]
+      },
+      {
+        title: 'Hadoop-Based Platforms',
+        bgImage: '/images/capabilities/data-analytics.png',
+        description: 'Leverage the power of distributed processing for cost-effective enterprise storage and high-concurrency analysis. We modernize Hadoop ecosystems for active archiving and scalable compute.',
+        items: [
+          { heading: 'Hadoop as Enterprise Data Warehouse', description: 'Architect Hadoop clusters as the primary analytical layer — enabling SQL-on-Hadoop for BI workloads at a fraction of the per-TB cost of traditional warehouse platforms.' },
+          { heading: 'Hadoop as Active Archive Solution', description: 'Position Hadoop as a governed active archive tier — retaining years of historical data at low cost while keeping it queryable for compliance, research, and reprocessing.' },
+          { heading: 'Large-scale concurrent processing', description: 'Configure and tune distributed compute (MapReduce, Spark, Tez) for high-concurrency batch workloads — maximizing cluster utilization and minimizing job completion times.' },
+          { heading: 'Cost-effective long-term storage & retrieval', description: 'Implement HDFS tiering, storage policies, and lifecycle management to reduce the cost per TB of long-term data retention while maintaining sub-minute retrieval for analytical queries.' }
+        ]
+      },
+      {
+        title: 'RDBMS to NoSQL (R2M)',
+        bgImage: '/images/capabilities/data-analytics.png',
+        description: 'Automated conversion of legacy relational data into modern document-based schemas for high performance. Reduce manual migration errors and optimize for cloud-native speed.',
+        items: [
+          { heading: 'Automated schema conversion & mapping', description: 'Use AI-assisted tools to analyze relational schemas and generate equivalent NoSQL document models — eliminating manual schema re-design and accelerating migration timelines.' },
+          { heading: 'Replication & integrity validation', description: 'Run parallel replication with automated row-count, checksum, and referential integrity validation to guarantee data fidelity before the legacy system is decommissioned.' },
+          { heading: 'Performance optimization for NoSQL', description: 'Design partition keys, index strategies, and access patterns for the target NoSQL platform (MongoDB, DynamoDB, Cassandra) to maximize query performance at cloud scale.' },
+          { heading: 'Reduced manual migration overhead', description: 'Replace manual ETL scripting with automated migration pipelines that handle data type mapping, null handling, and transformation — reducing migration effort by up to 70%.' }
+        ]
+      },
+      {
+        title: 'Managed Data Services',
+        bgImage: '/images/capabilities/data-analytics.png',
+        description: 'Reliable 24/7 managed support for data platforms, ensuring continuous uptime, performance tuning, and ongoing governance for your intelligence ecosystem.',
+        items: [
+          { heading: 'Platform monitoring & health checks', description: 'Proactive 24/7 monitoring of pipeline health, cluster utilization, and data freshness — with automated alerting and escalation before issues impact downstream consumers.' },
+          { heading: 'Continuous performance optimization', description: 'Ongoing query tuning, storage optimization, and compute right-sizing cadences that keep platform performance improving and infrastructure costs contained over time.' },
+          { heading: 'Ongoing governance & compliance', description: 'Maintain data catalogues, lineage records, access control reviews, and compliance reporting on a continuous basis — keeping your platform audit-ready at all times.' },
+          { heading: 'Managed analytics operations', description: 'Operate your analytics infrastructure end-to-end — from pipeline orchestration and incident response to feature releases and user support — as a fully managed service.' }
+        ]
+      }
+    ]
   };
 
   const department = {
@@ -109,362 +360,23 @@ const BigData = () => {
     description: 'Transform your data into a strategic advantage with scalable engineering.'
   };
 
-  // Technologies (categorised lookup)
-  const technologies = [
-    {
-      category: 'Data Processing',
-      items: ['Apache Hadoop', 'Apache Spark', 'Kafka', 'Flink', 'Presto', 'Hive']
-    },
-    {
-      category: 'Databases',
-      items: ['MongoDB', 'PostgreSQL', 'Snowflake', 'BigQuery', 'Cassandra', 'Redis']
-    },
-    {
-      category: 'Cloud Platforms',
-      items: ['AWS', 'Azure', 'Google Cloud', 'DigitalOcean', 'IBM Cloud']
-    },
-    {
-      category: 'Orchestration & Governance',
-      items: ['Airflow', 'dbt', 'Data Catalog Tools', 'Data Governance Frameworks', 'Purview']
-    }
-  ];
-
-  // Capabilities (Implementing verbose descriptions and bullet points for 1:1 visibility)
-  const capabilities = [
-    {
-      title: 'EDW Optimization',
-      bgImage: '/images/capabilities/data-analytics.png',
-      description: 'Equip your Enterprise Data Warehouse to tackle the growing demands of big data. Build a central data repository that unifies heterogeneous sources, maintains data quality, and gives you access to the information you need – when you need it. Kangqore EDW Optimization offering helps you with:',
-      items: [
-        'Modernization of legacy warehouses',
-        'ELT / Offload Architecture',
-        'Data Archiving Solutions',
-        'Datastore, Governance & Security Management',
-        'Self Service BI / Discovery Enablement'
-      ]
-    },
-    {
-      title: 'Lakehouse Architecture',
-      bgImage: '/images/capabilities/software-engineering.png',
-      description: 'Define, design, and develop the capabilities of dealing with data of any size, shape, and speed. Empower your developers, data scientists and analysts with the right tools to leverage quintillions of bytes of data. Kangqore Data Lakes/Lakehouse offering helps you with:',
-      items: [
-        'Strategy & Roadmap Development',
-        'Prototyping & Tool Evaluation',
-        'Data Integration, Access & Services',
-        'Scalable Storage & Processing Architecture',
-        'Construction & Go-Live Enablement'
-      ]
-    },
-    {
-      title: 'Stream & Real-Time',
-      bgImage: '/images/capabilities/business-strategy.png',
-      description: 'Redefine real-time processing with Kangqore Stream Analytics offering. Garner insights from data streams generating from disparate sources as and when the event occurs. We implement cutting-edge solutions that help you with:',
-      items: [
-        'Real-time Data Ingestion',
-        'Scalable Data Processing & Storage',
-        'Event-driven Architecture & Flow',
-        'Dashboards, Alerting & Monitoring Systems'
-      ]
-    },
-    {
-      title: 'Migration & Integration',
-      bgImage: '/images/capabilities/digital-transformation.png',
-      description: 'Platform consolidation and large-scale data absorption across multi-source environments. We ensure seamless transitions and data integrity during complex enterprise transformation initiatives.',
-      items: [
-        'Large-scale data absorption & ingestion',
-        'Platform consolidation & unification',
-        'Multi-source integration frameworks',
-        'Structured & unstructured data handling'
-      ]
-    },
-    {
-      title: 'Hadoop-Based Platforms',
-      bgImage: '/images/capabilities/data-analytics.png',
-      description: 'Leverage the power of distributed processing for cost-effective enterprise storage and high-concurrency analysis. We modernize Hadoop ecosystems for active archiving and scalable compute.',
-      items: [
-        'Hadoop as Enterprise Data Warehouse',
-        'Hadoop as Active Archive Solution',
-        'Large-scale concurrent processing',
-        'Cost-effective long-term storage & retrieval'
-      ]
-    },
-    {
-      title: 'RDBMS to NoSQL (R2M)',
-      bgImage: '/images/capabilities/data-analytics.png',
-      description: 'Automated conversion of legacy relational data into modern document-based schemas for high performance. Reduce manual migration errors and optimize for cloud-native speed.',
-      items: [
-        'Automated schema conversion & mapping',
-        'Replication & integrity validation',
-        'Performance optimization for NoSQL',
-        'Reduced manual migration overhead'
-      ]
-    },
-    {
-      title: 'Managed Data Services',
-      bgImage: '/images/capabilities/data-analytics.png',
-      description: 'Reliable 24/7 managed support for data platforms, ensuring continuous uptime, performance tuning, and ongoing governance for your intelligence ecosystem.',
-      items: [
-        'Platform monitoring & health checks',
-        'Continuous performance optimization',
-        'Ongoing governance & compliance',
-        'Managed analytics operations'
-      ]
-    }
-  ];
-
-  // Side carousel / Trust Pillars (6 sliding cards)
-  const trustPillars = [
-    {
-      title: 'Data Migration & Integration Services',
-      tag: 'Absorption',
-      description: 'Unified pipelines to absorb massive datasets from silos into a cohesive, governed data ecosystem. Learn More →'
-    },
-    {
-      title: 'Managed Big Data Services',
-      tag: 'Operations',
-      description: 'Reliable 24/7 managed support for data platforms, ensuring continuous uptime and performance tuning. Learn More →'
-    },
-    {
-      title: 'Data Analysis Platform',
-      tag: 'Intelligence',
-      description: 'Self-service analytics hubs that allow business users to discover insights without technical overhead. Learn More →'
-    },
-    {
-      title: 'Hadoop Data Warehouse',
-      tag: 'Scalability',
-      description: 'High-concurrency data warehousing solutions built on distributed processing frameworks for enterprise scale. Learn More →'
-    },
-    {
-      title: 'Hadoop Active Archive',
-      tag: 'Cost Optimization',
-      description: 'Move cold data to cost-effective storage while keeping it queryable and accessible for historical analysis. Learn More →'
-    },
-    {
-      title: 'RDBMS to NoSQL Migration',
-      tag: 'Modernization',
-      description: 'Automated conversion of legacy relational data into modern document-based schemas for high performance. Learn More →'
-    }
-  ];
-
-  // Custom Full-Width Section (Related Offerings)
-  const customSections = (
-    <section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white overflow-hidden relative">
-      {/* Background Micro-details */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none" 
-           style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '100px 100px' }}></div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
-          {/* Left Side: Content & List */}
-          <div className="lg:w-1/2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-brand-blue rounded-full text-xs font-bold mb-6 tracking-widest uppercase">
-              Portfolio Ecosystem
-            </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight font-display">
-              Related Analytics <span className="text-transparent bg-clip-text bg-brand-gradient">Offerings</span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 leading-relaxed max-w-xl">
-              Accelerate your data journey by combining Big Data engineering with our broader portfolio of intelligence services.
-            </p>
-            <div className="space-y-4">
-              {[
-                { 
-                  name: 'AI & Cognitive Computing', 
-                  link: '/services/ai-cognitive/agentic-ai',
-                  icon: <BrainCircuit className="w-5 h-5" />,
-                  desc: 'Autonomous systems and agentic intelligence.'
-                },
-                { 
-                  name: 'Business Intelligence & Data Warehouse', 
-                  link: '/services/analytics-insights/analytics',
-                  icon: <BarChart3 className="w-5 h-5" />,
-                  desc: 'Modern EDW and descriptive analytics.'
-                },
-                { 
-                  name: 'Data Science', 
-                  link: '/services/analytics-insights/data-science',
-                  icon: <LineChart className="w-5 h-5" />,
-                  desc: 'Predictive modeling and statistical analysis.'
-                }
-              ].map((offering, idx) => (
-                <Link 
-                  key={idx} 
-                  to={offering.link}
-                  className="group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 border border-gray-100 rounded-3xl hover:border-blue-300 hover:shadow-lg transition-all duration-500"
-                >
-                  <div className="w-14 h-14 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-gradient group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
-                    {offering.icon}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-xl text-gray-900 dark:text-white tracking-tight group-hover:text-brand-blue transition-colors">{offering.name}</span>
-                      <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-brand-blue transition-all group-hover:translate-x-1" />
-                      </div>
-                    </div>
-                    <p className="text-gray-500 leading-relaxed">{offering.desc}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="mt-12 flex items-center gap-6">
-              <Link 
-                to="/services" 
-                className="inline-flex items-center gap-2 px-10 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-brand-blue transition-all group shadow-xl"
-              >
-                Explore Services 
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <div className="hidden sm:block text-sm text-gray-400 font-mono italic">
-                // CONNECTING_ECOSYSTEM...
-              </div>
-            </div>
-          </div>
-
-          {/* Right Side: Technical Schematic Graphic (Premium Level) */}
-          <div className="lg:w-5/12 relative">
-            <div className="relative aspect-square w-full max-w-[550px] mx-auto">
-              {/* Background Orbs */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-400/10 blur-[100px] rounded-full"></div>
-              
-              {/* Radial Grid */}
-              <div className="absolute inset-0 opacity-[0.05]" 
-                   style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-
-              {/* Technical Annotations (Micro-labels) */}
-              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
-                <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_BD_01</span></div>
-                <div className="flex justify-between gap-4"><span>SCALE:</span> <span>PB_LEVEL</span></div>
-                <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">OPTIMIZED</span></div>
-              </div>
-
-              <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
-                <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">Core System</div>
-                <div>SECURE_TUNNEL_ENABLED</div>
-                <div>LATENCY: 4MS</div>
-              </div>
-
-              {/* Central Core (Data Hub) */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-gray-100 flex items-center justify-center relative z-20 group">
-                <div className="absolute inset-4 bg-brand-gradient rounded-[32px] opacity-10 group-hover:opacity-20 transition-opacity"></div>
-                <div className="absolute inset-8 border border-brand-blue/30 rounded-3xl border-dashed animate-spin-slow"></div>
-                <div className="relative">
-                   <Database className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
-                </div>
-                
-                {/* Floating Micro-nodes inside central hub */}
-                <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
-                  <Lock className="w-6 h-6" />
-                </div>
-                <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:-rotate-6 transition-transform">
-                  <Zap className="w-7 h-7" />
-                </div>
-              </div>
-
-              {/* Satellite Clusters */}
-              {/* Top: AI Ecosystem */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 group">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-28 h-28 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center border border-blue-50 relative z-10 hover:-translate-y-2 transition-all duration-300">
-                    <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
-                    <BrainCircuit className="w-14 h-14 text-blue-600 drop-shadow-sm" />
-                  </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Intelligence</span>
-                </div>
-              </div>
-
-              {/* Left: Analytics Dash */}
-              <div className="absolute bottom-20 left-0 group">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
-                    <BarChart3 className="w-12 h-12 text-white" />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">99%</div>
-                  </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Visualization</span>
-                </div>
-              </div>
-
-              {/* Right: Data Science */}
-              <div className="absolute bottom-20 right-0 group">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-32 h-32 bg-slate-900 rounded-[40px] shadow-[0_30px_60px_rgba(0,0,0,0.3)] flex items-center justify-center relative -translate-x-6 hover:translate-x-0 transition-transform duration-300 overflow-hidden">
-                    <div className="absolute inset-0 bg-brand-gradient opacity-10 group-hover:opacity-20 transition-opacity"></div>
-                    <div className="relative">
-                      <LineChart className="w-16 h-16 text-emerald-400" />
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Prediction</span>
-                </div>
-              </div>
-
-              {/* Data Flow SVG (Super Technical) */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
-                <defs>
-                  <linearGradient id="flow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#2564ea" stopOpacity="0.8" />
-                    <stop offset="100%" stopColor="#4ab6d4" stopOpacity="0.4" />
-                  </linearGradient>
-                </defs>
-                
-                {/* Main Connection Lines with Flowing Dots */}
-                {/* Center to Top */}
-                <path d="M250,250 L250,140" stroke="url(#flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" className="animate-flow" fill="none" />
-                <circle r="4" fill="#2564ea">
-                  <animateMotion path="M250,250 L250,140" dur="3s" repeatCount="indefinite" />
-                </circle>
-
-                {/* Center to Left */}
-                <path d="M250,250 L140,380" stroke="url(#flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" className="animate-flow" fill="none" />
-                <circle r="4" fill="#22d3ee">
-                  <animateMotion path="M250,250 L140,380" dur="4s" repeatCount="indefinite" />
-                </circle>
-
-                {/* Center to Right */}
-                <path d="M250,250 L360,380" stroke="url(#flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" className="animate-flow" fill="none" />
-                <circle r="4" fill="#10b981">
-                  <animateMotion path="M250,250 L360,380" dur="5s" repeatCount="indefinite" />
-                </circle>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-
-  // Why Kangqore Content
-  const whyKangqoreIntro = `We don’t just implement tools. We build future-ready data platforms that solve architectural complexity and drive measurable growth.`;
-
-  const whyKangqore = [
-    { title: 'AI-native architecture', description: 'Data platforms built with embedded intelligence for next-gen AI applications.' },
-    { title: 'Enterprise-grade governance', description: 'End-to-end security and compliance integrated directly into the pipeline.' },
-    { title: 'Scalable cloud-first infrastructure', description: 'Native multi-cloud and hybrid architectures that grow with your enterprise.' },
-    { title: 'Performance-optimized engineering', description: 'Eliminating bottlenecks to ensure lightning-fast processing at extreme scale.' },
-    { title: 'Strategic technology partnerships', description: 'Leveraging top-tier relationships with Snowflake, Databricks, and Cloud giants.' },
-    { title: 'Outcomes-focused delivery', description: 'Engineering defined by business impact, not just storage volume.' }
-  ];
-
   const pageData = {
-    service: {
-      ...service,
-      technologies,
-      capabilities,
-      trustPillars,
-      trustPillarsRightTitle: 'End-to-End Data Transformation Solutions',
-      trustPillarsRightDescription: 'We design scalable, secure, and agile data ecosystems that accelerate innovation, improve operational efficiency, and enable smooth customer experiences tailored to your digital transformation journey.',
-      trustPillarsRightButton: 'Request a Consultation',
-      whyKangqoreIntro,
-      whyKangqore,
-      postIndustrySections: customSections,
-      ctaTitle: 'Turn Data Chaos Into Competitive Advantage',
-      ctaDescription: 'Let’s design your next-generation data platform.',
-      ctaButtonText: 'Schedule a Strategy Call'
-    },
+    service,
     department
   };
 
-  return <ServicePageTemplate service={pageData.service} department={department} />;
+  return (
+    <div className="ai-cognitive-page-override">
+      <SEO
+        title="Big Data Services — Enterprise Data Platform & Lakehouse Architecture"
+        description="Kangqore designs and modernizes enterprise Big Data platforms — from data lakehouses and real-time stream processing to Hadoop modernization and governed data ecosystems — built for AI-ready intelligence at scale."
+        keywords="big data services, enterprise data platform, data lakehouse architecture, Hadoop modernization, real-time stream processing, data lake, cloud data platform, big data consulting, data engineering, scalable data infrastructure"
+        url="https://kangqore.com/services/big-data"
+        schemas={[FAQ_SCHEMA]}
+      />
+      <ServicePageTemplate service={pageData.service} department={department} disableSEO />
+    </div>
+  );
 };
 
 export default BigData;

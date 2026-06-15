@@ -359,9 +359,9 @@ export const serviceSEO = {
 
   // ─── Cognition (11) ──
   'agentic-ai': {
-    title: 'Agentic AI — Cognition | Kangqore',
-    description: 'Autonomous AI agents that reason, plan, and execute complex tasks — governed, observable, human-in-the-loop. Built by Kangqore Cognition (eQORE™).',
-    keywords: 'agentic AI, autonomous AI agents, AI reasoning, multi-step AI, human-in-the-loop AI, eQORE',
+    title: 'Agentic AI Services — Autonomous AI Agents for Enterprise | Kangqore',
+    description: 'Kangqore builds production-grade agentic AI systems that reason, plan, and execute complex enterprise workflows autonomously — with human-in-the-loop oversight, audit trails, and governance by design.',
+    keywords: 'agentic AI services, autonomous AI agents, enterprise AI agent development, AI workflow automation, multi-agent orchestration, human-in-the-loop AI, LLM agents, governed AI agents, agentic AI consulting, LLM agent orchestration, RAG-powered agents',
     url: '/services/agentic-ai',
   },
   'ai-cognitive-computing': {

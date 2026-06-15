@@ -327,13 +327,13 @@ export default function DepartmentPageReal() {
                     elevated ? 'lg:-translate-y-4' : ''
                   }`}
                 >
-                  {/* Brand gradient top */}
-                  <div
-                    className="w-full h-36 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-44 shadow-lg"
-                    style={{ background: 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)', opacity: 0.65 }}
-                  />
+                  {/* Image top */}
+                  <div className="w-full h-48 sm:h-56 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-56 sm:group-hover:h-64 shadow-lg relative">
+                    <img src={svc.image} alt={svc.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, transparent 0%, #06090f60 100%)' }} />
+                  </div>
                   {/* Dark card */}
-                  <div className="relative w-[92%] mx-auto -mt-10 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-7 shadow-2xl transition-all duration-500 group-hover:border-white/20">
+                  <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-7 shadow-2xl transition-all duration-500 group-hover:border-white/20">
                     <div className="w-5 h-0.5 rounded-full mb-4 bg-brand-cyan" />
                     <h3 className="text-white font-bold text-xl sm:text-2xl leading-tight mb-3">
                       {svc.name}

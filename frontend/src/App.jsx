@@ -102,6 +102,38 @@ function MainLayout({ children, showFullMenu, setShowFullMenu, handleMenuClick }
 import useVisitorTracking from './hooks/useVisitorTracking';
 import GlobalScrollAnimations from './components/GlobalScrollAnimations';
 import WebVitalsReporter from './kangqore-vis/components/WebVitalsReporter';
+import { kangqoreVisAdminRoutes } from './kangqore-vis';
+
+// OS (dashboard) — lazy loaded per module
+import { ProtectedRoute as OSProtectedRoute } from './os/components/auth/ProtectedRoute';
+const OSLayout           = React.lazy(() => import('./os/components/shell/OSLayout').then(m => ({ default: m.OSLayout })));
+const UnauthorizedPage   = React.lazy(() => import('./os/pages/UnauthorizedPage').then(m => ({ default: m.UnauthorizedPage })));
+const StrategyModule     = React.lazy(() => import('./os/features/strategy').then(m => ({ default: m.StrategyModule })));
+const ProjectsModule     = React.lazy(() => import('./os/features/projects').then(m => ({ default: m.ProjectsModule })));
+const ResourcesModule    = React.lazy(() => import('./os/features/resources').then(m => ({ default: m.ResourcesModule })));
+const FinanceModule      = React.lazy(() => import('./os/features/finance').then(m => ({ default: m.FinanceModule })));
+const ConsultationsModule = React.lazy(() => import('./os/features/consultations').then(m => ({ default: m.ConsultationsModule })));
+const DeliveryModule     = React.lazy(() => import('./os/features/delivery').then(m => ({ default: m.DeliveryModule })));
+const GovernanceModule   = React.lazy(() => import('./os/features/governance').then(m => ({ default: m.GovernanceModule })));
+const CommsModule        = React.lazy(() => import('./os/features/comms').then(m => ({ default: m.CommsModule })));
+const ClientsModule      = React.lazy(() => import('./os/features/clients').then(m => ({ default: m.ClientsModule })));
+const PartnersModule     = React.lazy(() => import('./os/features/partners').then(m => ({ default: m.PartnersModule })));
+const LeadsModule        = React.lazy(() => import('./os/features/leads').then(m => ({ default: m.LeadsModule })));
+const InvestorsModule    = React.lazy(() => import('./os/features/investors').then(m => ({ default: m.InvestorsModule })));
+const DepartmentsModule  = React.lazy(() => import('./os/features/departments').then(m => ({ default: m.DepartmentsModule })));
+const WorkflowsModule    = React.lazy(() => import('./os/features/workflows').then(m => ({ default: m.WorkflowsModule })));
+const MarketingModule    = React.lazy(() => import('./os/features/marketing').then(m => ({ default: m.MarketingModule })));
+const CareersModule      = React.lazy(() => import('./os/features/careers').then(m => ({ default: m.CareersModule })));
+const AnalyticsModule    = React.lazy(() => import('./os/features/analytics').then(m => ({ default: m.AnalyticsModule })));
+const KIMMMModule        = React.lazy(() => import('./os/features/kimmp').then(m => ({ default: m.KIMMMModule })));
+const AdminOverview      = React.lazy(() => import('./os/features/overview').then(m => ({ default: m.AdminOverview })));
+const SettingsModule     = React.lazy(() => import('./os/features/settings').then(m => ({ default: m.SettingsModule })));
+const ClientPortal       = React.lazy(() => import('./os/portals/client').then(m => ({ default: m.ClientPortal })));
+const PartnerPortal      = React.lazy(() => import('./os/portals/partner').then(m => ({ default: m.PartnerPortal })));
+const InvestorPortal     = React.lazy(() => import('./os/portals/investor').then(m => ({ default: m.InvestorPortal })));
+const CareersPortal      = React.lazy(() => import('./os/portals/careers').then(m => ({ default: m.CareersPortal })));
+const JournalistPortal   = React.lazy(() => import('./os/portals/journalist').then(m => ({ default: m.JournalistPortal })));
+const AnalystPortal      = React.lazy(() => import('./os/portals/analyst').then(m => ({ default: m.AnalystPortal })));
 
 /**
  * Loading Fallback
@@ -186,6 +218,89 @@ function AppContent() {
           {/* Auth & Dashboard Routes (no Header/Footer) */}
           {authRoutes}
           <Route path="/eqore-ai" element={<EQoreAIConsole />} />
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+          {/* OS — internal dashboard (ADMIN only) */}
+          <Route
+            path="/kangqore-view/admin"
+            element={
+              <OSProtectedRoute allowedRoles={['ADMIN']}>
+                <OSLayout />
+              </OSProtectedRoute>
+            }
+          >
+            <Route index                   element={<Navigate to="overview" replace />} />
+            <Route path="overview"         element={<AdminOverview />}       />
+            <Route path="strategy/*"       element={<StrategyModule />}      />
+            <Route path="projects/*"       element={<ProjectsModule />}      />
+            <Route path="resources/*"      element={<ResourcesModule />}     />
+            <Route path="finance/*"        element={<FinanceModule />}       />
+            <Route path="consultations/*"  element={<ConsultationsModule />} />
+            <Route path="delivery/*"       element={<DeliveryModule />}      />
+            <Route path="governance/*"     element={<GovernanceModule />}    />
+            <Route path="comms/*"          element={<CommsModule />}         />
+            <Route path="clients/*"        element={<ClientsModule />}       />
+            <Route path="partners/*"       element={<PartnersModule />}      />
+            <Route path="leads/*"          element={<LeadsModule />}         />
+            <Route path="investors/*"      element={<InvestorsModule />}     />
+            <Route path="departments/*"    element={<DepartmentsModule />}   />
+            <Route path="workflows/*"      element={<WorkflowsModule />}     />
+            <Route path="marketing/*"      element={<MarketingModule />}     />
+            <Route path="careers/*"        element={<CareersModule />}       />
+            <Route path="analytics/*"      element={<AnalyticsModule />}     />
+            <Route path="kimmp/*"          element={<KIMMMModule />}         />
+            <Route path="settings/*"       element={<SettingsModule />}      />
+          </Route>
+
+          {/* External portals */}
+          <Route
+            path="/kangqore-view/client/*"
+            element={
+              <OSProtectedRoute allowedRoles={['CLIENT', 'ADMIN']}>
+                <ClientPortal />
+              </OSProtectedRoute>
+            }
+          />
+          <Route
+            path="/kangqore-view/partner/*"
+            element={
+              <OSProtectedRoute allowedRoles={['PARTNER', 'ADMIN']}>
+                <PartnerPortal />
+              </OSProtectedRoute>
+            }
+          />
+          <Route
+            path="/kangqore-view/investor/*"
+            element={
+              <OSProtectedRoute allowedRoles={['INVESTOR', 'ADMIN']}>
+                <InvestorPortal />
+              </OSProtectedRoute>
+            }
+          />
+          <Route
+            path="/kangqore-view/careers/*"
+            element={
+              <OSProtectedRoute allowedRoles={['JOB_SEEKER', 'ADMIN']}>
+                <CareersPortal />
+              </OSProtectedRoute>
+            }
+          />
+          <Route
+            path="/kangqore-view/journalist/*"
+            element={
+              <OSProtectedRoute allowedRoles={['JOURNALIST', 'ADMIN']}>
+                <JournalistPortal />
+              </OSProtectedRoute>
+            }
+          />
+          <Route
+            path="/kangqore-view/analyst/*"
+            element={
+              <OSProtectedRoute allowedRoles={['ANALYST', 'ADMIN']}>
+                <AnalystPortal />
+              </OSProtectedRoute>
+            }
+          />
 
           {/* Standalone document pages — no Header/Footer (optimised for print/PDF) */}
           <Route path="/bids/tata-steel" element={<BIDSTataSteel />} />
@@ -237,6 +352,9 @@ function AppContent() {
                 <Route path="/admin/eqore-sales" element={<EqoreSalesPage />} />
                 <Route path="/admin/alis" element={<AlisPage />} />
                 <Route path="/admin/kimmp-pages" element={<KimmpPagesPage />} />
+
+                {/* Kangqore Vis Admin Routes */}
+                {kangqoreVisAdminRoutes}
 
                 {/* Catch-all: resolve a KIMMP generated page, else NotFound. */}
                 <Route path="*" element={<DynamicKangqorePage />} />

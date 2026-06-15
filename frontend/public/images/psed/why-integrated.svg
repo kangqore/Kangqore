@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#06090f"/>
+  <radialGradient id="g7" cx="50%" cy="50%" r="60%">
+    <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.16"/>
+    <stop offset="100%" stop-color="#06090f" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="400" height="250" fill="url(#g7)"/>
+  <!-- Three interlocking rings (Venn style) representing integration -->
+  <!-- Strategy circle (left) -->
+  <circle cx="160" cy="115" r="62" stroke="#22D3EE" stroke-opacity="0.5" stroke-width="1.5" fill="#22D3EE" fill-opacity="0.04"/>
+  <!-- Design circle (right) -->
+  <circle cx="240" cy="115" r="62" stroke="#22D3EE" stroke-opacity="0.5" stroke-width="1.5" fill="#22D3EE" fill-opacity="0.04"/>
+  <!-- Overlap fill -->
+  <clipPath id="c1"><circle cx="160" cy="115" r="62"/></clipPath>
+  <circle cx="240" cy="115" r="62" fill="#22D3EE" fill-opacity="0.1" clip-path="url(#c1)"/>
+
+  <!-- Labels -->
+  <text x="128" y="112" font-size="9" fill="#22D3EE" fill-opacity="0.55" font-family="monospace" font-weight="bold">STRATEGY</text>
+  <text x="246" y="112" font-size="9" fill="#22D3EE" fill-opacity="0.55" font-family="monospace" font-weight="bold">DESIGN</text>
+  <text x="183" y="105" font-size="7.5" fill="#22D3EE" fill-opacity="0.85" font-family="monospace" font-weight="bold">BUILD</text>
+  <!-- Center glow dot -->
+  <circle cx="200" cy="115" r="8" fill="#22D3EE" fill-opacity="0.7"/>
+  <circle cx="200" cy="115" r="14" stroke="#22D3EE" stroke-opacity="0.3" stroke-width="1" fill="none"/>
+
+  <!-- Connection arrows (top to bottom, strategy→design→build flow) -->
+  <line x1="200" y1="48" x2="200" y2="38" stroke="#22D3EE" stroke-opacity="0.4" stroke-width="1.5"/>
+  <polygon points="200,35 196,43 204,43" fill="#22D3EE" fill-opacity="0.5"/>
+
+  <!-- Bottom build label with underline -->
+  <text x="175" y="193" font-size="9" fill="#22D3EE" fill-opacity="0.4" font-family="monospace">DELIVERY</text>
+  <line x1="175" y1="196" x2="230" y2="196" stroke="#22D3EE" stroke-opacity="0.2" stroke-width="0.8"/>
+
+  <!-- Decorative corner marks -->
+  <line x1="30" y1="30" x2="50" y2="30" stroke="#22D3EE" stroke-opacity="0.2" stroke-width="1"/>
+  <line x1="30" y1="30" x2="30" y2="50" stroke="#22D3EE" stroke-opacity="0.2" stroke-width="1"/>
+  <line x1="370" y1="220" x2="350" y2="220" stroke="#22D3EE" stroke-opacity="0.2" stroke-width="1"/>
+  <line x1="370" y1="220" x2="370" y2="200" stroke="#22D3EE" stroke-opacity="0.2" stroke-width="1"/>
+</svg>

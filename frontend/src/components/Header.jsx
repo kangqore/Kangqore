@@ -34,7 +34,7 @@ const Header = ({ onMenuClick }) => {
   // Adaptive Glassmorphic Logic - Detects light sections under the header
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const sections = document.querySelectorAll('section, main > div, footer, .hero-section');
+      const sections = document.querySelectorAll('section, footer, .hero-section');
       const lightElements = [];
       
       sections.forEach(sec => {

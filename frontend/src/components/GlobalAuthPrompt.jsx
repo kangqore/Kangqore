@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useLocation } from 'react-router-dom';
 import { X, Check, ShieldAlert, RefreshCw } from 'lucide-react';
 
 const GlobalAuthPrompt = () => {
   const { user, login, signup } = useAuth();
+  const location = useLocation();
   
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authTab, setAuthTab] = useState('signin'); // 'signin' or 'signup'
@@ -19,15 +21,15 @@ const GlobalAuthPrompt = () => {
 
   // Timers for showing Auth popup (30s initial, 45s interval)
   useEffect(() => {
-    // If the user is logged in, do not trigger anything
-    if (user) {
+    // If the user is logged in, or if we are on the login page, do not trigger anything
+    if (user || location.pathname === '/login') {
       setShowAuthModal(false);
       return;
     }
 
     // Set 30s timer for initial floating prompt
     const initialTimer = setTimeout(() => {
-      if (!user) {
+      if (!user && location.pathname !== '/login') {
         setShowAuthModal(true);
       }
     }, 30000);
@@ -107,6 +109,7 @@ const GlobalAuthPrompt = () => {
     }
   };
 
+  if (location.pathname === '/login') return null;
   if (!showAuthModal) return null;
 
   return (
@@ -114,26 +117,33 @@ const GlobalAuthPrompt = () => {
       
       <div className="w-full max-w-md bg-[#141414] border border-white/10 rounded-3xl shadow-2xl p-6 sm:p-8 relative overflow-hidden animate-fade-in-up">
         
+        {/* Background Image matching Predictive Insights & Operations Optimization card */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <img 
+            src="/images/capabilities/agentic-governed-autonomy.png" 
+            alt="background texture" 
+            className="w-full h-full object-cover" 
+          />
+          <div className="absolute inset-0 bg-[#141414]/60 z-[1]" />
+          <div className="absolute inset-x-0 top-0 h-1/2 z-[2]" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.55) 45%,rgba(0,0,0,0) 100%)' }} />
+        </div>
+
         {/* Ambient overlay details */}
-        <div className="absolute -top-12 -right-12 w-28 h-28 bg-brand-cyan/20 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-12 -left-12 w-28 h-28 bg-brand-blue/20 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -top-12 -right-12 w-28 h-28 bg-brand-cyan/20 rounded-full blur-2xl pointer-events-none z-[3]" />
+        <div className="absolute -bottom-12 -left-12 w-28 h-28 bg-brand-blue/20 rounded-full blur-2xl pointer-events-none z-[3]" />
 
         {/* Modal Close Button */}
         <button 
           onClick={handleCloseAuthModal}
-          className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition"
+          className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition z-20"
         >
           <X className="w-5 h-5" />
         </button>
 
-        {/* Auth Title */}
-        <div className="text-center mb-6">
-          <div className="relative mx-auto mb-3 shrink-0 w-12 h-12">
-            <div className="w-12 h-12 rounded-2xl overflow-hidden border border-cyan-400/30 bg-[#050505] flex items-center justify-center">
-              <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
-            </div>
-            <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-cyan-400 border-2 border-[#0e121e] rounded-full animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.6)]"></span>
-          </div>
+        <div className="relative z-10">
+          {/* Auth Title */}
+          <div className="text-center mb-6">
+          <img src="/assets/kangqore-icon-white.png" alt="Kangqore" className="w-[58px] h-[58px] object-contain mx-auto mb-3" />
           <h2 className="text-xl font-extrabold tracking-tight text-white">Unlock Executive Core Features</h2>
           <p className="text-xs text-gray-400 mt-1 max-w-xs mx-auto">
             Sign in to save your progress, bookmark capabilities, and unlock exclusive enterprise content.
@@ -283,7 +293,7 @@ const GlobalAuthPrompt = () => {
             {/* Google Sign In Button */}
             <button 
               onClick={handleGoogleAuth}
-              className="w-full py-2.5 rounded-xl bg-[#1e2330] hover:bg-[#252b3c] border border-white/5 text-white font-semibold text-xs flex items-center justify-center gap-2 transition duration-300"
+              className="w-full py-2.5 rounded-xl bg-[#1e2330]/80 backdrop-blur-md hover:bg-[#252b3c] border border-white/5 text-white font-semibold text-xs flex items-center justify-center gap-2 transition duration-300"
             >
               <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -295,6 +305,7 @@ const GlobalAuthPrompt = () => {
             </button>
           </>
         )}
+        </div>
       </div>
     </div>
   );

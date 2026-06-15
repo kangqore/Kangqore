@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#06090f"/>
+  <radialGradient id="g9" cx="45%" cy="45%" r="60%">
+    <stop offset="0%" stop-color="#34D399" stop-opacity="0.16"/>
+    <stop offset="100%" stop-color="#06090f" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="400" height="250" fill="url(#g9)"/>
+
+  <!-- Y axis -->
+  <line x1="72" y1="200" x2="72" y2="38" stroke="#34D399" stroke-opacity="0.3" stroke-width="1"/>
+  <!-- X axis -->
+  <line x1="72" y1="200" x2="355" y2="200" stroke="#34D399" stroke-opacity="0.3" stroke-width="1"/>
+
+  <!-- Y axis ticks & labels -->
+  <line x1="67" y1="170" x2="72" y2="170" stroke="#34D399" stroke-opacity="0.3" stroke-width="1"/>
+  <line x1="67" y1="140" x2="72" y2="140" stroke="#34D399" stroke-opacity="0.3" stroke-width="1"/>
+  <line x1="67" y1="110" x2="72" y2="110" stroke="#34D399" stroke-opacity="0.3" stroke-width="1"/>
+  <line x1="67" y1="80" x2="72" y2="80" stroke="#34D399" stroke-opacity="0.3" stroke-width="1"/>
+  <line x1="67" y1="50" x2="72" y2="50" stroke="#34D399" stroke-opacity="0.3" stroke-width="1"/>
+
+  <!-- Grid lines (horizontal) -->
+  <line x1="72" y1="170" x2="355" y2="170" stroke="#34D399" stroke-opacity="0.06" stroke-width="0.8"/>
+  <line x1="72" y1="140" x2="355" y2="140" stroke="#34D399" stroke-opacity="0.06" stroke-width="0.8"/>
+  <line x1="72" y1="110" x2="355" y2="110" stroke="#34D399" stroke-opacity="0.06" stroke-width="0.8"/>
+  <line x1="72" y1="80" x2="355" y2="80" stroke="#34D399" stroke-opacity="0.06" stroke-width="0.8"/>
+  <line x1="72" y1="50" x2="355" y2="50" stroke="#34D399" stroke-opacity="0.06" stroke-width="0.8"/>
+
+  <!-- Upward trend line -->
+  <polyline points="95,190 140,175 185,160 230,135 275,105 320,70 345,50"
+    stroke="#34D399" stroke-opacity="0.8" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+
+  <!-- Area fill under the trend -->
+  <polygon points="95,190 140,175 185,160 230,135 275,105 320,70 345,50 345,200 95,200"
+    fill="#34D399" fill-opacity="0.06"/>
+
+  <!-- Data points on the line -->
+  <circle cx="95" cy="190" r="3.5" fill="#34D399" fill-opacity="0.5"/>
+  <circle cx="140" cy="175" r="3.5" fill="#34D399" fill-opacity="0.6"/>
+  <circle cx="185" cy="160" r="3.5" fill="#34D399" fill-opacity="0.65"/>
+  <circle cx="230" cy="135" r="4" fill="#34D399" fill-opacity="0.75"/>
+  <circle cx="275" cy="105" r="4" fill="#34D399" fill-opacity="0.85"/>
+  <circle cx="320" cy="70" r="4.5" fill="#34D399" fill-opacity="0.9"/>
+  <circle cx="345" cy="50" r="5.5" fill="#34D399" fill-opacity="1"/>
+  <circle cx="345" cy="50" r="10" stroke="#34D399" stroke-opacity="0.3" stroke-width="1" fill="none"/>
+  <circle cx="345" cy="50" r="18" stroke="#34D399" stroke-opacity="0.12" stroke-width="1" fill="none"/>
+
+  <!-- Arrow at chart tip -->
+  <polygon points="345,35 341,47 349,47" fill="#34D399" fill-opacity="0.7"/>
+
+  <!-- Team enablement dots (small people) below chart -->
+  <circle cx="130" cy="220" r="5" fill="#34D399" fill-opacity="0.35"/>
+  <circle cx="155" cy="218" r="5" fill="#34D399" fill-opacity="0.45"/>
+  <circle cx="180" cy="220" r="5" fill="#34D399" fill-opacity="0.35"/>
+  <circle cx="205" cy="217" r="5" fill="#34D399" fill-opacity="0.55"/>
+  <circle cx="230" cy="220" r="5" fill="#34D399" fill-opacity="0.35"/>
+
+  <!-- Y axis arrow -->
+  <polygon points="72,35 68,45 76,45" fill="#34D399" fill-opacity="0.4"/>
+  <!-- X axis arrow -->
+  <polygon points="358,200 348,196 348,204" fill="#34D399" fill-opacity="0.4"/>
+</svg>

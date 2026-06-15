@@ -238,6 +238,16 @@ export const servicesData = {
     relatedServiceSlugs: ['agentic-ai', 'data-science-ai', 'genai-business-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1655720828018-edd2daec9349?w=800&q=80',
+    whatIsTitle: 'AI & Cognitive Computing',
+    whatIsTitleLine2: 'Solutions That',
+    whatIsHighlight: 'Think, Learn & Act.',
+    whatIsPara2: 'Kangqore implements cognitive systems across NLP, knowledge reasoning, and adaptive learning — enabling enterprises to automate judgment-intensive decisions and surface insights from unstructured information at scale.',
+    businessMetrics: [
+      { title: 'Comprehension Accuracy', desc: 'Improvement in unstructured data comprehension using cognitive NLP and enterprise reasoning engines.', value: '87', suffix: '%', metricLabel: 'Comprehension Accuracy', icon: 'BrainCircuit' },
+      { title: 'Insights Speed',          desc: 'Faster time to insight from enterprise knowledge bases using cognitive search and semantic retrieval.',  value: '4',  suffix: 'x',   metricLabel: 'Faster Insights',        icon: 'Zap'         },
+      { title: 'Decision Automation',     desc: 'Complex decisions automated through cognitive reasoning frameworks without manual human review.',          value: '65', suffix: '%', metricLabel: 'Decisions Automated',    icon: 'Target'      },
+      { title: 'Live Deployments',        desc: 'Enterprise cognitive systems deployed across financial services, healthcare, and manufacturing sectors.',   value: '30', suffix: '+', metricLabel: 'Deployments',            icon: 'Layers'      },
+    ],
   },
 
   'data-science-ai': {
@@ -251,6 +261,16 @@ export const servicesData = {
     relatedServiceSlugs: ['mlops', 'analytics', 'big-data'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80',
+    whatIsTitle: 'Data Science & AI',
+    whatIsTitleLine2: 'That Turns Data Into',
+    whatIsHighlight: 'Predictable Revenue.',
+    whatIsPara2: 'Kangqore combines rigorous statistical analysis with production-grade machine learning to build, validate, and deploy models that move metrics — from customer churn prediction to demand forecasting and risk scoring.',
+    businessMetrics: [
+      { title: 'Model Accuracy Gain',  desc: 'Average improvement over baseline heuristics after deploying Kangqore data science models.',                         value: '38', suffix: '%',    metricLabel: 'Accuracy Improvement', icon: 'Target'    },
+      { title: 'Model Delivery Speed', desc: 'Time from data exploration to production-ready model using accelerated feature engineering pipelines.',                value: '6',  suffix: ' Wks', metricLabel: 'Model Delivery',       icon: 'Zap'       },
+      { title: 'Revenue Uplift',       desc: 'Average revenue uplift from predictive models in pricing, churn reduction, and customer LTV applications.',            value: '22', suffix: '%',    metricLabel: 'Revenue Uplift',       icon: 'TrendingUp'},
+      { title: 'Models Built',         desc: 'Custom AI/ML models built and deployed across retail, financial services, and healthcare industries.',                  value: '80', suffix: '+',    metricLabel: 'Models Deployed',      icon: 'Layers'    },
+    ],
   },
 
   'genai-business-services': {
@@ -264,6 +284,16 @@ export const servicesData = {
     relatedServiceSlugs: ['agentic-ai', 'ai-governance', 'mlops'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80',
+    whatIsTitle: 'Generative AI That',
+    whatIsTitleLine2: 'Transforms How Business',
+    whatIsHighlight: 'Gets Done.',
+    whatIsPara2: 'Kangqore implements LLMs, retrieval-augmented generation, and domain-specific fine-tuning so enterprises generate content, code, and decisions at 10× the speed of traditional workflows — without losing accuracy or governance control.',
+    businessMetrics: [
+      { title: 'Output Speed',      desc: 'Reduction in content and code generation time using enterprise LLMs versus traditional production workflows.', value: '70', suffix: '%', metricLabel: 'Faster Output',       icon: 'Zap'         },
+      { title: 'Cost Per Asset',    desc: 'Average cost reduction per generated document, code artifact, or report vs. manual production.',               value: '60', suffix: '%', metricLabel: 'Cost Reduction',      icon: 'Target'      },
+      { title: 'Model Accuracy',    desc: 'Fine-tuned enterprise model response accuracy on domain-specific knowledge and task benchmarks.',               value: '92', suffix: '%', metricLabel: 'Model Accuracy',      icon: 'BrainCircuit'},
+      { title: 'Use Cases Live',    desc: 'Enterprise generative AI applications deployed and running across clients spanning 8+ industries.',             value: '40', suffix: '+', metricLabel: 'Use Cases Deployed',  icon: 'Layers'      },
+    ],
   },
 
   'mlops': {
@@ -277,6 +307,16 @@ export const servicesData = {
     relatedServiceSlugs: ['data-science-ai', 'devops-as-a-service', 'ai-governance'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+    whatIsTitle: 'MLOps That Gets Models',
+    whatIsTitleLine2: 'Into Production —',
+    whatIsHighlight: 'And Keeps Them There.',
+    whatIsPara2: 'Kangqore implements ML pipeline automation, model monitoring, and continuous retraining infrastructure — so models move from notebook to production in weeks, not months, and stay accurate long after launch.',
+    businessMetrics: [
+      { title: 'Deployment Frequency', desc: 'Increase in model deployment frequency after MLOps pipeline implementation and CI/CD automation.', value: '5',  suffix: 'x',    metricLabel: 'Faster Deployment',    icon: 'Zap'       },
+      { title: 'Model Accuracy Gain',  desc: 'Performance improvement through automated retraining, monitoring, and continuous feedback loops.',  value: '34', suffix: '%',    metricLabel: 'Accuracy Improvement', icon: 'TrendingUp'},
+      { title: 'Production Incidents', desc: 'Reduction in model drift and production failures through proactive monitoring and automated alerts.', value: '80', suffix: '%',    metricLabel: 'Fewer Incidents',      icon: 'Target'    },
+      { title: 'Time to Production',   desc: 'End-to-end time from validated model to production deployment using automated MLOps pipelines.',      value: '2',  suffix: ' Wks', metricLabel: 'Deployment Speed',     icon: 'Layers'    },
+    ],
   },
 
   'analytics': {
@@ -290,6 +330,16 @@ export const servicesData = {
     relatedServiceSlugs: ['big-data', 'data-science-ai'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+    whatIsTitle: 'Analytics That Drives',
+    whatIsTitleLine2: 'Decisions, Not Just',
+    whatIsHighlight: 'Dashboards.',
+    whatIsPara2: 'Kangqore builds analytics ecosystems where every stakeholder has the right data at the right time — from executive KPI dashboards to operational reports and governed self-service insight layers across the enterprise.',
+    businessMetrics: [
+      { title: 'Reporting Speed',  desc: 'Reduction in reporting cycle time after self-service BI and automated dashboard deployment.',                        value: '75',  suffix: '%', metricLabel: 'Faster Reporting',        icon: 'Zap'       },
+      { title: 'User Empowerment', desc: 'Business users independently exploring data without engineering support after self-service analytics rollout.',    value: '5',   suffix: 'x', metricLabel: 'More Self-Service Users', icon: 'TrendingUp'},
+      { title: 'KPI Visibility',   desc: 'Real-time KPI dashboards deployed across business units with a governed, single source of truth data layer.',     value: '100', suffix: '%', metricLabel: 'KPI Coverage',            icon: 'Target'    },
+      { title: 'Decision Quality', desc: 'Improvement in decision quality scores after analytics platform deployment, measured via decision audit outcomes.', value: '41',  suffix: '%', metricLabel: 'Better Decisions',        icon: 'BarChart3' },
+    ],
   },
 
   'big-data': {
@@ -303,6 +353,16 @@ export const servicesData = {
     relatedServiceSlugs: ['analytics', 'data-science-ai'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+    whatIsTitle: 'Big Data Infrastructure',
+    whatIsTitleLine2: 'Built to Process What',
+    whatIsHighlight: 'Others Cannot.',
+    whatIsPara2: 'Kangqore architects scalable data lakehouses, streaming pipelines, and distributed processing platforms on AWS, Azure, and GCP — enabling enterprises to store, query, and act on petabyte-scale data with sub-second freshness.',
+    businessMetrics: [
+      { title: 'Query Performance',    desc: 'Average improvement in analytical query response time after data warehouse modernization and lake house migration.', value: '10',  suffix: 'x',    metricLabel: 'Faster Queries',   icon: 'Zap'     },
+      { title: 'Storage Cost',         desc: 'Reduction in data storage costs through lake house consolidation and tiered storage optimization.',               value: '55',  suffix: '%',    metricLabel: 'Storage Savings',  icon: 'Target'  },
+      { title: 'Data Freshness',       desc: 'Real-time streaming pipelines delivering sub-second data freshness for operational analytics workloads.',         value: '<1',  suffix: ' Sec', metricLabel: 'Data Latency',     icon: 'Activity'},
+      { title: 'Data Under Management',desc: 'Total data volume managed across client lake house architectures on AWS, Azure, and GCP.',                        value: '5',   suffix: 'PB+',  metricLabel: 'Petabyte Scale',   icon: 'Layers'  },
+    ],
   },
 
   'digital-process-automation': {
@@ -316,6 +376,16 @@ export const servicesData = {
     relatedServiceSlugs: ['robotic-process-automation', 'business-process-management', 'intelligent-automation'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=800&q=80',
+    whatIsTitle: 'Digital Process Automation',
+    whatIsTitleLine2: 'That Removes Work, Not',
+    whatIsHighlight: 'Just Speeds It Up.',
+    whatIsPara2: 'Kangqore digitizes and automates end-to-end business processes — from consulting and discovery through low-code deployment and cognitive augmentation — so each workflow step contributes measurable value with zero wasted motion.',
+    businessMetrics: [
+      { title: 'Cycle Time',      desc: 'Average reduction in process cycle time across digitized workflows after DPA implementation.',                     value: '60',  suffix: '%',    metricLabel: 'Cycle Time Reduction',  icon: 'Zap'      },
+      { title: 'Manual Touches',  desc: 'Fewer manual interventions per transaction after end-to-end workflow automation deployment.',                       value: '80',  suffix: '%',    metricLabel: 'Fewer Manual Steps',    icon: 'Target'   },
+      { title: 'Audit Coverage',  desc: 'Process transactions captured with full digital audit trail for compliance and regulatory reporting.',              value: '100', suffix: '%',    metricLabel: 'Audit Trail Coverage',  icon: 'Shield'   },
+      { title: 'Pilot Speed',     desc: 'Typical time from process discovery and consulting engagement to first production pilot deployment.',               value: '4–6', suffix: ' Wks', metricLabel: 'Pilot to Production',   icon: 'TrendingUp'},
+    ],
   },
 
   'robotic-process-automation': {
@@ -329,6 +399,16 @@ export const servicesData = {
     relatedServiceSlugs: ['digital-process-automation', 'intelligent-automation'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1563207153-f403bf289096?w=800&q=80',
+    whatIsTitle: 'RPA That Deploys Bots',
+    whatIsTitleLine2: 'That Operate Without',
+    whatIsHighlight: 'Supervision.',
+    whatIsPara2: 'Kangqore builds enterprise RPA programs from process assessment through Centre of Excellence establishment — deploying screen automation and cognitive bots that execute high-volume, rules-based workflows at 99.8% accuracy.',
+    businessMetrics: [
+      { title: 'Operational Cost', desc: 'Average cost reduction achieved across IT and business process automation programs delivered by Kangqore.', value: '40',   suffix: '%',    metricLabel: 'Cost Reduction',   icon: 'Target'    },
+      { title: 'Bot Accuracy',     desc: 'Execution accuracy across finance, HR, and insurance workflows — virtually eliminating manual processing errors.',  value: '99.8', suffix: '%',    metricLabel: 'Bot Accuracy',     icon: 'Shield'    },
+      { title: 'POC Delivery',     desc: 'Time from engagement kickoff to a working automation POC — output before you commit to full-scale deployment.',     value: '5–7',  suffix: ' Day', metricLabel: 'POC Speed',        icon: 'Zap'       },
+      { title: 'Scalability',      desc: 'Enterprise scale multiplier — bots replicated across functions without proportional cost increase.',                value: '10',   suffix: 'x',    metricLabel: 'Bot Scalability',  icon: 'TrendingUp'},
+    ],
   },
 
   'business-process-management': {
@@ -342,6 +422,16 @@ export const servicesData = {
     relatedServiceSlugs: ['digital-process-automation', 'intelligent-automation'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
+    whatIsTitle: 'Business Process Management',
+    whatIsTitleLine2: 'Designed to Scale Across',
+    whatIsHighlight: 'Every Function.',
+    whatIsPara2: 'Kangqore designs, implements, and manages end-to-end BPM programs covering sales operations, finance, supply chain, HR, and customer experience — delivering measurable cycle time reduction and operational savings at enterprise scale.',
+    businessMetrics: [
+      { title: 'Cycle Time',       desc: 'Average reduction in process cycle time after BPM implementation across back-office and operations functions.',   value: '40',  suffix: '%',    metricLabel: 'Cycle Time Reduction', icon: 'Zap'      },
+      { title: 'Opex Savings',     desc: 'Cost reduction from process optimization, efficiency gains, and automation across managed BPM programs.',         value: '30',  suffix: '%',    metricLabel: 'Cost Savings',         icon: 'Target'   },
+      { title: 'Assessment Speed', desc: 'Time from engagement kickoff to completed process assessment and optimization roadmap delivered.',                value: '2–4', suffix: ' Wks', metricLabel: 'Time to Roadmap',      icon: 'TrendingUp'},
+      { title: 'Function Coverage',desc: 'Operational coverage across sales, finance, supply chain, HR, marketing, and customer experience management.',   value: '360', suffix: '°',    metricLabel: 'Business Coverage',    icon: 'Layers'   },
+    ],
   },
 
   'intelligent-automation': {
@@ -355,6 +445,16 @@ export const servicesData = {
     relatedServiceSlugs: ['agentic-ai', 'robotic-process-automation', 'digital-process-automation'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
+    whatIsTitle: 'Intelligent Automation',
+    whatIsTitleLine2: 'That Thinks Before',
+    whatIsHighlight: 'It Executes.',
+    whatIsPara2: 'Kangqore combines AI decision engines with process automation to handle complexity that pure RPA cannot — automating judgment-intensive workflows, document processing, and multi-system orchestration with human-in-the-loop oversight.',
+    businessMetrics: [
+      { title: 'Process Cycle Time',  desc: 'Average reduction in end-to-end process cycle time following intelligent automation deployment.',                    value: '60',  suffix: '%',    metricLabel: 'Cycle Time Reduction', icon: 'Zap'      },
+      { title: 'Deployment Speed',    desc: 'Typical time from automation pilot kickoff to enterprise-grade production deployment.',                               value: '4–6', suffix: ' Wks', metricLabel: 'Pilot to Production',  icon: 'TrendingUp'},
+      { title: 'Bot Uptime SLA',      desc: 'Sustained automation workflow uptime across deployed intelligent automation programs under managed model.',            value: '99.5',suffix: '%',    metricLabel: 'Bot Uptime',           icon: 'Shield'   },
+      { title: 'Decision Velocity',   desc: 'Faster decision cycles enabled by AI-augmented automation removing manual bottlenecks from approval chains.',         value: '3',   suffix: 'x',    metricLabel: 'Faster Decisions',     icon: 'Target'   },
+    ],
   },
 
   // ═════════════════════════════════════════════════════════════════════════════
@@ -757,6 +857,16 @@ export const servicesData = {
     relatedServiceSlugs: ['ai-governance', 'operation-technology', 'finance-risk-management'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80',
+    whatIsTitle: 'IT Security That Detects',
+    whatIsTitleLine2: 'Threats Before They',
+    whatIsHighlight: 'Become Breaches.',
+    whatIsPara2: 'Kangqore delivers end-to-end IT security from initial assessment and threat detection through incident response and ongoing compliance management — building a security posture that is proactive, measurable, and audit-ready.',
+    businessMetrics: [
+      { title: 'Threat Detection',  desc: 'Improvement in threat detection rate through integrated SOC operations and AI-assisted monitoring systems.', value: '94',  suffix: '%', metricLabel: 'Detection Rate',      icon: 'Shield'   },
+      { title: 'Incident Response', desc: 'Reduction in mean time to respond to security incidents after SOC implementation and playbook automation.',  value: '67',  suffix: '%', metricLabel: 'Faster Response',     icon: 'Zap'      },
+      { title: 'Control Coverage',  desc: 'Security controls mapped and validated against ISO 27001, NIST CSF, SOC 2, and sector compliance frameworks.', value: '100', suffix: '%', metricLabel: 'Compliance Coverage', icon: 'Target'   },
+      { title: 'Repeat Incidents',  desc: 'Reduction in recurring incidents after root cause remediation and proactive security hardening programs.',   value: '58',  suffix: '%', metricLabel: 'Incident Reduction',  icon: 'Activity' },
+    ],
   },
 
   'finance-risk-management': {
@@ -783,6 +893,16 @@ export const servicesData = {
     relatedServiceSlugs: ['agentic-ai', 'genai-business-services', 'mlops'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1639322537504-6427a16b0a28?w=800&q=80',
+    whatIsTitle: 'AI Governance That Turns',
+    whatIsTitleLine2: 'Ethics Into',
+    whatIsHighlight: 'Operational Practice.',
+    whatIsPara2: 'Kangqore builds comprehensive AI governance frameworks covering bias detection, model explainability, compliance monitoring, and risk assessment — aligned to EU AI Act, NIST AI RMF, ISO/IEC 42001, and sector-specific regulatory requirements.',
+    businessMetrics: [
+      { title: 'Audit Coverage',       desc: 'Percentage of AI model deployments covered by governance frameworks with immutable audit trails.',                      value: '100', suffix: '%', metricLabel: 'Full Audit Coverage',  icon: 'Shield'   },
+      { title: 'Bias Reduction',       desc: 'Reduction in detected model bias across protected attributes after governance framework implementation.',              value: '73',  suffix: '%', metricLabel: 'Bias Reduction',       icon: 'Target'   },
+      { title: 'Risk Resolution',      desc: 'AI risk findings resolved per governance sprint cycle across enterprise AI portfolios under Kangqore management.',     value: '90',  suffix: '%', metricLabel: 'Risk Resolution Rate', icon: 'Zap'      },
+      { title: 'Frameworks Covered',   desc: 'Governance frameworks mapped to EU AI Act, NIST AI RMF, ISO/IEC 42001, and sector-specific compliance standards.',    value: '6',   suffix: '+', metricLabel: 'Standards Aligned',    icon: 'Layers'   },
+    ],
   },
 
   'quality-engineering-assurance': {

@@ -23,6 +23,7 @@ import { Route, Navigate } from 'react-router-dom';
 import DashboardRedirect from '../components/DashboardRedirect';
 
 const Login         = React.lazy(() => import('../pages/Login'));
+const DevAdminLogin = React.lazy(() => import('../pages/DevAdminLogin'));
 const AuthCallback  = React.lazy(() => import('../pages/AuthCallback'));
 const ForgotPassword = React.lazy(() => import('../pages/ForgotPassword'));
 const ResetPassword  = React.lazy(() => import('../pages/ResetPassword'));
@@ -35,6 +36,7 @@ export const authRoutes = [
 
   // ── Auth pages ────────────────────────────────────────────────────────────
   <Route key="auth-callback"   path="/auth/callback"     element={<AuthCallback />}   />,
+  <Route key="dev-admin-login" path="/dev-admin-login"   element={<DevAdminLogin />}   />,
   <Route key="login"           path="/login"              element={<Login />}           />,
   <Route key="register"        path="/register"           element={<Navigate to="/login" replace />} />,
   <Route key="signup"          path="/signup"             element={<Navigate to="/login" replace />} />,

@@ -46,12 +46,12 @@ export const departmentData = [
     ],
     services: [
       {
-        name: 'Agentic AI',
+        name: 'Agentic AI Services',
         slug: 'agentic-ai',
-        shortDescription: 'Build autonomous AI agents that can reason, plan, and execute complex tasks',
-        fullDescription: 'Deploy intelligent AI agents capable of autonomous decision-making, multi-step reasoning, and goal-oriented task execution for your business processes.',
+        shortDescription: 'Deploy production-grade AI agents that reason, plan, and execute complex multi-step workflows autonomously — with governance, audit trails, and human oversight built in.',
+        fullDescription: 'Deploy production-grade AI agents that reason, plan, and execute complex multi-step workflows autonomously — with governance, audit trails, and human oversight built in.',
         image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
-        keyFeatures: ['Autonomous decision-making', 'Multi-step reasoning', 'Goal-oriented execution', 'Self-improvement capabilities', 'Human-in-the-loop integration']
+        keyFeatures: ['Autonomous AI Agent Development', 'Multi-Agent Orchestration', 'Human-in-the-Loop Governance', 'RAG-Powered Enterprise Reasoning', 'Governed AI Deployment']
       },
       {
         name: 'AI & Cognitive Computing',

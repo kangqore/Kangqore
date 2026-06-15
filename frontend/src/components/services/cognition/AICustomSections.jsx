@@ -381,7 +381,7 @@ export const AIAcceleratorRoadmap = ({ title, phases }) => {
 // ═══════════════════════════════════════════════════════════════════════════════
 // 6. METRICS & IMPACT SECTION
 // ═══════════════════════════════════════════════════════════════════════════════
-export const AIMetricsSection = ({ metrics }) => {
+export const AIMetricsSection = ({ metrics, hideHeading = false }) => {
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -426,14 +426,16 @@ export const AIMetricsSection = ({ metrics }) => {
       <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(37,100,234,0.1),transparent_70%)] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="mb-20 text-center max-w-4xl mx-auto">
-          <h2 className="text-5xl lg:text-7xl font-bold text-white mb-6 font-display tracking-tight leading-[0.95]">
-            Measurable <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">Impact.</span>
-          </h2>
-          <p className="text-xl text-gray-400 font-light leading-relaxed">
-            Intelligence is only valuable when it scales efficiency, cuts costs, or accelerates revenue.
-          </p>
-        </div>
+        {!hideHeading && (
+          <div className="mb-20 text-center max-w-4xl mx-auto">
+            <h2 className="text-5xl lg:text-7xl font-bold text-white mb-6 font-display tracking-tight leading-[0.95]">
+              Measurable <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">Impact.</span>
+            </h2>
+            <p className="text-xl text-gray-400 font-light leading-relaxed">
+              Intelligence is only valuable when it scales efficiency, cuts costs, or accelerates revenue.
+            </p>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {metrics.map((kpi, idx) => (

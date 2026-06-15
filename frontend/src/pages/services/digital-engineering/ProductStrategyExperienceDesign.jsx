@@ -1043,44 +1043,6 @@ export default function ProductStrategyExperienceDesign() {
         </div>
       </section>
 
-      {/* ─────────────────── TOOLS & TECHNOLOGIES ─────────────────── */}
-      <section className="py-32 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div
-          ref={techRef}
-          className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${techVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-        >
-          <div className="mb-16">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE TOOLKIT</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white max-w-3xl">
-              Tools & Technologies for Strategic{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">Design.</span>
-            </h2>
-            <p className="text-white/40 text-base font-medium leading-relaxed mt-6 max-w-2xl">
-              We leverage industry-leading design, prototyping, and research tools to execute high-fidelity product strategy and seamless engineering handoffs.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {technologies.map((tech) => (
-              <div key={tech.category} className="p-6 border border-white/[0.07] bg-[#06090f] rounded-xl flex flex-col gap-4">
-                <div>
-                  <div className="w-5 h-0.5 rounded-full mb-4" style={{ backgroundColor: tech.color }} />
-                  <h3 className="text-white font-black text-base leading-snug">{tech.category}</h3>
-                </div>
-                <ul className="space-y-2.5">
-                  {tech.items.map(item => (
-                    <li key={item} className="flex items-start gap-3">
-                      <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: tech.color }} />
-                      <span className="text-white/50 text-sm font-medium leading-relaxed">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ─────────────────── FAQ ─────────────────── */}
       <section className="py-32 border-t border-white/[0.05] relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div

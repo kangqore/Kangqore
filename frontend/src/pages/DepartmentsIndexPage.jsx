@@ -304,11 +304,11 @@ const DepartmentsIndexPage = () => {
                   to={`/departments/${slug}`}
                   className={`group relative flex flex-col transition-all duration-500 hover:-translate-y-2 ${elevated ? 'lg:-translate-y-4' : ''}`}
                 >
-                  {/* Top brand gradient area */}
+                  {/* Top image area */}
                   <div
-                    className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 relative"
-                    style={{ background: BRAND_GRADIENT }}
+                    className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 relative bg-black"
                   >
+                    <img src={`/assets/frameworks/${['ai.png', 'cloud.png', 'strategy.png', 'cyber.png', 'data.png', 'ops.png'][i % 6]}`} alt={d.shortName} className="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-screen transition-transform duration-700 group-hover:scale-105" />
                     {/* Subtle icon watermark */}
                     {Icon && (
                       <div className="absolute inset-0 flex items-center justify-center opacity-10">

@@ -1,4 +1,4 @@
-# Stage 1: Build Frontend (CRA)
+# Stage 1: Build Frontend (Vite)
 FROM node:20-alpine AS frontend-builder
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
@@ -6,9 +6,7 @@ ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 RUN npm install --legacy-peer-deps --ignore-scripts
 COPY frontend ./
-ENV REACT_APP_BACKEND_URL=""
-# Call craco directly — bypasses postbuild (react-snap) which needs Chromium not available in Alpine
-RUN npx craco build
+RUN npm run build
 
 # Stage 2: Production Runner — tsx runs TypeScript directly, no compile step needed
 # node:20-slim (Debian) used here — Alpine lacks libssl.so.1.1 which Prisma requires
