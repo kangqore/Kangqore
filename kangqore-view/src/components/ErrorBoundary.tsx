@@ -32,7 +32,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center mb-4">
             <AlertTriangle className="w-6 h-6 text-red-500" />
           </div>
-          <p className="text-sm font-semibold text-slate-900 mb-1">Something went wrong</p>
+          <p className="text-sm font-semibold text-white mb-1">Something went wrong</p>
           <p className="text-xs text-slate-500 mb-4 max-w-xs">{this.state.message}</p>
           <button
             onClick={this.reset}

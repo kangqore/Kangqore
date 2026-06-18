@@ -93,7 +93,7 @@ export function AuditLogPage() {
       <KIMMPSignalBar module="Audit" />
 
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Audit Log</h2>
+        <h2 className="text-xl font-bold text-white">Audit Log</h2>
         <p className="text-sm text-slate-500 mt-0.5">
           {auditLogs.length} governance events — immutable record of all decisions, risks, changes, and deliverables
         </p>
@@ -112,13 +112,13 @@ export function AuditLogPage() {
           {actionGroups.map(g => (
             <button key={g.key} onClick={() => setGroupFilter(g.key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                groupFilter === g.key ? 'bg-[#2564ea] text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+                groupFilter === g.key ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}>
               {g.label}
             </button>
           ))}
         </div>
-        <span className="ml-auto text-sm text-slate-400">{visible.length} events</span>
+        <span className="ml-auto text-sm text-slate-500">{visible.length} events</span>
       </div>
 
       {/* Grouped timeline */}
@@ -126,17 +126,17 @@ export function AuditLogPage() {
         {Object.entries(grouped).map(([day, logs]) => (
           <div key={day}>
             <div className="flex items-center gap-3 mb-3">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">{day}</p>
-              <div className="flex-1 h-px bg-slate-100" />
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">{day}</p>
+              <div className="flex-1 h-px bg-os-s1" />
               <span className="text-xs text-slate-300 whitespace-nowrap">{logs.length} event{logs.length !== 1 ? 's' : ''}</span>
             </div>
             <Card padding="none">
-              <ul className="divide-y divide-slate-50">
+              <ul className="divide-y divide-[#2E2854]">
                 {logs.map(log => {
                   const meta = ACTION_META[log.action]
                   const group: ActionGroup = meta?.group ?? 'decision'
                   return (
-                    <li key={log.id} className="flex items-start gap-4 px-5 py-4 hover:bg-slate-50 transition-colors">
+                    <li key={log.id} className="flex items-start gap-4 px-5 py-4 hover:bg-slate-900 transition-colors">
                       {/* Action icon */}
                       <div className={cn('w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5', GROUP_COLOR[group])}>
                         {GROUP_ICON[group]}
@@ -156,9 +156,9 @@ export function AuditLogPage() {
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-sm font-medium text-slate-800 truncate">{log.resource}</p>
+                            <p className="text-sm font-medium text-slate-200 truncate">{log.resource}</p>
                           </div>
-                          <span className="text-[11px] text-slate-400 whitespace-nowrap flex-shrink-0">
+                          <span className="text-[11px] text-slate-500 whitespace-nowrap flex-shrink-0">
                             {fmtDateTime(log.createdAt)}
                           </span>
                         </div>
@@ -169,7 +169,7 @@ export function AuditLogPage() {
                             <Avatar name={log.user.name} size="xs" />
                             <span className="text-xs text-slate-500">{log.user.name}</span>
                             {log.user.company && (
-                              <span className="text-xs text-slate-400">· {log.user.company}</span>
+                              <span className="text-xs text-slate-500">· {log.user.company}</span>
                             )}
                           </div>
                         )}

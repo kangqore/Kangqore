@@ -105,9 +105,9 @@ function ProjectRadarCard({ project }: { project: Project }) {
         <div className="min-w-0">
           <div className="flex items-center gap-2 mb-0.5 flex-wrap">
             <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: project.pillarColor }} />
-            <h3 className="text-sm font-semibold text-slate-900 truncate">{project.name}</h3>
+            <h3 className="text-sm font-semibold text-white truncate">{project.name}</h3>
           </div>
-          <p className="text-xs text-slate-400 truncate">{project.client}</p>
+          <p className="text-xs text-slate-500 truncate">{project.client}</p>
         </div>
         <div className="flex flex-col items-end gap-1 flex-shrink-0">
           <span className="text-2xl font-bold" style={{ color }}>{overall}</span>
@@ -141,7 +141,7 @@ function ProjectRadarCard({ project }: { project: Project }) {
       <div className="grid grid-cols-3 gap-2">
         {(Object.keys(health) as (keyof HealthDimensions)[]).map(k => (
           <div key={k} className="text-center">
-            <div className="text-[11px] text-slate-400 mb-0.5 capitalize">{DIMENSION_LABELS[k]}</div>
+            <div className="text-[11px] text-slate-500 mb-0.5 capitalize">{DIMENSION_LABELS[k]}</div>
             <div
               className="text-xs font-bold"
               style={{ color: scoreColor(health[k]) }}
@@ -179,7 +179,7 @@ export function DeliveryHealthPage() {
       <KIMMPSignalBar module="Delivery" />
 
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Delivery Health</h2>
+        <h2 className="text-xl font-bold text-white">Delivery Health</h2>
         <p className="text-sm text-slate-500 mt-0.5">
           {activeProjects.length} active projects · 6-dimension health across schedule, budget, quality, team, client & tech
         </p>
@@ -197,13 +197,13 @@ export function DeliveryHealthPage() {
           label="At Risk"
           value={atRisk}
           icon={<AlertTriangle className="w-5 h-5" />}
-          iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'}
+          iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'}
         />
         <StatCard
           label="Critical"
           value={critical}
           icon={<TrendingDown className="w-5 h-5" />}
-          iconColor={critical > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-400'}
+          iconColor={critical > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-300'}
         />
         <StatCard
           label="Open Risks"
@@ -225,8 +225,8 @@ export function DeliveryHealthPage() {
                   className="w-2 h-2 rounded-full flex-shrink-0"
                   style={{ background: p.pillarColor }}
                 />
-                <span className="text-xs text-slate-600 w-40 truncate">{p.name}</span>
-                <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                <span className="text-xs text-slate-500 w-40 truncate">{p.name}</span>
+                <div className="flex-1 h-2 bg-os-s1 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{ width: `${score}%`, background: scoreColor(score) }}
@@ -246,8 +246,8 @@ export function DeliveryHealthPage() {
       {/* Radar grid */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <p className="text-sm font-semibold text-slate-700">Project deep-dive</p>
-          <p className="text-xs text-slate-400">Click dimensions for detail</p>
+          <p className="text-sm font-semibold text-slate-300">Project deep-dive</p>
+          <p className="text-xs text-slate-500">Click dimensions for detail</p>
         </div>
         <StaggerList className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           {displayed.map(p => <StaggerItem key={p.id}><ProjectRadarCard project={p} /></StaggerItem>)}
@@ -256,7 +256,7 @@ export function DeliveryHealthPage() {
           <button
             onClick={() => setShowAll(v => !v)}
             className={cn(
-              'mt-3 flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-800 transition-colors mx-auto',
+              'mt-3 flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-200 transition-colors mx-auto',
             )}
           >
             <ChevronDown className={cn('w-3.5 h-3.5 transition-transform', showAll && 'rotate-180')} />

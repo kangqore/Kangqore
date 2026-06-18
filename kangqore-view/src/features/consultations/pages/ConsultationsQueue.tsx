@@ -111,7 +111,7 @@ function ConsultationDrawer({
         {/* Status */}
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-slate-400 mb-1.5">Status</p>
+            <p className="text-xs font-semibold text-slate-500 mb-1.5">Status</p>
             <InlineSelect
               value={consultation.status}
               options={STATUS_OPTIONS}
@@ -121,8 +121,8 @@ function ConsultationDrawer({
             />
           </div>
           <div className="text-right">
-            <p className="text-xs text-slate-400">Received</p>
-            <p className="text-sm font-medium text-slate-700">{fmtDate(consultation.createdAt)}</p>
+            <p className="text-xs text-slate-500">Received</p>
+            <p className="text-sm font-medium text-slate-300">{fmtDate(consultation.createdAt)}</p>
           </div>
         </div>
 
@@ -130,22 +130,22 @@ function ConsultationDrawer({
 
         {/* Contact */}
         <div>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Contact</p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Contact</p>
           <div className="space-y-2">
             <div className="flex items-center gap-2.5">
-              <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+              <Mail className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
               <a href={`mailto:${consultation.email}`} className="text-sm text-blue-600 hover:underline">{consultation.email}</a>
             </div>
             {consultation.phone && (
               <div className="flex items-center gap-2.5">
-                <Phone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                <span className="text-sm text-slate-700">{consultation.phone}</span>
+                <Phone className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+                <span className="text-sm text-slate-300">{consultation.phone}</span>
               </div>
             )}
             {consultation.company && (
               <div className="flex items-center gap-2.5">
-                <Building2 className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                <span className="text-sm text-slate-700">{consultation.company}</span>
+                <Building2 className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+                <span className="text-sm text-slate-300">{consultation.company}</span>
               </div>
             )}
           </div>
@@ -155,18 +155,18 @@ function ConsultationDrawer({
 
         {/* Request */}
         <div>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Request</p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Request</p>
           <div className="space-y-2.5">
             {consultation.service && (
               <div>
-                <span className="text-xs text-slate-400">Service</span>
-                <p className="text-sm font-medium text-slate-800">{consultation.service}</p>
+                <span className="text-xs text-slate-500">Service</span>
+                <p className="text-sm font-medium text-slate-200">{consultation.service}</p>
               </div>
             )}
             {consultation.topic && (
               <div>
-                <span className="text-xs text-slate-400">Topic</span>
-                <p className="text-sm text-slate-700">{consultation.topic}</p>
+                <span className="text-xs text-slate-500">Topic</span>
+                <p className="text-sm text-slate-300">{consultation.topic}</p>
               </div>
             )}
             {consultation.services && consultation.services.length > 1 && (
@@ -178,18 +178,18 @@ function ConsultationDrawer({
             )}
             {consultation.preferredDate && (
               <div className="flex items-center gap-2">
-                <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                <Calendar className="w-3.5 h-3.5 text-slate-500" />
                 <span className="text-xs text-slate-500">Preferred date:</span>
-                <span className="text-xs font-medium text-slate-700">{fmtDate(consultation.preferredDate)}</span>
+                <span className="text-xs font-medium text-slate-300">{fmtDate(consultation.preferredDate)}</span>
               </div>
             )}
             {consultation.message && (
-              <div className="p-3 bg-slate-50 rounded-xl">
+              <div className="p-3 bg-slate-900 rounded-xl">
                 <div className="flex items-center gap-1.5 mb-1.5">
-                  <MessageSquare className="w-3 h-3 text-slate-400" />
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Message</span>
+                  <MessageSquare className="w-3 h-3 text-slate-500" />
+                  <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Message</span>
                 </div>
-                <p className="text-xs text-slate-600 leading-relaxed">{consultation.message}</p>
+                <p className="text-xs text-slate-500 leading-relaxed">{consultation.message}</p>
               </div>
             )}
           </div>
@@ -199,7 +199,7 @@ function ConsultationDrawer({
 
         {/* Scheduling */}
         <div>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Scheduling</p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Scheduling</p>
           <div className="space-y-3">
             <div>
               <label className="block text-xs font-semibold text-slate-500 mb-1.5">Scheduled date & time</label>
@@ -214,7 +214,7 @@ function ConsultationDrawer({
               <select
                 value={meetingMode}
                 onChange={e => setMeetingMode(e.target.value)}
-                className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
               >
                 <option value="">Select…</option>
                 <option value="VIDEO">Video call</option>
@@ -243,7 +243,7 @@ function ConsultationDrawer({
 
         {/* Notes */}
         <div>
-          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Internal notes</label>
+          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Internal notes</label>
           <Textarea
             value={notes}
             onChange={e => setNotes(e.target.value)}
@@ -253,8 +253,8 @@ function ConsultationDrawer({
         </div>
 
         {/* Source + timestamps */}
-        <div className="flex items-center gap-4 text-xs text-slate-400 pt-1">
-          <span>Source: <span className="capitalize text-slate-600">{consultation.source}</span></span>
+        <div className="flex items-center gap-4 text-xs text-slate-500 pt-1">
+          <span>Source: <span className="capitalize text-slate-500">{consultation.source}</span></span>
           {consultation.contactedAt && <span>Contacted: {fmtDate(consultation.contactedAt)}</span>}
         </div>
       </div>
@@ -310,7 +310,7 @@ export function ConsultationsQueue() {
       {/* Header */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Consultations</h2>
+          <h2 className="text-xl font-bold text-white">Consultations</h2>
           <p className="text-sm text-slate-500 mt-0.5">
             {stats.total} requests · {stats.pending} pending
             {overdueCount > 0 && (
@@ -324,8 +324,8 @@ export function ConsultationsQueue() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"       value={stats.total}       icon={<MessageSquare className="w-5 h-5" />} iconColor="bg-slate-100 text-slate-500"   />
-        <StatCard label="Pending"     value={stats.pending}     icon={<Clock         className="w-5 h-5" />} iconColor={stats.pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'}  />
+        <StatCard label="Total"       value={stats.total}       icon={<MessageSquare className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-300"   />
+        <StatCard label="Pending"     value={stats.pending}     icon={<Clock         className="w-5 h-5" />} iconColor={stats.pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'}  />
         <StatCard label="Contacted"   value={stats.contacted}   icon={<Phone         className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"      />
         <StatCard label="Scheduled"   value={stats.scheduled + stats.rescheduled} icon={<Calendar className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"    />
         <StatCard label="Completed"   value={stats.completed}   icon={<Mail          className="w-5 h-5" />} iconColor="bg-purple-100 text-purple-600"  />
@@ -347,54 +347,54 @@ export function ConsultationsQueue() {
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                 statusFilter === s
-                  ? 'bg-[#2564ea] text-white'
-                  : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+                  ? 'bg-os-blue text-white'
+                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}
             >
               {s === 'ALL' ? 'All' : s.charAt(0) + s.slice(1).toLowerCase()}
             </button>
           ))}
         </div>
-        <span className="ml-auto text-sm text-slate-400">{visible.length} requests</span>
+        <span className="ml-auto text-sm text-slate-500">{visible.length} requests</span>
       </div>
 
       {/* Table */}
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
+            <tr className="border-b border-os-border bg-slate-900">
               {['Name', 'Company', 'Service / Topic', 'Received', 'Preferred', 'Status', ''].map(h => (
-                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">{h}</th>
+                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
             </tr>
           </thead>
-          <StaggerTableBody className="divide-y divide-slate-50">
+          <StaggerTableBody className="divide-y divide-[#2E2854]">
             {visible.map(c => {
               const overdue = isOverdue(c)
               return (
                 <StaggerRow
                   key={c.id}
-                  className="hover:bg-slate-50 transition-colors cursor-pointer group"
+                  className="hover:bg-slate-900 transition-colors cursor-pointer group"
                   onClick={() => setOpenId(c.id)}
                 >
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
                         <span className="text-white text-[10px] font-bold">{c.name.charAt(0)}</span>
                       </div>
                       <div className="min-w-0">
-                        <p className="font-medium text-slate-900 truncate">{c.name}</p>
-                        <p className="text-[11px] text-slate-400 truncate">{c.email}</p>
+                        <p className="font-medium text-white truncate">{c.name}</p>
+                        <p className="text-[11px] text-slate-500 truncate">{c.email}</p>
                       </div>
                       {overdue && <AlertCircle className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />}
                     </div>
                   </td>
-                  <td className="px-4 py-3.5 text-slate-600 text-xs">{c.company ?? '—'}</td>
+                  <td className="px-4 py-3.5 text-slate-500 text-xs">{c.company ?? '—'}</td>
                   <td className="px-4 py-3.5 max-w-[200px]">
-                    <p className="text-xs font-medium text-slate-700 truncate">{c.service ?? '—'}</p>
-                    {c.topic && <p className="text-[11px] text-slate-400 truncate">{c.topic}</p>}
+                    <p className="text-xs font-medium text-slate-300 truncate">{c.service ?? '—'}</p>
+                    {c.topic && <p className="text-[11px] text-slate-500 truncate">{c.topic}</p>}
                   </td>
-                  <td className="px-4 py-3.5 text-xs text-slate-400 whitespace-nowrap">{timeAgo(c.createdAt)}</td>
+                  <td className="px-4 py-3.5 text-xs text-slate-500 whitespace-nowrap">{timeAgo(c.createdAt)}</td>
                   <td className="px-4 py-3.5 text-xs text-slate-500 whitespace-nowrap">{fmtDate(c.preferredDate)}</td>
                   <td className="px-4 py-3.5" onClick={e => e.stopPropagation()}>
                     <InlineSelect
@@ -406,7 +406,7 @@ export function ConsultationsQueue() {
                   </td>
                   <td className="px-4 py-3.5">
                     {c.scheduledAt && (
-                      <div className="flex items-center gap-1 text-[11px] text-slate-400 whitespace-nowrap">
+                      <div className="flex items-center gap-1 text-[11px] text-slate-500 whitespace-nowrap">
                         <Calendar className="w-3 h-3" />
                         {fmtTime(c.scheduledAt)}
                       </div>

@@ -5,7 +5,7 @@ import { Progress, MultiProgress } from '@design-system/components/Progress'
 import { useFinanceStore } from '../store'
 import type { BudgetCategory } from '../types'
 
-const fmt = (n: number) => `£${(n / 1000).toFixed(0)}k`
+const fmt = (n: number) => `₹${(n / 1000).toFixed(0)}k`
 
 const CATEGORIES: (BudgetCategory | 'all')[] = ['all', 'Personnel', 'Software', 'Infrastructure', 'Marketing', 'Travel', 'Legal', 'Other']
 
@@ -43,7 +43,7 @@ export function BudgetTracker() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Budget Tracker</h2>
+        <h2 className="text-xl font-bold text-white">Budget Tracker</h2>
         <p className="text-sm text-slate-500 mt-0.5">Full-year 2026 budget — spend vs allocation</p>
       </div>
 
@@ -81,7 +81,7 @@ export function BudgetTracker() {
           ].map(s => (
             <span key={s.label} className="flex items-center gap-1.5">
               <span className={`w-2.5 h-2.5 rounded-sm ${s.color}`} />
-              {s.label} <strong className="text-slate-700">{s.val}</strong>
+              {s.label} <strong className="text-slate-300">{s.val}</strong>
             </span>
           ))}
         </div>
@@ -93,12 +93,12 @@ export function BudgetTracker() {
             return (
               <div key={c.cat} className="flex items-center gap-3">
                 <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: CAT_COLOR[c.cat] }} />
-                <span className="text-xs text-slate-600 w-32">{c.cat}</span>
+                <span className="text-xs text-slate-500 w-32">{c.cat}</span>
                 <div className="flex-1">
                   <Progress value={pct} size="sm" color={pct > 85 ? 'danger' : pct > 70 ? 'warning' : 'success'} />
                 </div>
                 <span className="text-xs text-slate-500 w-20 text-right">{fmt(c.spent)} / {fmt(c.allocated)}</span>
-                <span className="text-xs font-bold w-10 text-right text-slate-700">{pct}%</span>
+                <span className="text-xs font-bold w-10 text-right text-slate-300">{pct}%</span>
               </div>
             )
           })}
@@ -112,7 +112,7 @@ export function BudgetTracker() {
             key={c}
             onClick={() => setCat(c)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              catFilter === c ? 'bg-blue-600 text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+              catFilter === c ? 'bg-blue-600 text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
             }`}
           >
             {c === 'all' ? 'All Categories' : c}
@@ -128,32 +128,32 @@ export function BudgetTracker() {
         </CardHeader>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
+            <tr className="border-b border-os-border bg-slate-900">
               {['Category', 'Department', 'Description', 'Allocated', 'Spent', 'Committed', 'Remaining', 'Status'].map(h => (
-                <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">{h}</th>
+                <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <tbody className="divide-y divide-[#2E2854]">
             {visible.map(b => {
               const remaining = b.allocated - b.spent - b.committed
               const pct       = Math.round((b.spent / b.allocated) * 100)
               const health    = pct > 90 ? 'danger' : pct > 75 ? 'warning' : 'success'
 
               return (
-                <tr key={b.id} className="hover:bg-slate-50 transition-colors">
+                <tr key={b.id} className="hover:bg-slate-900 transition-colors">
                   <td className="px-5 py-3.5">
                     <span className="flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full" style={{ background: CAT_COLOR[b.category] }} />
-                      <span className="text-xs font-semibold text-slate-600">{b.category}</span>
+                      <span className="text-xs font-semibold text-slate-500">{b.category}</span>
                     </span>
                   </td>
                   <td className="px-5 py-3.5 text-xs text-slate-500">{b.department}</td>
-                  <td className="px-5 py-3.5 text-sm text-slate-700 max-w-xs">
+                  <td className="px-5 py-3.5 text-sm text-slate-300 max-w-xs">
                     <span className="truncate block">{b.description}</span>
                   </td>
-                  <td className="px-5 py-3.5 font-semibold text-slate-800">{fmt(b.allocated)}</td>
-                  <td className="px-5 py-3.5 text-slate-600">{fmt(b.spent)}</td>
+                  <td className="px-5 py-3.5 font-semibold text-slate-200">{fmt(b.allocated)}</td>
+                  <td className="px-5 py-3.5 text-slate-500">{fmt(b.spent)}</td>
                   <td className="px-5 py-3.5 text-[#fdab3d] font-semibold">{fmt(b.committed)}</td>
                   <td className="px-5 py-3.5 font-bold" style={{ color: remaining < 0 ? '#e2445c' : '#00c875' }}>
                     {fmt(remaining)}
@@ -161,7 +161,7 @@ export function BudgetTracker() {
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2">
                       <Progress value={pct} size="sm" color={health} className="w-16" />
-                      <span className="text-xs font-bold text-slate-600">{pct}%</span>
+                      <span className="text-xs font-bold text-slate-500">{pct}%</span>
                     </div>
                   </td>
                 </tr>

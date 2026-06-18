@@ -65,16 +65,16 @@ function MeetingCard({ meeting }: { meeting: typeof MOCK_MEETINGS[0] }) {
     <Card className="hover:shadow-md transition-all duration-200">
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0 text-center w-14">
-          <div className="text-2xl font-bold text-[#2564ea] leading-none">
+          <div className="text-2xl font-bold text-os-blue leading-none">
             {new Date(meeting.startTime).getDate()}
           </div>
-          <div className="text-xs text-slate-400 uppercase tracking-wide">
+          <div className="text-xs text-slate-500 uppercase tracking-wide">
             {new Date(meeting.startTime).toLocaleDateString('en-GB', { month: 'short' })}
           </div>
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-1">
-            <h3 className="text-sm font-semibold text-slate-900">{meeting.title}</h3>
+            <h3 className="text-sm font-semibold text-white">{meeting.title}</h3>
             {isPast
               ? <Badge variant="neutral" size="sm">Completed</Badge>
               : <Badge variant="success" dot size="sm">Upcoming</Badge>
@@ -131,20 +131,20 @@ export function ClientMeetings() {
   return (
     <div className="space-y-8 max-w-3xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Meetings</h2>
+        <h2 className="text-xl font-bold text-white">Meetings</h2>
         <p className="text-sm text-slate-500 mt-0.5">{meetings.length} total · {upcoming.length} upcoming</p>
       </div>
 
       {/* Consultation requests */}
       {consultations.length > 0 && (
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Consultation requests</p>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Consultation requests</p>
           <div className="space-y-3">
             {consultations.map(c => (
               <Card key={c.id} className="border-blue-100 bg-blue-50/40">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="text-sm font-semibold text-slate-800">{c.name}</p>
+                    <p className="text-sm font-semibold text-slate-200">{c.name}</p>
                     <p className="text-xs text-slate-500 mt-0.5">{c.service}</p>
                     {c.scheduledAt && (
                       <p className="text-xs text-blue-600 font-medium mt-1 flex items-center gap-1">
@@ -170,9 +170,9 @@ export function ClientMeetings() {
 
       {/* Upcoming */}
       <div>
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Upcoming</p>
+        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Upcoming</p>
         {upcoming.length === 0
-          ? <p className="text-sm text-slate-400 py-6 text-center border border-dashed border-slate-200 rounded-xl">No upcoming meetings scheduled.</p>
+          ? <p className="text-sm text-slate-500 py-6 text-center border border-dashed border-os-border rounded-xl">No upcoming meetings scheduled.</p>
           : <div className="space-y-3">{upcoming.map(m => <MeetingCard key={m.id} meeting={m} />)}</div>
         }
       </div>
@@ -180,7 +180,7 @@ export function ClientMeetings() {
       {/* Past */}
       {past.length > 0 && (
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Past meetings</p>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Past meetings</p>
           <div className="space-y-3">{past.map(m => <MeetingCard key={m.id} meeting={m} />)}</div>
         </div>
       )}

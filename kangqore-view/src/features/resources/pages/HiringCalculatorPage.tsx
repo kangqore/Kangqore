@@ -11,7 +11,7 @@ import { useLeadsStore } from '@features/leads/store'
 
 // ─── constants ────────────────────────────────────────────────────────────────
 
-// Average hours per week per £10k of pipeline value (rough industry estimate)
+// Average hours per week per ₹10k of pipeline value (rough industry estimate)
 const HOURS_PER_10K_GBP = 8
 // Assumed win rate for forecasting
 const WIN_RATE_PCT = 0.35
@@ -53,7 +53,7 @@ const URGENCY_LABEL: Record<string, string> = {
   immediate: 'Hire now', q2: 'Q3 2026', q3: 'Q4 2026',
 }
 
-const fmt = (n: number) => `£${Math.round(n).toLocaleString()}`
+const fmt = (n: number) => `₹${Math.round(n).toLocaleString()}`
 
 // ─── capacity projection ──────────────────────────────────────────────────────
 
@@ -85,9 +85,9 @@ export function HiringCalculatorPage() {
   const avgUtil          = Math.round(usedHrs / totalCapacityHrs * 100)
 
   // Pipeline demand projection
-  const pipelineValue    = forecastValue()  // £
+  const pipelineValue    = forecastValue()  // ₹
   const expectedWins     = pipelineValue * WIN_RATE_PCT
-  const demandHrsPerWeek = Math.round((expectedWins / 1000 / 10) * HOURS_PER_10K_GBP)  // convert £ to hrs/wk
+  const demandHrsPerWeek = Math.round((expectedWins / 1000 / 10) * HOURS_PER_10K_GBP)  // convert ₹ to hrs/wk
   const capacityGap      = Math.max(0, demandHrsPerWeek - freeHrs)
   const hiresNeeded      = Math.ceil(capacityGap / 35) // assuming 35h billable/wk per hire
   const monthsToFill     = hiresNeeded > 0 ? 3 : 0   // average time to hire
@@ -112,7 +112,7 @@ export function HiringCalculatorPage() {
       <KIMMPSignalBar module="Hiring" />
 
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Hiring Calculator</h2>
+        <h2 className="text-xl font-bold text-white">Hiring Calculator</h2>
         <p className="text-sm text-slate-500 mt-0.5">
           Capacity vs pipeline demand — know when to hire before you lose the deal.
         </p>
@@ -130,24 +130,24 @@ export function HiringCalculatorPage() {
       <Card>
         <CardHeader><CardTitle>Pipeline demand translation</CardTitle></CardHeader>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
-          <div className="p-4 bg-slate-50 rounded-xl">
-            <p className="text-xs text-slate-400 mb-1 flex items-center gap-1.5"><TrendingUp className="w-3.5 h-3.5" />Forecast pipeline</p>
-            <p className="text-xl font-bold text-slate-800">{fmt(pipelineValue)}</p>
-            <p className="text-[11px] text-slate-400 mt-0.5">{WIN_RATE_PCT * 100}% assumed win rate</p>
+          <div className="p-4 bg-slate-900 rounded-xl">
+            <p className="text-xs text-slate-500 mb-1 flex items-center gap-1.5"><TrendingUp className="w-3.5 h-3.5" />Forecast pipeline</p>
+            <p className="text-xl font-bold text-slate-200">{fmt(pipelineValue)}</p>
+            <p className="text-[11px] text-slate-500 mt-0.5">{WIN_RATE_PCT * 100}% assumed win rate</p>
           </div>
-          <div className="p-4 bg-white border-l-4 border-l-[#0073ea] border-y border-r border-slate-200 rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="p-4 bg-os-s1 border-l-4 border-l-[#0073ea] border-y border-r border-os-border rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
             <p className="text-xs text-[#0073ea] font-semibold mb-1.5 flex items-center gap-1.5"><DollarSign className="w-3.5 h-3.5" />Expected wins</p>
-            <p className="text-xl font-bold text-slate-800">{fmt(expectedWins)}</p>
-            <p className="text-[11px] text-slate-400 mt-1">Across {leads.filter(l => !['won','lost'].includes(l.stage)).length} active leads</p>
+            <p className="text-xl font-bold text-slate-200">{fmt(expectedWins)}</p>
+            <p className="text-[11px] text-slate-500 mt-1">Across {leads.filter(l => !['won','lost'].includes(l.stage)).length} active leads</p>
           </div>
-          <div className={`p-4 rounded-xl border-y border-r border-slate-200 border-l-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] bg-white ${capacityGap > 0 ? 'border-l-[#e2445c]' : 'border-l-[#00c875]'}`}>
+          <div className={`p-4 rounded-xl border-y border-r border-os-border border-l-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] bg-os-s1 ${capacityGap > 0 ? 'border-l-[#e2445c]' : 'border-l-[#00c875]'}`}>
             <p className={`text-xs font-semibold mb-1.5 flex items-center gap-1.5 ${capacityGap > 0 ? 'text-[#e2445c]' : 'text-[#00c875]'}`}>
               <AlertTriangle className="w-3.5 h-3.5" />Demand vs capacity
             </p>
-            <p className="text-xl font-bold text-slate-800">
+            <p className="text-xl font-bold text-slate-200">
               {capacityGap > 0 ? `+${capacityGap}h` : 'Covered'} / wk
             </p>
-            <p className="text-[11px] text-slate-400 mt-1">
+            <p className="text-[11px] text-slate-500 mt-1">
               {capacityGap > 0 ? `${hiresNeeded} hire${hiresNeeded !== 1 ? 's' : ''} needed` : 'Current team can absorb pipeline'}
             </p>
           </div>
@@ -168,7 +168,7 @@ export function HiringCalculatorPage() {
             <Bar dataKey="demand"   fill="#2564ea" radius={[4,4,0,0]} name="Demand" opacity={0.7} />
           </BarChart>
         </ResponsiveContainer>
-        <p className="text-[11px] text-slate-400 mt-2">
+        <p className="text-[11px] text-slate-500 mt-2">
           Green = team capacity · Blue = projected demand from pipeline · Red line = maximum capacity ceiling
         </p>
       </Card>
@@ -179,7 +179,7 @@ export function HiringCalculatorPage() {
         <div className="space-y-3 mt-2">
           {deptStats.map(d => (
             <div key={d.dept} className="flex items-center gap-4">
-              <span className="text-xs text-slate-600 w-28 flex-shrink-0">{d.dept}</span>
+              <span className="text-xs text-slate-500 w-28 flex-shrink-0">{d.dept}</span>
               <div className="flex-1">
                 <Progress
                   value={d.avgUtil}
@@ -190,7 +190,7 @@ export function HiringCalculatorPage() {
               <span className={`text-xs font-bold w-10 text-right ${d.avgUtil >= 95 ? 'text-red-600' : d.avgUtil >= 80 ? 'text-amber-600' : 'text-green-600'}`}>
                 {d.avgUtil}%
               </span>
-              <span className="text-[11px] text-slate-400 w-14">{d.count} people</span>
+              <span className="text-[11px] text-slate-500 w-14">{d.count} people</span>
               {d.avgUtil >= 90 && <Badge variant="danger" size="sm">At limit</Badge>}
             </div>
           ))}
@@ -201,21 +201,21 @@ export function HiringCalculatorPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Briefcase className="w-4 h-4 text-slate-600" />
+            <Briefcase className="w-4 h-4 text-slate-500" />
             Recommended hires
           </CardTitle>
         </CardHeader>
         <div className="space-y-4 mt-2">
           {HIRE_RECOMMENDATIONS.map((rec, i) => (
             <div key={i}>
-              {i > 0 && <div className="h-px bg-slate-100 mb-4" />}
+              {i > 0 && <div className="h-px bg-os-s1 mb-4" />}
               <div className="flex items-start gap-4">
                 <div className="w-8 h-8 rounded-xl bg-[#0073ea] flex items-center justify-center flex-shrink-0 text-white font-extrabold text-sm shadow-[0_2px_6px_rgba(0,115,234,0.2)]">
                   {i + 1}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <p className="text-sm font-semibold text-slate-900">{rec.role}</p>
+                    <p className="text-sm font-semibold text-white">{rec.role}</p>
                     <Badge variant={URGENCY_V[rec.urgency]} size="sm">{URGENCY_LABEL[rec.urgency]}</Badge>
                   </div>
                   <p className="text-xs text-slate-500 mb-2">{rec.rationale}</p>
@@ -229,8 +229,8 @@ export function HiringCalculatorPage() {
         </div>
 
         {hiresNeeded > 0 && (
-          <div className="mt-4 p-3 bg-white border-l-4 border-l-[#fdab3d] border-y border-r border-slate-200 rounded-xl">
-            <p className="text-xs text-slate-700 font-medium">
+          <div className="mt-4 p-3 bg-os-s1 border-l-4 border-l-[#fdab3d] border-y border-r border-os-border rounded-xl">
+            <p className="text-xs text-slate-300 font-medium">
               At current pipeline conversion rate, start hiring now — average time-to-hire is {monthsToFill} months.
               Delaying risks capacity crunch in Q3.
             </p>

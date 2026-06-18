@@ -39,11 +39,11 @@ const STATUS_ICON: Record<DecisionStatus, React.ReactNode> = {
   APPROVED:         <CheckCircle2 className="w-4 h-4 text-green-500" />,
   REJECTED:         <XCircle     className="w-4 h-4 text-red-500"    />,
   DEFERRED:         <Pause       className="w-4 h-4 text-blue-400"   />,
-  WITHDRAWN:        <Minus       className="w-4 h-4 text-slate-400"  />,
+  WITHDRAWN:        <Minus       className="w-4 h-4 text-slate-500"  />,
 }
 
 const fmtDate  = (s?: string) => s ? new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'
-const fmtCost  = (n?: number) => n == null ? '—' : n < 0 ? `-£${Math.abs(n).toLocaleString()}` : `+£${n.toLocaleString()}`
+const fmtCost  = (n?: number) => n == null ? '—' : n < 0 ? `-₹${Math.abs(n).toLocaleString()}` : `+₹${n.toLocaleString()}`
 
 // ─── detail drawer ────────────────────────────────────────────────────────────
 
@@ -67,7 +67,7 @@ function DecisionDrawer({
         {/* Status + priority */}
         <div className="flex items-center gap-4 flex-wrap">
           <div>
-            <p className="text-xs font-semibold text-slate-400 mb-1.5">Status</p>
+            <p className="text-xs font-semibold text-slate-500 mb-1.5">Status</p>
             <InlineSelect
               value={decision.status}
               options={STATUS_OPTIONS}
@@ -76,13 +76,13 @@ function DecisionDrawer({
             />
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-400 mb-1.5">Priority</p>
+            <p className="text-xs font-semibold text-slate-500 mb-1.5">Priority</p>
             <Badge variant={PRIORITY_V[decision.priority]} size="md">{decision.priority}</Badge>
           </div>
           {decision.dueDate && (
             <div>
-              <p className="text-xs font-semibold text-slate-400 mb-1.5">Decision due</p>
-              <p className="text-sm font-medium text-slate-700">{fmtDate(decision.dueDate)}</p>
+              <p className="text-xs font-semibold text-slate-500 mb-1.5">Decision due</p>
+              <p className="text-sm font-medium text-slate-300">{fmtDate(decision.dueDate)}</p>
             </div>
           )}
         </div>
@@ -92,17 +92,17 @@ function DecisionDrawer({
         {/* Description */}
         {decision.description && (
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Background</p>
-            <p className="text-sm text-slate-700 leading-relaxed">{decision.description}</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Background</p>
+            <p className="text-sm text-slate-300 leading-relaxed">{decision.description}</p>
           </div>
         )}
 
         {/* Rationale */}
         {decision.rationale && (
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Rationale</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Rationale</p>
             <div className="p-3 bg-green-50 border border-green-100 rounded-xl">
-              <p className="text-sm text-slate-700 leading-relaxed">{decision.rationale}</p>
+              <p className="text-sm text-slate-300 leading-relaxed">{decision.rationale}</p>
             </div>
           </div>
         )}
@@ -110,9 +110,9 @@ function DecisionDrawer({
         {/* Tradeoffs */}
         {decision.tradeoffs && (
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Trade-offs</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Trade-offs</p>
             <div className="p-3 bg-amber-50 border border-amber-100 rounded-xl">
-              <p className="text-sm text-slate-700 leading-relaxed">{decision.tradeoffs}</p>
+              <p className="text-sm text-slate-300 leading-relaxed">{decision.tradeoffs}</p>
             </div>
           </div>
         )}
@@ -121,24 +121,24 @@ function DecisionDrawer({
 
         {/* Impact */}
         <div>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Impact</p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Impact</p>
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 bg-slate-50 rounded-xl text-center">
-              <TrendingDown className="w-4 h-4 text-slate-400 mx-auto mb-1" />
-              <p className="text-[11px] text-slate-400 mb-0.5">Time</p>
-              <p className="text-sm font-bold text-slate-700">{decision.impactTime ?? '—'}</p>
+            <div className="p-3 bg-slate-900 rounded-xl text-center">
+              <TrendingDown className="w-4 h-4 text-slate-500 mx-auto mb-1" />
+              <p className="text-[11px] text-slate-500 mb-0.5">Time</p>
+              <p className="text-sm font-bold text-slate-300">{decision.impactTime ?? '—'}</p>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl text-center">
-              <DollarSign className="w-4 h-4 text-slate-400 mx-auto mb-1" />
-              <p className="text-[11px] text-slate-400 mb-0.5">Cost</p>
+            <div className="p-3 bg-slate-900 rounded-xl text-center">
+              <DollarSign className="w-4 h-4 text-slate-500 mx-auto mb-1" />
+              <p className="text-[11px] text-slate-500 mb-0.5">Cost</p>
               <p className={`text-sm font-bold ${decision.impactCost != null && decision.impactCost < 0 ? 'text-green-600' : 'text-amber-600'}`}>
                 {fmtCost(decision.impactCost)}
               </p>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl text-center">
-              <TrendingUp className="w-4 h-4 text-slate-400 mx-auto mb-1" />
-              <p className="text-[11px] text-slate-400 mb-0.5">Risk</p>
-              <p className="text-sm font-bold text-slate-700">{decision.impactRisk ?? '—'}</p>
+            <div className="p-3 bg-slate-900 rounded-xl text-center">
+              <TrendingUp className="w-4 h-4 text-slate-500 mx-auto mb-1" />
+              <p className="text-[11px] text-slate-500 mb-0.5">Risk</p>
+              <p className="text-sm font-bold text-slate-300">{decision.impactRisk ?? '—'}</p>
             </div>
           </div>
         </div>
@@ -150,33 +150,33 @@ function DecisionDrawer({
             <div className="grid grid-cols-2 gap-3 text-xs">
               {decision.approver && (
                 <div>
-                  <p className="text-slate-400 mb-0.5">Approver</p>
-                  <p className="font-medium text-slate-700">{decision.approver.name}</p>
-                  {decision.approver.authorityRole && <p className="text-slate-400">{decision.approver.authorityRole}</p>}
+                  <p className="text-slate-500 mb-0.5">Approver</p>
+                  <p className="font-medium text-slate-300">{decision.approver.name}</p>
+                  {decision.approver.authorityRole && <p className="text-slate-500">{decision.approver.authorityRole}</p>}
                 </div>
               )}
               {decision.client && (
                 <div>
-                  <p className="text-slate-400 mb-0.5">Client</p>
-                  <p className="font-medium text-slate-700">{decision.client.name}</p>
+                  <p className="text-slate-500 mb-0.5">Client</p>
+                  <p className="font-medium text-slate-300">{decision.client.name}</p>
                 </div>
               )}
               {decision.risk && (
                 <div>
-                  <p className="text-slate-400 mb-0.5">Linked risk</p>
-                  <p className="font-medium text-slate-700">{decision.risk.title}</p>
+                  <p className="text-slate-500 mb-0.5">Linked risk</p>
+                  <p className="font-medium text-slate-300">{decision.risk.title}</p>
                 </div>
               )}
               {decision.changeRequest && (
                 <div>
-                  <p className="text-slate-400 mb-0.5">Linked CR</p>
-                  <p className="font-medium text-slate-700">{decision.changeRequest.title}</p>
+                  <p className="text-slate-500 mb-0.5">Linked CR</p>
+                  <p className="font-medium text-slate-300">{decision.changeRequest.title}</p>
                 </div>
               )}
             </div>
           </>
         )}
-        <div className="text-xs text-slate-400">Logged {fmtDate(decision.createdAt)}</div>
+        <div className="text-xs text-slate-500">Logged {fmtDate(decision.createdAt)}</div>
       </div>
     </EditDrawer>
   )
@@ -231,7 +231,7 @@ function AddDecisionDrawer({ onAdd, onClose }: { onAdd: (d: Partial<Decision>) =
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Priority</label>
             <select value={form.priority} onChange={e => set('priority', e.target.value as Priority)}
-              className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as Priority[]).map(p => <option key={p} value={p}>{p}</option>)}
             </select>
           </div>
@@ -240,7 +240,7 @@ function AddDecisionDrawer({ onAdd, onClose }: { onAdd: (d: Partial<Decision>) =
             <Input type="date" value={form.dueDate} onChange={e => set('dueDate', e.target.value)} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-500 mb-1.5">Cost impact (£)</label>
+            <label className="block text-xs font-semibold text-slate-500 mb-1.5">Cost impact (₹)</label>
             <Input type="number" value={form.impactCost} onChange={e => set('impactCost', e.target.value)} placeholder="e.g. -5000" />
           </div>
           <div>
@@ -307,7 +307,7 @@ export function DecisionLogPage() {
 
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Decision Log</h2>
+          <h2 className="text-xl font-bold text-white">Decision Log</h2>
           <p className="text-sm text-slate-500 mt-0.5">
             {decisions.length} decisions logged
             {pending > 0 && <span className="ml-2 text-amber-600 font-medium">· {pending} pending approval</span>}
@@ -320,10 +320,10 @@ export function DecisionLogPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"    value={decisions.length}     icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-slate-100 text-slate-500" />
-        <StatCard label="Pending"  value={pending}              icon={<Clock        className="w-5 h-5" />} iconColor={pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'} />
+        <StatCard label="Total"    value={decisions.length}     icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-300" />
+        <StatCard label="Pending"  value={pending}              icon={<Clock        className="w-5 h-5" />} iconColor={pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
         <StatCard label="Approved" value={byStatus('APPROVED')} icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
-        <StatCard label="Rejected" value={byStatus('REJECTED')} icon={<XCircle      className="w-5 h-5" />} iconColor={byStatus('REJECTED') > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-400'} />
+        <StatCard label="Rejected" value={byStatus('REJECTED')} icon={<XCircle      className="w-5 h-5" />} iconColor={byStatus('REJECTED') > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-300'} />
         <StatCard label="Deferred" value={byStatus('DEFERRED')} icon={<Pause        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
       </div>
 
@@ -335,32 +335,32 @@ export function DecisionLogPage() {
           {(['ALL','PENDING_APPROVAL','APPROVED','REJECTED','DEFERRED'] as const).map(s => (
             <button key={s} onClick={() => setFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                filter === s ? 'bg-[#2564ea] text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+                filter === s ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}>
               {s === 'ALL' ? 'All' : s === 'PENDING_APPROVAL' ? 'Pending' : s.charAt(0) + s.slice(1).toLowerCase()}
             </button>
           ))}
         </div>
-        <span className="ml-auto text-sm text-slate-400">{visible.length} decisions</span>
+        <span className="ml-auto text-sm text-slate-500">{visible.length} decisions</span>
       </div>
 
       {/* Table */}
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
+            <tr className="border-b border-os-border bg-slate-900">
               {['Decision', 'Project', 'Impact', 'Priority', 'Due', 'Status', 'Logged'].map(h => (
-                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">{h}</th>
+                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
             </tr>
           </thead>
-          <StaggerTableBody className="divide-y divide-slate-50">
+          <StaggerTableBody className="divide-y divide-[#2E2854]">
             {visible.map(d => (
-              <StaggerRow key={d.id} className="hover:bg-slate-50 transition-colors cursor-pointer group" onClick={() => setOpenId(d.id)}>
+              <StaggerRow key={d.id} className="hover:bg-slate-900 transition-colors cursor-pointer group" onClick={() => setOpenId(d.id)}>
                 <td className="px-4 py-3.5 max-w-[240px]">
                   <div className="flex items-start gap-2">
                     {STATUS_ICON[d.status]}
-                    <p className="text-xs font-medium text-slate-800 leading-snug line-clamp-2">{d.title}</p>
+                    <p className="text-xs font-medium text-slate-200 leading-snug line-clamp-2">{d.title}</p>
                   </div>
                 </td>
                 <td className="px-4 py-3.5 text-xs text-slate-500 whitespace-nowrap">{d.project?.title ?? '—'}</td>
@@ -370,16 +370,16 @@ export function DecisionLogPage() {
                       {fmtCost(d.impactCost)}
                     </span>
                   )}
-                  {d.impactTime && <span className="ml-2 text-slate-400">{d.impactTime}</span>}
+                  {d.impactTime && <span className="ml-2 text-slate-500">{d.impactTime}</span>}
                 </td>
                 <td className="px-4 py-3.5">
                   <Badge variant={PRIORITY_V[d.priority]} size="sm">{d.priority}</Badge>
                 </td>
-                <td className="px-4 py-3.5 text-xs text-slate-400 whitespace-nowrap">{fmtDate(d.dueDate)}</td>
+                <td className="px-4 py-3.5 text-xs text-slate-500 whitespace-nowrap">{fmtDate(d.dueDate)}</td>
                 <td className="px-4 py-3.5" onClick={e => e.stopPropagation()}>
                   <InlineSelect value={d.status} options={STATUS_OPTIONS} onChange={status => onPatch(d.id, { status })} dot />
                 </td>
-                <td className="px-4 py-3.5 text-xs text-slate-400 whitespace-nowrap">{fmtDate(d.createdAt)}</td>
+                <td className="px-4 py-3.5 text-xs text-slate-500 whitespace-nowrap">{fmtDate(d.createdAt)}</td>
               </StaggerRow>
             ))}
           </StaggerTableBody>

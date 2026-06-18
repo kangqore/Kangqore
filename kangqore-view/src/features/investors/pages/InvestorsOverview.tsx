@@ -31,9 +31,9 @@ export function InvestorsOverview() {
     <div className="space-y-8">
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Total Raised"      value={`£${(totalRaised / 1000).toFixed(1)}M`}                         icon={<DollarSign className="w-5 h-5" />} changeLabel="Seed closed" />
+        <StatCard label="Total Raised"      value={`₹${(totalRaised / 1000).toFixed(1)}M`}                         icon={<DollarSign className="w-5 h-5" />} changeLabel="Seed closed" />
         <StatCard label="Committed"         value={committed.length}                                                 icon={<UserCheck  className="w-5 h-5" />} changeLabel={`${engaged.length} engaged`} />
-        <StatCard label="Active Round"      value={activeRound ? `£${(activeRound.targetAmount / 1000).toFixed(1)}M` : '—'} icon={<Target className="w-5 h-5" />} changeLabel={activeRound?.name ?? 'None open'} />
+        <StatCard label="Active Round"      value={activeRound ? `₹${(activeRound.targetAmount / 1000).toFixed(1)}M` : '—'} icon={<Target className="w-5 h-5" />} changeLabel={activeRound?.name ?? 'None open'} />
         <StatCard label="Investor Pipeline" value={investors.filter(i => i.status !== 'passed').length}              icon={<Users     className="w-5 h-5" />} changeLabel={`${prospects.length} prospects`} />
       </div>
 
@@ -51,23 +51,23 @@ export function InvestorsOverview() {
             <CardBody className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-1.5">
-                  <span className="text-slate-600">Raised</span>
-                  <span className="font-semibold text-slate-900">
-                    £{(activeRound.raisedAmount / 1000).toFixed(1)}M / £{(activeRound.targetAmount / 1000).toFixed(1)}M
+                  <span className="text-slate-500">Raised</span>
+                  <span className="font-semibold text-white">
+                    ₹{(activeRound.raisedAmount / 1000).toFixed(1)}M / ₹{(activeRound.targetAmount / 1000).toFixed(1)}M
                   </span>
                 </div>
                 <Progress value={seriesAProgress} color="brand" size="md" showValue />
               </div>
-              <div className="text-sm text-slate-600">
-                Post-money valuation: <span className="font-semibold text-slate-900">£{(activeRound.valuation / 1000).toFixed(1)}M</span>
+              <div className="text-sm text-slate-500">
+                Post-money valuation: <span className="font-semibold text-white">₹{(activeRound.valuation / 1000).toFixed(1)}M</span>
               </div>
               <div className="space-y-1.5">
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Use of Funds</p>
                 {activeRound.useOfFunds.map(uf => (
                   <div key={uf.category} className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
-                    <span className="text-sm text-slate-700 flex-1">{uf.category}</span>
-                    <span className="text-sm font-medium text-slate-900">{uf.percentage}%</span>
+                    <span className="text-sm text-slate-300 flex-1">{uf.category}</span>
+                    <span className="text-sm font-medium text-white">{uf.percentage}%</span>
                   </div>
                 ))}
               </div>
@@ -81,13 +81,13 @@ export function InvestorsOverview() {
             <CardTitle>All Investors & Pipeline</CardTitle>
           </CardHeader>
           <CardBody className="p-0">
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-[#2E2854]">
               {investors.map(inv => (
-                <div key={inv.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors">
+                <div key={inv.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-900 transition-colors">
                   <Avatar name={inv.name} size="sm" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-semibold text-slate-900 truncate">{inv.name}</p>
+                      <p className="text-sm font-semibold text-white truncate">{inv.name}</p>
                       {inv.leadInvestor && (
                         <Badge variant="brand" size="sm">Lead</Badge>
                       )}
@@ -96,12 +96,12 @@ export function InvestorsOverview() {
                   </div>
                   <div className="text-right hidden sm:block">
                     {inv.committed > 0 ? (
-                      <p className="text-sm font-semibold text-slate-900">£{inv.committed}k</p>
+                      <p className="text-sm font-semibold text-white">₹{inv.committed}k</p>
                     ) : (
-                      <p className="text-sm text-slate-400">—</p>
+                      <p className="text-sm text-slate-500">—</p>
                     )}
                     <p className="text-xs text-slate-500">
-                      £{inv.checkSize.min}k–{inv.checkSize.max > 999
+                      ₹{inv.checkSize.min}k–{inv.checkSize.max > 999
                         ? `${(inv.checkSize.max / 1000).toFixed(0)}M`
                         : `${inv.checkSize.max}k`} range
                     </p>
@@ -122,21 +122,21 @@ export function InvestorsOverview() {
           <CardTitle>Recent Touchpoints</CardTitle>
         </CardHeader>
         <CardBody className="p-0">
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-[#2E2854]">
             {investors
               .filter(i => i.status !== 'passed')
               .sort((a, b) => b.lastContact.localeCompare(a.lastContact))
               .slice(0, 6)
               .map(inv => (
                 <div key={inv.id} className="flex items-center gap-4 px-5 py-3.5">
-                  <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
                     {inv.status === 'committed'
                       ? <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      : <Clock className="w-4 h-4 text-slate-400" />
+                      : <Clock className="w-4 h-4 text-slate-500" />
                     }
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-900">{inv.name} — {inv.firm}</p>
+                    <p className="text-sm font-medium text-white">{inv.name} — {inv.firm}</p>
                     <p className="text-xs text-slate-500 truncate line-clamp-1">{inv.notes}</p>
                   </div>
                   <div className="text-right flex-shrink-0">

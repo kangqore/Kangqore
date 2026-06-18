@@ -76,12 +76,12 @@ function AvatarGroup({ users, max = 4, size = 'sm' }: AvatarGroupProps) {
   return (
     <div className="flex -space-x-2">
       {shown.map((u, i) => (
-        <div key={i} className="ring-2 ring-white rounded-full">
+        <div key={i} className="ring-2 ring-[#151C2F] rounded-full">
           <Avatar name={u.name} src={u.src} size={size} />
         </div>
       ))}
       {rest > 0 && (
-        <div className={cn('ring-2 ring-white rounded-full flex items-center justify-center bg-slate-200 text-slate-600 font-semibold', sizeMap[size])}>
+        <div className={cn('ring-2 ring-[#151C2F] rounded-full flex items-center justify-center bg-slate-200 text-slate-500 font-semibold', sizeMap[size])}>
           <span className="text-[10px]">+{rest}</span>
         </div>
       )}

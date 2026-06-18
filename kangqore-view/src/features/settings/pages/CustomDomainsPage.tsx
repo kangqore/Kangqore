@@ -52,7 +52,7 @@ export function CustomDomainsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">Custom Domains</h2>
+          <h2 className="text-lg font-bold text-white">Custom Domains</h2>
           <p className="text-sm text-slate-500 mt-1">
             Use your own domain for booking pages and client-facing URLs.
           </p>
@@ -67,19 +67,19 @@ export function CustomDomainsPage() {
         <Card>
           <CardBody className="p-5 space-y-4">
             <div>
-              <label className="text-xs font-semibold text-slate-700 mb-1.5 block">Domain</label>
+              <label className="text-xs font-semibold text-slate-300 mb-1.5 block">Domain</label>
               <input
                 type="text"
                 value={newDomain}
                 onChange={e => setNewDomain(e.target.value)}
                 placeholder="book.yourcompany.com"
-                className="w-full h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
               />
             </div>
-            <div className="bg-slate-50 rounded-xl p-4 text-xs text-slate-600 space-y-1.5">
-              <p className="font-semibold text-slate-800">DNS Setup Required</p>
+            <div className="bg-slate-900 rounded-xl p-4 text-xs text-slate-300 space-y-1.5">
+              <p className="font-semibold text-slate-200">DNS Setup Required</p>
               <p>Add a CNAME record pointing to <code className="font-mono bg-slate-200 px-1 rounded">app.kangqore.com</code></p>
-              <p className="text-slate-400">Verification may take up to 24 hours after DNS propagation.</p>
+              <p className="text-slate-500">Verification may take up to 24 hours after DNS propagation.</p>
             </div>
             <div className="flex gap-2">
               <Button size="sm" onClick={() => addDomain()} disabled={!newDomain.includes('.') || adding_} loading={adding_}>
@@ -97,8 +97,8 @@ export function CustomDomainsPage() {
         <Card>
           <CardBody className="text-center py-10">
             <Globe className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-            <p className="text-sm font-medium text-slate-700">No custom domains</p>
-            <p className="text-xs text-slate-400 mt-1">Add a domain to brand your booking and portal URLs.</p>
+            <p className="text-sm font-medium text-slate-300">No custom domains</p>
+            <p className="text-xs text-slate-500 mt-1">Add a domain to brand your booking and portal URLs.</p>
           </CardBody>
         </Card>
       )}
@@ -107,14 +107,14 @@ export function CustomDomainsPage() {
         <Card>
           <CardHeader><CardTitle>Domains</CardTitle></CardHeader>
           <CardBody className="p-0">
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-[#2E2854]">
               {domains.map(d => {
                 const cfg = STATUS_CONFIG[d.status] ?? STATUS_CONFIG.PENDING
                 return (
-                  <div key={d.id} className="flex items-center gap-4 px-5 py-4 hover:bg-slate-50 transition-colors">
+                  <div key={d.id} className="flex items-center gap-4 px-5 py-4 hover:bg-slate-900 transition-colors">
                     <cfg.Icon className={`w-4 h-4 flex-shrink-0 ${cfg.color}`} />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-slate-900 font-mono">{d.domain}</p>
+                      <p className="text-sm font-semibold text-white font-mono">{d.domain}</p>
                       <p className="text-xs text-slate-500 mt-0.5">
                         Added {new Date(d.createdAt).toLocaleDateString()}
                         {d.verifiedAt && ` · Verified ${new Date(d.verifiedAt).toLocaleDateString()}`}

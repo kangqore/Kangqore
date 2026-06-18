@@ -1,25 +1,31 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 import { OSLayout }       from '@components/shell/OSLayout'
 import { ProtectedRoute } from '@components/auth/ProtectedRoute'
 import { Spinner }        from '@design-system/components/Spinner'
+import { useAuthStore }   from '@store/auth'
+import { useKIMMPStore, toInsight } from '@store/kimmp'
+import { connectSocket, disconnectSocket } from '@lib/socket'
+import { api, isDemo } from '@lib/api'
 
-// Public pages — loaded eagerly (small, always needed)
+// Public pages
 import { LoginPage }        from '@pages/auth/LoginPage'
 import { SignupPage }       from '@pages/auth/SignupPage'
 import { UnauthorizedPage } from '@pages/UnauthorizedPage'
 
-// OS modules — lazy loaded per route (each becomes its own chunk)
+// OS modules — lazy loaded per route
+const DashboardHome     = lazy(() => import('@features/overview/DashboardHome').then(m => ({ default: m.DashboardHome })))
+const AdminOverview     = lazy(() => import('@features/overview/AdminOverview').then(m => ({ default: m.AdminOverview })))
 const StrategyModule    = lazy(() => import('@features/strategy').then(m => ({ default: m.StrategyModule })))
 const ProjectsModule    = lazy(() => import('@features/projects').then(m => ({ default: m.ProjectsModule })))
 const ResourcesModule   = lazy(() => import('@features/resources').then(m => ({ default: m.ResourcesModule })))
 const FinanceModule     = lazy(() => import('@features/finance').then(m => ({ default: m.FinanceModule })))
 const ConsultationsModule = lazy(() => import('@features/consultations').then(m => ({ default: m.ConsultationsModule })))
-const DeliveryModule      = lazy(() => import('@features/delivery').then(m => ({ default: m.DeliveryModule })))
-const GovernanceModule    = lazy(() => import('@features/governance').then(m => ({ default: m.GovernanceModule })))
-const CommsModule         = lazy(() => import('@features/comms').then(m => ({ default: m.CommsModule })))
+const DeliveryModule    = lazy(() => import('@features/delivery').then(m => ({ default: m.DeliveryModule })))
+const GovernanceModule  = lazy(() => import('@features/governance').then(m => ({ default: m.GovernanceModule })))
+const CommsModule       = lazy(() => import('@features/comms').then(m => ({ default: m.CommsModule })))
 const ClientsModule     = lazy(() => import('@features/clients').then(m => ({ default: m.ClientsModule })))
 const PartnersModule    = lazy(() => import('@features/partners').then(m => ({ default: m.PartnersModule })))
 const LeadsModule       = lazy(() => import('@features/leads').then(m => ({ default: m.LeadsModule })))
@@ -29,14 +35,19 @@ const WorkflowsModule   = lazy(() => import('@features/workflows').then(m => ({ 
 const MarketingModule   = lazy(() => import('@features/marketing').then(m => ({ default: m.MarketingModule })))
 const CareersModule     = lazy(() => import('@features/careers').then(m => ({ default: m.CareersModule })))
 const AnalyticsModule   = lazy(() => import('@features/analytics').then(m => ({ default: m.AnalyticsModule })))
-const KIMMMModule       = lazy(() => import('@features/kimmp').then(m => ({ default: m.KIMMMModule })))
+const KIMMMModule       = lazy(() => import('@features/kangqore-immp').then(m => ({ default: m.KIMMMModule })))
+const AgentLogsModule   = lazy(() => import('@features/agent-logs').then(m => ({ default: m.AgentLogsModule })))
+const SystemsModule     = lazy(() => import('@features/systems').then(m => ({ default: m.SystemsModule })))
+const SchedulingModule  = lazy(() => import('@features/scheduling').then(m => ({ default: m.SchedulingModule })))
 const SettingsModule    = lazy(() => import('@features/settings').then(m => ({ default: m.SettingsModule })))
 
-// Portals — lazy loaded (never needed by OS users)
+// Portals
 const ClientPortal   = lazy(() => import('@portals/client').then(m => ({ default: m.ClientPortal })))
 const PartnerPortal  = lazy(() => import('@portals/partner').then(m => ({ default: m.PartnerPortal })))
 const InvestorPortal = lazy(() => import('@portals/investor').then(m => ({ default: m.InvestorPortal })))
 const CareersPortal  = lazy(() => import('@portals/careers').then(m => ({ default: m.CareersPortal })))
+const JournalistPortal = lazy(() => import('@portals/journalist').then(m => ({ default: m.JournalistPortal })))
+const AnalystPortal  = lazy(() => import('@portals/analyst').then(m => ({ default: m.AnalystPortal })))
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,25 +57,16 @@ const queryClient = new QueryClient({
 
 function PageLoader() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f8f9fb]">
+    <div className="min-h-screen flex items-center justify-center bg-os-bg">
       <Spinner size="lg" />
     </div>
   )
 }
 
-import { useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { useAuthStore } from '@store/auth'
-import { useKIMMPStore, toInsight } from '@store/kimmp'
-import { connectSocket, disconnectSocket } from '@lib/socket'
-import { api, isDemo } from '@lib/api'
-
-// Inner component — lives inside QueryClientProvider so useQuery is valid here
 function AppInner() {
   const { isAuthenticated } = useAuthStore()
   const setInsights = useKIMMPStore(s => s.setInsights)
 
-  // Global KIMMP signal fetch — runs once on login, feeds the whole OS
   const { data: kimmpData } = useQuery({
     queryKey: ['kimmp-global'],
     queryFn: () => api.get('/dashboard/insights', { params: { limit: 50 } })
@@ -87,95 +89,77 @@ function AppInner() {
   }, [isAuthenticated])
 
   return (
-      <BrowserRouter>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            {/* Public */}
-            <Route path="/login"  element={<LoginPage />}  />
-            <Route path="/signup" element={<SignupPage />} />
+    <BrowserRouter>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          {/* Public */}
+          <Route path="/login"  element={<LoginPage />}  />
+          <Route path="/signup" element={<SignupPage />} />
 
-            {/* Internal OS — ADMIN only */}
-            <Route
-              path="/kangqore-view"
-              element={
-                <ProtectedRoute allowedRoles={['ADMIN']}>
-                  <OSLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate to="/kangqore-view/kimmp" replace />} />
+          {/* Internal OS — ADMIN only */}
+          <Route
+            path="/kangqore-view/admin"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <OSLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Navigate to="/kangqore-view/admin/home" replace />} />
 
-              {/* Phase 1 — Core Operations */}
-              <Route path="strategy/*"    element={<StrategyModule />}    />
-              <Route path="projects/*"    element={<ProjectsModule />}    />
-              <Route path="resources/*"   element={<ResourcesModule />}   />
-              <Route path="finance/*"     element={<FinanceModule />}     />
+            <Route path="home"             element={<DashboardHome />}       />
+            <Route path="WAANDA"           element={<AdminOverview />}        />
+            <Route path="strategy/*"       element={<StrategyModule />}      />
+            <Route path="projects/*"       element={<ProjectsModule />}      />
+            <Route path="resources/*"      element={<ResourcesModule />}     />
+            <Route path="finance/*"        element={<FinanceModule />}       />
+            <Route path="consultations/*"  element={<ConsultationsModule />} />
+            <Route path="delivery/*"       element={<DeliveryModule />}      />
+            <Route path="governance/*"     element={<GovernanceModule />}    />
+            <Route path="comms/*"          element={<CommsModule />}         />
+            <Route path="clients/*"        element={<ClientsModule />}       />
+            <Route path="partners/*"       element={<PartnersModule />}      />
+            <Route path="leads/*"          element={<LeadsModule />}         />
+            <Route path="investors/*"      element={<InvestorsModule />}     />
+            <Route path="departments/*"    element={<DepartmentsModule />}   />
+            <Route path="workflows/*"      element={<WorkflowsModule />}     />
+            <Route path="marketing/*"      element={<MarketingModule />}     />
+            <Route path="careers/*"        element={<CareersModule />}       />
+            <Route path="analytics/*"      element={<AnalyticsModule />}     />
+            <Route path="kangqore-immp/*"  element={<KIMMMModule />}         />
+            <Route path="agent-logs"       element={<AgentLogsModule />}     />
+            <Route path="systems/*"        element={<SystemsModule />}       />
+            <Route path="scheduling/*"     element={<SchedulingModule />}    />
+            <Route path="settings/*"       element={<SettingsModule />}      />
+          </Route>
 
-              {/* Phase 2 — CRM */}
-              <Route path="consultations/*" element={<ConsultationsModule />} />
-              <Route path="delivery/*"      element={<DeliveryModule />}      />
-              <Route path="governance/*"    element={<GovernanceModule />}    />
-              <Route path="comms/*"         element={<CommsModule />}         />
-              <Route path="clients/*"       element={<ClientsModule />}       />
-              <Route path="partners/*"    element={<PartnersModule />}    />
-              <Route path="leads/*"       element={<LeadsModule />}       />
-              <Route path="investors/*"   element={<InvestorsModule />}   />
+          {/* Portals */}
+          <Route path="/kangqore-view/client/*"
+            element={<ProtectedRoute allowedRoles={['CLIENT', 'ADMIN']}><ClientPortal /></ProtectedRoute>}
+          />
+          <Route path="/kangqore-view/partner/*"
+            element={<ProtectedRoute allowedRoles={['PARTNER', 'ADMIN']}><PartnerPortal /></ProtectedRoute>}
+          />
+          <Route path="/kangqore-view/investor/*"
+            element={<ProtectedRoute allowedRoles={['INVESTOR', 'ADMIN']}><InvestorPortal /></ProtectedRoute>}
+          />
+          <Route path="/kangqore-view/careers/*"
+            element={<ProtectedRoute allowedRoles={['JOB_SEEKER', 'ADMIN']}><CareersPortal /></ProtectedRoute>}
+          />
+          <Route path="/kangqore-view/journalist/*"
+            element={<ProtectedRoute allowedRoles={['JOURNALIST', 'ADMIN']}><JournalistPortal /></ProtectedRoute>}
+          />
+          <Route path="/kangqore-view/analyst/*"
+            element={<ProtectedRoute allowedRoles={['ANALYST', 'ADMIN']}><AnalystPortal /></ProtectedRoute>}
+          />
 
-              {/* Phase 3 — Operations */}
-              <Route path="departments/*" element={<DepartmentsModule />} />
-              <Route path="workflows/*"   element={<WorkflowsModule />}   />
-              <Route path="marketing/*"   element={<MarketingModule />}   />
-              <Route path="careers/*"     element={<CareersModule />}     />
-
-              {/* Phase 4 — Intelligence */}
-              <Route path="analytics/*"   element={<AnalyticsModule />}   />
-              <Route path="kimmp/*"       element={<KIMMMModule />}       />
-
-              {/* Settings */}
-              <Route path="settings/*"    element={<SettingsModule />}    />
-            </Route>
-
-            {/* Phase 5 — External Portals */}
-            <Route
-              path="/portal/client/*"
-              element={
-                <ProtectedRoute allowedRoles={['CLIENT', 'ADMIN']}>
-                  <ClientPortal />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/portal/partner/*"
-              element={
-                <ProtectedRoute allowedRoles={['PARTNER', 'ADMIN']}>
-                  <PartnerPortal />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/portal/investor/*"
-              element={
-                <ProtectedRoute allowedRoles={['INVESTOR', 'ADMIN']}>
-                  <InvestorPortal />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/portal/careers/*"
-              element={
-                <ProtectedRoute allowedRoles={['JOB_SEEKER', 'ADMIN']}>
-                  <CareersPortal />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route path="/unauthorized" element={<UnauthorizedPage />} />
-            <Route path="/"  element={<Navigate to="/login" replace />} />
-            <Route path="*"  element={<Navigate to="/login" replace />} />
-          </Routes>
-        </Suspense>
-        <Toaster position="top-right" />
-      </BrowserRouter>
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
+          <Route path="/"  element={<Navigate to="/login" replace />} />
+          <Route path="*"  element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Suspense>
+      <Toaster position="top-right" />
+    </BrowserRouter>
   )
 }
 

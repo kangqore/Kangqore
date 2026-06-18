@@ -10,7 +10,7 @@ const sizeMap = {
 const colorMap = {
   brand:   'border-[#4ab6d4]/30 border-t-[#2564ea]',
   white:   'border-white/30 border-t-white',
-  slate:   'border-slate-200 border-t-slate-500',
+  slate:   'border-[#2E2854] border-t-slate-500',
   success: 'border-green-200 border-t-green-600',
   danger:  'border-red-200 border-t-red-600',
 }
@@ -33,7 +33,7 @@ function Spinner({ size = 'md', color = 'brand', className }: SpinnerProps) {
 
 function FullPageSpinner() {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white/60 backdrop-blur-sm z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-[#151C2F]/60 backdrop-blur-sm z-50">
       <Spinner size="lg" />
     </div>
   )

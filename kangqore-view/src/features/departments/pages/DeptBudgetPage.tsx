@@ -16,14 +16,14 @@ export function DeptBudgetPage() {
       {/* Totals */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Total Annual Budget', value: `£${(totalBudget() / 1000).toFixed(2)}M`, sub: 'All departments' },
-          { label: 'YTD Spend (H1)',       value: `£${totalSpent()}k`,                       sub: `${overallPct}% of H1 allocation` },
-          { label: 'Remaining H1',         value: `£${Math.round(totalBudget() * 0.5) - totalSpent()}k`, sub: 'Available H1 budget' },
-          { label: 'H2 Budget',            value: `£${Math.round(totalBudget() * 0.5)}k`,    sub: 'Allocated, not started' },
+          { label: 'Total Annual Budget', value: `₹${(totalBudget() / 1000).toFixed(2)}M`, sub: 'All departments' },
+          { label: 'YTD Spend (H1)',       value: `₹${totalSpent()}k`,                       sub: `${overallPct}% of H1 allocation` },
+          { label: 'Remaining H1',         value: `₹${Math.round(totalBudget() * 0.5) - totalSpent()}k`, sub: 'Available H1 budget' },
+          { label: 'H2 Budget',            value: `₹${Math.round(totalBudget() * 0.5)}k`,    sub: 'Allocated, not started' },
         ].map(item => (
-          <div key={item.label} className="bg-white border border-slate-200 rounded-xl p-5">
+          <div key={item.label} className="bg-os-s1 border border-os-border rounded-xl p-5">
             <p className="text-xs text-slate-500 mb-1">{item.label}</p>
-            <p className="text-2xl font-bold text-slate-900">{item.value}</p>
+            <p className="text-2xl font-bold text-white">{item.value}</p>
             <p className="text-xs text-slate-500 mt-1">{item.sub}</p>
           </div>
         ))}
@@ -53,7 +53,7 @@ export function DeptBudgetPage() {
                     <Badge variant={BUDGET_BADGE[dept?.budgetStatus ?? 'on-track']} size="sm" dot>
                       {dept?.budgetStatus ?? 'on-track'}
                     </Badge>
-                    <span className="text-sm font-semibold text-slate-900">£{b.annual}k / yr</span>
+                    <span className="text-sm font-semibold text-white">₹{b.annual}k / yr</span>
                   </div>
                 </div>
               </CardHeader>
@@ -61,8 +61,8 @@ export function DeptBudgetPage() {
                 {/* H1 summary */}
                 <div>
                   <div className="flex justify-between text-sm mb-1.5">
-                    <span className="text-slate-600">H1 Utilisation</span>
-                    <span className="font-semibold text-slate-900">£{h1spent}k / £{h1budget}k ({h1pct}%)</span>
+                    <span className="text-slate-500">H1 Utilisation</span>
+                    <span className="font-semibold text-white">₹{h1spent}k / ₹{h1budget}k ({h1pct}%)</span>
                   </div>
                   <Progress
                     value={Math.min(h1pct, 100)}
@@ -74,13 +74,13 @@ export function DeptBudgetPage() {
                 {/* Quarterly breakdown */}
                 <div className="grid grid-cols-4 gap-3">
                   {quarters.map(q => (
-                    <div key={q.label} className={`rounded-xl p-3 ${q.done ? 'bg-slate-50' : 'bg-slate-50/50 opacity-60'}`}>
+                    <div key={q.label} className={`rounded-xl p-3 ${q.done ? 'bg-slate-900' : 'bg-slate-900/50 opacity-60'}`}>
                       <p className="text-xs font-semibold text-slate-500 mb-1">{q.label}</p>
-                      <p className="text-sm font-bold text-slate-900">£{q.budget}k</p>
+                      <p className="text-sm font-bold text-white">₹{q.budget}k</p>
                       {q.done ? (
-                        <p className="text-xs text-slate-500">Spent: £{q.spent}k</p>
+                        <p className="text-xs text-slate-500">Spent: ₹{q.spent}k</p>
                       ) : (
-                        <p className="text-xs text-slate-400">Budgeted</p>
+                        <p className="text-xs text-slate-500">Budgeted</p>
                       )}
                     </div>
                   ))}
@@ -94,12 +94,12 @@ export function DeptBudgetPage() {
                       const pct = Math.round((cat.spent / cat.budget) * 100)
                       return (
                         <div key={cat.name} className="flex items-center gap-3">
-                          <span className="text-sm text-slate-700 w-40 flex-shrink-0">{cat.name}</span>
+                          <span className="text-sm text-slate-300 w-40 flex-shrink-0">{cat.name}</span>
                           <div className="flex-1">
                             <Progress value={Math.min(pct, 100)} color={pct > 100 ? 'danger' : 'brand'} size="sm" />
                           </div>
                           <span className="text-xs text-slate-500 w-28 text-right flex-shrink-0">
-                            £{cat.spent}k / £{cat.budget}k
+                            ₹{cat.spent}k / ₹{cat.budget}k
                           </span>
                         </div>
                       )

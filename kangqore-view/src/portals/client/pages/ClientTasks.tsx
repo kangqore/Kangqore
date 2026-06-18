@@ -53,7 +53,7 @@ export function ClientTasks() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Tasks & Actions</h2>
+        <h2 className="text-xl font-bold text-white">Tasks & Actions</h2>
         <p className="text-sm text-slate-500 mt-0.5">
           {pending} pending your action{overdue > 0 && <span className="ml-2 text-red-600 font-medium">· {overdue} overdue</span>}
         </p>
@@ -66,7 +66,7 @@ export function ClientTasks() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-              filter === f ? 'bg-[#2564ea] text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+              filter === f ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-500 hover:border-blue-300'
             }`}
           >
             {f === 'all' ? 'All' : f.replace('-', ' ')}
@@ -79,9 +79,9 @@ export function ClientTasks() {
         const tasks = visible.filter(t => t.projectName === proj)
         return (
           <div key={proj}>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">{proj}</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">{proj}</p>
             <Card padding="none">
-              <ul className="divide-y divide-slate-50">
+              <ul className="divide-y divide-[#2E2854]">
                 {tasks.map(t => {
                   const overdue = isOverdue(t.dueDate, t.status)
                   return (
@@ -95,17 +95,17 @@ export function ClientTasks() {
                       {STATUS_ICON[t.status]}
                       <div className="flex-1 min-w-0">
                         <p className={cn(
-                          'text-sm text-slate-800',
-                          t.status === 'completed' && 'line-through text-slate-400',
+                          'text-sm text-slate-200',
+                          t.status === 'completed' && 'line-through text-slate-500',
                         )}>
                           {t.title}
                         </p>
                         <div className="flex items-center gap-3 mt-1 flex-wrap">
                           <Badge variant={CATEGORY_VARIANT[t.category] ?? 'neutral'} size="sm">{t.category}</Badge>
-                          <span className="text-[11px] text-slate-400">{t.assignee}</span>
+                          <span className="text-[11px] text-slate-500">{t.assignee}</span>
                           <span className={cn(
                             'text-[11px] font-medium',
-                            overdue ? 'text-red-500' : 'text-slate-400'
+                            overdue ? 'text-red-500' : 'text-slate-500'
                           )}>
                             {overdue ? 'Overdue · ' : ''}{fmtDate(t.dueDate)}
                           </span>
@@ -122,7 +122,7 @@ export function ClientTasks() {
       })}
 
       {visible.length === 0 && (
-        <div className="py-14 text-center text-sm text-slate-400">No tasks match this filter.</div>
+        <div className="py-14 text-center text-sm text-slate-500">No tasks match this filter.</div>
       )}
     </div>
   )

@@ -22,12 +22,12 @@ const TABS = [
 
 export function PartnerPortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-100 pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-os-s1 pt-[7.5rem]">
       <PortalNavbar
         portalName="Partner Portal"
         portalColor="bg-gradient-to-br from-[#059669] to-[#34d399]"
         tabs={TABS}
-        basePath="/portal/partner"
+        basePath="/kangqore-view/partner"
       />
       <div className="flex-1 overflow-y-auto min-h-0">
         <ModuleShell>
@@ -39,7 +39,7 @@ export function PartnerPortal() {
             <Route path="meetings"       element={<PartnerMeetings />}     />
             <Route path="documents"      element={<PartnerDocuments />}    />
             <Route path="earnings"       element={<PartnerEarnings />}     />
-            <Route path="*"              element={<Navigate to="/portal/partner" replace />} />
+            <Route path="*"              element={<Navigate to="/kangqore-view/partner" replace />} />
           </Routes>
         </ModuleShell>
       </div>

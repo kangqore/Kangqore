@@ -20,12 +20,12 @@ const TABS = [
 
 export function InvestorPortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-100 pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-os-s1 pt-[7.5rem]">
       <PortalNavbar
         portalName="Investor Portal"
         portalColor="bg-gradient-to-br from-[#7c3aed] to-[#a78bfa]"
         tabs={TABS}
-        basePath="/portal/investor"
+        basePath="/kangqore-view/investor"
       />
       <div className="flex-1 overflow-y-auto min-h-0">
         <ModuleShell>
@@ -36,7 +36,7 @@ export function InvestorPortal() {
             <Route path="meetings"    element={<InvestorMeetings />}      />
             <Route path="documents"   element={<InvestorDocuments />}     />
             <Route path="captable"    element={<div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto"><CapTablePage /></div>} />
-            <Route path="*"           element={<Navigate to="/portal/investor" replace />} />
+            <Route path="*"           element={<Navigate to="/kangqore-view/investor" replace />} />
           </Routes>
         </ModuleShell>
       </div>

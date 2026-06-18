@@ -124,15 +124,15 @@ export function NotificationPanel() {
 
       {/* Panel */}
       <div className={cn(
-        'fixed top-0 right-0 h-screen w-[380px] bg-white border-l border-slate-200 z-50 flex flex-col shadow-2xl',
+        'fixed top-0 right-0 h-screen w-[380px] bg-os-s1 border-l border-os-border z-50 flex flex-col shadow-2xl',
         'transition-transform duration-300 ease-in-out',
         notificationPanelOpen ? 'translate-x-0' : 'translate-x-full'
       )}>
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-os-border">
           <div className="flex items-center gap-2.5">
-            <Bell className="w-4 h-4 text-slate-600" />
-            <h2 className="font-semibold text-slate-900 text-sm">Notifications</h2>
+            <Bell className="w-4 h-4 text-slate-500" />
+            <h2 className="font-semibold text-white text-sm">Notifications</h2>
             {unread > 0 && (
               <Badge variant="brand" size="sm">{unread} new</Badge>
             )}
@@ -148,14 +148,14 @@ export function NotificationPanel() {
         </div>
 
         {/* List */}
-        <div className="flex-1 overflow-y-auto divide-y divide-slate-50">
+        <div className="flex-1 overflow-y-auto divide-y divide-[#2E2854]">
           {isLoading && (
             <div className="flex items-center justify-center p-8 text-sm text-slate-500 gap-2">
               <Spinner size="sm" /> Loading…
             </div>
           )}
           {!isLoading && notifications.length === 0 && (
-            <div className="text-center py-12 text-sm text-slate-400">
+            <div className="text-center py-12 text-sm text-slate-500">
               No notifications yet.
             </div>
           )}
@@ -163,7 +163,7 @@ export function NotificationPanel() {
             <div
               key={n.id}
               className={cn(
-                'flex gap-3 px-5 py-4 hover:bg-slate-50 transition-colors cursor-pointer',
+                'flex gap-3 px-5 py-4 hover:bg-slate-900 transition-colors cursor-pointer',
                 !n.read && 'bg-blue-50/40'
               )}
               onClick={() => handleNotificationClick(n)}
@@ -171,11 +171,11 @@ export function NotificationPanel() {
               <Avatar name={n.user} size="sm" />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-slate-900 truncate">{n.title}</span>
+                  <span className="text-sm font-medium text-white truncate">{n.title}</span>
                   <Badge variant={n.type} size="sm" dot />
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{n.body}</p>
-                <p className="text-[11px] text-slate-400 mt-1">{n.time}</p>
+                <p className="text-[11px] text-slate-500 mt-1">{n.time}</p>
               </div>
               {!n.read && (
                 <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 flex-shrink-0" />
@@ -185,7 +185,7 @@ export function NotificationPanel() {
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-slate-100">
+        <div className="px-5 py-3 border-t border-os-border">
           <Button variant="ghost" size="sm" className="w-full text-slate-500" onClick={closeNotificationPanel}>
             Close Panel
           </Button>

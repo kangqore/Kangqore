@@ -42,7 +42,7 @@ export function ClientInvoices() {
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Invoices & Payments</h2>
+        <h2 className="text-xl font-bold text-white">Invoices & Payments</h2>
         <p className="text-sm text-slate-500 mt-1">All invoices for your Kangqore engagement.</p>
       </div>
 
@@ -71,7 +71,7 @@ export function ClientInvoices() {
         <CardBody className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/50">
+              <tr className="border-b border-os-border bg-slate-900/50">
                 {['Invoice', 'Description', 'Issue Date', 'Due Date', 'Amount', 'Status', ''].map(h => (
                   <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide whitespace-nowrap">
                     {h}
@@ -79,14 +79,14 @@ export function ClientInvoices() {
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#2E2854]">
               {invoices.map(inv => {
                 const cfg = STATUS_CONFIG[inv.status as keyof typeof STATUS_CONFIG]
                 const Icon = cfg.icon
                 return (
-                  <tr key={inv.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-5 py-3.5 font-mono text-xs font-semibold text-slate-700">{inv.id}</td>
-                    <td className="px-5 py-3.5 text-slate-700 max-w-xs">
+                  <tr key={inv.id} className="hover:bg-slate-900 transition-colors">
+                    <td className="px-5 py-3.5 font-mono text-xs font-semibold text-slate-300">{inv.id}</td>
+                    <td className="px-5 py-3.5 text-slate-300 max-w-xs">
                       <span className="line-clamp-1">{inv.project}</span>
                     </td>
                     <td className="px-5 py-3.5 text-slate-500 whitespace-nowrap">{inv.date}</td>
@@ -95,10 +95,10 @@ export function ClientInvoices() {
                         {inv.due}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 font-semibold text-slate-900 whitespace-nowrap">£{inv.amount.toLocaleString()}</td>
+                    <td className="px-5 py-3.5 font-semibold text-white whitespace-nowrap">£{inv.amount.toLocaleString()}</td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-1.5">
-                        <Icon className={`w-3.5 h-3.5 ${inv.status === 'paid' ? 'text-[#00c875]' : inv.status === 'overdue' ? 'text-[#e2445c]' : 'text-slate-400'}`} />
+                        <Icon className={`w-3.5 h-3.5 ${inv.status === 'paid' ? 'text-[#00c875]' : inv.status === 'overdue' ? 'text-[#e2445c]' : 'text-slate-500'}`} />
                         <Badge variant={cfg.variant} size="sm">{cfg.label}</Badge>
                       </div>
                     </td>

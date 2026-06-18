@@ -6,8 +6,8 @@ import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { useFinanceStore } from '../store'
 
-const fmt = (n: number) => `£${n.toLocaleString()}`
-const fmtK = (n: number) => `£${(n / 1000).toFixed(0)}k`
+const fmt = (n: number) => `₹${n.toLocaleString()}`
+const fmtK = (n: number) => `₹${(n / 1000).toFixed(0)}k`
 
 export function BurnRatePage() {
   const { cashFlow, projectFinancials } = useFinanceStore()
@@ -45,8 +45,8 @@ export function BurnRatePage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Burn Rate & Runway</h2>
-          <p className="text-sm text-slate-400 mt-0.5">Monthly outflow analysis and cash runway projection</p>
+          <h2 className="text-xl font-bold text-white">Burn Rate & Runway</h2>
+          <p className="text-sm text-slate-500 mt-0.5">Monthly outflow analysis and cash runway projection</p>
         </div>
       </div>
 
@@ -56,11 +56,11 @@ export function BurnRatePage() {
           { label: 'Avg Monthly Burn',  value: fmtK(avgBurn),       text: 'text-red-600' },
           { label: 'Current Balance',   value: fmtK(latestBalance), text: 'text-green-600' },
           { label: 'Cash Runway',       value: `${runway} months`,   text: 'text-blue-600' },
-          { label: 'Months of Data',    value: `${months}`,          text: 'text-slate-700' },
+          { label: 'Months of Data',    value: `${months}`,          text: 'text-slate-300' },
         ].map(c => (
-          <Card key={c.label} className="hover:border-slate-200/80 transition-all duration-200">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">{c.label}</p>
-            <p className="text-2xl font-bold text-slate-800">{c.value}</p>
+          <Card key={c.label} className="hover:border-os-border/80 transition-all duration-200">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">{c.label}</p>
+            <p className="text-2xl font-bold text-slate-200">{c.value}</p>
           </Card>
         ))}
       </div>
@@ -69,7 +69,7 @@ export function BurnRatePage() {
       <Card>
         <CardHeader>
           <CardTitle>Burn Rate vs Revenue</CardTitle>
-          <div className="flex items-center gap-4 text-xs text-slate-400">
+          <div className="flex items-center gap-4 text-xs text-slate-500">
             <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-400" />Outflow (Burn)</span>
             <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-400" />Inflow (Revenue)</span>
             <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-orange-400 rounded" />3-Mo Avg</span>
@@ -107,7 +107,7 @@ export function BurnRatePage() {
             <Line type="monotone" dataKey="projected" stroke="#2564ea" strokeWidth={1.5} dot={{ r: 3 }} strokeDasharray="6 3"                 name="Projected" />
           </LineChart>
         </ResponsiveContainer>
-        <p className="text-[10px] font-semibold text-slate-400 mt-3 text-center uppercase tracking-wider">Projected at avg burn of {fmtK(avgBurn)}/month — assumes no new revenue</p>
+        <p className="text-[10px] font-semibold text-slate-500 mt-3 text-center uppercase tracking-wider">Projected at avg burn of {fmtK(avgBurn)}/month — assumes no new revenue</p>
       </Card>
 
       {/* Burn by project */}

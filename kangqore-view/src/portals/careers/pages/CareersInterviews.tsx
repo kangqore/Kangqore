@@ -80,7 +80,7 @@ function PrepChecklist({ items }: { items: typeof INTERVIEWS[0]['prep'] }) {
   const done = items.filter(i => i.done).length
   return (
     <div>
-      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
         Prep checklist · {done}/{items.length} done
       </p>
       <ul className="space-y-1.5">
@@ -90,7 +90,7 @@ function PrepChecklist({ items }: { items: typeof INTERVIEWS[0]['prep'] }) {
               ? <CheckSquare className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
               : <Square      className="w-4 h-4 text-slate-300 flex-shrink-0 mt-0.5" />
             }
-            <span className={cn('text-sm', item.done ? 'text-slate-400 line-through' : 'text-slate-700')}>
+            <span className={cn('text-sm', item.done ? 'text-slate-500 line-through' : 'text-slate-300')}>
               {item.text}
             </span>
           </li>
@@ -142,36 +142,36 @@ export function CareersInterviews() {
           className="w-full flex items-start gap-4 text-left"
           onClick={() => setExpanded(isOpen ? null : interview.id)}
         >
-          <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
             {FORMAT_ICON[interview.format] ?? FORMAT_ICON.VIDEO}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-              <span className="text-sm font-semibold text-slate-900">{interview.stage}</span>
+              <span className="text-sm font-semibold text-white">{interview.stage}</span>
               <Badge variant={STATUS_V[interview.status]} size="sm" dot>{interview.status}</Badge>
               {isNext && <Badge variant="info" size="sm">Next up</Badge>}
             </div>
             <p className="text-xs text-slate-500">
               {interview.interviewer} · {interview.interviewerRole}
             </p>
-            <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-400 flex-wrap">
+            <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-500 flex-wrap">
               <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{interview.duration} min</span>
               <span>{fmtDate(interview.date)}</span>
               <span>{fmtTime(interview.date)}</span>
             </div>
           </div>
-          <ChevronDown className={cn('w-4 h-4 text-slate-400 flex-shrink-0 mt-1 transition-transform', isOpen && 'rotate-180')} />
+          <ChevronDown className={cn('w-4 h-4 text-slate-500 flex-shrink-0 mt-1 transition-transform', isOpen && 'rotate-180')} />
         </button>
 
         {/* Expanded */}
         {isOpen && (
-          <div className="mt-4 pt-4 border-t border-slate-100 space-y-4">
+          <div className="mt-4 pt-4 border-t border-os-border space-y-4">
             {interview.notes && (
               <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">
                   {isPast ? 'Feedback' : 'What to expect'}
                 </p>
-                <p className="text-sm text-slate-700 leading-relaxed">{interview.notes}</p>
+                <p className="text-sm text-slate-300 leading-relaxed">{interview.notes}</p>
               </div>
             )}
 
@@ -193,7 +193,7 @@ export function CareersInterviews() {
   return (
     <div className="space-y-8 max-w-2xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Interviews</h2>
+        <h2 className="text-xl font-bold text-white">Interviews</h2>
         <p className="text-sm text-slate-500 mt-0.5">
           {upcoming.length} upcoming · {past.length} completed
         </p>
@@ -201,14 +201,14 @@ export function CareersInterviews() {
 
       {upcoming.length > 0 && (
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Upcoming</p>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Upcoming</p>
           <div className="space-y-3">{upcoming.map(renderCard)}</div>
         </div>
       )}
 
       {past.length > 0 && (
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Completed</p>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Completed</p>
           <div className="space-y-3">{past.map(renderCard)}</div>
         </div>
       )}

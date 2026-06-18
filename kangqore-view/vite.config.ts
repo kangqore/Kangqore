@@ -1,13 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
     tsconfigPaths(),
   ],
 
@@ -23,6 +21,8 @@ export default defineConfig({
       '@store': resolve(__dirname, 'src/store'),
       '@types': resolve(__dirname, 'src/types'),
       '@portals': resolve(__dirname, 'src/portals'),
+      '@os/motion': resolve(__dirname, 'src/motion/index.ts'),
+      '@os/tokens': resolve(__dirname, 'src/tokens/index.ts'),
     },
   },
 

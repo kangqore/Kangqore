@@ -96,7 +96,7 @@ export function SignupPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2.5 mb-5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center">
               <span className="text-white font-bold">K</span>
             </div>
             <span className="font-semibold text-slate-900 text-lg">Kangqore OS</span>

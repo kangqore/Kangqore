@@ -30,18 +30,18 @@ export function InvestorProfile() {
           <CardTitle>Investors</CardTitle>
         </CardHeader>
         <CardBody className="p-0">
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-[#2E2854]">
             {investors.map(inv => (
               <button
                 key={inv.id}
                 onClick={() => setSelected(inv.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-slate-50 ${
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-slate-900 ${
                   inv.id === selectedId ? 'bg-blue-50' : ''
                 }`}
               >
                 <Avatar name={inv.name} size="sm" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">{inv.name}</p>
+                  <p className="text-sm font-medium text-white truncate">{inv.name}</p>
                   <p className="text-xs text-slate-500 truncate">{inv.firm}</p>
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -63,7 +63,7 @@ export function InvestorProfile() {
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-900">{investor.name}</h2>
+                  <h2 className="text-xl font-bold text-white">{investor.name}</h2>
                   <p className="text-sm text-slate-500 mt-0.5">{investor.firm} · {TYPE_LABEL[investor.type]}</p>
                 </div>
                 <div className="flex gap-2 flex-wrap">
@@ -73,7 +73,7 @@ export function InvestorProfile() {
                   {investor.leadInvestor && <Badge variant="brand" size="sm">Lead Investor</Badge>}
                 </div>
               </div>
-              <div className="flex flex-wrap gap-4 mt-4 text-sm text-slate-600">
+              <div className="flex flex-wrap gap-4 mt-4 text-sm text-slate-500">
                 <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" />{investor.email}</span>
                 {investor.phone && <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" />{investor.phone}</span>}
                 <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{investor.country}</span>
@@ -86,16 +86,16 @@ export function InvestorProfile() {
         {/* Investment details */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {[
-            { label: 'Check Size', value: `£${investor.checkSize.min}k – £${investor.checkSize.max > 999 ? `${(investor.checkSize.max / 1000).toFixed(0)}M` : `${investor.checkSize.max}k`}` },
-            { label: 'Committed', value: investor.committed > 0 ? `£${investor.committed}k` : '—' },
+            { label: 'Check Size', value: `₹${investor.checkSize.min}k – ₹${investor.checkSize.max > 999 ? `${(investor.checkSize.max / 1000).toFixed(0)}M` : `${investor.checkSize.max}k`}` },
+            { label: 'Committed', value: investor.committed > 0 ? `₹${investor.committed}k` : '—' },
             { label: 'Ownership', value: investor.ownership ? `${investor.ownership}%` : '—' },
             { label: 'Last Contact', value: investor.lastContact },
             { label: 'Next Follow-up', value: investor.nextFollowUp ?? '—' },
             { label: 'Preferred Stages', value: investor.preferredStage.map(s => STAGE_LABEL[s]).join(', ') },
           ].map(item => (
-            <div key={item.label} className="bg-slate-50 rounded-xl p-4">
+            <div key={item.label} className="bg-slate-900 rounded-xl p-4">
               <p className="text-xs text-slate-500 mb-1">{item.label}</p>
-              <p className="text-sm font-semibold text-slate-900">{item.value}</p>
+              <p className="text-sm font-semibold text-white">{item.value}</p>
             </div>
           ))}
         </div>
@@ -106,7 +106,7 @@ export function InvestorProfile() {
             <CardTitle>Notes</CardTitle>
           </CardHeader>
           <CardBody>
-            <p className="text-sm text-slate-700 leading-relaxed">{investor.notes}</p>
+            <p className="text-sm text-slate-300 leading-relaxed">{investor.notes}</p>
           </CardBody>
         </Card>
 

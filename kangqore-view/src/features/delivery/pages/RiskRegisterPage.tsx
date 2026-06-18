@@ -51,7 +51,7 @@ function riskScoreVariant(score: number): 'danger' | 'warning' | 'info' | 'neutr
 
 const TREND_ICON: Record<string, React.ReactNode> = {
   INCREASING: <TrendingUp   className="w-3.5 h-3.5 text-red-500"   />,
-  STABLE:     <Minus         className="w-3.5 h-3.5 text-slate-400" />,
+  STABLE:     <Minus         className="w-3.5 h-3.5 text-slate-500" />,
   DECREASING: <TrendingDown  className="w-3.5 h-3.5 text-green-500" />,
 }
 
@@ -110,7 +110,7 @@ function RiskDrawer({
         {/* Status + Score */}
         <div className="flex items-center gap-4 flex-wrap">
           <div>
-            <p className="text-xs font-semibold text-slate-400 mb-1.5">Status</p>
+            <p className="text-xs font-semibold text-slate-500 mb-1.5">Status</p>
             <InlineSelect
               value={risk.status}
               options={STATUS_OPTIONS}
@@ -120,21 +120,21 @@ function RiskDrawer({
             />
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-400 mb-1.5">Severity</p>
+            <p className="text-xs font-semibold text-slate-500 mb-1.5">Severity</p>
             <Badge variant={SEV_VARIANT[risk.severity]} size="md">{risk.severity}</Badge>
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-400 mb-1.5">Risk score</p>
+            <p className="text-xs font-semibold text-slate-500 mb-1.5">Risk score</p>
             <Badge variant={scoreV} size="md">
               {score}/16 · {LEVEL_LABEL[String(Math.min(4, Math.ceil(score / 4)))] ?? 'High'}
             </Badge>
           </div>
           {risk.trend && (
             <div>
-              <p className="text-xs font-semibold text-slate-400 mb-1.5">Trend</p>
+              <p className="text-xs font-semibold text-slate-500 mb-1.5">Trend</p>
               <div className="flex items-center gap-1.5">
                 {TREND_ICON[risk.trend]}
-                <span className="text-xs text-slate-600 capitalize">{risk.trend.toLowerCase()}</span>
+                <span className="text-xs text-slate-500 capitalize">{risk.trend.toLowerCase()}</span>
               </div>
             </div>
           )}
@@ -145,23 +145,23 @@ function RiskDrawer({
         {/* P × I */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-xs font-semibold text-slate-400 mb-1">Probability</p>
-            <p className="text-sm font-medium text-slate-700 capitalize">{risk.probability?.toLowerCase() ?? '—'}</p>
+            <p className="text-xs font-semibold text-slate-500 mb-1">Probability</p>
+            <p className="text-sm font-medium text-slate-300 capitalize">{risk.probability?.toLowerCase() ?? '—'}</p>
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-400 mb-1">Impact</p>
-            <p className="text-sm font-medium text-slate-700 capitalize">{risk.impact?.toLowerCase() ?? '—'}</p>
+            <p className="text-xs font-semibold text-slate-500 mb-1">Impact</p>
+            <p className="text-sm font-medium text-slate-300 capitalize">{risk.impact?.toLowerCase() ?? '—'}</p>
           </div>
           {risk.owner && (
             <div>
-              <p className="text-xs font-semibold text-slate-400 mb-1">Owner</p>
-              <p className="text-sm font-medium text-slate-700">{risk.owner}</p>
+              <p className="text-xs font-semibold text-slate-500 mb-1">Owner</p>
+              <p className="text-sm font-medium text-slate-300">{risk.owner}</p>
             </div>
           )}
           {risk.riskOwner && (
             <div>
-              <p className="text-xs font-semibold text-slate-400 mb-1">Risk domain</p>
-              <p className="text-sm font-medium text-slate-700 capitalize">{risk.riskOwner?.toLowerCase().replace(/_/g, ' ')}</p>
+              <p className="text-xs font-semibold text-slate-500 mb-1">Risk domain</p>
+              <p className="text-sm font-medium text-slate-300 capitalize">{risk.riskOwner?.toLowerCase().replace(/_/g, ' ')}</p>
             </div>
           )}
         </div>
@@ -170,7 +170,7 @@ function RiskDrawer({
 
         {/* Description */}
         <div>
-          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Description</label>
+          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Description</label>
           <Textarea
             value={description}
             onChange={e => setDescription(e.target.value)}
@@ -181,7 +181,7 @@ function RiskDrawer({
 
         {/* Mitigation */}
         <div>
-          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Mitigation plan</label>
+          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Mitigation plan</label>
           <Textarea
             value={mitigation}
             onChange={e => setMitigation(e.target.value)}
@@ -192,7 +192,7 @@ function RiskDrawer({
 
         {/* Contingency */}
         <div>
-          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Contingency plan</label>
+          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Contingency plan</label>
           <Textarea
             value={contingency}
             onChange={e => setContingency(e.target.value)}
@@ -205,7 +205,7 @@ function RiskDrawer({
         {risk.clientAcceptedBy && (
           <>
             <Divider />
-            <div className="p-3 bg-white border-l-4 border-l-[#00c875] border-y border-r border-slate-200 rounded-xl">
+            <div className="p-3 bg-os-s1 border-l-4 border-l-[#00c875] border-y border-r border-os-border rounded-xl">
               <p className="text-xs text-slate-750 font-semibold">
                 Accepted by {risk.clientAcceptedBy}
                 {risk.clientAcceptedAt && ` on ${new Date(risk.clientAcceptedAt).toLocaleDateString('en-GB')}`}
@@ -261,7 +261,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Severity</label>
             <select value={form.severity} onChange={e => set('severity', e.target.value)}
-              className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as RiskSeverity[]).map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
@@ -270,7 +270,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Probability</label>
             <select value={form.probability} onChange={e => set('probability', e.target.value)}
-              className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as RiskProbability[]).map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
@@ -279,7 +279,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Impact</label>
             <select value={form.impact} onChange={e => set('impact', e.target.value)}
-              className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as RiskImpact[]).map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
@@ -288,7 +288,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Trend</label>
             <select value={form.trend} onChange={e => set('trend', e.target.value)}
-              className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               <option value="STABLE">Stable</option>
               <option value="INCREASING">Increasing</option>
               <option value="DECREASING">Decreasing</option>
@@ -339,7 +339,7 @@ function ImpactMatrix({ risks }: { risks: Risk[] }) {
         <table className="w-full text-xs border-collapse">
           <thead>
             <tr>
-              <th className="text-left text-slate-400 pr-2 pb-2 font-medium w-20">Probability ↓</th>
+              <th className="text-left text-slate-500 pr-2 pb-2 font-medium w-20">Probability ↓</th>
               {IMPACTS.map(i => (
                 <th key={i} className="pb-2 text-center font-semibold text-slate-500 capitalize px-2">{i.toLowerCase()}</th>
               ))}
@@ -441,7 +441,7 @@ export function RiskRegisterPage() {
 
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Risk Register</h2>
+          <h2 className="text-xl font-bold text-white">Risk Register</h2>
           <p className="text-sm text-slate-500 mt-0.5">
             {risks.length} risks · {byStatus('OPEN')} open
             {escalated > 0 && <span className="ml-2 text-red-600 font-medium">{escalated} escalated</span>}
@@ -454,9 +454,9 @@ export function RiskRegisterPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"     value={risks.length}         icon={<Shield       className="w-5 h-5" />} iconColor="bg-slate-100 text-slate-500"     />
-        <StatCard label="Open"      value={byStatus('OPEN')}     icon={<AlertTriangle className="w-5 h-5" />} iconColor={byStatus('OPEN') > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-400'}      />
-        <StatCard label="Escalated" value={escalated}            icon={<ArrowUpCircle className="w-5 h-5" />} iconColor={escalated > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'} />
+        <StatCard label="Total"     value={risks.length}         icon={<Shield       className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-300"     />
+        <StatCard label="Open"      value={byStatus('OPEN')}     icon={<AlertTriangle className="w-5 h-5" />} iconColor={byStatus('OPEN') > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-300'}      />
+        <StatCard label="Escalated" value={escalated}            icon={<ArrowUpCircle className="w-5 h-5" />} iconColor={escalated > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
         <StatCard label="Mitigated" value={byStatus('MITIGATED')}icon={<Shield       className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"        />
         <StatCard label="Accepted"  value={byStatus('ACCEPTED')} icon={<Shield       className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"      />
       </div>
@@ -480,39 +480,39 @@ export function RiskRegisterPage() {
               onClick={() => setStatusFilter(s as RiskStatus | 'ALL')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                 statusFilter === s
-                  ? 'bg-[#2564ea] text-white'
-                  : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+                  ? 'bg-os-blue text-white'
+                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}
             >
               {s === 'ALL' ? 'All' : s.charAt(0) + s.slice(1).toLowerCase()}
             </button>
           ))}
         </div>
-        <span className="ml-auto text-sm text-slate-400">{visible.length} risks</span>
+        <span className="ml-auto text-sm text-slate-500">{visible.length} risks</span>
       </div>
 
       {/* Table */}
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
+            <tr className="border-b border-os-border bg-slate-900">
               {['Risk', 'Project', 'P×I Score', 'Severity', 'Trend', 'Owner', 'Status', ''].map(h => (
-                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">{h}</th>
+                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
             </tr>
           </thead>
-          <StaggerTableBody className="divide-y divide-slate-50">
+          <StaggerTableBody className="divide-y divide-[#2E2854]">
             {visible.map(r => {
               const score = riskScore(r)
               const scoreV = riskScoreVariant(score)
               return (
                 <StaggerRow
                   key={r.id}
-                  className="hover:bg-slate-50 transition-colors cursor-pointer group"
+                  className="hover:bg-slate-900 transition-colors cursor-pointer group"
                   onClick={() => setOpenId(r.id)}
                 >
                   <td className="px-4 py-3.5 max-w-[240px]">
-                    <p className="font-medium text-slate-900 text-xs leading-snug line-clamp-2">{r.title}</p>
+                    <p className="font-medium text-white text-xs leading-snug line-clamp-2">{r.title}</p>
                   </td>
                   <td className="px-4 py-3.5 text-xs text-slate-500 whitespace-nowrap">
                     {r.project?.title ?? '—'}
@@ -553,7 +553,7 @@ export function RiskRegisterPage() {
           </StaggerTableBody>
         </table>
         {visible.length === 0 && (
-          <div className="py-14 text-center text-sm text-slate-400">No risks match your filters.</div>
+          <div className="py-14 text-center text-sm text-slate-500">No risks match your filters.</div>
         )}
       </Card>
 

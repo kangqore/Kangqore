@@ -23,7 +23,7 @@ const ACTIVITY_ICON: Record<ActivityType, React.ElementType> = {
 const ACTIVITY_COLOR: Record<ActivityType, string> = {
   email: 'bg-blue-100 text-blue-600', call: 'bg-green-100 text-green-600',
   meeting: 'bg-violet-100 text-violet-600', note: 'bg-amber-100 text-amber-600',
-  'score-change': 'bg-[#2564ea]/10 text-[#2564ea]', 'stage-change': 'bg-slate-100 text-slate-600',
+  'score-change': 'bg-os-blue/10 text-os-blue', 'stage-change': 'bg-os-s1 text-slate-300',
 }
 const SOURCE_VARIANT = {
   eQORE: 'brand', inbound: 'success', outbound: 'neutral',
@@ -43,11 +43,11 @@ export function LeadProfile() {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" leftIcon={<ChevronLeft className="w-4 h-4"/>} onClick={() => navigate('/kangqore-view/leads')}>
+        <Button variant="ghost" size="sm" leftIcon={<ChevronLeft className="w-4 h-4"/>} onClick={() => navigate('/kangqore-view/admin/leads')}>
           Pipeline
         </Button>
         <select value={selectedId} onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
+          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
           {leads.map(l => <option key={l.id} value={l.id}>{l.company}</option>)}
         </select>
       </div>
@@ -55,17 +55,17 @@ export function LeadProfile() {
       {/* Header card */}
       <Card>
         <div className="flex items-start gap-5 flex-wrap">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
             <span className="text-white font-bold text-lg">{lead.company.slice(0,2).toUpperCase()}</span>
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-wrap mb-1">
-              <h2 className="text-xl font-bold text-slate-900">{lead.company}</h2>
+              <h2 className="text-xl font-bold text-white">{lead.company}</h2>
               <Badge variant={STAGE_VARIANT[lead.stage]} size="sm" dot>{lead.stage}</Badge>
               <Badge variant={SOURCE_VARIANT[lead.source]} size="sm">{lead.source}</Badge>
             </div>
             <p className="text-sm text-slate-500">{lead.contactName} · {lead.contactRole}</p>
-            <div className="flex items-center gap-4 mt-2 text-xs text-slate-400">
+            <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
               <span className="flex items-center gap-1"><Mail className="w-3 h-3"/>{lead.email}</span>
               {lead.phone && <span className="flex items-center gap-1"><Phone className="w-3 h-3"/>{lead.phone}</span>}
               <span className="flex items-center gap-1"><MapPin className="w-3 h-3"/>{lead.country}</span>
@@ -74,13 +74,13 @@ export function LeadProfile() {
           </div>
           <div className="flex flex-col items-end gap-2">
             <div className="text-right">
-              <p className="text-2xl font-bold text-slate-900">£{(lead.value/1000).toFixed(0)}k</p>
-              <p className="text-xs text-slate-400">deal value</p>
+              <p className="text-2xl font-bold text-white">₹{(lead.value/1000).toFixed(0)}k</p>
+              <p className="text-xs text-slate-500">deal value</p>
             </div>
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${lead.score >= 80 ? 'bg-green-500' : lead.score >= 60 ? 'bg-amber-400' : 'bg-slate-300'}`} />
-              <span className="text-xl font-bold text-slate-800">{lead.score}</span>
-              <span className="text-xs text-slate-400">eQORE score</span>
+              <span className="text-xl font-bold text-slate-200">{lead.score}</span>
+              <span className="text-xs text-slate-500">eQORE score</span>
             </div>
             <Badge variant={lead.probability >= 60 ? 'success' : lead.probability >= 30 ? 'warning' : 'neutral'} size="sm">
               {lead.probability}% win probability
@@ -92,7 +92,7 @@ export function LeadProfile() {
 
         {/* Stage progress */}
         <div>
-          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Pipeline Stage</p>
+          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-3">Pipeline Stage</p>
           <div className="flex items-center gap-1">
             {activeStages.map((s, i) => {
               const isActive  = lead.stage === s
@@ -105,7 +105,7 @@ export function LeadProfile() {
                     isActive  ? `${STAGE_COLOR[s]} text-white scale-110` :
                     isPast    ? 'bg-green-100 text-green-600' :
                     isLost    ? 'bg-red-50 text-red-300' :
-                    'bg-slate-100 text-slate-400'
+                    'bg-os-s1 text-slate-300'
                   )}>
                     {i + 1}
                   </div>
@@ -118,13 +118,13 @@ export function LeadProfile() {
           </div>
           <div className="flex justify-between mt-1.5">
             {activeStages.map(s => (
-              <span key={s} className={`text-[9px] font-medium capitalize flex-1 text-center ${lead.stage === s ? 'text-slate-800 font-bold' : 'text-slate-400'}`}>{s}</span>
+              <span key={s} className={`text-[9px] font-medium capitalize flex-1 text-center ${lead.stage === s ? 'text-slate-200 font-bold' : 'text-slate-500'}`}>{s}</span>
             ))}
           </div>
         </div>
 
         <div className="flex items-center gap-3 mt-4 flex-wrap">
-          {lead.tags.map(t => <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-[#2564ea]/5 text-[#2564ea] font-medium border border-[#2564ea]/15">{t}</span>)}
+          {lead.tags.map(t => <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-os-blue/5 text-os-blue font-medium border border-os-blue/15">{t}</span>)}
         </div>
       </Card>
 
@@ -134,12 +134,12 @@ export function LeadProfile() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center">
                 <span className="text-white text-[10px] font-bold">eQ</span>
               </div>
               <CardTitle>eQORE Score Breakdown</CardTitle>
             </div>
-            <span className="text-2xl font-bold text-slate-900">{lead.score}</span>
+            <span className="text-2xl font-bold text-white">{lead.score}</span>
           </CardHeader>
           {signals.length > 0 ? (
             <div className="space-y-3">
@@ -149,21 +149,21 @@ export function LeadProfile() {
                     <div className="flex items-center gap-2">
                       <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded capitalize ${
                         sig.category === 'intent'       ? 'bg-red-50 text-red-600' :
-                        sig.category === 'fit'          ? 'bg-[#2564ea]/8 text-[#2564ea]' :
+                        sig.category === 'fit'          ? 'bg-os-blue/8 text-os-blue' :
                         sig.category === 'engagement'   ? 'bg-green-50 text-green-600' :
-                        'bg-slate-100 text-slate-500'
+                        'bg-os-s1 text-slate-300'
                       }`}>{sig.category}</span>
-                      <span className="text-xs text-slate-700 font-medium">{sig.signal}</span>
+                      <span className="text-xs text-slate-300 font-medium">{sig.signal}</span>
                     </div>
-                    <span className="text-xs font-bold text-slate-800">+{sig.contribution.toFixed(1)}</span>
+                    <span className="text-xs font-bold text-slate-200">+{sig.contribution.toFixed(1)}</span>
                   </div>
                   <Progress value={sig.rawScore} size="sm" color={sig.rawScore >= 80 ? 'success' : sig.rawScore >= 60 ? 'warning' : 'brand'} />
-                  <p className="text-[10px] text-slate-400 mt-0.5">{sig.description}</p>
+                  <p className="text-[10px] text-slate-500 mt-0.5">{sig.description}</p>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-slate-400 py-6 text-center">No eQORE signals yet — score based on manual assessment</p>
+            <p className="text-sm text-slate-500 py-6 text-center">No eQORE signals yet — score based on manual assessment</p>
           )}
         </Card>
 
@@ -184,19 +184,19 @@ export function LeadProfile() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-sm font-medium text-slate-800 truncate">{act.title}</p>
-                        <span className="text-[10px] text-slate-400 flex-shrink-0">{new Date(act.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
+                        <p className="text-sm font-medium text-slate-200 truncate">{act.title}</p>
+                        <span className="text-[10px] text-slate-500 flex-shrink-0">{new Date(act.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
                       </div>
-                      {act.metadata && <span className="text-[10px] font-semibold text-[#2564ea] bg-[#2564ea]/5 px-1.5 py-0.5 rounded mt-0.5 inline-block">{act.metadata}</span>}
+                      {act.metadata && <span className="text-[10px] font-semibold text-os-blue bg-os-blue/5 px-1.5 py-0.5 rounded mt-0.5 inline-block">{act.metadata}</span>}
                       <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{act.description}</p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">{act.owner}</p>
+                      <p className="text-[10px] text-slate-500 mt-0.5">{act.owner}</p>
                     </div>
                   </div>
                 )
               })}
             </div>
           ) : (
-            <p className="text-sm text-slate-400 py-6 text-center">No activity yet</p>
+            <p className="text-sm text-slate-500 py-6 text-center">No activity yet</p>
           )}
         </Card>
       </div>
@@ -209,11 +209,11 @@ export function LeadProfile() {
             { label: 'Owner',          value: lead.owner.split(' ')[0] },
             { label: 'Created',        value: new Date(lead.createdAt).toLocaleDateString('en-GB',{month:'short',year:'numeric'}) },
             { label: 'Last activity',  value: new Date(lead.lastActivity).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) },
-            { label: 'Forecast',       value: `£${((lead.value * lead.probability)/100000).toFixed(0)}k weighted` },
+            { label: 'Forecast',       value: `₹${((lead.value * lead.probability)/100000).toFixed(0)}k weighted` },
           ].map(s => (
             <div key={s.label}>
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">{s.label}</p>
-              <p className="text-sm font-semibold text-slate-800 mt-0.5">{s.value}</p>
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">{s.label}</p>
+              <p className="text-sm font-semibold text-slate-200 mt-0.5">{s.value}</p>
             </div>
           ))}
         </div>

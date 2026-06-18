@@ -32,7 +32,7 @@ const CATEGORY_CONFIG: Record<DocCategory, { label: string; color: string }> = {
   contract:   { label: 'Contract',   color: 'bg-blue-50 text-blue-700'   },
   report:     { label: 'Report',     color: 'bg-green-50 text-green-700' },
   design:     { label: 'Design',     color: 'bg-purple-50 text-purple-700'},
-  technical:  { label: 'Technical',  color: 'bg-slate-100 text-slate-700' },
+  technical:  { label: 'Technical',  color: 'bg-os-s1 text-slate-300' },
   compliance: { label: 'Compliance', color: 'bg-red-50 text-red-700'     },
 }
 
@@ -63,17 +63,17 @@ export function ClientDocuments() {
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Documents & Deliverables</h2>
+        <h2 className="text-xl font-bold text-white">Documents & Deliverables</h2>
         <p className="text-sm text-slate-500 mt-1">All shared files, contracts, reports, and assets for your engagement.</p>
       </div>
 
       {/* Folder quick-access */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {FOLDERS.map(f => (
-          <button key={f.label} className="bg-white border border-slate-200 rounded-xl p-4 text-left hover:border-blue-300 hover:bg-blue-50/30 transition-all">
+          <button key={f.label} className="bg-os-s1 border border-os-border rounded-xl p-4 text-left hover:border-blue-300 hover:bg-blue-50/30 transition-all">
             <span className="text-2xl mb-2 block">{f.icon}</span>
-            <p className="text-sm font-medium text-slate-900 leading-tight">{f.label}</p>
-            <p className="text-xs text-slate-400 mt-1">{f.count} files</p>
+            <p className="text-sm font-medium text-white leading-tight">{f.label}</p>
+            <p className="text-xs text-slate-500 mt-1">{f.count} files</p>
           </button>
         ))}
       </div>
@@ -87,18 +87,18 @@ export function ClientDocuments() {
           </CardTitle>
         </CardHeader>
         <CardBody className="p-0">
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-[#2E2854]">
             {documents.map(doc => {
               const cfg = CATEGORY_CONFIG[doc.category]
               return (
-                <div key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors">
-                  <div className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
+                <div key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-900 transition-colors">
+                  <div className="w-9 h-9 rounded-xl bg-os-s1 flex items-center justify-center flex-shrink-0">
                     <FileText className="w-4 h-4 text-slate-500" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <p className="text-sm font-medium text-slate-900 truncate">{doc.name}</p>
-                      {doc.confidential && <Lock className="w-3 h-3 text-slate-400 flex-shrink-0" />}
+                      <p className="text-sm font-medium text-white truncate">{doc.name}</p>
+                      {doc.confidential && <Lock className="w-3 h-3 text-slate-500 flex-shrink-0" />}
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5">{doc.project} · {doc.date} · {doc.size}</p>
                   </div>

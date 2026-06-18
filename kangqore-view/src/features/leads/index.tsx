@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { LayoutGrid, KanbanSquare, Mail, Brain } from 'lucide-react'
 import { cn } from '@design-system/cn'
@@ -10,6 +10,7 @@ import { LeadProfile }   from './pages/LeadProfile'
 import { NurturePage }   from './pages/NurturePage'
 import { ScoringPage }   from './pages/ScoringPage'
 import type { Lead } from './types'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
   { path: '',        label: 'Pipeline', icon: KanbanSquare },
@@ -63,19 +64,21 @@ export function LeadsModule() {
     if (data?.length) hydrate(data.map((e, i) => toLead(e, i)))
   }, [data, hydrate])
 
+  const { pathname } = useLocation()
+
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
+      <div className="flex items-center gap-1 border-b border-os-border mb-6 -mt-2">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
-            to={tab.path === '' ? '/kangqore-view/leads' : `/kangqore-view/leads/${tab.path}`}
+            to={tab.path === '' ? '/kangqore-view/admin/leads' : `/kangqore-view/admin/leads/${tab.path}`}
             end={tab.path === ''}
             className={({ isActive }) => cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
-                ? 'border-[#2564ea] text-[#2564ea]'
-                : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
+                ? 'border-os-blue text-os-blue'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -84,13 +87,18 @@ export function LeadsModule() {
         ))}
       </div>
 
-      <Routes>
-        <Route index            element={<LeadsPipeline />} />
-        <Route path="profile"   element={<LeadProfile />}   />
-        <Route path="nurture"   element={<NurturePage />}   />
-        <Route path="scoring"   element={<ScoringPage />}   />
-        <Route path="*"         element={<Navigate to="/kangqore-view/leads" replace />} />
-      </Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
+
+        <Routes>
+          <Route index            element={<LeadsPipeline />} />
+          <Route path="profile"   element={<LeadProfile />}   />
+          <Route path="nurture"   element={<NurturePage />}   />
+          <Route path="scoring"   element={<ScoringPage />}   />
+          <Route path="*"         element={<Navigate to="/kangqore-view/admin/leads" replace />} />
+        </Routes>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

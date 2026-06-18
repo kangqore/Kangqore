@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Users, CalendarDays, GitBranch, BarChart3, Layers, FlaskConical, UserPlus } from 'lucide-react'
 import { cn } from '@design-system/cn'
@@ -13,6 +13,7 @@ import { UtilizationPage }       from './pages/UtilizationPage'
 import { SkillsMatrixPage }      from './pages/SkillsMatrixPage'
 import { ScenarioPlanningPage }  from './pages/ScenarioPlanningPage'
 import { HiringCalculatorPage }  from './pages/HiringCalculatorPage'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
   { path: '',             label: 'Team',        icon: Users        },
@@ -47,19 +48,21 @@ export function ResourcesModule() {
     )
   }
 
+  const { pathname } = useLocation()
+
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
+      <div className="flex items-center gap-1 border-b border-os-border mb-6 -mt-2">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
-            to={tab.path === '' ? '/kangqore-view/resources' : `/kangqore-view/resources/${tab.path}`}
+            to={tab.path === '' ? '/kangqore-view/admin/resources' : `/kangqore-view/admin/resources/${tab.path}`}
             end={tab.path === ''}
             className={({ isActive }) => cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
-                ? 'border-blue-600 text-blue-700'
-                : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
+                ? 'border-os-blue text-os-blue'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -68,16 +71,21 @@ export function ResourcesModule() {
         ))}
       </div>
 
-      <Routes>
-        <Route index                element={<TeamOverview />}         />
-        <Route path="capacity"      element={<CapacityPage />}         />
-        <Route path="skills"        element={<SkillsMatrixPage />}     />
-        <Route path="scenarios"     element={<ScenarioPlanningPage />} />
-        <Route path="hiring"        element={<HiringCalculatorPage />} />
-        <Route path="assignments"   element={<AssignmentsPage />}      />
-        <Route path="utilization"   element={<UtilizationPage />}      />
-        <Route path="*"             element={<Navigate to="/kangqore-view/resources" replace />} />
-      </Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
+
+        <Routes>
+          <Route index                element={<TeamOverview />}         />
+          <Route path="capacity"      element={<CapacityPage />}         />
+          <Route path="skills"        element={<SkillsMatrixPage />}     />
+          <Route path="scenarios"     element={<ScenarioPlanningPage />} />
+          <Route path="hiring"        element={<HiringCalculatorPage />} />
+          <Route path="assignments"   element={<AssignmentsPage />}      />
+          <Route path="utilization"   element={<UtilizationPage />}      />
+          <Route path="*"             element={<Navigate to="/kangqore-view/admin/resources" replace />} />
+        </Routes>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

@@ -32,7 +32,7 @@ export function PillarsPage() {
     <div className="space-y-12 pb-16">
       <div className="flex items-center justify-between flex-wrap gap-4 mb-2">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Strategic Pillars</h2>
+          <h2 className="text-2xl font-bold text-os-cyan tracking-tight">Strategic Pillars</h2>
           <p className="text-sm text-slate-500 mt-1">{pillars.length} pillars · foundation of company strategy</p>
         </div>
       </div>
@@ -47,7 +47,7 @@ export function PillarsPage() {
           onChange={e => setSearch(e.target.value)}
         />
         <div className="flex items-center gap-3">
-          <Filter className="w-3.5 h-3.5 text-slate-400" />
+          <Filter className="w-3.5 h-3.5 text-slate-500" />
           {HEALTH_FILTERS.map(f => (
             <button
               key={f.value}
@@ -55,7 +55,7 @@ export function PillarsPage() {
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
                 healthFilter === f.value
                   ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}
             >
               {f.label}
@@ -80,16 +80,16 @@ export function PillarsPage() {
                 <div className="lg:col-span-1 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-3 mb-3">
-                      <h3 className="font-bold text-lg text-slate-900 tracking-tight">{pillar.name}</h3>
+                      <h3 className="font-bold text-lg text-os-cyan tracking-tight">{pillar.name}</h3>
                       <HealthBadge status={pillar.health} />
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed mb-6 font-normal">{pillar.description}</p>
                   </div>
-                  <div className="flex items-center gap-3 mt-4 pt-4 border-t border-slate-50/50">
+                  <div className="flex items-center gap-3 mt-4 pt-4 border-t border-os-border/50">
                     <Avatar name={pillar.owner} size="sm" className="ring-2 ring-slate-50" />
                     <div>
-                      <p className="text-xs font-bold text-slate-700">{pillar.owner}</p>
-                      <p className="text-[10px] text-slate-400 font-medium">Pillar owner</p>
+                      <p className="text-xs font-bold text-slate-300">{pillar.owner}</p>
+                      <p className="text-[10px] text-slate-500 font-medium">Pillar owner</p>
                     </div>
                   </div>
                 </div>
@@ -97,10 +97,10 @@ export function PillarsPage() {
                 {/* Middle — budget */}
                 <div className="lg:col-span-1 flex flex-col justify-between gap-4">
                   <div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Budget Overview</p>
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Budget Overview</p>
                     <div className="flex items-end justify-between mb-2">
-                      <span className="text-2xl font-black text-slate-900">£{(pillar.spent / 1000).toFixed(0)}k</span>
-                      <span className="text-xs text-slate-400 font-medium pb-0.5">of £{(pillar.budget / 1000).toFixed(0)}k spent</span>
+                      <span className="text-2xl font-black text-white">₹{(pillar.spent / 1000).toFixed(0)}k</span>
+                      <span className="text-xs text-slate-500 font-medium pb-0.5">of ₹{(pillar.budget / 1000).toFixed(0)}k spent</span>
                     </div>
                     <Progress
                       value={spentPct}
@@ -109,13 +109,13 @@ export function PillarsPage() {
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4 mt-2">
-                    <div className="bg-slate-50 rounded-xl p-4 border border-slate-100/50 flex flex-col justify-center">
-                      <p className="text-2xl font-black text-slate-900">{pillar.programCount}</p>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">Programs</p>
+                    <div className="bg-slate-900 rounded-xl p-4 border border-os-border/50 flex flex-col justify-center">
+                      <p className="text-2xl font-black text-white">{pillar.programCount}</p>
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">Programs</p>
                     </div>
-                    <div className="bg-slate-50 rounded-xl p-4 border border-slate-100/50 flex flex-col justify-center">
-                      <p className="text-2xl font-black text-slate-900">{pillar.okrCount}</p>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">OKRs</p>
+                    <div className="bg-slate-900 rounded-xl p-4 border border-os-border/50 flex flex-col justify-center">
+                      <p className="text-2xl font-black text-white">{pillar.okrCount}</p>
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">OKRs</p>
                     </div>
                   </div>
                 </div>
@@ -123,7 +123,7 @@ export function PillarsPage() {
                 {/* Right — programs */}
                 <div className="lg:col-span-1 flex flex-col justify-between">
                   <div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Active Programs</p>
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Active Programs</p>
                     <div className="space-y-4">
                       {programs.slice(0, 4).map(prog => (
                         <div key={prog.id} className="flex items-center gap-3">
@@ -139,12 +139,12 @@ export function PillarsPage() {
                             {prog.status}
                           </Badge>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-slate-700 truncate">{prog.name}</p>
+                            <p className="text-xs font-bold text-slate-300 truncate">{prog.name}</p>
                             <div className="mt-1">
                               <Progress value={prog.progress} size="sm" color="brand" />
                             </div>
                           </div>
-                          <span className="text-[10px] font-semibold text-slate-400 w-8 text-right">{prog.progress}%</span>
+                          <span className="text-[10px] font-semibold text-slate-500 w-8 text-right">{prog.progress}%</span>
                         </div>
                       ))}
                     </div>

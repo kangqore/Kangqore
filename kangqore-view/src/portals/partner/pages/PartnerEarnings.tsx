@@ -45,7 +45,7 @@ export function PartnerEarnings() {
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Earnings & Payments</h2>
+        <h2 className="text-xl font-bold text-white">Earnings & Payments</h2>
         <p className="text-sm text-slate-500 mt-1">Your payment history and upcoming earnings from Kangqore projects.</p>
       </div>
 
@@ -57,7 +57,7 @@ export function PartnerEarnings() {
           { label: 'MoM Growth',        value: '+14%',                             color: 'bg-purple-50',text: 'text-purple-700'},
         ].map(s => (
           <div key={s.label} className={`rounded-xl p-5 ${s.color}`}>
-            <p className="text-xs font-medium text-slate-600 mb-1">{s.label}</p>
+            <p className="text-xs font-medium text-slate-500 mb-1">{s.label}</p>
             <p className={`text-2xl font-bold ${s.text}`}>{s.value}</p>
           </div>
         ))}
@@ -76,12 +76,12 @@ export function PartnerEarnings() {
             <div className="flex items-end gap-2 h-36">
               {MONTHLY.map((m, i) => (
                 <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
-                  <span className="text-[10px] font-semibold text-slate-600">£{(m.amount / 1000).toFixed(1)}k</span>
+                  <span className="text-[10px] font-semibold text-slate-500">£{(m.amount / 1000).toFixed(1)}k</span>
                   <div
                     className={`w-full rounded-t-lg ${i === MONTHLY.length - 1 ? 'bg-blue-300' : 'bg-green-400'}`}
                     style={{ height: `${(m.amount / maxEarning) * 110}px` }}
                   />
-                  <span className="text-[9px] text-slate-400 text-center leading-tight">{m.month}</span>
+                  <span className="text-[9px] text-slate-500 text-center leading-tight">{m.month}</span>
                 </div>
               ))}
             </div>
@@ -99,8 +99,8 @@ export function PartnerEarnings() {
             ].map(p => (
               <div key={p.project}>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-slate-700 font-medium">{p.project}</span>
-                  <span className="font-semibold text-slate-900">£{p.amount.toLocaleString()}</span>
+                  <span className="text-slate-300 font-medium">{p.project}</span>
+                  <span className="font-semibold text-white">£{p.amount.toLocaleString()}</span>
                 </div>
                 <Progress value={p.pct} color="success" size="sm" />
               </div>
@@ -120,20 +120,20 @@ export function PartnerEarnings() {
         <CardBody className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/50">
+              <tr className="border-b border-os-border bg-slate-900/50">
                 {['Ref', 'Period', 'Projects', 'Date', 'Amount', 'Status', ''].map(h => (
                   <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#2E2854]">
               {payments.map(p => (
-                <tr key={p.id} className="hover:bg-slate-50 transition-colors">
+                <tr key={p.id} className="hover:bg-slate-900 transition-colors">
                   <td className="px-5 py-3.5 font-mono text-xs text-slate-500">{p.id}</td>
-                  <td className="px-5 py-3.5 font-medium text-slate-900">{p.period}</td>
+                  <td className="px-5 py-3.5 font-medium text-white">{p.period}</td>
                   <td className="px-5 py-3.5 text-slate-500 text-xs max-w-[180px]"><span className="line-clamp-1">{p.project}</span></td>
                   <td className="px-5 py-3.5 text-slate-500 whitespace-nowrap">{p.date}</td>
-                  <td className="px-5 py-3.5 font-bold text-slate-900 whitespace-nowrap">£{p.amount.toLocaleString()}</td>
+                  <td className="px-5 py-3.5 font-bold text-white whitespace-nowrap">£{p.amount.toLocaleString()}</td>
                   <td className="px-5 py-3.5">
                     {p.status === 'paid'
                       ? <div className="flex items-center gap-1.5 text-green-600"><CheckCircle2 className="w-3.5 h-3.5" /><Badge variant="success" size="sm">Paid</Badge></div>

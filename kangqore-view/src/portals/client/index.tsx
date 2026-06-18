@@ -32,12 +32,12 @@ const TABS = [
 
 export function ClientPortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-100 pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-os-s1 pt-[7.5rem]">
       <PortalNavbar
         portalName="Client Portal"
-        portalColor="bg-gradient-to-br from-[#2564ea] to-[#4ab6d4]"
+        portalColor="bg-gradient-to-br from-os-blue to-os-cyan"
         tabs={TABS}
-        basePath="/portal/client"
+        basePath="/kangqore-view/client"
       />
       <div className="flex-1 overflow-y-auto min-h-0">
         <ModuleShell>
@@ -52,7 +52,7 @@ export function ClientPortal() {
             <Route path="invoices"           element={<ClientInvoices />}        />
             <Route path="documents"          element={<ClientDocuments />}       />
             <Route path="report"             element={<ClientExecutiveReport />} />
-            <Route path="*"                  element={<Navigate to="/portal/client" replace />} />
+            <Route path="*"                  element={<Navigate to="/kangqore-view/client" replace />} />
           </Routes>
         </ModuleShell>
       </div>

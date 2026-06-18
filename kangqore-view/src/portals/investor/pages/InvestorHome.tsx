@@ -95,7 +95,7 @@ export function InvestorHome() {
       )}
 
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Welcome back, {user?.name ?? myInvestor.name}</h2>
+        <h2 className="text-xl font-bold text-white">Welcome back, {user?.name ?? myInvestor.name}</h2>
         <p className="text-sm text-slate-500 mt-1">Kangqore company overview — as of {latestUpdate.period}.</p>
       </div>
 
@@ -128,7 +128,7 @@ export function InvestorHome() {
             <div className="flex items-end gap-3 h-36">
               {MONTHLY_MRR.map((m, i) => (
                 <div key={m.month} className="flex-1 flex flex-col items-center gap-1.5">
-                  <span className="text-xs font-semibold text-slate-700">£{(m.mrr / 1000).toFixed(0)}k</span>
+                  <span className="text-xs font-semibold text-slate-300">£{(m.mrr / 1000).toFixed(0)}k</span>
                   <div
                     className={`w-full rounded-t-lg ${i === MONTHLY_MRR.length - 1 ? 'bg-blue-500' : 'bg-blue-200'}`}
                     style={{ height: `${(m.mrr / maxMRR) * 110}px` }}
@@ -156,9 +156,9 @@ export function InvestorHome() {
                 { label: 'Round',     value: 'Seed' },
                 { label: 'Share class', value: 'Series A Preferred' },
               ].map(item => (
-                <div key={item.label} className="flex justify-between text-sm border-b border-slate-100 pb-2 last:border-0 last:pb-0">
+                <div key={item.label} className="flex justify-between text-sm border-b border-os-border pb-2 last:border-0 last:pb-0">
                   <span className="text-slate-500">{item.label}</span>
-                  <span className="font-semibold text-slate-900">{item.value}</span>
+                  <span className="font-semibold text-white">{item.value}</span>
                 </div>
               ))}
             </div>
@@ -181,7 +181,7 @@ export function InvestorHome() {
           <CardBody>
             <ul className="space-y-2">
               {latestUpdate.highlights.map((h, i) => (
-                <li key={i} className="flex gap-2 text-sm text-slate-700">
+                <li key={i} className="flex gap-2 text-sm text-slate-300">
                   <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>{h}
                 </li>
               ))}
@@ -202,19 +202,19 @@ export function InvestorHome() {
             <CardBody className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-1.5">
-                  <span className="text-slate-600">Target</span>
+                  <span className="text-slate-500">Target</span>
                   <span className="font-semibold">£{(activeRound.targetAmount / 1000).toFixed(1)}M</span>
                 </div>
                 <Progress value={Math.round((activeRound.raisedAmount / activeRound.targetAmount) * 100)} color="brand" size="md" />
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="bg-slate-50 rounded-xl p-3">
+                <div className="bg-slate-900 rounded-xl p-3">
                   <p className="text-xs text-slate-500">Post-Money Val.</p>
-                  <p className="font-bold text-slate-900">£{(activeRound.valuation / 1000).toFixed(1)}M</p>
+                  <p className="font-bold text-white">£{(activeRound.valuation / 1000).toFixed(1)}M</p>
                 </div>
-                <div className="bg-slate-50 rounded-xl p-3">
+                <div className="bg-slate-900 rounded-xl p-3">
                   <p className="text-xs text-slate-500">Lead Investor</p>
-                  <p className="font-bold text-slate-900">TechForward</p>
+                  <p className="font-bold text-white">TechForward</p>
                 </div>
               </div>
               <a href="#" className="flex items-center gap-1.5 text-sm text-blue-600 font-medium hover:text-blue-800">

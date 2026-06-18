@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { api, DEMO_TOKEN } from '@lib/api'
 
-export type UserRole = 'ADMIN' | 'CLIENT' | 'PARTNER' | 'INVESTOR' | 'JOB_SEEKER'
+export type UserRole = 'ADMIN' | 'CLIENT' | 'PARTNER' | 'INVESTOR' | 'JOB_SEEKER' | 'JOURNALIST' | 'ANALYST'
 
 export interface AuthUser {
   id: string
@@ -37,11 +37,13 @@ export interface SignupPayload {
 }
 
 export const ROLE_REDIRECT: Record<UserRole, string> = {
-  ADMIN:      '/kangqore-view/kimmp',
-  CLIENT:     '/portal/client',
-  PARTNER:    '/portal/partner',
-  INVESTOR:   '/portal/investor',
-  JOB_SEEKER: '/portal/careers',
+  ADMIN:      '/kangqore-view/admin',
+  CLIENT:     '/kangqore-view/client',
+  PARTNER:    '/kangqore-view/partner',
+  INVESTOR:   '/kangqore-view/investor',
+  JOB_SEEKER: '/kangqore-view/careers',
+  JOURNALIST: '/kangqore-view/journalist',
+  ANALYST:    '/kangqore-view/analyst',
 }
 
 // Write auth state to the same localStorage keys the frontend website uses
@@ -148,11 +150,13 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
 
     loginAsDemo: (role: UserRole = 'ADMIN') => {
       const demoUsers: Record<UserRole, AuthUser> = {
-        ADMIN:      { id: 'demo-admin',    name: 'Mahesh Kumar',  email: 'admin@kangqore.com',    role: 'ADMIN'      },
-        CLIENT:     { id: 'demo-client',   name: 'Dr. Priya Rao', email: 'priya@synapsehealth.com',role: 'CLIENT'     },
-        PARTNER:    { id: 'demo-partner',  name: 'Dev Patel',     email: 'dev@kangqore.com',       role: 'PARTNER'    },
-        INVESTOR:   { id: 'demo-investor', name: 'James Whitfield',email:'james@whitfieldvc.com',  role: 'INVESTOR'   },
-        JOB_SEEKER: { id: 'demo-job',      name: 'Mia Johansson', email: 'mia.j@outlook.com',      role: 'JOB_SEEKER' },
+        ADMIN:      { id: 'demo-admin',      name: 'Mahesh Kumar',    email: 'admin@kangqore.com',       role: 'ADMIN'      },
+        CLIENT:     { id: 'demo-client',     name: 'Dr. Priya Rao',   email: 'priya@synapsehealth.com',  role: 'CLIENT'     },
+        PARTNER:    { id: 'demo-partner',    name: 'Dev Patel',       email: 'dev@kangqore.com',         role: 'PARTNER'    },
+        INVESTOR:   { id: 'demo-investor',   name: 'James Whitfield', email: 'james@whitfieldvc.com',    role: 'INVESTOR'   },
+        JOB_SEEKER: { id: 'demo-job',        name: 'Mia Johansson',   email: 'mia.j@outlook.com',        role: 'JOB_SEEKER' },
+        JOURNALIST: { id: 'demo-journalist', name: 'Ananya Singh',    email: 'ananya@pressdesk.com',     role: 'JOURNALIST' },
+        ANALYST:    { id: 'demo-analyst',    name: 'Ravi Mehta',      email: 'ravi.mehta@insights.com',  role: 'ANALYST'    },
       }
       const user = demoUsers[role]
       persistToWebsiteKeys(DEMO_TOKEN, user)

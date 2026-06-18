@@ -52,7 +52,7 @@ function SkeletonText({ lines = 3, className, lastLineWidth = '60%' }: SkeletonT
 
 function SkeletonStatCard({ className }: { className?: string }) {
   return (
-    <div className={cn('bg-white border border-slate-200 shadow-sm rounded-xl p-5 space-y-3', className)} aria-hidden="true">
+    <div className={cn('bg-[#151C2F] border border-[#2E2854] shadow-sm rounded-xl p-5 space-y-3', className)} aria-hidden="true">
       <div className="flex items-center justify-between">
         <Skeleton height="12px" width="40%" />
         <Skeleton height="32px" width="32px" rounded="lg" />
@@ -80,14 +80,14 @@ function SkeletonRow({ cols = 4, className }: { cols?: number; className?: strin
 
 function SkeletonCard({ rows = 3, className }: { rows?: number; className?: string }) {
   return (
-    <div className={cn('bg-white border border-slate-200 shadow-sm rounded-xl overflow-hidden', className)} aria-hidden="true">
-      <div className="p-5 border-b border-slate-100">
+    <div className={cn('bg-[#151C2F] border border-[#2E2854] shadow-sm rounded-xl overflow-hidden', className)} aria-hidden="true">
+      <div className="p-5 border-b border-[#2E2854]">
         <div className="flex items-center gap-3">
           <Skeleton height="16px" width="35%" />
           <Skeleton height="20px" width="48px" rounded="full" />
         </div>
       </div>
-      <div className="divide-y divide-slate-50">
+      <div className="divide-y divide-[#2E2854]">
         {Array.from({ length: rows }).map((_, i) => (
           <SkeletonRow key={i} />
         ))}

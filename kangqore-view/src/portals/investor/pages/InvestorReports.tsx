@@ -48,7 +48,7 @@ export function InvestorReports() {
   return (
     <div className="space-y-6 max-w-4xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Performance Reports</h2>
+        <h2 className="text-xl font-bold text-white">Performance Reports</h2>
         <p className="text-sm text-slate-500 mt-0.5">ARR, cohort analysis and segment breakdown — as of June 2026</p>
       </div>
 
@@ -98,19 +98,19 @@ export function InvestorReports() {
             const pct = Math.round((seg.arr / TOP_SEGMENTS[0].arr) * 100)
             return (
               <div key={seg.name} className="flex items-center gap-4">
-                <div className="w-5 text-xs font-bold text-slate-400">{i + 1}</div>
+                <div className="w-5 text-xs font-bold text-slate-500">{i + 1}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-slate-700">{seg.name}</span>
+                    <span className="text-xs font-medium text-slate-300">{seg.name}</span>
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-slate-500">{seg.clients} clients</span>
                       <Badge variant="success" size="sm">{seg.growth}</Badge>
-                      <span className="text-xs font-bold text-slate-800 w-20 text-right">
+                      <span className="text-xs font-bold text-slate-200 w-20 text-right">
                         £{(seg.arr / 1000).toFixed(0)}k
                       </span>
                     </div>
                   </div>
-                  <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-os-s1 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full bg-violet-500 transition-all duration-500"
                       style={{ width: `${pct}%` }}

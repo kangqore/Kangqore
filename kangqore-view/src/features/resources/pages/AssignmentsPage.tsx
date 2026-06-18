@@ -29,7 +29,7 @@ export function AssignmentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Assignments</h2>
+        <h2 className="text-xl font-bold text-white">Assignments</h2>
         <p className="text-sm text-slate-500 mt-0.5">Allocation matrix — people × projects</p>
       </div>
 
@@ -38,9 +38,9 @@ export function AssignmentsPage() {
         {projectTotals.map(p => (
           <Card key={p.id} className="text-center py-3 px-2">
             <div className="w-3 h-3 rounded-full mx-auto mb-2" style={{ background: p.color }} />
-            <p className="text-xs font-semibold text-slate-700 mb-1">{p.short}</p>
-            <p className="text-lg font-bold text-slate-900">{p.totalHours}h</p>
-            <p className="text-[10px] text-slate-400">{p.memberCount} people/wk</p>
+            <p className="text-xs font-semibold text-slate-300 mb-1">{p.short}</p>
+            <p className="text-lg font-bold text-white">{p.totalHours}h</p>
+            <p className="text-[10px] text-slate-500">{p.memberCount} people/wk</p>
           </Card>
         ))}
       </div>
@@ -49,39 +49,39 @@ export function AssignmentsPage() {
       <Card padding="none">
         <CardHeader className="px-5 pt-5 pb-3">
           <CardTitle>Allocation Matrix</CardTitle>
-          <span className="text-xs text-slate-400">Cell = hours/week · % of capacity</span>
+          <span className="text-xs text-slate-500">Cell = hours/week · % of capacity</span>
         </CardHeader>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50">
-                <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Person</th>
+              <tr className="border-b border-os-border bg-slate-900">
+                <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Person</th>
                 {PROJECTS.map(p => (
                   <th key={p.id} className="text-center px-3 py-3">
                     <Tooltip content={p.name} side="top">
                       <div className="flex flex-col items-center gap-1">
                         <div className="w-2.5 h-2.5 rounded-full" style={{ background: p.color }} />
-                        <span className="text-[10px] font-semibold text-slate-400 uppercase">{p.short}</span>
+                        <span className="text-[10px] font-semibold text-slate-500 uppercase">{p.short}</span>
                       </div>
                     </Tooltip>
                   </th>
                 ))}
-                <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Total / Capacity</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Total / Capacity</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-[#2E2854]">
               {team.map(member => {
                 const memberAllocs = allocations.filter(a => a.memberId === member.id)
                 const totalHrs = memberAllocs.reduce((s, a) => s + a.hoursPerWeek, 0)
 
                 return (
-                  <tr key={member.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={member.id} className="hover:bg-slate-900 transition-colors">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2.5">
                         <Avatar name={member.name} size="sm" />
                         <div>
-                          <p className="text-sm font-medium text-slate-800">{member.name}</p>
-                          <p className="text-xs text-slate-400">{member.availability}h/wk</p>
+                          <p className="text-sm font-medium text-slate-200">{member.name}</p>
+                          <p className="text-xs text-slate-500">{member.availability}h/wk</p>
                         </div>
                       </div>
                     </td>
@@ -107,10 +107,10 @@ export function AssignmentsPage() {
                     })}
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
-                        <span className={`text-sm font-bold ${totalHrs > member.availability ? 'text-red-600' : 'text-slate-800'}`}>
+                        <span className={`text-sm font-bold ${totalHrs > member.availability ? 'text-red-600' : 'text-slate-200'}`}>
                           {totalHrs}h
                         </span>
-                        <span className="text-xs text-slate-400">/ {member.availability}h</span>
+                        <span className="text-xs text-slate-500">/ {member.availability}h</span>
                         {totalHrs > member.availability && (
                           <Badge variant="danger" size="sm">over</Badge>
                         )}

@@ -72,7 +72,7 @@ export function SiteNav() {
     >
       {/* ── Utility bar ── */}
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto mt-3">
-        <div className="hidden lg:flex justify-end items-center h-8 px-4 gap-5 text-[13px] font-medium text-slate-600">
+        <div className="hidden lg:flex justify-end items-center h-8 px-4 gap-5 text-[13px] font-medium text-slate-500">
           {[
             { label: 'Careers',     href: '/careers'     },
             { label: 'News',        href: '/news'        },
@@ -82,7 +82,7 @@ export function SiteNav() {
             <a
               key={link.href}
               href={link.href}
-              className="hover:text-slate-900 transition-colors"
+              className="hover:text-white transition-colors"
             >
               {link.label}
             </a>
@@ -91,7 +91,7 @@ export function SiteNav() {
           {user && (
             <>
               <span className="w-px h-3.5 bg-slate-300" />
-              <span className="text-slate-700 font-semibold">{user.name}</span>
+              <span className="text-slate-300 font-semibold">{user.name}</span>
               <button
                 onClick={logout}
                 className="flex items-center gap-1 text-slate-500 hover:text-red-500 transition-colors"
@@ -106,7 +106,7 @@ export function SiteNav() {
 
       {/* ── Main pill nav ── */}
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto mt-1">
-        <div className="backdrop-blur-[14px] rounded-full border border-black/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.07)] bg-white/60 flex items-center justify-between h-16 lg:h-[4.5rem] px-5 lg:px-7">
+        <div className="backdrop-blur-[14px] rounded-full border border-black/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.07)] bg-os-s1/60 flex items-center justify-between h-16 lg:h-[4.5rem] px-5 lg:px-7">
 
           {/* Logo */}
           <a href="/" className="flex items-center shrink-0 group">
@@ -118,7 +118,7 @@ export function SiteNav() {
           </a>
 
           {/* Nav links pill */}
-          <nav className="hidden lg:flex items-center gap-1 rounded-full px-4 py-1 bg-white/80 border border-white/30 shadow-sm backdrop-blur-md">
+          <nav className="hidden lg:flex items-center gap-1 rounded-full px-4 py-1 bg-os-s1/80 border border-white/30 shadow-sm backdrop-blur-md">
             {NAV_ITEMS.map(item => (
               <div
                 key={item.id}
@@ -129,7 +129,7 @@ export function SiteNav() {
                 {item.href ? (
                   <a
                     href={item.href}
-                    className="flex items-center gap-1 px-4 py-2 text-[14px] font-bold text-gray-800 hover:text-blue-600 transition-colors rounded-full hover:bg-slate-50"
+                    className="flex items-center gap-1 px-4 py-2 text-[14px] font-bold text-gray-800 hover:text-blue-600 transition-colors rounded-full hover:bg-slate-900"
                   >
                     {item.label}
                     <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
@@ -137,7 +137,7 @@ export function SiteNav() {
                 ) : (
                   <button
                     onClick={() => setActiveDropdown(activeDropdown === item.id ? null : item.id)}
-                    className="flex items-center gap-1 px-4 py-2 text-[14px] font-bold text-gray-800 hover:text-blue-600 transition-colors rounded-full hover:bg-slate-50"
+                    className="flex items-center gap-1 px-4 py-2 text-[14px] font-bold text-gray-800 hover:text-blue-600 transition-colors rounded-full hover:bg-slate-900"
                   >
                     {item.label}
                     <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${activeDropdown === item.id ? 'rotate-180 text-blue-500' : ''}`} />
@@ -147,7 +147,7 @@ export function SiteNav() {
                 {/* Dropdown panel */}
                 {item.items && activeDropdown === item.id && (
                   <div
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-5 min-w-[280px] pointer-events-auto"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-os-s1/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-5 min-w-[280px] pointer-events-auto"
                     style={{ animation: 'siteNavFadeIn 0.2s cubic-bezier(0.16,1,0.3,1)' }}
                     onMouseEnter={() => setActiveDropdown(item.id)}
                     onMouseLeave={() => setActiveDropdown(null)}

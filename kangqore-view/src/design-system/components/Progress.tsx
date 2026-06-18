@@ -33,13 +33,13 @@ function Progress({ value, max = 100, color = 'brand', size = 'md', label, showV
     <div className={cn('flex flex-col gap-1.5', className)}>
       {(label || showValue) && (
         <div className="flex items-center justify-between">
-          {label && <span className="text-xs font-medium text-slate-600">{label}</span>}
-          {showValue && <span className="text-xs font-semibold text-slate-700">{Math.round(pct)}%</span>}
+          {label && <span className="text-xs font-medium text-slate-500">{label}</span>}
+          {showValue && <span className="text-xs font-semibold text-white">{Math.round(pct)}%</span>}
         </div>
       )}
       <RadixProgress.Root
         value={pct}
-        className={cn('overflow-hidden rounded-full bg-slate-100 w-full', sizeMap[size])}
+        className={cn('overflow-hidden rounded-full bg-[#151C2F] border border-[#2E2854] w-full', sizeMap[size])}
       >
         <RadixProgress.Indicator
           className={cn(
@@ -62,7 +62,7 @@ function MultiProgress({ segments, size = 'md', className }: {
   const total = segments.reduce((s, seg) => s + seg.value, 0)
 
   return (
-    <div className={cn('flex overflow-hidden rounded-full bg-slate-100 w-full', sizeMap[size], className)}>
+    <div className={cn('flex overflow-hidden rounded-full bg-[#151C2F] border border-[#2E2854] w-full', sizeMap[size], className)}>
       {segments.map((seg, i) => (
         <div
           key={i}

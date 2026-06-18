@@ -143,11 +143,11 @@ export function InternalMessages() {
         {selectedConv ? (
           <>
             {/* Header */}
-            <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100 flex-shrink-0">
+            <div className="flex items-center gap-3 px-5 py-4 border-b border-os-border flex-shrink-0">
               <Avatar name={selectedConv.user.name} size="sm" />
               <div>
-                <p className="text-sm font-semibold text-slate-900">{selectedConv.user.name}</p>
-                <p className="text-xs text-slate-400 capitalize">{selectedConv.user.role?.toLowerCase()}</p>
+                <p className="text-sm font-semibold text-white">{selectedConv.user.name}</p>
+                <p className="text-xs text-slate-500 capitalize">{selectedConv.user.role?.toLowerCase()}</p>
               </div>
             </div>
 
@@ -155,7 +155,7 @@ export function InternalMessages() {
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3">
               {loading && (
                 <div className="space-y-3 animate-pulse">
-                  {[1,2,3].map(i => <div key={i} className={`h-12 rounded-2xl bg-slate-100 ${i % 2 === 0 ? 'ml-auto w-3/5' : 'w-3/5'}`} />)}
+                  {[1,2,3].map(i => <div key={i} className={`h-12 rounded-2xl bg-os-s1 ${i % 2 === 0 ? 'ml-auto w-3/5' : 'w-3/5'}`} />)}
                 </div>
               )}
               {!loading && thread.map(msg => {
@@ -164,10 +164,10 @@ export function InternalMessages() {
                   <div key={msg.id} className={`flex gap-2.5 max-w-[80%] ${isMe ? 'ml-auto flex-row-reverse' : ''}`}>
                     <Avatar name={msg.sender.name} size="xs" className="flex-shrink-0 mt-1" />
                     <div>
-                      <div className={`rounded-2xl px-4 py-2.5 ${isMe ? 'bg-[#2564ea] text-white rounded-tr-sm' : 'bg-slate-100 text-slate-800 rounded-tl-sm'}`}>
+                      <div className={`rounded-2xl px-4 py-2.5 ${isMe ? 'bg-os-blue text-white rounded-tr-sm' : 'bg-os-s1 text-slate-200 rounded-tl-sm'}`}>
                         <p className="text-sm leading-relaxed">{msg.content}</p>
                       </div>
-                      <p className={`text-[10px] text-slate-400 mt-1 ${isMe ? 'text-right' : ''}`}>
+                      <p className={`text-[10px] text-slate-500 mt-1 ${isMe ? 'text-right' : ''}`}>
                         {fmtTime(msg.createdAt)}
                       </p>
                     </div>
@@ -175,13 +175,13 @@ export function InternalMessages() {
                 )
               })}
               {!loading && thread.length === 0 && (
-                <p className="text-center text-xs text-slate-400 py-10">Start the conversation.</p>
+                <p className="text-center text-xs text-slate-500 py-10">Start the conversation.</p>
               )}
               <div ref={bottomRef} />
             </div>
 
             {/* Compose */}
-            <div className="border-t border-slate-100 px-4 py-3 flex-shrink-0">
+            <div className="border-t border-os-border px-4 py-3 flex-shrink-0">
               <div className="flex items-end gap-2">
                 <textarea
                   value={draft}
@@ -189,7 +189,7 @@ export function InternalMessages() {
                   onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) send() }}
                   rows={2}
                   placeholder="Type a message… (⌘↵ to send)"
-                  className="flex-1 resize-none border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                  className="flex-1 resize-none border border-os-border rounded-xl px-3 py-2.5 text-sm text-slate-300 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
                 />
                 <Button variant="primary" size="sm" leftIcon={<Send className="w-3.5 h-3.5" />}
                   disabled={!draft.trim() || isPending} onClick={send}>
@@ -200,11 +200,11 @@ export function InternalMessages() {
           </>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center px-8">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center mb-3">
-              <MessageSquare className="w-5 h-5 text-slate-400" />
+            <div className="w-12 h-12 rounded-2xl bg-os-s1 flex items-center justify-center mb-3">
+              <MessageSquare className="w-5 h-5 text-slate-500" />
             </div>
-            <p className="text-sm font-semibold text-slate-700">Select a conversation</p>
-            <p className="text-xs text-slate-400 mt-1">Internal team messages</p>
+            <p className="text-sm font-semibold text-slate-300">Select a conversation</p>
+            <p className="text-xs text-slate-500 mt-1">Internal team messages</p>
           </div>
         )}
       </div>

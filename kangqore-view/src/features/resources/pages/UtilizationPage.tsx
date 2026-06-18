@@ -44,7 +44,7 @@ export function UtilizationPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Utilization Analytics</h2>
+          <h2 className="text-xl font-bold text-white">Utilization Analytics</h2>
           <p className="text-sm text-slate-500 mt-0.5">Team capacity usage — last 4 weeks</p>
         </div>
         <div className="flex items-center gap-2">
@@ -131,11 +131,11 @@ export function UtilizationPage() {
         <div className="space-y-3">
           {[...team].sort((a, b) => b.utilization - a.utilization).map((m, i) => (
             <div key={m.id} className="flex items-center gap-3">
-              <span className="text-xs text-slate-400 w-4 text-right">{i + 1}</span>
+              <span className="text-xs text-slate-500 w-4 text-right">{i + 1}</span>
               <Avatar name={m.name} size="sm" />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                  <p className="text-sm font-medium text-slate-800">{m.name}</p>
+                  <p className="text-sm font-medium text-slate-200">{m.name}</p>
                   <span className={`text-xs font-bold ${m.utilization >= 95 ? 'text-red-600' : m.utilization >= 80 ? 'text-amber-600' : 'text-green-600'}`}>
                     {m.utilization}%
                   </span>
@@ -146,7 +146,7 @@ export function UtilizationPage() {
                   color={m.utilization >= 95 ? 'danger' : m.utilization >= 80 ? 'warning' : 'success'}
                 />
               </div>
-              <span className="text-xs text-slate-400 w-24 text-right">
+              <span className="text-xs text-slate-500 w-24 text-right">
                 {Math.round(m.availability * m.utilization / 100)}h / {m.availability}h
               </span>
             </div>

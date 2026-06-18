@@ -1,0 +1,230 @@
+/* ─── Fonts (bundled — no CDN dependency) ─────────────────────────────────── */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/figtree/500.css";
+@import "@fontsource/figtree/600.css";
+@import "@fontsource/figtree/700.css";
+@import "@fontsource/figtree/800.css";
+
+
+:root {
+  /* Brand — Kangqore official: #2564ea → #4ab6d4 */
+  --color-brand-50:  #eef6ff;
+  --color-brand-100: #d9ecff;
+  --color-brand-200: #b3d9ff;
+  --color-brand-300: #7ec0f0;
+  --color-brand-400: #4ab6d4;
+  --color-brand-500: #2564ea;
+  --color-brand-600: #1a52cc;
+  --color-brand-700: #1440a8;
+  --color-brand-800: #0f2f80;
+  --color-brand-900: #0a1f58;
+  --color-brand-gradient: linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%);
+
+  /* Surface */
+  --color-surface-0:   #ffffff;
+  --color-surface-50:  #f5f7fa;
+  --color-surface-100: #eef1f6;
+  --color-surface-200: #e2e7f0;
+  --color-surface-300: #c8d0e0;
+  --color-surface-400: #9aaabf;
+  --color-surface-500: #6b7a99;
+
+  /* Text */
+  --color-text-primary:   #0f1117;
+  --color-text-secondary: #4b5368;
+  --color-text-muted:     #8896b0;
+  --color-text-inverse:   #ffffff;
+
+  /* Status */
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-danger:  #dc2626;
+  --color-info:    #2563eb;
+
+  /* Health card tints */
+  --health-on-track-border: #16a34a;
+  --health-on-track-bg:     #f0fdf4;
+  --health-at-risk-border:  #d97706;
+  --health-at-risk-bg:      #fffbeb;
+  --health-behind-border:   #dc2626;
+  --health-behind-bg:       #fef2f2;
+  --health-completed-border:#64748b;
+  --health-completed-bg:    #f8fafc;
+
+  /* Typography */
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Figtree', system-ui, -apple-system, sans-serif;
+
+  /* Layout */
+  --sidebar-width: 210px;
+  --sidebar-collapsed-width: 64px;
+  --topbar-height: 60px;
+}
+
+
+/* ─── Kangqore OS Design Tokens ─────────────────────────────────────────────
+ * All OS-specific tokens use --os-* prefix.
+ * Use these in new code. Existing raw hex values migrate gradually.
+ * ────────────────────────────────────────────────────────────────────────── */
+:root {
+
+  /* ── Surfaces (depth stack: 0 = deepest, 3 = most elevated) ── */
+  --os-bg:        #060b18;
+  --os-surface-0: #0d1117;
+  --os-surface-1: #151C2F;
+  --os-surface-2: #1a2340;
+  --os-surface-3: #1f2a4a;
+  --os-glass:     rgba(21, 28, 47, 0.72);
+  --os-glass-blur: blur(20px) saturate(180%);
+
+  /* ── Borders ── */
+  --os-border:         #2E2854;
+  --os-border-subtle:  rgba(46, 40, 84, 0.45);
+  --os-border-strong:  #3d3870;
+
+  /* ── Brand ── */
+  --os-blue:     #2564ea;
+  --os-cyan:     #4ab6d4;
+  --os-blue-dim: rgba(37,  100, 234, 0.14);
+  --os-cyan-dim: rgba(74,  182, 212, 0.12);
+  --os-blue-glow: rgba(37, 100, 234, 0.35);
+  --os-cyan-glow: rgba(74, 182, 212, 0.25);
+
+  /* ── Text (1 = loudest, 5 = quietest) ── */
+  --os-text-1: #ffffff;
+  --os-text-2: #e2e8f0;
+  --os-text-3: #94a3b8;
+  --os-text-4: #64748b;
+  --os-text-5: #475569;
+
+  /* ── Status ── */
+  --os-success:     #059669;
+  --os-warning:     #d97706;
+  --os-danger:      #ef4444;
+  --os-info:        #2564ea;
+  --os-success-dim: rgba(5,   150, 105, 0.12);
+  --os-warning-dim: rgba(217, 119,   6, 0.12);
+  --os-danger-dim:  rgba(239,  68,  68, 0.12);
+  --os-info-dim:    rgba(37,  100, 234, 0.12);
+
+  /* ── Typography — 6 sizes only, 3 weights only ── */
+  --os-font-ui:      'Inter',   system-ui, -apple-system, sans-serif;
+  --os-font-display: 'Figtree', system-ui, -apple-system, sans-serif;
+
+  --os-size-xs:   0.625rem;  /* 10px — labels, timestamps, badges       */
+  --os-size-sm:   0.75rem;   /* 12px — captions, secondary labels        */
+  --os-size-base: 0.875rem;  /* 14px — body, table cells, form values    */
+  --os-size-md:   1rem;      /* 16px — card titles, important body       */
+  --os-size-lg:   1.25rem;   /* 20px — section headings (Figtree)        */
+  --os-size-xl:   1.75rem;   /* 28px — page headings (Figtree)           */
+
+  --os-weight-normal:   400;
+  --os-weight-semibold: 600;
+  --os-weight-bold:     700;
+
+  --os-leading-tight:  1.2;
+  --os-leading-snug:   1.4;
+  --os-leading-normal: 1.6;
+
+  --os-tracking-tight: -0.02em;
+  --os-tracking-snug:  -0.01em;
+  --os-tracking-wide:   0.04em;
+  --os-tracking-wider:  0.08em;
+
+  /* ── Border radius family ── */
+  --os-radius-xs: 4px;
+  --os-radius-sm: 6px;
+  --os-radius-md: 10px;
+  --os-radius-lg: 16px;
+  --os-radius-xl: 24px;
+
+  /* ── Shadows ── */
+  --os-shadow-sm:   0 1px 4px  rgba(0, 0, 0, 0.3);
+  --os-shadow-md:   0 4px 20px rgba(0, 0, 0, 0.4);
+  --os-shadow-lg:   0 12px 40px rgba(0, 0, 0, 0.5);
+  --os-shadow-glow: 0 0 24px rgba(37,  100, 234, 0.28);
+  --os-shadow-cyan: 0 0 24px rgba(74,  182, 212, 0.22);
+
+  /* ── Motion (CSS transitions — Framer spring presets live in tokens/motion.ts) ── */
+  --os-duration-fast:   120ms;
+  --os-duration-base:   220ms;
+  --os-duration-slow:   380ms;
+  --os-ease-smooth:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --os-ease-snappy:  cubic-bezier(0.4,  0,    0.2,  1);
+  --os-ease-bounce:  cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+/* ─── Typography utilities ───────────────────────────────────────────────── */
+
+/* Explicit display class — Figtree 800, tighter tracking than h2 default */
+.text-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* ─── Skeleton shimmer ───────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--os-surface-1) 25%,
+    var(--os-surface-2) 50%,
+    var(--os-surface-1) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.os-glass-card {
+  background: rgba(21, 28, 47, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(46, 40, 84, 0.45);
+}
+
+.os-glass-strong {
+  background: rgba(21, 28, 47, 0.90);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid var(--os-border);
+}
+
+/* ─── Drawer exit animation (Radix Dialog data-state) ───────────────────── */
+/*
+ * Radix waits for the animation to finish before removing the DOM node,
+ * so this gives EditDrawer a slide-out matching its slide-in entrance.
+ */
+@keyframes drawer-slide-out {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes overlay-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+[data-radix-dialog-content][data-state="closed"] {
+  animation: drawer-slide-out 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+  pointer-events: none;
+}
+
+[data-radix-dialog-overlay][data-state="closed"] {
+  animation: overlay-fade-out 0.18s ease-in forwards;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--color-surface-300); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-surface-400); }

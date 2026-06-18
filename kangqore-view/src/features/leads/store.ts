@@ -12,12 +12,15 @@ interface LeadsStore {
   error:            string | null
   hydrate:          (leads: typeof LEADS) => void
   setSelected:      (id: string) => void
-  moveLeadStage:   (leadId: string, stage: LeadStage) => void
-  leadSignals:     (id: string) => typeof EQORE_SIGNALS
-  leadActivities:  (id: string) => typeof ACTIVITIES
-  leadNurture:     (id: string) => typeof NURTURE_SEQUENCES[0] | undefined
-  pipelineValue:   () => number
-  forecastValue:   () => number
+  moveLeadStage:    (leadId: string, stage: LeadStage) => void
+  updateLead:       (leadId: string, patch: Partial<typeof LEADS[0]>) => void
+  bulkUpdateLeads:  (leadIds: string[], patch: Partial<typeof LEADS[0]>) => void
+  bulkDeleteLeads:  (leadIds: string[]) => void
+  leadSignals:      (id: string) => typeof EQORE_SIGNALS
+  leadActivities:   (id: string) => typeof ACTIVITIES
+  leadNurture:      (id: string) => typeof NURTURE_SEQUENCES[0] | undefined
+  pipelineValue:    () => number
+  forecastValue:    () => number
 }
 
 export const useLeadsStore = create<LeadsStore>((set, get) => ({
@@ -30,9 +33,15 @@ export const useLeadsStore = create<LeadsStore>((set, get) => ({
   error:            null,
   hydrate:          (leads) => set({ leads, isLoading: false, error: null }),
 
-  setSelected:    (id) => set({ selectedId: id }),
-  moveLeadStage:  (leadId, stage) =>
+  setSelected:     (id) => set({ selectedId: id }),
+  moveLeadStage:   (leadId, stage) =>
     set(s => ({ leads: s.leads.map(l => l.id === leadId ? { ...l, stage } : l) })),
+  updateLead:      (leadId, patch) =>
+    set(s => ({ leads: s.leads.map(l => l.id === leadId ? { ...l, ...patch } : l) })),
+  bulkUpdateLeads: (leadIds, patch) =>
+    set(s => ({ leads: s.leads.map(l => leadIds.includes(l.id) ? { ...l, ...patch } : l) })),
+  bulkDeleteLeads: (leadIds) =>
+    set(s => ({ leads: s.leads.filter(l => !leadIds.includes(l.id)) })),
 
   leadSignals:    (id) => get().signals.filter(s => s.leadId === id),
   leadActivities: (id) => get().activities.filter(a => a.leadId === id).sort((a,b) => b.date.localeCompare(a.date)),

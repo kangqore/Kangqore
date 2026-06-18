@@ -20,12 +20,12 @@ const TABS = [
 
 export function CareersPortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-100 pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-os-s1 pt-[7.5rem]">
       <PortalNavbar
         portalName="Careers"
         portalColor="bg-gradient-to-br from-[#d97706] to-[#fbbf24]"
         tabs={TABS}
-        basePath="/portal/careers"
+        basePath="/kangqore-view/careers"
       />
       <div className="flex-1 overflow-y-auto min-h-0">
         <ModuleShell>
@@ -36,7 +36,7 @@ export function CareersPortal() {
             <Route path="messages"         element={<CareersMessages />}   />
             <Route path="documents"        element={<CareersDocuments />}  />
             <Route path="portfolio"        element={<CareersPortfolio />}  />
-            <Route path="*"                element={<Navigate to="/portal/careers" replace />} />
+            <Route path="*"                element={<Navigate to="/kangqore-view/careers" replace />} />
           </Routes>
         </ModuleShell>
       </div>
