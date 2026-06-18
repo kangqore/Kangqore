@@ -40,7 +40,7 @@ function fmt(n: number) {
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 
 function Skeleton({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse rounded-lg bg-[#4ab6d4]/20 ${className}`} />
+  return <div className={`animate-pulse rounded-lg bg-os-cyan/20 ${className}`} />
 }
 
 function SkeletonLight({ className = '' }: { className?: string }) {
@@ -127,12 +127,12 @@ function Hero({
               </span>
             ) : null}
             {clients ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-300 border border-slate-700 bg-[#4ab6d4]/10">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-300 border border-slate-700 bg-os-cyan/10">
                 <Briefcase className="w-3 h-3" /> {clients} Clients
               </span>
             ) : null}
             {pipeline ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-300 border border-slate-700 bg-[#4ab6d4]/10">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-300 border border-slate-700 bg-os-cyan/10">
                 <Zap className="w-3 h-3" /> Pipeline {pipeline}
               </span>
             ) : null}
@@ -150,7 +150,7 @@ function Hero({
           </button>
           <button
             onClick={() => navigate('/kangqore-view/admin/projects')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-slate-200 border border-slate-700 bg-[#4ab6d4]/10 hover:bg-[#4ab6d4]/20 transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-slate-200 border border-slate-700 bg-os-cyan/10 hover:bg-os-cyan/20 transition-all active:scale-95"
           >
             <LayoutDashboard className="w-3.5 h-3.5" /> New Project
           </button>
@@ -241,7 +241,7 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
     <div className="bg-os-s1 border-os-border rounded-2xl p-5 flex flex-col gap-5">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-bold text-white flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md bg-[#2564ea]/10 flex items-center justify-center">
+          <div className="w-5 h-5 rounded-md bg-os-blue/10 flex items-center justify-center">
             <Target className="w-3 h-3 text-os-blue" />
           </div>
           My Focus
@@ -499,7 +499,7 @@ function ModuleBoard({ navigate }: { navigate: (p: string) => void }) {
               whileHover={{ y: -3, transition: spring.smooth }}
               whileTap={{ scale: 0.97, transition: spring.snappy }}
               onClick={() => navigate(m.path)}
-              className="group relative flex items-center gap-3 px-4 py-3 bg-os-s1 rounded-xl border border-os-border hover:border-[#4ab6d4]/50 hover:shadow-lg hover:shadow-[#4ab6d4]/10 text-left overflow-hidden"
+              className="group relative flex items-center gap-3 px-4 py-3 bg-os-s1 rounded-xl border border-os-border hover:border-os-cyan/50 hover:shadow-lg hover:shadow-[#4ab6d4]/10 text-left overflow-hidden"
             >
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"

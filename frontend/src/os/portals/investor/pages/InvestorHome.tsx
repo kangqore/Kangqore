@@ -156,7 +156,7 @@ export function InvestorHome() {
                 { label: 'Round',     value: 'Seed' },
                 { label: 'Share class', value: 'Series A Preferred' },
               ].map(item => (
-                <div key={item.label} className="flex justify-between text-sm border-b border-[#2E2854] pb-2 last:border-0 last:pb-0">
+                <div key={item.label} className="flex justify-between text-sm border-b border-os-border pb-2 last:border-0 last:pb-0">
                   <span className="text-slate-500">{item.label}</span>
                   <span className="font-semibold text-white">{item.value}</span>
                 </div>
@@ -208,11 +208,11 @@ export function InvestorHome() {
                 <Progress value={Math.round((activeRound.raisedAmount / activeRound.targetAmount) * 100)} color="brand" size="md" />
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="bg-[#0F172A] rounded-xl p-3">
+                <div className="bg-slate-900 rounded-xl p-3">
                   <p className="text-xs text-slate-500">Post-Money Val.</p>
                   <p className="font-bold text-white">£{(activeRound.valuation / 1000).toFixed(1)}M</p>
                 </div>
-                <div className="bg-[#0F172A] rounded-xl p-3">
+                <div className="bg-slate-900 rounded-xl p-3">
                   <p className="text-xs text-slate-500">Lead Investor</p>
                   <p className="font-bold text-white">TechForward</p>
                 </div>

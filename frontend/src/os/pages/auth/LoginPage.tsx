@@ -49,7 +49,7 @@ export function LoginPage() {
       {/* Left — brand panel */}
       <div className="hidden lg:flex lg:w-[45%] bg-[#0f1117] flex-col justify-between p-12">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center">
             <span className="text-white font-bold">K</span>
           </div>
           <div>
@@ -61,7 +61,7 @@ export function LoginPage() {
         <div>
           <h1 className="text-4xl font-bold text-white leading-tight">
             Strategy meets<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-os-blue to-os-cyan">
               execution.
             </span>
           </h1>
@@ -92,7 +92,7 @@ export function LoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="flex items-center gap-2.5 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center">
               <span className="text-white font-bold text-sm">K</span>
             </div>
             <span className="font-semibold text-slate-900">Kangqore OS</span>

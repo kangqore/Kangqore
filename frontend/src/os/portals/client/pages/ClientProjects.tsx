@@ -100,7 +100,7 @@ export function ClientProjects() {
         return (
           <Card key={p.id} className="overflow-hidden">
             <button
-              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-[#0F172A] transition-colors text-left"
+              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-slate-900 transition-colors text-left"
               onClick={() => setOpenId(isOpen ? '' : p.id)}
             >
               {isOpen
@@ -128,7 +128,7 @@ export function ClientProjects() {
             </button>
 
             {isOpen && (
-              <div className="border-t border-[#2E2854] px-5 pb-5 pt-4 space-y-5">
+              <div className="border-t border-os-border px-5 pb-5 pt-4 space-y-5">
                 <p className="text-sm text-slate-500 leading-relaxed">{p.description}</p>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -138,7 +138,7 @@ export function ClientProjects() {
                     { label: 'Start Date',    value: p.startDate    },
                     { label: 'Target Date',   value: p.targetDate   },
                   ].map(item => (
-                    <div key={item.label} className="bg-[#0F172A] rounded-xl p-3">
+                    <div key={item.label} className="bg-slate-900 rounded-xl p-3">
                       <p className="text-xs text-slate-500 mb-0.5">{item.label}</p>
                       <p className="text-sm font-semibold text-white">{item.value}</p>
                     </div>
@@ -152,7 +152,7 @@ export function ClientProjects() {
                     {p.milestones.map((m, i) => (
                       <div key={i} className="flex items-center gap-3">
                         <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          m.done ? 'bg-green-100' : 'bg-[#151C2F]'
+                          m.done ? 'bg-green-100' : 'bg-os-s1'
                         }`}>
                           {m.done
                             ? <CheckSquare className="w-3.5 h-3.5 text-green-600" />

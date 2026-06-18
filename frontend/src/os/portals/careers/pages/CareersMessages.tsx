@@ -72,7 +72,7 @@ export function CareersMessages() {
   return (
     <div className="flex flex-col max-w-2xl" style={{ height: 'calc(100vh - 200px)', minHeight: 460 }}>
       {/* Header */}
-      <div className="flex items-center gap-3 pb-4 border-b border-[#2E2854] flex-shrink-0">
+      <div className="flex items-center gap-3 pb-4 border-b border-os-border flex-shrink-0">
         <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center">
           <MessageSquare className="w-4 h-4 text-amber-600" />
         </div>
@@ -87,7 +87,7 @@ export function CareersMessages() {
         {isLoading && (
           <div className="space-y-3 animate-pulse">
             {[1,2,3].map(i => (
-              <div key={i} className={`h-16 rounded-2xl bg-[#151C2F] ${i % 2 === 0 ? 'ml-auto w-4/5' : 'w-4/5'}`} />
+              <div key={i} className={`h-16 rounded-2xl bg-os-s1 ${i % 2 === 0 ? 'ml-auto w-4/5' : 'w-4/5'}`} />
             ))}
           </div>
         )}
@@ -108,8 +108,8 @@ export function CareersMessages() {
                 )}
                 <div className={`rounded-2xl px-4 py-3 ${
                   isOutbound
-                    ? 'bg-[#151C2F] text-slate-200 rounded-tl-sm'
-                    : 'bg-[#d97706] text-white rounded-tr-sm'
+                    ? 'bg-os-s1 text-slate-200 rounded-tl-sm'
+                    : 'bg-os-warning text-white rounded-tr-sm'
                 }`}>
                   <p className="text-sm leading-relaxed">{email.body}</p>
                 </div>
@@ -124,7 +124,7 @@ export function CareersMessages() {
       </div>
 
       {/* Compose */}
-      <div className="border-t border-[#2E2854] pt-3 flex-shrink-0">
+      <div className="border-t border-os-border pt-3 flex-shrink-0">
         <div className="flex items-end gap-2">
           <textarea
             value={draft}
@@ -132,7 +132,7 @@ export function CareersMessages() {
             onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) send() }}
             rows={2}
             placeholder="Message the talent team… (⌘↵ to send)"
-            className="flex-1 resize-none border border-[#2E2854] rounded-xl px-3 py-2.5 text-sm text-slate-300 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400"
+            className="flex-1 resize-none border border-os-border rounded-xl px-3 py-2.5 text-sm text-slate-300 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400"
           />
           <Button
             variant="primary"

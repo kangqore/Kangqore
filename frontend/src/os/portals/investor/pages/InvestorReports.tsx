@@ -110,7 +110,7 @@ export function InvestorReports() {
                       </span>
                     </div>
                   </div>
-                  <div className="h-1.5 bg-[#151C2F] rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-os-s1 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full bg-violet-500 transition-all duration-500"
                       style={{ width: `${pct}%` }}

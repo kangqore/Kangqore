@@ -108,9 +108,9 @@ function StatusTimeline({ status }: { status: string }) {
             <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all ${
               isActive
                 ? isCurrent
-                  ? 'bg-[#2564ea] text-white'
+                  ? 'bg-os-blue text-white'
                   : 'bg-green-100 text-green-700'
-                : 'bg-[#151C2F] text-slate-500'
+                : 'bg-os-s1 text-slate-500'
             }`}>
               {STATUS_LABEL[step]}
             </div>
@@ -147,13 +147,13 @@ function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
           <p className="text-sm text-slate-300 leading-relaxed">{cr.description}</p>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-3 bg-[#0F172A] rounded-xl">
+          <div className="p-3 bg-slate-900 rounded-xl">
             <p className="text-xs text-slate-500 mb-1">Cost impact</p>
             <p className={`text-sm font-bold ${cr.costImpact < 0 ? 'text-green-600' : 'text-amber-600'}`}>
               {fmtCost(cr.costImpact)}
             </p>
           </div>
-          <div className="p-3 bg-[#0F172A] rounded-xl">
+          <div className="p-3 bg-slate-900 rounded-xl">
             <p className="text-xs text-slate-500 mb-1">Time impact</p>
             <p className="text-sm font-bold text-slate-300">{cr.timeImpact}</p>
           </div>
@@ -227,7 +227,7 @@ function SubmitCRDrawer({ onClose }: { onClose: () => void }) {
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Priority</label>
             <select value={form.priority} onChange={e => set('priority', e.target.value)}
-              className="w-full border border-[#2E2854] rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
@@ -277,16 +277,16 @@ export function ClientChangeRequests() {
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        <StatCard label="In Review" value={pending}  icon={<Clock        className="w-5 h-5" />} iconColor={pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-[#151C2F] text-slate-500'} />
+        <StatCard label="In Review" value={pending}  icon={<Clock        className="w-5 h-5" />} iconColor={pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-500'} />
         <StatCard label="Approved"  value={approved} icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
-        <StatCard label="Rejected"  value={rejected} icon={<XCircle      className="w-5 h-5" />} iconColor={rejected > 0 ? 'bg-red-100 text-red-600' : 'bg-[#151C2F] text-slate-500'} />
+        <StatCard label="Rejected"  value={rejected} icon={<XCircle      className="w-5 h-5" />} iconColor={rejected > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-500'} />
       </div>
 
       <div className="flex items-center gap-2">
         {['ALL', 'PENDING_APPROVAL', 'UNDER_REVIEW', 'APPROVED', 'REJECTED'].map(s => (
           <button key={s} onClick={() => setFilter(s)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-              filter === s ? 'bg-[#2564ea] text-white' : 'bg-[#151C2F] border border-[#2E2854] text-slate-500 hover:border-blue-300'
+              filter === s ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-500 hover:border-blue-300'
             }`}
           >
             {s === 'ALL' ? 'All' : STATUS_LABEL[s] ?? s}

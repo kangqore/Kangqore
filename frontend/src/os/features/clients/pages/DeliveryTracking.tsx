@@ -34,7 +34,7 @@ export function DeliveryTracking() {
       <div className="flex items-center gap-3 flex-wrap">
         {[
           { label: `${overallCompleted} completed`, color: 'bg-green-50 text-green-700 border-green-200' },
-          { label: `${overallInProg} in progress`,  color: 'bg-[#2564ea]/5 text-os-blue border-[#2564ea]/20' },
+          { label: `${overallInProg} in progress`,  color: 'bg-os-blue/5 text-os-blue border-os-blue/20' },
           { label: `${overallDelayed} delayed`,      color: overallDelayed > 0 ? 'bg-red-50 text-red-700 border-red-200' : 'bg-slate-900 text-slate-300 border-os-border' },
           { label: `${milestones.filter(m=>m.status==='upcoming').length} upcoming`, color: 'bg-slate-900 text-slate-300 border-os-border' },
         ].map(c => (

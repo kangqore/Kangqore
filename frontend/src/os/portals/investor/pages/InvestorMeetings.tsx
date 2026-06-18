@@ -112,7 +112,7 @@ export function InvestorMeetings() {
       <div>
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Upcoming</p>
         {upcoming.length === 0
-          ? <p className="text-sm text-slate-500 text-center py-6 border border-dashed border-[#2E2854] rounded-xl">No upcoming meetings scheduled.</p>
+          ? <p className="text-sm text-slate-500 text-center py-6 border border-dashed border-os-border rounded-xl">No upcoming meetings scheduled.</p>
           : <div className="space-y-3">{upcoming.map(m => <MeetingCard key={m.id} m={m} />)}</div>
         }
       </div>

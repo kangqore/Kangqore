@@ -134,7 +134,7 @@ export function ClientExecutiveReport() {
       <Card>
         <CardHeader><CardTitle>Financial summary</CardTitle></CardHeader>
         <div className="grid grid-cols-3 gap-4 mt-2">
-          <div className="text-center p-3 bg-[#0F172A] rounded-xl">
+          <div className="text-center p-3 bg-slate-900 rounded-xl">
             <TrendingUp className="w-4 h-4 text-blue-500 mx-auto mb-1" />
             <div className="text-lg font-bold text-slate-200">{fmt(totalInvoiced)}</div>
             <div className="text-[11px] text-slate-500">Total invoiced</div>

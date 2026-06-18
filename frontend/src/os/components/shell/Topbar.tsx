@@ -89,7 +89,7 @@ export function Topbar() {
           className={cn(
             'relative h-9 w-full max-w-[400px] rounded-full border border-os-border bg-slate-900',
             'flex items-center gap-2 pl-9 pr-3 text-sm text-slate-500',
-            'hover:border-[#4ab6d4]/60 hover:bg-os-s1 transition-all duration-150 text-left'
+            'hover:border-os-cyan/60 hover:bg-os-s1 transition-all duration-150 text-left'
           )}
         >
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />

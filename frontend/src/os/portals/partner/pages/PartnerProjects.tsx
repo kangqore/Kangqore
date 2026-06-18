@@ -56,7 +56,7 @@ export function PartnerProjects() {
       <div className="grid grid-cols-3 gap-3">
         <StatCard label="Active"    value={active}    icon={<Briefcase className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
         <StatCard label="Completed" value={completed} icon={<Briefcase className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
-        <StatCard label="Total"     value={projects.length} icon={<Briefcase className="w-5 h-5" />} iconColor="bg-[#151C2F] text-slate-500" />
+        <StatCard label="Total"     value={projects.length} icon={<Briefcase className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-500" />
       </div>
 
       <div className="space-y-4">

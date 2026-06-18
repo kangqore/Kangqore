@@ -57,7 +57,7 @@ export function PartnerProfile() {
           All Partners
         </Button>
         <select value={selectedId} onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20">
+          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
           {partners.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
       </div>
@@ -106,7 +106,7 @@ export function PartnerProfile() {
 
         <div className="mt-4 flex gap-2 flex-wrap">
           {partner.specialisms.map(s => (
-            <span key={s} className="text-xs px-2.5 py-1 rounded-full bg-[#2564ea]/5 text-os-blue font-medium border border-[#2564ea]/15">{s}</span>
+            <span key={s} className="text-xs px-2.5 py-1 rounded-full bg-os-blue/5 text-os-blue font-medium border border-os-blue/15">{s}</span>
           ))}
         </div>
 

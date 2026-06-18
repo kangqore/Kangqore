@@ -142,7 +142,7 @@ export function CareersInterviews() {
           className="w-full flex items-start gap-4 text-left"
           onClick={() => setExpanded(isOpen ? null : interview.id)}
         >
-          <div className="w-10 h-10 rounded-xl bg-[#0F172A] flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
             {FORMAT_ICON[interview.format] ?? FORMAT_ICON.VIDEO}
           </div>
           <div className="flex-1 min-w-0">
@@ -165,7 +165,7 @@ export function CareersInterviews() {
 
         {/* Expanded */}
         {isOpen && (
-          <div className="mt-4 pt-4 border-t border-[#2E2854] space-y-4">
+          <div className="mt-4 pt-4 border-t border-os-border space-y-4">
             {interview.notes && (
               <div>
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">

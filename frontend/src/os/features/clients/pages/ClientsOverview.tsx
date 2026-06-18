@@ -18,7 +18,7 @@ const HEALTH_VARIANT: Record<ClientHealth, 'success' | 'warning' | 'danger' | 'i
   excellent: 'info', good: 'success', 'at-risk': 'warning', critical: 'danger',
 }
 const TIER_COLOR: Record<RelationshipTier, string> = {
-  strategic:  'bg-[#2564ea]/20 text-os-cyan border border-[#4ab6d4]/30',
+  strategic:  'bg-os-blue/20 text-os-cyan border border-os-cyan/30',
   enterprise: 'bg-violet-900/20 text-violet-300 border border-violet-500/30',
   standard:   'bg-os-s1 text-slate-300 border border-os-border',
   starter:    'bg-slate-900 text-slate-300 border border-os-border',
@@ -119,7 +119,7 @@ export function ClientsOverview() {
           onClick={() => { setSelecting(s => !s); if (selecting) setSelectedIds(new Set()) }}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border ${
             selecting
-              ? 'bg-[#2564ea]/20 text-os-cyan border-[#4ab6d4]/40'
+              ? 'bg-os-blue/20 text-os-cyan border-os-cyan/40'
               : 'bg-os-s1 text-slate-400 border-os-border hover:text-white'
           }`}
         >
@@ -130,7 +130,7 @@ export function ClientsOverview() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Total ARR"       value={fmt(totalARR)} icon={<DollarSign    className="w-5 h-5"/>} iconColor="bg-[#2564ea]/20 text-os-cyan" change={14} changeLabel="YoY" />
+        <StatCard label="Total ARR"       value={fmt(totalARR)} icon={<DollarSign    className="w-5 h-5"/>} iconColor="bg-os-blue/20 text-os-cyan" change={14} changeLabel="YoY" />
         <StatCard label="Active Clients"  value={activeCount}   icon={<Users         className="w-5 h-5"/>} iconColor="bg-[#00c875]/20 text-[#00c875]"   />
         <StatCard label="At Risk / Critical" value={atRisk}     icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-[#fdab3d]/20 text-[#fdab3d]' : 'bg-os-s1 text-slate-300'} />
         <StatCard label="Avg Satisfaction" value={`${avgNPS}`}  icon={<Star          className="w-5 h-5"/>} iconColor="bg-[#fdab3d]/20 text-[#fdab3d]" suffix="/100" />
@@ -160,7 +160,7 @@ export function ClientsOverview() {
           <StaggerItem key={client.id}>
           <Card
             className={`hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 cursor-pointer h-full border-os-border relative ${
-              selecting && selectedIds.has(client.id) ? 'ring-2 ring-[#2564ea] border-[#2564ea]/60' : ''
+              selecting && selectedIds.has(client.id) ? 'ring-2 ring-[#2564ea] border-os-blue/60' : ''
             }`}
             onClick={() => openClient(client.id)}
           >

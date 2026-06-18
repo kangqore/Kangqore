@@ -88,7 +88,7 @@ export function PartnerDashboard() {
           { label: 'Total Earnings',  value: `£${apiStats.total_earnings?.toLocaleString()}`, icon: DollarSign,  color: 'bg-green-50 text-green-600' },
           { label: 'Partner Score',   value: `${apiStats.rating} / 5`, icon: Star,        color: 'bg-purple-50 text-purple-600'},
         ].map(s => (
-          <div key={s.label} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-5 flex items-center gap-4">
+          <div key={s.label} className="bg-os-s1 border border-os-border rounded-xl p-5 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>
@@ -105,7 +105,7 @@ export function PartnerDashboard() {
         <div className="lg:col-span-2 space-y-3">
           <h3 className="text-base font-semibold text-white">Assigned Tasks</h3>
           {tasks.length === 0 && (
-            <div className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-8 text-center text-slate-500 text-sm">
+            <div className="bg-os-s1 border border-os-border rounded-xl p-8 text-center text-slate-500 text-sm">
               No pending tasks assigned to you.
             </div>
           )}
@@ -151,7 +151,7 @@ export function PartnerDashboard() {
                   <span className="font-semibold text-white">£{e.amount?.toLocaleString()}</span>
                 </div>
               ))}
-              <div className="pt-2 border-t border-[#2E2854]">
+              <div className="pt-2 border-t border-os-border">
                 <div className="flex justify-between text-sm font-semibold">
                   <span className="text-slate-500">Total YTD Portfolio</span>
                   <span className="text-green-600">£{(apiStats.total_earnings + apiStats.pending_earnings)?.toLocaleString()}</span>

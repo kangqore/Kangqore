@@ -65,7 +65,7 @@ function MeetingCard({ meeting }: { meeting: typeof MOCK_MEETINGS[0] }) {
     <Card className="hover:shadow-md transition-all duration-200">
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0 text-center w-14">
-          <div className="text-2xl font-bold text-[#2564ea] leading-none">
+          <div className="text-2xl font-bold text-os-blue leading-none">
             {new Date(meeting.startTime).getDate()}
           </div>
           <div className="text-xs text-slate-500 uppercase tracking-wide">
@@ -172,7 +172,7 @@ export function ClientMeetings() {
       <div>
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Upcoming</p>
         {upcoming.length === 0
-          ? <p className="text-sm text-slate-500 py-6 text-center border border-dashed border-[#2E2854] rounded-xl">No upcoming meetings scheduled.</p>
+          ? <p className="text-sm text-slate-500 py-6 text-center border border-dashed border-os-border rounded-xl">No upcoming meetings scheduled.</p>
           : <div className="space-y-3">{upcoming.map(m => <MeetingCard key={m.id} meeting={m} />)}</div>
         }
       </div>

@@ -6,16 +6,16 @@
  * ALL /dashboard/* routes redirect to the dashboard-os app.
  * The DashboardRedirect component maps old paths to their dashboard-os equivalents:
  *
- *   /dashboard/admin/*          →  <OS_URL>/os/...
- *   /dashboard/client/*         →  <OS_URL>/portal/client/...
- *   /dashboard/partner/*        →  <OS_URL>/portal/partner/...
- *   /dashboard/investor/*       →  <OS_URL>/portal/investor/...
- *   /dashboard/careers/*        →  <OS_URL>/portal/careers/...
- *   /dashboard/calendar         →  <OS_URL>/os/settings/calendar
- *   /dashboard/webhooks         →  <OS_URL>/os/settings/webhooks
- *   /dashboard/workflows        →  <OS_URL>/os/settings/workflows
- *   /dashboard/email-templates  →  <OS_URL>/os/settings/email-templates
- *   /dashboard/custom-domains   →  <OS_URL>/os/settings/custom-domains
+ *   /dashboard/admin/*          →  /kangqore-view/admin/...
+ *   /dashboard/client/*         →  /kangqore-view/client/...
+ *   /dashboard/partner/*        →  /kangqore-view/partner/...
+ *   /dashboard/investor/*       →  /kangqore-view/investor/...
+ *   /dashboard/careers/*        →  /kangqore-view/careers/...
+ *   /dashboard/calendar         →  /kangqore-view/admin/settings/calendar
+ *   /dashboard/webhooks         →  /kangqore-view/admin/settings/webhooks
+ *   /dashboard/workflows        →  /kangqore-view/admin/settings/workflows
+ *   /dashboard/email-templates  →  /kangqore-view/admin/settings/email-templates
+ *   /dashboard/custom-domains   →  /kangqore-view/admin/settings/custom-domains
  */
 
 import React from 'react';
@@ -63,6 +63,10 @@ export const authRoutes = [
   <Route key="dashboard-partner"  path="/dashboard/partner/*"  element={<DashboardRedirect />} />,
   <Route key="dashboard-investor" path="/dashboard/investor/*" element={<DashboardRedirect />} />,
   <Route key="dashboard-careers"  path="/dashboard/careers/*"  element={<DashboardRedirect />} />,
+
+  // Bare /dashboard and /dashboard/<anything-unmatched>
+  <Route key="dashboard-bare"     path="/dashboard"    element={<DashboardRedirect />} />,
+  <Route key="dashboard-catchall" path="/dashboard/*"  element={<DashboardRedirect />} />,
 
   // Legacy /admin/dashboard path
   <Route key="admin-dashboard-old" path="/admin/dashboard" element={<DashboardRedirect />} />,

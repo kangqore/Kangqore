@@ -14,7 +14,7 @@ const TYPE_ICON: Record<GovernanceType, React.ElementType> = {
   escalation:      AlertTriangle,
 }
 const TYPE_COLOR: Record<GovernanceType, string> = {
-  decision:        'bg-[#2564ea]/10 text-os-blue',
+  decision:        'bg-os-blue/10 text-os-blue',
   'change-request':'bg-amber-100 text-amber-600',
   steering:        'bg-os-s1 text-slate-300',
   escalation:      'bg-red-100 text-red-600',
@@ -66,7 +66,7 @@ export function GovernancePage() {
       <div className="flex items-center gap-3 flex-wrap">
         <Input placeholder="Search…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-52" value={search} onChange={e => setSearch(e.target.value)} />
         <select value={typeFilter} onChange={e => setType(e.target.value as GovernanceType | 'all')}
-          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
           <option value="all">All Types</option>
           <option value="decision">Decisions</option>
           <option value="change-request">Change Requests</option>
@@ -74,7 +74,7 @@ export function GovernancePage() {
           <option value="escalation">Escalations</option>
         </select>
         <select value={statusFilter} onChange={e => setStatus(e.target.value as GovernanceStatus | 'all')}
-          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
           <option value="all">All Statuses</option>
           <option value="open">Open</option>
           <option value="pending">Pending</option>
@@ -83,7 +83,7 @@ export function GovernancePage() {
           <option value="rejected">Rejected</option>
         </select>
         <select value={clientFilter} onChange={e => setClient(e.target.value)}
-          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
           <option value="all">All Clients</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>

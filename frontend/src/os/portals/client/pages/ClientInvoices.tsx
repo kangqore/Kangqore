@@ -71,7 +71,7 @@ export function ClientInvoices() {
         <CardBody className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#2E2854] bg-[#0F172A]/50">
+              <tr className="border-b border-os-border bg-slate-900/50">
                 {['Invoice', 'Description', 'Issue Date', 'Due Date', 'Amount', 'Status', ''].map(h => (
                   <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide whitespace-nowrap">
                     {h}
@@ -84,7 +84,7 @@ export function ClientInvoices() {
                 const cfg = STATUS_CONFIG[inv.status as keyof typeof STATUS_CONFIG]
                 const Icon = cfg.icon
                 return (
-                  <tr key={inv.id} className="hover:bg-[#0F172A] transition-colors">
+                  <tr key={inv.id} className="hover:bg-slate-900 transition-colors">
                     <td className="px-5 py-3.5 font-mono text-xs font-semibold text-slate-300">{inv.id}</td>
                     <td className="px-5 py-3.5 text-slate-300 max-w-xs">
                       <span className="line-clamp-1">{inv.project}</span>

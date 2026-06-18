@@ -54,7 +54,7 @@ export function ClientProfile() {
         <select
           value={selectedId}
           onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20"
+          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20"
         >
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
@@ -139,7 +139,7 @@ export function ClientProfile() {
                   <p className="text-xs text-slate-500 truncate">{ct.email}</p>
                 </div>
                 <div className="flex gap-1.5">
-                   <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-[#2564ea]/10 hover:text-os-blue flex items-center justify-center transition-all duration-300">
+                   <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-os-blue/10 hover:text-os-blue flex items-center justify-center transition-all duration-300">
                      <Mail className="w-3.5 h-3.5 text-slate-500" />
                    </button>
                    {ct.phone && (

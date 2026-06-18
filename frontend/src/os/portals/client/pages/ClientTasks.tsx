@@ -66,7 +66,7 @@ export function ClientTasks() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-              filter === f ? 'bg-[#2564ea] text-white' : 'bg-[#151C2F] border border-[#2E2854] text-slate-500 hover:border-blue-300'
+              filter === f ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-500 hover:border-blue-300'
             }`}
           >
             {f === 'all' ? 'All' : f.replace('-', ' ')}

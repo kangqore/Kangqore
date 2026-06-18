@@ -48,7 +48,7 @@ export function AnalystHome() {
         <h2 className="text-base font-bold text-slate-200 mb-4">Key Metrics</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {kpis.map(({ icon: Icon, label, value, sub }) => (
-            <div key={label} className="p-5 rounded-2xl border border-[#2E2854] bg-[#151C2F] text-center">
+            <div key={label} className="p-5 rounded-2xl border border-os-border bg-os-s1 text-center">
               <div className="w-9 h-9 rounded-lg bg-cyan-50 flex items-center justify-center mx-auto mb-3">
                 <Icon className="w-5 h-5 text-cyan-600" />
               </div>
@@ -65,8 +65,8 @@ export function AnalystHome() {
         <h2 className="text-base font-bold text-slate-200 mb-4">Reports &amp; Briefings</h2>
         <div className="space-y-3">
           {reports.map(({ label, date, status }) => (
-            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-[#2E2854] bg-[#151C2F] hover:shadow-sm transition-shadow">
-              <div className="w-9 h-9 rounded-lg bg-[#151C2F] flex items-center justify-center flex-shrink-0">
+            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-os-border bg-os-s1 hover:shadow-sm transition-shadow">
+              <div className="w-9 h-9 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
                 <FileBarChart className="w-5 h-5 text-slate-500" />
               </div>
               <div className="flex-1 min-w-0">
@@ -76,7 +76,7 @@ export function AnalystHome() {
               <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
                 status === 'Available'
                   ? 'bg-emerald-100 text-emerald-700'
-                  : 'bg-[#151C2F] text-slate-500'
+                  : 'bg-os-s1 text-slate-500'
               }`}>
                 {status}
               </span>

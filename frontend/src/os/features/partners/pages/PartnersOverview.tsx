@@ -57,7 +57,7 @@ export function PartnersOverview() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Active Partners"   value={active}                                 icon={<Briefcase     className="w-5 h-5"/>} iconColor="bg-[#2564ea]/10 text-os-blue" />
+        <StatCard label="Active Partners"   value={active}                                 icon={<Briefcase     className="w-5 h-5"/>} iconColor="bg-os-blue/10 text-os-blue" />
         <StatCard label="Total Paid Out"    value={`₹${(totalEarned/1000).toFixed(0)}k`}  icon={<DollarSign    className="w-5 h-5"/>} iconColor="bg-green-100 text-green-600"    />
         <StatCard label="Pending Payment"   value={`₹${(totalPending/1000).toFixed(0)}k`} icon={<DollarSign    className="w-5 h-5"/>} iconColor="bg-amber-100 text-amber-600"    />
         <StatCard label="Paused"            value={atRisk}                                 icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
@@ -66,7 +66,7 @@ export function PartnersOverview() {
       <div className="flex items-center gap-3 flex-wrap">
         <Input placeholder="Search partners or skills…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-64" value={search} onChange={e => setSearch(e.target.value)} />
         {(['all','platinum','gold','silver','associate'] as const).map(t => (
-          <button key={t} onClick={() => setTier(t)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${tierFilter === t ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-[#2564ea]/40'}`}>
+          <button key={t} onClick={() => setTier(t)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${tierFilter === t ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-os-blue/40'}`}>
             {t === 'all' ? 'All Tiers' : t}
           </button>
         ))}

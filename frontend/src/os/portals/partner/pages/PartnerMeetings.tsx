@@ -54,7 +54,7 @@ export function PartnerMeetings() {
       <Card key={m.id} className="hover:shadow-md transition-all duration-200">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0 text-center w-12">
-            <div className="text-2xl font-bold text-[#059669] leading-none">
+            <div className="text-2xl font-bold text-os-success leading-none">
               {new Date(m.startTime).getDate()}
             </div>
             <div className="text-xs text-slate-500 uppercase tracking-wide">
@@ -95,7 +95,7 @@ export function PartnerMeetings() {
       <div>
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Upcoming</p>
         {upcoming.length === 0
-          ? <p className="text-sm text-slate-500 text-center py-6 border border-dashed border-[#2E2854] rounded-xl">No upcoming meetings.</p>
+          ? <p className="text-sm text-slate-500 text-center py-6 border border-dashed border-os-border rounded-xl">No upcoming meetings.</p>
           : <div className="space-y-3">{upcoming.map(renderMeeting)}</div>
         }
       </div>

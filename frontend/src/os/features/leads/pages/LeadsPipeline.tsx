@@ -70,10 +70,10 @@ function LeadCard({
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
         'bg-os-s1 border rounded-xl p-3 select-none shadow-sm',
-        'hover:shadow-lg hover:shadow-[#4ab6d4]/10 hover:-translate-y-1 hover:border-[#2564ea]/30 transition-all duration-150',
+        'hover:shadow-lg hover:shadow-[#4ab6d4]/10 hover:-translate-y-1 hover:border-os-blue/30 transition-all duration-150',
         isDragging && !dragging && 'opacity-30',
         dragging && 'shadow-xl rotate-1 scale-105',
-        selected ? 'border-[#2564ea]/60 bg-[#1a2440]' : 'border-os-border',
+        selected ? 'border-os-blue/60 bg-[#1a2440]' : 'border-os-border',
       )}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
@@ -313,7 +313,7 @@ export function LeadsPipeline() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <StatCard label="Pipeline Value"  value={`₹${(totalPipeline/1000).toFixed(0)}k`}  icon={<TrendingUp className="w-5 h-5"/>} iconColor="bg-[#2564ea]/10 text-os-blue"  />
+        <StatCard label="Pipeline Value"  value={`₹${(totalPipeline/1000).toFixed(0)}k`}  icon={<TrendingUp className="w-5 h-5"/>} iconColor="bg-os-blue/10 text-os-blue"  />
         <StatCard label="Forecast Value"  value={`₹${(totalForecast/1000).toFixed(0)}k`}  icon={<TrendingUp className="w-5 h-5"/>} iconColor="bg-amber-100 text-amber-600"     />
         <StatCard label="Won YTD"          value={`₹${(wonValue/1000).toFixed(0)}k`}       icon={<TrendingUp className="w-5 h-5"/>} iconColor="bg-green-100 text-green-600"     />
         <StatCard label="Active Leads"     value={activeCount}                              icon={<TrendingUp className="w-5 h-5"/>} iconColor="bg-os-s1 text-slate-300"     />

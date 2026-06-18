@@ -20,7 +20,7 @@ const TABS = [
 
 export function InvestorPortal() {
   return (
-    <div className="flex flex-col h-screen bg-[#151C2F] pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-os-s1 pt-[7.5rem]">
       <PortalNavbar
         portalName="Investor Portal"
         portalColor="bg-gradient-to-br from-[#7c3aed] to-[#a78bfa]"

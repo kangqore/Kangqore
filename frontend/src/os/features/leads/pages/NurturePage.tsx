@@ -12,7 +12,7 @@ const STEP_ICON: Record<string, React.ElementType> = {
 }
 const STEP_COLOR: Record<string, string> = {
   email: 'bg-blue-100 text-blue-600', call: 'bg-green-100 text-green-600',
-  linkedin: 'bg-[#2564ea]/10 text-os-blue', wait: 'bg-os-s1 text-slate-300',
+  linkedin: 'bg-os-blue/10 text-os-blue', wait: 'bg-os-s1 text-slate-300',
 }
 
 export function NurturePage() {
@@ -78,7 +78,7 @@ export function NurturePage() {
                   const Icon = STEP_ICON[step.type] ?? Mail
                   const isNext = !step.completed && i === doneSteps
                   return (
-                    <div key={step.step} className={`flex items-start gap-3 p-2.5 rounded-xl transition-colors ${isNext ? 'bg-[#2564ea]/5 border border-[#2564ea]/15' : ''}`}>
+                    <div key={step.step} className={`flex items-start gap-3 p-2.5 rounded-xl transition-colors ${isNext ? 'bg-os-blue/5 border border-os-blue/15' : ''}`}>
                       {/* Status indicator */}
                       <div className="flex-shrink-0 mt-0.5">
                         {step.completed
@@ -101,7 +101,7 @@ export function NurturePage() {
                             {step.title}
                           </p>
                           {isNext && (
-                            <span className="text-[10px] font-semibold text-os-blue bg-[#2564ea]/10 px-1.5 py-0.5 rounded flex-shrink-0">NEXT</span>
+                            <span className="text-[10px] font-semibold text-os-blue bg-os-blue/10 px-1.5 py-0.5 rounded flex-shrink-0">NEXT</span>
                           )}
                         </div>
                         <p className="text-[10px] text-slate-500 mt-0.5">{step.description}</p>

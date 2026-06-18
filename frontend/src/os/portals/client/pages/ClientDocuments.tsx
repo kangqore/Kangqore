@@ -32,7 +32,7 @@ const CATEGORY_CONFIG: Record<DocCategory, { label: string; color: string }> = {
   contract:   { label: 'Contract',   color: 'bg-blue-50 text-blue-700'   },
   report:     { label: 'Report',     color: 'bg-green-50 text-green-700' },
   design:     { label: 'Design',     color: 'bg-purple-50 text-purple-700'},
-  technical:  { label: 'Technical',  color: 'bg-[#151C2F] text-slate-300' },
+  technical:  { label: 'Technical',  color: 'bg-os-s1 text-slate-300' },
   compliance: { label: 'Compliance', color: 'bg-red-50 text-red-700'     },
 }
 
@@ -70,7 +70,7 @@ export function ClientDocuments() {
       {/* Folder quick-access */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {FOLDERS.map(f => (
-          <button key={f.label} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-4 text-left hover:border-blue-300 hover:bg-blue-50/30 transition-all">
+          <button key={f.label} className="bg-os-s1 border border-os-border rounded-xl p-4 text-left hover:border-blue-300 hover:bg-blue-50/30 transition-all">
             <span className="text-2xl mb-2 block">{f.icon}</span>
             <p className="text-sm font-medium text-white leading-tight">{f.label}</p>
             <p className="text-xs text-slate-500 mt-1">{f.count} files</p>
@@ -91,8 +91,8 @@ export function ClientDocuments() {
             {documents.map(doc => {
               const cfg = CATEGORY_CONFIG[doc.category]
               return (
-                <div key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#0F172A] transition-colors">
-                  <div className="w-9 h-9 rounded-xl bg-[#151C2F] flex items-center justify-center flex-shrink-0">
+                <div key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-900 transition-colors">
+                  <div className="w-9 h-9 rounded-xl bg-os-s1 flex items-center justify-center flex-shrink-0">
                     <FileText className="w-4 h-4 text-slate-500" />
                   </div>
                   <div className="flex-1 min-w-0">

@@ -65,23 +65,31 @@ function mapPath(pathname) {
   if (p === adminPrefix || p.startsWith(adminPrefix + '/')) {
     const sub = p.slice(adminPrefix.length + 1); // e.g. "leads", "clients/123"
     const adminModuleMap = {
-      'leads':       '/kangqore-view/admin/leads',
-      'clients':     '/kangqore-view/admin/clients',
-      'partners':    '/kangqore-view/admin/partners',
-      'analytics':   '/kangqore-view/admin/analytics',
-      'kpi':         '/kangqore-view/admin/analytics',
-      'finance':     '/kangqore-view/admin/finance',
-      'billing':     '/kangqore-view/admin/finance',
-      'careers':     '/kangqore-view/admin/careers',
-      'projects':    '/kangqore-view/admin/projects',
-      'resources':   '/kangqore-view/admin/resources',
-      'departments': '/kangqore-view/admin/departments',
-      'marketing':   '/kangqore-view/admin/marketing',
-      'kimmp-pages': '/kangqore-view/admin/kimmp',
-      'kimmp':       '/kangqore-view/admin/kimmp',
-      'investors':   '/kangqore-view/admin/investors',
-      'strategy':    '/kangqore-view/admin/strategy',
-      'workflows':   '/kangqore-view/admin/workflows',
+      'leads':         '/kangqore-view/admin/leads',
+      'clients':       '/kangqore-view/admin/clients',
+      'partners':      '/kangqore-view/admin/partners',
+      'analytics':     '/kangqore-view/admin/analytics',
+      'kpi':           '/kangqore-view/admin/analytics',
+      'finance':       '/kangqore-view/admin/finance',
+      'billing':       '/kangqore-view/admin/finance',
+      'careers':       '/kangqore-view/admin/careers',
+      'projects':      '/kangqore-view/admin/projects',
+      'resources':     '/kangqore-view/admin/resources',
+      'departments':   '/kangqore-view/admin/departments',
+      'marketing':     '/kangqore-view/admin/marketing',
+      'kimmp-pages':   '/kangqore-view/admin/kangqore-immp',
+      'kimmp':         '/kangqore-view/admin/kangqore-immp',
+      'kangqore-immp': '/kangqore-view/admin/kangqore-immp',
+      'investors':     '/kangqore-view/admin/investors',
+      'strategy':      '/kangqore-view/admin/strategy',
+      'workflows':     '/kangqore-view/admin/workflows',
+      'comms':         '/kangqore-view/admin/comms',
+      'consultations': '/kangqore-view/admin/consultations',
+      'delivery':      '/kangqore-view/admin/delivery',
+      'governance':    '/kangqore-view/admin/governance',
+      'systems':       '/kangqore-view/admin/systems',
+      'agent-logs':    '/kangqore-view/admin/agent-logs',
+      'scheduling':    '/kangqore-view/admin/scheduling',
     };
 
     const firstSegment = sub.split('/')[0];
@@ -90,7 +98,7 @@ function mapPath(pathname) {
       return adminModuleMap[firstSegment] + rest;
     }
 
-    return '/kangqore-view/admin/kimmp';
+    return '/kangqore-view/admin';
   }
 
   // ── Fallback ──────────────────────────────────────────────────────────────

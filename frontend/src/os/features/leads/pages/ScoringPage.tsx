@@ -7,7 +7,7 @@ import type { SignalCategory } from '../types'
 
 const CATEGORY_COLOR: Record<SignalCategory, string> = {
   intent:       'bg-red-100   text-red-600',
-  fit:          'bg-[#2564ea]/10 text-os-blue',
+  fit:          'bg-os-blue/10 text-os-blue',
   engagement:   'bg-green-100 text-green-600',
   firmographic: 'bg-os-s1 text-slate-300',
 }

@@ -90,7 +90,7 @@ export function MyApplication() {
               { label: 'Current Stage', value: STAGES.find(s => s.id === currentStage)?.label ?? '—' },
               { label: 'Salary',        value: application.salary                           },
             ].map(item => (
-              <div key={item.label} className="bg-[#0F172A] rounded-xl p-3">
+              <div key={item.label} className="bg-slate-900 rounded-xl p-3">
                 <p className="text-xs text-slate-500 mb-0.5">{item.label}</p>
                 <p className="text-sm font-semibold text-white">{item.value}</p>
               </div>
@@ -113,7 +113,7 @@ export function MyApplication() {
                 <div key={stage.id} className="flex gap-4">
                   <div className="flex flex-col items-center">
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      isDone ? 'bg-green-100' : isActive ? 'bg-blue-100' : 'bg-[#151C2F]'
+                      isDone ? 'bg-green-100' : isActive ? 'bg-blue-100' : 'bg-os-s1'
                     }`}>
                       {isDone
                         ? <CheckCircle2 className="w-4 h-4 text-green-600" />
@@ -167,7 +167,7 @@ export function MyApplication() {
                   </div>
                   <div className={`flex-1 max-w-[85%] ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
                     <div className={`rounded-xl px-3 py-2 text-sm ${
-                      isMe ? 'bg-blue-600 text-white' : 'bg-[#151C2F] text-slate-200'
+                      isMe ? 'bg-blue-600 text-white' : 'bg-os-s1 text-slate-200'
                     }`}>
                       {msg.text}
                     </div>

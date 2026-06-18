@@ -76,7 +76,7 @@ export function ClientDashboard() {
           { label: 'SLA Compliance',  value: '96%',                                                                    icon: CheckCircle2, color: 'bg-green-50 text-green-600' },
           { label: 'Next Milestone',  value: projects[0]?.milestoneDate ?? '—',                                        icon: Calendar,     color: 'bg-purple-50 text-purple-600'},
         ].map(s => (
-          <div key={s.label} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-5 flex items-center gap-4">
+          <div key={s.label} className="bg-os-s1 border border-os-border rounded-xl p-5 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>

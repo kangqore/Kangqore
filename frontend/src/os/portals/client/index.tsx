@@ -32,10 +32,10 @@ const TABS = [
 
 export function ClientPortal() {
   return (
-    <div className="flex flex-col h-screen bg-[#151C2F] pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-os-s1 pt-[7.5rem]">
       <PortalNavbar
         portalName="Client Portal"
-        portalColor="bg-gradient-to-br from-[#2564ea] to-[#4ab6d4]"
+        portalColor="bg-gradient-to-br from-os-blue to-os-cyan"
         tabs={TABS}
         basePath="/kangqore-view/client"
       />

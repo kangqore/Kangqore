@@ -182,7 +182,7 @@ export function CareersPortfolio() {
           { url: form.portfolioUrl, icon: <Globe     className="w-4 h-4" />, label: 'Portfolio' },
           { url: form.cvUrl,        icon: <FileText  className="w-4 h-4" />, label: 'CV'        },
         ].filter(l => l.url).length > 0 && (
-          <div className="flex items-center gap-4 mt-4 pt-4 border-t border-[#2E2854] flex-wrap">
+          <div className="flex items-center gap-4 mt-4 pt-4 border-t border-os-border flex-wrap">
             {[
               { url: form.linkedinUrl,  icon: <Link2     className="w-4 h-4" />, label: 'LinkedIn'  },
               { url: form.githubUrl,    icon: <GitBranch className="w-4 h-4" />, label: 'GitHub'    },
@@ -203,7 +203,7 @@ export function CareersPortfolio() {
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Work samples</p>
         <div className="space-y-3 mb-4">
           {samples.map(s => (
-            <div key={s.id} className="flex items-start gap-3 p-3 bg-[#0F172A] rounded-xl group">
+            <div key={s.id} className="flex items-start gap-3 p-3 bg-slate-900 rounded-xl group">
               <div className="flex-1 min-w-0">
                 <a href={s.url} target="_blank" rel="noreferrer"
                   className="text-sm font-medium text-slate-200 hover:text-blue-600 hover:underline flex items-center gap-1">
@@ -227,7 +227,7 @@ export function CareersPortfolio() {
           )}
         </div>
 
-        <div className="border-t border-[#2E2854] pt-4 space-y-2">
+        <div className="border-t border-os-border pt-4 space-y-2">
           <p className="text-xs font-semibold text-slate-500 mb-2">Add a work sample</p>
           <Input value={addTitle} onChange={e => setAddTitle(e.target.value)} placeholder="Project or article title" />
           <Input value={addUrl}   onChange={e => setAddUrl(e.target.value)}   placeholder="URL" />

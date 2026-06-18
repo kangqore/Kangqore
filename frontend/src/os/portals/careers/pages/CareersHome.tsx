@@ -9,7 +9,7 @@ import { api } from '@lib/api'
 const DEPT_COLOR: Record<string, string> = {
   engineering: 'bg-blue-50 text-blue-700', product: 'bg-purple-50 text-purple-700',
   sales: 'bg-green-50 text-green-700', delivery: 'bg-orange-50 text-orange-700',
-  ops: 'bg-[#151C2F] text-slate-500', design: 'bg-pink-50 text-pink-700',
+  ops: 'bg-os-s1 text-slate-500', design: 'bg-pink-50 text-pink-700',
 }
 
 const PERKS = [
@@ -55,7 +55,7 @@ export function CareersHome() {
           <p className="text-blue-400 text-sm font-semibold mb-2 tracking-wide uppercase">We're hiring</p>
           <h2 className="text-2xl font-bold leading-tight mb-3">
             Build the OS that runs companies.<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-os-blue to-os-cyan">
               Join Kangqore.
             </span>
           </h2>
@@ -106,7 +106,7 @@ export function CareersHome() {
                 {/* Requirements preview */}
                 <div className="flex flex-wrap gap-1.5 mt-3">
                   {role.requirements.slice(0, 3).map((req, i) => (
-                    <span key={i} className="text-xs bg-[#151C2F] text-slate-500 px-2 py-0.5 rounded-full">{req}</span>
+                    <span key={i} className="text-xs bg-os-s1 text-slate-500 px-2 py-0.5 rounded-full">{req}</span>
                   ))}
                   {role.requirements.length > 3 && (
                     <span className="text-xs text-slate-500">+{role.requirements.length - 3} more</span>
@@ -123,7 +123,7 @@ export function CareersHome() {
         <h3 className="text-base font-bold text-white mb-4">Why Kangqore?</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {PERKS.map(p => (
-            <div key={p.label} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-4">
+            <div key={p.label} className="bg-os-s1 border border-os-border rounded-xl p-4">
               <span className="text-2xl mb-2 block">{p.icon}</span>
               <p className="text-sm font-semibold text-white">{p.label}</p>
               <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{p.desc}</p>

@@ -58,7 +58,7 @@ const itemHover: Record<Variant, string> = {
   danger:  'focus:bg-[#e2445c]/10  text-[#e2445c]',
   info:    'focus:bg-[#0073ea]/10  text-[#0073ea]',
   neutral: 'focus:bg-os-s1 text-white',
-  brand:   'focus:bg-[#2564ea]/10  text-os-cyan',
+  brand:   'focus:bg-os-blue/10  text-os-cyan',
   dark:    'focus:bg-slate-900 text-white',
 }
 

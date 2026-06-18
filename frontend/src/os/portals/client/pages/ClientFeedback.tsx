@@ -42,7 +42,7 @@ function NpsButton({ score, selected, onSelect }: { score: number; selected: boo
       className={`w-9 h-9 rounded-xl text-sm font-bold border transition-all ${
         selected
           ? `${bg} border-transparent scale-110 shadow-md`
-          : 'bg-[#151C2F] border-[#2E2854] text-slate-500 hover:border-[#2E2854]'
+          : 'bg-os-s1 border-os-border text-slate-500 hover:border-os-border'
       }`}
     >
       {score}
@@ -93,7 +93,7 @@ export function ClientFeedback() {
               <div className={`text-4xl font-bold ${npsLabel(Math.round(avgNps)).color}`}>{avgNps}</div>
               <div className="text-xs text-slate-500 mt-0.5">Your NPS</div>
             </div>
-            <div className="h-12 w-px bg-[#151C2F]" />
+            <div className="h-12 w-px bg-os-s1" />
             <div>
               <Badge variant={avgNps >= 9 ? 'success' : avgNps >= 7 ? 'warning' : 'danger'} size="md">
                 {npsLabel(Math.round(avgNps)).label}
@@ -125,7 +125,7 @@ export function ClientFeedback() {
             <select
               value={projectId}
               onChange={e => setProjectId(e.target.value)}
-              className="w-full border border-[#2E2854] rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
             >
               {PROJECTS_FOR_FEEDBACK.map(p => (
                 <option key={p.id} value={p.id}>{p.title}</option>

@@ -41,7 +41,7 @@ export function TasksPage() {
           <p className="text-sm text-slate-500 mt-0.5">{tasks.length} tasks across {partners.length} partners</p>
         </div>
         <div className="flex items-center gap-2 text-xs">
-          <span className="px-3 py-1.5 rounded-xl bg-[#2564ea]/5 text-os-blue font-semibold border border-[#2564ea]/15">{activeTasks} active</span>
+          <span className="px-3 py-1.5 rounded-xl bg-os-blue/5 text-os-blue font-semibold border border-os-blue/15">{activeTasks} active</span>
           {inReview > 0 && <span className="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 font-semibold border border-amber-200">{inReview} in review</span>}
           {overdue  > 0 && <span className="px-3 py-1.5 rounded-xl bg-red-50 text-red-700 font-semibold border border-red-200">{overdue} overdue</span>}
           <span className="px-3 py-1.5 rounded-xl bg-slate-900 text-slate-300 font-semibold border border-os-border">₹{(totalFees/1000).toFixed(0)}k committed</span>
@@ -51,13 +51,13 @@ export function TasksPage() {
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
         <select value={partnerFilter} onChange={e => setPartner(e.target.value)}
-          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
           <option value="all">All Partners</option>
           {partners.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
         <div className="flex items-center gap-2">
           {(['all','assigned','in-progress','review','completed','overdue'] as const).map(s => (
-            <button key={s} onClick={() => setStatus(s)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusFilter === s ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-[#2564ea]/40'}`}>
+            <button key={s} onClick={() => setStatus(s)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusFilter === s ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-os-blue/40'}`}>
               {s === 'all' ? 'All' : s.replace('-',' ')}
             </button>
           ))}

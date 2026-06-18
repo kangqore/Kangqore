@@ -47,8 +47,8 @@ export function JournalistHome() {
         <h2 className="text-base font-bold text-slate-200 mb-4">Press Resources</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {resources.map(({ icon: Icon, label, desc, tag }) => (
-            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-[#2E2854] bg-[#151C2F] hover:shadow-sm transition-shadow">
-              <div className="w-10 h-10 rounded-lg bg-[#151C2F] flex items-center justify-center flex-shrink-0">
+            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-os-border bg-os-s1 hover:shadow-sm transition-shadow">
+              <div className="w-10 h-10 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
                 <Icon className="w-5 h-5 text-slate-500" />
               </div>
               <div className="flex-1 min-w-0">
@@ -56,7 +56,7 @@ export function JournalistHome() {
                 <p className="text-slate-500 text-xs truncate">{desc}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#151C2F] text-slate-500">{tag}</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-os-s1 text-slate-500">{tag}</span>
                 <Download className="w-4 h-4 text-slate-500 hover:text-slate-300 cursor-pointer" />
               </div>
             </div>
@@ -69,7 +69,7 @@ export function JournalistHome() {
         <h2 className="text-base font-bold text-slate-200 mb-4">Latest News</h2>
         <div className="space-y-3">
           {latestNews.map(({ date, headline }) => (
-            <div key={headline} className="flex items-start gap-4 p-4 rounded-2xl border border-[#2E2854] bg-[#151C2F] hover:shadow-sm transition-shadow group">
+            <div key={headline} className="flex items-start gap-4 p-4 rounded-2xl border border-os-border bg-os-s1 hover:shadow-sm transition-shadow group">
               <span className="text-xs font-semibold text-slate-500 mt-0.5 whitespace-nowrap">{date}</span>
               <p className="flex-1 text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{headline}</p>
               <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-slate-500 flex-shrink-0 transition-colors" />

@@ -80,7 +80,7 @@ export function CareersDocuments() {
               {folder.docs.map(doc => {
                 const locked = !doc.date
                 return (
-                  <li key={doc.id} className={`flex items-center gap-4 px-5 py-3.5 transition-colors ${locked ? 'opacity-50' : 'hover:bg-[#0F172A] group'}`}>
+                  <li key={doc.id} className={`flex items-center gap-4 px-5 py-3.5 transition-colors ${locked ? 'opacity-50' : 'hover:bg-slate-900 group'}`}>
                     <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
                       {locked
                         ? <Lock className="w-4 h-4 text-slate-500" />
@@ -97,10 +97,10 @@ export function CareersDocuments() {
                     </div>
                     {!locked && (
                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-1.5 rounded-lg hover:bg-[#151C2F] text-slate-500 hover:text-slate-500">
+                        <button className="p-1.5 rounded-lg hover:bg-os-s1 text-slate-500 hover:text-slate-500">
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="p-1.5 rounded-lg hover:bg-[#151C2F] text-slate-500 hover:text-slate-500">
+                        <button className="p-1.5 rounded-lg hover:bg-os-s1 text-slate-500 hover:text-slate-500">
                           <Download className="w-4 h-4" />
                         </button>
                       </div>

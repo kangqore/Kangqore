@@ -120,7 +120,7 @@ export function PartnerEarnings() {
         <CardBody className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#2E2854] bg-[#0F172A]/50">
+              <tr className="border-b border-os-border bg-slate-900/50">
                 {['Ref', 'Period', 'Projects', 'Date', 'Amount', 'Status', ''].map(h => (
                   <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide whitespace-nowrap">{h}</th>
                 ))}
@@ -128,7 +128,7 @@ export function PartnerEarnings() {
             </thead>
             <tbody className="divide-y divide-[#2E2854]">
               {payments.map(p => (
-                <tr key={p.id} className="hover:bg-[#0F172A] transition-colors">
+                <tr key={p.id} className="hover:bg-slate-900 transition-colors">
                   <td className="px-5 py-3.5 font-mono text-xs text-slate-500">{p.id}</td>
                   <td className="px-5 py-3.5 font-medium text-white">{p.period}</td>
                   <td className="px-5 py-3.5 text-slate-500 text-xs max-w-[180px]"><span className="line-clamp-1">{p.project}</span></td>

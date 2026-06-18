@@ -63,7 +63,7 @@ function mapInvestorUpdate(u: any, i: number): RichUpdate {
 
 function MetricTile({ label, value, sub, trend }: { label: string; value: string | number; sub?: string; trend?: 'up' | 'down' }) {
   return (
-    <div className="bg-[#0F172A] rounded-xl p-4">
+    <div className="bg-slate-900 rounded-xl p-4">
       <p className="text-xs text-slate-500 mb-1">{label}</p>
       <div className="flex items-end gap-1.5">
         <p className="text-xl font-bold text-white">{value}</p>
@@ -104,7 +104,7 @@ export function InvestorUpdatesPortal() {
           return (
             <Card key={u.id} className="overflow-hidden">
               <div
-                className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-[#0F172A] transition-colors"
+                className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-slate-900 transition-colors"
                 onClick={() => setOpenId(isOpen ? '' : u.id)}
               >
                 <div className="flex items-center gap-3">
@@ -126,7 +126,7 @@ export function InvestorUpdatesPortal() {
               </div>
 
               {isOpen && (
-                <div className="border-t border-[#2E2854] px-5 pb-5 pt-4 space-y-5">
+                <div className="border-t border-os-border px-5 pb-5 pt-4 space-y-5">
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <MetricTile label="MRR"       value={`£${(m.mrr / 1000).toFixed(1)}k`} sub={`+${m.mrrGrowth}% MoM`} trend="up" />
                     <MetricTile label="ARR"       value={`£${(m.arr / 1000).toFixed(0)}k`} sub="Annualised" trend="up" />
