@@ -89,7 +89,7 @@ export function SLADashboard() {
           <Card key={client.id} padding="none">
             <CardHeader className="px-5 pt-5 pb-3">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center">
                   <span className="text-white font-bold text-xs">{client.logo}</span>
                 </div>
                 <CardTitle>{client.name}</CardTitle>
@@ -102,7 +102,7 @@ export function SLADashboard() {
             </CardHeader>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+                <tr className="border-b border-os-border bg-slate-900">
                   {['Metric','Period','Target','Current','Trend','Status'].map(h=>(
                     <th key={h} className="text-left px-5 py-2.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                   ))}
@@ -113,7 +113,7 @@ export function SLADashboard() {
                   const TrendIcon = TREND_ICON[sla.trend]
                   const pct = Math.min(100, Math.round((sla.current / sla.target) * 100))
                   return (
-                    <tr key={sla.id} className="hover:bg-[#0F172A] transition-colors">
+                    <tr key={sla.id} className="hover:bg-slate-900 transition-colors">
                       <td className="px-5 py-3 font-medium text-slate-300">{sla.metric}</td>
                       <td className="px-5 py-3 text-xs text-slate-500">{sla.period}</td>
                       <td className="px-5 py-3 text-slate-500">{sla.target}{sla.unit}</td>

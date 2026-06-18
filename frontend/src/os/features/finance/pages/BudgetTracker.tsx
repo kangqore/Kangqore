@@ -112,7 +112,7 @@ export function BudgetTracker() {
             key={c}
             onClick={() => setCat(c)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              catFilter === c ? 'bg-blue-600 text-white' : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-blue-300'
+              catFilter === c ? 'bg-blue-600 text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
             }`}
           >
             {c === 'all' ? 'All Categories' : c}
@@ -128,7 +128,7 @@ export function BudgetTracker() {
         </CardHeader>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+            <tr className="border-b border-os-border bg-slate-900">
               {['Category', 'Department', 'Description', 'Allocated', 'Spent', 'Committed', 'Remaining', 'Status'].map(h => (
                 <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
@@ -141,7 +141,7 @@ export function BudgetTracker() {
               const health    = pct > 90 ? 'danger' : pct > 75 ? 'warning' : 'success'
 
               return (
-                <tr key={b.id} className="hover:bg-[#0F172A] transition-colors">
+                <tr key={b.id} className="hover:bg-slate-900 transition-colors">
                   <td className="px-5 py-3.5">
                     <span className="flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full" style={{ background: CAT_COLOR[b.category] }} />

@@ -61,22 +61,22 @@ function ModulePulse({ module, insights }: { module: string; insights: Insight[]
   const high     = insights.filter(i => i.priority === 'high').length
   const Icon = MODULE_ICONS[module] ?? (({ className }) => <Brain className={className} />)
 
-  const cardBorder = critical > 0 ? 'border-l-4 border-l-[#e2445c] border-y border-r border-[#2E2854] bg-[#151C2F]' :
-                     high > 0     ? 'border-l-4 border-l-[#fdab3d] border-y border-r border-[#2E2854] bg-[#151C2F]' :
-                     insights.length > 0 ? 'border-l-4 border-l-[#0073ea] border-y border-r border-[#2E2854] bg-[#151C2F]' :
-                     'border-[#2E2854] bg-[#151C2F]'
+  const cardBorder = critical > 0 ? 'border-l-4 border-l-[#e2445c] border-y border-r border-os-border bg-os-s1' :
+                     high > 0     ? 'border-l-4 border-l-[#fdab3d] border-y border-r border-os-border bg-os-s1' :
+                     insights.length > 0 ? 'border-l-4 border-l-[#0073ea] border-y border-r border-os-border bg-os-s1' :
+                     'border-os-border bg-os-s1'
 
   const iconBg = critical > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_6px_rgba(226,68,92,0.2)]' :
                  high > 0     ? 'bg-[#fdab3d] text-white shadow-[0_2px_6px_rgba(253,171,61,0.2)]' :
                  insights.length > 0 ? 'bg-[#0073ea] text-white shadow-[0_2px_6px_rgba(0,115,234,0.2)]' :
-                 'bg-[#151C2F] text-slate-300'
+                 'bg-os-s1 text-slate-300'
 
   const path = `/kangqore-view/${module.toLowerCase()}`
 
   return (
     <button
       onClick={() => navigate(path)}
-      className={`flex items-center gap-3 p-3 rounded-xl transition-all hover:shadow-lg hover:shadow-[#4ab6d4]/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer text-left cursor-pointer hover:border-[#2E2854] border ${cardBorder}`}
+      className={`flex items-center gap-3 p-3 rounded-xl transition-all hover:shadow-lg hover:shadow-[#4ab6d4]/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer text-left cursor-pointer hover:border-os-border border ${cardBorder}`}
     >
       <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${iconBg}`}>
         <Icon className="w-3.5 h-3.5" />
@@ -131,7 +131,7 @@ function DimensionBar({ label, score, color }: { label: string; score: number; c
         <span className="text-[11px] font-medium text-slate-500">{label}</span>
         <span className="text-[11px] font-bold" style={{ color }}>{score}</span>
       </div>
-      <div className="h-1.5 bg-[#151C2F] rounded-full overflow-hidden">
+      <div className="h-1.5 bg-os-s1 rounded-full overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-700"
           style={{ width: `${score}%`, backgroundColor: color }}
@@ -288,10 +288,10 @@ function CommandBar({ insights }: { insights: Insight[] }) {
   const displayedQuery = listening && interim ? interim : query
 
   return (
-    <div className="rounded-2xl border border-[#2E2854] bg-[#151C2F] shadow-sm overflow-hidden">
+    <div className="rounded-2xl border border-os-border bg-os-s1 shadow-sm overflow-hidden">
 
       {/* Input row */}
-      <div className={`flex items-center gap-3 px-4 py-3 border-b border-[#2E2854] transition-colors ${
+      <div className={`flex items-center gap-3 px-4 py-3 border-b border-os-border transition-colors ${
         listening ? 'bg-red-50/60' : 'bg-gradient-to-r from-purple-950/[0.03] to-blue-950/[0.03]'
       }`}>
         <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${
@@ -325,7 +325,7 @@ function CommandBar({ insights }: { insights: Insight[] }) {
             className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all flex-shrink-0 ${
               listening
                 ? 'bg-red-500 text-white shadow-[0_0_10px_rgba(239,68,68,0.4)]'
-                : 'bg-[#151C2F] text-slate-300 hover:bg-purple-100 hover:text-purple-600'
+                : 'bg-os-s1 text-slate-300 hover:bg-purple-100 hover:text-purple-600'
             }`}
           >
             {listening ? <MicOff className="w-3 h-3" /> : <Mic className="w-3 h-3" />}
@@ -378,7 +378,7 @@ function CommandBar({ insights }: { insights: Insight[] }) {
               {/* Confidence + model badge */}
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1.5">
-                  <div className="h-1 w-16 bg-[#151C2F] rounded-full overflow-hidden">
+                  <div className="h-1 w-16 bg-os-s1 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full bg-purple-500 transition-all duration-700"
                       style={{ width: `${result.confidence}%` }}
@@ -424,7 +424,7 @@ function CommandBar({ insights }: { insights: Insight[] }) {
             <button
               key={s}
               onClick={() => submit(s)}
-              className="text-[11px] px-2.5 py-1 rounded-lg bg-[#0F172A] border border-[#2E2854] text-slate-300 hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700 transition-all"
+              className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-900 border border-os-border text-slate-300 hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700 transition-all"
             >
               {s}
             </button>
@@ -438,7 +438,7 @@ function CommandBar({ insights }: { insights: Insight[] }) {
 function CommandSignalRow({ insight }: { insight: Insight }) {
   const config = CATEGORY_CONFIG[insight.category]
   return (
-    <div className="flex items-start gap-3 p-3 rounded-xl bg-[#0F172A] border border-[#2E2854]">
+    <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-900 border border-os-border">
       <div className={`w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 ${config.color}`}>
         <config.Icon className="w-3 h-3" />
       </div>
@@ -460,7 +460,7 @@ function InsightCard({ insight }: { insight: Insight }) {
   const acked = isAcknowledged(insight.id)
 
   return (
-    <div className={`bg-[#151C2F] rounded-xl border border-[#2E2854] border-l-4 shadow-sm transition-opacity ${PRIORITY_BORDER[insight.priority]} ${acked ? 'opacity-60' : ''}`}>
+    <div className={`bg-os-s1 rounded-xl border border-os-border border-l-4 shadow-sm transition-opacity ${PRIORITY_BORDER[insight.priority]} ${acked ? 'opacity-60' : ''}`}>
       <div className="p-5">
         <div className="flex items-start justify-between gap-3 mb-2.5">
           <div className="flex items-start gap-3">
@@ -491,8 +491,8 @@ function InsightCard({ insight }: { insight: Insight }) {
               title={acked ? 'Mark as active' : 'Acknowledge — mark as actioned'}
               className={`w-7 h-7 rounded-lg flex items-center justify-center border transition-all ${
                 acked
-                  ? 'border-green-200 bg-green-50 text-green-600 hover:bg-[#0F172A] hover:text-slate-300'
-                  : 'border-[#2E2854] bg-[#151C2F] text-slate-300 hover:border-green-300 hover:bg-green-50 hover:text-green-600'
+                  ? 'border-green-200 bg-green-50 text-green-600 hover:bg-slate-900 hover:text-slate-300'
+                  : 'border-os-border bg-os-s1 text-slate-300 hover:border-green-300 hover:bg-green-50 hover:text-green-600'
               }`}
             >
               {acked ? <RotateCcw className="w-3.5 h-3.5" /> : <Check className="w-3.5 h-3.5" />}
@@ -503,7 +503,7 @@ function InsightCard({ insight }: { insight: Insight }) {
         <p className="text-sm text-slate-500 leading-relaxed mb-4 ml-11">{insight.summary}</p>
 
         {expanded && (
-          <div className="ml-11 space-y-3 mb-3 pt-3 border-t border-[#2E2854]">
+          <div className="ml-11 space-y-3 mb-3 pt-3 border-t border-os-border">
             <p className="text-sm text-slate-300 leading-relaxed">{insight.detail}</p>
             <div className="flex items-start gap-2 bg-blue-50 rounded-xl p-3">
               <ArrowRight className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
@@ -618,7 +618,7 @@ export function KIMMMPage() {
           <button
             onClick={() => refetch()}
             disabled={isFetching}
-            className="h-7 w-7 rounded-lg flex items-center justify-center text-slate-300 hover:text-slate-300 hover:bg-[#151C2F] transition-colors disabled:opacity-40"
+            className="h-7 w-7 rounded-lg flex items-center justify-center text-slate-300 hover:text-slate-300 hover:bg-os-s1 transition-colors disabled:opacity-40"
             title="Refresh signals"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
@@ -631,7 +631,7 @@ export function KIMMMPage() {
       <CommandBar insights={insights} />
 
       {/* OS Health Score + Dimensions */}
-      <div className="rounded-2xl border border-[#2E2854] bg-[#151C2F] shadow-sm p-5">
+      <div className="rounded-2xl border border-os-border bg-os-s1 shadow-sm p-5">
         <div className="flex items-center gap-2 mb-4">
           <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center">
             <Brain className="w-3.5 h-3.5 text-white" />
@@ -659,14 +659,14 @@ export function KIMMMPage() {
 
       {/* Priority Action Queue */}
       {criticalInsights.length > 0 && (
-        <div className="rounded-2xl border border-[#2E2854] bg-[#151C2F] p-5 space-y-3 border-l-4 border-l-[#e2445c] shadow-sm">
+        <div className="rounded-2xl border border-os-border bg-os-s1 p-5 space-y-3 border-l-4 border-l-[#e2445c] shadow-sm">
           <div className="flex items-center gap-2 mb-1">
             <AlertTriangle className="w-4 h-4 text-[#e2445c]" />
             <h3 className="text-xs font-bold text-slate-200 uppercase tracking-[0.12em]">Priority Action Queue</h3>
             <span className="ml-auto text-xs px-2.5 py-0.5 rounded-full bg-[#e2445c] text-white font-extrabold shadow-sm">{criticalInsights.length} critical</span>
           </div>
           {criticalInsights.map(insight => (
-            <div key={insight.id} className="bg-[#151C2F] rounded-xl border border-[#2E2854] p-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all">
+            <div key={insight.id} className="bg-os-s1 rounded-xl border border-os-border p-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-[#e2445c] text-white flex items-center justify-center flex-shrink-0 shadow-[0_2px_8px_rgba(226,68,92,0.3)]">
                   <AlertTriangle className="w-4 h-4" />
@@ -674,7 +674,7 @@ export function KIMMMPage() {
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-white text-sm">{insight.title}</p>
                   <p className="text-xs text-slate-500 mt-1 leading-normal">{insight.summary}</p>
-                  <div className="flex items-start gap-2 mt-2.5 bg-[#0F172A] border border-[#2E2854]/60 rounded-xl p-2.5">
+                  <div className="flex items-start gap-2 mt-2.5 bg-slate-900 border border-os-border/60 rounded-xl p-2.5">
                     <ArrowRight className="w-3.5 h-3.5 text-[#e2445c] flex-shrink-0 mt-0.5" />
                     <p className="text-xs font-semibold text-slate-300">{insight.action}</p>
                   </div>
@@ -717,7 +717,7 @@ export function KIMMMPage() {
           { label: 'High Priority',     value: highInsights.length,                          icon: Zap,           color: 'text-orange-600 bg-orange-50'  },
           { label: 'Modules Monitored', value: allModules.length,                            icon: BarChart3,     color: 'text-blue-600 bg-blue-50'      },
         ].map(s => (
-          <div key={s.label} className="rounded-xl border border-[#2E2854] p-5 flex items-center gap-4 shadow-sm" style={{ background: '#151C2F' }}>
+          <div key={s.label} className="rounded-xl border border-os-border p-5 flex items-center gap-4 shadow-sm" style={{ background: '#151C2F' }}>
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>
@@ -740,12 +740,12 @@ export function KIMMMPage() {
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
                 filter === cat
                   ? 'bg-slate-900 text-white border-slate-900'
-                  : 'bg-[#151C2F] text-slate-300 border-[#2E2854] hover:border-slate-400'
+                  : 'bg-os-s1 text-slate-300 border-os-border hover:border-slate-400'
               }`}
             >
               {cat === 'all' ? 'All Signals' : CATEGORY_CONFIG[cat].label}
               <span className={`inline-flex items-center justify-center min-w-[1.1rem] h-[1.1rem] px-1 rounded-full text-[10px] font-bold ${
-                filter === cat ? 'bg-[#151C2F]/20 text-white' : 'bg-[#151C2F] text-slate-300'
+                filter === cat ? 'bg-os-s1/20 text-white' : 'bg-os-s1 text-slate-300'
               }`}>{count}</span>
             </button>
           )
@@ -755,8 +755,8 @@ export function KIMMMPage() {
       {/* Signal feed */}
       <div className="space-y-4">
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center bg-[#151C2F] rounded-2xl border border-[#2E2854]">
-            <div className="w-12 h-12 rounded-2xl bg-[#151C2F] flex items-center justify-center mb-4">
+          <div className="flex flex-col items-center justify-center py-16 text-center bg-os-s1 rounded-2xl border border-os-border">
+            <div className="w-12 h-12 rounded-2xl bg-os-s1 flex items-center justify-center mb-4">
               {filter === 'all'
                 ? <Brain className="w-6 h-6 text-slate-500" />
                 : (() => { const Ic = CATEGORY_CONFIG[filter].Icon; return <Ic className="w-6 h-6 text-slate-500" /> })()

@@ -44,7 +44,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   FINANCE:     'bg-emerald-50 text-emerald-700',
   GOAL:        'bg-violet-50 text-violet-700',
   INTELLIGENCE:'bg-sky-50 text-sky-700',
-  SYSTEM:      'bg-[#0F172A] text-slate-300',
+  SYSTEM:      'bg-slate-900 text-slate-300',
 }
 
 const RULE_LABELS: Record<string, string> = {
@@ -72,7 +72,7 @@ function formatRelative(iso: string) {
 function AlertCard({ alert, onDismiss }: { alert: ProactiveAlert; onDismiss: (id: string) => void }) {
   const navigate = useNavigate()
   const sev = SEV_CONFIG[alert.severity] ?? SEV_CONFIG.LOW
-  const catColor = CATEGORY_COLORS[alert.category] ?? 'bg-[#0F172A] text-slate-300'
+  const catColor = CATEGORY_COLORS[alert.category] ?? 'bg-slate-900 text-slate-300'
   const ruleLabel = RULE_LABELS[alert.ruleId] ?? alert.ruleId
 
   function handleAction() {
@@ -83,14 +83,14 @@ function AlertCard({ alert, onDismiss }: { alert: ProactiveAlert; onDismiss: (id
   }
 
   return (
-    <div className={`bg-[#151C2F] border border-[#2E2854] border-l-4 ${sev.border} rounded-xl p-4 shadow-sm space-y-3`}>
+    <div className={`bg-os-s1 border border-os-border border-l-4 ${sev.border} rounded-xl p-4 shadow-sm space-y-3`}>
       <div className="flex items-start gap-3">
         <AlertTriangle className={`w-4 h-4 mt-0.5 flex-shrink-0 ${sev.icon}`} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
             <Badge variant={sev.badge} size="sm" dot>{alert.severity}</Badge>
             <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-md ${catColor}`}>{alert.category}</span>
-            <span className="text-[10px] text-slate-500 border border-[#2E2854] px-1.5 py-0.5 rounded-md">{ruleLabel}</span>
+            <span className="text-[10px] text-slate-500 border border-os-border px-1.5 py-0.5 rounded-md">{ruleLabel}</span>
             <span className="text-[10px] text-slate-500 ml-auto">{formatRelative(alert.createdAt)}</span>
           </div>
           <p className="text-sm font-semibold text-white">{alert.title}</p>
@@ -98,7 +98,7 @@ function AlertCard({ alert, onDismiss }: { alert: ProactiveAlert; onDismiss: (id
         </div>
         <button
           onClick={() => onDismiss(alert.id)}
-          className="w-6 h-6 rounded-md flex items-center justify-center text-slate-300 hover:text-slate-300 hover:bg-[#151C2F] transition-all flex-shrink-0"
+          className="w-6 h-6 rounded-md flex items-center justify-center text-slate-300 hover:text-slate-300 hover:bg-os-s1 transition-all flex-shrink-0"
           title="Dismiss"
         >
           <X className="w-3.5 h-3.5" />
@@ -106,7 +106,7 @@ function AlertCard({ alert, onDismiss }: { alert: ProactiveAlert; onDismiss: (id
       </div>
 
       {alert.suggestedAction && (
-        <div className="flex items-start gap-2 bg-[#0F172A] border border-[#2E2854] rounded-xl px-3 py-2.5 ml-7">
+        <div className="flex items-start gap-2 bg-slate-900 border border-os-border rounded-xl px-3 py-2.5 ml-7">
           <ArrowRight className="w-3.5 h-3.5 text-slate-500 flex-shrink-0 mt-0.5" />
           <p className="text-xs font-medium text-slate-300">{alert.suggestedAction}</p>
           {alert.actionType === 'NAVIGATE' && alert.actionPayload?.route && (
@@ -182,7 +182,7 @@ export function AlertsPage() {
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => refetch()}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-[#151C2F] hover:text-slate-300 transition-colors"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-os-s1 hover:text-slate-300 transition-colors"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
@@ -190,7 +190,7 @@ export function AlertsPage() {
             <button
               onClick={() => dismissAllMut.mutate()}
               disabled={dismissAllMut.isPending}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#151C2F] text-slate-300 hover:bg-slate-200 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-os-s1 text-slate-300 hover:bg-slate-200 transition-colors"
             >
               <CheckCheck className="w-3.5 h-3.5" />
               Dismiss All
@@ -213,9 +213,9 @@ export function AlertsPage() {
           { label: 'Critical', count: bySeverity.CRITICAL.length, color: 'text-red-600 bg-red-50' },
           { label: 'High',     count: bySeverity.HIGH.length,     color: 'text-amber-600 bg-amber-50' },
           { label: 'Moderate', count: bySeverity.MODERATE.length, color: 'text-blue-600 bg-blue-50' },
-          { label: 'Low',      count: bySeverity.LOW.length,      color: 'text-slate-300 bg-[#0F172A]' },
+          { label: 'Low',      count: bySeverity.LOW.length,      color: 'text-slate-300 bg-slate-900' },
         ].map(s => (
-          <div key={s.label} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-4 shadow-sm text-center">
+          <div key={s.label} className="bg-os-s1 border border-os-border rounded-xl p-4 shadow-sm text-center">
             <p className={`text-2xl font-bold ${s.color.split(' ')[0]}`}>{s.count}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
           </div>
@@ -223,7 +223,7 @@ export function AlertsPage() {
       </div>
 
       {/* Rule guide */}
-      <div className="bg-[#0F172A] border border-[#2E2854] rounded-xl p-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+      <div className="bg-slate-900 border border-os-border rounded-xl p-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
         {Object.entries(RULE_LABELS).map(([k, v]) => (
           <span key={k} className="text-slate-500"><span className="font-semibold text-slate-300">{v}</span></span>
         ))}
@@ -233,7 +233,7 @@ export function AlertsPage() {
       {isLoading ? (
         <div className="flex justify-center py-12"><Spinner /></div>
       ) : alerts.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-[#151C2F] border border-[#2E2854] rounded-2xl">
+        <div className="flex flex-col items-center justify-center py-20 bg-os-s1 border border-os-border rounded-2xl">
           <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center mb-4">
             <CheckCheck className="w-6 h-6 text-green-500" />
           </div>

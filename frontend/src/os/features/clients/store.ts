@@ -16,12 +16,15 @@ interface ClientsStore {
   hydrateSLAs:         (rows: SLAMetric[])        => void
   hydrateMilestones:   (rows: Milestone[])        => void
   hydrateGovernance:   (rows: GovernanceItem[])   => void
-  setSelected:         (id: string)               => void
-  selectedClient:      () => typeof CLIENTS[0] | undefined
-  clientInteractions:  (id: string) => typeof INTERACTIONS
-  clientSLAs:          (id: string) => typeof SLA_METRICS
-  clientMilestones:    (id: string) => typeof MILESTONES
-  clientGovernance:    (id: string) => typeof GOVERNANCE
+  setSelected:          (id: string)               => void
+  updateClient:         (clientId: string, patch: Partial<Client>) => void
+  bulkUpdateClients:    (clientIds: string[], patch: Partial<Client>) => void
+  bulkDeleteClients:    (clientIds: string[]) => void
+  selectedClient:       () => typeof CLIENTS[0] | undefined
+  clientInteractions:   (id: string) => typeof INTERACTIONS
+  clientSLAs:           (id: string) => typeof SLA_METRICS
+  clientMilestones:     (id: string) => typeof MILESTONES
+  clientGovernance:     (id: string) => typeof GOVERNANCE
 }
 
 export const useClientsStore = create<ClientsStore>((set, get) => ({
@@ -39,9 +42,15 @@ export const useClientsStore = create<ClientsStore>((set, get) => ({
   hydrateSLAs:         (slaMetrics)   => set({ slaMetrics }),
   hydrateMilestones:   (milestones)   => set({ milestones }),
   hydrateGovernance:   (governance)   => set({ governance }),
-  setSelected:         (id)           => set({ selectedId: id }),
+  setSelected:       (id)         => set({ selectedId: id }),
+  updateClient:      (clientId, patch) =>
+    set(s => ({ clients: s.clients.map(c => c.id === clientId ? { ...c, ...patch } : c) })),
+  bulkUpdateClients: (clientIds, patch) =>
+    set(s => ({ clients: s.clients.map(c => clientIds.includes(c.id) ? { ...c, ...patch } : c) })),
+  bulkDeleteClients: (clientIds) =>
+    set(s => ({ clients: s.clients.filter(c => !clientIds.includes(c.id)) })),
 
-  selectedClient:     () => get().clients.find(c => c.id === get().selectedId),
+  selectedClient:    () => get().clients.find(c => c.id === get().selectedId),
   clientInteractions: (id) => get().interactions.filter(i => i.clientId === id).sort((a,b) => b.date.localeCompare(a.date)),
   clientSLAs:         (id) => get().slaMetrics.filter(s => s.clientId === id),
   clientMilestones:   (id) => get().milestones.filter(m => m.clientId === id),

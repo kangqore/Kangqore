@@ -64,7 +64,7 @@ function SignalRow({ signal }: { signal: Signal }) {
   const Icon = cat.icon
 
   return (
-    <div className="flex items-start gap-3 py-3 px-4 border-b border-[#2E2854] last:border-0 hover:bg-[#0F172A]/60 transition-colors">
+    <div className="flex items-start gap-3 py-3 px-4 border-b border-os-border last:border-0 hover:bg-slate-900/60 transition-colors">
       <div className={`w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 ${cat.color}`}>
         <Icon className="w-3 h-3" />
       </div>
@@ -73,7 +73,7 @@ function SignalRow({ signal }: { signal: Signal }) {
         <div className="flex items-center gap-2 mt-1 flex-wrap">
           <Badge variant={sev.badge} size="sm" dot>{signal.severity}</Badge>
           <span className="text-[10px] text-slate-500">{signal.signalType.replace(/_/g, ' ')}</span>
-          <span className="text-[10px] text-slate-500 border-l border-[#2E2854] pl-2">{signal.sourceModule}</span>
+          <span className="text-[10px] text-slate-500 border-l border-os-border pl-2">{signal.sourceModule}</span>
           <span className="text-[10px] text-slate-300 ml-auto">{signal.confidence}% conf</span>
         </div>
       </div>
@@ -98,7 +98,7 @@ function PatternCard({ pattern }: { pattern: CorrelationPattern }) {
       {pattern.signals?.length > 0 && (
         <div className="flex flex-wrap gap-1 ml-6">
           {pattern.signals.map((s, i) => (
-            <span key={i} className="text-[10px] bg-[#151C2F] border border-purple-200 text-purple-600 px-1.5 py-0.5 rounded-md">{s}</span>
+            <span key={i} className="text-[10px] bg-os-s1 border border-purple-200 text-purple-600 px-1.5 py-0.5 rounded-md">{s}</span>
           ))}
         </div>
       )}
@@ -165,7 +165,7 @@ export function SignalsPage() {
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => refetch()}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-[#151C2F] transition-colors"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-os-s1 transition-colors"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
           </button>
@@ -188,7 +188,7 @@ export function SignalsPage() {
           { label: 'Moderate', count: counts.MODERATE, color: 'text-blue-600'  },
           { label: 'Low',      count: counts.LOW,      color: 'text-slate-500' },
         ].map(s => (
-          <div key={s.label} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-4 shadow-sm text-center">
+          <div key={s.label} className="bg-os-s1 border border-os-border rounded-xl p-4 shadow-sm text-center">
             <p className={`text-2xl font-bold ${s.color}`}>{s.count}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
           </div>
@@ -217,7 +217,7 @@ export function SignalsPage() {
               className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
                 sevFilter === f
                   ? 'bg-slate-900 text-white border-slate-900'
-                  : 'bg-[#151C2F] text-slate-300 border-[#2E2854] hover:border-slate-400'
+                  : 'bg-os-s1 text-slate-300 border-os-border hover:border-slate-400'
               }`}
             >
               {f === 'ALL' ? 'All Severities' : f}
@@ -233,7 +233,7 @@ export function SignalsPage() {
               className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
                 catFilter === f
                   ? 'bg-purple-600 text-white border-purple-600'
-                  : 'bg-[#151C2F] text-slate-300 border-[#2E2854] hover:border-slate-400'
+                  : 'bg-os-s1 text-slate-300 border-os-border hover:border-slate-400'
               }`}
             >
               {f === 'ALL' ? 'All Categories' : f}
@@ -243,7 +243,7 @@ export function SignalsPage() {
       </div>
 
       {/* Signal list */}
-      <div className="bg-[#151C2F] border border-[#2E2854] rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-os-s1 border border-os-border rounded-xl overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="flex justify-center py-12"><Spinner /></div>
         ) : signals.length === 0 ? (
@@ -253,7 +253,7 @@ export function SignalsPage() {
           </div>
         ) : (
           <>
-            <div className="px-4 py-2.5 border-b border-[#2E2854] bg-[#0F172A] flex items-center justify-between">
+            <div className="px-4 py-2.5 border-b border-os-border bg-slate-900 flex items-center justify-between">
               <span className="text-xs font-semibold text-slate-500">{signals.length} signals</span>
               <span className="text-[10px] text-slate-500">Latest first</span>
             </div>

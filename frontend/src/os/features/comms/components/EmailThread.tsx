@@ -38,7 +38,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="space-y-3 w-full max-w-md px-8 animate-pulse">
-          {[1,2,3].map(i => <div key={i} className={`h-14 rounded-2xl bg-[#151C2F] ${i % 2 === 0 ? 'ml-auto w-4/5' : 'w-4/5'}`} />)}
+          {[1,2,3].map(i => <div key={i} className={`h-14 rounded-2xl bg-os-s1 ${i % 2 === 0 ? 'ml-auto w-4/5' : 'w-4/5'}`} />)}
         </div>
       </div>
     )
@@ -47,7 +47,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
   return (
     <div className="flex flex-col h-full">
       {/* Contact header */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-[#2E2854] flex-shrink-0">
+      <div className="flex items-center gap-3 px-5 py-4 border-b border-os-border flex-shrink-0">
         <Avatar name={contact.name} size="sm" />
         <div>
           <p className="text-sm font-semibold text-white">{contact.name}</p>
@@ -74,7 +74,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
               <div>
                 <div className={cn(
                   'rounded-2xl px-4 py-3',
-                  isOutbound ? 'bg-[#2564ea] text-white rounded-tr-sm' : 'bg-[#151C2F] text-slate-200 rounded-tl-sm',
+                  isOutbound ? 'bg-os-blue text-white rounded-tr-sm' : 'bg-os-s1 text-slate-200 rounded-tl-sm',
                 )}>
                   {email.subject && (
                     <p className={cn('text-[10px] font-semibold mb-1.5', isOutbound ? 'text-blue-200' : 'text-slate-500')}>
@@ -99,7 +99,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
       </div>
 
       {/* Compose reply */}
-      <div className="border-t border-[#2E2854] px-4 py-3 flex-shrink-0">
+      <div className="border-t border-os-border px-4 py-3 flex-shrink-0">
         <div className="flex items-end gap-2">
           <textarea
             value={draft}
@@ -107,7 +107,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
             onKeyDown={onKeyDown}
             rows={2}
             placeholder={`Reply to ${contact.name}… (⌘↵ to send)`}
-            className="flex-1 resize-none border border-[#2E2854] rounded-xl px-3 py-2.5 text-sm text-slate-300 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 leading-relaxed"
+            className="flex-1 resize-none border border-os-border rounded-xl px-3 py-2.5 text-sm text-slate-300 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 leading-relaxed"
           />
           <Button
             variant="primary"

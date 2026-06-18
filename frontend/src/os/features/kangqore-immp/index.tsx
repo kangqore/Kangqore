@@ -116,7 +116,7 @@ export function KIMMMModule() {
   return (
     <div>
       {/* Scrollable tab bar */}
-      <div className="flex items-center gap-0.5 border-b border-[#2E2854] mb-6 -mt-2 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-0.5 border-b border-os-border mb-6 -mt-2 overflow-x-auto scrollbar-none">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -125,8 +125,8 @@ export function KIMMMModule() {
             className={({ isActive }) => cn(
               'flex items-center gap-1.5 px-3.5 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
               isActive
-                ? 'border-[#2564ea] text-[#2564ea]'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-[#2E2854]'
+                ? 'border-os-blue text-os-blue'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />

@@ -18,7 +18,7 @@ export function OKRCard({ objective }: { objective: Objective }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <Card className="overflow-hidden bg-[#151C2F] border border-[#2E2854]/80 hover:shadow-lg transition-all duration-300 relative" padding="lg">
+    <Card className="overflow-hidden bg-os-s1 border border-os-border/80 hover:shadow-lg transition-all duration-300 relative" padding="lg">
       {/* Pillar accent */}
       <div className="w-1.5 absolute left-0 top-0 bottom-0" style={{ background: objective.pillarColor }} />
       <div className="pl-4">
@@ -66,11 +66,11 @@ export function OKRCard({ objective }: { objective: Objective }) {
 
         {/* Key results (expanded) */}
         {expanded && (
-          <div className="mt-6 ml-8 space-y-4 border-t border-[#2E2854] pt-5">
+          <div className="mt-6 ml-8 space-y-4 border-t border-os-border pt-5">
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Key Results</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {objective.keyResults.map(kr => (
-                <div key={kr.id} className={cn('p-4 rounded-xl', 'bg-[#0F172A]/50 border border-[#2E2854]/80 flex flex-col justify-between gap-3')}>
+                <div key={kr.id} className={cn('p-4 rounded-xl', 'bg-slate-900/50 border border-os-border/80 flex flex-col justify-between gap-3')}>
                   <div>
                     <div className="flex items-start justify-between gap-3 mb-2">
                       <p className="text-xs font-bold text-slate-300 leading-relaxed flex-1">{kr.title}</p>

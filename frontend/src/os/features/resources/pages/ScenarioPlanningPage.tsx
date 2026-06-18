@@ -121,7 +121,7 @@ export function ScenarioPlanningPage() {
               <button
                 key={p.label}
                 onClick={() => applyPreset(p)}
-                className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#151C2F] text-slate-300 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-os-s1 text-slate-300 hover:bg-blue-50 hover:text-blue-700 transition-colors"
               >
                 {p.label}
               </button>
@@ -164,8 +164,8 @@ export function ScenarioPlanningPage() {
                 className={cn(
                   'px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all',
                   cfg.skills.includes(skill)
-                    ? 'bg-[#2564ea] text-white border-[#2564ea]'
-                    : 'bg-[#151C2F] text-slate-300 border-[#2E2854] hover:border-blue-300'
+                    ? 'bg-os-blue text-white border-os-blue'
+                    : 'bg-os-s1 text-slate-300 border-os-border hover:border-blue-300'
                 )}
               >
                 {skill}
@@ -186,7 +186,7 @@ export function ScenarioPlanningPage() {
             <div className="text-xs text-slate-500 mt-0.5">Capacity coverage</div>
           </Card>
           <Card className="text-center py-4">
-            <div className="text-2xl font-bold text-[#2564ea]">{viable.length}</div>
+            <div className="text-2xl font-bold text-os-blue">{viable.length}</div>
             <div className="text-xs text-slate-500 mt-0.5">Viable contributors</div>
           </Card>
           <Card className="text-center py-4">
@@ -240,7 +240,7 @@ export function ScenarioPlanningPage() {
 
         {/* Per-person breakdown */}
         <Card padding="none">
-          <div className="px-5 py-4 border-b border-[#2E2854]">
+          <div className="px-5 py-4 border-b border-os-border">
             <p className="text-sm font-semibold text-slate-300">Team capacity breakdown</p>
             <p className="text-xs text-slate-500 mt-0.5">Sorted by viability — skill match + available hours</p>
           </div>

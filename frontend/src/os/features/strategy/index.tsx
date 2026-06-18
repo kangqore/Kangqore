@@ -47,7 +47,7 @@ export function StrategyModule() {
 
   return (
     <div className="space-y-0">
-      <div className="flex items-center gap-2 border-b border-[#2E2854] mb-8 mt-1">
+      <div className="flex items-center gap-2 border-b border-os-border mb-8 mt-1">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -56,8 +56,8 @@ export function StrategyModule() {
             className={({ isActive }) => cn(
               'flex items-center gap-2.5 px-5 py-3 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
-                ? 'border-[#2564ea] text-[#2564ea]'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-[#2E2854]'
+                ? 'border-os-blue text-os-blue'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />

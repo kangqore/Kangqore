@@ -123,19 +123,19 @@ function DecisionDrawer({
         <div>
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Impact</p>
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 bg-[#0F172A] rounded-xl text-center">
+            <div className="p-3 bg-slate-900 rounded-xl text-center">
               <TrendingDown className="w-4 h-4 text-slate-500 mx-auto mb-1" />
               <p className="text-[11px] text-slate-500 mb-0.5">Time</p>
               <p className="text-sm font-bold text-slate-300">{decision.impactTime ?? '—'}</p>
             </div>
-            <div className="p-3 bg-[#0F172A] rounded-xl text-center">
+            <div className="p-3 bg-slate-900 rounded-xl text-center">
               <DollarSign className="w-4 h-4 text-slate-500 mx-auto mb-1" />
               <p className="text-[11px] text-slate-500 mb-0.5">Cost</p>
               <p className={`text-sm font-bold ${decision.impactCost != null && decision.impactCost < 0 ? 'text-green-600' : 'text-amber-600'}`}>
                 {fmtCost(decision.impactCost)}
               </p>
             </div>
-            <div className="p-3 bg-[#0F172A] rounded-xl text-center">
+            <div className="p-3 bg-slate-900 rounded-xl text-center">
               <TrendingUp className="w-4 h-4 text-slate-500 mx-auto mb-1" />
               <p className="text-[11px] text-slate-500 mb-0.5">Risk</p>
               <p className="text-sm font-bold text-slate-300">{decision.impactRisk ?? '—'}</p>
@@ -231,7 +231,7 @@ function AddDecisionDrawer({ onAdd, onClose }: { onAdd: (d: Partial<Decision>) =
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Priority</label>
             <select value={form.priority} onChange={e => set('priority', e.target.value as Priority)}
-              className="w-full border border-[#2E2854] rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as Priority[]).map(p => <option key={p} value={p}>{p}</option>)}
             </select>
           </div>
@@ -320,10 +320,10 @@ export function DecisionLogPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"    value={decisions.length}     icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-[#151C2F] text-slate-300" />
-        <StatCard label="Pending"  value={pending}              icon={<Clock        className="w-5 h-5" />} iconColor={pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-[#151C2F] text-slate-300'} />
+        <StatCard label="Total"    value={decisions.length}     icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-300" />
+        <StatCard label="Pending"  value={pending}              icon={<Clock        className="w-5 h-5" />} iconColor={pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
         <StatCard label="Approved" value={byStatus('APPROVED')} icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
-        <StatCard label="Rejected" value={byStatus('REJECTED')} icon={<XCircle      className="w-5 h-5" />} iconColor={byStatus('REJECTED') > 0 ? 'bg-red-100 text-red-600' : 'bg-[#151C2F] text-slate-300'} />
+        <StatCard label="Rejected" value={byStatus('REJECTED')} icon={<XCircle      className="w-5 h-5" />} iconColor={byStatus('REJECTED') > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-300'} />
         <StatCard label="Deferred" value={byStatus('DEFERRED')} icon={<Pause        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
       </div>
 
@@ -335,7 +335,7 @@ export function DecisionLogPage() {
           {(['ALL','PENDING_APPROVAL','APPROVED','REJECTED','DEFERRED'] as const).map(s => (
             <button key={s} onClick={() => setFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                filter === s ? 'bg-[#2564ea] text-white' : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-blue-300'
+                filter === s ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}>
               {s === 'ALL' ? 'All' : s === 'PENDING_APPROVAL' ? 'Pending' : s.charAt(0) + s.slice(1).toLowerCase()}
             </button>
@@ -348,7 +348,7 @@ export function DecisionLogPage() {
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+            <tr className="border-b border-os-border bg-slate-900">
               {['Decision', 'Project', 'Impact', 'Priority', 'Due', 'Status', 'Logged'].map(h => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
@@ -356,7 +356,7 @@ export function DecisionLogPage() {
           </thead>
           <StaggerTableBody className="divide-y divide-[#2E2854]">
             {visible.map(d => (
-              <StaggerRow key={d.id} className="hover:bg-[#0F172A] transition-colors cursor-pointer group" onClick={() => setOpenId(d.id)}>
+              <StaggerRow key={d.id} className="hover:bg-slate-900 transition-colors cursor-pointer group" onClick={() => setOpenId(d.id)}>
                 <td className="px-4 py-3.5 max-w-[240px]">
                   <div className="flex items-start gap-2">
                     {STATUS_ICON[d.status]}

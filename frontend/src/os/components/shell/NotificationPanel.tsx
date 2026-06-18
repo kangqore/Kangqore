@@ -124,12 +124,12 @@ export function NotificationPanel() {
 
       {/* Panel */}
       <div className={cn(
-        'fixed top-0 right-0 h-screen w-[380px] bg-[#151C2F] border-l border-[#2E2854] z-50 flex flex-col shadow-2xl',
+        'fixed top-0 right-0 h-screen w-[380px] bg-os-s1 border-l border-os-border z-50 flex flex-col shadow-2xl',
         'transition-transform duration-300 ease-in-out',
         notificationPanelOpen ? 'translate-x-0' : 'translate-x-full'
       )}>
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[#2E2854]">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-os-border">
           <div className="flex items-center gap-2.5">
             <Bell className="w-4 h-4 text-slate-500" />
             <h2 className="font-semibold text-white text-sm">Notifications</h2>
@@ -163,7 +163,7 @@ export function NotificationPanel() {
             <div
               key={n.id}
               className={cn(
-                'flex gap-3 px-5 py-4 hover:bg-[#0F172A] transition-colors cursor-pointer',
+                'flex gap-3 px-5 py-4 hover:bg-slate-900 transition-colors cursor-pointer',
                 !n.read && 'bg-blue-50/40'
               )}
               onClick={() => handleNotificationClick(n)}
@@ -185,7 +185,7 @@ export function NotificationPanel() {
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-[#2E2854]">
+        <div className="px-5 py-3 border-t border-os-border">
           <Button variant="ghost" size="sm" className="w-full text-slate-500" onClick={closeNotificationPanel}>
             Close Panel
           </Button>

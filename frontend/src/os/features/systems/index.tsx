@@ -842,7 +842,7 @@ export function SystemsModule() {
       </div>
 
       {/* Tab bar */}
-      <div className="flex items-center gap-0.5 border-b border-[#2E2854] -mb-1 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-0.5 border-b border-os-border -mb-1 overflow-x-auto scrollbar-none">
         {TABS.map(tab => {
           const accent = ACCENT[tab.path]
           return (
@@ -854,7 +854,7 @@ export function SystemsModule() {
                 'flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
                 isActive
                   ? 'border-[--tab-accent] text-[--tab-accent]'
-                  : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-[#2E2854]'
+                  : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
               )}
               style={{ '--tab-accent': accent } as React.CSSProperties}
             >

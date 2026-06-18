@@ -166,7 +166,7 @@ export function EmailInbox({ tab }: Props) {
           />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center px-8">
-            <div className="w-12 h-12 rounded-2xl bg-[#151C2F] flex items-center justify-center mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-os-s1 flex items-center justify-center mb-3">
               <MessageSquare className="w-5 h-5 text-slate-500" />
             </div>
             <p className="text-sm font-semibold text-slate-300">

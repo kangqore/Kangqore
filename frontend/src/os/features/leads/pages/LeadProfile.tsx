@@ -23,7 +23,7 @@ const ACTIVITY_ICON: Record<ActivityType, React.ElementType> = {
 const ACTIVITY_COLOR: Record<ActivityType, string> = {
   email: 'bg-blue-100 text-blue-600', call: 'bg-green-100 text-green-600',
   meeting: 'bg-violet-100 text-violet-600', note: 'bg-amber-100 text-amber-600',
-  'score-change': 'bg-[#2564ea]/10 text-[#2564ea]', 'stage-change': 'bg-[#151C2F] text-slate-300',
+  'score-change': 'bg-[#2564ea]/10 text-os-blue', 'stage-change': 'bg-os-s1 text-slate-300',
 }
 const SOURCE_VARIANT = {
   eQORE: 'brand', inbound: 'success', outbound: 'neutral',
@@ -47,7 +47,7 @@ export function LeadProfile() {
           Pipeline
         </Button>
         <select value={selectedId} onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
+          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20">
           {leads.map(l => <option key={l.id} value={l.id}>{l.company}</option>)}
         </select>
       </div>
@@ -55,7 +55,7 @@ export function LeadProfile() {
       {/* Header card */}
       <Card>
         <div className="flex items-start gap-5 flex-wrap">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
             <span className="text-white font-bold text-lg">{lead.company.slice(0,2).toUpperCase()}</span>
           </div>
           <div className="flex-1 min-w-0">
@@ -105,7 +105,7 @@ export function LeadProfile() {
                     isActive  ? `${STAGE_COLOR[s]} text-white scale-110` :
                     isPast    ? 'bg-green-100 text-green-600' :
                     isLost    ? 'bg-red-50 text-red-300' :
-                    'bg-[#151C2F] text-slate-300'
+                    'bg-os-s1 text-slate-300'
                   )}>
                     {i + 1}
                   </div>
@@ -124,7 +124,7 @@ export function LeadProfile() {
         </div>
 
         <div className="flex items-center gap-3 mt-4 flex-wrap">
-          {lead.tags.map(t => <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-[#2564ea]/5 text-[#2564ea] font-medium border border-[#2564ea]/15">{t}</span>)}
+          {lead.tags.map(t => <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-[#2564ea]/5 text-os-blue font-medium border border-[#2564ea]/15">{t}</span>)}
         </div>
       </Card>
 
@@ -134,7 +134,7 @@ export function LeadProfile() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center">
                 <span className="text-white text-[10px] font-bold">eQ</span>
               </div>
               <CardTitle>eQORE Score Breakdown</CardTitle>
@@ -149,9 +149,9 @@ export function LeadProfile() {
                     <div className="flex items-center gap-2">
                       <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded capitalize ${
                         sig.category === 'intent'       ? 'bg-red-50 text-red-600' :
-                        sig.category === 'fit'          ? 'bg-[#2564ea]/8 text-[#2564ea]' :
+                        sig.category === 'fit'          ? 'bg-[#2564ea]/8 text-os-blue' :
                         sig.category === 'engagement'   ? 'bg-green-50 text-green-600' :
-                        'bg-[#151C2F] text-slate-300'
+                        'bg-os-s1 text-slate-300'
                       }`}>{sig.category}</span>
                       <span className="text-xs text-slate-300 font-medium">{sig.signal}</span>
                     </div>
@@ -187,7 +187,7 @@ export function LeadProfile() {
                         <p className="text-sm font-medium text-slate-200 truncate">{act.title}</p>
                         <span className="text-[10px] text-slate-500 flex-shrink-0">{new Date(act.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
                       </div>
-                      {act.metadata && <span className="text-[10px] font-semibold text-[#2564ea] bg-[#2564ea]/5 px-1.5 py-0.5 rounded mt-0.5 inline-block">{act.metadata}</span>}
+                      {act.metadata && <span className="text-[10px] font-semibold text-os-blue bg-[#2564ea]/5 px-1.5 py-0.5 rounded mt-0.5 inline-block">{act.metadata}</span>}
                       <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{act.description}</p>
                       <p className="text-[10px] text-slate-500 mt-0.5">{act.owner}</p>
                     </div>

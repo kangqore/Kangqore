@@ -14,9 +14,9 @@ const TYPE_ICON: Record<GovernanceType, React.ElementType> = {
   escalation:      AlertTriangle,
 }
 const TYPE_COLOR: Record<GovernanceType, string> = {
-  decision:        'bg-[#2564ea]/10 text-[#2564ea]',
+  decision:        'bg-[#2564ea]/10 text-os-blue',
   'change-request':'bg-amber-100 text-amber-600',
-  steering:        'bg-[#151C2F] text-slate-300',
+  steering:        'bg-os-s1 text-slate-300',
   escalation:      'bg-red-100 text-red-600',
 }
 const STATUS_VARIANT: Record<GovernanceStatus,'success'|'warning'|'danger'|'neutral'|'info'> = {
@@ -58,7 +58,7 @@ export function GovernancePage() {
         <div className="flex items-center gap-2">
           {critical > 0 && <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-red-50 text-red-700 border border-red-200"><AlertTriangle className="w-3.5 h-3.5"/>{critical} critical open</span>}
           <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200">{open} open</span>
-          <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-[#0F172A] text-slate-300 border border-[#2E2854]">{pending} pending</span>
+          <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-900 text-slate-300 border border-os-border">{pending} pending</span>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ export function GovernancePage() {
       <div className="flex items-center gap-3 flex-wrap">
         <Input placeholder="Search…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-52" value={search} onChange={e => setSearch(e.target.value)} />
         <select value={typeFilter} onChange={e => setType(e.target.value as GovernanceType | 'all')}
-          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20">
           <option value="all">All Types</option>
           <option value="decision">Decisions</option>
           <option value="change-request">Change Requests</option>
@@ -74,7 +74,7 @@ export function GovernancePage() {
           <option value="escalation">Escalations</option>
         </select>
         <select value={statusFilter} onChange={e => setStatus(e.target.value as GovernanceStatus | 'all')}
-          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20">
           <option value="all">All Statuses</option>
           <option value="open">Open</option>
           <option value="pending">Pending</option>
@@ -83,7 +83,7 @@ export function GovernancePage() {
           <option value="rejected">Rejected</option>
         </select>
         <select value={clientFilter} onChange={e => setClient(e.target.value)}
-          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20">
           <option value="all">All Clients</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
@@ -120,7 +120,7 @@ export function GovernancePage() {
                       <p className="text-xs text-green-700">{item.resolution}</p>
                     </div>
                   )}
-                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[#2E2854]">
+                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-os-border">
                     <Avatar name={item.owner} size="xs" />
                     <span className="text-xs text-slate-500">{item.owner}</span>
                   </div>

@@ -65,7 +65,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'flex-shrink-0 flex flex-col bg-[#151C2F] text-white border-r border-[#2E2854] transition-all duration-300 ease-in-out h-full',
+        'flex-shrink-0 flex flex-col bg-os-s1 text-white border-r border-os-border transition-all duration-300 ease-in-out h-full',
         sidebarCollapsed ? 'w-16' : 'w-[230px]'
       )}
       style={{ zIndex: 40 }}
@@ -74,17 +74,17 @@ export function Sidebar() {
       <Link
         to="/"
         className={cn(
-          'flex items-center gap-3 flex-shrink-0 hover:bg-[#0F172A] transition-colors cursor-pointer',
+          'flex items-center gap-3 flex-shrink-0 hover:bg-slate-900 transition-colors cursor-pointer',
           sidebarCollapsed ? 'h-[60px] justify-center px-0' : 'h-[60px] px-5'
         )}
       >
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0 shadow-sm">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0 shadow-sm">
           <img src="/assets/kangqore-icon-white.png" alt="Kangqore" className="w-5 h-5 object-contain" />
         </div>
         {!sidebarCollapsed && (
           <div className="overflow-hidden">
             <p className="text-white font-bold text-sm leading-none" style={{ fontFamily: 'var(--font-display)' }}>Kangqore</p>
-            <p className="text-[#4ab6d4] text-[10px] tracking-widest mt-0.5 font-bold uppercase">Workspace</p>
+            <p className="text-os-cyan text-[10px] tracking-widest mt-0.5 font-bold uppercase">Workspace</p>
           </div>
         )}
       </Link>
@@ -108,8 +108,8 @@ export function Sidebar() {
                   'flex items-center gap-3 rounded-lg transition-all duration-150 group relative',
                   sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
                   isActive
-                    ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white shadow-sm'
-                    : 'text-slate-500 hover:bg-[#0F172A] hover:text-white'
+                    ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
+                    : 'text-slate-500 hover:bg-slate-900 hover:text-white'
                 )}
               >
                 <HomeIcon className={cn("w-[18px] h-[18px] flex-shrink-0", sidebarCollapsed ? "" : "opacity-80 group-hover:opacity-100")} />
@@ -151,8 +151,8 @@ export function Sidebar() {
                       'flex items-center gap-3 rounded-lg transition-all duration-150 group relative',
                       sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
                       isActive
-                        ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white shadow-sm'
-                        : 'text-slate-500 hover:bg-[#0F172A] hover:text-white'
+                        ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
+                        : 'text-slate-500 hover:bg-slate-900 hover:text-white'
                     )}
                   >
                     <Icon className={cn("w-[18px] h-[18px] flex-shrink-0", sidebarCollapsed ? "" : "opacity-80 group-hover:opacity-100")} />
@@ -188,11 +188,11 @@ export function Sidebar() {
       </motion.nav>
 
       {/* Collapse toggle */}
-      <div className="flex-shrink-0 border-t border-[#2E2854] p-3">
+      <div className="flex-shrink-0 border-t border-os-border p-3">
         <button
           onClick={toggleSidebar}
           className={cn(
-            'flex items-center gap-2.5 w-full rounded-lg h-9 text-slate-500 hover:text-white hover:bg-[#0F172A] transition-all duration-150',
+            'flex items-center gap-2.5 w-full rounded-lg h-9 text-slate-500 hover:text-white hover:bg-slate-900 transition-all duration-150',
             sidebarCollapsed ? 'justify-center' : 'px-3'
           )}
         >

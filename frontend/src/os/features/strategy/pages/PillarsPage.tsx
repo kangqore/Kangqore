@@ -32,7 +32,7 @@ export function PillarsPage() {
     <div className="space-y-12 pb-16">
       <div className="flex items-center justify-between flex-wrap gap-4 mb-2">
         <div>
-          <h2 className="text-2xl font-bold text-[#4ab6d4] tracking-tight">Strategic Pillars</h2>
+          <h2 className="text-2xl font-bold text-os-cyan tracking-tight">Strategic Pillars</h2>
           <p className="text-sm text-slate-500 mt-1">{pillars.length} pillars · foundation of company strategy</p>
         </div>
       </div>
@@ -55,7 +55,7 @@ export function PillarsPage() {
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
                 healthFilter === f.value
                   ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-blue-300'
+                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}
             >
               {f.label}
@@ -80,12 +80,12 @@ export function PillarsPage() {
                 <div className="lg:col-span-1 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-3 mb-3">
-                      <h3 className="font-bold text-lg text-[#4ab6d4] tracking-tight">{pillar.name}</h3>
+                      <h3 className="font-bold text-lg text-os-cyan tracking-tight">{pillar.name}</h3>
                       <HealthBadge status={pillar.health} />
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed mb-6 font-normal">{pillar.description}</p>
                   </div>
-                  <div className="flex items-center gap-3 mt-4 pt-4 border-t border-[#2E2854]/50">
+                  <div className="flex items-center gap-3 mt-4 pt-4 border-t border-os-border/50">
                     <Avatar name={pillar.owner} size="sm" className="ring-2 ring-slate-50" />
                     <div>
                       <p className="text-xs font-bold text-slate-300">{pillar.owner}</p>
@@ -109,11 +109,11 @@ export function PillarsPage() {
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4 mt-2">
-                    <div className="bg-[#0F172A] rounded-xl p-4 border border-[#2E2854]/50 flex flex-col justify-center">
+                    <div className="bg-slate-900 rounded-xl p-4 border border-os-border/50 flex flex-col justify-center">
                       <p className="text-2xl font-black text-white">{pillar.programCount}</p>
                       <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">Programs</p>
                     </div>
-                    <div className="bg-[#0F172A] rounded-xl p-4 border border-[#2E2854]/50 flex flex-col justify-center">
+                    <div className="bg-slate-900 rounded-xl p-4 border border-os-border/50 flex flex-col justify-center">
                       <p className="text-2xl font-black text-white">{pillar.okrCount}</p>
                       <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">OKRs</p>
                     </div>

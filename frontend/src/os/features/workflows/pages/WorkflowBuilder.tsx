@@ -10,7 +10,7 @@ const STEP_TYPE_CONFIG: Record<string, { label: string; color: string; Icon: Rea
   action:       { label: 'Action',       color: 'bg-blue-50 border-blue-200 text-blue-700',   Icon: ({ className }) => <Play          className={className ?? 'w-3.5 h-3.5'} /> },
   condition:    { label: 'Condition',    color: 'bg-amber-50 border-amber-200 text-amber-700', Icon: ({ className }) => <GitBranch     className={className ?? 'w-3.5 h-3.5'} /> },
   notification: { label: 'Notify',       color: 'bg-green-50 border-green-200 text-green-700', Icon: ({ className }) => <Bell          className={className ?? 'w-3.5 h-3.5'} /> },
-  delay:        { label: 'Wait',         color: 'bg-[#0F172A] border-[#2E2854] text-slate-300', Icon: ({ className }) => <Clock         className={className ?? 'w-3.5 h-3.5'} /> },
+  delay:        { label: 'Wait',         color: 'bg-slate-900 border-os-border text-slate-300', Icon: ({ className }) => <Clock         className={className ?? 'w-3.5 h-3.5'} /> },
   approval:     { label: 'Approval',     color: 'bg-purple-50 border-purple-200 text-purple-700', Icon: ({ className }) => <CheckSquare className={className ?? 'w-3.5 h-3.5'} /> },
   integration:  { label: 'Integration',  color: 'bg-pink-50 border-pink-200 text-pink-700',   Icon: ({ className }) => <Link          className={className ?? 'w-3.5 h-3.5'} /> },
 }
@@ -54,11 +54,11 @@ export function WorkflowBuilder() {
               <button
                 key={w.id}
                 onClick={() => { setSelected(w.id); setSelectedStep(null) }}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#0F172A] transition-colors ${
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-900 transition-colors ${
                   w.id === selectedId ? 'bg-blue-50' : ''
                 }`}
               >
-                <div className="w-7 h-7 rounded-lg bg-[#151C2F] flex items-center justify-center flex-shrink-0">
+                <div className="w-7 h-7 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
                   <GitBranch className="w-3.5 h-3.5 text-slate-500" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -96,7 +96,7 @@ export function WorkflowBuilder() {
           </CardHeader>
           <CardBody className="space-y-4">
             {/* Trigger */}
-            <div className="flex items-center gap-3 p-3 bg-[#0F172A] rounded-xl border border-[#2E2854]">
+            <div className="flex items-center gap-3 p-3 bg-slate-900 rounded-xl border border-os-border">
               <div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center">
                 <Zap className="w-4 h-4 text-white" />
               </div>
@@ -135,16 +135,16 @@ export function WorkflowBuilder() {
             </CardHeader>
             <CardBody className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#0F172A] rounded-xl p-3">
+                <div className="bg-slate-900 rounded-xl p-3">
                   <p className="text-xs text-slate-500 mb-1">Type</p>
                   <Badge variant="neutral" size="sm">{STEP_TYPE_CONFIG[step.type]?.label ?? step.type}</Badge>
                 </div>
-                <div className="bg-[#0F172A] rounded-xl p-3">
+                <div className="bg-slate-900 rounded-xl p-3">
                   <p className="text-xs text-slate-500 mb-1">Order</p>
                   <p className="text-sm font-semibold text-white">Step {step.order}</p>
                 </div>
               </div>
-              <div className="bg-[#0F172A] rounded-xl p-3">
+              <div className="bg-slate-900 rounded-xl p-3">
                 <p className="text-xs text-slate-500 mb-1">Description</p>
                 <p className="text-sm text-slate-300">{step.description}</p>
               </div>

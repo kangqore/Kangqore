@@ -112,7 +112,7 @@ export function AuditLogPage() {
           {actionGroups.map(g => (
             <button key={g.key} onClick={() => setGroupFilter(g.key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                groupFilter === g.key ? 'bg-[#2564ea] text-white' : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-blue-300'
+                groupFilter === g.key ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}>
               {g.label}
             </button>
@@ -127,7 +127,7 @@ export function AuditLogPage() {
           <div key={day}>
             <div className="flex items-center gap-3 mb-3">
               <p className="text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">{day}</p>
-              <div className="flex-1 h-px bg-[#151C2F]" />
+              <div className="flex-1 h-px bg-os-s1" />
               <span className="text-xs text-slate-300 whitespace-nowrap">{logs.length} event{logs.length !== 1 ? 's' : ''}</span>
             </div>
             <Card padding="none">
@@ -136,7 +136,7 @@ export function AuditLogPage() {
                   const meta = ACTION_META[log.action]
                   const group: ActionGroup = meta?.group ?? 'decision'
                   return (
-                    <li key={log.id} className="flex items-start gap-4 px-5 py-4 hover:bg-[#0F172A] transition-colors">
+                    <li key={log.id} className="flex items-start gap-4 px-5 py-4 hover:bg-slate-900 transition-colors">
                       {/* Action icon */}
                       <div className={cn('w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5', GROUP_COLOR[group])}>
                         {GROUP_ICON[group]}

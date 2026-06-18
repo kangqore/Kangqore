@@ -44,7 +44,7 @@ function Skeleton({ className = '' }: { className?: string }) {
 }
 
 function SkeletonLight({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse rounded-lg bg-[#151C2F] ${className}`} />
+  return <div className={`animate-pulse rounded-lg bg-os-s1 ${className}`} />
 }
 
 // ─── Module board config ──────────────────────────────────────────────────────
@@ -103,7 +103,7 @@ function Hero({
         <div className="space-y-3">
           <div>
             <p className="text-slate-500 text-xs font-medium tracking-widest uppercase mb-1">{formatDate()}</p>
-            <h1 className="text-3xl font-bold text-[#4ab6d4] tracking-tight" style={{ fontFamily: 'var(--font-display, inherit)' }}>
+            <h1 className="text-3xl font-bold text-os-cyan tracking-tight" style={{ fontFamily: 'var(--font-display, inherit)' }}>
               {getGreeting()}, Mahesh
             </h1>
           </div>
@@ -143,7 +143,7 @@ function Hero({
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => navigate('/kangqore-view/admin/leads')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-[#4ab6d4] transition-all hover:opacity-90 active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-os-cyan transition-all hover:opacity-90 active:scale-95"
             style={{ background: '#2564ea', boxShadow: '0 2px 12px rgba(37,100,234,0.4)' }}
           >
             <Zap className="w-3.5 h-3.5" /> New Lead
@@ -194,7 +194,7 @@ function KpiStrip({ kpis, analytics, loading }: { kpis: any; analytics: any; loa
             key={def.key}
             variants={staggerChild}
             whileHover={{ y: -3, transition: spring.smooth }}
-            className="bg-[#151C2F] rounded-xl border border-[#2E2854] px-4 py-4 hover:shadow-lg hover:shadow-[#4ab6d4]/10 cursor-pointer group"
+            className="bg-os-s1 rounded-xl border border-os-border px-4 py-4 hover:shadow-lg hover:shadow-[#4ab6d4]/10 cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-3">
               <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{def.key}</p>
@@ -238,17 +238,17 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
   const approvals = (approvalsData?.approvals ?? []).slice(0, 3)
 
   return (
-    <div className="bg-[#151C2F] border-[#2E2854] rounded-2xl p-5 flex flex-col gap-5">
+    <div className="bg-os-s1 border-os-border rounded-2xl p-5 flex flex-col gap-5">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-bold text-white flex items-center gap-2">
           <div className="w-5 h-5 rounded-md bg-[#2564ea]/10 flex items-center justify-center">
-            <Target className="w-3 h-3 text-[#2564ea]" />
+            <Target className="w-3 h-3 text-os-blue" />
           </div>
           My Focus
         </h3>
         <button
           onClick={() => navigate('/kangqore-view/admin/kangqore-immp/goals')}
-          className="text-xs text-[#2564ea] hover:underline flex items-center gap-0.5 font-medium"
+          className="text-xs text-os-blue hover:underline flex items-center gap-0.5 font-medium"
         >
           All goals <ArrowRight className="w-3 h-3" />
         </button>
@@ -260,13 +260,13 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
         </div>
       ) : goals.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-8 text-center">
-          <div className="w-10 h-10 rounded-xl bg-[#0F172A] flex items-center justify-center mb-3">
+          <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center mb-3">
             <Target className="w-5 h-5 text-slate-300" />
           </div>
           <p className="text-sm font-medium text-slate-500">No active goals</p>
           <button
             onClick={() => navigate('/kangqore-view/admin/kangqore-immp/goals')}
-            className="mt-3 text-xs text-[#2564ea] font-semibold hover:underline"
+            className="mt-3 text-xs text-os-blue font-semibold hover:underline"
           >
             Set your first goal →
           </button>
@@ -287,7 +287,7 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
                     {g.status?.replace(/_/g, ' ')}
                   </span>
                 </div>
-                <div className="h-1.5 bg-[#151C2F] rounded-full overflow-hidden">
+                <div className="h-1.5 bg-os-s1 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-700"
                     style={{ width: `${Math.min(pct, 100)}%`, background: barColor }}
@@ -302,7 +302,7 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
 
       {approvals.length > 0 && (
         <>
-          <div className="h-px bg-[#151C2F]" />
+          <div className="h-px bg-os-s1" />
           <div>
             <p className="text-xs font-bold text-slate-300 mb-3 flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-amber-500" />
@@ -319,7 +319,7 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
                   </div>
                   <button
                     onClick={() => navigate('/kangqore-view/admin/kangqore-immp/actions')}
-                    className="text-[10px] text-[#2564ea] font-semibold hover:underline flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="text-[10px] text-os-blue font-semibold hover:underline flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     Review
                   </button>
@@ -377,7 +377,7 @@ function WaandaLivePanel({ navigate }: { navigate: (p: string) => void }) {
       style={{ background: 'linear-gradient(160deg, #0d1117 0%, #0a0f1e 100%)', border: '1px solid rgba(37,100,234,0.2)' }}
     >
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-[#4ab6d4] flex items-center gap-2">
+        <h3 className="text-sm font-bold text-os-cyan flex items-center gap-2">
           <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'rgba(43,189,255,0.15)' }}>
             <Brain className="w-3 h-3" style={{ color: '#2bbdff' }} />
           </div>
@@ -499,7 +499,7 @@ function ModuleBoard({ navigate }: { navigate: (p: string) => void }) {
               whileHover={{ y: -3, transition: spring.smooth }}
               whileTap={{ scale: 0.97, transition: spring.snappy }}
               onClick={() => navigate(m.path)}
-              className="group relative flex items-center gap-3 px-4 py-3 bg-[#151C2F] rounded-xl border border-[#2E2854] hover:border-[#4ab6d4]/50 hover:shadow-lg hover:shadow-[#4ab6d4]/10 text-left overflow-hidden"
+              className="group relative flex items-center gap-3 px-4 py-3 bg-os-s1 rounded-xl border border-os-border hover:border-[#4ab6d4]/50 hover:shadow-lg hover:shadow-[#4ab6d4]/10 text-left overflow-hidden"
             >
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
@@ -539,7 +539,7 @@ function ActivityFeed() {
   }
 
   return (
-    <div className="bg-[#151C2F] border-[#2E2854] rounded-2xl p-5">
+    <div className="bg-os-s1 border-os-border rounded-2xl p-5">
       <div className="flex items-center justify-between mb-5">
         <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
           <Activity className="w-3.5 h-3.5" />
@@ -547,7 +547,7 @@ function ActivityFeed() {
         </h3>
         <button
           onClick={() => refetch()}
-          className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-300 hover:bg-[#151C2F] hover:text-slate-300 transition-colors"
+          className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-300 hover:bg-os-s1 hover:text-slate-300 transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
         </button>
@@ -573,12 +573,12 @@ function ActivityFeed() {
         </div>
       ) : (
         <div className="relative">
-          <div className="absolute left-[5px] top-2 bottom-2 w-px bg-[#151C2F]" />
+          <div className="absolute left-[5px] top-2 bottom-2 w-px bg-os-s1" />
           <ul className="space-y-5 pl-5">
             {signals.map((s: any) => (
               <li key={s.id} className="relative group">
                 <span
-                  className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full ring-2 ring-[#151C2F] flex-shrink-0 transition-transform group-hover:scale-125"
+                  className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full ring-2 ring-os-s1 flex-shrink-0 transition-transform group-hover:scale-125"
                   style={{ background: PRIORITY_COLOR[s.priority] ?? '#94a3b8' }}
                 />
                 <div className="flex items-start justify-between gap-4">
@@ -587,7 +587,7 @@ function ActivityFeed() {
                     {s.summary && <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{s.summary}</p>}
                     <div className="flex items-center gap-2 mt-1.5">
                       {s.module && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-[#151C2F] text-slate-300 font-semibold">{s.module}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-os-s1 text-slate-300 font-semibold">{s.module}</span>
                       )}
                       {s.category && (
                         <span className="text-[10px] text-slate-500">{s.category}</span>

@@ -21,7 +21,7 @@ export function DeptBudgetPage() {
           { label: 'Remaining H1',         value: `₹${Math.round(totalBudget() * 0.5) - totalSpent()}k`, sub: 'Available H1 budget' },
           { label: 'H2 Budget',            value: `₹${Math.round(totalBudget() * 0.5)}k`,    sub: 'Allocated, not started' },
         ].map(item => (
-          <div key={item.label} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-5">
+          <div key={item.label} className="bg-os-s1 border border-os-border rounded-xl p-5">
             <p className="text-xs text-slate-500 mb-1">{item.label}</p>
             <p className="text-2xl font-bold text-white">{item.value}</p>
             <p className="text-xs text-slate-500 mt-1">{item.sub}</p>
@@ -74,7 +74,7 @@ export function DeptBudgetPage() {
                 {/* Quarterly breakdown */}
                 <div className="grid grid-cols-4 gap-3">
                   {quarters.map(q => (
-                    <div key={q.label} className={`rounded-xl p-3 ${q.done ? 'bg-[#0F172A]' : 'bg-[#0F172A]/50 opacity-60'}`}>
+                    <div key={q.label} className={`rounded-xl p-3 ${q.done ? 'bg-slate-900' : 'bg-slate-900/50 opacity-60'}`}>
                       <p className="text-xs font-semibold text-slate-500 mb-1">{q.label}</p>
                       <p className="text-sm font-bold text-white">₹{q.budget}k</p>
                       {q.done ? (

@@ -73,10 +73,10 @@ export function CustomDomainsPage() {
                 value={newDomain}
                 onChange={e => setNewDomain(e.target.value)}
                 placeholder="book.yourcompany.com"
-                className="w-full h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-white px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
               />
             </div>
-            <div className="bg-[#0F172A] rounded-xl p-4 text-xs text-slate-300 space-y-1.5">
+            <div className="bg-slate-900 rounded-xl p-4 text-xs text-slate-300 space-y-1.5">
               <p className="font-semibold text-slate-200">DNS Setup Required</p>
               <p>Add a CNAME record pointing to <code className="font-mono bg-slate-200 px-1 rounded">app.kangqore.com</code></p>
               <p className="text-slate-500">Verification may take up to 24 hours after DNS propagation.</p>
@@ -111,7 +111,7 @@ export function CustomDomainsPage() {
               {domains.map(d => {
                 const cfg = STATUS_CONFIG[d.status] ?? STATUS_CONFIG.PENDING
                 return (
-                  <div key={d.id} className="flex items-center gap-4 px-5 py-4 hover:bg-[#0F172A] transition-colors">
+                  <div key={d.id} className="flex items-center gap-4 px-5 py-4 hover:bg-slate-900 transition-colors">
                     <cfg.Icon className={`w-4 h-4 flex-shrink-0 ${cfg.color}`} />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-white font-mono">{d.domain}</p>

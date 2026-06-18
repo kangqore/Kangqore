@@ -40,10 +40,10 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        'bg-[#151C2F] border border-[#2E2854] rounded-xl p-3.5 select-none transition-all duration-200',
-        'hover:border-[#2E2854]/80',
+        'bg-os-s1 border border-os-border rounded-xl p-3.5 select-none transition-all duration-200',
+        'hover:border-os-border/80',
         isDragging && !dragging && 'opacity-30',
-        dragging && 'shadow-md bg-[#151C2F] border-[#2E2854]',
+        dragging && 'shadow-md bg-os-s1 border-os-border',
         'cursor-grab active:cursor-grabbing'
       )}
     >
@@ -51,7 +51,7 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
         <button 
           {...attributes} 
           {...listeners} 
-          className="text-slate-300 hover:text-slate-300 hover:bg-[#0F172A] p-1 rounded-lg mt-0.5 flex-shrink-0 transition-colors"
+          className="text-slate-300 hover:text-slate-300 hover:bg-slate-900 p-1 rounded-lg mt-0.5 flex-shrink-0 transition-colors"
         >
           <GripVertical className="w-3.5 h-3.5" />
         </button>
@@ -66,12 +66,12 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
               <Badge key={l} variant={LABEL_VARIANT[l] ?? 'neutral'} size="sm" className="font-medium tracking-wide">{l}</Badge>
             ))}
           </div>
-          <div className="flex items-center justify-between border-t border-[#2E2854]/50 pt-2.5 mt-1">
+          <div className="flex items-center justify-between border-t border-os-border/50 pt-2.5 mt-1">
             <div className="flex items-center gap-2">
               <Avatar name={task.assignee} size="xs" />
               <span className="text-[10px] font-medium text-slate-500">{task.assignee.split(' ')[0]}</span>
             </div>
-            <span className="text-[10px] font-semibold text-slate-300 bg-[#0F172A] px-1.5 py-0.5 rounded">{task.storyPoints} pts</span>
+            <span className="text-[10px] font-semibold text-slate-300 bg-slate-900 px-1.5 py-0.5 rounded">{task.storyPoints} pts</span>
           </div>
         </div>
       </div>
@@ -86,14 +86,14 @@ function Column({ status, tasks }: { status: typeof COLUMNS[0]; tasks: Task[] })
       <div className="flex items-center gap-2 px-1 mb-1.5">
         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: status.color }} />
         <span className="text-xs font-semibold text-slate-500">{status.label}</span>
-        <span className="ml-auto text-[10px] font-bold text-slate-300 bg-[#151C2F] rounded-full w-5 h-5 flex items-center justify-center">
+        <span className="ml-auto text-[10px] font-bold text-slate-300 bg-os-s1 rounded-full w-5 h-5 flex items-center justify-center">
           {tasks.length}
         </span>
       </div>
       {/* Drop zone */}
       <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
         <div className={cn(
-          'flex flex-col gap-2 min-h-[120px] p-2 rounded-xl bg-[#0F172A]/40 border border-[#2E2854]/60',
+          'flex flex-col gap-2 min-h-[120px] p-2 rounded-xl bg-slate-900/40 border border-os-border/60',
           tasks.length === 0 && 'items-center justify-center'
         )}>
           {tasks.length === 0 && (
@@ -137,7 +137,7 @@ export function KanbanBoard() {
         <select
           value={selectedProjectId}
           onChange={e => setSelectedProject(e.target.value)}
-          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 ml-auto"
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 ml-auto"
         >
           {projects.filter(p => p.status !== 'planned').map(p => (
             <option key={p.id} value={p.id}>{p.name}</option>

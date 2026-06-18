@@ -33,7 +33,7 @@ export function PipelinePage() {
             className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
               r.id === selectedRoleId
                 ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-[#151C2F] text-slate-300 border-[#2E2854] hover:border-blue-300'
+                : 'bg-os-s1 text-slate-300 border-os-border hover:border-blue-300'
             }`}
           >
             {r.title}
@@ -57,13 +57,13 @@ export function PipelinePage() {
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: stage.color }} />
                   <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{stage.label}</span>
-                  <span className="ml-auto text-xs bg-[#151C2F] text-slate-300 rounded-full px-1.5 py-0.5">
+                  <span className="ml-auto text-xs bg-os-s1 text-slate-300 rounded-full px-1.5 py-0.5">
                     {stageCandidates.length}
                   </span>
                 </div>
                 <div className="space-y-2">
                   {stageCandidates.map(c => (
-                    <div key={c.id} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-3 shadow-sm">
+                    <div key={c.id} className="bg-os-s1 border border-os-border rounded-xl p-3 shadow-sm">
                       <div className="flex items-center gap-2 mb-2">
                         <Avatar name={c.name} size="xs" />
                         <p className="text-sm font-medium text-white truncate">{c.name}</p>
@@ -87,7 +87,7 @@ export function PipelinePage() {
                     </div>
                   ))}
                   {stageCandidates.length === 0 && (
-                    <div className="border-2 border-dashed border-[#2E2854] rounded-xl p-4 text-center">
+                    <div className="border-2 border-dashed border-os-border rounded-xl p-4 text-center">
                       <p className="text-xs text-slate-500">No candidates</p>
                     </div>
                   )}

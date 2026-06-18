@@ -168,7 +168,7 @@ export function AnalyticsOverview() {
                 </div>
               )
             })}
-            <div className="pt-2 border-t border-[#2E2854]">
+            <div className="pt-2 border-t border-os-border">
               <div className="flex justify-between text-sm font-semibold">
                 <span className="text-white">Total Workspace Users</span>
                 <span className="text-blue-600">{stats.total_users}</span>
@@ -181,7 +181,7 @@ export function AnalyticsOverview() {
       {/* Full KPI table */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {KEY_METRICS.map(m => (
-          <div key={m.label} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-4">
+          <div key={m.label} className="bg-os-s1 border border-os-border rounded-xl p-4">
             <p className="text-xs text-slate-500 mb-1">{m.label}</p>
             <p className="text-xl font-bold text-white">{m.value}</p>
             <p className={`text-xs font-medium mt-1 ${m.up ? 'text-green-600' : 'text-red-500'}`}>

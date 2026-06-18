@@ -58,7 +58,7 @@ export function CapacityPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+              <tr className="border-b border-os-border bg-slate-900">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-52">Person</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-32">Capacity</th>
                 {WEEKS.map(w => (
@@ -72,7 +72,7 @@ export function CapacityPage() {
                 const allocs = allocationsForMember(member.id)
                 const history = utilHistory.map(h => (h as Record<string, number | string>)[member.id] as number | undefined)
                 return (
-                  <tr key={member.id} className="hover:bg-[#0F172A] transition-colors">
+                  <tr key={member.id} className="hover:bg-slate-900 transition-colors">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2.5">
                         <Avatar name={member.name} size="sm" />

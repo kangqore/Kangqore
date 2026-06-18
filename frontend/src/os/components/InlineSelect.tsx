@@ -27,19 +27,19 @@ const variantClasses: Record<Variant, string> = {
   warning: 'bg-[#fdab3d]  text-white border-transparent hover:bg-[#fdab3d]/90 shadow-sm',
   danger:  'bg-[#e2445c]  text-white border-transparent hover:bg-[#e2445c]/90 shadow-sm',
   info:    'bg-[#0073ea]  text-white border-transparent hover:bg-[#0073ea]/90 shadow-sm',
-  neutral: 'bg-[#0F172A]  text-slate-300 border-[#2E2854] hover:bg-[#151C2F]',
-  brand:   'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white border-transparent hover:opacity-90 shadow-sm',
-  dark:    'bg-[#151C2F]  text-white border-transparent hover:bg-[#0F172A] shadow-sm',
+  neutral: 'bg-slate-900  text-slate-300 border-os-border hover:bg-os-s1',
+  brand:   'bg-gradient-to-r from-os-blue to-os-cyan text-white border-transparent hover:opacity-90 shadow-sm',
+  dark:    'bg-os-s1  text-white border-transparent hover:bg-slate-900 shadow-sm',
 }
 
 const dotColors: Record<Variant, string> = {
-  success: 'bg-[#151C2F]',
-  warning: 'bg-[#151C2F]',
-  danger:  'bg-[#151C2F]',
-  info:    'bg-[#151C2F]',
+  success: 'bg-os-s1',
+  warning: 'bg-os-s1',
+  danger:  'bg-os-s1',
+  info:    'bg-os-s1',
   neutral: 'bg-slate-400',
-  brand:   'bg-[#151C2F]',
-  dark:    'bg-[#151C2F]',
+  brand:   'bg-os-s1',
+  dark:    'bg-os-s1',
 }
 
 const itemDotColors: Record<Variant, string> = {
@@ -48,8 +48,8 @@ const itemDotColors: Record<Variant, string> = {
   danger:  'bg-[#e2445c]',
   info:    'bg-[#0073ea]',
   neutral: 'bg-slate-400',
-  brand:   'bg-[#4ab6d4]',
-  dark:    'bg-[#151C2F]',
+  brand:   'bg-os-cyan',
+  dark:    'bg-os-s1',
 }
 
 const itemHover: Record<Variant, string> = {
@@ -57,9 +57,9 @@ const itemHover: Record<Variant, string> = {
   warning: 'focus:bg-[#fdab3d]/10  text-[#fdab3d]',
   danger:  'focus:bg-[#e2445c]/10  text-[#e2445c]',
   info:    'focus:bg-[#0073ea]/10  text-[#0073ea]',
-  neutral: 'focus:bg-[#151C2F] text-white',
-  brand:   'focus:bg-[#2564ea]/10  text-[#4ab6d4]',
-  dark:    'focus:bg-[#0F172A] text-white',
+  neutral: 'focus:bg-os-s1 text-white',
+  brand:   'focus:bg-[#2564ea]/10  text-os-cyan',
+  dark:    'focus:bg-slate-900 text-white',
 }
 
 export function InlineSelect<T extends string = string>({
@@ -103,7 +103,7 @@ export function InlineSelect<T extends string = string>({
           align="start"
           sideOffset={4}
           onClick={e => e.stopPropagation()}
-          className="z-[100] min-w-[150px] bg-[#0F172A] border border-[#2E2854] rounded-xl shadow-lg p-1 animate-in fade-in-0 zoom-in-95 duration-150"
+          className="z-[100] min-w-[150px] bg-slate-900 border border-os-border rounded-xl shadow-lg p-1 animate-in fade-in-0 zoom-in-95 duration-150"
         >
           {options.map(opt => {
             const isSelected = opt.value === value

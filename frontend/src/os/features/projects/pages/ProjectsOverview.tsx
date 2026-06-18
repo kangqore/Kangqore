@@ -87,7 +87,7 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
           <Input type="number" value={form.budget} onChange={e => setForm(f => ({ ...f, budget: e.target.value }))} />
         </div>
 
-        <div className="pt-2 border-t border-[#2E2854] space-y-3">
+        <div className="pt-2 border-t border-os-border space-y-3">
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-2">Status</label>
             <InlineSelect
@@ -138,7 +138,7 @@ export function ProjectsOverview() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Active Projects"  value={active}     icon={<Briefcase    className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
         <StatCard label="Completed"        value={completed}  icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"   />
-        <StatCard label="At Risk / Behind" value={atRisk}     icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-[#151C2F] text-slate-300'} />
+        <StatCard label="At Risk / Behind" value={atRisk}     icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
         <StatCard label="Open Issues"      value={openIssues} icon={<Clock        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"     />
       </div>
 

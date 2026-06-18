@@ -7,7 +7,7 @@ import type { MilestoneStatus } from '../types'
 
 const STATUS_COLOR: Record<MilestoneStatus, string> = {
   completed:   'bg-green-500',
-  'in-progress':'bg-[#2564ea]',
+  'in-progress':'bg-os-blue',
   upcoming:    'bg-slate-300',
   delayed:     'bg-red-500',
 }
@@ -34,9 +34,9 @@ export function DeliveryTracking() {
       <div className="flex items-center gap-3 flex-wrap">
         {[
           { label: `${overallCompleted} completed`, color: 'bg-green-50 text-green-700 border-green-200' },
-          { label: `${overallInProg} in progress`,  color: 'bg-[#2564ea]/5 text-[#2564ea] border-[#2564ea]/20' },
-          { label: `${overallDelayed} delayed`,      color: overallDelayed > 0 ? 'bg-red-50 text-red-700 border-red-200' : 'bg-[#0F172A] text-slate-300 border-[#2E2854]' },
-          { label: `${milestones.filter(m=>m.status==='upcoming').length} upcoming`, color: 'bg-[#0F172A] text-slate-300 border-[#2E2854]' },
+          { label: `${overallInProg} in progress`,  color: 'bg-[#2564ea]/5 text-os-blue border-[#2564ea]/20' },
+          { label: `${overallDelayed} delayed`,      color: overallDelayed > 0 ? 'bg-red-50 text-red-700 border-red-200' : 'bg-slate-900 text-slate-300 border-os-border' },
+          { label: `${milestones.filter(m=>m.status==='upcoming').length} upcoming`, color: 'bg-slate-900 text-slate-300 border-os-border' },
         ].map(c => (
           <span key={c.label} className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${c.color}`}>{c.label}</span>
         ))}
@@ -54,7 +54,7 @@ export function DeliveryTracking() {
             <Card key={client.id}>
               {/* Client header */}
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-bold text-sm">{client.logo}</span>
                 </div>
                 <div className="flex-1 min-w-0">
@@ -73,12 +73,12 @@ export function DeliveryTracking() {
               {/* Milestone timeline */}
               <div className="relative">
                 {/* Connector line */}
-                <div className="absolute left-[7px] top-2 bottom-2 w-px bg-[#151C2F]" />
+                <div className="absolute left-[7px] top-2 bottom-2 w-px bg-os-s1" />
 
                 <div className="space-y-3">
                   {cms.map(ms => (
                     <div key={ms.id} className="flex items-start gap-3 relative">
-                      <div className={`w-3.5 h-3.5 rounded-full mt-0.5 flex-shrink-0 z-10 ring-2 ring-[#151C2F] ${STATUS_COLOR[ms.status]}`} />
+                      <div className={`w-3.5 h-3.5 rounded-full mt-0.5 flex-shrink-0 z-10 ring-2 ring-os-s1 ${STATUS_COLOR[ms.status]}`} />
                       <div className="flex-1 min-w-0 pb-1">
                         <div className="flex items-center gap-2 flex-wrap">
                           <p className={`text-sm font-medium ${ms.status === 'completed' ? 'text-slate-500 line-through' : 'text-slate-200'}`}>

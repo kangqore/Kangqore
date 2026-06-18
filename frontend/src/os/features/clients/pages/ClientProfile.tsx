@@ -15,8 +15,8 @@ const HEALTH_VARIANT: Record<ClientHealth, 'success' | 'warning' | 'danger' | 'i
 const TIER_COLOR: Record<RelationshipTier, string> = {
   strategic: 'bg-[#0073ea] text-white shadow-sm font-bold',
   enterprise: 'bg-[#7f53f9] text-white shadow-sm font-bold',
-  standard: 'bg-[#151C2F] text-slate-300 font-bold',
-  starter: 'bg-[#0F172A] text-slate-300 font-bold',
+  standard: 'bg-os-s1 text-slate-300 font-bold',
+  starter: 'bg-slate-900 text-slate-300 font-bold',
 }
 const INTERACTION_ICON: Record<InteractionType, React.ElementType> = {
   call: Phone, email: Mail, meeting: Video, note: MessageSquare, milestone: Star,
@@ -26,7 +26,7 @@ const INTERACTION_COLOR: Record<InteractionType, string> = {
   email: 'bg-[#0073ea] text-white shadow-[0_2px_6px_rgba(0,115,234,0.2)]',
   meeting: 'bg-[#7f53f9] text-white shadow-[0_2px_6px_rgba(127,83,249,0.2)]',
   note: 'bg-[#fdab3d] text-white shadow-[0_2px_6px_rgba(253,171,61,0.2)]',
-  milestone: 'bg-[#2564ea] text-white shadow-[0_2px_6px_rgba(37,100,234,0.2)]',
+  milestone: 'bg-os-blue text-white shadow-[0_2px_6px_rgba(37,100,234,0.2)]',
 }
 const fmt = (n: number) => `₹${(n / 1000).toFixed(0)}k`
 
@@ -54,7 +54,7 @@ export function ClientProfile() {
         <select
           value={selectedId}
           onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20"
+          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-[#2564ea]/20"
         >
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
@@ -63,7 +63,7 @@ export function ClientProfile() {
       {/* Header card */}
       <Card variant="glass" className="relative overflow-hidden">
         <div className="flex items-start gap-5 flex-wrap">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(37,100,234,0.15)]">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(37,100,234,0.15)]">
             <span className="text-white font-bold text-xl">{client.logo}</span>
           </div>
           <div className="flex-1 min-w-0">
@@ -139,11 +139,11 @@ export function ClientProfile() {
                   <p className="text-xs text-slate-500 truncate">{ct.email}</p>
                 </div>
                 <div className="flex gap-1.5">
-                   <button className="w-7 h-7 rounded-lg bg-[#0F172A] hover:bg-[#2564ea]/10 hover:text-[#2564ea] flex items-center justify-center transition-all duration-300">
+                   <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-[#2564ea]/10 hover:text-os-blue flex items-center justify-center transition-all duration-300">
                      <Mail className="w-3.5 h-3.5 text-slate-500" />
                    </button>
                    {ct.phone && (
-                     <button className="w-7 h-7 rounded-lg bg-[#0F172A] hover:bg-[#00c875]/10 hover:text-[#00c875] flex items-center justify-center transition-all duration-300">
+                     <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-[#00c875]/10 hover:text-[#00c875] flex items-center justify-center transition-all duration-300">
                        <Phone className="w-3.5 h-3.5 text-slate-500" />
                      </button>
                    )}
@@ -194,7 +194,7 @@ export function ClientProfile() {
               <div key={ms.id} className="flex items-start gap-3">
                 <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
                   ms.status === 'completed'   ? 'bg-green-500' :
-                  ms.status === 'in-progress' ? 'bg-[#2564ea]' :
+                  ms.status === 'in-progress' ? 'bg-os-blue' :
                   ms.status === 'delayed'     ? 'bg-red-500'   : 'bg-slate-300'
                 }`} />
                 <div className="flex-1 min-w-0">

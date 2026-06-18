@@ -16,7 +16,7 @@ const TRIGGER_LABEL: Record<string, string> = {
 const CATEGORY_COLOR: Record<string, string> = {
   sales: 'bg-blue-50 text-blue-700', delivery: 'bg-green-50 text-green-700',
   hr: 'bg-purple-50 text-purple-700', finance: 'bg-orange-50 text-orange-700',
-  ops: 'bg-[#151C2F] text-slate-300', marketing: 'bg-pink-50 text-pink-700',
+  ops: 'bg-os-s1 text-slate-300', marketing: 'bg-pink-50 text-pink-700',
 }
 
 const STEP_ICONS: Record<string, React.FC<{ className?: string }>> = {
@@ -36,7 +36,7 @@ function WorkflowCard({ wf }: { wf: Workflow }) {
       <CardBody className="p-5">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#151C2F] flex items-center justify-center flex-shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-os-s1 flex items-center justify-center flex-shrink-0">
               <GitBranch className="w-4 h-4 text-slate-500" />
             </div>
             <div>
@@ -71,7 +71,7 @@ function WorkflowCard({ wf }: { wf: Workflow }) {
         </div>
 
         {/* Stats */}
-        <div className="flex items-center justify-between text-xs text-slate-500 border-t border-[#2E2854] pt-3">
+        <div className="flex items-center justify-between text-xs text-slate-500 border-t border-os-border pt-3">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />

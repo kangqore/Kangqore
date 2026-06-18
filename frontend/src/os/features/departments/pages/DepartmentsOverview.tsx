@@ -17,17 +17,17 @@ const STATUS_BADGE: Record<string, 'success' | 'info' | 'warning' | 'neutral'> =
 }
 
 const BUDGET_TEXT: Record<string, string> = {
-  'on-track': 'text-[#059669]',
-  'over':     'text-[#ef4444]',
-  'under':    'text-[#2564ea]',
-  'at-risk':  'text-[#d97706]',
+  'on-track': 'text-os-success',
+  'over':     'text-os-danger',
+  'under':    'text-os-blue',
+  'at-risk':  'text-os-warning',
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function TrendIcon({ trend }: { trend: 'up' | 'down' | 'neutral' }) {
-  if (trend === 'up')   return <TrendingUp   className="w-3 h-3 text-[#059669]" />
-  if (trend === 'down') return <TrendingDown className="w-3 h-3 text-[#ef4444]" />
+  if (trend === 'up')   return <TrendingUp   className="w-3 h-3 text-os-success" />
+  if (trend === 'down') return <TrendingDown className="w-3 h-3 text-os-danger" />
   return                       <Minus        className="w-3 h-3 text-slate-500" />
 }
 
@@ -40,7 +40,7 @@ function DeptCard({ dept }: { dept: Department }) {
     <motion.div
       variants={staggerChild}
       whileHover={{ y: -3, transition: spring.smooth }}
-      className="bg-[#151C2F] rounded-xl border border-[#2E2854] overflow-hidden shadow-sm flex flex-col"
+      className="bg-os-s1 rounded-xl border border-os-border overflow-hidden shadow-sm flex flex-col"
       style={{ borderTop: `2px solid ${dept.color}` }}
     >
       {/* Header */}
@@ -80,7 +80,7 @@ function DeptCard({ dept }: { dept: Department }) {
             </div>
             {dept.openRoles > 0 && (
               <div>
-                <p className="text-sm font-bold text-[#d97706]">{dept.openRoles}</p>
+                <p className="text-sm font-bold text-os-warning">{dept.openRoles}</p>
                 <p className="text-[10px] text-slate-500">Open</p>
               </div>
             )}
@@ -117,7 +117,7 @@ function DeptCard({ dept }: { dept: Department }) {
             {dept.deliveryHealth}%
           </p>
         </div>
-        <div className="h-1.5 bg-[#0F172A] rounded-full overflow-hidden">
+        <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-700"
             style={{
@@ -148,7 +148,7 @@ function DeptCard({ dept }: { dept: Department }) {
       <div className="px-5 pb-4 flex-1">
         <div className="grid grid-cols-2 gap-2">
           {dept.kpis.slice(0, 4).map(kpi => (
-            <div key={kpi.metric} className="bg-[#0F172A] rounded-lg p-2.5">
+            <div key={kpi.metric} className="bg-slate-900 rounded-lg p-2.5">
               <TrendIcon trend={kpi.trend} />
               <p className="text-xs font-semibold text-white leading-tight mt-1">{kpi.value}</p>
               <p className="text-[10px] text-slate-500 leading-tight mt-0.5 truncate">{kpi.metric}</p>
@@ -158,7 +158,7 @@ function DeptCard({ dept }: { dept: Department }) {
       </div>
 
       {/* Services footer */}
-      <div className="px-5 py-3 border-t border-[#2E2854] flex flex-wrap gap-1.5">
+      <div className="px-5 py-3 border-t border-os-border flex flex-wrap gap-1.5">
         {dept.services.slice(0, 3).map(s => (
           <span
             key={s}
@@ -169,7 +169,7 @@ function DeptCard({ dept }: { dept: Department }) {
           </span>
         ))}
         {dept.services.length > 3 && (
-          <span className="text-[10px] px-2 py-0.5 rounded-md text-slate-500 bg-[#0F172A] font-medium">
+          <span className="text-[10px] px-2 py-0.5 rounded-md text-slate-500 bg-slate-900 font-medium">
             +{dept.services.length - 3} more
           </span>
         )}

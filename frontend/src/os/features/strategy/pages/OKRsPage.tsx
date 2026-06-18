@@ -35,7 +35,7 @@ export function OKRsPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4 mb-2">
         <div>
-          <h2 className="text-2xl font-bold text-[#4ab6d4] tracking-tight">OKRs — {selectedQuarter}</h2>
+          <h2 className="text-2xl font-bold text-os-cyan tracking-tight">OKRs — {selectedQuarter}</h2>
           <p className="text-sm text-slate-500 mt-1">
             {objectives.length} objectives · avg progress {avgProgress}%
           </p>
@@ -48,7 +48,7 @@ export function OKRsPage() {
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
                 selectedQuarter === q
                   ? 'bg-slate-900 text-white shadow-sm'
-                  : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-[#2E2854]'
+                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-os-border'
               }`}
             >
               {q}
@@ -67,7 +67,7 @@ export function OKRsPage() {
         ].map(s => {
           const count = filteredObjectives().filter(o => o.status === s.status).length
           return (
-            <div key={s.status} className="flex items-center gap-2 px-4 py-2 bg-[#151C2F] border border-[#2E2854]/80 rounded-2xl text-xs shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+            <div key={s.status} className="flex items-center gap-2 px-4 py-2 bg-os-s1 border border-os-border/80 rounded-2xl text-xs shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
               <span className="w-2.5 h-2.5 rounded-full" style={{ background: s.color }} />
               <span className="font-semibold text-slate-300">{s.label}</span>
               <span className="font-bold text-white ml-1">{count}</span>
@@ -93,7 +93,7 @@ export function OKRsPage() {
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
                 statusFilter === f.value
                   ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-blue-300'
+                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}
             >
               {f.label}
@@ -103,7 +103,7 @@ export function OKRsPage() {
         <select
           value={pillarFilter}
           onChange={e => setPillarFilter(e.target.value)}
-          className="h-10 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-4 pr-10 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 shadow-sm"
+          className="h-10 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-4 pr-10 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 shadow-sm"
         >
           <option value="all">All Pillars</option>
           {pillars.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}

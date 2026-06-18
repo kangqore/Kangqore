@@ -46,7 +46,7 @@ export function PortfolioMap() {
     <div className="space-y-12 pb-16">
       {/* Title block with spacious bottom margin */}
       <div>
-        <h2 className="text-2xl font-bold text-[#4ab6d4] tracking-tight">Portfolio Map</h2>
+        <h2 className="text-2xl font-bold text-os-cyan tracking-tight">Portfolio Map</h2>
         <p className="text-sm text-slate-500 mt-1">
           {programs.length} programs across {pillars.length} strategic pillars
         </p>
@@ -118,7 +118,7 @@ export function PortfolioMap() {
         <h3 className="text-base font-bold text-slate-200 mb-5 tracking-tight">All Programs</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {bubblePrograms.map(prog => (
-            <Card key={prog.id} padding="lg" className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between border border-[#2E2854] hover:border-[#2E2854]/80 bg-[#151C2F]">
+            <Card key={prog.id} padding="lg" className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between border border-os-border hover:border-os-border/80 bg-os-s1">
               <div>
                 {/* Pillar Accent Line */}
                 <div className="h-1.5 rounded-full mb-5 w-16" style={{ background: prog.pillarColor }} />
@@ -126,7 +126,7 @@ export function PortfolioMap() {
                 {/* Title & Badge */}
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="flex-1 min-w-0">
-                    <p className="text-base font-bold text-[#4ab6d4] tracking-tight truncate">{prog.name}</p>
+                    <p className="text-base font-bold text-os-cyan tracking-tight truncate">{prog.name}</p>
                     <p className="text-xs text-slate-500 mt-1 font-medium truncate">{prog.pillarName}</p>
                   </div>
                   <Badge variant={STATUS_VARIANT[prog.status]} size="sm" className="capitalize font-semibold">{prog.status}</Badge>
@@ -150,7 +150,7 @@ export function PortfolioMap() {
                 </div>
                 
                 {/* Footer specs with expanded padding */}
-                <div className="mt-5 pt-4 border-t border-[#2E2854]/80 flex items-center justify-between text-[11px] font-medium text-slate-500 tracking-wide">
+                <div className="mt-5 pt-4 border-t border-os-border/80 flex items-center justify-between text-[11px] font-medium text-slate-500 tracking-wide">
                   <span className="text-slate-500">₹{(prog.spent / 1000).toFixed(0)}k <span className="text-slate-350">/</span> ₹{(prog.budget / 1000).toFixed(0)}k</span>
                   <span>{prog.teamSize} people · ends {new Date(prog.endDate).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</span>
                 </div>

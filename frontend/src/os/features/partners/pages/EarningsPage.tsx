@@ -37,7 +37,7 @@ export function EarningsPage() {
         {[
           { label: 'Total Paid Out', value: fmtK(totalPaid),   bg: 'bg-green-50 border-green-100', text: 'text-green-700' },
           { label: 'Pending',        value: fmtK(totalPending), bg: 'bg-amber-50 border-amber-100', text: 'text-amber-700' },
-          { label: 'Overdue',        value: fmtK(totalOverdue), bg: totalOverdue > 0 ? 'bg-red-50 border-red-100' : 'bg-[#0F172A] border-[#2E2854]', text: totalOverdue > 0 ? 'text-red-700' : 'text-slate-500' },
+          { label: 'Overdue',        value: fmtK(totalOverdue), bg: totalOverdue > 0 ? 'bg-red-50 border-red-100' : 'bg-slate-900 border-os-border', text: totalOverdue > 0 ? 'text-red-700' : 'text-slate-500' },
         ].map(c => (
           <div key={c.label} className={`${c.bg} border rounded-2xl p-5`}>
             <p className="text-xs font-semibold opacity-60 mb-1">{c.label}</p>
@@ -76,7 +76,7 @@ export function EarningsPage() {
             const pctPaid  = Math.round((pPaid / p.totalEarned) * 100)
             return (
               <div key={p.id} className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-bold text-xs">{p.logo}</span>
                 </div>
                 <div className="flex-1 min-w-0">
@@ -104,7 +104,7 @@ export function EarningsPage() {
         </CardHeader>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+            <tr className="border-b border-os-border bg-slate-900">
               {['Invoice','Partner','Description','Amount','Issued','Due','Status'].map(h=>(
                 <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
@@ -112,7 +112,7 @@ export function EarningsPage() {
           </thead>
           <tbody className="divide-y divide-[#2E2854]">
             {[...payments].sort((a,b) => b.issuedDate.localeCompare(a.issuedDate)).map(p => (
-              <tr key={p.id} className="hover:bg-[#0F172A] transition-colors">
+              <tr key={p.id} className="hover:bg-slate-900 transition-colors">
                 <td className="px-5 py-3 font-mono text-xs text-slate-500">{p.invoiceNumber}</td>
                 <td className="px-5 py-3 text-slate-300 font-medium text-xs">{p.partnerName.split(' ')[0]}</td>
                 <td className="px-5 py-3 text-slate-500 max-w-[200px] truncate">{p.description}</td>

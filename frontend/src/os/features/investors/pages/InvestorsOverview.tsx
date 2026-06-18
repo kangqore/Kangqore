@@ -83,7 +83,7 @@ export function InvestorsOverview() {
           <CardBody className="p-0">
             <div className="divide-y divide-[#2E2854]">
               {investors.map(inv => (
-                <div key={inv.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#0F172A] transition-colors">
+                <div key={inv.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-900 transition-colors">
                   <Avatar name={inv.name} size="sm" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
@@ -129,7 +129,7 @@ export function InvestorsOverview() {
               .slice(0, 6)
               .map(inv => (
                 <div key={inv.id} className="flex items-center gap-4 px-5 py-3.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#151C2F] flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
                     {inv.status === 'committed'
                       ? <CheckCircle2 className="w-4 h-4 text-green-500" />
                       : <Clock className="w-4 h-4 text-slate-500" />

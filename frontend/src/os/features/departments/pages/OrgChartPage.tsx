@@ -10,11 +10,11 @@ const DEPT_COLORS: Record<string, string> = {
   'Design & Product': 'bg-purple-50 border-purple-200 text-purple-700',
   'Sales & GTM':      'bg-green-50 border-green-200 text-green-700',
   'Client Delivery':  'bg-orange-50 border-orange-200 text-orange-700',
-  'Finance & Ops':    'bg-[#151C2F] border-[#2E2854] text-slate-300',
+  'Finance & Ops':    'bg-os-s1 border-os-border text-slate-300',
 }
 
 function OrgNodeCard({ node }: { node: OrgNode }) {
-  const color = DEPT_COLORS[node.department] ?? 'bg-[#0F172A] border-[#2E2854] text-slate-300'
+  const color = DEPT_COLORS[node.department] ?? 'bg-slate-900 border-os-border text-slate-300'
   return (
     <div className={`rounded-xl border p-3 min-w-[160px] text-center ${color}`}>
       <Avatar name={node.name} size="sm" className="mx-auto mb-2" />
@@ -48,7 +48,7 @@ export function OrgChartPage() {
         {departments.map(d => (
           <div
             key={d.id}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium ${DEPT_COLORS[d.name] ?? 'bg-[#0F172A] border-[#2E2854]'}`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium ${DEPT_COLORS[d.name] ?? 'bg-slate-900 border-os-border'}`}
           >
             <span>{d.name}</span>
             <Badge variant="neutral" size="sm">{d.headcount}</Badge>
@@ -119,7 +119,7 @@ export function OrgChartPage() {
         <CardBody className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#2E2854] bg-[#0F172A]/50">
+              <tr className="border-b border-os-border bg-slate-900/50">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Name</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Title</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Department</th>
@@ -130,7 +130,7 @@ export function OrgChartPage() {
               {orgNodes.map(node => {
                 const manager = orgNodes.find(n => n.id === node.reportsTo)
                 return (
-                  <tr key={node.id} className="hover:bg-[#0F172A] transition-colors">
+                  <tr key={node.id} className="hover:bg-slate-900 transition-colors">
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
                         <Avatar name={node.name} size="xs" />

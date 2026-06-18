@@ -7,9 +7,9 @@ import type { SignalCategory } from '../types'
 
 const CATEGORY_COLOR: Record<SignalCategory, string> = {
   intent:       'bg-red-100   text-red-600',
-  fit:          'bg-[#2564ea]/10 text-[#2564ea]',
+  fit:          'bg-[#2564ea]/10 text-os-blue',
   engagement:   'bg-green-100 text-green-600',
-  firmographic: 'bg-[#151C2F] text-slate-300',
+  firmographic: 'bg-os-s1 text-slate-300',
 }
 
 function ScoreRing({ score }: { score: number }) {
@@ -55,7 +55,7 @@ export function ScoringPage() {
     <div className="space-y-6">
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center">
             <span className="text-white text-xs font-bold">eQ</span>
           </div>
           <h2 className="text-xl font-bold text-white">eQORE Lead Scoring</h2>
@@ -80,7 +80,7 @@ export function ScoringPage() {
               </div>
             ))}
           </div>
-          <div className="mt-4 pt-4 border-t border-[#2E2854] text-xs text-slate-500">
+          <div className="mt-4 pt-4 border-t border-os-border text-xs text-slate-500">
             Avg score: <span className="font-bold text-slate-300">{Math.round(leads.reduce((s,l)=>s+l.score,0)/leads.length)}</span>
           </div>
         </Card>

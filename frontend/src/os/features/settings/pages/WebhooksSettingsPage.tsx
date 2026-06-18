@@ -82,7 +82,7 @@ export function WebhooksSettingsPage() {
                 value={newUrl}
                 onChange={e => setNewUrl(e.target.value)}
                 placeholder="https://your-app.com/webhooks/kangqore"
-                className="w-full h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-white px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
               />
             </div>
             <div>
@@ -97,7 +97,7 @@ export function WebhooksSettingsPage() {
                     className={`text-xs px-2.5 py-1 rounded-full border transition-all ${
                       newEvents.includes(evt)
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-[#151C2F] text-slate-300 border-[#2E2854] hover:border-blue-300'
+                        : 'bg-os-s1 text-slate-300 border-os-border hover:border-blue-300'
                     }`}
                   >
                     {evt}
@@ -134,7 +134,7 @@ export function WebhooksSettingsPage() {
           return (
             <Card key={wh.id} className="overflow-hidden">
               <div
-                className="flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-[#0F172A] transition-colors"
+                className="flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-slate-900 transition-colors"
                 onClick={() => setExpanded(isOpen ? null : wh.id)}
               >
                 <cfg.Icon className={`w-4 h-4 flex-shrink-0 ${cfg.color}`} />
@@ -147,10 +147,10 @@ export function WebhooksSettingsPage() {
               </div>
 
               {isOpen && (
-                <div className="border-t border-[#2E2854] px-5 py-4 space-y-3 bg-[#0F172A]/50">
+                <div className="border-t border-os-border px-5 py-4 space-y-3 bg-slate-900/50">
                   <div className="flex flex-wrap gap-1.5">
                     {wh.events.map(e => (
-                      <span key={e} className="text-xs bg-[#151C2F] text-slate-300 px-2 py-0.5 rounded-full">{e}</span>
+                      <span key={e} className="text-xs bg-os-s1 text-slate-300 px-2 py-0.5 rounded-full">{e}</span>
                     ))}
                   </div>
                   {wh.lastDelivery && (

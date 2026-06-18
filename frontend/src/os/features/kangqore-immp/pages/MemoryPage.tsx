@@ -66,7 +66,7 @@ function formatTimestamp(iso: string): string {
 function MemoryEntryRow({ entry }: { entry: MemoryEntry }) {
   const config = CATEGORY_CONFIG[entry.signalCategory]
   return (
-    <div className="flex items-start gap-3 p-4 rounded-xl border border-[#2E2854] bg-[#151C2F] hover:border-[#2E2854] transition-all">
+    <div className="flex items-start gap-3 p-4 rounded-xl border border-os-border bg-os-s1 hover:border-os-border transition-all">
       <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${config.bg} text-white`}>
         <config.Icon className="w-3.5 h-3.5" />
       </div>
@@ -111,7 +111,7 @@ export function MemoryPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border border-[#2E2854] rounded-xl p-1 bg-[#0F172A] w-fit">
+      <div className="flex gap-1 border border-os-border rounded-xl p-1 bg-slate-900 w-fit">
         {([
           { key: 'log',      label: `Action Log (${memoryEntries.length})` },
           { key: 'patterns', label: `Learned Patterns (${LEARNED_PATTERNS.length})` },
@@ -121,7 +121,7 @@ export function MemoryPage() {
             onClick={() => setView(t.key)}
             className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
               view === t.key
-                ? 'bg-[#151C2F] text-white shadow-sm border border-[#2E2854]'
+                ? 'bg-os-s1 text-white shadow-sm border border-os-border'
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
@@ -152,7 +152,7 @@ export function MemoryPage() {
                     <button
                       onClick={() => unacknowledgeSignal(signal.id)}
                       title="Restore to active signals"
-                      className="w-6 h-6 rounded-md flex items-center justify-center text-slate-300 hover:text-slate-300 hover:bg-[#151C2F] transition-all"
+                      className="w-6 h-6 rounded-md flex items-center justify-center text-slate-300 hover:text-slate-300 hover:bg-os-s1 transition-all"
                     >
                       <RotateCcw className="w-3 h-3" />
                     </button>
@@ -169,8 +169,8 @@ export function MemoryPage() {
               Action History
             </h3>
             {memoryEntries.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-16 text-center bg-[#151C2F] rounded-2xl border border-[#2E2854]">
-                <div className="w-12 h-12 rounded-2xl bg-[#151C2F] flex items-center justify-center mb-4">
+              <div className="flex flex-col items-center justify-center py-16 text-center bg-os-s1 rounded-2xl border border-os-border">
+                <div className="w-12 h-12 rounded-2xl bg-os-s1 flex items-center justify-center mb-4">
                   <Brain className="w-6 h-6 text-slate-300" />
                 </div>
                 <p className="text-sm font-semibold text-slate-300">No actions recorded yet</p>
@@ -198,7 +198,7 @@ export function MemoryPage() {
           {LEARNED_PATTERNS.map(pattern => {
             const Icon = pattern.icon
             return (
-              <div key={pattern.id} className="bg-[#151C2F] rounded-xl border border-[#2E2854] p-5 shadow-sm">
+              <div key={pattern.id} className="bg-os-s1 rounded-xl border border-os-border p-5 shadow-sm">
                 <div className="flex items-start gap-4">
                   <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${pattern.iconColor}`}>
                     <Icon className="w-4.5 h-4.5" />

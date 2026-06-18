@@ -184,7 +184,7 @@ function ConsultationDrawer({
               </div>
             )}
             {consultation.message && (
-              <div className="p-3 bg-[#0F172A] rounded-xl">
+              <div className="p-3 bg-slate-900 rounded-xl">
                 <div className="flex items-center gap-1.5 mb-1.5">
                   <MessageSquare className="w-3 h-3 text-slate-500" />
                   <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Message</span>
@@ -214,7 +214,7 @@ function ConsultationDrawer({
               <select
                 value={meetingMode}
                 onChange={e => setMeetingMode(e.target.value)}
-                className="w-full border border-[#2E2854] rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
               >
                 <option value="">Select…</option>
                 <option value="VIDEO">Video call</option>
@@ -324,8 +324,8 @@ export function ConsultationsQueue() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"       value={stats.total}       icon={<MessageSquare className="w-5 h-5" />} iconColor="bg-[#151C2F] text-slate-300"   />
-        <StatCard label="Pending"     value={stats.pending}     icon={<Clock         className="w-5 h-5" />} iconColor={stats.pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-[#151C2F] text-slate-300'}  />
+        <StatCard label="Total"       value={stats.total}       icon={<MessageSquare className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-300"   />
+        <StatCard label="Pending"     value={stats.pending}     icon={<Clock         className="w-5 h-5" />} iconColor={stats.pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'}  />
         <StatCard label="Contacted"   value={stats.contacted}   icon={<Phone         className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"      />
         <StatCard label="Scheduled"   value={stats.scheduled + stats.rescheduled} icon={<Calendar className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"    />
         <StatCard label="Completed"   value={stats.completed}   icon={<Mail          className="w-5 h-5" />} iconColor="bg-purple-100 text-purple-600"  />
@@ -347,8 +347,8 @@ export function ConsultationsQueue() {
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                 statusFilter === s
-                  ? 'bg-[#2564ea] text-white'
-                  : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-blue-300'
+                  ? 'bg-os-blue text-white'
+                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}
             >
               {s === 'ALL' ? 'All' : s.charAt(0) + s.slice(1).toLowerCase()}
@@ -362,7 +362,7 @@ export function ConsultationsQueue() {
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+            <tr className="border-b border-os-border bg-slate-900">
               {['Name', 'Company', 'Service / Topic', 'Received', 'Preferred', 'Status', ''].map(h => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
@@ -374,12 +374,12 @@ export function ConsultationsQueue() {
               return (
                 <StaggerRow
                   key={c.id}
-                  className="hover:bg-[#0F172A] transition-colors cursor-pointer group"
+                  className="hover:bg-slate-900 transition-colors cursor-pointer group"
                   onClick={() => setOpenId(c.id)}
                 >
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
                         <span className="text-white text-[10px] font-bold">{c.name.charAt(0)}</span>
                       </div>
                       <div className="min-w-0">

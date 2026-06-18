@@ -72,13 +72,13 @@ export function EmailTemplatesPage() {
             <CardBody className="p-0">
               <div className="divide-y divide-[#2E2854]">
                 {items.map(t => (
-                  <div key={t.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#0F172A] transition-colors">
+                  <div key={t.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-900 transition-colors">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-white">{t.name}</p>
                       <p className="text-xs text-slate-500 truncate font-mono mt-0.5">{t.subject}</p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLOR[t.category] ?? 'bg-[#151C2F] text-slate-300'}`}>
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLOR[t.category] ?? 'bg-os-s1 text-slate-300'}`}>
                         {t.category}
                       </span>
                       <Badge variant={t.isActive ? 'success' : 'neutral'} size="sm" dot>

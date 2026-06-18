@@ -22,7 +22,7 @@ export function SettingsModule() {
     <div>
       <div className="mb-6 -mt-2">
         <h1 className="text-lg font-bold text-white mb-4">Settings</h1>
-        <div className="flex items-center gap-1 border-b border-[#2E2854]">
+        <div className="flex items-center gap-1 border-b border-os-border">
           {TABS.map(tab => (
             <NavLink
               key={tab.path}
@@ -30,8 +30,8 @@ export function SettingsModule() {
               className={({ isActive }) => cn(
                 'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap',
                 isActive
-                  ? 'border-[#2564ea] text-[#2564ea]'
-                  : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-[#2E2854]'
+                  ? 'border-os-blue text-os-blue'
+                  : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
               )}
             >
               <tab.icon className="w-3.5 h-3.5" />

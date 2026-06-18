@@ -44,17 +44,17 @@ export function GanttPage() {
         <p className="text-sm text-slate-500 mt-0.5">Project timelines — 2026</p>
       </div>
 
-      <div className="bg-[#151C2F] rounded-2xl border border-[#2E2854] overflow-hidden shadow-sm">
+      <div className="bg-os-s1 rounded-2xl border border-os-border overflow-hidden shadow-sm">
         {/* Month header */}
-        <div className="flex border-b border-[#2E2854]">
-          <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-[#2E2854] text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <div className="flex border-b border-os-border">
+          <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-os-border text-xs font-semibold text-slate-500 uppercase tracking-wider">
             Project
           </div>
           <div className="flex-1 relative h-10 overflow-hidden">
             {months.map(m => (
               <div
                 key={m.label}
-                className="absolute top-0 h-full flex items-center border-r border-[#2E2854] last:border-0"
+                className="absolute top-0 h-full flex items-center border-r border-os-border last:border-0"
                 style={{ left: `${m.left}%`, width: `${m.width}%` }}
               >
                 <span className="text-xs text-slate-500 font-medium px-2">{m.label}</span>
@@ -71,9 +71,9 @@ export function GanttPage() {
             const isLate = new Date(project.endDate) < new Date() && project.status !== 'completed'
 
             return (
-              <div key={project.id} className={`flex items-center ${i % 2 === 0 ? 'bg-[#151C2F]' : 'bg-[#0F172A]/50'} border-b border-[#2E2854] last:border-0`}>
+              <div key={project.id} className={`flex items-center ${i % 2 === 0 ? 'bg-os-s1' : 'bg-slate-900/50'} border-b border-os-border last:border-0`}>
                 {/* Project info */}
-                <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-[#2E2854]">
+                <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-os-border">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: project.pillarColor }} />
                     <span className="text-xs font-medium text-slate-200 truncate">{project.name}</span>
@@ -95,7 +95,7 @@ export function GanttPage() {
                   {months.map(m => (
                     <div
                       key={m.label}
-                      className="absolute top-0 bottom-0 border-r border-[#2E2854]"
+                      className="absolute top-0 bottom-0 border-r border-os-border"
                       style={{ left: `${m.left + m.width}%` }}
                     />
                   ))}
@@ -144,7 +144,7 @@ export function GanttPage() {
         </div>
 
         {/* Legend */}
-        <div className="px-4 py-3 border-t border-[#2E2854] flex items-center gap-6 text-xs text-slate-500">
+        <div className="px-4 py-3 border-t border-os-border flex items-center gap-6 text-xs text-slate-500">
           <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-600" />Active</span>
           <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-green-500" />Completed</span>
           <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-500" />Planned</span>

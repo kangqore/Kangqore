@@ -63,7 +63,7 @@ function CRPipeline({ status }: { status: ChangeStatus }) {
     return (
       <div className="flex items-center gap-2">
         <span className={`px-2.5 py-1 rounded-full text-[11px] font-semibold ${
-          rejected ? 'bg-red-100 text-red-700' : 'bg-[#151C2F] text-slate-300'
+          rejected ? 'bg-red-100 text-red-700' : 'bg-os-s1 text-slate-300'
         }`}>
           {PIPELINE_LABEL[status]}
         </span>
@@ -81,9 +81,9 @@ function CRPipeline({ status }: { status: ChangeStatus }) {
             <span className={`px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all ${
               isActive
                 ? isCurrent
-                  ? 'bg-[#2564ea] text-white'
+                  ? 'bg-os-blue text-white'
                   : 'bg-green-100 text-green-700'
-                : 'bg-[#151C2F] text-slate-300'
+                : 'bg-os-s1 text-slate-300'
             }`}>
               {PIPELINE_LABEL[step]}
             </span>
@@ -161,13 +161,13 @@ function CRDetailDrawer({
         <div>
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Impact</p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-[#0F172A] rounded-xl">
+            <div className="p-3 bg-slate-900 rounded-xl">
               <p className="text-[11px] text-slate-500 mb-0.5">Cost impact</p>
               <p className={`text-sm font-bold ${cr.costImpact != null && cr.costImpact < 0 ? 'text-green-600' : 'text-amber-600'}`}>
                 {fmtCost(cr.costImpact)}
               </p>
             </div>
-            <div className="p-3 bg-[#0F172A] rounded-xl">
+            <div className="p-3 bg-slate-900 rounded-xl">
               <p className="text-[11px] text-slate-500 mb-0.5">Timeline impact</p>
               <p className="text-sm font-bold text-slate-300">{cr.timeImpact ?? '—'}</p>
             </div>
@@ -242,11 +242,11 @@ export function ChangeControlPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"       value={changeRequests.length}     icon={<GitPullRequest className="w-5 h-5" />} iconColor="bg-[#151C2F] text-slate-300" />
-        <StatCard label="Pending"     value={byStatus('PENDING_APPROVAL')} icon={<Clock className="w-5 h-5" />} iconColor={byStatus('PENDING_APPROVAL') > 0 ? 'bg-amber-100 text-amber-600' : 'bg-[#151C2F] text-slate-300'} />
+        <StatCard label="Total"       value={changeRequests.length}     icon={<GitPullRequest className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-300" />
+        <StatCard label="Pending"     value={byStatus('PENDING_APPROVAL')} icon={<Clock className="w-5 h-5" />} iconColor={byStatus('PENDING_APPROVAL') > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
         <StatCard label="Under Review" value={byStatus('UNDER_REVIEW')} icon={<Clock className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
         <StatCard label="Approved"    value={byStatus('APPROVED')}      icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
-        <StatCard label="Rejected"    value={byStatus('REJECTED')}      icon={<XCircle className="w-5 h-5" />} iconColor={byStatus('REJECTED') > 0 ? 'bg-red-100 text-red-600' : 'bg-[#151C2F] text-slate-300'} />
+        <StatCard label="Rejected"    value={byStatus('REJECTED')}      icon={<XCircle className="w-5 h-5" />} iconColor={byStatus('REJECTED') > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-300'} />
       </div>
 
       {/* Filters */}
@@ -257,7 +257,7 @@ export function ChangeControlPage() {
           {(['ALL','PENDING_APPROVAL','UNDER_REVIEW','APPROVED','REJECTED','IMPLEMENTED'] as const).map(s => (
             <button key={s} onClick={() => setFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                filter === s ? 'bg-[#2564ea] text-white' : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-blue-300'
+                filter === s ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
               }`}>
               {s === 'ALL' ? 'All' : PIPELINE_LABEL[s] ?? s}
             </button>
@@ -270,7 +270,7 @@ export function ChangeControlPage() {
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+            <tr className="border-b border-os-border bg-slate-900">
               {['Change Request', 'Project / Client', 'Cost', 'Time', 'Priority', 'Status', 'Requested'].map(h => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
@@ -278,7 +278,7 @@ export function ChangeControlPage() {
           </thead>
           <tbody className="divide-y divide-[#2E2854]">
             {visible.map(c => (
-              <tr key={c.id} className="hover:bg-[#0F172A] transition-colors cursor-pointer group" onClick={() => setOpenId(c.id)}>
+              <tr key={c.id} className="hover:bg-slate-900 transition-colors cursor-pointer group" onClick={() => setOpenId(c.id)}>
                 <td className="px-4 py-3.5 max-w-[220px]">
                   <div className="flex items-start gap-2">
                     {STATUS_ICON[c.status]}

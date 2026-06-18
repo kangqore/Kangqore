@@ -35,7 +35,7 @@ export function InvestorProfile() {
               <button
                 key={inv.id}
                 onClick={() => setSelected(inv.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-[#0F172A] ${
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-slate-900 ${
                   inv.id === selectedId ? 'bg-blue-50' : ''
                 }`}
               >
@@ -93,7 +93,7 @@ export function InvestorProfile() {
             { label: 'Next Follow-up', value: investor.nextFollowUp ?? '—' },
             { label: 'Preferred Stages', value: investor.preferredStage.map(s => STAGE_LABEL[s]).join(', ') },
           ].map(item => (
-            <div key={item.label} className="bg-[#0F172A] rounded-xl p-4">
+            <div key={item.label} className="bg-slate-900 rounded-xl p-4">
               <p className="text-xs text-slate-500 mb-1">{item.label}</p>
               <p className="text-sm font-semibold text-white">{item.value}</p>
             </div>

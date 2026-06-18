@@ -68,7 +68,7 @@ export function IssueTracker() {
           {[
             { label: `${critical} Critical`, color: 'bg-red-50 text-red-600 border-red-200' },
             { label: `${bugs} Bugs`,         color: 'bg-orange-50 text-orange-600 border-orange-200' },
-            { label: `${open} Open`,         color: 'bg-[#0F172A] text-slate-300 border-[#2E2854]' },
+            { label: `${open} Open`,         color: 'bg-slate-900 text-slate-300 border-os-border' },
           ].map(c => (
             <span key={c.label} className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${c.color}`}>{c.label}</span>
           ))}
@@ -87,21 +87,21 @@ export function IssueTracker() {
         <select
           value={priorityFilter}
           onChange={e => setPriority(e.target.value as Priority | 'all')}
-          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         >
           {PRIORITIES.map(p => <option key={p} value={p}>{p === 'all' ? 'All Priorities' : p}</option>)}
         </select>
         <select
           value={typeFilter}
           onChange={e => setType(e.target.value as IssueType | 'all')}
-          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         >
           {TYPES.map(t => <option key={t} value={t}>{t === 'all' ? 'All Types' : t}</option>)}
         </select>
         <select
           value={projectFilter}
           onChange={e => setProject(e.target.value)}
-          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         >
           <option value="all">All Projects</option>
           {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -110,10 +110,10 @@ export function IssueTracker() {
       </div>
 
       {/* Table */}
-      <div className="bg-[#151C2F] rounded-2xl border border-[#2E2854] overflow-hidden shadow-sm">
+      <div className="bg-os-s1 rounded-2xl border border-os-border overflow-hidden shadow-sm">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+            <tr className="border-b border-os-border bg-slate-900">
               <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-8">#</th>
               <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Issue</th>
               <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Project</th>
@@ -127,7 +127,7 @@ export function IssueTracker() {
             {visible.map(issue => {
               const TypeIcon = TYPE_ICON[issue.type]
               return (
-                <tr key={issue.id} className="hover:bg-[#0F172A] transition-colors cursor-pointer group">
+                <tr key={issue.id} className="hover:bg-slate-900 transition-colors cursor-pointer group">
                   <td className="px-4 py-3 text-xs text-slate-500 font-mono">{issue.id.toUpperCase()}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">

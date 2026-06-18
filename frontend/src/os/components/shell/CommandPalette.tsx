@@ -154,12 +154,12 @@ export function CommandPalette() {
             className="fixed top-[14vh] left-1/2 -translate-x-1/2 z-[160] w-full max-w-[580px] px-4"
           >
             <div
-              className="bg-[#151C2F] border border-[#2E2854] rounded-2xl overflow-hidden"
+              className="bg-os-s1 border border-os-border rounded-2xl overflow-hidden"
               style={{ boxShadow: '0 32px 80px rgba(0,0,0,0.75)' }}
             >
 
               {/* Input row */}
-              <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#2E2854]">
+              <div className="flex items-center gap-3 px-4 py-3.5 border-b border-os-border">
                 {isFetching
                   ? <Loader2 className="w-4 h-4 text-slate-500 animate-spin flex-shrink-0" />
                   : <Search className="w-4 h-4 text-slate-500 flex-shrink-0" />
@@ -172,7 +172,7 @@ export function CommandPalette() {
                   placeholder="Search leads, clients, projects, partners…"
                   className="flex-1 bg-transparent text-sm text-white placeholder:text-slate-500 outline-none"
                 />
-                <kbd className="hidden sm:flex items-center gap-0.5 text-[10px] text-slate-500 font-mono bg-[#0F172A] px-1.5 py-0.5 border border-[#2E2854] rounded flex-shrink-0">
+                <kbd className="hidden sm:flex items-center gap-0.5 text-[10px] text-slate-500 font-mono bg-slate-900 px-1.5 py-0.5 border border-os-border rounded flex-shrink-0">
                   Esc
                 </kbd>
               </div>
@@ -181,7 +181,7 @@ export function CommandPalette() {
               <div ref={listRef} className="max-h-[56vh] overflow-y-auto">
                 {dq.length < 2 ? (
                   <div className="flex flex-col items-center justify-center py-10 px-6 text-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#0F172A] border border-[#2E2854] flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-slate-900 border border-os-border flex items-center justify-center">
                       <Command className="w-5 h-5 text-slate-500" />
                     </div>
                     <p className="text-sm text-slate-500">
@@ -222,7 +222,7 @@ export function CommandPalette() {
                                 onClick={() => select(result)}
                                 className={cn(
                                   'w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors',
-                                  isActive ? 'bg-[#1a2340]' : 'hover:bg-[#0F172A]/60'
+                                  isActive ? 'bg-os-s2' : 'hover:bg-slate-900/60'
                                 )}
                               >
                                 <div
@@ -243,7 +243,7 @@ export function CommandPalette() {
                                   </span>
                                 )}
                                 {isActive && (
-                                  <ArrowRight className="w-3.5 h-3.5 text-[#4ab6d4] flex-shrink-0" />
+                                  <ArrowRight className="w-3.5 h-3.5 text-os-cyan flex-shrink-0" />
                                 )}
                               </button>
                             )
@@ -257,10 +257,10 @@ export function CommandPalette() {
 
               {/* Footer */}
               {results.length > 0 && (
-                <div className="border-t border-[#2E2854] px-4 py-2.5 flex items-center gap-4">
+                <div className="border-t border-os-border px-4 py-2.5 flex items-center gap-4">
                   {[['↑↓', 'navigate'], ['↵', 'open'], ['esc', 'close']].map(([key, label]) => (
                     <span key={key} className="text-[10px] text-slate-500 flex items-center gap-1">
-                      <kbd className="font-mono bg-[#0F172A] px-1 border border-[#2E2854] rounded">{key}</kbd>
+                      <kbd className="font-mono bg-slate-900 px-1 border border-os-border rounded">{key}</kbd>
                       {label}
                     </span>
                   ))}

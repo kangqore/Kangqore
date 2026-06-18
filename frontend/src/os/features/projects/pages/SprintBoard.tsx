@@ -52,7 +52,7 @@ export function SprintBoard() {
         <select
           value={selectedProjectId}
           onChange={e => setSelectedProject(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         >
           {projects.filter(p => p.status !== 'planned').map(p => (
             <option key={p.id} value={p.id}>{p.name}</option>

@@ -54,7 +54,7 @@ export function AssignmentsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+              <tr className="border-b border-os-border bg-slate-900">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Person</th>
                 {PROJECTS.map(p => (
                   <th key={p.id} className="text-center px-3 py-3">
@@ -75,7 +75,7 @@ export function AssignmentsPage() {
                 const totalHrs = memberAllocs.reduce((s, a) => s + a.hoursPerWeek, 0)
 
                 return (
-                  <tr key={member.id} className="hover:bg-[#0F172A] transition-colors">
+                  <tr key={member.id} className="hover:bg-slate-900 transition-colors">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2.5">
                         <Avatar name={member.name} size="sm" />

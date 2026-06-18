@@ -55,7 +55,7 @@ const LEVEL_LABELS: Record<number, string> = {
 }
 
 const LEVEL_COLORS: Record<number, string> = {
-  0: 'text-slate-300 bg-[#0F172A] border-[#2E2854]',
+  0: 'text-slate-300 bg-slate-900 border-os-border',
   1: 'text-blue-600 bg-blue-50 border-blue-200',
   2: 'text-amber-600 bg-amber-50 border-amber-200',
   3: 'text-orange-600 bg-orange-50 border-orange-200',
@@ -88,7 +88,7 @@ function ApprovalCard({
   const lvlColor = LEVEL_COLORS[approval.level] ?? LEVEL_COLORS[3]
 
   return (
-    <div className="bg-[#151C2F] border border-[#2E2854] rounded-xl shadow-sm p-4 space-y-3 border-l-4 border-l-amber-400">
+    <div className="bg-os-s1 border border-os-border rounded-xl shadow-sm p-4 space-y-3 border-l-4 border-l-amber-400">
       <div className="flex items-start gap-3">
         <div className="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
           <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
@@ -115,7 +115,7 @@ function ApprovalCard({
           <button
             onClick={() => onDeny(approval.id)}
             disabled={processing}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#151C2F] text-red-600 border border-red-200 hover:bg-red-50 transition-colors disabled:opacity-50"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-os-s1 text-red-600 border border-red-200 hover:bg-red-50 transition-colors disabled:opacity-50"
           >
             <X className="w-3 h-3" />
             Deny
@@ -133,7 +133,7 @@ function ApprovalCard({
 
 function HistoryRow({ action }: { action: ActionHistory }) {
   return (
-    <div className="flex items-center gap-3 py-2.5 px-4 border-b border-[#2E2854] last:border-0 hover:bg-[#0F172A]/60 transition-colors">
+    <div className="flex items-center gap-3 py-2.5 px-4 border-b border-os-border last:border-0 hover:bg-slate-900/60 transition-colors">
       {action.status === 'APPROVED'
         ? <Check className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
         : <X     className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
@@ -181,8 +181,8 @@ function ProposeForm() {
   }
 
   return (
-    <div className="bg-[#151C2F] border border-[#2E2854] rounded-xl shadow-sm overflow-hidden">
-      <div className="p-4 space-y-3 border-b border-[#2E2854]">
+    <div className="bg-os-s1 border border-os-border rounded-xl shadow-sm overflow-hidden">
+      <div className="p-4 space-y-3 border-b border-os-border">
         <p className="text-sm font-semibold text-slate-200 flex items-center gap-2">
           <Plus className="w-4 h-4 text-slate-500" />
           Propose an Action
@@ -192,14 +192,14 @@ function ProposeForm() {
           onChange={e => setDesc(e.target.value)}
           placeholder="Describe what you want KIMMP to do — e.g. 'Send a follow-up email to all cold leads from this week'"
           rows={2}
-          className="w-full text-sm border border-[#2E2854] rounded-lg px-3 py-2.5 outline-none resize-none focus:border-blue-300 text-slate-200 placeholder:text-slate-500"
+          className="w-full text-sm border border-os-border rounded-lg px-3 py-2.5 outline-none resize-none focus:border-blue-300 text-slate-200 placeholder:text-slate-500"
         />
         <div className="flex items-center gap-3">
           <input
             value={context}
             onChange={e => setContext(e.target.value)}
             placeholder="Context (optional)"
-            className="flex-1 text-xs border border-[#2E2854] rounded-lg px-3 py-2 outline-none focus:border-blue-300 text-slate-500 placeholder:text-slate-500"
+            className="flex-1 text-xs border border-os-border rounded-lg px-3 py-2 outline-none focus:border-blue-300 text-slate-500 placeholder:text-slate-500"
           />
           <button
             onClick={propose}
@@ -215,9 +215,9 @@ function ProposeForm() {
       {error && <div className="px-4 py-3 bg-red-50 text-sm text-red-600">{error}</div>}
 
       {result && (
-        <div className="p-4 space-y-3 bg-[#0F172A]">
+        <div className="p-4 space-y-3 bg-slate-900">
           <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">KIMMP Proposed</p>
-          <div className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-3 space-y-2">
+          <div className="bg-os-s1 border border-os-border rounded-xl p-3 space-y-2">
             <div className="flex items-start gap-2">
               <Zap className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
@@ -326,7 +326,7 @@ export function ActionsPage() {
           )}
           <button
             onClick={refresh}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-[#151C2F] transition-colors"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-os-s1 transition-colors"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
@@ -347,7 +347,7 @@ export function ActionsPage() {
       <ProposeForm />
 
       {/* Tabs */}
-      <div className="flex gap-1 border border-[#2E2854] rounded-xl p-1 bg-[#0F172A] w-fit">
+      <div className="flex gap-1 border border-os-border rounded-xl p-1 bg-slate-900 w-fit">
         {([
           { key: 'queue',   label: `Approval Queue (${approvals.length})`, icon: ShieldCheck },
           { key: 'history', label: 'Action History',                        icon: Clock       },
@@ -357,7 +357,7 @@ export function ActionsPage() {
             onClick={() => setTab(t.key as Tab)}
             className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
               tab === t.key
-                ? 'bg-[#151C2F] text-white shadow-sm border border-[#2E2854]'
+                ? 'bg-os-s1 text-white shadow-sm border border-os-border'
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
@@ -372,7 +372,7 @@ export function ActionsPage() {
         <div className="flex justify-center py-12"><Spinner /></div>
       ) : tab === 'queue' ? (
         approvals.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 bg-[#151C2F] border border-[#2E2854] rounded-2xl text-center">
+          <div className="flex flex-col items-center justify-center py-16 bg-os-s1 border border-os-border rounded-2xl text-center">
             <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center mb-4">
               <Check className="w-6 h-6 text-green-500" />
             </div>
@@ -394,12 +394,12 @@ export function ActionsPage() {
         )
       ) : (
         history.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 bg-[#151C2F] border border-[#2E2854] rounded-2xl text-center">
+          <div className="flex flex-col items-center justify-center py-16 bg-os-s1 border border-os-border rounded-2xl text-center">
             <Clock className="w-8 h-8 text-slate-200 mb-3" />
             <p className="text-sm text-slate-500">No action history yet.</p>
           </div>
         ) : (
-          <div className="bg-[#151C2F] border border-[#2E2854] rounded-xl overflow-hidden shadow-sm">
+          <div className="bg-os-s1 border border-os-border rounded-xl overflow-hidden shadow-sm">
             {history.map(a => <HistoryRow key={a.id} action={a} />)}
           </div>
         )
