@@ -54,13 +54,13 @@ function MeetingCard({ m }: { m: Meeting }) {
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0 text-center w-14">
           <div className="text-2xl font-bold text-[#7c3aed] leading-none">{new Date(m.startTime).getDate()}</div>
-          <div className="text-xs text-slate-400 uppercase">{new Date(m.startTime).toLocaleDateString('en-GB', { month: 'short' })}</div>
+          <div className="text-xs text-slate-500 uppercase">{new Date(m.startTime).toLocaleDateString('en-GB', { month: 'short' })}</div>
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-1.5">
             <div>
               <div className="flex items-center gap-2 mb-0.5">
-                <h3 className="text-sm font-semibold text-slate-900">{m.title}</h3>
+                <h3 className="text-sm font-semibold text-white">{m.title}</h3>
                 <Badge variant={TYPE_V[m.type] ?? 'neutral'} size="sm">{m.type.replace('_', ' ')}</Badge>
               </div>
             </div>
@@ -76,7 +76,7 @@ function MeetingCard({ m }: { m: Meeting }) {
           </div>
           {m.agenda && (
             <div className="flex items-start gap-1.5">
-              <FileText className="w-3 h-3 text-slate-400 mt-0.5 flex-shrink-0" />
+              <FileText className="w-3 h-3 text-slate-500 mt-0.5 flex-shrink-0" />
               <p className="text-xs text-slate-500 leading-relaxed">{m.agenda}</p>
             </div>
           )}
@@ -105,21 +105,21 @@ export function InvestorMeetings() {
   return (
     <div className="space-y-8 max-w-2xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Board Meetings & Calls</h2>
+        <h2 className="text-xl font-bold text-white">Board Meetings & Calls</h2>
         <p className="text-sm text-slate-500 mt-0.5">{meetings.length} meetings · {upcoming.length} upcoming</p>
       </div>
 
       <div>
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Upcoming</p>
+        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Upcoming</p>
         {upcoming.length === 0
-          ? <p className="text-sm text-slate-400 text-center py-6 border border-dashed border-slate-200 rounded-xl">No upcoming meetings scheduled.</p>
+          ? <p className="text-sm text-slate-500 text-center py-6 border border-dashed border-[#2E2854] rounded-xl">No upcoming meetings scheduled.</p>
           : <div className="space-y-3">{upcoming.map(m => <MeetingCard key={m.id} m={m} />)}</div>
         }
       </div>
 
       {past.length > 0 && (
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Past meetings</p>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Past meetings</p>
           <div className="space-y-3">{past.map(m => <MeetingCard key={m.id} m={m} />)}</div>
         </div>
       )}

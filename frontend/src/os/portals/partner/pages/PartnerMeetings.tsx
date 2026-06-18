@@ -57,13 +57,13 @@ export function PartnerMeetings() {
             <div className="text-2xl font-bold text-[#059669] leading-none">
               {new Date(m.startTime).getDate()}
             </div>
-            <div className="text-xs text-slate-400 uppercase tracking-wide">
+            <div className="text-xs text-slate-500 uppercase tracking-wide">
               {new Date(m.startTime).toLocaleDateString('en-GB', { month: 'short' })}
             </div>
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2 mb-1">
-              <h3 className="text-sm font-semibold text-slate-900">{m.title}</h3>
+              <h3 className="text-sm font-semibold text-white">{m.title}</h3>
               {isPast
                 ? <Badge variant="neutral" size="sm">Completed</Badge>
                 : <Badge variant="success" dot size="sm">Upcoming</Badge>
@@ -88,21 +88,21 @@ export function PartnerMeetings() {
   return (
     <div className="space-y-8 max-w-2xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Meetings</h2>
+        <h2 className="text-xl font-bold text-white">Meetings</h2>
         <p className="text-sm text-slate-500 mt-0.5">{meetings.length} total · {upcoming.length} upcoming</p>
       </div>
 
       <div>
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Upcoming</p>
+        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Upcoming</p>
         {upcoming.length === 0
-          ? <p className="text-sm text-slate-400 text-center py-6 border border-dashed border-slate-200 rounded-xl">No upcoming meetings.</p>
+          ? <p className="text-sm text-slate-500 text-center py-6 border border-dashed border-[#2E2854] rounded-xl">No upcoming meetings.</p>
           : <div className="space-y-3">{upcoming.map(renderMeeting)}</div>
         }
       </div>
 
       {past.length > 0 && (
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Past meetings</p>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Past meetings</p>
           <div className="space-y-3">{past.map(renderMeeting)}</div>
         </div>
       )}

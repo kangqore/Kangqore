@@ -15,7 +15,7 @@
 import { prisma } from '../../lib/prisma';
 import logger from '../../utils/logger';
 
-export type CostOperation = 'BEHAVIOR_TIER2' | 'PAGE_GENERATION' | 'CLAIM_VALIDATION';
+export type CostOperation = 'BEHAVIOR_TIER2' | 'PAGE_GENERATION' | 'CLAIM_VALIDATION' | 'COMMAND';
 
 /** Anthropic pricing in USD per 1 million tokens. Update when pricing changes. */
 const PRICE_PER_M: Record<string, { input: number; output: number }> = {

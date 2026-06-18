@@ -369,9 +369,11 @@ export default function Login() {
 
 
               {/* Typography */}
-              <div className="text-center z-20 mb-16 mt-20">
-                <h1 className="text-4xl xl:text-5xl font-black text-white leading-[1.2] tracking-tight max-w-[500px]">
-                  Unlock executive capabilities for your <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-blue">enterprise</span>.
+              <div className="text-center z-20 mb-6 mt-36">
+                <h1 className="text-4xl xl:text-5xl font-black leading-[1.2] tracking-tight max-w-[500px]">
+                  <span className="text-white opacity-40">Unlock executive capabilities for your </span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-blue">enterprise</span>
+                  <span className="text-white opacity-40">.</span>
                 </h1>
               </div>
 

@@ -22,7 +22,7 @@ export function CapacityPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Capacity Planning</h2>
+        <h2 className="text-xl font-bold text-white">Capacity Planning</h2>
         <p className="text-sm text-slate-500 mt-0.5">
           {totalUsed}h used / {totalCapacity}h total weekly capacity
         </p>
@@ -45,7 +45,7 @@ export function CapacityPage() {
       <Card padding="none">
         <CardHeader className="px-5 pt-5 pb-3">
           <CardTitle>Weekly Allocation by Person</CardTitle>
-          <div className="flex items-center gap-3 text-xs text-slate-400">
+          <div className="flex items-center gap-3 text-xs text-slate-500">
             {[{ color: 'bg-green-500', label: '<60%' }, { color: 'bg-blue-500', label: '60–80%' }, { color: 'bg-amber-500', label: '80–95%' }, { color: 'bg-red-500', label: '≥95%' }].map(l => (
               <span key={l.label} className="flex items-center gap-1.5">
                 <span className={`w-2.5 h-2.5 rounded-sm ${l.color}`} />
@@ -58,27 +58,27 @@ export function CapacityPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50">
-                <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider w-52">Person</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider w-32">Capacity</th>
+              <tr className="border-b border-[#2E2854] bg-[#0F172A]">
+                <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-52">Person</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-32">Capacity</th>
                 {WEEKS.map(w => (
-                  <th key={w} className="text-center px-3 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">{w}</th>
+                  <th key={w} className="text-center px-3 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{w}</th>
                 ))}
-                <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Projects</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Projects</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-[#2E2854]">
               {team.map(member => {
                 const allocs = allocationsForMember(member.id)
                 const history = utilHistory.map(h => (h as Record<string, number | string>)[member.id] as number | undefined)
                 return (
-                  <tr key={member.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={member.id} className="hover:bg-[#0F172A] transition-colors">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2.5">
                         <Avatar name={member.name} size="sm" />
                         <div>
-                          <p className="text-sm font-medium text-slate-800">{member.name}</p>
-                          <p className="text-xs text-slate-400">{member.role.split(' ').slice(0, 2).join(' ')}</p>
+                          <p className="text-sm font-medium text-slate-200">{member.name}</p>
+                          <p className="text-xs text-slate-500">{member.role.split(' ').slice(0, 2).join(' ')}</p>
                         </div>
                       </div>
                     </td>
@@ -88,7 +88,7 @@ export function CapacityPage() {
                         size="sm"
                         color={member.utilization >= 95 ? 'danger' : member.utilization >= 80 ? 'warning' : 'success'}
                       />
-                      <p className="text-[10px] text-slate-400 mt-1">{Math.round(member.availability * member.utilization / 100)}h / {member.availability}h</p>
+                      <p className="text-[10px] text-slate-500 mt-1">{Math.round(member.availability * member.utilization / 100)}h / {member.availability}h</p>
                     </td>
                     {WEEKS.map((w, i) => {
                       const util = i < history.length ? history[i] : member.utilization
@@ -111,7 +111,7 @@ export function CapacityPage() {
                             <span className="w-3 h-3 rounded-full cursor-default" style={{ background: a.projectColor }} />
                           </Tooltip>
                         ))}
-                        <span className="text-xs text-slate-400 self-center">{allocs.length} project{allocs.length !== 1 ? 's' : ''}</span>
+                        <span className="text-xs text-slate-500 self-center">{allocs.length} project{allocs.length !== 1 ? 's' : ''}</span>
                       </div>
                     </td>
                   </tr>
@@ -130,10 +130,10 @@ export function CapacityPage() {
           const avgUtil = Math.round(members.reduce((s, m) => s + m.utilization, 0) / members.length)
           return (
             <Card key={dept} className="text-center">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">{dept}</p>
-              <p className="text-2xl font-bold text-slate-900 mb-3">{avgUtil}%</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{dept}</p>
+              <p className="text-2xl font-bold text-white mb-3">{avgUtil}%</p>
               <Progress value={avgUtil} size="sm" color={avgUtil >= 95 ? 'danger' : avgUtil >= 80 ? 'warning' : 'success'} />
-              <p className="text-xs text-slate-400 mt-2">{members.length} member{members.length !== 1 ? 's' : ''}</p>
+              <p className="text-xs text-slate-500 mt-2">{members.length} member{members.length !== 1 ? 's' : ''}</p>
             </Card>
           )
         })}

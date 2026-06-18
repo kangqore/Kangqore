@@ -36,16 +36,16 @@ function Dropdown({ trigger, groups, align = 'end', side = 'bottom', className }
           side={side}
           sideOffset={6}
           className={cn(
-            'z-50 min-w-[180px] bg-white border border-slate-200 rounded-xl shadow-lg p-1',
+            'z-50 min-w-[180px] bg-[#151C2F] border border-[#2E2854] rounded-xl shadow-lg p-1',
             'animate-in fade-in-0 zoom-in-95 duration-150',
             className
           )}
         >
           {groups.map((group, gi) => (
             <div key={gi}>
-              {gi > 0 && <RadixDropdown.Separator className="my-1 h-px bg-slate-100" />}
+              {gi > 0 && <RadixDropdown.Separator className="my-1 h-px bg-[#2E2854]" />}
               {group.label && (
-                <div className="px-2 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wide">
+                <div className="px-2 py-1.5 text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
                   {group.label}
                 </div>
               )}
@@ -57,15 +57,15 @@ function Dropdown({ trigger, groups, align = 'end', side = 'bottom', className }
                   className={cn(
                     'flex items-center gap-2.5 px-2.5 py-2 text-sm rounded-lg cursor-default outline-none transition-colors',
                     item.variant === 'danger'
-                      ? 'text-red-600 focus:bg-red-50'
-                      : 'text-slate-700 focus:bg-slate-50',
+                      ? 'text-red-500 focus:bg-red-500/10'
+                      : 'text-slate-300 focus:bg-[#0F172A] focus:text-white',
                     item.disabled && 'opacity-40 cursor-not-allowed'
                   )}
                 >
                   {item.icon && <span className="w-4 h-4 flex items-center">{item.icon}</span>}
                   <span className="flex-1">{item.label}</span>
                   {item.shortcut && (
-                    <span className="text-[11px] text-slate-400 font-mono">{item.shortcut}</span>
+                    <span className="text-[11px] text-slate-500 font-mono">{item.shortcut}</span>
                   )}
                 </RadixDropdown.Item>
               ))}

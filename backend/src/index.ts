@@ -52,6 +52,10 @@ import { eqorePublicRoutes } from './eqore/routes';
 import { eqoreLeadIntelligenceRoutes } from './eqore-lead-intelligence';
 import { alisRouter } from './kangqore-alis';
 import { kangqoreImmpRoutes } from './kangqore-immp';
+import { ScoutScheduler } from './kangqore-immp/scout/scoutScheduler';
+import { GoalScheduler } from './kangqore-immp/goals/goalScheduler';
+import { ProactiveScheduler } from './kangqore-immp/proactive/proactiveScheduler';
+import { TwinScheduler } from './kangqore-immp/twin/twinScheduler';
 import { authenticate, authorize } from './middleware/auth';
 
 import { errorHandler } from './middleware/errorHandler';
@@ -174,6 +178,9 @@ app.use('/api/admin/alis', authenticate, authorize(['ADMIN']), alisRouter);
 // KIMMP — Human Behavior Intelligence Layer (auth applied per-route inside the router).
 app.use('/api/admin/kangqore-immp', kangqoreImmpRoutes);
 
+import adminSearchRoutes from './routes/admin-search';
+app.use('/api/admin/search', adminSearchRoutes);
+
 import servicesRoutes from './routes/services'; // Phase 3
 app.use('/api/services', servicesRoutes); 
 
@@ -263,6 +270,10 @@ app.set('io', io); // Make io accessible in routes via req.app.get('io')
 
 // Initialize Scheduled Jobs
 CronManager.initialize();
+ScoutScheduler.start();
+GoalScheduler.start();
+ProactiveScheduler.start();
+TwinScheduler.start();
 
 server.listen(PORT, () => {
   console.log(`🚀 Core Backend + Frontend running on port ${PORT}`);

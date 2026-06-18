@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { useLocation, Routes, Route, Navigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { api, isDemo } from '@lib/api'
 import { useConsultationsStore } from './store'
 import { ConsultationsQueue } from './pages/ConsultationsQueue'
 import type { Consultation } from './types'
+import { AnimatePresence, motion } from 'framer-motion'
 
 function toConsultation(r: Record<string, unknown>): Consultation {
   return {
@@ -48,10 +49,17 @@ export function ConsultationsModule() {
     if (data?.length) hydrate(data.map(toConsultation))
   }, [data, hydrate])
 
+  const { pathname } = useLocation()
+
   return (
-    <Routes>
-      <Route index element={<ConsultationsQueue />} />
-      <Route path="*" element={<Navigate to="/kangqore-view/consultations" replace />} />
-    </Routes>
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
+
+      <Routes>
+        <Route index element={<ConsultationsQueue />} />
+        <Route path="*" element={<Navigate to="/kangqore-view/admin/consultations" replace />} />
+      </Routes>
+      </motion.div>
+    </AnimatePresence>
   )
 }

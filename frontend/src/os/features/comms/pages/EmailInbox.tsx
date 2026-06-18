@@ -166,10 +166,10 @@ export function EmailInbox({ tab }: Props) {
           />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center px-8">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center mb-3">
-              <MessageSquare className="w-5 h-5 text-slate-400" />
+            <div className="w-12 h-12 rounded-2xl bg-[#151C2F] flex items-center justify-center mb-3">
+              <MessageSquare className="w-5 h-5 text-slate-500" />
             </div>
-            <p className="text-sm font-semibold text-slate-700">
+            <p className="text-sm font-semibold text-slate-300">
               {conversations.length === 0 ? `No ${tab.label.toLowerCase()} conversations yet` : 'Select a conversation'}
             </p>
             {totalUnread > 0 && (

@@ -9,8 +9,11 @@ export const SIGNAL_SOURCE_MODULES = [
   'eqore',
   'lead-intelligence',
   'alis',
+  'alis-responder',
   'vis',
+  'vis-actioner',
   'kimmp',
+  'scout',
 ] as const;
 
 /** The kind of signal — drives which consumer cares about it. */
@@ -21,6 +24,8 @@ export const SIGNAL_CATEGORIES = [
   'CONTENT',
   'RISK',
   'SYSTEM',
+  'COMPETITOR',
+  'OPPORTUNITY',
 ] as const;
 
 export const SIGNAL_SEVERITIES = ['LOW', 'MODERATE', 'HIGH', 'CRITICAL'] as const;

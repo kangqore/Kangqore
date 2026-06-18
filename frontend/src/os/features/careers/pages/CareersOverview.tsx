@@ -27,7 +27,7 @@ const DEPT_COLOR: Record<string, string> = {
   product: 'bg-purple-50 text-purple-700',
   sales: 'bg-green-50 text-green-700',
   delivery: 'bg-orange-50 text-orange-700',
-  ops: 'bg-slate-100 text-slate-600',
+  ops: 'bg-[#151C2F] text-slate-300',
   design: 'bg-pink-50 text-pink-700',
 }
 
@@ -72,19 +72,19 @@ export function CareersOverview() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold text-slate-500 mb-1.5">Department</label>
-              <select value={form.department} onChange={e => set('department', e.target.value)} className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30">
+              <select value={form.department} onChange={e => set('department', e.target.value)} className="w-full border border-[#2E2854] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30">
                 {['engineering','product','sales','delivery','ops','design'].map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
             <div>
               <label className="block text-xs font-semibold text-slate-500 mb-1.5">Type</label>
-              <select value={form.type} onChange={e => set('type', e.target.value)} className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30">
+              <select value={form.type} onChange={e => set('type', e.target.value)} className="w-full border border-[#2E2854] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30">
                 {['full-time','part-time','contract','freelance'].map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
           </div>
           <Input label="Location" value={form.location} onChange={e => set('location', e.target.value)} placeholder="London, UK / Remote" />
-          <Input label="Salary range (optional)" value={form.salaryRange} onChange={e => set('salaryRange', e.target.value)} placeholder="e.g. £80k–£100k" />
+          <Input label="Salary range (optional)" value={form.salaryRange} onChange={e => set('salaryRange', e.target.value)} placeholder="e.g. ₹80k–₹100k" />
           <Textarea label="Description" value={form.description} onChange={e => set('description', e.target.value)} rows={3} placeholder="Role overview…" />
           <Textarea label="Requirements (one per line)" value={form.requirements} onChange={e => set('requirements', e.target.value)} rows={4} placeholder={"5+ years Node.js\nPostgreSQL experience\nRemote working experience"} />
           <div className="flex justify-end gap-2 pt-2">
@@ -117,7 +117,7 @@ export function CareersOverview() {
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="font-semibold text-slate-900">{role.title}</h3>
+                      <h3 className="font-semibold text-white">{role.title}</h3>
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${DEPT_COLOR[role.department]}`}>
                         {role.department}
                       </span>
@@ -125,7 +125,7 @@ export function CareersOverview() {
                     <p className="text-xs text-slate-500 mt-1">
                       {role.location} · {role.remote ? 'Remote OK' : 'On-site'} · {role.type}
                       {(role.salaryRange || role.salaryMin > 0) && (
-                        <> · {role.salaryRange || `£${role.salaryMin}k–£${role.salaryMax}k`}</>
+                        <> · {role.salaryRange || `₹${role.salaryMin}k–₹${role.salaryMax}k`}</>
                       )}
                     </p>
                   </div>
@@ -134,14 +134,14 @@ export function CareersOverview() {
                   </Badge>
                 </div>
 
-                <p className="text-sm text-slate-600 mb-3 line-clamp-2">{role.description}</p>
+                <p className="text-sm text-slate-500 mb-3 line-clamp-2">{role.description}</p>
 
                 <div className="flex items-center justify-between text-xs text-slate-500">
                   <div className="flex gap-4">
-                    <span><span className="font-semibold text-slate-800">{role.applications}</span> applications</span>
-                    <span><span className="font-semibold text-slate-800">{pipelineByRole[role.id] ?? role.inPipeline}</span> in pipeline</span>
+                    <span><span className="font-semibold text-slate-200">{role.applications}</span> applications</span>
+                    <span><span className="font-semibold text-slate-200">{pipelineByRole[role.id] ?? role.inPipeline}</span> in pipeline</span>
                     {role.targetStartDate && (
-                      <span>Target start: <span className="font-semibold text-slate-800">{role.targetStartDate}</span></span>
+                      <span>Target start: <span className="font-semibold text-slate-200">{role.targetStartDate}</span></span>
                     )}
                   </div>
                   <span>HM: {role.hiringManager}</span>
@@ -157,7 +157,7 @@ export function CareersOverview() {
             <CardTitle>Active Candidates</CardTitle>
           </CardHeader>
           <CardBody className="p-0">
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-[#2E2854]">
               {candidates
                 .filter(c => !['rejected'].includes(c.stage))
                 .sort((a, b) => (b.cvScore ?? 0) - (a.cvScore ?? 0))
@@ -167,7 +167,7 @@ export function CareersOverview() {
                     <div key={c.id} className="flex items-center gap-3 px-4 py-3">
                       <Avatar name={c.name} size="sm" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">{c.name}</p>
+                        <p className="text-sm font-medium text-white truncate">{c.name}</p>
                         <p className="text-xs text-slate-500 truncate">{role?.title}</p>
                       </div>
                       <div className="flex flex-col items-end gap-1">

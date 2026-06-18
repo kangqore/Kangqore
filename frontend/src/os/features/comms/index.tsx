@@ -1,10 +1,11 @@
-import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { MessageSquare, Users, Handshake, TrendingUp, GraduationCap } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { useCommsStore } from './store'
 import { EmailInbox }      from './pages/EmailInbox'
 import { InternalMessages } from './pages/InternalMessages'
 import type { TabConfig } from './types'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const EMAIL_TABS: TabConfig[] = [
   {
@@ -55,6 +56,8 @@ const NAV_TABS = [
 
 function UnreadBadge({ count }: { count: number }) {
   if (count === 0) return null
+  const { pathname } = useLocation()
+
   return (
     <span className="ml-1.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0">
       {count > 9 ? '9+' : count}
@@ -76,17 +79,17 @@ export function CommsModule() {
   return (
     <div>
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2 overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[#2E2854] mb-6 -mt-2 overflow-x-auto">
         {NAV_TABS.map(tab => (
           <NavLink
             key={tab.path}
-            to={tab.path === '' ? '/kangqore-view/comms' : `/kangqore-view/comms/${tab.path}`}
+            to={tab.path === '' ? '/kangqore-view/admin/comms' : `/kangqore-view/admin/comms/${tab.path}`}
             end={tab.path === ''}
             className={({ isActive }) => cn(
               'flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
               isActive
                 ? 'border-[#2564ea] text-[#2564ea]'
-                : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-[#2E2854]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -96,17 +99,22 @@ export function CommsModule() {
         ))}
       </div>
 
-      <Routes>
-        <Route index element={<InternalMessages />} />
-        {EMAIL_TABS.map(tab => (
-          <Route
-            key={tab.path}
-            path={tab.path}
-            element={<EmailInbox tab={tab} />}
-          />
-        ))}
-        <Route path="*" element={<Navigate to="/kangqore-view/comms" replace />} />
-      </Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
+
+        <Routes>
+          <Route index element={<InternalMessages />} />
+          {EMAIL_TABS.map(tab => (
+            <Route
+              key={tab.path}
+              path={tab.path}
+              element={<EmailInbox tab={tab} />}
+            />
+          ))}
+          <Route path="*" element={<Navigate to="/kangqore-view/admin/comms" replace />} />
+        </Routes>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

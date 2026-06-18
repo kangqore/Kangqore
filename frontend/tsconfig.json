@@ -21,6 +21,8 @@
       "@design-system/*": ["./src/os/design-system/*"],
       "@pages/*":         ["./src/os/pages/*"],
       "@portals/*":       ["./src/os/portals/*"],
+      "@os/tokens":       ["./src/os/tokens/index.ts"],
+      "@os/motion":       ["./src/os/motion/index.ts"],
       "@/*":              ["./src/*"]
     }
   },

@@ -125,8 +125,11 @@ const WorkflowsModule    = React.lazy(() => import('./os/features/workflows').th
 const MarketingModule    = React.lazy(() => import('./os/features/marketing').then(m => ({ default: m.MarketingModule })));
 const CareersModule      = React.lazy(() => import('./os/features/careers').then(m => ({ default: m.CareersModule })));
 const AnalyticsModule    = React.lazy(() => import('./os/features/analytics').then(m => ({ default: m.AnalyticsModule })));
-const KIMMMModule        = React.lazy(() => import('./os/features/kimmp').then(m => ({ default: m.KIMMMModule })));
+const KIMMMModule        = React.lazy(() => import('./os/features/kangqore-immp').then(m => ({ default: m.KIMMMModule })));
 const AdminOverview      = React.lazy(() => import('./os/features/overview').then(m => ({ default: m.AdminOverview })));
+const DashboardHome      = React.lazy(() => import('./os/features/overview').then(m => ({ default: m.DashboardHome })));
+const AgentLogsModule    = React.lazy(() => import('./os/features/agent-logs').then(m => ({ default: m.AgentLogsModule })));
+const SystemsModule      = React.lazy(() => import('./os/features/systems').then(m => ({ default: m.SystemsModule })));
 const SettingsModule     = React.lazy(() => import('./os/features/settings').then(m => ({ default: m.SettingsModule })));
 const ClientPortal       = React.lazy(() => import('./os/portals/client').then(m => ({ default: m.ClientPortal })));
 const PartnerPortal      = React.lazy(() => import('./os/portals/partner').then(m => ({ default: m.PartnerPortal })));
@@ -229,8 +232,9 @@ function AppContent() {
               </OSProtectedRoute>
             }
           >
-            <Route index                   element={<Navigate to="overview" replace />} />
-            <Route path="overview"         element={<AdminOverview />}       />
+            <Route index                   element={<Navigate to="home" replace />} />
+            <Route path="home"             element={<DashboardHome />}       />
+            <Route path="WAANDA"           element={<AdminOverview />}       />
             <Route path="strategy/*"       element={<StrategyModule />}      />
             <Route path="projects/*"       element={<ProjectsModule />}      />
             <Route path="resources/*"      element={<ResourcesModule />}     />
@@ -248,7 +252,9 @@ function AppContent() {
             <Route path="marketing/*"      element={<MarketingModule />}     />
             <Route path="careers/*"        element={<CareersModule />}       />
             <Route path="analytics/*"      element={<AnalyticsModule />}     />
-            <Route path="kimmp/*"          element={<KIMMMModule />}         />
+            <Route path="kangqore-immp/*"  element={<KIMMMModule />}         />
+            <Route path="agent-logs"       element={<AgentLogsModule />}     />
+            <Route path="systems/*"          element={<SystemsModule />}       />
             <Route path="settings/*"       element={<SettingsModule />}      />
           </Route>
 

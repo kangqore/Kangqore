@@ -52,7 +52,7 @@ export function EmailTemplatesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-bold text-slate-900">Email Templates</h2>
+        <h2 className="text-lg font-bold text-white">Email Templates</h2>
         <p className="text-sm text-slate-500 mt-1">
           Manage automated email templates sent to clients, partners, and investors.
         </p>
@@ -70,15 +70,15 @@ export function EmailTemplatesPage() {
               </CardTitle>
             </CardHeader>
             <CardBody className="p-0">
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-[#2E2854]">
                 {items.map(t => (
-                  <div key={t.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors">
+                  <div key={t.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#0F172A] transition-colors">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-900">{t.name}</p>
+                      <p className="text-sm font-medium text-white">{t.name}</p>
                       <p className="text-xs text-slate-500 truncate font-mono mt-0.5">{t.subject}</p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLOR[t.category] ?? 'bg-slate-100 text-slate-600'}`}>
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLOR[t.category] ?? 'bg-[#151C2F] text-slate-300'}`}>
                         {t.category}
                       </span>
                       <Badge variant={t.isActive ? 'success' : 'neutral'} size="sm" dot>

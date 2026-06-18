@@ -82,7 +82,7 @@ export function ClientProjects() {
   return (
     <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Your Projects</h2>
+        <h2 className="text-xl font-bold text-white">Your Projects</h2>
         <p className="text-sm text-slate-500 mt-1">Live status of all active and completed engagements.</p>
       </div>
 
@@ -100,16 +100,16 @@ export function ClientProjects() {
         return (
           <Card key={p.id} className="overflow-hidden">
             <button
-              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-slate-50 transition-colors text-left"
+              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-[#0F172A] transition-colors text-left"
               onClick={() => setOpenId(isOpen ? '' : p.id)}
             >
               {isOpen
-                ? <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
-                : <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                ? <ChevronDown className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                : <ChevronRight className="w-4 h-4 text-slate-500 flex-shrink-0" />
               }
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <p className="font-semibold text-slate-900">{p.name}</p>
+                  <p className="font-semibold text-white">{p.name}</p>
                   <Badge variant={cfg.variant} size="sm" dot>{cfg.label}</Badge>
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5">
@@ -118,8 +118,8 @@ export function ClientProjects() {
               </div>
               <div className="hidden sm:flex items-center gap-3 flex-shrink-0">
                 <div className="text-right">
-                  <p className="text-sm font-bold text-slate-900">{p.progress}%</p>
-                  <p className="text-xs text-slate-400">{doneMiles}/{p.milestones.length} milestones</p>
+                  <p className="text-sm font-bold text-white">{p.progress}%</p>
+                  <p className="text-xs text-slate-500">{doneMiles}/{p.milestones.length} milestones</p>
                 </div>
                 <div className="w-24">
                   <Progress value={p.progress} color={p.status === 'at-risk' ? 'warning' : 'brand'} size="sm" />
@@ -128,8 +128,8 @@ export function ClientProjects() {
             </button>
 
             {isOpen && (
-              <div className="border-t border-slate-100 px-5 pb-5 pt-4 space-y-5">
-                <p className="text-sm text-slate-600 leading-relaxed">{p.description}</p>
+              <div className="border-t border-[#2E2854] px-5 pb-5 pt-4 space-y-5">
+                <p className="text-sm text-slate-500 leading-relaxed">{p.description}</p>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
@@ -138,9 +138,9 @@ export function ClientProjects() {
                     { label: 'Start Date',    value: p.startDate    },
                     { label: 'Target Date',   value: p.targetDate   },
                   ].map(item => (
-                    <div key={item.label} className="bg-slate-50 rounded-xl p-3">
+                    <div key={item.label} className="bg-[#0F172A] rounded-xl p-3">
                       <p className="text-xs text-slate-500 mb-0.5">{item.label}</p>
-                      <p className="text-sm font-semibold text-slate-900">{item.value}</p>
+                      <p className="text-sm font-semibold text-white">{item.value}</p>
                     </div>
                   ))}
                 </div>
@@ -152,17 +152,17 @@ export function ClientProjects() {
                     {p.milestones.map((m, i) => (
                       <div key={i} className="flex items-center gap-3">
                         <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          m.done ? 'bg-green-100' : 'bg-slate-100'
+                          m.done ? 'bg-green-100' : 'bg-[#151C2F]'
                         }`}>
                           {m.done
                             ? <CheckSquare className="w-3.5 h-3.5 text-green-600" />
-                            : <Clock       className="w-3.5 h-3.5 text-slate-400" />
+                            : <Clock       className="w-3.5 h-3.5 text-slate-500" />
                           }
                         </div>
-                        <span className={`text-sm flex-1 ${m.done ? 'text-slate-500 line-through' : 'text-slate-900 font-medium'}`}>
+                        <span className={`text-sm flex-1 ${m.done ? 'text-slate-500 line-through' : 'text-white font-medium'}`}>
                           {m.name}
                         </span>
-                        <span className="text-xs text-slate-400 flex-shrink-0">{m.date}</span>
+                        <span className="text-xs text-slate-500 flex-shrink-0">{m.date}</span>
                       </div>
                     ))}
                   </div>

@@ -49,14 +49,14 @@ export function PartnerProjects() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">My Projects</h2>
+        <h2 className="text-xl font-bold text-white">My Projects</h2>
         <p className="text-sm text-slate-500 mt-0.5">{projects.length} assigned projects</p>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
         <StatCard label="Active"    value={active}    icon={<Briefcase className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
         <StatCard label="Completed" value={completed} icon={<Briefcase className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
-        <StatCard label="Total"     value={projects.length} icon={<Briefcase className="w-5 h-5" />} iconColor="bg-slate-100 text-slate-500" />
+        <StatCard label="Total"     value={projects.length} icon={<Briefcase className="w-5 h-5" />} iconColor="bg-[#151C2F] text-slate-500" />
       </div>
 
       <div className="space-y-4">
@@ -65,7 +65,7 @@ export function PartnerProjects() {
             <div className="flex items-start gap-3 mb-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h3 className="text-sm font-semibold text-slate-900">{p.title}</h3>
+                  <h3 className="text-sm font-semibold text-white">{p.title}</h3>
                   <Badge variant={STATUS_V[p.status] ?? 'neutral'} size="sm">{p.status}</Badge>
                   <Badge variant={HEALTH_V[p.health] ?? 'neutral'} dot size="sm">{p.health}</Badge>
                 </div>
@@ -75,15 +75,15 @@ export function PartnerProjects() {
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3 text-xs">
               <div className="flex items-center gap-1.5 text-slate-500">
-                <Users className="w-3.5 h-3.5 text-slate-400" />
+                <Users className="w-3.5 h-3.5 text-slate-500" />
                 {p.client.name}
               </div>
               <div className="flex items-center gap-1.5 text-slate-500">
-                <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                <Calendar className="w-3.5 h-3.5 text-slate-500" />
                 Due {fmtDate(p.dueDate)}
               </div>
               <div className="flex items-center gap-1.5 text-slate-500">
-                <DollarSign className="w-3.5 h-3.5 text-slate-400" />
+                <DollarSign className="w-3.5 h-3.5 text-slate-500" />
                 {fmt(p.spent)} / {fmt(p.budget)}
               </div>
               <div className="text-slate-500">
@@ -95,7 +95,7 @@ export function PartnerProjects() {
               <div className="flex-1">
                 <Progress value={p.progress} size="sm" color={p.health === 'at-risk' ? 'warning' : p.health === 'behind' ? 'danger' : 'brand'} />
               </div>
-              <span className="text-xs font-bold text-slate-700 w-8">{p.progress}%</span>
+              <span className="text-xs font-bold text-slate-300 w-8">{p.progress}%</span>
             </div>
           </Card>
         ))}

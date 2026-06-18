@@ -8,10 +8,10 @@ import type { InvestorUpdate } from '../types'
 
 function MetricTile({ label, value, sub, trend }: { label: string; value: string | number; sub?: string; trend?: 'up' | 'down' | 'neutral' }) {
   return (
-    <div className="bg-slate-50 rounded-xl p-4">
+    <div className="bg-[#0F172A] rounded-xl p-4">
       <p className="text-xs text-slate-500 mb-1">{label}</p>
       <div className="flex items-end gap-1.5">
-        <p className="text-xl font-bold text-slate-900">{value}</p>
+        <p className="text-xl font-bold text-white">{value}</p>
         {trend && trend !== 'neutral' && (
           trend === 'up'
             ? <TrendingUp className="w-4 h-4 text-green-500 mb-0.5" />
@@ -28,7 +28,7 @@ function UpdateCard({ update, isOpen, onToggle }: { update: InvestorUpdate; isOp
   return (
     <Card className="overflow-hidden">
       <div
-        className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-slate-50 transition-colors"
+        className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-[#0F172A] transition-colors"
         onClick={onToggle}
       >
         <div className="flex items-center gap-3">
@@ -36,13 +36,13 @@ function UpdateCard({ update, isOpen, onToggle }: { update: InvestorUpdate; isOp
             <Send className="w-4 h-4 text-blue-600" />
           </div>
           <div>
-            <p className="font-semibold text-slate-900">{update.title}</p>
+            <p className="font-semibold text-white">{update.title}</p>
             <p className="text-xs text-slate-500">Sent {update.sentDate}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-bold text-slate-900">£{(m.mrr / 1000).toFixed(0)}k MRR</p>
+            <p className="text-sm font-bold text-white">₹{(m.mrr / 1000).toFixed(0)}k MRR</p>
             <p className="text-xs text-green-600">+{m.mrrGrowth}% MoM</p>
           </div>
           <Badge variant={isOpen ? 'brand' : 'neutral'} size="sm">{isOpen ? 'Open' : 'View'}</Badge>
@@ -50,13 +50,13 @@ function UpdateCard({ update, isOpen, onToggle }: { update: InvestorUpdate; isOp
       </div>
 
       {isOpen && (
-        <div className="border-t border-slate-100 px-5 pb-5 pt-4 space-y-5">
+        <div className="border-t border-[#2E2854] px-5 pb-5 pt-4 space-y-5">
           {/* Metrics grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <MetricTile label="MRR" value={`£${(m.mrr / 1000).toFixed(1)}k`} sub={`+${m.mrrGrowth}% MoM`} trend="up" />
-            <MetricTile label="ARR" value={`£${(m.arr / 1000).toFixed(0)}k`} sub="Annualised" trend="up" />
+            <MetricTile label="MRR" value={`₹${(m.mrr / 1000).toFixed(1)}k`} sub={`+${m.mrrGrowth}% MoM`} trend="up" />
+            <MetricTile label="ARR" value={`₹${(m.arr / 1000).toFixed(0)}k`} sub="Annualised" trend="up" />
             <MetricTile label="Customers" value={m.customers} sub={`NRR ${m.nrr}%`} trend={m.nrr >= 100 ? 'up' : 'down'} />
-            <MetricTile label="Runway" value={`${m.runway}mo`} sub={`£${m.cashOnHand}k cash`} trend={m.runway >= 12 ? 'up' : 'down'} />
+            <MetricTile label="Runway" value={`${m.runway}mo`} sub={`₹${m.cashOnHand}k cash`} trend={m.runway >= 12 ? 'up' : 'down'} />
             <MetricTile label="Headcount" value={m.headcount} sub="FTE" trend="neutral" />
           </div>
 
@@ -65,11 +65,11 @@ function UpdateCard({ update, isOpen, onToggle }: { update: InvestorUpdate; isOp
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500" />
-                <p className="text-sm font-semibold text-slate-700">Highlights</p>
+                <p className="text-sm font-semibold text-slate-300">Highlights</p>
               </div>
               <ul className="space-y-1.5">
                 {update.highlights.map((h, i) => (
-                  <li key={i} className="text-sm text-slate-600 flex gap-2">
+                  <li key={i} className="text-sm text-slate-500 flex gap-2">
                     <span className="text-green-500 mt-0.5 flex-shrink-0">•</span>{h}
                   </li>
                 ))}
@@ -80,11 +80,11 @@ function UpdateCard({ update, isOpen, onToggle }: { update: InvestorUpdate; isOp
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <AlertCircle className="w-4 h-4 text-orange-500" />
-                <p className="text-sm font-semibold text-slate-700">Challenges</p>
+                <p className="text-sm font-semibold text-slate-300">Challenges</p>
               </div>
               <ul className="space-y-1.5">
                 {update.challenges.map((c, i) => (
-                  <li key={i} className="text-sm text-slate-600 flex gap-2">
+                  <li key={i} className="text-sm text-slate-500 flex gap-2">
                     <span className="text-orange-500 mt-0.5 flex-shrink-0">•</span>{c}
                   </li>
                 ))}
@@ -95,11 +95,11 @@ function UpdateCard({ update, isOpen, onToggle }: { update: InvestorUpdate; isOp
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Users className="w-4 h-4 text-blue-500" />
-                <p className="text-sm font-semibold text-slate-700">Asks</p>
+                <p className="text-sm font-semibold text-slate-300">Asks</p>
               </div>
               <ul className="space-y-1.5">
                 {update.askItems.map((a, i) => (
-                  <li key={i} className="text-sm text-slate-600 flex gap-2">
+                  <li key={i} className="text-sm text-slate-500 flex gap-2">
                     <span className="text-blue-500 mt-0.5 flex-shrink-0">•</span>{a}
                   </li>
                 ))}
@@ -120,7 +120,7 @@ export function UpdatesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">Investor Updates</h2>
+          <h2 className="text-lg font-semibold text-white">Investor Updates</h2>
           <p className="text-sm text-slate-500 mt-0.5">Monthly and milestone updates sent to shareholders</p>
         </div>
         <Button size="sm" leftIcon={<Send className="w-3.5 h-3.5" />}>

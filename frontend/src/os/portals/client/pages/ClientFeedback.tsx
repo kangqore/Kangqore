@@ -42,7 +42,7 @@ function NpsButton({ score, selected, onSelect }: { score: number; selected: boo
       className={`w-9 h-9 rounded-xl text-sm font-bold border transition-all ${
         selected
           ? `${bg} border-transparent scale-110 shadow-md`
-          : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
+          : 'bg-[#151C2F] border-[#2E2854] text-slate-500 hover:border-[#2E2854]'
       }`}
     >
       {score}
@@ -81,7 +81,7 @@ export function ClientFeedback() {
   return (
     <div className="space-y-8 max-w-2xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Feedback</h2>
+        <h2 className="text-xl font-bold text-white">Feedback</h2>
         <p className="text-sm text-slate-500 mt-0.5">Your satisfaction matters — share how we're doing</p>
       </div>
 
@@ -91,9 +91,9 @@ export function ClientFeedback() {
           <div className="flex items-center gap-4">
             <div className="text-center">
               <div className={`text-4xl font-bold ${npsLabel(Math.round(avgNps)).color}`}>{avgNps}</div>
-              <div className="text-xs text-slate-400 mt-0.5">Your NPS</div>
+              <div className="text-xs text-slate-500 mt-0.5">Your NPS</div>
             </div>
-            <div className="h-12 w-px bg-slate-100" />
+            <div className="h-12 w-px bg-[#151C2F]" />
             <div>
               <Badge variant={avgNps >= 9 ? 'success' : avgNps >= 7 ? 'warning' : 'danger'} size="md">
                 {npsLabel(Math.round(avgNps)).label}
@@ -108,7 +108,7 @@ export function ClientFeedback() {
       {submitted ? (
         <Card className="text-center py-8">
           <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto mb-3" />
-          <p className="text-lg font-semibold text-slate-800">Thank you for your feedback!</p>
+          <p className="text-lg font-semibold text-slate-200">Thank you for your feedback!</p>
           <p className="text-sm text-slate-500 mt-1">We read every response and use it to improve.</p>
           <Button variant="secondary" size="sm" className="mt-4" onClick={() => { setSubmitted(false); setNps(null); setComment('') }}>
             Submit another
@@ -116,7 +116,7 @@ export function ClientFeedback() {
         </Card>
       ) : (
         <Card>
-          <h3 className="text-base font-semibold text-slate-900 mb-1">Share your feedback</h3>
+          <h3 className="text-base font-semibold text-white mb-1">Share your feedback</h3>
           <p className="text-xs text-slate-500 mb-5">How likely are you to recommend Kangqore to a colleague?</p>
 
           {/* Project selector */}
@@ -125,7 +125,7 @@ export function ClientFeedback() {
             <select
               value={projectId}
               onChange={e => setProjectId(e.target.value)}
-              className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+              className="w-full border border-[#2E2854] rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
             >
               {PROJECTS_FOR_FEEDBACK.map(p => (
                 <option key={p.id} value={p.id}>{p.title}</option>
@@ -143,7 +143,7 @@ export function ClientFeedback() {
                 <NpsButton key={i} score={i} selected={nps === i} onSelect={() => setNps(i)} />
               ))}
             </div>
-            <div className="flex justify-between text-[10px] text-slate-400 mt-1.5 px-1">
+            <div className="flex justify-between text-[10px] text-slate-500 mt-1.5 px-1">
               <span>Not likely at all</span>
               <span>Extremely likely</span>
             </div>
@@ -185,7 +185,7 @@ export function ClientFeedback() {
       {/* History */}
       {feedbacks.length > 0 && (
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Previous submissions</p>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Previous submissions</p>
           <div className="space-y-3">
             {feedbacks.map(f => {
               const { label, bg } = npsLabel(f.npsScore)
@@ -198,10 +198,10 @@ export function ClientFeedback() {
                      <div className="flex-1 min-w-0">
                        <div className="flex items-center gap-2 mb-1">
                         <Badge variant={f.npsScore >= 9 ? 'success' : f.npsScore >= 7 ? 'warning' : 'danger'} size="sm">{label}</Badge>
-                        <span className="text-xs text-slate-400">{f.project?.title}</span>
+                        <span className="text-xs text-slate-500">{f.project?.title}</span>
                       </div>
-                      {f.comment && <p className="text-sm text-slate-600 leading-relaxed">{f.comment}</p>}
-                      <p className="text-[11px] text-slate-400 mt-1">{fmtDate(f.createdAt)}</p>
+                      {f.comment && <p className="text-sm text-slate-500 leading-relaxed">{f.comment}</p>}
+                      <p className="text-[11px] text-slate-500 mt-1">{fmtDate(f.createdAt)}</p>
                     </div>
                   </div>
                 </Card>

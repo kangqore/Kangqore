@@ -14,7 +14,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-slate-700">
+          <label htmlFor={inputId} className="text-sm font-medium text-slate-300">
             {label}
           </label>
         )}
@@ -23,17 +23,17 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={inputId}
           rows={rows}
           className={cn(
-            'w-full rounded-xl border bg-white text-sm text-slate-900 placeholder:text-slate-400 resize-none',
-            'border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100',
+            'w-full rounded-xl border bg-[#0F172A] text-sm text-white placeholder:text-slate-500 resize-none',
+            'border-[#2E2854] focus:border-[#4ab6d4] focus:ring-2 focus:ring-[#4ab6d4]/20',
             'outline-none transition-all duration-150 p-3',
-            'disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed',
-            error && 'border-red-400 focus:border-red-400 focus:ring-red-100',
+            'disabled:bg-[#151C2F] disabled:text-slate-500 disabled:cursor-not-allowed',
+            error && 'border-red-500 focus:border-red-500 focus:ring-red-500/20',
             className
           )}
           {...props}
         />
-        {error && <p className="text-xs text-red-600">{error}</p>}
-        {hint && !error && <p className="text-xs text-slate-400">{hint}</p>}
+        {error && <p className="text-xs text-red-500">{error}</p>}
+        {hint && !error && <p className="text-xs text-slate-500">{hint}</p>}
       </div>
     )
   }

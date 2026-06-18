@@ -23,7 +23,7 @@ export function AnalystHome() {
           <LineChart className="w-6 h-6 text-cyan-600" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Analyst Intelligence Portal</h1>
+          <h1 className="text-2xl font-bold text-white">Analyst Intelligence Portal</h1>
           <p className="text-slate-500 mt-1 text-sm">Authorised access to Kangqore performance data, reports, and briefing materials.</p>
         </div>
       </div>
@@ -31,7 +31,7 @@ export function AnalystHome() {
       {/* Analyst contact */}
       <div className="p-5 rounded-2xl bg-cyan-50 border border-cyan-100 flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <p className="font-semibold text-slate-800 text-sm">Analyst Relations</p>
+          <p className="font-semibold text-slate-200 text-sm">Analyst Relations</p>
           <p className="text-slate-500 text-xs mt-0.5">Schedule a briefing or request additional data</p>
         </div>
         <a
@@ -45,16 +45,16 @@ export function AnalystHome() {
 
       {/* KPIs */}
       <section>
-        <h2 className="text-base font-bold text-slate-800 mb-4">Key Metrics</h2>
+        <h2 className="text-base font-bold text-slate-200 mb-4">Key Metrics</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {kpis.map(({ icon: Icon, label, value, sub }) => (
-            <div key={label} className="p-5 rounded-2xl border border-slate-200 bg-white text-center">
+            <div key={label} className="p-5 rounded-2xl border border-[#2E2854] bg-[#151C2F] text-center">
               <div className="w-9 h-9 rounded-lg bg-cyan-50 flex items-center justify-center mx-auto mb-3">
                 <Icon className="w-5 h-5 text-cyan-600" />
               </div>
-              <p className="text-2xl font-extrabold text-slate-900">{value}</p>
-              <p className="text-xs font-semibold text-slate-600 mt-0.5">{label}</p>
-              <p className="text-xs text-slate-400 mt-0.5">{sub}</p>
+              <p className="text-2xl font-extrabold text-white">{value}</p>
+              <p className="text-xs font-semibold text-slate-500 mt-0.5">{label}</p>
+              <p className="text-xs text-slate-500 mt-0.5">{sub}</p>
             </div>
           ))}
         </div>
@@ -62,21 +62,21 @@ export function AnalystHome() {
 
       {/* Reports */}
       <section>
-        <h2 className="text-base font-bold text-slate-800 mb-4">Reports &amp; Briefings</h2>
+        <h2 className="text-base font-bold text-slate-200 mb-4">Reports &amp; Briefings</h2>
         <div className="space-y-3">
           {reports.map(({ label, date, status }) => (
-            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-200 bg-white hover:shadow-sm transition-shadow">
-              <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
+            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-[#2E2854] bg-[#151C2F] hover:shadow-sm transition-shadow">
+              <div className="w-9 h-9 rounded-lg bg-[#151C2F] flex items-center justify-center flex-shrink-0">
                 <FileBarChart className="w-5 h-5 text-slate-500" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-slate-800 text-sm">{label}</p>
-                <p className="text-slate-400 text-xs">{date}</p>
+                <p className="font-semibold text-slate-200 text-sm">{label}</p>
+                <p className="text-slate-500 text-xs">{date}</p>
               </div>
               <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
                 status === 'Available'
                   ? 'bg-emerald-100 text-emerald-700'
-                  : 'bg-slate-100 text-slate-500'
+                  : 'bg-[#151C2F] text-slate-500'
               }`}>
                 {status}
               </span>

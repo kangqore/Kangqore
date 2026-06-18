@@ -12,7 +12,7 @@ const TABS = [
 
 export function JournalistPortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-100 pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-[#151C2F] pt-[7.5rem]">
       <PortalNavbar
         portalName="Press Portal"
         portalColor="bg-gradient-to-br from-[#be185d] to-[#f472b6]"

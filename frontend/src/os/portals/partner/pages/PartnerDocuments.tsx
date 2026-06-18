@@ -45,7 +45,7 @@ export function PartnerDocuments() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Documents</h2>
+        <h2 className="text-xl font-bold text-white">Documents</h2>
         <p className="text-sm text-slate-500 mt-0.5">{documents.length} files shared with you</p>
       </div>
 
@@ -56,21 +56,21 @@ export function PartnerDocuments() {
         return (
           <div key={proj ?? 'general'}>
             <div className="flex items-center gap-2 mb-3">
-              <FolderOpen className="w-4 h-4 text-slate-400" />
+              <FolderOpen className="w-4 h-4 text-slate-500" />
               <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
                 {proj ?? 'General'}
               </p>
             </div>
             <Card padding="none">
-              <ul className="divide-y divide-slate-50">
+              <ul className="divide-y divide-[#2E2854]">
                 {docs.map(doc => (
-                  <li key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors group">
+                  <li key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#0F172A] transition-colors group">
                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                       <FileText className="w-4 h-4 text-blue-500" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-800 truncate">{doc.title}</p>
-                      <div className="flex items-center gap-3 mt-0.5 text-xs text-slate-400">
+                      <p className="text-sm font-medium text-slate-200 truncate">{doc.title}</p>
+                      <div className="flex items-center gap-3 mt-0.5 text-xs text-slate-500">
                         <Badge variant={TYPE_VARIANT[doc.type] ?? 'neutral'} size="sm">{doc.type}</Badge>
                         <span>{doc.format}</span>
                         <span>{doc.size}</span>
@@ -78,10 +78,10 @@ export function PartnerDocuments() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors">
+                      <button className="p-1.5 rounded-lg hover:bg-[#151C2F] text-slate-500 hover:text-slate-500 transition-colors">
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors">
+                      <button className="p-1.5 rounded-lg hover:bg-[#151C2F] text-slate-500 hover:text-slate-500 transition-colors">
                         <Download className="w-4 h-4" />
                       </button>
                     </div>

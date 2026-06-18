@@ -56,7 +56,7 @@ export function ClientDashboard() {
     <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
       {/* Welcome */}
       <div>
-        <h2 className="text-xl font-bold text-slate-900">
+        <h2 className="text-xl font-bold text-white">
           Welcome back, {user?.name ?? 'there'}
         </h2>
         <p className="text-sm text-slate-500 mt-1">Here's the latest on your Kangqore engagement.</p>
@@ -76,12 +76,12 @@ export function ClientDashboard() {
           { label: 'SLA Compliance',  value: '96%',                                                                    icon: CheckCircle2, color: 'bg-green-50 text-green-600' },
           { label: 'Next Milestone',  value: projects[0]?.milestoneDate ?? '—',                                        icon: Calendar,     color: 'bg-purple-50 text-purple-600'},
         ].map(s => (
-          <div key={s.label} className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4">
+          <div key={s.label} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-5 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-slate-900">{s.value}</p>
+              <p className="text-2xl font-bold text-white">{s.value}</p>
               <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
             </div>
           </div>
@@ -91,13 +91,13 @@ export function ClientDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Active projects */}
         <div className="lg:col-span-2 space-y-4">
-          <h3 className="text-base font-semibold text-slate-900">Active Projects</h3>
+          <h3 className="text-base font-semibold text-white">Active Projects</h3>
           {projects.map(p => (
             <Card key={p.id} padding="none">
               <CardBody className="p-6">
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div>
-                    <p className="font-semibold text-slate-900">{p.name}</p>
+                    <p className="font-semibold text-white">{p.name}</p>
                     <p className="text-xs text-slate-500 mt-0.5">{p.phase} · Lead: {p.deliveryLead}</p>
                   </div>
                   <Badge variant={STATUS_BADGE[p.status]} size="sm" dot>
@@ -113,7 +113,7 @@ export function ClientDashboard() {
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-slate-500">
                   <Calendar className="w-3.5 h-3.5" />
-                  Next: <span className="font-medium text-slate-700">{p.nextMilestone}</span>
+                  Next: <span className="font-medium text-slate-300">{p.nextMilestone}</span>
                   <span>—</span>
                   <span>{p.milestoneDate}</span>
                 </div>
@@ -135,13 +135,13 @@ export function ClientDashboard() {
                       ? <CheckCircle2 className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
                       : <AlertTriangle className="w-3.5 h-3.5 text-orange-500 flex-shrink-0" />
                     }
-                    <span className="text-xs text-slate-700 truncate">{s.metric}</span>
+                    <span className="text-xs text-slate-300 truncate">{s.metric}</span>
                   </div>
                   <div className="text-right flex-shrink-0">
                     <span className={`text-xs font-semibold ${s.status === 'met' ? 'text-green-600' : 'text-orange-600'}`}>
                       {s.current}
                     </span>
-                    <span className="text-xs text-slate-400 ml-1">/ {s.target}</span>
+                    <span className="text-xs text-slate-500 ml-1">/ {s.target}</span>
                   </div>
                 </div>
               ))}
@@ -152,7 +152,7 @@ export function ClientDashboard() {
           <Card>
             <CardHeader><CardTitle>Recent Activity</CardTitle></CardHeader>
             <CardBody className="p-0">
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-[#2E2854]">
                 {RECENT_DELIVERIES.map((d, i) => (
                   <div key={i} className="flex items-start gap-3 px-4 py-3">
                     <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${
@@ -160,8 +160,8 @@ export function ClientDashboard() {
                       d.type === 'invoice' ? 'bg-orange-500' : 'bg-green-500'
                     }`} />
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-slate-800 leading-snug">{d.title}</p>
-                      <p className="text-xs text-slate-400 mt-0.5">{d.date}</p>
+                      <p className="text-xs font-medium text-slate-200 leading-snug">{d.title}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{d.date}</p>
                     </div>
                   </div>
                 ))}

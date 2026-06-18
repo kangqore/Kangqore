@@ -1,18 +1,20 @@
 import { forwardRef } from 'react'
+import { motion } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { Loader2 } from 'lucide-react'
 import { cn } from '../cn'
+import { spring } from '@os/motion'
 
 const button = cva(
-  'inline-flex items-center justify-center gap-2 font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none',
+  'inline-flex items-center justify-center gap-2 font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none',
   {
     variants: {
       variant: {
-        primary:   'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white hover:opacity-90 active:opacity-95 focus-visible:ring-[#2564ea] shadow-sm',
-        secondary: 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 active:bg-slate-100 focus-visible:ring-slate-400 shadow-sm',
-        ghost:     'text-slate-600 hover:bg-slate-100 active:bg-slate-200 focus-visible:ring-slate-400',
-        danger:    'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500 shadow-sm',
-        success:   'bg-green-600 text-white hover:bg-green-700 active:bg-green-800 focus-visible:ring-green-500 shadow-sm',
+        primary:   'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white hover:opacity-90 focus-visible:ring-[#2564ea] shadow-sm',
+        secondary: 'bg-[#0F172A] text-slate-300 border border-[#2E2854] hover:bg-[#151C2F] hover:text-white focus-visible:ring-slate-400 shadow-sm',
+        ghost:     'text-slate-500 hover:text-white hover:bg-[#0F172A] focus-visible:ring-slate-400',
+        danger:    'bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-500 shadow-sm',
+        success:   'bg-[#00c875] text-white hover:bg-[#00c875]/90 focus-visible:ring-[#00c875] shadow-sm',
         brand:     'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white hover:opacity-90 focus-visible:ring-[#2564ea] shadow-sm',
       },
       size: {
@@ -38,18 +40,24 @@ export interface ButtonProps
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, loading, leftIcon, rightIcon, children, disabled, ...props }, ref) => (
-    <button
-      ref={ref}
-      className={cn(button({ variant, size }), className)}
-      disabled={disabled ?? loading}
-      {...props}
-    >
-      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : leftIcon}
-      {children}
-      {!loading && rightIcon}
-    </button>
-  )
+  ({ className, variant, size, loading, leftIcon, rightIcon, children, disabled, ...props }, ref) => {
+    const isDisabled = disabled ?? loading
+    return (
+      <motion.button
+        ref={ref}
+        className={cn(button({ variant, size }), className)}
+        disabled={isDisabled}
+        whileTap={isDisabled ? undefined : { scale: 0.97 }}
+        whileHover={isDisabled ? undefined : { scale: 1.01 }}
+        transition={spring.snappy}
+        {...(props as any)}
+      >
+        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : leftIcon}
+        {children}
+        {!loading && rightIcon}
+      </motion.button>
+    )
+  }
 )
 
 Button.displayName = 'Button'

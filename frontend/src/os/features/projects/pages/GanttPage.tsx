@@ -40,24 +40,24 @@ export function GanttPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Gantt Chart</h2>
+        <h2 className="text-xl font-bold text-white">Gantt Chart</h2>
         <p className="text-sm text-slate-500 mt-0.5">Project timelines — 2026</p>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+      <div className="bg-[#151C2F] rounded-2xl border border-[#2E2854] overflow-hidden shadow-sm">
         {/* Month header */}
-        <div className="flex border-b border-slate-100">
-          <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-slate-100 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <div className="flex border-b border-[#2E2854]">
+          <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-[#2E2854] text-xs font-semibold text-slate-500 uppercase tracking-wider">
             Project
           </div>
           <div className="flex-1 relative h-10 overflow-hidden">
             {months.map(m => (
               <div
                 key={m.label}
-                className="absolute top-0 h-full flex items-center border-r border-slate-100 last:border-0"
+                className="absolute top-0 h-full flex items-center border-r border-[#2E2854] last:border-0"
                 style={{ left: `${m.left}%`, width: `${m.width}%` }}
               >
-                <span className="text-xs text-slate-400 font-medium px-2">{m.label}</span>
+                <span className="text-xs text-slate-500 font-medium px-2">{m.label}</span>
               </div>
             ))}
           </div>
@@ -71,12 +71,12 @@ export function GanttPage() {
             const isLate = new Date(project.endDate) < new Date() && project.status !== 'completed'
 
             return (
-              <div key={project.id} className={`flex items-center ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'} border-b border-slate-100 last:border-0`}>
+              <div key={project.id} className={`flex items-center ${i % 2 === 0 ? 'bg-[#151C2F]' : 'bg-[#0F172A]/50'} border-b border-[#2E2854] last:border-0`}>
                 {/* Project info */}
-                <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-slate-100">
+                <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-[#2E2854]">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: project.pillarColor }} />
-                    <span className="text-xs font-medium text-slate-800 truncate">{project.name}</span>
+                    <span className="text-xs font-medium text-slate-200 truncate">{project.name}</span>
                   </div>
                   <div className="flex items-center gap-2 mt-1 ml-4">
                     <Avatar name={project.owner} size="xs" />
@@ -95,7 +95,7 @@ export function GanttPage() {
                   {months.map(m => (
                     <div
                       key={m.label}
-                      className="absolute top-0 bottom-0 border-r border-slate-100"
+                      className="absolute top-0 bottom-0 border-r border-[#2E2854]"
                       style={{ left: `${m.left + m.width}%` }}
                     />
                   ))}
@@ -144,12 +144,12 @@ export function GanttPage() {
         </div>
 
         {/* Legend */}
-        <div className="px-4 py-3 border-t border-slate-100 flex items-center gap-6 text-xs text-slate-500">
+        <div className="px-4 py-3 border-t border-[#2E2854] flex items-center gap-6 text-xs text-slate-500">
           <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-600" />Active</span>
           <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-green-500" />Completed</span>
           <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-500" />Planned</span>
           <span className="flex items-center gap-1.5"><span className="w-px h-3 bg-red-400" />Today</span>
-          <span className="flex items-center gap-1.5 ml-auto text-slate-400">Darker shade = remaining work</span>
+          <span className="flex items-center gap-1.5 ml-auto text-slate-500">Darker shade = remaining work</span>
         </div>
       </div>
     </div>

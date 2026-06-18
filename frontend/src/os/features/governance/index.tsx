@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { CheckCircle2, GitPullRequest, Shield } from 'lucide-react'
 import { cn } from '@design-system/cn'
@@ -9,6 +9,7 @@ import { DecisionLogPage }   from './pages/DecisionLogPage'
 import { ChangeControlPage } from './pages/ChangeControlPage'
 import { AuditLogPage }      from './pages/AuditLogPage'
 import type { Decision, ChangeRequest, AuditLog } from './types'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
   { path: '',        label: 'Decisions',      icon: CheckCircle2   },
@@ -104,19 +105,21 @@ export function GovernanceModule() {
   useEffect(() => { if (changesData?.length)   hydrateChangeRequests(changesData.map(toChangeRequest)) }, [changesData, hydrateChangeRequests])
   useEffect(() => { if (auditData?.length)     hydrateAuditLogs(auditData.map(toAuditLog)) }, [auditData, hydrateAuditLogs])
 
+  const { pathname } = useLocation()
+
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
+      <div className="flex items-center gap-1 border-b border-[#2E2854] mb-6 -mt-2">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
-            to={tab.path === '' ? '/kangqore-view/governance' : `/kangqore-view/governance/${tab.path}`}
+            to={tab.path === '' ? '/kangqore-view/admin/governance' : `/kangqore-view/admin/governance/${tab.path}`}
             end={tab.path === ''}
             className={({ isActive }) => cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
                 ? 'border-[#2564ea] text-[#2564ea]'
-                : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-[#2E2854]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -125,12 +128,17 @@ export function GovernanceModule() {
         ))}
       </div>
 
-      <Routes>
-        <Route index          element={<DecisionLogPage />}   />
-        <Route path="changes" element={<ChangeControlPage />} />
-        <Route path="audit"   element={<AuditLogPage />}      />
-        <Route path="*"       element={<Navigate to="/kangqore-view/governance" replace />} />
-      </Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
+
+        <Routes>
+          <Route index          element={<DecisionLogPage />}   />
+          <Route path="changes" element={<ChangeControlPage />} />
+          <Route path="audit"   element={<AuditLogPage />}      />
+          <Route path="*"       element={<Navigate to="/kangqore-view/admin/governance" replace />} />
+        </Routes>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

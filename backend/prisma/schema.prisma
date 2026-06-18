@@ -3497,3 +3497,217 @@ model MarketingMetric {
 
   @@map("marketing_metrics")
 }
+
+// ─── KIMMP Agent Framework ────────────────────────────────────────────────────
+
+model KimmpAgent {
+  id           String            @id @default(cuid())
+  name         String
+  role         String
+  description  String?
+  maxLevel     Int               @default(1)
+  status       String            @default("ACTIVE")
+  tools        String[]
+  model        String            @default("claude-sonnet-4-6")
+  systemPrompt String?           @db.Text
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  logs         KimmpAgentLog[]
+  approvals    KimmpApprovalRequest[]
+
+  @@map("kimmp_agent")
+}
+
+model KimmpAgentLog {
+  id         String     @id @default(cuid())
+  agentId    String
+  agent      KimmpAgent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  action     String
+  input      Json?
+  output     Json?
+  level      Int
+  status     String     @default("COMPLETED")
+  durationMs Int?
+  createdAt  DateTime   @default(now())
+
+  @@map("kimmp_agent_log")
+}
+
+model KimmpTool {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  description  String
+  category     String
+  defaultLevel Int      @default(3)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("kimmp_tool")
+}
+
+model KimmpApprovalRequest {
+  id          String      @id @default(cuid())
+  agentId     String?
+  agent       KimmpAgent? @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  tool        String
+  action      String
+  description String
+  input       Json?
+  level       Int         @default(3)
+  status      String      @default("PENDING")
+  requestedAt DateTime    @default(now())
+  reviewedAt  DateTime?
+  reviewedBy  String?
+  expiresAt   DateTime
+
+  @@index([status])
+  @@map("kimmp_approval_request")
+}
+
+model KimmpScoutJob {
+  id             String   @id @default(cuid())
+  sourceName     String
+  query          String
+  resultsFound   Int      @default(0)
+  signalsEmitted Int      @default(0)
+  status         String   @default("COMPLETED")
+  createdAt      DateTime @default(now())
+
+  @@index([sourceName])
+  @@map("kimmp_scout_job")
+}
+
+model KimmpResearchResult {
+  id          String   @id @default(cuid())
+  question    String
+  domain      String?
+  summary     String
+  content     Json
+  sources     String[]
+  confidence  Int      @default(70)
+  signalId    String?
+  generatedAt DateTime @default(now())
+
+  @@map("kimmp_research_result")
+}
+
+model KimmpReport {
+  id          String   @id @default(cuid())
+  type        String
+  title       String
+  summary     String
+  content     String
+  fromDate    DateTime
+  toDate      DateTime
+  generatedAt DateTime @default(now())
+  generatedBy String?
+
+  @@index([type])
+  @@map("kimmp_report")
+}
+
+model KimmpGoal {
+  id           String             @id @default(cuid())
+  objective    String
+  deadline     DateTime?
+  owner        String?
+  status       String             @default("PENDING_APPROVAL")
+  strategy     String             @db.Text
+  progressPct  Int                @default(0)
+  approvedAt   DateTime?
+  approvedBy   String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  tasks        KimmpGoalTask[]
+  leverageLogs KimmpLeverageLog[]
+
+  @@index([status])
+  @@map("kimmp_goal")
+}
+
+model KimmpGoalTask {
+  id           String    @id @default(cuid())
+  goalId       String
+  goal         KimmpGoal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  step         Int
+  title        String
+  description  String
+  actionType   String?
+  actionParams Json?
+  agentHint    String?
+  status       String    @default("PENDING")
+  dueDate      DateTime?
+  completedAt  DateTime?
+  result       String?
+
+  @@index([goalId])
+  @@map("kimmp_goal_task")
+}
+
+model KimmpLeverageLog {
+  id             String     @id @default(cuid())
+  goalId         String?
+  goal           KimmpGoal? @relation(fields: [goalId], references: [id], onDelete: SetNull)
+  weekStarting   DateTime
+  hoursRemoved   Float      @default(0)
+  tasksCompleted Int        @default(0)
+  description    String?
+  createdAt      DateTime   @default(now())
+
+  @@index([weekStarting])
+  @@map("kimmp_leverage_log")
+}
+
+model KimmpProactiveAlert {
+  id              String   @id @default(cuid())
+  ruleId          String
+  entityId        String
+  category        String
+  title           String
+  description     String
+  severity        String   @default("MODERATE")
+  suggestedAction String?
+  actionType      String?
+  actionPayload   Json?
+  dismissed       Boolean  @default(false)
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+
+  @@index([dismissed, expiresAt])
+  @@map("kimmp_proactive_alert")
+}
+
+model KimmpOrchestration {
+  id             String   @id @default(cuid())
+  question       String
+  intent         String
+  agentsUsed     String[]
+  summary        String?
+  recommendation String?  @db.Text
+  evidence       Json?
+  riskFactors    Json?
+  nextSteps      Json?
+  agentResults   Json?
+  confidence     Int      @default(0)
+  durationMs     Int      @default(0)
+  createdAt      DateTime @default(now())
+  createdBy      String?
+
+  @@map("kimmp_orchestration")
+}
+
+model KimmpTwinSnapshot {
+  id                String   @id @default(cuid())
+  revenueHealth     Int      @default(0)
+  pipelineVelocity  Int      @default(0)
+  executionCapacity Int      @default(0)
+  riskExposure      Int      @default(0)
+  marketPosition    Int      @default(0)
+  overallScore      Int      @default(0)
+  metadata          Json?
+  computedAt        DateTime @default(now())
+
+  @@index([computedAt])
+  @@map("kimmp_twin_snapshot")
+}

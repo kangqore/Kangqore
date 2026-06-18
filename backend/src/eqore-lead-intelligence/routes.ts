@@ -2,30 +2,11 @@ import { Router } from 'express';
 import { EqoreAdminController } from './controllers/eqoreAdmin.controller';
 import { EqoreGraphController } from './controllers/eqoreGraph.controller';
 import { EqoreSalesAdminController } from './controllers/salesAdmin.controller';
-import logger from '../utils/logger';
+import { requireAuth, requireRole } from '../middleware/rbac';
 
 const adminRouter = Router();
 
-// Admin Auth Guard (RBAC Verification)
-const adminAuthGuard = (req: any, res: any, next: any) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized', message: 'Missing or invalid Authorization header' });
-  }
-  
-  const token = authHeader.split(' ')[1];
-  const adminSecret = process.env.ADMIN_SECRET_TOKEN || 'eqore-local-dev-admin-secret';
-
-  if (token !== adminSecret) {
-    logger.warn(`RBAC violation attempt from IP: ${req.ip}`);
-    return res.status(403).json({ error: 'Forbidden', message: 'Invalid admin credentials' });
-  }
-
-  req.user = { id: 'admin', role: 'ADMIN' };
-  next();
-};
-
-adminRouter.use('/', adminAuthGuard);
+adminRouter.use('/', requireAuth, requireRole(['ADMIN']));
 
 // Admin Routes (Leads)
 adminRouter.get('/leads', EqoreAdminController.listLeads);

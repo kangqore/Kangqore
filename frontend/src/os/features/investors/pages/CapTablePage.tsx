@@ -37,7 +37,7 @@ export function CapTablePage() {
               <item.icon className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-slate-900">{item.value}</p>
+              <p className="text-2xl font-bold text-white">{item.value}</p>
               <p className="text-xs text-slate-500 mt-0.5">{item.label}</p>
             </div>
           </Card>
@@ -58,11 +58,11 @@ export function CapTablePage() {
                   style={{ backgroundColor: OWNERSHIP_COLORS[idx % OWNERSHIP_COLORS.length] }}
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">{ct.investorName}</p>
+                  <p className="text-sm font-medium text-white truncate">{ct.investorName}</p>
                   <p className="text-xs text-slate-500">{ct.shareClass}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold text-slate-900">{ct.ownership}%</p>
+                  <p className="text-sm font-bold text-white">{ct.ownership}%</p>
                 </div>
               </div>
             ))}
@@ -91,7 +91,7 @@ export function CapTablePage() {
           <CardBody className="p-0 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50/50">
+                <tr className="border-b border-[#2E2854] bg-[#0F172A]/50">
                   <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Shareholder</th>
                   <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Round</th>
                   <th className="text-right px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Invested</th>
@@ -99,9 +99,9 @@ export function CapTablePage() {
                   <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Rights</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-[#2E2854]">
                 {sorted.map((ct, idx) => (
-                  <tr key={ct.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={ct.id} className="hover:bg-[#0F172A] transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
                         <div
@@ -114,7 +114,7 @@ export function CapTablePage() {
                           <div className="w-5 h-5" />
                         )}
                         <div>
-                          <p className="font-medium text-slate-900">{ct.investorName}</p>
+                          <p className="font-medium text-white">{ct.investorName}</p>
                           <p className="text-xs text-slate-500">{ct.firm}</p>
                         </div>
                       </div>
@@ -122,11 +122,11 @@ export function CapTablePage() {
                     <td className="px-4 py-3.5">
                       <Badge variant="neutral" size="sm">{ROUND_LABEL[ct.round] ?? ct.round}</Badge>
                     </td>
-                    <td className="px-4 py-3.5 text-right font-medium text-slate-900">
-                      {ct.amount > 0 ? `£${ct.amount}k` : '—'}
+                    <td className="px-4 py-3.5 text-right font-medium text-white">
+                      {ct.amount > 0 ? `₹${ct.amount}k` : '—'}
                     </td>
                     <td className="px-4 py-3.5 text-right">
-                      <span className="font-bold text-slate-900">{ct.ownership}%</span>
+                      <span className="font-bold text-white">{ct.ownership}%</span>
                     </td>
                     <td className="px-4 py-3.5">
                       <div className="flex gap-1.5 flex-wrap">
@@ -138,12 +138,12 @@ export function CapTablePage() {
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t-2 border-slate-200 bg-slate-50">
-                  <td className="px-5 py-3 font-bold text-slate-900" colSpan={2}>Total</td>
-                  <td className="px-4 py-3 text-right font-bold text-slate-900">
-                    £{capTable.filter(c => c.amount > 0).reduce((s, c) => s + c.amount, 0)}k
+                <tr className="border-t-2 border-[#2E2854] bg-[#0F172A]">
+                  <td className="px-5 py-3 font-bold text-white" colSpan={2}>Total</td>
+                  <td className="px-4 py-3 text-right font-bold text-white">
+                    ₹{capTable.filter(c => c.amount > 0).reduce((s, c) => s + c.amount, 0)}k
                   </td>
-                  <td className="px-4 py-3 text-right font-bold text-slate-900">100%</td>
+                  <td className="px-4 py-3 text-right font-bold text-white">100%</td>
                   <td />
                 </tr>
               </tfoot>

@@ -35,7 +35,7 @@ export function PortalNavbar({ portalName, portalColor, tabs, basePath }: Portal
   return (
     <>
     <SiteNav />
-    <header className="bg-white border-b border-slate-100 z-10 flex-shrink-0">
+    <header className="bg-[#151C2F] border-b border-[#2E2854] z-10 flex-shrink-0">
       {/* Top bar */}
       <div className="flex items-center gap-4 px-6 lg:px-10 h-14">
         {/* Logo */}
@@ -44,8 +44,8 @@ export function PortalNavbar({ portalName, portalColor, tabs, basePath }: Portal
             <span className="text-white font-bold text-xs">K</span>
           </div>
           <div className="hidden sm:block">
-            <p className="text-sm font-semibold text-slate-900 leading-none">Kangqore</p>
-            <p className="text-[10px] text-slate-400 mt-0.5">{portalName}</p>
+            <p className="text-sm font-semibold text-white leading-none">Kangqore</p>
+            <p className="text-[10px] text-slate-500 mt-0.5">{portalName}</p>
           </div>
         </button>
 
@@ -54,24 +54,24 @@ export function PortalNavbar({ portalName, portalColor, tabs, basePath }: Portal
         {/* User menu */}
         <DropdownRoot>
           <DropdownTrigger asChild>
-            <button className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-slate-50 transition-colors">
+            <button className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-[#0F172A] transition-colors">
               <Avatar name={user?.name ?? 'User'} size="sm" />
               <div className="hidden sm:flex flex-col items-start">
-                <span className="text-sm font-medium text-slate-800 leading-none">{user?.name}</span>
+                <span className="text-sm font-medium text-slate-200 leading-none">{user?.name}</span>
                 <Badge variant="info" size="sm" className="mt-0.5">
                   {ROLE_BADGE[user?.role ?? ''] ?? user?.role}
                 </Badge>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-500 hidden sm:block" />
             </button>
           </DropdownTrigger>
           <DropdownPortal>
-            <DropdownContent align="end" sideOffset={8} className="z-50 min-w-[180px] bg-white border border-slate-200 rounded-xl shadow-lg p-1">
-              <div className="px-3 py-2.5 border-b border-slate-100 mb-1">
-                <p className="text-sm font-semibold text-slate-900">{user?.name}</p>
-                <p className="text-xs text-slate-400 truncate">{user?.email}</p>
+            <DropdownContent align="end" sideOffset={8} className="z-50 min-w-[180px] bg-[#151C2F] border border-[#2E2854] rounded-xl shadow-lg p-1">
+              <div className="px-3 py-2.5 border-b border-[#2E2854] mb-1">
+                <p className="text-sm font-semibold text-white">{user?.name}</p>
+                <p className="text-xs text-slate-500 truncate">{user?.email}</p>
               </div>
-              <DropdownSeparator className="my-1 h-px bg-slate-100" />
+              <DropdownSeparator className="my-1 h-px bg-[#151C2F]" />
               <DropdownItem
                 onClick={logout}
                 className="flex items-center gap-2.5 px-2.5 py-2 text-sm text-red-600 rounded-lg cursor-default outline-none focus:bg-red-50"
@@ -95,7 +95,7 @@ export function PortalNavbar({ portalName, portalColor, tabs, basePath }: Portal
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
               isActive
                 ? 'border-[#2564ea] text-[#2564ea]'
-                : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-[#2E2854]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />

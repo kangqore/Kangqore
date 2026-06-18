@@ -46,16 +46,16 @@ export function ConversationList({
   )
 
   return (
-    <div className="flex flex-col h-full border-r border-slate-100">
+    <div className="flex flex-col h-full border-r border-[#2E2854]">
       {/* Search */}
-      <div className="p-3 border-b border-slate-100 flex-shrink-0">
+      <div className="p-3 border-b border-[#2E2854] flex-shrink-0">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
           <input
             value={search}
             onChange={e => onSearch(e.target.value)}
             placeholder={`Search ${audienceLabel?.toLowerCase() ?? 'conversations'}…`}
-            className="w-full pl-8 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+            className="w-full pl-8 pr-3 py-2 text-xs bg-[#0F172A] border border-[#2E2854] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
           />
         </div>
       </div>
@@ -69,7 +69,7 @@ export function ConversationList({
                 <div className="w-9 h-9 rounded-full bg-slate-200 flex-shrink-0" />
                 <div className="flex-1 space-y-1.5">
                   <div className="h-3 bg-slate-200 rounded w-3/4" />
-                  <div className="h-2.5 bg-slate-100 rounded w-full" />
+                  <div className="h-2.5 bg-[#151C2F] rounded w-full" />
                 </div>
               </div>
             ))}
@@ -95,7 +95,7 @@ export function ConversationList({
               key={user.id}
               onClick={() => onSelect(user.id)}
               className={cn(
-                'w-full flex items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-slate-50 border-b border-slate-50',
+                'w-full flex items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-[#0F172A] border-b border-[#2E2854]',
                 isSelected && 'bg-blue-50 border-blue-100 hover:bg-blue-50',
               )}
             >
@@ -109,15 +109,15 @@ export function ConversationList({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-baseline justify-between gap-1 mb-0.5">
-                  <p className={cn('text-xs font-semibold truncate', isSelected ? 'text-[#2564ea]' : 'text-slate-800')}>
+                  <p className={cn('text-xs font-semibold truncate', isSelected ? 'text-[#2564ea]' : 'text-slate-200')}>
                     {user.name}
                   </p>
-                  <span className="text-[10px] text-slate-400 flex-shrink-0">{fmtTime(time)}</span>
+                  <span className="text-[10px] text-slate-500 flex-shrink-0">{fmtTime(time)}</span>
                 </div>
                 {user.company && (
-                  <p className="text-[10px] text-slate-400 truncate mb-0.5">{user.company}</p>
+                  <p className="text-[10px] text-slate-500 truncate mb-0.5">{user.company}</p>
                 )}
-                <p className={cn('text-[11px] truncate', unread > 0 ? 'text-slate-700 font-medium' : 'text-slate-400')}>
+                <p className={cn('text-[11px] truncate', unread > 0 ? 'text-slate-300 font-medium' : 'text-slate-500')}>
                   {preview}
                 </p>
               </div>

@@ -40,10 +40,10 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        'bg-white border border-slate-100 rounded-xl p-3.5 select-none transition-all duration-200',
-        'hover:border-slate-200/80',
+        'bg-[#151C2F] border border-[#2E2854] rounded-xl p-3.5 select-none transition-all duration-200',
+        'hover:border-[#2E2854]/80',
         isDragging && !dragging && 'opacity-30',
-        dragging && 'shadow-md bg-white border-slate-300',
+        dragging && 'shadow-md bg-[#151C2F] border-[#2E2854]',
         'cursor-grab active:cursor-grabbing'
       )}
     >
@@ -51,27 +51,27 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
         <button 
           {...attributes} 
           {...listeners} 
-          className="text-slate-300 hover:text-slate-500 hover:bg-slate-50 p-1 rounded-lg mt-0.5 flex-shrink-0 transition-colors"
+          className="text-slate-300 hover:text-slate-300 hover:bg-[#0F172A] p-1 rounded-lg mt-0.5 flex-shrink-0 transition-colors"
         >
           <GripVertical className="w-3.5 h-3.5" />
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-2">
             <Flag className={cn('w-3.5 h-3.5 flex-shrink-0', PRIORITY_COLOR[task.priority])} />
-            <span className="text-[10px] text-slate-400 font-mono tracking-wider">{task.id.toUpperCase()}</span>
+            <span className="text-[10px] text-slate-500 font-mono tracking-wider">{task.id.toUpperCase()}</span>
           </div>
-          <p className="text-xs font-semibold text-slate-800 leading-relaxed mb-2.5">{task.title}</p>
+          <p className="text-xs font-semibold text-slate-200 leading-relaxed mb-2.5">{task.title}</p>
           <div className="flex items-center gap-1.5 flex-wrap mb-3">
             {task.labels.slice(0, 2).map(l => (
               <Badge key={l} variant={LABEL_VARIANT[l] ?? 'neutral'} size="sm" className="font-medium tracking-wide">{l}</Badge>
             ))}
           </div>
-          <div className="flex items-center justify-between border-t border-slate-100/50 pt-2.5 mt-1">
+          <div className="flex items-center justify-between border-t border-[#2E2854]/50 pt-2.5 mt-1">
             <div className="flex items-center gap-2">
               <Avatar name={task.assignee} size="xs" />
               <span className="text-[10px] font-medium text-slate-500">{task.assignee.split(' ')[0]}</span>
             </div>
-            <span className="text-[10px] font-semibold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">{task.storyPoints} pts</span>
+            <span className="text-[10px] font-semibold text-slate-300 bg-[#0F172A] px-1.5 py-0.5 rounded">{task.storyPoints} pts</span>
           </div>
         </div>
       </div>
@@ -85,15 +85,15 @@ function Column({ status, tasks }: { status: typeof COLUMNS[0]; tasks: Task[] })
       {/* Header */}
       <div className="flex items-center gap-2 px-1 mb-1.5">
         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: status.color }} />
-        <span className="text-xs font-semibold text-slate-600">{status.label}</span>
-        <span className="ml-auto text-[10px] font-bold text-slate-400 bg-slate-100 rounded-full w-5 h-5 flex items-center justify-center">
+        <span className="text-xs font-semibold text-slate-500">{status.label}</span>
+        <span className="ml-auto text-[10px] font-bold text-slate-300 bg-[#151C2F] rounded-full w-5 h-5 flex items-center justify-center">
           {tasks.length}
         </span>
       </div>
       {/* Drop zone */}
       <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
         <div className={cn(
-          'flex flex-col gap-2 min-h-[120px] p-2 rounded-xl bg-slate-50/40 border border-slate-100/60',
+          'flex flex-col gap-2 min-h-[120px] p-2 rounded-xl bg-[#0F172A]/40 border border-[#2E2854]/60',
           tasks.length === 0 && 'items-center justify-center'
         )}>
           {tasks.length === 0 && (
@@ -133,11 +133,11 @@ export function KanbanBoard() {
     <div className="space-y-4">
       {/* Project selector */}
       <div className="flex items-center gap-3 flex-wrap">
-        <h2 className="text-xl font-bold text-slate-900">Kanban Board</h2>
+        <h2 className="text-xl font-bold text-white">Kanban Board</h2>
         <select
           value={selectedProjectId}
           onChange={e => setSelectedProject(e.target.value)}
-          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 ml-auto"
+          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 ml-auto"
         >
           {projects.filter(p => p.status !== 'planned').map(p => (
             <option key={p.id} value={p.id}>{p.name}</option>

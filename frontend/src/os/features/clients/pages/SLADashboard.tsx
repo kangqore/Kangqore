@@ -10,7 +10,7 @@ const STATUS_VARIANT: Record<SLAStatus, 'success' | 'warning' | 'danger'> = {
   met: 'success', 'at-risk': 'warning', breached: 'danger',
 }
 const TREND_ICON = { up: TrendingUp, down: TrendingDown, stable: Minus }
-const TREND_COLOR = { up: 'text-[#00c875]', down: 'text-[#e2445c]', stable: 'text-slate-400' }
+const TREND_COLOR = { up: 'text-[#00c875]', down: 'text-[#e2445c]', stable: 'text-slate-500' }
 
 export function SLADashboard() {
   const { clients, slaMetrics } = useClientsStore()
@@ -36,12 +36,12 @@ export function SLADashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">SLA Dashboard</h2>
+          <h2 className="text-xl font-bold text-white">SLA Dashboard</h2>
           <p className="text-sm text-slate-500 mt-0.5">{slaMetrics.length} metrics across {clients.length} clients</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-slate-900">{compliance}%</span>
-          <span className="text-sm text-slate-400">overall compliance</span>
+          <span className="text-2xl font-bold text-white">{compliance}%</span>
+          <span className="text-sm text-slate-500">overall compliance</span>
         </div>
       </div>
 
@@ -50,7 +50,7 @@ export function SLADashboard() {
         {[
           { label: `${met} Met`,       color: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)] border-transparent'   },
           { label: `${atRisk} At Risk`, color: 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.25)] border-transparent'  },
-          { label: `${breached} Breached`, color: breached > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)] border-transparent' : 'bg-slate-200 text-slate-700 border-transparent' },
+          { label: `${breached} Breached`, color: breached > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)] border-transparent' : 'bg-slate-200 text-slate-300 border-transparent' },
         ].map(c => (
           <span key={c.label} className={`text-sm font-bold px-4 py-2 rounded-xl border ${c.color}`}>{c.label}</span>
         ))}
@@ -60,7 +60,7 @@ export function SLADashboard() {
       <Card>
         <CardHeader>
           <CardTitle>SLA Status by Client</CardTitle>
-          <div className="flex items-center gap-4 text-xs text-slate-400">
+          <div className="flex items-center gap-4 text-xs text-slate-500">
             {[{c:'bg-green-500',l:'Met'},{c:'bg-amber-400',l:'At Risk'},{c:'bg-red-400',l:'Breached'}].map(i=>(
               <span key={i.l} className="flex items-center gap-1.5"><span className={`w-2.5 h-2.5 rounded-sm ${i.c}`}/>{i.l}</span>
             ))}
@@ -102,25 +102,25 @@ export function SLADashboard() {
             </CardHeader>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50">
+                <tr className="border-b border-[#2E2854] bg-[#0F172A]">
                   {['Metric','Period','Target','Current','Trend','Status'].map(h=>(
-                    <th key={h} className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">{h}</th>
+                    <th key={h} className="text-left px-5 py-2.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-[#2E2854]">
                 {cSLAs.map(sla => {
                   const TrendIcon = TREND_ICON[sla.trend]
                   const pct = Math.min(100, Math.round((sla.current / sla.target) * 100))
                   return (
-                    <tr key={sla.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-5 py-3 font-medium text-slate-700">{sla.metric}</td>
-                      <td className="px-5 py-3 text-xs text-slate-400">{sla.period}</td>
-                      <td className="px-5 py-3 text-slate-600">{sla.target}{sla.unit}</td>
+                    <tr key={sla.id} className="hover:bg-[#0F172A] transition-colors">
+                      <td className="px-5 py-3 font-medium text-slate-300">{sla.metric}</td>
+                      <td className="px-5 py-3 text-xs text-slate-500">{sla.period}</td>
+                      <td className="px-5 py-3 text-slate-500">{sla.target}{sla.unit}</td>
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-2">
                           <Progress value={pct} size="sm" color={sla.status === 'met' ? 'success' : sla.status === 'at-risk' ? 'warning' : 'danger'} className="w-20" />
-                          <span className="font-semibold text-slate-800">{sla.current}{sla.unit}</span>
+                          <span className="font-semibold text-slate-200">{sla.current}{sla.unit}</span>
                         </div>
                       </td>
                       <td className="px-5 py-3">

@@ -12,6 +12,7 @@
 
 import { prisma } from '../../lib/prisma';
 import { SignalLedger } from '../../kangqore-immp/signals/signalLedger.service';
+import { AlisVisSync } from '../../kangqore-alis/services/alisVisSync.service';
 import logger from '../../utils/logger';
 
 export interface VisSignalScanResult {
@@ -67,6 +68,8 @@ export class VisSignalProducer {
           },
         });
         emitted++;
+        // VIS → ALIS: apply content coverage boost to leads in this service area
+        if (opp.title) AlisVisSync.applyCoverageToLeads(opp.title).catch(() => {});
       }
     } catch (err) {
       logger.warn('VisSignalProducer.scanAndEmit failed: ' + (err as Error).message);

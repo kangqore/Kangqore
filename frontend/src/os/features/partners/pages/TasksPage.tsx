@@ -37,32 +37,32 @@ export function TasksPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Tasks & Assignments</h2>
+          <h2 className="text-xl font-bold text-white">Tasks & Assignments</h2>
           <p className="text-sm text-slate-500 mt-0.5">{tasks.length} tasks across {partners.length} partners</p>
         </div>
         <div className="flex items-center gap-2 text-xs">
           <span className="px-3 py-1.5 rounded-xl bg-[#2564ea]/5 text-[#2564ea] font-semibold border border-[#2564ea]/15">{activeTasks} active</span>
           {inReview > 0 && <span className="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 font-semibold border border-amber-200">{inReview} in review</span>}
           {overdue  > 0 && <span className="px-3 py-1.5 rounded-xl bg-red-50 text-red-700 font-semibold border border-red-200">{overdue} overdue</span>}
-          <span className="px-3 py-1.5 rounded-xl bg-slate-50 text-slate-600 font-semibold border border-slate-200">£{(totalFees/1000).toFixed(0)}k committed</span>
+          <span className="px-3 py-1.5 rounded-xl bg-[#0F172A] text-slate-300 font-semibold border border-[#2E2854]">₹{(totalFees/1000).toFixed(0)}k committed</span>
         </div>
       </div>
 
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
         <select value={partnerFilter} onChange={e => setPartner(e.target.value)}
-          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
           <option value="all">All Partners</option>
           {partners.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
         <div className="flex items-center gap-2">
           {(['all','assigned','in-progress','review','completed','overdue'] as const).map(s => (
-            <button key={s} onClick={() => setStatus(s)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusFilter === s ? 'bg-[#2564ea] text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-[#2564ea]/40'}`}>
+            <button key={s} onClick={() => setStatus(s)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusFilter === s ? 'bg-[#2564ea] text-white' : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-[#2564ea]/40'}`}>
               {s === 'all' ? 'All' : s.replace('-',' ')}
             </button>
           ))}
         </div>
-        <span className="ml-auto text-sm text-slate-400">{visible.length} tasks</span>
+        <span className="ml-auto text-sm text-slate-500">{visible.length} tasks</span>
       </div>
 
       {/* Kanban-style columns (status board) */}
@@ -74,24 +74,24 @@ export function TasksPage() {
               <div key={col.id}>
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2 h-2 rounded-full" style={{ background: col.color }} />
-                  <span className="text-xs font-semibold text-slate-600">{col.label}</span>
-                  <span className="ml-auto text-xs font-bold text-slate-400 bg-slate-100 rounded-full w-5 h-5 flex items-center justify-center">{colTasks.length}</span>
+                  <span className="text-xs font-semibold text-slate-500">{col.label}</span>
+                  <span className="ml-auto text-xs font-bold text-slate-300 bg-[#151C2F] rounded-full w-5 h-5 flex items-center justify-center">{colTasks.length}</span>
                 </div>
                 <div className="space-y-2 min-h-[80px]">
                   {colTasks.map(task => (
-                    <div key={task.id} className="bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
+                    <div key={task.id} className="bg-[#151C2F] rounded-xl border border-[#2E2854] p-3 shadow-sm">
                       <div className="flex items-center gap-1.5 mb-1.5">
                         <Flag className={cn('w-3 h-3', PRIORITY_COLOR[task.priority])} />
-                        <span className="text-[10px] text-slate-400 font-mono truncate">{task.projectName}</span>
+                        <span className="text-[10px] text-slate-500 font-mono truncate">{task.projectName}</span>
                       </div>
-                      <p className="text-xs font-medium text-slate-800 leading-tight mb-2">{task.title}</p>
-                      <div className="flex items-center justify-between text-[10px] text-slate-400">
+                      <p className="text-xs font-medium text-slate-200 leading-tight mb-2">{task.title}</p>
+                      <div className="flex items-center justify-between text-[10px] text-slate-500">
                         <span>{task.partnerName.split(' ')[0]}</span>
-                        <span className="font-semibold text-slate-600">£{(task.fee/1000).toFixed(1)}k</span>
+                        <span className="font-semibold text-slate-500">₹{(task.fee/1000).toFixed(1)}k</span>
                       </div>
                     </div>
                   ))}
-                  {colTasks.length === 0 && <div className="h-16 rounded-xl border-2 border-dashed border-slate-100 flex items-center justify-center text-xs text-slate-300">Empty</div>}
+                  {colTasks.length === 0 && <div className="h-16 rounded-xl border-2 border-dashed border-[#2E2854] flex items-center justify-center text-xs text-slate-300">Empty</div>}
                 </div>
               </div>
             )
@@ -106,14 +106,14 @@ export function TasksPage() {
                 <Flag className={cn('w-4 h-4 flex-shrink-0', PRIORITY_COLOR[task.priority])} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <p className="text-sm font-semibold text-slate-800 truncate">{task.title}</p>
+                    <p className="text-sm font-semibold text-slate-200 truncate">{task.title}</p>
                     <Badge variant={STATUS_VARIANT[task.status]} size="sm">{task.status.replace('-',' ')}</Badge>
                   </div>
-                  <p className="text-xs text-slate-400">{task.partnerName} · {task.projectName}</p>
+                  <p className="text-xs text-slate-500">{task.partnerName} · {task.projectName}</p>
                 </div>
                 <div className="flex items-center gap-4 flex-shrink-0 text-xs text-slate-500">
                   <span>{task.storyPoints} pts</span>
-                  <span className="font-semibold text-slate-800">£{task.fee.toLocaleString()}</span>
+                  <span className="font-semibold text-slate-200">₹{task.fee.toLocaleString()}</span>
                   <span>Due {new Date(task.dueDate).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
                 </div>
               </div>

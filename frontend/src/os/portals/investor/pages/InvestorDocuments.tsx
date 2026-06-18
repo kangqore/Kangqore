@@ -75,30 +75,30 @@ export function InvestorDocuments() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Data Room</h2>
+        <h2 className="text-xl font-bold text-white">Data Room</h2>
         <p className="text-sm text-slate-500 mt-0.5">{totalDocs} documents · confidential investor access</p>
       </div>
 
       {dataRoom.map((folder: typeof DATA_ROOM[0]) => (
         <div key={folder.folder}>
           <div className="flex items-center gap-2 mb-3">
-            <FolderOpen className="w-4 h-4 text-slate-400" />
+            <FolderOpen className="w-4 h-4 text-slate-500" />
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{folder.folder}</p>
-            <span className="text-xs text-slate-400">({folder.docs.length})</span>
+            <span className="text-xs text-slate-500">({folder.docs.length})</span>
           </div>
           <Card padding="none">
-            <ul className="divide-y divide-slate-50">
+            <ul className="divide-y divide-[#2E2854]">
               {folder.docs.map((doc: Doc) => (
-                <li key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors group">
+                <li key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#0F172A] transition-colors group">
                   <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0">
                     <FileText className="w-4 h-4 text-violet-500" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <p className="text-sm font-medium text-slate-800 truncate">{doc.title}</p>
-                      {doc.restricted && <Lock className="w-3 h-3 text-slate-400 flex-shrink-0" />}
+                      <p className="text-sm font-medium text-slate-200 truncate">{doc.title}</p>
+                      {doc.restricted && <Lock className="w-3 h-3 text-slate-500 flex-shrink-0" />}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-slate-400">
+                    <div className="flex items-center gap-3 text-xs text-slate-500">
                       <Badge variant={TYPE_V[doc.type] ?? 'neutral'} size="sm">{doc.type}</Badge>
                       <span>{doc.format}</span>
                       <span>{doc.size}</span>
@@ -106,10 +106,10 @@ export function InvestorDocuments() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600">
+                    <button className="p-1.5 rounded-lg hover:bg-[#151C2F] text-slate-500 hover:text-slate-500">
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600">
+                    <button className="p-1.5 rounded-lg hover:bg-[#151C2F] text-slate-500 hover:text-slate-500">
                       <Download className="w-4 h-4" />
                     </button>
                   </div>

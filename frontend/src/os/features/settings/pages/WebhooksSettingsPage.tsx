@@ -23,7 +23,7 @@ const ALL_EVENTS = [
 
 const STATUS_CONFIG = {
   ACTIVE:   { variant: 'success' as const, Icon: CheckCircle2, color: 'text-green-500' },
-  INACTIVE: { variant: 'neutral' as const, Icon: Clock,         color: 'text-slate-400' },
+  INACTIVE: { variant: 'neutral' as const, Icon: Clock,         color: 'text-slate-500' },
   FAILING:  { variant: 'danger'  as const, Icon: XCircle,       color: 'text-red-500'   },
 }
 
@@ -63,7 +63,7 @@ export function WebhooksSettingsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">Webhooks</h2>
+          <h2 className="text-lg font-bold text-white">Webhooks</h2>
           <p className="text-sm text-slate-500 mt-1">Send real-time event data to external URLs.</p>
         </div>
         <Button size="sm" leftIcon={<Plus className="w-3.5 h-3.5" />} onClick={() => setAdding(a => !a)}>
@@ -76,17 +76,17 @@ export function WebhooksSettingsPage() {
         <Card>
           <CardBody className="space-y-4 p-5">
             <div>
-              <label className="text-xs font-semibold text-slate-700 mb-1.5 block">Endpoint URL</label>
+              <label className="text-xs font-semibold text-slate-300 mb-1.5 block">Endpoint URL</label>
               <input
                 type="url"
                 value={newUrl}
                 onChange={e => setNewUrl(e.target.value)}
                 placeholder="https://your-app.com/webhooks/kangqore"
-                className="w-full h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="w-full h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-white px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
               />
             </div>
             <div>
-              <label className="text-xs font-semibold text-slate-700 mb-1.5 block">Events</label>
+              <label className="text-xs font-semibold text-slate-300 mb-1.5 block">Events</label>
               <div className="flex flex-wrap gap-2">
                 {ALL_EVENTS.map(evt => (
                   <button
@@ -97,7 +97,7 @@ export function WebhooksSettingsPage() {
                     className={`text-xs px-2.5 py-1 rounded-full border transition-all ${
                       newEvents.includes(evt)
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
+                        : 'bg-[#151C2F] text-slate-300 border-[#2E2854] hover:border-blue-300'
                     }`}
                   >
                     {evt}
@@ -121,8 +121,8 @@ export function WebhooksSettingsPage() {
         <Card>
           <CardBody className="text-center py-10">
             <Link2 className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-            <p className="text-sm font-medium text-slate-700">No webhooks configured</p>
-            <p className="text-xs text-slate-400 mt-1">Add one to receive real-time event notifications.</p>
+            <p className="text-sm font-medium text-slate-300">No webhooks configured</p>
+            <p className="text-xs text-slate-500 mt-1">Add one to receive real-time event notifications.</p>
           </CardBody>
         </Card>
       )}
@@ -134,23 +134,23 @@ export function WebhooksSettingsPage() {
           return (
             <Card key={wh.id} className="overflow-hidden">
               <div
-                className="flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-[#0F172A] transition-colors"
                 onClick={() => setExpanded(isOpen ? null : wh.id)}
               >
                 <cfg.Icon className={`w-4 h-4 flex-shrink-0 ${cfg.color}`} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate font-mono">{wh.url}</p>
+                  <p className="text-sm font-medium text-white truncate font-mono">{wh.url}</p>
                   <p className="text-xs text-slate-500">{wh.events.length} events · created {new Date(wh.createdAt).toLocaleDateString()}</p>
                 </div>
                 <Badge variant={cfg.variant} size="sm">{wh.status}</Badge>
-                {isOpen ? <ChevronDown className="w-4 h-4 text-slate-400" /> : <ChevronRight className="w-4 h-4 text-slate-400" />}
+                {isOpen ? <ChevronDown className="w-4 h-4 text-slate-500" /> : <ChevronRight className="w-4 h-4 text-slate-500" />}
               </div>
 
               {isOpen && (
-                <div className="border-t border-slate-100 px-5 py-4 space-y-3 bg-slate-50/50">
+                <div className="border-t border-[#2E2854] px-5 py-4 space-y-3 bg-[#0F172A]/50">
                   <div className="flex flex-wrap gap-1.5">
                     {wh.events.map(e => (
-                      <span key={e} className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">{e}</span>
+                      <span key={e} className="text-xs bg-[#151C2F] text-slate-300 px-2 py-0.5 rounded-full">{e}</span>
                     ))}
                   </div>
                   {wh.lastDelivery && (

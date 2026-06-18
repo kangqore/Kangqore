@@ -33,7 +33,7 @@ export function PipelinePage() {
             className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
               r.id === selectedRoleId
                 ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
+                : 'bg-[#151C2F] text-slate-300 border-[#2E2854] hover:border-blue-300'
             }`}
           >
             {r.title}
@@ -56,17 +56,17 @@ export function PipelinePage() {
               <div key={stage.id} className="flex-1 min-w-[160px]">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: stage.color }} />
-                  <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">{stage.label}</span>
-                  <span className="ml-auto text-xs bg-slate-100 text-slate-500 rounded-full px-1.5 py-0.5">
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{stage.label}</span>
+                  <span className="ml-auto text-xs bg-[#151C2F] text-slate-300 rounded-full px-1.5 py-0.5">
                     {stageCandidates.length}
                   </span>
                 </div>
                 <div className="space-y-2">
                   {stageCandidates.map(c => (
-                    <div key={c.id} className="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+                    <div key={c.id} className="bg-[#151C2F] border border-[#2E2854] rounded-xl p-3 shadow-sm">
                       <div className="flex items-center gap-2 mb-2">
                         <Avatar name={c.name} size="xs" />
-                        <p className="text-sm font-medium text-slate-900 truncate">{c.name}</p>
+                        <p className="text-sm font-medium text-white truncate">{c.name}</p>
                       </div>
                       <p className="text-xs text-slate-500 mb-2">{c.location}</p>
                       {c.cvScore && (
@@ -83,12 +83,12 @@ export function PipelinePage() {
                           <Badge key={t} variant="neutral" size="sm">{t}</Badge>
                         ))}
                       </div>
-                      <p className="text-xs text-slate-400 mt-2">{c.lastActivity}</p>
+                      <p className="text-xs text-slate-500 mt-2">{c.lastActivity}</p>
                     </div>
                   ))}
                   {stageCandidates.length === 0 && (
-                    <div className="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center">
-                      <p className="text-xs text-slate-400">No candidates</p>
+                    <div className="border-2 border-dashed border-[#2E2854] rounded-xl p-4 text-center">
+                      <p className="text-xs text-slate-500">No candidates</p>
                     </div>
                   )}
                 </div>

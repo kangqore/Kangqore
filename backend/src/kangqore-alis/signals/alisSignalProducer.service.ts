@@ -11,6 +11,7 @@
 
 import { prisma } from '../../lib/prisma';
 import { SignalLedger } from '../../kangqore-immp/signals/signalLedger.service';
+import { AlisVisSync } from '../services/alisVisSync.service';
 import logger from '../../utils/logger';
 
 export interface AlisSignalScanResult {
@@ -73,6 +74,8 @@ export class AlisSignalProducer {
           },
         });
         emitted++;
+        // ALIS → VIS: push demand spike into VIS content priority
+        AlisVisSync.pushDemandToVis(dept, stats.hot).catch(() => {});
       }
     } catch (err) {
       logger.warn('AlisSignalProducer.scanAndEmit failed: ' + (err as Error).message);

@@ -52,7 +52,7 @@ export function CalendarSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-bold text-slate-900">Calendar Integrations</h2>
+        <h2 className="text-lg font-bold text-white">Calendar Integrations</h2>
         <p className="text-sm text-slate-500 mt-1">
           Connect your calendars to automatically block busy slots and sync scheduled events.
         </p>
@@ -72,7 +72,7 @@ export function CalendarSettingsPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <p className="font-semibold text-slate-900">{provider.name}</p>
+                      <p className="font-semibold text-white">{provider.name}</p>
                       {connected && (
                         <Badge variant="success" size="sm" dot>
                           {connected.status === 'ACTIVE' ? 'Connected' : connected.status}
@@ -84,7 +84,7 @@ export function CalendarSettingsPage() {
                       : <p className="text-xs text-slate-500">{provider.description}</p>
                     }
                     {connected?.lastSyncedAt && (
-                      <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">
+                      <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
                         <RefreshCw className="w-3 h-3" />
                         Last synced {new Date(connected.lastSyncedAt).toLocaleDateString()}
                       </p>
@@ -124,7 +124,7 @@ export function CalendarSettingsPage() {
         <Card>
           <CardHeader><CardTitle>Active Integrations</CardTitle></CardHeader>
           <CardBody className="p-0">
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-[#2E2854]">
               {integrations.map(i => (
                 <div key={i.id} className="flex items-center gap-4 px-5 py-3.5">
                   {i.status === 'ACTIVE'
@@ -132,7 +132,7 @@ export function CalendarSettingsPage() {
                     : <XCircle     className="w-4 h-4 text-red-500   flex-shrink-0" />
                   }
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-900">{i.provider === 'GOOGLE' ? 'Google Calendar' : 'Microsoft Calendar'}</p>
+                    <p className="text-sm font-medium text-white">{i.provider === 'GOOGLE' ? 'Google Calendar' : 'Microsoft Calendar'}</p>
                     <p className="text-xs text-slate-500">{i.accountEmail}</p>
                   </div>
                   <Badge variant={i.status === 'ACTIVE' ? 'success' : 'danger'} size="sm">{i.status}</Badge>

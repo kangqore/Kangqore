@@ -1,79 +1,174 @@
 import { NavLink, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 import { cn } from '@design-system/cn'
 import { Tooltip } from '@design-system/components/Tooltip'
-import { navGroups } from '@lib/nav'
+import { navGroups, HOME_NAV_ITEM } from '@lib/nav'
 import { useUIStore } from '@store/ui'
 import { useKIMMPStore } from '@store/kimmp'
+import { staggerContainer, staggerChild } from '@os/motion'
+import { api, isDemo } from '@lib/api'
+
+function useSidebarCounts() {
+  const { data: leadStats } = useQuery({
+    queryKey: ['contact-stats'],
+    queryFn: () => api.get('/contact/stats').then(r => r.data.stats),
+    staleTime: 60_000,
+    refetchInterval: 120_000,
+    enabled: !isDemo(),
+  })
+  const { data: consultStats } = useQuery({
+    queryKey: ['consultation-stats'],
+    queryFn: () => api.get('/consultations/stats').then(r => r.data.stats),
+    staleTime: 60_000,
+    refetchInterval: 120_000,
+    enabled: !isDemo(),
+  })
+  const { data: notifData } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: () => api.get('/notifications?limit=20').then(r => r.data.notifications ?? []),
+    staleTime: 30_000,
+    enabled: !isDemo(),
+  })
+  const unread: number = Array.isArray(notifData)
+    ? notifData.filter((n: { read: boolean }) => !n.read).length
+    : 0
+
+  return {
+    leads:         (leadStats?.new ?? 0) as number,
+    consultations: (consultStats?.pending ?? 0) as number,
+    comms:         unread,
+  }
+}
+
+const GROUP_DOT: Record<string, string> = {
+  INTELLIGENCE: '#7c3aed',
+  CRM:          '#2564ea',
+  CORE:         '#059669',
+  OPERATIONS:   '#d97706',
+  SYSTEM:       '#64748b',
+}
 
 export function Sidebar() {
   const { sidebarCollapsed, toggleSidebar } = useUIStore()
   const criticalCount = useKIMMPStore(s => s.criticalCount())
+  const counts = useSidebarCounts()
+
+  const ITEM_BADGE: Record<string, number> = {
+    'kangqore-immp': criticalCount,
+    leads:           counts.leads,
+    consultations:   counts.consultations,
+    comms:           counts.comms,
+  }
 
   return (
     <aside
       className={cn(
-        'flex-shrink-0 flex flex-col bg-white border-r border-slate-200 transition-all duration-300 ease-in-out h-full',
-        sidebarCollapsed ? 'w-16' : 'w-[210px]'
+        'flex-shrink-0 flex flex-col bg-[#151C2F] text-white border-r border-[#2E2854] transition-all duration-300 ease-in-out h-full',
+        sidebarCollapsed ? 'w-16' : 'w-[230px]'
       )}
+      style={{ zIndex: 40 }}
     >
       {/* Logo */}
-      <Link 
+      <Link
         to="/"
         className={cn(
-          'flex items-center gap-3 border-b border-slate-200 flex-shrink-0 hover:bg-slate-50 transition-colors cursor-pointer',
-          sidebarCollapsed ? 'h-16 justify-center px-0' : 'h-16 px-5'
+          'flex items-center gap-3 flex-shrink-0 hover:bg-[#0F172A] transition-colors cursor-pointer',
+          sidebarCollapsed ? 'h-[60px] justify-center px-0' : 'h-[60px] px-5'
         )}
       >
-        <div className="w-8 h-8 rounded-lg bg-[#0A0A0A] flex items-center justify-center flex-shrink-0 shadow-sm">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] flex items-center justify-center flex-shrink-0 shadow-sm">
           <img src="/assets/kangqore-icon-white.png" alt="Kangqore" className="w-5 h-5 object-contain" />
         </div>
         {!sidebarCollapsed && (
           <div className="overflow-hidden">
-            <p className="text-slate-900 font-bold text-sm leading-none" style={{ fontFamily: 'var(--font-display)' }}>Kangqore</p>
-            <p className="text-slate-400 text-[11px] mt-0.5 font-medium">View</p>
+            <p className="text-white font-bold text-sm leading-none" style={{ fontFamily: 'var(--font-display)' }}>Kangqore</p>
+            <p className="text-[#4ab6d4] text-[10px] tracking-widest mt-0.5 font-bold uppercase">Workspace</p>
           </div>
         )}
       </Link>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto overflow-x-hidden py-3 space-y-4">
+      <motion.nav
+        variants={staggerContainer(0.06)}
+        initial="hidden"
+        animate="visible"
+        className="flex-1 overflow-y-auto overflow-x-hidden py-4 space-y-4"
+      >
+        {/* Pinned Home */}
+        <motion.div variants={staggerChild}>
+          {(() => {
+            const HomeIcon = HOME_NAV_ITEM.icon
+            const homeLink = (
+              <NavLink
+                to={HOME_NAV_ITEM.path}
+                end
+                className={({ isActive }) => cn(
+                  'flex items-center gap-3 rounded-lg transition-all duration-150 group relative',
+                  sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
+                  isActive
+                    ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white shadow-sm'
+                    : 'text-slate-500 hover:bg-[#0F172A] hover:text-white'
+                )}
+              >
+                <HomeIcon className={cn("w-[18px] h-[18px] flex-shrink-0", sidebarCollapsed ? "" : "opacity-80 group-hover:opacity-100")} />
+                {!sidebarCollapsed && (
+                  <span className="text-[13px] font-semibold truncate flex-1">{HOME_NAV_ITEM.label}</span>
+                )}
+              </NavLink>
+            )
+            return (
+              <div>
+                {sidebarCollapsed ? (
+                  <Tooltip content="Home" side="right">{homeLink}</Tooltip>
+                ) : homeLink}
+                <div className="mx-4 mt-3 h-px bg-[#2E2854]" />
+              </div>
+            )
+          })()}
+        </motion.div>
+
         {navGroups.map(group => (
-          <div key={group.label}>
+          <motion.div key={group.label} variants={staggerChild}>
             {!sidebarCollapsed && (
-              <p className="px-4 mb-1.5 text-[9px] font-bold tracking-[0.12em] text-slate-400 uppercase">
+              <p className="px-5 mb-1.5 text-[10px] font-semibold tracking-wider text-slate-500 uppercase flex items-center gap-1.5">
+                <span
+                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{ background: GROUP_DOT[group.label] ?? '#64748b' }}
+                />
                 {group.label}
               </p>
             )}
-            {sidebarCollapsed && <div className="mx-3 my-2 h-px bg-slate-100" />}
-            <ul className="space-y-0.5 px-2">
+            {sidebarCollapsed && <div className="mx-4 my-2 h-px bg-[#2E2854]" />}
+            <ul className="space-y-0.5">
               {group.items.map(item => {
                 const Icon = item.icon
                 const link = (
                   <NavLink
                     to={item.path}
                     className={({ isActive }) => cn(
-                      'flex items-center gap-3 rounded-xl transition-all duration-150 group relative',
-                      sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-9 px-3',
+                      'flex items-center gap-3 rounded-lg transition-all duration-150 group relative',
+                      sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
                       isActive
                         ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white shadow-sm'
-                        : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
+                        : 'text-slate-500 hover:bg-[#0F172A] hover:text-white'
                     )}
                   >
-                    <Icon className="w-4 h-4 flex-shrink-0" />
+                    <Icon className={cn("w-[18px] h-[18px] flex-shrink-0", sidebarCollapsed ? "" : "opacity-80 group-hover:opacity-100")} />
                     {!sidebarCollapsed && (
                       <>
                         <span className="text-[13px] font-medium truncate flex-1">{item.label}</span>
-                        {item.id === 'kimmp' && criticalCount > 0 && (
+                        {(ITEM_BADGE[item.id] ?? 0) > 0 && (
                           <span className="flex-shrink-0 min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center px-1">
-                            {criticalCount}
+                            {ITEM_BADGE[item.id] > 99 ? '99+' : ITEM_BADGE[item.id]}
                           </span>
                         )}
                       </>
                     )}
-                    {sidebarCollapsed && item.id === 'kimmp' && criticalCount > 0 && (
+                    {sidebarCollapsed && (ITEM_BADGE[item.id] ?? 0) > 0 && (
                       <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
-                        {criticalCount}
+                        {ITEM_BADGE[item.id] > 9 ? '9+' : ITEM_BADGE[item.id]}
                       </span>
                     )}
                   </NavLink>
@@ -88,22 +183,22 @@ export function Sidebar() {
                 )
               })}
             </ul>
-          </div>
+          </motion.div>
         ))}
-      </nav>
+      </motion.nav>
 
       {/* Collapse toggle */}
-      <div className="flex-shrink-0 border-t border-slate-200 p-3">
+      <div className="flex-shrink-0 border-t border-[#2E2854] p-3">
         <button
           onClick={toggleSidebar}
           className={cn(
-            'flex items-center gap-2.5 w-full rounded-xl h-9 text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-all duration-150',
+            'flex items-center gap-2.5 w-full rounded-lg h-9 text-slate-500 hover:text-white hover:bg-[#0F172A] transition-all duration-150',
             sidebarCollapsed ? 'justify-center' : 'px-3'
           )}
         >
           {sidebarCollapsed
-            ? <PanelLeftOpen className="w-4 h-4" />
-            : <><PanelLeftClose className="w-4 h-4" /><span className="text-[13px] font-medium">Collapse</span></>
+            ? <PanelLeftOpen className="w-[18px] h-[18px]" />
+            : <><PanelLeftClose className="w-[18px] h-[18px]" /><span className="text-[13px] font-medium">Collapse</span></>
           }
         </button>
       </div>

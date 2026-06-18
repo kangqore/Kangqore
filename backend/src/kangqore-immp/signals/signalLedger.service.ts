@@ -13,6 +13,7 @@
 
 import { prisma } from '../../lib/prisma';
 import logger from '../../utils/logger';
+import { emitToAdmins } from '../../socket';
 import { SignalIngestInput } from './signalSchema';
 
 export interface SignalQueryFilters {
@@ -41,6 +42,24 @@ export class SignalLedger {
           metadata: (input.metadata as any) ?? null,
         },
       });
+      // Push to all connected admin dashboards (best-effort)
+      try {
+        const payload = {
+          id: row.id,
+          sourceModule: input.sourceModule,
+          signalType: input.signalType,
+          signalCategory: input.signalCategory,
+          signalValue: input.signalValue,
+          severity: input.severity ?? 'LOW',
+          confidence: input.confidence ?? 0,
+          createdAt: new Date().toISOString(),
+        };
+        emitToAdmins('kimmp:signal', payload);
+        if (input.severity === 'CRITICAL' || input.severity === 'HIGH') {
+          emitToAdmins('kimmp:critical', payload);
+        }
+      } catch {}
+
       return row.id as string;
     } catch (error) {
       logger.warn(

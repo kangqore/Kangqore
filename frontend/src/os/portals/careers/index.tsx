@@ -20,7 +20,7 @@ const TABS = [
 
 export function CareersPortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-100 pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-[#151C2F] pt-[7.5rem]">
       <PortalNavbar
         portalName="Careers"
         portalColor="bg-gradient-to-br from-[#d97706] to-[#fbbf24]"

@@ -14,8 +14,8 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
   return (
     <Card
       padding="lg"
-      className="group cursor-pointer hover:border-slate-200/80 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full bg-white border border-slate-100"
-      onClick={() => navigate(`/kangqore-view/strategy/pillars/${pillar.id}`)}
+      className="group cursor-pointer hover:border-[#2E2854]/80 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full bg-[#151C2F] border border-[#2E2854]"
+      onClick={() => navigate(`/kangqore-view/admin/strategy/pillars/${pillar.id}`)}
     >
       <div>
         {/* Muted color bar indicator */}
@@ -26,7 +26,7 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
 
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-slate-900 text-base tracking-tight truncate">{pillar.name}</h3>
+            <h3 className="font-bold text-white text-base tracking-tight truncate">{pillar.name}</h3>
             <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed font-normal">{pillar.description}</p>
           </div>
           <HealthBadge status={pillar.health} />
@@ -35,11 +35,11 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
         {/* Stats row */}
         <div className="flex items-center gap-5 mb-5 text-xs text-slate-500 font-medium">
           <span className="flex items-center gap-2">
-            <LayoutDashboard className="w-4 h-4 text-slate-400" />
+            <LayoutDashboard className="w-4 h-4 text-slate-500" />
             {pillar.programCount} programs
           </span>
           <span className="flex items-center gap-2">
-            <Target className="w-4 h-4 text-slate-400" />
+            <Target className="w-4 h-4 text-slate-500" />
             {pillar.okrCount} OKRs
           </span>
         </div>
@@ -51,15 +51,15 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
           value={spentPct}
           size="sm"
           color={spentPct > 85 ? 'danger' : spentPct > 70 ? 'warning' : 'success'}
-          label={`Budget — £${(pillar.spent / 1000).toFixed(0)}k / £${(pillar.budget / 1000).toFixed(0)}k`}
+          label={`Budget — ₹${(pillar.spent / 1000).toFixed(0)}k / ₹${(pillar.budget / 1000).toFixed(0)}k`}
           showValue
         />
 
         {/* Footer */}
-        <div className={cn('flex items-center justify-between mt-5 pt-4 border-t border-slate-100/80')}>
+        <div className={cn('flex items-center justify-between mt-5 pt-4 border-t border-[#2E2854]/80')}>
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <Avatar name={pillar.owner} size="xs" className="ring-2 ring-slate-50" />
-            <span className="font-semibold text-slate-700">{pillar.owner}</span>
+            <span className="font-semibold text-slate-300">{pillar.owner}</span>
           </div>
           <ArrowRight className="w-3.5 h-3.5 text-slate-350 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-300" />
         </div>

@@ -39,7 +39,7 @@ const STATUS_ICON: Record<ChangeStatus, React.ReactNode> = {
   APPROVED:         <CheckCircle2 className="w-4 h-4 text-green-500"   />,
   REJECTED:         <XCircle      className="w-4 h-4 text-red-500"     />,
   IMPLEMENTED:      <CheckCircle2 className="w-4 h-4 text-purple-500"  />,
-  DEFERRED:         <Clock        className="w-4 h-4 text-slate-400"   />,
+  DEFERRED:         <Clock        className="w-4 h-4 text-slate-500"   />,
 }
 
 const PIPELINE: ChangeStatus[] = ['PENDING_APPROVAL', 'UNDER_REVIEW', 'APPROVED', 'IMPLEMENTED']
@@ -50,7 +50,7 @@ const PIPELINE_LABEL: Record<ChangeStatus, string> = {
 }
 
 const fmtDate = (s?: string) => s ? new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'
-const fmtCost = (n?: number) => n == null ? '—' : n < 0 ? `-£${Math.abs(n).toLocaleString()}` : `+£${n.toLocaleString()}`
+const fmtCost = (n?: number) => n == null ? '—' : n < 0 ? `-₹${Math.abs(n).toLocaleString()}` : `+₹${n.toLocaleString()}`
 
 // ─── status pipeline ──────────────────────────────────────────────────────────
 
@@ -63,7 +63,7 @@ function CRPipeline({ status }: { status: ChangeStatus }) {
     return (
       <div className="flex items-center gap-2">
         <span className={`px-2.5 py-1 rounded-full text-[11px] font-semibold ${
-          rejected ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-500'
+          rejected ? 'bg-red-100 text-red-700' : 'bg-[#151C2F] text-slate-300'
         }`}>
           {PIPELINE_LABEL[status]}
         </span>
@@ -83,7 +83,7 @@ function CRPipeline({ status }: { status: ChangeStatus }) {
                 ? isCurrent
                   ? 'bg-[#2564ea] text-white'
                   : 'bg-green-100 text-green-700'
-                : 'bg-slate-100 text-slate-400'
+                : 'bg-[#151C2F] text-slate-300'
             }`}>
               {PIPELINE_LABEL[step]}
             </span>
@@ -135,7 +135,7 @@ function CRDetailDrawer({
       <div className="space-y-5">
         {/* Pipeline */}
         <div>
-          <p className="text-xs font-semibold text-slate-400 mb-2">Status</p>
+          <p className="text-xs font-semibold text-slate-500 mb-2">Status</p>
           <CRPipeline status={cr.status} />
         </div>
 
@@ -143,8 +143,8 @@ function CRDetailDrawer({
         <div className="flex items-center gap-3 flex-wrap">
           <Badge variant={PRIORITY_V[cr.priority]} size="sm">{cr.priority}</Badge>
           {cr.decisionType && <Badge variant="neutral" size="sm">{cr.decisionType}</Badge>}
-          <span className="text-xs text-slate-400">Requested by {cr.requestedBy}</span>
-          <span className="text-xs text-slate-400">· {fmtDate(cr.createdAt)}</span>
+          <span className="text-xs text-slate-500">Requested by {cr.requestedBy}</span>
+          <span className="text-xs text-slate-500">· {fmtDate(cr.createdAt)}</span>
         </div>
 
         <Divider />
@@ -152,24 +152,24 @@ function CRDetailDrawer({
         {/* Description */}
         {cr.description && (
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Description</p>
-            <p className="text-sm text-slate-700 leading-relaxed">{cr.description}</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Description</p>
+            <p className="text-sm text-slate-300 leading-relaxed">{cr.description}</p>
           </div>
         )}
 
         {/* Impact */}
         <div>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Impact</p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Impact</p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-slate-50 rounded-xl">
-              <p className="text-[11px] text-slate-400 mb-0.5">Cost impact</p>
+            <div className="p-3 bg-[#0F172A] rounded-xl">
+              <p className="text-[11px] text-slate-500 mb-0.5">Cost impact</p>
               <p className={`text-sm font-bold ${cr.costImpact != null && cr.costImpact < 0 ? 'text-green-600' : 'text-amber-600'}`}>
                 {fmtCost(cr.costImpact)}
               </p>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl">
-              <p className="text-[11px] text-slate-400 mb-0.5">Timeline impact</p>
-              <p className="text-sm font-bold text-slate-700">{cr.timeImpact ?? '—'}</p>
+            <div className="p-3 bg-[#0F172A] rounded-xl">
+              <p className="text-[11px] text-slate-500 mb-0.5">Timeline impact</p>
+              <p className="text-sm font-bold text-slate-300">{cr.timeImpact ?? '—'}</p>
             </div>
           </div>
           {cr.rejectionImpact && (
@@ -183,7 +183,7 @@ function CRDetailDrawer({
         {/* Inline status override */}
         <Divider />
         <div>
-          <p className="text-xs font-semibold text-slate-400 mb-2">Override status</p>
+          <p className="text-xs font-semibold text-slate-500 mb-2">Override status</p>
           <InlineSelect value={cr.status} options={STATUS_OPTIONS}
             onChange={status => onPatch(cr.id, { status })} size="md" dot />
         </div>
@@ -233,7 +233,7 @@ export function ChangeControlPage() {
       <KIMMPSignalBar module="Change Control" />
 
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Change Control</h2>
+        <h2 className="text-xl font-bold text-white">Change Control</h2>
         <p className="text-sm text-slate-500 mt-0.5">
           {changeRequests.length} change requests
           {inFlight > 0 && <span className="ml-2 text-amber-600 font-medium">· {inFlight} awaiting decision</span>}
@@ -242,11 +242,11 @@ export function ChangeControlPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"       value={changeRequests.length}     icon={<GitPullRequest className="w-5 h-5" />} iconColor="bg-slate-100 text-slate-500" />
-        <StatCard label="Pending"     value={byStatus('PENDING_APPROVAL')} icon={<Clock className="w-5 h-5" />} iconColor={byStatus('PENDING_APPROVAL') > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'} />
+        <StatCard label="Total"       value={changeRequests.length}     icon={<GitPullRequest className="w-5 h-5" />} iconColor="bg-[#151C2F] text-slate-300" />
+        <StatCard label="Pending"     value={byStatus('PENDING_APPROVAL')} icon={<Clock className="w-5 h-5" />} iconColor={byStatus('PENDING_APPROVAL') > 0 ? 'bg-amber-100 text-amber-600' : 'bg-[#151C2F] text-slate-300'} />
         <StatCard label="Under Review" value={byStatus('UNDER_REVIEW')} icon={<Clock className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
         <StatCard label="Approved"    value={byStatus('APPROVED')}      icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
-        <StatCard label="Rejected"    value={byStatus('REJECTED')}      icon={<XCircle className="w-5 h-5" />} iconColor={byStatus('REJECTED') > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-400'} />
+        <StatCard label="Rejected"    value={byStatus('REJECTED')}      icon={<XCircle className="w-5 h-5" />} iconColor={byStatus('REJECTED') > 0 ? 'bg-red-100 text-red-600' : 'bg-[#151C2F] text-slate-300'} />
       </div>
 
       {/* Filters */}
@@ -257,37 +257,37 @@ export function ChangeControlPage() {
           {(['ALL','PENDING_APPROVAL','UNDER_REVIEW','APPROVED','REJECTED','IMPLEMENTED'] as const).map(s => (
             <button key={s} onClick={() => setFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                filter === s ? 'bg-[#2564ea] text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+                filter === s ? 'bg-[#2564ea] text-white' : 'bg-[#151C2F] border border-[#2E2854] text-slate-300 hover:border-blue-300'
               }`}>
               {s === 'ALL' ? 'All' : PIPELINE_LABEL[s] ?? s}
             </button>
           ))}
         </div>
-        <span className="ml-auto text-sm text-slate-400">{visible.length} requests</span>
+        <span className="ml-auto text-sm text-slate-500">{visible.length} requests</span>
       </div>
 
       {/* Table */}
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
+            <tr className="border-b border-[#2E2854] bg-[#0F172A]">
               {['Change Request', 'Project / Client', 'Cost', 'Time', 'Priority', 'Status', 'Requested'].map(h => (
-                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">{h}</th>
+                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <tbody className="divide-y divide-[#2E2854]">
             {visible.map(c => (
-              <tr key={c.id} className="hover:bg-slate-50 transition-colors cursor-pointer group" onClick={() => setOpenId(c.id)}>
+              <tr key={c.id} className="hover:bg-[#0F172A] transition-colors cursor-pointer group" onClick={() => setOpenId(c.id)}>
                 <td className="px-4 py-3.5 max-w-[220px]">
                   <div className="flex items-start gap-2">
                     {STATUS_ICON[c.status]}
-                    <p className="text-xs font-medium text-slate-800 leading-snug line-clamp-2">{c.title}</p>
+                    <p className="text-xs font-medium text-slate-200 leading-snug line-clamp-2">{c.title}</p>
                   </div>
                 </td>
                 <td className="px-4 py-3.5 text-xs">
-                  <p className="text-slate-700 font-medium">{c.project?.title ?? '—'}</p>
-                  {c.client && <p className="text-slate-400">{c.client.name}</p>}
+                  <p className="text-slate-300 font-medium">{c.project?.title ?? '—'}</p>
+                  {c.client && <p className="text-slate-500">{c.client.name}</p>}
                 </td>
                 <td className="px-4 py-3.5 text-xs whitespace-nowrap">
                   {c.costImpact != null && (
@@ -303,7 +303,7 @@ export function ChangeControlPage() {
                 <td className="px-4 py-3.5" onClick={e => e.stopPropagation()}>
                   <InlineSelect value={c.status} options={STATUS_OPTIONS} onChange={status => onPatch(c.id, { status })} dot />
                 </td>
-                <td className="px-4 py-3.5 text-xs text-slate-400 whitespace-nowrap">{fmtDate(c.createdAt)}</td>
+                <td className="px-4 py-3.5 text-xs text-slate-500 whitespace-nowrap">{fmtDate(c.createdAt)}</td>
               </tr>
             ))}
           </tbody>

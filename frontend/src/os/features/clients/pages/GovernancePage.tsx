@@ -16,7 +16,7 @@ const TYPE_ICON: Record<GovernanceType, React.ElementType> = {
 const TYPE_COLOR: Record<GovernanceType, string> = {
   decision:        'bg-[#2564ea]/10 text-[#2564ea]',
   'change-request':'bg-amber-100 text-amber-600',
-  steering:        'bg-slate-100 text-slate-600',
+  steering:        'bg-[#151C2F] text-slate-300',
   escalation:      'bg-red-100 text-red-600',
 }
 const STATUS_VARIANT: Record<GovernanceStatus,'success'|'warning'|'danger'|'neutral'|'info'> = {
@@ -52,13 +52,13 @@ export function GovernancePage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Governance</h2>
+          <h2 className="text-xl font-bold text-white">Governance</h2>
           <p className="text-sm text-slate-500 mt-0.5">{governance.length} items · decisions, changes, steering, escalations</p>
         </div>
         <div className="flex items-center gap-2">
           {critical > 0 && <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-red-50 text-red-700 border border-red-200"><AlertTriangle className="w-3.5 h-3.5"/>{critical} critical open</span>}
           <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200">{open} open</span>
-          <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-50 text-slate-600 border border-slate-200">{pending} pending</span>
+          <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-[#0F172A] text-slate-300 border border-[#2E2854]">{pending} pending</span>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ export function GovernancePage() {
       <div className="flex items-center gap-3 flex-wrap">
         <Input placeholder="Search…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-52" value={search} onChange={e => setSearch(e.target.value)} />
         <select value={typeFilter} onChange={e => setType(e.target.value as GovernanceType | 'all')}
-          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
           <option value="all">All Types</option>
           <option value="decision">Decisions</option>
           <option value="change-request">Change Requests</option>
@@ -74,7 +74,7 @@ export function GovernancePage() {
           <option value="escalation">Escalations</option>
         </select>
         <select value={statusFilter} onChange={e => setStatus(e.target.value as GovernanceStatus | 'all')}
-          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
           <option value="all">All Statuses</option>
           <option value="open">Open</option>
           <option value="pending">Pending</option>
@@ -83,11 +83,11 @@ export function GovernancePage() {
           <option value="rejected">Rejected</option>
         </select>
         <select value={clientFilter} onChange={e => setClient(e.target.value)}
-          className="h-9 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
+          className="h-9 rounded-xl border border-[#2E2854] bg-[#151C2F] text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-[#2564ea] focus:ring-2 focus:ring-[#2564ea]/20">
           <option value="all">All Clients</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
-        <span className="ml-auto text-sm text-slate-400">{visible.length} items</span>
+        <span className="ml-auto text-sm text-slate-500">{visible.length} items</span>
       </div>
 
       {/* Items */}
@@ -105,22 +105,22 @@ export function GovernancePage() {
                   <div className="flex items-start justify-between gap-3 flex-wrap mb-2">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-semibold text-slate-900 text-sm">{item.title}</h3>
+                        <h3 className="font-semibold text-white text-sm">{item.title}</h3>
                         <Badge variant={PRIORITY_VARIANT[item.priority]} size="sm">{item.priority}</Badge>
                         <Badge variant={STATUS_VARIANT[item.status]} size="sm">{item.status}</Badge>
                       </div>
-                      <p className="text-xs text-slate-400 mt-0.5 capitalize">{item.type.replace('-',' ')} · {client?.name}</p>
+                      <p className="text-xs text-slate-500 mt-0.5 capitalize">{item.type.replace('-',' ')} · {client?.name}</p>
                     </div>
-                    <span className="text-xs text-slate-400 flex-shrink-0">{new Date(item.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                    <span className="text-xs text-slate-500 flex-shrink-0">{new Date(item.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed">{item.description}</p>
+                  <p className="text-sm text-slate-500 leading-relaxed">{item.description}</p>
                   {item.resolution && (
                     <div className="mt-2 flex items-start gap-2 p-2.5 bg-green-50 rounded-xl">
                       <CheckCircle className="w-3.5 h-3.5 text-green-600 flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-green-700">{item.resolution}</p>
                     </div>
                   )}
-                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[#2E2854]">
                     <Avatar name={item.owner} size="xs" />
                     <span className="text-xs text-slate-500">{item.owner}</span>
                   </div>
@@ -130,7 +130,7 @@ export function GovernancePage() {
           )
         })}
         {visible.length === 0 && (
-          <div className="py-12 text-center text-sm text-slate-400">No governance items match your filters.</div>
+          <div className="py-12 text-center text-sm text-slate-500">No governance items match your filters.</div>
         )}
       </div>
     </div>

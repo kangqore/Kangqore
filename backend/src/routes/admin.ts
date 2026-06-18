@@ -2,6 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
 import { Role } from '@prisma/client';
+import { redisConnection } from '../lib/redis';
 import { cacheService } from '../services/cache.service';
 import { notifyNewEmail } from '../services/notificationService';
 // import { generateToken } from '../utils/jwt'; // Removed incompatible utility
@@ -1471,5 +1472,116 @@ router.post('/investors/updates', authenticate, authorize(['ADMIN']), async (req
     next(error);
   }
 });
+
+/**
+ * GET /api/admin/financial-kpis
+ * Real-time financial KPIs from Invoice, Contract, Project tables.
+ */
+router.get('/financial-kpis', authenticate, authorize([Role.ADMIN]), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const now = new Date()
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+    const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999)
+
+    const [paidMTD, paidLastMonth, contractTotals, projectStats, invoiceGroups, onTimeCount, budgetAgg] = await Promise.all([
+      prisma.invoice.aggregate({
+        where: { status: 'PAID', paidAt: { gte: startOfMonth } },
+        _sum: { amount: true },
+      }),
+      prisma.invoice.aggregate({
+        where: { status: 'PAID', paidAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
+        _sum: { amount: true },
+      }),
+      prisma.contract.aggregate({
+        where: { status: 'ACTIVE' },
+        _sum: { value: true },
+        _count: { id: true },
+      }),
+      prisma.project.aggregate({
+        where: { status: 'ACTIVE' },
+        _count: true,
+        _sum: { budget: true, spend: true },
+      }),
+      prisma.invoice.groupBy({
+        by: ['status'],
+        _count: { id: true },
+      }),
+      prisma.project.count({
+        where: { status: 'ACTIVE', health: { gte: 70 } },
+      }),
+      prisma.project.aggregate({
+        where: { status: 'ACTIVE' },
+        _sum: { budget: true },
+      }),
+    ])
+
+    const revenueMTD = Number(paidMTD._sum.amount ?? 0)
+    const revenueLastMonth = Number(paidLastMonth._sum.amount ?? 0)
+    const activeContractValue = Number(contractTotals._sum.value ?? 0)
+    const arr = activeContractValue || revenueMTD * 12
+
+    const statusMap: Record<string, number> = {}
+    for (const g of invoiceGroups) statusMap[g.status] = g._count.id
+
+    res.json({
+      revenueMTD,
+      revenueLastMonth,
+      arr,
+      activeContracts: contractTotals._count.id,
+      activeProjects: projectStats._count,
+      totalBudget: Number(projectStats._sum.budget ?? 0),
+      totalSpend: Number(projectStats._sum.spend ?? 0),
+      pendingInvoices: statusMap['SENT'] ?? 0,
+      overdueInvoices: statusMap['OVERDUE'] ?? 0,
+      draftInvoices: statusMap['DRAFT'] ?? 0,
+      onTimeProjectPct: projectStats._count > 0 ? Math.round((onTimeCount / projectStats._count) * 100) : 0,
+      pipelineValue: Number(budgetAgg._sum.budget ?? 0),
+      mrrDeltaPct: revenueMTD > 0 && revenueLastMonth > 0
+        ? Math.round(((revenueMTD - revenueLastMonth) / revenueLastMonth) * 100)
+        : 0,
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+/**
+ * GET /api/admin/health-deep
+ * Live health check: DB, Redis, KIMMP engine.
+ */
+router.get('/health-deep', authenticate, authorize([Role.ADMIN]), async (_req: AuthenticatedRequest, res: Response) => {
+  const services: Array<{ service: string; status: string; latencyMs?: number }> = []
+
+  services.push({ service: 'API Core', status: 'ONLINE' })
+  services.push({ service: 'Auth Service', status: 'ACTIVE' })
+
+  const dbStart = Date.now()
+  try {
+    await prisma.$queryRaw`SELECT 1`
+    services.push({ service: 'DB Postgres', status: 'HEALTHY', latencyMs: Date.now() - dbStart })
+  } catch {
+    services.push({ service: 'DB Postgres', status: 'OFFLINE', latencyMs: Date.now() - dbStart })
+  }
+
+  const redisStart = Date.now()
+  try {
+    await redisConnection.ping()
+    services.push({ service: 'Redis Cache', status: 'ACTIVE', latencyMs: Date.now() - redisStart })
+  } catch {
+    services.push({ service: 'Redis Cache', status: 'OFFLINE', latencyMs: Date.now() - redisStart })
+  }
+
+  try {
+    await (prisma as any).kimmpSignal.count()
+    services.push({ service: 'KIMMP Engine', status: 'RUNNING' })
+  } catch {
+    services.push({ service: 'KIMMP Engine', status: 'DEGRADED' })
+  }
+
+  services.push({ service: 'Socket.io', status: 'LIVE' })
+
+  res.json({ services, checkedAt: new Date().toISOString() })
+})
 
 export default router;

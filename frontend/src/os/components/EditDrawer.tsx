@@ -33,15 +33,15 @@ export function EditDrawer({
         <Dialog.Overlay className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 animate-in fade-in-0 duration-200" />
         <Dialog.Content
           className={cn(
-            'fixed right-0 top-0 h-full z-50 bg-white shadow-2xl flex flex-col w-full',
+            'fixed right-0 top-0 h-full z-50 bg-[#151C2F] shadow-2xl flex flex-col w-full',
             'animate-in slide-in-from-right duration-250 ease-out',
             widthMap[width],
           )}
         >
           {/* Header */}
-          <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-slate-100 flex-shrink-0">
+          <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-[#2E2854] flex-shrink-0">
             <div>
-              <Dialog.Title className="text-base font-semibold text-slate-900">
+              <Dialog.Title className="text-base font-semibold text-white">
                 {title}
               </Dialog.Title>
               {description && (
@@ -52,7 +52,7 @@ export function EditDrawer({
             </div>
             <Dialog.Close
               onClick={onClose}
-              className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors flex-shrink-0"
+              className="text-slate-500 hover:text-slate-500 p-1.5 rounded-lg hover:bg-[#151C2F] transition-colors flex-shrink-0"
             >
               <X className="w-4 h-4" />
             </Dialog.Close>
@@ -65,7 +65,7 @@ export function EditDrawer({
 
           {/* Footer */}
           {footer && (
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 flex-shrink-0">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#2E2854] flex-shrink-0">
               {footer}
             </div>
           )}

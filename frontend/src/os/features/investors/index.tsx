@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { LayoutGrid, PieChart, Send, UserCircle } from 'lucide-react'
 import { cn } from '@design-system/cn'
@@ -10,6 +10,7 @@ import { InvestorsOverview } from './pages/InvestorsOverview'
 import { CapTablePage }      from './pages/CapTablePage'
 import { UpdatesPage }       from './pages/UpdatesPage'
 import { InvestorProfile }   from './pages/InvestorProfile'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
   { path: '',         label: 'Overview',  icon: LayoutGrid  },
@@ -109,19 +110,21 @@ export function InvestorsModule() {
   useEffect(() => { if (ctData?.length)        hydrateCapTable((ctData as Record<string,unknown>[]).map(toCapTable))         }, [ctData,         hydrateCapTable])
   useEffect(() => { if (rnData?.length)        hydrateRounds((rnData as Record<string,unknown>[]).map(toRound))              }, [rnData,         hydrateRounds])
 
+  const { pathname } = useLocation()
+
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
+      <div className="flex items-center gap-1 border-b border-[#2E2854] mb-6 -mt-2">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
-            to={tab.path === '' ? '/kangqore-view/investors' : `/kangqore-view/investors/${tab.path}`}
+            to={tab.path === '' ? '/kangqore-view/admin/investors' : `/kangqore-view/admin/investors/${tab.path}`}
             end={tab.path === ''}
             className={({ isActive }) => cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
                 ? 'border-[#2564ea] text-[#2564ea]'
-                : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-[#2E2854]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -130,13 +133,18 @@ export function InvestorsModule() {
         ))}
       </div>
 
-      <Routes>
-        <Route index              element={<InvestorsOverview />} />
-        <Route path="captable"    element={<CapTablePage />}      />
-        <Route path="updates"     element={<UpdatesPage />}       />
-        <Route path="profile"     element={<InvestorProfile />}   />
-        <Route path="*"           element={<Navigate to="/kangqore-view/investors" replace />} />
-      </Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
+
+        <Routes>
+          <Route index              element={<InvestorsOverview />} />
+          <Route path="captable"    element={<CapTablePage />}      />
+          <Route path="updates"     element={<UpdatesPage />}       />
+          <Route path="profile"     element={<InvestorProfile />}   />
+          <Route path="*"           element={<Navigate to="/kangqore-view/admin/investors" replace />} />
+        </Routes>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

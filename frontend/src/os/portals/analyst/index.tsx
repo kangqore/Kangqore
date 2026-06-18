@@ -12,7 +12,7 @@ const TABS = [
 
 export function AnalystPortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-100 pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-[#151C2F] pt-[7.5rem]">
       <PortalNavbar
         portalName="Analyst Portal"
         portalColor="bg-gradient-to-br from-[#0e7490] to-[#22d3ee]"

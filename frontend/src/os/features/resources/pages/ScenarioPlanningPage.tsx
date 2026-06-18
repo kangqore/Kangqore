@@ -106,7 +106,7 @@ export function ScenarioPlanningPage() {
       <KIMMPSignalBar module="Scenario Planning" />
 
       <div>
-        <h2 className="text-xl font-bold text-slate-900">Scenario Planning</h2>
+        <h2 className="text-xl font-bold text-white">Scenario Planning</h2>
         <p className="text-sm text-slate-500 mt-0.5">
           Model a new engagement and see who can staff it — before committing.
         </p>
@@ -115,13 +115,13 @@ export function ScenarioPlanningPage() {
       {/* Config card */}
       <Card>
         <div className="flex items-center justify-between gap-3 mb-4">
-          <p className="text-sm font-semibold text-slate-700">Define scenario</p>
+          <p className="text-sm font-semibold text-slate-300">Define scenario</p>
           <div className="flex items-center gap-2 flex-wrap">
             {PRESETS.map(p => (
               <button
                 key={p.label}
                 onClick={() => applyPreset(p)}
-                className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#151C2F] text-slate-300 hover:bg-blue-50 hover:text-blue-700 transition-colors"
               >
                 {p.label}
               </button>
@@ -165,7 +165,7 @@ export function ScenarioPlanningPage() {
                   'px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all',
                   cfg.skills.includes(skill)
                     ? 'bg-[#2564ea] text-white border-[#2564ea]'
-                    : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300'
+                    : 'bg-[#151C2F] text-slate-300 border-[#2E2854] hover:border-blue-300'
                 )}
               >
                 {skill}
@@ -183,23 +183,23 @@ export function ScenarioPlanningPage() {
             <div className={cn('text-2xl font-bold', coveragePct >= 80 ? 'text-green-600' : coveragePct >= 50 ? 'text-amber-600' : 'text-red-600')}>
               {coveragePct}%
             </div>
-            <div className="text-xs text-slate-400 mt-0.5">Capacity coverage</div>
+            <div className="text-xs text-slate-500 mt-0.5">Capacity coverage</div>
           </Card>
           <Card className="text-center py-4">
             <div className="text-2xl font-bold text-[#2564ea]">{viable.length}</div>
-            <div className="text-xs text-slate-400 mt-0.5">Viable contributors</div>
+            <div className="text-xs text-slate-500 mt-0.5">Viable contributors</div>
           </Card>
           <Card className="text-center py-4">
             <div className={cn('text-2xl font-bold', uncoveredSkills.length > 0 ? 'text-red-600' : 'text-green-600')}>
               {uncoveredSkills.length}
             </div>
-            <div className="text-xs text-slate-400 mt-0.5">Skill gaps</div>
+            <div className="text-xs text-slate-500 mt-0.5">Skill gaps</div>
           </Card>
           <Card className="text-center py-4">
-            <div className="text-2xl font-bold text-slate-700">
-              £{Math.round(viable.reduce((s, r) => s + r.canContribute * r.member.billableRate, 0) / 1000)}k
+            <div className="text-2xl font-bold text-slate-300">
+              ₹{Math.round(viable.reduce((s, r) => s + r.canContribute * r.member.billableRate, 0) / 1000)}k
             </div>
-            <div className="text-xs text-slate-400 mt-0.5">Est. cost / week</div>
+            <div className="text-xs text-slate-500 mt-0.5">Est. cost / week</div>
           </Card>
         </div>
 
@@ -240,18 +240,18 @@ export function ScenarioPlanningPage() {
 
         {/* Per-person breakdown */}
         <Card padding="none">
-          <div className="px-5 py-4 border-b border-slate-100">
-            <p className="text-sm font-semibold text-slate-700">Team capacity breakdown</p>
-            <p className="text-xs text-slate-400 mt-0.5">Sorted by viability — skill match + available hours</p>
+          <div className="px-5 py-4 border-b border-[#2E2854]">
+            <p className="text-sm font-semibold text-slate-300">Team capacity breakdown</p>
+            <p className="text-xs text-slate-500 mt-0.5">Sorted by viability — skill match + available hours</p>
           </div>
-          <div className="divide-y divide-slate-50">
+          <div className="divide-y divide-[#2E2854]">
             {results.map(r => (
               <div key={r.member.id} className={cn('flex items-start gap-4 px-5 py-4', !r.viable && 'opacity-50')}>
                 <Avatar name={r.member.name} size="sm" className="flex-shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className="text-sm font-semibold text-slate-900">{r.member.name}</span>
-                    <span className="text-xs text-slate-400">{r.member.role}</span>
+                    <span className="text-sm font-semibold text-white">{r.member.name}</span>
+                    <span className="text-xs text-slate-500">{r.member.role}</span>
                     {r.viable
                       ? <Badge variant="success" size="sm">Viable</Badge>
                       : <Badge variant="neutral" size="sm">Low capacity</Badge>
@@ -272,7 +272,7 @@ export function ScenarioPlanningPage() {
                         </span>
                       ))}
                       {r.missingSkills.map(s => (
-                        <span key={s} className="flex items-center gap-1 text-[11px] text-slate-400">
+                        <span key={s} className="flex items-center gap-1 text-[11px] text-slate-500">
                           <Trash2 className="w-3 h-3" />{s}
                         </span>
                       ))}

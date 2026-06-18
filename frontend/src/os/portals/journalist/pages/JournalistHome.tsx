@@ -22,7 +22,7 @@ export function JournalistHome() {
           <Newspaper className="w-6 h-6 text-pink-600" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Press &amp; Media Hub</h1>
+          <h1 className="text-2xl font-bold text-white">Press &amp; Media Hub</h1>
           <p className="text-slate-500 mt-1 text-sm">Resources for verified press and media professionals covering Kangqore.</p>
         </div>
       </div>
@@ -30,7 +30,7 @@ export function JournalistHome() {
       {/* Press contact */}
       <div className="p-5 rounded-2xl bg-pink-50 border border-pink-100 flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <p className="font-semibold text-slate-800 text-sm">Press Enquiries</p>
+          <p className="font-semibold text-slate-200 text-sm">Press Enquiries</p>
           <p className="text-slate-500 text-xs mt-0.5">For interviews, quotes, or media requests</p>
         </div>
         <a
@@ -44,20 +44,20 @@ export function JournalistHome() {
 
       {/* Resources */}
       <section>
-        <h2 className="text-base font-bold text-slate-800 mb-4">Press Resources</h2>
+        <h2 className="text-base font-bold text-slate-200 mb-4">Press Resources</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {resources.map(({ icon: Icon, label, desc, tag }) => (
-            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-200 bg-white hover:shadow-sm transition-shadow">
-              <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
+            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-[#2E2854] bg-[#151C2F] hover:shadow-sm transition-shadow">
+              <div className="w-10 h-10 rounded-lg bg-[#151C2F] flex items-center justify-center flex-shrink-0">
                 <Icon className="w-5 h-5 text-slate-500" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-slate-800 text-sm">{label}</p>
-                <p className="text-slate-400 text-xs truncate">{desc}</p>
+                <p className="font-semibold text-slate-200 text-sm">{label}</p>
+                <p className="text-slate-500 text-xs truncate">{desc}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-500">{tag}</span>
-                <Download className="w-4 h-4 text-slate-400 hover:text-slate-700 cursor-pointer" />
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#151C2F] text-slate-500">{tag}</span>
+                <Download className="w-4 h-4 text-slate-500 hover:text-slate-300 cursor-pointer" />
               </div>
             </div>
           ))}
@@ -66,12 +66,12 @@ export function JournalistHome() {
 
       {/* Latest news */}
       <section>
-        <h2 className="text-base font-bold text-slate-800 mb-4">Latest News</h2>
+        <h2 className="text-base font-bold text-slate-200 mb-4">Latest News</h2>
         <div className="space-y-3">
           {latestNews.map(({ date, headline }) => (
-            <div key={headline} className="flex items-start gap-4 p-4 rounded-2xl border border-slate-200 bg-white hover:shadow-sm transition-shadow group">
-              <span className="text-xs font-semibold text-slate-400 mt-0.5 whitespace-nowrap">{date}</span>
-              <p className="flex-1 text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors">{headline}</p>
+            <div key={headline} className="flex items-start gap-4 p-4 rounded-2xl border border-[#2E2854] bg-[#151C2F] hover:shadow-sm transition-shadow group">
+              <span className="text-xs font-semibold text-slate-500 mt-0.5 whitespace-nowrap">{date}</span>
+              <p className="flex-1 text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{headline}</p>
               <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-slate-500 flex-shrink-0 transition-colors" />
             </div>
           ))}

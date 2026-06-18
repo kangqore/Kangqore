@@ -9,7 +9,7 @@ const CATEGORY_COLOR: Record<SignalCategory, string> = {
   intent:       'bg-red-100   text-red-600',
   fit:          'bg-[#2564ea]/10 text-[#2564ea]',
   engagement:   'bg-green-100 text-green-600',
-  firmographic: 'bg-slate-100 text-slate-600',
+  firmographic: 'bg-[#151C2F] text-slate-300',
 }
 
 function ScoreRing({ score }: { score: number }) {
@@ -24,8 +24,8 @@ function ScoreRing({ score }: { score: number }) {
           strokeDasharray={`${dash} ${circ}`} strokeLinecap="round" style={{ transition: 'stroke-dasharray 0.5s ease' }} />
       </svg>
       <div className="absolute text-center">
-        <span className="text-xl font-bold text-slate-900">{score}</span>
-        <p className="text-[9px] text-slate-400 leading-none mt-0.5">score</p>
+        <span className="text-xl font-bold text-white">{score}</span>
+        <p className="text-[9px] text-slate-500 leading-none mt-0.5">score</p>
       </div>
     </div>
   )
@@ -58,7 +58,7 @@ export function ScoringPage() {
           <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] flex items-center justify-center">
             <span className="text-white text-xs font-bold">eQ</span>
           </div>
-          <h2 className="text-xl font-bold text-slate-900">eQORE Lead Scoring</h2>
+          <h2 className="text-xl font-bold text-white">eQORE Lead Scoring</h2>
         </div>
         <p className="text-sm text-slate-500">{leads.length} leads scored · AI-powered signal engine</p>
       </div>
@@ -74,14 +74,14 @@ export function ScoringPage() {
               { label: '❄ Cold (<60)',    count: cold, color: 'brand',   pct: Math.round(cold/leads.length*100) },
             ].map(d => (
               <div key={d.label} className="flex items-center gap-3">
-                <span className="text-sm w-28 text-left text-slate-700">{d.label}</span>
+                <span className="text-sm w-28 text-left text-slate-300">{d.label}</span>
                 <Progress value={d.pct} size="sm" color={d.color as 'success'|'warning'|'brand'} className="flex-1" />
-                <span className="text-sm font-bold text-slate-800 w-6">{d.count}</span>
+                <span className="text-sm font-bold text-slate-200 w-6">{d.count}</span>
               </div>
             ))}
           </div>
-          <div className="mt-4 pt-4 border-t border-slate-100 text-xs text-slate-400">
-            Avg score: <span className="font-bold text-slate-700">{Math.round(leads.reduce((s,l)=>s+l.score,0)/leads.length)}</span>
+          <div className="mt-4 pt-4 border-t border-[#2E2854] text-xs text-slate-500">
+            Avg score: <span className="font-bold text-slate-300">{Math.round(leads.reduce((s,l)=>s+l.score,0)/leads.length)}</span>
           </div>
         </Card>
 
@@ -116,16 +116,16 @@ export function ScoringPage() {
                 <ScoreRing score={lead.score} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <h3 className="font-semibold text-slate-900">{lead.company}</h3>
+                    <h3 className="font-semibold text-white">{lead.company}</h3>
                     <Badge variant={lead.source === 'eQORE' ? 'brand' : 'neutral'} size="sm">{lead.source}</Badge>
                   </div>
-                  <p className="text-xs text-slate-400 mb-3">{lead.contactName} · {lead.industry}</p>
+                  <p className="text-xs text-slate-500 mb-3">{lead.contactName} · {lead.industry}</p>
                   <div className="grid grid-cols-2 gap-2">
                     {byCategory.map(c => (
                       <div key={c.cat} className="flex items-center gap-2">
                         <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded capitalize ${CATEGORY_COLOR[c.cat]}`}>{c.cat.slice(0,3)}</span>
                         <Progress value={c.avg} size="sm" color={c.avg >= 80 ? 'success' : c.avg >= 60 ? 'warning' : 'brand'} className="flex-1" />
-                        <span className="text-[10px] font-bold text-slate-600 w-6">{c.avg}</span>
+                        <span className="text-[10px] font-bold text-slate-500 w-6">{c.avg}</span>
                       </div>
                     ))}
                   </div>

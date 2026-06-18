@@ -39,6 +39,8 @@ export default defineConfig(({ mode }) => {
         '@design-system': path.resolve(__dirname, 'src/os/design-system'),
         '@pages':         path.resolve(__dirname, 'src/os/pages'),
         '@portals':       path.resolve(__dirname, 'src/os/portals'),
+        '@os/tokens':     path.resolve(__dirname, 'src/os/tokens'),
+        '@os/motion':     path.resolve(__dirname, 'src/os/motion'),
       },
     },
 

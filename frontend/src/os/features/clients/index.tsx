@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery }   from '@tanstack/react-query'
 import { LayoutGrid, UserCircle, Truck, Shield, BookOpen } from 'lucide-react'
 import { cn }         from '@design-system/cn'
@@ -11,6 +11,7 @@ import { ClientProfile }    from './pages/ClientProfile'
 import { DeliveryTracking } from './pages/DeliveryTracking'
 import { SLADashboard }     from './pages/SLADashboard'
 import { GovernancePage }   from './pages/GovernancePage'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
   { path: '',           label: 'Overview',   icon: LayoutGrid  },
@@ -126,19 +127,21 @@ export function ClientsModule() {
   useEffect(() => { if (mData?.length) hydrateMilestones((mData as Record<string,unknown>[]).map(toMilestone))   }, [mData, hydrateMilestones])
   useEffect(() => { if (gData?.length) hydrateGovernance((gData as Record<string,unknown>[]).map(toGovernance))  }, [gData, hydrateGovernance])
 
+  const { pathname } = useLocation()
+
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-slate-200 mb-6 -mt-2">
+      <div className="flex items-center gap-1 border-b border-[#2E2854] mb-6 -mt-2">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
-            to={tab.path === '' ? '/kangqore-view/clients' : `/kangqore-view/clients/${tab.path}`}
+            to={tab.path === '' ? '/kangqore-view/admin/clients' : `/kangqore-view/admin/clients/${tab.path}`}
             end={tab.path === ''}
             className={({ isActive }) => cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
                 ? 'border-[#2564ea] text-[#2564ea]'
-                : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-[#2E2854]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -146,14 +149,19 @@ export function ClientsModule() {
           </NavLink>
         ))}
       </div>
-      <Routes>
-        <Route index              element={<ClientsOverview />}  />
-        <Route path="profile"     element={<ClientProfile />}    />
-        <Route path="delivery"    element={<DeliveryTracking />} />
-        <Route path="sla"         element={<SLADashboard />}     />
-        <Route path="governance"  element={<GovernancePage />}   />
-        <Route path="*"           element={<Navigate to="/kangqore-view/clients" replace />} />
-      </Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
+
+        <Routes>
+          <Route index              element={<ClientsOverview />}  />
+          <Route path="profile"     element={<ClientProfile />}    />
+          <Route path="delivery"    element={<DeliveryTracking />} />
+          <Route path="sla"         element={<SLADashboard />}     />
+          <Route path="governance"  element={<GovernancePage />}   />
+          <Route path="*"           element={<Navigate to="/kangqore-view/admin/clients" replace />} />
+        </Routes>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

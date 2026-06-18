@@ -47,8 +47,8 @@ export const KimmpFlags = {
   /** Allow the Tier-2 Claude pass during shadow observation. Off by default to bound cost. */
   shadowTier2: () => bool('KIMMP_SHADOW_TIER2', false),
 
-  /** PR 2b — let KIMMP's behavior reading shape eQORE responses. OFF by default. */
-  eqoreInfluence: () => bool('KIMMP_EQORE_INFLUENCE', false),
+  /** KIMMP's behavior reading actively shapes eQORE responses. ON by default. */
+  eqoreInfluence: () => bool('KIMMP_EQORE_INFLUENCE', true),
 
   /** Size of the in-memory recent-shadow-observation buffer (PR 2.5). */
   shadowBufferSize: () => num('KIMMP_SHADOW_BUFFER', 200),
@@ -64,6 +64,12 @@ export const KimmpFlags = {
   /** Phase 5 — run and store v0 predictions per lead. OFF by default.
    *  Enable after the migration is applied. */
   predictionsEnabled: () => bool('KIMMP_PREDICTIONS_ENABLED', false),
+
+  /** Command Interface — natural language queries answered by Claude over live signals. */
+  commandEnabled: () => bool('KIMMP_COMMAND_ENABLED', true),
+
+  /** Model for the Command Interface. Haiku by default for speed; override to Sonnet for richer responses. */
+  commandModel: () => process.env.KIMMP_COMMAND_MODEL || 'claude-haiku-4-5-20251001',
 };
 
 export function logKimmpFlagSummary(): void {

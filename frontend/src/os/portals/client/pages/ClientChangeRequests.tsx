@@ -110,7 +110,7 @@ function StatusTimeline({ status }: { status: string }) {
                 ? isCurrent
                   ? 'bg-[#2564ea] text-white'
                   : 'bg-green-100 text-green-700'
-                : 'bg-slate-100 text-slate-400'
+                : 'bg-[#151C2F] text-slate-500'
             }`}>
               {STATUS_LABEL[step]}
             </div>
@@ -139,36 +139,36 @@ function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
         <div className="flex items-center gap-3 flex-wrap">
           <Badge variant={PRIORITY_V[cr.priority]} size="sm">{cr.priority}</Badge>
           <Badge variant="neutral" size="sm">{cr.decisionType}</Badge>
-          <span className="text-xs text-slate-400">Submitted {fmtDate(cr.createdAt)}</span>
+          <span className="text-xs text-slate-500">Submitted {fmtDate(cr.createdAt)}</span>
         </div>
         <Divider />
         <div>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Description</p>
-          <p className="text-sm text-slate-700 leading-relaxed">{cr.description}</p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Description</p>
+          <p className="text-sm text-slate-300 leading-relaxed">{cr.description}</p>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-3 bg-slate-50 rounded-xl">
-            <p className="text-xs text-slate-400 mb-1">Cost impact</p>
+          <div className="p-3 bg-[#0F172A] rounded-xl">
+            <p className="text-xs text-slate-500 mb-1">Cost impact</p>
             <p className={`text-sm font-bold ${cr.costImpact < 0 ? 'text-green-600' : 'text-amber-600'}`}>
               {fmtCost(cr.costImpact)}
             </p>
           </div>
-          <div className="p-3 bg-slate-50 rounded-xl">
-            <p className="text-xs text-slate-400 mb-1">Time impact</p>
-            <p className="text-sm font-bold text-slate-700">{cr.timeImpact}</p>
+          <div className="p-3 bg-[#0F172A] rounded-xl">
+            <p className="text-xs text-slate-500 mb-1">Time impact</p>
+            <p className="text-sm font-bold text-slate-300">{cr.timeImpact}</p>
           </div>
         </div>
         <div>
-          <p className="text-xs text-slate-400">Requested by: <span className="text-slate-700 font-medium">{cr.requestedBy}</span></p>
+          <p className="text-xs text-slate-500">Requested by: <span className="text-slate-300 font-medium">{cr.requestedBy}</span></p>
         </div>
         {cr.approvingDecisions?.length > 0 && (
           <>
             <Divider />
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Linked decisions</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Linked decisions</p>
               {cr.approvingDecisions.map((d: any) => (
                 <div key={d.id} className="flex items-center justify-between p-3 bg-green-50 border border-green-100 rounded-xl">
-                  <span className="text-sm text-slate-700">{d.title}</span>
+                  <span className="text-sm text-slate-300">{d.title}</span>
                   <Badge variant="success" size="sm">{d.status}</Badge>
                 </div>
               ))}
@@ -227,7 +227,7 @@ function SubmitCRDrawer({ onClose }: { onClose: () => void }) {
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Priority</label>
             <select value={form.priority} onChange={e => set('priority', e.target.value)}
-              className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-[#2E2854] rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
@@ -268,7 +268,7 @@ export function ClientChangeRequests() {
     <div className="space-y-5 max-w-3xl">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Change Requests</h2>
+          <h2 className="text-xl font-bold text-white">Change Requests</h2>
           <p className="text-sm text-slate-500 mt-0.5">{crs.length} total · {pending} in review</p>
         </div>
         <Button variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />} onClick={() => setShowForm(true)}>
@@ -277,16 +277,16 @@ export function ClientChangeRequests() {
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        <StatCard label="In Review" value={pending}  icon={<Clock        className="w-5 h-5" />} iconColor={pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'} />
+        <StatCard label="In Review" value={pending}  icon={<Clock        className="w-5 h-5" />} iconColor={pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-[#151C2F] text-slate-500'} />
         <StatCard label="Approved"  value={approved} icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
-        <StatCard label="Rejected"  value={rejected} icon={<XCircle      className="w-5 h-5" />} iconColor={rejected > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-400'} />
+        <StatCard label="Rejected"  value={rejected} icon={<XCircle      className="w-5 h-5" />} iconColor={rejected > 0 ? 'bg-red-100 text-red-600' : 'bg-[#151C2F] text-slate-500'} />
       </div>
 
       <div className="flex items-center gap-2">
         {['ALL', 'PENDING_APPROVAL', 'UNDER_REVIEW', 'APPROVED', 'REJECTED'].map(s => (
           <button key={s} onClick={() => setFilter(s)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-              filter === s ? 'bg-[#2564ea] text-white' : 'bg-white border border-slate-200 text-slate-500 hover:border-blue-300'
+              filter === s ? 'bg-[#2564ea] text-white' : 'bg-[#151C2F] border border-[#2E2854] text-slate-500 hover:border-blue-300'
             }`}
           >
             {s === 'ALL' ? 'All' : STATUS_LABEL[s] ?? s}
@@ -300,24 +300,24 @@ export function ClientChangeRequests() {
             <div className="flex items-start gap-3">
               {STATUS_ICON[cr.status]}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-900 truncate">{cr.title}</p>
+                <p className="text-sm font-semibold text-white truncate">{cr.title}</p>
                 <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{cr.description}</p>
                 <div className="flex items-center gap-3 mt-2 flex-wrap">
                   <Badge variant={STATUS_VARIANT[cr.status]} size="sm">{STATUS_LABEL[cr.status]}</Badge>
                   <Badge variant={PRIORITY_V[cr.priority]} size="sm">{cr.priority}</Badge>
-                  {cr.project && <span className="text-[11px] text-slate-400">{cr.project.title}</span>}
-                  <span className="text-[11px] text-slate-400">
+                  {cr.project && <span className="text-[11px] text-slate-500">{cr.project.title}</span>}
+                  <span className="text-[11px] text-slate-500">
                     {cr.costImpact !== 0 && <span className={cr.costImpact < 0 ? 'text-green-600' : 'text-amber-600'}>{fmtCost(cr.costImpact)} · </span>}
                     {cr.timeImpact}
                   </span>
                 </div>
               </div>
-              <span className="text-[11px] text-slate-400 whitespace-nowrap flex-shrink-0">{fmtDate(cr.createdAt)}</span>
+              <span className="text-[11px] text-slate-500 whitespace-nowrap flex-shrink-0">{fmtDate(cr.createdAt)}</span>
             </div>
           </Card>
         ))}
         {visible.length === 0 && (
-          <div className="py-12 text-center text-sm text-slate-400">No change requests match this filter.</div>
+          <div className="py-12 text-center text-sm text-slate-500">No change requests match this filter.</div>
         )}
       </div>
 

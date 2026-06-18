@@ -46,7 +46,7 @@ export function PortfolioMap() {
     <div className="space-y-12 pb-16">
       {/* Title block with spacious bottom margin */}
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Portfolio Map</h2>
+        <h2 className="text-2xl font-bold text-[#4ab6d4] tracking-tight">Portfolio Map</h2>
         <p className="text-sm text-slate-500 mt-1">
           {programs.length} programs across {pillars.length} strategic pillars
         </p>
@@ -58,7 +58,7 @@ export function PortfolioMap() {
           <CardHeader className="mb-6">
             <div className="space-y-1">
               <CardTitle className="text-lg font-bold">Programs by Pillar</CardTitle>
-              <p className="text-xs text-slate-400">Distribution of active and planned programs</p>
+              <p className="text-xs text-slate-500">Distribution of active and planned programs</p>
             </div>
             <div className="flex items-center gap-4 text-xs text-slate-500">
               {(['active', 'planned', 'completed'] as ProgramStatus[]).map(s => (
@@ -89,7 +89,7 @@ export function PortfolioMap() {
           <CardHeader className="mb-6">
             <div className="space-y-1">
               <CardTitle className="text-lg font-bold">Status Breakdown</CardTitle>
-              <p className="text-xs text-slate-400">Overall completion volume</p>
+              <p className="text-xs text-slate-500">Overall completion volume</p>
             </div>
           </CardHeader>
           <div className="space-y-5 flex-1 flex flex-col justify-center pb-2">
@@ -101,9 +101,9 @@ export function PortfolioMap() {
                   <div className="flex items-center justify-between text-xs">
                     <span className="flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full" style={{ background: STATUS_COLOR[s] }} />
-                      <span className="font-semibold text-slate-700 capitalize">{s}</span>
+                      <span className="font-semibold text-slate-300 capitalize">{s}</span>
                     </span>
-                    <span className="font-bold text-slate-900">{count}</span>
+                    <span className="font-bold text-white">{count}</span>
                   </div>
                   <Progress value={pct} size="sm" color={STATUS_VARIANT[s] === 'success' ? 'success' : STATUS_VARIANT[s] === 'info' ? 'info' : STATUS_VARIANT[s] === 'brand' ? 'brand' : 'brand'} />
                 </div>
@@ -115,10 +115,10 @@ export function PortfolioMap() {
 
       {/* Program grid - Overhauled for high-end spacious cards */}
       <div>
-        <h3 className="text-base font-bold text-slate-800 mb-5 tracking-tight">All Programs</h3>
+        <h3 className="text-base font-bold text-slate-200 mb-5 tracking-tight">All Programs</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {bubblePrograms.map(prog => (
-            <Card key={prog.id} padding="lg" className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between border border-slate-100 hover:border-slate-200/80 bg-white">
+            <Card key={prog.id} padding="lg" className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between border border-[#2E2854] hover:border-[#2E2854]/80 bg-[#151C2F]">
               <div>
                 {/* Pillar Accent Line */}
                 <div className="h-1.5 rounded-full mb-5 w-16" style={{ background: prog.pillarColor }} />
@@ -126,8 +126,8 @@ export function PortfolioMap() {
                 {/* Title & Badge */}
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="flex-1 min-w-0">
-                    <p className="text-base font-bold text-slate-900 tracking-tight truncate">{prog.name}</p>
-                    <p className="text-xs text-slate-400 mt-1 font-medium truncate">{prog.pillarName}</p>
+                    <p className="text-base font-bold text-[#4ab6d4] tracking-tight truncate">{prog.name}</p>
+                    <p className="text-xs text-slate-500 mt-1 font-medium truncate">{prog.pillarName}</p>
                   </div>
                   <Badge variant={STATUS_VARIANT[prog.status]} size="sm" className="capitalize font-semibold">{prog.status}</Badge>
                 </div>
@@ -144,14 +144,14 @@ export function PortfolioMap() {
                 <div className="mt-5 flex items-center justify-between text-xs text-slate-500">
                   <div className="flex items-center gap-2">
                     <Avatar name={prog.owner} size="xs" className="ring-2 ring-slate-50" />
-                    <span className="font-medium text-slate-700">{prog.owner}</span>
+                    <span className="font-medium text-slate-300">{prog.owner}</span>
                   </div>
                   <HealthBadge status={prog.health} />
                 </div>
                 
                 {/* Footer specs with expanded padding */}
-                <div className="mt-5 pt-4 border-t border-slate-100/80 flex items-center justify-between text-[11px] font-medium text-slate-400 tracking-wide">
-                  <span className="text-slate-500">£{(prog.spent / 1000).toFixed(0)}k <span className="text-slate-350">/</span> £{(prog.budget / 1000).toFixed(0)}k</span>
+                <div className="mt-5 pt-4 border-t border-[#2E2854]/80 flex items-center justify-between text-[11px] font-medium text-slate-500 tracking-wide">
+                  <span className="text-slate-500">₹{(prog.spent / 1000).toFixed(0)}k <span className="text-slate-350">/</span> ₹{(prog.budget / 1000).toFixed(0)}k</span>
                   <span>{prog.teamSize} people · ends {new Date(prog.endDate).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</span>
                 </div>
               </div>

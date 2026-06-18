@@ -28,13 +28,13 @@ function Toggle({ checked, onChange, label, description, disabled, size = 'md', 
         'relative inline-flex items-center rounded-full transition-colors duration-200 outline-none',
         'focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
         'disabled:opacity-50 disabled:cursor-not-allowed',
-        'data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-slate-200',
+        'data-[state=checked]:bg-[#4ab6d4] data-[state=unchecked]:bg-[#2E2854]',
         track
       )}
     >
       <Switch.Thumb
         className={cn(
-          'block rounded-full bg-white shadow-sm translate-x-0.5 transition-transform duration-200',
+          'block rounded-full bg-[#151C2F] shadow-sm translate-x-0.5 transition-transform duration-200',
           thumb
         )}
       />
@@ -47,8 +47,8 @@ function Toggle({ checked, onChange, label, description, disabled, size = 'md', 
     <div className={cn('flex items-center gap-3', className)}>
       {control}
       <div className="flex flex-col">
-        <span className="text-sm font-medium text-slate-700">{label}</span>
-        {description && <span className="text-xs text-slate-400">{description}</span>}
+        <span className="text-sm font-medium text-slate-300">{label}</span>
+        {description && <span className="text-xs text-slate-500">{description}</span>}
       </div>
     </div>
   )
