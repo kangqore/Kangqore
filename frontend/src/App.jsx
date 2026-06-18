@@ -131,6 +131,7 @@ const DashboardHome      = React.lazy(() => import('./os/features/overview').the
 const AgentLogsModule    = React.lazy(() => import('./os/features/agent-logs').then(m => ({ default: m.AgentLogsModule })));
 const SystemsModule      = React.lazy(() => import('./os/features/systems').then(m => ({ default: m.SystemsModule })));
 const SettingsModule     = React.lazy(() => import('./os/features/settings').then(m => ({ default: m.SettingsModule })));
+const SchedulingModule   = React.lazy(() => import('./os/features/scheduling').then(m => ({ default: m.SchedulingModule })));
 const ClientPortal       = React.lazy(() => import('./os/portals/client').then(m => ({ default: m.ClientPortal })));
 const PartnerPortal      = React.lazy(() => import('./os/portals/partner').then(m => ({ default: m.PartnerPortal })));
 const InvestorPortal     = React.lazy(() => import('./os/portals/investor').then(m => ({ default: m.InvestorPortal })));
@@ -254,7 +255,8 @@ function AppContent() {
             <Route path="analytics/*"      element={<AnalyticsModule />}     />
             <Route path="kangqore-immp/*"  element={<KIMMMModule />}         />
             <Route path="agent-logs"       element={<AgentLogsModule />}     />
-            <Route path="systems/*"          element={<SystemsModule />}       />
+            <Route path="systems/*"        element={<SystemsModule />}       />
+            <Route path="scheduling/*"     element={<SchedulingModule />}    />
             <Route path="settings/*"       element={<SettingsModule />}      />
           </Route>
 
