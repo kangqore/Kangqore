@@ -21,6 +21,10 @@ interface EventType {
 
 const VIDEO_LABELS = { JITSI: 'Jitsi (built-in)', ZOOM: 'Zoom', GOOGLE_MEET: 'Google Meet' }
 
+function toSlug(name: string) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Date.now().toString(36)
+}
+
 const EMPTY: Omit<EventType, 'id' | 'slug' | 'bookingCount'> = {
   name: '', duration: 30, description: '', location: '',
   videoProvider: 'JITSI', isActive: true,
@@ -40,9 +44,14 @@ export function EventTypesPage() {
   })
 
   const { mutate: save, isPending: saving } = useMutation({
-    mutationFn: () => editing
-      ? api.put(`/scheduling/event-types/${editing.id}`, form)
-      : api.post('/scheduling/event-types', form),
+    mutationFn: () => {
+      const payload = editing
+        ? { ...form, slug: editing.slug }
+        : { ...form, slug: toSlug(form.name) }
+      return editing
+        ? api.put(`/scheduling/event-types/${editing.id}`, payload)
+        : api.post('/scheduling/event-types', payload)
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['event-types'] })
       close()

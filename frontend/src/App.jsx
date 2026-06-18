@@ -21,11 +21,8 @@ import Services from './pages/Services';
 import DynamicKangqorePage from './pages/DynamicKangqorePage';
 import InstallPrompt from './components/InstallPrompt';
 import OfflineIndicator from './components/OfflineIndicator';
-import EqoreLeadsPage from './pages/admin/EqoreLeadsPage';
-import EqoreSalesPage from './pages/admin/EqoreSalesPage';
-import AlisPage from './pages/admin/AlisPage';
-import KimmpPagesPage from './pages/admin/KimmpPagesPage';
-import EQoreAIConsole from './pages/EQoreAIConsole';
+// Legacy admin pages retired 2026-06-18 — redirected to OS via legacyRedirects.json
+// Files preserved until 2026-08-01 deletion: pages/admin/{EqoreLeads,EqoreSales,Alis,KimmpPages}Page.jsx
 import BookingCancelPage from './pages/BookingCancelPage';
 import BookingReschedulePage from './pages/BookingReschedulePage';
 import AcceptInvitePage from './pages/AcceptInvitePage';
@@ -221,7 +218,7 @@ function AppContent() {
 
           {/* Auth & Dashboard Routes (no Header/Footer) */}
           {authRoutes}
-          <Route path="/eqore-ai" element={<EQoreAIConsole />} />
+          <Route path="/eqore-ai" element={<Navigate to="/kangqore-view/admin/kangqore-immp" replace />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
           {/* OS — internal dashboard (ADMIN only) */}
@@ -355,11 +352,7 @@ function AppContent() {
                 {/* Service routes (77 individual services) */}
                 {serviceRoutes}
 
-                {/* Admin eQORE Routes */}
-                <Route path="/admin/eqore-leads" element={<EqoreLeadsPage />} />
-                <Route path="/admin/eqore-sales" element={<EqoreSalesPage />} />
-                <Route path="/admin/alis" element={<AlisPage />} />
-                <Route path="/admin/kimmp-pages" element={<KimmpPagesPage />} />
+                {/* Admin routes retired 2026-06-18: handled by top-level legacyRedirectRoutes → OS */}
 
                 {/* Kangqore Vis Admin Routes */}
                 {kangqoreVisAdminRoutes}

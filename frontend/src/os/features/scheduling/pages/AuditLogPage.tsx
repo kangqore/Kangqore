@@ -42,7 +42,7 @@ export function AuditLogPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['scheduling-audit-log', page, action, from, to],
-    queryFn: () => api.get('/scheduling/audit-log', {
+    queryFn: () => api.get('/scheduling/audit', {
       params: { page, limit: PAGE_SIZE, action: action || undefined, from: from || undefined, to: to || undefined }
     }).then(r => r.data),
     enabled: !isDemo(),

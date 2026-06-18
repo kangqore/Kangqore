@@ -6,26 +6,27 @@ import { StatCard } from '@design-system/components/StatCard'
 import { Spinner } from '@design-system/components/Spinner'
 import { api, isDemo } from '@lib/api'
 
+// Backend accepts ?days=7|30|90
 const RANGES = [
-  { label: '7 days',  value: '7d'  },
-  { label: '30 days', value: '30d' },
-  { label: '90 days', value: '90d' },
+  { label: '7 days',  days: 7  },
+  { label: '30 days', days: 30 },
+  { label: '90 days', days: 90 },
 ]
 
-interface AnalyticsData {
-  total: number
-  confirmed: number
-  cancelled: number
-  noShows: number
-  completionRate: number
-  topEventTypes: { name: string; count: number }[]
-  byDay: { date: string; count: number }[]
+interface AnalyticsResponse {
+  metrics: {
+    totalBookings: number
+    cancellationRate: number
+    noShowRate: number
+  }
+  timeSeries: { date: string; bookings: number }[]
+  eventTypeBreakdown: { name: string; value: number }[]
 }
 
 interface EventType { id: string; name: string }
 
 export function AnalyticsPage() {
-  const [range, setRange]           = useState('30d')
+  const [days, setDays]             = useState(30)
   const [eventTypeId, setEventTypeId] = useState('')
 
   const { data: eventTypes = [] } = useQuery<EventType[]>({
@@ -35,16 +36,22 @@ export function AnalyticsPage() {
     staleTime: 1000 * 60 * 10,
   })
 
-  const { data, isLoading } = useQuery<AnalyticsData>({
-    queryKey: ['scheduling-analytics', range, eventTypeId],
+  const { data, isLoading } = useQuery<AnalyticsResponse>({
+    queryKey: ['scheduling-analytics', days, eventTypeId],
     queryFn: () => api.get('/scheduling/analytics', {
-      params: { range, eventTypeId: eventTypeId || undefined }
+      params: { days, eventTypeId: eventTypeId || undefined }
     }).then(r => r.data),
     enabled: !isDemo(),
     staleTime: 1000 * 60 * 2,
   })
 
-  const maxCount = data?.byDay?.length ? Math.max(...data.byDay.map(d => d.count), 1) : 1
+  const total     = data?.metrics.totalBookings ?? 0
+  const cancelPct = data?.metrics.cancellationRate ?? 0
+  const noShowPct = data?.metrics.noShowRate ?? 0
+  const confirmed = total - Math.round(total * cancelPct / 100)
+  const maxCount  = data?.timeSeries.length
+    ? Math.max(...data.timeSeries.map(d => d.bookings), 1)
+    : 1
 
   return (
     <div className="space-y-6">
@@ -53,9 +60,9 @@ export function AnalyticsPage() {
         <div className="flex items-center gap-1 bg-os-s1 rounded-xl p-1">
           {RANGES.map(r => (
             <button
-              key={r.value}
-              onClick={() => setRange(r.value)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${range === r.value ? 'bg-os-blue text-white' : 'text-slate-400 hover:text-white'}`}
+              key={r.days}
+              onClick={() => setDays(r.days)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${days === r.days ? 'bg-os-blue text-white' : 'text-slate-400 hover:text-white'}`}
             >
               {r.label}
             </button>
@@ -75,54 +82,50 @@ export function AnalyticsPage() {
 
       {data && (
         <>
-          {/* Stat cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <StatCard label="Total bookings"    value={data.total}                       />
-            <StatCard label="Confirmed"         value={data.confirmed}                   />
-            <StatCard label="Cancelled"         value={data.cancelled}                   />
-            <StatCard label="Completion rate"   value={`${Math.round(data.completionRate)}%`} />
+            <StatCard label="Total bookings"    value={total}                              />
+            <StatCard label="Confirmed"         value={confirmed}                          />
+            <StatCard label="Cancellation rate" value={`${cancelPct.toFixed(1)}%`}        />
+            <StatCard label="No-show rate"      value={`${noShowPct.toFixed(1)}%`}        />
           </div>
 
-          {/* Bar chart — simple CSS bars */}
-          {data.byDay?.length > 0 && (
+          {data.timeSeries?.length > 0 && (
             <Card>
               <CardBody className="p-5">
                 <p className="text-sm font-semibold text-white mb-4">Bookings per day</p>
                 <div className="flex items-end gap-1 h-28">
-                  {data.byDay.map(d => (
+                  {data.timeSeries.map(d => (
                     <div key={d.date} className="flex-1 flex flex-col items-center gap-1 group relative">
                       <div
                         className="w-full rounded-t bg-os-blue/70 group-hover:bg-os-blue transition-all"
-                        style={{ height: `${Math.max(4, (d.count / maxCount) * 100)}%` }}
+                        style={{ height: `${Math.max(4, (d.bookings / maxCount) * 100)}%` }}
                       />
-                      {/* tooltip on hover */}
                       <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-0.5 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                        {d.count}
+                        {d.bookings}
                       </div>
                     </div>
                   ))}
                 </div>
                 <div className="flex justify-between text-xs text-slate-600 mt-1">
-                  <span>{data.byDay[0]?.date ? new Date(data.byDay[0].date).toLocaleDateString([], { month: 'short', day: 'numeric' }) : ''}</span>
-                  <span>{data.byDay[data.byDay.length - 1]?.date ? new Date(data.byDay[data.byDay.length - 1].date).toLocaleDateString([], { month: 'short', day: 'numeric' }) : ''}</span>
+                  <span>{data.timeSeries[0]?.date ? new Date(data.timeSeries[0].date).toLocaleDateString([], { month: 'short', day: 'numeric' }) : ''}</span>
+                  <span>{data.timeSeries.at(-1)?.date ? new Date(data.timeSeries.at(-1)!.date).toLocaleDateString([], { month: 'short', day: 'numeric' }) : ''}</span>
                 </div>
               </CardBody>
             </Card>
           )}
 
-          {/* Top event types */}
-          {data.topEventTypes?.length > 0 && (
+          {data.eventTypeBreakdown?.length > 0 && (
             <Card>
               <CardBody className="p-5">
                 <p className="text-sm font-semibold text-white mb-4">Top event types</p>
                 <div className="space-y-3">
-                  {data.topEventTypes.map(et => {
-                    const pct = Math.round((et.count / (data.total || 1)) * 100)
+                  {data.eventTypeBreakdown.map(et => {
+                    const pct = total > 0 ? Math.round((et.value / total) * 100) : 0
                     return (
                       <div key={et.name}>
                         <div className="flex justify-between text-xs mb-1">
                           <span className="text-slate-300">{et.name}</span>
-                          <span className="text-slate-500">{et.count} ({pct}%)</span>
+                          <span className="text-slate-500">{et.value} ({pct}%)</span>
                         </div>
                         <div className="h-1.5 bg-os-s1 rounded-full overflow-hidden">
                           <div className="h-full bg-os-blue rounded-full" style={{ width: `${pct}%` }} />

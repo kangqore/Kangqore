@@ -89,5 +89,23 @@
 
   "/services/conversion-engineering/growth-funnels-conversion-engineering": "/services/growth-funnels-conversion-engineering",
   "/services/conversion-engineering/conversion-rate-optimization": "/services/conversion-rate-optimization",
-  "/services/conversion-engineering/campaign-planning": "/services/campaign-planning"
+  "/services/conversion-engineering/campaign-planning": "/services/campaign-planning",
+
+  "/admin/eqore-leads": "/kangqore-view/admin/leads",
+  "/admin/eqore-sales": "/kangqore-view/admin/clients",
+  "/admin/alis": "/kangqore-view/admin/kangqore-immp",
+  "/admin/kimmp-pages": "/kangqore-view/admin/kangqore-immp",
+  "/admin/dashboard": "/kangqore-view/admin/home",
+  "/admin/scheduling": "/kangqore-view/admin/scheduling",
+  "/admin/scheduling/analytics": "/kangqore-view/admin/scheduling/analytics",
+  "/admin/scheduling/audit-log": "/kangqore-view/admin/scheduling/audit-log",
+  "/admin/scheduling/team": "/kangqore-view/admin/scheduling/team",
+  "/admin/projects": "/kangqore-view/admin/projects",
+  "/admin/users": "/kangqore-view/admin/resources",
+  "/admin/settings": "/kangqore-view/admin/settings",
+  "/admin/analytics": "/kangqore-view/admin/analytics",
+  "/admin/leads": "/kangqore-view/admin/leads",
+  "/admin/consultations": "/kangqore-view/admin/consultations",
+  "/admin/contacts": "/kangqore-view/admin/clients",
+  "/eqore-ai": "/kangqore-view/admin/kangqore-immp"
 }
