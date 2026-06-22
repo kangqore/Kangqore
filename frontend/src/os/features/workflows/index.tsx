@@ -1,18 +1,20 @@
 import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery }   from '@tanstack/react-query'
-import { LayoutGrid, GitBranch } from 'lucide-react'
+import { LayoutGrid, GitBranch, Sparkles } from 'lucide-react'
 import { cn }         from '@design-system/cn'
 import { api, isDemo } from '@lib/api'
 import { useWorkflowsStore } from './store'
 import type { Workflow, WorkflowRun } from './types'
-import { WorkflowsOverview } from './pages/WorkflowsOverview'
-import { WorkflowBuilder }   from './pages/WorkflowBuilder'
+import { WorkflowsOverview }       from './pages/WorkflowsOverview'
+import { WorkflowBuilder }         from './pages/WorkflowBuilder'
+import { KIMMLWorkflowGenerator }  from './pages/KIMMLWorkflowGenerator'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
-  { path: '',        label: 'Overview', icon: LayoutGrid },
-  { path: 'builder', label: 'Builder',  icon: GitBranch  },
+  { path: '',          label: 'Overview',      icon: LayoutGrid },
+  { path: 'builder',   label: 'Builder',       icon: GitBranch  },
+  { path: 'kimmp',     label: 'KIMMP Build',   icon: Sparkles   },
 ]
 
 // Map DB row → frontend Workflow type.
@@ -107,8 +109,9 @@ export function WorkflowsModule() {
         <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
 
         <Routes>
-          <Route index          element={<WorkflowsOverview />} />
-          <Route path="builder" element={<WorkflowBuilder />}  />
+          <Route index          element={<WorkflowsOverview />}       />
+          <Route path="builder" element={<WorkflowBuilder />}         />
+          <Route path="kimmp"   element={<KIMMLWorkflowGenerator />}  />
           <Route path="*"       element={<Navigate to="/kangqore-view/admin/workflows" replace />} />
         </Routes>
         </motion.div>

@@ -1,4 +1,3 @@
-import Anthropic from '@anthropic-ai/sdk'
 import { prisma } from '../../lib/prisma'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { KimmpResearchService } from '../research/kimmpResearch.service'
@@ -7,9 +6,8 @@ import { KimmpGoalEngine } from '../goals/kimmpGoal.service'
 import { KimmpReportService } from '../reports/kimmpReport.service'
 import { KimmpActionProposer } from '../actions/kimmpActionProposer'
 import { KimmpDigitalTwin } from '../twin/kimmpTwin.service'
+import { haiku as _haiku, sonnet as _sonnet, opus as _opus, textOf as _textOf } from '../llm/kimmpLLMRouter'
 import logger from '../../utils/logger'
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
 
 export type AgentType =
   | 'SCOUT'
@@ -80,20 +78,17 @@ export interface OrchestrationResult {
   createdAt:      string
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Helpers — go through KIMMLLMRouter so every call is captured as training data ──
 const haiku  = (system: string, user: string, maxTokens = 500) =>
-  anthropic.messages.create({ model: 'claude-haiku-4-5-20251001', max_tokens: maxTokens, temperature: 0.1,
-    system, messages: [{ role: 'user', content: user }] })
+  _haiku(system, user, maxTokens, { agentSystem: 'KIMMP', agentType: 'orchestrator' })
 
 const sonnet = (system: string, user: string, maxTokens = 900) =>
-  anthropic.messages.create({ model: 'claude-sonnet-4-6', max_tokens: maxTokens, temperature: 0.1,
-    system, messages: [{ role: 'user', content: user }] })
+  _sonnet(system, user, maxTokens, { agentSystem: 'KIMMP', agentType: 'orchestrator' })
 
 const opus   = (system: string, user: string, maxTokens = 1200) =>
-  anthropic.messages.create({ model: 'claude-opus-4-8', max_tokens: maxTokens, temperature: 0.1,
-    system, messages: [{ role: 'user', content: user }] })
+  _opus(system, user, maxTokens, { agentSystem: 'KIMMP', agentType: 'orchestrator' })
 
-const textOf = (res: Anthropic.Message) => res.content[0]?.type === 'text' ? res.content[0].text : ''
+const textOf = _textOf
 
 const noKey = () => !process.env.ANTHROPIC_API_KEY
 
@@ -710,7 +705,7 @@ async function runKnowledgeEngine(params: Record<string, any>): Promise<{ output
   return { output: sections || 'No knowledge found.', data: { memories: (memories as any[]).length, research: (research as any[]).length, kb: (kb as any[]).length } }
 }
 
-async function runSimulationEngine(params: Record<string, any>): Promise<{ output: string; data?: any }> {
+export async function runSimulationEngine(params: Record<string, any>): Promise<{ output: string; data?: any }> {
   if (noKey()) return { output: 'SIMULATION_ENGINE requires ANTHROPIC_API_KEY.', data: {} }
   const scenario = params.scenario ?? 'Current trajectory'
   const [fin, goals, twin] = await Promise.all([
@@ -727,6 +722,34 @@ async function runSimulationEngine(params: Record<string, any>): Promise<{ outpu
     `Scenario: "${scenario}"\n\nBaseline:\n${fin.output}\n${twinCtx}\nActive goals: ${goalCtx || 'None'}\n${params.variables ? `Variables: ${JSON.stringify(params.variables)}` : ''}`, 900
   )
   return { output: textOf(res), data: { scenario } }
+}
+
+// Parses the "ADJUSTED TWIN SCORES" section from simulation engine output.
+// Returns null if the section is absent (Claude occasionally varies headings).
+export function parseAdjustedScores(text: string): {
+  revenueHealth: number | null
+  pipelineVelocity: number | null
+  executionCapacity: number | null
+  riskExposure: number | null
+  marketPosition: number | null
+} | null {
+  const sectionMatch = text.match(/ADJUSTED\s+TWIN\s+SCORES[\s\S]{0,600}/i)
+  if (!sectionMatch) return null
+  const block = sectionMatch[0]
+  const grab = (patterns: RegExp[]): number | null => {
+    for (const re of patterns) {
+      const m = block.match(re)
+      if (m) return Math.min(100, Math.max(0, Number(m[1])))
+    }
+    return null
+  }
+  return {
+    revenueHealth:     grab([/revenue\s+health[:\s—–-]+[-•*\s]*(\d+)/i,    /rev(?:enue)?[:\s—–-]+[-•*\s]*(\d+)/i]),
+    pipelineVelocity:  grab([/pipeline\s+velocity[:\s—–-]+[-•*\s]*(\d+)/i, /pipe(?:line)?[:\s—–-]+[-•*\s]*(\d+)/i]),
+    executionCapacity: grab([/execution\s+capacity[:\s—–-]+[-•*\s]*(\d+)/i,/exec(?:ution)?[:\s—–-]+[-•*\s]*(\d+)/i]),
+    riskExposure:      grab([/risk\s+exposure[:\s—–-]+[-•*\s]*(\d+)/i,     /risk[:\s—–-]+[-•*\s]*(\d+)/i]),
+    marketPosition:    grab([/market\s+position[:\s—–-]+[-•*\s]*(\d+)/i,   /mkt|market[:\s—–-]+[-•*\s]*(\d+)/i]),
+  }
 }
 
 // ─── Sentinel Layer helpers ───────────────────────────────────────────────────

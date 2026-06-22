@@ -10,6 +10,7 @@ import { DecisionEngine } from '../decision/decisionEngine.service';
 import { PermissionMatrix } from '../governance/permissionMatrix';
 import { KimmpAuditLog } from '../governance/auditLog.service';
 import { KimmpTracer } from '../governance/kimmpTracer.service';
+import { onDecisionApproved } from '../learning/kimmpLearning.service';
 import { prisma } from '../../lib/prisma';
 
 const DECISION_STATUSES = ['PROPOSED', 'APPROVED', 'EXECUTED', 'DISMISSED'];
@@ -131,13 +132,15 @@ export class DecisionEngineController {
           },
         });
 
-        // 5. Trace event.
+        // 5. Trace event + learning hook.
         if (status === 'APPROVED') {
           KimmpTracer.decisionApproved(decisionId, actorId, {
             decisionType: decision.decisionType,
             targetModule: decision.targetModule,
             priority: decision.priority,
           });
+          // Every approved decision becomes a quality-1.0 training example
+          void onDecisionApproved(decisionId)
         } else if (status === 'DISMISSED') {
           KimmpTracer.decisionDismissed(decisionId, actorId, { decisionType: decision.decisionType });
         }
