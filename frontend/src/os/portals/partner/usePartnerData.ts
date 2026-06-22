@@ -48,3 +48,11 @@ export function usePartnerMeetings() {
     staleTime: 1000 * 60 * 5,
   })
 }
+
+export function usePartnerEmails(folder?: string) {
+  return useQuery({
+    queryKey: ['partner', 'emails', folder],
+    queryFn: () => api.get('/partner/emails', { params: folder ? { folder } : {} }).then(r => r.data.emails ?? []),
+    staleTime: 1000 * 60 * 2,
+  })
+}

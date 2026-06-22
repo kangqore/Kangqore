@@ -137,4 +137,67 @@ router.get('/earnings', requireAuth, requirePartner, async (req, res) => {
     }
 });
 
+// GET /api/partner/emails
+router.get('/emails', requireAuth, requirePartner, async (req, res) => {
+  try {
+    const userId = req.user!.userId;
+    const { folder, search } = req.query;
+    const where: any = { partnerId: userId };
+    if (folder) where.partnerFolder = (folder as string).toUpperCase();
+    if (search) {
+      where.OR = [
+        { subject: { contains: search as string, mode: 'insensitive' } },
+        { body:    { contains: search as string, mode: 'insensitive' } },
+      ];
+    }
+    const emails = await (prisma as any).emailLog.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
+    res.json({ emails });
+  } catch (error) {
+    console.error('Partner emails error:', error);
+    res.json({ emails: [] });
+  }
+});
+
+// POST /api/partner/emails/reply
+router.post('/emails/reply', requireAuth, requirePartner, async (req, res) => {
+  try {
+    const userId = req.user!.userId;
+    const { emailId, content, subject } = req.body;
+    if (!content) return res.status(400).json({ error: 'Content required' });
+    const partner = await prisma.user.findUnique({ where: { id: userId } });
+    if (!partner) return res.status(404).json({ error: 'User not found' });
+    let threadId: string | undefined;
+    let replySubject = subject || 'Partner Message';
+    if (emailId) {
+      const orig = await (prisma as any).emailLog.findUnique({ where: { id: emailId } });
+      if (orig) { threadId = orig.threadId || orig.id; replySubject = `Re: ${orig.subject}`; }
+    }
+    const email = await (prisma as any).emailLog.create({
+      data: {
+        subject: replySubject,
+        from: partner.email || partner.name,
+        to: 'admin@kangqore.com',
+        body: content,
+        preview: content.substring(0, 100),
+        partnerId: userId,
+        threadId: threadId || undefined,
+        replyToId: emailId || undefined,
+        direction: 'inbound',
+        isRead: false,
+        isUnread: true,
+        partnerFolder: 'SENT',
+        adminFolder: 'INBOX',
+      },
+    });
+    res.status(201).json({ success: true, email });
+  } catch (error) {
+    console.error('Partner reply error:', error);
+    res.status(500).json({ error: 'Failed to send' });
+  }
+});
+
 export default router;
