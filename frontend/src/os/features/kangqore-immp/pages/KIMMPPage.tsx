@@ -574,7 +574,7 @@ export function KIMMMPage() {
 
   const { data: rawInsights, isLoading, isFetching, refetch, dataUpdatedAt } = useQuery({
     queryKey: ['kimmp-insights'],
-    queryFn: () => api.get('/dashboard/insights', { params: { limit: 50 } })
+    queryFn: () => api.get('/admin/kangqore-immp/insights')
       .then(r => (r.data.insights ?? r.data ?? []) as Record<string, unknown>[]),
     enabled: !isDemo(),
     staleTime: 1000 * 60 * 3,
@@ -584,7 +584,7 @@ export function KIMMMPage() {
   const lastUpdated = useRelativeTime(dataUpdatedAt || undefined)
 
   useEffect(() => {
-    if (rawInsights?.length) setInsights(rawInsights.map((r, i) => toInsight(r, i)))
+    if (rawInsights !== undefined) setInsights((rawInsights ?? []).map((r, i) => toInsight(r, i)))
   }, [rawInsights, setInsights])
 
   const reactive        = insights.filter(i => i.type !== 'predictive')

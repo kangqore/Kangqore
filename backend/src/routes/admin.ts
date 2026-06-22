@@ -1824,4 +1824,204 @@ router.post('/projects', authenticate, authorize(['ADMIN']), async (req: Authent
   } catch (err) { next(err) }
 })
 
+// ─── KIMMP: Synthesise live insights from operational data ────────────────────
+//
+// Returns an array shaped for the frontend `toInsight()` mapper.
+// Each insight has: id, category, priority, title, summary, content,
+// action, module, confidence, impact.
+//
+// Signal sources:
+//   Ticket (open P1/P2)  → risk / ops
+//   Invoice (overdue)    → revenue
+//   ClientCRM (health)   → risk
+//   Contact (new leads)  → opportunity
+//   Project (overdue)    → ops
+//
+router.get('/kangqore-immp/insights', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const now = new Date()
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+
+    const [
+      openTickets,
+      overdueInvoices,
+      atRiskClients,
+      newLeads,
+      overdueProjects,
+    ] = await Promise.all([
+      prisma.ticket.findMany({
+        where: { status: { in: ['open', 'pending'] } },
+        select: { id: true, priority: true, subject: true, category: true, createdAt: true },
+      }),
+      prisma.invoice.findMany({
+        where: { dueDate: { lt: now }, status: { notIn: ['PAID', 'CANCELLED'] } },
+        select: { id: true, amount: true, currency: true, dueDate: true, invoiceNumber: true },
+      }),
+      (prisma as any).clientCRM?.findMany({
+        where: { health: { in: ['at-risk', 'critical'] }, status: 'active' },
+        select: { id: true, name: true, health: true, arr: true, satisfactionScore: true },
+      }).catch(() => []) as Promise<any[]>,
+      prisma.contact.findMany({
+        where: { createdAt: { gte: sevenDaysAgo } },
+        select: { id: true, name: true, status: true, createdAt: true },
+      }),
+      prisma.project.findMany({
+        where: { status: { in: ['ACTIVE', 'IN_PROGRESS'] }, dueDate: { lt: now } },
+        select: { id: true, title: true, status: true, dueDate: true },
+      }),
+    ])
+
+    const insights: Record<string, unknown>[] = []
+
+    // ── P1/P2 tickets ──────────────────────────────────────────────────────
+    const criticalTickets = openTickets.filter((t: any) => t.priority?.toLowerCase() === 'critical' || t.priority?.toLowerCase() === 'p1')
+    const highTickets     = openTickets.filter((t: any) => t.priority?.toLowerCase() === 'high'     || t.priority?.toLowerCase() === 'p2')
+
+    if (criticalTickets.length > 0) {
+      insights.push({
+        id:         `tickets-critical-${criticalTickets.length}`,
+        category:   'risk',
+        priority:   'critical',
+        title:      `${criticalTickets.length} critical support ticket${criticalTickets.length > 1 ? 's' : ''} open`,
+        summary:    `${criticalTickets.length} P1 ticket${criticalTickets.length > 1 ? 's require' : ' requires'} immediate attention. Unresolved critical issues directly impact client satisfaction and SLA compliance.`,
+        content:    `Critical tickets: ${criticalTickets.map((t: any) => t.subject).join('; ')}.`,
+        action:     'Assign a senior resource to each critical ticket and update the client within 1 hour.',
+        module:     'Clients',
+        confidence: 100,
+        impact:     'High',
+        createdAt:  now.toISOString(),
+      })
+    }
+
+    if (highTickets.length > 0) {
+      insights.push({
+        id:         `tickets-high-${highTickets.length}`,
+        category:   'ops',
+        priority:   highTickets.length >= 5 ? 'high' : 'medium',
+        title:      `${highTickets.length} high-priority ticket${highTickets.length > 1 ? 's' : ''} awaiting resolution`,
+        summary:    `${highTickets.length} P2 ticket${highTickets.length > 1 ? 's are' : ' is'} open. Sustained high-ticket volume can indicate systemic product or delivery issues.`,
+        content:    `High-priority tickets: ${highTickets.slice(0, 5).map((t: any) => t.subject).join('; ')}${highTickets.length > 5 ? '…' : ''}.`,
+        action:     'Review ticket queue and ensure each P2 has an assigned owner with a resolution ETA.',
+        module:     'Clients',
+        confidence: 95,
+        impact:     'Medium',
+        createdAt:  now.toISOString(),
+      })
+    }
+
+    if (openTickets.length === 0) {
+      insights.push({
+        id:         'tickets-clear',
+        category:   'ops',
+        priority:   'low',
+        title:      'Support queue clear — no open tickets',
+        summary:    'All client support tickets are resolved. This is a positive signal for service delivery quality.',
+        content:    'Zero open tickets across all clients. Maintain this state by proactively monitoring client usage.',
+        action:     'Consider proactive check-in calls with top clients to surface issues before they become tickets.',
+        module:     'Clients',
+        confidence: 100,
+        impact:     'Low',
+        createdAt:  now.toISOString(),
+      })
+    }
+
+    // ── Overdue invoices ───────────────────────────────────────────────────
+    if (overdueInvoices.length > 0) {
+      const totalOverdue = overdueInvoices.reduce((sum: number, inv: any) => sum + Number(inv.amount), 0)
+      const currency = overdueInvoices[0]?.currency ?? 'USD'
+      const oldest   = overdueInvoices.reduce((a: any, b: any) => a.dueDate < b.dueDate ? a : b)
+      const daysPast = Math.floor((now.getTime() - new Date(oldest.dueDate).getTime()) / (24 * 60 * 60 * 1000))
+      insights.push({
+        id:         `invoices-overdue-${overdueInvoices.length}`,
+        category:   'revenue',
+        priority:   totalOverdue > 10000 ? 'critical' : overdueInvoices.length >= 3 ? 'high' : 'medium',
+        title:      `${overdueInvoices.length} overdue invoice${overdueInvoices.length > 1 ? 's' : ''} — ${currency} ${totalOverdue.toLocaleString()} outstanding`,
+        summary:    `${overdueInvoices.length} invoice${overdueInvoices.length > 1 ? 's' : ''} past due date, totalling ${currency} ${totalOverdue.toLocaleString()}. Oldest invoice is ${daysPast} days overdue.`,
+        content:    `Outstanding invoices: ${overdueInvoices.map((inv: any) => `${inv.invoiceNumber} (${inv.currency} ${Number(inv.amount).toLocaleString()})`).join(', ')}.`,
+        action:     'Send overdue notice to all clients with outstanding invoices. Escalate invoices over 30 days to finance lead.',
+        module:     'Finance',
+        confidence: 99,
+        impact:     'High',
+        createdAt:  now.toISOString(),
+      })
+    }
+
+    // ── At-risk clients ────────────────────────────────────────────────────
+    if (atRiskClients.length > 0) {
+      const criticalClients = atRiskClients.filter((c: any) => c.health === 'critical')
+      const atRisk          = atRiskClients.filter((c: any) => c.health === 'at-risk')
+      const totalARR        = atRiskClients.reduce((sum: number, c: any) => sum + (c.arr ?? 0), 0)
+      insights.push({
+        id:         `clients-health-${atRiskClients.length}`,
+        category:   'risk',
+        priority:   criticalClients.length > 0 ? 'critical' : 'high',
+        title:      `${atRiskClients.length} client${atRiskClients.length > 1 ? 's' : ''} at risk — £${(totalARR / 1000).toFixed(0)}k ARR exposed`,
+        summary:    `${criticalClients.length} critical and ${atRisk.length} at-risk client${atRiskClients.length > 1 ? 's' : ''} detected. Combined ARR at risk: £${totalARR.toLocaleString()}.`,
+        content:    `At-risk clients: ${atRiskClients.map((c: any) => `${c.name} (${c.health}, score: ${c.satisfactionScore})`).join('; ')}.`,
+        action:     'Schedule retention calls with all at-risk clients within 48 hours. Prepare QBR decks for critical accounts.',
+        module:     'Clients',
+        confidence: 87,
+        impact:     'Critical',
+        createdAt:  now.toISOString(),
+      })
+    }
+
+    // ── New leads ─────────────────────────────────────────────────────────
+    if (newLeads.length > 0) {
+      insights.push({
+        id:         `leads-new-${newLeads.length}`,
+        category:   'opportunity',
+        priority:   newLeads.length >= 10 ? 'high' : 'medium',
+        title:      `${newLeads.length} new lead${newLeads.length > 1 ? 's' : ''} in the last 7 days`,
+        summary:    `${newLeads.length} new contact${newLeads.length > 1 ? 's' : ''} entered the pipeline this week. Early engagement within 24h significantly improves conversion rates.`,
+        content:    `New leads: ${newLeads.slice(0, 5).map((l: any) => l.name).join(', ')}${newLeads.length > 5 ? ` and ${newLeads.length - 5} more` : ''}.`,
+        action:     'Ensure all new leads have been contacted within 24h and assigned to a sales owner.',
+        module:     'Leads',
+        confidence: 90,
+        impact:     'Medium',
+        createdAt:  now.toISOString(),
+      })
+    }
+
+    // ── Overdue projects ───────────────────────────────────────────────────
+    if (overdueProjects.length > 0) {
+      insights.push({
+        id:         `projects-overdue-${overdueProjects.length}`,
+        category:   'ops',
+        priority:   overdueProjects.length >= 3 ? 'high' : 'medium',
+        title:      `${overdueProjects.length} active project${overdueProjects.length > 1 ? 's' : ''} past due date`,
+        summary:    `${overdueProjects.length} project${overdueProjects.length > 1 ? 's are' : ' is'} past their target completion date while still showing active status. This may indicate timeline slippage or missing status updates.`,
+        content:    `Overdue projects: ${overdueProjects.map((p: any) => p.title).join('; ')}.`,
+        action:     'Review overdue projects with delivery leads. Update status or revise delivery dates with client agreement.',
+        module:     'Projects',
+        confidence: 92,
+        impact:     'High',
+        createdAt:  now.toISOString(),
+      })
+    }
+
+    // ── All-clear ─────────────────────────────────────────────────────────
+    if (insights.length === 0) {
+      insights.push({
+        id:         'all-clear',
+        category:   'opportunity',
+        priority:   'low',
+        title:      'All operational signals healthy',
+        summary:    'No critical issues detected across tickets, finance, clients, or delivery. Platform is in a healthy state.',
+        content:    'KIMMP has scanned all connected data sources and found no active risk or revenue signals requiring immediate attention.',
+        action:     'Continue monitoring. Consider proactive outreach to top clients to maintain relationship health.',
+        module:     'System',
+        confidence: 95,
+        impact:     'Low',
+        createdAt:  now.toISOString(),
+      })
+    }
+
+    res.json({ insights, generatedAt: now.toISOString(), sourceCount: { openTickets: openTickets.length, overdueInvoices: overdueInvoices.length, atRiskClients: atRiskClients.length, newLeads: newLeads.length, overdueProjects: overdueProjects.length } })
+  } catch (err) {
+    next(err)
+  }
+})
+
 export default router;
+

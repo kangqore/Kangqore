@@ -3,6 +3,7 @@ import {
   MOCK_CLIENT_EMAILS, MOCK_PARTNER_EMAILS,
   MOCK_INVESTOR_EMAILS, MOCK_CAREERS_EMAILS, MOCK_MESSAGES,
 } from './data'
+import { isDemo } from '@lib/api'
 import type { EmailConversation, InternalConversation, TabAudience } from './types'
 
 interface CommsStore {
@@ -13,15 +14,17 @@ interface CommsStore {
   appendEmail:      (audience: TabAudience, convId: string, email: import('./types').EmailLog) => void
 }
 
+const demo = isDemo()
+
 export const useCommsStore = create<CommsStore>((set) => ({
   emailConversations: {
     messages:  [],
-    clients:   MOCK_CLIENT_EMAILS,
-    partners:  MOCK_PARTNER_EMAILS,
-    investors: MOCK_INVESTOR_EMAILS,
-    careers:   MOCK_CAREERS_EMAILS,
+    clients:   demo ? MOCK_CLIENT_EMAILS   : [],
+    partners:  demo ? MOCK_PARTNER_EMAILS  : [],
+    investors: demo ? MOCK_INVESTOR_EMAILS : [],
+    careers:   demo ? MOCK_CAREERS_EMAILS  : [],
   },
-  internalConversations: MOCK_MESSAGES,
+  internalConversations: demo ? MOCK_MESSAGES : [],
 
   hydrateEmails: (audience, convs) =>
     set(s => ({ emailConversations: { ...s.emailConversations, [audience]: convs } })),

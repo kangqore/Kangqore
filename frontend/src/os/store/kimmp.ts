@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { isDemo } from '@lib/api'
 
 export type InsightCategory = 'revenue' | 'risk' | 'opportunity' | 'ops' | 'talent'
 export type InsightPriority = 'critical' | 'high' | 'medium' | 'low'
@@ -230,7 +231,7 @@ export function toInsight(raw: Record<string, unknown>, i: number): Insight {
 export const useKIMMPStore = create<KIMMPStore>()(
   persist(
     (set, get) => ({
-      insights:        [...KIMMP_MOCK, ...KIMMP_FORECAST],
+      insights:        isDemo() ? [...KIMMP_MOCK, ...KIMMP_FORECAST] : [],
       isLoaded:        false,
       acknowledgedIds: [],
       memoryEntries:   [],
