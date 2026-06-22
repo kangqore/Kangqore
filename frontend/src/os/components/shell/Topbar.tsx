@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import {
   Search, Bell, Settings, LogOut, User,
   ChevronDown, Grid3X3, ChevronRight, Plus, Maximize2, Minimize2,
+  Brain,
 } from 'lucide-react'
 import { LightningIcon, SquaresFourIcon, TargetIcon, CpuIcon } from '@phosphor-icons/react'
 import { Tooltip } from '@design-system/components/Tooltip'
@@ -102,6 +103,15 @@ export function Topbar() {
     ? notifData.filter((n: { isRead?: boolean; read?: boolean }) => !(n.isRead ?? n.read)).length
     : 0
 
+  const { data: kimmpStats } = useQuery({
+    queryKey: ['kimmp-router-stats-topbar'],
+    queryFn: () => api.get('/admin/kangqore-immp/learning/router/stats').then(r => r.data),
+    enabled: !isDemo(),
+    staleTime: 60_000,
+    refetchInterval: 120_000,
+  })
+  const distillationCount: number = kimmpStats?.distillationCount ?? 0
+
   const location = useLocation()
   const currentModule = allNavItems.find(item => location.pathname.startsWith(item.path))
 
@@ -187,6 +197,19 @@ export function Topbar() {
             </div>
           )}
         </div>
+
+        {/* KIMMP live indicator */}
+        <Tooltip content={`KIMMP · ${distillationCount.toLocaleString()} training examples`} side="bottom">
+          <button
+            onClick={() => navigate('/kangqore-view/admin/kangqore-immp/briefing')}
+            className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg transition-all duration-150 hover:bg-white/5 flex-shrink-0"
+            style={{ border: '1px solid rgba(127,83,249,0.2)', background: 'rgba(127,83,249,0.06)' }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse flex-shrink-0" />
+            <Brain className="w-3 h-3 text-violet-400" />
+            <span className="hidden lg:block text-[10px] font-bold text-violet-400 leading-none">KIMMP</span>
+          </button>
+        </Tooltip>
 
         {/* Divider */}
         <div className="w-px h-5 mx-0.5 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.07)' }} />

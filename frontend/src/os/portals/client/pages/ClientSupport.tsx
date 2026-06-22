@@ -254,9 +254,9 @@ export function ClientSupport() {
 
       {/* KPIs */}
       <div className="grid grid-cols-3 gap-3">
-        <StatCard label="Open"       value={open}       icon={<AlertCircle  className="w-5 h-5" />} iconColor={open > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500'} />
-        <StatCard label="In Progress" value={inProgress} icon={<Clock       className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
-        <StatCard label="Resolved"   value={resolved}   icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
+        <StatCard label="Open"       value={open}       icon={<AlertCircle  className="w-5 h-5" />} iconColor={open > 0 ? 'bg-amber-500/10 text-amber-400' : 'bg-white/5 text-slate-500'} />
+        <StatCard label="In Progress" value={inProgress} icon={<Clock       className="w-5 h-5" />} iconColor="bg-blue-500/10 text-blue-400" />
+        <StatCard label="Resolved"   value={resolved}   icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-emerald-500/10 text-emerald-400" />
       </div>
 
       {/* Filter */}
