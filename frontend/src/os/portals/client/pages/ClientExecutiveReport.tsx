@@ -4,7 +4,7 @@ import {
   FileText, Calendar, Sparkles, Shield, Activity,
   ArrowRight, Clock,
 } from 'lucide-react'
-import { useClientProjects, useClientInvoices } from '../useClientData'
+import { useClientProjects, useClientInvoices, useClientRisks, type ClientProject } from '../useClientData'
 
 // ── Design tokens (match ClientDashboard) ─────────────────────────────────────
 
@@ -30,18 +30,7 @@ function anim(ms: number): React.CSSProperties {
   return { animation: `_rptFadeUp 0.5s ${EASE} ${ms}ms both` }
 }
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
-
-const MOCK_PROJECTS = [
-  { id: 'p1', name: 'Patient Portal v2',      progress: 68, health: 'on-track', budget: 180000, spent: 98000,  nextMilestone: 'Beta release to UAT', milestoneDate: '2026-06-20' },
-  { id: 'p2', name: 'HIPAA Compliance Layer', progress: 91, health: 'on-track', budget: 95000,  spent: 87000,  nextMilestone: 'Final audit sign-off', milestoneDate: '2026-06-15' },
-  { id: 'p3', name: 'Analytics Dashboard',    progress: 32, health: 'at-risk',  budget: 140000, spent: 45000,  nextMilestone: 'Design review',        milestoneDate: '2026-06-28' },
-]
-
-const MOCK_RISKS = [
-  { id: 'r1', title: 'HIPAA audit logging gap — remediation in progress',    severity: 'CRITICAL', owner: 'Omar Khalid', due: '20 Jun' },
-  { id: 'r2', title: 'Analytics Dashboard milestone sign-off client-blocked', severity: 'MEDIUM',   owner: 'Anika Roy',   due: '28 Jun' },
-]
+// ── Static data ────────────────────────────────────────────────────────────────
 
 const SLA_ITEMS = [
   { metric: 'P1 Response SLA',   target: '< 2h',   current: '1.4h',  met: true,  pct: 93 },
@@ -144,26 +133,27 @@ export function ClientExecutiveReport() {
 
   const { data: apiProjects } = useClientProjects()
   const { data: apiInvoices } = useClientInvoices()
+  const { data: apiRisks }    = useClientRisks()
 
-  const projects = (apiProjects as typeof MOCK_PROJECTS | undefined)?.length
-    ? (apiProjects as typeof MOCK_PROJECTS)
-    : MOCK_PROJECTS
+  const projects: ClientProject[] = apiProjects ?? []
   const invoices = (apiInvoices as Record<string, unknown>[] | undefined) ?? []
+  const risks    = (apiRisks as { id: string; title: string; severity: string; owner?: string; due: string }[] | undefined) ?? []
 
-  const totalInvoiced  = invoices.length
-    ? invoices.reduce((s, i) => s + Number(i.amount ?? 0), 0) : 346500
-  const totalCollected = invoices.length
-    ? invoices.filter(i => i.status === 'paid').reduce((s, i) => s + Number(i.amount ?? 0), 0) : 230000
+  const totalInvoiced  = invoices.reduce((s, i) => s + Number(i.amount ?? 0), 0)
+  const totalCollected = invoices
+    .filter(i => String(i.status ?? '').toLowerCase() === 'paid')
+    .reduce((s, i) => s + Number(i.amount ?? 0), 0)
   const outstanding    = totalInvoiced - totalCollected
 
   const onTrack   = projects.filter(p => p.health === 'on-track').length
-  const atRisk    = projects.filter(p => p.health === 'at-risk').length
-  const openRisks = MOCK_RISKS.filter(r => r.id).length
+  const atRisk    = projects.filter(p => p.health === 'at-risk' || p.health === 'behind').length
   const slaScore  = Math.round(SLA_ITEMS.filter(s => s.met).length / SLA_ITEMS.length * 100)
 
-  const waandaBrief = atRisk === 0
-    ? `All ${projects.length} engagements are progressing on schedule with strong delivery momentum. SLA compliance at ${slaScore}% — all critical response targets met. No risks require escalation this period. Your Kangqore team recommends a focus on the upcoming beta milestone.`
-    : `${onTrack} of ${projects.length} projects are on track. ${projects.find(p => p.health === 'at-risk')?.name ?? 'Analytics Dashboard'} requires attention — milestone sign-off is client-blocked and deadline risk is elevated. Immediate stakeholder alignment recommended. All financial commitments are within agreed parameters.`
+  const waandaBrief = projects.length === 0
+    ? `No active projects found for this account. Contact your account manager to get started.`
+    : atRisk === 0
+      ? `All ${projects.length} engagement${projects.length > 1 ? 's are' : ' is'} progressing on schedule. SLA compliance at ${slaScore}% — all critical response targets met. ${risks.length === 0 ? 'No open risks this period.' : `${risks.length} risk${risks.length > 1 ? 's' : ''} under active monitoring.`}`
+      : `${onTrack} of ${projects.length} projects are on track. ${projects.find(p => p.health !== 'on-track')?.name} requires attention — milestone sign-off is client-blocked and deadline risk is elevated. Immediate stakeholder alignment recommended.`
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
@@ -231,57 +221,72 @@ export function ClientExecutiveReport() {
         <StatCard value={onTrack}         label="On track"          color={GREEN}  delay={140} />
         <StatCard value={atRisk}          label="At risk"           color={AMBER}  delay={200} />
         <StatCard value={`${slaScore}%`}  label="SLA compliance"    color={PURPLE} delay={260} />
+        <StatCard value={risks.length}    label="Open risks"        color={RED}    delay={320} />
       </div>
 
       {/* ── Projects ────────────────────────────────────────────────────────── */}
       <Section title="Project Portfolio" icon={Activity} iconColor={BLUE} delay={320}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {projects.map(p => {
-            const hc = HEALTH_COLOR[p.health] ?? AMBER
-            const budgetPct = Math.round(p.spent / p.budget * 100)
-            return (
-              <div key={p.id} style={{
-                borderRadius: 14, padding: 16,
-                background: CARD, border: `1px solid ${EDGE}`,
-                borderLeft: `3px solid ${hc}`,
-              }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
-                  <div style={{ minWidth: 0 }}>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>{p.name}</p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
-                      <span style={{
-                        fontSize: 10, fontWeight: 700,
-                        padding: '2px 8px', borderRadius: 999,
-                        color: hc, background: `${hc}14`, border: `1px solid ${hc}25`,
-                      }}>
-                        {p.health === 'on-track' ? 'On Track' : p.health === 'at-risk' ? 'At Risk' : p.health}
-                      </span>
-                      <span style={{ fontSize: 11, color: '#475569' }}>
-                        Budget: {fmt(p.spent)} / {fmt(p.budget)} ({budgetPct}% utilised)
-                      </span>
+        {projects.length === 0 ? (
+          <div style={{ borderRadius: 14, padding: 24, background: CARD, border: `1px solid ${EDGE}`, textAlign: 'center' }}>
+            <p style={{ fontSize: 13, color: '#475569', margin: 0 }}>No active projects. Contact your account manager to get started.</p>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {projects.map(p => {
+              const hc = HEALTH_COLOR[p.health] ?? AMBER
+              const budgetPct = p.budget > 0 ? Math.round(p.spent / p.budget * 100) : 0
+              const milestoneLabel = p.nextMilestone && p.nextMilestone !== '—' ? p.nextMilestone : null
+              const milestoneDate  = p.milestoneDate
+                ? new Date(p.milestoneDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+                : ''
+              return (
+                <div key={p.id} style={{
+                  borderRadius: 14, padding: 16,
+                  background: CARD, border: `1px solid ${EDGE}`,
+                  borderLeft: `3px solid ${hc}`,
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>{p.name}</p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
+                        <span style={{
+                          fontSize: 10, fontWeight: 700,
+                          padding: '2px 8px', borderRadius: 999,
+                          color: hc, background: `${hc}14`, border: `1px solid ${hc}25`,
+                        }}>
+                          {p.health === 'on-track' ? 'On Track' : p.health === 'at-risk' ? 'At Risk' : 'Behind'}
+                        </span>
+                        {p.budget > 0 && (
+                          <span style={{ fontSize: 11, color: '#475569' }}>
+                            Budget: {fmt(p.spent)} / {fmt(p.budget)} ({budgetPct}% utilised)
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <p style={{ fontSize: 22, fontWeight: 900, color: '#f1f5f9', margin: 0, fontVariantNumeric: 'tabular-nums' }}>
+                        {p.progress}%
+                      </p>
+                      <p style={{ fontSize: 10, color: '#475569', margin: '2px 0 0' }}>complete</p>
                     </div>
                   </div>
-                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                    <p style={{ fontSize: 22, fontWeight: 900, color: '#f1f5f9', margin: 0, fontVariantNumeric: 'tabular-nums' }}>
-                      {p.progress}%
-                    </p>
-                    <p style={{ fontSize: 10, color: '#475569', margin: '2px 0 0' }}>complete</p>
-                  </div>
-                </div>
 
-                <Bar pct={p.progress} color={p.health === 'at-risk' ? AMBER : BLUE} />
+                  <Bar pct={p.progress} color={p.health !== 'on-track' ? AMBER : BLUE} />
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10 }}>
-                  <Calendar style={{ width: 10, height: 10, color: '#475569' }} />
-                  <span style={{ fontSize: 11, color: '#64748b' }}>
-                    Next: <span style={{ color: '#94a3b8', fontWeight: 600 }}>{p.nextMilestone}</span>
-                    {' '}· {new Date(p.milestoneDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
-                  </span>
+                  {milestoneLabel && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10 }}>
+                      <Calendar style={{ width: 10, height: 10, color: '#475569' }} />
+                      <span style={{ fontSize: 11, color: '#64748b' }}>
+                        Next: <span style={{ color: '#94a3b8', fontWeight: 600 }}>{milestoneLabel}</span>
+                        {milestoneDate && ` · ${milestoneDate}`}
+                      </span>
+                    </div>
+                  )}
                 </div>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+          </div>
+        )}
       </Section>
 
       {/* ── Financial summary ────────────────────────────────────────────────── */}
@@ -352,10 +357,10 @@ export function ClientExecutiveReport() {
       </Section>
 
       {/* ── Open risks ───────────────────────────────────────────────────────── */}
-      {MOCK_RISKS.length > 0 && (
+      {risks.length > 0 && (
         <Section title="Open Risks" icon={AlertTriangle} iconColor={RED} delay={520}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {MOCK_RISKS.map(r => {
+            {risks.map(r => {
               const sc = SEV_COLOR[r.severity] ?? AMBER
               return (
                 <div key={r.id} style={{
@@ -372,13 +377,11 @@ export function ClientExecutiveReport() {
                     {r.severity}
                   </span>
                   <p style={{ fontSize: 12, fontWeight: 500, color: '#e2e8f0', margin: 0, flex: 1 }}>{r.title}</p>
-                  <div style={{ flexShrink: 0, textAlign: 'right' }}>
-                    <p style={{ fontSize: 11, color: '#64748b', margin: 0 }}>{r.owner}</p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      <Clock style={{ width: 9, height: 9, color: '#475569' }} />
-                      <span style={{ fontSize: 10, color: '#475569' }}>{r.due}</span>
+                  {r.owner && (
+                    <div style={{ flexShrink: 0, textAlign: 'right' }}>
+                      <p style={{ fontSize: 11, color: '#64748b', margin: 0 }}>{r.owner}</p>
                     </div>
-                  </div>
+                  )}
                 </div>
               )
             })}

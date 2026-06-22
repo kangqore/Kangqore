@@ -1,10 +1,54 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@lib/api'
+
+function relativeTime(date: Date): string {
+  const diff = Date.now() - date.getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 1) return 'just now'
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  const days = Math.floor(hrs / 24)
+  return `${days}d ago`
+}
+
+export interface ClientNotif {
+  id: string
+  type: 'kimmp' | 'invoice' | 'milestone' | 'ticket' | 'info'
+  title: string
+  body: string
+  time: string
+  read: boolean
+  link?: string
+}
+
+// Normalized shape returned by /api/client/projects
+export interface ClientProject {
+  id: string
+  name: string
+  description: string
+  progress: number
+  health: 'on-track' | 'at-risk' | 'behind'
+  budget: number
+  spent: number
+  startDate: string
+  targetDate: string
+  nextMilestone: string
+  milestoneDate: string
+  status: string
+  lead: string
+  deliverables: Array<{
+    id: string
+    title: string
+    status: string
+    dueDate: string | null
+  }>
+}
 
 export function useClientProjects() {
   return useQuery({
     queryKey: ['client', 'projects'],
-    queryFn: () => api.get('/projects').then(r => r.data.projects ?? []),
+    queryFn: () => api.get('/client/projects').then(r => (r.data.projects ?? []) as ClientProject[]),
     staleTime: 1000 * 60 * 5,
   })
 }
@@ -81,5 +125,82 @@ export function useClientTasks() {
       }))
     ),
     staleTime: 1000 * 60 * 2,
+  })
+}
+
+export function useClientRisks() {
+  return useQuery({
+    queryKey: ['client', 'risks'],
+    queryFn: () => api.get('/client/risks').then(r => r.data.risks ?? []),
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
+export function useClientNotifications() {
+  return useQuery<ClientNotif[]>({
+    queryKey: ['client', 'notifications'],
+    queryFn: () => api.get('/client/notifications').then(r => {
+      const raw: Record<string, unknown>[] = r.data.notifications ?? []
+      return raw.map(n => {
+        const rawType = String(n.type ?? 'info').toLowerCase()
+        const type = (['kimmp', 'invoice', 'milestone', 'ticket'] as const).includes(rawType as 'kimmp')
+          ? (rawType as ClientNotif['type'])
+          : 'info' as const
+        return {
+          id:    String(n.id),
+          type,
+          title: String(n.title),
+          body:  String(n.message),
+          time:  relativeTime(new Date(String(n.createdAt))),
+          read:  Boolean(n.isRead),
+          link:  n.link ? String(n.link) : undefined,
+        }
+      })
+    }),
+    refetchInterval: 30_000,
+    staleTime: 0,
+  })
+}
+
+export function useMarkNotificationRead() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => api.patch(`/client/notifications/${id}/read`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['client', 'notifications'] }),
+  })
+}
+
+export interface CRMessage {
+  id: string
+  senderId: string
+  content: string
+  createdAt: string
+  sender: { id: string; name: string; role: string; avatarUrl?: string }
+}
+
+export function useCRMessages(crId: string | null) {
+  return useQuery<CRMessage[]>({
+    queryKey: ['cr', 'messages', crId],
+    queryFn: () => api.get(`/change-requests/${crId}/messages`).then(r => r.data.messages ?? []),
+    enabled: !!crId,
+    refetchInterval: 10_000,
+    staleTime: 0,
+  })
+}
+
+export function useSendCRMessage() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ crId, content }: { crId: string; content: string }) =>
+      api.post(`/change-requests/${crId}/messages`, { content }),
+    onSuccess: (_data, { crId }) => qc.invalidateQueries({ queryKey: ['cr', 'messages', crId] }),
+  })
+}
+
+export function useMarkAllNotificationsRead() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: () => api.patch('/client/notifications/read-all'),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['client', 'notifications'] }),
   })
 }

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { api, DEMO_TOKEN } from '@lib/api'
 
-export type UserRole = 'ADMIN' | 'CLIENT' | 'PARTNER' | 'INVESTOR' | 'JOB_SEEKER' | 'JOURNALIST' | 'ANALYST'
+export type UserRole = 'ADMIN' | 'CLIENT' | 'PARTNER' | 'INVESTOR' | 'JOB_SEEKER' | 'JOURNALIST' | 'ANALYST' | 'TEAM' | 'EXECUTIVE'
 
 export interface AuthUser {
   id: string
@@ -46,6 +46,8 @@ export const ROLE_REDIRECT: Record<UserRole, string> = {
   JOB_SEEKER: '/kangqore-view/careers',
   JOURNALIST: '/kangqore-view/journalist',
   ANALYST:    '/kangqore-view/analyst',
+  TEAM:       '/kangqore-view/team',
+  EXECUTIVE:  '/kangqore-view/executive',
 }
 
 // Write auth state to the same localStorage keys the frontend website uses
@@ -159,6 +161,8 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
         JOB_SEEKER: { id: 'demo-job',        name: 'Mia Johansson',   email: 'mia.j@outlook.com',        role: 'JOB_SEEKER' },
         JOURNALIST: { id: 'demo-journalist', name: 'Ananya Singh',    email: 'ananya@pressdesk.com',     role: 'JOURNALIST' },
         ANALYST:    { id: 'demo-analyst',    name: 'Ravi Mehta',      email: 'ravi.mehta@insights.com',  role: 'ANALYST'    },
+        TEAM:       { id: 'demo-team',       name: 'Arjun Sharma',    email: 'arjun@kangqore.com',       role: 'TEAM'       },
+        EXECUTIVE:  { id: 'demo-executive',  name: 'Vikram Nair',     email: 'vikram@kangqore.com',      role: 'EXECUTIVE'  },
       }
       const user = demoUsers[role]
       persistToWebsiteKeys(DEMO_TOKEN, user)

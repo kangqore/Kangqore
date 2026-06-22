@@ -2,12 +2,13 @@
  * ClientChangeRequests — Apple-grade rebuild
  * 4-surface dark system, ₹ currency, no light-theme classes
  */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, Clock, CheckCircle2, XCircle, ChevronRight } from 'lucide-react'
+import { Plus, Clock, CheckCircle2, XCircle, ChevronRight, Send, MessageSquare } from 'lucide-react'
 import { EditDrawer } from '@components/EditDrawer'
 import { api, isDemo } from '@lib/api'
-import { useClientChangeRequests } from '../useClientData'
+import { useClientChangeRequests, useCRMessages, useSendCRMessage, type CRMessage } from '../useClientData'
+import { useAuthStore } from '@store/auth'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
@@ -166,6 +167,108 @@ function StatusTimeline({ status }: { status: string }) {
   )
 }
 
+// ── Message thread ────────────────────────────────────────────────────────────
+
+function MessageThread({ crId }: { crId: string }) {
+  const { user }                      = useAuthStore()
+  const { data: messages = [] }       = useCRMessages(crId)
+  const { mutate: send, isPending }   = useSendCRMessage()
+  const [draft, setDraft]             = useState('')
+  const bottomRef                     = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages.length])
+
+  function handleSend() {
+    const content = draft.trim()
+    if (!content || isPending) return
+    send({ crId, content })
+    setDraft('')
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+        <MessageSquare style={{ width: 13, height: 13, color: BLUE }} />
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', margin: 0 }}>
+          Discussion
+        </p>
+        {messages.length > 0 && (
+          <span style={{
+            fontSize: 10, fontWeight: 700, padding: '1px 7px', borderRadius: 999,
+            color: BLUE, background: `${BLUE}14`, border: `1px solid ${BLUE}25`,
+          }}>{messages.length}</span>
+        )}
+      </div>
+
+      {/* Thread */}
+      <div style={{
+        maxHeight: 280, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10,
+        padding: messages.length ? '4px 0 8px' : 0,
+      }}>
+        {messages.length === 0 && (
+          <p style={{ fontSize: 12, color: '#334155', margin: '0 0 8px' }}>No messages yet. Start the conversation below.</p>
+        )}
+        {messages.map((m: CRMessage) => {
+          const isMe = m.sender.id === user?.id
+          return (
+            <div key={m.id} style={{
+              display: 'flex', flexDirection: 'column',
+              alignItems: isMe ? 'flex-end' : 'flex-start',
+            }}>
+              <div style={{
+                maxWidth: '80%', padding: '10px 14px', borderRadius: isMe ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
+                background: isMe ? `${BLUE}18` : RAISE,
+                border: `1px solid ${isMe ? `${BLUE}30` : EDGE}`,
+              }}>
+                <p style={{ fontSize: 13, color: '#e2e8f0', margin: 0, lineHeight: 1.5 }}>{m.content}</p>
+              </div>
+              <p style={{ fontSize: 10, color: '#334155', margin: '3px 4px 0' }}>
+                {isMe ? 'You' : m.sender.name} · {new Date(m.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+              </p>
+            </div>
+          )
+        })}
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Input */}
+      <div style={{
+        display: 'flex', gap: 8, alignItems: 'flex-end', marginTop: 8,
+        padding: '12px', borderRadius: 12,
+        background: RAISE, border: `1px solid ${EDGE}`,
+      }}>
+        <textarea
+          value={draft}
+          onChange={e => setDraft(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend() } }}
+          placeholder="Write a message… (Enter to send)"
+          rows={2}
+          style={{
+            flex: 1, background: 'transparent', border: 'none', outline: 'none',
+            fontSize: 13, color: '#e2e8f0', resize: 'none', fontFamily: 'inherit',
+            lineHeight: 1.5,
+          }}
+        />
+        <button
+          onClick={handleSend}
+          disabled={!draft.trim() || isPending}
+          style={{
+            width: 34, height: 34, borderRadius: 10, flexShrink: 0, cursor: draft.trim() ? 'pointer' : 'default',
+            background: draft.trim() ? BLUE : '#1a2340',
+            border: `1px solid ${draft.trim() ? BLUE : EDGE}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.15s',
+          }}
+        >
+          <Send style={{ width: 14, height: 14, color: draft.trim() ? '#fff' : '#334155' }} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
 // ── CR detail drawer ──────────────────────────────────────────────────────────
 
 function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
@@ -268,6 +371,11 @@ function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
             </div>
           </>
         )}
+
+        {/* Message thread */}
+        <div style={{ height: 1, background: EDGE }} />
+        <MessageThread crId={cr.id} />
+
       </div>
     </EditDrawer>
   )

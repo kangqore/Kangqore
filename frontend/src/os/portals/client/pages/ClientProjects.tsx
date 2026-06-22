@@ -4,55 +4,25 @@ import { Badge } from '@design-system/components/Badge'
 import { Spinner } from '@design-system/components/Spinner'
 import { useClientProjects } from '../useClientData'
 
-const PROJECTS = [
-  {
-    id: 'p1', name: 'Patient Portal v2', status: 'in-progress', progress: 68,
-    startDate: '2026-03-01', targetDate: '2026-07-15',
-    deliveryLead: 'Ravi Nair', techLead: 'Dev Patel',
-    color: '#2564ea',
-    description: 'Full rebuild of the patient-facing portal with HIPAA compliance, telemedicine, and appointment scheduling.',
-    milestones: [
-      { name: 'Discovery & Architecture',    date: '2026-03-20', done: true  },
-      { name: 'Design system & wireframes',  date: '2026-04-10', done: true  },
-      { name: 'Core auth & patient flows',   date: '2026-05-01', done: true  },
-      { name: 'Telemedicine integration',    date: '2026-06-05', done: false },
-      { name: 'Beta release to UAT',         date: '2026-06-20', done: false },
-      { name: 'Go-live',                     date: '2026-07-15', done: false },
-    ],
-  },
-  {
-    id: 'p2', name: 'HIPAA Compliance Layer', status: 'in-progress', progress: 91,
-    startDate: '2026-04-01', targetDate: '2026-06-15',
-    deliveryLead: 'Omar Khalid', techLead: 'Jake Morton',
-    color: '#00c875',
-    description: 'Audit logging, data encryption at rest, and compliance reporting module for regulatory sign-off.',
-    milestones: [
-      { name: 'Threat model & scope',         date: '2026-04-10', done: true  },
-      { name: 'Encryption implementation',    date: '2026-05-01', done: true  },
-      { name: 'Audit log module',             date: '2026-05-20', done: true  },
-      { name: 'Compliance report builder',    date: '2026-06-01', done: true  },
-      { name: 'Final audit & sign-off',       date: '2026-06-15', done: false },
-    ],
-  },
-  {
-    id: 'p3', name: 'Analytics Dashboard', status: 'at-risk', progress: 32,
-    startDate: '2026-05-01', targetDate: '2026-07-30',
-    deliveryLead: 'Anika Roy', techLead: 'Priya Chen',
-    color: '#fdab3d',
-    description: 'Executive analytics dashboard for patient outcomes, staff efficiency, and operational KPIs.',
-    milestones: [
-      { name: 'Requirements workshop',    date: '2026-05-10', done: true  },
-      { name: 'Data model design',        date: '2026-05-28', done: false },
-      { name: 'UI prototypes',            date: '2026-06-08', done: false },
-      { name: 'Backend integration',      date: '2026-07-01', done: false },
-      { name: 'UAT & launch',             date: '2026-07-30', done: false },
-    ],
-  },
-]
+interface Project {
+  id: string
+  name: string
+  description: string
+  status: 'in-progress' | 'at-risk' | 'behind' | 'completed' | 'on-hold'
+  progress: number
+  startDate: string
+  targetDate: string
+  lead: string
+  color: string
+  milestones: Array<{ name: string; date: string | null; done: boolean }>
+}
 
-const STATUS_CONFIG = {
+const PROJECT_COLORS = ['#2564ea', '#7f53f9', '#00c875', '#06b6d4', '#f472b6']
+
+const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
   'in-progress': { label: 'In Progress', color: '#2564ea' },
   'at-risk':     { label: 'At Risk',     color: '#fdab3d' },
+  'behind':      { label: 'Behind',      color: '#e2445c' },
   'completed':   { label: 'Completed',   color: '#00c875' },
   'on-hold':     { label: 'On Hold',     color: '#64748b' },
 }
@@ -61,20 +31,35 @@ const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'n
 
 // ── Timeline view ─────────────────────────────────────────────────────────────
 
-function TimelineView({ projects }: { projects: typeof PROJECTS }) {
-  const totalStart = new Date('2026-03-01').getTime()
-  const totalEnd   = new Date('2026-08-01').getTime()
-  const totalMs    = totalEnd - totalStart
+function TimelineView({ projects }: { projects: Project[] }) {
+  const { totalStart, totalEnd } = useMemo(() => {
+    if (!projects.length) {
+      const now = new Date()
+      return {
+        totalStart: new Date(now.getFullYear(), now.getMonth() - 1, 1).getTime(),
+        totalEnd:   new Date(now.getFullYear(), now.getMonth() + 4, 1).getTime(),
+      }
+    }
+    const starts = projects.map(p => new Date(p.startDate).getTime()).filter(Boolean)
+    const ends   = projects.map(p => new Date(p.targetDate || p.startDate).getTime()).filter(Boolean)
+    const minMs  = Math.min(...starts)
+    const maxMs  = Math.max(...ends)
+    // Pad 2 weeks on each side
+    return { totalStart: minMs - 14 * 86400000, totalEnd: maxMs + 14 * 86400000 }
+  }, [projects])
+  const totalMs = totalEnd - totalStart
 
   const months = useMemo(() => {
     const res: string[] = []
-    const d = new Date('2026-03-01')
-    while (d <= new Date('2026-08-01')) {
+    const d = new Date(totalStart)
+    d.setDate(1)
+    const end = new Date(totalEnd)
+    while (d <= end) {
       res.push(d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit' }))
       d.setMonth(d.getMonth() + 1)
     }
     return res
-  }, [])
+  }, [totalStart, totalEnd])
 
   const pct = (dateStr: string) => {
     const t = new Date(dateStr).getTime()
@@ -128,16 +113,16 @@ function TimelineView({ projects }: { projects: typeof PROJECTS }) {
                     style={{ width: `${p.progress}%`, background: p.color, opacity: 0.7 }} />
                 </div>
                 {/* Milestone diamonds */}
-                {p.milestones.map((m, mi) => (
+                {p.milestones.filter(m => m.date).map((m, mi) => (
                   <div key={mi}
                     className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rotate-45 transition-all"
                     style={{
-                      left: `calc(${pct(m.date)}% - 6px)`,
+                      left: `calc(${pct(m.date!)}% - 6px)`,
                       background: m.done ? p.color : '#1f2a4a',
                       border: `1.5px solid ${m.done ? p.color : '#2E2854'}`,
                       boxShadow: m.done ? `0 0 6px ${p.color}50` : 'none',
                     }}
-                    title={`${m.name} · ${fmtDate(m.date)}`}
+                    title={`${m.name} · ${fmtDate(m.date!)}`}
                   />
                 ))}
               </div>
@@ -152,7 +137,7 @@ function TimelineView({ projects }: { projects: typeof PROJECTS }) {
 // ── List view (accordion) ─────────────────────────────────────────────────────
 
 function ListView({ projects, openId, setOpenId }: {
-  projects: typeof PROJECTS
+  projects: Project[]
   openId: string
   setOpenId: (id: string) => void
 }) {
@@ -185,7 +170,7 @@ function ListView({ projects, openId, setOpenId }: {
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  {fmtDate(p.startDate)} → {fmtDate(p.targetDate)} · {p.deliveryLead}
+                  {p.startDate ? fmtDate(p.startDate) : '—'} → {p.targetDate ? fmtDate(p.targetDate) : '—'} · {p.lead}
                 </p>
               </div>
               <div className="hidden sm:flex items-center gap-4 flex-shrink-0">
@@ -206,10 +191,10 @@ function ListView({ projects, openId, setOpenId }: {
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
-                    { label: 'Delivery Lead', value: p.deliveryLead },
-                    { label: 'Tech Lead',     value: p.techLead     },
-                    { label: 'Start Date',    value: fmtDate(p.startDate)  },
-                    { label: 'Target Date',   value: fmtDate(p.targetDate) },
+                    { label: 'Delivery Lead', value: p.lead },
+                    { label: 'Progress',      value: `${p.progress}%` },
+                    { label: 'Start Date',    value: p.startDate ? fmtDate(p.startDate) : '—' },
+                    { label: 'Target Date',   value: p.targetDate ? fmtDate(p.targetDate) : '—' },
                   ].map(item => (
                     <div key={item.label} className="rounded-xl p-3" style={{ background: 'rgba(15, 23, 42, 0.2)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', border: '1px solid #1a2340' }}>
                       <p className="text-[10px] text-slate-500 mb-0.5">{item.label}</p>
@@ -234,7 +219,7 @@ function ListView({ projects, openId, setOpenId }: {
                         <span className={`text-sm flex-1 ${m.done ? 'text-slate-500 line-through' : 'text-white font-medium'}`}>
                           {m.name}
                         </span>
-                        <span className="text-xs text-slate-500 flex-shrink-0">{fmtDate(m.date)}</span>
+                        <span className="text-xs text-slate-500 flex-shrink-0">{m.date ? fmtDate(m.date) : '—'}</span>
                       </div>
                     ))}
                   </div>
@@ -255,30 +240,38 @@ export function ClientProjects() {
   const [openId, setOpenId] = useState<string>('p1')
   const { data: apiProjects, isLoading } = useClientProjects()
 
-  const projects = useMemo(() => {
-    const api = apiProjects as Record<string, unknown>[] | undefined
-    return api?.length
-      ? api.map(p => ({
-          id:          String(p.id),
-          name:        String(p.title ?? p.name ?? 'Untitled'),
-          status:      p.status === 'ACTIVE' ? 'in-progress' : p.status === 'COMPLETED' ? 'completed' : 'on-hold',
-          progress:    Number(p.progress ?? 0),
-          startDate:   String(p.createdAt ?? '2026-03-01').slice(0, 10),
-          targetDate:  '2026-07-30',
-          deliveryLead: 'Kangqore',
-          techLead:    'Kangqore',
-          color:       '#2564ea',
-          description: String(p.description ?? ''),
-          milestones:  ((p.deliverables as Record<string,unknown>[] | undefined) ?? []).map((d, i) => ({
-            name: String(d.title ?? `Milestone ${i + 1}`),
-            date: '2026-07-01',
-            done: d.status === 'COMPLETED',
-          })),
-        }))
-      : PROJECTS
+  const projects: Project[] = useMemo(() => {
+    if (!apiProjects?.length) return []
+    return apiProjects.map((p, i) => {
+      const color = p.health === 'behind' ? '#e2445c'
+        : p.health === 'at-risk' ? '#fdab3d'
+        : PROJECT_COLORS[i % PROJECT_COLORS.length]
+      const status: Project['status'] =
+        String(p.status) === 'COMPLETED' ? 'completed'
+        : String(p.status) === 'ON_HOLD'  ? 'on-hold'
+        : p.health === 'behind'           ? 'behind'
+        : p.health === 'at-risk'          ? 'at-risk'
+        : 'in-progress'
+      return {
+        id:          p.id,
+        name:        p.name,
+        description: p.description,
+        progress:    p.progress,
+        status,
+        startDate:   p.startDate,
+        targetDate:  p.targetDate,
+        lead:        p.lead,
+        color,
+        milestones:  p.deliverables.map(d => ({
+          name: d.title,
+          date: d.dueDate,
+          done: d.status === 'COMPLETED' || d.status === 'APPROVED',
+        })),
+      }
+    })
   }, [apiProjects])
 
-  const atRisk = projects.filter(p => p.status === 'at-risk').length
+  const atRisk = projects.filter(p => p.status === 'at-risk' || p.status === 'behind').length
 
   return (
     <div className="space-y-5">
@@ -319,11 +312,20 @@ export function ClientProjects() {
         </div>
       )}
 
-      {view === 'list' ? (
-        <ListView projects={projects as typeof PROJECTS} openId={openId} setOpenId={setOpenId} />
-      ) : (
-        <TimelineView projects={projects as typeof PROJECTS} />
+      {!isLoading && projects.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 text-center rounded-2xl"
+          style={{ background: 'rgba(15,23,42,0.3)', border: '1px solid rgba(30,41,59,0.6)' }}>
+          <GanttChart className="w-10 h-10 text-slate-700 mb-4" />
+          <p className="text-slate-400 font-semibold">No active projects</p>
+          <p className="text-slate-600 text-sm mt-1">Projects assigned to your account will appear here.</p>
+        </div>
       )}
+
+      {projects.length > 0 && (view === 'list' ? (
+        <ListView projects={projects} openId={openId} setOpenId={setOpenId} />
+      ) : (
+        <TimelineView projects={projects} />
+      ))}
     </div>
   )
 }

@@ -108,6 +108,7 @@ model User {
   crmIntegrations       CRMIntegration[]
   customDomains         CustomDomain[]
   EventTypeTeamMember   EventTypeTeamMember[]
+  crMessages            ChangeRequestMessage[] @relation("CRMessageSender")
 
   @@map("users")
 }
@@ -558,11 +559,25 @@ model ChangeRequest {
   sourceMeeting          Meeting?              @relation("ChangeFromMeeting", fields: [sourceMeetingId], references: [id])
   sourceMessage          Message?              @relation("ChangeFromMessage", fields: [sourceMessageId], references: [id])
   approvingDecisions     Decision[]            @relation("ChangeApproval")
+  messages               ChangeRequestMessage[]
 
   @@index([projectId])
   @@index([clientId])
   @@index([status])
   @@map("change_requests")
+}
+
+model ChangeRequestMessage {
+  id              String        @id @default(cuid())
+  changeRequestId String
+  senderId        String
+  content         String        @db.Text
+  createdAt       DateTime      @default(now())
+  changeRequest   ChangeRequest @relation(fields: [changeRequestId], references: [id], onDelete: Cascade)
+  sender          User          @relation("CRMessageSender", fields: [senderId], references: [id])
+
+  @@index([changeRequestId])
+  @@map("change_request_messages")
 }
 
 model Content {
@@ -1687,6 +1702,8 @@ enum Role {
   JOURNALIST
   ANALYST
   VISITOR
+  TEAM
+  EXECUTIVE
 }
 
 enum AdminItemType {

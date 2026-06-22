@@ -12,9 +12,10 @@ import {
   CheckCircle2, AlertTriangle, TrendingUp,
   Calendar, Zap, ArrowRight, Users,
   Phone, GitPullRequest, MessageSquare, Sparkles,
+  FileText, Package,
 } from 'lucide-react'
 import { Spinner } from '@design-system/components/Spinner'
-import { useClientProjects, useClientActions, useClientInvoices } from '../useClientData'
+import { useClientProjects, useClientActions, useClientInvoices, type ClientProject } from '../useClientData'
 import { useAuthStore } from '@store/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -203,11 +204,23 @@ function WaandaBriefing({ text }: { text: string }) {
 
 // ── Data ───────────────────────────────────────────────────────────────────────
 
-const MOCK_PROJECTS = [
-  { id: 'p1', name: 'Patient Portal v2',      phase: 'Development',  progress: 68, status: 'on-track', milestone: 'Beta release to UAT', milestoneDate: '20 Jun', lead: 'Ravi Nair'   },
-  { id: 'p2', name: 'HIPAA Compliance Layer', phase: 'QA & Testing', progress: 91, status: 'on-track', milestone: 'Final audit sign-off', milestoneDate: '15 Jun', lead: 'Omar Khalid' },
-  { id: 'p3', name: 'Analytics Dashboard',    phase: 'Design',       progress: 32, status: 'at-risk',  milestone: 'Design review',        milestoneDate: '28 Jun', lead: 'Anika Roy'   },
-]
+const BASE = '/kangqore-view/client'
+
+interface ActionItem {
+  type: string
+  id: string
+  title: string
+  subtitle: string
+  dueDate: string | null
+  urgency: 'high' | 'medium'
+  link: string
+  meta?: Record<string, unknown>
+}
+
+const ACTION_COLOR: Record<string, string> = {
+  INVOICE: AMBER, DELIVERABLE: BLUE, DECISION: GREEN,
+  CHANGE_REQUEST: PURPLE, RISK: RED, TICKET: '#06b6d4',
+}
 
 const SLA_ITEMS = [
   { metric: 'P1 Response',     target: '< 2h',  current: '1.4h',  met: true,  pct: 93 },
@@ -236,12 +249,104 @@ const ACTIVITY = [
   { title: 'Change request CR-014 approved',         date: '7 Jun',  color: BLUE   },
 ]
 
-const BASE = '/kangqore-view/client'
-
 function greeting(name?: string) {
   const h = new Date().getHours()
   const g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening'
   return `${g}${name ? `, ${name.split(' ')[0]}` : ''}.`
+}
+
+// ── Action Required widget ─────────────────────────────────────────────────────
+
+function ActionRequiredWidget({ actions, onNavigate }: {
+  actions: ActionItem[]
+  onNavigate: (path: string) => void
+}) {
+  const highCount = actions.filter(a => a.urgency === 'high').length
+  const sorted    = [...actions].sort((a, b) =>
+    a.urgency === 'high' && b.urgency !== 'high' ? -1 : 1
+  )
+
+  return (
+    <div style={{
+      ...anim(0),
+      borderRadius: 16,
+      background: `rgba(226,68,92,0.05)`,
+      border: `1px solid rgba(226,68,92,0.2)`,
+      borderLeft: `3px solid ${RED}`,
+      padding: '14px 18px',
+    }}>
+      {/* Header row */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+        <span style={{ width: 7, height: 7, borderRadius: '50%', background: RED, animation: 'pulse 2s infinite', flexShrink: 0 }} />
+        <p style={{ fontSize: 12, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>Action Required</p>
+        <span style={{
+          fontSize: 10, fontWeight: 800,
+          padding: '2px 7px', borderRadius: 999,
+          color: RED, background: `${RED}18`, border: `1px solid ${RED}30`,
+        }}>
+          {actions.length}
+        </span>
+        {highCount > 0 && (
+          <span style={{
+            fontSize: 10, fontWeight: 700,
+            padding: '2px 7px', borderRadius: 999,
+            color: '#f1f5f9', background: `${RED}30`, border: `1px solid ${RED}50`,
+          }}>
+            {highCount} urgent
+          </span>
+        )}
+      </div>
+
+      {/* Action list */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {sorted.slice(0, 5).map(a => {
+          const color = ACTION_COLOR[a.type] ?? BLUE
+          const isHigh = a.urgency === 'high'
+          return (
+            <button
+              key={a.id}
+              onClick={() => onNavigate(a.link ?? BASE)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10, width: '100%', textAlign: 'left',
+                padding: '9px 12px', borderRadius: 10, cursor: 'pointer',
+                background: isHigh ? `${RED}08` : RAISE,
+                border: `1px solid ${isHigh ? `${RED}20` : EDGE}`,
+                transition: `all 0.15s`,
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${color}0d` }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = isHigh ? `${RED}08` : RAISE }}
+            >
+              <span style={{
+                width: 22, height: 22, borderRadius: 7, flexShrink: 0,
+                background: `${color}14`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                {a.type === 'INVOICE'
+                  ? <FileText style={{ width: 11, height: 11, color }} />
+                  : a.type === 'DELIVERABLE'
+                    ? <Package style={{ width: 11, height: 11, color }} />
+                    : a.type === 'CHANGE_REQUEST'
+                      ? <GitPullRequest style={{ width: 11, height: 11, color }} />
+                      : a.type === 'TICKET'
+                        ? <MessageSquare style={{ width: 11, height: 11, color }} />
+                        : a.type === 'RISK'
+                          ? <AlertTriangle style={{ width: 11, height: 11, color }} />
+                          : <CheckCircle2 style={{ width: 11, height: 11, color }} />
+                }
+              </span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontSize: 12, fontWeight: 600, color: '#e2e8f0', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {a.title}
+                </p>
+                <p style={{ fontSize: 10, color: isHigh ? '#f87171' : '#64748b', margin: '1px 0 0' }}>{a.subtitle}</p>
+              </div>
+              <ArrowRight style={{ width: 12, height: 12, color: '#475569', flexShrink: 0 }} />
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
@@ -255,31 +360,21 @@ export function ClientDashboard() {
 
   useEffect(() => { ensureKeyframes() }, [])
 
-  const projects = useMemo(() => {
-    const api = apiProjects as Record<string, unknown>[] | undefined
-    return api?.length
-      ? api.map(p => ({
-          id:       String(p.id),
-          name:     String(p.title ?? p.name ?? 'Untitled'),
-          phase:    String(p.status ?? 'Active'),
-          progress: Number(p.progress ?? 0),
-          status:   p.status === 'ACTIVE' ? 'on-track' : 'at-risk' as string,
-          milestone: '—', milestoneDate: '—', lead: 'Kangqore',
-        }))
-      : MOCK_PROJECTS
-  }, [apiProjects])
+  const projects: ClientProject[] = useMemo(() => apiProjects ?? [], [apiProjects])
 
-  const pendingActions = actionsData
-    ? ((actionsData.deliverables?.length ?? 0) + (actionsData.decisions?.length ?? 0))
-    : 0
+  const actions: ActionItem[] = useMemo(
+    () => (actionsData as { actions?: ActionItem[] } | undefined)?.actions ?? [],
+    [actionsData]
+  )
+  const pendingActions = actions.length
 
   const invoices  = (apiInvoices as Record<string, unknown>[] | undefined) ?? []
   const outstanding = invoices
-    .filter(i => i.status === 'overdue' || i.status === 'pending')
+    .filter(i => i.status === 'overdue' || i.status === 'pending' || i.status === 'OVERDUE' || i.status === 'PENDING')
     .reduce((s, i) => s + Number(i.amount ?? 0), 0)
 
-  const atRisk  = projects.filter(p => p.status === 'at-risk').length
-  const onTrack = projects.filter(p => p.status === 'on-track').length
+  const atRisk  = projects.filter(p => p.health === 'at-risk' || p.health === 'behind').length
+  const onTrack = projects.filter(p => p.health === 'on-track').length
 
   const score = useMemo(() => {
     const r = projects.length > 0 ? onTrack / projects.length : 1
@@ -289,11 +384,12 @@ export function ClientDashboard() {
   const scoreColor = score >= 80 ? GREEN : score >= 60 ? AMBER : RED
 
   const brief = useMemo(() => {
+    if (projects.length === 0) return 'No active projects found. Contact your account manager to get started.'
     if (atRisk === 0) {
-      return `All ${projects.length} engagements are on track. ${projects[0]?.name} is at ${projects[0]?.progress}% and progressing ahead of schedule. No risks flagged — your team is delivering well this sprint.`
+      return `All ${projects.length} engagement${projects.length > 1 ? 's are' : ' is'} on track. ${projects[0]?.name} is at ${projects[0]?.progress}% and progressing well. No risks flagged this sprint.`
     }
-    const rp = projects.find(p => p.status === 'at-risk')
-    return `${onTrack} of your ${projects.length} projects are on track. ${rp?.name} needs immediate attention — your sign-off on the design review is required this week to keep the timeline intact. All other engagements are progressing normally.`
+    const rp = projects.find(p => p.health === 'at-risk' || p.health === 'behind')
+    return `${onTrack} of your ${projects.length} projects are on track. ${rp?.name} needs attention — please review and confirm any pending actions to keep the timeline intact.`
   }, [projects, atRisk, onTrack])
 
   const kpis = [
@@ -307,6 +403,11 @@ export function ClientDashboard() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+
+      {/* ── 0. Action Required ─────────────────────────────────────────────── */}
+      {actions.length > 0 && (
+        <ActionRequiredWidget actions={actions} onNavigate={navigate} />
+      )}
 
       {/* ── 1. Hero ─────────────────────────────────────────────────────────── */}
       <div style={{
@@ -509,76 +610,90 @@ export function ClientDashboard() {
             View all <ArrowRight style={{ width: 12, height: 12 }} />
           </button>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-          {projects.map((p, i) => {
-            const isRisk = p.status === 'at-risk'
-            const c = isRisk ? AMBER : GREEN
-            return (
-              <div key={p.id} style={{
-                ...anim(400 + i * 60),
-                borderRadius: 16, cursor: 'pointer',
-                background: `linear-gradient(180deg, ${c}07 0%, ${CARD} 50%)`, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)',
-                border: `1px solid ${EDGE}`,
-                borderTop: `1.5px solid ${c}50`,
-                padding: 16,
-                transition: `transform 0.2s ${EASE}, box-shadow 0.2s ${EASE}`,
-              }}
-              onClick={() => navigate(`${BASE}/projects`)}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.transform = 'translateY(-2px)'
-                el.style.boxShadow = `0 8px 24px rgba(0,0,0,0.3), 0 0 0 1px ${c}20`
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.transform = 'none'
-                el.style.boxShadow = 'none'
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, gap: 8 }}>
-                  <div style={{ minWidth: 0 }}>
-                    <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</p>
-                    <p style={{ fontSize: 11, color: '#475569', margin: '3px 0 0' }}>{p.phase} · {p.lead}</p>
-                  </div>
-                  <span style={{
-                    fontSize: 10, fontWeight: 700, whiteSpace: 'nowrap',
-                    padding: '3px 8px', borderRadius: 999,
-                    color: c, background: `${c}14`, border: `1px solid ${c}25`,
-                  }}>
-                    {isRisk ? 'At Risk' : 'On Track'}
-                  </span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <span style={{ fontSize: 11, color: '#475569' }}>Progress</span>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#e2e8f0', fontVariantNumeric: 'tabular-nums' }}>{p.progress}%</span>
-                </div>
-                <div style={{ height: 4, borderRadius: 999, background: EDGE, overflow: 'hidden' }}>
-                  <div style={{
-                    height: '100%', borderRadius: 999,
-                    width: `${p.progress}%`,
-                    background: isRisk
-                      ? `linear-gradient(90deg, ${AMBER}, #f59e0b)`
-                      : `linear-gradient(90deg, ${BLUE}, #3b82f6)`,
-                    boxShadow: `0 0 8px ${c}40`,
-                  }} />
-                </div>
-                {'milestone' in p && p.milestone !== '—' && (
-                  <div style={{
-                    display: 'flex', alignItems: 'center', gap: 6,
-                    marginTop: 12, paddingTop: 12, borderTop: `1px solid ${EDGE}`,
-                  }}>
-                    <Calendar style={{ width: 10, height: 10, color: '#475569', flexShrink: 0 }} />
-                    <span style={{ fontSize: 10, color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
-                      {(p as typeof MOCK_PROJECTS[0]).milestone}
-                    </span>
-                    <span style={{ fontSize: 10, fontWeight: 600, color: '#475569', flexShrink: 0 }}>
-                      {(p as typeof MOCK_PROJECTS[0]).milestoneDate}
+        {projects.length === 0 ? (
+          <div style={{
+            borderRadius: 16, padding: 32, textAlign: 'center',
+            background: CARD, border: `1px solid ${EDGE}`,
+          }}>
+            <p style={{ fontSize: 13, color: '#475569', margin: 0 }}>No active projects — contact your account manager to get started.</p>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+            {projects.map((p, i) => {
+              const isRisk = p.health === 'at-risk' || p.health === 'behind'
+              const c = isRisk ? AMBER : GREEN
+              const milestoneDate = p.milestoneDate
+                ? new Date(p.milestoneDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+                : ''
+              return (
+                <div key={p.id} style={{
+                  ...anim(400 + i * 60),
+                  borderRadius: 16, cursor: 'pointer',
+                  background: `linear-gradient(180deg, ${c}07 0%, ${CARD} 50%)`,
+                  border: `1px solid ${EDGE}`,
+                  borderTop: `1.5px solid ${c}50`,
+                  padding: 16,
+                  transition: `transform 0.2s ${EASE}, box-shadow 0.2s ${EASE}`,
+                }}
+                onClick={() => navigate(`${BASE}/projects`)}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.transform = 'translateY(-2px)'
+                  el.style.boxShadow = `0 8px 24px rgba(0,0,0,0.3), 0 0 0 1px ${c}20`
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.transform = 'none'
+                  el.style.boxShadow = 'none'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, gap: 8 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</p>
+                      <p style={{ fontSize: 11, color: '#475569', margin: '3px 0 0' }}>Kangqore</p>
+                    </div>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, whiteSpace: 'nowrap',
+                      padding: '3px 8px', borderRadius: 999,
+                      color: c, background: `${c}14`, border: `1px solid ${c}25`,
+                    }}>
+                      {isRisk ? 'At Risk' : 'On Track'}
                     </span>
                   </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <span style={{ fontSize: 11, color: '#475569' }}>Progress</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#e2e8f0', fontVariantNumeric: 'tabular-nums' }}>{p.progress}%</span>
+                  </div>
+                  <div style={{ height: 4, borderRadius: 999, background: EDGE, overflow: 'hidden' }}>
+                    <div style={{
+                      height: '100%', borderRadius: 999,
+                      width: `${p.progress}%`,
+                      background: isRisk
+                        ? `linear-gradient(90deg, ${AMBER}, #f59e0b)`
+                        : `linear-gradient(90deg, ${BLUE}, #3b82f6)`,
+                      boxShadow: `0 0 8px ${c}40`,
+                    }} />
+                  </div>
+                  {p.nextMilestone && p.nextMilestone !== '—' && (
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: 6,
+                      marginTop: 12, paddingTop: 12, borderTop: `1px solid ${EDGE}`,
+                    }}>
+                      <Calendar style={{ width: 10, height: 10, color: '#475569', flexShrink: 0 }} />
+                      <span style={{ fontSize: 10, color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                        {p.nextMilestone}
+                      </span>
+                      {milestoneDate && (
+                        <span style={{ fontSize: 10, fontWeight: 600, color: '#475569', flexShrink: 0 }}>
+                          {milestoneDate}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       {/* ── 4. Team | SLA | Activity ────────────────────────────────────────── */}

@@ -138,6 +138,8 @@ const InvestorPortal     = React.lazy(() => import('./os/portals/investor').then
 const CareersPortal      = React.lazy(() => import('./os/portals/careers').then(m => ({ default: m.CareersPortal })));
 const JournalistPortal   = React.lazy(() => import('./os/portals/journalist').then(m => ({ default: m.JournalistPortal })));
 const AnalystPortal      = React.lazy(() => import('./os/portals/analyst').then(m => ({ default: m.AnalystPortal })));
+const TeamPortal         = React.lazy(() => import('./os/portals/team').then(m => ({ default: m.TeamPortal })));
+const ExecutivePortal    = React.lazy(() => import('./os/portals/executive').then(m => ({ default: m.ExecutivePortal })));
 
 /**
  * Loading Fallback
@@ -309,6 +311,22 @@ function AppContent() {
             element={
               <OSProtectedRoute allowedRoles={['ANALYST', 'ADMIN']}>
                 <AnalystPortal />
+              </OSProtectedRoute>
+            }
+          />
+          <Route
+            path="/kangqore-view/team/*"
+            element={
+              <OSProtectedRoute allowedRoles={['TEAM', 'ADMIN']}>
+                <TeamPortal />
+              </OSProtectedRoute>
+            }
+          />
+          <Route
+            path="/kangqore-view/executive/*"
+            element={
+              <OSProtectedRoute allowedRoles={['EXECUTIVE', 'ADMIN']}>
+                <ExecutivePortal />
               </OSProtectedRoute>
             }
           />

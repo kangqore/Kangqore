@@ -26,37 +26,28 @@ import { ClientKnowledge }         from './pages/ClientKnowledge'
 import { ClientServices }          from './pages/ClientServices'
 import { ClientWaanda }            from './pages/ClientWaanda'
 import { useAuthStore }            from '@store/auth'
+import {
+  useClientNotifications,
+  useClientActions,
+  useMarkNotificationRead,
+  useMarkAllNotificationsRead,
+  type ClientNotif,
+} from './useClientData'
+import { useMemo } from 'react'
 
 const ACCENT = '#2564ea'
 const BASE   = '/kangqore-view/client'
 
-// ── Mock notifications ─────────────────────────────────────────────────────────
+// ── Notification meta ──────────────────────────────────────────────────────────
 
-type NotifType = 'kimmp' | 'invoice' | 'milestone' | 'ticket'
+type NotifType = ClientNotif['type']
 
-interface ClientNotif {
-  id: string
-  type: NotifType
-  title: string
-  body: string
-  time: string
-  read: boolean
-}
-
-const MOCK_NOTIFS: ClientNotif[] = [
-  { id: 'n1', type: 'kimmp',     title: 'WAANDA: delivery risk detected',           body: 'Project Phoenix milestone is 3 days from a potential breach. WAANDA recommends a sync with your delivery lead.',           time: '2 hours ago',  read: false },
-  { id: 'n2', type: 'invoice',   title: 'Invoice INV-2026-042 due in 7 days',       body: 'Payment of ₹3,40,000 is due on 29 Jun 2026. Please arrange bank transfer to avoid a late payment notice.',               time: '1 day ago',    read: false },
-  { id: 'n3', type: 'milestone', title: 'Phase 2 Delivery — milestone completed',   body: 'Your team has confirmed Phase 2 delivery as complete. Your Executive Report has been updated to reflect this milestone.',   time: '2 days ago',   read: true  },
-  { id: 'n4', type: 'ticket',    title: 'Support ticket #TK-001 resolved',          body: 'The staging environment issue (500 error on patient login) has been resolved and confirmed by your UAT team.',             time: '3 days ago',   read: true  },
-  { id: 'n5', type: 'kimmp',     title: 'WAANDA: AR health signal',                 body: 'Accounts receivable aging has increased by 18% this month. WAANDA recommends reviewing INV-2026-038 before end of week.',  time: '4 days ago',   read: true  },
-  { id: 'n6', type: 'milestone', title: 'Upcoming: UAT signoff due in 5 days',      body: 'UAT signoff is due on 28 Jun 2026. Please ensure your team is available and the test plan is finalised.',                  time: '5 days ago',   read: true  },
-]
-
-const NOTIF_META: Record<NotifType, { color: string; bg: string; border: string; label: string }> = {
+const NOTIF_META: Record<string, { color: string; bg: string; border: string; label: string }> = {
   kimmp:     { color: '#a78bfa', bg: 'rgba(167,139,250,0.08)', border: 'rgba(167,139,250,0.2)', label: 'WAANDA'    },
   invoice:   { color: '#fbbf24', bg: 'rgba(251,191,36,0.08)',  border: 'rgba(251,191,36,0.2)',  label: 'Finance'   },
   milestone: { color: '#34d399', bg: 'rgba(52,211,153,0.08)',  border: 'rgba(52,211,153,0.2)',  label: 'Delivery'  },
   ticket:    { color: '#60a5fa', bg: 'rgba(96,165,250,0.08)',  border: 'rgba(96,165,250,0.2)',  label: 'Support'   },
+  info:      { color: '#94a3b8', bg: 'rgba(148,163,184,0.08)', border: 'rgba(148,163,184,0.2)', label: 'Update'    },
 }
 
 // ── Nav groups ─────────────────────────────────────────────────────────────────
@@ -74,7 +65,7 @@ const NAV_GROUPS = [
     color: '#7f53f9',
     items: [
       { path: 'projects',        label: 'Projects',   icon: Briefcase,      end: false, badge: 0 },
-      { path: 'tasks',           label: 'Tasks',      icon: CheckSquare,    end: false, badge: 3 },
+      { path: 'tasks',           label: 'Tasks',      icon: CheckSquare,    end: false, badge: 0 },
       { path: 'meetings',        label: 'Meetings',   icon: Calendar,       end: false, badge: 0 },
     ],
   },
@@ -82,7 +73,7 @@ const NAV_GROUPS = [
     label: 'FINANCE',
     color: '#fdab3d',
     items: [
-      { path: 'invoices',        label: 'Invoices',   icon: FileText,       end: false, badge: 1, badgeDanger: true },
+      { path: 'invoices',        label: 'Invoices',   icon: FileText,       end: false, badge: 0, badgeDanger: true },
       { path: 'documents',       label: 'Documents',  icon: FolderOpen,     end: false, badge: 0 },
     ],
   },
@@ -97,7 +88,7 @@ const NAV_GROUPS = [
     label: 'SUPPORT',
     color: '#2564ea',
     items: [
-      { path: 'support',         label: 'Support',    icon: Headphones,     end: false, badge: 2 },
+      { path: 'support',         label: 'Support',    icon: Headphones,     end: false, badge: 0 },
       { path: 'change-requests', label: 'Changes',    icon: GitPullRequest, end: false, badge: 0 },
       { path: 'feedback',        label: 'Feedback',   icon: MessageSquare,  end: false, badge: 0 },
       { path: 'knowledge',       label: 'Knowledge',  icon: BookOpen,       end: false, badge: 0 },
@@ -122,7 +113,11 @@ const NAV_GROUPS = [
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 
-function ClientSidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+function ClientSidebar({ collapsed, onToggle, badgeCounts = {} }: {
+  collapsed: boolean
+  onToggle: () => void
+  badgeCounts?: Record<string, number>
+}) {
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
 
@@ -188,19 +183,19 @@ function ClientSidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: 
                       {!collapsed && (
                         <>
                           <span className="text-[13px] font-medium truncate flex-1">{item.label}</span>
-                          {item.badge > 0 && (
+                          {(badgeCounts[item.path] ?? item.badge) > 0 && (
                             <span className="text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
                               style={{
                                 background: item.badgeDanger ? '#e2445c' : ACCENT,
                                 color: '#fff',
                               }}>
-                              {item.badge}
+                              {badgeCounts[item.path] ?? item.badge}
                             </span>
                           )}
                         </>
                       )}
                       {/* Collapsed badge dot */}
-                      {collapsed && item.badge > 0 && (
+                      {collapsed && (badgeCounts[item.path] ?? item.badge) > 0 && (
                         <span className="absolute top-1 right-1 w-2 h-2 rounded-full"
                           style={{ background: item.badgeDanger ? '#e2445c' : '#fdab3d' }} />
                       )}
@@ -268,14 +263,31 @@ function ClientSidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: 
 
 // ── Notifications panel ───────────────────────────────────────────────────────
 
-function NotificationsPanel({ onClose }: { onClose: () => void }) {
-  const [notifs, setNotifs] = useState<ClientNotif[]>(MOCK_NOTIFS)
+function NotificationsPanel({
+  notifications,
+  onMarkRead,
+  onMarkAllRead,
+  onClose,
+}: {
+  notifications: ClientNotif[]
+  onMarkRead: (id: string) => void
+  onMarkAllRead: () => void
+  onClose: () => void
+}) {
+  // Optimistic local state so the UI feels instant
+  const [notifs, setNotifs] = useState<ClientNotif[]>(notifications)
+  useEffect(() => { setNotifs(notifications) }, [notifications])
   const unread = notifs.filter(n => !n.read).length
 
-  const markRead = (id: string) =>
+  const markRead = (id: string) => {
     setNotifs(ns => ns.map(n => n.id === id ? { ...n, read: true } : n))
+    onMarkRead(id)
+  }
 
-  const markAllRead = () => setNotifs(ns => ns.map(n => ({ ...n, read: true })))
+  const markAllRead = () => {
+    setNotifs(ns => ns.map(n => ({ ...n, read: true })))
+    onMarkAllRead()
+  }
 
   return (
     <>
@@ -356,7 +368,15 @@ function NotificationsPanel({ onClose }: { onClose: () => void }) {
 
 // ── Topbar ────────────────────────────────────────────────────────────────────
 
-function ClientTopbar() {
+function ClientTopbar({
+  notifications,
+  onMarkRead,
+  onMarkAllRead,
+}: {
+  notifications: ClientNotif[]
+  onMarkRead: (id: string) => void
+  onMarkAllRead: () => void
+}) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { user, logout } = useAuthStore()
@@ -365,7 +385,7 @@ function ClientTopbar() {
   const [searchFocused, setSearchFocused] = useState(false)
   const userRef = useRef<HTMLDivElement>(null)
 
-  const unreadCount = MOCK_NOTIFS.filter(n => !n.read).length
+  const unreadCount = notifications.filter(n => !n.read).length
 
   useEffect(() => {
     if (!userOpen) return
@@ -514,7 +534,14 @@ function ClientTopbar() {
         </div>
       </div>
     </header>
-    {notifOpen && <NotificationsPanel onClose={() => setNotifOpen(false)} />}
+    {notifOpen && (
+      <NotificationsPanel
+        notifications={notifications}
+        onMarkRead={onMarkRead}
+        onMarkAllRead={onMarkAllRead}
+        onClose={() => setNotifOpen(false)}
+      />
+    )}
     </>
   )
 }
@@ -525,12 +552,30 @@ import { AmbientBackground } from '../../components/shell/AmbientBackground'
 export function ClientPortal() {
   const [collapsed, setCollapsed] = useState(false)
 
+  const { data: liveNotifications = [] } = useClientNotifications()
+  const { data: actionsData }            = useClientActions()
+  const markReadMutation    = useMarkNotificationRead()
+  const markAllReadMutation = useMarkAllNotificationsRead()
+
+  const badgeCounts = useMemo(() => {
+    const acts: Array<{ type: string }> = (actionsData as { actions?: Array<{ type: string }> })?.actions ?? []
+    return {
+      support:           acts.filter(a => a.type === 'TICKET').length,
+      'change-requests': acts.filter(a => a.type === 'CHANGE_REQUEST').length,
+      invoices:          acts.filter(a => a.type === 'INVOICE').length,
+    }
+  }, [actionsData])
+
   return (
     <div className="flex h-screen overflow-hidden relative text-slate-200">
       <AmbientBackground />
-      <ClientSidebar collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
+      <ClientSidebar collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} badgeCounts={badgeCounts} />
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden relative z-10">
-        <ClientTopbar />
+        <ClientTopbar
+          notifications={liveNotifications}
+          onMarkRead={(id) => markReadMutation.mutate(id)}
+          onMarkAllRead={() => markAllReadMutation.mutate()}
+        />
         <main className="flex-1 overflow-y-auto">
           <div className="px-6 lg:px-10 py-8 w-full max-w-6xl mx-auto">
             <ModuleShell>
