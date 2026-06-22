@@ -26,6 +26,7 @@ import {
   ShieldCheckeredIcon,
   CrosshairIcon,
   SirenIcon,
+  FlowArrowIcon,
 } from '@phosphor-icons/react'
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
 
@@ -59,6 +60,7 @@ export const navGroups: NavGroup[] = [
       { id: 'systems',       label: 'Systems',        icon: HardDrivesIcon,    path: `${BASE}/systems`        },
       { id: 'aegis',         label: 'AEGIS',          icon: ShieldCheckeredIcon, path: `${BASE}/aegis`        },
       { id: 'agent-logs',    label: 'Agent Logs',     icon: ScrollIcon,        path: `${BASE}/agent-logs`     },
+      { id: 'connect',       label: 'Connect',        icon: FlowArrowIcon,     path: `${BASE}/connect`        },
       { id: 'analytics',     label: 'Analytics',      icon: ChartBarIcon,      path: `${BASE}/analytics`      },
     ],
   },
