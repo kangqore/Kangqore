@@ -12,6 +12,7 @@ import passport from 'passport';
 
 import authRoutes from './routes/auth';
 import oauthRoutes from './routes/oauth';
+import samlRoutes from './routes/saml';
 import './config/passport'; // Init strategies
 import sessionRoutes from './routes/sessions';
 import profileRoutes from './routes/profile';
@@ -120,6 +121,7 @@ app.get('/api/test-restart', (req, res) => {
 // API Routes
 app.use('/api/documents', documentRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/auth/saml', samlRoutes);
 app.use('/api/oauth', oauthRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/profile', profileRoutes);

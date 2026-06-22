@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Eye, EyeOff, ArrowRight, Target, LayoutDashboard, Brain, Zap } from 'lucide-react'
+import { Eye, EyeOff, ArrowRight, Target, LayoutDashboard, Brain, Zap, ShieldCheck } from 'lucide-react'
 import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
 import { useAuthStore, ROLE_REDIRECT } from '@store/auth'
@@ -26,7 +26,9 @@ export function LoginPage() {
   const { login, loginAsDemo, isLoading, error, clearError } = useAuthStore()
   const navigate = useNavigate()
   const location = useLocation()
+  const [searchParams] = useSearchParams()
   const [showPwd, setShowPwd] = useState(false)
+  const ssoError = searchParams.get('sso_error') === '1'
 
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname
 
@@ -101,9 +103,9 @@ export function LoginPage() {
           <h2 className="text-2xl font-bold text-slate-900">Welcome back</h2>
           <p className="mt-1.5 text-sm text-slate-500">Sign in to your workspace</p>
 
-          {error && (
+          {(error || ssoError) && (
             <div className="mt-5 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
-              {error}
+              {error || 'SSO sign-in failed. Please try again or use your password.'}
             </div>
           )}
 
@@ -161,6 +163,14 @@ export function LoginPage() {
           </div>
 
           <div className="space-y-2">
+            <a
+              href="/api/auth/saml/login"
+              className="w-full flex items-center justify-center gap-2 h-9 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-150 shadow-sm"
+            >
+              <ShieldCheck className="w-4 h-4 text-slate-500" />
+              Sign in with SSO
+            </a>
+
             <button
               onClick={() => { loginAsDemo('ADMIN'); navigate(ROLE_REDIRECT['ADMIN'], { replace: true }) }}
               className="w-full flex items-center justify-center gap-2 h-9 rounded-xl border-2 border-dashed border-blue-200 text-sm font-semibold text-blue-600 hover:bg-blue-50 hover:border-blue-400 transition-all duration-150"

@@ -21,6 +21,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.92.0",
     "@azure/msal-node": "^5.2.2",
+    "@node-saml/passport-saml": "^5.1.0",
     "@prisma/client": "5.22.0",
     "@sendgrid/mail": "^8.1.6",
     "@types/passport": "^1.0.17",

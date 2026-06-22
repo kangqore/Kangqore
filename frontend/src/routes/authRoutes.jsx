@@ -28,6 +28,7 @@ const AuthCallback  = React.lazy(() => import('../pages/AuthCallback'));
 const ForgotPassword = React.lazy(() => import('../pages/ForgotPassword'));
 const ResetPassword  = React.lazy(() => import('../pages/ResetPassword'));
 const ChangePassword = React.lazy(() => import('../pages/ChangePassword'));
+const SSOCallbackPage = React.lazy(() => import('../os/pages/auth/SSOCallbackPage').then(m => ({ default: m.SSOCallbackPage })));
 
 // KangqoreVis — Visibility Intelligence admin pages (separate product, not in dashboard-os)
 import { kangqoreVisAdminRoutes } from '../kangqore-vis';
@@ -36,6 +37,7 @@ export const authRoutes = [
 
   // ── Auth pages ────────────────────────────────────────────────────────────
   <Route key="auth-callback"   path="/auth/callback"     element={<AuthCallback />}   />,
+  <Route key="sso-callback"    path="/sso/callback"      element={<SSOCallbackPage />} />,
   <Route key="dev-admin-login" path="/dev-admin-login"   element={<DevAdminLogin />}   />,
   <Route key="login"           path="/login"              element={<Login />}           />,
   <Route key="register"        path="/register"           element={<Navigate to="/login" replace />} />,

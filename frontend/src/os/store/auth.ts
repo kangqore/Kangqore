@@ -20,13 +20,14 @@ interface AuthStore {
   isLoading: boolean
   error: string | null
 
-  login:       (email: string, password: string) => Promise<void>
-  signup:      (data: SignupPayload) => Promise<void>
-  loginAsDemo: (role?: UserRole) => void
-  logout:      () => void
-  clearError:  () => void
+  login:          (email: string, password: string) => Promise<void>
+  signup:         (data: SignupPayload) => Promise<void>
+  loginAsDemo:    (role?: UserRole) => void
+  logout:         () => void
+  clearError:     () => void
   syncFromWebsite: () => boolean   // hydrate from website session if present
-  patchUser:   (patch: Partial<AuthUser>) => void
+  patchUser:      (patch: Partial<AuthUser>) => void
+  setUserFromSSO: (user: AuthUser, token: string) => void
 }
 
 export interface SignupPayload {
@@ -187,6 +188,10 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
         return true
       }
       return false
+    },
+
+    setUserFromSSO: (user, token) => {
+      set({ user, token, isAuthenticated: true, isDemo: false, isLoading: false, error: null })
     },
   }
 })
