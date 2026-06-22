@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Brain, CheckCircle, AlertTriangle, XCircle, Download, ChevronDown, ChevronUp, Clock } from 'lucide-react'
+import { Brain, CheckCircle, AlertTriangle, XCircle, Download, ChevronDown, ChevronUp, Clock, TrendingUp, Zap, Flag } from 'lucide-react'
 
 type ControlStatus = 'PASS' | 'WARN' | 'FAIL'
 type Framework = 'SOC 2' | 'ISO 27001' | 'NIST CSF'
@@ -240,6 +240,185 @@ const CONTROLS: ComplianceControl[] = [
   },
 ]
 
+// ── Certification Roadmap ─────────────────────────────────────────────────────
+
+const CERTS = [
+  { name: 'SOC 2 Type I',  done: true,  date: '2026-03', unlocks: 'Enterprise conversations',                         color: '#00c875' },
+  { name: 'SOC 2 Type II', done: false, date: '2026-10',  daysLeft: 47, current: true, readiness: 73, target: 85,     unlocks: 'Enterprise procurement approval',          color: '#7f53f9' },
+  { name: 'ISO 27001',     done: false, date: '2027-06', unlocks: 'European enterprises, regulated industries',        color: '#2564ea' },
+  { name: 'HIPAA BAA',     done: false, date: '2027-12', unlocks: 'Healthcare vertical ($50B TAM)',                    color: '#fdab3d' },
+  { name: 'FedRAMP',       done: false, date: '2028-12', unlocks: 'US Federal / DoD (largest contracts)',              color: '#64748b' },
+] as const
+
+function CertificationRoadmap() {
+  return (
+    <div className="rounded-xl p-5" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
+      <div className="flex items-center gap-2 mb-4">
+        <Flag className="w-3.5 h-3.5 text-violet-400" />
+        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Certification Roadmap</p>
+        <span className="ml-auto text-[10px] text-slate-600">SOC 2 Type I complete → working toward enterprise procurement gate</span>
+      </div>
+
+      <div className="relative">
+        {/* Connecting line */}
+        <div className="absolute top-5 left-5 right-5 h-px" style={{ background: 'linear-gradient(90deg, #00c875, #7f53f9, #2564ea, #fdab3d, #334155)' }} />
+
+        <div className="grid grid-cols-5 gap-2 relative">
+          {CERTS.map((cert) => (
+            <div key={cert.name} className="flex flex-col items-center gap-2 text-center">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 relative z-10"
+                style={{
+                  background: cert.done ? `${cert.color}18` : cert.current ? `${cert.color}12` : '#0d1117',
+                  border: `2px solid ${cert.done || cert.current ? cert.color : '#2E2854'}`,
+                  boxShadow: cert.current ? `0 0 12px ${cert.color}40` : 'none',
+                }}>
+                {cert.done
+                  ? <CheckCircle style={{ width: 16, height: 16, color: cert.color }} />
+                  : cert.current
+                    ? <div className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: cert.color }} />
+                    : <div className="w-2 h-2 rounded-full bg-slate-700" />
+                }
+              </div>
+
+              <div>
+                <p className="text-[10px] font-bold leading-tight" style={{ color: cert.done || cert.current ? cert.color : '#475569' }}>{cert.name}</p>
+                <p className="text-[9px] text-slate-600 mt-0.5">{cert.date}</p>
+                {cert.current && 'daysLeft' in cert && (
+                  <p className="text-[9px] font-bold mt-0.5" style={{ color: cert.color }}>
+                    {cert.daysLeft}d remaining
+                  </p>
+                )}
+                {cert.done && <p className="text-[9px] text-emerald-600 font-bold mt-0.5">Complete</p>}
+              </div>
+
+              <p className="text-[9px] text-slate-600 leading-tight hidden lg:block">{cert.unlocks}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Audit Countdown ───────────────────────────────────────────────────────────
+
+function AuditCountdown() {
+  const daysLeft   = 47
+  const readiness  = 73
+  const target     = 85
+  const gap        = target - readiness
+  const urgency    = daysLeft < 30 ? '#e2445c' : daysLeft < 60 ? '#fdab3d' : '#7f53f9'
+
+  return (
+    <div className="rounded-xl p-5 flex items-center gap-6" style={{ background: `${urgency}06`, border: `1px solid ${urgency}20` }}>
+      <div className="flex-shrink-0 text-center">
+        <p className="text-4xl font-black tabular-nums" style={{ color: urgency }}>{daysLeft}</p>
+        <p className="text-[10px] font-bold" style={{ color: urgency }}>days</p>
+      </div>
+      <div className="w-px h-12 bg-[#2E2854] flex-shrink-0" />
+      <div className="flex-1 min-w-0">
+        <p className="text-[11px] font-bold text-white mb-0.5">SOC 2 Type II Audit</p>
+        <p className="text-[11px] text-slate-500">Current readiness <span className="font-bold text-amber-400">{readiness}%</span> — target <span className="font-bold text-emerald-400">{target}%</span> — gap <span className="font-bold" style={{ color: urgency }}>+{gap}% needed</span></p>
+        <div className="mt-2 h-1.5 rounded-full" style={{ background: '#1f2a4a' }}>
+          <div className="h-full rounded-full relative" style={{ width: `${readiness}%`, background: `linear-gradient(90deg, ${urgency}88, ${urgency})` }}>
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[6px]" style={{ borderBottomColor: '#00c875', transform: `translateX(${(target - readiness) / readiness * 100}%) translateY(-50%)` }} />
+          </div>
+          {/* Target marker */}
+          <div className="relative h-0" style={{ marginTop: '-6px', marginLeft: `${target}%`, width: 0 }}>
+            <div className="w-px h-3 absolute top-0" style={{ background: '#00c875', left: 0, marginTop: '-3px' }} />
+          </div>
+        </div>
+        <p className="text-[10px] text-slate-600 mt-1">Close ISS-005 + schedule DR test + run vuln scan → readiness reaches {target}%</p>
+      </div>
+    </div>
+  )
+}
+
+// ── Resolution Impact ─────────────────────────────────────────────────────────
+
+const QUICK_WINS = [
+  {
+    action:    'Complete access review — ISS-005',
+    detail:    '12 user accounts at 91-day review threshold. Manual review ~2h.',
+    controls:  3,
+    scoreGain: 16,
+    frameworks: ['SOC 2 CC6.3', 'ISO A.9.4.1', 'NIST PR.AC-1'],
+    effort:    'LOW',
+    effortColor: '#00c875',
+  },
+  {
+    action:    'Schedule & run vulnerability scan',
+    detail:    'Last scan 45 days ago (target: monthly). Overdue by 15 days.',
+    controls:  2,
+    scoreGain: 8,
+    frameworks: ['SOC 2 CC7.2', 'ISO A.12.6.1'],
+    effort:    'LOW',
+    effortColor: '#00c875',
+  },
+  {
+    action:    'Complete disaster recovery test',
+    detail:    'RPO/RTO untested since H1 2025 (157 days). Bi-annual requirement.',
+    controls:  1,
+    scoreGain: 5,
+    frameworks: ['SOC 2 A1.2'],
+    effort:    'MED',
+    effortColor: '#fdab3d',
+  },
+] as const
+
+function ResolutionImpact({ currentScore }: { currentScore: number }) {
+  const totalGain   = QUICK_WINS.reduce((s, w) => s + w.scoreGain, 0)
+  const projScore   = Math.min(100, currentScore + totalGain)
+
+  return (
+    <div className="rounded-xl p-5" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
+      <div className="flex items-center justify-between gap-4 mb-4">
+        <div className="flex items-center gap-2">
+          <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">KIMMP Resolution Impact</p>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span className="text-[11px] text-slate-500">Current</span>
+          <span className="text-base font-black text-amber-400">{currentScore}%</span>
+          <span className="text-slate-600 text-sm">→</span>
+          <span className="text-base font-black text-emerald-400">{projScore}%</span>
+          <span className="text-[11px] text-slate-500">after 3 fixes</span>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        {QUICK_WINS.map((w) => (
+          <div key={w.action} className="flex items-start gap-3 rounded-lg p-3"
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid #1f2a4a' }}>
+            <Zap className="w-3.5 h-3.5 text-violet-400 flex-shrink-0 mt-0.5" />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-2 mb-0.5">
+                <p className="text-[12px] font-semibold text-white leading-tight">{w.action}</p>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded"
+                    style={{ color: w.effortColor, background: `${w.effortColor}10`, border: `1px solid ${w.effortColor}25` }}>
+                    {w.effort} EFFORT
+                  </span>
+                  <span className="text-[11px] font-black text-emerald-400">+{w.scoreGain}%</span>
+                </div>
+              </div>
+              <p className="text-[10px] text-slate-500 mb-1.5">{w.detail}</p>
+              <div className="flex flex-wrap gap-1">
+                {w.frameworks.map(f => (
+                  <span key={f} className="text-[9px] font-mono px-1.5 py-0.5 rounded"
+                    style={{ background: 'rgba(127,83,249,0.08)', color: '#a78bfa', border: '1px solid rgba(127,83,249,0.2)' }}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const STATUS_COLOR: Record<ControlStatus, string> = {
   PASS: '#00c875',
   WARN: '#fdab3d',
@@ -391,6 +570,15 @@ export function AegisCompliancePage() {
 
   return (
     <div className="space-y-5">
+
+      {/* Certification Roadmap */}
+      <CertificationRoadmap />
+
+      {/* Audit Countdown */}
+      <AuditCountdown />
+
+      {/* Resolution Impact */}
+      <ResolutionImpact currentScore={score} />
 
       {/* Summary strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">

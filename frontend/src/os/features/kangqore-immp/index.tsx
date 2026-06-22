@@ -2,12 +2,13 @@ import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import {
   Brain, TrendingUp, BookOpen, Satellite, Bell, Activity,
-  Search, Target, FileText, UserCheck, CheckSquare,
+  Search, Target, FileText, UserCheck, CheckSquare, Newspaper,
 } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { getSocket } from '@lib/socket'
 import { isDemo } from '@lib/api'
 import { useKIMMPStore, toInsight } from '@store/kimmp'
+import { BriefingPage }  from './pages/BriefingPage'
 import { KIMMMPage }    from './pages/KIMMPPage'
 import { ForecastPage } from './pages/ForecastPage'
 import { MemoryPage }   from './pages/MemoryPage'
@@ -24,6 +25,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 const BASE = '/kangqore-view/admin/kangqore-immp'
 
 const TABS = [
+  { path: 'briefing',  end: false, label: 'Briefing',     icon: Newspaper   },
   { path: '',          end: true,  label: 'Intelligence', icon: Brain       },
   { path: 'forecast',  end: false, label: 'Forecast',     icon: TrendingUp  },
   { path: 'memory',    end: false, label: 'Memory',       icon: BookOpen    },
@@ -135,6 +137,7 @@ export function KIMMMModule() {
         <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
 
         <Routes>
+          <Route path="briefing"      element={<BriefingPage />} />
           <Route index                element={<KIMMMPage />}    />
           <Route path="forecast"      element={<ForecastPage />} />
           <Route path="memory"        element={<MemoryPage />}   />
