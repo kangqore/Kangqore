@@ -40,10 +40,10 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        'bg-os-s1 border border-os-border rounded-xl p-3.5 select-none transition-all duration-200',
-        'hover:border-os-border/80',
+        'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-3.5 select-none transition-all duration-200',
+        'hover:border-white/10 border-t-white/20/80',
         isDragging && !dragging && 'opacity-30',
-        dragging && 'shadow-md bg-os-s1 border-os-border',
+        dragging && 'shadow-md bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-white/10 border-t-white/20',
         'cursor-grab active:cursor-grabbing'
       )}
     >
@@ -66,7 +66,7 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
               <Badge key={l} variant={LABEL_VARIANT[l] ?? 'neutral'} size="sm" className="font-medium tracking-wide">{l}</Badge>
             ))}
           </div>
-          <div className="flex items-center justify-between border-t border-os-border/50 pt-2.5 mt-1">
+          <div className="flex items-center justify-between border-t border-white/10 border-t-white/20/50 pt-2.5 mt-1">
             <div className="flex items-center gap-2">
               <Avatar name={task.assignee} size="xs" />
               <span className="text-[10px] font-medium text-slate-500">{task.assignee.split(' ')[0]}</span>
@@ -86,14 +86,14 @@ function Column({ status, tasks }: { status: typeof COLUMNS[0]; tasks: Task[] })
       <div className="flex items-center gap-2 px-1 mb-1.5">
         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: status.color }} />
         <span className="text-xs font-semibold text-slate-500">{status.label}</span>
-        <span className="ml-auto text-[10px] font-bold text-slate-300 bg-os-s1 rounded-full w-5 h-5 flex items-center justify-center">
+        <span className="ml-auto text-[10px] font-bold text-slate-300 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full w-5 h-5 flex items-center justify-center">
           {tasks.length}
         </span>
       </div>
       {/* Drop zone */}
       <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
         <div className={cn(
-          'flex flex-col gap-2 min-h-[120px] p-2 rounded-xl bg-slate-900/40 border border-os-border/60',
+          'flex flex-col gap-2 min-h-[120px] p-2 rounded-xl bg-slate-900/40 border border-white/10 border-t-white/20/60',
           tasks.length === 0 && 'items-center justify-center'
         )}>
           {tasks.length === 0 && (
@@ -137,7 +137,7 @@ export function KanbanBoard() {
         <select
           value={selectedProjectId}
           onChange={e => setSelectedProject(e.target.value)}
-          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 ml-auto"
+          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 ml-auto"
         >
           {projects.filter(p => p.status !== 'planned').map(p => (
             <option key={p.id} value={p.id}>{p.name}</option>

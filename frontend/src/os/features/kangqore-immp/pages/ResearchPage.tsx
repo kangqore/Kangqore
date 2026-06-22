@@ -46,7 +46,7 @@ function ResultCard({ result }: { result: ResearchResult }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="bg-os-s1 border border-os-border rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl shadow-sm overflow-hidden">
       <div className="p-4 space-y-3">
         <div className="flex items-start gap-3">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center flex-shrink-0">
@@ -79,7 +79,7 @@ function ResultCard({ result }: { result: ResearchResult }) {
         )}
 
         {expanded && result.sources?.length > 0 && (
-          <div className="ml-10 space-y-2 pt-2 border-t border-os-border">
+          <div className="ml-10 space-y-2 pt-2 border-t border-white/10 border-t-white/20">
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
               <Globe className="w-3 h-3" />
               Sources
@@ -160,15 +160,15 @@ export function ResearchPage() {
         </div>
         <button
           onClick={() => refetch()}
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-os-s1 transition-colors"
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
         </button>
       </div>
 
       {/* Query interface */}
-      <div className="bg-os-s1 border border-os-border rounded-2xl shadow-sm overflow-hidden">
-        <div className="p-4 space-y-3 border-b border-os-border">
+      <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-2xl shadow-sm overflow-hidden">
+        <div className="p-4 space-y-3 border-b border-white/10 border-t-white/20">
           <div className="flex items-center gap-3">
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center flex-shrink-0">
               <Sparkles className="w-3.5 h-3.5 text-white" />
@@ -193,7 +193,7 @@ export function ResearchPage() {
             value={domain}
             onChange={e => setDomain(e.target.value)}
             placeholder="Domain hint (optional) — e.g. 'competitor analysis', 'government tenders'"
-            className="w-full text-xs bg-slate-900 border border-os-border rounded-lg px-3 py-2 outline-none text-slate-300 placeholder:text-slate-300"
+            className="w-full text-xs bg-slate-900 border border-white/10 border-t-white/20 rounded-lg px-3 py-2 outline-none text-slate-300 placeholder:text-slate-300"
           />
         </div>
 
@@ -220,7 +220,7 @@ export function ResearchPage() {
               <button
                 key={s.label}
                 onClick={() => submit(s.label, s.domain)}
-                className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-900 border border-os-border text-slate-300 hover:bg-teal-50 hover:border-teal-200 hover:text-teal-700 transition-all"
+                className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-900 border border-white/10 border-t-white/20 text-slate-300 hover:bg-teal-50 hover:border-teal-200 hover:text-teal-700 transition-all"
               >
                 {s.label}
               </button>
@@ -249,7 +249,7 @@ export function ResearchPage() {
         {isLoading ? (
           <div className="flex justify-center py-8"><Spinner /></div>
         ) : results.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 bg-os-s1 border border-os-border rounded-xl text-center">
+          <div className="flex flex-col items-center justify-center py-12 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl text-center">
             <Search className="w-8 h-8 text-slate-200 mb-3" />
             <p className="text-sm text-slate-500">No research queries yet. Ask your first question above.</p>
           </div>

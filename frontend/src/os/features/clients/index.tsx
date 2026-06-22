@@ -121,17 +121,17 @@ export function ClientsModule() {
   const { data: mData } = useQuery({ queryKey: ['admin','crm','milestones'],   queryFn: () => api.get('/admin/crm/milestones').then(r => r.data.milestones ?? []),     enabled: !isDemo(), staleTime: 1000*60*5 })
   const { data: gData } = useQuery({ queryKey: ['admin','crm','governance'],   queryFn: () => api.get('/admin/crm/governance').then(r => r.data.governance ?? []),     enabled: !isDemo(), staleTime: 1000*60*5 })
 
-  useEffect(() => { if (data?.length)  hydrate((data as Record<string,unknown>[]).map(toClient))             }, [data,  hydrate])
-  useEffect(() => { if (iData?.length) hydrateInteractions((iData as Record<string,unknown>[]).map(toInteraction)) }, [iData, hydrateInteractions])
-  useEffect(() => { if (sData?.length) hydrateSLAs((sData as Record<string,unknown>[]).map(toSLA))               }, [sData, hydrateSLAs])
-  useEffect(() => { if (mData?.length) hydrateMilestones((mData as Record<string,unknown>[]).map(toMilestone))   }, [mData, hydrateMilestones])
-  useEffect(() => { if (gData?.length) hydrateGovernance((gData as Record<string,unknown>[]).map(toGovernance))  }, [gData, hydrateGovernance])
+  useEffect(() => { if (data  !== undefined) hydrate((data  as Record<string,unknown>[]).map(toClient))                }, [data,  hydrate])
+  useEffect(() => { if (iData !== undefined) hydrateInteractions((iData as Record<string,unknown>[]).map(toInteraction)) }, [iData, hydrateInteractions])
+  useEffect(() => { if (sData !== undefined) hydrateSLAs((sData as Record<string,unknown>[]).map(toSLA))                }, [sData, hydrateSLAs])
+  useEffect(() => { if (mData !== undefined) hydrateMilestones((mData as Record<string,unknown>[]).map(toMilestone))    }, [mData, hydrateMilestones])
+  useEffect(() => { if (gData !== undefined) hydrateGovernance((gData as Record<string,unknown>[]).map(toGovernance))   }, [gData, hydrateGovernance])
 
   const { pathname } = useLocation()
 
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-os-border mb-6 -mt-2">
+      <div className="flex items-center gap-1 border-b border-white/10 border-t-white/20 mb-6 -mt-2">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -141,7 +141,7 @@ export function ClientsModule() {
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
                 ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />

@@ -112,7 +112,7 @@ export function AuditLogPage() {
           {actionGroups.map(g => (
             <button key={g.key} onClick={() => setGroupFilter(g.key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                groupFilter === g.key ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
+                groupFilter === g.key ? 'bg-os-blue text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-blue-300'
               }`}>
               {g.label}
             </button>
@@ -127,7 +127,7 @@ export function AuditLogPage() {
           <div key={day}>
             <div className="flex items-center gap-3 mb-3">
               <p className="text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">{day}</p>
-              <div className="flex-1 h-px bg-os-s1" />
+              <div className="flex-1 h-px bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10" />
               <span className="text-xs text-slate-300 whitespace-nowrap">{logs.length} event{logs.length !== 1 ? 's' : ''}</span>
             </div>
             <Card padding="none">

@@ -48,26 +48,26 @@ export function FinanceOverview() {
         <StatCard label="Cash Balance"    value={fmt(balance)}   prefix="" icon={<Wallet        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" change={8}  changeLabel="vs last month" />
         <StatCard label="Revenue Invoiced" value={fmt(invoiced)}  prefix="" icon={<DollarSign    className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"    change={12} changeLabel="YTD"          />
         <StatCard label="Collected"        value={fmt(collected)} prefix="" icon={<TrendingUp    className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"  />
-        <StatCard label="Overdue"          value={fmt(overdue)}   prefix="" icon={<AlertCircle   className="w-5 h-5" />} iconColor={overdue > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-300'} />
+        <StatCard label="Overdue"          value={fmt(overdue)}   prefix="" icon={<AlertCircle   className="w-5 h-5" />} iconColor={overdue > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'} />
       </div>
 
       {/* Runway chip */}
-      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-blue-50 border border-blue-100 rounded-2xl">
+      <div className="flex items-center gap-3 p-4 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-2xl">
         <div className="flex flex-col">
-          <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">Cash Runway</span>
+          <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Cash Runway</span>
           <span className="text-2xl font-bold text-white">{runway} months</span>
         </div>
-        <div className="w-px self-stretch bg-blue-200 mx-2" />
+        <div className="w-px self-stretch bg-white/10 mx-2" />
         <div className="flex flex-col">
-          <span className="text-xs text-slate-500">Monthly burn rate</span>
-          <span className="text-lg font-bold text-slate-300">{fmt(monthlyBurn)}</span>
+          <span className="text-xs text-slate-400">Monthly burn rate</span>
+          <span className="text-lg font-bold text-slate-200">{fmt(monthlyBurn)}</span>
         </div>
-        <div className="w-px self-stretch bg-blue-200 mx-2" />
+        <div className="w-px self-stretch bg-white/10 mx-2" />
         <div className="flex flex-col">
-          <span className="text-xs text-slate-500">Total budget</span>
-          <span className="text-lg font-bold text-slate-300">{fmt(budget)}</span>
+          <span className="text-xs text-slate-400">Total budget</span>
+          <span className="text-lg font-bold text-slate-200">{fmt(budget)}</span>
         </div>
-        <div className="w-px self-stretch bg-blue-200 mx-2" />
+        <div className="w-px self-stretch bg-white/10 mx-2" />
         <div className="flex-1">
           <Progress
             value={Math.round((spent / budget) * 100)}
@@ -132,7 +132,7 @@ export function FinanceOverview() {
             const spentPct = Math.round((p.spent / p.budget) * 100)
             const collectedPct = Math.round((p.collected / p.budget) * 100)
             return (
-              <div key={p.projectId} className="flex items-center gap-4 py-2 border-b border-os-border last:border-0">
+              <div key={p.projectId} className="flex items-center gap-4 py-2 border-b border-white/10 border-t-white/20 last:border-0">
                 <div className="w-1.5 h-10 rounded-full flex-shrink-0" style={{ background: p.projectColor }} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
@@ -150,7 +150,7 @@ export function FinanceOverview() {
                   </div>
                 </div>
                 <div className="w-32 flex-shrink-0">
-                  <div className="relative h-2 bg-os-s1 rounded-full overflow-hidden">
+                  <div className="relative h-2 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full overflow-hidden">
                     <div className="absolute left-0 top-0 h-full rounded-full bg-green-400" style={{ width: `${collectedPct}%` }} />
                     <div className="absolute left-0 top-0 h-full rounded-full bg-blue-500 opacity-40" style={{ width: `${spentPct}%` }} />
                   </div>

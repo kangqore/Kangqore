@@ -9,7 +9,7 @@ const CATEGORY_COLOR: Record<SignalCategory, string> = {
   intent:       'bg-red-100   text-red-600',
   fit:          'bg-os-blue/10 text-os-blue',
   engagement:   'bg-green-100 text-green-600',
-  firmographic: 'bg-os-s1 text-slate-300',
+  firmographic: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300',
 }
 
 function ScoreRing({ score }: { score: number }) {
@@ -80,7 +80,7 @@ export function ScoringPage() {
               </div>
             ))}
           </div>
-          <div className="mt-4 pt-4 border-t border-os-border text-xs text-slate-500">
+          <div className="mt-4 pt-4 border-t border-white/10 border-t-white/20 text-xs text-slate-500">
             Avg score: <span className="font-bold text-slate-300">{Math.round(leads.reduce((s,l)=>s+l.score,0)/leads.length)}</span>
           </div>
         </Card>

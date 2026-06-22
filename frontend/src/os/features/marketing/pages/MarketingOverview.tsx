@@ -99,7 +99,7 @@ export function MarketingOverview() {
                   <span className="text-xs text-slate-500 w-20 flex-shrink-0">{m.month}</span>
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center gap-2">
-                      <div className="flex-1 bg-os-s1 rounded-full h-2">
+                      <div className="flex-1 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full h-2">
                         <div
                           className="h-2 rounded-full bg-blue-500 transition-all"
                           style={{ width: `${Math.min((m.mqls / 25) * 100, 100)}%` }}

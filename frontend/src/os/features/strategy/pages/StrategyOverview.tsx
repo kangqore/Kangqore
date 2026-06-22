@@ -43,7 +43,7 @@ export function StrategyOverview() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-6 mb-2">
         <div>
-          <h2 className="text-2xl font-bold text-os-cyan tracking-tight">Strategy Overview</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-os-cyan tracking-tight">Strategy Overview</h2>
           <p className="text-sm text-slate-500 mt-1">Company-wide strategic health across all pillars and OKRs</p>
         </div>
         <div className="flex items-center gap-2">
@@ -54,7 +54,7 @@ export function StrategyOverview() {
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
                 selectedQuarter === q
                   ? 'bg-slate-900 text-white shadow-sm'
-                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-os-border'
+                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-white/10 border-t-white/20'
               }`}
             >
               {q}
@@ -137,7 +137,7 @@ export function StrategyOverview() {
               <CardTitle className="text-base font-bold">Portfolio Budget</CardTitle>
               <p className="text-xs text-slate-500">Pillar spent distribution</p>
             </div>
-            <span className="text-sm font-bold text-slate-200 bg-slate-900 px-3 py-1 rounded-md border border-os-border/50">
+            <span className="text-sm font-bold text-slate-200 bg-slate-900 px-3 py-1 rounded-md border border-white/10 border-t-white/20/50">
               ₹{(totalSpent / 1000).toFixed(0)}k / ₹{(totalBudget / 1000).toFixed(0)}k
             </span>
           </CardHeader>
@@ -159,7 +159,7 @@ export function StrategyOverview() {
               </div>
             ))}
           </div>
-          <div className="mt-6 pt-5 border-t border-os-border/80">
+          <div className="mt-6 pt-5 border-t border-white/10 border-t-white/20/80">
             <Progress
               value={Math.round((totalSpent / totalBudget) * 100)}
               color="brand"
@@ -190,7 +190,7 @@ export function StrategyOverview() {
         </CardHeader>
         <div className="space-y-4">
           {programs.filter(p => p.status === 'active').slice(0, 6).map(prog => (
-            <div key={prog.id} className="flex items-center gap-6 py-4 border-b border-os-border/50 last:border-0 last:pb-0 first:pt-0">
+            <div key={prog.id} className="flex items-center gap-6 py-4 border-b border-white/10 border-t-white/20/50 last:border-0 last:pb-0 first:pt-0">
               <div className="w-2 h-8 rounded-full flex-shrink-0" style={{ background: prog.pillarColor }} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold text-slate-200 truncate">{prog.name}</p>

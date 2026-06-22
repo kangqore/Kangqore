@@ -40,7 +40,7 @@ function DeptCard({ dept }: { dept: Department }) {
     <motion.div
       variants={staggerChild}
       whileHover={{ y: -3, transition: spring.smooth }}
-      className="bg-os-s1 rounded-xl border border-os-border overflow-hidden shadow-sm flex flex-col"
+      className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-xl border border-white/10 border-t-white/20 overflow-hidden shadow-sm flex flex-col"
       style={{ borderTop: `2px solid ${dept.color}` }}
     >
       {/* Header */}
@@ -158,7 +158,7 @@ function DeptCard({ dept }: { dept: Department }) {
       </div>
 
       {/* Services footer */}
-      <div className="px-5 py-3 border-t border-os-border flex flex-wrap gap-1.5">
+      <div className="px-5 py-3 border-t border-white/10 border-t-white/20 flex flex-wrap gap-1.5">
         {dept.services.slice(0, 3).map(s => (
           <span
             key={s}

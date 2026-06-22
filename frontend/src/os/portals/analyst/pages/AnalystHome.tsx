@@ -23,7 +23,7 @@ export function AnalystHome() {
           <LineChart className="w-6 h-6 text-cyan-600" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-white">Analyst Intelligence Portal</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-white">Analyst Intelligence Portal</h1>
           <p className="text-slate-500 mt-1 text-sm">Authorised access to Kangqore performance data, reports, and briefing materials.</p>
         </div>
       </div>
@@ -48,7 +48,7 @@ export function AnalystHome() {
         <h2 className="text-base font-bold text-slate-200 mb-4">Key Metrics</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {kpis.map(({ icon: Icon, label, value, sub }) => (
-            <div key={label} className="p-5 rounded-2xl border border-os-border bg-os-s1 text-center">
+            <div key={label} className="p-5 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-center">
               <div className="w-9 h-9 rounded-lg bg-cyan-50 flex items-center justify-center mx-auto mb-3">
                 <Icon className="w-5 h-5 text-cyan-600" />
               </div>
@@ -65,8 +65,8 @@ export function AnalystHome() {
         <h2 className="text-base font-bold text-slate-200 mb-4">Reports &amp; Briefings</h2>
         <div className="space-y-3">
           {reports.map(({ label, date, status }) => (
-            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-os-border bg-os-s1 hover:shadow-sm transition-shadow">
-              <div className="w-9 h-9 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
+            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:shadow-sm transition-shadow">
+              <div className="w-9 h-9 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0">
                 <FileBarChart className="w-5 h-5 text-slate-500" />
               </div>
               <div className="flex-1 min-w-0">
@@ -76,7 +76,7 @@ export function AnalystHome() {
               <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
                 status === 'Available'
                   ? 'bg-emerald-100 text-emerald-700'
-                  : 'bg-os-s1 text-slate-500'
+                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500'
               }`}>
                 {status}
               </span>

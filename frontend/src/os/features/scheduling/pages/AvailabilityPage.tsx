@@ -118,7 +118,7 @@ export function AvailabilityPage() {
           <select
             value={timezone}
             onChange={e => setTimezone(e.target.value)}
-            className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400 w-full max-w-xs"
+            className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400 w-full max-w-xs"
           >
             {TIMEZONES.map(tz => <option key={tz} value={tz}>{tz}</option>)}
           </select>
@@ -146,10 +146,10 @@ export function AvailabilityPage() {
                 {slot.enabled ? (
                   <div className="flex items-center gap-2 flex-1">
                     <input type="time" value={slot.start} onChange={e => setTime(day, 'start', e.target.value)}
-                      className="h-8 rounded-lg border border-os-border bg-os-s1 text-sm text-white px-2 focus:outline-none focus:border-blue-400" />
+                      className="h-8 rounded-lg border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-2 focus:outline-none focus:border-blue-400" />
                     <span className="text-slate-500 text-sm">–</span>
                     <input type="time" value={slot.end} onChange={e => setTime(day, 'end', e.target.value)}
-                      className="h-8 rounded-lg border border-os-border bg-os-s1 text-sm text-white px-2 focus:outline-none focus:border-blue-400" />
+                      className="h-8 rounded-lg border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-2 focus:outline-none focus:border-blue-400" />
                   </div>
                 ) : (
                   <span className="text-xs text-slate-600 flex-1">Unavailable</span>

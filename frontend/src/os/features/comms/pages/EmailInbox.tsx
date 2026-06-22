@@ -5,7 +5,7 @@ import { ConversationList } from '../components/ConversationList'
 import { EmailThread }      from '../components/EmailThread'
 import { api, isDemo }      from '@lib/api'
 import { useCommsStore }    from '../store'
-import type { TabConfig, EmailConversation, EmailLog, ContactInfo } from '../types'
+import type { TabConfig, EmailConversation, EmailLog, ContactInfo, EmailAttachment } from '../types'
 
 // ─── mappers ──────────────────────────────────────────────────────────────────
 
@@ -109,16 +109,18 @@ export function EmailInbox({ tab }: Props) {
   }
 
   // Reply mutation
+  type ReplyArgs = { content: string; attachments?: EmailAttachment[] }
   const { mutate: sendReply, isPending } = useMutation({
-    mutationFn: async (content: string) => {
+    mutationFn: async ({ content, attachments }: ReplyArgs) => {
       if (!isDemo()) await api.post(tab.replyApi, {
         [tab.idField]: selectedId,
         content,
-        subject: `Re: ${threadEmails[threadEmails.length - 1]?.subject ?? ''}`,
-        replyToId: threadEmails[threadEmails.length - 1]?.id,
+        subject:    `Re: ${threadEmails[threadEmails.length - 1]?.subject ?? ''}`,
+        replyToId:  threadEmails[threadEmails.length - 1]?.id,
+        attachments: attachments ?? [],
       })
     },
-    onSuccess: (_, content) => {
+    onSuccess: (_, { content, attachments }) => {
       if (!selectedId) return
       const outbound: EmailLog = {
         id:            `local-${Date.now()}`,
@@ -129,7 +131,8 @@ export function EmailInbox({ tab }: Props) {
         preview:       content.slice(0, 80),
         direction:     'outbound',
         isRead:        true,
-        hasAttachment: false,
+        hasAttachment: (attachments?.length ?? 0) > 0,
+        attachments:   attachments ?? null,
         createdAt:     new Date().toISOString(),
       }
       setThreadEmails(prev => [...prev, outbound])
@@ -160,13 +163,13 @@ export function EmailInbox({ tab }: Props) {
           <EmailThread
             contact={threadContact}
             emails={threadEmails}
-            onReply={sendReply}
+            onReply={(content, attachments) => sendReply({ content, attachments })}
             isPending={isPending}
             loading={threadLoading}
           />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center px-8">
-            <div className="w-12 h-12 rounded-2xl bg-os-s1 flex items-center justify-center mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center mb-3">
               <MessageSquare className="w-5 h-5 text-slate-500" />
             </div>
             <p className="text-sm font-semibold text-slate-300">

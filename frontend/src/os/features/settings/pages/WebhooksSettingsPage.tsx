@@ -82,7 +82,7 @@ export function WebhooksSettingsPage() {
                 value={newUrl}
                 onChange={e => setNewUrl(e.target.value)}
                 placeholder="https://your-app.com/webhooks/kangqore"
-                className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
               />
             </div>
             <div>
@@ -97,7 +97,7 @@ export function WebhooksSettingsPage() {
                     className={`text-xs px-2.5 py-1 rounded-full border transition-all ${
                       newEvents.includes(evt)
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-os-s1 text-slate-300 border-os-border hover:border-blue-300'
+                        : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border-white/10 border-t-white/20 hover:border-blue-300'
                     }`}
                   >
                     {evt}
@@ -147,10 +147,10 @@ export function WebhooksSettingsPage() {
               </div>
 
               {isOpen && (
-                <div className="border-t border-os-border px-5 py-4 space-y-3 bg-slate-900/50">
+                <div className="border-t border-white/10 border-t-white/20 px-5 py-4 space-y-3 bg-slate-900/50">
                   <div className="flex flex-wrap gap-1.5">
                     {wh.events.map(e => (
-                      <span key={e} className="text-xs bg-os-s1 text-slate-300 px-2 py-0.5 rounded-full">{e}</span>
+                      <span key={e} className="text-xs bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 px-2 py-0.5 rounded-full">{e}</span>
                     ))}
                   </div>
                   {wh.lastDelivery && (

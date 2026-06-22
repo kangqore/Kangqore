@@ -27,19 +27,19 @@ const variantClasses: Record<Variant, string> = {
   warning: 'bg-[#fdab3d]  text-white border-transparent hover:bg-[#fdab3d]/90 shadow-sm',
   danger:  'bg-[#e2445c]  text-white border-transparent hover:bg-[#e2445c]/90 shadow-sm',
   info:    'bg-[#0073ea]  text-white border-transparent hover:bg-[#0073ea]/90 shadow-sm',
-  neutral: 'bg-slate-900  text-slate-300 border-os-border hover:bg-os-s1',
+  neutral: 'bg-slate-900  text-slate-300 border-white/10 border-t-white/20 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10',
   brand:   'bg-gradient-to-r from-os-blue to-os-cyan text-white border-transparent hover:opacity-90 shadow-sm',
-  dark:    'bg-os-s1  text-white border-transparent hover:bg-slate-900 shadow-sm',
+  dark:    'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10  text-white border-transparent hover:bg-slate-900 shadow-sm',
 }
 
 const dotColors: Record<Variant, string> = {
-  success: 'bg-os-s1',
-  warning: 'bg-os-s1',
-  danger:  'bg-os-s1',
-  info:    'bg-os-s1',
+  success: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10',
+  warning: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10',
+  danger:  'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10',
+  info:    'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10',
   neutral: 'bg-slate-400',
-  brand:   'bg-os-s1',
-  dark:    'bg-os-s1',
+  brand:   'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10',
+  dark:    'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10',
 }
 
 const itemDotColors: Record<Variant, string> = {
@@ -49,7 +49,7 @@ const itemDotColors: Record<Variant, string> = {
   info:    'bg-[#0073ea]',
   neutral: 'bg-slate-400',
   brand:   'bg-os-cyan',
-  dark:    'bg-os-s1',
+  dark:    'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10',
 }
 
 const itemHover: Record<Variant, string> = {
@@ -57,7 +57,7 @@ const itemHover: Record<Variant, string> = {
   warning: 'focus:bg-[#fdab3d]/10  text-[#fdab3d]',
   danger:  'focus:bg-[#e2445c]/10  text-[#e2445c]',
   info:    'focus:bg-[#0073ea]/10  text-[#0073ea]',
-  neutral: 'focus:bg-os-s1 text-white',
+  neutral: 'focus:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-white',
   brand:   'focus:bg-os-blue/10  text-os-cyan',
   dark:    'focus:bg-slate-900 text-white',
 }
@@ -103,7 +103,7 @@ export function InlineSelect<T extends string = string>({
           align="start"
           sideOffset={4}
           onClick={e => e.stopPropagation()}
-          className="z-[100] min-w-[150px] bg-slate-900 border border-os-border rounded-xl shadow-lg p-1 animate-in fade-in-0 zoom-in-95 duration-150"
+          className="z-[100] min-w-[150px] bg-slate-900 border border-white/10 border-t-white/20 rounded-xl shadow-lg p-1 animate-in fade-in-0 zoom-in-95 duration-150"
         >
           {options.map(opt => {
             const isSelected = opt.value === value

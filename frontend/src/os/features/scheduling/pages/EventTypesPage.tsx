@@ -111,10 +111,10 @@ export function EventTypesPage() {
                   </div>
                 </div>
                 <div className="flex gap-1 shrink-0">
-                  <button onClick={() => open(et)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-os-s1 transition-colors">
+                  <button onClick={() => open(et)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors">
                     <Pencil className="w-4 h-4" />
                   </button>
-                  <button onClick={() => { if (confirm('Delete this event type?')) remove(et.id) }} className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-os-s1 transition-colors">
+                  <button onClick={() => { if (confirm('Delete this event type?')) remove(et.id) }} className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -127,7 +127,7 @@ export function EventTypesPage() {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={close}>
-          <div className="bg-os-s0 border border-os-border rounded-2xl p-6 w-full max-w-lg space-y-5 shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-os-s0 border border-white/10 border-t-white/20 rounded-2xl p-6 w-full max-w-lg space-y-5 shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-white">{editing ? 'Edit event type' : 'New event type'}</h3>
               <button onClick={close} className="text-slate-500 hover:text-white"><X className="w-5 h-5" /></button>
@@ -145,7 +145,7 @@ export function EventTypesPage() {
                   value={(form as Record<string, unknown>)[key] as string}
                   onChange={e => set(key, e.target.value)}
                   placeholder={placeholder}
-                  className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+                  className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
                 />
               </div>
             ))}
@@ -158,7 +158,7 @@ export function EventTypesPage() {
                   min={5}
                   value={form.duration}
                   onChange={e => set('duration', Number(e.target.value))}
-                  className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+                  className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
                 />
               </div>
               <div>
@@ -166,7 +166,7 @@ export function EventTypesPage() {
                 <select
                   value={form.videoProvider}
                   onChange={e => set('videoProvider', e.target.value)}
-                  className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+                  className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
                 >
                   <option value="JITSI">Jitsi (built-in)</option>
                   <option value="ZOOM">Zoom</option>
@@ -185,7 +185,7 @@ export function EventTypesPage() {
               <span className="text-sm text-slate-400">Active (accepts bookings)</span>
             </div>
 
-            <div className="flex gap-2 pt-2 border-t border-os-border">
+            <div className="flex gap-2 pt-2 border-t border-white/10 border-t-white/20">
               <Button size="sm" onClick={() => save()} disabled={!form.name || saving} loading={saving}>
                 {editing ? 'Save changes' : 'Create'}
               </Button>

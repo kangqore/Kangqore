@@ -6,6 +6,7 @@ import {
   ArrowRight, ChevronDown, ChevronUp, BarChart3,
   Briefcase, DollarSign, Users, GraduationCap, Building2,
   RefreshCw, Check, RotateCcw, Send, Mic, MicOff, Sparkles,
+  Activity, Shield, ShieldAlert,
 } from 'lucide-react'
 import { Badge } from '@design-system/components/Badge'
 import { Spinner } from '@design-system/components/Spinner'
@@ -17,131 +18,87 @@ import {
 
 // ─── Category config ──────────────────────────────────────────────────────────
 
-const CATEGORY_CONFIG: Record<InsightCategory, {
+const CAT: Record<InsightCategory, {
   label: string
-  color: string
-  dot: string
-  dimColor: string
+  color: string        // solid pill bg
+  glow: string         // card border glow
+  icon: string         // hex for icon
+  dim: string          // dim rgba for bg tints
   Icon: React.FC<{ className?: string }>
 }> = {
-  revenue:     { label: 'Revenue',     color: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)]',  dot: 'bg-[#00c875]', dimColor: '#00c875', Icon: ({ className }) => <TrendingUp    className={className ?? 'w-4 h-4'} /> },
-  risk:        { label: 'Risk',        color: 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)]',   dot: 'bg-[#e2445c]', dimColor: '#e2445c', Icon: ({ className }) => <AlertTriangle className={className ?? 'w-4 h-4'} /> },
-  opportunity: { label: 'Opportunity', color: 'bg-[#0073ea] text-white shadow-[0_2px_8px_rgba(0,115,234,0.25)]',  dot: 'bg-[#0073ea]', dimColor: '#0073ea', Icon: ({ className }) => <Lightbulb     className={className ?? 'w-4 h-4'} /> },
-  ops:         { label: 'Operations',  color: 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.25)]',  dot: 'bg-[#fdab3d]', dimColor: '#fdab3d', Icon: ({ className }) => <Zap           className={className ?? 'w-4 h-4'} /> },
-  talent:      { label: 'Talent',      color: 'bg-[#7f53f9] text-white shadow-[0_2px_8px_rgba(127,83,249,0.25)]',  dot: 'bg-[#7f53f9]', dimColor: '#7f53f9', Icon: ({ className }) => <Target        className={className ?? 'w-4 h-4'} /> },
+  revenue:     { label: 'Revenue',     color: '#00c875', glow: 'rgba(0,200,117,0.18)',    icon: '#00c875', dim: 'rgba(0,200,117,0.08)',    Icon: p => <TrendingUp    {...p} /> },
+  risk:        { label: 'Risk',        color: '#e2445c', glow: 'rgba(226,68,92,0.18)',     icon: '#e2445c', dim: 'rgba(226,68,92,0.08)',     Icon: p => <AlertTriangle {...p} /> },
+  opportunity: { label: 'Opportunity', color: '#0073ea', glow: 'rgba(0,115,234,0.18)',     icon: '#0073ea', dim: 'rgba(0,115,234,0.08)',     Icon: p => <Lightbulb     {...p} /> },
+  ops:         { label: 'Operations',  color: '#fdab3d', glow: 'rgba(253,171,61,0.18)',    icon: '#fdab3d', dim: 'rgba(253,171,61,0.08)',    Icon: p => <Zap           {...p} /> },
+  talent:      { label: 'Talent',      color: '#7f53f9', glow: 'rgba(127,83,249,0.18)',    icon: '#7f53f9', dim: 'rgba(127,83,249,0.08)',    Icon: p => <Target        {...p} /> },
 }
 
-const PRIORITY_BORDER: Record<string, string> = {
-  critical: 'border-l-[#e2445c]',
-  high:     'border-l-[#fdab3d]',
-  medium:   'border-l-[#0073ea]',
-  low:      'border-l-[#c4c4c4]',
+const PRIORITY_LEFT: Record<string, string> = {
+  critical: '#e2445c',
+  high:     '#fdab3d',
+  medium:   '#0073ea',
+  low:      '#2E2854',
 }
 
-const PRIORITY_BADGE: Record<string, 'danger' | 'warning' | 'info' | 'neutral'> = {
-  critical: 'danger', high: 'warning', medium: 'info', low: 'neutral',
-}
-
-// ─── Module pulse grid ────────────────────────────────────────────────────────
-
-const MODULE_ICONS: Record<string, React.FC<{ className?: string }>> = {
-  Leads:     ({ className }) => <Zap           className={className} />,
-  Finance:   ({ className }) => <DollarSign    className={className} />,
-  Clients:   ({ className }) => <Briefcase     className={className} />,
-  Careers:   ({ className }) => <GraduationCap className={className} />,
-  Projects:  ({ className }) => <BarChart3     className={className} />,
-  Investors: ({ className }) => <TrendingUp    className={className} />,
-  Resources: ({ className }) => <Users         className={className} />,
-  System:    ({ className }) => <Building2     className={className} />,
-}
-
-function ModulePulse({ module, insights }: { module: string; insights: Insight[] }) {
-  const navigate = useNavigate()
-  const critical = insights.filter(i => i.priority === 'critical').length
-  const high     = insights.filter(i => i.priority === 'high').length
-  const Icon = MODULE_ICONS[module] ?? (({ className }) => <Brain className={className} />)
-
-  const cardBorder = critical > 0 ? 'border-l-4 border-l-[#e2445c] border-y border-r border-os-border bg-os-s1' :
-                     high > 0     ? 'border-l-4 border-l-[#fdab3d] border-y border-r border-os-border bg-os-s1' :
-                     insights.length > 0 ? 'border-l-4 border-l-[#0073ea] border-y border-r border-os-border bg-os-s1' :
-                     'border-os-border bg-os-s1'
-
-  const iconBg = critical > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_6px_rgba(226,68,92,0.2)]' :
-                 high > 0     ? 'bg-[#fdab3d] text-white shadow-[0_2px_6px_rgba(253,171,61,0.2)]' :
-                 insights.length > 0 ? 'bg-[#0073ea] text-white shadow-[0_2px_6px_rgba(0,115,234,0.2)]' :
-                 'bg-os-s1 text-slate-300'
-
-  const path = `/kangqore-view/${module.toLowerCase()}`
-
-  return (
-    <button
-      onClick={() => navigate(path)}
-      className={`flex items-center gap-3 p-3 rounded-xl transition-all hover:shadow-lg hover:shadow-[#4ab6d4]/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer text-left cursor-pointer hover:border-os-border border ${cardBorder}`}
-    >
-      <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${iconBg}`}>
-        <Icon className="w-3.5 h-3.5" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-semibold text-slate-200 leading-none">{module}</p>
-        <p className="text-[10px] text-slate-500 mt-1.5 leading-none">
-          {insights.length === 0 ? 'No signals' : `${insights.length} signal${insights.length > 1 ? 's' : ''}`}
-        </p>
-      </div>
-    </button>
-  )
-}
-
-// ─── Health Score ring ────────────────────────────────────────────────────────
+// ─── Health ring (SVG) ────────────────────────────────────────────────────────
 
 function HealthRing({ score }: { score: number }) {
   const r = 44
   const circ = 2 * Math.PI * r
-  const dash = circ * 0.75
-  const offset = dash - (score / 100) * dash
+  const dash = (score / 100) * circ * 0.75
+  const offset = 0
   const color = score >= 75 ? '#00c875' : score >= 50 ? '#fdab3d' : '#e2445c'
   const label = score >= 75 ? 'Healthy' : score >= 50 ? 'Moderate' : 'At Risk'
 
   return (
-    <div className="flex flex-col items-center gap-1">
-      <svg width={120} height={120} viewBox="0 0 120 120">
-        <circle cx={60} cy={60} r={r} fill="none" stroke="#f1f5f9" strokeWidth={8}
+    <div className="flex flex-col items-center gap-2 flex-shrink-0">
+      <svg width={112} height={112} viewBox="0 0 112 112">
+        {/* Track */}
+        <circle cx={56} cy={56} r={r} fill="none" stroke="#1f2a4a" strokeWidth={8}
           strokeDasharray={`${circ * 0.75} ${circ * 0.25}`} strokeLinecap="round"
-          transform="rotate(135 60 60)" />
-        <circle cx={60} cy={60} r={r} fill="none" stroke={color} strokeWidth={8}
+          transform="rotate(135 56 56)" />
+        {/* Value arc */}
+        <circle cx={56} cy={56} r={r} fill="none" stroke={color} strokeWidth={8}
           strokeDasharray={`${dash} ${circ - dash}`} strokeDashoffset={offset}
-          strokeLinecap="round" transform="rotate(135 60 60)"
-          style={{ transition: 'stroke-dashoffset 0.8s ease, stroke 0.5s ease' }}
+          strokeLinecap="round" transform="rotate(135 56 56)"
+          style={{ transition: 'stroke-dashoffset 0.8s ease, stroke 0.5s ease',
+                   filter: `drop-shadow(0 0 6px ${color}55)` }}
         />
-        <text x={60} y={54} textAnchor="middle" className="fill-slate-900" style={{ fontSize: 22, fontWeight: 800, fontFamily: 'inherit' }}>
+        {/* Score text */}
+        <text x={56} y={50} textAnchor="middle"
+          style={{ fontSize: 24, fontWeight: 800, fontFamily: 'inherit', fill: '#ffffff' }}>
           {score}
         </text>
-        <text x={60} y={70} textAnchor="middle" className="fill-slate-400" style={{ fontSize: 10, fontFamily: 'inherit' }}>
+        <text x={56} y={65} textAnchor="middle"
+          style={{ fontSize: 10, fontFamily: 'inherit', fill: '#64748b' }}>
           / 100
         </text>
       </svg>
-      <span className="text-xs font-semibold" style={{ color }}>{label}</span>
+      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full"
+        style={{ color, background: `${color}18`, border: `1px solid ${color}30` }}>
+        {label}
+      </span>
     </div>
   )
 }
 
 function DimensionBar({ label, score, color }: { label: string; score: number; color: string }) {
   return (
-    <div className="space-y-1">
+    <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <span className="text-[11px] font-medium text-slate-500">{label}</span>
-        <span className="text-[11px] font-bold" style={{ color }}>{score}</span>
+        <span className="text-[11px] font-medium text-slate-400">{label}</span>
+        <span className="text-[11px] font-bold tabular-nums" style={{ color }}>{score}</span>
       </div>
-      <div className="h-1.5 bg-os-s1 rounded-full overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-700"
-          style={{ width: `${score}%`, backgroundColor: color }}
-        />
+      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: '#1a2340' }}>
+        <div className="h-full rounded-full transition-all duration-700"
+          style={{ width: `${score}%`, background: color,
+                   boxShadow: `0 0 6px ${color}55` }} />
       </div>
     </div>
   )
 }
 
-// ─── Command interface ────────────────────────────────────────────────────────
+// ─── Command bar ──────────────────────────────────────────────────────────────
 
 interface BackendCommandResult {
   response: string
@@ -151,7 +108,6 @@ interface BackendCommandResult {
   model: string
 }
 
-// Typewriter hook — animates text character by character
 function useTypewriter(text: string, active: boolean) {
   const [displayed, setDisplayed] = useState('')
   useEffect(() => {
@@ -162,60 +118,47 @@ function useTypewriter(text: string, active: boolean) {
       i++
       setDisplayed(text.slice(0, i))
       if (i >= text.length) clearInterval(id)
-    }, 18)
+    }, 16)
     return () => clearInterval(id)
   }, [text, active])
   return displayed
 }
 
-// Voice input hook — Web Speech API
-function useVoiceInput(onResult: (transcript: string) => void) {
-  const [listening, setListening]   = useState(false)
-  const [supported, setSupported]   = useState(false)
-  const [interim,   setInterim]     = useState('')
-  const recognitionRef = useRef<any>(null)
+function useVoiceInput(onResult: (t: string) => void) {
+  const [listening, setListening] = useState(false)
+  const [supported, setSupported] = useState(false)
+  const [interim,   setInterim]   = useState('')
+  const ref = useRef<any>(null)
 
   useEffect(() => {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
     setSupported(!!SR)
   }, [])
 
-  const startListening = useCallback(() => {
+  const start = useCallback(() => {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
     if (!SR) return
-    const recognition = new SR()
-    recognitionRef.current = recognition
-    recognition.continuous    = false
-    recognition.interimResults = true
-    recognition.lang          = 'en-GB'
-
-    recognition.onstart  = () => { setListening(true); setInterim('') }
-    recognition.onend    = () => { setListening(false); setInterim('') }
-    recognition.onerror  = () => { setListening(false); setInterim('') }
-
-    recognition.onresult = (e: any) => {
-      let interimText = ''
-      let finalText   = ''
-      for (const result of Array.from(e.results) as any[]) {
-        if (result.isFinal) finalText   += result[0].transcript
-        else                interimText += result[0].transcript
-      }
-      setInterim(interimText)
-      if (finalText) { onResult(finalText.trim()); setInterim('') }
+    const r = new SR()
+    ref.current = r
+    r.continuous = false; r.interimResults = true; r.lang = 'en-GB'
+    r.onstart  = () => { setListening(true);  setInterim('') }
+    r.onend    = () => { setListening(false); setInterim('') }
+    r.onerror  = () => { setListening(false); setInterim('') }
+    r.onresult = (e: any) => {
+      let fin = '', tmp = ''
+      for (const res of Array.from(e.results) as any[])
+        res.isFinal ? (fin += res[0].transcript) : (tmp += res[0].transcript)
+      setInterim(tmp)
+      if (fin) { onResult(fin.trim()); setInterim('') }
     }
-
-    recognition.start()
+    r.start()
   }, [onResult])
 
-  const stopListening = useCallback(() => {
-    recognitionRef.current?.stop()
-    setListening(false)
-  }, [])
-
-  return { listening, supported, interim, startListening, stopListening }
+  const stop = useCallback(() => { ref.current?.stop(); setListening(false) }, [])
+  return { listening, supported, interim, start, stop }
 }
 
-const SUGGESTED_QUERIES = [
+const SUGGESTED = [
   "What should I focus on today?",
   "What's the biggest risk this week?",
   "Show me deals about to go cold",
@@ -223,42 +166,50 @@ const SUGGESTED_QUERIES = [
   "Give me a full brief",
 ]
 
+function CommandSignalRow({ insight }: { insight: Insight }) {
+  const cfg = CAT[insight.category]
+  return (
+    <div className="flex items-start gap-3 p-3 rounded-xl border"
+      style={{ background: '#0d1117', borderColor: '#2E2854' }}>
+      <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
+        style={{ background: cfg.dim, border: `1px solid ${cfg.color}30` }}>
+        <cfg.Icon className="w-3 h-3" style={{ color: cfg.color } as React.CSSProperties} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-semibold text-slate-200 leading-tight">{insight.title}</p>
+        <p className="text-[11px] text-slate-500 mt-0.5">{insight.summary}</p>
+      </div>
+      <span className="text-[10px] font-bold text-slate-500 flex-shrink-0">{insight.impact}</span>
+    </div>
+  )
+}
+
 function CommandBar({ insights }: { insights: Insight[] }) {
-  const [query,   setQuery]   = useState('')
-  const [result,  setResult]  = useState<BackendCommandResult | null>(null)
+  const [query,    setQuery]    = useState('')
+  const [result,   setResult]   = useState<BackendCommandResult | null>(null)
   const [thinking, setThinking] = useState(false)
   const [animate,  setAnimate]  = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const storeInsights = useKIMMPStore(s => s.insights)
 
   const displayed = useTypewriter(result?.response ?? '', animate)
-
-  // Referenced signals — look up by ID in the store
-  const referencedSignals = result?.signalIds
-    ?.map(id => storeInsights.find(i => i.id === id))
-    .filter(Boolean) as Insight[] ?? []
+  const referencedSignals = (result?.signalIds ?? [])
+    .map(id => storeInsights.find(i => i.id === id))
+    .filter(Boolean) as Insight[]
 
   const submit = useCallback(async (q?: string) => {
     const text = (q ?? query).trim()
     if (!text) return
-    setQuery(text)
-    setThinking(true)
-    setResult(null)
-    setAnimate(false)
-
+    setQuery(text); setThinking(true); setResult(null); setAnimate(false)
     try {
       const res = await api.post('/admin/kangqore-immp/command', { query: text })
-      setResult(res.data)
-      setAnimate(true)
+      setResult(res.data); setAnimate(true)
     } catch {
-      // Fallback — client-side keyword response so the UI never goes blank
       const reactive = insights.filter(i => i.type !== 'predictive')
-      const critical = reactive.filter(i => i.priority === 'critical')
-      const high     = reactive.filter(i => i.priority === 'high')
-      const top      = [...critical, ...high]
+      const top = [...reactive.filter(i => i.priority === 'critical'), ...reactive.filter(i => i.priority === 'high')]
       setResult({
         response: top.length > 0
-          ? `${critical.length} critical and ${high.length} high-priority signals active. Review the feed below.`
+          ? `${reactive.filter(i => i.priority === 'critical').length} critical and ${reactive.filter(i => i.priority === 'high').length} high-priority signals active. Review the feed below.`
           : 'No critical signals right now. All modules appear stable.',
         signalIds:       top.slice(0, 3).map(i => i.id),
         confidence:      60,
@@ -271,28 +222,22 @@ function CommandBar({ insights }: { insights: Insight[] }) {
     }
   }, [query, insights])
 
-  const { listening, supported, interim, startListening, stopListening } = useVoiceInput(
-    useCallback((transcript: string) => {
-      setQuery(transcript)
-      submit(transcript)
-    }, [submit])
+  const { listening, supported, interim, start, stop } = useVoiceInput(
+    useCallback((t: string) => { setQuery(t); submit(t) }, [submit])
   )
 
-  const clear = () => {
-    setQuery('')
-    setResult(null)
-    setAnimate(false)
-    inputRef.current?.focus()
-  }
-
+  const clear = () => { setQuery(''); setResult(null); setAnimate(false); inputRef.current?.focus() }
   const displayedQuery = listening && interim ? interim : query
 
   return (
-    <div className="rounded-2xl border border-os-border bg-os-s1 shadow-sm overflow-hidden">
+    <div className="rounded-2xl border overflow-hidden"
+      style={{ background: '#0d1117', borderColor: '#2E2854' }}>
 
       {/* Input row */}
-      <div className={`flex items-center gap-3 px-4 py-3 border-b border-os-border transition-colors ${
-        listening ? 'bg-red-50/60' : 'bg-gradient-to-r from-purple-950/[0.03] to-blue-950/[0.03]'
+      <div className={`flex items-center gap-3 px-4 py-3 border-b transition-all ${
+        listening
+          ? 'border-red-500/30 bg-red-500/5'
+          : 'border-white/10 border-t-white/20 bg-gradient-to-r from-purple-500/[0.04] to-blue-500/[0.04]'
       }`}>
         <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${
           listening
@@ -308,50 +253,46 @@ function CommandBar({ insights }: { insights: Insight[] }) {
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && submit()}
           placeholder={listening ? 'Listening…' : `Ask KIMMP — "What's the biggest risk?", "Show deals going cold", "What should I focus on?"`}
-          className={`flex-1 text-sm bg-transparent outline-none placeholder:text-slate-500 transition-colors ${
-            listening ? 'text-red-600 placeholder:text-red-300' : 'text-slate-200'
+          className={`flex-1 text-sm bg-transparent outline-none placeholder:text-slate-600 transition-colors ${
+            listening ? 'text-red-400' : 'text-slate-200'
           }`}
         />
 
         {displayedQuery && !listening && (
-          <button onClick={clear} className="text-slate-300 hover:text-slate-500 transition-colors text-xs">✕</button>
+          <button onClick={clear} className="text-slate-600 hover:text-slate-400 transition-colors text-xs">✕</button>
         )}
 
-        {/* Voice button */}
         {supported && (
           <button
-            onClick={listening ? stopListening : startListening}
-            title={listening ? 'Stop listening' : 'Speak your question'}
+            onClick={listening ? stop : start}
+            title={listening ? 'Stop' : 'Speak'}
             className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all flex-shrink-0 ${
               listening
                 ? 'bg-red-500 text-white shadow-[0_0_10px_rgba(239,68,68,0.4)]'
-                : 'bg-os-s1 text-slate-300 hover:bg-purple-100 hover:text-purple-600'
+                : 'text-slate-500 hover:text-purple-400 hover:bg-purple-500/10'
             }`}
           >
-            {listening ? <MicOff className="w-3 h-3" /> : <Mic className="w-3 h-3" />}
+            {listening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
           </button>
         )}
 
-        {/* Send button */}
         <button
           onClick={() => submit()}
           disabled={!displayedQuery.trim() || thinking || listening}
-          className="h-7 w-7 rounded-lg flex items-center justify-center bg-purple-600 text-white hover:bg-purple-700 transition-colors disabled:opacity-40 flex-shrink-0"
+          className="h-7 w-7 rounded-lg flex items-center justify-center transition-all flex-shrink-0 disabled:opacity-30"
+          style={{ background: 'linear-gradient(135deg, #7c3aed, #2564ea)' }}
         >
-          {thinking ? <Spinner size="sm" /> : <Send className="w-3 h-3" />}
+          {thinking ? <Spinner size="sm" /> : <Send className="w-3 h-3 text-white" />}
         </button>
       </div>
 
       {/* Thinking state */}
       {thinking && (
         <div className="flex items-center gap-3 px-5 py-4">
-          <div className="flex gap-1">
+          <div className="flex gap-1.5">
             {[0, 1, 2].map(i => (
-              <span
-                key={i}
-                className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-bounce"
-                style={{ animationDelay: `${i * 150}ms` }}
-              />
+              <span key={i} className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-bounce"
+                style={{ animationDelay: `${i * 150}ms` }} />
             ))}
           </div>
           <span className="text-xs text-slate-500">KIMMP is reasoning across signals…</span>
@@ -361,11 +302,10 @@ function CommandBar({ insights }: { insights: Insight[] }) {
       {/* Response */}
       {result && !thinking && (
         <div className="p-5 space-y-4">
-
-          {/* Main response with typewriter */}
           <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Sparkles className="w-3 h-3 text-white" />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ background: 'linear-gradient(135deg, #7c3aed, #2564ea)' }}>
+              <Sparkles className="w-3.5 h-3.5 text-white" />
             </div>
             <div className="flex-1 space-y-2">
               <p className="text-sm text-white leading-relaxed font-medium">
@@ -374,57 +314,55 @@ function CommandBar({ insights }: { insights: Insight[] }) {
                   <span className="inline-block w-0.5 h-4 bg-purple-500 ml-0.5 animate-pulse align-middle" />
                 )}
               </p>
-
-              {/* Confidence + model badge */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <div className="flex items-center gap-1.5">
-                  <div className="h-1 w-16 bg-os-s1 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-purple-500 transition-all duration-700"
-                      style={{ width: `${result.confidence}%` }}
-                    />
+                  <div className="h-1 w-16 rounded-full overflow-hidden" style={{ background: '#1a2340' }}>
+                    <div className="h-full rounded-full bg-purple-500 transition-all duration-700"
+                      style={{ width: `${result.confidence}%` }} />
                   </div>
                   <span className="text-[10px] text-slate-500">{result.confidence}% confidence</span>
                 </div>
-                {result.model !== 'fallback' && (
-                  <span className="text-[10px] text-slate-300">· {result.model}</span>
-                )}
-                {result.model === 'fallback' && (
-                  <span className="text-[10px] text-amber-500">· client fallback</span>
-                )}
+                {result.model !== 'fallback'
+                  ? <span className="text-[10px] text-slate-500">· {result.model}</span>
+                  : <span className="text-[10px] text-amber-500">· client fallback</span>
+                }
               </div>
             </div>
           </div>
 
-          {/* Suggested action */}
           {result.suggestedAction && (
-            <div className="flex items-start gap-2 bg-purple-50 border border-purple-100 rounded-xl px-3.5 py-2.5 ml-9">
-              <ArrowRight className="w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5" />
-              <p className="text-xs font-semibold text-purple-800">{result.suggestedAction}</p>
+            <div className="flex items-start gap-2 rounded-xl px-3.5 py-2.5 ml-10"
+              style={{ background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)' }}>
+              <ArrowRight className="w-3.5 h-3.5 text-purple-400 flex-shrink-0 mt-0.5" />
+              <p className="text-xs font-semibold text-purple-300">{result.suggestedAction}</p>
             </div>
           )}
 
-          {/* Referenced signals */}
           {referencedSignals.length > 0 && (
-            <div className="ml-9 space-y-2">
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Referenced signals</p>
-              {referencedSignals.map(insight => (
-                <CommandSignalRow key={insight.id} insight={insight} />
-              ))}
+            <div className="ml-10 space-y-2">
+              <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Referenced signals</p>
+              {referencedSignals.map(i => <CommandSignalRow key={i.id} insight={i} />)}
             </div>
           )}
         </div>
       )}
 
-      {/* Suggested queries — shown when idle */}
+      {/* Suggested queries — idle */}
       {!result && !thinking && (
-        <div className="flex items-center gap-2 px-4 py-2.5 flex-wrap">
-          <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Try:</span>
-          {SUGGESTED_QUERIES.map(s => (
-            <button
-              key={s}
-              onClick={() => submit(s)}
-              className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-900 border border-os-border text-slate-300 hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700 transition-all"
+        <div className="flex items-center gap-2 px-4 py-3 flex-wrap border-t border-white/10 border-t-white/20/50">
+          <span className="text-[10px] text-slate-600 font-semibold uppercase tracking-wider">Try:</span>
+          {SUGGESTED.map(s => (
+            <button key={s} onClick={() => submit(s)}
+              className="text-[11px] px-2.5 py-1 rounded-lg transition-all text-slate-400 hover:text-white"
+              style={{ background: '#151C2F', border: '1px solid #2E2854' }}
+              onMouseEnter={e => {
+                ;(e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(124,58,237,0.4)'
+                ;(e.currentTarget as HTMLButtonElement).style.background = 'rgba(124,58,237,0.08)'
+              }}
+              onMouseLeave={e => {
+                ;(e.currentTarget as HTMLButtonElement).style.borderColor = '#2E2854'
+                ;(e.currentTarget as HTMLButtonElement).style.background = '#151C2F'
+              }}
             >
               {s}
             </button>
@@ -435,19 +373,55 @@ function CommandBar({ insights }: { insights: Insight[] }) {
   )
 }
 
-function CommandSignalRow({ insight }: { insight: Insight }) {
-  const config = CATEGORY_CONFIG[insight.category]
+// ─── Module pulse ─────────────────────────────────────────────────────────────
+
+const MODULE_ICONS: Record<string, React.FC<{ className?: string }>> = {
+  Leads:     p => <Zap           {...p} />,
+  Finance:   p => <DollarSign    {...p} />,
+  Clients:   p => <Briefcase     {...p} />,
+  Careers:   p => <GraduationCap {...p} />,
+  Projects:  p => <BarChart3     {...p} />,
+  Investors: p => <TrendingUp    {...p} />,
+  Resources: p => <Users         {...p} />,
+  System:    p => <Building2     {...p} />,
+}
+
+function ModulePulse({ module, insights }: { module: string; insights: Insight[] }) {
+  const navigate = useNavigate()
+  const critical = insights.filter(i => i.priority === 'critical').length
+  const high     = insights.filter(i => i.priority === 'high').length
+  const Icon = MODULE_ICONS[module] ?? (p => <Brain {...p} />)
+
+  const statusColor = critical > 0 ? '#e2445c' : high > 0 ? '#fdab3d' : insights.length > 0 ? '#0073ea' : '#1f2a4a'
+  const textColor   = critical > 0 ? '#e2445c' : high > 0 ? '#fdab3d' : insights.length > 0 ? '#0073ea' : '#475569'
+  const count       = critical > 0 ? critical  : high > 0 ? high      : insights.length
+
   return (
-    <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-900 border border-os-border">
-      <div className={`w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 ${config.color}`}>
-        <config.Icon className="w-3 h-3" />
+    <button
+      onClick={() => navigate(`/kangqore-view/admin/${module.toLowerCase()}`)}
+      className="flex flex-col items-center gap-2 p-3 rounded-xl transition-all group"
+      style={{
+        background: '#0d1117',
+        border: `1px solid ${insights.length > 0 ? `${statusColor}30` : '#1f2a4a'}`,
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${statusColor}60`; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)' }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = insights.length > 0 ? `${statusColor}30` : '#1f2a4a'; (e.currentTarget as HTMLElement).style.transform = '' }}
+    >
+      <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
+        style={{ background: `${statusColor}18`, border: `1px solid ${statusColor}30`,
+                 boxShadow: insights.length > 0 ? `0 0 8px ${statusColor}20` : 'none' }}>
+        <Icon className="w-4 h-4" style={{ color: statusColor } as React.CSSProperties} />
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-semibold text-slate-200 leading-tight">{insight.title}</p>
-        <p className="text-[11px] text-slate-500 mt-0.5">{insight.summary}</p>
+      <div className="text-center">
+        <p className="text-[10px] font-semibold text-slate-400">{module}</p>
+        {count > 0 && (
+          <p className="text-[10px] font-bold tabular-nums" style={{ color: textColor }}>{count} signal{count !== 1 ? 's' : ''}</p>
+        )}
+        {count === 0 && (
+          <p className="text-[9px] text-slate-600">clear</p>
+        )}
       </div>
-      <span className="text-[10px] font-bold text-slate-500 flex-shrink-0">{insight.impact}</span>
-    </div>
+    </button>
   )
 }
 
@@ -455,69 +429,110 @@ function CommandSignalRow({ insight }: { insight: Insight }) {
 
 function InsightCard({ insight }: { insight: Insight }) {
   const [expanded, setExpanded] = useState(false)
-  const config = CATEGORY_CONFIG[insight.category]
+  const cfg = CAT[insight.category]
   const { isAcknowledged, acknowledgeSignal, unacknowledgeSignal } = useKIMMPStore()
   const acked = isAcknowledged(insight.id)
+  const leftColor = PRIORITY_LEFT[insight.priority]
 
   return (
-    <div className={`bg-os-s1 rounded-xl border border-os-border border-l-4 shadow-sm transition-opacity ${PRIORITY_BORDER[insight.priority]} ${acked ? 'opacity-60' : ''}`}>
-      <div className="p-5">
-        <div className="flex items-start justify-between gap-3 mb-2.5">
+    <div
+      className="rounded-xl overflow-hidden transition-all"
+      style={{
+        background: '#0d1117',
+        border: `1px solid #2E2854`,
+        borderLeft: `3px solid ${leftColor}`,
+        opacity: acked ? 0.55 : 1,
+        boxShadow: !acked && insight.priority === 'critical' ? `0 0 16px ${leftColor}18` : 'none',
+      }}
+    >
+      <div className="p-4">
+        <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
-            <div className={`mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${config.color}`}>
-              <config.Icon className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ background: cfg.dim, border: `1px solid ${cfg.color}25`,
+                       boxShadow: `0 0 8px ${cfg.color}20` }}>
+              <cfg.Icon className="w-4 h-4" style={{ color: cfg.color } as React.CSSProperties} />
             </div>
-            <div>
-              <p className={`font-semibold leading-tight ${acked ? 'line-through text-slate-500' : 'text-white'}`}>{insight.title}</p>
-              <div className="flex items-center gap-2 mt-1 flex-wrap">
-                <Badge variant={PRIORITY_BADGE[insight.priority]} size="sm" dot>
-                  {insight.priority.charAt(0).toUpperCase() + insight.priority.slice(1)}
-                </Badge>
-                <Badge variant="neutral" size="sm">{insight.module}</Badge>
-                <span className="text-xs text-slate-500">{insight.confidence}% confidence</span>
+            <div className="min-w-0">
+              <p className={`text-sm font-semibold leading-tight ${acked ? 'line-through text-slate-600' : 'text-white'}`}>
+                {insight.title}
+              </p>
+              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide"
+                  style={{ color: leftColor, background: `${leftColor}18`, border: `1px solid ${leftColor}30` }}>
+                  {insight.priority}
+                </span>
+                <span className="text-[10px] font-medium text-slate-500 px-2 py-0.5 rounded-md"
+                  style={{ background: '#151C2F', border: '1px solid #2E2854' }}>
+                  {insight.module}
+                </span>
+                <span className="text-[10px] text-slate-600">{insight.confidence}% conf.</span>
                 {insight.createdAt && (
-                  <span className="text-xs text-slate-500">{formatRelative(insight.createdAt)}</span>
+                  <span className="text-[10px] text-slate-600">{formatRelative(insight.createdAt)}</span>
                 )}
-                {acked && <Badge variant="success" size="sm">Acknowledged</Badge>}
+                {acked && (
+                  <span className="text-[10px] font-bold text-emerald-500 px-2 py-0.5 rounded-md"
+                    style={{ background: 'rgba(5,150,105,0.1)', border: '1px solid rgba(5,150,105,0.25)' }}>
+                    Acknowledged
+                  </span>
+                )}
               </div>
             </div>
           </div>
+
           <div className="flex items-center gap-2 flex-shrink-0">
-            <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wider ${config.color}`}>
-              {insight.impact}
-            </span>
+            {insight.impact && insight.impact !== '—' && (
+              <span className="text-[11px] font-extrabold px-2.5 py-1 rounded-lg"
+                style={{ color: cfg.color, background: cfg.dim, border: `1px solid ${cfg.color}25` }}>
+                {insight.impact}
+              </span>
+            )}
             <button
               onClick={() => acked ? unacknowledgeSignal(insight.id) : acknowledgeSignal(insight.id)}
-              title={acked ? 'Mark as active' : 'Acknowledge — mark as actioned'}
-              className={`w-7 h-7 rounded-lg flex items-center justify-center border transition-all ${
-                acked
-                  ? 'border-green-200 bg-green-50 text-green-600 hover:bg-slate-900 hover:text-slate-300'
-                  : 'border-os-border bg-os-s1 text-slate-300 hover:border-green-300 hover:bg-green-50 hover:text-green-600'
-              }`}
+              title={acked ? 'Reopen' : 'Acknowledge'}
+              className="w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+              style={{
+                border: acked ? '1px solid rgba(5,150,105,0.35)' : '1px solid #2E2854',
+                background: acked ? 'rgba(5,150,105,0.1)' : '#151C2F',
+                color: acked ? '#059669' : '#475569',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = acked ? '#2E2854' : 'rgba(5,150,105,0.35)'
+                el.style.background  = acked ? '#151C2F' : 'rgba(5,150,105,0.1)'
+                el.style.color       = acked ? '#475569' : '#059669'
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = acked ? 'rgba(5,150,105,0.35)' : '#2E2854'
+                el.style.background  = acked ? 'rgba(5,150,105,0.1)' : '#151C2F'
+                el.style.color       = acked ? '#059669' : '#475569'
+              }}
             >
               {acked ? <RotateCcw className="w-3.5 h-3.5" /> : <Check className="w-3.5 h-3.5" />}
             </button>
           </div>
         </div>
 
-        <p className="text-sm text-slate-500 leading-relaxed mb-4 ml-11">{insight.summary}</p>
+        <p className="text-xs text-slate-500 leading-relaxed mt-2.5 pl-11">{insight.summary}</p>
 
         {expanded && (
-          <div className="ml-11 space-y-3 mb-3 pt-3 border-t border-os-border">
-            <p className="text-sm text-slate-300 leading-relaxed">{insight.detail}</p>
-            <div className="flex items-start gap-2 bg-blue-50 rounded-xl p-3">
-              <ArrowRight className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
-              <p className="text-sm font-medium text-blue-800">{insight.action}</p>
+          <div className="pl-11 space-y-3 mt-3 pt-3" style={{ borderTop: '1px solid #1f2a4a' }}>
+            <p className="text-xs text-slate-300 leading-relaxed">{insight.detail}</p>
+            <div className="flex items-start gap-2 rounded-xl px-3.5 py-2.5"
+              style={{ background: 'rgba(37,100,234,0.06)', border: '1px solid rgba(37,100,234,0.15)' }}>
+              <ArrowRight className="w-3.5 h-3.5 text-os-blue flex-shrink-0 mt-0.5" />
+              <p className="text-xs font-semibold text-slate-200">{insight.action}</p>
             </div>
           </div>
         )}
 
         <button
           onClick={() => setExpanded(e => !e)}
-          className="ml-11 flex items-center gap-1 text-xs text-blue-600 font-medium hover:text-blue-800 transition-colors"
+          className="pl-11 mt-2.5 flex items-center gap-1 text-xs font-medium transition-colors text-slate-600 hover:text-os-blue"
         >
           {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-          {expanded ? 'Show less' : 'View detail & action'}
+          {expanded ? 'Show less' : 'Detail & action'}
         </button>
       </div>
     </div>
@@ -527,22 +542,19 @@ function InsightCard({ insight }: { insight: Insight }) {
 function formatRelative(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime()
   const m = Math.floor(diff / 60000)
-  if (m < 1)   return 'just now'
-  if (m < 60)  return `${m}m ago`
+  if (m < 1)  return 'just now'
+  if (m < 60) return `${m}m ago`
   const h = Math.floor(m / 60)
-  if (h < 24)  return `${h}h ago`
-  const d = Math.floor(h / 24)
-  return `${d}d ago`
+  if (h < 24) return `${h}h ago`
+  return `${Math.floor(h / 24)}d ago`
 }
-
-// ─── Relative time hook ───────────────────────────────────────────────────────
 
 function useRelativeTime(ts: number | undefined) {
   const [label, setLabel] = useState('')
   const compute = useCallback(() => {
     if (!ts) return ''
     const diff = Math.floor((Date.now() - ts) / 60000)
-    if (diff < 1) return 'just now'
+    if (diff < 1)  return 'just now'
     if (diff === 1) return '1m ago'
     return `${diff}m ago`
   }, [ts])
@@ -575,216 +587,225 @@ export function KIMMMPage() {
     if (rawInsights?.length) setInsights(rawInsights.map((r, i) => toInsight(r, i)))
   }, [rawInsights, setInsights])
 
-  // Only reactive signals for the intelligence feed
-  const reactive = insights.filter(i => i.type !== 'predictive')
-  const filtered = filter === 'all' ? reactive : reactive.filter(i => i.category === filter)
+  const reactive        = insights.filter(i => i.type !== 'predictive')
+  const filtered        = filter === 'all' ? reactive : reactive.filter(i => i.category === filter)
   const criticalInsights = reactive.filter(i => i.priority === 'critical')
-  const highInsights     = reactive.filter(i => i.priority === 'high')
+  const highInsights    = reactive.filter(i => i.priority === 'high')
 
-  const score   = healthScore()
+  const score     = healthScore()
   const dimScores = healthByDimension()
 
-  // Module pulse
-  const moduleSignals = reactive.reduce<Record<string, Insight[]>>((acc, insight) => {
-    const m = insight.module || 'System'
+  const moduleSignals = reactive.reduce<Record<string, Insight[]>>((acc, ins) => {
+    const m = ins.module || 'System'
     if (!acc[m]) acc[m] = []
-    acc[m].push(insight)
+    acc[m].push(ins)
     return acc
   }, {})
   const allModules = ['Leads', 'Finance', 'Clients', 'Careers', 'Projects', 'Investors', 'Resources']
   allModules.forEach(m => { if (!moduleSignals[m]) moduleSignals[m] = [] })
 
-  return (
-    <div className="space-y-8 max-w-5xl">
+  const sortedFiltered = [...filtered].sort((a, b) => {
+    const p: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 }
+    return (p[a.priority] ?? 9) - (p[b.priority] ?? 9)
+  })
 
-      {/* Header */}
-      <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center flex-shrink-0 shadow-lg">
-          <Brain className="w-6 h-6 text-white" />
+  return (
+    <div className="space-y-6">
+
+      {/* ── Header ─────────────────────────────────────────────────────────── */}
+      <div className="flex items-center gap-4">
+        <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ background: 'linear-gradient(135deg, #7c3aed, #2564ea)',
+                   boxShadow: '0 0 20px rgba(124,58,237,0.3)' }}>
+          <Brain className="w-5 h-5 text-white" />
         </div>
-        <div className="flex-1">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-base font-bold text-white flex items-center gap-2">
             KIMMP Intelligence
             {isLoading && <Spinner size="sm" />}
           </h2>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 mt-0.5">
             Cross-module AI signals, risks, and opportunities — the operating brain of the OS.
           </p>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {lastUpdated && (
-            <span className="text-[11px] text-slate-500">Updated {lastUpdated}</span>
-          )}
-          <button
-            onClick={() => refetch()}
-            disabled={isFetching}
-            className="h-7 w-7 rounded-lg flex items-center justify-center text-slate-300 hover:text-slate-300 hover:bg-os-s1 transition-colors disabled:opacity-40"
-            title="Refresh signals"
-          >
+        <div className="flex items-center gap-2.5 flex-shrink-0">
+          {lastUpdated && <span className="text-[11px] text-slate-600">Updated {lastUpdated}</span>}
+          <button onClick={() => refetch()} disabled={isFetching}
+            className="h-7 w-7 rounded-lg flex items-center justify-center text-slate-600 hover:text-slate-300 transition-colors disabled:opacity-40"
+            style={{ background: '#151C2F', border: '1px solid #2E2854' }}>
             <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
           </button>
-          <Badge variant="success" size="sm" dot>Live</Badge>
+          <span className="text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5"
+            style={{ color: '#00c875', background: 'rgba(0,200,117,0.1)', border: '1px solid rgba(0,200,117,0.25)' }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00c875] animate-pulse" />
+            Live
+          </span>
         </div>
       </div>
 
-      {/* Command Interface */}
+      {/* ── Command bar ────────────────────────────────────────────────────── */}
       <CommandBar insights={insights} />
 
-      {/* OS Health Score + Dimensions */}
-      <div className="rounded-2xl border border-os-border bg-os-s1 shadow-sm p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center">
-            <Brain className="w-3.5 h-3.5 text-white" />
+      {/* ── Health + Stats row ─────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+
+        {/* Health card — 2/5 width */}
+        <div className="lg:col-span-2 rounded-2xl p-5"
+          style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
+          <div className="flex items-center gap-2 mb-4">
+            <Activity className="w-3.5 h-3.5 text-purple-400" />
+            <span className="text-xs font-bold text-slate-300">OS Health Score</span>
+            <span className="text-[10px] text-slate-600 ml-1">live</span>
           </div>
-          <h3 className="text-sm font-bold text-slate-200">OS Health Score</h3>
-          <span className="text-xs text-slate-500 ml-1">— computed live from active signals</span>
+          <div className="flex items-center gap-6">
+            <HealthRing score={score} />
+            <div className="flex-1 space-y-2.5">
+              {(Object.entries(dimScores) as [InsightCategory, number][]).map(([dim, s]) => (
+                <DimensionBar key={dim} label={CAT[dim].label} score={s} color={CAT[dim].color} />
+              ))}
+            </div>
+          </div>
+          <p className="text-[10px] text-slate-600 mt-4 leading-relaxed">
+            Score drops as unacknowledged signals accumulate. Acknowledge after acting.
+          </p>
         </div>
-        <div className="flex items-start gap-8">
-          <HealthRing score={score} />
-          <div className="flex-1 grid grid-cols-1 gap-2.5 pt-2">
-            {(Object.entries(dimScores) as [InsightCategory, number][]).map(([dim, s]) => (
-              <DimensionBar
-                key={dim}
-                label={CATEGORY_CONFIG[dim].label}
-                score={s}
-                color={CATEGORY_CONFIG[dim].dimColor}
-              />
-            ))}
+
+        {/* Stats — 3/5 width */}
+        <div className="lg:col-span-3 grid grid-cols-2 gap-3">
+          {[
+            { label: 'Active Signals',    value: reactive.length,    icon: Brain,       color: '#7f53f9', dim: 'rgba(127,83,249,0.12)' },
+            { label: 'Critical Alerts',   value: criticalCount(),     icon: ShieldAlert, color: '#e2445c', dim: 'rgba(226,68,92,0.12)'  },
+            { label: 'High Priority',     value: highInsights.length, icon: Zap,         color: '#fdab3d', dim: 'rgba(253,171,61,0.12)' },
+            { label: 'Modules Monitored', value: allModules.length,   icon: Shield,      color: '#0073ea', dim: 'rgba(0,115,234,0.12)'  },
+          ].map(({ label, value, icon: Icon, color, dim }) => (
+            <div key={label} className="rounded-xl p-4 flex items-center gap-3"
+              style={{ background: '#0d1117', border: `1px solid ${color}20` }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={{ background: dim, border: `1px solid ${color}30`,
+                         boxShadow: `0 0 10px ${color}15` }}>
+                <Icon className="w-4 h-4" style={{ color } as React.CSSProperties} />
+              </div>
+              <div>
+                <p className="text-xl font-bold text-white tabular-nums">{value}</p>
+                <p className="text-[11px] text-slate-500 mt-0.5">{label}</p>
+              </div>
+            </div>
+          ))}
+
+          {/* Module pulse — fills remaining bottom */}
+          <div className="col-span-2 rounded-xl p-3.5" style={{ background: '#0d1117', border: '1px solid #1f2a4a' }}>
+            <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest mb-2.5">Intelligence Pulse</p>
+            <div className="grid grid-cols-7 gap-1.5">
+              {allModules.map(m => (
+                <ModulePulse key={m} module={m} insights={moduleSignals[m] ?? []} />
+              ))}
+            </div>
           </div>
         </div>
-        <p className="text-[11px] text-slate-500 mt-3">
-          Score drops as active unacknowledged signals accumulate. Acknowledge a signal after taking action to restore the score.
-        </p>
       </div>
 
-      {/* Priority Action Queue */}
+      {/* ── Priority action queue ──────────────────────────────────────────── */}
       {criticalInsights.length > 0 && (
-        <div className="rounded-2xl border border-os-border bg-os-s1 p-5 space-y-3 border-l-4 border-l-[#e2445c] shadow-sm">
-          <div className="flex items-center gap-2 mb-1">
-            <AlertTriangle className="w-4 h-4 text-[#e2445c]" />
-            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-[0.12em]">Priority Action Queue</h3>
-            <span className="ml-auto text-xs px-2.5 py-0.5 rounded-full bg-[#e2445c] text-white font-extrabold shadow-sm">{criticalInsights.length} critical</span>
+        <div className="rounded-2xl p-5 space-y-3"
+          style={{ background: 'rgba(226,68,92,0.04)', border: '1px solid rgba(226,68,92,0.2)',
+                   borderLeft: '3px solid #e2445c', boxShadow: '0 0 24px rgba(226,68,92,0.06)' }}>
+          <div className="flex items-center gap-2">
+            <ShieldAlert className="w-4 h-4 text-[#e2445c]" />
+            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-widest">Priority Action Queue</h3>
+            <span className="ml-auto text-[11px] font-bold px-2.5 py-0.5 rounded-full"
+              style={{ color: '#e2445c', background: 'rgba(226,68,92,0.15)', border: '1px solid rgba(226,68,92,0.3)' }}>
+              {criticalInsights.length} critical
+            </span>
           </div>
-          {criticalInsights.map(insight => (
-            <div key={insight.id} className="bg-os-s1 rounded-xl border border-os-border p-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all">
+          {criticalInsights.map(ins => (
+            <div key={ins.id} className="rounded-xl p-4"
+              style={{ background: '#0d1117', border: '1px solid rgba(226,68,92,0.15)' }}>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#e2445c] text-white flex items-center justify-center flex-shrink-0 shadow-[0_2px_8px_rgba(226,68,92,0.3)]">
-                  <AlertTriangle className="w-4 h-4" />
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(226,68,92,0.15)', border: '1px solid rgba(226,68,92,0.3)',
+                           boxShadow: '0 0 10px rgba(226,68,92,0.2)' }}>
+                  <AlertTriangle className="w-4 h-4 text-[#e2445c]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-white text-sm">{insight.title}</p>
-                  <p className="text-xs text-slate-500 mt-1 leading-normal">{insight.summary}</p>
-                  <div className="flex items-start gap-2 mt-2.5 bg-slate-900 border border-os-border/60 rounded-xl p-2.5">
-                    <ArrowRight className="w-3.5 h-3.5 text-[#e2445c] flex-shrink-0 mt-0.5" />
-                    <p className="text-xs font-semibold text-slate-300">{insight.action}</p>
+                  <p className="text-sm font-semibold text-white">{ins.title}</p>
+                  <p className="text-xs text-slate-500 mt-1 leading-normal">{ins.summary}</p>
+                  <div className="flex items-start gap-2 mt-2.5 rounded-xl px-3 py-2"
+                    style={{ background: 'rgba(37,100,234,0.06)', border: '1px solid rgba(37,100,234,0.15)' }}>
+                    <ArrowRight className="w-3.5 h-3.5 text-os-blue flex-shrink-0 mt-0.5" />
+                    <p className="text-xs font-semibold text-slate-300">{ins.action}</p>
                   </div>
                 </div>
-                <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-[#e2445c]/10 text-[#e2445c] flex-shrink-0">{insight.impact}</span>
+                {ins.impact && ins.impact !== '—' && (
+                  <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg flex-shrink-0"
+                    style={{ color: '#e2445c', background: 'rgba(226,68,92,0.1)', border: '1px solid rgba(226,68,92,0.2)' }}>
+                    {ins.impact}
+                  </span>
+                )}
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Module Pulse */}
+      {/* ── Signal feed ────────────────────────────────────────────────────── */}
       <div>
-        <h3 className="text-sm font-semibold text-slate-300 mb-3">OS Intelligence Pulse</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
-          {allModules.map(m => (
-            <ModulePulse key={m} module={m} insights={moduleSignals[m] ?? []} />
-          ))}
-        </div>
-        <div className="flex items-center gap-5 mt-2.5">
-          {[
-            { color: 'bg-[#e2445c]', label: 'Critical' },
-            { color: 'bg-[#fdab3d]', label: 'High' },
-            { color: 'bg-[#0073ea]', label: 'Active' },
-            { color: 'bg-slate-200',  label: 'No signals' },
-          ].map(({ color, label }) => (
-            <span key={label} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-              <span className={`w-2 h-2 rounded-sm flex-shrink-0 ${color}`} />
-              {label}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Stats row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { label: 'Active Signals',    value: reactive.length,                             icon: Brain,         color: 'text-purple-600 bg-purple-50' },
-          { label: 'Critical Alerts',   value: criticalCount(),                              icon: AlertTriangle, color: 'text-red-600 bg-red-50'       },
-          { label: 'High Priority',     value: highInsights.length,                          icon: Zap,           color: 'text-orange-600 bg-orange-50'  },
-          { label: 'Modules Monitored', value: allModules.length,                            icon: BarChart3,     color: 'text-blue-600 bg-blue-50'      },
-        ].map(s => (
-          <div key={s.label} className="rounded-xl border border-os-border p-5 flex items-center gap-4 shadow-sm" style={{ background: '#151C2F' }}>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color}`}>
-              <s.icon className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-white">{s.value}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Category filters */}
-      <div className="flex gap-2 flex-wrap">
-        {(['all', 'revenue', 'risk', 'opportunity', 'ops', 'talent'] as const).map(cat => {
-          const count = cat === 'all' ? reactive.length : reactive.filter(i => i.category === cat).length
-          return (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
-                filter === cat
-                  ? 'bg-slate-900 text-white border-slate-900'
-                  : 'bg-os-s1 text-slate-300 border-os-border hover:border-slate-400'
-              }`}
-            >
-              {cat === 'all' ? 'All Signals' : CATEGORY_CONFIG[cat].label}
-              <span className={`inline-flex items-center justify-center min-w-[1.1rem] h-[1.1rem] px-1 rounded-full text-[10px] font-bold ${
-                filter === cat ? 'bg-os-s1/20 text-white' : 'bg-os-s1 text-slate-300'
-              }`}>{count}</span>
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Signal feed */}
-      <div className="space-y-4">
-        {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center bg-os-s1 rounded-2xl border border-os-border">
-            <div className="w-12 h-12 rounded-2xl bg-os-s1 flex items-center justify-center mb-4">
-              {filter === 'all'
-                ? <Brain className="w-6 h-6 text-slate-500" />
-                : (() => { const Ic = CATEGORY_CONFIG[filter].Icon; return <Ic className="w-6 h-6 text-slate-500" /> })()
-              }
-            </div>
-            <p className="text-sm font-semibold text-slate-300">
-              No {filter === 'all' ? '' : `${CATEGORY_CONFIG[filter].label} `}signals right now
-            </p>
-            <p className="text-xs text-slate-500 mt-1 max-w-xs">
-              All clear in this category — check back later or widen the filter.
-            </p>
-            {filter !== 'all' && (
-              <button
-                onClick={() => setFilter('all')}
-                className="mt-4 text-xs text-blue-600 font-medium hover:text-blue-800 transition-colors"
-              >
-                View all signals →
+        {/* Category filter pills */}
+        <div className="flex gap-2 flex-wrap mb-4">
+          {(['all', 'revenue', 'risk', 'opportunity', 'ops', 'talent'] as const).map(cat => {
+            const count  = cat === 'all' ? reactive.length : reactive.filter(i => i.category === cat).length
+            const active = filter === cat
+            const color  = cat === 'all' ? '#7f53f9' : CAT[cat].color
+            return (
+              <button key={cat} onClick={() => setFilter(cat)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
+                style={{
+                  background: active ? `${color}14` : '#0d1117',
+                  border:     active ? `1px solid ${color}40` : '1px solid #2E2854',
+                  color:      active ? '#ffffff' : '#64748b',
+                  boxShadow:  active ? `0 0 12px ${color}15` : 'none',
+                }}>
+                {cat === 'all' ? 'All Signals' : CAT[cat].label}
+                <span className="text-[10px] font-bold tabular-nums px-1.5 py-0.5 rounded-md"
+                  style={{
+                    background: active ? `${color}20` : '#1a2340',
+                    color:      active ? '#ffffff' : '#475569',
+                  }}>
+                  {count}
+                </span>
               </button>
-            )}
-          </div>
-        ) : (
-          filtered
-            .sort((a, b) => {
-              const order: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 }
-              return (order[a.priority] ?? 9) - (order[b.priority] ?? 9)
-            })
-            .map(insight => <InsightCard key={insight.id} insight={insight} />)
-        )}
+            )
+          })}
+        </div>
+
+        {/* Feed */}
+        <div className="space-y-3">
+          {sortedFiltered.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-14 rounded-2xl"
+              style={{ background: '#0d1117', border: '1px solid #1f2a4a' }}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+                style={{ background: '#151C2F', border: '1px solid #2E2854' }}>
+                {filter === 'all'
+                  ? <Brain className="w-5 h-5 text-slate-600" />
+                  : (() => { const CatIcon = CAT[filter].Icon; return <CatIcon className="w-5 h-5" style={{ color: '#475569' }} /> })()
+                }
+              </div>
+              <p className="text-sm font-semibold text-slate-400">
+                No {filter === 'all' ? '' : `${CAT[filter].label} `}signals right now
+              </p>
+              <p className="text-xs text-slate-600 mt-1 max-w-xs text-center">
+                All clear — check back later or widen the filter.
+              </p>
+              {filter !== 'all' && (
+                <button onClick={() => setFilter('all')}
+                  className="mt-4 text-xs font-medium text-os-blue hover:text-white transition-colors">
+                  View all signals →
+                </button>
+              )}
+            </div>
+          ) : (
+            sortedFiltered.map(ins => <InsightCard key={ins.id} insight={ins} />)
+          )}
+        </div>
       </div>
     </div>
   )

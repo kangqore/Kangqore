@@ -1,6 +1,6 @@
 import { NavLink, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { SidebarSimpleIcon } from '@phosphor-icons/react'
 import { useQuery } from '@tanstack/react-query'
 import { cn } from '@design-system/cn'
 import { Tooltip } from '@design-system/components/Tooltip'
@@ -65,7 +65,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'flex-shrink-0 flex flex-col bg-os-s1 text-white border-r border-os-border transition-all duration-300 ease-in-out h-full',
+        'flex-shrink-0 flex flex-col bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-white border-r border-white/10 border-t-white/20 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ease-in-out h-full',
         sidebarCollapsed ? 'w-16' : 'w-[230px]'
       )}
       style={{ zIndex: 40 }}
@@ -74,7 +74,7 @@ export function Sidebar() {
       <Link
         to="/"
         className={cn(
-          'flex items-center gap-3 flex-shrink-0 hover:bg-slate-900 transition-colors cursor-pointer',
+          'flex items-center gap-3 flex-shrink-0 hover:bg-white/[0.04] transition-colors cursor-pointer',
           sidebarCollapsed ? 'h-[60px] justify-center px-0' : 'h-[60px] px-5'
         )}
       >
@@ -84,7 +84,7 @@ export function Sidebar() {
         {!sidebarCollapsed && (
           <div className="overflow-hidden">
             <p className="text-white font-bold text-sm leading-none" style={{ fontFamily: 'var(--font-display)' }}>Kangqore</p>
-            <p className="text-os-cyan text-[10px] tracking-widest mt-0.5 font-bold uppercase">Workspace</p>
+            <p className="text-os-cyan text-[10px] tracking-widest mt-0.5 font-bold uppercase">View</p>
           </div>
         )}
       </Link>
@@ -109,10 +109,10 @@ export function Sidebar() {
                   sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
                   isActive
                     ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
-                    : 'text-slate-500 hover:bg-slate-900 hover:text-white'
+                    : 'text-slate-500 hover:bg-white/[0.06] hover:text-slate-100'
                 )}
               >
-                <HomeIcon className={cn("w-[18px] h-[18px] flex-shrink-0", sidebarCollapsed ? "" : "opacity-80 group-hover:opacity-100")} />
+                <HomeIcon weight="fill" className={cn("w-[18px] h-[18px] flex-shrink-0 transition-transform duration-100", sidebarCollapsed ? "" : "opacity-70 group-hover:opacity-100 group-hover:scale-110")} />
                 {!sidebarCollapsed && (
                   <span className="text-[13px] font-semibold truncate flex-1">{HOME_NAV_ITEM.label}</span>
                 )}
@@ -152,10 +152,10 @@ export function Sidebar() {
                       sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
                       isActive
                         ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
-                        : 'text-slate-500 hover:bg-slate-900 hover:text-white'
+                        : 'text-slate-500 hover:bg-white/[0.06] hover:text-slate-100'
                     )}
                   >
-                    <Icon className={cn("w-[18px] h-[18px] flex-shrink-0", sidebarCollapsed ? "" : "opacity-80 group-hover:opacity-100")} />
+                    <Icon weight="fill" className={cn("w-[18px] h-[18px] flex-shrink-0 transition-transform duration-100", sidebarCollapsed ? "" : "opacity-70 group-hover:opacity-100 group-hover:scale-110")} />
                     {!sidebarCollapsed && (
                       <>
                         <span className="text-[13px] font-medium truncate flex-1">{item.label}</span>
@@ -188,17 +188,17 @@ export function Sidebar() {
       </motion.nav>
 
       {/* Collapse toggle */}
-      <div className="flex-shrink-0 border-t border-os-border p-3">
+      <div className="flex-shrink-0 border-t border-white/10 border-t-white/20 p-3">
         <button
           onClick={toggleSidebar}
           className={cn(
-            'flex items-center gap-2.5 w-full rounded-lg h-9 text-slate-500 hover:text-white hover:bg-slate-900 transition-all duration-150',
+            'flex items-center gap-2.5 w-full rounded-lg h-9 text-slate-500 hover:text-slate-100 hover:bg-white/[0.06] transition-all duration-150',
             sidebarCollapsed ? 'justify-center' : 'px-3'
           )}
         >
           {sidebarCollapsed
-            ? <PanelLeftOpen className="w-[18px] h-[18px]" />
-            : <><PanelLeftClose className="w-[18px] h-[18px]" /><span className="text-[13px] font-medium">Collapse</span></>
+            ? <SidebarSimpleIcon weight="fill" className="w-[18px] h-[18px]" />
+            : <><SidebarSimpleIcon weight="fill" className="w-[18px] h-[18px]" /><span className="text-[13px] font-medium">Collapse</span></>
           }
         </button>
       </div>

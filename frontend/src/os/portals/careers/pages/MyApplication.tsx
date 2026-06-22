@@ -113,7 +113,7 @@ export function MyApplication() {
                 <div key={stage.id} className="flex gap-4">
                   <div className="flex flex-col items-center">
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      isDone ? 'bg-green-100' : isActive ? 'bg-blue-100' : 'bg-os-s1'
+                      isDone ? 'bg-green-100' : isActive ? 'bg-blue-100' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10'
                     }`}>
                       {isDone
                         ? <CheckCircle2 className="w-4 h-4 text-green-600" />
@@ -167,7 +167,7 @@ export function MyApplication() {
                   </div>
                   <div className={`flex-1 max-w-[85%] ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
                     <div className={`rounded-xl px-3 py-2 text-sm ${
-                      isMe ? 'bg-blue-600 text-white' : 'bg-os-s1 text-slate-200'
+                      isMe ? 'bg-blue-600 text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-200'
                     }`}>
                       {msg.text}
                     </div>

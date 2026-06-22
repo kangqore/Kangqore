@@ -54,7 +54,7 @@ export function AssignmentsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-os-border bg-slate-900">
+              <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Person</th>
                 {PROJECTS.map(p => (
                   <th key={p.id} className="text-center px-3 py-3">

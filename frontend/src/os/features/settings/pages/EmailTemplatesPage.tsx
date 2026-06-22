@@ -78,7 +78,7 @@ export function EmailTemplatesPage() {
                       <p className="text-xs text-slate-500 truncate font-mono mt-0.5">{t.subject}</p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLOR[t.category] ?? 'bg-os-s1 text-slate-300'}`}>
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLOR[t.category] ?? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'}`}>
                         {t.category}
                       </span>
                       <Badge variant={t.isActive ? 'success' : 'neutral'} size="sm" dot>

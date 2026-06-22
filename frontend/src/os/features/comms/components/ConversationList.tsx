@@ -46,16 +46,16 @@ export function ConversationList({
   )
 
   return (
-    <div className="flex flex-col h-full border-r border-os-border">
+    <div className="flex flex-col h-full border-r border-white/10 border-t-white/20">
       {/* Search */}
-      <div className="p-3 border-b border-os-border flex-shrink-0">
+      <div className="p-3 border-b border-white/10 border-t-white/20 flex-shrink-0">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
           <input
             value={search}
             onChange={e => onSearch(e.target.value)}
             placeholder={`Search ${audienceLabel?.toLowerCase() ?? 'conversations'}…`}
-            className="w-full pl-8 pr-3 py-2 text-xs bg-slate-900 border border-os-border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+            className="w-full pl-8 pr-3 py-2 text-xs bg-slate-900 border border-white/10 border-t-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
           />
         </div>
       </div>
@@ -69,7 +69,7 @@ export function ConversationList({
                 <div className="w-9 h-9 rounded-full bg-slate-200 flex-shrink-0" />
                 <div className="flex-1 space-y-1.5">
                   <div className="h-3 bg-slate-200 rounded w-3/4" />
-                  <div className="h-2.5 bg-os-s1 rounded w-full" />
+                  <div className="h-2.5 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded w-full" />
                 </div>
               </div>
             ))}
@@ -95,7 +95,7 @@ export function ConversationList({
               key={user.id}
               onClick={() => onSelect(user.id)}
               className={cn(
-                'w-full flex items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-slate-900 border-b border-os-border',
+                'w-full flex items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-slate-900 border-b border-white/10 border-t-white/20',
                 isSelected && 'bg-blue-50 border-blue-100 hover:bg-blue-50',
               )}
             >

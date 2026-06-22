@@ -39,7 +39,7 @@ function DropdownGroup({ group }: { group: BulkActionGroup }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1E2D4A] text-slate-200 text-xs font-semibold hover:bg-[#2E3D5A] transition-colors border border-os-border"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1E2D4A] text-slate-200 text-xs font-semibold hover:bg-[#2E3D5A] transition-colors border border-white/10 border-t-white/20"
       >
         {group.label}
         <ChevronDown className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} />
@@ -51,7 +51,7 @@ function DropdownGroup({ group }: { group: BulkActionGroup }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.97 }}
             transition={{ duration: 0.12, ease: 'easeOut' }}
-            className="absolute bottom-full mb-2 left-0 min-w-[140px] bg-os-s1 border border-os-border rounded-xl shadow-2xl overflow-hidden z-50"
+            className="absolute bottom-full mb-2 left-0 min-w-[140px] bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl shadow-2xl overflow-hidden z-50"
           >
             {group.options.map(opt => (
               <button
@@ -78,7 +78,7 @@ export function BulkActionBar({ count, onClear, actions = [], groups = [] }: Bul
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 24 }}
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-900 border border-os-border shadow-2xl shadow-black/60"
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-900 border border-white/10 border-t-white/20 shadow-2xl shadow-black/60"
           style={{ backdropFilter: 'blur(12px)' }}
         >
           <span className="text-white text-sm font-bold min-w-[80px]">
@@ -96,7 +96,7 @@ export function BulkActionBar({ count, onClear, actions = [], groups = [] }: Bul
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border ${
                   action.variant === 'danger'
                     ? 'bg-red-900/30 text-red-400 border-red-700/40 hover:bg-red-900/50'
-                    : 'bg-[#1E2D4A] text-slate-200 border-os-border hover:bg-[#2E3D5A]'
+                    : 'bg-[#1E2D4A] text-slate-200 border-white/10 border-t-white/20 hover:bg-[#2E3D5A]'
                 }`}
               >
                 {action.icon}

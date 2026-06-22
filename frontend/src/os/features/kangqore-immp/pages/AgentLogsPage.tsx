@@ -75,7 +75,7 @@ function Stat({ label, value, sub }: { label: string; value: string | number; su
   return (
     <div className="bg-white border border-slate-200 rounded-xl px-5 py-4">
       <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">{label}</p>
-      <p className="text-2xl font-bold text-slate-900">{value}</p>
+      <p className="text-2xl font-bold tracking-tight text-slate-900">{value}</p>
       {sub && <p className="text-xs text-slate-400 mt-0.5">{sub}</p>}
     </div>
   )

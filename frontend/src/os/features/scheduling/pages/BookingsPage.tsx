@@ -78,13 +78,13 @@ export function BookingsPage() {
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1) }}
             placeholder="Search by name, email or event type…"
-            className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white pl-9 pr-3 focus:outline-none focus:border-blue-400"
+            className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white pl-9 pr-3 focus:outline-none focus:border-blue-400"
           />
         </div>
         <select
           value={status}
           onChange={e => { setStatus(e.target.value); setPage(1) }}
-          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
         >
           <option value="">All statuses</option>
           <option value="CONFIRMED">Confirmed</option>
@@ -140,12 +140,12 @@ export function BookingsPage() {
           <span>{filtered.length} total</span>
           <div className="flex items-center gap-2">
             <button disabled={page === 1} onClick={() => setPage(p => p - 1)}
-              className="p-1.5 rounded-lg hover:bg-os-s1 disabled:opacity-30">
+              className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 disabled:opacity-30">
               <ChevronLeft className="w-4 h-4" />
             </button>
             <span>Page {page} of {totalPages}</span>
             <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}
-              className="p-1.5 rounded-lg hover:bg-os-s1 disabled:opacity-30">
+              className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 disabled:opacity-30">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -155,7 +155,7 @@ export function BookingsPage() {
       {/* Detail modal */}
       {selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSelected(null)}>
-          <div className="bg-os-s0 border border-os-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-os-s0 border border-white/10 border-t-white/20 rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-start justify-between">
               <h3 className="font-bold text-white text-lg">{selected.eventType?.name ?? 'Meeting'}</h3>
               <button onClick={() => setSelected(null)} className="text-slate-500 hover:text-white">
@@ -179,7 +179,7 @@ export function BookingsPage() {
             </div>
 
             {selected.status === 'CONFIRMED' && (
-              <div className="flex gap-2 pt-2 border-t border-os-border">
+              <div className="flex gap-2 pt-2 border-t border-white/10 border-t-white/20">
                 <Button size="sm" variant="ghost" leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
                   onClick={() => window.open(`/booking/reschedule/${selected.id}`, '_blank')}>
                   Reschedule

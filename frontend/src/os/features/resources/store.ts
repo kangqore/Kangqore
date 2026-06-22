@@ -1,11 +1,12 @@
 import { create } from 'zustand'
-import { TEAM, ALLOCATIONS, UTIL_HISTORY } from './data'
 import type { TeamMember, Allocation } from './types'
+
+type UtilRow = { week: string; [memberId: string]: number | string }
 
 interface ResourcesStore {
   team: TeamMember[]
   allocations: Allocation[]
-  utilHistory: typeof UTIL_HISTORY
+  utilHistory: UtilRow[]
   selectedMemberId: string | null
   setSelectedMember: (id: string | null) => void
   allocationsForMember: (memberId: string) => Allocation[]
@@ -15,9 +16,9 @@ interface ResourcesStore {
 }
 
 export const useResourcesStore = create<ResourcesStore>((set, get) => ({
-  team: TEAM,
-  allocations: ALLOCATIONS,
-  utilHistory: UTIL_HISTORY,
+  team: [],
+  allocations: [],
+  utilHistory: [],
   selectedMemberId: null,
 
   setSelectedMember: (id) => set({ selectedMemberId: id }),

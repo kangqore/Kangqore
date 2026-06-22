@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { Briefcase, CheckCircle2, AlertTriangle, Clock, Pencil } from 'lucide-react'
+import { Briefcase, CheckCircle2, AlertTriangle, Clock, Pencil, Trash2 } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { InlineSelect } from '@components/InlineSelect'
 import { EditDrawer } from '@components/EditDrawer'
@@ -10,6 +10,7 @@ import { Progress } from '@design-system/components/Progress'
 import { Avatar, AvatarGroup } from '@design-system/components/Avatar'
 import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
+import { api, isDemo } from '@lib/api'
 import { useProjectsStore } from '../store'
 import type { Project, ProjectStatus, HealthStatus } from '../types'
 
@@ -40,15 +41,21 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
     endDate: project.endDate.slice(0, 10),
     budget:  String(project.budget),
   })
+  const [saving, setSaving] = useState(false)
 
-  function save() {
-    updateProject(project.id, {
+  async function save() {
+    const patch = {
       name:    form.name,
       client:  form.client,
       owner:   form.owner,
       endDate: form.endDate,
       budget:  Number(form.budget),
-    })
+    }
+    updateProject(project.id, patch)
+    if (!isDemo()) {
+      setSaving(true)
+      await api.patch(`/projects/${project.id}`, patch).catch(() => {}).finally(() => setSaving(false))
+    }
     onClose()
   }
 
@@ -61,7 +68,7 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
       footer={
         <>
           <Button variant="secondary" size="sm" onClick={onClose}>Cancel</Button>
-          <Button variant="primary" size="sm" onClick={save}>Save changes</Button>
+          <Button variant="primary" size="sm" onClick={save} loading={saving}>Save changes</Button>
         </>
       }
     >
@@ -87,7 +94,7 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
           <Input type="number" value={form.budget} onChange={e => setForm(f => ({ ...f, budget: e.target.value }))} />
         </div>
 
-        <div className="pt-2 border-t border-os-border space-y-3">
+        <div className="pt-2 border-t border-white/10 border-t-white/20 space-y-3">
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-2">Status</label>
             <InlineSelect
@@ -114,9 +121,24 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
 }
 
 export function ProjectsOverview() {
-  const { projects, tasks, issues, updateProjectStatus, updateProjectHealth } = useProjectsStore()
+  const { projects, tasks, issues, updateProjectStatus, updateProjectHealth, deleteProject } = useProjectsStore()
   const [editingId, setEditingId] = useState<string | null>(null)
   const editingProject = projects.find(p => p.id === editingId)
+
+  function patchStatus(id: string, status: ProjectStatus) {
+    updateProjectStatus(id, status)
+    if (!isDemo()) api.patch(`/projects/${id}`, { status })
+  }
+
+  function patchHealth(id: string, health: HealthStatus) {
+    updateProjectHealth(id, health)
+    if (!isDemo()) api.patch(`/projects/${id}`, { health })
+  }
+
+  function handleDelete(id: string) {
+    deleteProject(id)
+    if (!isDemo()) api.delete(`/projects/${id}`)
+  }
 
   const active     = projects.filter(p => p.status === 'active').length
   const completed  = projects.filter(p => p.status === 'completed').length
@@ -138,7 +160,7 @@ export function ProjectsOverview() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Active Projects"  value={active}     icon={<Briefcase    className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
         <StatCard label="Completed"        value={completed}  icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"   />
-        <StatCard label="At Risk / Behind" value={atRisk}     icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
+        <StatCard label="At Risk / Behind" value={atRisk}     icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'} />
         <StatCard label="Open Issues"      value={openIssues} icon={<Clock        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"     />
       </div>
 
@@ -172,13 +194,13 @@ export function ProjectsOverview() {
                   <InlineSelect
                     value={p.status}
                     options={STATUS_OPTIONS}
-                    onChange={status => updateProjectStatus(p.id, status)}
+                    onChange={status => patchStatus(p.id, status)}
                     size="sm"
                   />
                   <InlineSelect
                     value={p.health}
                     options={HEALTH_OPTIONS}
-                    onChange={health => updateProjectHealth(p.id, health)}
+                    onChange={health => patchHealth(p.id, health)}
                     size="sm"
                     dot
                   />
@@ -206,6 +228,14 @@ export function ProjectsOverview() {
                     onClick={e => { e.stopPropagation(); setEditingId(p.id) }}
                   >
                     <Pencil className="w-3.5 h-3.5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-400"
+                    onClick={e => { e.stopPropagation(); handleDelete(p.id) }}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
                   </Button>
                   <Avatar name={p.owner} size="sm" />
                 </div>

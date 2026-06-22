@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Search, Bell, Settings, LogOut, User, ChevronDown, Grid3X3, ChevronRight, Plus, Zap, LayoutDashboard, Target, Cpu } from 'lucide-react'
-import { cn } from '@design-system/cn'
-import { Avatar } from '@design-system/components/Avatar'
-import { Badge } from '@design-system/components/Badge'
+import {
+  Search, Bell, Settings, LogOut, User,
+  ChevronDown, Grid3X3, ChevronRight, Plus, Maximize2, Minimize2,
+} from 'lucide-react'
+import { LightningIcon, SquaresFourIcon, TargetIcon, CpuIcon } from '@phosphor-icons/react'
 import { Tooltip } from '@design-system/components/Tooltip'
 import {
   DropdownRoot, DropdownTrigger, DropdownContent,
@@ -15,18 +16,48 @@ import { useAuthStore } from '@store/auth'
 import { allNavItems } from '@lib/nav'
 import { api, isDemo } from '@lib/api'
 import { useCommandPalette } from './CommandPalette'
+import { QuickCreateModal, type CreateMode } from '../QuickCreateModal'
 
 const ROLE_LABEL: Record<string, string> = {
   ADMIN: 'Admin', CLIENT: 'Client', PARTNER: 'Partner',
   INVESTOR: 'Investor', JOB_SEEKER: 'Applicant',
 }
 
-const NEW_ACTIONS = [
-  { label: 'New Lead',    icon: Zap,             path: '/kangqore-view/admin/leads'                },
-  { label: 'New Project', icon: LayoutDashboard, path: '/kangqore-view/admin/projects'             },
-  { label: 'New Goal',    icon: Target,          path: '/kangqore-view/admin/kangqore-immp/goals'  },
-  { label: 'Ask WAANDA',  icon: Cpu,             path: '/kangqore-view/admin/WAANDA'               },
+const NEW_ACTIONS: Array<{
+  label: string
+  icon: React.ElementType
+  mode?: CreateMode
+  path?: string
+}> = [
+  { label: 'New Lead',    icon: LightningIcon,   mode: 'lead'    },
+  { label: 'New Project', icon: SquaresFourIcon, mode: 'project' },
+  { label: 'New Goal',    icon: TargetIcon,      mode: 'goal'    },
+  { label: 'Ask WAANDA',  icon: CpuIcon,         path: '/kangqore-view/admin/WAANDA' },
 ]
+
+// Custom avatar — no design system component, no teal
+function UserMonogram({ name, size = 28 }: { name: string; size?: number }) {
+  const initials = name.split(' ').map(n => n[0] ?? '').join('').slice(0, 2).toUpperCase()
+  return (
+    <div
+      className="flex-shrink-0 flex items-center justify-center rounded-full font-bold text-white select-none"
+      style={{
+        width: size, height: size,
+        fontSize: size * 0.38,
+        background: 'linear-gradient(135deg, #2564ea 0%, #0ea5e9 100%)',
+      }}
+    >
+      {initials}
+    </div>
+  )
+}
+
+const PANEL_STYLE = {
+  background: 'rgba(8,12,22,0.97)',
+  backdropFilter: 'blur(24px)',
+  border: '1px solid rgba(255,255,255,0.07)',
+  boxShadow: '0 20px 48px rgba(0,0,0,0.6)',
+} as const
 
 export function Topbar() {
   const { openNotificationPanel } = useUIStore()
@@ -34,11 +65,26 @@ export function Topbar() {
   const navigate = useNavigate()
   const { setOpen: openSearch } = useCommandPalette()
   const [newOpen, setNewOpen] = useState(false)
+  const [createMode, setCreateMode] = useState<CreateMode>(null)
   const newRef = useRef<HTMLDivElement>(null)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+
+  useEffect(() => {
+    const onChange = () => setIsFullscreen(!!document.fullscreenElement)
+    document.addEventListener('fullscreenchange', onChange)
+    return () => document.removeEventListener('fullscreenchange', onChange)
+  }, [])
+
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (!document.fullscreenElement) await document.documentElement.requestFullscreen()
+      else await document.exitFullscreen()
+    } catch {}
+  }, [])
 
   useEffect(() => {
     if (!newOpen) return
-    function onClick(e: MouseEvent) {
+    const onClick = (e: MouseEvent) => {
       if (newRef.current && !newRef.current.contains(e.target as Node)) setNewOpen(false)
     }
     document.addEventListener('mousedown', onClick)
@@ -49,78 +95,91 @@ export function Topbar() {
     queryKey: ['notifications'],
     queryFn: () => api.get('/notifications?limit=20').then(r => r.data.notifications ?? []),
     enabled: !isDemo(),
-    staleTime: 1000 * 30,
-    refetchInterval: 1000 * 60,
+    staleTime: 30_000,
+    refetchInterval: 60_000,
   })
   const unreadCount: number = Array.isArray(notifData)
-    ? notifData.filter((n: { read: boolean }) => !n.read).length
+    ? notifData.filter((n: { isRead?: boolean; read?: boolean }) => !(n.isRead ?? n.read)).length
     : 0
+
   const location = useLocation()
+  const currentModule = allNavItems.find(item => location.pathname.startsWith(item.path))
 
-  const currentModule = allNavItems.find(item =>
-    location.pathname.startsWith(item.path)
-  )
-
-  const displayName = user?.name  ?? 'User'
+  const displayName  = user?.name  ?? 'User'
   const displayEmail = user?.email ?? ''
   const displayRole  = ROLE_LABEL[user?.role ?? ''] ?? user?.role ?? 'Admin'
 
   return (
-    <header className="flex-shrink-0 h-[60px] bg-os-s1 border-b border-os-border flex items-center justify-between px-4 z-10">
-      {/* App Launcher & Breadcrumbs */}
-      <div className="flex items-center gap-4 flex-1">
-        <Tooltip content="App Launcher" side="bottom">
-          <button className="flex items-center justify-center w-9 h-9 rounded-lg text-slate-500 hover:bg-slate-900 hover:text-slate-300 transition-colors">
-            <Grid3X3 className="w-5 h-5" />
+    <>
+    <header
+      className="flex-shrink-0 h-[60px] flex items-center gap-4 px-4"
+      style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+    >
+
+      {/* ── Left: breadcrumb ── */}
+      <div className="flex items-center gap-2.5 flex-shrink-0 min-w-0">
+        <Tooltip content="App launcher" side="bottom">
+          <button className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-300 hover:bg-white/5 transition-all duration-150 flex-shrink-0">
+            <Grid3X3 className="w-[15px] h-[15px]" />
           </button>
         </Tooltip>
 
-        <div className="hidden md:flex items-center gap-2 text-sm">
-          <span className="text-slate-500 font-medium">Workspace</span>
-          <ChevronRight className="w-4 h-4 text-[#2E2854]" />
-          <span className="text-white font-semibold">{currentModule?.label ?? 'Overview'}</span>
+        <div className="hidden md:flex items-center gap-1.5 text-sm min-w-0">
+          <span className="text-slate-600 font-medium flex-shrink-0">Kangqore View</span>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-800 flex-shrink-0" />
+          <span className="text-white font-semibold truncate">{currentModule?.label ?? 'Overview'}</span>
         </div>
       </div>
 
-      {/* Centered Search — opens CommandPalette */}
+      {/* ── Centre: search ── */}
       <div className="flex-1 flex justify-center">
         <button
           onClick={() => openSearch(true)}
-          className={cn(
-            'relative h-9 w-full max-w-[400px] rounded-full border border-os-border bg-slate-900',
-            'flex items-center gap-2 pl-9 pr-3 text-sm text-slate-500',
-            'hover:border-os-cyan/60 hover:bg-os-s1 transition-all duration-150 text-left'
-          )}
+          className="group relative h-9 w-full max-w-[400px] rounded-full flex items-center gap-2 pl-9 pr-3 text-sm text-slate-500 text-left transition-all duration-150 hover:text-slate-300"
+          style={{
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.07)',
+          }}
         >
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
-          Search anything…
-          <kbd className="ml-auto text-[10px] text-slate-500 font-mono hidden lg:block bg-os-s1 px-1 border border-os-border rounded">⌘K</kbd>
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-[15px] h-[15px] text-slate-600 pointer-events-none group-hover:text-slate-500 transition-colors" />
+          <span className="flex-1 leading-none">Search anything…</span>
+          <kbd
+            className="hidden lg:flex items-center gap-px text-[10px] text-slate-700 font-sans rounded px-1.5 py-1 leading-none flex-shrink-0"
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
+          >
+            <span style={{ fontSize: 13, lineHeight: 1 }}>⌘</span>K
+          </kbd>
         </button>
       </div>
 
-      {/* Right Actions */}
-      <div className="flex items-center gap-3 flex-1 justify-end">
+      {/* ── Right: actions ── */}
+      <div className="flex items-center gap-1.5 flex-shrink-0">
 
-        {/* +New quick-create */}
+        {/* + New */}
         <div className="relative" ref={newRef}>
           <button
             onClick={() => setNewOpen(o => !o)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-os-blue to-os-cyan text-white text-sm font-medium hover:opacity-90 transition-opacity"
+            className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-white text-[13px] font-semibold transition-opacity hover:opacity-85 flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, #2564ea 0%, #0ea5e9 100%)' }}
           >
             <Plus className="w-3.5 h-3.5" />
             New
           </button>
           {newOpen && (
-            <div className="absolute right-0 top-full mt-1.5 w-52 bg-os-s1 border border-os-border rounded-xl shadow-lg py-1 z-50">
+            <div className="absolute right-0 top-full mt-2 w-52 rounded-xl py-1.5 z-50" style={PANEL_STYLE}>
               {NEW_ACTIONS.map(a => {
                 const Icon = a.icon
                 return (
                   <button
                     key={a.label}
-                    onClick={() => { navigate(a.path); setNewOpen(false) }}
-                    className="flex items-center gap-2.5 w-full px-3 py-2 text-sm text-slate-300 hover:bg-slate-900 hover:text-white transition-colors text-left"
+                    onClick={() => {
+                      setNewOpen(false)
+                      if (a.mode) { setCreateMode(a.mode) }
+                      else if (a.path) { navigate(a.path) }
+                    }}
+                    className="flex items-center gap-2.5 w-full px-3 py-2 text-[13px] text-slate-400 hover:text-white hover:bg-white/5 transition-colors text-left"
                   >
-                    <Icon className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                    <Icon weight="fill" className="w-4 h-4 text-slate-600 flex-shrink-0" />
                     {a.label}
                   </button>
                 )
@@ -129,55 +188,97 @@ export function Topbar() {
           )}
         </div>
 
-        {/* Notification bell */}
+        {/* Divider */}
+        <div className="w-px h-5 mx-0.5 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.07)' }} />
+
+        {/* Bell */}
         <Tooltip content="Notifications" side="bottom">
           <button
             onClick={openNotificationPanel}
-            className="relative h-9 w-9 rounded-full flex items-center justify-center text-slate-500 border border-os-border hover:bg-slate-900 transition-colors"
+            className="relative w-8 h-8 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all duration-150"
           >
-            <Bell className="w-[18px] h-[18px]" />
+            <Bell className="w-[17px] h-[17px]" />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center border-2 border-[#151C2F]">
+              <span
+                className="absolute -top-1.5 -right-1.5 min-w-[17px] h-[17px] rounded-full bg-red-500 text-white text-[9px] font-black flex items-center justify-center leading-none tabular-nums"
+                style={{ padding: '0 4px', boxShadow: '0 0 0 2px #0B1121, 0 2px 8px rgba(239,68,68,0.35)' }}
+              >
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
           </button>
         </Tooltip>
 
-        <div className="w-px h-6 bg-[#2E2854] mx-1 hidden sm:block" />
+        {/* Fullscreen */}
+        <Tooltip content={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'} side="bottom">
+          <button
+            onClick={toggleFullscreen}
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all duration-150"
+          >
+            {isFullscreen
+              ? <Minimize2 className="w-[15px] h-[15px]" />
+              : <Maximize2 className="w-[15px] h-[15px]" />}
+          </button>
+        </Tooltip>
+
+        {/* Divider */}
+        <div className="w-px h-5 mx-0.5 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.07)' }} />
 
         {/* User menu */}
         <DropdownRoot>
           <DropdownTrigger asChild>
-            <button className="flex items-center gap-2.5 rounded-full pl-1 pr-3 py-1 hover:bg-slate-900 transition-colors border border-transparent hover:border-os-border">
-              <Avatar name={displayName} size="sm" className="w-7 h-7" />
-              <div className="hidden lg:flex flex-col items-start">
-                <span className="text-xs font-semibold text-white leading-none">{displayName}</span>
-              </div>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-500 hidden lg:block" />
+            <button className="flex items-center gap-2 h-8 pl-1 pr-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-150">
+              <UserMonogram name={displayName} size={26} />
+              <span className="hidden lg:block text-[13px] font-semibold text-white leading-none">{displayName}</span>
+              <ChevronDown className="w-3 h-3 text-slate-600 hidden lg:block" />
             </button>
           </DropdownTrigger>
           <DropdownPortal>
-            <DropdownContent align="end" sideOffset={8} className="z-50 min-w-[200px] bg-os-s1 border border-os-border rounded-xl shadow-lg p-1 animate-in fade-in-0 zoom-in-95 duration-150">
-              <div className="px-3 py-2.5 border-b border-os-border mb-1">
-                <p className="text-sm font-semibold text-white">{displayName}</p>
-                <p className="text-xs text-slate-500 truncate">{displayEmail}</p>
-                <Badge variant="brand" size="sm" className="mt-2 w-max">{displayRole}</Badge>
+            <DropdownContent
+              align="end"
+              sideOffset={8}
+              className="z-50 min-w-[210px] rounded-xl p-1.5 animate-in fade-in-0 zoom-in-95 duration-150"
+              style={PANEL_STYLE}
+            >
+              {/* User info header */}
+              <div className="flex items-center gap-2.5 px-2.5 py-2.5 mb-1" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                <UserMonogram name={displayName} size={32} />
+                <div className="min-w-0">
+                  <p className="text-[13px] font-semibold text-white leading-none mb-1 truncate">{displayName}</p>
+                  <p className="text-[11px] text-slate-500 truncate leading-none">{displayEmail}</p>
+                </div>
               </div>
-              <DropdownItem className="flex items-center gap-2.5 px-2.5 py-2 text-sm text-slate-300 rounded-lg cursor-default outline-none hover:bg-slate-900 hover:text-white">
-                <User className="w-4 h-4 text-slate-500" />
+
+              {/* Role chip */}
+              <div className="px-2.5 pt-2 pb-1.5 mb-1" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                <span
+                  className="inline-block text-[9px] font-bold uppercase tracking-[0.1em] px-2 py-1 rounded-md"
+                  style={{ background: 'rgba(37,100,234,0.1)', color: '#60a5fa', border: '1px solid rgba(37,100,234,0.18)' }}
+                >
+                  {displayRole}
+                </span>
+              </div>
+
+              <DropdownItem
+                onClick={() => navigate('/kangqore-view/admin/settings/profile')}
+                className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-slate-400 rounded-lg cursor-pointer outline-none hover:bg-white/5 hover:text-white transition-colors"
+              >
+                <User className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />
                 Profile
               </DropdownItem>
-              <DropdownItem className="flex items-center gap-2.5 px-2.5 py-2 text-sm text-slate-300 rounded-lg cursor-default outline-none hover:bg-slate-900 hover:text-white">
-                <Settings className="w-4 h-4 text-slate-500" />
+              <DropdownItem
+                onClick={() => navigate('/kangqore-view/admin/settings')}
+                className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-slate-400 rounded-lg cursor-pointer outline-none hover:bg-white/5 hover:text-white transition-colors"
+              >
+                <Settings className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />
                 Settings
               </DropdownItem>
-              <DropdownSeparator className="my-1 h-px bg-[#2E2854]" />
+              <DropdownSeparator className="my-1 h-px mx-1" style={{ background: 'rgba(255,255,255,0.06)' }} />
               <DropdownItem
                 onClick={logout}
-                className="flex items-center gap-2.5 px-2.5 py-2 text-sm text-red-500 rounded-lg cursor-default outline-none hover:bg-red-500/10"
+                className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-red-500 rounded-lg cursor-default outline-none hover:bg-red-500/10 transition-colors"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5 flex-shrink-0" />
                 Sign out
               </DropdownItem>
             </DropdownContent>
@@ -185,5 +286,8 @@ export function Topbar() {
         </DropdownRoot>
       </div>
     </header>
+
+    <QuickCreateModal mode={createMode} onClose={() => setCreateMode(null)} />
+  </>
   )
 }

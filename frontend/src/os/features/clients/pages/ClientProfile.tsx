@@ -15,7 +15,7 @@ const HEALTH_VARIANT: Record<ClientHealth, 'success' | 'warning' | 'danger' | 'i
 const TIER_COLOR: Record<RelationshipTier, string> = {
   strategic: 'bg-[#0073ea] text-white shadow-sm font-bold',
   enterprise: 'bg-[#7f53f9] text-white shadow-sm font-bold',
-  standard: 'bg-os-s1 text-slate-300 font-bold',
+  standard: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 font-bold',
   starter: 'bg-slate-900 text-slate-300 font-bold',
 }
 const INTERACTION_ICON: Record<InteractionType, React.ElementType> = {
@@ -54,7 +54,7 @@ export function ClientProfile() {
         <select
           value={selectedId}
           onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20"
+          className="ml-auto h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20"
         >
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
@@ -78,7 +78,7 @@ export function ClientProfile() {
           </div>
           <div className="flex flex-col items-end gap-2">
             <div className="text-right">
-              <p className="text-2xl font-bold text-white">{fmt(client.arr)}</p>
+              <p className="text-2xl font-bold tracking-tight text-white">{fmt(client.arr)}</p>
               <p className="text-xs text-slate-500">Annual Recurring Revenue</p>
             </div>
             <div className="flex items-center gap-1.5 text-sm">
@@ -139,11 +139,11 @@ export function ClientProfile() {
                   <p className="text-xs text-slate-500 truncate">{ct.email}</p>
                 </div>
                 <div className="flex gap-1.5">
-                   <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-os-blue/10 hover:text-os-blue flex items-center justify-center transition-all duration-300">
+                   <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-os-blue/10 hover:text-os-blue flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
                      <Mail className="w-3.5 h-3.5 text-slate-500" />
                    </button>
                    {ct.phone && (
-                     <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-[#00c875]/10 hover:text-[#00c875] flex items-center justify-center transition-all duration-300">
+                     <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-[#00c875]/10 hover:text-[#00c875] flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
                        <Phone className="w-3.5 h-3.5 text-slate-500" />
                      </button>
                    )}

@@ -149,11 +149,11 @@
   --os-shadow-cyan: 0 0 24px rgba(74,  182, 212, 0.22);
 
   /* ── Motion (CSS transitions — Framer spring presets live in tokens/motion.ts) ── */
-  --os-duration-fast:   120ms;
-  --os-duration-base:   220ms;
-  --os-duration-slow:   380ms;
-  --os-ease-smooth:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --os-ease-snappy:  cubic-bezier(0.4,  0,    0.2,  1);
+  --os-duration-fast:   150ms;
+  --os-duration-base:   350ms;
+  --os-duration-slow:   500ms;
+  --os-ease-smooth:  cubic-bezier(0.16, 1, 0.3, 1); /* Apple Fluid Spring Approximation */
+  --os-ease-snappy:  cubic-bezier(0.175, 0.885, 0.32, 1.15); /* Snappy bounce */
   --os-ease-bounce:  cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 

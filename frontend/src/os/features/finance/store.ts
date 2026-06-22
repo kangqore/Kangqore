@@ -1,17 +1,16 @@
 import { create } from 'zustand'
-import { INVOICES, BUDGET_LINES, CASH_FLOW, PROJECT_FINANCIALS } from './data'
-import type { Invoice, InvoiceStatus } from './types'
+import type { Invoice, InvoiceStatus, BudgetLine, CashFlowPoint, ProjectFinancial } from './types'
 
 interface FinanceStore {
-  invoices:            typeof INVOICES
-  budgetLines:         typeof BUDGET_LINES
-  cashFlow:            typeof CASH_FLOW
-  projectFinancials:   typeof PROJECT_FINANCIALS
+  invoices:            Invoice[]
+  budgetLines:         BudgetLine[]
+  cashFlow:            CashFlowPoint[]
+  projectFinancials:   ProjectFinancial[]
   isLoading:           boolean
   error:               string | null
   hydrateInvoices:     (invoices: Invoice[]) => void
   updateInvoiceStatus: (id: string, status: InvoiceStatus) => void
-  invoicesByStatus:    (status: InvoiceStatus) => typeof INVOICES
+  invoicesByStatus:    (status: InvoiceStatus) => Invoice[]
   totalInvoiced:       () => number
   totalCollected:      () => number
   totalOverdue:        () => number
@@ -20,15 +19,17 @@ interface FinanceStore {
 }
 
 export const useFinanceStore = create<FinanceStore>((set, get) => ({
-  invoices:          INVOICES,
-  isLoading:         false,
+  invoices:          [],
+  isLoading:         true,
   error:             null,
-  hydrateInvoices:     (invoices) => set({ invoices, isLoading: false, error: null }),
+  budgetLines:       [],
+  cashFlow:          [],
+  projectFinancials: [],
+
+  hydrateInvoices: (invoices) => set({ invoices, isLoading: false, error: null }),
+
   updateInvoiceStatus: (id, status) =>
     set(s => ({ invoices: s.invoices.map(i => i.id === id ? { ...i, status } : i) })),
-  budgetLines:       BUDGET_LINES,
-  cashFlow:          CASH_FLOW,
-  projectFinancials: PROJECT_FINANCIALS,
 
   invoicesByStatus: (status) => get().invoices.filter(i => i.status === status),
 

@@ -38,7 +38,7 @@ interface MarketSignal {
 
 const SENTIMENT_COLORS: Record<string, string> = {
   POSITIVE:  'text-green-600 bg-green-50 border-green-200',
-  NEUTRAL:   'text-slate-300 bg-slate-900 border-os-border',
+  NEUTRAL:   'text-slate-300 bg-slate-900 border-white/10 border-t-white/20',
   NEGATIVE:  'text-red-600 bg-red-50 border-red-200',
   MIXED:     'text-amber-600 bg-amber-50 border-amber-200',
 }
@@ -67,7 +67,7 @@ function ObservationCard({ obs }: { obs: ShadowObservation }) {
   const urgencyBadge = URGENCY_BADGE[obs.urgency?.toUpperCase()] ?? 'neutral'
 
   return (
-    <div className="bg-os-s1 border border-os-border rounded-xl shadow-sm p-4 space-y-3">
+    <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl shadow-sm p-4 space-y-3">
       <div className="flex items-start gap-3">
         <div className="w-7 h-7 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0">
           <Eye className="w-3.5 h-3.5 text-violet-600" />
@@ -123,7 +123,7 @@ function ObservationCard({ obs }: { obs: ShadowObservation }) {
 
 function MarketSignalRow({ signal }: { signal: MarketSignal }) {
   return (
-    <div className="flex items-start gap-3 py-3 px-4 border-b border-os-border last:border-0 hover:bg-slate-900/60 transition-colors">
+    <div className="flex items-start gap-3 py-3 px-4 border-b border-white/10 border-t-white/20 last:border-0 hover:bg-slate-900/60 transition-colors">
       <Globe className="w-3.5 h-3.5 text-blue-400 flex-shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
         <p className="text-xs text-slate-300 leading-snug">{signal.signalValue}</p>
@@ -185,14 +185,14 @@ export function BehaviorPage() {
         </div>
         <button
           onClick={refresh}
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-os-s1 transition-colors"
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
         </button>
       </div>
 
       {/* Tab switcher */}
-      <div className="flex gap-1 border border-os-border rounded-xl p-1 bg-slate-900 w-fit">
+      <div className="flex gap-1 border border-white/10 border-t-white/20 rounded-xl p-1 bg-slate-900 w-fit">
         {([
           { key: 'shadow', label: `Shadow Observations (${observations.length})`, icon: Eye },
           { key: 'market', label: `Market Behavior (${marketSignals.length})`,    icon: Globe },
@@ -202,7 +202,7 @@ export function BehaviorPage() {
             onClick={() => setTab(t.key as Tab)}
             className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
               tab === t.key
-                ? 'bg-os-s1 text-white shadow-sm border border-os-border'
+                ? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-white shadow-sm border border-white/10 border-t-white/20'
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
@@ -236,7 +236,7 @@ export function BehaviorPage() {
         <div className="flex justify-center py-12"><Spinner /></div>
       ) : tab === 'shadow' ? (
         observations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 bg-os-s1 border border-os-border rounded-2xl text-center">
+          <div className="flex flex-col items-center justify-center py-16 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-2xl text-center">
             <div className="w-12 h-12 rounded-2xl bg-violet-50 flex items-center justify-center mb-4">
               <Eye className="w-6 h-6 text-violet-300" />
             </div>
@@ -250,7 +250,7 @@ export function BehaviorPage() {
         )
       ) : (
         marketSignals.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 bg-os-s1 border border-os-border rounded-2xl text-center">
+          <div className="flex flex-col items-center justify-center py-16 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-2xl text-center">
             <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-4">
               <Globe className="w-6 h-6 text-blue-300" />
             </div>
@@ -258,7 +258,7 @@ export function BehaviorPage() {
             <p className="text-xs text-slate-500 mt-1 max-w-xs">Market behavior signals will appear here as ALIS interaction data flows in.</p>
           </div>
         ) : (
-          <div className="bg-os-s1 border border-os-border rounded-xl overflow-hidden shadow-sm">
+          <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl overflow-hidden shadow-sm">
             {marketSignals.map(s => <MarketSignalRow key={s.id} signal={s} />)}
           </div>
         )

@@ -21,9 +21,9 @@ export function DeptBudgetPage() {
           { label: 'Remaining H1',         value: `₹${Math.round(totalBudget() * 0.5) - totalSpent()}k`, sub: 'Available H1 budget' },
           { label: 'H2 Budget',            value: `₹${Math.round(totalBudget() * 0.5)}k`,    sub: 'Allocated, not started' },
         ].map(item => (
-          <div key={item.label} className="bg-os-s1 border border-os-border rounded-xl p-5">
+          <div key={item.label} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-5">
             <p className="text-xs text-slate-500 mb-1">{item.label}</p>
-            <p className="text-2xl font-bold text-white">{item.value}</p>
+            <p className="text-2xl font-bold tracking-tight text-white">{item.value}</p>
             <p className="text-xs text-slate-500 mt-1">{item.sub}</p>
           </div>
         ))}

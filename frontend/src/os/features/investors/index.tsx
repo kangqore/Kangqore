@@ -105,16 +105,16 @@ export function InvestorsModule() {
   const { data: ctData }        = useQuery({ queryKey: ['admin','crm','cap-table'],    queryFn: () => api.get('/admin/crm/cap-table').then(r => r.data.capTable ?? []),              enabled: !isDemo(), staleTime: 1000*60*10 })
   const { data: rnData }        = useQuery({ queryKey: ['admin','crm','rounds'],       queryFn: () => api.get('/admin/crm/fundraising-rounds').then(r => r.data.rounds ?? []),      enabled: !isDemo(), staleTime: 1000*60*10 })
 
-  useEffect(() => { if (investorsData?.length) hydrateInvestors((investorsData as Record<string,unknown>[]).map(toInvestor)) }, [investorsData, hydrateInvestors])
-  useEffect(() => { if (updatesData?.length)   hydrateUpdates((updatesData as Record<string,unknown>[]).map(toUpdate))       }, [updatesData,   hydrateUpdates])
-  useEffect(() => { if (ctData?.length)        hydrateCapTable((ctData as Record<string,unknown>[]).map(toCapTable))         }, [ctData,         hydrateCapTable])
-  useEffect(() => { if (rnData?.length)        hydrateRounds((rnData as Record<string,unknown>[]).map(toRound))              }, [rnData,         hydrateRounds])
+  useEffect(() => { if (investorsData !== undefined) hydrateInvestors((investorsData as Record<string,unknown>[]).map(toInvestor)) }, [investorsData, hydrateInvestors])
+  useEffect(() => { if (updatesData   !== undefined) hydrateUpdates((updatesData as Record<string,unknown>[]).map(toUpdate))       }, [updatesData,   hydrateUpdates])
+  useEffect(() => { if (ctData        !== undefined) hydrateCapTable((ctData as Record<string,unknown>[]).map(toCapTable))         }, [ctData,         hydrateCapTable])
+  useEffect(() => { if (rnData        !== undefined) hydrateRounds((rnData as Record<string,unknown>[]).map(toRound))              }, [rnData,         hydrateRounds])
 
   const { pathname } = useLocation()
 
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-os-border mb-6 -mt-2">
+      <div className="flex items-center gap-1 border-b border-white/10 border-t-white/20 mb-6 -mt-2">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -124,7 +124,7 @@ export function InvestorsModule() {
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
                 ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />

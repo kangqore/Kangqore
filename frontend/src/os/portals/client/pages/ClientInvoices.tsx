@@ -40,7 +40,7 @@ export function ClientInvoices() {
   const outstanding  = invoices.filter(i => i.status === 'overdue' || i.status === 'pending').reduce((s, i) => s + i.amount, 0)
 
   return (
-    <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
+    <div className="space-y-8">
       <div>
         <h2 className="text-xl font-bold text-white">Invoices & Payments</h2>
         <p className="text-sm text-slate-500 mt-1">All invoices for your Kangqore engagement.</p>
@@ -49,13 +49,13 @@ export function ClientInvoices() {
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {[
-          { label: 'Total Paid',       value: `£${(paid / 1000).toFixed(0)}k`,        color: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)]' },
-          { label: 'Outstanding',      value: outstanding > 0 ? `£${(outstanding / 1000).toFixed(0)}k` : '£0', color: outstanding > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)]' : 'bg-slate-800 text-white' },
-          { label: 'Total Engagement', value: `£${(invoices.filter(i => i.status !== 'upcoming').reduce((s, i) => s + i.amount, 0) / 1000).toFixed(0)}k`, color: 'bg-[#0073ea] text-white shadow-[0_2px_8px_rgba(0,115,234,0.25)]' },
+          { label: 'Total Paid',       value: `₹${(paid / 1000).toFixed(0)}k`,        color: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)]' },
+          { label: 'Outstanding',      value: outstanding > 0 ? `₹${(outstanding / 1000).toFixed(0)}k` : '₹0', color: outstanding > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)]' : 'bg-slate-800 text-white' },
+          { label: 'Total Engagement', value: `₹${(invoices.filter(i => i.status !== 'upcoming').reduce((s, i) => s + i.amount, 0) / 1000).toFixed(0)}k`, color: 'bg-[#0073ea] text-white shadow-[0_2px_8px_rgba(0,115,234,0.25)]' },
         ].map(s => (
           <div key={s.label} className={`rounded-xl p-5 ${s.color}`}>
             <p className="text-xs font-semibold opacity-85 mb-1">{s.label}</p>
-            <p className="text-2xl font-bold">{s.value}</p>
+            <p className="text-2xl font-bold tracking-tight">{s.value}</p>
           </div>
         ))}
       </div>
@@ -71,7 +71,7 @@ export function ClientInvoices() {
         <CardBody className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-os-border bg-slate-900/50">
+              <tr className="border-b border-white/10 border-t-white/20 bg-slate-900/50">
                 {['Invoice', 'Description', 'Issue Date', 'Due Date', 'Amount', 'Status', ''].map(h => (
                   <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide whitespace-nowrap">
                     {h}
@@ -95,7 +95,7 @@ export function ClientInvoices() {
                         {inv.due}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 font-semibold text-white whitespace-nowrap">£{inv.amount.toLocaleString()}</td>
+                    <td className="px-5 py-3.5 font-semibold text-white whitespace-nowrap">₹{inv.amount.toLocaleString()}</td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-1.5">
                         <Icon className={`w-3.5 h-3.5 ${inv.status === 'paid' ? 'text-[#00c875]' : inv.status === 'overdue' ? 'text-[#e2445c]' : 'text-slate-500'}`} />

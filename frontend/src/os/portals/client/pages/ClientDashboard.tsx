@@ -1,174 +1,678 @@
-import { CheckCircle2, AlertTriangle, FileText, TrendingUp, Calendar } from 'lucide-react'
-import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
-import { Badge } from '@design-system/components/Badge'
-import { Progress } from '@design-system/components/Progress'
+/**
+ * ClientDashboard — Apple-grade rebuild
+ *
+ * Design system
+ *   Surfaces (4 levels): BG → CARD → RAISE → EDGE
+ *   Type scale: 10 / 12 / 14 / 16 / 24 / 48 px
+ *   Spacing:    8 / 16 / 24 / 32 px (4pt grid, prefer multiples of 8)
+ *   Motion:     cubic-bezier(0.16, 1, 0.3, 1), 500 ms, stagger 60 ms
+ */
+import { useEffect, useRef, useMemo } from 'react'
+import {
+  CheckCircle2, AlertTriangle, TrendingUp,
+  Calendar, Zap, ArrowRight, Users,
+  Phone, GitPullRequest, MessageSquare, Sparkles,
+} from 'lucide-react'
 import { Spinner } from '@design-system/components/Spinner'
-import { useClientProjects, useClientActions } from '../useClientData'
+import { useClientProjects, useClientActions, useClientInvoices } from '../useClientData'
 import { useAuthStore } from '@store/auth'
+import { useNavigate } from 'react-router-dom'
+
+// ── Design tokens ──────────────────────────────────────────────────────────────
+
+const BG    = '#080c18'   // S0 — page floor
+const CARD  = 'rgba(15, 23, 42, 0.4)'   // S1 — card surface
+const RAISE = 'rgba(30, 41, 59, 0.6)'   // S2 — raised element / hover
+const EDGE  = 'rgba(30, 41, 59, 0.6)'   // S3 — border / divider
+
+const BLUE   = '#2564ea'
+const PURPLE = '#7f53f9'
+const GREEN  = '#00c875'
+const AMBER  = '#fdab3d'
+const RED    = '#e2445c'
+
+const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
+
+// ── One-time keyframe injection ────────────────────────────────────────────────
+
+let _injected = false
+function ensureKeyframes() {
+  if (_injected) return
+  _injected = true
+  const s = document.createElement('style')
+  s.textContent = `
+    @keyframes _fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0);    }
+    }
+    @keyframes _shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+  `
+  document.head.appendChild(s)
+}
+
+// Returns inline style for a staggered entrance
+function anim(delayMs: number): React.CSSProperties {
+  return {
+    animation: `_fadeUp 0.55s ${EASE} ${delayMs}ms both`,
+  }
+}
+
+// ── Engagement ring (RAF-driven, zero re-renders) ─────────────────────────────
+
+function EngagementRing({ score, color }: { score: number; color: string }) {
+  const arcRef  = useRef<SVGCircleElement>(null)
+  const glowRef = useRef<SVGCircleElement>(null)
+  const numRef  = useRef<HTMLSpanElement>(null)
+  const R = 52
+  const C = +(2 * Math.PI * R).toFixed(4)
+
+  useEffect(() => {
+    const arc  = arcRef.current
+    const glow = glowRef.current
+    const num  = numRef.current
+    if (!arc || !num) return
+
+    arc.style.strokeDashoffset  = String(C)
+    if (glow) glow.style.strokeDashoffset = String(C)
+    num.textContent = '0'
+
+    let raf: number
+    const id = window.setTimeout(() => {
+      const t0 = performance.now()
+      const dur = 1600
+      const tick = (now: number) => {
+        const t = Math.min((now - t0) / dur, 1)
+        const e = 1 - (1 - t) ** 3            // ease-out cubic
+        const v = Math.round(e * score)
+        const off = C * (1 - v / 100)
+        arc.style.strokeDashoffset  = String(off)
+        if (glow) glow.style.strokeDashoffset = String(off)
+        num.textContent = String(v)
+        if (t < 1) raf = requestAnimationFrame(tick)
+      }
+      raf = requestAnimationFrame(tick)
+    }, 480)
+
+    return () => { clearTimeout(id); cancelAnimationFrame(raf) }
+  }, [score, C])
+
+  return (
+    <div style={{ position: 'relative', width: 152, height: 152, flexShrink: 0 }}>
+      <svg viewBox="0 0 128 128" style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
+        {/* Track */}
+        <circle cx="64" cy="64" r={R} fill="none" stroke={EDGE} strokeWidth="9" strokeLinecap="round" />
+        {/* Glow */}
+        <circle ref={glowRef} cx="64" cy="64" r={R} fill="none" stroke={color}
+          strokeWidth="18" strokeLinecap="round"
+          strokeDasharray={C} strokeDashoffset={C}
+          style={{ opacity: 0.12, filter: 'blur(6px)' }} />
+        {/* Arc */}
+        <circle ref={arcRef} cx="64" cy="64" r={R} fill="none" stroke={color}
+          strokeWidth="9" strokeLinecap="round"
+          strokeDasharray={C} strokeDashoffset={C}
+          style={{ filter: `drop-shadow(0 0 5px ${color}90)` }} />
+      </svg>
+      <div style={{
+        position: 'absolute', inset: 0,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <span ref={numRef}
+          style={{ fontSize: 46, fontWeight: 900, color: '#fff', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+          0
+        </span>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color, marginTop: 4 }}>
+          / 100
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// ── Animated dimension bar (RAF-driven) ───────────────────────────────────────
+
+function DimBar({ label, pct, color, delay = 0 }: {
+  label: string; pct: number; color: string; delay?: number
+}) {
+  const barRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const bar = barRef.current
+    if (!bar) return
+    bar.style.width = '0%'
+    const id = window.setTimeout(() => { bar.style.width = `${pct}%` }, delay + 700)
+    return () => clearTimeout(id)
+  }, [pct, delay])
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+        <span style={{ fontSize: 11, fontWeight: 500, color: '#64748b', letterSpacing: '0.02em' }}>{label}</span>
+        <span style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', fontVariantNumeric: 'tabular-nums' }}>{pct}%</span>
+      </div>
+      <div style={{ height: 3, borderRadius: 999, background: EDGE }}>
+        <div ref={barRef} style={{
+          height: '100%', borderRadius: 999,
+          background: color, boxShadow: `0 0 8px ${color}55`,
+          width: '0%', transition: `width 0.9s ${EASE}`,
+        }} />
+      </div>
+    </div>
+  )
+}
+
+// ── Frosted-glass WAANDA briefing ─────────────────────────────────────────────
+
+function WaandaBriefing({ text }: { text: string }) {
+  return (
+    <div style={{
+      background: 'rgba(127, 83, 249, 0.06)',
+      backdropFilter: 'blur(24px)',
+      WebkitBackdropFilter: 'blur(24px) saturate(200%)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 8px 32px rgba(37,100,234,0.15)',
+        border: '1px solid rgba(127, 83, 249, 0.16)',
+      borderRadius: 16,
+      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 32px rgba(127,83,249,0.08)',
+      padding: '16px 20px',
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: 12,
+    }}>
+      {/* Icon */}
+      <div style={{
+        width: 32, height: 32, borderRadius: 10, flexShrink: 0,
+        background: 'linear-gradient(135deg, rgba(127,83,249,0.3), rgba(127,83,249,0.1))',
+        border: '1px solid rgba(127,83,249,0.25)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        marginTop: 1,
+      }}>
+        <Sparkles style={{ width: 14, height: 14, color: '#a78bfa' }} />
+      </div>
+      {/* Text */}
+      <div>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#a78bfa', marginBottom: 6 }}>
+          WAANDA Briefing
+        </p>
+        <p style={{ fontSize: 13, fontWeight: 400, color: '#cbd5e1', lineHeight: 1.65, margin: 0 }}>{text}</p>
+      </div>
+    </div>
+  )
+}
+
+// ── Data ───────────────────────────────────────────────────────────────────────
 
 const MOCK_PROJECTS = [
-  { id: 'p1', name: 'Patient Portal v2',      phase: 'Development',  progress: 68, status: 'on-track',   nextMilestone: 'Beta release', milestoneDate: '2026-06-20', deliveryLead: 'Ravi Nair' },
-  { id: 'p2', name: 'HIPAA Compliance Layer', phase: 'QA & Testing', progress: 91, status: 'on-track',   nextMilestone: 'Sign-off',     milestoneDate: '2026-06-10', deliveryLead: 'Omar Khalid' },
-  { id: 'p3', name: 'Analytics Dashboard',    phase: 'Design',       progress: 32, status: 'at-risk',    nextMilestone: 'Design review',milestoneDate: '2026-06-08', deliveryLead: 'Anika Roy' },
-]
-
-const RECENT_DELIVERIES = [
-  { title: 'Sprint 12 build deployed to staging', date: '2026-05-30', type: 'delivery' },
-  { title: 'HIPAA audit report shared',           date: '2026-05-27', type: 'document' },
-  { title: 'Design review meeting notes',         date: '2026-05-25', type: 'meeting'  },
-  { title: 'Invoice INV-2026-041 issued',         date: '2026-05-20', type: 'invoice'  },
+  { id: 'p1', name: 'Patient Portal v2',      phase: 'Development',  progress: 68, status: 'on-track', milestone: 'Beta release to UAT', milestoneDate: '20 Jun', lead: 'Ravi Nair'   },
+  { id: 'p2', name: 'HIPAA Compliance Layer', phase: 'QA & Testing', progress: 91, status: 'on-track', milestone: 'Final audit sign-off', milestoneDate: '15 Jun', lead: 'Omar Khalid' },
+  { id: 'p3', name: 'Analytics Dashboard',    phase: 'Design',       progress: 32, status: 'at-risk',  milestone: 'Design review',        milestoneDate: '28 Jun', lead: 'Anika Roy'   },
 ]
 
 const SLA_ITEMS = [
-  { metric: 'Response time (P1)',  target: '< 2h',  current: '1.4h', status: 'met'     },
-  { metric: 'Response time (P2)',  target: '< 8h',  current: '6.2h', status: 'met'     },
-  { metric: 'Uptime (staging)',    target: '99.5%', current: '99.8%',status: 'met'     },
-  { metric: 'Sprint delivery',     target: '90%',   current: '87%',  status: 'at-risk' },
+  { metric: 'P1 Response',     target: '< 2h',  current: '1.4h',  met: true,  pct: 93 },
+  { metric: 'P2 Response',     target: '< 8h',  current: '6.2h',  met: true,  pct: 78 },
+  { metric: 'Staging Uptime',  target: '99.5%', current: '99.8%', met: true,  pct: 99 },
+  { metric: 'Sprint Delivery', target: '90%',   current: '87%',   met: false, pct: 87 },
 ]
 
-const STATUS_BADGE: Record<string, 'success' | 'warning' | 'danger'> = {
-  'on-track': 'success', 'at-risk': 'warning', 'delayed': 'danger',
+const TEAM = [
+  { name: 'Ravi Nair',   role: 'Delivery Lead', project: 'Patient Portal',  initials: 'RN', color: BLUE   },
+  { name: 'Omar Khalid', role: 'Tech Lead',      project: 'HIPAA Compliance',initials: 'OK', color: PURPLE },
+  { name: 'Anika Roy',   role: 'Design Lead',    project: 'Analytics',       initials: 'AR', color: GREEN  },
+]
+
+const THIS_WEEK = [
+  { type: 'milestone', title: 'Beta release to UAT',       date: '20 Jun', project: 'Patient Portal v2', urgent: false, color: BLUE   },
+  { type: 'task',      title: 'Sign off on BAA agreement', date: '12 Jun', project: 'HIPAA Compliance',  urgent: true,  color: RED    },
+  { type: 'meeting',   title: 'Sprint 13 Review',          date: '19 Jun', project: 'All Projects',      urgent: false, color: PURPLE },
+]
+
+const ACTIVITY = [
+  { title: 'Sprint 12 deployed to staging',          date: '17 Jun', color: BLUE   },
+  { title: 'HIPAA audit report shared in Documents', date: '14 Jun', color: PURPLE },
+  { title: 'Monthly sync meeting notes uploaded',    date: '12 Jun', color: GREEN  },
+  { title: 'Invoice INV-2026-041 issued — ₹42,000', date: '10 Jun', color: AMBER  },
+  { title: 'Change request CR-014 approved',         date: '7 Jun',  color: BLUE   },
+]
+
+const BASE = '/kangqore-view/client'
+
+function greeting(name?: string) {
+  const h = new Date().getHours()
+  const g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening'
+  return `${g}${name ? `, ${name.split(' ')[0]}` : ''}.`
 }
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
 
 export function ClientDashboard() {
   const { user } = useAuthStore()
+  const navigate = useNavigate()
   const { data: apiProjects, isLoading } = useClientProjects()
   const { data: actionsData } = useClientActions()
+  const { data: apiInvoices } = useClientInvoices()
 
-  // Map API projects → display shape; fall back to mock if no real data yet
-  const projects = (apiProjects as Record<string, unknown>[] | undefined)?.length
-    ? (apiProjects as Record<string, unknown>[]).map(p => ({
-        id:            String(p.id),
-        name:          String(p.title ?? p.name ?? 'Untitled'),
-        phase:         String(p.status ?? 'Active'),
-        progress:      Number(p.progress ?? 0),
-        status:        p.status === 'ACTIVE' ? 'on-track' : ('at-risk' as const),
-        nextMilestone: '—',
-        milestoneDate: '—',
-        deliveryLead:  'Kangqore',
-      }))
-    : MOCK_PROJECTS
+  useEffect(() => { ensureKeyframes() }, [])
 
-  const pendingActions: number = actionsData
-    ? (actionsData.deliverables?.length ?? 0) + (actionsData.decisions?.length ?? 0)
+  const projects = useMemo(() => {
+    const api = apiProjects as Record<string, unknown>[] | undefined
+    return api?.length
+      ? api.map(p => ({
+          id:       String(p.id),
+          name:     String(p.title ?? p.name ?? 'Untitled'),
+          phase:    String(p.status ?? 'Active'),
+          progress: Number(p.progress ?? 0),
+          status:   p.status === 'ACTIVE' ? 'on-track' : 'at-risk' as string,
+          milestone: '—', milestoneDate: '—', lead: 'Kangqore',
+        }))
+      : MOCK_PROJECTS
+  }, [apiProjects])
+
+  const pendingActions = actionsData
+    ? ((actionsData.deliverables?.length ?? 0) + (actionsData.decisions?.length ?? 0))
     : 0
+
+  const invoices  = (apiInvoices as Record<string, unknown>[] | undefined) ?? []
+  const outstanding = invoices
+    .filter(i => i.status === 'overdue' || i.status === 'pending')
+    .reduce((s, i) => s + Number(i.amount ?? 0), 0)
+
+  const atRisk  = projects.filter(p => p.status === 'at-risk').length
+  const onTrack = projects.filter(p => p.status === 'on-track').length
+
+  const score = useMemo(() => {
+    const r = projects.length > 0 ? onTrack / projects.length : 1
+    return Math.round(60 + r * 30 + (atRisk === 0 ? 10 : 0))
+  }, [projects, onTrack, atRisk])
+
+  const scoreColor = score >= 80 ? GREEN : score >= 60 ? AMBER : RED
+
+  const brief = useMemo(() => {
+    if (atRisk === 0) {
+      return `All ${projects.length} engagements are on track. ${projects[0]?.name} is at ${projects[0]?.progress}% and progressing ahead of schedule. No risks flagged — your team is delivering well this sprint.`
+    }
+    const rp = projects.find(p => p.status === 'at-risk')
+    return `${onTrack} of your ${projects.length} projects are on track. ${rp?.name} needs immediate attention — your sign-off on the design review is required this week to keep the timeline intact. All other engagements are progressing normally.`
+  }, [projects, atRisk, onTrack])
+
+  const kpis = [
+    { label: 'Active Projects', value: String(projects.length), icon: TrendingUp, color: BLUE   },
+    { label: 'Pending Actions', value: String(pendingActions),  icon: Zap,        color: AMBER  },
+    { label: 'SLA Score',       value: '96%',                  icon: CheckCircle2,color: GREEN  },
+    { label: 'Outstanding',
+      value: outstanding > 0 ? `₹${(outstanding / 1000).toFixed(0)}k` : '₹0',
+      icon: AlertTriangle, color: outstanding > 0 ? RED : GREEN },
+  ]
+
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
-      {/* Welcome */}
-      <div>
-        <h2 className="text-xl font-bold text-white">
-          Welcome back, {user?.name ?? 'there'}
-        </h2>
-        <p className="text-sm text-slate-500 mt-1">Here's the latest on your Kangqore engagement.</p>
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
 
-      {isLoading && (
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <Spinner size="sm" /> Loading live data…
-        </div>
-      )}
+      {/* ── 1. Hero ─────────────────────────────────────────────────────────── */}
+      <div style={{
+        ...anim(0),
+        borderRadius: 20,
+        overflow: 'hidden',
+        background: `linear-gradient(150deg, ${RAISE} 0%, ${CARD} 80%)`, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)',
+        border: `1px solid ${EDGE}`,
+        boxShadow: `inset 0 1px 0 rgba(13,17,23,0.4)`,
+        padding: 24,
+        position: 'relative',
+      }}>
+        {/* Ambient light leak */}
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: 'radial-gradient(ellipse at 80% 30%, rgba(37,100,234,0.09) 0%, transparent 60%)',
+        }} />
 
-      {/* Summary stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { label: 'Active Projects', value: projects.filter(p => p.status === 'on-track').length || projects.length, icon: TrendingUp,   color: 'bg-blue-50 text-blue-600'   },
-          { label: 'Pending Actions', value: pendingActions || 0,                                                      icon: FileText,     color: 'bg-orange-50 text-orange-600'},
-          { label: 'SLA Compliance',  value: '96%',                                                                    icon: CheckCircle2, color: 'bg-green-50 text-green-600' },
-          { label: 'Next Milestone',  value: projects[0]?.milestoneDate ?? '—',                                        icon: Calendar,     color: 'bg-purple-50 text-purple-600'},
-        ].map(s => (
-          <div key={s.label} className="bg-os-s1 border border-os-border rounded-xl p-5 flex items-center gap-4">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${s.color}`}>
-              <s.icon className="w-5 h-5" />
-            </div>
+        <div style={{ position: 'relative' }}>
+          {/* Greeting row */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 20 }}>
             <div>
-              <p className="text-2xl font-bold text-white">{s.value}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#334155', marginBottom: 6 }}>
+                Client Portal
+              </p>
+              <h2 style={{ fontSize: 20, fontWeight: 700, color: '#f1f5f9', margin: 0, lineHeight: 1.2 }}>
+                {greeting(user?.name)}
+              </h2>
+              <p style={{ fontSize: 13, color: '#64748b', margin: '6px 0 0' }}>
+                Live status of your Kangqore engagement.
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              {isLoading && <Spinner size="sm" />}
+              <span style={{
+                fontSize: 11, fontWeight: 700, letterSpacing: '0.04em',
+                padding: '6px 12px', borderRadius: 999,
+                color: scoreColor,
+                background: `${scoreColor}14`,
+                border: `1px solid ${scoreColor}30`,
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: scoreColor, display: 'inline-block', animation: 'pulse 2s infinite' }} />
+                {score >= 80 ? 'Excellent' : score >= 60 ? 'On Track' : 'Needs Attention'}
+              </span>
             </div>
           </div>
-        ))}
+
+          {/* Frosted glass WAANDA briefing */}
+          <WaandaBriefing text={brief} />
+
+          {/* Quick actions */}
+          <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
+            {[
+              { label: 'Schedule a Call',  icon: Phone,          path: `${BASE}/meetings` },
+              { label: 'Submit Request',   icon: GitPullRequest, path: `${BASE}/support`  },
+              { label: 'Leave Feedback',   icon: MessageSquare,  path: `${BASE}/feedback` },
+            ].map(({ label, icon: Icon, path }) => (
+              <button key={label} onClick={() => navigate(path)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '8px 14px', borderRadius: 10,
+                  background: RAISE, border: `1px solid ${EDGE}`,
+                  color: '#94a3b8', fontSize: 12, fontWeight: 600,
+                  cursor: 'pointer', transition: `all 0.2s ${EASE}`,
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.borderColor = `${BLUE}50`
+                  el.style.color = '#e2e8f0'
+                  el.style.background = `${RAISE}cc`
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.borderColor = EDGE
+                  el.style.color = '#94a3b8'
+                  el.style.background = RAISE
+                }}>
+                <Icon style={{ width: 13, height: 13, flexShrink: 0 }} />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Active projects */}
-        <div className="lg:col-span-2 space-y-4">
-          <h3 className="text-base font-semibold text-white">Active Projects</h3>
-          {projects.map(p => (
-            <Card key={p.id} padding="none">
-              <CardBody className="p-6">
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div>
-                    <p className="font-semibold text-white">{p.name}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{p.phase} · Lead: {p.deliveryLead}</p>
-                  </div>
-                  <Badge variant={STATUS_BADGE[p.status]} size="sm" dot>
-                    {p.status === 'on-track' ? 'On Track' : 'At Risk'}
-                  </Badge>
-                </div>
-                <div className="mb-3">
-                  <div className="flex justify-between text-xs text-slate-500 mb-1.5">
-                    <span>Overall progress</span>
-                    <span className="font-semibold">{p.progress}%</span>
-                  </div>
-                  <Progress value={p.progress} color={p.status === 'at-risk' ? 'warning' : 'success'} size="sm" />
-                </div>
-                <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                  <Calendar className="w-3.5 h-3.5" />
-                  Next: <span className="font-medium text-slate-300">{p.nextMilestone}</span>
-                  <span>—</span>
-                  <span>{p.milestoneDate}</span>
-                </div>
-              </CardBody>
-            </Card>
-          ))}
+      {/* ── 2. Health ring + KPIs ───────────────────────────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 24 }}>
+
+        {/* Ring card */}
+        <div style={{
+          ...anim(60),
+          borderRadius: 20,
+          background: CARD, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)',
+          border: `1px solid ${EDGE}`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.03)`,
+          padding: 24,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24,
+          minWidth: 220,
+        }}>
+          <EngagementRing score={score} color={scoreColor} />
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <DimBar label="Delivery pace"   pct={93}  color={BLUE}   delay={0}   />
+            <DimBar label="SLA compliance"  pct={96}  color={GREEN}  delay={80}  />
+            <DimBar label="Communication"   pct={100} color={PURPLE} delay={160} />
+            <DimBar label="Budget health"   pct={88}  color={AMBER}  delay={240} />
+            <DimBar label="Sprint velocity" pct={87}  color={BLUE}   delay={320} />
+          </div>
         </div>
 
-        {/* Right column */}
-        <div className="space-y-5">
-          {/* SLA */}
-          <Card>
-            <CardHeader><CardTitle>SLA Status</CardTitle></CardHeader>
-            <CardBody className="space-y-3">
-              {SLA_ITEMS.map(s => (
-                <div key={s.metric} className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 flex-1 min-w-0">
-                    {s.status === 'met'
-                      ? <CheckCircle2 className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
-                      : <AlertTriangle className="w-3.5 h-3.5 text-orange-500 flex-shrink-0" />
-                    }
-                    <span className="text-xs text-slate-300 truncate">{s.metric}</span>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <span className={`text-xs font-semibold ${s.status === 'met' ? 'text-green-600' : 'text-orange-600'}`}>
-                      {s.current}
-                    </span>
-                    <span className="text-xs text-slate-500 ml-1">/ {s.target}</span>
-                  </div>
-                </div>
-              ))}
-            </CardBody>
-          </Card>
+        {/* Right: KPIs + This Week */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-          {/* Recent activity */}
-          <Card>
-            <CardHeader><CardTitle>Recent Activity</CardTitle></CardHeader>
-            <CardBody className="p-0">
-              <div className="divide-y divide-[#2E2854]">
-                {RECENT_DELIVERIES.map((d, i) => (
-                  <div key={i} className="flex items-start gap-3 px-4 py-3">
-                    <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${
-                      d.type === 'delivery' ? 'bg-blue-500' : d.type === 'document' ? 'bg-purple-500' :
-                      d.type === 'invoice' ? 'bg-orange-500' : 'bg-green-500'
-                    }`} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-slate-200 leading-snug">{d.title}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{d.date}</p>
+          {/* KPI 2×2 */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            {kpis.map(({ label, value, icon: Icon, color }, i) => (
+              <div key={label} style={{
+                ...anim(80 + i * 60),
+                borderRadius: 16,
+                background: CARD, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)',
+                border: `1px solid ${EDGE}`,
+                padding: 16,
+                display: 'flex', alignItems: 'center', gap: 12,
+              }}>
+                <div style={{
+                  width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+                  background: `${color}12`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: `0 0 12px ${color}18`,
+                }}>
+                  <Icon style={{ width: 16, height: 16, color } as React.CSSProperties} />
+                </div>
+                <div>
+                  <p style={{ fontSize: 22, fontWeight: 900, color: '#f1f5f9', margin: 0, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+                    {value}
+                  </p>
+                  <p style={{ fontSize: 11, color: '#475569', margin: '4px 0 0' }}>{label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* This Week */}
+          <div style={{
+            ...anim(320),
+            borderRadius: 16, background: CARD, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)',
+            border: `1px solid ${EDGE}`, padding: 16,
+          }}>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', marginBottom: 12 }}>
+              This Week
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {THIS_WEEK.map((item, i) => {
+                const Icon = item.type === 'meeting' ? Users : item.type === 'task' ? CheckCircle2 : Calendar
+                return (
+                  <div key={i} style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '10px 12px', borderRadius: 12,
+                    background: item.urgent ? `rgba(226,68,92,0.07)` : RAISE,
+                    border: `1px solid ${item.urgent ? 'rgba(226,68,92,0.2)' : EDGE}`,
+                  }}>
+                    <div style={{
+                      width: 28, height: 28, borderRadius: 8, flexShrink: 0,
+                      background: `${item.color}14`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <Icon style={{ width: 13, height: 13, color: item.color } as React.CSSProperties} />
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontSize: 12, fontWeight: 600, color: '#e2e8f0', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {item.title}
+                      </p>
+                      <p style={{ fontSize: 10, color: '#475569', margin: '2px 0 0' }}>{item.project}</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                      {item.urgent && <AlertTriangle style={{ width: 11, height: 11, color: RED }} />}
+                      <span style={{ fontSize: 11, fontWeight: 600, color: '#64748b' }}>{item.date}</span>
                     </div>
                   </div>
-                ))}
-              </div>
-            </CardBody>
-          </Card>
+                )
+              })}
+            </div>
+          </div>
         </div>
+      </div>
+
+      {/* ── 3. Active projects ──────────────────────────────────────────────── */}
+      <div style={anim(380)}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <p style={{ fontSize: 14, fontWeight: 600, color: '#f1f5f9', margin: 0 }}>Active Projects</p>
+          <button onClick={() => navigate(`${BASE}/projects`)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 4,
+              fontSize: 12, fontWeight: 600, color: BLUE,
+              background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+              transition: `color 0.15s`,
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#3b82f6' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = BLUE }}>
+            View all <ArrowRight style={{ width: 12, height: 12 }} />
+          </button>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+          {projects.map((p, i) => {
+            const isRisk = p.status === 'at-risk'
+            const c = isRisk ? AMBER : GREEN
+            return (
+              <div key={p.id} style={{
+                ...anim(400 + i * 60),
+                borderRadius: 16, cursor: 'pointer',
+                background: `linear-gradient(180deg, ${c}07 0%, ${CARD} 50%)`, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)',
+                border: `1px solid ${EDGE}`,
+                borderTop: `1.5px solid ${c}50`,
+                padding: 16,
+                transition: `transform 0.2s ${EASE}, box-shadow 0.2s ${EASE}`,
+              }}
+              onClick={() => navigate(`${BASE}/projects`)}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.transform = 'translateY(-2px)'
+                el.style.boxShadow = `0 8px 24px rgba(0,0,0,0.3), 0 0 0 1px ${c}20`
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.transform = 'none'
+                el.style.boxShadow = 'none'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, gap: 8 }}>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</p>
+                    <p style={{ fontSize: 11, color: '#475569', margin: '3px 0 0' }}>{p.phase} · {p.lead}</p>
+                  </div>
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, whiteSpace: 'nowrap',
+                    padding: '3px 8px', borderRadius: 999,
+                    color: c, background: `${c}14`, border: `1px solid ${c}25`,
+                  }}>
+                    {isRisk ? 'At Risk' : 'On Track'}
+                  </span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <span style={{ fontSize: 11, color: '#475569' }}>Progress</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#e2e8f0', fontVariantNumeric: 'tabular-nums' }}>{p.progress}%</span>
+                </div>
+                <div style={{ height: 4, borderRadius: 999, background: EDGE, overflow: 'hidden' }}>
+                  <div style={{
+                    height: '100%', borderRadius: 999,
+                    width: `${p.progress}%`,
+                    background: isRisk
+                      ? `linear-gradient(90deg, ${AMBER}, #f59e0b)`
+                      : `linear-gradient(90deg, ${BLUE}, #3b82f6)`,
+                    boxShadow: `0 0 8px ${c}40`,
+                  }} />
+                </div>
+                {'milestone' in p && p.milestone !== '—' && (
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    marginTop: 12, paddingTop: 12, borderTop: `1px solid ${EDGE}`,
+                  }}>
+                    <Calendar style={{ width: 10, height: 10, color: '#475569', flexShrink: 0 }} />
+                    <span style={{ fontSize: 10, color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                      {(p as typeof MOCK_PROJECTS[0]).milestone}
+                    </span>
+                    <span style={{ fontSize: 10, fontWeight: 600, color: '#475569', flexShrink: 0 }}>
+                      {(p as typeof MOCK_PROJECTS[0]).milestoneDate}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* ── 4. Team | SLA | Activity ────────────────────────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+
+        {/* Team */}
+        <div style={{ ...anim(560), borderRadius: 16, background: CARD, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)', border: `1px solid ${EDGE}`, padding: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+            <Users style={{ width: 14, height: 14, color: '#475569' }} />
+            <p style={{ fontSize: 12, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>Your Kangqore Team</p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {TEAM.map(t => (
+              <div key={t.name} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{
+                  width: 34, height: 34, borderRadius: 10, flexShrink: 0,
+                  background: `${t.color}18`, border: `1px solid ${t.color}30`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 11, fontWeight: 700, color: t.color,
+                }}>
+                  {t.initials}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>{t.name}</p>
+                  <p style={{ fontSize: 10, color: '#475569', margin: '2px 0 0' }}>{t.role}</p>
+                </div>
+                <span style={{
+                  fontSize: 10, fontWeight: 600,
+                  padding: '3px 7px', borderRadius: 6,
+                  color: t.color, background: `${t.color}12`,
+                  maxWidth: 72, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                }}>
+                  {t.project}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* SLA */}
+        <div style={{ ...anim(620), borderRadius: 16, background: CARD, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)', border: `1px solid ${EDGE}`, padding: 20 }}>
+          <p style={{ fontSize: 12, fontWeight: 600, color: '#e2e8f0', margin: '0 0 16px' }}>SLA Performance</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {SLA_ITEMS.map(s => (
+              <div key={s.metric}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                  <span style={{ fontSize: 11, fontWeight: 500, color: '#64748b' }}>{s.metric}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: s.met ? GREEN : AMBER, fontVariantNumeric: 'tabular-nums' }}>
+                      {s.current}
+                    </span>
+                    <span style={{ fontSize: 10, color: '#334155' }}>/ {s.target}</span>
+                    {s.met
+                      ? <CheckCircle2 style={{ width: 11, height: 11, color: GREEN }} />
+                      : <AlertTriangle style={{ width: 11, height: 11, color: AMBER }} />
+                    }
+                  </div>
+                </div>
+                <div style={{ height: 3, borderRadius: 999, background: EDGE }}>
+                  <div style={{
+                    height: '100%', borderRadius: 999,
+                    width: `${s.pct}%`,
+                    background: s.met ? GREEN : AMBER,
+                    boxShadow: `0 0 6px ${s.met ? GREEN : AMBER}55`,
+                  }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Activity */}
+        <div style={{ ...anim(680), borderRadius: 16, background: CARD, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)', border: `1px solid ${EDGE}`, padding: 20 }}>
+          <p style={{ fontSize: 12, fontWeight: 600, color: '#e2e8f0', margin: '0 0 16px' }}>Recent Activity</p>
+          <div style={{ position: 'relative', paddingLeft: 16 }}>
+            <div style={{ position: 'absolute', left: 5, top: 0, bottom: 0, width: 1, background: EDGE }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {ACTIVITY.map((a, i) => (
+                <div key={i} style={{ position: 'relative' }}>
+                  <div style={{
+                    position: 'absolute', left: -16, top: 3,
+                    width: 10, height: 10, borderRadius: '50%',
+                    background: `${a.color}18`,
+                    border: `2px solid ${a.color}`,
+                    boxShadow: `0 0 5px ${a.color}40`,
+                  }} />
+                  <p style={{ fontSize: 12, color: '#cbd5e1', margin: 0, lineHeight: 1.5 }}>{a.title}</p>
+                  <p style={{ fontSize: 10, color: '#334155', margin: '3px 0 0' }}>{a.date}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   )

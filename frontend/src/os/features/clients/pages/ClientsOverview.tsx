@@ -5,29 +5,44 @@ import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card } from '@design-system/components/Card'
 import { StatCard } from '@design-system/components/StatCard'
-import { Badge } from '@design-system/components/Badge'
 import { Avatar } from '@design-system/components/Avatar'
 import { Input } from '@design-system/components/Input'
 import { Progress } from '@design-system/components/Progress'
 import { BulkActionBar } from '@components/BulkActionBar'
+import { InlineSelect } from '@components/InlineSelect'
 import { useClientsStore } from '../store'
 import { api, isDemo } from '@lib/api'
 import type { ClientHealth, RelationshipTier, ClientStatus } from '../types'
 
-const HEALTH_VARIANT: Record<ClientHealth, 'success' | 'warning' | 'danger' | 'info'> = {
-  excellent: 'info', good: 'success', 'at-risk': 'warning', critical: 'danger',
-}
+const HEALTH_OPTIONS = [
+  { value: 'excellent', label: 'Excellent', variant: 'info'    as const },
+  { value: 'good',      label: 'Good',      variant: 'success' as const },
+  { value: 'at-risk',   label: 'At Risk',   variant: 'warning' as const },
+  { value: 'critical',  label: 'Critical',  variant: 'danger'  as const },
+]
+const STATUS_OPTIONS = [
+  { value: 'active',     label: 'Active',     variant: 'success' as const },
+  { value: 'onboarding', label: 'Onboarding', variant: 'info'    as const },
+  { value: 'paused',     label: 'Paused',     variant: 'warning' as const },
+  { value: 'churned',    label: 'Churned',    variant: 'neutral' as const },
+]
+
 const TIER_COLOR: Record<RelationshipTier, string> = {
   strategic:  'bg-os-blue/20 text-os-cyan border border-os-cyan/30',
   enterprise: 'bg-violet-900/20 text-violet-300 border border-violet-500/30',
-  standard:   'bg-os-s1 text-slate-300 border border-os-border',
-  starter:    'bg-slate-900 text-slate-300 border border-os-border',
+  standard:   'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border border-white/10 border-t-white/20',
+  starter:    'bg-slate-900 text-slate-300 border border-white/10 border-t-white/20',
 }
 const fmt = (n: number) => `₹${(n / 1000).toFixed(0)}k`
 
 export function ClientsOverview() {
-  const { clients, setSelected, bulkUpdateClients, bulkDeleteClients } = useClientsStore()
+  const { clients, setSelected, updateClient, bulkUpdateClients, bulkDeleteClients } = useClientsStore()
   const navigate = useNavigate()
+
+  function patchClient(id: string, patch: Partial<Parameters<typeof updateClient>[1]>) {
+    updateClient(id, patch)
+    if (!isDemo()) api.patch(`/admin/crm/clients/${id}`, patch)
+  }
   const [search, setSearch] = useState('')
   const [tierFilter, setTier] = useState<RelationshipTier | 'all'>('all')
   const [selecting, setSelecting] = useState(false)
@@ -120,7 +135,7 @@ export function ClientsOverview() {
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border ${
             selecting
               ? 'bg-os-blue/20 text-os-cyan border-os-cyan/40'
-              : 'bg-os-s1 text-slate-400 border-os-border hover:text-white'
+              : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-400 border-white/10 border-t-white/20 hover:text-white'
           }`}
         >
           <CheckSquare className="w-3.5 h-3.5" />
@@ -132,7 +147,7 @@ export function ClientsOverview() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Total ARR"       value={fmt(totalARR)} icon={<DollarSign    className="w-5 h-5"/>} iconColor="bg-os-blue/20 text-os-cyan" change={14} changeLabel="YoY" />
         <StatCard label="Active Clients"  value={activeCount}   icon={<Users         className="w-5 h-5"/>} iconColor="bg-[#00c875]/20 text-[#00c875]"   />
-        <StatCard label="At Risk / Critical" value={atRisk}     icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-[#fdab3d]/20 text-[#fdab3d]' : 'bg-os-s1 text-slate-300'} />
+        <StatCard label="At Risk / Critical" value={atRisk}     icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-[#fdab3d]/20 text-[#fdab3d]' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'} />
         <StatCard label="Avg Satisfaction" value={`${avgNPS}`}  icon={<Star          className="w-5 h-5"/>} iconColor="bg-[#fdab3d]/20 text-[#fdab3d]" suffix="/100" />
       </div>
 
@@ -140,14 +155,14 @@ export function ClientsOverview() {
       <div className="flex items-center gap-3 flex-wrap">
         <Input placeholder="Search clients…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-56" value={search} onChange={e => setSearch(e.target.value)} />
         {(['all','strategic','enterprise','standard','starter'] as const).map(t => (
-          <button key={t} onClick={() => setTier(t)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${tierFilter === t ? 'bg-os-cyan text-[#0F172A]' : 'bg-os-s1 border border-os-border text-slate-300 hover:text-white'}`}>
+          <button key={t} onClick={() => setTier(t)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${tierFilter === t ? 'bg-os-cyan text-[#0F172A]' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:text-white'}`}>
             {t === 'all' ? 'All Tiers' : t}
           </button>
         ))}
         {selecting && visible.length > 0 && (
           <button
             onClick={toggleAll}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 border border-os-border bg-os-s1 hover:text-white transition-colors ml-auto"
+            className="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:text-white transition-colors ml-auto"
           >
             {visible.every(c => selectedIds.has(c.id)) ? 'Deselect All' : `Select All (${visible.length})`}
           </button>
@@ -159,7 +174,7 @@ export function ClientsOverview() {
         {visible.map(client => (
           <StaggerItem key={client.id}>
           <Card
-            className={`hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 cursor-pointer h-full border-os-border relative ${
+            className={`hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 cursor-pointer h-full border-white/10 border-t-white/20 relative ${
               selecting && selectedIds.has(client.id) ? 'ring-2 ring-[#2564ea] border-os-blue/60' : ''
             }`}
             onClick={() => openClient(client.id)}
@@ -170,7 +185,7 @@ export function ClientsOverview() {
                   type="checkbox"
                   checked={selectedIds.has(client.id)}
                   onChange={() => toggleSelect(client.id)}
-                  className="w-4 h-4 rounded border-os-border bg-slate-900 accent-[#2564ea] cursor-pointer"
+                  className="w-4 h-4 rounded border-white/10 border-t-white/20 bg-slate-900 accent-[#2564ea] cursor-pointer"
                 />
               </div>
             )}
@@ -190,7 +205,12 @@ export function ClientsOverview() {
                     <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full capitalize ${TIER_COLOR[client.tier]}`}>
                       {client.tier}
                     </span>
-                    <Badge variant={HEALTH_VARIANT[client.health]} dot size="sm">{client.health}</Badge>
+                    <InlineSelect
+                      value={client.health}
+                      options={HEALTH_OPTIONS}
+                      onChange={v => patchClient(client.id, { health: v as ClientHealth })}
+                      dot
+                    />
                   </div>
                 </div>
 
@@ -201,9 +221,11 @@ export function ClientsOverview() {
                   <span className="font-semibold text-slate-200 text-sm">{fmt(client.arr)}<span className="font-normal text-slate-500 text-xs"> ARR</span></span>
                   <span>Owner: <strong className="text-slate-300">{client.owner.split(' ')[0]}</strong></span>
                   <span>NPS <strong className={client.satisfactionScore >= 75 ? 'text-[#00c875]' : client.satisfactionScore >= 55 ? 'text-[#fdab3d]' : 'text-[#e2445c]'}>{client.satisfactionScore}</strong></span>
-                  <Badge variant={client.status === 'active' ? 'success' : client.status === 'onboarding' ? 'info' : client.status === 'paused' ? 'warning' : 'neutral'} size="sm" className="ml-auto">
-                    {client.status}
-                  </Badge>
+                  <InlineSelect
+                    value={client.status}
+                    options={STATUS_OPTIONS}
+                    onChange={v => patchClient(client.id, { status: v as ClientStatus })}
+                  />
                 </div>
 
                 {/* Contract progress */}
@@ -222,7 +244,7 @@ export function ClientsOverview() {
                 )}
 
                 {/* Contacts */}
-                <div className="flex items-center gap-2 mt-3 pt-3 border-t border-os-border">
+                <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/10 border-t-white/20">
                   <div className="flex -space-x-2">
                     {client.contacts.slice(0, 3).map(ct => (
                       <div key={ct.id} className="ring-2 ring-os-s1 rounded-full">

@@ -22,7 +22,7 @@ export function JournalistHome() {
           <Newspaper className="w-6 h-6 text-pink-600" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-white">Press &amp; Media Hub</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-white">Press &amp; Media Hub</h1>
           <p className="text-slate-500 mt-1 text-sm">Resources for verified press and media professionals covering Kangqore.</p>
         </div>
       </div>
@@ -47,8 +47,8 @@ export function JournalistHome() {
         <h2 className="text-base font-bold text-slate-200 mb-4">Press Resources</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {resources.map(({ icon: Icon, label, desc, tag }) => (
-            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-os-border bg-os-s1 hover:shadow-sm transition-shadow">
-              <div className="w-10 h-10 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
+            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:shadow-sm transition-shadow">
+              <div className="w-10 h-10 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0">
                 <Icon className="w-5 h-5 text-slate-500" />
               </div>
               <div className="flex-1 min-w-0">
@@ -56,7 +56,7 @@ export function JournalistHome() {
                 <p className="text-slate-500 text-xs truncate">{desc}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-os-s1 text-slate-500">{tag}</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500">{tag}</span>
                 <Download className="w-4 h-4 text-slate-500 hover:text-slate-300 cursor-pointer" />
               </div>
             </div>
@@ -69,7 +69,7 @@ export function JournalistHome() {
         <h2 className="text-base font-bold text-slate-200 mb-4">Latest News</h2>
         <div className="space-y-3">
           {latestNews.map(({ date, headline }) => (
-            <div key={headline} className="flex items-start gap-4 p-4 rounded-2xl border border-os-border bg-os-s1 hover:shadow-sm transition-shadow group">
+            <div key={headline} className="flex items-start gap-4 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:shadow-sm transition-shadow group">
               <span className="text-xs font-semibold text-slate-500 mt-0.5 whitespace-nowrap">{date}</span>
               <p className="flex-1 text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{headline}</p>
               <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-slate-500 flex-shrink-0 transition-colors" />

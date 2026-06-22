@@ -58,7 +58,7 @@ export function PartnerEarnings() {
         ].map(s => (
           <div key={s.label} className={`rounded-xl p-5 ${s.color}`}>
             <p className="text-xs font-medium text-slate-500 mb-1">{s.label}</p>
-            <p className={`text-2xl font-bold ${s.text}`}>{s.value}</p>
+            <p className={`text-2xl font-bold tracking-tight ${s.text}`}>{s.value}</p>
           </div>
         ))}
       </div>
@@ -120,7 +120,7 @@ export function PartnerEarnings() {
         <CardBody className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-os-border bg-slate-900/50">
+              <tr className="border-b border-white/10 border-t-white/20 bg-slate-900/50">
                 {['Ref', 'Period', 'Projects', 'Date', 'Amount', 'Status', ''].map(h => (
                   <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide whitespace-nowrap">{h}</th>
                 ))}

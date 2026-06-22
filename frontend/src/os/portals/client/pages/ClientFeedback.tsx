@@ -1,68 +1,159 @@
-import { useState } from 'react'
+/**
+ * ClientFeedback — Apple-grade rebuild
+ * Same 4-surface design system: BG/CARD/RAISE/EDGE
+ */
+import { useState, useEffect } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Send, CheckCircle2 } from 'lucide-react'
-import { Card } from '@design-system/components/Card'
-import { Badge } from '@design-system/components/Badge'
-import { Button } from '@design-system/components/Button'
-import { Textarea } from '@design-system/components/Textarea'
+import { Send, CheckCircle2, Star } from 'lucide-react'
 import { api, isDemo } from '@lib/api'
 import { useClientFeedback } from '../useClientData'
 
-// ─── mock ─────────────────────────────────────────────────────────────────────
+// ── Design tokens ─────────────────────────────────────────────────────────────
+
+const CARD  = '#0d1117'
+const RAISE = '#121d30'
+const EDGE  = '#1e2b40'
+const GREEN  = '#00c875'
+const AMBER  = '#fdab3d'
+const RED    = '#e2445c'
+const BLUE   = '#2564ea'
+const EASE   = 'cubic-bezier(0.16, 1, 0.3, 1)'
+
+let _inj = false
+function ensureKf() {
+  if (_inj) return; _inj = true
+  const s = document.createElement('style')
+  s.textContent = `@keyframes _fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}`
+  document.head.appendChild(s)
+}
+const anim = (d: number): React.CSSProperties => ({ animation: `_fadeUp 0.55s ${EASE} ${d}ms both` })
+
+// ── NPS helpers ───────────────────────────────────────────────────────────────
+
+function npsColor(score: number): string {
+  if (score >= 9) return GREEN
+  if (score >= 7) return AMBER
+  return RED
+}
+
+function npsLabel(score: number): { label: string; description: string } {
+  if (score >= 9) return { label: 'Promoter',  description: 'You\'re a Promoter — thank you!' }
+  if (score >= 7) return { label: 'Passive',   description: 'You\'re Passive — help us improve.' }
+  return               { label: 'Detractor', description: 'You\'re a Detractor — we want to do better.' }
+}
+
+// ── Mock data ─────────────────────────────────────────────────────────────────
 
 const MOCK_FEEDBACK = [
   {
-    id: 'fb1', npsScore: 9, comment: 'The team has been incredibly responsive and the delivery quality has been excellent. The HIPAA compliance work was particularly thorough.',
+    id: 'fb1', npsScore: 9,
+    comment: 'The team has been incredibly responsive and the delivery quality has been excellent. The HIPAA compliance work was particularly thorough.',
     project: { title: 'HIPAA Compliance Layer' }, createdAt: '2026-05-20T10:00:00Z',
   },
   {
-    id: 'fb2', npsScore: 7, comment: 'Good progress overall. Would appreciate more frequent status updates — sometimes we are left guessing on milestone timing.',
+    id: 'fb2', npsScore: 7,
+    comment: 'Good progress overall. Would appreciate more frequent status updates — sometimes we are left guessing on milestone timing.',
     project: { title: 'Patient Portal v2' }, createdAt: '2026-04-15T09:00:00Z',
   },
 ]
 
-const PROJECTS_FOR_FEEDBACK = [
+const PROJECTS = [
   { id: 'pj1', title: 'Patient Portal v2' },
   { id: 'pj5', title: 'Analytics Dashboard' },
 ]
 
-// ─── helpers ──────────────────────────────────────────────────────────────────
+const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
-function npsLabel(score: number) {
-  if (score >= 9) return { label: 'Promoter',  color: 'text-[#00c875]',  bg: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.2)]'  }
-  if (score >= 7) return { label: 'Passive',   color: 'text-[#fdab3d]',  bg: 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.2)]'  }
-  return               { label: 'Detractor', color: 'text-[#e2445c]',    bg: 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.2)]'    }
-}
+// ── NPS button ────────────────────────────────────────────────────────────────
 
-function NpsButton({ score, selected, onSelect }: { score: number; selected: boolean; onSelect: () => void }) {
-  const { bg } = npsLabel(score)
+function NpsBtn({ score, selected, onSelect }: { score: number; selected: boolean; onSelect: () => void }) {
+  const color = npsColor(score)
   return (
-    <button
-      onClick={onSelect}
-      className={`w-9 h-9 rounded-xl text-sm font-bold border transition-all ${
-        selected
-          ? `${bg} border-transparent scale-110 shadow-md`
-          : 'bg-os-s1 border-os-border text-slate-500 hover:border-os-border'
-      }`}
-    >
+    <button onClick={onSelect} style={{
+      width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+      fontSize: 13, fontWeight: 700, cursor: 'pointer',
+      background: selected ? color : `${color}12`,
+      border: `1px solid ${selected ? color : `${color}30`}`,
+      color: selected ? '#fff' : color,
+      transform: selected ? 'scale(1.1)' : 'scale(1)',
+      boxShadow: selected ? `0 0 14px ${color}50` : 'none',
+      transition: `all 0.2s ${EASE}`,
+      fontVariantNumeric: 'tabular-nums',
+    }}>
       {score}
     </button>
   )
 }
 
-const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+// ── Score summary ring ────────────────────────────────────────────────────────
 
-// ─── page ─────────────────────────────────────────────────────────────────────
+function ScoreSummary({ avg, count }: { avg: number; count: number }) {
+  const color = npsColor(Math.round(avg))
+  const { label } = npsLabel(Math.round(avg))
+
+  return (
+    <div style={{
+      ...anim(0),
+      borderRadius: 20, padding: '24px 28px',
+      background: `linear-gradient(145deg, ${RAISE} 0%, ${CARD} 70%)`,
+      border: `1px solid ${EDGE}`,
+      boxShadow: `inset 0 1px 0 rgba(13,17,23,0.4)`,
+      display: 'flex', alignItems: 'center', gap: 32,
+      position: 'relative', overflow: 'hidden',
+    }}>
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: `radial-gradient(ellipse at 90% 50%, ${color}10 0%, transparent 60%)`,
+      }} />
+
+      {/* Big score */}
+      <div style={{ textAlign: 'center', flexShrink: 0 }}>
+        <div style={{ fontSize: 56, fontWeight: 900, color, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+          {avg.toFixed(1)}
+        </div>
+        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', marginTop: 6 }}>
+          Your NPS
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div style={{ width: 1, height: 64, background: EDGE, flexShrink: 0 }} />
+
+      {/* Details */}
+      <div>
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          padding: '5px 12px', borderRadius: 999, marginBottom: 10,
+          background: `${color}14`, border: `1px solid ${color}30`,
+        }}>
+          <Star style={{ width: 11, height: 11, color }} />
+          <span style={{ fontSize: 11, fontWeight: 700, color }}>{label}</span>
+        </div>
+        <p style={{ fontSize: 13, color: '#64748b', margin: 0 }}>
+          Based on <strong style={{ color: '#94a3b8' }}>{count}</strong> feedback submission{count !== 1 ? 's' : ''}
+        </p>
+        <p style={{ fontSize: 11, color: '#334155', margin: '6px 0 0' }}>
+          {avg >= 9 ? 'Your satisfaction is exceptional.' : avg >= 7 ? 'There is room to improve — we\'re listening.' : 'We take this seriously and will address your concerns.'}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 export function ClientFeedback() {
-  const { data }   = useClientFeedback()
-  const feedbacks  = (data as typeof MOCK_FEEDBACK | undefined)?.length ? data as typeof MOCK_FEEDBACK : MOCK_FEEDBACK
+  const { data }    = useClientFeedback()
+  const feedbacks   = ((data as typeof MOCK_FEEDBACK | undefined)?.length ? data as typeof MOCK_FEEDBACK : MOCK_FEEDBACK)
   const queryClient = useQueryClient()
 
-  const [nps,        setNps]        = useState<number | null>(null)
-  const [comment,    setComment]    = useState('')
-  const [projectId,  setProjectId]  = useState(PROJECTS_FOR_FEEDBACK[0].id)
-  const [submitted,  setSubmitted]  = useState(false)
+  useEffect(() => { ensureKf() }, [])
+
+  const [nps,       setNps]       = useState<number | null>(null)
+  const [comment,   setComment]   = useState('')
+  const [projectId, setProjectId] = useState(PROJECTS[0].id)
+  const [submitted, setSubmitted] = useState(false)
+  const [focused,   setFocused]   = useState<'textarea' | 'select' | null>(null)
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
@@ -74,137 +165,205 @@ export function ClientFeedback() {
     },
   })
 
-  const avgNps = feedbacks.length
+  const avg = feedbacks.length
     ? Math.round(feedbacks.reduce((s, f) => s + f.npsScore, 0) / feedbacks.length * 10) / 10
     : null
 
+  const labelCss = {
+    fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const,
+    color: '#334155', display: 'block', marginBottom: 8,
+  }
+
+  const inputBase: React.CSSProperties = {
+    width: '100%', background: RAISE, border: `1px solid ${EDGE}`,
+    borderRadius: 10, padding: '10px 12px', fontSize: 13, color: '#e2e8f0',
+    outline: 'none', transition: `border-color 0.15s`, resize: 'vertical' as const,
+    fontFamily: 'inherit',
+  }
+
   return (
-    <div className="space-y-8 max-w-2xl">
-      <div>
-        <h2 className="text-xl font-bold text-white">Feedback</h2>
-        <p className="text-sm text-slate-500 mt-0.5">Your satisfaction matters — share how we're doing</p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+
+      {/* Header */}
+      <div style={anim(0)}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>Feedback</h2>
+        <p style={{ fontSize: 13, color: '#475569', margin: '6px 0 0' }}>Your satisfaction matters — share how we're doing</p>
       </div>
 
-      {/* Current NPS summary */}
-      {avgNps !== null && (
-        <Card>
-          <div className="flex items-center gap-4">
-            <div className="text-center">
-              <div className={`text-4xl font-bold ${npsLabel(Math.round(avgNps)).color}`}>{avgNps}</div>
-              <div className="text-xs text-slate-500 mt-0.5">Your NPS</div>
-            </div>
-            <div className="h-12 w-px bg-os-s1" />
-            <div>
-              <Badge variant={avgNps >= 9 ? 'success' : avgNps >= 7 ? 'warning' : 'danger'} size="md">
-                {npsLabel(Math.round(avgNps)).label}
-              </Badge>
-              <p className="text-xs text-slate-500 mt-1">Based on {feedbacks.length} feedback submission{feedbacks.length !== 1 ? 's' : ''}</p>
-            </div>
-          </div>
-        </Card>
-      )}
+      {/* Score summary */}
+      {avg !== null && <ScoreSummary avg={avg} count={feedbacks.length} />}
 
-      {/* Submit new feedback */}
+      {/* Submit form */}
       {submitted ? (
-        <Card className="text-center py-8">
-          <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto mb-3" />
-          <p className="text-lg font-semibold text-slate-200">Thank you for your feedback!</p>
-          <p className="text-sm text-slate-500 mt-1">We read every response and use it to improve.</p>
-          <Button variant="secondary" size="sm" className="mt-4" onClick={() => { setSubmitted(false); setNps(null); setComment('') }}>
+        <div style={{
+          ...anim(80),
+          borderRadius: 20, padding: '40px 28px', textAlign: 'center',
+          background: CARD, border: `1px solid ${EDGE}`,
+        }}>
+          <div style={{
+            width: 56, height: 56, borderRadius: '50%',
+            background: `${GREEN}14`, border: `1px solid ${GREEN}30`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto 16px',
+          }}>
+            <CheckCircle2 style={{ width: 24, height: 24, color: GREEN }} />
+          </div>
+          <p style={{ fontSize: 16, fontWeight: 700, color: '#f1f5f9', margin: '0 0 8px' }}>Thank you for your feedback!</p>
+          <p style={{ fontSize: 13, color: '#475569', margin: '0 0 24px' }}>We read every response and use it to improve.</p>
+          <button
+            onClick={() => { setSubmitted(false); setNps(null); setComment('') }}
+            style={{
+              padding: '9px 20px', borderRadius: 10,
+              background: RAISE, border: `1px solid ${EDGE}`,
+              color: '#94a3b8', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+            }}>
             Submit another
-          </Button>
-        </Card>
+          </button>
+        </div>
       ) : (
-        <Card>
-          <h3 className="text-base font-semibold text-white mb-1">Share your feedback</h3>
-          <p className="text-xs text-slate-500 mb-5">How likely are you to recommend Kangqore to a colleague?</p>
+        <div style={{
+          ...anim(80),
+          borderRadius: 20, padding: 28,
+          background: CARD, border: `1px solid ${EDGE}`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.03)`,
+        }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: '#f1f5f9', margin: '0 0 6px' }}>Share your feedback</h3>
+          <p style={{ fontSize: 12, color: '#475569', margin: '0 0 24px' }}>How likely are you to recommend Kangqore to a colleague?</p>
 
-          {/* Project selector */}
-          <div className="mb-5">
-            <label className="block text-xs font-semibold text-slate-500 mb-2">Project</label>
+          {/* Project */}
+          <div style={{ marginBottom: 24 }}>
+            <label style={labelCss}>Project</label>
             <select
               value={projectId}
               onChange={e => setProjectId(e.target.value)}
-              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
-            >
-              {PROJECTS_FOR_FEEDBACK.map(p => (
-                <option key={p.id} value={p.id}>{p.title}</option>
-              ))}
+              onFocus={() => setFocused('select')}
+              onBlur={() => setFocused(null)}
+              style={{ ...inputBase, borderColor: focused === 'select' ? `${BLUE}60` : EDGE, appearance: 'none', cursor: 'pointer' }}>
+              {PROJECTS.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
             </select>
           </div>
 
           {/* NPS scale */}
-          <div className="mb-2">
-            <label className="block text-xs font-semibold text-slate-500 mb-3">
-              NPS score (0 = not likely, 10 = extremely likely)
+          <div style={{ marginBottom: 8 }}>
+            <label style={labelCss}>
+              How likely are you to recommend us? <span style={{ color: '#334155', fontWeight: 500 }}>(0 = not likely · 10 = extremely likely)</span>
             </label>
-            <div className="flex items-center gap-1.5 flex-wrap">
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {Array.from({ length: 11 }, (_, i) => (
-                <NpsButton key={i} score={i} selected={nps === i} onSelect={() => setNps(i)} />
+                <NpsBtn key={i} score={i} selected={nps === i} onSelect={() => setNps(i)} />
               ))}
             </div>
-            <div className="flex justify-between text-[10px] text-slate-500 mt-1.5 px-1">
-              <span>Not likely at all</span>
-              <span>Extremely likely</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
+              <span style={{ fontSize: 10, color: '#334155' }}>Not likely</span>
+              <span style={{ fontSize: 10, color: '#334155' }}>Extremely likely</span>
             </div>
           </div>
 
-          {nps !== null && (
-            <div className={`mt-3 p-2.5 rounded-xl ${npsLabel(nps).bg}`}>
-              <p className="text-xs font-bold text-white">
-                {nps >= 9 ? 'You\'re a Promoter — thank you!' : nps >= 7 ? 'You\'re Passive — help us improve.' : 'You\'re a Detractor — please tell us more.'}
-              </p>
-            </div>
-          )}
+          {/* Score interpretation */}
+          {nps !== null && (() => {
+            const color = npsColor(nps)
+            const { label, description } = npsLabel(nps)
+            return (
+              <div style={{
+                margin: '16px 0 24px',
+                padding: '12px 16px', borderRadius: 12,
+                background: `${color}10`, border: `1px solid ${color}25`,
+                display: 'flex', alignItems: 'center', gap: 10,
+              }}>
+                <div style={{
+                  width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                  background: `${color}20`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 14, fontWeight: 900, color,
+                  fontVariantNumeric: 'tabular-nums',
+                }}>
+                  {nps}
+                </div>
+                <div>
+                  <span style={{ fontSize: 11, fontWeight: 700, color, letterSpacing: '0.04em' }}>{label}</span>
+                  <p style={{ fontSize: 12, color: '#64748b', margin: '2px 0 0' }}>{description}</p>
+                </div>
+              </div>
+            )
+          })()}
 
           {/* Comment */}
-          <div className="mt-5">
-            <label className="block text-xs font-semibold text-slate-500 mb-2">What's one thing we could do better?</label>
-            <Textarea
+          <div style={{ marginBottom: 24 }}>
+            <label style={labelCss}>What's one thing we could do better? <span style={{ color: '#334155', fontWeight: 500 }}>(optional)</span></label>
+            <textarea
               value={comment}
               onChange={e => setComment(e.target.value)}
+              onFocus={() => setFocused('textarea')}
+              onBlur={() => setFocused(null)}
               rows={3}
-              placeholder="Your comment (optional)…"
+              placeholder="Your comment…"
+              style={{ ...inputBase, borderColor: focused === 'textarea' ? `${BLUE}60` : EDGE }}
             />
           </div>
 
-          <div className="mt-5 flex justify-end">
-            <Button
-              variant="primary"
-              size="sm"
-              leftIcon={<Send className="w-3.5 h-3.5" />}
+          {/* Submit */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button
               disabled={nps === null || isPending}
               onClick={() => mutate()}
-            >
-              Submit feedback
-            </Button>
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '10px 20px', borderRadius: 10, border: 'none',
+                background: nps === null ? RAISE : BLUE,
+                color: nps === null ? '#334155' : '#fff',
+                fontSize: 13, fontWeight: 600,
+                cursor: nps === null ? 'not-allowed' : 'pointer',
+                boxShadow: nps !== null ? `0 4px 14px ${BLUE}40` : 'none',
+                transition: `all 0.2s ${EASE}`,
+              }}>
+              <Send style={{ width: 13, height: 13 }} />
+              {isPending ? 'Submitting…' : 'Submit feedback'}
+            </button>
           </div>
-        </Card>
+        </div>
       )}
 
       {/* History */}
       {feedbacks.length > 0 && (
-        <div>
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Previous submissions</p>
-          <div className="space-y-3">
-            {feedbacks.map(f => {
-              const { label, bg } = npsLabel(f.npsScore)
+        <div style={anim(160)}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', margin: '0 0 12px' }}>
+            Previous Submissions
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {feedbacks.map((f, i) => {
+              const color = npsColor(f.npsScore)
+              const { label } = npsLabel(f.npsScore)
               return (
-                 <Card key={f.id}>
-                   <div className="flex items-start gap-4">
-                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg ${bg} flex-shrink-0`}>
-                       {f.npsScore}
-                     </div>
-                     <div className="flex-1 min-w-0">
-                       <div className="flex items-center gap-2 mb-1">
-                        <Badge variant={f.npsScore >= 9 ? 'success' : f.npsScore >= 7 ? 'warning' : 'danger'} size="sm">{label}</Badge>
-                        <span className="text-xs text-slate-500">{f.project?.title}</span>
-                      </div>
-                      {f.comment && <p className="text-sm text-slate-500 leading-relaxed">{f.comment}</p>}
-                      <p className="text-[11px] text-slate-500 mt-1">{fmtDate(f.createdAt)}</p>
-                    </div>
+                <div key={f.id} style={{
+                  animation: `_fadeUp 0.55s ${EASE} ${180 + i * 60}ms both`,
+                  borderRadius: 16, padding: '16px 20px',
+                  background: CARD, border: `1px solid ${EDGE}`,
+                  display: 'flex', gap: 16, alignItems: 'flex-start',
+                }}>
+                  {/* Score bubble */}
+                  <div style={{
+                    width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+                    background: `${color}14`, border: `1px solid ${color}30`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 18, fontWeight: 900, color,
+                    fontVariantNumeric: 'tabular-nums',
+                  }}>
+                    {f.npsScore}
                   </div>
-                </Card>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                      <span style={{
+                        fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 999,
+                        color, background: `${color}14`, border: `1px solid ${color}25`,
+                      }}>{label}</span>
+                      <span style={{ fontSize: 11, color: '#334155' }}>{f.project?.title}</span>
+                    </div>
+                    {f.comment && (
+                      <p style={{ fontSize: 13, color: '#64748b', margin: '0 0 6px', lineHeight: 1.6 }}>{f.comment}</p>
+                    )}
+                    <p style={{ fontSize: 10, color: '#1e2b40', margin: 0 }}>{fmtDate(f.createdAt)}</p>
+                  </div>
+                </div>
               )
             })}
           </div>

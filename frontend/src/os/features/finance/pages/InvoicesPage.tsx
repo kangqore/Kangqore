@@ -57,7 +57,7 @@ export function InvoicesPage() {
         <StatCard label="Total Invoiced" value={`₹${(totalInvoiced() / 1000).toFixed(0)}k`}  iconColor="bg-blue-100 text-blue-600"   icon={<FileText className="w-5 h-5" />} />
         <StatCard label="Collected"      value={`₹${(totalCollected() / 1000).toFixed(0)}k`} iconColor="bg-green-100 text-green-600" icon={<FileText className="w-5 h-5" />} />
         <StatCard label="Awaiting"       value={`₹${(sent / 1000).toFixed(0)}k`}             iconColor="bg-amber-100 text-amber-600" icon={<FileText className="w-5 h-5" />} />
-        <StatCard label="Overdue"        value={`₹${(totalOverdue() / 1000).toFixed(0)}k`}   iconColor={totalOverdue() > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-300'} icon={<FileText className="w-5 h-5" />} />
+        <StatCard label="Overdue"        value={`₹${(totalOverdue() / 1000).toFixed(0)}k`}   iconColor={totalOverdue() > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'} icon={<FileText className="w-5 h-5" />} />
       </div>
 
       {/* Filters */}
@@ -75,7 +75,7 @@ export function InvoicesPage() {
               key={s}
               onClick={() => setStatus(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                statusFilter === s ? 'bg-blue-600 text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
+                statusFilter === s ? 'bg-blue-600 text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-blue-300'
               }`}
             >
               {s}
@@ -89,7 +89,7 @@ export function InvoicesPage() {
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-os-border bg-slate-900">
+            <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
               {['Invoice #', 'Client', 'Project', 'Amount', 'Issued', 'Due', 'Status', ''].map(h => (
                 <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
@@ -179,7 +179,7 @@ export function InvoicesPage() {
                 <span className="col-span-2 text-right">Amount</span>
               </div>
               {selected.items.map((item, i) => (
-                <div key={i} className="grid grid-cols-12 text-sm py-2 border-b border-os-border last:border-0">
+                <div key={i} className="grid grid-cols-12 text-sm py-2 border-b border-white/10 border-t-white/20 last:border-0">
                   <span className="col-span-6 text-slate-300">{item.description}</span>
                   <span className="col-span-2 text-right text-slate-500">{item.quantity}</span>
                   <span className="col-span-2 text-right text-slate-500">{fmt(item.rate)}</span>

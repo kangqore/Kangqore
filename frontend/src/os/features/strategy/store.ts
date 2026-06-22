@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { PILLARS, PROGRAMS, OBJECTIVES } from './data'
 import type { Pillar, Program, Objective, Quarter } from './types'
 
 interface StrategyStore {
@@ -14,9 +13,9 @@ interface StrategyStore {
 }
 
 export const useStrategyStore = create<StrategyStore>((set, get) => ({
-  pillars: PILLARS,
-  programs: PROGRAMS,
-  objectives: OBJECTIVES,
+  pillars: [],
+  programs: [],
+  objectives: [],
   selectedQuarter: 'Q2 2026',
 
   setSelectedQuarter: (q) => set({ selectedQuarter: q }),

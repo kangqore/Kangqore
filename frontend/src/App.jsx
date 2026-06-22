@@ -129,6 +129,9 @@ const AgentLogsModule    = React.lazy(() => import('./os/features/agent-logs').t
 const SystemsModule      = React.lazy(() => import('./os/features/systems').then(m => ({ default: m.SystemsModule })));
 const SettingsModule     = React.lazy(() => import('./os/features/settings').then(m => ({ default: m.SettingsModule })));
 const SchedulingModule   = React.lazy(() => import('./os/features/scheduling').then(m => ({ default: m.SchedulingModule })));
+const AegisModule        = React.lazy(() => import('./os/features/aegis').then(m => ({ default: m.AegisModule })));
+const BidsModule         = React.lazy(() => import('./os/features/bids').then(m => ({ default: m.BidsModule })));
+const OpsCentreModule    = React.lazy(() => import('./os/features/ops-centre').then(m => ({ default: m.OpsCentreModule })));
 const ClientPortal       = React.lazy(() => import('./os/portals/client').then(m => ({ default: m.ClientPortal })));
 const PartnerPortal      = React.lazy(() => import('./os/portals/partner').then(m => ({ default: m.PartnerPortal })));
 const InvestorPortal     = React.lazy(() => import('./os/portals/investor').then(m => ({ default: m.InvestorPortal })));
@@ -254,6 +257,9 @@ function AppContent() {
             <Route path="agent-logs"       element={<AgentLogsModule />}     />
             <Route path="systems/*"        element={<SystemsModule />}       />
             <Route path="scheduling/*"     element={<SchedulingModule />}    />
+            <Route path="bids/*"           element={<BidsModule />}          />
+            <Route path="ops-centre/*"     element={<OpsCentreModule />}     />
+            <Route path="aegis/*"          element={<AegisModule />}         />
             <Route path="settings/*"       element={<SettingsModule />}      />
           </Route>
 

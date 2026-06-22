@@ -37,11 +37,11 @@ export function EarningsPage() {
         {[
           { label: 'Total Paid Out', value: fmtK(totalPaid),   bg: 'bg-green-50 border-green-100', text: 'text-green-700' },
           { label: 'Pending',        value: fmtK(totalPending), bg: 'bg-amber-50 border-amber-100', text: 'text-amber-700' },
-          { label: 'Overdue',        value: fmtK(totalOverdue), bg: totalOverdue > 0 ? 'bg-red-50 border-red-100' : 'bg-slate-900 border-os-border', text: totalOverdue > 0 ? 'text-red-700' : 'text-slate-500' },
+          { label: 'Overdue',        value: fmtK(totalOverdue), bg: totalOverdue > 0 ? 'bg-red-50 border-red-100' : 'bg-slate-900 border-white/10 border-t-white/20', text: totalOverdue > 0 ? 'text-red-700' : 'text-slate-500' },
         ].map(c => (
           <div key={c.label} className={`${c.bg} border rounded-2xl p-5`}>
             <p className="text-xs font-semibold opacity-60 mb-1">{c.label}</p>
-            <p className={`text-2xl font-bold ${c.text}`}>{c.value}</p>
+            <p className={`text-2xl font-bold tracking-tight ${c.text}`}>{c.value}</p>
           </div>
         ))}
       </div>
@@ -104,7 +104,7 @@ export function EarningsPage() {
         </CardHeader>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-os-border bg-slate-900">
+            <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
               {['Invoice','Partner','Description','Amount','Issued','Due','Status'].map(h=>(
                 <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}

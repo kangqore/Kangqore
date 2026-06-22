@@ -20,10 +20,10 @@ const CATEGORY_ICON: Record<InsightCategory, React.FC<{ className?: string }>> =
 }
 
 const PRIORITY_STYLES: Record<string, string> = {
-  critical: 'border-l-4 border-l-[#e2445c] bg-os-s1 border-y border-r border-os-border shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
-  high:     'border-l-4 border-l-[#fdab3d] bg-os-s1 border-y border-r border-os-border shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
-  medium:   'border-l-4 border-l-[#0073ea] bg-os-s1 border-y border-r border-os-border shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
-  low:      'border-l-4 border-l-slate-500 bg-os-s1 border-y border-r border-os-border shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
+  critical: 'border-l-4 border-l-[#e2445c] bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-y border-r border-white/10 border-t-white/20 shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
+  high:     'border-l-4 border-l-[#fdab3d] bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-y border-r border-white/10 border-t-white/20 shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
+  medium:   'border-l-4 border-l-[#0073ea] bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-y border-r border-white/10 border-t-white/20 shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
+  low:      'border-l-4 border-l-slate-500 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-y border-r border-white/10 border-t-white/20 shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
 }
 
 const PRIORITY_ICON_COLOR: Record<string, string> = {
@@ -37,7 +37,7 @@ const PRIORITY_BADGE: Record<string, string> = {
   critical: 'bg-[#e2445c] text-white font-extrabold shadow-sm',
   high:     'bg-[#fdab3d] text-white font-extrabold shadow-sm',
   medium:   'bg-[#0073ea] text-white font-extrabold shadow-sm',
-  low:      'bg-slate-900 text-slate-300 font-extrabold shadow-sm border border-os-border',
+  low:      'bg-slate-900 text-slate-300 font-extrabold shadow-sm border border-white/10 border-t-white/20',
 }
 
 function SignalRow({ insight, expanded }: { insight: Insight; expanded: boolean }) {
@@ -60,9 +60,9 @@ function SignalRow({ insight, expanded }: { insight: Insight; expanded: boolean 
           </div>
           <p className="text-xs text-slate-500 mt-1 leading-relaxed">{insight.summary}</p>
           {expanded && (
-            <div className="mt-2 pt-2 border-t border-os-border space-y-1.5">
+            <div className="mt-2 pt-2 border-t border-white/10 border-t-white/20 space-y-1.5">
               <p className="text-xs text-slate-300 leading-relaxed">{insight.detail}</p>
-              <div className="flex items-start gap-2 mt-2.5 bg-slate-900 border border-os-border rounded-xl p-2.5">
+              <div className="flex items-start gap-2 mt-2.5 bg-slate-900 border border-white/10 border-t-white/20 rounded-xl p-2.5">
                 <ArrowRight className="w-3.5 h-3.5 text-os-cyan flex-shrink-0 mt-0.5" />
                 <p className="text-xs font-semibold text-slate-200">{insight.action}</p>
               </div>
@@ -133,7 +133,7 @@ export function KIMMPSignalBar({ module, className }: KIMMPSignalBarProps) {
 
       {/* Signal content */}
       {expanded && (
-        <div className="border border-t-0 border-os-border bg-slate-900 rounded-b-xl p-3 space-y-2">
+        <div className="border border-t-0 border-white/10 border-t-white/20 bg-slate-900 rounded-b-xl p-3 space-y-2">
           <SignalRow insight={topSignal} expanded={detailExpanded} />
           {rest.length > 0 && detailExpanded && rest.map(s => (
             <SignalRow key={s.id} insight={s} expanded={false} />

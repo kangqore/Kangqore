@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { DECISIONS, CHANGE_REQUESTS, AUDIT_LOGS } from './data'
 import type { Decision, ChangeRequest, AuditLog } from './types'
 
 interface GovernanceStore {
@@ -17,10 +16,10 @@ interface GovernanceStore {
 }
 
 export const useGovernanceStore = create<GovernanceStore>((set) => ({
-  decisions:      DECISIONS,
-  changeRequests: CHANGE_REQUESTS,
-  auditLogs:      AUDIT_LOGS,
-  isLoading:      false,
+  decisions:      [],
+  changeRequests: [],
+  auditLogs:      [],
+  isLoading:      true,
   error:          null,
 
   hydrateDecisions:      (d) => set({ decisions: d }),

@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { RISKS } from './data'
 import type { Risk } from './types'
 
 interface DeliveryStore {
@@ -12,8 +11,8 @@ interface DeliveryStore {
 }
 
 export const useDeliveryStore = create<DeliveryStore>((set) => ({
-  risks:     RISKS,
-  isLoading: false,
+  risks:     [],
+  isLoading: true,
   error:     null,
 
   hydrate: (risks) => set({ risks, isLoading: false, error: null }),

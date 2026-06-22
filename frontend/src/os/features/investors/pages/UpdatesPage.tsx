@@ -50,7 +50,7 @@ function UpdateCard({ update, isOpen, onToggle }: { update: InvestorUpdate; isOp
       </div>
 
       {isOpen && (
-        <div className="border-t border-os-border px-5 pb-5 pt-4 space-y-5">
+        <div className="border-t border-white/10 border-t-white/20 px-5 pb-5 pt-4 space-y-5">
           {/* Metrics grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <MetricTile label="MRR" value={`₹${(m.mrr / 1000).toFixed(1)}k`} sub={`+${m.mrrGrowth}% MoM`} trend="up" />

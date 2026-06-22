@@ -35,7 +35,7 @@ function ForecastCard({ insight }: { insight: Insight }) {
   const config = CATEGORY_CONFIG[insight.category]
 
   return (
-    <div className={`bg-os-s1 rounded-xl border border-os-border border-l-4 shadow-sm ${PRIORITY_BORDER[insight.priority]}`}>
+    <div className={`bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-xl border border-white/10 border-t-white/20 border-l-4 shadow-sm ${PRIORITY_BORDER[insight.priority]}`}>
       {/* Forecast badge strip */}
       <div className="flex items-center gap-2 px-5 pt-3.5 pb-0">
         <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-violet-100 text-violet-700 uppercase tracking-wider">
@@ -75,7 +75,7 @@ function ForecastCard({ insight }: { insight: Insight }) {
         <p className="text-sm text-slate-500 leading-relaxed mb-3 ml-11">{insight.summary}</p>
 
         {expanded && (
-          <div className="ml-11 space-y-3 mb-3 pt-3 border-t border-os-border">
+          <div className="ml-11 space-y-3 mb-3 pt-3 border-t border-white/10 border-t-white/20">
             <p className="text-sm text-slate-300 leading-relaxed">{insight.detail}</p>
             {insight.forecastBasis && (
               <div className="flex items-start gap-2 bg-violet-50 border border-violet-100 rounded-xl p-3">
@@ -138,12 +138,12 @@ export function ForecastPage() {
           { label: 'Critical Risk',    value: criticalCount,     color: 'text-red-600 bg-red-50',       icon: AlertTriangle },
           { label: 'High Priority',    value: highCount,         color: 'text-orange-600 bg-orange-50', icon: Zap           },
         ].map(s => (
-          <div key={s.label} className="bg-os-s1 border border-os-border rounded-xl p-5 flex items-center gap-4 shadow-sm">
+          <div key={s.label} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-5 flex items-center gap-4 shadow-sm">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{s.value}</p>
+              <p className="text-2xl font-bold tracking-tight text-white">{s.value}</p>
               <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
             </div>
           </div>
@@ -162,12 +162,12 @@ export function ForecastPage() {
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
                 filter === cat
                   ? 'bg-violet-600 text-white border-violet-600'
-                  : 'bg-os-s1 text-slate-300 border-os-border hover:border-violet-300'
+                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border-white/10 border-t-white/20 hover:border-violet-300'
               }`}
             >
               {cat === 'all' ? 'All Forecasts' : CATEGORY_CONFIG[cat].label}
               <span className={`inline-flex items-center justify-center min-w-[1.1rem] h-[1.1rem] px-1 rounded-full text-[10px] font-bold ${
-                filter === cat ? 'bg-os-s1/20 text-white' : 'bg-os-s1 text-slate-300'
+                filter === cat ? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/20 text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'
               }`}>{count}</span>
             </button>
           )
@@ -184,7 +184,7 @@ export function ForecastPage() {
           .map(insight => <ForecastCard key={insight.id} insight={insight} />)
         }
         {filtered.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-center bg-os-s1 rounded-2xl border border-os-border">
+          <div className="flex flex-col items-center justify-center py-16 text-center bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-2xl border border-white/10 border-t-white/20">
             <div className="w-12 h-12 rounded-2xl bg-violet-50 flex items-center justify-center mb-4">
               <TrendingUp className="w-6 h-6 text-violet-300" />
             </div>

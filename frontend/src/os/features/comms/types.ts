@@ -6,6 +6,12 @@ export interface ContactInfo {
   role?:    string
 }
 
+export interface EmailAttachment {
+  name: string
+  url:  string
+  size: number
+}
+
 export interface EmailLog {
   id:            string
   subject:       string
@@ -16,6 +22,7 @@ export interface EmailLog {
   direction:     'inbound' | 'outbound'
   isRead:        boolean
   hasAttachment: boolean
+  attachments?:  EmailAttachment[] | null
   threadId?:     string
   replyToId?:    string
   createdAt:     string

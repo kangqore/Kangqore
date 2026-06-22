@@ -110,7 +110,7 @@ function ProjectRadarCard({ project }: { project: Project }) {
           <p className="text-xs text-slate-500 truncate">{project.client}</p>
         </div>
         <div className="flex flex-col items-end gap-1 flex-shrink-0">
-          <span className="text-2xl font-bold" style={{ color }}>{overall}</span>
+          <span className="text-2xl font-bold tracking-tight" style={{ color }}>{overall}</span>
           <Badge variant={badge.variant} dot size="sm">{badge.label}</Badge>
         </div>
       </div>
@@ -197,13 +197,13 @@ export function DeliveryHealthPage() {
           label="At Risk"
           value={atRisk}
           icon={<AlertTriangle className="w-5 h-5" />}
-          iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'}
+          iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'}
         />
         <StatCard
           label="Critical"
           value={critical}
           icon={<TrendingDown className="w-5 h-5" />}
-          iconColor={critical > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-300'}
+          iconColor={critical > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'}
         />
         <StatCard
           label="Open Risks"
@@ -226,7 +226,7 @@ export function DeliveryHealthPage() {
                   style={{ background: p.pillarColor }}
                 />
                 <span className="text-xs text-slate-500 w-40 truncate">{p.name}</span>
-                <div className="flex-1 h-2 bg-os-s1 rounded-full overflow-hidden">
+                <div className="flex-1 h-2 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{ width: `${score}%`, background: scoreColor(score) }}

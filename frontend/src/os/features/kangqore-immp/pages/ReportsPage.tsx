@@ -86,10 +86,10 @@ function ReportCard({ report }: { report: Report }) {
   const Icon = cfg?.icon ?? (({ className }) => <FileText className={className} />)
 
   return (
-    <div className="bg-os-s1 border border-os-border rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl shadow-sm overflow-hidden">
       <div className="p-4 space-y-3">
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0">
             <Icon className="w-4 h-4 text-slate-500" />
           </div>
           <div className="flex-1 min-w-0">
@@ -125,7 +125,7 @@ function ReportCard({ report }: { report: Report }) {
 
         {/* Sections */}
         {report.sections?.length > 0 && expanded && (
-          <div className="ml-11 space-y-4 pt-3 border-t border-os-border">
+          <div className="ml-11 space-y-4 pt-3 border-t border-white/10 border-t-white/20">
             {report.sections.map((s, i) => (
               <div key={i}>
                 <p className="text-xs font-bold text-slate-300 mb-1">{s.heading}</p>
@@ -193,7 +193,7 @@ export function ReportsPage() {
         </div>
         <button
           onClick={() => refetch()}
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-os-s1 transition-colors"
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
         </button>
@@ -207,7 +207,7 @@ export function ReportsPage() {
           return (
             <div key={rt.type} className={`border rounded-xl p-4 transition-all ${rt.color}`}>
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-os-s1/60 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/60 flex items-center justify-center flex-shrink-0">
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="flex-1">
@@ -218,7 +218,7 @@ export function ReportsPage() {
               <button
                 onClick={() => generate(rt.type)}
                 disabled={!!generating}
-                className="flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-os-s1/70 text-xs font-bold hover:bg-os-s1/90 transition-colors disabled:opacity-50 border border-current/20"
+                className="flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/70 text-xs font-bold hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/90 transition-colors disabled:opacity-50 border border-current/20"
               >
                 {isRunning ? <Spinner size="sm" /> : <Play className="w-3 h-3" />}
                 {isRunning ? 'Generating…' : 'Generate Now'}
@@ -252,7 +252,7 @@ export function ReportsPage() {
         {isLoading ? (
           <div className="flex justify-center py-8"><Spinner /></div>
         ) : reports.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 bg-os-s1 border border-os-border rounded-xl text-center">
+          <div className="flex flex-col items-center justify-center py-12 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl text-center">
             <FileText className="w-8 h-8 text-slate-200 mb-3" />
             <p className="text-sm text-slate-500">No reports generated yet.</p>
           </div>

@@ -46,7 +46,7 @@ export function PortfolioMap() {
     <div className="space-y-12 pb-16">
       {/* Title block with spacious bottom margin */}
       <div>
-        <h2 className="text-2xl font-bold text-os-cyan tracking-tight">Portfolio Map</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-os-cyan tracking-tight">Portfolio Map</h2>
         <p className="text-sm text-slate-500 mt-1">
           {programs.length} programs across {pillars.length} strategic pillars
         </p>
@@ -118,7 +118,7 @@ export function PortfolioMap() {
         <h3 className="text-base font-bold text-slate-200 mb-5 tracking-tight">All Programs</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {bubblePrograms.map(prog => (
-            <Card key={prog.id} padding="lg" className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between border border-os-border hover:border-os-border/80 bg-os-s1">
+            <Card key={prog.id} padding="lg" className="hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] cursor-pointer flex flex-col justify-between border border-white/10 border-t-white/20 hover:border-white/10 border-t-white/20/80 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10">
               <div>
                 {/* Pillar Accent Line */}
                 <div className="h-1.5 rounded-full mb-5 w-16" style={{ background: prog.pillarColor }} />
@@ -150,7 +150,7 @@ export function PortfolioMap() {
                 </div>
                 
                 {/* Footer specs with expanded padding */}
-                <div className="mt-5 pt-4 border-t border-os-border/80 flex items-center justify-between text-[11px] font-medium text-slate-500 tracking-wide">
+                <div className="mt-5 pt-4 border-t border-white/10 border-t-white/20/80 flex items-center justify-between text-[11px] font-medium text-slate-500 tracking-wide">
                   <span className="text-slate-500">₹{(prog.spent / 1000).toFixed(0)}k <span className="text-slate-350">/</span> ₹{(prog.budget / 1000).toFixed(0)}k</span>
                   <span>{prog.teamSize} people · ends {new Date(prog.endDate).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</span>
                 </div>

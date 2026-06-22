@@ -135,12 +135,12 @@ export function HiringCalculatorPage() {
             <p className="text-xl font-bold text-slate-200">{fmt(pipelineValue)}</p>
             <p className="text-[11px] text-slate-500 mt-0.5">{WIN_RATE_PCT * 100}% assumed win rate</p>
           </div>
-          <div className="p-4 bg-os-s1 border-l-4 border-l-[#0073ea] border-y border-r border-os-border rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="p-4 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-l-4 border-l-[#0073ea] border-y border-r border-white/10 border-t-white/20 rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
             <p className="text-xs text-[#0073ea] font-semibold mb-1.5 flex items-center gap-1.5"><DollarSign className="w-3.5 h-3.5" />Expected wins</p>
             <p className="text-xl font-bold text-slate-200">{fmt(expectedWins)}</p>
             <p className="text-[11px] text-slate-500 mt-1">Across {leads.filter(l => !['won','lost'].includes(l.stage)).length} active leads</p>
           </div>
-          <div className={`p-4 rounded-xl border-y border-r border-os-border border-l-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] bg-os-s1 ${capacityGap > 0 ? 'border-l-[#e2445c]' : 'border-l-[#00c875]'}`}>
+          <div className={`p-4 rounded-xl border-y border-r border-white/10 border-t-white/20 border-l-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 ${capacityGap > 0 ? 'border-l-[#e2445c]' : 'border-l-[#00c875]'}`}>
             <p className={`text-xs font-semibold mb-1.5 flex items-center gap-1.5 ${capacityGap > 0 ? 'text-[#e2445c]' : 'text-[#00c875]'}`}>
               <AlertTriangle className="w-3.5 h-3.5" />Demand vs capacity
             </p>
@@ -208,7 +208,7 @@ export function HiringCalculatorPage() {
         <div className="space-y-4 mt-2">
           {HIRE_RECOMMENDATIONS.map((rec, i) => (
             <div key={i}>
-              {i > 0 && <div className="h-px bg-os-s1 mb-4" />}
+              {i > 0 && <div className="h-px bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 mb-4" />}
               <div className="flex items-start gap-4">
                 <div className="w-8 h-8 rounded-xl bg-[#0073ea] flex items-center justify-center flex-shrink-0 text-white font-extrabold text-sm shadow-[0_2px_6px_rgba(0,115,234,0.2)]">
                   {i + 1}
@@ -229,7 +229,7 @@ export function HiringCalculatorPage() {
         </div>
 
         {hiresNeeded > 0 && (
-          <div className="mt-4 p-3 bg-os-s1 border-l-4 border-l-[#fdab3d] border-y border-r border-os-border rounded-xl">
+          <div className="mt-4 p-3 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-l-4 border-l-[#fdab3d] border-y border-r border-white/10 border-t-white/20 rounded-xl">
             <p className="text-xs text-slate-300 font-medium">
               At current pipeline conversion rate, start hiring now — average time-to-hire is {monthsToFill} months.
               Delaying risks capacity crunch in Q3.

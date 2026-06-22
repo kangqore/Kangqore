@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { DEPARTMENTS, ORG_NODES, DEPT_BUDGETS } from './data'
 import type { Department, OrgNode, DeptBudget } from './types'
 
 interface DepartmentsStore {
@@ -15,10 +14,10 @@ interface DepartmentsStore {
 }
 
 export const useDepartmentsStore = create<DepartmentsStore>((set, get) => ({
-  departments: DEPARTMENTS,
-  orgNodes:    ORG_NODES,
-  budgets:     DEPT_BUDGETS,
-  selectedId:  'd1',
+  departments: [],
+  orgNodes:    [],
+  budgets:     [],
+  selectedId:  '',
 
   hydrate:     (data) => set({ departments: data.departments, orgNodes: data.orgNodes, budgets: data.budgets }),
   setSelected: (id) => set({ selectedId: id }),

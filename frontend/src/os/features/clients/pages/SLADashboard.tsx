@@ -1,24 +1,122 @@
+import { useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { Plus, Shield } from 'lucide-react'
+import { InlineSelect } from '@components/InlineSelect'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '@lib/api'
 import { useClientsStore } from '../store'
 import type { SLAStatus } from '../types'
 
-const STATUS_VARIANT: Record<SLAStatus, 'success' | 'warning' | 'danger'> = {
-  met: 'success', 'at-risk': 'warning', breached: 'danger',
+const SLA_STATUS_OPTIONS = [
+  { value: 'met',      label: 'Met',      variant: 'success' as const },
+  { value: 'at-risk',  label: 'At Risk',  variant: 'warning' as const },
+  { value: 'breached', label: 'Breached', variant: 'danger'  as const },
+]
+const SLA_TREND_OPTIONS = [
+  { value: 'up',     label: 'Up',     variant: 'success' as const },
+  { value: 'stable', label: 'Stable', variant: 'neutral' as const },
+  { value: 'down',   label: 'Down',   variant: 'danger'  as const },
+]
+
+const inputStyle = { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)' }
+const inputClass = 'w-full rounded-lg px-3 py-2 text-[13px] text-slate-200 placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
+const EMPTY_SLA = { clientId: '', metric: '', target: '', current: '', unit: '%', period: 'Monthly', status: 'met' as const, trend: 'stable' as const }
+
+function AddSLAModal({ clients, onClose }: { clients: { id: string; name: string }[]; onClose: () => void }) {
+  const qc = useQueryClient()
+  const [form, setForm] = useState(EMPTY_SLA)
+  const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setForm(f => ({ ...f, [k]: e.target.value }))
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => api.post('/admin/crm/slas', { ...form, target: Number(form.target), current: Number(form.current) }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['admin','crm','slas'] }); onClose() },
+  })
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center">
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(2px)' }} onClick={onClose} />
+      <div className="relative z-10 w-full max-w-[420px] rounded-2xl p-5 flex flex-col gap-3"
+        style={{ background: 'rgba(10,13,24,0.98)', border: '1px solid rgba(255,255,255,0.09)', boxShadow: '0 32px 64px rgba(0,0,0,0.7)' }}>
+        <div className="flex items-center justify-between mb-1">
+          <h3 className="text-[14px] font-bold text-slate-100">Add SLA Metric</h3>
+          <button onClick={onClose} className="text-slate-600 hover:text-slate-300 text-lg leading-none">×</button>
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Client *</label>
+          <select required value={form.clientId} onChange={set('clientId')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
+            <option value="">Select client…</option>
+            {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Metric *</label>
+          <input value={form.metric} onChange={set('metric')} placeholder="e.g. Uptime, Response Time" className={inputClass} style={inputStyle} />
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Target</label>
+            <input type="number" value={form.target} onChange={set('target')} placeholder="99" className={inputClass} style={inputStyle} />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Current</label>
+            <input type="number" value={form.current} onChange={set('current')} placeholder="97" className={inputClass} style={inputStyle} />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Unit</label>
+            <input value={form.unit} onChange={set('unit')} placeholder="%" className={inputClass} style={inputStyle} />
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Period</label>
+            <select value={form.period} onChange={set('period')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
+              {['Monthly','Quarterly','Weekly','Annual'].map(p => <option key={p}>{p}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Status</label>
+            <select value={form.status} onChange={set('status')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
+              <option value="met">Met</option>
+              <option value="at-risk">At Risk</option>
+              <option value="breached">Breached</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Trend</label>
+            <select value={form.trend} onChange={set('trend')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
+              <option value="stable">Stable</option>
+              <option value="up">Up</option>
+              <option value="down">Down</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex justify-end gap-2 pt-1">
+          <button onClick={onClose} className="px-3 py-1.5 text-[13px] text-slate-500 hover:text-slate-300">Cancel</button>
+          <button onClick={() => mutate()} disabled={isPending || !form.clientId || !form.metric}
+            className="px-4 py-1.5 rounded-lg text-[13px] font-semibold text-white disabled:opacity-50"
+            style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
+            {isPending ? 'Saving…' : 'Add Metric'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
-const TREND_ICON = { up: TrendingUp, down: TrendingDown, stable: Minus }
-const TREND_COLOR = { up: 'text-[#00c875]', down: 'text-[#e2445c]', stable: 'text-slate-500' }
 
 export function SLADashboard() {
-  const { clients, slaMetrics } = useClientsStore()
+  const { clients, slaMetrics, updateSLA } = useClientsStore()
+
+  function patchSLA(id: string, patch: Parameters<typeof updateSLA>[1]) {
+    updateSLA(id, patch)
+    api.patch(`/admin/crm/slas/${id}`, patch)
+  }
+  const [showAdd, setShowAdd] = useState(false)
 
   const met      = slaMetrics.filter(s => s.status === 'met').length
   const atRisk   = slaMetrics.filter(s => s.status === 'at-risk').length
   const breached = slaMetrics.filter(s => s.status === 'breached').length
-  const compliance = Math.round((met / slaMetrics.length) * 100)
+  const compliance = slaMetrics.length > 0 ? Math.round((met / slaMetrics.length) * 100) : 0
 
   // Bar chart data: per-client SLA compliance
   const chartData = clients.map(c => {
@@ -34,17 +132,39 @@ export function SLADashboard() {
 
   return (
     <div className="space-y-6">
+      {showAdd && <AddSLAModal clients={clients} onClose={() => setShowAdd(false)} />}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-xl font-bold text-white">SLA Dashboard</h2>
           <p className="text-sm text-slate-500 mt-0.5">{slaMetrics.length} metrics across {clients.length} clients</p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-white">{compliance}%</span>
-          <span className="text-sm text-slate-500">overall compliance</span>
+        <div className="flex items-center gap-3">
+          {slaMetrics.length > 0 && (
+            <>
+              <span className="text-2xl font-bold tracking-tight text-white">{compliance}%</span>
+              <span className="text-sm text-slate-500">overall compliance</span>
+            </>
+          )}
+          <button onClick={() => setShowAdd(true)}
+            className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-white text-[13px] font-semibold"
+            style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
+            <Plus className="w-3.5 h-3.5" /> Add SLA
+          </button>
         </div>
       </div>
 
+      {slaMetrics.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
+          <Shield className="w-10 h-10 text-slate-800" />
+          <p className="text-sm font-semibold text-slate-600">No SLA metrics yet</p>
+          <p className="text-xs text-slate-700 max-w-xs">Add your first SLA metric to start tracking compliance across clients.</p>
+          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-lg text-white text-[13px] font-semibold mt-2"
+            style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
+            <Plus className="w-3.5 h-3.5" /> Add first SLA metric
+          </button>
+        </div>
+      )}
+      {slaMetrics.length > 0 && <>
       {/* Status chips */}
       <div className="flex items-center gap-3">
         {[
@@ -102,7 +222,7 @@ export function SLADashboard() {
             </CardHeader>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-os-border bg-slate-900">
+                <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
                   {['Metric','Period','Target','Current','Trend','Status'].map(h=>(
                     <th key={h} className="text-left px-5 py-2.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                   ))}
@@ -110,7 +230,6 @@ export function SLADashboard() {
               </thead>
               <tbody className="divide-y divide-[#2E2854]">
                 {cSLAs.map(sla => {
-                  const TrendIcon = TREND_ICON[sla.trend]
                   const pct = Math.min(100, Math.round((sla.current / sla.target) * 100))
                   return (
                     <tr key={sla.id} className="hover:bg-slate-900 transition-colors">
@@ -124,10 +243,18 @@ export function SLADashboard() {
                         </div>
                       </td>
                       <td className="px-5 py-3">
-                        <TrendIcon className={`w-4 h-4 ${TREND_COLOR[sla.trend]}`} />
+                        <InlineSelect
+                          value={sla.trend}
+                          options={SLA_TREND_OPTIONS}
+                          onChange={v => patchSLA(sla.id, { trend: v as typeof sla.trend })}
+                        />
                       </td>
                       <td className="px-5 py-3">
-                        <Badge variant={STATUS_VARIANT[sla.status]} dot size="sm">{sla.status}</Badge>
+                        <InlineSelect
+                          value={sla.status}
+                          options={SLA_STATUS_OPTIONS}
+                          onChange={v => patchSLA(sla.id, { status: v as SLAStatus })}
+                        />
                       </td>
                     </tr>
                   )
@@ -137,6 +264,7 @@ export function SLADashboard() {
           </Card>
         )
       })}
+      </>}
     </div>
   )
 }

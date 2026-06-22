@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { CAMPAIGNS, CONTENT_PIECES, MONTHLY_METRICS } from './data'
 import type { Campaign, ContentPiece, MarketingMetrics } from './types'
 
 interface MarketingStore {
@@ -14,9 +13,9 @@ interface MarketingStore {
 }
 
 export const useMarketingStore = create<MarketingStore>((set, get) => ({
-  campaigns: CAMPAIGNS,
-  content:   CONTENT_PIECES,
-  metrics:   MONTHLY_METRICS,
+  campaigns: [],
+  content:   [],
+  metrics:   [],
 
   hydrate: (data) => set({ campaigns: data.campaigns, content: data.content, metrics: data.metrics }),
 

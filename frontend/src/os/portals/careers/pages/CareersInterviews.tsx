@@ -165,7 +165,7 @@ export function CareersInterviews() {
 
         {/* Expanded */}
         {isOpen && (
-          <div className="mt-4 pt-4 border-t border-os-border space-y-4">
+          <div className="mt-4 pt-4 border-t border-white/10 border-t-white/20 space-y-4">
             {interview.notes && (
               <div>
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">

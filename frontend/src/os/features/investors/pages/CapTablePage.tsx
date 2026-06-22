@@ -37,7 +37,7 @@ export function CapTablePage() {
               <item.icon className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{item.value}</p>
+              <p className="text-2xl font-bold tracking-tight text-white">{item.value}</p>
               <p className="text-xs text-slate-500 mt-0.5">{item.label}</p>
             </div>
           </Card>
@@ -91,7 +91,7 @@ export function CapTablePage() {
           <CardBody className="p-0 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-os-border bg-slate-900/50">
+                <tr className="border-b border-white/10 border-t-white/20 bg-slate-900/50">
                   <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Shareholder</th>
                   <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Round</th>
                   <th className="text-right px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Invested</th>
@@ -138,7 +138,7 @@ export function CapTablePage() {
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t-2 border-os-border bg-slate-900">
+                <tr className="border-t-2 border-white/10 border-t-white/20 bg-slate-900">
                   <td className="px-5 py-3 font-bold text-white" colSpan={2}>Total</td>
                   <td className="px-4 py-3 text-right font-bold text-white">
                     ₹{capTable.filter(c => c.amount > 0).reduce((s, c) => s + c.amount, 0)}k

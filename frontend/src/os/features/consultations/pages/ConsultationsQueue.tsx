@@ -214,7 +214,7 @@ function ConsultationDrawer({
               <select
                 value={meetingMode}
                 onChange={e => setMeetingMode(e.target.value)}
-                className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
               >
                 <option value="">Select…</option>
                 <option value="VIDEO">Video call</option>
@@ -324,8 +324,8 @@ export function ConsultationsQueue() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"       value={stats.total}       icon={<MessageSquare className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-300"   />
-        <StatCard label="Pending"     value={stats.pending}     icon={<Clock         className="w-5 h-5" />} iconColor={stats.pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'}  />
+        <StatCard label="Total"       value={stats.total}       icon={<MessageSquare className="w-5 h-5" />} iconColor="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300"   />
+        <StatCard label="Pending"     value={stats.pending}     icon={<Clock         className="w-5 h-5" />} iconColor={stats.pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'}  />
         <StatCard label="Contacted"   value={stats.contacted}   icon={<Phone         className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"      />
         <StatCard label="Scheduled"   value={stats.scheduled + stats.rescheduled} icon={<Calendar className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"    />
         <StatCard label="Completed"   value={stats.completed}   icon={<Mail          className="w-5 h-5" />} iconColor="bg-purple-100 text-purple-600"  />
@@ -348,7 +348,7 @@ export function ConsultationsQueue() {
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                 statusFilter === s
                   ? 'bg-os-blue text-white'
-                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
+                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-blue-300'
               }`}
             >
               {s === 'ALL' ? 'All' : s.charAt(0) + s.slice(1).toLowerCase()}
@@ -362,7 +362,7 @@ export function ConsultationsQueue() {
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-os-border bg-slate-900">
+            <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
               {['Name', 'Company', 'Service / Topic', 'Received', 'Preferred', 'Status', ''].map(h => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}

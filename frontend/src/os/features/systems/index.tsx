@@ -42,7 +42,6 @@ const STATUS_CFG: Record<SysStatus, { icon: any; label: string; color: string }>
 function StatusBadge({ status }: { status: SysStatus }) {
   const c = STATUS_CFG[status]
   const Icon = c.icon
-  const { pathname } = useLocation()
 
   return (
     <span
@@ -172,7 +171,7 @@ function OverviewTab({ onRefreshAll }: { onRefreshAll: () => void }) {
       >
         <div>
           <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Fleet Status</p>
-          <p className="text-2xl font-bold text-white">{healthy}/4 <span className="text-base font-normal text-slate-400">systems healthy</span></p>
+          <p className="text-2xl font-bold tracking-tight text-white">{healthy}/4 <span className="text-base font-normal text-slate-400">systems healthy</span></p>
         </div>
         <div className="flex flex-wrap gap-4">
           {systems.map(s => {
@@ -331,12 +330,12 @@ function EqoreTab() {
       {/* Service health */}
       {healthRows.length > 0 && (
         <Section title="Service Health">
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {healthRows.map((r, i) => (
               <div
                 key={r.label}
                 className="flex items-center px-4 py-3 gap-3"
-                style={{ borderBottom: i < healthRows.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}
+                style={{ borderBottom: i < healthRows.length - 1 ? '1px solid rgba(13,17,23,0.4)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}
               >
                 <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: r.ok ? '#059669' : '#ef4444' }} />
                 <span className="text-sm text-slate-400 flex-1">{r.label}</span>
@@ -368,12 +367,12 @@ function EqoreTab() {
       {/* Recent leads */}
       {leadList.length > 0 && (
         <Section title="Recent Leads via eQORE">
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {leadList.map((l: any, i: number) => (
               <div
                 key={l.id ?? i}
                 className="flex items-center px-4 py-3 gap-3"
-                style={{ borderBottom: i < leadList.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}
+                style={{ borderBottom: i < leadList.length - 1 ? '1px solid rgba(13,17,23,0.4)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}
               >
                 <div className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold text-white" style={{ background: 'rgba(124,58,237,0.2)' }}>
                   {(l.name ?? l.email ?? '?').charAt(0).toUpperCase()}
@@ -472,9 +471,9 @@ function LeadIntelTab() {
       {/* Open tasks */}
       {openTasks.length > 0 && (
         <Section title={`Open Tasks (${openTasks.length})`}>
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {openTasks.slice(0, 10).map((t: any, i: number) => (
-              <div key={t.id ?? i} className="flex items-center gap-3 px-4 py-3" style={{ borderBottom: i < Math.min(openTasks.length, 10) - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}>
+              <div key={t.id ?? i} className="flex items-center gap-3 px-4 py-3" style={{ borderBottom: i < Math.min(openTasks.length, 10) - 1 ? '1px solid rgba(13,17,23,0.4)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}>
                 <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#d97706' }} />
                 <p className="text-sm text-slate-300 flex-1">{t.title ?? t.description ?? `Task ${i + 1}`}</p>
                 {t.dueDate && <span className="text-[10px] text-slate-600 flex-shrink-0">{timeAgo(t.dueDate)}</span>}
@@ -688,12 +687,12 @@ function VisTab() {
       {/* Full KPI table */}
       {kpis.length > 0 && (
         <Section title="Live KPIs">
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {kpis.map((k: any, i: number) => (
               <div
                 key={k.metric}
                 className="flex items-center px-4 py-3 gap-3"
-                style={{ borderBottom: i < kpis.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}
+                style={{ borderBottom: i < kpis.length - 1 ? '1px solid rgba(13,17,23,0.4)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}
               >
                 <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: k.status === 'live' ? '#059669' : '#64748b' }} />
                 <span className="text-sm text-slate-400 flex-1">{k.label}</span>
@@ -735,9 +734,9 @@ function VisTab() {
           </div>
         )}
         {auditEntries.length > 0 && (
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {auditEntries.map((e: any, i: number) => (
-              <div key={i} className="flex items-start gap-3 px-4 py-3" style={{ borderBottom: i < auditEntries.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}>
+              <div key={i} className="flex items-start gap-3 px-4 py-3" style={{ borderBottom: i < auditEntries.length - 1 ? '1px solid rgba(13,17,23,0.4)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}>
                 <Clock className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-slate-600" />
                 <p className="text-sm text-slate-300 flex-1">{e.action ?? e.event ?? e.message ?? `Entry ${i + 1}`}</p>
                 {e.createdAt && <span className="text-[10px] text-slate-600 flex-shrink-0">{timeAgo(e.createdAt)}</span>}
@@ -781,12 +780,568 @@ function VisTab() {
 // ─── Root module ──────────────────────────────────────────────────────────────
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// ─── KIMMP tab — AI-governed systems (WAANDA brain) ──────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const KIMMP_SYSTEMS = [
+  { id: 'EQORE',      label: 'EQORE',      fullName: 'Conversation Intelligence', model: 'sonnet-4-6',  color: '#2564ea', agents: 6  },
+  { id: 'LEAD_INTEL', label: 'LEAD INTEL', fullName: 'Lead Scoring Intelligence', model: 'sonnet-4-6',  color: '#00c875', agents: 6  },
+  { id: 'ALIS',       label: 'ALIS',       fullName: 'Autonomous Demand Ops',     model: 'haiku-4-5',   color: '#fdab3d', agents: 6  },
+  { id: 'VIS',        label: 'VIS',        fullName: 'Visibility Intelligence',   model: 'sonnet-4-6',  color: '#7f53f9', agents: 5  },
+  { id: 'SENTINEL',   label: 'SENTINEL',   fullName: 'Security & Resilience',     model: 'opus-4-8',    color: '#e2445c', agents: 12 },
+]
+
+type FeedbackType = 'ACCEPTED' | 'DISMISSED' | 'CORRECTED'
+
+const PRIORITY_COLOR: Record<string, string> = {
+  CRITICAL: '#e2445c', HIGH: '#fdab3d', NORMAL: '#059669',
+}
+
+const SCOLOR: Record<string, string> = {
+  EQORE: '#2564ea', LEAD_INTEL: '#00c875', ALIS: '#fdab3d',
+  VIS: '#7f53f9', SENTINEL: '#e2445c', KIMMP: '#7f53f9',
+}
+
+function ConfBar({ value, color }: { value: number; color: string }) {
+  return (
+    <div className="flex items-center gap-2 flex-1">
+      <div className="flex-1 h-1 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+        <div className="h-full rounded-full" style={{ width: `${value}%`, background: color }} />
+      </div>
+      <span className="text-[10px] font-bold tabular-nums" style={{ color }}>{value}%</span>
+    </div>
+  )
+}
+
+// ─── Systems sub-panel ────────────────────────────────────────────────────────
+
+function KimmpSystemsPanel() {
+  const qc = useQueryClient()
+  const [runningSystem, setRunningSystem] = useState<string | null>(null)
+  const [loopRunning, setLoopRunning]     = useState(false)
+  const [triggerInput, setTriggerInput]   = useState('')
+  const [lastBriefing, setLastBriefing]   = useState<Record<string, any>>({})
+
+  const { data: history } = useQuery({
+    queryKey: ['kimmp-history-brief'],
+    queryFn:  () => api.get('/admin/kangqore-immp/systems/history?limit=10').then(r => r.data).catch(() => null),
+    staleTime: 30_000,
+  })
+
+  useEffect(() => {
+    if (!history?.history) return
+    const bySystem: Record<string, any> = {}
+    for (const b of (history.history as any[])) {
+      if (!bySystem[b.system]) bySystem[b.system] = b
+    }
+    setLastBriefing(bySystem)
+  }, [history])
+
+  async function runSystem(system: string) {
+    setRunningSystem(system)
+    try {
+      await api.post(`/admin/kangqore-immp/systems/${system}/run`, {
+        trigger: triggerInput || 'manual',
+        input:   triggerInput || undefined,
+      })
+      qc.invalidateQueries({ queryKey: ['kimmp-history-brief'] })
+      qc.invalidateQueries({ queryKey: ['kimmp-briefings'] })
+    } finally { setRunningSystem(null) }
+  }
+
+  async function runLoop() {
+    setLoopRunning(true)
+    try {
+      await api.post('/admin/kangqore-immp/loops/trigger', {
+        trigger: triggerInput || 'loops.manual',
+        input:   triggerInput || undefined,
+      })
+      qc.invalidateQueries({ queryKey: ['kimmp-history-brief'] })
+      qc.invalidateQueries({ queryKey: ['kimmp-briefings'] })
+    } finally { setLoopRunning(false) }
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="rounded-2xl px-6 py-5" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(37,100,234,0.15)' }}>
+        <div className="flex items-start justify-between gap-4 flex-wrap mb-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">WAANDA — Governed by KIMMP</p>
+            <p className="text-xl font-bold text-white">5 Systems · 35 Agents · claude-opus-4-8</p>
+            <p className="text-xs text-slate-500 mt-1">LEAD INTEL → ALIS → EQORE → VIS · SENTINEL always-on</p>
+          </div>
+          <button
+            onClick={runLoop}
+            disabled={loopRunning}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+            style={{ background: 'rgba(37,100,234,0.15)', border: '1px solid rgba(37,100,234,0.3)', color: '#2564ea' }}
+          >
+            <Play className={`w-4 h-4 ${loopRunning ? 'animate-spin' : ''}`} />
+            {loopRunning ? 'Running LOOPS…' : 'Trigger LOOPS Cascade'}
+          </button>
+        </div>
+        <input
+          value={triggerInput}
+          onChange={e => setTriggerInput(e.target.value)}
+          placeholder="Optional context / input for this run…"
+          className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none"
+          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3">
+        {KIMMP_SYSTEMS.map(sys => {
+          const last  = lastBriefing[sys.id]
+          const color = sys.color
+          return (
+            <div key={sys.id} className="rounded-2xl p-4 space-y-3" style={{ background: `${color}07`, border: `1px solid ${color}20` }}>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: color }}>
+                  <Brain className="w-4 h-4 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-white">{sys.label}</p>
+                  <p className="text-[10px] text-slate-500 truncate">{sys.fullName}</p>
+                </div>
+                <span className="text-[9px] font-mono px-2 py-0.5 rounded flex-shrink-0" style={{ color, background: `${color}15`, border: `1px solid ${color}25` }}>{sys.agents} agents</span>
+              </div>
+              <div className="text-[10px] text-slate-600 font-mono">{sys.model}</div>
+              {last ? (
+                <div className="space-y-1.5">
+                  <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: `${color}90` }}>Last run · {timeAgo(last.createdAt)}</p>
+                  <p className="text-xs text-slate-400 leading-snug line-clamp-2">{last.summary}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: PRIORITY_COLOR[last.priority] ?? '#64748b', background: `${PRIORITY_COLOR[last.priority] ?? '#64748b'}15` }}>{last.priority}</span>
+                    <ConfBar value={last.confidence ?? 0} color={color} />
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-slate-600">No runs yet</p>
+              )}
+              <button
+                onClick={() => runSystem(sys.id)}
+                disabled={runningSystem === sys.id}
+                className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+                style={{ color, background: `${color}12`, border: `1px solid ${color}28` }}
+              >
+                <Play className={`w-3 h-3 ${runningSystem === sys.id ? 'animate-spin' : ''}`} />
+                {runningSystem === sys.id ? 'Running…' : `Run ${sys.label}`}
+              </button>
+            </div>
+          )
+        })}
+        <div className="rounded-2xl p-4 space-y-3" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#2564ea,#7f53f9)' }}>
+              <Brain className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-white">KIMMP / WAANDA</p>
+              <p className="text-[10px] text-slate-500">Governing Brain</p>
+            </div>
+          </div>
+          <p className="text-xs text-slate-500 leading-relaxed">Governs all 5 systems. Synthesises every LOOPS cascade. Runs on claude-opus-4-8. Activates automatically at end of each cascade.</p>
+          <div className="text-[10px] font-mono text-slate-600">claude-opus-4-8 · auto</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Briefings sub-panel ──────────────────────────────────────────────────────
+
+function KimmpBriefingsPanel() {
+  const qc = useQueryClient()
+  const [expanded, setExpanded]         = useState<string | null>(null)
+  const [correcting, setCorrecting]     = useState<string | null>(null)
+  const [correctionText, setCorrText]   = useState('')
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['kimmp-briefings'],
+    queryFn:  () => api.get('/admin/kangqore-immp/systems/history?limit=30').then(r => r.data).catch(() => null),
+    staleTime: 30_000,
+  })
+
+  const feedbackMutation = useMutation({
+    mutationFn: ({ id, feedback, correction }: { id: string; feedback: FeedbackType; correction?: string }) =>
+      api.post(`/admin/kangqore-immp/systems/dispatch/${id}/feedback`, { feedback, correction }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['kimmp-briefings'] })
+      setCorrecting(null); setCorrText('')
+    },
+  })
+
+  const briefings: any[] = data?.history ?? []
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-slate-500">{briefings.length} recent briefings — rate each to train the learning system</p>
+        <ABtn icon={RefreshCw} label="Refresh" loading={isLoading} onClick={() => refetch()} color="#64748b" />
+      </div>
+
+      {briefings.length === 0 && !isLoading && (
+        <div className="text-center py-16 text-slate-600 text-sm">No briefings yet — trigger a system run from the Systems tab</div>
+      )}
+
+      {briefings.map((b: any) => {
+        const color    = SCOLOR[b.system] ?? '#64748b'
+        const isOpen   = expanded === b.id
+        const fbDone   = b.feedback
+        const findings: string[] = b.keyFindings ?? []
+        const alerts: string[]   = b.alerts ?? []
+        return (
+          <div key={b.id} className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${color}20`, background: `${color}05` }}>
+            <button className="w-full flex items-start gap-3 p-4 text-left" onClick={() => setExpanded(isOpen ? null : b.id)}>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: color }}>
+                <Brain className="w-4 h-4 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <span className="text-xs font-bold text-white">{b.system}</span>
+                  <span className="text-[10px] font-mono text-slate-600">{b.trigger}</span>
+                  {b.priority && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ color: PRIORITY_COLOR[b.priority] ?? '#64748b', background: `${PRIORITY_COLOR[b.priority] ?? '#64748b'}15` }}>{b.priority}</span>}
+                  {alerts.length > 0 && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded text-red-400 bg-red-400/10">{alerts.length} alert{alerts.length > 1 ? 's' : ''}</span>}
+                  {fbDone && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ color: fbDone === 'ACCEPTED' ? '#059669' : fbDone === 'DISMISSED' ? '#e2445c' : '#fdab3d', background: fbDone === 'ACCEPTED' ? 'rgba(5,150,105,0.1)' : fbDone === 'DISMISSED' ? 'rgba(226,68,92,0.1)' : 'rgba(253,171,61,0.1)' }}>{fbDone}</span>}
+                </div>
+                <p className="text-xs text-slate-400 leading-snug line-clamp-2">{b.summary}</p>
+                <div className="flex items-center gap-3 mt-1.5">
+                  <ConfBar value={b.confidence ?? 0} color={color} />
+                  <span className="text-[10px] text-slate-600 flex-shrink-0">{timeAgo(b.createdAt)}</span>
+                </div>
+              </div>
+              {isOpen ? <ChevronDown className="w-4 h-4 text-slate-600 flex-shrink-0 mt-1" /> : <ChevronRight className="w-4 h-4 text-slate-600 flex-shrink-0 mt-1" />}
+            </button>
+
+            {isOpen && (
+              <div className="px-4 pb-4 space-y-3 border-t" style={{ borderColor: `${color}15` }}>
+                {alerts.length > 0 && (
+                  <div className="space-y-1.5 pt-3">
+                    {alerts.map((a: string, i: number) => (
+                      <div key={i} className="flex items-start gap-2 px-3 py-2 rounded-xl text-xs text-red-300" style={{ background: 'rgba(226,68,92,0.08)', border: '1px solid rgba(226,68,92,0.15)' }}>
+                        <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-red-400" />{a}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {findings.length > 0 && (
+                  <div className="pt-3">
+                    <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mb-2">Key Findings</p>
+                    <div className="space-y-1.5">
+                      {findings.map((f: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2 text-xs text-slate-300">
+                          <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: color }} />{f}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {b.agentsRun?.length > 0 && (
+                  <div>
+                    <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mb-2">Agents Run</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {b.agentsRun.map((a: string) => (
+                        <span key={a} className="text-[10px] font-mono px-2 py-0.5 rounded" style={{ color, background: `${color}12`, border: `1px solid ${color}20` }}>{a}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {!fbDone && (
+                  <div className="pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                    <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mb-2">Rate this briefing</p>
+                    {correcting === b.id ? (
+                      <div className="space-y-2">
+                        <textarea
+                          value={correctionText}
+                          onChange={e => setCorrText(e.target.value)}
+                          placeholder="What should the system have done differently?"
+                          rows={2}
+                          className="w-full px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none resize-none"
+                          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                        />
+                        <div className="flex gap-2">
+                          <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'CORRECTED', correction: correctionText })} disabled={!correctionText.trim() || feedbackMutation.isPending} className="px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40" style={{ color: '#fdab3d', background: 'rgba(253,171,61,0.12)', border: '1px solid rgba(253,171,61,0.25)' }}>Submit Correction</button>
+                          <button onClick={() => { setCorrecting(null); setCorrText('') }} className="px-3 py-1.5 rounded-lg text-xs text-slate-500">Cancel</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2 flex-wrap">
+                        <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'ACCEPTED' })} disabled={feedbackMutation.isPending} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40" style={{ color: '#059669', background: 'rgba(5,150,105,0.1)', border: '1px solid rgba(5,150,105,0.2)' }}><CheckCircle2 className="w-3.5 h-3.5" /> Accept</button>
+                        <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'DISMISSED' })} disabled={feedbackMutation.isPending} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40" style={{ color: '#e2445c', background: 'rgba(226,68,92,0.1)', border: '1px solid rgba(226,68,92,0.2)' }}><XCircle className="w-3.5 h-3.5" /> Dismiss</button>
+                        <button onClick={() => setCorrecting(b.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold" style={{ color: '#fdab3d', background: 'rgba(253,171,61,0.1)', border: '1px solid rgba(253,171,61,0.2)' }}><AlertTriangle className="w-3.5 h-3.5" /> Correct</button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+// ─── Learning sub-panel ───────────────────────────────────────────────────────
+
+function KimmpLearningPanel() {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['kimmp-learning-summary'],
+    queryFn:  () => api.get('/admin/kangqore-immp/systems/learning/summary').then(r => r.data).catch(() => null),
+    staleTime: 60_000,
+  })
+
+  const summary: Record<string, any> = data?.summary ?? {}
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-slate-500">How much each system has learned from operator feedback</p>
+        <ABtn icon={RefreshCw} label="Refresh" loading={isLoading} onClick={() => refetch()} color="#64748b" />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        {KIMMP_SYSTEMS.map(sys => {
+          const s     = summary[sys.id] ?? {}
+          const color = SCOLOR[sys.id] ?? '#64748b'
+          return (
+            <div key={sys.id} className="rounded-2xl p-4 space-y-3" style={{ background: `${color}07`, border: `1px solid ${color}18` }}>
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: color }}>
+                  <Brain className="w-3.5 h-3.5 text-white" />
+                </div>
+                <p className="text-sm font-bold text-white">{sys.label}</p>
+                <span className="ml-auto text-[10px] font-bold text-slate-500">{s.totalRecords ?? 0} runs</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="rounded-xl px-3 py-2 text-center" style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.12)' }}>
+                  <p className="text-base font-bold text-emerald-400">{s.acceptanceRate ?? 0}%</p>
+                  <p className="text-[9px] text-slate-600 mt-0.5">Accepted</p>
+                </div>
+                <div className="rounded-xl px-3 py-2 text-center" style={{ background: 'rgba(226,68,92,0.08)', border: '1px solid rgba(226,68,92,0.12)' }}>
+                  <p className="text-base font-bold text-red-400">{s.dismissalRate ?? 0}%</p>
+                  <p className="text-[9px] text-slate-600 mt-0.5">Dismissed</p>
+                </div>
+                <div className="rounded-xl px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <p className="text-base font-bold text-white">{s.withFeedback ?? 0}</p>
+                  <p className="text-[9px] text-slate-600 mt-0.5">Rated</p>
+                </div>
+              </div>
+              {(s.topAgents ?? []).length > 0 && (
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mb-2">Top Agents</p>
+                  {(s.topAgents as any[]).slice(0, 3).map((a: any) => (
+                    <div key={a.agentType} className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-mono text-slate-400 flex-1 truncate">{a.agentType}</span>
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: a.strength === 'STRONG' ? '#059669' : a.strength === 'MODERATE' ? '#fdab3d' : '#e2445c', background: a.strength === 'STRONG' ? 'rgba(5,150,105,0.1)' : 'rgba(253,171,61,0.1)' }}>{a.strength}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {(s.triggerPatterns ?? []).length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {(s.triggerPatterns as string[]).slice(0, 4).map(p => (
+                    <span key={p} className="text-[9px] font-mono px-1.5 py-0.5 rounded text-slate-500" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>{p}</span>
+                  ))}
+                </div>
+              )}
+              {!s.totalRecords && <p className="text-xs text-slate-600">No runs yet</p>}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+// ─── Knowledge (RAG) sub-panel ────────────────────────────────────────────────
+
+const RAG_DOC_TYPES: Record<string, string[]> = {
+  EQORE:      ['meeting', 'client_note', 'action_item', 'conversation', 'org_knowledge'],
+  LEAD_INTEL: ['scoring_rationale', 'deal_history', 'win_loss', 'tender', 'prospect_note'],
+  ALIS:       ['playbook', 'sop', 'campaign_brief', 'workflow_template', 'performance_report'],
+  VIS:        ['report', 'exec_summary', 'competitor_intel', 'market_research', 'strategy_doc'],
+  SENTINEL:   ['cve', 'incident_report', 'compliance_doc', 'security_policy', 'audit_log'],
+  KIMMP:      ['loop_synthesis', 'strategic_decision', 'cross_system_pattern', 'board_doc'],
+}
+
+function KimmpKnowledgePanel() {
+  const qc = useQueryClient()
+  const [selectedSys, setSelectedSys] = useState('EQORE')
+  const [ingestForm, setIngestForm]   = useState({ docType: '', title: '', body: '', source: '' })
+  const [showIngest, setShowIngest]   = useState(false)
+  const [testQuery, setTestQuery]     = useState('')
+  const [testResult, setTestResult]   = useState<any>(null)
+  const [testLoading, setTestLoading] = useState(false)
+
+  const color = SCOLOR[selectedSys] ?? '#64748b'
+
+  const { data: ragStatus } = useQuery({
+    queryKey: ['rag-status'],
+    queryFn:  () => api.get('/admin/kangqore-immp/rag/status').then(r => r.data).catch(() => null),
+    staleTime: 30_000,
+  })
+
+  const { data: docs, refetch: refetchDocs } = useQuery({
+    queryKey: ['rag-docs', selectedSys],
+    queryFn:  () => api.get(`/admin/kangqore-immp/rag/${selectedSys}?limit=20`).then(r => r.data).catch(() => null),
+    staleTime: 30_000,
+  })
+
+  const ingestMutation = useMutation({
+    mutationFn: (form: typeof ingestForm) =>
+      api.post(`/admin/kangqore-immp/rag/${selectedSys}/ingest`, form),
+    onSuccess: () => {
+      setIngestForm({ docType: '', title: '', body: '', source: '' })
+      setShowIngest(false)
+      refetchDocs()
+      qc.invalidateQueries({ queryKey: ['rag-status'] })
+    },
+  })
+
+  async function testRetrieval() {
+    if (!testQuery.trim()) return
+    setTestLoading(true)
+    try {
+      const res = await api.post(`/admin/kangqore-immp/rag/${selectedSys}/retrieve`, { query: testQuery, topK: 3 })
+      setTestResult(res.data)
+    } finally { setTestLoading(false) }
+  }
+
+  const indexState = ragStatus?.indexState ?? {}
+  const docList: any[] = docs?.docs ?? []
+  const docTypes = RAG_DOC_TYPES[selectedSys] ?? []
+  const ALL_RAG = ['EQORE', 'LEAD_INTEL', 'ALIS', 'VIS', 'SENTINEL', 'KIMMP']
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+        {ALL_RAG.map(s => {
+          const c  = SCOLOR[s] ?? '#64748b'
+          const st = indexState[s] ?? {}
+          return (
+            <button key={s} onClick={() => setSelectedSys(s)} className="rounded-xl px-3 py-2.5 text-center transition-all" style={{ background: s === selectedSys ? `${c}15` : 'rgba(255,255,255,0.02)', border: `1px solid ${s === selectedSys ? c : 'rgba(255,255,255,0.06)'}` }}>
+              <p className="text-[10px] font-bold truncate" style={{ color: s === selectedSys ? c : '#64748b' }}>{s.replace('_', '_')}</p>
+              <p className="text-base font-bold text-white mt-0.5">{st.chunks ?? 0}</p>
+              <p className="text-[9px] text-slate-600">docs</p>
+            </button>
+          )
+        })}
+      </div>
+
+      <div className="rounded-2xl p-4 space-y-4" style={{ background: `${color}07`, border: `1px solid ${color}18` }}>
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-bold text-white">{selectedSys} Knowledge Base</p>
+          <button onClick={() => setShowIngest(v => !v)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold" style={{ color, background: `${color}12`, border: `1px solid ${color}25` }}>+ Ingest Document</button>
+        </div>
+
+        {showIngest && (
+          <div className="space-y-3 pt-2 border-t" style={{ borderColor: `${color}15` }}>
+            <div className="grid grid-cols-2 gap-3">
+              <select value={ingestForm.docType} onChange={e => setIngestForm(f => ({ ...f, docType: e.target.value }))} className="px-3 py-2 rounded-xl text-xs text-white outline-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <option value="">Doc Type *</option>
+                {docTypes.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+              <input value={ingestForm.source} onChange={e => setIngestForm(f => ({ ...f, source: e.target.value }))} placeholder="Source (optional)" className="px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }} />
+            </div>
+            <input value={ingestForm.title} onChange={e => setIngestForm(f => ({ ...f, title: e.target.value }))} placeholder="Title *" className="w-full px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }} />
+            <textarea value={ingestForm.body} onChange={e => setIngestForm(f => ({ ...f, body: e.target.value }))} placeholder="Document content *" rows={4} className="w-full px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none resize-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }} />
+            <button onClick={() => ingestMutation.mutate(ingestForm)} disabled={!ingestForm.title || !ingestForm.body || !ingestForm.docType || ingestMutation.isPending} className="px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40" style={{ color, background: `${color}15`, border: `1px solid ${color}30` }}>
+              {ingestMutation.isPending ? 'Embedding…' : 'Ingest & Embed'}
+            </button>
+          </div>
+        )}
+
+        <div className="space-y-2">
+          <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600">Test Retrieval</p>
+          <div className="flex gap-2">
+            <input value={testQuery} onChange={e => setTestQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && testRetrieval()} placeholder="Query the knowledge base…" className="flex-1 px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }} />
+            <button onClick={testRetrieval} disabled={testLoading || !testQuery.trim()} className="px-3 py-2 rounded-xl text-xs font-bold disabled:opacity-40" style={{ color, background: `${color}12`, border: `1px solid ${color}25` }}>
+              {testLoading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : 'Search'}
+            </button>
+          </div>
+          {testResult && (
+            <div className="rounded-xl p-3 space-y-2" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <p className="text-[10px] font-bold text-slate-500">{testResult.chunkCount} chunk{testResult.chunkCount !== 1 ? 's' : ''} retrieved</p>
+              {(testResult.chunks ?? []).map((c: any, i: number) => (
+                <div key={i} className="px-3 py-2 rounded-lg" style={{ background: `${color}08`, border: `1px solid ${color}15` }}>
+                  <p className="text-[10px] font-bold text-white mb-0.5">[{c.docType}] {c.title}</p>
+                  <p className="text-[10px] text-slate-500 leading-relaxed line-clamp-3">{c.body}</p>
+                  <p className="text-[9px] text-slate-600 mt-1">Score: {(c.score * 100).toFixed(1)}%{c.source ? ` · ${c.source}` : ''}</p>
+                </div>
+              ))}
+              {testResult.chunkCount === 0 && <p className="text-xs text-slate-600">No matches — add documents or trigger system runs first</p>}
+            </div>
+          )}
+        </div>
+
+        {docList.length > 0 && (
+          <div>
+            <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mb-2">{docList.length} documents indexed</p>
+            <div className="space-y-1.5">
+              {docList.map((d: any) => (
+                <div key={d.id} className="flex items-center gap-3 px-3 py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded flex-shrink-0" style={{ color, background: `${color}12` }}>{d.docType}</span>
+                  <p className="text-xs text-slate-300 flex-1 truncate">{d.title}</p>
+                  <span className="text-[10px] text-slate-600 flex-shrink-0">{timeAgo(d.createdAt)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {docList.length === 0 && <p className="text-xs text-slate-600 text-center py-4">No documents yet — ingest content above or trigger system runs (briefings auto-index)</p>}
+      </div>
+    </div>
+  )
+}
+
+// ─── KIMMP root tab ───────────────────────────────────────────────────────────
+
+type KimmpSubTab = 'systems' | 'briefings' | 'learning' | 'knowledge'
+
+function KimmpTab() {
+  const [sub, setSub] = useState<KimmpSubTab>('systems')
+
+  const SUB_TABS: { id: KimmpSubTab; label: string; icon: any }[] = [
+    { id: 'systems',   label: 'Systems',   icon: Server    },
+    { id: 'briefings', label: 'Briefings', icon: Activity  },
+    { id: 'learning',  label: 'Learning',  icon: BarChart3 },
+    { id: 'knowledge', label: 'Knowledge', icon: Database  },
+  ]
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3 pb-4 border-b" style={{ borderColor: 'rgba(37,100,234,0.15)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg,#2564ea,#7f53f9)' }}>
+          <Brain className="w-5 h-5 text-white" />
+        </div>
+        <div className="flex-1">
+          <h2 className="text-base font-bold text-white">KIMMP / WAANDA</h2>
+          <p className="text-xs text-slate-500">AI-Governed Intelligence Systems · 5 LLMs · 35 Agents</p>
+        </div>
+        <div className="flex gap-1 flex-wrap">
+          {SUB_TABS.map(t => (
+            <button key={t.id} onClick={() => setSub(t.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all" style={{ color: sub === t.id ? '#2564ea' : '#64748b', background: sub === t.id ? 'rgba(37,100,234,0.12)' : 'transparent', border: `1px solid ${sub === t.id ? 'rgba(37,100,234,0.3)' : 'transparent'}` }}>
+              <t.icon className="w-3.5 h-3.5" />{t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      {sub === 'systems'   && <KimmpSystemsPanel />}
+      {sub === 'briefings' && <KimmpBriefingsPanel />}
+      {sub === 'learning'  && <KimmpLearningPanel />}
+      {sub === 'knowledge' && <KimmpKnowledgePanel />}
+    </div>
+  )
+}
+
 const TABS = [
-  { path: '',          end: true,  label: 'Overview',          icon: LayoutGrid   },
-  { path: 'eqore',    end: false, label: 'eQORE',              icon: MessageSquare },
-  { path: 'lead-intel', end: false, label: 'Lead Intelligence', icon: Zap          },
-  { path: 'alis',     end: false, label: 'ALIS',               icon: TrendingUp   },
-  { path: 'vis',      end: false, label: 'VIS',                icon: Globe        },
+  { path: '',           end: true,  label: 'Overview',          icon: LayoutGrid    },
+  { path: 'eqore',     end: false, label: 'eQORE',              icon: MessageSquare },
+  { path: 'lead-intel', end: false, label: 'Lead Intelligence', icon: Zap           },
+  { path: 'alis',      end: false, label: 'ALIS',               icon: TrendingUp    },
+  { path: 'vis',       end: false, label: 'VIS',                icon: Globe         },
+  { path: 'kimmp',     end: false, label: 'KIMMP',              icon: Brain         },
 ]
 
 const ACCENT: Record<string, string> = {
@@ -795,9 +1350,11 @@ const ACCENT: Record<string, string> = {
   'lead-intel': '#2564ea',
   'alis':       '#059669',
   'vis':        '#0ea5e9',
+  'kimmp':      '#2564ea',
 }
 
 export function SystemsModule() {
+  const { pathname } = useLocation()
   const qc = useQueryClient()
   const [lastRefreshed, setLastRefreshed] = useState<Date>(new Date())
 
@@ -842,7 +1399,7 @@ export function SystemsModule() {
       </div>
 
       {/* Tab bar */}
-      <div className="flex items-center gap-0.5 border-b border-os-border -mb-1 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-0.5 border-b border-white/10 border-t-white/20 -mb-1 overflow-x-auto scrollbar-none">
         {TABS.map(tab => {
           const accent = ACCENT[tab.path]
           return (
@@ -854,7 +1411,7 @@ export function SystemsModule() {
                 'flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
                 isActive
                   ? 'border-[--tab-accent] text-[--tab-accent]'
-                  : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
+                  : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
               )}
               style={{ '--tab-accent': accent } as React.CSSProperties}
             >
@@ -875,6 +1432,7 @@ export function SystemsModule() {
           <Route path="lead-intel"    element={<LeadIntelTab />} />
           <Route path="alis"          element={<AlisTab />} />
           <Route path="vis"           element={<VisTab />} />
+          <Route path="kimmp"         element={<KimmpTab />} />
           <Route path="*"             element={<Navigate to={BASE} replace />} />
         </Routes>
         </motion.div>

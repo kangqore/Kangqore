@@ -10,11 +10,11 @@ const DEPT_COLORS: Record<string, string> = {
   'Design & Product': 'bg-purple-50 border-purple-200 text-purple-700',
   'Sales & GTM':      'bg-green-50 border-green-200 text-green-700',
   'Client Delivery':  'bg-orange-50 border-orange-200 text-orange-700',
-  'Finance & Ops':    'bg-os-s1 border-os-border text-slate-300',
+  'Finance & Ops':    'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-white/10 border-t-white/20 text-slate-300',
 }
 
 function OrgNodeCard({ node }: { node: OrgNode }) {
-  const color = DEPT_COLORS[node.department] ?? 'bg-slate-900 border-os-border text-slate-300'
+  const color = DEPT_COLORS[node.department] ?? 'bg-slate-900 border-white/10 border-t-white/20 text-slate-300'
   return (
     <div className={`rounded-xl border p-3 min-w-[160px] text-center ${color}`}>
       <Avatar name={node.name} size="sm" className="mx-auto mb-2" />
@@ -48,7 +48,7 @@ export function OrgChartPage() {
         {departments.map(d => (
           <div
             key={d.id}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium ${DEPT_COLORS[d.name] ?? 'bg-slate-900 border-os-border'}`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium ${DEPT_COLORS[d.name] ?? 'bg-slate-900 border-white/10 border-t-white/20'}`}
           >
             <span>{d.name}</span>
             <Badge variant="neutral" size="sm">{d.headcount}</Badge>
@@ -119,7 +119,7 @@ export function OrgChartPage() {
         <CardBody className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-os-border bg-slate-900/50">
+              <tr className="border-b border-white/10 border-t-white/20 bg-slate-900/50">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Name</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Title</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Department</th>

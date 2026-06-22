@@ -33,7 +33,7 @@ export function AnalystReports() {
   return (
     <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Reports &amp; Briefings</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-white">Reports &amp; Briefings</h1>
         <p className="text-slate-500 mt-1 text-sm">Authorised analyst briefing materials and downloadable reports.</p>
       </div>
 
@@ -47,7 +47,7 @@ export function AnalystReports() {
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
               filter === f
                 ? 'bg-cyan-600 text-white'
-                : 'bg-os-s1 border border-os-border text-slate-400 hover:text-white'
+                : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-400 hover:text-white'
             }`}
           >
             {f}
@@ -61,7 +61,7 @@ export function AnalystReports() {
           <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Available Now</h2>
           <div className="space-y-3">
             {available.map(r => (
-              <div key={r.id} className="flex items-start gap-4 p-4 rounded-2xl border border-os-border bg-os-s1 hover:bg-os-s2 transition-colors group">
+              <div key={r.id} className="flex items-start gap-4 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 transition-colors group">
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <FileBarChart className="w-5 h-5 text-cyan-400" />
                 </div>
@@ -98,8 +98,8 @@ export function AnalystReports() {
           <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Upcoming</h2>
           <div className="space-y-3">
             {upcoming.map(r => (
-              <div key={r.id} className="flex items-start gap-4 p-4 rounded-2xl border border-os-border bg-os-s1 opacity-60">
-                <div className="w-10 h-10 rounded-xl bg-os-s1 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div key={r.id} className="flex items-start gap-4 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 opacity-60">
+                <div className="w-10 h-10 rounded-xl bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Clock className="w-5 h-5 text-slate-500" />
                 </div>
                 <div className="flex-1 min-w-0">

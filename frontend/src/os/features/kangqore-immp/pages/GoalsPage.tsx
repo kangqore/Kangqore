@@ -74,12 +74,12 @@ function GoalCard({
   const atRisk = goal.status === 'ACTIVE' && dl !== null && dl <= 7 && goal.progressPct < 70
 
   return (
-    <div className={`bg-os-s1 border border-os-border rounded-xl shadow-sm overflow-hidden ${atRisk ? 'border-l-4 border-l-amber-400' : ''}`}>
+    <div className={`bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl shadow-sm overflow-hidden ${atRisk ? 'border-l-4 border-l-amber-400' : ''}`}>
       <div className="p-4 space-y-3">
         <div className="flex items-start gap-3">
           <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
             goal.status === 'ACTIVE' ? 'bg-green-100' :
-            goal.status === 'COMPLETED' ? 'bg-os-s1' :
+            goal.status === 'COMPLETED' ? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10' :
             goal.status === 'FAILED' ? 'bg-red-100' : 'bg-blue-50'
           }`}>
             <Target className={`w-3.5 h-3.5 ${
@@ -139,7 +139,7 @@ function GoalCard({
               <span className="text-[10px] text-slate-500">Progress</span>
               <span className="text-[10px] font-bold text-slate-300">{goal.progressPct}%</span>
             </div>
-            <div className="h-1.5 bg-os-s1 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-700 ${
                   goal.progressPct >= 70 ? 'bg-green-400' : atRisk ? 'bg-amber-400' : 'bg-blue-400'
@@ -169,13 +169,13 @@ function GoalCard({
         {expanded && goal.tasks?.length > 0 && (
           <div className="ml-10 space-y-1.5">
             {goal.tasks.map(task => (
-              <div key={task.id} className="flex items-center gap-2 p-2 rounded-lg bg-slate-900 border border-os-border">
+              <div key={task.id} className="flex items-center gap-2 p-2 rounded-lg bg-slate-900 border border-white/10 border-t-white/20">
                 <button
                   onClick={() => task.status !== 'COMPLETED' && onCompleteTask(goal.id, task.id)}
                   className={`w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 border transition-all ${
                     task.status === 'COMPLETED'
                       ? 'bg-green-500 border-green-500 text-white'
-                      : 'border-os-border hover:border-green-400 hover:bg-green-50'
+                      : 'border-white/10 border-t-white/20 hover:border-green-400 hover:bg-green-50'
                   }`}
                 >
                   {task.status === 'COMPLETED' && <Check className="w-3 h-3" />}
@@ -223,7 +223,7 @@ function CreateGoalForm({ onCreate }: { onCreate: () => void }) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-dashed border-os-border text-sm font-medium text-slate-500 hover:border-slate-400 hover:text-slate-300 transition-all w-full"
+        className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-dashed border-white/10 border-t-white/20 text-sm font-medium text-slate-500 hover:border-slate-400 hover:text-slate-300 transition-all w-full"
       >
         <Plus className="w-4 h-4" />
         Set a new goal for KIMMP
@@ -242,14 +242,14 @@ function CreateGoalForm({ onCreate }: { onCreate: () => void }) {
         onChange={e => setObjective(e.target.value)}
         placeholder="Describe the goal — e.g. 'Win 3 government education tech contracts by Q3 2026'"
         rows={3}
-        className="w-full text-sm border border-blue-200 rounded-lg px-3 py-2.5 bg-os-s1 outline-none resize-none focus:border-blue-400 text-slate-200 placeholder:text-slate-300"
+        className="w-full text-sm border border-blue-200 rounded-lg px-3 py-2.5 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 outline-none resize-none focus:border-blue-400 text-slate-200 placeholder:text-slate-300"
       />
       <div className="flex items-center gap-3">
         <input
           type="date"
           value={deadline}
           onChange={e => setDeadline(e.target.value)}
-          className="text-sm border border-blue-200 rounded-lg px-3 py-2 bg-os-s1 outline-none focus:border-blue-400 text-slate-300"
+          className="text-sm border border-blue-200 rounded-lg px-3 py-2 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 outline-none focus:border-blue-400 text-slate-300"
         />
         <span className="text-xs text-slate-500">Deadline (optional)</span>
         <div className="flex items-center gap-2 ml-auto">
@@ -328,7 +328,7 @@ export function GoalsPage() {
         </div>
         <button
           onClick={() => refetch()}
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-os-s1 transition-colors"
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loadingGoals ? 'animate-spin' : ''}`} />
         </button>
@@ -342,12 +342,12 @@ export function GoalsPage() {
           { label: 'Pending Review', value: pendingGoals.length,       color: 'text-amber-600 bg-amber-50',  icon: Clock      },
           { label: 'Completed',      value: completedGoals.length,     color: 'text-slate-300 bg-slate-900',  icon: Check      },
         ].map(s => (
-          <div key={s.label} className="bg-os-s1 border border-os-border rounded-xl p-4 flex items-center gap-3 shadow-sm">
+          <div key={s.label} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-4 flex items-center gap-3 shadow-sm">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${s.color}`}>
               <s.icon className="w-4.5 h-4.5" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{s.value}</p>
+              <p className="text-2xl font-bold tracking-tight text-white">{s.value}</p>
               <p className="text-xs text-slate-500">{s.label}</p>
             </div>
           </div>
@@ -404,7 +404,7 @@ export function GoalsPage() {
 
       {/* Empty */}
       {!loadingGoals && goals.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-20 bg-os-s1 border border-os-border rounded-2xl text-center">
+        <div className="flex flex-col items-center justify-center py-20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-2xl text-center">
           <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center mb-4">
             <Target className="w-6 h-6 text-green-500" />
           </div>

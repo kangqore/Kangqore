@@ -11,7 +11,7 @@ import type { PartnerTier, DeliverableStatus, PartnerNote } from '../types'
 const TIER_STYLE: Record<PartnerTier, string> = {
   platinum: 'bg-gradient-to-r from-os-blue to-os-cyan text-white',
   gold:     'bg-amber-100 text-amber-700',
-  silver:   'bg-os-s1 text-slate-300',
+  silver:   'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300',
   associate:'bg-slate-900  text-slate-300',
 }
 const DELIVERABLE_VARIANT: Record<DeliverableStatus,'success'|'info'|'warning'|'danger'|'neutral'> = {
@@ -22,7 +22,7 @@ const NOTE_ICON: Record<PartnerNote['type'], React.ElementType> = {
 }
 const NOTE_COLOR: Record<PartnerNote['type'], string> = {
   praise: 'bg-green-100 text-green-600', issue: 'bg-red-100 text-red-600',
-  performance: 'bg-amber-100 text-amber-600', general: 'bg-os-s1 text-slate-300',
+  performance: 'bg-amber-100 text-amber-600', general: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300',
 }
 
 function Stars({ rating }: { rating: number }) {
@@ -57,7 +57,7 @@ export function PartnerProfile() {
           All Partners
         </Button>
         <select value={selectedId} onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
+          className="ml-auto h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
           {partners.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
       </div>
@@ -79,7 +79,7 @@ export function PartnerProfile() {
             <p className="text-sm text-slate-500 mt-2 leading-relaxed">{partner.description}</p>
           </div>
           <div className="flex flex-col items-end gap-1.5">
-            <p className="text-2xl font-bold text-white">{fmt(partner.totalEarned)}</p>
+            <p className="text-2xl font-bold tracking-tight text-white">{fmt(partner.totalEarned)}</p>
             <p className="text-xs text-slate-500">total earned</p>
             {partner.pendingPayment > 0 && (
               <Badge variant="warning" size="sm">₹{(partner.pendingPayment/1000).toFixed(0)}k pending</Badge>
@@ -110,7 +110,7 @@ export function PartnerProfile() {
           ))}
         </div>
 
-        <div className="flex items-center gap-3 mt-4 pt-4 border-t border-os-border">
+        <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/10 border-t-white/20">
           <div className="flex items-center gap-2 text-sm text-slate-500">
             <Mail className="w-4 h-4 text-slate-500" />
             {partner.contact.email}
@@ -137,14 +137,14 @@ export function PartnerProfile() {
           </CardHeader>
           <div className="space-y-3">
             {deliverables.map(d => (
-              <div key={d.id} className="p-3 rounded-xl bg-slate-900 border border-os-border">
+              <div key={d.id} className="p-3 rounded-xl bg-slate-900 border border-white/10 border-t-white/20">
                 <div className="flex items-start justify-between gap-2 mb-1">
                   <p className="text-sm font-medium text-slate-200">{d.title}</p>
                   <Badge variant={DELIVERABLE_VARIANT[d.status]} size="sm">{d.status.replace('-',' ')}</Badge>
                 </div>
                 <p className="text-xs text-slate-500 line-clamp-1">{d.description}</p>
                 {d.feedback && (
-                  <p className="text-xs text-slate-500 mt-1.5 italic border-l-2 border-os-border pl-2">{d.feedback}</p>
+                  <p className="text-xs text-slate-500 mt-1.5 italic border-l-2 border-white/10 border-t-white/20 pl-2">{d.feedback}</p>
                 )}
                 <div className="flex items-center justify-between mt-2 text-[10px] text-slate-500">
                   <span>Due {new Date(d.dueDate).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
@@ -186,7 +186,7 @@ export function PartnerProfile() {
         </CardHeader>
         <div className="space-y-2">
           {payments.map(p => (
-            <div key={p.id} className="flex items-center gap-4 py-2.5 border-b border-os-border last:border-0">
+            <div key={p.id} className="flex items-center gap-4 py-2.5 border-b border-white/10 border-t-white/20 last:border-0">
               <span className="font-mono text-xs text-slate-500 w-28 flex-shrink-0">{p.invoiceNumber}</span>
               <span className="text-sm text-slate-300 flex-1 truncate">{p.description}</span>
               <span className="font-bold text-white flex-shrink-0">{fmt(p.amount)}</span>
@@ -196,7 +196,7 @@ export function PartnerProfile() {
             </div>
           ))}
         </div>
-        <div className="mt-4 pt-4 border-t border-os-border flex items-center justify-between">
+        <div className="mt-4 pt-4 border-t border-white/10 border-t-white/20 flex items-center justify-between">
           <span className="text-sm text-slate-500">Total pending</span>
           <span className="text-base font-bold text-amber-600">
             {fmt(payments.filter(p => p.status === 'pending' || p.status === 'processing').reduce((s,p)=>s+p.amount,0))}

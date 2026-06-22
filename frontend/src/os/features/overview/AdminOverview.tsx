@@ -2,9 +2,9 @@ import { useState, useEffect, useRef, useCallback, useMemo, Component } from 're
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowRight, Mic, MicOff, Send, Volume2, VolumeX } from 'lucide-react'
+import { ArrowRight, Maximize2, Minimize2, Mic, MicOff, Paperclip, Send, Volume2, VolumeX } from 'lucide-react'
 import { api } from '@lib/api'
-import { useKIMMPStore, KIMMP_MOCK } from '@store/kimmp'
+import { useKIMMPStore } from '@store/kimmp'
 import { useSignalStream, type LiveSignal } from '@lib/useSignalStream'
 
 // ─── Palette ──────────────────────────────────────────────────────────────────
@@ -120,6 +120,32 @@ function Gauge({ value, max = 100, label, sub = '', color = C, size = 140 }: {
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="block mx-auto">
       <defs>
+        <radialGradient id="metalBase" cx="50%" cy="50%" fx="35%" fy="35%">
+          <stop offset="0%" stopColor="#1a2530" />
+          <stop offset="50%" stopColor="#0f1620" />
+          <stop offset="100%" stopColor="#050a10" />
+        </radialGradient>
+        <radialGradient id="coreEnergy" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="20%" stopColor="#cceeff" />
+          <stop offset="45%" stopColor="#00aaff" />
+          <stop offset="80%" stopColor="#0044aa" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#001133" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="chromeRing" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="30%" stopColor="#666666" />
+          <stop offset="50%" stopColor="#cccccc" />
+          <stop offset="70%" stopColor="#333333" />
+          <stop offset="100%" stopColor="#aaaaaa" />
+        </linearGradient>
+        <linearGradient id="copperCoil" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#ffb366" />
+          <stop offset="40%" stopColor="#cc6600" />
+          <stop offset="60%" stopColor="#ffcc99" />
+          <stop offset="100%" stopColor="#804000" />
+        </linearGradient>
+
         <filter id={`glow-${label}`}>
           <feGaussianBlur stdDeviation="3" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
@@ -159,8 +185,8 @@ function Gauge({ value, max = 100, label, sub = '', color = C, size = 140 }: {
 }
 
 // ─── Panel ────────────────────────────────────────────────────────────────────
-function Panel({ title, color = C, children, onClick }: {
-  title: string; color?: string; children: ReactNode; onClick?: () => void
+function Panel({ title, subtitle, color = C, children, onClick }: {
+  title: string; subtitle?: string; color?: string; children: ReactNode; onClick?: () => void
 }) {
   return (
     <div onClick={onClick} className={onClick ? 'cursor-pointer relative p-[1px] mb-3' : 'relative p-[1px] mb-3'}
@@ -191,6 +217,11 @@ function Panel({ title, color = C, children, onClick }: {
             <div style={{ fontFamily:'monospace', fontSize:9, fontWeight:800, color:color, letterSpacing:'0.2em' }}>
               [{title.toUpperCase()}]
             </div>
+            {subtitle && (
+              <div style={{ fontSize:7, color:`${color}55`, letterSpacing:'0.12em', whiteSpace:'nowrap' }}>
+                {subtitle}
+              </div>
+            )}
             <div style={{ flex:1, height:1, background:`linear-gradient(90deg, ${color}40, transparent)` }} />
             <div style={{ width: 4, height: 4, borderRadius: '50%', background: color }} />
           </div>
@@ -232,9 +263,10 @@ class HUDBoundary extends Component<{ children: ReactNode; label: string }, { er
 }
 
 // ─── Central HUD SVG ──────────────────────────────────────────────────────────
-function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal, criticalAlert, bootPhase, kpis, userRole }: {
+function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal, criticalAlert, bootPhase, kpis, userRole, scenarioDelta }: {
   confidence: number; health: number; analytics: any; sweep: number; insights: any[]
   lastSignal: LiveSignal | null; criticalAlert: LiveSignal | null; bootPhase: number; kpis: any; userRole: string
+  scenarioDelta?: ScenarioDelta | null
 }) {
   const [hovered, setHovered] = useState<string | null>(null)
   const [flowKey, setFlowKey] = useState<{deg:number; key:number} | null>(null)
@@ -312,6 +344,54 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
         transition: tilt.x === 0 && tilt.y === 0 ? 'transform 0.6s ease' : 'transform 0.05s linear',
       }}>
       <defs>
+        <radialGradient id="metalBase" cx="50%" cy="50%" fx="30%" fy="30%">
+          <stop offset="0%" stopColor="#304050" />
+          <stop offset="20%" stopColor="#1a2530" />
+          <stop offset="60%" stopColor="#0f1620" />
+          <stop offset="100%" stopColor="#020408" />
+        </radialGradient>
+        <radialGradient id="coreEnergy" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="15%" stopColor="#aaddff" />
+          <stop offset="40%" stopColor="#0088ff" />
+          <stop offset="70%" stopColor="#002288" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#000511" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="chromeRing" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="25%" stopColor="#444444" />
+          <stop offset="45%" stopColor="#dddddd" />
+          <stop offset="55%" stopColor="#222222" />
+          <stop offset="85%" stopColor="#eeeeee" />
+          <stop offset="100%" stopColor="#111111" />
+        </linearGradient>
+        <linearGradient id="copperCoil" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ffeedd" />
+          <stop offset="15%" stopColor="#ffb366" />
+          <stop offset="50%" stopColor="#804000" />
+          <stop offset="85%" stopColor="#ffb366" />
+          <stop offset="100%" stopColor="#331100" />
+        </linearGradient>
+
+        <filter id="bevelDrop" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#000" floodOpacity="0.8" />
+          <feDropShadow dx="0" dy="0" stdDeviation="2" floodColor="#00aaff" floodOpacity="0.4" />
+        </filter>
+        <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feOffset dx="0" dy="4"/>
+          <feGaussianBlur stdDeviation="5" result="offset-blur"/>
+          <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+          <feFlood floodColor="black" floodOpacity="0.9" result="color"/>
+          <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <radialGradient id="glassLens" cx="30%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.15" />
+          <stop offset="30%" stopColor="#ffffff" stopOpacity="0.05" />
+          <stop offset="50%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="100%" stopColor="#00aaff" stopOpacity="0.05" />
+        </radialGradient>
+
         <radialGradient id="centerGrad" cx="50%" cy="50%">
           <stop offset="0%" stopColor="#001833" />
           <stop offset="100%" stopColor="#000812" />
@@ -422,6 +502,30 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
                 <textPath href={`#lbl2-${deg}`} startOffset="50%" textAnchor="middle">{line2}</textPath>
               </text>
             )}
+            {/* Scenario delta badge — appears outside the arc ring when scenario mode is active */}
+            {scenarioDelta && (() => {
+              const DELTA_MAP: Record<number, keyof ScenarioDelta> = {
+                180: 'revenueHealth', 36: 'pipelineVelocity', 288: 'executionCapacity',
+                324: 'riskExposure',  72: 'marketPosition',
+              }
+              const deltaKey = DELTA_MAP[deg]
+              if (!deltaKey) return null
+              const dv = Math.round(scenarioDelta[deltaKey])
+              if (dv === 0) return null
+              const bc = dv > 0 ? '#00ffaa' : CR
+              const bp = polar(cx, cy, 138, deg)
+              return (
+                <g>
+                  <rect x={bp.x - 13} y={bp.y - 8} width={26} height={16} rx={3}
+                    fill={`${bc}20`} stroke={bc} strokeWidth={0.8} />
+                  <text x={bp.x} y={bp.y + 4.5} textAnchor="middle" fill={bc}
+                    fontSize={7} fontFamily="monospace" fontWeight="900"
+                    style={{ filter:`drop-shadow(0 0 3px ${bc})` }}>
+                    {dv > 0 ? '+' : ''}{dv}
+                  </text>
+                </g>
+              )
+            })()}
           </g>
         )
       })}
@@ -488,33 +592,49 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
       <path d={Array.from({length: 12}).map((_,i) => arcWedgePath(cx,cy, 66, 70, i*30, i*30 + 15)).join(' ')} 
         fill={`${C}40`} style={{ animation:'orbit-cw 12s linear infinite', transformOrigin:`${cx}px ${cy}px` }} />
 
-      {/* ── Complex Reactor rings ── */}
-      <circle cx={cx} cy={cy} r={42} fill="url(#centerGrad)"
-        stroke={`${C}80`} strokeWidth={2} style={{ filter:`drop-shadow(0 0 20px ${C}50)` }} />
+      {/* ── Hyper-Realistic Reactor Core ── */}
+      {/* Heavy base metal housing */}
+      <circle cx={cx} cy={cy} r={54} fill="url(#metalBase)" stroke="url(#chromeRing)" strokeWidth={2} filter="url(#bevelDrop)" />
+      
+      {/* 10 copper energy coils wrapping the housing */}
+      {Array.from({length: 10}).map((_, i) => {
+        const d = i * 36;
+        return <path key={i} d={arcWedgePath(cx,cy, 46, 56, d-6, d+6)} fill="url(#copperCoil)" filter="url(#bevelDrop)" />
+      })}
+
+      {/* Inner Chrome housing ring */}
+      <circle cx={cx} cy={cy} r={46} fill="none" stroke="url(#chromeRing)" strokeWidth={6} filter="url(#innerShadow)" />
+      
+      {/* Deep dark chamber */}
+      <circle cx={cx} cy={cy} r={42} fill="#050a12" filter="url(#innerShadow)" />
 
       {/* 3 counter-rotating inner targeting reticles */}
-      <circle cx={cx} cy={cy} r={38} fill="none" stroke={`${C}60`} strokeWidth={3}
-        strokeDasharray="1 4 10 4" style={{ animation:'orbit-ccw 8s linear infinite', transformOrigin:`${cx}px ${cy}px` }} />
+      <circle cx={cx} cy={cy} r={38} fill="none" stroke="#00aaff" strokeWidth={1.5}
+        strokeDasharray="1 4 10 4" style={{ filter:'drop-shadow(0 0 6px #00aaff)', animation:'orbit-ccw 8s linear infinite', transformOrigin:`${cx}px ${cy}px` }} />
+      <circle cx={cx} cy={cy} r={32} fill="none" stroke="#ffffff" strokeWidth={1}
+        strokeDasharray="2 4" style={{ filter:'drop-shadow(0 0 4px #ffffff)', animation:'orbit-cw 4s linear infinite', transformOrigin:`${cx}px ${cy}px` }} />
+      <circle cx={cx} cy={cy} r={28} fill="none" stroke="#0066ff" strokeWidth={0.5}
+        strokeDasharray="40 10 20 10" style={{ filter:'drop-shadow(0 0 4px #0066ff)', animation:'orbit-ccw 20s linear infinite', transformOrigin:`${cx}px ${cy}px` }} />
 
-      <circle cx={cx} cy={cy} r={32} fill="none" stroke={`${C}90`} strokeWidth={1}
-        strokeDasharray="2 4" style={{ animation:'orbit-cw 4s linear infinite', transformOrigin:`${cx}px ${cy}px` }} />
+      {/* Primary glowing energy core */}
+      <circle cx={cx} cy={cy} r={26} fill="url(#coreEnergy)" style={{ filter:`drop-shadow(0 0 25px #00aaff) drop-shadow(0 0 50px #00aaff)`, animation:'arcPulse 2s infinite' }} />
+      {/* Extreme bright center point */}
+      <circle cx={cx} cy={cy} r={10} fill="#ffffff" style={{ filter:`drop-shadow(0 0 10px #ffffff) drop-shadow(0 0 20px #ffffff)`, animation:'arcPulseFast 0.8s infinite' }} />
 
-      <circle cx={cx} cy={cy} r={28} fill="none" stroke={`${C}ff`} strokeWidth={0.5}
-        strokeDasharray="40 10 20 10" style={{ animation:'orbit-ccw 20s linear infinite', transformOrigin:`${cx}px ${cy}px` }} />
+      {/* Glass Lens reflection */}
+      <circle cx={cx} cy={cy} r={42} fill="url(#glassLens)" pointerEvents="none" />
 
-      {/* ── Dynamic Center Core ── */}
+      {/* ── Dynamic Center Info Overlay ── */}
       <g style={{ opacity: hovered ? 0 : 1, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
-        <circle cx={cx} cy={cy} r={16} fill={C} style={{ filter:`drop-shadow(0 0 15px ${C})`, animation:'arcPulse 2s infinite' }} opacity={0.3} />
         <image href="/assets/kangqore-icon-white.png" x={cx-14} y={cy-14} width={28} height={28}
-          opacity={0.9} style={{ filter:`drop-shadow(0 0 8px ${C})` }} />
-        <text x={cx} y={cy+56} textAnchor="middle" fill={C} fontSize={8} fontFamily="monospace" fontWeight="900" letterSpacing="0.1em" style={{ filter:`drop-shadow(0 0 4px ${C})` }}>
+          opacity={0.9} style={{ filter:`drop-shadow(0 0 12px ${C})` }} />
+        <text x={cx} y={cy+56} textAnchor="middle" fill="#ffffff" fontSize={8} fontFamily="monospace" fontWeight="900" letterSpacing="0.1em" style={{ filter:`drop-shadow(0 0 8px #03a9f4)` }}>
           {confidence}% CONF
         </text>
-        <text x={cx} y={cy+66} textAnchor="middle" fill={`${C}80`} fontSize={6} fontFamily="monospace" letterSpacing="0.1em">
+        <text x={cx} y={cy+66} textAnchor="middle" fill="#88ccff" fontSize={6} fontFamily="monospace" letterSpacing="0.1em" style={{ filter:`drop-shadow(0 0 4px #0066ff)` }}>
           SYS {health.toFixed(1)}%
         </text>
       </g>
-      
       {/* Hovered Module Readout */}
       <g style={{ opacity: hovered ? 1 : 0, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
         {hovered && (() => {
@@ -580,6 +700,206 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
   )
 }
 
+// ─── WAANDA Boot Greeting (JARVIS-style) ─────────────────────────────────────
+function WaandaGreeting({ kpis, insights, health, onDismiss }: {
+  kpis: any; insights: any[]; health: number
+  onDismiss: (voiceText: string) => void
+}) {
+  const [phase, setPhase] = useState(0)
+  const [exiting, setExiting] = useState(false)
+
+  const hour  = new Date().getHours()
+  const tod   = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening'
+  const crit  = insights.filter((i: any) => i.priority === 'critical').length
+  const high  = insights.filter((i: any) => i.priority === 'high').length
+  const twin  = kpis?.overallScore ?? null
+  const rev   = kpis?.revenueHealth ?? null
+
+  const statusLine = crit > 0
+    ? `${crit} critical signal${crit > 1 ? 's' : ''} require immediate attention${high > 0 ? `, along with ${high} high-priority item${high > 1 ? 's' : ''}` : ''}.`
+    : high > 0
+    ? `${high} high-priority signal${high > 1 ? 's' : ''} in queue. All critical systems clear.`
+    : 'All modules clear. No critical signals detected.'
+
+  const voiceText = [
+    `Good ${tod}, sir. WAANDA online.`,
+    crit > 0
+      ? `I've flagged ${crit} critical signal${crit > 1 ? 's' : ''} requiring immediate attention.`
+      : 'All ten modules are operational and running within normal parameters.',
+    twin != null ? `Business twin score is at ${twin} out of one hundred.` : '',
+    rev != null  ? `Revenue health holding at ${rev}.` : '',
+    'Standing by for your orders, sir.',
+  ].filter(Boolean).join(' ')
+
+  // Lines reveal sequentially — each item: [delay ms, content]
+  const LINES: Array<[number, { type: string; text: string; value?: string }]> = [
+    [0,    { type: 'title',    text: 'W·A·A·N·D·A' }],
+    [220,  { type: 'subtitle', text: 'WIDE-AREA ANALYTICS & NEURAL DISPATCH ARCHITECTURE' }],
+    [460,  { type: 'divider',  text: '' }],
+    [660,  { type: 'status',   text: 'Intelligence Mesh',    value: '✓ ONLINE' }],
+    [860,  { type: 'status',   text: 'Digital Twin',         value: twin != null ? `✓ ${twin}/100` : '✓ ACTIVE' }],
+    [1060, { type: 'status',   text: 'AEGIS Governance',     value: '✓ OPERATIONAL' }],
+    [1260, { type: 'status',   text: 'Signal Monitor',       value: `✓ ${insights.length || 0} TRACKED` }],
+    [1260, { type: 'status',   text: 'System Health',        value: `✓ ${health.toFixed(0)}%` }],
+    [1500, { type: 'divider',  text: '' }],
+    [1900, { type: 'greeting', text: `Good ${tod}, sir.` }],
+    [2300, { type: 'body',     text: statusLine }],
+    [2700, { type: 'body',     text: `10 modules online  ·  AEGIS active  ·  All systems nominal` }],
+    [3100, { type: 'ready',    text: 'WAANDA online. Standing by for orders.' }],
+    [3700, { type: 'prompt',   text: '[ CLICK ANYWHERE OR PRESS ANY KEY TO PROCEED ]' }],
+  ]
+
+  useEffect(() => {
+    const timers = LINES.map(([delay], i) =>
+      setTimeout(() => setPhase(p => Math.max(p, i + 1)), delay)
+    )
+    return () => timers.forEach(clearTimeout)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const dismiss = useCallback(() => {
+    if (exiting) return
+    setExiting(true)
+    setTimeout(() => onDismiss(voiceText), 180)
+  }, [exiting, onDismiss, voiceText])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key !== 'Tab') dismiss() }
+    document.addEventListener('keydown', onKey, true)
+    return () => document.removeEventListener('keydown', onKey, true)
+  }, [dismiss])
+
+  // Auto-advance after lines finish + 2s extra
+  useEffect(() => {
+    const t = setTimeout(dismiss, 7500)
+    return () => clearTimeout(t)
+  }, [dismiss])
+
+  const shownLines = LINES.slice(0, phase).map(([, l]) => l)
+
+  return (
+    <div onClick={dismiss} style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(0,3,10,0.97)',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      cursor: 'pointer',
+      opacity: exiting ? 0 : 1,
+      transition: exiting ? 'opacity 0.25s ease' : 'none',
+    }}>
+      {/* Scan-line texture */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,102,255,0.018) 3px, rgba(0,102,255,0.018) 4px)',
+      }} />
+      {/* Radial vignette glow */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: `radial-gradient(ellipse 60% 55% at 50% 50%, rgba(0,80,200,0.06) 0%, transparent 70%)`,
+      }} />
+
+      <div style={{ width: 580, maxWidth: '88vw', position: 'relative', padding: '32px 0' }}>
+        {/* Corner HUD brackets */}
+        {[['top','left'],['top','right'],['bottom','left'],['bottom','right']].map(([v, h]) => (
+          <div key={v+h} style={{
+            position: 'absolute',
+            [v]: -4, [h]: -12,
+            width: 18, height: 18,
+            [`border${v.charAt(0).toUpperCase()+v.slice(1)}`]: `1.5px solid ${CG}`,
+            [`border${h.charAt(0).toUpperCase()+h.slice(1)}`]: `1.5px solid ${CG}`,
+            opacity: 0.7,
+          }} />
+        ))}
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+          {shownLines.map((line, i) => {
+            if (line.type === 'title') return (
+              <div key={i} style={{
+                fontSize: 34, fontWeight: 900, color: C, letterSpacing: '0.5em',
+                fontFamily: 'monospace', textAlign: 'center',
+                filter: `drop-shadow(0 0 22px ${C}) drop-shadow(0 0 8px ${C})`,
+                animation: 'hudCardIn 0.5s ease', marginBottom: 6,
+              }}>
+                {line.text}
+              </div>
+            )
+            if (line.type === 'subtitle') return (
+              <div key={i} style={{
+                fontSize: 7, color: `${CG}80`, letterSpacing: '0.2em',
+                fontFamily: 'monospace', textAlign: 'center',
+                animation: 'hudCardIn 0.4s ease', marginBottom: 22,
+              }}>
+                {line.text}
+              </div>
+            )
+            if (line.type === 'divider') return (
+              <div key={i} style={{
+                height: 1, background: `linear-gradient(90deg, transparent, ${CG}30, ${C}50, ${CG}30, transparent)`,
+                margin: '10px 0', animation: 'hudCardIn 0.3s ease',
+              }} />
+            )
+            if (line.type === 'status') return (
+              <div key={i} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                padding: '4px 8px', animation: 'hudCardIn 0.3s ease',
+              }}>
+                <span style={{ fontSize: 10, color: `${C}70`, fontFamily: 'monospace', letterSpacing: '0.06em' }}>
+                  › {line.text}
+                </span>
+                <span style={{
+                  fontSize: 10, color: CG, fontFamily: 'monospace', fontWeight: 800,
+                  letterSpacing: '0.08em', filter: `drop-shadow(0 0 5px ${CG})`,
+                }}>
+                  {line.value}
+                </span>
+              </div>
+            )
+            if (line.type === 'greeting') return (
+              <div key={i} style={{
+                fontSize: 26, fontWeight: 800, color: '#ffffff',
+                letterSpacing: '0.06em', fontFamily: 'monospace', textAlign: 'center',
+                marginTop: 18, marginBottom: 10,
+                animation: 'hudCardIn 0.5s ease',
+                filter: `drop-shadow(0 0 14px ${C})`,
+              }}>
+                {line.text}
+              </div>
+            )
+            if (line.type === 'body') return (
+              <div key={i} style={{
+                fontSize: 11, color: '#7aaec8', fontFamily: 'monospace',
+                textAlign: 'center', lineHeight: 1.8, letterSpacing: '0.04em',
+                animation: 'hudCardIn 0.4s ease',
+              }}>
+                {line.text}
+              </div>
+            )
+            if (line.type === 'ready') return (
+              <div key={i} style={{
+                fontSize: 11, color: CG, fontFamily: 'monospace', fontWeight: 700,
+                textAlign: 'center', letterSpacing: '0.14em', marginTop: 18,
+                animation: 'hudCardIn 0.5s ease',
+                filter: `drop-shadow(0 0 8px ${CG})`,
+              }}>
+                {line.text}
+              </div>
+            )
+            if (line.type === 'prompt') return (
+              <div key={i} style={{
+                fontSize: 8, color: `${C}45`, fontFamily: 'monospace',
+                textAlign: 'center', letterSpacing: '0.18em', marginTop: 26,
+                animation: 'blink2 1.6s ease-in-out infinite',
+              }}>
+                {line.text}
+              </div>
+            )
+            return null
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── HUD Command Bar ──────────────────────────────────────────────────────────
 
 function useTypewriter(text: string, active: boolean) {
@@ -628,49 +948,101 @@ function useVoiceInput(onResult: (t: string) => void) {
 function useTTS() {
   const [speaking, setSpeaking] = useState(false)
   const [muted,    setMuted]    = useState(false)
-  const muteRef = useRef(false)
 
-  const speak = useCallback((text: string) => {
-    if (muteRef.current || !window.speechSynthesis) return
-    window.speechSynthesis.cancel()
-    const utter = new SpeechSynthesisUtterance(text)
-    utter.rate = 0.78; utter.pitch = 1.0; utter.volume = 1
+  const st = useRef<{
+    muted:   boolean
+    current: HTMLAudioElement | null
+    queue:   Array<{ text: string; type: string }>
+    playing: boolean
+    ctx:     AudioContext | null
+  }>({ muted: false, current: null, queue: [], playing: false, ctx: null })
 
-    const pickVoice = (voices: SpeechSynthesisVoice[]) =>
-      voices.find(v => /samantha/i.test(v.name))
-      || voices.find(v => /karen|moira|tessa|victoria|zira|hazel|susan|allison|ava|kate|serena/i.test(v.name))
-      || voices.find(v => v.lang === 'en-AU')
-      || voices.find(v => v.lang.startsWith('en') && !/male|daniel|oliver|arthur/i.test(v.name))
-      || null
-
-    const doSpeak = (voices: SpeechSynthesisVoice[]) => {
-      const voice = pickVoice(voices)
-      if (voice) utter.voice = voice
-      utter.onstart = () => setSpeaking(true)
-      utter.onend   = () => setSpeaking(false)
-      utter.onerror = () => setSpeaking(false)
-      window.speechSynthesis.speak(utter)
+  // Unlock Web Audio API on first user gesture (Chrome autoplay policy)
+  useEffect(() => {
+    const unlock = () => {
+      try {
+        if (!st.current.ctx) st.current.ctx = new AudioContext()
+        st.current.ctx.resume()
+      } catch {}
     }
-
-    const voices = window.speechSynthesis.getVoices()
-    if (voices.length > 0) {
-      doSpeak(voices)
-    } else {
-      // Voices load async — wait for the event then speak
-      window.speechSynthesis.addEventListener('voiceschanged', function handler() {
-        window.speechSynthesis.removeEventListener('voiceschanged', handler)
-        doSpeak(window.speechSynthesis.getVoices())
-      }, { once: true } as any)
+    document.addEventListener('click',   unlock, true)
+    document.addEventListener('keydown', unlock, true)
+    return () => {
+      document.removeEventListener('click',   unlock, true)
+      document.removeEventListener('keydown', unlock, true)
     }
   }, [])
 
-  const silence = useCallback(() => { window.speechSynthesis?.cancel(); setSpeaking(false) }, [])
+  // Play a short notification tone, return its duration in ms
+  const chime = useCallback((type: string): number => {
+    try {
+      if (!st.current.ctx) st.current.ctx = new AudioContext()
+      const ctx = st.current.ctx
+      if (ctx.state === 'suspended') ctx.resume()
+      const now = ctx.currentTime
+      type Note = { f: number; t: number; d: number; g: number; w?: OscillatorType }
+      const TONES: Record<string, Note[]> = {
+        signal:   [{ f:1200, t:0,    d:0.18, g:0.12 }],
+        alert:    [{ f:880,  t:0,    d:0.18, g:0.30, w:'sawtooth' }, { f:660, t:0.20, d:0.18, g:0.26, w:'sawtooth' }],
+        agent:    [{ f:523,  t:0,    d:0.12, g:0.12 }, { f:659, t:0.14, d:0.12, g:0.12 }],
+        kpi:      [{ f:523,  t:0,    d:0.10, g:0.15 }, { f:659, t:0.12, d:0.10, g:0.15 }, { f:784, t:0.24, d:0.13, g:0.18 }],
+        system:   [{ f:440,  t:0,    d:0.12, g:0.07 }],
+        greeting: [{ f:523,  t:0,    d:0.10, g:0.10 }, { f:659, t:0.12, d:0.12, g:0.08 }],
+      }
+      const notes = TONES[type] ?? TONES.system
+      notes.forEach(({ f, t, d, g, w = 'sine' }) => {
+        const osc  = ctx.createOscillator()
+        const gain = ctx.createGain()
+        osc.type = w
+        osc.frequency.setValueAtTime(f, now + t)
+        gain.gain.setValueAtTime(0, now + t)
+        gain.gain.linearRampToValueAtTime(g, now + t + 0.01)
+        gain.gain.exponentialRampToValueAtTime(0.001, now + t + d)
+        osc.connect(gain); gain.connect(ctx.destination)
+        osc.start(now + t); osc.stop(now + t + d + 0.02)
+      })
+      return Math.ceil(Math.max(...notes.map(n => n.t + n.d)) * 1000) + 80
+    } catch { return 0 }
+  }, [])
+
+  const playNext = useCallback(() => {
+    const s = st.current
+    if (s.muted || s.playing || s.queue.length === 0) return
+    s.playing = true
+    setSpeaking(true)
+    const item = s.queue.shift()!
+    // Responses to user queries skip the chime (user is already listening)
+    const delay = item.type !== 'response' ? chime(item.type) : 0
+    setTimeout(() => {
+      if (s.muted) { s.playing = false; setSpeaking(false); return }
+      const audio = new Audio(`/api/admin/kangqore-immp/tts?text=${encodeURIComponent(item.text.slice(0, 500))}`)
+      s.current = audio
+      const done = () => { s.playing = false; s.current = null; setSpeaking(false); setTimeout(playNext, 200) }
+      audio.onended = done; audio.onerror = done
+      audio.play().catch(done)
+    }, delay)
+  }, [chime])
+
+  const speak = useCallback((text: string, type = 'system') => {
+    if (st.current.muted || !text.trim()) return
+    // Alerts jump to the front; everything else queues normally
+    if (type === 'alert') st.current.queue.unshift({ text, type })
+    else st.current.queue.push({ text, type })
+    playNext()
+  }, [playNext])
+
+  const silence = useCallback(() => {
+    const s = st.current
+    s.queue = []; s.playing = false
+    if (s.current) { s.current.pause(); s.current.src = ''; s.current = null }
+    setSpeaking(false)
+  }, [])
 
   const toggleMute = useCallback(() => {
-    muteRef.current = !muteRef.current
-    setMuted(muteRef.current)
-    if (muteRef.current) window.speechSynthesis?.cancel()
-  }, [])
+    st.current.muted = !st.current.muted
+    setMuted(st.current.muted)
+    if (st.current.muted) silence()
+  }, [silence])
 
   return { speak, silence, speaking, muted, toggleMute }
 }
@@ -713,16 +1085,47 @@ interface HUDCmdResult {
   plan?: PlanStepUI[] | null
 }
 
-function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
+interface ScenarioDelta {
+  revenueHealth:     number
+  pipelineVelocity:  number
+  executionCapacity: number
+  riskExposure:      number
+  marketPosition:    number
+}
+interface ScenarioResult {
+  narrative:   string
+  delta:       ScenarioDelta
+  scenario:    string
+  generatedAt: string
+}
+interface GoalTask {
+  id: string; step: number; title: string
+  status: 'PENDING' | 'IN_PROGRESS' | 'DONE' | 'FAILED' | 'OVERDUE'
+  result?: string | null
+}
+interface GoalCockpitData {
+  id: string; objective: string
+  status: 'PENDING_APPROVAL' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
+  progressPct: number; deadline?: string | null; tasks: GoalTask[]
+}
+
+function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
+  onScenario, onGoalCockpit, scenarioActive, onExitScenario }: {
   insights: any[]; color: string
   recentSignals: LiveSignal[]; criticalAlert: LiveSignal | null
+  onScenario: (result: ScenarioResult, delta: ScenarioDelta) => void
+  onGoalCockpit: () => void
+  scenarioActive: boolean
+  onExitScenario: () => void
 }) {
   const navigate = useNavigate()
   const [query,    setQuery]    = useState('')
   const [result,   setResult]   = useState<HUDCmdResult | null>(null)
   const [thinking, setThinking] = useState(false)
   const [animate,  setAnimate]  = useState(false)
-  const [history,  setHistory]  = useState<Array<{role:'user'|'assistant'; content:string}>>([])
+  const [history,  setHistory]  = useState<Array<{role:'user'|'assistant'; content:string}>>(() => {
+    try { return JSON.parse(localStorage.getItem('waanda-chat-history') || '[]') } catch { return [] }
+  })
   const [showHistory, setShowHistory] = useState(false)
   const [saved, setSaved] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem('kimmp-saved-queries') || '[]') } catch { return [] }
@@ -734,43 +1137,34 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
   const [feedbackSent, setFeedbackSent] = useState(false)
   const inputRef  = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const greeted   = useRef(false)
-  const alertedRef = useRef<string | null>(null)
+  const alertedRef   = useRef<string | null>(null)
 
   const { speak, silence, speaking, muted, toggleMute } = useTTS()
 
   useEffect(() => {
     if (!criticalAlert || alertedRef.current === criticalAlert.id) return
     alertedRef.current = criticalAlert.id
-    speak(`CRITICAL ALERT. ${criticalAlert.sourceModule} — ${criticalAlert.signalValue}. Immediate attention required, sir.`)
+    const msg = `CRITICAL ALERT. ${criticalAlert.sourceModule} — ${criticalAlert.signalValue}. Immediate attention required, sir.`
+    setTimeout(() => speak(msg, 'alert'), 800)
   }, [criticalAlert, speak])
 
   const displayed = useTypewriter(result?.response ?? '', animate)
 
   useEffect(() => {
-    if (greeted.current) return
-    greeted.current = true
-    const critical = insights.filter((i: any) => i.priority === 'critical').length
-    const high     = insights.filter((i: any) => i.priority === 'high').length
-    const hour     = new Date().getHours()
-    const tod = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening'
-    const greeting = critical > 0
-      ? `Good ${tod}, sir. ${critical} critical signal${critical > 1 ? 's' : ''} require immediate attention${high > 0 ? `, along with ${high} high-priority item${high > 1 ? 's' : ''}` : ''}. Shall I brief you?`
-      : `Good ${tod}, sir. Kangqore View is online. All modules operating within normal parameters.`
-    setTimeout(() => speak(greeting), 1400)
-  }, [insights, speak])
-
-  useEffect(() => {
-    if (!result || animate) return
-    speak(result.response + (result.suggestedAction ? '. ' + result.suggestedAction : ''))
+    if (!result || !animate) return
+    speak(result.response + (result.suggestedAction ? '. ' + result.suggestedAction : ''), 'response')
   }, [animate, result, speak])
 
-  // Auto-navigate when KIMMP returns a route
+  // Auto-navigate when KIMMP returns a route; intercept /goals to open cockpit
   useEffect(() => {
     if (!result?.navigate) return
+    if (result.navigate === '/goals' || result.navigate?.includes('goals')) {
+      onGoalCockpit()
+      return
+    }
     const t = setTimeout(() => navigate(result.navigate!), 1800)
     return () => clearTimeout(t)
-  }, [result, navigate])
+  }, [result, navigate, onGoalCockpit])
 
   const saveQuery = (q: string) => {
     const next = [q, ...saved.filter(s => s !== q)].slice(0, 5)
@@ -827,6 +1221,36 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
     const text = (q ?? query).trim()
     if (!text) return
     silence()
+
+    // ── Goal Cockpit intercept ────────────────────────────────────────────────
+    if (/^(show\s+(my\s+)?goals?|goals?|my\s+goals?|goal\s+cockpit)$/i.test(text)) {
+      onGoalCockpit()
+      setQuery('')
+      return
+    }
+
+    // ── Scenario Playground intercept ─────────────────────────────────────────
+    const isScenario = /^what\s+if\b/i.test(text) || /\bscenario\b.*\bif\b/i.test(text)
+    if (isScenario) {
+      setQuery(text); setThinking(true); setResult(null); setAnimate(false)
+      try {
+        const res = await api.post('/admin/kangqore-immp/simulate', { scenario: text })
+        onScenario(res.data as ScenarioResult, res.data.delta as ScenarioDelta)
+        setResult({
+          response: `Scenario analysis complete. Review the arc module deltas — delta badges show projected changes under this scenario.`,
+          confidence: 85, suggestedAction: res.data.narrative?.slice(0, 120) ?? null,
+          model: 'simulation', navigate: null,
+        })
+        setAnimate(true)
+      } catch {
+        setResult({
+          response: 'Simulation unavailable — ensure the AI backend key is configured.',
+          confidence: 0, suggestedAction: null, model: 'fallback', navigate: null,
+        }); setAnimate(true)
+      } finally { setThinking(false) }
+      return
+    }
+
     setQuery(text); setThinking(true); setResult(null); setAnimate(false)
     try {
       const res = await api.post('/admin/kangqore-immp/command', {
@@ -843,7 +1267,11 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
       if (res.data.pendingAction) setPendingAction(res.data.pendingAction)
       if (res.data.plan?.length) setPlan(res.data.plan)
       else setPlan([])
-      setHistory(h => [...h, { role:'user', content:text }, { role:'assistant', content:res.data.response }])
+      setHistory(h => {
+        const next = [...h, { role:'user', content:text }, { role:'assistant', content:res.data.response }]
+        try { localStorage.setItem('waanda-chat-history', JSON.stringify(next.slice(-40))) } catch {}
+        return next
+      })
     } catch {
       const reactive = insights.filter((i: any) => i.type !== 'predictive')
       const top = reactive.filter((i: any) => i.priority === 'critical' || i.priority === 'high')
@@ -854,14 +1282,35 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
         confidence: 60, suggestedAction: null, model: 'fallback', navigate: null,
       }); setAnimate(true)
     } finally { setThinking(false) }
-  }, [query, history, insights, recentSignals, silence])
+  }, [query, history, insights, recentSignals, silence, onScenario, onGoalCockpit])
 
   const { listening, supported, interim, start, stop } = useVoiceInput(
     useCallback((t: string) => { setQuery(t); submit(t) }, [submit])
   )
+
+  // Voice-mode loop: after WAANDA finishes speaking, re-activate mic automatically
+  const voiceModeRef        = useRef(false)
+  const [voiceMode, setVoiceMode] = useState(false)
+  const setVM = (v: boolean) => { voiceModeRef.current = v; setVoiceMode(v) }
+  const prevSpeakRef  = useRef(false)
+  useEffect(() => {
+    const wasSpeaking = prevSpeakRef.current
+    prevSpeakRef.current = speaking
+    if (wasSpeaking && !speaking && voiceModeRef.current && !thinking) {
+      // small gap so the user hears the response fully before mic opens
+      setTimeout(() => { if (voiceModeRef.current) start() }, 600)
+    }
+  }, [speaking, thinking, start])
+
   const handleMicClick = useCallback(() => {
-    if (listening) { stop(); return }
-    silence(); start()
+    if (listening) {
+      setVM(false)   // exit voice-mode loop
+      stop()
+      return
+    }
+    setVM(true)      // enter voice-mode loop
+    silence()
+    start()
   }, [listening, stop, silence, start])
 
   const displayedQuery = listening && interim ? interim : query
@@ -871,10 +1320,26 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
     ? (topModule.includes('lead') ? 'What happened with leads?' : topModule.includes('eqore') ? 'Latest eQORE signals?' : topModule.includes('finance') ? 'Finance status?' : 'What should I focus on?')
     : 'What should I focus on?'
 
-  const SUGGESTED = [DYNAMIC, 'Show me critical risks', 'Open finance', 'Give me a brief']
+  const SUGGESTED = [DYNAMIC, "How's our pipeline?", 'Show me critical risks', 'Give me a business brief', 'What if we close 5 deals this month?', 'Open finance']
 
   return (
     <div style={{ width:'100%' }}>
+      {/* Scenario mode indicator strip */}
+      {scenarioActive && (
+        <div style={{
+          display:'flex', alignItems:'center', justifyContent:'space-between',
+          padding:'3px 8px', marginBottom:5,
+          background:`rgba(0,102,255,0.10)`, border:`1px solid ${CG}35`, borderRadius:5,
+        }}>
+          <span style={{ fontSize:8, color:CG, fontFamily:'monospace', letterSpacing:'0.15em', fontWeight:800 }}>
+            ◈ SCENARIO MODE — arc badges show projected deltas
+          </span>
+          <button onClick={onExitScenario}
+            style={{ background:'none', border:'none', cursor:'pointer', color:`${CR}80`, fontSize:9, padding:0, fontFamily:'monospace' }}>
+            ✕ exit
+          </button>
+        </div>
+      )}
       {/* Conversation history thread */}
       {history.length > 0 && (
         <div style={{ marginBottom:4 }}>
@@ -887,7 +1352,7 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
               {history.map((h, i) => (
                 <div key={i} style={{ padding:'2px 0', borderBottom:`1px solid ${color}08` }}>
                   <span style={{ fontSize:7, color: h.role === 'user' ? `${color}70` : `${CG}70`, fontFamily:'monospace', display:'block' }}>
-                    {h.role === 'user' ? '▶ YOU' : '◈ KIMMP'}
+                    {h.role === 'user' ? '▶ YOU' : '◈ WAANDA'}
                   </span>
                   <span style={{ fontSize:8, color: h.role === 'user' ? `${color}90` : '#8ab0c8', lineHeight:1.4, display:'block' }}>
                     {h.content.slice(0, 120)}{h.content.length > 120 ? '…' : ''}
@@ -931,7 +1396,7 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
 
       {/* Input row */}
       <div style={{
-        display:'flex', alignItems:'center', gap:8, padding:'6px 10px',
+        display:'flex', alignItems:'center', gap:6, padding:'5px 8px',
         background: listening ? 'rgba(255,51,85,0.08)' : speaking ? `rgba(0,212,255,0.08)` : `rgba(0,212,255,0.04)`,
         border: `1px solid ${listening ? '#ff335540' : speaking ? `${color}50` : `${color}25`}`,
         borderRadius:8, transition:'all 0.3s',
@@ -942,7 +1407,7 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
           value={displayedQuery}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && submit()}
-          placeholder={listening ? 'Listening…' : speaking ? 'Speaking…' : `Ask KIMMP — "take me to finance", "what should I focus on?"…`}
+          placeholder={listening ? 'Listening…' : speaking ? 'Speaking…' : `Ask WAANDA — "take me to finance", "what should I focus on?"…`}
           style={{
             flex:1, background:'transparent', border:'none', outline:'none',
             fontSize:10, color: listening ? '#ff5577' : '#a0d8ef',
@@ -952,37 +1417,83 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
         {speaking && <Waveform color={color} active={speaking} />}
         {displayedQuery && !listening && !speaking && (
           <button onClick={() => { setQuery(''); setResult(null); silence() }}
-            style={{ background:'none', border:'none', color:`${color}40`, cursor:'pointer', fontSize:10 }}>✕</button>
+            style={{ width:18, height:18, borderRadius:'50%', flexShrink:0,
+              background:'rgba(255,255,255,0.04)', border:`1px solid ${color}18`,
+              color:`${color}50`, cursor:'pointer', fontSize:9, display:'flex',
+              alignItems:'center', justifyContent:'center', lineHeight:1, transition:'all 0.15s' }}>✕</button>
         )}
-        <button onClick={toggleMute} title={muted ? 'Unmute' : 'Mute'}
-          style={{ width:24, height:24, borderRadius:4, border:`1px solid ${muted ? '#ff886040' : `${color}25`}`,
-            background:'transparent', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', flexShrink:0 }}>
-          {muted ? <VolumeX size={10} color="#ff8860" /> : <Volume2 size={10} color={`${color}60`} />}
+
+        {/* ── Action buttons ── */}
+        {/* Mute */}
+        <button onClick={toggleMute} title={muted ? 'Unmute WAANDA' : 'Mute WAANDA'}
+          style={{ width:34, height:34, borderRadius:'50%', flexShrink:0, cursor:'pointer',
+            display:'flex', alignItems:'center', justifyContent:'center',
+            border: muted ? '1px solid rgba(255,68,68,0.55)' : `1px solid ${color}22`,
+            background: muted
+              ? 'radial-gradient(circle at 50% 35%, rgba(255,68,68,0.18) 0%, rgba(255,68,68,0.05) 100%)'
+              : `radial-gradient(circle at 50% 35%, ${color}0d 0%, transparent 100%)`,
+            boxShadow: muted
+              ? '0 0 16px rgba(255,68,68,0.30), inset 0 1px 0 rgba(255,255,255,0.07)'
+              : 'inset 0 1px 0 rgba(255,255,255,0.05)',
+            transition:'all 0.2s ease' }}>
+          {muted ? <VolumeX size={13} color="#ff4444" /> : <Volume2 size={13} color={`${color}90`} />}
         </button>
+
+        {/* Mic / voice loop */}
         {supported && (
           <button onClick={handleMicClick}
-            style={{ width:24, height:24, borderRadius:4, border:`1px solid ${listening ? '#ff3355' : `${color}30`}`,
-              background: listening ? 'rgba(255,51,85,0.2)' : 'transparent',
-              display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', flexShrink:0,
-              boxShadow: listening ? '0 0 8px #ff335560' : 'none',
-              animation: listening ? 'blink2 1s infinite' : 'none' }}>
-            {listening ? <MicOff size={10} color="#ff3355" /> : <Mic size={10} color={`${color}80`} />}
+            title={listening ? 'Stop listening' : voiceMode ? 'Voice loop active — click to exit' : 'Speech to speech'}
+            style={{ width:34, height:34, borderRadius:'50%', flexShrink:0, cursor:'pointer',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              border: listening ? '1px solid rgba(255,51,85,0.65)'
+                    : voiceMode  ? `1px solid ${color}65`
+                    :              `1px solid ${color}22`,
+              background: listening
+                ? 'radial-gradient(circle at 50% 35%, rgba(255,51,85,0.22) 0%, rgba(255,51,85,0.06) 100%)'
+                : voiceMode
+                ? `radial-gradient(circle at 50% 35%, ${color}1a 0%, ${color}05 100%)`
+                : `radial-gradient(circle at 50% 35%, ${color}0d 0%, transparent 100%)`,
+              boxShadow: listening
+                ? '0 0 18px rgba(255,51,85,0.40), inset 0 1px 0 rgba(255,255,255,0.07)'
+                : voiceMode
+                ? `0 0 14px ${color}40, inset 0 1px 0 rgba(255,255,255,0.07)`
+                : 'inset 0 1px 0 rgba(255,255,255,0.05)',
+              animation: listening ? 'blink2 1.2s ease-in-out infinite' : 'none',
+              transition:'all 0.2s ease' }}>
+            {listening ? <MicOff size={13} color="#ff3355" /> : <Mic size={13} color={voiceMode ? color : `${color}90`} />}
           </button>
         )}
+
+        {/* Attach */}
         <button onClick={() => fileInputRef.current?.click()}
           title="Attach image, PDF, or document"
-          style={{ width:24, height:24, borderRadius:4, border:`1px solid ${color}25`,
-            background:'transparent', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', flexShrink:0,
-            opacity: attachments.length >= 3 ? 0.3 : 1 }}>
-          <span style={{ fontSize:10, color:`${color}50` }}>⊕</span>
+          style={{ width:34, height:34, borderRadius:'50%', flexShrink:0,
+            cursor: attachments.length >= 3 ? 'not-allowed' : 'pointer',
+            display:'flex', alignItems:'center', justifyContent:'center',
+            border: `1px solid ${color}22`,
+            background: `radial-gradient(circle at 50% 35%, ${color}0d 0%, transparent 100%)`,
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+            opacity: attachments.length >= 3 ? 0.28 : 1,
+            transition:'all 0.2s ease' }}>
+          <Paperclip size={12} color={`${color}90`} />
         </button>
+
+        {/* Send — primary CTA */}
         <button onClick={() => submit()}
           disabled={!displayedQuery.trim() || thinking}
-          style={{ width:24, height:24, borderRadius:4, background:`${color}20`,
-            border:`1px solid ${color}40`, display:'flex', alignItems:'center',
-            justifyContent:'center', cursor:'pointer', flexShrink:0,
-            opacity: (!displayedQuery.trim() || thinking) ? 0.3 : 1 }}>
-          <Send size={10} color={color} />
+          style={{ width:34, height:34, borderRadius:'50%', flexShrink:0,
+            cursor: (!displayedQuery.trim() || thinking) ? 'not-allowed' : 'pointer',
+            display:'flex', alignItems:'center', justifyContent:'center',
+            border: `1px solid ${color}${(!displayedQuery.trim() || thinking) ? '20' : '70'}`,
+            background: (!displayedQuery.trim() || thinking)
+              ? `radial-gradient(circle at 50% 35%, ${color}07 0%, transparent 100%)`
+              : `radial-gradient(circle at 50% 35%, ${color}28 0%, ${color}0f 100%)`,
+            boxShadow: (!displayedQuery.trim() || thinking)
+              ? 'inset 0 1px 0 rgba(255,255,255,0.04)'
+              : `0 0 18px ${color}45, inset 0 1px 0 rgba(255,255,255,0.10)`,
+            opacity: (!displayedQuery.trim() || thinking) ? 0.32 : 1,
+            transition:'all 0.25s ease' }}>
+          <Send size={12} color={(!displayedQuery.trim() || thinking) ? `${color}55` : color} />
         </button>
       </div>
 
@@ -1025,7 +1536,7 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
           <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:5 }}>
             <LevelBadge level={pendingAction.level} />
             <span style={{ fontSize:8, color: LEVEL_COLORS[pendingAction.level] ?? CA, fontFamily:'monospace', letterSpacing:'0.1em' }}>
-              KIMMP PROPOSES: {pendingAction.type.replace(/_/g, ' ')}
+              WAANDA PROPOSES: {pendingAction.type.replace(/_/g, ' ')}
             </span>
           </div>
           <div style={{ fontSize:9, color:'#a0d8ef', marginBottom:8, lineHeight:1.4 }}>{pendingAction.description}</div>
@@ -1133,6 +1644,541 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert }: {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+// ─── Scenario Panel ───────────────────────────────────────────────────────────
+function ScenarioPanel({ result, color, onExit }: {
+  result: ScenarioResult; color: string; onExit: () => void
+}) {
+  const displayed = useTypewriter(result.narrative, true)
+  const DELTA_LABELS: { key: keyof ScenarioDelta; label: string }[] = [
+    { key: 'revenueHealth',     label: 'REVENUE'   },
+    { key: 'pipelineVelocity',  label: 'PIPELINE'  },
+    { key: 'executionCapacity', label: 'EXECUTION' },
+    { key: 'riskExposure',      label: 'RISK'      },
+    { key: 'marketPosition',    label: 'MARKET'    },
+  ]
+  return (
+    <div style={{ marginTop:8 }}>
+      <Panel title="SCENARIO ANALYSIS" color={CG}>
+        <div style={{ display:'flex', gap:5, flexWrap:'wrap', marginBottom:8 }}>
+          {DELTA_LABELS.map(({ key, label }) => {
+            const dv = Math.round(result.delta[key] ?? 0)
+            if (dv === 0) return null
+            const bc = dv > 0 ? '#00ffaa' : CR
+            return (
+              <div key={key} style={{
+                padding:'2px 7px', borderRadius:4, fontSize:8, fontFamily:'monospace',
+                fontWeight:800, letterSpacing:'0.08em',
+                background:`${bc}18`, border:`1px solid ${bc}50`, color:bc,
+              }}>
+                {label} {dv > 0 ? '+' : ''}{dv}
+              </div>
+            )
+          })}
+        </div>
+        <p style={{ fontSize:9, color:'#b0d8ef', lineHeight:1.6, fontFamily:'monospace', margin:0 }}>
+          {displayed}
+          {displayed.length < result.narrative.length && (
+            <span style={{ animation:'blink2 0.5s infinite', color }}> ▌</span>
+          )}
+        </p>
+        <div style={{ display:'flex', justifyContent:'space-between', marginTop:6 }}>
+          <span style={{ fontSize:7, color:`${color}40`, fontFamily:'monospace' }}>
+            {new Date(result.generatedAt).toLocaleTimeString('en-GB')}
+          </span>
+          <button onClick={onExit}
+            style={{ background:'none', border:'none', cursor:'pointer', fontSize:8, color:`${CR}60`, fontFamily:'monospace' }}>
+            ✕ clear scenario
+          </button>
+        </div>
+      </Panel>
+    </div>
+  )
+}
+
+// ─── Goal Cockpit ─────────────────────────────────────────────────────────────
+function GoalCockpit({ onClose, color }: { onClose: () => void; color: string }) {
+  const { data, isLoading } = useQuery<{ goals: GoalCockpitData[] }>({
+    queryKey:        ['goal-cockpit'],
+    queryFn:         () => api.get('/admin/kangqore-immp/goals').then(r => r.data),
+    refetchInterval: 30_000,
+  })
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  const goals: GoalCockpitData[] = data?.goals ?? []
+  const statusColor = (s: string) =>
+    s === 'ACTIVE' ? CG : s === 'COMPLETED' ? '#00ffaa' : s === 'CANCELLED' ? CR : '#ffaa00'
+  const daysLeft = (deadline?: string | null) => {
+    if (!deadline) return null
+    return Math.ceil((new Date(deadline).getTime() - Date.now()) / 86_400_000)
+  }
+
+  return (
+    <div style={{
+      position:'absolute', inset:0, zIndex:20,
+      background:'rgba(0,5,16,0.93)', backdropFilter:'blur(6px)',
+      display:'flex', flexDirection:'column', padding:16, overflowY:'auto',
+    }}>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
+        <span style={{ fontSize:11, fontWeight:800, color, letterSpacing:'0.2em', fontFamily:'monospace' }}>
+          ◈ GOAL COCKPIT
+        </span>
+        <button onClick={onClose}
+          style={{ background:'none', border:`1px solid ${CR}40`, borderRadius:4, color:CR,
+            cursor:'pointer', fontSize:9, padding:'3px 10px', fontFamily:'monospace', letterSpacing:'0.1em' }}>
+          ✕ CLOSE
+        </button>
+      </div>
+      {isLoading && (
+        <div style={{ textAlign:'center', padding:40, fontSize:9, color:`${color}50`, fontFamily:'monospace' }}>
+          LOADING GOAL INTELLIGENCE…
+        </div>
+      )}
+      {goals.map(goal => {
+        const dl = daysLeft(goal.deadline)
+        const nextTask = goal.tasks.find(t => t.status === 'PENDING' || t.status === 'IN_PROGRESS')
+        return (
+          <div key={goal.id} style={{
+            marginBottom:10, padding:10,
+            background:'rgba(0,8,20,0.8)', border:`1px solid ${color}22`, borderRadius:6,
+          }}>
+            <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:8, marginBottom:6 }}>
+              <span style={{ fontSize:9, color:'#c0dff0', fontFamily:'monospace', lineHeight:1.4, flex:1 }}>
+                {goal.objective}
+              </span>
+              <span style={{
+                fontSize:7, fontWeight:800, letterSpacing:'0.08em', flexShrink:0,
+                padding:'2px 6px', borderRadius:3, fontFamily:'monospace',
+                color:statusColor(goal.status), border:`1px solid ${statusColor(goal.status)}40`,
+                background:`${statusColor(goal.status)}12`,
+              }}>
+                {goal.status.replace(/_/g, ' ')}
+              </span>
+            </div>
+            <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
+              <div style={{ flex:1, height:4, background:`${color}15`, borderRadius:2, overflow:'hidden' }}>
+                <div style={{
+                  height:'100%', width:`${goal.progressPct}%`,
+                  background: goal.progressPct >= 80 ? '#00ffaa' : goal.progressPct >= 40 ? color : '#ffaa00',
+                  transition:'width 0.6s ease', borderRadius:2,
+                }} />
+              </div>
+              <span style={{ fontSize:8, color:`${color}70`, fontFamily:'monospace', flexShrink:0 }}>
+                {goal.progressPct}%
+              </span>
+              {dl !== null && (
+                <span style={{
+                  fontSize:7, flexShrink:0, fontFamily:'monospace',
+                  color: dl <= 3 ? CR : dl <= 7 ? '#ffaa00' : `${color}60`,
+                }}>
+                  {dl > 0 ? `${dl}d left` : `${Math.abs(dl)}d overdue`}
+                </span>
+              )}
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:3 }}>
+              {goal.tasks.map(task => {
+                const isNext = task.id === nextTask?.id
+                const tc = task.status === 'DONE' ? CG : task.status === 'IN_PROGRESS' ? color : `${color}40`
+                return (
+                  <div key={task.id} style={{
+                    display:'flex', alignItems:'center', gap:6, padding:'3px 6px', borderRadius:4,
+                    background: isNext ? `${color}08` : 'transparent',
+                    border: isNext ? `1px solid ${color}20` : '1px solid transparent',
+                  }}>
+                    <span style={{ fontSize:7, color:`${color}40`, fontFamily:'monospace', width:14, flexShrink:0 }}>
+                      {task.step}.
+                    </span>
+                    <span style={{
+                      fontSize:8, fontFamily:'monospace', flex:1,
+                      color: task.status === 'DONE' ? `${CG}70` : '#8ab0c8',
+                      textDecoration: task.status === 'DONE' ? 'line-through' : 'none',
+                    }}>
+                      {task.title}
+                    </span>
+                    <span style={{ fontSize:9, color:tc, flexShrink:0 }}>
+                      {task.status === 'DONE' ? '✓' : task.status === 'IN_PROGRESS' ? '⟳' : task.status === 'FAILED' || task.status === 'OVERDUE' ? '✗' : '○'}
+                    </span>
+                    {isNext && (
+                      <span style={{ fontSize:6, color, fontFamily:'monospace', letterSpacing:'0.08em' }}>NEXT</span>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )
+      })}
+      {!isLoading && goals.length === 0 && (
+        <div style={{ textAlign:'center', padding:40, fontSize:9, color:`${color}40`, fontFamily:'monospace' }}>
+          No goals found. Ask WAANDA to create one.
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── WAANDA Full-Screen Chat ──────────────────────────────────────────────────
+interface ChatMessage {
+  role: 'user' | 'assistant'
+  content: string
+  confidence?: number
+  suggestedAction?: string | null
+  navigate?: string | null
+  model?: string
+  ts: number
+}
+
+function WaandaChat({ onClose, recentSignals }: {
+  onClose: () => void
+  recentSignals: LiveSignal[]
+}) {
+  const navigate = useNavigate()
+  const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    try { return JSON.parse(localStorage.getItem('waanda-chat-messages') || '[]') } catch { return [] }
+  })
+  const [query,       setQuery]       = useState('')
+  const [thinking,    setThinking]    = useState(false)
+  const [attachments, setAttachments] = useState<AttachmentItem[]>([])
+  const scrollRef   = useRef<HTMLDivElement>(null)
+  const inputRef    = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const { speak, silence, speaking, muted, toggleMute } = useTTS()
+
+  // Auto-scroll to bottom whenever messages or thinking changes
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+  }, [messages, thinking])
+
+  // Focus input on open; Esc to close
+  useEffect(() => {
+    inputRef.current?.focus()
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { silence(); onClose() } }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [onClose, silence])
+
+  const submit = useCallback(async (q?: string) => {
+    const text = (q ?? query).trim()
+    if (!text || thinking) return
+    silence()
+
+    const history = messages.map(m => ({ role: m.role, content: m.content }))
+    const userMsg: ChatMessage = { role: 'user', content: text, ts: Date.now() }
+    setMessages(prev => [...prev, userMsg])
+    setQuery('')
+    setThinking(true)
+
+    try {
+      const res = await api.post('/admin/kangqore-immp/command', {
+        query: text,
+        history: history.slice(-20),
+        moduleContext: recentSignals[0]?.sourceModule,
+        attachments: attachments.map(a => ({ type: a.type, data: a.data, mimeType: a.mimeType, name: a.name })),
+      })
+
+      const aMsg: ChatMessage = {
+        role: 'assistant',
+        content: res.data.response,
+        confidence: res.data.confidence,
+        suggestedAction: res.data.suggestedAction,
+        navigate: res.data.navigate,
+        model: res.data.model,
+        ts: Date.now(),
+      }
+
+      setMessages(prev => {
+        const next = [...prev, aMsg]
+        try { localStorage.setItem('waanda-chat-messages', JSON.stringify(next.slice(-60))) } catch {}
+        return next
+      })
+
+      setAttachments([])
+      speak(res.data.response + (res.data.suggestedAction ? '. ' + res.data.suggestedAction : ''), 'response')
+
+      if (res.data.navigate) {
+        setTimeout(() => { navigate(res.data.navigate); onClose() }, 1800)
+      }
+    } catch {
+      setMessages(prev => {
+        const fallback: ChatMessage = {
+          role: 'assistant',
+          content: "I'm having trouble connecting right now. Please check that the backend is running and ANTHROPIC_API_KEY is set.",
+          confidence: 0, suggestedAction: null, navigate: null, model: 'fallback', ts: Date.now(),
+        }
+        const next = [...prev, fallback]
+        try { localStorage.setItem('waanda-chat-messages', JSON.stringify(next.slice(-60))) } catch {}
+        return next
+      })
+    } finally {
+      setThinking(false)
+    }
+  }, [query, messages, thinking, silence, speak, attachments, recentSignals, navigate, onClose])
+
+  const { listening, supported, interim, start, stop } = useVoiceInput(
+    useCallback((t: string) => submit(t), [submit])
+  )
+
+  const handleMicClick = useCallback(() => {
+    if (listening) { stop() } else { silence(); start() }
+  }, [listening, stop, silence, start])
+
+  const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    Array.from(e.target.files || []).slice(0, 3).forEach(file => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const result = reader.result as string
+        const data = result.split(',')[1]
+        const type: 'image' | 'pdf' | 'document' = file.type.startsWith('image/') ? 'image' : file.type === 'application/pdf' ? 'pdf' : 'document'
+        setAttachments(prev => [...prev, { name: file.name, data, type, mimeType: file.type, preview: type === 'image' ? result : undefined }])
+      }
+      reader.readAsDataURL(file)
+    })
+    e.target.value = ''
+  }
+
+  const clearChat = () => {
+    setMessages([])
+    localStorage.removeItem('waanda-chat-messages')
+  }
+
+  const displayedQuery = listening && interim ? interim : query
+
+  const STARTERS = [
+    "What should I focus on today?",
+    "How's our pipeline looking?",
+    "What are the biggest risks right now?",
+    "Give me a business brief",
+    "What if we close 5 deals this month?",
+  ]
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 1500,
+      background: 'rgba(0,4,14,0.98)',
+      display: 'flex', flexDirection: 'column',
+      fontFamily: 'monospace',
+    }}>
+      {/* Scan line texture */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,80,200,0.012) 3px, rgba(0,80,200,0.012) 4px)',
+      }} />
+
+      {/* ── Header ── */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '12px 24px', flexShrink: 0,
+        borderBottom: `1px solid ${C}20`,
+        background: `linear-gradient(90deg, rgba(0,16,48,0.95), rgba(0,8,24,0.98), rgba(0,16,48,0.95))`,
+        position: 'relative', zIndex: 1,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div className="live-blink" style={{ width: 7, height: 7, borderRadius: '50%', background: CG, boxShadow: `0 0 6px ${CG}` }} />
+          <span style={{ fontSize: 13, fontWeight: 900, color: C, letterSpacing: '0.25em' }}>W·A·A·N·D·A</span>
+          <span style={{ fontSize: 8, color: `${C}50`, letterSpacing: '0.1em' }}>CONVERSATIONAL INTELLIGENCE</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {messages.length > 0 && (
+            <button onClick={clearChat} style={{
+              background: 'none', border: `1px solid ${CR}30`, borderRadius: 4,
+              color: `${CR}60`, cursor: 'pointer', fontSize: 8, padding: '3px 10px',
+              fontFamily: 'monospace', letterSpacing: '0.1em',
+            }}>✕ clear</button>
+          )}
+          <button onClick={toggleMute} style={{
+            background: 'none', border: `1px solid ${muted ? CR : C}30`, borderRadius: 4,
+            color: muted ? `${CR}70` : `${C}60`, cursor: 'pointer', fontSize: 9,
+            padding: '3px 10px', fontFamily: 'monospace',
+          }}>{muted ? '🔇' : '🔊'}</button>
+          <button onClick={() => { silence(); onClose() }} style={{
+            background: `${CR}10`, border: `1px solid ${CR}40`, borderRadius: 4,
+            color: CR, cursor: 'pointer', fontSize: 9, padding: '4px 14px',
+            fontFamily: 'monospace', letterSpacing: '0.1em',
+          }}>✕ CLOSE</button>
+        </div>
+      </div>
+
+      {/* ── Chat thread ── */}
+      <div ref={scrollRef} style={{
+        flex: 1, overflowY: 'auto', padding: '24px 0',
+        display: 'flex', flexDirection: 'column', gap: 0,
+        position: 'relative', zIndex: 1,
+      }}>
+        {messages.length === 0 && (
+          <div style={{ textAlign: 'center', marginTop: 80, padding: '0 40px' }}>
+            <div style={{ fontSize: 32, fontWeight: 900, color: `${C}25`, letterSpacing: '0.4em', marginBottom: 12 }}>◈</div>
+            <div style={{ fontSize: 13, color: `${C}40`, letterSpacing: '0.1em', marginBottom: 6 }}>WAANDA is ready</div>
+            <div style={{ fontSize: 10, color: `${C}25`, letterSpacing: '0.08em', marginBottom: 28 }}>Ask anything — business, strategy, data, code, ideas</div>
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
+              {STARTERS.map(s => (
+                <button key={s} onClick={() => submit(s)} style={{
+                  fontSize: 9, padding: '6px 14px', borderRadius: 6, cursor: 'pointer',
+                  fontFamily: 'monospace', background: `${C}08`, border: `1px solid ${C}25`,
+                  color: `${C}80`, letterSpacing: '0.05em', transition: 'all 0.15s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = `${C}18`; e.currentTarget.style.borderColor = `${C}50` }}
+                onMouseLeave={e => { e.currentTarget.style.background = `${C}08`; e.currentTarget.style.borderColor = `${C}25` }}>
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {messages.map((msg, i) => (
+          <div key={i} style={{
+            display: 'flex',
+            flexDirection: msg.role === 'user' ? 'row-reverse' : 'row',
+            gap: 10, padding: '6px 24px', alignItems: 'flex-start',
+          }}>
+            {/* Avatar */}
+            <div style={{
+              width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: msg.role === 'user' ? `${CA}30` : `${CG}20`,
+              border: `1px solid ${msg.role === 'user' ? CA : CG}40`,
+              fontSize: msg.role === 'user' ? 10 : 9,
+              color: msg.role === 'user' ? `${CA}cc` : CG,
+              fontWeight: 900,
+            }}>
+              {msg.role === 'user' ? 'M' : '◈'}
+            </div>
+
+            {/* Bubble */}
+            <div style={{
+              maxWidth: '68%', padding: '10px 14px',
+              borderRadius: msg.role === 'user' ? '12px 4px 12px 12px' : '4px 12px 12px 12px',
+              background: msg.role === 'user'
+                ? `linear-gradient(135deg, ${CA}18, ${CA}08)`
+                : `linear-gradient(135deg, rgba(0,16,48,0.9), rgba(0,8,32,0.8))`,
+              border: `1px solid ${msg.role === 'user' ? CA : C}20`,
+              boxShadow: msg.role === 'assistant' ? '0 2px 12px rgba(0,0,0,0.3)' : 'none',
+            }}>
+              <div style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.15em', marginBottom: 5, color: msg.role === 'user' ? `${CA}80` : `${CG}90` }}>
+                {msg.role === 'user' ? 'YOU' : '◈ WAANDA'}
+              </div>
+              <div style={{ fontSize: 12, color: msg.role === 'user' ? '#b0c8e0' : '#d0e8f8', lineHeight: 1.7, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                {msg.content}
+              </div>
+              {msg.role === 'assistant' && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 8, flexWrap: 'wrap' }}>
+                  {msg.confidence != null && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <div style={{ width: 36, height: 2, background: `${C}20`, borderRadius: 1, overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: `${msg.confidence}%`, background: (msg.confidence ?? 0) >= 70 ? CG : (msg.confidence ?? 0) >= 40 ? C : CR, borderRadius: 1 }} />
+                      </div>
+                      <span style={{ fontSize: 7, color: `${C}50` }}>{msg.confidence}%</span>
+                    </div>
+                  )}
+                  {msg.suggestedAction && <span style={{ fontSize: 8, color: `${C}60`, fontStyle: 'italic' }}>→ {msg.suggestedAction}</span>}
+                  {msg.navigate && <span style={{ fontSize: 8, color: CG }}>↗ navigating…</span>}
+                </div>
+              )}
+              <div style={{ fontSize: 7, color: `${C}20`, marginTop: 4, textAlign: msg.role === 'user' ? 'right' : 'left' }}>
+                {new Date(msg.ts).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Thinking dots */}
+        {thinking && (
+          <div style={{ display: 'flex', gap: 10, padding: '6px 24px', alignItems: 'flex-start' }}>
+            <div style={{ width: 28, height: 28, borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: `${CG}20`, border: `1px solid ${CG}40`, fontSize: 9, color: CG, fontWeight: 900 }}>◈</div>
+            <div style={{ padding: '10px 16px', borderRadius: '4px 12px 12px 12px', background: 'linear-gradient(135deg, rgba(0,16,48,0.9), rgba(0,8,32,0.8))', border: `1px solid ${C}20` }}>
+              <div style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.15em', marginBottom: 6, color: `${CG}90` }}>◈ WAANDA</div>
+              <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+                {[0,1,2].map(j => (
+                  <div key={j} style={{ width: 6, height: 6, borderRadius: '50%', background: CG, animation: `orbit-cw 1s ${j * 0.25}s ease-in-out infinite`, boxShadow: `0 0 4px ${CG}` }} />
+                ))}
+                <span style={{ fontSize: 9, color: `${CG}60`, marginLeft: 4 }}>thinking…</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Attachment pills */}
+      {attachments.length > 0 && (
+        <div style={{ display: 'flex', gap: 6, padding: '8px 24px 0', flexWrap: 'wrap', position: 'relative', zIndex: 1 }}>
+          {attachments.map((a, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', background: `${C}10`, border: `1px solid ${C}25`, borderRadius: 4 }}>
+              {a.preview && <img src={a.preview} alt={a.name} style={{ width: 20, height: 20, objectFit: 'cover', borderRadius: 2 }} />}
+              <span style={{ fontSize: 8, color: `${C}70`, maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{a.name}</span>
+              <button onClick={() => setAttachments(p => p.filter((_, j) => j !== i))} style={{ background: 'none', border: 'none', color: `${CR}60`, cursor: 'pointer', fontSize: 9, padding: 0 }}>✕</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ── Input area ── */}
+      <div style={{ padding: '16px 24px 20px', borderTop: `1px solid ${C}15`, background: 'rgba(0,6,20,0.95)', flexShrink: 0, position: 'relative', zIndex: 1 }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10,
+          background: listening ? 'rgba(255,51,85,0.06)' : 'rgba(0,30,80,0.4)',
+          border: `1px solid ${listening ? '#ff335540' : speaking ? `${C}50` : `${C}20`}`,
+          borderRadius: 12, padding: '10px 14px',
+          boxShadow: speaking ? `0 0 20px ${C}15` : 'none',
+          transition: 'all 0.3s',
+        }}>
+          <input
+            ref={inputRef}
+            value={displayedQuery}
+            onChange={e => setQuery(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && !e.shiftKey && submit()}
+            placeholder={listening ? 'Listening…' : speaking ? 'WAANDA is speaking…' : 'Ask WAANDA anything — strategy, data, ideas, code…'}
+            style={{
+              flex: 1, background: 'transparent', border: 'none', outline: 'none',
+              fontSize: 13, color: listening ? '#ff5577' : '#c0d8f0',
+              fontFamily: 'monospace', lineHeight: 1.5,
+            }}
+          />
+          <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf,.txt,.csv,.md" style={{ display: 'none' }} onChange={handleFiles} />
+          {supported && (
+            <button onClick={handleMicClick} title={listening ? 'Stop' : 'Voice input'} style={{
+              width: 36, height: 36, borderRadius: '50%', flexShrink: 0, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              border: `1px solid ${listening ? '#ff3355' : C}40`,
+              background: listening ? 'rgba(255,51,85,0.15)' : 'none',
+              boxShadow: listening ? '0 0 14px rgba(255,51,85,0.35)' : 'none',
+              transition: 'all 0.2s',
+            }}>
+              {listening ? <MicOff size={14} color="#ff3355" /> : <Mic size={14} color={`${C}80`} />}
+            </button>
+          )}
+          <button onClick={() => fileInputRef.current?.click()} title="Attach file" disabled={attachments.length >= 3} style={{
+            width: 36, height: 36, borderRadius: '50%', flexShrink: 0, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            border: `1px solid ${C}25`, background: 'none',
+            opacity: attachments.length >= 3 ? 0.3 : 1, transition: 'all 0.2s',
+          }}>
+            <Paperclip size={14} color={`${C}80`} />
+          </button>
+          <button onClick={() => submit()} disabled={!displayedQuery.trim() || thinking} style={{
+            height: 36, padding: '0 18px', borderRadius: 8, flexShrink: 0,
+            cursor: (!displayedQuery.trim() || thinking) ? 'not-allowed' : 'pointer',
+            display: 'flex', alignItems: 'center', gap: 6,
+            border: `1px solid ${(!displayedQuery.trim() || thinking) ? `${C}15` : `${C}60`}`,
+            background: (!displayedQuery.trim() || thinking) ? 'none' : `linear-gradient(135deg, ${C}20, ${C}08)`,
+            boxShadow: (!displayedQuery.trim() || thinking) ? 'none' : `0 0 16px ${C}30`,
+            opacity: (!displayedQuery.trim() || thinking) ? 0.35 : 1, transition: 'all 0.2s',
+          }}>
+            <span style={{ fontSize: 10, color: C, fontFamily: 'monospace', fontWeight: 800, letterSpacing: '0.1em' }}>SEND</span>
+            <Send size={11} color={C} />
+          </button>
+        </div>
+        <div style={{ fontSize: 8, color: `${C}25`, marginTop: 6, textAlign: 'center', letterSpacing: '0.1em' }}>
+          Enter to send · Esc to close · Voice and file attachment supported
+        </div>
+      </div>
     </div>
   )
 }
@@ -1608,7 +2654,7 @@ function ActionQueuePanel() {
           padding:'6px 10px', borderRadius:6, background:`${CA}06`, border:`1px solid ${CA}15`,
           cursor:'pointer', marginBottom: open ? 6 : 0 }}>
         <span style={{ fontSize:9, color:`${CA}80`, fontWeight:800, letterSpacing:'0.12em', fontFamily:'monospace' }}>
-          ⊞ KIMMP ACTIONS
+          ⊞ WAANDA ACTIONS
         </span>
         <div style={{ display:'flex', alignItems:'center', gap:6 }}>
           {pendingCount > 0 && (
@@ -1628,7 +2674,7 @@ function ActionQueuePanel() {
             <input
               value={proposeText} onChange={e => setProposeText(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && !proposing && propose()}
-              placeholder="Tell KIMMP what to do e.g. Draft a follow-up email to cold leads"
+              placeholder="Tell WAANDA what to do e.g. Draft a follow-up email to cold leads"
               style={{ flex:1, background:`${CA}08`, border:`1px solid ${CA}20`, borderRadius:4,
                 color:'#a8c8ef', fontSize:9, padding:'5px 8px', fontFamily:'monospace', outline:'none' }}
             />
@@ -1765,7 +2811,7 @@ function ProactiveInsights() {
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center',
           padding:'5px 10px', borderRadius:6, background:`${C}04`, border:`1px solid ${C}08` }}>
           <span style={{ fontSize:8, color:`${C}25`, fontFamily:'monospace', letterSpacing:'0.08em' }}>
-            ◈ KIMMP INSIGHTS — all clear
+            ◈ WAANDA INSIGHTS — all clear
           </span>
           <button onClick={triggerScan} disabled={scanning}
             style={{ fontSize:7, padding:'2px 7px', borderRadius:3, cursor:'pointer', fontFamily:'monospace',
@@ -1782,7 +2828,7 @@ function ProactiveInsights() {
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:5 }}>
         <div style={{ display:'flex', alignItems:'center', gap:6 }}>
           <span style={{ fontSize:9, color:CA, fontWeight:800, letterSpacing:'0.1em', fontFamily:'monospace' }}>
-            ◈ KIMMP INSIGHTS
+            ◈ WAANDA INSIGHTS
           </span>
           {alerts.length > 0 && (
             <span style={{ fontSize:7, padding:'1px 5px', borderRadius:10, background:`${CA}25`, border:`1px solid ${CA}40`, color:CA, fontFamily:'monospace' }}>
@@ -1929,7 +2975,7 @@ function GoalsPanel() {
           padding:'6px 10px', borderRadius:6, background:`${C}06`, border:`1px solid ${C}15`,
           cursor:'pointer', marginBottom: open ? 6 : 0 }}>
         <span style={{ fontSize:9, color:`${C}70`, fontWeight:800, letterSpacing:'0.12em', fontFamily:'monospace' }}>
-          ◎ KIMMP GOAL ENGINE
+          ◎ WAANDA GOAL ENGINE
         </span>
         <div style={{ display:'flex', alignItems:'center', gap:8 }}>
           {leverage && leverage.hoursThisWeek > 0 && (
@@ -2315,7 +3361,7 @@ function NexusWidgets() {
       <Widget label="LEAD INTEL" value={cnt('lead-intelligence') || 'LIVE'} color={CG} glow={cnt('lead-intelligence') > 0}  sub="SCORING" />
       <Widget label="ALIS"      value={cnt('alis') || 'LIVE'}               color={C}  glow={cnt('alis') > 0}               sub="DEMAND OPS" />
       <Widget label="VIS"       value={cnt('vis') || 'LIVE'}                color={CG} glow={cnt('vis') > 0}                sub="VISIBILITY" />
-      <Widget label="KIMMP"     value={cnt('kimmp') || 'LIVE'}              color='#00ffcc' glow                            sub="BRAIN" />
+      <Widget label="WAANDA"     value={cnt('kimmp') || 'LIVE'}              color='#00ffcc' glow                            sub="BRAIN" />
       <Widget label="LOOPS"     value={crossCount > 0 ? crossCount : '7'}   color='#00ffcc' glow                            sub="ALL ACTIVE" />
     </>
   )
@@ -2418,7 +3464,7 @@ function OrchestrationPanel() {
           padding:'6px 10px', borderRadius:6, background:`${C}06`, border:`1px solid ${C}15`,
           cursor:'pointer', marginBottom: open ? 6 : 0 }}>
         <span style={{ fontSize:9, color:`${C}70`, fontWeight:800, letterSpacing:'0.12em', fontFamily:'monospace' }}>
-          ⟳ KIMMP ORCHESTRATOR
+          ⟳ WAANDA ORCHESTRATOR
         </span>
         <div style={{ display:'flex', alignItems:'center', gap:6 }}>
           {history.length > 0 && <span style={{ fontSize:8, color:`${C}30`, fontFamily:'monospace' }}>{history.length} runs</span>}
@@ -2611,7 +3657,7 @@ function OrchestrationPanel() {
 
           {!history.length && !result && !running && (
             <div style={{ fontSize:9, color:`${C}25`, fontFamily:'monospace', textAlign:'center', padding:'8px 0' }}>
-              Ask a strategic question — KIMMP dispatches the right agents automatically
+              Ask a strategic question — WAANDA dispatches the right agents automatically
             </div>
           )}
         </div>
@@ -2654,7 +3700,7 @@ function ResearchPanel() {
           padding:'6px 10px', borderRadius:6, background:`${CG}06`, border:`1px solid ${CG}15`,
           cursor:'pointer', marginBottom: open ? 6 : 0 }}>
         <span style={{ fontSize:9, color:`${CG}70`, fontWeight:800, letterSpacing:'0.12em', fontFamily:'monospace' }}>
-          ⟳ KIMMP RESEARCH AGENT
+          ⟳ WAANDA RESEARCH AGENT
         </span>
         <span style={{ fontSize:8, color:`${C}40` }}>{open ? '▲' : '▼'}</span>
       </button>
@@ -2785,7 +3831,7 @@ function ReportsPanel() {
           padding:'6px 10px', borderRadius:6, background:`${CA}06`, border:`1px solid ${CA}15`,
           cursor:'pointer', marginBottom: open ? 6 : 0 }}>
         <span style={{ fontSize:9, color:`${CA}90`, fontWeight:800, letterSpacing:'0.12em', fontFamily:'monospace' }}>
-          ◉ KIMMP REPORTS
+          ◉ WAANDA REPORTS
         </span>
         <div style={{ display:'flex', alignItems:'center', gap:6 }}>
           {reports.length > 0 && <span style={{ fontSize:8, color:`${CA}70`, fontFamily:'monospace' }}>{reports.length} generated</span>}
@@ -2866,7 +3912,7 @@ function MemoryPanel() {
           padding:'6px 10px', borderRadius:6, background:`${C}06`, border:`1px solid ${C}15`,
           cursor:'pointer', marginBottom: open ? 6 : 0, transition:'all 0.2s' }}>
         <span style={{ fontSize:9, color:`${C}70`, fontWeight:800, letterSpacing:'0.12em', fontFamily:'monospace' }}>
-          ◈ KIMMP MEMORY
+          ◈ WAANDA MEMORY
         </span>
         <div style={{ display:'flex', alignItems:'center', gap:6 }}>
           {memories.length > 0 && (
@@ -2879,7 +3925,7 @@ function MemoryPanel() {
         <div style={{ background:'rgba(0,8,24,0.92)', borderRadius:6, border:`1px solid ${C}15`, overflow:'hidden' }}>
           {!memories.length ? (
             <div style={{ padding:'10px', fontSize:9, color:`${C}30`, fontFamily:'monospace', textAlign:'center' }}>
-              No memories stored yet. KIMMP learns from every interaction.
+              No memories stored yet. WAANDA learns from every interaction.
             </div>
           ) : (
             memories.slice(0, 15).map((m: any) => (
@@ -2977,6 +4023,8 @@ function NotificationCentre({ signals }: { signals: LiveSignal[] }) {
 
 // ─── CSS keyframes ─────────────────────────────────────────────────────────────
 const CSS = `
+body, html { margin: 0; padding: 0; overflow: hidden; width: 100%; height: 100%; }
+
 @keyframes orbit-cw    { to { transform: rotate(360deg);  } }
 @keyframes orbit-ccw   { to { transform: rotate(-360deg); } }
 @keyframes scanline    { 0%{top:0;opacity:.5} 80%{opacity:.3} 100%{top:100%;opacity:0} }
@@ -2991,6 +4039,7 @@ const CSS = `
 @keyframes bootArc     { from{opacity:0;stroke-dasharray:0 260} to{opacity:1;stroke-dasharray:260 0} }
 @keyframes particlePop { 0%,100%{opacity:0;r:0} 30%,70%{opacity:.7;r:1.4} }
 @keyframes widgetPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.88;transform:scale(1.012)} }
+@keyframes hudCardIn   { from{opacity:0;transform:translateY(10px) scale(0.96)} to{opacity:1;transform:translateY(0) scale(1)} }
 .live-blink  { animation: blink2 1.4s ease-in-out infinite; }
 .data-pulse  { animation: datapulse 2s ease-in-out infinite; }
 .widget-alive{ animation: widgetPulse 2.8s ease-in-out infinite; transition: all 0.3s; cursor: pointer; }
@@ -3004,11 +4053,11 @@ const CSS = `
 // ─── HUD Section Label ────────────────────────────────────────────────────────
 function SectionLabel({ text, color = C }: { text: string; color?: string }) {
   return (
-    <div style={{ display:'flex', alignItems:'center', gap:5, margin:'4px 0 2px' }}>
-      <div style={{ width:10, height:1, background:color, boxShadow:`0 0 4px ${color}` }} />
-      <span style={{ fontSize:6, color:`${color}70`, letterSpacing:'0.22em', fontWeight:900,
-        fontFamily:'monospace', whiteSpace:'nowrap' }}>{text}</span>
-      <div style={{ flex:1, height:1, background:`linear-gradient(90deg,${color}40,transparent)` }} />
+    <div style={{ display:'flex', alignItems:'center', gap:5, margin:'8px 0 4px' }}>
+      <div style={{ width:12, height:1, background:color, boxShadow:`0 0 6px ${color}` }} />
+      <span style={{ fontSize:6.5, color:color, letterSpacing:'0.22em', fontWeight:900,
+        fontFamily:'monospace', whiteSpace:'nowrap', filter:`drop-shadow(0 0 2px ${color}80)` }}>{text}</span>
+      <div style={{ flex:1, height:1, background:`linear-gradient(90deg,${color}80,transparent)` }} />
     </div>
   )
 }
@@ -3164,7 +4213,7 @@ type ModalType = 'finance' | 'clients' | 'signals' | 'approvals' | 'decisions' |
 function WidgetModal({ type, data, onClose }: {
   type: ModalType
   data: {
-    mrrCr: number; revCr: number; arrCr: number; mrrTrend: string
+    mrrCr: number | null; revCr: number | null; arrCr: number | null; mrrTrend: string | null
     kpis: any; analytics: any
     recentSignals: LiveSignal[]; critical: number; liveApprovals: any[]
     insights: any[]
@@ -3208,12 +4257,12 @@ function WidgetModal({ type, data, onClose }: {
       case 'finance':
         return (
           <>
-            <MRow label="MRR"                value={`₹${mrrCr.toFixed(2)}Cr`}         color={CG} />
-            <MRow label="MRR TREND"          value={mrrTrend}                           color={mrrTrend.startsWith('+') ? CG : CR} />
-            <MRow label="REVENUE (LAST MTH)" value={`₹${revCr.toFixed(2)}Cr`}         color={CG} />
-            <MRow label="ARR"                value={`₹${arrCr.toFixed(2)}Cr`}         color={C}  />
-            <MRow label="FORECAST (30D)"     value={`₹${(revCr * 1.16).toFixed(2)}Cr`} color={CA} />
-            <MRow label="CASH FORECAST (30D)"value={`₹${(revCr * 1.08).toFixed(2)}Cr`} color={CA} />
+            <MRow label="MRR"                value={mrrCr != null ? `₹${mrrCr.toFixed(2)}Cr` : '—'}            color={CG} />
+            <MRow label="MRR TREND"          value={mrrTrend ?? '—'}                    color={mrrTrend ? (mrrTrend.startsWith('+') ? CG : CR) : '#64748b'} />
+            <MRow label="REVENUE (LAST MTH)" value={revCr != null ? `₹${revCr.toFixed(2)}Cr` : '—'}            color={CG} />
+            <MRow label="ARR"                value={arrCr != null ? `₹${arrCr.toFixed(2)}Cr` : '—'}            color={C}  />
+            <MRow label="FORECAST (30D)"     value={revCr != null ? `₹${(revCr * 1.16).toFixed(2)}Cr` : '—'}  color={CA} />
+            <MRow label="CASH FORECAST (30D)"value={revCr != null ? `₹${(revCr * 1.08).toFixed(2)}Cr` : '—'}  color={CA} />
             {kpis?.activeContracts != null && <MRow label="ACTIVE CONTRACTS" value={kpis.activeContracts} color={CG} />}
             {kpis?.totalBudget > 0 && (
               <MRow label="BUDGET UTILISATION" value={`${Math.round((kpis.totalSpend / kpis.totalBudget) * 100)}%`} />
@@ -3387,11 +4436,562 @@ function WidgetModal({ type, data, onClose }: {
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
+// ─── Minimalist UI Components (J.A.R.V.I.S) ──────────────────────────────────
+function MinimalistRingWidget({ label, value, sub, color = '#00aaff', onClick }: any) {
+  const pct = typeof value === 'number' ? Math.min(100, Math.max(0, value)) : (typeof value === 'string' && value.includes('%') ? parseFloat(value) : 100);
+  const cx = 50, cy = 50, r = 40;
+  const circum = 2 * Math.PI * r;
+  return (
+    <div onClick={onClick} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', cursor: onClick ? 'pointer' : 'default' }}>
+      <div style={{ fontSize: 9, color: '#88ccff', letterSpacing: '0.1em', marginBottom: 6 }}>{label}</div>
+      <div style={{ position: 'relative', width: 70, height: 70 }}>
+        <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke={`${color}20`} strokeWidth={2} />
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth={2} strokeDasharray={`${(pct/100)*circum} ${circum}`} style={{ filter: `drop-shadow(0 0 4px ${color})`, transition: 'stroke-dasharray 1s ease-out' }} />
+        </svg>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>{value}</div>
+          {sub && <div style={{ fontSize: 6, color: `${color}90`, letterSpacing: '0.05em', marginTop: 2 }}>{sub}</div>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PerformanceMetricRow({ label, value, score, color = '#00aaff' }: any) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: `1px solid ${color}10` }}>
+      <div style={{ fontSize: 6.5, color: '#88ccff', letterSpacing: '0.1em' }}>{label}</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div style={{ fontSize: 9, fontWeight: 800, color: '#fff' }}>{value}</div>
+        <div style={{ fontSize: 5.5, color: '#ff4444' }}>/{score}</div>
+      </div>
+    </div>
+  )
+}
+
+function NexusFlatList({ signals }: any) {
+  const sigList = Array.isArray(signals) ? signals : (signals?.signals ?? []);
+  const cnt = (id: string) => sigList.filter((s: any) => s.sourceModule === id || (s.sourceModule as string)?.startsWith(id)).length;
+  const items = [
+    { id: 'eqore', label: 'eQORE', sub: 'CONVERSATIONS' },
+    { id: 'lead-intelligence', label: 'LEAD INTEL', sub: 'SCORING' },
+    { id: 'vis', label: 'VIS', sub: 'VISIBILITY' },
+    { id: 'alis', label: 'ALLIES', sub: 'DEMAND OPS' },
+    { id: 'kimmp', label: 'WAANDA', sub: 'BRAIN' },
+    { id: 'loops', label: 'LOOPS', sub: 'ALL ACTIVE', val: 7 }
+  ];
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 8px' }}>
+      {items.map(it => (
+        <div key={it.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
+          <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#00aaff', marginTop: 4, boxShadow: `0 0 4px #00aaff` }} />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ fontSize: 9, color: '#88ccff', letterSpacing: '0.05em' }}>{it.label}</div>
+            <div style={{ fontSize: 12, color: '#fff', fontWeight: 600, marginTop: 2 }}>{it.val || (cnt(it.id) || 'LIVE')}</div>
+            <div style={{ fontSize: 7, color: `#00aaff80`, letterSpacing: '0.1em', marginTop: 1 }}>{it.sub}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+// ─── HUD Event Log Drawer ────────────────────────────────────────────────────
+const EVT_TYPE_LABELS: Record<string, string> = {
+  signal: 'SIGNAL', agent: 'AGENT', alert: 'ALERT', kpi: 'KPI', system: 'SYSTEM',
+}
+const EVT_TYPE_COLORS: Record<string, string> = {
+  signal: C, agent: '#00ddaa', alert: CR, kpi: '#ffaa00', system: C,
+}
+
+// Solid readable colors for the log — no opacity tricks on dark bg
+const LOG_BG      = '#07101e'
+const LOG_ROW     = '#0c1828'
+const LOG_ROW_ALT = '#0a1520'
+const LOG_BORDER  = '#1a2d45'
+const LOG_TEXT    = '#c8dff5'
+const LOG_MUTED   = '#5a7a9a'
+const LOG_DIM     = '#3a5570'
+
+const BADGE_BG: Record<string, string>   = { signal:'#0d2a42', agent:'#0d2e28', alert:'#2a0d0d', kpi:'#2a1f00', system:'#0d1e30' }
+const BADGE_TXT: Record<string, string>  = { signal:'#4ab8ff', agent:'#00ddaa', alert:'#ff5555', kpi:'#ffbb22', system:'#88aacc' }
+const BADGE_BDR: Record<string, string>  = { signal:'#1a5080', agent:'#008866', alert:'#882222', kpi:'#886600', system:'#2a4466' }
+const ACCENT_COL: Record<string, string> = { signal:'#2288cc', agent:'#00aa88', alert:'#cc2222', kpi:'#cc8800', system:'#335577' }
+
+function HUDLogRow({ ev, idx }: { ev: LiveHUDEvent; idx: number }) {
+  const [expanded, setExpanded] = useState(false)
+  const accent = ACCENT_COL[ev.type] ?? '#336688'
+  const badge  = { bg: BADGE_BG[ev.type] ?? '#0d1e30', txt: BADGE_TXT[ev.type] ?? '#88aacc', bdr: BADGE_BDR[ev.type] ?? '#2a4466' }
+  const ts     = new Date(ev.ts)
+
+  const rawEntries = ev.raw
+    ? Object.entries(ev.raw).filter(([k, v]) => k !== 'signalValue' && v != null && v !== '' && String(v).trim() !== '')
+    : []
+
+  const tsStr  = `${ts.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })}  ${ts.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`
+  const preview = (ev.value ?? '—').slice(0, 100) + ((ev.value?.length ?? 0) > 100 ? '…' : '')
+  const rowBg  = idx % 2 === 0 ? '#0d1b2e' : '#0a1524'
+
+  return (
+    <div style={{ marginBottom: 2 }}>
+
+      {/* ── Summary row ── */}
+      <div
+        onClick={() => setExpanded(x => !x)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 0,
+          background: expanded ? '#132240' : rowBg,
+          borderLeft: `4px solid ${accent}`,
+          borderRadius: 4,
+          cursor: 'pointer',
+          minHeight: 38,
+          padding: '0 12px 0 0',
+        }}
+      >
+        {/* Timestamp */}
+        <div style={{ width: 160, flexShrink: 0, padding: '0 10px 0 12px', fontSize: 11, color: '#7090b0', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+          {tsStr}
+        </div>
+
+        {/* Type badge */}
+        <div style={{ width: 72, flexShrink: 0 }}>
+          <span style={{
+            display: 'inline-block',
+            background: badge.bg, border: `1px solid ${badge.bdr}`, borderRadius: 4,
+            padding: '3px 8px', color: badge.txt,
+            fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', fontFamily: 'monospace',
+          }}>
+            {EVT_TYPE_LABELS[ev.type] ?? ev.type.toUpperCase()}
+          </span>
+        </div>
+
+        {/* Source */}
+        <div style={{ width: 150, flexShrink: 0, padding: '0 10px', fontSize: 11, color: '#8ab0d0', fontWeight: 600, fontFamily: 'monospace', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {ev.title}
+        </div>
+
+        {/* Value preview — flex: 1 takes all remaining space */}
+        <div style={{ flex: 1, minWidth: 0, padding: '0 10px', fontSize: 11, color: '#d0e8ff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', lineHeight: 1.4 }}>
+          {preview}
+        </div>
+
+        {/* Chevron */}
+        <div style={{ width: 28, flexShrink: 0, textAlign: 'center', fontSize: 11, color: '#446688' }}>
+          {expanded ? '▲' : '▼'}
+        </div>
+      </div>
+
+      {/* Sub-label */}
+      {ev.sub && !expanded && (
+        <div style={{ background: rowBg, borderLeft: `4px solid ${accent}30`, padding: '2px 12px 5px 396px', fontSize: 10, color: '#4a6a8a', fontFamily: 'monospace', letterSpacing: '0.05em' }}>
+          {ev.sub}
+        </div>
+      )}
+
+      {/* ── Expanded detail panel ── */}
+      {expanded && (
+        <div style={{
+          background: '#080f1e',
+          borderLeft: `4px solid ${accent}`,
+          borderBottom: `1px solid #1a3050`,
+          borderRight: `1px solid #1a3050`,
+          borderRadius: '0 0 4px 4px',
+          padding: '14px 18px 16px',
+          display: 'flex', flexDirection: 'column', gap: 14,
+        }}>
+
+          {/* Sub-label */}
+          {ev.sub && (
+            <div style={{ fontSize: 11, color: '#6a90b0', letterSpacing: '0.06em', fontFamily: 'monospace' }}>
+              {ev.sub}
+            </div>
+          )}
+
+          {/* Intelligence brief */}
+          {(ev.type === 'signal' || ev.type === 'alert') && ev.raw?.signalValue && (
+            <div>
+              <div style={{ fontSize: 10, color: '#446688', letterSpacing: '0.15em', marginBottom: 8, fontFamily: 'monospace', fontWeight: 700 }}>
+                ◈  INTELLIGENCE BRIEF
+              </div>
+              <div style={{
+                background: '#0c1e34', border: `1px solid #1e3a5a`,
+                borderRadius: 6, padding: '12px 16px',
+                fontSize: 13, color: '#d8eeff', lineHeight: 1.8,
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+              }}>
+                {ev.raw.signalValue}
+              </div>
+            </div>
+          )}
+
+          {/* Metadata */}
+          {rawEntries.length > 0 && (
+            <div>
+              <div style={{ fontSize: 10, color: '#446688', letterSpacing: '0.15em', marginBottom: 10, fontFamily: 'monospace', fontWeight: 700 }}>
+                ⬡  METADATA
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                {rawEntries.map(([k, v]) => {
+                  const raw = typeof v === 'object' ? JSON.stringify(v, null, 2) : String(v)
+                  const label = k.replace(/([A-Z])/g, ' $1').trim().toUpperCase()
+                  const isBlock = raw.length > 80 || raw.includes('\n')
+                  return (
+                    <div key={k} style={{
+                      display: 'flex', flexDirection: isBlock ? 'column' : 'row',
+                      gap: isBlock ? 4 : 0,
+                      padding: '5px 10px',
+                      background: '#0d1e34',
+                      borderRadius: 4,
+                      alignItems: isBlock ? 'flex-start' : 'center',
+                    }}>
+                      <div style={{
+                        fontSize: 10, color: '#4a7090', letterSpacing: '0.1em',
+                        fontFamily: 'monospace', fontWeight: 700,
+                        flexShrink: 0, width: isBlock ? 'auto' : 160,
+                      }}>
+                        {label}
+                      </div>
+                      <div style={{
+                        fontSize: 11, color: '#b8d4f0', lineHeight: 1.6,
+                        wordBreak: 'break-word', fontFamily: 'monospace',
+                        whiteSpace: isBlock ? 'pre-wrap' : 'normal',
+                      }}>
+                        {raw}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {!rawEntries.length && !ev.raw?.signalValue && (
+            <div style={{ fontSize: 11, color: '#3a5570', fontFamily: 'monospace' }}>
+              No additional detail stored for this event.
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function HUDLogDrawer({ onClose }: { onClose: () => void }) {
+  const [filter, setFilter] = useState<string>('all')
+  const [search, setSearch] = useState('')
+
+  const { data: apiLog, isLoading, refetch } = useQuery({
+    queryKey: ['waanda-events'],
+    queryFn: () => api.get('/admin/kangqore-immp/events?limit=500').then(r => r.data.events ?? []) as Promise<LiveHUDEvent[]>,
+    staleTime: 30_000,
+    // Fall back to localStorage if API fails
+    placeholderData: () => {
+      try { return JSON.parse(localStorage.getItem('waanda-hud-log') || '[]') as LiveHUDEvent[] }
+      catch { return [] }
+    },
+  })
+  const log = apiLog ?? []
+
+  const clearLog = () => {
+    localStorage.removeItem('waanda-hud-log')
+    refetch()
+  }
+
+  const types = ['all', 'signal', 'alert', 'agent', 'kpi', 'system']
+
+  const filtered = log
+    .filter(e => filter === 'all' || e.type === filter)
+    .filter(e => !search || [e.title, e.value, e.sub, e.raw?.signalValue].some(s => (s ?? '').toLowerCase().includes(search.toLowerCase())))
+
+  const colBadge = (t: string) => ({ bg: BADGE_BG[t] ?? '#0d1e30', txt: BADGE_TXT[t] ?? '#88aacc', bdr: BADGE_BDR[t] ?? '#2a4466' })
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 2000,
+      background: LOG_BG,
+      display: 'flex', flexDirection: 'column', fontFamily: 'monospace',
+    }}>
+
+      {/* ── Header ── */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '14px 22px',
+        background: '#050d18',
+        borderBottom: `1px solid ${LOG_BORDER}`,
+        flexShrink: 0,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 11, color: '#2bbdff', letterSpacing: '0.05em' }}>◈</span>
+            <span style={{ fontSize: 14, fontWeight: 800, color: '#e8f4ff', letterSpacing: '0.2em' }}>WAANDA EVENT LOG</span>
+          </div>
+          <span style={{ fontSize: 10, color: LOG_MUTED, background: '#0d1e30', border: `1px solid ${LOG_BORDER}`, borderRadius: 3, padding: '2px 8px' }}>
+            {log.length} entries
+          </span>
+          <span style={{ fontSize: 8, color: LOG_DIM, letterSpacing: '0.08em' }}>Click any row to expand full detail</span>
+        </div>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          {/* Search */}
+          <input
+            value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="Search events…"
+            style={{
+              fontSize: 9, padding: '5px 10px', borderRadius: 5,
+              background: '#0c1828', border: `1px solid ${LOG_BORDER}`, color: LOG_TEXT,
+              fontFamily: 'monospace', outline: 'none', width: 180,
+            }}
+          />
+          <button onClick={clearLog} style={{
+            fontSize: 9, padding: '5px 12px', borderRadius: 5, cursor: 'pointer',
+            background: '#1a0808', border: '1px solid #662222', color: '#ff7777',
+            fontFamily: 'monospace', fontWeight: 700,
+          }}>Clear Log</button>
+          <button onClick={onClose} style={{
+            fontSize: 9, padding: '5px 14px', borderRadius: 5, cursor: 'pointer',
+            background: '#0d1e30', border: '1px solid #2255aa', color: '#66aaff',
+            fontFamily: 'monospace', fontWeight: 800,
+          }}>Close ×</button>
+        </div>
+      </div>
+
+      {/* ── Filter tabs ── */}
+      <div style={{
+        display: 'flex', gap: 6, padding: '10px 22px',
+        background: '#060f1c', borderBottom: `1px solid ${LOG_BORDER}`,
+        flexShrink: 0, alignItems: 'center',
+      }}>
+        <span style={{ fontSize: 8, color: LOG_DIM, letterSpacing: '0.12em', marginRight: 4 }}>FILTER:</span>
+        {types.map(t => {
+          const b = colBadge(t)
+          const count = t === 'all' ? log.length : log.filter(e => e.type === t).length
+          const active = filter === t
+          return (
+            <button key={t} onClick={() => setFilter(t)} style={{
+              fontSize: 9, padding: '4px 12px', borderRadius: 5, cursor: 'pointer',
+              fontFamily: 'monospace', letterSpacing: '0.06em',
+              background: active ? (t === 'all' ? '#0d2040' : b.bg) : 'transparent',
+              border: `1px solid ${active ? (t === 'all' ? '#2255aa' : b.bdr) : LOG_BORDER}`,
+              color: active ? (t === 'all' ? '#66aaff' : b.txt) : LOG_MUTED,
+              transition: 'all 0.15s',
+              fontWeight: active ? 700 : 400,
+            }}>
+              {t === 'all' ? 'All' : EVT_TYPE_LABELS[t] ?? t}
+              <span style={{ marginLeft: 6, fontSize: 8, opacity: 0.7 }}>({count})</span>
+            </button>
+          )
+        })}
+        {search && (
+          <span style={{ marginLeft: 8, fontSize: 8, color: '#ffaa44' }}>
+            {filtered.length} match{filtered.length !== 1 ? 'es' : ''} for "{search}"
+          </span>
+        )}
+      </div>
+
+      {/* ── Column headers ── */}
+      <div style={{
+        display: 'grid', gridTemplateColumns: '152px 74px 148px minmax(0,1fr) 28px',
+        gap: '0 12px', padding: '6px 14px 6px 15px',
+        background: '#060f1c', borderBottom: `1px solid ${LOG_BORDER}`,
+        flexShrink: 0,
+      }}>
+        {['TIMESTAMP', 'TYPE', 'SOURCE', 'EVENT / BRIEF', ''].map(h => (
+          <div key={h} style={{ fontSize: 7, color: LOG_DIM, letterSpacing: '0.16em', fontWeight: 700 }}>{h}</div>
+        ))}
+      </div>
+
+      {/* ── Log entries ── */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '8px 14px', display: 'flex', flexDirection: 'column', gap: 0 }}>
+        {filtered.length === 0 ? (
+          <div style={{ fontSize: 12, color: LOG_MUTED, textAlign: 'center', marginTop: 80, letterSpacing: '0.1em' }}>
+            {search ? `No events match "${search}"` : 'No events recorded yet'}
+          </div>
+        ) : filtered.map((ev, i) => (
+          <HUDLogRow key={ev.id} ev={ev} idx={i} />
+        ))}
+      </div>
+
+      {/* ── Footer ── */}
+      <div style={{
+        borderTop: `1px solid ${LOG_BORDER}`, padding: '7px 22px',
+        background: '#060f1c', flexShrink: 0,
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      }}>
+        <span style={{ fontSize: 8, color: LOG_DIM, letterSpacing: '0.1em' }}>
+          Stored in PostgreSQL · waanda_events · up to 500 shown · persists across sessions
+        </span>
+        <span style={{ fontSize: 8, color: LOG_MUTED }}>
+          {filtered.length} of {log.length} shown
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// ─── Live HUD Event Feed ──────────────────────────────────────────────────────
+interface LiveHUDEvent {
+  id: string
+  type: 'signal' | 'agent' | 'alert' | 'kpi' | 'system'
+  title: string
+  value?: string
+  sub?: string
+  color: string
+  ts: number
+  announced: boolean
+  raw?: Record<string, any>
+}
+
+const HUD_EVT_ICONS: Record<string, string> = {
+  signal: '◈', agent: '⬡', alert: '▲', kpi: '⟳', system: '◉',
+}
+
+function LiveCard({ event }: { event: LiveHUDEvent }) {
+  const [opacity, setOpacity] = useState(1)
+  useEffect(() => {
+    const tick = () => {
+      const age = (Date.now() - event.ts) / 1000
+      setOpacity(Math.max(0.15, age > 50 ? 0.15 : 1 - (age / 90) * 0.85))
+    }
+    const t = setInterval(tick, 3000)
+    tick()
+    return () => clearInterval(t)
+  }, [event.ts])
+
+  return (
+    <div style={{
+      background: `${event.color}0a`,
+      border: `1px solid ${event.color}40`,
+      borderRadius: 5, padding: '5px 7px',
+      opacity, transition: 'opacity 1s ease',
+      animation: 'hudCardIn 0.45s ease',
+      boxShadow: `0 0 10px ${event.color}0f, inset 0 0 6px ${event.color}06`,
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Accent line */}
+      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 2, background: event.color, borderRadius: '2px 0 0 2px', opacity: 0.7 }} />
+      <div style={{ paddingLeft: 4 }}>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center', marginBottom: 2 }}>
+          <span style={{ fontSize: 9, color: event.color }}>{HUD_EVT_ICONS[event.type] ?? '•'}</span>
+          <span style={{ fontSize: 7, color: `${event.color}95`, letterSpacing: '0.12em', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>
+            {event.title}
+          </span>
+        </div>
+        {event.value && (
+          <div style={{ fontSize: 10, fontWeight: 800, color: '#eef4ff', letterSpacing: '0.03em', lineHeight: 1.2, fontFamily: 'monospace' }}>
+            {event.value}
+          </div>
+        )}
+        {event.sub && (
+          <div style={{ fontSize: 7, color: `${event.color}70`, marginTop: 2, letterSpacing: '0.08em', fontFamily: 'monospace' }}>
+            {event.sub}
+          </div>
+        )}
+        <div style={{ fontSize: 6, color: `${event.color}45`, marginTop: 3, fontFamily: 'monospace' }}>
+          {new Date(event.ts).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 export function AdminOverview() {
   const navigate  = useNavigate()
   const clock     = useClock()
   const [modal, setModal] = useState<ModalType | null>(null)
+  const [showLog, setShowLog] = useState(false)
   const uptime   = useUptime()
+
+  // HUD TTS for live event announcements (must come before any callback that calls speak)
+  const { speak } = useTTS()
+
+  // ── WAANDA Boot Greeting ─────────────────────────────────────────────────
+  const [greetingDone, setGreetingDone] = useState(false)
+  const handleGreetingDismiss = useCallback((voiceText: string) => {
+    setGreetingDone(true)
+    speak(voiceText, 'greeting')
+  }, [speak])
+
+  // ── Scenario Playground ──────────────────────────────────────────────────
+  const [scenarioResult,  setScenarioResult]  = useState<ScenarioResult | null>(null)
+  const [scenarioDelta,   setScenarioDelta]   = useState<ScenarioDelta | null>(null)
+  const handleScenario    = useCallback((res: ScenarioResult, delta: ScenarioDelta) => {
+    setScenarioResult(res); setScenarioDelta(delta)
+  }, [])
+  const handleExitScenario = useCallback(() => {
+    setScenarioResult(null); setScenarioDelta(null)
+  }, [])
+
+  // ── Goal Cockpit ─────────────────────────────────────────────────────────
+  const [goalCockpitOpen, setGoalCockpitOpen] = useState(false)
+  const handleGoalCockpit = useCallback(() => setGoalCockpitOpen(true), [])
+
+
+  // ── Live HUD Event feed ──────────────────────────────────────────────────
+  const [hudEvents, setHudEvents] = useState<LiveHUDEvent[]>([])
+  const spokenIds = useRef(new Set<string>())
+  const addHUDEvent = useCallback((ev: Omit<LiveHUDEvent, 'id' | 'announced'>) => {
+    const id = `${ev.type}-${Math.round(ev.ts / 1000)}-${ev.title.slice(0, 10)}`
+    const newEv: LiveHUDEvent = { ...ev, id, announced: false }
+    setHudEvents(prev => {
+      if (prev.some(e => e.id === id)) return prev
+      return [newEv, ...prev].slice(0, 10)
+    })
+    // Persist to DB (fire-and-forget) — primary storage
+    api.post('/admin/kangqore-immp/events', newEv).catch(() => {})
+    // Keep localStorage as local fallback so the drawer loads instantly
+    try {
+      const stored = JSON.parse(localStorage.getItem('waanda-hud-log') || '[]') as LiveHUDEvent[]
+      if (!stored.some(e => e.id === id)) {
+        localStorage.setItem('waanda-hud-log', JSON.stringify([newEv, ...stored].slice(0, 200)))
+      }
+    } catch {}
+  }, [])
+
+  // One-time drain of localStorage backlog → DB on first mount after DB storage was added
+  useEffect(() => {
+    const MIGRATION_KEY = 'waanda-hud-log-migrated-v1'
+    if (localStorage.getItem(MIGRATION_KEY)) return
+    try {
+      const stored: LiveHUDEvent[] = JSON.parse(localStorage.getItem('waanda-hud-log') || '[]')
+      if (!stored.length) { localStorage.setItem(MIGRATION_KEY, '1'); return }
+      // POST in small batches with a short delay so we don't hammer the backend
+      let i = 0
+      const send = () => {
+        const batch = stored.slice(i, i + 20)
+        if (!batch.length) { localStorage.setItem(MIGRATION_KEY, '1'); return }
+        Promise.allSettled(batch.map(ev => api.post('/admin/kangqore-immp/events', ev)))
+          .then(() => { i += 20; setTimeout(send, 300) })
+          .catch(() => { i += 20; setTimeout(send, 300) })
+      }
+      send()
+    } catch {}
+  }, [])
+
+  // Tracks mount time so HUD event TTS waits for the greeting to finish
+  const mountTime = useRef(Date.now())
+
+  // Arc measurement — ResizeObserver tracks the arc square's left offset within its
+  // container so the card columns can be sized to exactly fill the empty flanking space
+  const arcContainerRef = useRef<HTMLDivElement>(null)
+  const arcRef = useRef<HTMLDivElement>(null)
+  const [arcLeft, setArcLeft] = useState(0)
+  useEffect(() => {
+    const el = arcRef.current
+    const container = arcContainerRef.current
+    if (!el || !container) return
+    const measure = () => {
+      const arcRect = el.getBoundingClientRect()
+      const conRect = container.getBoundingClientRect()
+      setArcLeft(Math.max(0, arcRect.left - conRect.left))
+    }
+    const obs = new ResizeObserver(measure)
+    obs.observe(el)
+    obs.observe(container)
+    measure()
+    return () => obs.disconnect()
+  }, [])
 
   // Live signal stream via WebSocket
   const { lastSignal, criticalAlert, recentSignals } = useSignalStream()
@@ -3458,35 +5058,255 @@ export function AdminOverview() {
 
   // KIMMP
   const storeInsights = useKIMMPStore(s => s.insights)
-  const insights = storeInsights.length ? storeInsights : KIMMP_MOCK
+  const insights = storeInsights
   const critical = insights.filter(i => i.priority === 'critical').length
   const conf     = Math.round(insights.reduce((a, i) => a + i.confidence, 0) / (insights.length || 1))
 
-  // Live tickers — used as animated fallback when DB has no records yet
-  const health    = useTicker(97,   0.003)
-  const mrrTick   = useTicker(2.45, 0.004)
-  const revTick   = useTicker(1.62, 0.006)
-  const visits    = useTicker(analytics.total_visits || 91, 0.015)
-  const agents    = useTicker(31,   0.02)
+  // Real health score derived from service checks; ticker animates around it
+  const healthSeed = healthData?.system?.healthPct ?? 97
+  const health     = useTicker(healthSeed, 0.003)
+  // No ticker fallbacks — show real data only
+  const visits     = useTicker(analytics.total_visits || 91, 0.015)
 
-  // Financial values: real DB data in priority; ticker as warm fallback (amounts assumed ₹)
-  const mrrCr  = kpis?.revenueMTD       > 0 ? kpis.revenueMTD       / 1e7 : mrrTick
-  const revCr  = kpis?.revenueLastMonth > 0 ? kpis.revenueLastMonth / 1e7 : revTick
-  const arrCr  = kpis?.arr              > 0 ? kpis.arr              / 1e7 : mrrCr * 12
+  // AEGIS registered agent count — real value, animates around it
+  const { data: aegisStats } = useQuery({
+    queryKey: ['aegis-stats-hud'],
+    queryFn: () => api.get('/admin/aegis/agents').then(r => r.data),
+    staleTime: 1000 * 60 * 10,
+  })
+  const agents = useTicker(aegisStats?.total ?? 80, 0.02)
+
+  // System utilization — real OS metrics from health-deep
+  const sysStats = healthData?.system ?? { cpu: 0, ram: 0, network: 0 }
+
+  // ── Live HUD Event: Signal watch ────────────────────────────────────────
+  const prevSignalRef = useRef<LiveSignal | null>(null)
+  useEffect(() => {
+    if (!lastSignal || lastSignal === prevSignalRef.current) return
+    prevSignalRef.current = lastSignal
+    addHUDEvent({
+      type: 'signal',
+      title: (lastSignal.sourceModule || 'KIMMP').toUpperCase(),
+      value: lastSignal.signalValue || (lastSignal.signalType || 'SIGNAL').replace(/_/g, ' '),
+      sub: `${(lastSignal.signalCategory || lastSignal.signalType || '').replace(/_/g, ' ')} · ${lastSignal.severity} · CONF ${Math.round(lastSignal.confidence ?? 0)}%`,
+      color: C,
+      ts: lastSignal.createdAt ? new Date(lastSignal.createdAt).getTime() : Date.now(),
+      raw: { id: lastSignal.id, sourceModule: lastSignal.sourceModule, signalType: lastSignal.signalType, signalCategory: lastSignal.signalCategory, signalValue: lastSignal.signalValue, severity: lastSignal.severity, confidence: lastSignal.confidence, createdAt: lastSignal.createdAt },
+    })
+  }, [lastSignal, addHUDEvent])
+
+  // ── Live HUD Event: Critical alert ──────────────────────────────────────
+  const prevAlertRef = useRef<LiveSignal | null>(null)
+  useEffect(() => {
+    if (!criticalAlert || criticalAlert === prevAlertRef.current) return
+    prevAlertRef.current = criticalAlert
+    addHUDEvent({
+      type: 'alert',
+      title: 'CRITICAL ALERT',
+      value: criticalAlert.signalValue || (criticalAlert.signalType || 'CRITICAL').replace(/_/g, ' '),
+      sub: `${criticalAlert.sourceModule?.toUpperCase()} · ${criticalAlert.severity} · CONF ${Math.round(criticalAlert.confidence ?? 0)}%`,
+      color: CR,
+      ts: criticalAlert.createdAt ? new Date(criticalAlert.createdAt).getTime() : Date.now(),
+      raw: { id: criticalAlert.id, sourceModule: criticalAlert.sourceModule, signalType: criticalAlert.signalType, signalCategory: criticalAlert.signalCategory, signalValue: criticalAlert.signalValue, severity: criticalAlert.severity, confidence: criticalAlert.confidence, createdAt: criticalAlert.createdAt },
+    })
+  }, [criticalAlert, addHUDEvent])
+
+  // ── Live HUD Event: New intelligence from KIMMP store ───────────────────
+  const insightCountRef = useRef(0)
+  useEffect(() => {
+    const n = storeInsights.length
+    if (n > insightCountRef.current && insightCountRef.current > 0) {
+      const newest = storeInsights[0]
+      addHUDEvent({
+        type: 'agent',
+        title: 'NEW INTELLIGENCE',
+        value: (newest?.module || 'KIMMP').toUpperCase(),
+        sub: (newest?.summary || 'ANALYSIS COMPLETE').slice(0, 44),
+        color: '#00ddaa',
+        ts: Date.now(),
+        raw: newest ? { module: newest.module, summary: newest.summary, priority: newest.priority, confidence: newest.confidence, category: newest.category } : undefined,
+      })
+    }
+    insightCountRef.current = n
+  }, [storeInsights.length, addHUDEvent])
+
+  // ── Live HUD Event: AEGIS audit log poll ────────────────────────────────
+  const { data: aegisAudit } = useQuery({
+    queryKey: ['aegis-audit-hud'],
+    queryFn: () => api.get('/admin/aegis/audit?limit=1').then(r => r.data).catch(() => null),
+    refetchInterval: 25_000,
+  })
+  const prevAegisId = useRef<string | null>(null)
+  useEffect(() => {
+    const latest = aegisAudit?.logs?.[0]
+    if (!latest || latest.id === prevAegisId.current) return
+    prevAegisId.current = latest.id
+    addHUDEvent({
+      type: 'agent',
+      title: (latest.agentId || 'AEGIS').replace(/-/g, ' ').toUpperCase().slice(0, 20),
+      value: (latest.action || 'COMPLETED').replace(/_/g, ' '),
+      sub: (latest.outcome || 'LOGGED').slice(0, 34),
+      color: '#00ddaa',
+      ts: latest.createdAt ? new Date(latest.createdAt).getTime() : Date.now(),
+      raw: { agentId: latest.agentId, action: latest.action, outcome: latest.outcome, metadata: latest.metadata, engine: latest.engine, createdAt: latest.createdAt },
+    })
+  }, [aegisAudit, addHUDEvent])
+
+  // ── Live HUD Event: Proactive insights poll ──────────────────────────────
+  const { data: proactiveData } = useQuery({
+    queryKey: ['proactive-hud'],
+    queryFn: () => api.get('/admin/kangqore-immp/proactive/alerts').then(r => r.data).catch(() => null),
+    refetchInterval: 20_000,
+  })
+  const prevProactiveId = useRef<string | null>(null)
+  useEffect(() => {
+    const latest = proactiveData?.alerts?.[0]
+    if (!latest || latest.id === prevProactiveId.current) return
+    prevProactiveId.current = latest.id
+    addHUDEvent({
+      type: 'kpi',
+      title: 'PROACTIVE INSIGHT',
+      value: (latest.type || 'KPI ALERT').replace(/_/g, ' '),
+      sub: (latest.module || '').toUpperCase(),
+      color: '#ffaa00',
+      ts: latest.createdAt ? new Date(latest.createdAt).getTime() : Date.now(),
+      raw: { type: latest.type, module: latest.module, message: latest.message, severity: latest.severity, metric: latest.metric, value: latest.value, threshold: latest.threshold, createdAt: latest.createdAt },
+    })
+  }, [proactiveData, addHUDEvent])
+
+  // ── Live HUD Event: KPI change detection ────────────────────────────────
+  const prevKpisRef = useRef<any>(null)
+  useEffect(() => {
+    if (!kpis) return
+    const prev = prevKpisRef.current
+    const score = Number(kpis.overallScore)
+    const prevScore = Number(prev?.overallScore ?? 0)
+    if (prev && !isNaN(score) && !isNaN(prevScore) && Math.round(score) !== Math.round(prevScore)) {
+      addHUDEvent({
+        type: 'kpi',
+        title: 'TWIN SCORE',
+        value: `${Math.round(score)}%`,
+        sub: score > prevScore ? '▲ IMPROVING' : '▼ DECLINING',
+        color: score > prevScore ? '#00ddaa' : CR,
+        ts: Date.now(),
+        raw: {
+          previous: { overallScore: prevScore, pipelineVelocity: prev.pipelineVelocity, executionCapacity: prev.executionCapacity, revenueHealth: prev.revenueHealth },
+          current:  { overallScore: score, pipelineVelocity: kpis.pipelineVelocity, executionCapacity: kpis.executionCapacity, revenueHealth: kpis.revenueHealth, marketPosition: kpis.marketPosition, riskExposure: kpis.riskExposure },
+          delta: Math.round(score - prevScore),
+        },
+      })
+    }
+    prevKpisRef.current = kpis
+  }, [kpis, addHUDEvent])
+
+  // ── System utilization change events (cpu/ram spikes) ───────────────────
+  const prevSysRef = useRef({ cpu: 0, ram: 0 })
+  useEffect(() => {
+    const { cpu, ram } = sysStats
+    const prev = prevSysRef.current
+    if ((Math.abs(cpu - prev.cpu) > 15 || Math.abs(ram - prev.ram) > 10) && (prev.cpu > 0 || prev.ram > 0)) {
+      addHUDEvent({
+        type: 'system',
+        title: 'SYSTEM UTILIZATION',
+        value: `CPU ${cpu}%  RAM ${ram}%`,
+        sub: cpu > 80 || ram > 85 ? '⚠ ELEVATED LOAD' : 'WITHIN BOUNDS',
+        color: cpu > 80 || ram > 85 ? '#ffaa00' : C,
+        ts: Date.now(),
+        raw: { cpu, ram, network: sysStats.network, prevCpu: prev.cpu, prevRam: prev.ram, deltaCpu: cpu - prev.cpu, deltaRam: ram - prev.ram },
+      })
+    }
+    prevSysRef.current = { cpu, ram }
+  }, [sysStats.cpu, sysStats.ram, addHUDEvent])
+
+  // ── TTS: announce ALL pending events, one after another ──────────────────
+  // Alerts jump to the front of the speech queue; all others append in order.
+  // Time guards removed — the speak queue handles sequencing behind the greeting.
+  useEffect(() => {
+    const pending = hudEvents.filter(e => !e.announced && !spokenIds.current.has(e.id))
+    if (pending.length === 0) return
+
+    // Mark all as spoken synchronously so re-renders don't re-announce them
+    const ids = new Set(pending.map(e => e.id))
+    pending.forEach(e => spokenIds.current.add(e.id))
+    setHudEvents(prev => prev.map(e => ids.has(e.id) ? { ...e, announced: true } : e))
+
+    // Alerts first, then signals, agents, kpis, system
+    const ORDER: Record<string, number> = { alert:0, signal:1, agent:2, kpi:3, system:4 }
+    const sorted = [...pending].sort((a, b) => (ORDER[a.type] ?? 5) - (ORDER[b.type] ?? 5))
+
+    sorted.forEach(e => {
+      const v = (e.value ?? '').toLowerCase().replace(/_/g, ' ')
+      const phrases: Record<string, string> = {
+        signal: `${e.title.toLowerCase()} signal: ${v}`,
+        agent:  `${v || 'agent run'}, complete`,
+        alert:  `critical alert: ${v}`,
+        kpi:    `${e.title.toLowerCase()}: ${e.value}`,
+        system: `system: ${v}`,
+      }
+      speak(phrases[e.type] ?? `${e.title}: ${e.value ?? ''}`, e.type)
+    })
+  }, [hudEvents, speak])
+
+  // ── Auto-expire events older than 90 seconds ─────────────────────────────
+  useEffect(() => {
+    const t = setInterval(() => {
+      const cutoff = Date.now() - 90_000
+      setHudEvents(prev => prev.filter(e => e.ts > cutoff))
+    }, 10_000)
+    return () => clearInterval(t)
+  }, [])
+
+  // Alternate new events left / right for visual balance
+  const leftEvents  = hudEvents.filter((_, i) => i % 2 === 0).slice(0, 4)
+  const rightEvents = hudEvents.filter((_, i) => i % 2 !== 0).slice(0, 4)
+
+  // Financial values: real DB data only — null when unavailable
+  const mrrCr  = kpis?.revenueMTD       > 0 ? kpis.revenueMTD       / 1e7 : null
+  const revCr  = kpis?.revenueLastMonth > 0 ? kpis.revenueLastMonth / 1e7 : null
+  const arrCr  = kpis?.arr              > 0 ? kpis.arr              / 1e7 : null
   const mrrTrend = kpis?.revenueMTD > 0 && kpis?.revenueLastMonth > 0
     ? `${(((kpis.revenueMTD - kpis.revenueLastMonth) / kpis.revenueLastMonth) * 100).toFixed(0)}%`
-    : '+18%'
+    : null
 
   const timeStr = clock.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' })
   const dateStr = clock.toLocaleDateString('en-GB', { weekday:'short', day:'2-digit', month:'short', year:'numeric' })
 
+  // ── Fullscreen ────────────────────────────────────────────────────────────
+  const [isFullscreen, setIsFullscreen] = useState(false)
+  useEffect(() => {
+    const onChange = () => setIsFullscreen(!!document.fullscreenElement)
+    document.addEventListener('fullscreenchange', onChange)
+    return () => document.removeEventListener('fullscreenchange', onChange)
+  }, [])
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen()
+      } else {
+        await document.exitFullscreen()
+      }
+    } catch {}
+  }, [])
+
   return (
     <div style={{
-      width:'100%', height:'100vh', overflow:'hidden', position:'relative',
+      width:'100%', height: isFullscreen ? '100vh' : 'calc(100vh - 0.5cm)',
+      overflow:'hidden', position:'relative',
       background:'radial-gradient(ellipse at 50% 30%, #001433 0%, #000c22 50%, #000510 100%)',
       fontFamily:'monospace',
     }}>
       <style>{CSS}</style>
+
+      {/* WAANDA boot greeting — JARVIS-style, shows once per session */}
+      {!greetingDone && bootPhase >= 2 && (
+        <WaandaGreeting
+          kpis={kpis}
+          insights={insights}
+          health={health}
+          onDismiss={handleGreetingDismiss}
+        />
+      )}
+
 
       {/* Grid overlay */}
       <div style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0,
@@ -3526,7 +5346,7 @@ export function AdminOverview() {
           <div style={{ display:'flex', alignItems:'center', gap:16 }}>
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <div className="live-blink" style={{ width:8, height:8, borderRadius:'50%', background:CG, boxShadow:`0 0 8px ${CG}` }} />
-              <span style={{ fontSize:11, fontWeight:800, color:C, letterSpacing:'0.2em', textTransform: 'uppercase' }}>Kangqore View</span>
+              <span style={{ fontSize:11, fontWeight:800, color:C, letterSpacing:'0.2em', textTransform: 'uppercase' }}>WAANDA</span>
             </div>
             {[
               { label:'HEALTH', val:`${health.toFixed(0)}%`,    color:CG  },
@@ -3538,21 +5358,51 @@ export function AdminOverview() {
                 <span style={{ fontSize:12, fontWeight:800, color, textShadow:`0 0 8px ${color}` }}>{val}</span>
               </div>
             ))}
+
+            <button onClick={() => setShowLog(true)} style={{
+              marginLeft: 4, paddingLeft: 16, borderLeft: `1px solid ${C}20`,
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: 6, outline: 'none'
+            }}>
+              <span style={{ fontSize: 9, color: `${C}50`, letterSpacing: '0.12em' }}>◈</span>
+              <span style={{ fontSize: 8, color: `${C}50`, letterSpacing: '0.15em', fontFamily: 'monospace' }}>LOG</span>
+              <span style={{ fontSize: 12, fontWeight: 800, color: C, textShadow: `0 0 8px ${C}` }}>60</span>
+            </button>
           </div>
 
-          {/* Center title removed per user request */}
-          <div style={{ textAlign:'center' }}>
+          {/* Center title */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{ fontSize:15, fontWeight:900, color:C, letterSpacing:'0.4em', textShadow:`0 0 16px ${C}`, lineHeight:1 }}>W.A.A.N.D.A.</div>
+            <div style={{ fontSize:10, color:`${C}70`, letterSpacing:'0.15em', textTransform:'uppercase', whiteSpace:'nowrap' }}>A Kangqore Product.</div>
           </div>
 
           {/* Right: clock and exit */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 24, textAlign: 'right' }}>
             <div>
-              <div style={{ fontSize:22, fontWeight:900, color:C, letterSpacing:'0.1em',
+              <div style={{ fontSize:15, fontWeight:900, color:C, letterSpacing:'0.1em',
                 textShadow:`0 0 16px ${C}`, lineHeight:1 }}>{timeStr}</div>
               <div style={{ fontSize:9, color:`${C}50`, marginTop:2 }}>{dateStr}</div>
             </div>
             
-            <button 
+            {/* Fullscreen toggle */}
+            <button
+              onClick={toggleFullscreen}
+              title={isFullscreen ? 'Exit fullscreen (Esc)' : 'Fullscreen'}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: 32, height: 32,
+                background: 'transparent',
+                border: 'none', borderRadius: 6, cursor: 'pointer',
+                transition: 'all 0.2s', outline: 'none', flexShrink: 0,
+                color: isFullscreen ? '#94a3b8' : '#64748b',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = '#e2e8f0'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
+              onMouseLeave={e => { e.currentTarget.style.color = isFullscreen ? '#94a3b8' : '#64748b'; e.currentTarget.style.background = 'transparent' }}
+            >
+              {isFullscreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+            </button>
+
+            <button
               onClick={() => navigate('/kangqore-view/admin/home')}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6, height: 32,
@@ -3569,8 +5419,7 @@ export function AdminOverview() {
                 e.currentTarget.style.background = `linear-gradient(135deg, ${C}20 0%, transparent 100%)`;
               }}
             >
-              <span style={{ fontSize: 9, fontWeight: 800, color: C, letterSpacing: '0.15em' }}>EXIT HUD</span>
-              <ArrowRight size={12} color={C} />
+              <span style={{ fontSize: 9, fontWeight: 800, color: C, letterSpacing: '0.15em' }}>← Back</span>
             </button>
           </div>
         </div>
@@ -3579,67 +5428,144 @@ export function AdminOverview() {
         <div style={{ flex:1, display:'grid', gridTemplateColumns:'195px 1fr 195px', gap:10, padding:10, minHeight:0 }}>
 
           {/* ═ LEFT ═ */}
-          <div style={{ display:'flex', flexDirection:'column', gap:3, overflowY:'auto' }}>
-
-            {/* ── SYSTEM STATUS — circular gauges like JARVIS ── */}
-            <SectionLabel text="SYSTEM STATUS" color={CG} />
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:4, justifyItems:'center',
-              padding:'4px 0', background:'rgba(0,8,24,0.6)', borderRadius:8, border:`1px solid ${CG}15` }}>
-              <Gauge value={Math.round(health)} label="HEALTH" color={CG} size={88} />
-              <Gauge value={conf}               label="KIMMP"  color={C}  size={88} />
-            </div>
-
-            {/* ── DIGITAL TWIN ── */}
-            <SectionLabel text="DIGITAL TWIN" color={C} />
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:4 }}>
-              <TwinWidgets onOpen={() => setModal('twin')} />
-            </div>
-
-            {/* ── FINANCIAL ── */}
-            <SectionLabel text="FINANCIAL" color={CG} />
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:4 }}>
-              <Widget label="MRR"      value={`₹${mrrCr.toFixed(1)}Cr`}        color={CG} glow={!!mrrTrend?.startsWith('+')} sub={mrrTrend ?? undefined} onClick={() => setModal('finance')} />
-              <Widget label="REVENUE"  value={`₹${revCr.toFixed(1)}Cr`}        color={CG} glow sub="+23% MTD"  onClick={() => setModal('finance')} />
-              <Widget label="ARR"      value={`₹${arrCr.toFixed(1)}Cr`}        color={C}  sub="ANNUAL"          onClick={() => setModal('finance')} />
-              <Widget label="FORECAST" value={`₹${(revCr*1.16).toFixed(1)}Cr`} color={CA} glow sub="+16% 30D"  onClick={() => setModal('finance')} />
-            </div>
-
-            {/* ── USERS & REACH ── */}
-            <SectionLabel text="USERS & REACH" color={C} />
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:4 }}>
-              <Widget label="USERS"    value={analytics.total_users ?? 0} color={C}  glow={(analytics.total_users ?? 0) > 0} sub="+6%"  onClick={() => setModal('clients')} />
-              <Widget label="CLIENTS"  value={analytics.clients     ?? 0} color={CG} glow={(analytics.clients     ?? 0) > 0} sub="+9%"  onClick={() => setModal('clients')} />
-              <Widget label="PARTNERS" value={analytics.partners    ?? 0} color={C}  sub="+5%"                                           onClick={() => setModal('clients')} />
-              <Widget label="VISITS"   value={Math.round(visits)}         color={CG} glow sub="+21%"                                     onClick={() => setModal('clients')} />
-            </div>
-
-            {/* ── OPERATIONS ── */}
-            <SectionLabel text="OPERATIONS" color={CR} />
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:4 }}>
-              <Widget label="SIGNALS"  value={recentSignals.length} color={CR} glow={recentSignals.length > 0} sub="IN LEDGER" onClick={() => setModal('signals')} />
-              <Widget label="CRITICAL" value={critical}             color={CR} glow={critical > 0}             sub="PRIORITY"  onClick={() => setModal('signals')} />
-            </div>
+<div style={{ display:'flex', flexDirection:'column', gap:20, overflow:'hidden', transform: 'scale(0.9)', transformOrigin: 'top center' }}>
+  {/* ── SYSTEM STATUS ── */}
+  <SectionLabel text="SYSTEM STATUS" color={CG} />
+  <div style={{ display:'flex', alignItems: 'center', justifyContent: 'space-between', padding:'4px 16px', background:'rgba(0,8,24,0.6)', borderRadius:8, border:`1px solid ${CG}15` }}>
+    <div style={{ position: 'relative', width: 60, height: 60 }}>
+      <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-120deg)' }}>
+        <circle cx="50" cy="50" r="40" fill="none" stroke={`${CG}20`} strokeWidth="4" strokeDasharray="180 300" />
+        <circle cx="50" cy="50" r="40" fill="none" stroke={CG} strokeWidth="4" strokeDasharray={`${180 * (health/100)} 300`} style={{ filter: `drop-shadow(0 0 6px ${CG})` }} />
+      </svg>
+      <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
+        <div style={{ fontSize: 10.8, fontWeight: 800, color: '#fff' }}>{Math.round(health)}%</div>
+        <div style={{ fontSize: 5.4, color: CG }}>HEALTH</div>
+      </div>
+    </div>
+    <svg width="40" height="20" viewBox="0 0 40 20">
+       <path d="M0 10 L10 10 L15 2 L20 18 L25 8 L30 10 L40 10" fill="none" stroke={CG} strokeWidth="1" />
+       <circle cx="20" cy="18" r="2" fill={CG} />
+    </svg>
+    <div style={{ position: 'relative', width: 60, height: 60 }}>
+      <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-120deg)' }}>
+        <circle cx="50" cy="50" r="40" fill="none" stroke={`${C}20`} strokeWidth="4" strokeDasharray="180 300" />
+        <circle cx="50" cy="50" r="40" fill="none" stroke={C} strokeWidth="4" strokeDasharray={`${180 * (conf/100)} 300`} style={{ filter: `drop-shadow(0 0 6px ${C})` }} />
+      </svg>
+      <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
+        <div style={{ fontSize: 10.8, fontWeight: 800, color: '#fff' }}>{conf}%</div>
+        <div style={{ fontSize: 5.4, color: C }}>WAANDA</div>
+      </div>
+    </div>
+  </div>
+  {/* ── PERFORMANCE METRICS ── */}
+  <SectionLabel text="PERFORMANCE METRICS" color={C} />
+  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 24px', padding:'4px 8px' }}>
+    {(() => {
+      const twin = kpis ?? {};
+      const tv = (v: number | undefined) => v != null ? Math.round(v) : '—';
+      return (
+        <>
+          <div style={{ display:'flex', flexDirection:'column' }}>
+            <PerformanceMetricRow label="TWIN SCORE" value={tv(twin.overallScore)} score={100} />
+            <PerformanceMetricRow label="PIPELINE" value={tv(twin.pipelineVelocity)} score={100} />
+            <PerformanceMetricRow label="EXECUTION" value={tv(twin.executionCapacity)} score={100} />
           </div>
-
-          {/* ═ CENTER HUD ═ */}
+          <div style={{ display:'flex', flexDirection:'column' }}>
+            <PerformanceMetricRow label="REVENUE" value={tv(twin.revenueHealth)} score={100} />
+            <PerformanceMetricRow label="MARKET" value={tv(twin.marketPosition)} score={100} />
+            <PerformanceMetricRow label="RISK EXP." value={tv(twin.riskExposure)} score={100} />
+          </div>
+        </>
+      )
+    })()}
+  </div>
+  {/* ── FINANCIAL OVERVIEW ── */}
+  <SectionLabel text="FINANCIAL OVERVIEW" color={CG} />
+  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
+    <MinimalistRingWidget label="MRR" value={mrrCr != null ? `₹${mrrCr.toFixed(1)}Cr` : '—'} sub={mrrTrend ?? undefined} color={CG} />
+    <MinimalistRingWidget label="REVENUE" value={revCr != null ? `₹${revCr.toFixed(1)}Cr` : '—'} color={CG} />
+    <MinimalistRingWidget label="ARR" value={arrCr != null ? `₹${arrCr.toFixed(1)}Cr` : '—'} color={C} />
+    <MinimalistRingWidget label="FORECAST" value={revCr != null ? `₹${(revCr*1.16).toFixed(1)}Cr` : '—'} color={C} />
+  </div>
+  {/* ── USERS & REACH ── */}
+  <SectionLabel text="USERS & REACH" color={C} />
+  <div style={{ position: 'relative', height: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 10px' }}>
+    <svg viewBox="0 0 200 100" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.2 }}>
+      {Array.from({length: 200}).map((_, i) => (
+         <circle key={i} cx={((i * 13) % 200)} cy={((i * 7) % 100)} r={1} fill={C} opacity={Math.random()} />
+      ))}
+    </svg>
+    <div style={{ zIndex: 1 }}>
+      <div style={{ fontSize: 7.2, color: '#88ccff', letterSpacing: '0.1em' }}>ACTIVE USERS</div>
+      <div style={{ fontSize: 14.4, color: '#fff', fontWeight: 800 }}>{(analytics.total_users ?? 0).toLocaleString()}</div>
+      <div style={{ fontSize: 7.2, color: `${C}60` }}>REGISTERED</div>
+    </div>
+    <div style={{ zIndex: 1, textAlign: 'right' }}>
+      <div style={{ fontSize: 7.2, color: '#88ccff', letterSpacing: '0.1em' }}>TOTAL VISITS</div>
+      <div style={{ fontSize: 14.4, color: '#fff', fontWeight: 800 }}>{analytics.total_visits >= 1000 ? `${(analytics.total_visits / 1000).toFixed(1)}K` : String(analytics.total_visits ?? 0)}</div>
+      <div style={{ fontSize: 7.2, color: `${C}60` }}>ALL TIME</div>
+    </div>
+  </div>
+  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: `1px solid ${C}20`, marginTop: 10 }}>
+    {['00','01','02','03','04','05','06','07','08','09','10','11','12'].map(t => (
+      <div key={t} style={{ fontSize: 6.3, color: `${C}60` }}>{t}</div>
+    ))}
+  </div>
+</div>{/* ═ CENTER HUD ═ */}
           <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'flex-start', minHeight:0, gap:8, overflow:'hidden' }}>
 
             {/* Arc — outer div fills flex space; inner square wrapper sizes to height so arc is never clipped */}
-            <div style={{ flex:'1 0 0', width:'100%', minHeight:360, display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden' }}>
-              <div style={{ height:'100%', aspectRatio:'1/1', maxWidth:'100%' }}>
-                <WaandaGUI confidence={conf} health={+health.toFixed(0)} insights={insights} analytics={analytics} sweep={sweep} lastSignal={lastSignal} criticalAlert={criticalAlert} bootPhase={bootPhase} kpis={kpis} userRole={userRole} />
+            <div ref={arcContainerRef} style={{ flex:'1 0 0', width:'100%', minHeight:360, display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', position:'relative' }}>
+
+              {/* LEFT LIVE FEED — fills the empty dark space to the left of the arc square */}
+              <div style={{
+                position: 'absolute', left: 4, top: 12, bottom: 12,
+                width: arcLeft > 20 ? arcLeft - 10 : 0,
+                display: 'flex', flexDirection: 'column', gap: 6,
+                justifyContent: 'center', overflow: 'hidden', pointerEvents: 'none',
+              }}>
+                {leftEvents.map(e => <LiveCard key={e.id} event={e} />)}
               </div>
+
+              <div ref={arcRef} style={{ height:'100%', aspectRatio:'1/1', maxWidth:'100%' }}>
+                <WaandaGUI confidence={conf} health={+health.toFixed(0)} insights={insights} analytics={analytics} sweep={sweep} lastSignal={lastSignal} criticalAlert={criticalAlert} bootPhase={bootPhase} kpis={kpis} userRole={userRole} scenarioDelta={scenarioDelta} />
+              </div>
+              {/* Goal Cockpit overlay — covers the entire arc area */}
+              {goalCockpitOpen && (
+                <GoalCockpit onClose={() => setGoalCockpitOpen(false)} color={C} />
+              )}
+
+              {/* RIGHT LIVE FEED — fills the empty dark space to the right of the arc square */}
+              <div style={{
+                position: 'absolute', right: 4, top: 12, bottom: 12,
+                width: arcLeft > 20 ? arcLeft - 10 : 0,
+                display: 'flex', flexDirection: 'column', gap: 6,
+                justifyContent: 'center', overflow: 'hidden', pointerEvents: 'none',
+              }}>
+                {rightEvents.map(e => <LiveCard key={e.id} event={e} />)}
+              </div>
+
             </div>
 
             {/* Bottom Group — only essentials under the arc */}
             <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:8, width:'100%', flexShrink:0 }}>
 
-              {/* KIMMP Command Bar */}
+              {/* WAANDA Command Bar */}
               <div style={{ width: '85%' }}>
-                <Panel title="KANGQORE VIEW" color={C}>
-                  <HUDCommandBar insights={insights} color={C} recentSignals={recentSignals} criticalAlert={criticalAlert} />
+                <Panel title="WAANDA" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C}>
+                  <HUDCommandBar
+                    insights={insights} color={C} recentSignals={recentSignals} criticalAlert={criticalAlert}
+                    onScenario={handleScenario} onGoalCockpit={handleGoalCockpit}
+                    scenarioActive={scenarioResult !== null} onExitScenario={handleExitScenario}
+                  />
                 </Panel>
               </div>
+              {/* Scenario analysis panel — shows below command bar when scenario mode is active */}
+              {scenarioResult && (
+                <div style={{ width: '85%' }}>
+                  <ScenarioPanel result={scenarioResult} color={C} onExit={handleExitScenario} />
+                </div>
+              )}
 
 
 
@@ -3647,49 +5573,70 @@ export function AdminOverview() {
           </div>
 
           {/* ═ RIGHT ═ */}
-          <div style={{ display:'flex', flexDirection:'column', gap:3, overflowY:'auto' }}>
-
-            {/* ── COMMAND ── */}
-            <SectionLabel text="COMMAND" color={CA} />
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:4 }}>
-              <Widget label="APPROVALS" value={liveApprovals.length}             color={CA} glow={liveApprovals.length > 0} sub="PENDING"  onClick={() => setModal('approvals')} />
-              <Widget label="DECISIONS" value={insights.length}                  color={C}  glow={insights.length > 0}     sub="IN QUEUE" onClick={() => setModal('decisions')} />
-              <Widget label="CASH FCST" value={`₹${(revCr*1.08).toFixed(1)}Cr`} color={CA} sub="30D VIEW"                              onClick={() => setModal('finance')}   />
-              <Widget label="CONTRACTS" value={kpis?.activeContracts ?? 0}       color={CG} glow={(kpis?.activeContracts ?? 0) > 0} sub="ACTIVE" onClick={() => setModal('finance')} />
-            </div>
-
-            {/* ── MODULE NEXUS ── */}
-            <SectionLabel text="MODULE NEXUS" color='#00ffcc' />
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:4 }}>
-              <NexusWidgets />
-            </div>
-
-            {/* ── INTELLIGENCE ── */}
-            <SectionLabel text="INTELLIGENCE" color={CR} />
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:4 }}>
-              <Widget label="INSIGHTS" value={insights.filter(i => i.priority === 'critical').length || insights.length}
-                color={CR} glow={insights.some(i => i.priority === 'critical')} sub="PROACTIVE" onClick={() => setModal('insights')} />
-              <Widget label="GOALS"    value="ENGINE" color={CG} glow sub="ACTIVE"   onClick={() => setModal('goals')}    />
-              <Widget label="RESEARCH" value="ACTIVE" color={C}  sub="AGENTS ON"     onClick={() => setModal('research')} />
-              <Widget label="MEMORY"   value="ON"     color={CA} glow sub="LEARNING" onClick={() => setModal('insights')} />
-            </div>
+<div style={{ display:'flex', flexDirection:'column', gap:20, overflow:'hidden', paddingBottom: 20, transform: 'scale(0.9)', transformOrigin: 'top center' }}>
+  {/* ── COMMAND CENTER ── */}
+  <SectionLabel text="COMMAND CENTER" color={CA} />
+  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
+    <MinimalistRingWidget label="APPROVALS" value={liveApprovals.length} sub="PENDING" color={CA} />
+    <MinimalistRingWidget label="DECISIONS" value={insights.length} sub="IN QUEUE" color={C} />
+    <MinimalistRingWidget label="CASH FCST" value={revCr != null ? `₹${(revCr*1.08).toFixed(1)}Cr` : '—'} sub="30D VIEW" color={CA} />
+    <MinimalistRingWidget label="CONTRACTS" value="0" sub="ACTIVE" color={C} />
+  </div>
+  {/* ── MODULE NEXUS ── */}
+  <SectionLabel text="MODULE NEXUS" color='#00ffcc' />
+  <div style={{ padding: '8px' }}>
+     <NexusFlatList signals={recentSignals} />
+  </div>
+  {/* ── INTELLIGENCE ── */}
+  <SectionLabel text="INTELLIGENCE" color={CR} />
+  <div style={{ display:'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 16px' }}>
+     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+       <div style={{ fontSize: 8.1, color: '#88ccff' }}>INSIGHTS</div>
+       <div style={{ fontSize: 14.4, color: CR, fontWeight: 800, filter: `drop-shadow(0 0 8px ${CR})` }}>{insights.filter(i => i.priority === 'critical').length || insights.length || 3}</div>
+       <div style={{ fontSize: 7.2, color: CR }}>PROACTIVE</div>
+     </div>
+     <div style={{ display: 'flex', gap: 6, alignItems: 'flex-end', height: 40, position: 'relative' }}>
+       {[0.4, 0.7, 0.5, 0.8, 0.3, 0.6, 0.4, 0.9, 0.5].map((v, i) => (
+          <div key={i} style={{ width: 2, height: `${v * 100}%`, background: CR, boxShadow: `0 0 4px ${CR}`, transition: 'height 0.3s' }} />
+       ))}
+       <div style={{ display: 'flex', gap: 6, position: 'absolute', bottom: -12 }}>
+         {['01','02','03','04','05','06','07','08','09'].map((v, i) => (
+           <div key={i} style={{ fontSize: 5.4, color: `${C}60`, width: 2, textAlign: 'center' }}>{v}</div>
+         ))}
+       </div>
+     </div>
+  </div>
+  {/* ── SYSTEM UTILIZATION ── */}
+  <SectionLabel text="SYSTEM UTILIZATION" color={C} />
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '8px' }}>
+    {[ { label: 'CPU', val: sysStats.cpu }, { label: 'RAM', val: sysStats.ram }, { label: 'NETWORK', val: sysStats.network } ].map(s => (
+       <div key={s.label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+          <div style={{ fontSize: 7.2, color: '#88ccff', width: 40 }}>{s.label}</div>
+          <div style={{ flex: 1, height: 8, display: 'flex', gap: 2 }}>
+             {Array.from({length: 40}).map((_, i) => (
+               <div key={i} style={{ flex: 1, height: '100%', background: i < (s.val/100)*40 ? C : `${C}20`, boxShadow: i < (s.val/100)*40 ? `0 0 4px ${C}` : 'none' }} />
+             ))}
           </div>
+          <div style={{ fontSize: 8.1, color: '#fff', width: 25, textAlign: 'right' }}>{s.val}%</div>
+       </div>
+    ))}
+  </div>
+</div>
         </div>
-      </div>
-
-      {/* ── Widget Modal overlay ── */}
+      </div>{/* ── Widget Modal overlay ── */}
       {modal && (
         <WidgetModal
           type={modal}
           onClose={() => setModal(null)}
           data={{
-            mrrCr, revCr, arrCr, mrrTrend: mrrTrend ?? '+0%',
+            mrrCr, revCr, arrCr, mrrTrend,
             kpis, analytics,
             recentSignals, critical, liveApprovals,
             insights,
           }}
         />
       )}
+      {showLog && <HUDLogDrawer onClose={() => setShowLog(false)} />}
     </div>
   )
 }

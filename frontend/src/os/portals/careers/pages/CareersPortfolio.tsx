@@ -182,7 +182,7 @@ export function CareersPortfolio() {
           { url: form.portfolioUrl, icon: <Globe     className="w-4 h-4" />, label: 'Portfolio' },
           { url: form.cvUrl,        icon: <FileText  className="w-4 h-4" />, label: 'CV'        },
         ].filter(l => l.url).length > 0 && (
-          <div className="flex items-center gap-4 mt-4 pt-4 border-t border-os-border flex-wrap">
+          <div className="flex items-center gap-4 mt-4 pt-4 border-t border-white/10 border-t-white/20 flex-wrap">
             {[
               { url: form.linkedinUrl,  icon: <Link2     className="w-4 h-4" />, label: 'LinkedIn'  },
               { url: form.githubUrl,    icon: <GitBranch className="w-4 h-4" />, label: 'GitHub'    },
@@ -227,7 +227,7 @@ export function CareersPortfolio() {
           )}
         </div>
 
-        <div className="border-t border-os-border pt-4 space-y-2">
+        <div className="border-t border-white/10 border-t-white/20 pt-4 space-y-2">
           <p className="text-xs font-semibold text-slate-500 mb-2">Add a work sample</p>
           <Input value={addTitle} onChange={e => setAddTitle(e.target.value)} placeholder="Project or article title" />
           <Input value={addUrl}   onChange={e => setAddUrl(e.target.value)}   placeholder="URL" />

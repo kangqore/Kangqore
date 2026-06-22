@@ -36,7 +36,7 @@ export const EQORE_SIGNALS: eQORESignal[] = [
 ]
 
 export const ACTIVITIES: LeadActivity[] = [
-  { id: 'a1',  leadId: 'l1', type: 'score-change', title: 'Score updated by eQORE',           description: 'Composite score increased after pricing page visit and email open.',               date: '2026-05-27', owner: 'KIMMP',        metadata: '76 → 84' },
+  { id: 'a1',  leadId: 'l1', type: 'score-change', title: 'Score updated by eQORE',           description: 'Composite score increased after pricing page visit and email open.',               date: '2026-05-27', owner: 'WAANDA',        metadata: '76 → 84' },
   { id: 'a2',  leadId: 'l1', type: 'meeting',       title: 'Solution demo — Marcus Reid',      description: 'Walked through portfolio management OS and AI capabilities. Very engaged.',        date: '2026-05-22', owner: 'Mahesh Kumar' },
   { id: 'a3',  leadId: 'l1', type: 'email',         title: 'Proposal sent',                    description: 'Sent SOW + commercial proposal for Phase 1 (investment portal + analytics).',     date: '2026-05-18', owner: 'Mahesh Kumar' },
   { id: 'a4',  leadId: 'l1', type: 'stage-change',  title: 'Moved to Proposal',                description: 'Discovery confirmed ICP fit. Moved from Qualified to Proposal.',                  date: '2026-05-05', owner: 'Mahesh Kumar', metadata: 'Qualified → Proposal' },

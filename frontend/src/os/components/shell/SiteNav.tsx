@@ -106,7 +106,7 @@ export function SiteNav() {
 
       {/* ── Main pill nav ── */}
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto mt-1">
-        <div className="backdrop-blur-[14px] rounded-full border border-black/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.07)] bg-os-s1/60 flex items-center justify-between h-16 lg:h-[4.5rem] px-5 lg:px-7">
+        <div className="backdrop-blur-[14px] rounded-full border border-black/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.07)] bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/60 flex items-center justify-between h-16 lg:h-[4.5rem] px-5 lg:px-7">
 
           {/* Logo */}
           <a href="/" className="flex items-center shrink-0 group">
@@ -118,7 +118,7 @@ export function SiteNav() {
           </a>
 
           {/* Nav links pill */}
-          <nav className="hidden lg:flex items-center gap-1 rounded-full px-4 py-1 bg-os-s1/80 border border-white/30 shadow-sm backdrop-blur-md">
+          <nav className="hidden lg:flex items-center gap-1 rounded-full px-4 py-1 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/80 border border-white/30 shadow-sm backdrop-blur-md">
             {NAV_ITEMS.map(item => (
               <div
                 key={item.id}
@@ -147,7 +147,7 @@ export function SiteNav() {
                 {/* Dropdown panel */}
                 {item.items && activeDropdown === item.id && (
                   <div
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-os-s1/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-5 min-w-[280px] pointer-events-auto"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-5 min-w-[280px] pointer-events-auto"
                     style={{ animation: 'siteNavFadeIn 0.2s cubic-bezier(0.16,1,0.3,1)' }}
                     onMouseEnter={() => setActiveDropdown(item.id)}
                     onMouseLeave={() => setActiveDropdown(null)}
@@ -181,7 +181,7 @@ export function SiteNav() {
             {/* Ask eQORE AI */}
             <a
               href="/eqore-ai"
-              className="group relative hidden lg:inline-flex items-center justify-center rounded-full px-5 py-2 overflow-hidden border border-white/20 shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_30px_rgba(37,100,234,0.3)] transition-all duration-300 hover:scale-[1.04]"
+              className="group relative hidden lg:inline-flex items-center justify-center rounded-full px-5 py-2 overflow-hidden border border-white/20 shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_30px_rgba(37,100,234,0.3)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.04]"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-[#1e3a8a] via-[#2564ea] to-[#06b6d4] animate-[gradientShift_4s_ease_infinite_alternate] bg-[length:200%_200%]" />
               <style>{`

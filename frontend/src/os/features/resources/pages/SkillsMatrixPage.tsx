@@ -88,8 +88,8 @@ export function SkillsMatrixPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard label="Total skills"      value={totalSkills}         icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
         <StatCard label="Avg per person"    value={avgSkillsPerPerson}  icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
-        <StatCard label="Single point risk" value={gapSkills}           icon={<AlertCircle  className="w-5 h-5" />} iconColor={gapSkills > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
-        <StatCard label="Team size"         value={team.length}         icon={<Circle       className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-300" />
+        <StatCard label="Single point risk" value={gapSkills}           icon={<AlertCircle  className="w-5 h-5" />} iconColor={gapSkills > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'} />
+        <StatCard label="Team size"         value={team.length}         icon={<Circle       className="w-5 h-5" />} iconColor="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300" />
       </div>
 
       {/* Skill gap alerts */}
@@ -120,7 +120,7 @@ export function SkillsMatrixPage() {
           <button
             onClick={() => setFilterSkill(null)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              !filterSkill ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
+              !filterSkill ? 'bg-os-blue text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-blue-300'
             }`}
           >
             All skills
@@ -130,7 +130,7 @@ export function SkillsMatrixPage() {
               key={skill}
               onClick={() => setFilterSkill(filterSkill === skill ? null : skill)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                filterSkill === skill ? 'bg-amber-500 text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-amber-300'
+                filterSkill === skill ? 'bg-amber-500 text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-amber-300'
               }`}
             >
               {skill}
@@ -150,13 +150,13 @@ export function SkillsMatrixPage() {
 
           return (
             <Card key={group.label} padding="none">
-              <div className="px-5 pt-4 pb-2 border-b border-os-border">
+              <div className="px-5 pt-4 pb-2 border-b border-white/10 border-t-white/20">
                 <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{group.label}</p>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-os-border">
+                    <tr className="border-b border-white/10 border-t-white/20">
                       <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-500 w-48">Person</th>
                       {activeSkills.map(skill => (
                         <th key={skill} className="px-3 py-2.5 text-center">
@@ -199,7 +199,7 @@ export function SkillsMatrixPage() {
                                 </div>
                               ) : (
                                 <div className="flex justify-center">
-                                  <div className="w-5 h-5 rounded-full bg-os-s1" />
+                                  <div className="w-5 h-5 rounded-full bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10" />
                                 </div>
                               )}
                             </td>

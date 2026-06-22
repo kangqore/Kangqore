@@ -44,20 +44,20 @@ export function TasksPage() {
           <span className="px-3 py-1.5 rounded-xl bg-os-blue/5 text-os-blue font-semibold border border-os-blue/15">{activeTasks} active</span>
           {inReview > 0 && <span className="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 font-semibold border border-amber-200">{inReview} in review</span>}
           {overdue  > 0 && <span className="px-3 py-1.5 rounded-xl bg-red-50 text-red-700 font-semibold border border-red-200">{overdue} overdue</span>}
-          <span className="px-3 py-1.5 rounded-xl bg-slate-900 text-slate-300 font-semibold border border-os-border">₹{(totalFees/1000).toFixed(0)}k committed</span>
+          <span className="px-3 py-1.5 rounded-xl bg-slate-900 text-slate-300 font-semibold border border-white/10 border-t-white/20">₹{(totalFees/1000).toFixed(0)}k committed</span>
         </div>
       </div>
 
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
         <select value={partnerFilter} onChange={e => setPartner(e.target.value)}
-          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
+          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
           <option value="all">All Partners</option>
           {partners.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
         <div className="flex items-center gap-2">
           {(['all','assigned','in-progress','review','completed','overdue'] as const).map(s => (
-            <button key={s} onClick={() => setStatus(s)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusFilter === s ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-os-blue/40'}`}>
+            <button key={s} onClick={() => setStatus(s)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusFilter === s ? 'bg-os-blue text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-os-blue/40'}`}>
               {s === 'all' ? 'All' : s.replace('-',' ')}
             </button>
           ))}
@@ -75,11 +75,11 @@ export function TasksPage() {
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2 h-2 rounded-full" style={{ background: col.color }} />
                   <span className="text-xs font-semibold text-slate-500">{col.label}</span>
-                  <span className="ml-auto text-xs font-bold text-slate-300 bg-os-s1 rounded-full w-5 h-5 flex items-center justify-center">{colTasks.length}</span>
+                  <span className="ml-auto text-xs font-bold text-slate-300 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full w-5 h-5 flex items-center justify-center">{colTasks.length}</span>
                 </div>
                 <div className="space-y-2 min-h-[80px]">
                   {colTasks.map(task => (
-                    <div key={task.id} className="bg-os-s1 rounded-xl border border-os-border p-3 shadow-sm">
+                    <div key={task.id} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-xl border border-white/10 border-t-white/20 p-3 shadow-sm">
                       <div className="flex items-center gap-1.5 mb-1.5">
                         <Flag className={cn('w-3 h-3', PRIORITY_COLOR[task.priority])} />
                         <span className="text-[10px] text-slate-500 font-mono truncate">{task.projectName}</span>
@@ -91,7 +91,7 @@ export function TasksPage() {
                       </div>
                     </div>
                   ))}
-                  {colTasks.length === 0 && <div className="h-16 rounded-xl border-2 border-dashed border-os-border flex items-center justify-center text-xs text-slate-300">Empty</div>}
+                  {colTasks.length === 0 && <div className="h-16 rounded-xl border-2 border-dashed border-white/10 border-t-white/20 flex items-center justify-center text-xs text-slate-300">Empty</div>}
                 </div>
               </div>
             )

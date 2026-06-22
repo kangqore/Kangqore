@@ -57,7 +57,7 @@ export function BudgetTracker() {
         ].map(c => (
           <div key={c.label} className={`${c.color} rounded-2xl p-4`}>
             <p className="text-xs font-semibold opacity-85 mb-1">{c.label}</p>
-            <p className="text-2xl font-bold">{c.value}</p>
+            <p className="text-2xl font-bold tracking-tight">{c.value}</p>
           </div>
         ))}
       </div>
@@ -112,7 +112,7 @@ export function BudgetTracker() {
             key={c}
             onClick={() => setCat(c)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              catFilter === c ? 'bg-blue-600 text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
+              catFilter === c ? 'bg-blue-600 text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-blue-300'
             }`}
           >
             {c === 'all' ? 'All Categories' : c}
@@ -128,7 +128,7 @@ export function BudgetTracker() {
         </CardHeader>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-os-border bg-slate-900">
+            <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
               {['Category', 'Department', 'Description', 'Allocated', 'Spent', 'Committed', 'Remaining', 'Status'].map(h => (
                 <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}

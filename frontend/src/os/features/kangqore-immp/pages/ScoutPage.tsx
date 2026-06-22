@@ -70,9 +70,9 @@ function SourceCard({ source, onRun, running }: { source: ScoutSource; onRun: (n
   const slug = source.name.toLowerCase().replace(/\s+/g, '-')
 
   return (
-    <div className={`bg-os-s1 border border-os-border border-l-4 ${CATEGORY_BORDER[source.signalCategory]} rounded-xl p-4 shadow-sm flex flex-col gap-3`}>
+    <div className={`bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 border-l-4 ${CATEGORY_BORDER[source.signalCategory]} rounded-xl p-4 shadow-sm flex flex-col gap-3`}>
       <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0">
           <Icon className="w-4 h-4 text-slate-500" />
         </div>
         <div className="flex-1 min-w-0">
@@ -108,7 +108,7 @@ function SourceCard({ source, onRun, running }: { source: ScoutSource; onRun: (n
 
 function JobRow({ job }: { job: ScoutJob }) {
   return (
-    <div className="flex items-center gap-3 py-2.5 px-4 border-b border-os-border last:border-0 hover:bg-slate-900 transition-colors">
+    <div className="flex items-center gap-3 py-2.5 px-4 border-b border-white/10 border-t-white/20 last:border-0 hover:bg-slate-900 transition-colors">
       {job.status === 'COMPLETED'
         ? <CheckCircle2 className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
         : <XCircle      className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
@@ -203,12 +203,12 @@ export function ScoutPage() {
           { label: 'Jobs (Recent 30)',  value: completedJobs,  color: 'text-green-600 bg-green-50' },
           { label: 'Signals Emitted',   value: totalSignals,   color: 'text-purple-600 bg-purple-50' },
         ].map(s => (
-          <div key={s.label} className="bg-os-s1 border border-os-border rounded-xl p-4 flex items-center gap-3 shadow-sm">
+          <div key={s.label} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-4 flex items-center gap-3 shadow-sm">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${s.color}`}>
               <Satellite className="w-4.5 h-4.5" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{s.value}</p>
+              <p className="text-2xl font-bold tracking-tight text-white">{s.value}</p>
               <p className="text-xs text-slate-500">{s.label}</p>
             </div>
           </div>
@@ -248,12 +248,12 @@ export function ScoutPage() {
           {loadingJobs && <Spinner size="sm" />}
           <button
             onClick={() => refetchJobs()}
-            className="ml-auto w-7 h-7 rounded-lg flex items-center justify-center text-slate-300 hover:bg-os-s1 hover:text-slate-300 transition-colors"
+            className="ml-auto w-7 h-7 rounded-lg flex items-center justify-center text-slate-300 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:text-slate-300 transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
         </div>
-        <div className="bg-os-s1 border border-os-border rounded-xl overflow-hidden shadow-sm">
+        <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl overflow-hidden shadow-sm">
           {jobs.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <Satellite className="w-8 h-8 text-slate-200 mb-3" />

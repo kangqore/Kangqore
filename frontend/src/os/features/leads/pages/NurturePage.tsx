@@ -12,7 +12,7 @@ const STEP_ICON: Record<string, React.ElementType> = {
 }
 const STEP_COLOR: Record<string, string> = {
   email: 'bg-blue-100 text-blue-600', call: 'bg-green-100 text-green-600',
-  linkedin: 'bg-os-blue/10 text-os-blue', wait: 'bg-os-s1 text-slate-300',
+  linkedin: 'bg-os-blue/10 text-os-blue', wait: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300',
 }
 
 export function NurturePage() {
@@ -32,7 +32,7 @@ export function NurturePage() {
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-green-50 text-green-700 border border-green-200">{active} active</span>
           <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200">{paused} paused</span>
-          <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-900 text-slate-300 border border-os-border">{completed} completed</span>
+          <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-900 text-slate-300 border border-white/10 border-t-white/20">{completed} completed</span>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export function NurturePage() {
               </div>
 
               {/* Progress bar */}
-              <div className="w-full h-1.5 bg-os-s1 rounded-full overflow-hidden mb-4">
+              <div className="w-full h-1.5 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full overflow-hidden mb-4">
                 <div
                   className="h-full rounded-full transition-all duration-500"
                   style={{
@@ -90,7 +90,7 @@ export function NurturePage() {
                       </div>
 
                       {/* Step icon */}
-                      <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 ${step.completed ? 'bg-os-s1 text-slate-300' : STEP_COLOR[step.type]}`}>
+                      <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 ${step.completed ? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300' : STEP_COLOR[step.type]}`}>
                         <Icon className="w-3 h-3" />
                       </div>
 
@@ -115,7 +115,7 @@ export function NurturePage() {
               </div>
 
               {/* Footer */}
-              <div className="mt-4 pt-3 border-t border-os-border flex items-center justify-between text-xs text-slate-500">
+              <div className="mt-4 pt-3 border-t border-white/10 border-t-white/20 flex items-center justify-between text-xs text-slate-500">
                 <span>Enrolled {new Date(seq.enrolledDate).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
                 {seq.status === 'active' && (
                   <span className="text-os-blue font-semibold">
@@ -139,7 +139,7 @@ export function NurturePage() {
           {leads
             .filter(l => !['won','lost'].includes(l.stage) && !nurtureSequences.some(n => n.leadId === l.id && n.status === 'active'))
             .map(lead => (
-              <div key={lead.id} className="flex items-center gap-3 py-2 border-b border-os-border last:border-0">
+              <div key={lead.id} className="flex items-center gap-3 py-2 border-b border-white/10 border-t-white/20 last:border-0">
                 <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
                   <span className="text-white text-[10px] font-bold">{lead.company.slice(0,2)}</span>
                 </div>

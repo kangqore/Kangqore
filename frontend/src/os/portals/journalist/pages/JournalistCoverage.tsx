@@ -60,14 +60,14 @@ export function JournalistCoverage() {
   return (
     <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Press Coverage</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-white">Press Coverage</h1>
         <p className="text-slate-500 mt-1 text-sm">Recent press coverage and media appearances for Kangqore. H1 2026.</p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         {STATS.map(({ label, value, icon: Icon }) => (
-          <div key={label} className="p-4 rounded-2xl border border-os-border bg-os-s1 text-center">
+          <div key={label} className="p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-center">
             <Icon className="w-5 h-5 text-pink-400 mx-auto mb-2" />
             <p className="text-2xl font-extrabold text-white">{value}</p>
             <p className="text-xs text-slate-500 mt-0.5">{label}</p>
@@ -80,7 +80,7 @@ export function JournalistCoverage() {
         <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Recent Coverage</h2>
         <div className="space-y-3">
           {COVERAGE.map(({ id, pub, tier, date, headline, excerpt, url }) => (
-            <div key={id} className="p-4 rounded-2xl border border-os-border bg-os-s1 hover:bg-os-s2 transition-colors group">
+            <div key={id} className="p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 transition-colors group">
               <div className="flex items-start justify-between gap-3 mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-bold text-white">{pub}</span>

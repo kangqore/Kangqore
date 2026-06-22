@@ -1,40 +1,51 @@
 import { create } from 'zustand'
-import { PARTNERS, PARTNER_TASKS, DELIVERABLES, PAYMENTS, NOTES } from './data'
 import type { Partner, PartnerTask, Deliverable, PartnerPayment, PartnerNote } from './types'
 
 interface PartnersStore {
-  partners:     typeof PARTNERS
-  tasks:        typeof PARTNER_TASKS
-  deliverables: typeof DELIVERABLES
-  payments:     typeof PAYMENTS
-  notes:        typeof NOTES
+  partners:     Partner[]
+  tasks:        PartnerTask[]
+  deliverables: Deliverable[]
+  payments:     PartnerPayment[]
+  notes:        PartnerNote[]
   selectedId:   string
-  setSelected:         (id: string)           => void
-  hydratePartners:     (p: Partner[])         => void
-  hydrateTasks:        (rows: PartnerTask[])  => void
-  hydrateDeliverables: (rows: Deliverable[])  => void
+  isLoading:    boolean
+  setSelected:         (id: string)             => void
+  hydratePartners:     (p: Partner[])           => void
+  hydrateTasks:        (rows: PartnerTask[])    => void
+  hydrateDeliverables: (rows: Deliverable[])    => void
   hydratePayments:     (rows: PartnerPayment[]) => void
-  hydrateNotes:        (rows: PartnerNote[])  => void
-  partnerTasks:        (id: string) => typeof PARTNER_TASKS
-  partnerDeliverables: (id: string) => typeof DELIVERABLES
-  partnerPayments:     (id: string) => typeof PAYMENTS
-  partnerNotes:        (id: string) => typeof NOTES
+  hydrateNotes:        (rows: PartnerNote[])    => void
+  updatePartner:       (id: string, patch: Partial<Partner>) => void
+  partnerTasks:        (id: string) => PartnerTask[]
+  partnerDeliverables: (id: string) => Deliverable[]
+  partnerPayments:     (id: string) => PartnerPayment[]
+  partnerNotes:        (id: string) => PartnerNote[]
 }
 
 export const usePartnersStore = create<PartnersStore>((set, get) => ({
-  partners:     PARTNERS,
-  tasks:        PARTNER_TASKS,
-  deliverables: DELIVERABLES,
-  payments:     PAYMENTS,
-  notes:        NOTES,
-  selectedId:   'pt1',
+  partners:     [],
+  tasks:        [],
+  deliverables: [],
+  payments:     [],
+  notes:        [],
+  selectedId:   '',
+  isLoading:    true,
 
-  setSelected:         (id)    => set({ selectedId: id }),
-  hydratePartners:     (p)     => set({ partners: p, selectedId: p[0]?.id ?? 'pt1' }),
+  setSelected: (id) => set({ selectedId: id }),
+
+  hydratePartners: (partners) => set(s => ({
+    partners,
+    isLoading: false,
+    selectedId: s.selectedId || partners[0]?.id || '',
+  })),
+
   hydrateTasks:        (tasks)        => set({ tasks }),
   hydrateDeliverables: (deliverables) => set({ deliverables }),
   hydratePayments:     (payments)     => set({ payments }),
   hydrateNotes:        (notes)        => set({ notes }),
+
+  updatePartner: (id, patch) =>
+    set(s => ({ partners: s.partners.map(p => p.id === id ? { ...p, ...patch } : p) })),
 
   partnerTasks:        (id) => get().tasks.filter(t => t.partnerId === id),
   partnerDeliverables: (id) => get().deliverables.filter(d => d.partnerId === id),

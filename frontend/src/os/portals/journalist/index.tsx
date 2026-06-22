@@ -12,9 +12,11 @@ const TABS = [
   { path: 'coverage', label: 'Coverage',  icon: ExternalLink },
 ]
 
+import { AmbientBackground } from '../../components/shell/AmbientBackground'
+
 export function JournalistPortal() {
   return (
-    <div className="flex flex-col h-screen bg-os-s1 pt-[7.5rem]">
+    <div className="flex flex-col h-screen bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 pt-[7.5rem]">
       <PortalNavbar
         portalName="Press Portal"
         portalColor="bg-gradient-to-br from-[#be185d] to-[#f472b6]"

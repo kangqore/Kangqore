@@ -58,7 +58,7 @@ export function CapacityPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-os-border bg-slate-900">
+              <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-52">Person</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-32">Capacity</th>
                 {WEEKS.map(w => (
@@ -131,7 +131,7 @@ export function CapacityPage() {
           return (
             <Card key={dept} className="text-center">
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{dept}</p>
-              <p className="text-2xl font-bold text-white mb-3">{avgUtil}%</p>
+              <p className="text-2xl font-bold tracking-tight text-white mb-3">{avgUtil}%</p>
               <Progress value={avgUtil} size="sm" color={avgUtil >= 95 ? 'danger' : avgUtil >= 80 ? 'warning' : 'success'} />
               <p className="text-xs text-slate-500 mt-2">{members.length} member{members.length !== 1 ? 's' : ''}</p>
             </Card>

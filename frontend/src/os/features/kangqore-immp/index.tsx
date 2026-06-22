@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import {
   Brain, TrendingUp, BookOpen, Satellite, Bell, Activity,
-  Search, Target, FileText, UserCheck, CheckSquare, GitBranch, Server,
+  Search, Target, FileText, UserCheck, CheckSquare,
 } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { getSocket } from '@lib/socket'
@@ -19,8 +19,6 @@ import { GoalsPage }    from './pages/GoalsPage'
 import { ReportsPage }  from './pages/ReportsPage'
 import { BehaviorPage } from './pages/BehaviorPage'
 import { ActionsPage }   from './pages/ActionsPage'
-import { AgentLogsPage } from './pages/AgentLogsPage'
-import { SystemsPage }   from './pages/SystemsPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -37,8 +35,6 @@ const TABS = [
   { path: 'reports',   end: false, label: 'Reports',      icon: FileText    },
   { path: 'behavior',  end: false, label: 'Behavior',     icon: UserCheck   },
   { path: 'actions',    end: false, label: 'Actions',     icon: CheckSquare },
-  { path: 'agent-logs', end: false, label: 'Agent Logs',  icon: GitBranch   },
-  { path: 'systems',    end: false, label: 'Systems',     icon: Server      },
 ]
 
 function useKIMMPSocket() {
@@ -116,7 +112,7 @@ export function KIMMMModule() {
   return (
     <div>
       {/* Scrollable tab bar */}
-      <div className="flex items-center gap-0.5 border-b border-os-border mb-6 -mt-2 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-0.5 border-b border-white/10 border-t-white/20 mb-6 -mt-2 overflow-x-auto scrollbar-none">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -126,7 +122,7 @@ export function KIMMMModule() {
               'flex items-center gap-1.5 px-3.5 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
               isActive
                 ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -150,8 +146,6 @@ export function KIMMMModule() {
           <Route path="reports"       element={<ReportsPage />}  />
           <Route path="behavior"      element={<BehaviorPage />} />
           <Route path="actions"       element={<ActionsPage />}    />
-          <Route path="agent-logs"    element={<AgentLogsPage />} />
-          <Route path="systems"       element={<SystemsPage />} />
           <Route path="*"             element={<Navigate to={BASE} replace />} />
         </Routes>
         </motion.div>

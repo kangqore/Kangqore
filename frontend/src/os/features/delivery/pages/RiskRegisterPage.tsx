@@ -205,7 +205,7 @@ function RiskDrawer({
         {risk.clientAcceptedBy && (
           <>
             <Divider />
-            <div className="p-3 bg-os-s1 border-l-4 border-l-[#00c875] border-y border-r border-os-border rounded-xl">
+            <div className="p-3 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-l-4 border-l-[#00c875] border-y border-r border-white/10 border-t-white/20 rounded-xl">
               <p className="text-xs text-slate-750 font-semibold">
                 Accepted by {risk.clientAcceptedBy}
                 {risk.clientAcceptedAt && ` on ${new Date(risk.clientAcceptedAt).toLocaleDateString('en-GB')}`}
@@ -261,7 +261,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Severity</label>
             <select value={form.severity} onChange={e => set('severity', e.target.value)}
-              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as RiskSeverity[]).map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
@@ -270,7 +270,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Probability</label>
             <select value={form.probability} onChange={e => set('probability', e.target.value)}
-              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as RiskProbability[]).map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
@@ -279,7 +279,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Impact</label>
             <select value={form.impact} onChange={e => set('impact', e.target.value)}
-              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as RiskImpact[]).map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
@@ -288,7 +288,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5">Trend</label>
             <select value={form.trend} onChange={e => set('trend', e.target.value)}
-              className="w-full border border-os-border rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               <option value="STABLE">Stable</option>
               <option value="INCREASING">Increasing</option>
               <option value="DECREASING">Decreasing</option>
@@ -454,9 +454,9 @@ export function RiskRegisterPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"     value={risks.length}         icon={<Shield       className="w-5 h-5" />} iconColor="bg-os-s1 text-slate-300"     />
-        <StatCard label="Open"      value={byStatus('OPEN')}     icon={<AlertTriangle className="w-5 h-5" />} iconColor={byStatus('OPEN') > 0 ? 'bg-red-100 text-red-600' : 'bg-os-s1 text-slate-300'}      />
-        <StatCard label="Escalated" value={escalated}            icon={<ArrowUpCircle className="w-5 h-5" />} iconColor={escalated > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
+        <StatCard label="Total"     value={risks.length}         icon={<Shield       className="w-5 h-5" />} iconColor="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300"     />
+        <StatCard label="Open"      value={byStatus('OPEN')}     icon={<AlertTriangle className="w-5 h-5" />} iconColor={byStatus('OPEN') > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'}      />
+        <StatCard label="Escalated" value={escalated}            icon={<ArrowUpCircle className="w-5 h-5" />} iconColor={escalated > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'} />
         <StatCard label="Mitigated" value={byStatus('MITIGATED')}icon={<Shield       className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"        />
         <StatCard label="Accepted"  value={byStatus('ACCEPTED')} icon={<Shield       className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"      />
       </div>
@@ -481,7 +481,7 @@ export function RiskRegisterPage() {
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                 statusFilter === s
                   ? 'bg-os-blue text-white'
-                  : 'bg-os-s1 border border-os-border text-slate-300 hover:border-blue-300'
+                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-blue-300'
               }`}
             >
               {s === 'ALL' ? 'All' : s.charAt(0) + s.slice(1).toLowerCase()}
@@ -495,7 +495,7 @@ export function RiskRegisterPage() {
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-os-border bg-slate-900">
+            <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
               {['Risk', 'Project', 'P×I Score', 'Severity', 'Trend', 'Owner', 'Status', ''].map(h => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}

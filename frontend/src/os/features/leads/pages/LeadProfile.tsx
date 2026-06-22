@@ -23,7 +23,7 @@ const ACTIVITY_ICON: Record<ActivityType, React.ElementType> = {
 const ACTIVITY_COLOR: Record<ActivityType, string> = {
   email: 'bg-blue-100 text-blue-600', call: 'bg-green-100 text-green-600',
   meeting: 'bg-violet-100 text-violet-600', note: 'bg-amber-100 text-amber-600',
-  'score-change': 'bg-os-blue/10 text-os-blue', 'stage-change': 'bg-os-s1 text-slate-300',
+  'score-change': 'bg-os-blue/10 text-os-blue', 'stage-change': 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300',
 }
 const SOURCE_VARIANT = {
   eQORE: 'brand', inbound: 'success', outbound: 'neutral',
@@ -47,7 +47,7 @@ export function LeadProfile() {
           Pipeline
         </Button>
         <select value={selectedId} onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
+          className="ml-auto h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
           {leads.map(l => <option key={l.id} value={l.id}>{l.company}</option>)}
         </select>
       </div>
@@ -74,7 +74,7 @@ export function LeadProfile() {
           </div>
           <div className="flex flex-col items-end gap-2">
             <div className="text-right">
-              <p className="text-2xl font-bold text-white">₹{(lead.value/1000).toFixed(0)}k</p>
+              <p className="text-2xl font-bold tracking-tight text-white">₹{(lead.value/1000).toFixed(0)}k</p>
               <p className="text-xs text-slate-500">deal value</p>
             </div>
             <div className="flex items-center gap-2">
@@ -105,7 +105,7 @@ export function LeadProfile() {
                     isActive  ? `${STAGE_COLOR[s]} text-white scale-110` :
                     isPast    ? 'bg-green-100 text-green-600' :
                     isLost    ? 'bg-red-50 text-red-300' :
-                    'bg-os-s1 text-slate-300'
+                    'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'
                   )}>
                     {i + 1}
                   </div>
@@ -139,7 +139,7 @@ export function LeadProfile() {
               </div>
               <CardTitle>eQORE Score Breakdown</CardTitle>
             </div>
-            <span className="text-2xl font-bold text-white">{lead.score}</span>
+            <span className="text-2xl font-bold tracking-tight text-white">{lead.score}</span>
           </CardHeader>
           {signals.length > 0 ? (
             <div className="space-y-3">
@@ -151,7 +151,7 @@ export function LeadProfile() {
                         sig.category === 'intent'       ? 'bg-red-50 text-red-600' :
                         sig.category === 'fit'          ? 'bg-os-blue/8 text-os-blue' :
                         sig.category === 'engagement'   ? 'bg-green-50 text-green-600' :
-                        'bg-os-s1 text-slate-300'
+                        'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'
                       }`}>{sig.category}</span>
                       <span className="text-xs text-slate-300 font-medium">{sig.signal}</span>
                     </div>

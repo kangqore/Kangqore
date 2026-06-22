@@ -97,10 +97,10 @@ export function CareersDocuments() {
                     </div>
                     {!locked && (
                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-1.5 rounded-lg hover:bg-os-s1 text-slate-500 hover:text-slate-500">
+                        <button className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500 hover:text-slate-500">
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="p-1.5 rounded-lg hover:bg-os-s1 text-slate-500 hover:text-slate-500">
+                        <button className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500 hover:text-slate-500">
                           <Download className="w-4 h-4" />
                         </button>
                       </div>

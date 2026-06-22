@@ -58,9 +58,9 @@ export function BurnRatePage() {
           { label: 'Cash Runway',       value: `${runway} months`,   text: 'text-blue-600' },
           { label: 'Months of Data',    value: `${months}`,          text: 'text-slate-300' },
         ].map(c => (
-          <Card key={c.label} className="hover:border-os-border/80 transition-all duration-200">
+          <Card key={c.label} className="hover:border-white/10 border-t-white/20/80 transition-all duration-200">
             <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">{c.label}</p>
-            <p className="text-2xl font-bold text-slate-200">{c.value}</p>
+            <p className="text-2xl font-bold tracking-tight text-slate-200">{c.value}</p>
           </Card>
         ))}
       </div>

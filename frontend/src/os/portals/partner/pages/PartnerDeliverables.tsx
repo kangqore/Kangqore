@@ -49,7 +49,7 @@ export function PartnerDeliverables() {
 
       <div className="grid grid-cols-3 gap-3">
         <StatCard label="In Progress" value={inProgress} icon={<Clock        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
-        <StatCard label="In Review"   value={inReview}   icon={<AlertTriangle className="w-5 h-5" />} iconColor={inReview > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-500'} />
+        <StatCard label="In Review"   value={inReview}   icon={<AlertTriangle className="w-5 h-5" />} iconColor={inReview > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500'} />
         <StatCard label="Accepted"    value={accepted}   icon={<CheckCircle2  className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
       </div>
 
@@ -57,7 +57,7 @@ export function PartnerDeliverables() {
         {(['ALL','IN_PROGRESS','REVIEW','SUBMITTED','ACCEPTED'] as Filter[]).map(f => (
           <button key={f} onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-              filter === f ? 'bg-os-success text-white' : 'bg-os-s1 border border-os-border text-slate-500 hover:border-green-300'
+              filter === f ? 'bg-os-success text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-500 hover:border-green-300'
             }`}>
             {f === 'ALL' ? 'All' : STATUS_CONFIG[f]?.label ?? f}
           </button>

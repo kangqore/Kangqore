@@ -53,7 +53,7 @@ function MeetingCard({ m }: { m: Meeting }) {
     <Card className="hover:shadow-md transition-all duration-200">
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0 text-center w-14">
-          <div className="text-2xl font-bold text-[#7c3aed] leading-none">{new Date(m.startTime).getDate()}</div>
+          <div className="text-2xl font-bold tracking-tight text-[#7c3aed] leading-none">{new Date(m.startTime).getDate()}</div>
           <div className="text-xs text-slate-500 uppercase">{new Date(m.startTime).toLocaleDateString('en-GB', { month: 'short' })}</div>
         </div>
         <div className="flex-1 min-w-0">
@@ -112,7 +112,7 @@ export function InvestorMeetings() {
       <div>
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Upcoming</p>
         {upcoming.length === 0
-          ? <p className="text-sm text-slate-500 text-center py-6 border border-dashed border-os-border rounded-xl">No upcoming meetings scheduled.</p>
+          ? <p className="text-sm text-slate-500 text-center py-6 border border-dashed border-white/10 border-t-white/20 rounded-xl">No upcoming meetings scheduled.</p>
           : <div className="space-y-3">{upcoming.map(m => <MeetingCard key={m.id} m={m} />)}</div>
         }
       </div>

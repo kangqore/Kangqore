@@ -129,7 +129,7 @@ export function InvestorsOverview() {
               .slice(0, 6)
               .map(inv => (
                 <div key={inv.id} className="flex items-center gap-4 px-5 py-3.5">
-                  <div className="w-8 h-8 rounded-lg bg-os-s1 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0">
                     {inv.status === 'committed'
                       ? <CheckCircle2 className="w-4 h-4 text-green-500" />
                       : <Clock className="w-4 h-4 text-slate-500" />

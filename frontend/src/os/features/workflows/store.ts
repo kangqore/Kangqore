@@ -1,11 +1,11 @@
 import { create } from 'zustand'
-import { WORKFLOWS, WORKFLOW_RUNS } from './data'
 import type { Workflow, WorkflowRun } from './types'
 
 interface WorkflowsStore {
-  workflows:  typeof WORKFLOWS
-  runs:       typeof WORKFLOW_RUNS
+  workflows:  Workflow[]
+  runs:       WorkflowRun[]
   selectedId: string
+  isLoading:  boolean
   setSelected:       (id: string)          => void
   hydrateWorkflows:  (wf: Workflow[])      => void
   hydrateRuns:       (runs: WorkflowRun[]) => void
@@ -15,12 +15,13 @@ interface WorkflowsStore {
 }
 
 export const useWorkflowsStore = create<WorkflowsStore>((set, get) => ({
-  workflows:  WORKFLOWS,
-  runs:       WORKFLOW_RUNS,
-  selectedId: 'wf1',
+  workflows:  [],
+  runs:       [],
+  selectedId: '',
+  isLoading:  true,
 
   setSelected:      (id)    => set({ selectedId: id }),
-  hydrateWorkflows: (wf)    => set({ workflows: wf, selectedId: wf[0]?.id ?? 'wf1' }),
+  hydrateWorkflows: (wf)    => set({ workflows: wf, isLoading: false, selectedId: wf[0]?.id ?? '' }),
   hydrateRuns:      (runs)  => set({ runs }),
 
   totalRuns:   () => get().workflows.reduce((s, w) => s + w.runsTotal, 0),

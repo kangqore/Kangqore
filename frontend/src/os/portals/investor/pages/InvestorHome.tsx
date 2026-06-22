@@ -109,7 +109,7 @@ export function InvestorHome() {
         ].map(s => (
           <div key={s.label} className={`rounded-xl border border-white/60 p-6 ${s.bg}`}>
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">{s.label}</p>
-            <p className={`text-3xl font-bold ${s.text}`}>{s.value}</p>
+            <p className={`text-3xl font-bold tracking-tight ${s.text}`}>{s.value}</p>
             <p className="text-xs text-slate-500 mt-1.5">{s.sub}</p>
           </div>
         ))}
@@ -156,7 +156,7 @@ export function InvestorHome() {
                 { label: 'Round',     value: 'Seed' },
                 { label: 'Share class', value: 'Series A Preferred' },
               ].map(item => (
-                <div key={item.label} className="flex justify-between text-sm border-b border-os-border pb-2 last:border-0 last:pb-0">
+                <div key={item.label} className="flex justify-between text-sm border-b border-white/10 border-t-white/20 pb-2 last:border-0 last:pb-0">
                   <span className="text-slate-500">{item.label}</span>
                   <span className="font-semibold text-white">{item.value}</span>
                 </div>

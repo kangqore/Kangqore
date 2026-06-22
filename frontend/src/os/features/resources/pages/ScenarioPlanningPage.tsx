@@ -121,7 +121,7 @@ export function ScenarioPlanningPage() {
               <button
                 key={p.label}
                 onClick={() => applyPreset(p)}
-                className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-os-s1 text-slate-300 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 hover:bg-blue-50 hover:text-blue-700 transition-colors"
               >
                 {p.label}
               </button>
@@ -165,7 +165,7 @@ export function ScenarioPlanningPage() {
                   'px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all',
                   cfg.skills.includes(skill)
                     ? 'bg-os-blue text-white border-os-blue'
-                    : 'bg-os-s1 text-slate-300 border-os-border hover:border-blue-300'
+                    : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border-white/10 border-t-white/20 hover:border-blue-300'
                 )}
               >
                 {skill}
@@ -180,23 +180,23 @@ export function ScenarioPlanningPage() {
         {/* Summary */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <Card className="text-center py-4">
-            <div className={cn('text-2xl font-bold', coveragePct >= 80 ? 'text-green-600' : coveragePct >= 50 ? 'text-amber-600' : 'text-red-600')}>
+            <div className={cn('text-2xl font-bold tracking-tight', coveragePct >= 80 ? 'text-green-600' : coveragePct >= 50 ? 'text-amber-600' : 'text-red-600')}>
               {coveragePct}%
             </div>
             <div className="text-xs text-slate-500 mt-0.5">Capacity coverage</div>
           </Card>
           <Card className="text-center py-4">
-            <div className="text-2xl font-bold text-os-blue">{viable.length}</div>
+            <div className="text-2xl font-bold tracking-tight text-os-blue">{viable.length}</div>
             <div className="text-xs text-slate-500 mt-0.5">Viable contributors</div>
           </Card>
           <Card className="text-center py-4">
-            <div className={cn('text-2xl font-bold', uncoveredSkills.length > 0 ? 'text-red-600' : 'text-green-600')}>
+            <div className={cn('text-2xl font-bold tracking-tight', uncoveredSkills.length > 0 ? 'text-red-600' : 'text-green-600')}>
               {uncoveredSkills.length}
             </div>
             <div className="text-xs text-slate-500 mt-0.5">Skill gaps</div>
           </Card>
           <Card className="text-center py-4">
-            <div className="text-2xl font-bold text-slate-300">
+            <div className="text-2xl font-bold tracking-tight text-slate-300">
               ₹{Math.round(viable.reduce((s, r) => s + r.canContribute * r.member.billableRate, 0) / 1000)}k
             </div>
             <div className="text-xs text-slate-500 mt-0.5">Est. cost / week</div>
@@ -240,7 +240,7 @@ export function ScenarioPlanningPage() {
 
         {/* Per-person breakdown */}
         <Card padding="none">
-          <div className="px-5 py-4 border-b border-os-border">
+          <div className="px-5 py-4 border-b border-white/10 border-t-white/20">
             <p className="text-sm font-semibold text-slate-300">Team capacity breakdown</p>
             <p className="text-xs text-slate-500 mt-0.5">Sorted by viability — skill match + available hours</p>
           </div>

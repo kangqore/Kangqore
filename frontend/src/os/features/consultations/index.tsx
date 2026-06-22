@@ -46,7 +46,7 @@ export function ConsultationsModule() {
   })
 
   useEffect(() => {
-    if (data?.length) hydrate(data.map(toConsultation))
+    if (data !== undefined) hydrate(data.map(toConsultation))
   }, [data, hydrate])
 
   const { pathname } = useLocation()

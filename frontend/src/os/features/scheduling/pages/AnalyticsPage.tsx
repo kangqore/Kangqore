@@ -57,7 +57,7 @@ export function AnalyticsPage() {
     <div className="space-y-6">
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-1 bg-os-s1 rounded-xl p-1">
+        <div className="flex items-center gap-1 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-xl p-1">
           {RANGES.map(r => (
             <button
               key={r.days}
@@ -71,7 +71,7 @@ export function AnalyticsPage() {
         <select
           value={eventTypeId}
           onChange={e => setEventTypeId(e.target.value)}
-          className="h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
         >
           <option value="">All event types</option>
           {eventTypes.map(et => <option key={et.id} value={et.id}>{et.name}</option>)}
@@ -127,7 +127,7 @@ export function AnalyticsPage() {
                           <span className="text-slate-300">{et.name}</span>
                           <span className="text-slate-500">{et.value} ({pct}%)</span>
                         </div>
-                        <div className="h-1.5 bg-os-s1 rounded-full overflow-hidden">
+                        <div className="h-1.5 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full overflow-hidden">
                           <div className="h-full bg-os-blue rounded-full" style={{ width: `${pct}%` }} />
                         </div>
                       </div>

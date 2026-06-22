@@ -1,9 +1,21 @@
+import { useState } from 'react'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
 import { Avatar } from '@design-system/components/Avatar'
+import { Plus, Truck } from 'lucide-react'
+import { InlineSelect } from '@components/InlineSelect'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '@lib/api'
 import { useClientsStore } from '../store'
 import type { MilestoneStatus } from '../types'
+
+const MS_STATUS_OPTIONS = [
+  { value: 'upcoming',    label: 'Upcoming',    variant: 'neutral' as const },
+  { value: 'in-progress', label: 'In Progress', variant: 'info'    as const },
+  { value: 'completed',   label: 'Completed',   variant: 'success' as const },
+  { value: 'delayed',     label: 'Delayed',     variant: 'danger'  as const },
+]
 
 const STATUS_COLOR: Record<MilestoneStatus, string> = {
   completed:   'bg-green-500',
@@ -11,12 +23,81 @@ const STATUS_COLOR: Record<MilestoneStatus, string> = {
   upcoming:    'bg-slate-300',
   delayed:     'bg-red-500',
 }
-const STATUS_VARIANT: Record<MilestoneStatus, 'success'|'info'|'neutral'|'danger'> = {
-  completed: 'success', 'in-progress': 'info', upcoming: 'neutral', delayed: 'danger',
+const inputStyle = { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)' }
+const inputClass = 'w-full rounded-lg px-3 py-2 text-[13px] text-slate-200 placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
+
+function AddMilestoneModal({ clients, onClose }: { clients: { id: string; name: string }[]; onClose: () => void }) {
+  const qc = useQueryClient()
+  const [form, setForm] = useState({ clientId: '', title: '', description: '', dueDate: '', status: 'upcoming', owner: '' })
+  const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setForm(f => ({ ...f, [k]: e.target.value }))
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => api.post('/admin/crm/milestones', form),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['admin','crm','milestones'] }); onClose() },
+  })
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center">
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(2px)' }} onClick={onClose} />
+      <div className="relative z-10 w-full max-w-[420px] rounded-2xl p-5 flex flex-col gap-3"
+        style={{ background: 'rgba(10,13,24,0.98)', border: '1px solid rgba(255,255,255,0.09)', boxShadow: '0 32px 64px rgba(0,0,0,0.7)' }}>
+        <div className="flex items-center justify-between mb-1">
+          <h3 className="text-[14px] font-bold text-slate-100">Add Milestone</h3>
+          <button onClick={onClose} className="text-slate-600 hover:text-slate-300 text-lg leading-none">×</button>
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Client *</label>
+          <select required value={form.clientId} onChange={set('clientId')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
+            <option value="">Select client…</option>
+            {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Title *</label>
+          <input value={form.title} onChange={set('title')} placeholder="e.g. API Integration Complete" className={inputClass} style={inputStyle} />
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Description</label>
+          <textarea value={form.description} onChange={set('description')} rows={2} placeholder="What does this milestone deliver?" className={`${inputClass} resize-none`} style={inputStyle} />
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Due Date *</label>
+            <input type="date" value={form.dueDate} onChange={set('dueDate')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }} />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Status</label>
+            <select value={form.status} onChange={set('status')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
+              <option value="upcoming">Upcoming</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="delayed">Delayed</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Owner</label>
+          <input value={form.owner} onChange={set('owner')} placeholder="e.g. Mahesh Kumar" className={inputClass} style={inputStyle} />
+        </div>
+        <div className="flex justify-end gap-2 pt-1">
+          <button onClick={onClose} className="px-3 py-1.5 text-[13px] text-slate-500 hover:text-slate-300">Cancel</button>
+          <button onClick={() => mutate()} disabled={isPending || !form.clientId || !form.title || !form.dueDate}
+            className="px-4 py-1.5 rounded-lg text-[13px] font-semibold text-white disabled:opacity-50"
+            style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
+            {isPending ? 'Saving…' : 'Add Milestone'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export function DeliveryTracking() {
-  const { clients, milestones } = useClientsStore()
+  const { clients, milestones, updateMilestone } = useClientsStore()
+
+  function patchMilestone(id: string, patch: Parameters<typeof updateMilestone>[1]) {
+    updateMilestone(id, patch)
+    api.patch(`/admin/crm/milestones/${id}`, patch)
+  }
+  const [showAdd, setShowAdd] = useState(false)
   const activeClients = clients.filter(c => c.status !== 'churned' && c.projectIds.length > 0)
 
   const overallCompleted = milestones.filter(m => m.status === 'completed').length
@@ -25,18 +106,40 @@ export function DeliveryTracking() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-white">Delivery Tracking</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{milestones.length} milestones across {activeClients.length} clients</p>
+      {showAdd && <AddMilestoneModal clients={clients} onClose={() => setShowAdd(false)} />}
+
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h2 className="text-xl font-bold text-white">Delivery Tracking</h2>
+          <p className="text-sm text-slate-500 mt-0.5">{milestones.length} milestones across {activeClients.length} clients</p>
+        </div>
+        <button onClick={() => setShowAdd(true)}
+          className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-white text-[13px] font-semibold"
+          style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
+          <Plus className="w-3.5 h-3.5" /> Add Milestone
+        </button>
       </div>
 
+      {milestones.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
+          <Truck className="w-10 h-10 text-slate-800" />
+          <p className="text-sm font-semibold text-slate-600">No milestones yet</p>
+          <p className="text-xs text-slate-700 max-w-xs">Add milestones to track delivery progress across your client engagements.</p>
+          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-lg text-white text-[13px] font-semibold mt-2"
+            style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
+            <Plus className="w-3.5 h-3.5" /> Add first milestone
+          </button>
+        </div>
+      )}
+
+      {milestones.length > 0 && <>
       {/* Summary chips */}
       <div className="flex items-center gap-3 flex-wrap">
         {[
           { label: `${overallCompleted} completed`, color: 'bg-green-50 text-green-700 border-green-200' },
           { label: `${overallInProg} in progress`,  color: 'bg-os-blue/5 text-os-blue border-os-blue/20' },
-          { label: `${overallDelayed} delayed`,      color: overallDelayed > 0 ? 'bg-red-50 text-red-700 border-red-200' : 'bg-slate-900 text-slate-300 border-os-border' },
-          { label: `${milestones.filter(m=>m.status==='upcoming').length} upcoming`, color: 'bg-slate-900 text-slate-300 border-os-border' },
+          { label: `${overallDelayed} delayed`,      color: overallDelayed > 0 ? 'bg-red-50 text-red-700 border-red-200' : 'bg-slate-900 text-slate-300 border-white/10 border-t-white/20' },
+          { label: `${milestones.filter(m=>m.status==='upcoming').length} upcoming`, color: 'bg-slate-900 text-slate-300 border-white/10 border-t-white/20' },
         ].map(c => (
           <span key={c.label} className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${c.color}`}>{c.label}</span>
         ))}
@@ -73,7 +176,7 @@ export function DeliveryTracking() {
               {/* Milestone timeline */}
               <div className="relative">
                 {/* Connector line */}
-                <div className="absolute left-[7px] top-2 bottom-2 w-px bg-os-s1" />
+                <div className="absolute left-[7px] top-2 bottom-2 w-px bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10" />
 
                 <div className="space-y-3">
                   {cms.map(ms => (
@@ -84,7 +187,11 @@ export function DeliveryTracking() {
                           <p className={`text-sm font-medium ${ms.status === 'completed' ? 'text-slate-500 line-through' : 'text-slate-200'}`}>
                             {ms.title}
                           </p>
-                          <Badge variant={STATUS_VARIANT[ms.status]} size="sm">{ms.status.replace('-',' ')}</Badge>
+                          <InlineSelect
+                            value={ms.status}
+                            options={MS_STATUS_OPTIONS}
+                            onChange={v => patchMilestone(ms.id, { status: v as MilestoneStatus })}
+                          />
                         </div>
                         <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{ms.description}</p>
                         <div className="flex items-center gap-3 mt-1">
@@ -108,6 +215,7 @@ export function DeliveryTracking() {
           )
         })}
       </div>
+      </>}
     </div>
   )
 }

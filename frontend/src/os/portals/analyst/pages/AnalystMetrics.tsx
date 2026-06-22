@@ -40,7 +40,7 @@ export function AnalystMetrics() {
   return (
     <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-10">
       <div>
-        <h1 className="text-2xl font-bold text-white">Key Metrics</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-white">Key Metrics</h1>
         <p className="text-slate-500 mt-1 text-sm">Performance data as of Q2 2026. Updated quarterly.</p>
       </div>
 
@@ -49,7 +49,7 @@ export function AnalystMetrics() {
         <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">At a Glance</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {KPIS.map(({ label, value, change, up, sub }) => (
-            <div key={label} className="p-4 rounded-2xl border border-os-border bg-os-s1">
+            <div key={label} className="p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10">
               <p className="text-xs text-slate-500 mb-1">{label}</p>
               <p className="text-2xl font-extrabold text-white leading-none">{value}</p>
               <div className="flex items-center gap-1 mt-1.5">
@@ -68,7 +68,7 @@ export function AnalystMetrics() {
       {/* ARR trend */}
       <section>
         <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">ARR Trend (USD, 2026)</h2>
-        <div className="p-5 rounded-2xl border border-os-border bg-os-s1">
+        <div className="p-5 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10">
           <div className="flex items-end gap-3 h-32">
             {TREND_BARS.map(({ month, arr }) => {
               const h = Math.round((arr / maxArr) * 100)
@@ -91,14 +91,14 @@ export function AnalystMetrics() {
       <div className="grid lg:grid-cols-2 gap-6">
         <section>
           <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Revenue by Segment</h2>
-          <div className="p-5 rounded-2xl border border-os-border bg-os-s1 space-y-3">
+          <div className="p-5 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 space-y-3">
             {SEGMENTS.map(({ label, pct, color }) => (
               <div key={label}>
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs text-slate-300">{label}</span>
                   <span className="text-xs font-bold text-slate-200">{pct}%</span>
                 </div>
-                <div className="h-2 rounded-full bg-os-s2 overflow-hidden">
+                <div className="h-2 rounded-full bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 overflow-hidden">
                   <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
                 </div>
               </div>
@@ -108,9 +108,9 @@ export function AnalystMetrics() {
 
         <section>
           <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Revenue Composition (H1 2026)</h2>
-          <div className="p-5 rounded-2xl border border-os-border bg-os-s1 space-y-3">
+          <div className="p-5 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 space-y-3">
             {GROWTH.map(({ label, value, change }) => (
-              <div key={label} className="flex items-center justify-between py-2 border-b border-os-border last:border-0">
+              <div key={label} className="flex items-center justify-between py-2 border-b border-white/10 border-t-white/20 last:border-0">
                 <span className="text-sm text-slate-300">{label}</span>
                 <div className="text-right">
                   <p className="text-sm font-bold text-white">{value}</p>

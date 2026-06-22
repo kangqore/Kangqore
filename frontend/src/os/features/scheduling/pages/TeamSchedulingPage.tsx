@@ -157,12 +157,12 @@ export function TeamSchedulingPage() {
                 value={memberQuery}
                 onChange={e => { setMemberQuery(e.target.value); searchUsers(e.target.value) }}
                 placeholder="Search by name or email…"
-                className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white pl-9 pr-3 focus:outline-none focus:border-blue-400"
+                className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white pl-9 pr-3 focus:outline-none focus:border-blue-400"
               />
               {searching && <Spinner size="sm" className="absolute right-3 top-1/2 -translate-y-1/2" />}
             </div>
             {memberResults.length > 0 && (
-              <div className="border border-os-border rounded-xl overflow-hidden divide-y divide-[#2E2854]">
+              <div className="border border-white/10 border-t-white/20 rounded-xl overflow-hidden divide-y divide-[#2E2854]">
                 {memberResults.map(u => {
                   const alreadyAdded = members.some(m => m.user.userId === u.id)
                   return (
@@ -199,7 +199,7 @@ export function TeamSchedulingPage() {
                   </div>
                   <button
                     onClick={() => removeMember(m.user.userId)}
-                    className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-os-s1 transition-colors"
+                    className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -246,7 +246,7 @@ export function TeamSchedulingPage() {
                   {(et.teamMembers?.length ?? 0) > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {et.teamMembers!.map(m => (
-                        <span key={m.user.userId} className="text-xs bg-os-s1 text-slate-300 px-2 py-0.5 rounded-full">
+                        <span key={m.user.userId} className="text-xs bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 px-2 py-0.5 rounded-full">
                           {m.user.name || m.user.email}
                         </span>
                       ))}
@@ -256,17 +256,17 @@ export function TeamSchedulingPage() {
                 <div className="flex gap-1 shrink-0">
                   <button
                     onClick={() => setManagingId(et.id)}
-                    className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-os-s1 transition-colors"
+                    className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
                     title="Manage members"
                   >
                     <Users className="w-4 h-4" />
                   </button>
-                  <button onClick={() => open(et)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-os-s1 transition-colors">
+                  <button onClick={() => open(et)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors">
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => { if (confirm('Delete this team event type?')) remove(et.id) }}
-                    className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-os-s1 transition-colors"
+                    className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -280,7 +280,7 @@ export function TeamSchedulingPage() {
       {/* Create / Edit modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={close}>
-          <div className="bg-os-s0 border border-os-border rounded-2xl p-6 w-full max-w-md space-y-5 shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-os-s0 border border-white/10 border-t-white/20 rounded-2xl p-6 w-full max-w-md space-y-5 shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-white">{editing ? 'Edit team event' : 'New team event'}</h3>
               <button onClick={close} className="text-slate-500 hover:text-white"><X className="w-5 h-5" /></button>
@@ -293,7 +293,7 @@ export function TeamSchedulingPage() {
                 value={form.name}
                 onChange={e => set('name', e.target.value)}
                 placeholder="Team intro call"
-                className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+                className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
               />
             </div>
 
@@ -305,7 +305,7 @@ export function TeamSchedulingPage() {
                   min={5}
                   value={form.duration}
                   onChange={e => set('duration', Number(e.target.value))}
-                  className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+                  className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
                 />
               </div>
               <div>
@@ -313,7 +313,7 @@ export function TeamSchedulingPage() {
                 <select
                   value={form.assignmentStrategy}
                   onChange={e => set('assignmentStrategy', e.target.value)}
-                  className="w-full h-9 rounded-xl border border-os-border bg-os-s1 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+                  className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
                 >
                   <option value="ROUND_ROBIN">Round Robin</option>
                   <option value="COLLECTIVE">Collective</option>
@@ -326,7 +326,7 @@ export function TeamSchedulingPage() {
               <p className="text-xs text-slate-500">After creating, use the <Users className="w-3 h-3 inline" /> button to add team members.</p>
             )}
 
-            <div className="flex gap-2 pt-2 border-t border-os-border">
+            <div className="flex gap-2 pt-2 border-t border-white/10 border-t-white/20">
               <Button size="sm" onClick={() => save()} disabled={!form.name || saving} loading={saving}>
                 {editing ? 'Save changes' : 'Create'}
               </Button>

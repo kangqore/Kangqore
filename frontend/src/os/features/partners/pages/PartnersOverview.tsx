@@ -11,8 +11,8 @@ import type { PartnerTier } from '../types'
 const TIER_STYLE: Record<PartnerTier, string> = {
   platinum: 'bg-gradient-to-r from-os-blue to-os-cyan text-white',
   gold:     'bg-amber-100 text-amber-700 border border-amber-200',
-  silver:   'bg-os-s1 text-slate-300 border border-os-border',
-  associate:'bg-slate-900  text-slate-300 border border-os-border',
+  silver:   'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border border-white/10 border-t-white/20',
+  associate:'bg-slate-900  text-slate-300 border border-white/10 border-t-white/20',
 }
 
 const STATUS_VARIANT = {
@@ -60,13 +60,13 @@ export function PartnersOverview() {
         <StatCard label="Active Partners"   value={active}                                 icon={<Briefcase     className="w-5 h-5"/>} iconColor="bg-os-blue/10 text-os-blue" />
         <StatCard label="Total Paid Out"    value={`₹${(totalEarned/1000).toFixed(0)}k`}  icon={<DollarSign    className="w-5 h-5"/>} iconColor="bg-green-100 text-green-600"    />
         <StatCard label="Pending Payment"   value={`₹${(totalPending/1000).toFixed(0)}k`} icon={<DollarSign    className="w-5 h-5"/>} iconColor="bg-amber-100 text-amber-600"    />
-        <StatCard label="Paused"            value={atRisk}                                 icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-os-s1 text-slate-300'} />
+        <StatCard label="Paused"            value={atRisk}                                 icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'} />
       </div>
 
       <div className="flex items-center gap-3 flex-wrap">
         <Input placeholder="Search partners or skills…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-64" value={search} onChange={e => setSearch(e.target.value)} />
         {(['all','platinum','gold','silver','associate'] as const).map(t => (
-          <button key={t} onClick={() => setTier(t)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${tierFilter === t ? 'bg-os-blue text-white' : 'bg-os-s1 border border-os-border text-slate-300 hover:border-os-blue/40'}`}>
+          <button key={t} onClick={() => setTier(t)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${tierFilter === t ? 'bg-os-blue text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-os-blue/40'}`}>
             {t === 'all' ? 'All Tiers' : t}
           </button>
         ))}
@@ -96,12 +96,12 @@ export function PartnersOverview() {
 
                 <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                   {partner.specialisms.slice(0,4).map(s => (
-                    <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-os-s1 text-slate-300 font-medium">{s}</span>
+                    <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 font-medium">{s}</span>
                   ))}
                   {partner.specialisms.length > 4 && <span className="text-[11px] text-slate-500">+{partner.specialisms.length - 4}</span>}
                 </div>
 
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-os-border text-xs text-slate-500">
+                <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/10 border-t-white/20 text-xs text-slate-500">
                   <span><strong className="text-slate-200">{partner.activeTasks}</strong> active tasks</span>
                   <span><strong className="text-slate-200">₹{(partner.totalEarned/1000).toFixed(0)}k</strong> earned</span>
                   {partner.pendingPayment > 0 && (

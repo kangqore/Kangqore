@@ -1,10 +1,14 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
+import { NavLink, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import {
   LayoutGrid, FolderOpen, FileText, Briefcase,
   Calendar, CheckSquare, Headphones, GitPullRequest,
-  MessageSquare, BarChart2,
+  MessageSquare, BarChart2, LogOut, ChevronLeft,
+  Bell, ChevronRight, Phone, Search, Settings, User,
+  ChevronDown, SlidersHorizontal,
 } from 'lucide-react'
-import { PortalNavbar }            from '../layout/PortalNavbar'
+import { cn } from '@design-system/cn'
+import { Avatar } from '@design-system/components/Avatar'
 import { ModuleShell }             from '@components/ModuleShell'
 import { ClientDashboard }         from './pages/ClientDashboard'
 import { ClientProjects }          from './pages/ClientProjects'
@@ -16,45 +20,398 @@ import { ClientSupport }           from './pages/ClientSupport'
 import { ClientChangeRequests }    from './pages/ClientChangeRequests'
 import { ClientFeedback }          from './pages/ClientFeedback'
 import { ClientExecutiveReport }   from './pages/ClientExecutiveReport'
+import { ClientSettings }          from './pages/ClientSettings'
+import { useAuthStore }            from '@store/auth'
 
-const TABS = [
-  { path: '',               label: 'Dashboard',    icon: LayoutGrid      },
-  { path: 'projects',       label: 'Projects',     icon: Briefcase       },
-  { path: 'meetings',       label: 'Meetings',     icon: Calendar        },
-  { path: 'tasks',          label: 'Tasks',        icon: CheckSquare     },
-  { path: 'support',        label: 'Support',      icon: Headphones      },
-  { path: 'change-requests',label: 'Changes',      icon: GitPullRequest  },
-  { path: 'feedback',       label: 'Feedback',     icon: MessageSquare   },
-  { path: 'invoices',       label: 'Invoices',     icon: FileText        },
-  { path: 'documents',      label: 'Documents',    icon: FolderOpen      },
-  { path: 'report',         label: 'Report',       icon: BarChart2       },
+const ACCENT = '#2564ea'
+const BASE   = '/kangqore-view/client'
+
+// ── Nav groups ─────────────────────────────────────────────────────────────────
+
+const NAV_GROUPS = [
+  {
+    label: 'OVERVIEW',
+    color: '#2564ea',
+    items: [
+      { path: '',                label: 'Dashboard',  icon: LayoutGrid,    end: true,  badge: 0 },
+    ],
+  },
+  {
+    label: 'WORK',
+    color: '#7f53f9',
+    items: [
+      { path: 'projects',        label: 'Projects',   icon: Briefcase,     end: false, badge: 0 },
+      { path: 'tasks',           label: 'Tasks',      icon: CheckSquare,   end: false, badge: 3 },
+      { path: 'meetings',        label: 'Meetings',   icon: Calendar,      end: false, badge: 0 },
+    ],
+  },
+  {
+    label: 'FINANCE',
+    color: '#fdab3d',
+    items: [
+      { path: 'invoices',        label: 'Invoices',   icon: FileText,      end: false, badge: 1, badgeDanger: true },
+      { path: 'documents',       label: 'Documents',  icon: FolderOpen,    end: false, badge: 0 },
+    ],
+  },
+  {
+    label: 'SUPPORT',
+    color: '#00c875',
+    items: [
+      { path: 'support',         label: 'Support',    icon: Headphones,    end: false, badge: 2 },
+      { path: 'change-requests', label: 'Changes',    icon: GitPullRequest,end: false, badge: 0 },
+      { path: 'feedback',        label: 'Feedback',   icon: MessageSquare, end: false, badge: 0 },
+    ],
+  },
+  {
+    label: 'INSIGHTS',
+    color: '#e2445c',
+    items: [
+      { path: 'report',          label: 'Report',     icon: BarChart2,         end: false, badge: 0 },
+    ],
+  },
+  {
+    label: 'ACCOUNT',
+    color: '#64748b',
+    items: [
+      { path: 'settings',        label: 'Settings',   icon: SlidersHorizontal, end: false, badge: 0 },
+    ],
+  },
 ]
 
-export function ClientPortal() {
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+
+function ClientSidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+  const { user, logout } = useAuthStore()
+  const navigate = useNavigate()
+
   return (
-    <div className="flex flex-col h-screen bg-os-s1 pt-[7.5rem]">
-      <PortalNavbar
-        portalName="Client Portal"
-        portalColor="bg-gradient-to-br from-os-blue to-os-cyan"
-        tabs={TABS}
-        basePath="/kangqore-view/client"
-      />
-      <div className="flex-1 overflow-y-auto min-h-0">
-        <ModuleShell>
-          <Routes>
-            <Route index                     element={<ClientDashboard />}       />
-            <Route path="projects"           element={<ClientProjects />}        />
-            <Route path="meetings"           element={<ClientMeetings />}        />
-            <Route path="tasks"              element={<ClientTasks />}           />
-            <Route path="support"            element={<ClientSupport />}         />
-            <Route path="change-requests"    element={<ClientChangeRequests />}  />
-            <Route path="feedback"           element={<ClientFeedback />}        />
-            <Route path="invoices"           element={<ClientInvoices />}        />
-            <Route path="documents"          element={<ClientDocuments />}       />
-            <Route path="report"             element={<ClientExecutiveReport />} />
-            <Route path="*"                  element={<Navigate to="/kangqore-view/client" replace />} />
-          </Routes>
-        </ModuleShell>
+    <aside
+      className="flex flex-col h-full flex-shrink-0 transition-all duration-200 select-none bg-slate-900/40 backdrop-blur-2xl relative z-20"
+      style={{ width: collapsed ? 56 : 220, borderRight: '1px solid rgba(255,255,255,0.1)' }}>
+
+      {/* Logo */}
+      <div className="flex items-center gap-3 px-3 h-14 flex-shrink-0"
+        style={{ borderBottom: '1px solid #1f2a4a' }}>
+        <button onClick={() => navigate(BASE)}
+          className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0 transition-transform hover:scale-105"
+          style={{ background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}88)`, boxShadow: `0 0 14px ${ACCENT}40` }}>
+          K
+        </button>
+        {!collapsed && (
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-white leading-none truncate">Kangqore</p>
+            <p className="text-[10px] mt-0.5 truncate" style={{ color: `${ACCENT}aa` }}>Client Portal</p>
+          </div>
+        )}
+        <button onClick={onToggle}
+          className="w-6 h-6 flex items-center justify-center rounded-md transition-colors flex-shrink-0 text-slate-600 hover:text-slate-300"
+          style={{ marginLeft: collapsed ? 'auto' : undefined }}>
+          {collapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+        </button>
+      </div>
+
+      {/* Nav groups */}
+      <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-4">
+        {NAV_GROUPS.map(group => (
+          <div key={group.label}>
+            {!collapsed && (
+              <div className="flex items-center gap-1.5 px-2 mb-1">
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: group.color }} />
+                <span className="text-[9px] font-bold tracking-widest" style={{ color: `${group.color}80` }}>
+                  {group.label}
+                </span>
+              </div>
+            )}
+            <div className="space-y-0.5">
+              {group.items.map(item => (
+                <NavLink
+                  key={item.path}
+                  to={item.path === '' ? BASE : `${BASE}/${item.path}`}
+                  end={item.end}
+                  title={collapsed ? item.label : undefined}
+                  className={({ isActive }) => cn(
+                    'flex items-center gap-3 rounded-xl transition-all duration-150 relative',
+                    collapsed ? 'h-9 w-9 mx-auto justify-center px-0' : 'px-3 py-2',
+                    isActive ? 'text-white' : 'text-slate-500 hover:text-slate-200',
+                  )}
+                  style={({ isActive }) => isActive
+                    ? { background: `${ACCENT}18`, border: `1px solid ${ACCENT}30` }
+                    : { border: '1px solid transparent' }
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <item.icon className="w-4 h-4 flex-shrink-0"
+                        style={{ color: isActive ? ACCENT : undefined } as React.CSSProperties} />
+                      {!collapsed && (
+                        <>
+                          <span className="text-[13px] font-medium truncate flex-1">{item.label}</span>
+                          {item.badge > 0 && (
+                            <span className="text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                              style={{
+                                background: item.badgeDanger ? '#e2445c' : ACCENT,
+                                color: '#fff',
+                              }}>
+                              {item.badge}
+                            </span>
+                          )}
+                        </>
+                      )}
+                      {/* Collapsed badge dot */}
+                      {collapsed && item.badge > 0 && (
+                        <span className="absolute top-1 right-1 w-2 h-2 rounded-full"
+                          style={{ background: item.badgeDanger ? '#e2445c' : '#fdab3d' }} />
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        ))}
+      </nav>
+
+      {/* Account manager card */}
+      {!collapsed && (
+        <div className="flex-shrink-0 mx-2 mb-2 rounded-xl p-3"
+          style={{ background: 'rgba(37,100,234,0.06)', border: '1px solid rgba(37,100,234,0.15)' }}>
+          <p className="text-[9px] font-bold uppercase tracking-widest mb-2" style={{ color: `${ACCENT}80` }}>
+            Your Account Manager
+          </p>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
+              style={{ background: ACCENT }}>
+              RN
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold text-white truncate">Ravi Nair</p>
+              <p className="text-[10px] text-slate-500">Delivery Lead</p>
+            </div>
+            <button className="w-6 h-6 flex items-center justify-center rounded-lg text-slate-600 hover:text-white transition-colors flex-shrink-0"
+              style={{ background: '#151C2F' }} title="Call Ravi">
+              <Phone className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* User + sign out */}
+      <div className="flex-shrink-0 p-2 space-y-1" style={{ borderTop: '1px solid #1f2a4a' }}>
+        {!collapsed && (
+          <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl" style={{ background: '#0d1117' }}>
+            <Avatar name={user?.name ?? 'U'} size="sm" className="flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold text-white truncate">{user?.name}</p>
+              <p className="text-[10px] text-slate-600 truncate">{user?.email}</p>
+            </div>
+          </div>
+        )}
+        <button
+          onClick={logout}
+          title="Sign out"
+          className={cn(
+            'flex items-center gap-2.5 rounded-xl transition-colors w-full text-slate-600 hover:text-red-400',
+            collapsed ? 'h-9 w-9 mx-auto justify-center px-0' : 'px-3 py-2',
+          )}
+          style={{ border: '1px solid transparent' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(226,68,92,0.06)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(226,68,92,0.15)' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.borderColor = 'transparent' }}>
+          <LogOut className="w-4 h-4 flex-shrink-0" />
+          {!collapsed && <span className="text-xs font-medium">Sign out</span>}
+        </button>
+      </div>
+    </aside>
+  )
+}
+
+// ── Topbar ────────────────────────────────────────────────────────────────────
+
+function ClientTopbar() {
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const { user, logout } = useAuthStore()
+  const [userOpen, setUserOpen] = useState(false)
+  const [searchFocused, setSearchFocused] = useState(false)
+  const userRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!userOpen) return
+    function onClickOutside(e: MouseEvent) {
+      if (userRef.current && !userRef.current.contains(e.target as Node)) setUserOpen(false)
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [userOpen])
+
+  const allItems = NAV_GROUPS.flatMap(g => g.items)
+  const current  = allItems.find(n =>
+    pathname === (n.path === '' ? BASE : `${BASE}/${n.path}`)
+  ) ?? allItems[0]
+
+  const displayName  = user?.name  ?? 'Client'
+  const displayEmail = user?.email ?? ''
+
+  return (
+    <header
+      className="flex-shrink-0 flex items-center justify-between px-4 relative z-20 bg-slate-900/40 backdrop-blur-2xl"
+      style={{ height: 60, borderBottom: '1px solid rgba(6,11,24,0.6)' }}
+    >
+      {/* Left — breadcrumb */}
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        <div className="hidden md:flex items-center gap-2 text-sm">
+          <span className="text-slate-500 font-medium">Client Portal</span>
+          <ChevronRight className="w-4 h-4 text-slate-700" />
+          <span className="text-white font-semibold">{current.label}</span>
+        </div>
+      </div>
+
+      {/* Center — search bar */}
+      <div className="flex-1 flex justify-center px-4">
+        <div
+          className="relative w-full max-w-[380px] h-9 rounded-full flex items-center gap-2 pl-9 pr-3 text-sm text-slate-500 transition-all duration-150"
+          style={{
+            background: '#0d1117',
+            border: `1px solid ${searchFocused ? 'rgba(37,100,234,0.5)' : '#1e2b40'}`,
+            boxShadow: searchFocused ? '0 0 0 3px rgba(37,100,234,0.12)' : 'none',
+          }}
+        >
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600 pointer-events-none" />
+          <input
+            placeholder="Search…"
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
+            className="bg-transparent outline-none w-full text-sm text-slate-300 placeholder:text-slate-600"
+          />
+          <kbd className="ml-auto text-[10px] text-slate-600 font-mono hidden lg:block bg-[#121d30] px-1.5 py-0.5 rounded border border-[#1e2b40] flex-shrink-0">
+            ⌘K
+          </kbd>
+        </div>
+      </div>
+
+      {/* Right — bell + user */}
+      <div className="flex items-center gap-2 flex-1 justify-end">
+
+        {/* Bell */}
+        <button
+          className="relative h-9 w-9 rounded-full flex items-center justify-center text-slate-500 transition-colors"
+          style={{ border: '1px solid #1e2b40', background: '#0d1117' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#121d30'; (e.currentTarget as HTMLElement).style.color = '#94a3b8' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0d1117'; (e.currentTarget as HTMLElement).style.color = '' }}
+        >
+          <Bell className="w-4 h-4" />
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full border-2 border-[#080c18]" style={{ background: '#e2445c' }} />
+        </button>
+
+        <div className="w-px h-5 mx-1 hidden sm:block" style={{ background: '#1e2b40' }} />
+
+        {/* User menu */}
+        <div className="relative" ref={userRef}>
+          <button
+            onClick={() => setUserOpen(o => !o)}
+            className="flex items-center gap-2 rounded-full pl-1 pr-3 py-1 transition-all"
+            style={{ border: '1px solid transparent' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#121d30'; (e.currentTarget as HTMLElement).style.borderColor = '#1e2b40' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.borderColor = 'transparent' }}
+          >
+            <Avatar name={displayName} size="sm" className="w-7 h-7 flex-shrink-0" />
+            <div className="hidden lg:flex flex-col items-start">
+              <span className="text-xs font-semibold text-white leading-none">{displayName}</span>
+            </div>
+            <ChevronDown className="w-3 h-3 text-slate-500 hidden lg:block" />
+          </button>
+
+          {userOpen && (
+            <div
+              className="absolute right-0 top-full mt-2 w-56 rounded-xl shadow-2xl py-1 z-50"
+              style={{ background: '#0d1117', border: '1px solid #1e2b40' }}
+            >
+              {/* User info header */}
+              <div className="px-3 py-3 mb-1" style={{ borderBottom: '1px solid #1e2b40' }}>
+                <div className="flex items-center gap-2.5 mb-2">
+                  <Avatar name={displayName} size="sm" className="w-8 h-8 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-white truncate">{displayName}</p>
+                    <p className="text-xs text-slate-500 truncate">{displayEmail}</p>
+                  </div>
+                </div>
+                <span style={{
+                  display: 'inline-block', fontSize: 9, fontWeight: 700,
+                  padding: '3px 8px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: '0.08em',
+                  color: '#2564ea', background: 'rgba(37,100,234,0.12)', border: '1px solid rgba(37,100,234,0.25)',
+                }}>
+                  Client
+                </span>
+              </div>
+
+              {/* Menu items */}
+              {[
+                { Icon: User,     label: 'Profile',  action: () => navigate(`${BASE}/settings`) },
+                { Icon: Settings, label: 'Settings', action: () => navigate(`${BASE}/settings`) },
+              ].map(item => (
+                <button
+                  key={item.label}
+                  onClick={() => { item.action(); setUserOpen(false) }}
+                  className="flex items-center gap-2.5 w-full px-3 py-2 text-sm text-slate-400 transition-colors text-left"
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#121d30'; (e.currentTarget as HTMLElement).style.color = '#f1f5f9' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '' }}
+                >
+                  <item.Icon className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                  {item.label}
+                </button>
+              ))}
+
+              <div className="my-1 h-px mx-2" style={{ background: '#1e2b40' }} />
+
+              <button
+                onClick={() => { logout(); setUserOpen(false) }}
+                className="flex items-center gap-2.5 w-full px-3 py-2 text-sm transition-colors text-left"
+                style={{ color: '#e2445c' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(226,68,92,0.08)'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
+              >
+                <LogOut className="w-4 h-4 flex-shrink-0" />
+                Sign out
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
+  )
+}
+
+// ── Portal shell ──────────────────────────────────────────────────────────────
+import { AmbientBackground } from '../../components/shell/AmbientBackground'
+
+export function ClientPortal() {
+  const [collapsed, setCollapsed] = useState(false)
+
+  return (
+    <div className="flex h-screen overflow-hidden relative text-slate-200">
+      <AmbientBackground />
+      <ClientSidebar collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden relative z-10">
+        <ClientTopbar />
+        <main className="flex-1 overflow-y-auto">
+          <div className="px-6 lg:px-10 py-8 w-full max-w-6xl mx-auto">
+            <ModuleShell>
+              <Routes>
+                <Route index                     element={<ClientDashboard />}       />
+                <Route path="projects"           element={<ClientProjects />}        />
+                <Route path="meetings"           element={<ClientMeetings />}        />
+                <Route path="tasks"              element={<ClientTasks />}           />
+                <Route path="support"            element={<ClientSupport />}         />
+                <Route path="change-requests"    element={<ClientChangeRequests />}  />
+                <Route path="feedback"           element={<ClientFeedback />}        />
+                <Route path="invoices"           element={<ClientInvoices />}        />
+                <Route path="documents"          element={<ClientDocuments />}       />
+                <Route path="report"             element={<ClientExecutiveReport />} />
+                <Route path="settings"           element={<ClientSettings />}        />
+                <Route path="*"                  element={<Navigate to={BASE} replace />} />
+              </Routes>
+            </ModuleShell>
+          </div>
+        </main>
       </div>
     </div>
   )

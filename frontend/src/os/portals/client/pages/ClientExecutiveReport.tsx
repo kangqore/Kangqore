@@ -23,7 +23,7 @@ const RECENT_ACTIVITY = [
   { id: 'a1', type: 'delivery',  label: 'Sprint 13 build deployed to staging',  date: '2026-06-02' },
   { id: 'a2', type: 'document',  label: 'HIPAA audit Phase 2 report shared',    date: '2026-05-30' },
   { id: 'a3', type: 'meeting',   label: 'Monthly steering committee completed', date: '2026-05-28' },
-  { id: 'a4', type: 'invoice',   label: 'Invoice INV-2026-043 issued (£24,500)', date: '2026-05-25' },
+  { id: 'a4', type: 'invoice',   label: 'Invoice INV-2026-043 issued (₹24,500)', date: '2026-05-25' },
   { id: 'a5', type: 'milestone', label: 'Patient Portal beta scope finalised',  date: '2026-05-20' },
 ]
 
@@ -42,7 +42,7 @@ const HEALTH_V: Record<string, 'success' | 'warning' | 'danger'> = {
   'on-track': 'success', 'at-risk': 'warning', 'behind': 'danger', 'completed': 'info' as any,
 }
 
-const fmt     = (n: number) => `£${n.toLocaleString()}`
+const fmt     = (n: number) => `₹${n.toLocaleString()}`
 const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 const today   = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
@@ -68,7 +68,7 @@ export function ClientExecutiveReport() {
   const openRisks = MOCK_RISKS.filter(r => r.status === 'OPEN').length
 
   return (
-    <div className="space-y-6 max-w-3xl" id="executive-report">
+    <div id="executive-report" className="space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -88,19 +88,19 @@ export function ClientExecutiveReport() {
       {/* Portfolio summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card className="text-center py-4">
-          <div className="text-2xl font-bold text-white">{projects.length}</div>
+          <div className="text-2xl font-bold tracking-tight text-white">{projects.length}</div>
           <div className="text-xs text-slate-500 mt-0.5">Active projects</div>
         </Card>
         <Card className="text-center py-4">
-          <div className="text-2xl font-bold text-green-600">{onTrack}</div>
+          <div className="text-2xl font-bold tracking-tight text-green-600">{onTrack}</div>
           <div className="text-xs text-slate-500 mt-0.5">On track</div>
         </Card>
         <Card className="text-center py-4">
-          <div className="text-2xl font-bold text-amber-600">{atRisk}</div>
+          <div className="text-2xl font-bold tracking-tight text-amber-600">{atRisk}</div>
           <div className="text-xs text-slate-500 mt-0.5">At risk</div>
         </Card>
         <Card className="text-center py-4">
-          <div className={`text-2xl font-bold ${openRisks > 0 ? 'text-red-600' : 'text-slate-500'}`}>{openRisks}</div>
+          <div className={`text-2xl font-bold tracking-tight ${openRisks > 0 ? 'text-red-600' : 'text-slate-500'}`}>{openRisks}</div>
           <div className="text-xs text-slate-500 mt-0.5">Open risks</div>
         </Card>
       </div>

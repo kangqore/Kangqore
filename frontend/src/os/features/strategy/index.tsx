@@ -30,7 +30,7 @@ export function StrategyModule() {
   })
 
   useEffect(() => {
-    if (data?.pillars?.length) hydrate(data)
+    if (data !== undefined) hydrate(data)
   }, [data, hydrate])
 
   if (isLoading && !isDemo()) {
@@ -47,7 +47,7 @@ export function StrategyModule() {
 
   return (
     <div className="space-y-0">
-      <div className="flex items-center gap-2 border-b border-os-border mb-8 mt-1">
+      <div className="flex items-center gap-2 border-b border-white/10 border-t-white/20 mb-8 mt-1">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -57,7 +57,7 @@ export function StrategyModule() {
               'flex items-center gap-2.5 px-5 py-3 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
                 ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-os-border'
+                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />

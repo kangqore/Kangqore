@@ -14,7 +14,7 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
   return (
     <Card
       padding="lg"
-      className="group cursor-pointer hover:border-os-border/80 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full bg-os-s1 border border-os-border"
+      className="group cursor-pointer hover:border-white/10 border-t-white/20/80 hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col justify-between h-full bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20"
       onClick={() => navigate(`/kangqore-view/admin/strategy/pillars/${pillar.id}`)}
     >
       <div>
@@ -56,12 +56,12 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
         />
 
         {/* Footer */}
-        <div className={cn('flex items-center justify-between mt-5 pt-4 border-t border-os-border/80')}>
+        <div className={cn('flex items-center justify-between mt-5 pt-4 border-t border-white/10 border-t-white/20/80')}>
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <Avatar name={pillar.owner} size="xs" className="ring-2 ring-slate-50" />
             <span className="font-semibold text-slate-300">{pillar.owner}</span>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-slate-350 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-300" />
+          <ArrowRight className="w-3.5 h-3.5 text-slate-350 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
         </div>
       </div>
     </Card>

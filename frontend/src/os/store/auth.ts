@@ -26,6 +26,7 @@ interface AuthStore {
   logout:      () => void
   clearError:  () => void
   syncFromWebsite: () => boolean   // hydrate from website session if present
+  patchUser:   (patch: Partial<AuthUser>) => void
 }
 
 export interface SignupPayload {
@@ -170,6 +171,14 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
     },
 
     clearError: () => set({ error: null }),
+
+    patchUser: (patch) => {
+      const current = _get().user
+      if (!current) return
+      const updated = { ...current, ...patch }
+      persistToWebsiteKeys(_get().token ?? '', updated)
+      set({ user: updated })
+    },
 
     syncFromWebsite: () => {
       const session = readWebsiteSession()

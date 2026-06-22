@@ -67,14 +67,14 @@ export function PartnerTasks() {
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: col.color }} />
                   <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{col.label}</span>
-                  <span className="ml-auto text-xs bg-os-s1 text-slate-500 rounded-full px-1.5 py-0.5">{colTasks.length}</span>
+                  <span className="ml-auto text-xs bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500 rounded-full px-1.5 py-0.5">{colTasks.length}</span>
                 </div>
 
                 <div className="space-y-2">
                   {colTasks.map(t => (
                     <div
                       key={t.id}
-                      className={`bg-os-s1 border border-os-border border-l-4 rounded-xl shadow-sm cursor-pointer hover:border-blue-200 transition-all ${PRIORITY_COLOR[t.priority]}`}
+                      className={`bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 border-l-4 rounded-xl shadow-sm cursor-pointer hover:border-blue-200 transition-all ${PRIORITY_COLOR[t.priority]}`}
                       onClick={() => setOpenId(openId === t.id ? null : t.id)}
                     >
                       <div className="p-3">
@@ -109,7 +109,7 @@ export function PartnerTasks() {
                       </div>
 
                       {openId === t.id && (
-                        <div className="border-t border-os-border px-3 py-2.5 bg-slate-900/50 rounded-b-xl">
+                        <div className="border-t border-white/10 border-t-white/20 px-3 py-2.5 bg-slate-900/50 rounded-b-xl">
                           <p className="text-xs text-slate-500 leading-relaxed">{t.desc}</p>
                         </div>
                       )}
@@ -117,7 +117,7 @@ export function PartnerTasks() {
                   ))}
 
                   {colTasks.length === 0 && (
-                    <div className="border-2 border-dashed border-os-border rounded-xl p-4 text-center">
+                    <div className="border-2 border-dashed border-white/10 border-t-white/20 rounded-xl p-4 text-center">
                       <p className="text-xs text-slate-500">No tasks</p>
                     </div>
                   )}

@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { CONSULTATIONS, MOCK_STATS } from './data'
 import type { Consultation, ConsultationStats } from './types'
 
 interface ConsultationsStore {
@@ -12,10 +11,12 @@ interface ConsultationsStore {
   updateConsultation: (id: string, patch: Partial<Consultation>) => void
 }
 
+const EMPTY_STATS: ConsultationStats = { total: 0, pending: 0, contacted: 0, scheduled: 0, completed: 0, rescheduled: 0 }
+
 export const useConsultationsStore = create<ConsultationsStore>((set) => ({
-  consultations: CONSULTATIONS,
-  stats:         MOCK_STATS,
-  isLoading:     false,
+  consultations: [],
+  stats:         EMPTY_STATS,
+  isLoading:     true,
   error:         null,
 
   hydrate: (consultations) => {

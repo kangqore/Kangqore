@@ -26,7 +26,7 @@ const ASSETS = [
 const PALETTE = [
   { name: 'Kangqore Blue',  hex: '#2564ea', cls: 'bg-os-blue'    },
   { name: 'Signal Cyan',    hex: '#4ab6d4', cls: 'bg-os-cyan'    },
-  { name: 'Deep Navy',      hex: '#151C2F', cls: 'bg-os-s1'      },
+  { name: 'Deep Navy',      hex: '#151C2F', cls: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10'      },
   { name: 'Pure White',     hex: '#ffffff', cls: 'bg-white'      },
 ]
 
@@ -45,7 +45,7 @@ export function JournalistAssets() {
   return (
     <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Press Assets</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-white">Press Assets</h1>
         <p className="text-slate-500 mt-1 text-sm">Brand assets for verified press and media use. Please review the editorial guidelines before publishing.</p>
       </div>
 
@@ -63,7 +63,7 @@ export function JournalistAssets() {
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
               filter === f
                 ? 'bg-pink-600 text-white'
-                : 'bg-os-s1 border border-os-border text-slate-400 hover:text-white'
+                : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-400 hover:text-white'
             }`}
           >
             {f}
@@ -74,7 +74,7 @@ export function JournalistAssets() {
       {/* Assets grid */}
       <div className="grid sm:grid-cols-2 gap-3">
         {visible.map(({ id, icon: Icon, title, desc, format, size }) => (
-          <div key={id} className="flex items-center gap-3 p-4 rounded-2xl border border-os-border bg-os-s1 hover:bg-os-s2 transition-colors group">
+          <div key={id} className="flex items-center gap-3 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 transition-colors group">
             <div className="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center flex-shrink-0">
               <Icon className="w-5 h-5 text-pink-400" />
             </div>
@@ -82,7 +82,7 @@ export function JournalistAssets() {
               <p className="font-semibold text-white text-sm truncate">{title}</p>
               <p className="text-slate-500 text-xs truncate">{desc}</p>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-os-s2 text-slate-400">{format}</span>
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 text-slate-400">{format}</span>
                 <span className="text-[10px] text-slate-500">{size}</span>
               </div>
             </div>
@@ -91,7 +91,7 @@ export function JournalistAssets() {
               className={`flex-shrink-0 p-2 rounded-lg transition-colors ${
                 downloaded.has(id)
                   ? 'bg-os-success/10 text-os-success'
-                  : 'bg-os-s2 text-slate-400 hover:text-white hover:bg-pink-600'
+                  : 'bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 text-slate-400 hover:text-white hover:bg-pink-600'
               }`}
             >
               {downloaded.has(id)
@@ -108,9 +108,9 @@ export function JournalistAssets() {
         <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Brand Palette</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {PALETTE.map(({ name, hex, cls }) => (
-            <div key={name} className="rounded-xl border border-os-border overflow-hidden">
+            <div key={name} className="rounded-xl border border-white/10 border-t-white/20 overflow-hidden">
               <div className={`h-14 w-full ${cls}`} />
-              <div className="p-2.5 bg-os-s1">
+              <div className="p-2.5 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10">
                 <p className="text-xs font-semibold text-slate-200">{name}</p>
                 <p className="text-[10px] text-slate-500 font-mono mt-0.5">{hex}</p>
               </div>
