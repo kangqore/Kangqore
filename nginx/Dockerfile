@@ -1,16 +1,16 @@
-# ─── Stage 1: Build kangqore-view ────────────────────────────────────────────
+# ─── Stage 1: Build frontend (Kangqore OS) ───────────────────────────────────
 FROM node:20-alpine AS os-builder
-WORKDIR /app/kangqore-view
-COPY kangqore-view/package*.json ./
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
 RUN npm ci
-COPY kangqore-view ./
+COPY frontend ./
 RUN npm run build
 
 # ─── Stage 2: Nginx serving ───────────────────────────────────────────────────
 FROM nginx:1.25-alpine
 
-# kangqore-view dist → location Nginx will serve /assets/, /os/, /portal/ from
-COPY --from=os-builder /app/kangqore-view/dist /var/www/kangqore-view
+# frontend/build → served under /kangqore-view/* by nginx
+COPY --from=os-builder /app/frontend/build /var/www/kangqore-view
 
 # Replace default Nginx config with ours
 COPY nginx/kangqore.conf /etc/nginx/conf.d/default.conf
