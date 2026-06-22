@@ -17,6 +17,7 @@ import projectProgressService from '../services/ProjectProgressService';
 import { SystemLearning } from '../kangqore-immp/agents/systemLearning';
 import { KimmpSystemDispatcher } from '../kangqore-immp/agents/systemDispatcher';
 import { SignalLedger } from '../kangqore-immp/signals/signalLedger.service';
+import { emailService } from '../services/email.service';
 
 const clientSignalsService = new ClientSignalsService();
 const clientConfusionService = new ClientConfusionService();
@@ -1050,6 +1051,66 @@ router.post('/client-emails/reply', authenticate, authorize(['ADMIN']), async (r
     await notifyNewEmail(clientId, 'client', newEmail.subject);
 
     res.status(201).json({ success: true, message: 'Reply sent', email: newEmail });
+  } catch (error) { next(error); }
+});
+
+// =====================================================
+// CLIENT PORTAL INVITE
+// =====================================================
+
+router.post('/clients/:clientId/portal-invite', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { clientId } = req.params;
+    const { contacts } = req.body as { contacts: Array<{ name: string; email: string }> };
+    if (!contacts?.length) return res.status(400).json({ error: 'At least one contact is required' });
+
+    const portalUrl = `${(process.env.CORS_ORIGINS || 'http://localhost:3001').split(',')[0]}/kangqore-view/login`;
+    const adminUser = await prisma.user.findUnique({ where: { id: req.user!.id }, select: { name: true } });
+    const clientRecord = await prisma.user.findFirst({ where: { id: clientId }, select: { company: true, name: true } });
+    const clientCompany = clientRecord?.company || clientRecord?.name || 'your company';
+
+    const results: Array<{ email: string; status: 'created' | 'exists'; tempPassword?: string }> = [];
+
+    for (const contact of contacts) {
+      const existing = await prisma.user.findUnique({ where: { email: contact.email } });
+      if (existing) {
+        results.push({ email: contact.email, status: 'exists' });
+        continue;
+      }
+
+      const tempPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-4).toUpperCase() + '!';
+      const hashed = await hashPassword(tempPassword);
+      const customId = await generateCustomId('CLIENT');
+
+      await prisma.user.create({
+        data: {
+          email: contact.email,
+          name: contact.name,
+          password: hashed,
+          role: 'CLIENT' as any,
+          customId,
+          status: 'ACTIVE',
+          company: clientCompany,
+        }
+      });
+
+      try {
+        await emailService.sendPortalInviteEmail({
+          to: contact.email,
+          name: contact.name,
+          tempPassword,
+          portalUrl,
+          invitedByName: adminUser?.name || 'Kangqore Admin',
+          clientCompany,
+        });
+      } catch (emailErr) {
+        // Email failure is non-fatal — account is created
+      }
+
+      results.push({ email: contact.email, status: 'created', tempPassword });
+    }
+
+    res.json({ results, portalUrl });
   } catch (error) { next(error); }
 });
 

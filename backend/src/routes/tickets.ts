@@ -24,14 +24,14 @@ router.get('/', authenticate, authorize(['CLIENT', 'ADMIN']), async (req: Authen
     const tickets = await prisma.ticket.findMany({
       where,
       include: {
-        client: {
-             select: { name: true, email: true, company: true }
+        client: { select: { name: true, email: true, company: true } },
+        messages: {
+          include: { sender: { select: { id: true, name: true, role: true } } },
+          orderBy: { createdAt: 'asc' },
         },
-        _count: {
-             select: { messages: true }
-        }
+        _count: { select: { messages: true } },
       },
-      orderBy: { updatedAt: 'desc' }
+      orderBy: { updatedAt: 'desc' },
     });
 
     res.json({ tickets });
@@ -139,6 +139,24 @@ router.post('/:id/reply', authenticate, async (req: AuthenticatedRequest, res: R
     } catch (error) {
         next(error);
     }
+});
+
+// PATCH /api/tickets/:id/escalate (Client escalates own ticket to CRITICAL)
+router.patch('/:id/escalate', authenticate, authorize(['CLIENT']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const ticket = await prisma.ticket.findUnique({ where: { id } });
+    if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
+    if (ticket.clientId !== req.user!.id) return res.status(403).json({ message: 'Access denied' });
+    const updated = await prisma.ticket.update({
+      where: { id },
+      data: { priority: 'CRITICAL', updatedAt: new Date() },
+    });
+    await notifyTicketUpdate(ticket.clientId, ticket.subject, 'ESCALATED');
+    res.json(updated);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // PATCH /api/tickets/:id/status (Admin only)

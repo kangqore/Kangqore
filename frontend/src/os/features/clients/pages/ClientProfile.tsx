@@ -1,13 +1,17 @@
-import { Phone, Mail, MessageSquare, Video, Star, ChevronLeft } from 'lucide-react'
+import { useState } from 'react'
+import { Phone, Mail, MessageSquare, Video, Star, ChevronLeft, ExternalLink, Check, Users } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Avatar } from '@design-system/components/Avatar'
 import { Button } from '@design-system/components/Button'
 import { Progress } from '@design-system/components/Progress'
 import { Divider } from '@design-system/components/Divider'
+import { EditDrawer } from '@components/EditDrawer'
+import { api, isDemo } from '@lib/api'
 import { useClientsStore } from '../store'
-import type { ClientHealth, RelationshipTier, InteractionType } from '../types'
+import type { ClientHealth, RelationshipTier, InteractionType, Contact } from '../types'
 
 const HEALTH_VARIANT: Record<ClientHealth, 'success' | 'warning' | 'danger' | 'info'> = {
   excellent: 'info', good: 'success', 'at-risk': 'warning', critical: 'danger',
@@ -30,6 +34,123 @@ const INTERACTION_COLOR: Record<InteractionType, string> = {
 }
 const fmt = (n: number) => `₹${(n / 1000).toFixed(0)}k`
 
+// ─── invite drawer ────────────────────────────────────────────────────────────
+
+type InviteResult = { email: string; status: 'created' | 'exists'; tempPassword?: string }
+
+function InviteToPortalDrawer({
+  clientId,
+  contacts,
+  onClose,
+}: {
+  clientId: string
+  contacts: Contact[]
+  onClose: () => void
+}) {
+  const [selected, setSelected] = useState<Set<string>>(() => new Set(contacts.filter(c => c.isPrimary).map(c => c.email)))
+  const [results, setResults] = useState<InviteResult[] | null>(null)
+
+  const toggle = (email: string) =>
+    setSelected(s => { const n = new Set(s); n.has(email) ? n.delete(email) : n.add(email); return n })
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const payload = contacts.filter(c => selected.has(c.email)).map(c => ({ name: c.name, email: c.email }))
+      if (isDemo()) return payload.map(c => ({ email: c.email, status: 'created' as const, tempPassword: 'Demo123!' }))
+      const res = await api.post(`/admin/clients/${clientId}/portal-invite`, { contacts: payload })
+      return res.data.results as InviteResult[]
+    },
+    onSuccess: (data) => setResults(data),
+  })
+
+  const canSend = selected.size > 0 && !results
+
+  return (
+    <EditDrawer
+      open
+      onClose={onClose}
+      title="Invite to Client Portal"
+      description="Selected contacts will receive an email with their login credentials."
+      width="md"
+      footer={results ? (
+        <Button variant="secondary" size="sm" onClick={onClose}>Done</Button>
+      ) : (
+        <>
+          <Button variant="secondary" size="sm" onClick={onClose}>Cancel</Button>
+          <Button
+            variant="primary" size="sm"
+            leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
+            disabled={!canSend || isPending}
+            onClick={() => mutate()}
+          >
+            {isPending ? 'Sending…' : `Send ${selected.size > 0 ? `${selected.size} ` : ''}Invite${selected.size !== 1 ? 's' : ''}`}
+          </Button>
+        </>
+      )}
+    >
+      {results ? (
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+              <Check className="w-4 h-4 text-emerald-400" />
+            </div>
+            <p className="text-sm font-semibold text-white">Invites sent</p>
+          </div>
+          {results.map(r => (
+            <div key={r.email} className="rounded-xl p-3.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <span className="text-sm font-semibold text-slate-200 truncate">{r.email}</span>
+                <Badge variant={r.status === 'created' ? 'success' : 'warning'} size="sm">
+                  {r.status === 'created' ? 'Account created' : 'Already exists'}
+                </Badge>
+              </div>
+              {r.tempPassword && (
+                <p className="text-xs text-slate-500 mt-1">
+                  Temp password: <span className="font-mono text-blue-400">{r.tempPassword}</span>
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-2">
+          <p className="text-xs text-slate-500 mb-3 flex items-center gap-1.5">
+            <Users className="w-3.5 h-3.5" />
+            {contacts.length} contact{contacts.length !== 1 ? 's' : ''} on this account
+          </p>
+          {contacts.map(ct => (
+            <button
+              key={ct.email}
+              onClick={() => toggle(ct.email)}
+              className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all"
+              style={{
+                background: selected.has(ct.email) ? 'rgba(37,100,234,0.08)' : 'rgba(255,255,255,0.02)',
+                border: `1px solid ${selected.has(ct.email) ? 'rgba(37,100,234,0.3)' : 'rgba(255,255,255,0.06)'}`,
+              }}
+            >
+              <div className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 transition-all ${
+                selected.has(ct.email) ? 'bg-os-blue' : 'border border-slate-600'
+              }`}>
+                {selected.has(ct.email) && <Check className="w-2.5 h-2.5 text-white" />}
+              </div>
+              <Avatar name={ct.name} size="sm" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <p className="text-sm font-semibold text-slate-200 truncate">{ct.name}</p>
+                  {ct.isPrimary && <Badge variant="brand" size="sm">Primary</Badge>}
+                </div>
+                <p className="text-xs text-slate-500 truncate">{ct.email}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </EditDrawer>
+  )
+}
+
+// ─── page ─────────────────────────────────────────────────────────────────────
+
 export function ClientProfile() {
   const navigate = useNavigate()
   const { clients, setSelected, clientInteractions, clientSLAs, clientMilestones, clientGovernance } = useClientsStore()
@@ -44,6 +165,9 @@ export function ClientProfile() {
   const slaBreached  = slas.filter(s => s.status === 'breached').length
   const slaAtRisk    = slas.filter(s => s.status === 'at-risk').length
   const completedMs  = milestones.filter(m => m.status === 'completed').length
+
+  const [inviteOpen, setInviteOpen] = useState(false)
+
   return (
     <div className="space-y-6">
       {/* Selector + back */}
@@ -54,10 +178,18 @@ export function ClientProfile() {
         <select
           value={selectedId}
           onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20"
+          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20"
         >
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
+        <Button
+          variant="secondary" size="sm"
+          leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
+          onClick={() => setInviteOpen(true)}
+          className="ml-auto"
+        >
+          Invite to Portal
+        </Button>
       </div>
 
       {/* Header card */}
@@ -263,6 +395,14 @@ export function ClientProfile() {
           </div>
         </Card>
       </div>
+
+      {inviteOpen && (
+        <InviteToPortalDrawer
+          clientId={client.id}
+          contacts={client.contacts}
+          onClose={() => setInviteOpen(false)}
+        />
+      )}
     </div>
   )
 }

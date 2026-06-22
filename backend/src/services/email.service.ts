@@ -100,6 +100,48 @@ class EmailService {
     await this.send(msg);
   }
 
+  async sendPortalInviteEmail(options: {
+    to: string;
+    name: string;
+    tempPassword: string;
+    portalUrl: string;
+    invitedByName: string;
+    clientCompany: string;
+  }) {
+    const { to, name, tempPassword, portalUrl, invitedByName, clientCompany } = options;
+    const html = `
+      <div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#f9fafb;border-radius:12px;">
+        <div style="background:#0b1121;border-radius:12px;padding:36px;border:1px solid rgba(255,255,255,0.08);">
+          <div style="text-align:center;margin-bottom:28px;">
+            <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(37,100,234,0.1);border:1px solid rgba(37,100,234,0.2);border-radius:10px;padding:10px 20px;">
+              <span style="font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.5px;">Kangqore</span>
+            </div>
+          </div>
+          <h2 style="color:#fff;font-size:22px;font-weight:700;margin:0 0 8px;text-align:center;">You're invited to the Client Portal</h2>
+          <p style="color:#94a3b8;font-size:14px;text-align:center;margin:0 0 28px;">
+            ${invitedByName} has given you access to the Kangqore Client Portal for <strong style="color:#e2e8f0;">${clientCompany}</strong>.
+          </p>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;margin-bottom:24px;">
+            <p style="color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 12px;">Your login credentials</p>
+            <p style="color:#e2e8f0;font-size:14px;margin:0 0 6px;"><span style="color:#64748b;">Email:</span> <strong>${to}</strong></p>
+            <p style="color:#e2e8f0;font-size:14px;margin:0;"><span style="color:#64748b;">Temporary password:</span> <strong style="font-family:monospace;background:rgba(37,100,234,0.1);padding:2px 8px;border-radius:4px;color:#93c5fd;">${tempPassword}</strong></p>
+          </div>
+          <div style="text-align:center;margin-bottom:24px;">
+            <a href="${portalUrl}" style="display:inline-block;background:linear-gradient(135deg,#2564ea,#0ea5e9);color:#fff;padding:14px 40px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;">Open Client Portal →</a>
+          </div>
+          <p style="color:#475569;font-size:12px;text-align:center;margin:0;">You'll be prompted to change your password on first login.<br>Portal: <a href="${portalUrl}" style="color:#60a5fa;">${portalUrl}</a></p>
+        </div>
+        <p style="text-align:center;color:#94a3b8;font-size:12px;margin-top:16px;">Kangqore · <a href="https://kangqore.com" style="color:#94a3b8;">kangqore.com</a></p>
+      </div>`;
+    await this.send({
+      to,
+      from: process.env.EMAIL_FROM || 'noreply@kangqore.com',
+      subject: `Your Kangqore Client Portal access — ${clientCompany}`,
+      text: `Hi ${name},\n\n${invitedByName} has invited you to the Kangqore Client Portal.\n\nLogin: ${portalUrl}\nEmail: ${to}\nTemporary password: ${tempPassword}\n\nPlease change your password after first login.\n\nKangqore`,
+      html,
+    });
+  }
+
   async sendPasswordResetEmail(email: string, token: string) {
     const resetLink = `${process.env.CORS_ORIGINS?.split(',')[0]}/reset-password?token=${token}`;
     const msg = {

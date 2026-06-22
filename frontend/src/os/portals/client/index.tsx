@@ -5,7 +5,8 @@ import {
   Calendar, CheckSquare, Headphones, GitPullRequest,
   MessageSquare, BarChart2, LogOut, ChevronLeft,
   Bell, ChevronRight, Phone, Search, Settings, User,
-  ChevronDown, SlidersHorizontal,
+  ChevronDown, SlidersHorizontal, BookOpen, Package, Brain,
+  AlertTriangle, X, Clock,
 } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { Avatar } from '@design-system/components/Avatar'
@@ -21,10 +22,42 @@ import { ClientChangeRequests }    from './pages/ClientChangeRequests'
 import { ClientFeedback }          from './pages/ClientFeedback'
 import { ClientExecutiveReport }   from './pages/ClientExecutiveReport'
 import { ClientSettings }          from './pages/ClientSettings'
+import { ClientKnowledge }         from './pages/ClientKnowledge'
+import { ClientServices }          from './pages/ClientServices'
+import { ClientWaanda }            from './pages/ClientWaanda'
 import { useAuthStore }            from '@store/auth'
 
 const ACCENT = '#2564ea'
 const BASE   = '/kangqore-view/client'
+
+// ── Mock notifications ─────────────────────────────────────────────────────────
+
+type NotifType = 'kimmp' | 'invoice' | 'milestone' | 'ticket'
+
+interface ClientNotif {
+  id: string
+  type: NotifType
+  title: string
+  body: string
+  time: string
+  read: boolean
+}
+
+const MOCK_NOTIFS: ClientNotif[] = [
+  { id: 'n1', type: 'kimmp',     title: 'WAANDA: delivery risk detected',           body: 'Project Phoenix milestone is 3 days from a potential breach. WAANDA recommends a sync with your delivery lead.',           time: '2 hours ago',  read: false },
+  { id: 'n2', type: 'invoice',   title: 'Invoice INV-2026-042 due in 7 days',       body: 'Payment of ₹3,40,000 is due on 29 Jun 2026. Please arrange bank transfer to avoid a late payment notice.',               time: '1 day ago',    read: false },
+  { id: 'n3', type: 'milestone', title: 'Phase 2 Delivery — milestone completed',   body: 'Your team has confirmed Phase 2 delivery as complete. Your Executive Report has been updated to reflect this milestone.',   time: '2 days ago',   read: true  },
+  { id: 'n4', type: 'ticket',    title: 'Support ticket #TK-001 resolved',          body: 'The staging environment issue (500 error on patient login) has been resolved and confirmed by your UAT team.',             time: '3 days ago',   read: true  },
+  { id: 'n5', type: 'kimmp',     title: 'WAANDA: AR health signal',                 body: 'Accounts receivable aging has increased by 18% this month. WAANDA recommends reviewing INV-2026-038 before end of week.',  time: '4 days ago',   read: true  },
+  { id: 'n6', type: 'milestone', title: 'Upcoming: UAT signoff due in 5 days',      body: 'UAT signoff is due on 28 Jun 2026. Please ensure your team is available and the test plan is finalised.',                  time: '5 days ago',   read: true  },
+]
+
+const NOTIF_META: Record<NotifType, { color: string; bg: string; border: string; label: string }> = {
+  kimmp:     { color: '#a78bfa', bg: 'rgba(167,139,250,0.08)', border: 'rgba(167,139,250,0.2)', label: 'WAANDA'    },
+  invoice:   { color: '#fbbf24', bg: 'rgba(251,191,36,0.08)',  border: 'rgba(251,191,36,0.2)',  label: 'Finance'   },
+  milestone: { color: '#34d399', bg: 'rgba(52,211,153,0.08)',  border: 'rgba(52,211,153,0.2)',  label: 'Delivery'  },
+  ticket:    { color: '#60a5fa', bg: 'rgba(96,165,250,0.08)',  border: 'rgba(96,165,250,0.2)',  label: 'Support'   },
+}
 
 // ── Nav groups ─────────────────────────────────────────────────────────────────
 
@@ -33,40 +66,49 @@ const NAV_GROUPS = [
     label: 'OVERVIEW',
     color: '#2564ea',
     items: [
-      { path: '',                label: 'Dashboard',  icon: LayoutGrid,    end: true,  badge: 0 },
+      { path: '',                label: 'Dashboard',  icon: LayoutGrid,     end: true,  badge: 0 },
     ],
   },
   {
     label: 'WORK',
     color: '#7f53f9',
     items: [
-      { path: 'projects',        label: 'Projects',   icon: Briefcase,     end: false, badge: 0 },
-      { path: 'tasks',           label: 'Tasks',      icon: CheckSquare,   end: false, badge: 3 },
-      { path: 'meetings',        label: 'Meetings',   icon: Calendar,      end: false, badge: 0 },
+      { path: 'projects',        label: 'Projects',   icon: Briefcase,      end: false, badge: 0 },
+      { path: 'tasks',           label: 'Tasks',      icon: CheckSquare,    end: false, badge: 3 },
+      { path: 'meetings',        label: 'Meetings',   icon: Calendar,       end: false, badge: 0 },
     ],
   },
   {
     label: 'FINANCE',
     color: '#fdab3d',
     items: [
-      { path: 'invoices',        label: 'Invoices',   icon: FileText,      end: false, badge: 1, badgeDanger: true },
-      { path: 'documents',       label: 'Documents',  icon: FolderOpen,    end: false, badge: 0 },
+      { path: 'invoices',        label: 'Invoices',   icon: FileText,       end: false, badge: 1, badgeDanger: true },
+      { path: 'documents',       label: 'Documents',  icon: FolderOpen,     end: false, badge: 0 },
+    ],
+  },
+  {
+    label: 'SERVICES',
+    color: '#00c875',
+    items: [
+      { path: 'services',        label: 'Services',   icon: Package,        end: false, badge: 0 },
     ],
   },
   {
     label: 'SUPPORT',
-    color: '#00c875',
+    color: '#2564ea',
     items: [
-      { path: 'support',         label: 'Support',    icon: Headphones,    end: false, badge: 2 },
-      { path: 'change-requests', label: 'Changes',    icon: GitPullRequest,end: false, badge: 0 },
-      { path: 'feedback',        label: 'Feedback',   icon: MessageSquare, end: false, badge: 0 },
+      { path: 'support',         label: 'Support',    icon: Headphones,     end: false, badge: 2 },
+      { path: 'change-requests', label: 'Changes',    icon: GitPullRequest, end: false, badge: 0 },
+      { path: 'feedback',        label: 'Feedback',   icon: MessageSquare,  end: false, badge: 0 },
+      { path: 'knowledge',       label: 'Knowledge',  icon: BookOpen,       end: false, badge: 0 },
     ],
   },
   {
     label: 'INSIGHTS',
-    color: '#e2445c',
+    color: '#7f53f9',
     items: [
-      { path: 'report',          label: 'Report',     icon: BarChart2,         end: false, badge: 0 },
+      { path: 'waanda',          label: 'WAANDA',     icon: Brain,          end: false, badge: 0 },
+      { path: 'report',          label: 'Report',     icon: BarChart2,      end: false, badge: 0 },
     ],
   },
   {
@@ -224,15 +266,106 @@ function ClientSidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: 
   )
 }
 
+// ── Notifications panel ───────────────────────────────────────────────────────
+
+function NotificationsPanel({ onClose }: { onClose: () => void }) {
+  const [notifs, setNotifs] = useState<ClientNotif[]>(MOCK_NOTIFS)
+  const unread = notifs.filter(n => !n.read).length
+
+  const markRead = (id: string) =>
+    setNotifs(ns => ns.map(n => n.id === id ? { ...n, read: true } : n))
+
+  const markAllRead = () => setNotifs(ns => ns.map(n => ({ ...n, read: true })))
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div className="fixed inset-0 z-40" onClick={onClose} />
+
+      {/* Panel */}
+      <div
+        className="fixed top-0 right-0 h-full w-[380px] z-50 flex flex-col"
+        style={{ background: '#080c18', borderLeft: '1px solid rgba(255,255,255,0.07)', boxShadow: '-20px 0 48px rgba(0,0,0,0.5)' }}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="flex items-center gap-2.5">
+            <Bell className="w-4 h-4 text-slate-400" />
+            <span className="text-sm font-bold text-white">Notifications</span>
+            {unread > 0 && (
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-red-500 text-white">{unread}</span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            {unread > 0 && (
+              <button onClick={markAllRead} className="text-[11px] text-slate-500 hover:text-blue-400 transition-colors">
+                Mark all read
+              </button>
+            )}
+            <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-300 hover:bg-white/5 transition-all">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* List */}
+        <div className="flex-1 overflow-y-auto py-2">
+          {notifs.map(n => {
+            const meta = NOTIF_META[n.type]
+            return (
+              <button
+                key={n.id}
+                onClick={() => markRead(n.id)}
+                className="w-full text-left px-4 py-3.5 transition-all relative"
+                style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
+              >
+                {/* Unread dot */}
+                {!n.read && (
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full" style={{ background: meta.color }} />
+                )}
+                <div className="pl-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span
+                      className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded"
+                      style={{ background: meta.bg, color: meta.color, border: `1px solid ${meta.border}` }}
+                    >
+                      {meta.label}
+                    </span>
+                    <span className="flex items-center gap-1 text-[10px] text-slate-600">
+                      <Clock className="w-2.5 h-2.5" />{n.time}
+                    </span>
+                  </div>
+                  <p className={`text-xs font-semibold mb-0.5 ${n.read ? 'text-slate-400' : 'text-white'}`}>{n.title}</p>
+                  <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">{n.body}</p>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Footer */}
+        <div className="flex-shrink-0 p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          <p className="text-[11px] text-slate-600 text-center">Notifications from WAANDA, Finance, and Delivery</p>
+        </div>
+      </div>
+    </>
+  )
+}
+
 // ── Topbar ────────────────────────────────────────────────────────────────────
 
 function ClientTopbar() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { user, logout } = useAuthStore()
-  const [userOpen, setUserOpen] = useState(false)
+  const [userOpen,      setUserOpen]      = useState(false)
+  const [notifOpen,     setNotifOpen]     = useState(false)
   const [searchFocused, setSearchFocused] = useState(false)
   const userRef = useRef<HTMLDivElement>(null)
+
+  const unreadCount = MOCK_NOTIFS.filter(n => !n.read).length
 
   useEffect(() => {
     if (!userOpen) return
@@ -252,6 +385,7 @@ function ClientTopbar() {
   const displayEmail = user?.email ?? ''
 
   return (
+    <>
     <header
       className="flex-shrink-0 flex items-center justify-between px-4 relative z-20 bg-slate-900/40 backdrop-blur-2xl"
       style={{ height: 60, borderBottom: '1px solid rgba(6,11,24,0.6)' }}
@@ -293,13 +427,16 @@ function ClientTopbar() {
 
         {/* Bell */}
         <button
+          onClick={() => setNotifOpen(o => !o)}
           className="relative h-9 w-9 rounded-full flex items-center justify-center text-slate-500 transition-colors"
-          style={{ border: '1px solid #1e2b40', background: '#0d1117' }}
+          style={{ border: '1px solid #1e2b40', background: notifOpen ? '#121d30' : '#0d1117' }}
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#121d30'; (e.currentTarget as HTMLElement).style.color = '#94a3b8' }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0d1117'; (e.currentTarget as HTMLElement).style.color = '' }}
+          onMouseLeave={e => { if (!notifOpen) (e.currentTarget as HTMLElement).style.background = '#0d1117'; (e.currentTarget as HTMLElement).style.color = '' }}
         >
           <Bell className="w-4 h-4" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full border-2 border-[#080c18]" style={{ background: '#e2445c' }} />
+          {unreadCount > 0 && (
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full border-2 border-[#080c18]" style={{ background: '#e2445c' }} />
+          )}
         </button>
 
         <div className="w-px h-5 mx-1 hidden sm:block" style={{ background: '#1e2b40' }} />
@@ -377,6 +514,8 @@ function ClientTopbar() {
         </div>
       </div>
     </header>
+    {notifOpen && <NotificationsPanel onClose={() => setNotifOpen(false)} />}
+    </>
   )
 }
 
@@ -406,6 +545,9 @@ export function ClientPortal() {
                 <Route path="invoices"           element={<ClientInvoices />}        />
                 <Route path="documents"          element={<ClientDocuments />}       />
                 <Route path="report"             element={<ClientExecutiveReport />} />
+                <Route path="knowledge"          element={<ClientKnowledge />}       />
+                <Route path="services"           element={<ClientServices />}        />
+                <Route path="waanda"             element={<ClientWaanda />}          />
                 <Route path="settings"           element={<ClientSettings />}        />
                 <Route path="*"                  element={<Navigate to={BASE} replace />} />
               </Routes>
