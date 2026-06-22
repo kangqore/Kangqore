@@ -256,6 +256,38 @@ router.post('/:id/tasks', authenticate, authorize(['CLIENT', 'ADMIN']), async (r
   }
 });
 
+// Update project (admin or owner)
+router.patch('/:id', authenticate, authorize(['ADMIN', 'CLIENT', 'PARTNER']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params
+    const { name, description, client, owner, startDate, endDate, budget, status, health, progress } = req.body
+
+    const existing = await prisma.project.findFirst({ where: { id } })
+    if (!existing) throw createError('Project not found', 404)
+
+    if (req.user!.role !== 'ADMIN' && existing.clientId !== req.user!.id) {
+      throw createError('Forbidden', 403)
+    }
+
+    const data: Record<string, unknown> = {}
+    if (name        !== undefined) data.name        = name
+    if (description !== undefined) data.description = description
+    if (client      !== undefined) data.clientName  = client
+    if (owner       !== undefined) data.owner       = owner
+    if (startDate   !== undefined) data.startDate   = new Date(startDate)
+    if (endDate     !== undefined) data.endDate     = new Date(endDate)
+    if (budget      !== undefined) data.budget      = Number(budget)
+    if (status      !== undefined) data.status      = status
+    if (health      !== undefined) data.health      = health
+    if (progress    !== undefined) data.progress    = Number(progress)
+
+    const project = await prisma.project.update({ where: { id }, data })
+    res.json({ project })
+  } catch (error) {
+    next(error)
+  }
+})
+
 // Delete project
 router.delete('/:id', authenticate, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {

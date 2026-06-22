@@ -1,4 +1,5 @@
 import { Router, Response, NextFunction } from 'express';
+import * as os from 'os';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
 import { Role } from '@prisma/client';
@@ -13,6 +14,9 @@ import { ClientSignalsService } from '../services/ClientSignalsService';
 import { ClientConfusionService } from '../services/ClientConfusionService';
 import accountabilityService from '../services/AccountabilityService';
 import projectProgressService from '../services/ProjectProgressService';
+import { SystemLearning } from '../kangqore-immp/agents/systemLearning';
+import { KimmpSystemDispatcher } from '../kangqore-immp/agents/systemDispatcher';
+import { SignalLedger } from '../kangqore-immp/signals/signalLedger.service';
 
 const clientSignalsService = new ClientSignalsService();
 const clientConfusionService = new ClientConfusionService();
@@ -27,36 +31,60 @@ router.post('/cache/clear', authenticate, authorize([Role.ADMIN]), (req, res) =>
 });
 
 // Get user statistics by role
-router.get('/stats', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.get('/stats', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
+    const now = new Date()
+    const thirtyDaysAgo = new Date(now); thirtyDaysAgo.setDate(now.getDate() - 30)
+
+    // Monthly buckets for the last 6 months
+    const MONTHS = Array.from({ length: 6 }, (_, i) => {
+      const d = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1)
+      return { label: d.toLocaleString('en-GB', { month: 'short' }), start: d, end: new Date(d.getFullYear(), d.getMonth() + 1, 1) }
+    })
+
     const [
-      total_users,
-      clients,
-      partners,
-      investors,
-      job_seekers,
-      admins
+      total_users, clients, partners, investors, job_seekers, admins,
+      totalProjects,
+      totalInsights,
+      consultPending, consultScheduled, consultCompleted, consultCancelled,
+      newUsersThisMonth,
+      ...monthCounts
     ] = await Promise.all([
       prisma.user.count(),
-      prisma.user.count({ where: { role: 'CLIENT' } }),
-      prisma.user.count({ where: { role: 'PARTNER' } }),
-      prisma.user.count({ where: { role: 'INVESTOR' } }),
-      prisma.user.count({ where: { role: 'JOB_SEEKER' } }),
-      prisma.user.count({ where: { role: 'ADMIN' } })
-    ]);
+      prisma.user.count({ where: { role: 'CLIENT'    } }),
+      prisma.user.count({ where: { role: 'PARTNER'   } }),
+      prisma.user.count({ where: { role: 'INVESTOR'  } }),
+      prisma.user.count({ where: { role: 'JOB_SEEKER'} }),
+      prisma.user.count({ where: { role: 'ADMIN'     } }),
+      prisma.project.count({ where: { status: { not: 'ARCHIVED' } } }),
+      (prisma as any).kimmpSignal?.count().catch(() => 0) ?? Promise.resolve(0),
+      prisma.consultation.count({ where: { status: 'PENDING'   } }),
+      prisma.consultation.count({ where: { status: 'SCHEDULED' } }),
+      prisma.consultation.count({ where: { status: 'COMPLETED' } }),
+      prisma.consultation.count({ where: { status: 'CANCELLED' } }),
+      prisma.user.count({ where: { createdAt: { gte: thirtyDaysAgo } } }),
+      ...MONTHS.map(m => prisma.user.count({ where: { createdAt: { gte: m.start, lt: m.end } } })),
+    ])
+
+    const prevUsers = total_users - newUsersThisMonth
+    const user_growth_rate = prevUsers > 0 ? parseFloat(((newUsersThisMonth / prevUsers) * 100).toFixed(1)) : (total_users > 0 ? 100 : 0)
 
     res.json({
       total_users,
-      by_role: {
-        clients,
-        partners,
-        investors,
-        job_seekers,
-        admins
-      }
-    });
+      totalProjects,
+      totalInsights: Number(totalInsights),
+      user_growth_rate,
+      user_growth: MONTHS.map((m, i) => ({ name: m.label, value: Number(monthCounts[i] ?? 0) })),
+      by_role: { clients, partners, investors, job_seekers, admins },
+      consultation_stats: {
+        pending:   consultPending,
+        scheduled: consultScheduled,
+        completed: consultCompleted,
+        cancelled: consultCancelled,
+      },
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
 });
 
@@ -1395,10 +1423,18 @@ router.patch('/leads/:id', authenticate, authorize(['ADMIN']), async (req: Authe
     const { id } = req.params;
     const { status, companyName, name, role, email, phone } = req.body;
 
+    // Capture previous status for outcome tracking
+    const prevLead = await prisma.eqoreLead.findUnique({
+      where: { id }, select: { status: true, name: true, companyName: true },
+    });
+    const prevStatus  = prevLead?.status ?? ''
+    const newStatus   = status ? status.toUpperCase() : prevStatus
+    const leadLabel   = `${prevLead?.name ?? 'Unknown'} (${prevLead?.companyName ?? 'Unknown'})`
+
     const lead = await prisma.eqoreLead.update({
       where: { id },
       data: {
-        ...(status      && { status: status.toUpperCase() }),
+        ...(status      && { status: newStatus }),
         ...(companyName !== undefined && { companyName }),
         ...(name        !== undefined && { name }),
         ...(role        !== undefined && { role }),
@@ -1409,10 +1445,97 @@ router.patch('/leads/:id', authenticate, authorize(['ADMIN']), async (req: Authe
     });
 
     res.json({ lead });
+
+    // ── Outcome tracking + event triggers (fire-and-forget) ──────────────────
+    if (status && newStatus !== prevStatus) {
+      ;(async () => {
+        try {
+          const isWon  = newStatus === 'WON'  || newStatus === 'CONVERTED'
+          const isLost = newStatus === 'LOST'  || newStatus === 'REJECTED' || newStatus === 'CHURNED'
+
+          // 1. Outcome feedback: auto-rate recent LEAD_INTEL dispatches
+          if (isWon || isLost) {
+            const recentDispatches: any[] = await (prisma as any).kimmpSystemDispatch.findMany({
+              where: {
+                system:    'LEAD_INTEL',
+                createdAt: { gte: new Date(Date.now() - 30 * 86_400_000) },
+                feedback:  null,
+              },
+              orderBy: { createdAt: 'desc' },
+              take: 3,
+              select: { id: true },
+            }).catch(() => [])
+
+            for (const d of recentDispatches) {
+              await SystemLearning.recordFeedback({
+                dispatchId: d.id,
+                feedback:   isWon ? 'ACCEPTED' : 'DISMISSED',
+                correction: isLost
+                  ? `Lead ${leadLabel} was lost (${newStatus}) — review scoring approach`
+                  : undefined,
+              }).catch(() => {})
+            }
+
+            // Emit outcome signal
+            await SignalLedger.record({
+              sourceModule:   'lead-intelligence',
+              signalType:     isWon ? 'lead.outcome.won' : 'lead.outcome.lost',
+              signalCategory: isWon ? 'OPPORTUNITY' : 'RISK',
+              signalValue:    `Lead ${leadLabel} → ${newStatus}`,
+              severity:       isWon ? 'LOW' : 'MODERATE',
+              confidence:     1,
+              metadata:       { leadId: id, previousStatus: prevStatus },
+            }).catch(() => {})
+          }
+
+          // 2. Event triggers: fire the right system based on status change
+          const userId = req.user?.userId
+
+          if (isWon) {
+            // Deal won → trigger all systems with win context
+            KimmpSystemDispatcher.triggerLoop({
+              trigger: 'event.deal.won',
+              input:   `Deal won: ${leadLabel} has converted to a client. Analyse what worked and update our playbooks accordingly.`,
+              userId,
+            }).catch(() => {})
+
+          } else if (isLost) {
+            // Deal lost → SENTINEL post-mortem
+            KimmpSystemDispatcher.run('SENTINEL', {
+              trigger: 'event.deal.lost',
+              input:   `Deal lost: ${leadLabel} status moved to ${newStatus}. Conduct a post-mortem — what went wrong and what risk signals did we miss?`,
+              userId,
+            }).catch(() => {})
+
+          } else if (['CONTACTED', 'QUALIFIED', 'PROPOSAL'].includes(newStatus)) {
+            // Pipeline progression → LEAD_INTEL
+            KimmpSystemDispatcher.run('LEAD_INTEL', {
+              trigger: `event.lead.${newStatus.toLowerCase()}`,
+              input:   `Lead ${leadLabel} moved to ${newStatus}. Assess conversion probability and recommended next actions.`,
+              userId,
+            }).catch(() => {})
+          }
+
+        } catch (err: any) {
+          // Silent — never break the response
+        }
+      })()
+    }
   } catch (error) {
     next(error);
   }
 });
+
+// DELETE /api/admin/leads/:id
+router.delete('/leads/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params
+    await prisma.eqoreLead.delete({ where: { id } })
+    res.json({ message: 'Lead deleted' })
+  } catch (error) {
+    next(error)
+  }
+})
 
 // =====================================================
 // ADMIN INVESTORS — list + updates
@@ -1581,7 +1704,63 @@ router.get('/health-deep', authenticate, authorize([Role.ADMIN]), async (_req: A
 
   services.push({ service: 'Socket.io', status: 'LIVE' })
 
-  res.json({ services, checkedAt: new Date().toISOString() })
+  // Real OS metrics
+  const totalMem = os.totalmem()
+  const freeMem  = os.freemem()
+  const ramPct   = Math.round(((totalMem - freeMem) / totalMem) * 100)
+  const loadAvg  = os.loadavg()[0]                          // 1-min load average
+  const cpuCount = os.cpus().length
+  const cpuPct   = Math.min(99, Math.round((loadAvg / cpuCount) * 100))
+  const onlineCount = services.filter(s => ['ONLINE','ACTIVE','HEALTHY','RUNNING','LIVE'].includes(s.status)).length
+  const healthPct   = Math.round((onlineCount / services.length) * 100)
+
+  res.json({
+    services,
+    checkedAt: new Date().toISOString(),
+    system: { cpu: cpuPct, ram: ramPct, network: 0, healthPct },
+  })
+})
+
+// ─── Quick Create: Lead (Contact) ─────────────────────────────────────────────
+router.post('/contacts', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { name, email, phone, organization, subject, message } = req.body ?? {}
+    if (!name || typeof name !== 'string') return res.status(400).json({ error: '`name` is required' })
+    if (!email || typeof email !== 'string') return res.status(400).json({ error: '`email` is required' })
+    const contact = await prisma.contact.create({
+      data: {
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phone: phone?.trim() ?? null,
+        organization: organization?.trim() ?? null,
+        subject: subject?.trim() ?? null,
+        message: message?.trim() ?? '(Created via admin)',
+        source: 'ADMIN',
+        status: 'NEW',
+      },
+    })
+    res.status(201).json({ contact })
+  } catch (err) { next(err) }
+})
+
+// ─── Quick Create: Project ─────────────────────────────────────────────────────
+router.post('/projects', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { title, clientId, description, dueDate, category } = req.body ?? {}
+    if (!title || typeof title !== 'string') return res.status(400).json({ error: '`title` is required' })
+    if (!clientId || typeof clientId !== 'string') return res.status(400).json({ error: '`clientId` is required' })
+    const project = await prisma.project.create({
+      data: {
+        title: title.trim(),
+        clientId,
+        description: description?.trim() ?? null,
+        dueDate: dueDate ? new Date(dueDate) : null,
+        category: category?.trim() ?? 'Transformation',
+        status: 'ACTIVE',
+      },
+    })
+    res.status(201).json({ project })
+  } catch (err) { next(err) }
 })
 
 export default router;

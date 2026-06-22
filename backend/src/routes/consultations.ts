@@ -6,6 +6,7 @@ import logger from '../utils/logger';
 import { createError } from '../middleware/errorHandler';
 // import { requireAuth, requireRole, AuthRequest } from '../middleware/rbac';
 import { authenticate, authorize, AuthenticatedRequest as AuthRequest } from '../middleware/auth';
+import { KimmpSystemDispatcher } from '../kangqore-immp/agents/systemDispatcher';
 
 const router = Router();
 
@@ -293,6 +294,16 @@ router.patch('/:id', authenticate, authorize(['ADMIN']), async (req: AuthRequest
     }
 
     res.json({ consultation });
+
+    // ── EQORE trigger on completion (fire-and-forget) ─────────────────────────
+    if (status === 'COMPLETED') {
+      const uid = (req as any).user?.userId
+      KimmpSystemDispatcher.run('EQORE', {
+        trigger: 'event.consultation.completed',
+        input:   `Consultation completed with ${consultation.name}${consultation.company ? ` (${consultation.company})` : ''} regarding "${consultation.service || consultation.topic || 'services'}". Analyse the outcome, update client intelligence, and recommend next engagement steps.`,
+        userId:  uid,
+      }).catch(() => {})
+    }
   } catch (error) {
     next(error);
   }

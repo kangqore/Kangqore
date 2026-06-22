@@ -109,9 +109,19 @@ async function scoreExecution(): Promise<{ score: number; meta: Record<string, a
 async function scoreRisk(): Promise<{ score: number; meta: Record<string, any> }> {
   try {
     const since72h = new Date(Date.now() - 72 * 3600_000)
+    // Scout signals use severity to mean "importance of the intelligence finding" — not business risk.
+    // Operational and meta signals are also excluded:
+    //   - SYSTEM_DISPATCH / LOOP_CASCADE_COMPLETED: AEGIS/loop lifecycle events
+    //   - TWIN_DIMENSION_CRITICAL: twin self-assessment (feedback loop if counted)
+    //   - PROACTIVE_ALERT: already counted separately via activeAlerts
+    const EXCLUDED_MODULES = ['scout']
+    const EXCLUDED_TYPES   = [
+      'TWIN_DIMENSION_CRITICAL', 'TWIN_RECOMPUTE', 'TWIN_HEALTH_ALERT',
+      'PROACTIVE_ALERT', 'SYSTEM_DISPATCH', 'LOOP_CASCADE_COMPLETED',
+    ]
     const [critical, high, failedTasks, activeAlerts] = await Promise.all([
-      (prisma as any).kimmpSignal.count({ where: { severity: 'CRITICAL', createdAt: { gte: since72h } } }).catch(() => 0),
-      (prisma as any).kimmpSignal.count({ where: { severity: 'HIGH',     createdAt: { gte: since72h } } }).catch(() => 0),
+      (prisma as any).kimmpSignal.count({ where: { severity: 'CRITICAL', createdAt: { gte: since72h }, sourceModule: { notIn: EXCLUDED_MODULES }, signalType: { notIn: EXCLUDED_TYPES } } }).catch(() => 0),
+      (prisma as any).kimmpSignal.count({ where: { severity: 'HIGH',     createdAt: { gte: since72h }, sourceModule: { notIn: EXCLUDED_MODULES }, signalType: { notIn: EXCLUDED_TYPES } } }).catch(() => 0),
       (prisma as any).kimmpGoalTask.count({ where: { status: { in: ['FAILED','OVERDUE'] } } }).catch(() => 0),
       (prisma as any).kimmpProactiveAlert.count({ where: { dismissed: false, severity: { in: ['HIGH','CRITICAL'] } } }).catch(() => 0),
     ])
@@ -192,7 +202,12 @@ export class KimmpDigitalTwin {
       },
     })
 
-    // Emit a signal if any dimension is in the danger zone
+    // Emit a signal only when a dimension crosses into genuine danger (< 20)
+    // and hasn't already been signalled for that dimension in the last 6 hours —
+    // prevents a storm of repeated alerts while the score sits at its natural floor.
+    const SIGNAL_THRESHOLD  = 20
+    const DEDUP_WINDOW_MS   = 6 * 3600_000
+    const since6h = new Date(Date.now() - DEDUP_WINDOW_MS)
     const dims = [
       { name: 'Revenue Health',      score: rev.score },
       { name: 'Pipeline Velocity',   score: pipe.score },
@@ -201,17 +216,25 @@ export class KimmpDigitalTwin {
       { name: 'Market Position',     score: mkt.score },
     ]
     for (const d of dims) {
-      if (d.score < 35) {
-        await SignalLedger.record({
-          sourceModule:   'kimmp',
-          signalType:     'TWIN_DIMENSION_CRITICAL',
-          signalCategory: 'RISK',
-          signalValue:    `Digital Twin: ${d.name} at ${d.score}/100 — critical threshold breached`,
-          severity:       'HIGH',
-          confidence:     90,
-          metadata:       { dimension: d.name, score: d.score, snapshotId: row.id },
-        }).catch(() => {})
-      }
+      if (d.score >= SIGNAL_THRESHOLD) continue
+      const alreadySignalled = await (prisma as any).kimmpSignal.findFirst({
+        where: {
+          signalType:   'TWIN_DIMENSION_CRITICAL',
+          sourceModule: 'kimmp',
+          createdAt:    { gte: since6h },
+          metadata:     { path: ['dimension'], equals: d.name },
+        },
+      }).catch(() => null)
+      if (alreadySignalled) continue
+      await SignalLedger.record({
+        sourceModule:   'kimmp',
+        signalType:     'TWIN_DIMENSION_CRITICAL',
+        signalCategory: 'RISK',
+        signalValue:    `Digital Twin: ${d.name} at ${d.score}/100 — critical threshold breached`,
+        severity:       'HIGH',
+        confidence:     90,
+        metadata:       { dimension: d.name, score: d.score, snapshotId: row.id },
+      }).catch(() => {})
     }
 
     logger.info(`[KIMMP:TWIN] Computed — overall ${overall} (REV:${rev.score} PIPE:${pipe.score} EXEC:${exec.score} RISK:${risk.score} MKT:${mkt.score})`)

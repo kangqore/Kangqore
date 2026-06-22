@@ -4,6 +4,7 @@ import logger from '../../utils/logger'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { WebSearchService, SearchResult } from './webSearch.service'
 import { prisma } from '../../lib/prisma'
+import { KimmpSystemDispatcher } from '../agents/systemDispatcher'
 
 // ─── Signal deduplication ─────────────────────────────────────────────────────
 // Prevents the same insight flooding the ledger when Scout runs every 10-15 min.
@@ -189,6 +190,17 @@ export class KimmpScoutService {
             metadata:       { query, url: sig.url ?? null, source: source.name },
           })
           totalSignals++
+
+          // High-severity competitor signals → wake ALIS immediately
+          if (
+            source.signalCategory === 'COMPETITOR' &&
+            (sig.severity === 'HIGH' || sig.severity === 'CRITICAL')
+          ) {
+            KimmpSystemDispatcher.run('ALIS', {
+              trigger: 'event.scout.competitor.high',
+              input:   `Urgent competitor intelligence from Scout: ${value}. Analyse competitive implications and update our positioning strategy accordingly.`,
+            }).catch(() => {})
+          }
         }
 
         // Log job record

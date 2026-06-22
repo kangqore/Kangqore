@@ -1,109 +1,95 @@
-// @ts-nocheck
-import express from 'express';
-import { PrismaClient } from '@prisma/client';
+import { Router, Response, NextFunction } from 'express'
+import { prisma } from '../lib/prisma'
+import { authenticate, authorize, AuthenticatedRequest } from '../middleware/auth'
 
-const router = express.Router();
-const prisma = new PrismaClient();
+const router = Router()
 
-// GET /api/admin/vendors - List all vendors with details
-router.get('/', async (req, res) => {
+const CATEGORY_COLORS: Record<string, string> = {
+  Cloud:    '#3b82f6',
+  SaaS:     '#10b981',
+  Staffing: '#f59e0b',
+}
+
+// GET /api/admin/vendors
+router.get('/', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const vendors: any = await prisma.vendor.findMany({
+    const vendors = await prisma.vendor.findMany({
       where: { status: 'ACTIVE' },
-      include: {
-        contracts: true
-      },
-      orderBy: { name: 'asc' }
-    });
+      include: { contracts: true },
+      orderBy: { name: 'asc' },
+    })
 
-    const formatted = vendors.map((v: any) => {
-      // Calculate monthly spend from active contracts (simplified)
-      const monthlySpend = v.contracts
-        .filter((c: any) => c.status === 'ACTIVE')
-        .reduce((sum: number, c: any) => sum + (Number(c.value) / 12), 0);
-        
-      // Find next renewal date
+    const formatted = vendors.map(v => {
+      const activeContracts = v.contracts.filter(c => c.status === 'ACTIVE')
+      const monthlySpend = activeContracts.reduce((sum, c) => sum + Number(c.value) / 12, 0)
       const nextRenewal = v.contracts
-        .filter((c: any) => c.renewalDate && new Date(c.renewalDate) > new Date())
-        .sort((a: any, b: any) => new Date(a.renewalDate).getTime() - new Date(b.renewalDate).getTime())[0]?.renewalDate;
+        .filter(c => c.renewalDate && c.renewalDate > new Date())
+        .sort((a, b) => a.renewalDate!.getTime() - b.renewalDate!.getTime())[0]?.renewalDate
 
       return {
-        id: v.id,
-        name: v.name,
-        category: v.category,
-        tier: v.tier,
-        risk: v.risk,
-        spend: monthlySpend, // Number
-        spendDisplay: `$${Math.round(monthlySpend/1000)}k/mo`,
-        renewal: nextRenewal ? new Date(nextRenewal).toISOString().split('T')[0] : 'N/A'
-      };
-    });
+        id:           v.id,
+        name:         v.name,
+        category:     v.category,
+        tier:         v.tier,
+        risk:         v.risk,
+        spend:        monthlySpend,
+        spendDisplay: `$${Math.round(monthlySpend / 1000)}k/mo`,
+        renewal:      nextRenewal ? nextRenewal.toISOString().split('T')[0] : 'N/A',
+      }
+    })
 
-    res.json(formatted);
-  } catch (error) {
-    console.error('Error fetching vendors:', error);
-    res.status(500).json({ error: 'Failed to fetch vendors' });
-  }
-});
+    res.json(formatted)
+  } catch (err) { next(err) }
+})
 
-// GET /api/admin/vendors/stats - Aggregate Vendor Stats
-router.get('/stats', async (req, res) => {
+// GET /api/admin/vendors/stats
+router.get('/stats', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const vendors: any = await prisma.vendor.findMany({
+    const vendors = await prisma.vendor.findMany({
       where: { status: 'ACTIVE' },
-      include: { contracts: true }
-    });
+      include: { contracts: true },
+    })
 
-    const totalAnnualSpend = vendors.reduce((sum: number, v: any) => {
-       const vendorAnnual = v.contracts
-         .filter((c: any) => c.status === 'ACTIVE')
-         .reduce((Startsum: number, c: any) => Startsum + Number(c.value), 0);
-       return sum + vendorAnnual;
-    }, 0);
+    const totalAnnualSpend = vendors.reduce((sum, v) =>
+      sum + v.contracts
+        .filter(c => c.status === 'ACTIVE')
+        .reduce((s, c) => s + Number(c.value), 0), 0)
 
-    const highRiskCount = vendors.filter((v: any) => v.risk === 'HIGH').length;
-    
-    // Renewals in next 90 days
-    const ninetyDaysFromNow = new Date();
-    ninetyDaysFromNow.setDate(ninetyDaysFromNow.getDate() + 90);
-    
-    const renewalsDue = vendors.reduce((count: number, v: any) => {
-      const hasRenewal = v.contracts.some((c: any) => {
-        if (!c.renewalDate) return false;
-        const d = new Date(c.renewalDate);
-        return d > new Date() && d <= ninetyDaysFromNow;
-      });
-      return hasRenewal ? count + 1 : count;
-    }, 0);
+    const highRiskCount = vendors.filter(v => v.risk === 'HIGH').length
 
-    const spendByCategory = vendors.reduce((acc: any, v: any) => {
-       const vendorAnnual = v.contracts.reduce((s: number, c: any) => s + Number(c.value), 0);
-       acc[v.category] = (acc[v.category] || 0) + vendorAnnual;
-       return acc;
-    }, {});
+    const ninetyDaysFromNow = new Date()
+    ninetyDaysFromNow.setDate(ninetyDaysFromNow.getDate() + 90)
 
-    // Chart Data
-    const chartData = Object.keys(spendByCategory).map(cat => ({
-       name: cat,
-       value: Math.round(spendByCategory[cat] / 100000), // Scaled down for chart logic if needed, or keeping raw
-       rawVal: spendByCategory[cat],
-       color: cat === 'Cloud' ? '#3b82f6' : cat === 'SaaS' ? '#10b981' : cat === 'Staffing' ? '#f59e0b' : '#6366f1'
-    }));
+    const renewalsDue = vendors.filter(v =>
+      v.contracts.some(c => {
+        if (!c.renewalDate) return false
+        return c.renewalDate > new Date() && c.renewalDate <= ninetyDaysFromNow
+      })
+    ).length
+
+    const spendByCategory = vendors.reduce<Record<string, number>>((acc, v) => {
+      const annual = v.contracts.reduce((s, c) => s + Number(c.value), 0)
+      acc[v.category] = (acc[v.category] ?? 0) + annual
+      return acc
+    }, {})
+
+    const chartData = Object.entries(spendByCategory).map(([name, rawVal]) => ({
+      name,
+      value:  Math.round(rawVal / 100_000),
+      rawVal,
+      color:  CATEGORY_COLORS[name] ?? '#6366f1',
+    }))
 
     res.json({
-       stats: [
-         { label: 'Annual Spend', value: `$${(totalAnnualSpend / 1000000).toFixed(1)}M`, icon: 'DollarSign', bg: 'bg-blue-50', color: 'text-blue-600' },
-         { label: 'Active Vendors', value: vendors.length.toString(), icon: 'Handshake', bg: 'bg-emerald-50', color: 'text-emerald-600' },
-         { label: 'High Risk', value: highRiskCount.toString(), icon: 'AlertTriangle', bg: 'bg-red-50', color: 'text-red-600' },
-         { label: 'Renewals Due', value: renewalsDue.toString(), sub: 'Next 90 days', icon: 'Calendar', bg: 'bg-amber-50', color: 'text-amber-600' }
-       ],
-       chartData
-    });
+      stats: [
+        { label: 'Annual Spend',   value: `$${(totalAnnualSpend / 1_000_000).toFixed(1)}M`, icon: 'DollarSign',   bg: 'bg-blue-50',    color: 'text-blue-600'    },
+        { label: 'Active Vendors', value: vendors.length.toString(),                          icon: 'Handshake',    bg: 'bg-emerald-50', color: 'text-emerald-600' },
+        { label: 'High Risk',      value: highRiskCount.toString(),                           icon: 'AlertTriangle',bg: 'bg-red-50',     color: 'text-red-600'     },
+        { label: 'Renewals Due',   value: renewalsDue.toString(), sub: 'Next 90 days',        icon: 'Calendar',     bg: 'bg-amber-50',   color: 'text-amber-600'   },
+      ],
+      chartData,
+    })
+  } catch (err) { next(err) }
+})
 
-  } catch (error) {
-    console.error('Error fetching vendor stats:', error);
-    res.status(500).json({ error: 'Failed to fetch vendor stats' });
-  }
-});
-
-export default router;
+export default router

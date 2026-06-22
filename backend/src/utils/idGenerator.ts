@@ -3,12 +3,14 @@ import { prisma } from '../lib/prisma';
 import { Role } from '@prisma/client';
 
 const ROLE_CODES: Record<Role, string> = {
-  CLIENT: 'CL',
-  PARTNER: 'PT',
-  INVESTOR: 'IN',
+  CLIENT:     'CL',
+  PARTNER:    'PT',
+  INVESTOR:   'IN',
   JOB_SEEKER: 'JS',
-  ADMIN: 'AD',
-  VISITOR: 'VS'
+  ADMIN:      'AD',
+  VISITOR:    'VS',
+  JOURNALIST: 'JR',
+  ANALYST:    'AN',
 };
 
 /**

@@ -13,7 +13,11 @@ export const SIGNAL_SOURCE_MODULES = [
   'vis',
   'vis-actioner',
   'kimmp',
+  'kimmp.loops',
+  'kimmp.sentinel',
+  'kimmp.debate',
   'scout',
+  'contact-form',
 ] as const;
 
 /** The kind of signal — drives which consumer cares about it. */

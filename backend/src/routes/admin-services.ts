@@ -1,51 +1,42 @@
-// @ts-nocheck
-import express from 'express';
-import { PrismaClient } from '@prisma/client';
+import { Router, Response, NextFunction } from 'express'
+import { prisma } from '../lib/prisma'
+import { authenticate, authorize, AuthenticatedRequest } from '../middleware/auth'
 
-const router = express.Router();
-const prisma = new PrismaClient();
+const router = Router()
 
-// GET /api/admin/services - List Service Lines with Latest Metrics
-router.get('/', async (req, res) => {
+// GET /api/admin/services
+router.get('/', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const services: any = await prisma.serviceLine.findMany({
+    const services = await prisma.serviceLine.findMany({
       include: {
         metrics: {
           orderBy: { period: 'desc' },
-          take: 1
+          take: 1,
+        },
+      },
+    })
+
+    const formatted = services
+      .map(s => {
+        const m = s.metrics[0]
+        return {
+          id:          s.id,
+          name:        s.name,
+          slug:        s.slug,
+          leadId:      s.leadId,
+          revenue:     m ? Number(m.revenue)     : 0,
+          cost:        m ? Number(m.cost)         : 0,
+          margin:      m ? Number(m.margin)       : 0,
+          utilization: m ? Number(m.utilization)  : 0,
+          headcount:   m?.headcount ?? 0,
+          bench:       m?.bench     ?? 0,
+          period:      m?.period    ?? null,
         }
-      }
-    });
+      })
+      .sort((a, b) => b.revenue - a.revenue)
 
-    const formatted = services.map((s: any) => {
-      const latestMetric = s.metrics[0] || {};
-      
-      return {
-        id: s.id,
-        name: s.name,
-        slug: s.slug,
-        leadId: s.leadId,
-        revenue: Number(latestMetric.revenue || 0),
-        cost: Number(latestMetric.cost || 0),
-        margin: Number(latestMetric.margin || 0), // Percentage
-        utilization: Number(latestMetric.utilization || 0), // Percentage
-        headcount: latestMetric.headcount || 0,
-        bench: latestMetric.bench || 0,
-        period: latestMetric.period
-      };
-    });
-    
-    // Sort by revenue desc
-    formatted.sort((a: any, b: any) => b.revenue - a.revenue);
+    res.json(formatted)
+  } catch (err) { next(err) }
+})
 
-    res.json(formatted);
-  } catch (error) {
-    console.error('Error fetching services:', error);
-    res.status(500).json({ error: 'Failed to fetch services' });
-  }
-});
-
-// GET /api/admin/services/stats - Aggregate Global Stats (Optional, fetched on frontend currently)
-// Left as placeholder if needed later.
-
-export default router;
+export default router

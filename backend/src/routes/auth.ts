@@ -202,6 +202,63 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response, next: Nex
   }
 });
 
+router.patch('/profile', requireAuth, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = (req.user as any).userId
+    const { name, company, linkedin, github, twitter, phone } = req.body
+    if (name !== undefined && (!name || typeof name !== 'string' || !name.trim())) {
+      return res.status(400).json({ error: 'Name cannot be empty' })
+    }
+    const data: Record<string, string | undefined> = {}
+    if (name     !== undefined) data.name     = name.trim()
+    if (company  !== undefined) data.company  = company?.trim()  || undefined
+    if (linkedin !== undefined) data.linkedin = linkedin?.trim() || undefined
+    if (github   !== undefined) data.github   = github?.trim()   || undefined
+    if (twitter  !== undefined) data.twitter  = twitter?.trim()  || undefined
+    if (phone    !== undefined) data.phone    = phone?.trim()    || undefined
+    const updated = await prisma.user.update({
+      where: { id: userId },
+      data,
+      select: { id: true, name: true, email: true, role: true, avatarUrl: true, company: true, linkedin: true, github: true, twitter: true, phone: true },
+    })
+    res.json({ user: updated })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/change-password', requireAuth, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = (req.user as any).userId
+    const { currentPassword, newPassword } = req.body
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Both currentPassword and newPassword are required' })
+    }
+    if (newPassword.length < 8) {
+      return res.status(400).json({ error: 'New password must be at least 8 characters' })
+    }
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user || !user.password) return res.status(404).json({ error: 'User not found' })
+    const valid = await bcrypt.compare(currentPassword, user.password as string)
+    if (!valid) return res.status(400).json({ error: 'Current password is incorrect' })
+    const hashed = await bcrypt.hash(newPassword, 12)
+    await prisma.user.update({ where: { id: userId }, data: { password: hashed } })
+    res.json({ ok: true })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/logout-all', requireAuth, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = (req.user as any).userId
+    await prisma.session.deleteMany({ where: { userId } }).catch(() => {})
+    res.json({ ok: true })
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;

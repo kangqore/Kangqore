@@ -5,6 +5,8 @@ import { emailService } from '../services/email.service';
 import logger from '../utils/logger';
 import { createError } from '../middleware/errorHandler';
 import { requireAuth, requireRole, AuthRequest } from '../middleware/rbac';
+import { SignalLedger } from '../kangqore-immp/signals/signalLedger.service';
+import { SystemRAG } from '../kangqore-immp/agents/systemRAG';
 
 const router = Router();
 
@@ -99,6 +101,44 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     } catch (emailError) {
       logger.error('Failed to send contact emails:', emailError);
     }
+
+    // Fire-and-forget: emit KIMMP signal + index into LEAD_INTEL RAG
+    ;(async () => {
+      try {
+        const services = interestedServices?.length
+          ? ` Interested in: ${(interestedServices as string[]).join(', ')}.`
+          : ''
+        const signalValue = `${inquiryType || 'General'} inquiry from ${name}${organization ? ` (${organization})` : ''}${services} — "${message.slice(0, 200)}${message.length > 200 ? '…' : ''}"`
+
+        await SignalLedger.record({
+          sourceModule:    'contact-form',
+          signalType:      'contact.form.submission',
+          signalCategory:  'INTENT',
+          signalValue,
+          confidence:      0.85,
+          severity:        'MODERATE',
+          metadata: {
+            contactId:    contact.id,
+            name, email,
+            organization: organization ?? null,
+            region:       region ?? null,
+            inquiryType:  inquiryType ?? null,
+            source:       source ?? 'contact-page',
+          },
+        })
+
+        await SystemRAG.ingest({
+          system:  'LEAD_INTEL',
+          docType: 'inquiry',
+          title:   `Contact: ${name}${organization ? ` — ${organization}` : ''} (${inquiryType || 'General'})`,
+          body:    `Name: ${name}\nEmail: ${email}\nOrganization: ${organization || 'N/A'}\nRegion: ${region || 'N/A'}\nInquiry: ${inquiryType || 'General'}\n${subject ? `Subject: ${subject}\n` : ''}Message: ${message}${services}`,
+          source:  `contact-form:${contact.id}`,
+          tags:    ['contact', 'lead', inquiryType || 'general', source || 'contact-page'].filter(Boolean),
+        })
+      } catch (err: any) {
+        logger.warn('[KIMMP] Contact signal/RAG ingest failed:', err.message)
+      }
+    })()
 
     // [New] Check if this email belongs to an existing user and create a Message for them
     try {

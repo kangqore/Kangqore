@@ -50,12 +50,18 @@ import feedbackRoutes from './routes/feedback'; // NEW
 import schedulingRoutes from './routes/scheduling';
 import { eqorePublicRoutes } from './eqore/routes';
 import { eqoreLeadIntelligenceRoutes } from './eqore-lead-intelligence';
+import './eqore/queue/shadowLead.worker';  // instantiates EqoreShadowWorker — listens on eqore-shadow-analysis queue
+import './eqore/queue/nurture.worker';     // instantiates EqoreNurtureWorker  — listens on eqore-nurture queue
 import { alisRouter } from './kangqore-alis';
 import { kangqoreImmpRoutes } from './kangqore-immp';
+import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor, AegisScheduler } from './kangqore-aegis';
 import { ScoutScheduler } from './kangqore-immp/scout/scoutScheduler';
 import { GoalScheduler } from './kangqore-immp/goals/goalScheduler';
 import { ProactiveScheduler } from './kangqore-immp/proactive/proactiveScheduler';
 import { TwinScheduler } from './kangqore-immp/twin/twinScheduler';
+import { LoopScheduler } from './kangqore-immp/agents/loopScheduler';
+import { MetaBriefingScheduler } from './kangqore-immp/agents/metaBriefingScheduler';
+import { KIMMLearningScheduler } from './kangqore-immp/learning/kimmpLearningScheduler';
 import { authenticate, authorize } from './middleware/auth';
 
 import { errorHandler } from './middleware/errorHandler';
@@ -172,11 +178,25 @@ import adminStrategyRoutes from './routes/admin-strategy'; // Phase 4
 app.use('/api/admin/clients', adminStrategyRoutes); 
 app.use('/api/feedback', feedbackRoutes); // NEW
 app.use('/api/scheduling', schedulingRoutes);
+
+// Comms email routes — client/partner/investor/career threads + reply
+import { clientEmailRouter, partnerEmailRouter, investorEmailRouter, careerEmailRouter } from './routes/admin-emails';
+app.use('/api/admin/client-emails',     clientEmailRouter);
+app.use('/api/admin/partner-emails',    partnerEmailRouter);
+app.use('/api/admin/investor-emails',   investorEmailRouter);
+app.use('/api/admin/job-seeker-emails', careerEmailRouter);
 app.use('/api/eqore', eqorePublicRoutes);
 app.use('/api/admin/eqore', eqoreLeadIntelligenceRoutes);
 app.use('/api/admin/alis', authenticate, authorize(['ADMIN']), alisRouter);
+// BIDS™ — Business Diagnostic Intelligence System
+import bidsRoutes from './routes/bids';
+app.use('/api/admin/bids', bidsRoutes);
+// AEGIS — Autonomous Executive Governance & Intelligence Shield
+// Sits above KIMMP: sovereign audit dashboard for ADMIN only.
+app.use('/api/admin/aegis', aegisShield, aegisRouter);
+
 // KIMMP — Human Behavior Intelligence Layer (auth applied per-route inside the router).
-app.use('/api/admin/kangqore-immp', kangqoreImmpRoutes);
+app.use('/api/admin/kangqore-immp', aegisAccessLogger, aegisEgressMonitor, kangqoreImmpRoutes);
 
 import adminSearchRoutes from './routes/admin-search';
 app.use('/api/admin/search', adminSearchRoutes);
@@ -274,6 +294,10 @@ ScoutScheduler.start();
 GoalScheduler.start();
 ProactiveScheduler.start();
 TwinScheduler.start();
+LoopScheduler.start();
+MetaBriefingScheduler.start();
+AegisScheduler.start();
+KIMMLearningScheduler.start();
 
 server.listen(PORT, () => {
   console.log(`🚀 Core Backend + Frontend running on port ${PORT}`);
@@ -286,6 +310,11 @@ server.listen(PORT, () => {
     indexKnowledgeBase()
       .catch((err) => console.error('concierge.index.boot.error', err))
       .finally(() => startKbWatcher());
+  });
+
+  // KIMMP: warm up per-system RAG indexes from DB (no-op if VOYAGE_API_KEY missing)
+  import('./kangqore-immp/agents/systemRAG').then(({ SystemRAG }) => {
+    SystemRAG.warmUp().catch(() => {});
   });
 });
 

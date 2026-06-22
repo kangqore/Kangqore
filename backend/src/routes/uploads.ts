@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 import { requireAuth } from '../middleware/rbac';
 import { upload } from '../middleware/upload';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // Single file upload
 router.post('/single', requireAuth, upload.single('file'), async (req: any, res) => {

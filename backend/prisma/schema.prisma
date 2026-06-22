@@ -3711,3 +3711,251 @@ model KimmpTwinSnapshot {
   @@index([computedAt])
   @@map("kimmp_twin_snapshot")
 }
+
+// KIMMP System Dispatch — persists every system-level activation and its agent outputs
+// Each system is an autonomous LLM agent (REASON → EXECUTE → SPEAK).
+model KimmpSystemDispatch {
+  id               String   @id @default(cuid())
+  system           String   // EQORE | LEAD_INTEL | ALIS | VIS | SENTINEL
+  trigger          String   // event that activated this system
+  model            String?  // LLM tier used by this system
+  priority         String?  // CRITICAL | HIGH | NORMAL (from REASON phase)
+  reasonedAgents   String[] // agents the system CHOSE to activate (Phase 1)
+  reasoningSummary String?  // why those agents were chosen
+  agentsRun        String[] // agent types that actually ran (Phase 2)
+  summary          String?  @db.Text
+  keyFindings      Json?    // string[]
+  recommendations  Json?    // string[]
+  alerts           Json?    // string[]
+  loopSignal       String?  @db.Text
+  confidence       Int      @default(0)
+  durationMs       Int      @default(0)
+  agentResults     Json?    // full AgentResult[]
+  feedback         String?  // ACCEPTED | DISMISSED | CORRECTED — set when operator rates
+  createdAt        DateTime @default(now())
+
+  @@index([system, createdAt])
+  @@index([priority, createdAt])
+  @@index([feedback, createdAt])
+  @@index([createdAt])
+  @@map("kimmp_system_dispatch")
+}
+
+// KIMMP System Memory — learning records for agent selection reinforcement.
+// Every dispatch writes a record. Operator feedback updates it.
+// The REASON phase reads these before selecting agents — systems get smarter over time.
+model KimmpSystemMemory {
+  id             String   @id @default(cuid())
+  system         String   // EQORE | LEAD_INTEL | ALIS | VIS | SENTINEL
+  triggerPattern String   // normalised trigger (meeting.completed, lead.scored, etc.)
+  dispatchId     String?  // link to KimmpSystemDispatch record
+  selectedAgents String[] // agents the system chose in Phase 1 (REASON)
+  confidence     Int      @default(0)
+  priority       String?  // CRITICAL | HIGH | NORMAL
+  feedback       String?  // ACCEPTED | DISMISSED | CORRECTED | null (pending)
+  correction     String?  @db.Text  // operator's correction text
+  loopSignalSent Boolean  @default(false) // did this system emit a loopSignal?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([system, triggerPattern, createdAt])
+  @@index([system, feedback])
+  @@index([dispatchId])
+  @@map("kimmp_system_memory")
+}
+
+// Per-system RAG knowledge base.
+// Each of the 6 systems (EQORE, LEAD_INTEL, ALIS, VIS, SENTINEL, KIMMP) maintains
+// its own document namespace. Embeddings stored as Float[] — cosine similarity
+// computed in TypeScript (same pattern as KnowledgeChunk/concierge.retrieval).
+// Auto-indexed after every briefing dispatch so systems learn from their own outputs.
+model KimmpSystemKnowledge {
+  id          String   @id @default(cuid())
+  system      String                    // EQORE | LEAD_INTEL | ALIS | VIS | SENTINEL | KIMMP
+  docType     String                    // meeting | scoring_rationale | playbook | cve | briefing | …
+  title       String
+  body        String   @db.Text
+  source      String?                   // e.g. "dispatch:abc123", "meeting:xyz", "manual"
+  tags        String[]
+  embedding   Float[]                   // voyage-3-large embeddings (1024-dim)
+  embedModel  String?
+  contentHash String                    // sha256(title+body) — deduplication key
+  active      Boolean  @default(true)   // soft delete
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([system, docType, createdAt])
+  @@index([system, active, createdAt])
+  @@index([contentHash])
+  @@map("kimmp_system_knowledge")
+}
+
+// ---------------------------------------------------------------------------
+// KIMMP Self-Growth — Training Corpus & Learning Loop
+//
+// KIMMP grows itself into an LLM through three stages:
+//   Stage 1 — Operational mining: approved decisions + accepted dispatches
+//             are automatically converted to instruction-tuning examples.
+//   Stage 2 — Self-generation: KIMMP uses Claude to synthesise novel examples
+//             from observed patterns (synthetic data augmentation).
+//   Stage 3 — Fine-tuning graduation: at 1,000 approved examples KIMMP exports
+//             JSONL for provider fine-tuning; at graduation, its own weights
+//             replace Claude for domain-specific inference.
+//
+// Quality 0.0–1.0:
+//   0.5 = auto-mined, unverified
+//   0.7 = synthetic, Claude-validated
+//   0.9 = auto-mined from ADMIN-approved decision
+//   1.0 = manually approved by ADMIN
+// ---------------------------------------------------------------------------
+
+model KimmpLearningExample {
+  id            String   @id @default(cuid())
+  source        String   // "decision" | "dispatch" | "memory" | "synthetic"
+  systemPrompt  String   @db.Text
+  userMessage   String   @db.Text
+  idealResponse String   @db.Text
+  quality       Float    @default(0.5)
+  approved      Boolean  @default(false)
+  agentSystem   String?  // EQORE | LEAD_INTEL | ALIS | VIS | SENTINEL | KIMMP
+  agentType     String?
+  sourceId      String?  // FK to originating record
+  tags          String[]
+  createdAt     DateTime @default(now())
+
+  @@index([source, createdAt])
+  @@index([approved, quality])
+  @@index([agentSystem, createdAt])
+  @@map("kimmp_learning_examples")
+}
+
+model KimmpLearningRun {
+  id             String    @id @default(cuid())
+  trigger        String    // "scheduled" | "manual" | "threshold" | "boot"
+  examplesAdded  Int       @default(0)
+  corpusBefore   Int       @default(0)
+  corpusAfter    Int       @default(0)
+  syntheticAdded Int       @default(0)
+  approvedCount  Int       @default(0)
+  readyForTune   Boolean   @default(false)
+  notes          String?
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+
+  @@index([startedAt])
+  @@map("kimmp_learning_runs")
+}
+
+// ---------------------------------------------------------------------------
+// Kangqore AEGIS — Autonomous Executive Governance & Intelligence Shield
+//
+// Immutable ledger for four governance domains:
+//   ACTIVATION     — every KIMMP system dispatch (admin-triggered or autonomous)
+//   AUTONOMOUS     — specifically tagged: KIMMP acted without being asked
+//   ACCESS_DENIED  — non-ADMIN attempt to reach a KIMMP endpoint
+//   KNOWLEDGE_ASSET — every RAG document ingested as ADMIN-owned intelligence
+// ---------------------------------------------------------------------------
+
+model AegisAuditLog {
+  id          String   @id @default(cuid())
+  eventType   String   // ACTIVATION | AUTONOMOUS | ACCESS_DENIED | KNOWLEDGE_ASSET
+  system      String?  // KIMMP system: EQORE | LEAD_INTEL | ALIS | VIS | SENTINEL | KIMMP
+  trigger     String?
+  actor       String   // "ADMIN" | "SCHEDULER" | userId
+  autonomous  Boolean  @default(false)
+  endpoint    String?  // for ACCESS_DENIED events
+  method      String?
+  userRole    String?
+  userId      String?
+  dispatchId  String?
+  agentsRun   String[]
+  priority    String?  // CRITICAL | HIGH | NORMAL
+  confidence  Int?
+  durationMs  Int?
+  assetId     String?  // for KNOWLEDGE_ASSET events
+  assetType   String?
+  assetSource String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([eventType, createdAt])
+  @@index([autonomous, createdAt])
+  @@index([system, createdAt])
+  @@index([actor, createdAt])
+  @@map("aegis_audit_logs")
+}
+
+// ---------------------------------------------------------------------------
+// AEGIS Agent Runs — queryable history of every agent's verdict over time.
+// Written by AegisEngineDispatcher after each agent execution.
+// ---------------------------------------------------------------------------
+
+model AegisAgentRun {
+  id         String   @id @default(cuid())
+  agentId    String                         // e.g. 'govops.engine-health'
+  engine     String                         // e.g. 'GOVERNANCE_OPS'
+  verdict    String                         // PASS | WARN | CRITICAL | INFO
+  summary    String
+  findings   String[]
+  actions    String[]
+  metadata   Json?
+  durationMs Int
+  raisedAt   DateTime @default(now())
+
+  @@index([engine, raisedAt])
+  @@index([verdict, raisedAt])
+  @@index([agentId, raisedAt])
+  @@map("aegis_agent_runs")
+}
+
+// ─── BIDS™ ───────────────────────────────────────────────────────────────────
+
+enum BidsEngagementStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+model BidsEngagement {
+  id             String               @id @default(cuid())
+  clientName     String
+  contactId      String?
+  industry       String
+  status         BidsEngagementStatus @default(DRAFT)
+  leadConsultant String?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  notes          String?
+  // Array of { n, name, status: PENDING|IN_PROGRESS|COMPLETE, completedAt? }
+  deliverables   Json                 @default("[]")
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@index([status, createdAt])
+  @@map("bids_engagements")
+}
+
+// ---------------------------------------------------------------------------
+// WAANDA Event Log — every HUD event emitted by WAANDA in real time.
+// Written by the frontend via POST /api/admin/kangqore-immp/events.
+// Replaces ephemeral localStorage storage so events survive across sessions,
+// devices, and browser clears.
+// ---------------------------------------------------------------------------
+
+model WaandaEvent {
+  id        String   @id @default(cuid())
+  type      String   // 'signal' | 'agent' | 'alert' | 'kpi' | 'system'
+  title     String
+  value     String?
+  sub       String?
+  color     String
+  ts        BigInt   // unix ms timestamp from client
+  announced Boolean  @default(false)
+  raw       Json?    // optional source payload
+  createdAt DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([createdAt])
+  @@map("waanda_events")
+}

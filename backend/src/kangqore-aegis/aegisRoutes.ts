@@ -1,0 +1,248 @@
+// ---------------------------------------------------------------------------
+// AEGIS Routes — ADMIN sovereignty dashboard API
+//
+// Mounted at /api/admin/aegis (protected by aegisShield upstream).
+// ---------------------------------------------------------------------------
+
+import { Router, Request, Response } from 'express'
+import { AegisLedger, AegisEventType }  from './aegisLedger.service'
+import { AegisSovereignty }             from './aegisSovereignty.service'
+import { AegisPolicyEngine }            from './aegisPolicy.service'
+import { AegisEngineDispatcher }        from './aegisEngineDispatcher'
+import { prisma }                       from '../lib/prisma'
+
+export const aegisRouter = Router()
+
+// ── Health ────────────────────────────────────────────────────────────────────
+
+aegisRouter.get('/health', (_req: Request, res: Response) => {
+  res.json({
+    shield:    'AEGIS',
+    fullName:  'Kangqore Autonomous Executive Governance & Intelligence Shield',
+    status:    'ACTIVE',
+    governs:   'KIMMP/WAANDA',
+    master:    'ADMIN',
+    components: [
+      'Sovereignty Engine',
+      'Executive Audit Ledger',
+      'Autonomy Boundary Monitor',
+      'Access Sentinel',
+      'Intelligence Registry',
+      'Intelligence Egress Control',
+      'Policy Engine',
+    ],
+    timestamp: new Date().toISOString(),
+  })
+})
+
+// ── Stats — all domains ───────────────────────────────────────────────────────
+
+aegisRouter.get('/stats', async (_req: Request, res: Response) => {
+  const [ledgerStats, ownershipSummary] = await Promise.all([
+    AegisLedger.stats(),
+    AegisSovereignty.ownershipSummary(),
+  ])
+  res.json({
+    shield:           'AEGIS',
+    ledger:           ledgerStats,
+    sovereignty:      ownershipSummary,
+    policies:         AegisPolicyEngine.listPolicies().length,
+    timestamp:        new Date().toISOString(),
+  })
+})
+
+// ── Executive Audit Ledger ────────────────────────────────────────────────────
+
+aegisRouter.get('/audit', async (req: Request, res: Response) => {
+  const { eventType, system, limit, offset, from, to } = req.query
+  const result = await AegisLedger.query({
+    eventType: eventType as AegisEventType | undefined,
+    system:    system as string | undefined,
+    limit:     limit  ? Number(limit)  : 50,
+    offset:    offset ? Number(offset) : 0,
+    from:      from   ? new Date(from as string) : undefined,
+    to:        to     ? new Date(to   as string) : undefined,
+  })
+  res.json({ shield: 'AEGIS', domain: 'AUDIT', ...result })
+})
+
+// ── Autonomy Boundary Monitor ─────────────────────────────────────────────────
+
+aegisRouter.get('/autonomy', async (req: Request, res: Response) => {
+  const { system, limit, offset } = req.query
+  const result = await AegisLedger.query({
+    autonomous: true,
+    system:     system as string | undefined,
+    limit:      limit  ? Number(limit)  : 50,
+    offset:     offset ? Number(offset) : 0,
+  })
+  res.json({ shield: 'AEGIS', domain: 'AUTONOMY_BOUNDARY', ...result })
+})
+
+// ── Access Sentinel ───────────────────────────────────────────────────────────
+
+aegisRouter.get('/shield', async (req: Request, res: Response) => {
+  const { limit, offset } = req.query
+  const result = await AegisLedger.query({
+    eventType: 'ACCESS_DENIED',
+    limit:     limit  ? Number(limit)  : 50,
+    offset:    offset ? Number(offset) : 0,
+  })
+  res.json({ shield: 'AEGIS', domain: 'ACCESS_SENTINEL', ...result })
+})
+
+// ── Intelligence Registry ─────────────────────────────────────────────────────
+
+aegisRouter.get('/assets', async (req: Request, res: Response) => {
+  const { system, limit, offset } = req.query
+  const result = await AegisLedger.query({
+    eventType: 'KNOWLEDGE_ASSET',
+    system:    system as string | undefined,
+    limit:     limit  ? Number(limit)  : 50,
+    offset:    offset ? Number(offset) : 0,
+  })
+  res.json({ shield: 'AEGIS', domain: 'INTELLIGENCE_REGISTRY', ...result })
+})
+
+// ── Intelligence Egress Control ───────────────────────────────────────────────
+
+aegisRouter.get('/egress', async (req: Request, res: Response) => {
+  const { limit, offset } = req.query
+  const result = await AegisLedger.query({
+    eventType: 'EGRESS',
+    limit:     limit  ? Number(limit)  : 50,
+    offset:    offset ? Number(offset) : 0,
+  })
+  res.json({ shield: 'AEGIS', domain: 'EGRESS_CONTROL', ...result })
+})
+
+// ── Sovereignty Engine ────────────────────────────────────────────────────────
+
+aegisRouter.get('/sovereignty', async (_req: Request, res: Response) => {
+  const summary = await AegisSovereignty.ownershipSummary()
+  res.json({
+    shield:  'AEGIS',
+    domain:  'SOVEREIGNTY',
+    master:  'ADMIN',
+    ...summary,
+  })
+})
+
+// ── Policy Engine ─────────────────────────────────────────────────────────────
+
+aegisRouter.get('/policy/rules', (_req: Request, res: Response) => {
+  res.json({
+    shield:   'AEGIS',
+    domain:   'POLICY_ENGINE',
+    policies: AegisPolicyEngine.listPolicies(),
+  })
+})
+
+// ── Agent Registry ────────────────────────────────────────────────────────────
+
+aegisRouter.get('/agents', (_req: Request, res: Response) => {
+  res.json({
+    shield:  'AEGIS',
+    domain:  'AGENT_REGISTRY',
+    ...AegisEngineDispatcher.registryStats(),
+    agents:  AegisEngineDispatcher.listAgents(),
+  })
+})
+
+// ── Agent Corps Summary — latest verdict per engine + health score ────────────
+
+aegisRouter.get('/agents/summary', async (_req: Request, res: Response) => {
+  const since24h = new Date(Date.now() - 86_400_000)
+
+  // Latest run per engine (last 7 days)
+  const since7d = new Date(Date.now() - 7 * 86_400_000)
+  const allEngines = [
+    'GOVERNANCE_OPS','SOVEREIGNTY','AUDIT_LEDGER','AUTONOMY_BOUNDARY',
+    'ACCESS_SENTINEL','INTELLIGENCE_REGISTRY','EGRESS_CONTROL',
+    'POLICY','TRUST_COMPLIANCE','RISK_INTELLIGENCE',
+  ]
+
+  const [engineLatest, critical24h, warn24h, reportRun] = await Promise.all([
+    // For each engine, find the latest run
+    Promise.all(allEngines.map(async engine => {
+      const row = await (prisma as any).aegisAgentRun.findFirst({
+        where:   { engine, raisedAt: { gte: since7d } },
+        orderBy: { raisedAt: 'desc' },
+        select:  { verdict: true, raisedAt: true, agentId: true, summary: true },
+      }).catch(() => null)
+      return { engine, latest: row ?? null }
+    })),
+    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: since24h } } }).catch(() => 0),
+    (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: since24h } } }).catch(() => 0),
+    // Pull health score from latest govops.reporting run
+    (prisma as any).aegisAgentRun.findFirst({
+      where:   { agentId: 'govops.reporting' },
+      orderBy: { raisedAt: 'desc' },
+      select:  { metadata: true, verdict: true, raisedAt: true },
+    }).catch(() => null),
+  ])
+
+  const healthScore: number = (reportRun?.metadata as any)?.healthScore ?? null
+
+  // Derive overall shield status
+  const hasCritical = engineLatest.some(e => e.latest?.verdict === 'CRITICAL') || critical24h > 0
+  const hasWarn     = engineLatest.some(e => e.latest?.verdict === 'WARN')     || warn24h > 0
+  const overallVerdict = hasCritical ? 'CRITICAL' : hasWarn ? 'WARN' : 'PASS'
+
+  res.json({
+    shield:         'AEGIS',
+    domain:         'AGENT_CORPS_SUMMARY',
+    overallVerdict,
+    healthScore,
+    critical24h,
+    warn24h,
+    engines: engineLatest,
+    lastChecked: new Date().toISOString(),
+  })
+})
+
+// ── Agent Runs — queryable history ───────────────────────────────────────────
+
+aegisRouter.get('/agents/runs', async (req: Request, res: Response) => {
+  const { engine, verdict, agentId, limit, offset } = req.query
+
+  const where: Record<string, unknown> = {}
+  if (engine)  where.engine  = engine
+  if (verdict) where.verdict = verdict
+  if (agentId) where.agentId = agentId
+
+  const [rows, total] = await Promise.all([
+    (prisma as any).aegisAgentRun.findMany({
+      where,
+      orderBy: { raisedAt: 'desc' },
+      take:    limit  ? Number(limit)  : 50,
+      skip:    offset ? Number(offset) : 0,
+    }),
+    (prisma as any).aegisAgentRun.count({ where }),
+  ])
+
+  res.json({ shield: 'AEGIS', domain: 'AGENT_RUNS', rows, total })
+})
+
+// ── On-demand engine run ─────────────────────────────────────────────────────
+
+aegisRouter.post('/engines/:engine/run', async (req: Request, res: Response) => {
+  const { engine } = req.params
+  const results = await AegisEngineDispatcher.runEngine(
+    engine.toUpperCase(),
+    { userId: (req as any).user?.id ?? 'ADMIN' },
+  )
+  res.json({ shield: 'AEGIS', engine: engine.toUpperCase(), ran: results.length, results })
+})
+
+// ── On-demand single agent run ────────────────────────────────────────────────
+
+aegisRouter.post('/agents/:agentId/run', async (req: Request, res: Response) => {
+  const { agentId } = req.params
+  const result = await AegisEngineDispatcher.runAgent(
+    agentId,
+    { userId: (req as any).user?.id ?? 'ADMIN' },
+  )
+  if (!result) return res.status(404).json({ error: `Agent '${agentId}' not found` })
+  res.json({ shield: 'AEGIS', result })
+})

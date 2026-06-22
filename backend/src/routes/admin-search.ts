@@ -31,13 +31,13 @@ router.get('/', authenticate, authorize(['ADMIN']), async (req: AuthenticatedReq
       prisma.contact.findMany({
         where: {
           OR: [
-            { name:    { contains: query, mode } },
-            { email:   { contains: query, mode } },
-            { subject: { contains: query, mode } },
-            { company: { contains: query, mode } },
+            { name:         { contains: query, mode } },
+            { email:        { contains: query, mode } },
+            { subject:      { contains: query, mode } },
+            { organization: { contains: query, mode } },
           ],
         },
-        select: { id: true, name: true, email: true, subject: true, status: true },
+        select: { id: true, name: true, email: true, subject: true, status: true, organization: true },
         take,
         orderBy: { createdAt: 'desc' },
       }),
@@ -96,7 +96,7 @@ router.get('/', authenticate, authorize(['ADMIN']), async (req: AuthenticatedReq
         type: 'lead' as const,
         id:       r.id,
         title:    r.name,
-        subtitle: r.email,
+        subtitle: r.organization ? `${r.organization} · ${r.email}` : r.email,
         path:     '/kangqore-view/admin/leads',
         meta:     r.status ?? undefined,
       })),
