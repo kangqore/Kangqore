@@ -58,13 +58,13 @@ export function ExecutiveSidebar() {
           sidebarCollapsed ? 'h-[60px] justify-center px-0' : 'h-[60px] px-5'
         )}
       >
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-400 flex items-center justify-center flex-shrink-0 shadow-sm">
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }}>
           <img src="/assets/kangqore-icon-white.png" alt="Kangqore" className="w-5 h-5 object-contain" />
         </div>
         {!sidebarCollapsed && (
           <div className="overflow-hidden">
             <p className="text-white font-bold text-sm leading-none" style={{ fontFamily: 'var(--font-display)' }}>Kangqore</p>
-            <p className="text-indigo-400 text-[10px] tracking-widest mt-0.5 font-bold uppercase">Executive</p>
+            <p className="text-[#4ab6d4] text-[10px] tracking-widest mt-0.5 font-bold uppercase">Executive</p>
           </div>
         )}
       </Link>
@@ -95,10 +95,9 @@ export function ExecutiveSidebar() {
                     className={({ isActive }) => cn(
                       'flex items-center gap-3 rounded-lg transition-all duration-150 group relative',
                       sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
-                      isActive
-                        ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-sm'
-                        : 'text-slate-500 hover:bg-white/[0.06] hover:text-slate-100'
+                      isActive ? 'text-white shadow-sm' : 'text-slate-500 hover:bg-white/[0.06] hover:text-slate-100'
                     )}
+                    style={({ isActive }) => isActive ? { background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' } : {}}
                   >
                     <Icon weight="fill" className={cn('w-[18px] h-[18px] flex-shrink-0 transition-transform duration-100', sidebarCollapsed ? '' : 'opacity-70 group-hover:opacity-100 group-hover:scale-110')} />
                     {!sidebarCollapsed && (
