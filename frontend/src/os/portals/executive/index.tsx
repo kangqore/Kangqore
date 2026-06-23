@@ -1,39 +1,45 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { LayoutDashboard, Target, Brain, BookMarked } from 'lucide-react'
-import { PortalNavbar }       from '../layout/PortalNavbar'
+import { ExecutiveSidebar }   from './ExecutiveSidebar'
+import { Topbar }             from '@components/shell/Topbar'
+import { NotificationPanel }  from '@components/shell/NotificationPanel'
 import { ModuleShell }        from '@components/ModuleShell'
+import { PageTransition }     from '@components/animations/PageTransition'
+import { AmbientBackground }  from '@components/shell/AmbientBackground'
+import { Toaster }            from '@design-system/components/Toast'
+import { CommandPalette }     from '@components/shell/CommandPalette'
+import '../../os.css'
+
 import { ExecutiveOverview }  from './pages/ExecutiveOverview'
 import { ExecutiveStrategy }  from './pages/ExecutiveStrategy'
 import { ExecutiveKIMMP }     from './pages/ExecutiveKIMMP'
 import { ExecutiveBoard }     from './pages/ExecutiveBoard'
 
-const TABS = [
-  { path: '',         label: 'Overview',  icon: LayoutDashboard },
-  { path: 'strategy', label: 'Strategy',  icon: Target           },
-  { path: 'kimmp',    label: 'KIMMP',     icon: Brain            },
-  { path: 'board',    label: 'Board',     icon: BookMarked       },
-]
-
 export function ExecutivePortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 pt-[7.5rem]">
-      <PortalNavbar
-        portalName="Executive Suite"
-        portalColor="bg-gradient-to-br from-[#4338ca] to-[#6366f1]"
-        tabs={TABS}
-        basePath="/kangqore-view/executive"
-      />
-      <div className="flex-1 overflow-y-auto min-h-0">
-        <ModuleShell>
-          <Routes>
-            <Route index              element={<ExecutiveOverview />}  />
-            <Route path="strategy"   element={<ExecutiveStrategy />}  />
-            <Route path="kimmp"      element={<ExecutiveKIMMP />}     />
-            <Route path="board"      element={<ExecutiveBoard />}     />
-            <Route path="*"          element={<Navigate to="/kangqore-view/executive" replace />} />
-          </Routes>
-        </ModuleShell>
+    <div className="flex h-screen overflow-hidden bg-[#0B1121] relative text-slate-200">
+      <AmbientBackground />
+      <ExecutiveSidebar />
+
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden bg-transparent m-0 md:my-2 md:mr-2 md:rounded-2xl z-10">
+        <Topbar />
+        <main className="flex-1 overflow-y-auto px-6 py-6 lg:px-10 lg:py-8 pb-16">
+          <PageTransition>
+            <ModuleShell>
+              <Routes>
+                <Route index              element={<ExecutiveOverview />}  />
+                <Route path="strategy"   element={<ExecutiveStrategy />}  />
+                <Route path="kimmp"      element={<ExecutiveKIMMP />}     />
+                <Route path="board"      element={<ExecutiveBoard />}     />
+                <Route path="*"          element={<Navigate to="/kangqore-view/executive" replace />} />
+              </Routes>
+            </ModuleShell>
+          </PageTransition>
+        </main>
       </div>
+
+      <NotificationPanel />
+      <Toaster />
+      <CommandPalette />
     </div>
   )
 }
