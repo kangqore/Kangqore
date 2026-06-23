@@ -26,7 +26,6 @@ import {
   ShieldCheckeredIcon,
   CrosshairIcon,
   SirenIcon,
-  PlugsConnectedIcon,
 } from '@phosphor-icons/react'
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
 
@@ -78,9 +77,8 @@ export const navGroups: NavGroup[] = [
   {
     label: 'CORE',
     items: [
-      { id: 'bids',        label: 'BIDS™',       icon: CrosshairIcon,      path: `${BASE}/bids`           },
-      { id: 'ops-centre',  label: 'Ops Centre',  icon: SirenIcon,          path: `${BASE}/ops-centre`     },
-      { id: 'connect',     label: 'Connect',     icon: PlugsConnectedIcon, path: `${BASE}/connect`        },
+      { id: 'bids',        label: 'BIDS™',       icon: CrosshairIcon,  path: `${BASE}/bids`           },
+      { id: 'ops-centre',  label: 'Ops Centre',  icon: SirenIcon,      path: `${BASE}/ops-centre`     },
       { id: 'strategy',    label: 'Strategy',    icon: StrategyIcon,      path: `${BASE}/strategy`       },
       { id: 'projects',    label: 'Projects',    icon: SquaresFourIcon,   path: `${BASE}/projects`       },
       { id: 'delivery',    label: 'Delivery',    icon: PulseIcon,         path: `${BASE}/delivery`       },
