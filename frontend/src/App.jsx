@@ -9,7 +9,7 @@ import FloatingButtons from './components/FloatingButtons';
 import CookieConsent from './components/CookieConsent';
 import { Toaster } from './components/ui/toaster';
 import GlobalAuthPrompt from './components/GlobalAuthPrompt';
-import GlobalFeedbackPrompt from './components/GlobalFeedbackPrompt';
+import eROOT from './components/eROOT';
 
 
 // Import modular routes
@@ -21,8 +21,6 @@ import Services from './pages/Services';
 import DynamicKangqorePage from './pages/DynamicKangqorePage';
 import InstallPrompt from './components/InstallPrompt';
 import OfflineIndicator from './components/OfflineIndicator';
-// Legacy admin pages retired 2026-06-18 — redirected to OS via legacyRedirects.json
-// Files preserved until 2026-08-01 deletion: pages/admin/{EqoreLeads,EqoreSales,Alis,KimmpPages}Page.jsx
 import BookingCancelPage from './pages/BookingCancelPage';
 import BookingReschedulePage from './pages/BookingReschedulePage';
 import AcceptInvitePage from './pages/AcceptInvitePage';
@@ -32,6 +30,7 @@ import './App.css';
 
 const BIDSTataSteel = React.lazy(() => import('./pages/BIDSTataSteel'));
 const HeroDemo = React.lazy(() => import('./pages/HeroDemo'));
+const EQoreAIConsole = React.lazy(() => import('./pages/EQoreAIConsole'));
 
 /**
  * Scroll to top on route change unless there is a hash anchor.
@@ -97,6 +96,10 @@ function MainLayout({ children, showFullMenu, setShowFullMenu, handleMenuClick }
 }
 
 import useVisitorTracking from './hooks/useVisitorTracking';
+import useVisitorIdentity from './hooks/useVisitorIdentity';
+import useFootprintTracker from './hooks/useFootprintTracker';
+import { usePresenceHeartbeat } from './hooks/usePresenceHeartbeat';
+import { useProactiveEQORE } from './hooks/useProactiveEQORE';
 import GlobalScrollAnimations from './components/GlobalScrollAnimations';
 import WebVitalsReporter from './kangqore-vis/components/WebVitalsReporter';
 import { kangqoreVisAdminRoutes } from './kangqore-vis';
@@ -113,6 +116,7 @@ const ConsultationsModule = React.lazy(() => import('./os/features/consultations
 const DeliveryModule     = React.lazy(() => import('./os/features/delivery').then(m => ({ default: m.DeliveryModule })));
 const GovernanceModule   = React.lazy(() => import('./os/features/governance').then(m => ({ default: m.GovernanceModule })));
 const CommsModule        = React.lazy(() => import('./os/features/comms').then(m => ({ default: m.CommsModule })));
+const VisitorsModule     = React.lazy(() => import('./os/features/visitors').then(m => ({ default: m.VisitorsModule })));
 const ClientsModule      = React.lazy(() => import('./os/features/clients').then(m => ({ default: m.ClientsModule })));
 const PartnersModule     = React.lazy(() => import('./os/features/partners').then(m => ({ default: m.PartnersModule })));
 const LeadsModule        = React.lazy(() => import('./os/features/leads').then(m => ({ default: m.LeadsModule })));
@@ -130,6 +134,8 @@ const SystemsModule      = React.lazy(() => import('./os/features/systems').then
 const SettingsModule     = React.lazy(() => import('./os/features/settings').then(m => ({ default: m.SettingsModule })));
 const SchedulingModule   = React.lazy(() => import('./os/features/scheduling').then(m => ({ default: m.SchedulingModule })));
 const AegisModule        = React.lazy(() => import('./os/features/aegis').then(m => ({ default: m.AegisModule })));
+const OntologyModule     = React.lazy(() => import('./os/features/ontology').then(m => ({ default: m.OntologyModule })));
+const NeuralNetworkModule= React.lazy(() => import('./os/features/neural-network').then(m => ({ default: m.NeuralNetworkModule })));
 const BidsModule         = React.lazy(() => import('./os/features/bids').then(m => ({ default: m.BidsModule })));
 const OpsCentreModule    = React.lazy(() => import('./os/features/ops-centre').then(m => ({ default: m.OpsCentreModule })));
 const ClientPortal       = React.lazy(() => import('./os/portals/client').then(m => ({ default: m.ClientPortal })));
@@ -140,6 +146,7 @@ const JournalistPortal   = React.lazy(() => import('./os/portals/journalist').th
 const AnalystPortal      = React.lazy(() => import('./os/portals/analyst').then(m => ({ default: m.AnalystPortal })));
 const TeamPortal         = React.lazy(() => import('./os/portals/team').then(m => ({ default: m.TeamPortal })));
 const ExecutivePortal    = React.lazy(() => import('./os/portals/executive').then(m => ({ default: m.ExecutivePortal })));
+const RelayPage          = React.lazy(() => import('./os/features/relay/pages/RelayPage').then(m => ({ default: m.default })));
 
 /**
  * Loading Fallback
@@ -203,6 +210,10 @@ const PageLoader = () => (
  */
 function AppContent() {
   useVisitorTracking();
+  useVisitorIdentity();
+  useFootprintTracker();
+  usePresenceHeartbeat();
+  useProactiveEQORE();
   const [showFullMenu, setShowFullMenu] = useState(false);
   
   const handleMenuClick = () => {
@@ -223,7 +234,7 @@ function AppContent() {
 
           {/* Auth & Dashboard Routes (no Header/Footer) */}
           {authRoutes}
-          <Route path="/eqore-ai" element={<Navigate to="/kangqore-view/admin/kangqore-immp" replace />} />
+          <Route path="/eqore-ai" element={<EQoreAIConsole />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
           {/* OS — internal dashboard (ADMIN only) */}
@@ -246,6 +257,7 @@ function AppContent() {
             <Route path="delivery/*"       element={<DeliveryModule />}      />
             <Route path="governance/*"     element={<GovernanceModule />}    />
             <Route path="comms/*"          element={<CommsModule />}         />
+            <Route path="visitors/*"       element={<VisitorsModule />}      />
             <Route path="clients/*"        element={<ClientsModule />}       />
             <Route path="partners/*"       element={<PartnersModule />}      />
             <Route path="leads/*"          element={<LeadsModule />}         />
@@ -262,7 +274,10 @@ function AppContent() {
             <Route path="bids/*"           element={<BidsModule />}             />
             <Route path="ops-centre/*"     element={<OpsCentreModule />}        />
             <Route path="aegis/*"          element={<AegisModule />}            />
+            <Route path="ontology/*"       element={<OntologyModule />}         />
+            <Route path="neural-network/*" element={<NeuralNetworkModule />}    />
             <Route path="settings/*"       element={<SettingsModule />}      />
+            <Route path="relay/*"          element={<RelayPage />}           />
           </Route>
 
           {/* External portals */}
@@ -413,7 +428,7 @@ function App() {
         <ThemeProvider>
           <AuthProvider>
             <GlobalAuthPrompt />
-            <GlobalFeedbackPrompt />
+            <eROOT />
             <PodcastProvider>
               <AppContent />
               <PodcastMiniPlayer />

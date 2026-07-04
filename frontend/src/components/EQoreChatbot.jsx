@@ -90,6 +90,18 @@ function renderFormattedText(text) {
   });
 }
 
+function getProactiveGreeting(page) {
+  if (!page) return null;
+  if (/\/services\/bids|\/bids/i.test(page))       return "I see you're exploring BIDS™ — what industry are you in? I can show you the edition built for it.";
+  if (/\/services/i.test(page))                     return "You've been looking at our services — want me to help narrow down what fits your situation?";
+  if (/\/pricing/i.test(page))                      return "Exploring pricing? I can walk you through the model or give you a rough estimate based on your needs.";
+  if (/\/about|\/company/i.test(page))              return "Learning about Kangqore? Happy to answer any questions about who we are or how we work.";
+  if (/\/careers/i.test(page))                      return "Interested in joining Kangqore? I can tell you about open roles or what it's like to work here.";
+  if (/\/contact/i.test(page))                      return "Ready to connect? I can help you book a consultation or route you to the right team.";
+  if (/\/case-studies|\/portfolio/i.test(page))     return "Browsing our work? Ask me about any case study or the results we've driven for clients like yours.";
+  return "You've been here a while — can I help with anything? I know everything about Kangqore.";
+}
+
 const EQoreChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
@@ -99,6 +111,7 @@ const EQoreChatbot = () => {
   const [schedulingIntents, setSchedulingIntents] = useState({}); // msgId → parsedIntent
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [proactiveGreeting, setProactiveGreeting] = useState(null);
   const recognitionRef = useRef(null);
   const spokenMessagesRef = useRef(new Set());
   const messagesEndRef = useRef(null);
@@ -184,6 +197,12 @@ const EQoreChatbot = () => {
   useEffect(() => {
     const handleToggle = (event) => {
       const detail = event?.detail;
+      if (detail && detail.proactive) {
+        const greeting = getProactiveGreeting(detail.page);
+        if (greeting) setProactiveGreeting(greeting);
+        setIsOpen(true);
+        return;
+      }
       if (detail && detail.surface && detail.name) {
         // Seed payload from an "Ask eQORE about X" CTA.
         setSeedContext({
@@ -214,6 +233,30 @@ const EQoreChatbot = () => {
         console.warn('Failed to clean openChat param', e);
       }
     }
+  }, []);
+
+  // Auto-Popout Logic (Aggressive Proactive Mode)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/kangqore-view')) {
+      return;
+    }
+    
+    // Initial popup at 5 seconds
+    const initialTimer = setTimeout(() => {
+      setIsOpen(true);
+      setProactiveGreeting("Hello! I'm eQORE. I've been analyzing your session — can I help you find something specific?");
+    }, 5000); 
+    
+    // Recurring popup every 45 seconds
+    const intervalTimer = setInterval(() => {
+      setIsOpen(true);
+      setProactiveGreeting("Hello! I'm eQORE. I've been analyzing your session — can I help you find something specific?");
+    }, 45000);
+    
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(intervalTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -262,6 +305,7 @@ const EQoreChatbot = () => {
     const text = (textOverride || inputText).trim();
     if (!text || streaming) return;
     setInputText('');
+    setProactiveGreeting(null);
 
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel(); // Cut off voice when user asks new question
@@ -355,7 +399,7 @@ const EQoreChatbot = () => {
             </button>
             {hasUserMessages && (
               <button
-                onClick={reset}
+                onClick={() => { reset(); setProactiveGreeting(null); }}
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors text-slate-400 hover:text-white"
                 title="Start a new conversation"
               >
@@ -487,6 +531,16 @@ const EQoreChatbot = () => {
               </div>
             );
           })}
+
+          {/* Proactive greeting banner */}
+          {!hasUserMessages && proactiveGreeting && (
+            <div className="mx-1 mt-2 mb-1 flex items-start gap-2.5 bg-cyan-500/10 border border-cyan-400/20 rounded-xl p-3">
+              <div className="w-5 h-5 rounded-md overflow-hidden shrink-0 mt-0.5">
+                <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
+              </div>
+              <p className="text-[12px] text-cyan-100 leading-relaxed">{proactiveGreeting}</p>
+            </div>
+          )}
 
           {/* Suggested Prompts (only show if no user messages yet) */}
           {!hasUserMessages && !streaming && (
