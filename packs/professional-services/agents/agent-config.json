@@ -1,0 +1,61 @@
+{
+  "description": "WAANDA agent configuration for professional services deployment.",
+  "agents": [
+    {
+      "type":    "PROJECT_HEALTH",
+      "system":  "DELIVERY_OPS",
+      "model":   "claude-haiku-4-5-20251001",
+      "purpose": "Daily assessment of all active projects — health score, confidence, risks, blockers, recommendations.",
+      "schedule": "DAILY",
+      "triggerOn": ["PROJECT_CREATED", "MILESTONE_DUE", "RISK_ADDED"]
+    },
+    {
+      "type":    "DELIVERY_MONITOR",
+      "system":  "DELIVERY_OPS",
+      "model":   "claude-sonnet-4-6",
+      "purpose": "Real-time monitoring of active client deliveries. Fires on SLA risk, milestone miss, critical risk.",
+      "schedule": "REACTIVE",
+      "triggerOn": ["MILESTONE_OVERDUE", "DELIVERABLE_BLOCKED", "RISK_CRITICAL"]
+    },
+    {
+      "type":    "PROJECT_TWIN_SIMULATOR",
+      "system":  "DELIVERY_OPS",
+      "model":   "claude-haiku-4-5-20251001",
+      "purpose": "Simulates 3 delivery scenarios (current / +1 resource / risk-adjusted) for each project.",
+      "schedule": "ON_DEMAND",
+      "triggerOn": ["PROJECT_AT_RISK"]
+    },
+    {
+      "type":    "INVOICE_INTELLIGENCE",
+      "system":  "FINANCE_OPS",
+      "model":   "claude-sonnet-4-6",
+      "purpose": "Validates invoices, monitors overdue receivables, and supports collections escalation.",
+      "schedule": "REACTIVE",
+      "triggerOn": ["INVOICE_CREATED", "INVOICE_OVERDUE"]
+    },
+    {
+      "type":    "COLLECTIONS_AGENT",
+      "system":  "FINANCE_OPS",
+      "model":   "claude-sonnet-4-6",
+      "purpose": "Drafts collections communications calibrated to relationship strength and overdue severity.",
+      "schedule": "REACTIVE",
+      "triggerOn": ["INVOICE_OVERDUE_14D"]
+    },
+    {
+      "type":    "DEAL_COACH",
+      "system":  "FINANCE_OPS",
+      "model":   "claude-sonnet-4-6",
+      "purpose": "Qualifies leads, drafts proposal follow-ups, and detects pipeline velocity issues.",
+      "schedule": "REACTIVE",
+      "triggerOn": ["LEAD_CREATED", "PROPOSAL_NO_RESPONSE_5D"]
+    },
+    {
+      "type":    "ENTERPRISE_COACH",
+      "system":  "ALIS",
+      "model":   "claude-haiku-4-5-20251001",
+      "purpose": "Weekly cross-department pattern recognition. Surfaces what worked in one department to expand to others.",
+      "schedule": "WEEKLY",
+      "triggerOn": ["SCHEDULE_WEEKLY"]
+    }
+  ]
+}

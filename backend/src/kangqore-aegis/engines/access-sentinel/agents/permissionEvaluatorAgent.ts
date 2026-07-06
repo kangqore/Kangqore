@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }        from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 export async function runPermissionEvaluatorAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start  = Date.now()
@@ -18,6 +21,10 @@ export async function runPermissionEvaluatorAgent(ctx: AgentContext): Promise<Ae
   const violators = Object.entries(actorMap).filter(([a]) => !PERMITTED.has(a))
 
   const verdict = violators.length > 0 ? 'WARN' : total > 0 ? 'PASS' : 'INFO'
+
+  const llmSummary = await callLLM(SYSTEM,
+    `Permission evaluator (6h): ${total} activations, ${violators.length} from unpermitted actors. Actor breakdown: ${Object.entries(actorMap).map(([a, c]) => `${a}:${c}`).join(', ')}. Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
 
   return {
     agentId:  'sentinel.permission-evaluator',

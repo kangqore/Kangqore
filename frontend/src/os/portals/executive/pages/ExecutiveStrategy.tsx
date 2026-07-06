@@ -1,4 +1,5 @@
 import { Target, CheckCircle, Clock, AlertCircle } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 
 const okrs = [
   {
@@ -35,34 +36,35 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.
 
 export function ExecutiveStrategy() {
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-10">
+    <div className="space-y-10">
+      <KIMMPSignalBar module="Strategy & OKRs" />
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
           <Target className="w-6 h-6 text-indigo-400" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Strategy & OKRs</h1>
-          <p className="text-slate-500 mt-1 text-sm">Company objectives and key results — Q2/Q3 2026.</p>
+          <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Strategy & OKRs</h1>
+          <p className="text-[var(--os-text-2)] mt-1 text-sm">Company objectives and key results — Q2/Q3 2026.</p>
         </div>
       </div>
 
       <div className="space-y-6">
         {okrs.map(({ objective, keyResults }) => (
-          <div key={objective} className="p-6 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10">
-            <h3 className="font-bold text-white text-[15px] mb-5">{objective}</h3>
+          <div key={objective} className="os-card p-6">
+            <h3 className="font-bold text-[15px] mb-5" style={{ color: 'var(--os-text-1)' }}>{objective}</h3>
             <div className="space-y-4">
               {keyResults.map(({ kr, progress, status }) => {
                 const cfg = STATUS_CONFIG[status]
                 return (
                   <div key={kr}>
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm text-slate-300 flex-1">{kr}</p>
+                      <p className="text-sm text-[var(--os-text-1)] flex-1">{kr}</p>
                       <div className="flex items-center gap-1.5 ml-4 flex-shrink-0" style={{ color: cfg.color }}>
                         {cfg.icon}
                         <span className="text-[11px] font-bold">{cfg.label}</span>
                       </div>
                     </div>
-                    <div className="h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                    <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--os-surface)' }}>
                       <div className="h-full rounded-full transition-all" style={{ width: `${progress}%`, background: cfg.color }} />
                     </div>
                   </div>

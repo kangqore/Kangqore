@@ -17,12 +17,60 @@ import { classifyIntent } from '../services/concierge.intent';
 import { retrieve, ensureIndexLoaded } from '../services/concierge.retrieval';
 import { EqoreSchedulingAgentService } from '../eqore/services/schedulingAgent.service';
 import { EqoreTokenService } from '../eqore/session/token.service';
+import { getIO } from '../socket';
+
+const INTENT_TAG_MAP: Record<string, string> = {
+  pricing: 'PRICING_INQUIRY',
+  services: 'BIDS_INTEREST',
+  comparison: 'COMPETITOR_COMPARISON',
+  support: 'TECHNICAL_QUESTION',
+  roadmap: 'TECHNICAL_QUESTION',
+  scheduling: 'BOOKING_INTENT',
+  contact: 'BOOKING_INTENT',
+};
+
+function enrichVisitorAsync(
+  convId: string,
+  visitorUuid: string | undefined,
+  intent: string,
+  messageCount: number,
+  capturedLead: { contactId: string; email: string } | null
+) {
+  Promise.resolve().then(async () => {
+    try {
+      const mappedTag = INTENT_TAG_MAP[intent];
+      if (mappedTag && visitorUuid) {
+        await prisma.anonymousVisitor.updateMany({
+          where: { visitorUuid, NOT: { intentTags: { has: mappedTag } } },
+          data: { intentTags: { push: mappedTag } },
+        });
+      }
+      const isBooking = intent === 'scheduling';
+      const isLeadCapture = !!capturedLead;
+      if (messageCount >= 3 || isBooking || isLeadCapture) {
+        try {
+          getIO().to('admin').emit('kimmp:signal:eqore', {
+            type: isLeadCapture ? 'LEAD_CAPTURE' : isBooking ? 'BOOKING_INTENT' : 'DEEP_ENGAGEMENT',
+            conversationId: convId,
+            visitorUuid: visitorUuid || null,
+            intent: mappedTag || intent,
+            messageCount,
+            timestamp: new Date().toISOString(),
+          });
+        } catch {}
+      }
+    } catch (e: any) {
+      logger.warn(`concierge.enrichment.warn: ${e.message}`);
+    }
+  });
+}
 
 const router = Router();
 
 const chatSchema = Joi.object({
   message: Joi.string().min(2).max(2000).required(),
   conversationId: Joi.string().optional().allow(null, ''),
+  visitorUuid: Joi.string().uuid().optional().allow(null, ''),
 });
 
 const leadSchema = Joi.object({
@@ -56,9 +104,10 @@ router.post(
       return next(createError(error.details[0].message, 400));
     }
 
-    const { message, conversationId } = value as {
+    const { message, conversationId, visitorUuid } = value as {
       message: string;
       conversationId?: string;
+      visitorUuid?: string;
     };
 
     let conversation = null;
@@ -80,6 +129,29 @@ router.post(
         }
       } catch (e: any) {
         logger.warn(`concierge.history.lookup.failed: ${e.message}`);
+      }
+    }
+
+    // Inject visitor footprint as leading context in history
+    if (visitorUuid && history.length === 0) {
+      try {
+        const visitor = await prisma.anonymousVisitor.findUnique({
+          where: { visitorUuid },
+          select: { topPages: true, eqoreQueries: true, intentTags: true, sessionCount: true },
+        })
+        if (visitor && (visitor.topPages.length || visitor.eqoreQueries.length || visitor.intentTags.length)) {
+          const lines: string[] = ['[VISITOR CONTEXT — do not mention this to the visitor]']
+          if (visitor.sessionCount > 1) lines.push(`Returning visitor (${visitor.sessionCount} sessions)`)
+          if (visitor.topPages.length) lines.push(`Pages visited: ${visitor.topPages.slice(0, 5).join(', ')}`)
+          if (visitor.eqoreQueries.length) lines.push(`Prior eQORE queries: ${visitor.eqoreQueries.slice(0, 5).join(' | ')}`)
+          if (visitor.intentTags.length) lines.push(`Intent signals: ${visitor.intentTags.join(', ')}`)
+          history = [
+            { role: 'user', content: lines.join('\n') },
+            { role: 'assistant', content: 'Understood. I have the visitor context and will personalise my response accordingly.' },
+          ]
+        }
+      } catch (e: any) {
+        logger.warn(`concierge.visitor.context.warn: ${e.message}`)
       }
     }
 
@@ -109,6 +181,7 @@ router.post(
         conversationId,
         userText: message,
         assistantText: text,
+        visitorUuid,
         meta: {
           intent,
           prefilterRule: pre.rule,
@@ -119,7 +192,7 @@ router.post(
           source: 'concierge',
         },
       })
-        .then((convId) => sseEvent(res, 'conversation', { conversationId: convId }))
+        .then(({ id: convId }) => sseEvent(res, 'conversation', { conversationId: convId }))
         .catch((err) => logger.error(`concierge.persist.error: ${err.message}`))
         .finally(() => res.end());
       return;
@@ -278,13 +351,15 @@ router.post(
             followups: final.followups || [],
           });
           try {
-            const convId = await persistTurn({
+            const { id: convId, userMessageCount } = await persistTurn({
               conversationId,
               userText: message,
               assistantText: final.text,
               meta: finalMeta,
+              visitorUuid,
             });
             sseEvent(res, 'conversation', { conversationId: convId });
+            enrichVisitorAsync(convId, visitorUuid, intent, userMessageCount, capturedLead);
           } catch (err: any) {
             logger.error(`concierge.persist.error: ${err.message}`);
           } finally {
@@ -485,8 +560,9 @@ async function persistTurn(args: {
   userText: string;
   assistantText: string;
   meta: any;
-}): Promise<string> {
-  const { conversationId, userText, assistantText, meta } = args;
+  visitorUuid?: string;
+}): Promise<{ id: string; userMessageCount: number }> {
+  const { conversationId, userText, assistantText, meta, visitorUuid } = args;
   const now = new Date().toISOString();
 
   const newMessages = [
@@ -507,15 +583,17 @@ async function persistTurn(args: {
       turns.push(meta);
       const intents: Record<string, number> = { ...(priorMeta.intents || {}) };
       if (meta?.intent) intents[meta.intent] = (intents[meta.intent] || 0) + 1;
+      const allMessages = [...prior, ...newMessages];
       const updated = await prisma.conversation.update({
         where: { id: existing.id },
         data: {
-          messages: [...prior, ...newMessages] as any,
-          meta: { ...priorMeta, turns, lastTurn: meta, intents },
+          messages: allMessages as any,
+          meta: { ...priorMeta, turns, lastTurn: meta, intents, visitorUuid: visitorUuid || priorMeta.visitorUuid },
           kind: existing.kind || 'concierge',
         },
       });
-      return updated.id;
+      const userCount = allMessages.filter((m: any) => m.role === 'user').length;
+      return { id: updated.id, userMessageCount: userCount };
     }
   }
 
@@ -525,10 +603,10 @@ async function persistTurn(args: {
     data: {
       kind: 'concierge',
       messages: newMessages as any,
-      meta: { turns: [meta], lastTurn: meta, intents },
+      meta: { turns: [meta], lastTurn: meta, intents, visitorUuid },
     },
   });
-  return created.id;
+  return { id: created.id, userMessageCount: 1 };
 }
 
 export default router;

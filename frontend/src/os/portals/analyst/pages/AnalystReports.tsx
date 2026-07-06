@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FileBarChart, Download, Clock, Filter } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 
 type ReportType = 'All' | 'Financial' | 'Market Intelligence' | 'Competitive' | 'Operational'
 
@@ -31,15 +32,16 @@ export function AnalystReports() {
   const upcoming  = visible.filter(r => r.status === 'Upcoming')
 
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
+    <div className="space-y-8">
+      <KIMMPSignalBar module="Reports" />
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">Reports &amp; Briefings</h1>
-        <p className="text-slate-500 mt-1 text-sm">Authorised analyst briefing materials and downloadable reports.</p>
+        <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Reports &amp; Briefings</h1>
+        <p className="text-[var(--os-text-2)] mt-1 text-sm">Authorised analyst briefing materials and downloadable reports.</p>
       </div>
 
       {/* Filters */}
       <div className="flex items-center gap-2 flex-wrap">
-        <Filter className="w-3.5 h-3.5 text-slate-500" />
+        <Filter className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
         {FILTERS.map(f => (
           <button
             key={f}
@@ -47,7 +49,7 @@ export function AnalystReports() {
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
               filter === f
                 ? 'bg-cyan-600 text-white'
-                : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-400 hover:text-white'
+                : 'os-card text-[var(--os-text-2)]'
             }`}
           >
             {f}
@@ -58,18 +60,18 @@ export function AnalystReports() {
       {/* Available */}
       {available.length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Available Now</h2>
+          <h2 className="text-sm font-semibold text-[var(--os-text-2)] uppercase tracking-wider mb-3">Available Now</h2>
           <div className="space-y-3">
             {available.map(r => (
-              <div key={r.id} className="flex items-start gap-4 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 transition-colors group">
+              <div key={r.id} className="os-card flex items-start gap-4 p-4 hover:shadow-md transition-all group">
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <FileBarChart className="w-5 h-5 text-cyan-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="font-semibold text-white text-sm">{r.title}</p>
-                      <p className="text-slate-500 text-xs mt-0.5">{r.desc}</p>
+                      <p className="font-semibold text-sm" style={{ color: 'var(--os-text-1)' }}>{r.title}</p>
+                      <p className="text-[var(--os-text-2)] text-xs mt-0.5">{r.desc}</p>
                     </div>
                     <a
                       href="#"
@@ -82,8 +84,8 @@ export function AnalystReports() {
                   </div>
                   <div className="flex items-center gap-3 mt-2">
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLOR[r.type]}`}>{r.type}</span>
-                    <span className="text-xs text-slate-500">{r.date}</span>
-                    <span className="text-xs text-slate-500">{r.pages} pages</span>
+                    <span className="text-xs text-[var(--os-text-2)]">{r.date}</span>
+                    <span className="text-xs text-[var(--os-text-2)]">{r.pages} pages</span>
                   </div>
                 </div>
               </div>
@@ -95,19 +97,19 @@ export function AnalystReports() {
       {/* Upcoming */}
       {upcoming.length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Upcoming</h2>
+          <h2 className="text-sm font-semibold text-[var(--os-text-2)] uppercase tracking-wider mb-3">Upcoming</h2>
           <div className="space-y-3">
             {upcoming.map(r => (
-              <div key={r.id} className="flex items-start gap-4 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 opacity-60">
-                <div className="w-10 h-10 rounded-xl bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Clock className="w-5 h-5 text-slate-500" />
+              <div key={r.id} className="os-card flex items-start gap-4 p-4 opacity-60">
+                <div className="w-10 h-10 rounded-xl bg-[var(--os-surface)] flex items-center justify-center flex-shrink-0 mt-0.5" style={{ border: '1px solid var(--os-border)' }}>
+                  <Clock className="w-5 h-5 text-[var(--os-text-2)]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-slate-300 text-sm">{r.title}</p>
-                  <p className="text-slate-500 text-xs mt-0.5">{r.desc}</p>
+                  <p className="font-semibold text-[var(--os-text-1)] text-sm">{r.title}</p>
+                  <p className="text-[var(--os-text-2)] text-xs mt-0.5">{r.desc}</p>
                   <div className="flex items-center gap-3 mt-2">
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLOR[r.type]}`}>{r.type}</span>
-                    <span className="text-xs text-slate-500">Expected {r.date}</span>
+                    <span className="text-xs text-[var(--os-text-2)]">Expected {r.date}</span>
                   </div>
                 </div>
               </div>
@@ -116,7 +118,7 @@ export function AnalystReports() {
         </section>
       )}
 
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-[var(--os-text-2)]">
         Need a report not listed here?{' '}
         <a href="mailto:analyst@kangqore.com" className="text-cyan-400 hover:underline">Contact analyst relations</a>
       </p>

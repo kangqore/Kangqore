@@ -21,8 +21,8 @@ const SLA_TREND_OPTIONS = [
   { value: 'down',   label: 'Down',   variant: 'danger'  as const },
 ]
 
-const inputStyle = { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)' }
-const inputClass = 'w-full rounded-lg px-3 py-2 text-[13px] text-slate-200 placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
+const inputStyle = { background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }
+const inputClass = 'w-full rounded-lg px-3 py-2 text-[13px] text-[var(--os-text-1)] placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
 const EMPTY_SLA = { clientId: '', metric: '', target: '', current: '', unit: '%', period: 'Monthly', status: 'met' as const, trend: 'stable' as const }
 
 function AddSLAModal({ clients, onClose }: { clients: { id: string; name: string }[]; onClose: () => void }) {
@@ -37,45 +37,45 @@ function AddSLAModal({ clients, onClose }: { clients: { id: string; name: string
     <div className="fixed inset-0 z-[60] flex items-center justify-center">
       <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(2px)' }} onClick={onClose} />
       <div className="relative z-10 w-full max-w-[420px] rounded-2xl p-5 flex flex-col gap-3"
-        style={{ background: 'rgba(10,13,24,0.98)', border: '1px solid rgba(255,255,255,0.09)', boxShadow: '0 32px 64px rgba(0,0,0,0.7)' }}>
+        style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', boxShadow: '0 32px 64px rgba(0,0,0,0.7)' }}>
         <div className="flex items-center justify-between mb-1">
           <h3 className="text-[14px] font-bold text-slate-100">Add SLA Metric</h3>
-          <button onClick={onClose} className="text-slate-600 hover:text-slate-300 text-lg leading-none">×</button>
+          <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)] text-lg leading-none">×</button>
         </div>
         <div>
-          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Client *</label>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Client *</label>
           <select required value={form.clientId} onChange={set('clientId')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
             <option value="">Select client…</option>
             {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Metric *</label>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Metric *</label>
           <input value={form.metric} onChange={set('metric')} placeholder="e.g. Uptime, Response Time" className={inputClass} style={inputStyle} />
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Target</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Target</label>
             <input type="number" value={form.target} onChange={set('target')} placeholder="99" className={inputClass} style={inputStyle} />
           </div>
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Current</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Current</label>
             <input type="number" value={form.current} onChange={set('current')} placeholder="97" className={inputClass} style={inputStyle} />
           </div>
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Unit</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Unit</label>
             <input value={form.unit} onChange={set('unit')} placeholder="%" className={inputClass} style={inputStyle} />
           </div>
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Period</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Period</label>
             <select value={form.period} onChange={set('period')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
               {['Monthly','Quarterly','Weekly','Annual'].map(p => <option key={p}>{p}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Status</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Status</label>
             <select value={form.status} onChange={set('status')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
               <option value="met">Met</option>
               <option value="at-risk">At Risk</option>
@@ -83,7 +83,7 @@ function AddSLAModal({ clients, onClose }: { clients: { id: string; name: string
             </select>
           </div>
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Trend</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Trend</label>
             <select value={form.trend} onChange={set('trend')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
               <option value="stable">Stable</option>
               <option value="up">Up</option>
@@ -92,7 +92,7 @@ function AddSLAModal({ clients, onClose }: { clients: { id: string; name: string
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-1">
-          <button onClick={onClose} className="px-3 py-1.5 text-[13px] text-slate-500 hover:text-slate-300">Cancel</button>
+          <button onClick={onClose} className="px-3 py-1.5 text-[13px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
           <button onClick={() => mutate()} disabled={isPending || !form.clientId || !form.metric}
             className="px-4 py-1.5 rounded-lg text-[13px] font-semibold text-white disabled:opacity-50"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
@@ -135,14 +135,14 @@ export function SLADashboard() {
       {showAdd && <AddSLAModal clients={clients} onClose={() => setShowAdd(false)} />}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-xl font-bold text-white">SLA Dashboard</h2>
-          <p className="text-sm text-slate-500 mt-0.5">{slaMetrics.length} metrics across {clients.length} clients</p>
+          <h2 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>SLA Dashboard</h2>
+          <p className="text-sm text-[var(--os-text-2)] mt-0.5">{slaMetrics.length} metrics across {clients.length} clients</p>
         </div>
         <div className="flex items-center gap-3">
           {slaMetrics.length > 0 && (
             <>
-              <span className="text-2xl font-bold tracking-tight text-white">{compliance}%</span>
-              <span className="text-sm text-slate-500">overall compliance</span>
+              <span className="text-2xl font-bold tracking-tight text-[var(--os-text-1)]">{compliance}%</span>
+              <span className="text-sm text-[var(--os-text-2)]">overall compliance</span>
             </>
           )}
           <button onClick={() => setShowAdd(true)}
@@ -156,8 +156,8 @@ export function SLADashboard() {
       {slaMetrics.length === 0 && (
         <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
           <Shield className="w-10 h-10 text-slate-800" />
-          <p className="text-sm font-semibold text-slate-600">No SLA metrics yet</p>
-          <p className="text-xs text-slate-700 max-w-xs">Add your first SLA metric to start tracking compliance across clients.</p>
+          <p className="text-sm font-semibold text-[var(--os-text-2)]">No SLA metrics yet</p>
+          <p className="text-xs text-[var(--os-text-2)] max-w-xs">Add your first SLA metric to start tracking compliance across clients.</p>
           <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-lg text-white text-[13px] font-semibold mt-2"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             <Plus className="w-3.5 h-3.5" /> Add first SLA metric
@@ -170,7 +170,7 @@ export function SLADashboard() {
         {[
           { label: `${met} Met`,       color: 'bg-[#00c875] text-white shadow-[0_2px_8px_rgba(0,200,117,0.25)] border-transparent'   },
           { label: `${atRisk} At Risk`, color: 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.25)] border-transparent'  },
-          { label: `${breached} Breached`, color: breached > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)] border-transparent' : 'bg-slate-200 text-slate-300 border-transparent' },
+          { label: `${breached} Breached`, color: breached > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)] border-transparent' : 'bg-slate-200 text-[var(--os-text-1)] border-transparent' },
         ].map(c => (
           <span key={c.label} className={`text-sm font-bold px-4 py-2 rounded-xl border ${c.color}`}>{c.label}</span>
         ))}
@@ -180,7 +180,7 @@ export function SLADashboard() {
       <Card>
         <CardHeader>
           <CardTitle>SLA Status by Client</CardTitle>
-          <div className="flex items-center gap-4 text-xs text-slate-500">
+          <div className="flex items-center gap-4 text-xs text-[var(--os-text-2)]">
             {[{c:'bg-green-500',l:'Met'},{c:'bg-amber-400',l:'At Risk'},{c:'bg-red-400',l:'Breached'}].map(i=>(
               <span key={i.l} className="flex items-center gap-1.5"><span className={`w-2.5 h-2.5 rounded-sm ${i.c}`}/>{i.l}</span>
             ))}
@@ -188,9 +188,9 @@ export function SLADashboard() {
         </CardHeader>
         <ResponsiveContainer width="100%" height={180}>
           <BarChart data={chartData} barSize={18} barGap={3}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f3f7" vertical={false} />
-            <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: '#9aaabf' }} axisLine={false} tickLine={false} allowDecimals={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--os-border)" vertical={false} />
+            <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'var(--os-text-2)' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: 'var(--os-text-2)' }} axisLine={false} tickLine={false} allowDecimals={false} />
             <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid #e4e8f0', fontSize: 12 }} />
             <Bar dataKey="Met"     fill="#22c55e" radius={[4,4,0,0]} stackId="a" />
             <Bar dataKey="At Risk" fill="#f59e0b" radius={[0,0,0,0]} stackId="a" />
@@ -222,24 +222,24 @@ export function SLADashboard() {
             </CardHeader>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
+                <tr className="border-b border-[var(--os-border)] bg-[var(--os-surface-0)]">
                   {['Metric','Period','Target','Current','Trend','Status'].map(h=>(
-                    <th key={h} className="text-left px-5 py-2.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                    <th key={h} className="text-left px-5 py-2.5 text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wider">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#2E2854]">
+              <tbody className="divide-y divide-[var(--os-border)]">
                 {cSLAs.map(sla => {
                   const pct = Math.min(100, Math.round((sla.current / sla.target) * 100))
                   return (
-                    <tr key={sla.id} className="hover:bg-slate-900 transition-colors">
-                      <td className="px-5 py-3 font-medium text-slate-300">{sla.metric}</td>
-                      <td className="px-5 py-3 text-xs text-slate-500">{sla.period}</td>
-                      <td className="px-5 py-3 text-slate-500">{sla.target}{sla.unit}</td>
+                    <tr key={sla.id} className="hover:bg-[var(--os-surface-0)] transition-colors">
+                      <td className="px-5 py-3 font-medium text-[var(--os-text-1)]">{sla.metric}</td>
+                      <td className="px-5 py-3 text-xs text-[var(--os-text-2)]">{sla.period}</td>
+                      <td className="px-5 py-3 text-[var(--os-text-2)]">{sla.target}{sla.unit}</td>
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-2">
                           <Progress value={pct} size="sm" color={sla.status === 'met' ? 'success' : sla.status === 'at-risk' ? 'warning' : 'danger'} className="w-20" />
-                          <span className="font-semibold text-slate-200">{sla.current}{sla.unit}</span>
+                          <span className="font-semibold text-[var(--os-text-1)]">{sla.current}{sla.unit}</span>
                         </div>
                       </td>
                       <td className="px-5 py-3">

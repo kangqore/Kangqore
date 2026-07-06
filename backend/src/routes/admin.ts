@@ -18,6 +18,26 @@ import { SystemLearning } from '../kangqore-immp/agents/systemLearning';
 import { KimmpSystemDispatcher } from '../kangqore-immp/agents/systemDispatcher';
 import { SignalLedger } from '../kangqore-immp/signals/signalLedger.service';
 import { emailService } from '../services/email.service';
+import { getRouterStats, getCircuitBreakerStatus } from '../kangqore-immp/llm/kimmpLLMRouter';
+import { getRuntimeHealth, setProviderMaintenance } from '../kangqore-immp/runtime/waandaRuntime';
+import { getRedisHealth } from '../lib/redis';
+import { runBenchmarks } from '../scripts/benchmarks/runBenchmarks';
+import { runGate4 }  from '../scripts/gate4/gate4Runner';
+import { runGate5 }  from '../scripts/gate5/gate5Runner';
+import { runGate35 } from '../scripts/gate35/gate35Runner';
+import { runGate6 }  from '../scripts/gate6/gate6Runner';
+import { issueCertificate, approveCertificate, latestCertificate, listCertificates, revokeCertificate, computeCertificateDiff } from '../scripts/qef/qefCertificateService';
+import { evaluateRelease, recordDeployment, recordOutcome, recordRollback, emergencyOverride, preflightCheck, listDecisions, listDeployments, listEnvironments } from '../scripts/rgs/rgsService';
+import { AegisLedger } from '../kangqore-aegis/aegisLedger.service';
+import { getFlightEvents } from '../scripts/flightRecorder/flightRecorderService';
+import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../scripts/gate8/gate8Service';
+import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, logAdoptionEvent } from '../scripts/gate8/enterpriseService';
+import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin } from '../scripts/gate8/projectOps.service';
+import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../scripts/gate8/enterpriseCoach.service';
+import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../scripts/gate8/decisionEngine.service';
+import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint } from '../scripts/gate8/blueprintService';
+import { simulateEnterpriseTwin, listTwinScenarios } from '../scripts/gate8/enterpriseTwin.service';
+import { computeCapabilityProfiles, getCapabilityProfiles, getRuntimeCallStats } from '../kangqore-immp/runtime/waandaRuntimeIntelligence.service';
 
 const clientSignalsService = new ClientSignalsService();
 const clientConfusionService = new ClientConfusionService();
@@ -1477,6 +1497,38 @@ router.post('/projects/:id/override-progress', authenticate, authorize(['ADMIN']
   }
 });
 
+// ─── Leads list ───────────────────────────────────────────────────────────────
+// GET /api/admin/eqore/leads  — lead pipeline list for OS Leads module
+router.get('/eqore/leads', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const limit  = Math.min(Number(req.query.limit)  || 200, 500)
+    const offset = Number(req.query.offset) || 0
+    const status = req.query.status as string | undefined
+
+    const where: Record<string, unknown> = {}
+    if (status) where.status = status
+
+    const leads = await prisma.eqoreLead.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      take:    limit,
+      skip:    offset,
+      select: {
+        id: true, companyName: true, name: true, role: true, email: true, phone: true,
+        leadScore: true, status: true, primaryIntent: true, website: true,
+        sourcePage: true, buyingStage: true, urgency: true, projectedValue: true,
+        pipelineWeight: true, valueTier: true, createdAt: true, updatedAt: true,
+        assignedOwnerName: true, schedulingStatus: true, leadCategory: true,
+        painPoints: true, problemStatement: true, recommendedAction: true,
+        conversationId: true,
+      },
+    })
+
+    const total = await prisma.eqoreLead.count({ where })
+    res.json({ leads, total, limit, offset })
+  } catch (err) { next(err) }
+})
+
 // ─── Lead inline editing ───────────────────────────────────────────────────
 // PATCH /api/admin/leads/:id  — update EqoreLead status and fields via JWT auth
 router.patch('/leads/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -1548,6 +1600,12 @@ router.patch('/leads/:id', authenticate, authorize(['ADMIN']), async (req: Authe
               metadata:       { leadId: id, previousStatus: prevStatus },
             }).catch(() => {})
           }
+
+          // 1b. Adoption Intelligence — log decision event for every status change
+          const adoptionType = (isWon || isLost) ? 'DECISION_ACCEPT' : 'WORKFLOW_TRIGGER'
+          logAdoptionEvent(adoptionType, (req as any).user?.id, 'lead', id, {
+            fromStatus: prevStatus, toStatus: newStatus, entityLabel: leadLabel,
+          }).catch(() => {})
 
           // 2. Event triggers: fire the right system based on status change
           const userId = req.user?.userId
@@ -1866,7 +1924,7 @@ router.get('/kangqore-immp/insights', authenticate, authorize(['ADMIN']), async 
         select: { id: true, name: true, status: true, createdAt: true },
       }),
       prisma.project.findMany({
-        where: { status: { in: ['ACTIVE', 'IN_PROGRESS'] }, dueDate: { lt: now } },
+        where: { status: 'ACTIVE', dueDate: { lt: now } },
         select: { id: true, title: true, status: true, dueDate: true },
       }),
     ])
@@ -2021,6 +2079,1078 @@ router.get('/kangqore-immp/insights', authenticate, authorize(['ADMIN']), async 
   } catch (err) {
     next(err)
   }
+})
+
+// ─── Gate 3: AI Benchmarks ───────────────────────────────────────────────────
+
+// GET  /admin/kangqore-immp/benchmarks        → latest run + trend
+// GET  /admin/kangqore-immp/benchmarks/runs   → paginated run history
+// POST /admin/kangqore-immp/benchmarks/run    → trigger a benchmark run
+
+router.get('/kangqore-immp/benchmarks', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const [latest, runs] = await Promise.all([
+      (prisma as any).kimmpBenchmarkRun.findFirst({
+        orderBy: { startedAt: 'desc' },
+        include: {
+          results: {
+            orderBy: { score: 'asc' },
+            select: { promptId: true, category: true, score: true, passed: true, issues: true, confidence: true, responseMs: true, actualModel: true },
+          },
+        },
+      }),
+      (prisma as any).kimmpBenchmarkRun.findMany({
+        orderBy: { startedAt: 'desc' },
+        take: 30,
+        select: { id: true, startedAt: true, totalScore: true, passCount: true, failCount: true, driftAlert: true, driftDelta: true, trigger: true },
+      }),
+    ])
+
+    const trend = runs.map((r: any) => ({ date: r.startedAt, score: r.totalScore, driftAlert: r.driftAlert }))
+
+    res.json({ latest, trend, totalRuns: runs.length })
+  } catch (err) { next(err) }
+})
+
+router.get('/kangqore-immp/benchmarks/runs', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const page  = Math.max(1, Number((req.query as any).page  ?? 1))
+    const limit = Math.min(50, Number((req.query as any).limit ?? 20))
+    const [runs, total] = await Promise.all([
+      (prisma as any).kimmpBenchmarkRun.findMany({
+        orderBy: { startedAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+        include: { results: { select: { promptId: true, score: true, passed: true, category: true } } },
+      }),
+      (prisma as any).kimmpBenchmarkRun.count(),
+    ])
+    res.json({ runs, total, page, limit })
+  } catch (err) { next(err) }
+})
+
+router.post('/kangqore-immp/benchmarks/run', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const authHeader = req.headers.authorization ?? ''
+    const token = authHeader.replace(/^Bearer\s+/i, '')
+    const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`
+    const summary = await runBenchmarks({ url: backendUrl, token, trigger: 'manual', verbose: false })
+    res.json(summary)
+  } catch (err) { next(err) }
+})
+
+// ─── WAANDA Runtime: maintenance mode toggle ─────────────────────────────────
+
+router.post('/kangqore-immp/runtime/maintenance', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { provider, on } = req.body as { provider: string; on: boolean }
+    if (!provider || typeof on !== 'boolean') return res.status(400).json({ error: 'provider (string) and on (boolean) required' })
+    setProviderMaintenance(provider, on)
+    res.json({ ok: true, provider, maintenance: on })
+  } catch (err) { next(err) }
+})
+
+// ─── Gate 7: Readiness — consolidated release gate ───────────────────────────
+// Returns structured gate statuses suitable for Mission Control Release Control.
+
+router.get('/kangqore-immp/readiness', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const [runtimeHealth, redisHealth, dbPing, latestBenchmark, latestGate35, latestGate4, latestGate5, latestGate6] = await Promise.allSettled([
+      getRuntimeHealth(),
+      Promise.resolve(getRedisHealth()),
+      prisma.$queryRaw`SELECT 1`.then(() => true).catch(() => false),
+      (prisma as any).kimmpBenchmarkRun.findFirst({
+        orderBy: { startedAt: 'desc' },
+        select: { totalScore: true, passCount: true, failCount: true, driftAlert: true, startedAt: true },
+      }).catch(() => null),
+      (prisma as any).waandaGate35Run.findFirst({
+        orderBy: { createdAt: 'desc' },
+        select: { totalScore: true, passCount: true, failCount: true, completedAt: true },
+      }).catch(() => null),
+      (prisma as any).kimmpGate4Run.findFirst({
+        orderBy: { runAt: 'desc' },
+        select: { totalScore: true, passCount: true, failCount: true, completedAt: true },
+      }).catch(() => null),
+      (prisma as any).waandaGate5Run.findFirst({
+        orderBy: { createdAt: 'desc' },
+        select: { totalScore: true, passCount: true, failCount: true, completedAt: true },
+      }).catch(() => null),
+      (prisma as any).waandaGate6Run.findFirst({
+        orderBy: { createdAt: 'desc' },
+        select: { totalScore: true, passCount: true, failCount: true, pendingCount: true, completedAt: true },
+      }).catch(() => null),
+    ])
+
+    const runtime  = runtimeHealth.status   === 'fulfilled' ? runtimeHealth.value   : null
+    const redis    = redisHealth.status      === 'fulfilled' ? redisHealth.value     : null
+    const dbOk     = dbPing.status           === 'fulfilled' ? dbPing.value          : false
+    const bench    = latestBenchmark.status  === 'fulfilled' ? latestBenchmark.value : null
+    const g35      = latestGate35.status     === 'fulfilled' ? latestGate35.value    : null
+    const g4       = latestGate4.status      === 'fulfilled' ? latestGate4.value     : null
+    const g5       = latestGate5.status      === 'fulfilled' ? latestGate5.value     : null
+    const g6       = latestGate6.status      === 'fulfilled' ? latestGate6.value     : null
+
+    // Gate 1: Functional Correctness — DB reachable = platform runs
+    const gate1 = dbOk ? 'PASS' : 'FAIL'
+
+    // Gate 2: Infrastructure Resilience — DB + Redis + at least one LLM provider
+    const gate2 = (dbOk && !redis?.degraded && runtime?.anyUp) ? 'PASS'
+                : (!dbOk || !runtime?.anyUp) ? 'FAIL' : 'DEGRADED'
+
+    // Gate 3: AI Reliability — last benchmark run score ≥75, no drift alert
+    const gate3 = !bench                    ? 'PENDING'
+                : bench.driftAlert          ? 'DEGRADED'
+                : bench.totalScore >= 75    ? 'PASS' : 'FAIL'
+
+    // Gate 3.5: Runtime Intelligence — failover rate + routing quality
+    const gate35 = !g35                    ? 'PENDING'
+                 : g35.totalScore >= 70 && g35.passCount >= 4 ? 'PASS'
+                 : g35.totalScore >= 50    ? 'DEGRADED' : 'FAIL'
+
+    // Gate 4: Autonomous Operations
+    const gate4 = !g4                      ? 'PENDING'
+                : g4.totalScore >= 75 && g4.failCount <= 1 ? 'PASS'
+                : g4.totalScore >= 60       ? 'DEGRADED' : 'FAIL'
+
+    // Gate 5: Interaction Quality
+    const gate5 = !g5                      ? 'PENDING'
+                : g5.totalScore >= 75 && (g5.failCount / (g5.passCount + g5.failCount || 1)) <= 0.20 ? 'PASS'
+                : g5.totalScore >= 60       ? 'DEGRADED' : 'FAIL'
+
+    // Gate 6: Enterprise Readiness
+    const gate6 = !g6                      ? 'PENDING'
+                : g6.totalScore >= 70 && g6.failCount <= 5 ? 'PASS'
+                : g6.totalScore >= 50       ? 'PARTIAL' : 'FAIL'
+
+    // Overall: weighted across 7 gates (Gate 7 = pending)
+    const gateScore = (g: string) => g === 'PASS' ? 100 : g === 'PARTIAL' ? 75 : g === 'DEGRADED' ? 65 : g === 'PENDING' ? 80 : 0
+    const overall = Math.round(
+      gateScore(gate1)  * 0.10 +
+      gateScore(gate2)  * 0.15 +
+      gateScore(gate3)  * 0.20 +
+      gateScore(gate35) * 0.10 +
+      gateScore(gate4)  * 0.15 +
+      gateScore(gate5)  * 0.15 +
+      gateScore(gate6)  * 0.15
+    )
+
+    const blockingIssues: string[] = []
+    const warnings: string[] = []
+    if (gate1 === 'FAIL')    blockingIssues.push('Database unreachable')
+    if (gate2 === 'FAIL')    blockingIssues.push('Infrastructure resilience failure')
+    if (gate3 === 'FAIL')    blockingIssues.push('AI benchmark quality below threshold')
+    if (gate35 === 'FAIL')   warnings.push('Runtime routing intelligence degraded')
+    if (gate4 === 'FAIL')    warnings.push('Autonomous workflow validation failed')
+    if (gate5 === 'FAIL')    warnings.push('Interaction quality below threshold')
+    if (gate6 === 'FAIL')    blockingIssues.push('Enterprise readiness gate failed')
+    if (redis?.degraded)     warnings.push(`Redis in fallback mode (${redis.fallbackDurationSec}s)`)
+    if (bench?.driftAlert)   warnings.push('AI quality drift detected')
+    if (!runtime?.anyUp)     blockingIssues.push('No LLM providers available')
+
+    const readyForRelease = blockingIssues.length === 0 && overall >= 75
+
+    res.json({
+      readyForRelease,
+      overall,
+      blockingIssues,
+      warnings,
+      recommendedAction: readyForRelease ? 'Deploy' : blockingIssues.length > 0 ? 'Block' : 'Review',
+      timestamp: new Date().toISOString(),
+      gates: {
+        gate1:  { name: 'Platform Correctness',    status: gate1,  weight: 10 },
+        gate2:  { name: 'Platform Resilience',     status: gate2,  weight: 15 },
+        gate3:  { name: 'Intelligence Quality',    status: gate3,  weight: 20 },
+        gate35: { name: 'Runtime Intelligence',    status: gate35, weight: 10 },
+        gate4:  { name: 'Autonomous Operations',   status: gate4,  weight: 15 },
+        gate5:  { name: 'Interaction Quality',     status: gate5,  weight: 15 },
+        gate6:  { name: 'Enterprise Readiness',    status: gate6,  weight: 15 },
+        gate7:  { name: 'Release Readiness',       status: 'PENDING', weight: 0 },
+      },
+      detail: {
+        database:  { ok: dbOk },
+        redis:     { ok: !redis?.degraded, mode: redis?.mode, fallbackDurationSec: redis?.fallbackDurationSec ?? 0 },
+        ai:        { overall: runtime?.overall, anyUp: runtime?.anyUp, providers: runtime?.providers },
+        benchmark: bench ? { score: bench.totalScore, passCount: bench.passCount, driftAlert: bench.driftAlert, at: bench.startedAt } : null,
+        runtime35: g35  ? { score: g35.totalScore,  passCount: g35.passCount,  failCount: g35.failCount,  at: g35.completedAt  } : null,
+        gate4:     g4   ? { score: g4.totalScore,   passCount: g4.passCount,   failCount: g4.failCount,   at: g4.completedAt   } : null,
+        gate5:     g5   ? { score: g5.totalScore,   passCount: g5.passCount,   failCount: g5.failCount,   at: g5.completedAt   } : null,
+        gate6:     g6   ? { score: g6.totalScore,   passCount: g6.passCount,   failCount: g6.failCount,   pendingCount: g6.pendingCount, at: g6.completedAt } : null,
+      },
+    })
+  } catch (err) { next(err) }
+})
+
+// ─── Gate 2: System Health — LLM Router + Redis + DB ────────────────────────
+// Powers the Gate 7 Production Readiness Dashboard.
+
+router.get('/kangqore-immp/system-health', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const [routerStats, redisHealth, dbPing] = await Promise.allSettled([
+      getRouterStats(),
+      Promise.resolve(getRedisHealth()),
+      prisma.$queryRaw`SELECT 1`.then(() => ({ ok: true })).catch((e: any) => ({ ok: false, error: e.message })),
+    ])
+
+    const router = routerStats.status === 'fulfilled' ? routerStats.value : null
+    const redis  = redisHealth.status === 'fulfilled'  ? redisHealth.value  : null
+    const db     = dbPing.status === 'fulfilled'       ? dbPing.value       : { ok: false, error: 'Prisma error' }
+
+    const llmProvidersUp = router
+      ? (router.activeProviders as string[]).filter(p => {
+          const cb = (router.circuitBreakers as any)[p]
+          return cb?.state === 'closed' || cb?.state === 'half-open'
+        }).length
+      : 0
+
+    const healthy = (db as any).ok && !redis?.degraded && llmProvidersUp > 0
+
+    res.json({
+      healthy,
+      timestamp: new Date().toISOString(),
+      gates: {
+        database: {
+          ok:    (db as any).ok,
+          error: (db as any).error ?? null,
+        },
+        redis: {
+          ok:             !redis?.degraded,
+          mode:           redis?.mode ?? 'unknown',
+          degraded:       redis?.degraded ?? false,
+          fallbackEntries: redis?.fallbackEntries ?? 0,
+        },
+        llm: {
+          ok:              llmProvidersUp > 0,
+          activeProviders: router?.activeProviders ?? [],
+          callsTotal:      router?.callsTotal ?? 0,
+          autonomyRatio:   router?.autonomyRatio ?? 0,
+          phase:           router?.phase ?? 'unknown',
+          circuitBreakers: router?.circuitBreakers ?? {},
+          providers:       router?.providers ?? [],
+        },
+      },
+    })
+  } catch (err) {
+    next(err)
+  }
+})
+
+// ─── Gate 3.5: Runtime Intelligence ──────────────────────────────────────────
+
+// GET  /admin/kangqore-immp/runtime/intelligence        → profiles + 30d stats
+// POST /admin/kangqore-immp/runtime/intelligence/run    → trigger Gate 3.5 check
+// POST /admin/kangqore-immp/runtime/intelligence/recompute → recompute profiles
+
+router.get('/kangqore-immp/runtime/intelligence', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const [profiles, stats, latest] = await Promise.all([
+      getCapabilityProfiles(),
+      getRuntimeCallStats(30),
+      (prisma as any).waandaGate35Run.findFirst({
+        orderBy: { createdAt: 'desc' },
+        include: { checks: true },
+      }).catch(() => null),
+    ])
+    res.json({ profiles, stats, latest })
+  } catch (err) { next(err) }
+})
+
+router.post('/kangqore-immp/runtime/intelligence/recompute', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    await computeCapabilityProfiles(30)
+    const profiles = await getCapabilityProfiles()
+    res.json({ ok: true, profiles })
+  } catch (err) { next(err) }
+})
+
+router.post('/kangqore-immp/runtime/intelligence/run', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const summary = await runGate35({ trigger: 'manual', verbose: false })
+    res.json({ ok: true, summary })
+  } catch (err) { next(err) }
+})
+
+// ─── Gate 5: Interaction Quality ─────────────────────────────────────────────
+
+// GET  /admin/kangqore-immp/gate5       → latest Gate 5 run + trend
+// POST /admin/kangqore-immp/gate5/run   → trigger Playwright e2e suite
+
+router.get('/kangqore-immp/gate5', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const [latest, trend] = await Promise.all([
+      (prisma as any).waandaGate5Run.findFirst({
+        orderBy: { createdAt: 'desc' },
+        include: { checks: true },
+      }).catch(() => null),
+      (prisma as any).waandaGate5Run.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+        select: { id: true, totalScore: true, passCount: true, failCount: true, durationMs: true, trigger: true, completedAt: true, createdAt: true },
+      }).catch(() => []),
+    ])
+
+    const gate = !latest ? 'PENDING'
+      : latest.totalScore >= 75 && (latest.failCount / Math.max(latest.passCount + latest.failCount, 1)) <= 0.20
+      ? 'PASS' : 'FAIL'
+
+    res.json({ gate, latest, trend })
+  } catch (err) { next(err) }
+})
+
+router.post('/kangqore-immp/gate5/run', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const summary = await runGate5({ trigger: 'manual', verbose: false })
+    res.json({ ok: true, summary })
+  } catch (err) { next(err) }
+})
+
+// ─── Gate 6: Enterprise Readiness ────────────────────────────────────────────
+
+// GET  /admin/kangqore-immp/gate6       → latest Gate 6 run + domain breakdown
+// POST /admin/kangqore-immp/gate6/run   → trigger a new Gate 6 run
+
+router.get('/kangqore-immp/gate6', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const [latest, trend] = await Promise.all([
+      (prisma as any).waandaGate6Run.findFirst({ orderBy: { createdAt: 'desc' }, include: { checks: true } }),
+      (prisma as any).waandaGate6Run.findMany({ orderBy: { createdAt: 'desc' }, take: 10, select: { totalScore: true, passCount: true, failCount: true, pendingCount: true, createdAt: true } }),
+    ])
+    res.json({ latest, trend })
+  } catch (err) { next(err) }
+})
+
+router.post('/kangqore-immp/gate6/run', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const summary = await runGate6({ trigger: 'manual', verbose: false })
+    res.json({ ok: true, summary })
+  } catch (err) { next(err) }
+})
+
+// ─── QEF Certificates ─────────────────────────────────────────────────────────
+// GET  /admin/kangqore-immp/certificates          → latest cert + release history
+// GET  /admin/kangqore-immp/certificates/latest   → just the current cert
+// POST /admin/kangqore-immp/certificates/issue    → issue a new certificate
+
+router.get('/kangqore-immp/certificates', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const [latest, history] = await Promise.all([
+      latestCertificate(),
+      listCertificates(20),
+    ])
+    res.json({ latest, history })
+  } catch (err) { next(err) }
+})
+
+router.get('/kangqore-immp/certificates/latest', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    res.json(await latestCertificate())
+  } catch (err) { next(err) }
+})
+
+router.post('/kangqore-immp/certificates/issue', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { reviewer, approver, draft } = req.body ?? {}
+    const cert = await issueCertificate({ trigger: 'manual', reviewer, approver, draft: !!draft, verbose: false })
+    res.json({ ok: true, cert })
+  } catch (err) { next(err) }
+})
+
+router.post('/kangqore-immp/certificates/:certId/approve', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { certId } = req.params
+    const { approver } = req.body ?? {}
+    if (!approver) { res.status(400).json({ error: 'approver is required' }); return }
+    const cert = await approveCertificate(certId, approver)
+    res.json({ ok: true, cert })
+  } catch (err) { next(err) }
+})
+
+router.post('/kangqore-immp/certificates/:certId/revoke', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { certId } = req.params
+    const { reason } = req.body ?? {}
+    if (!reason) { res.status(400).json({ error: 'reason is required' }); return }
+    const cert = await revokeCertificate(certId, reason)
+    res.json({ ok: true, cert })
+  } catch (err) { next(err) }
+})
+
+// GET /certificates/diff?from=QEF-2026-000001&to=QEF-2026-000002
+router.get('/kangqore-immp/certificates/diff', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { from, to } = req.query as { from?: string; to?: string }
+    if (!from || !to) { res.status(400).json({ error: 'from and to are required' }); return }
+    const diff = await computeCertificateDiff(from, to)
+    res.json(diff)
+  } catch (err) { next(err) }
+})
+
+// ─── Gate 4: Autonomous Operations ───────────────────────────────────────────
+
+// GET  /admin/kangqore-immp/gate4       → latest Gate 4 run + 10-run trend
+// POST /admin/kangqore-immp/gate4/run   → trigger a new Gate 4 run
+
+router.get('/kangqore-immp/gate4', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const [latest, trend] = await Promise.all([
+      (prisma as any).kimmpGate4Run.findFirst({
+        orderBy: { createdAt: 'desc' },
+        include: { results: true },
+      }).catch(() => null),
+      (prisma as any).kimmpGate4Run.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+        select: { id: true, totalScore: true, passCount: true, failCount: true, durationMs: true, trigger: true, completedAt: true, createdAt: true },
+      }).catch(() => []),
+    ])
+
+    const gate = latest
+      ? (latest.totalScore >= 75 && latest.failCount <= 1 ? 'PASS' : 'FAIL')
+      : 'PENDING'
+
+    res.json({ gate, latest, trend })
+  } catch (err) { next(err) }
+})
+
+router.post('/kangqore-immp/gate4/run', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const summary = await runGate4({ trigger: 'manual', verbose: false })
+    res.json({ ok: true, summary })
+  } catch (err) { next(err) }
+})
+
+// ─── Gate 7: Release Governance (RGS/1.0) ────────────────────────────────────
+//
+// GET  /admin/release/environments              → list environments + policies
+// GET  /admin/release/environments/:code/status → preflight (no decision record created)
+// POST /admin/release/evaluate                  → evaluate + create DeploymentDecision
+// POST /admin/release/deploy                    → record an actual deployment
+// POST /admin/release/outcome                   → record deployment outcome
+// POST /admin/release/rollback                  → authorize + record rollback
+// POST /admin/release/override                  → emergency override (2 approvers required)
+// GET  /admin/release/decisions                 → decision history
+// GET  /admin/release/deployments               → deployment history
+
+router.get('/release/environments', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { res.json(await listEnvironments()) } catch (err) { next(err) }
+})
+
+router.get('/release/environments/:code/status', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const certId = req.query.certId as string | undefined
+    res.json(await preflightCheck(req.params.code, certId))
+  } catch (err) { next(err) }
+})
+
+router.post('/release/evaluate', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { certId, environment, approver } = req.body
+    if (!certId || !environment) return res.status(400).json({ error: 'certId and environment are required' })
+    res.json(await evaluateRelease({ certId, envCode: environment, approver }))
+  } catch (err) { next(err) }
+})
+
+router.post('/release/deploy', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { decisionId, deployedBy } = req.body
+    if (!decisionId || !deployedBy) return res.status(400).json({ error: 'decisionId and deployedBy are required' })
+    res.json(await recordDeployment({ decisionId, deployedBy }))
+  } catch (err) { next(err) }
+})
+
+router.post('/release/outcome', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { deployId, outcome, outcomeNote } = req.body
+    if (!deployId || !outcome) return res.status(400).json({ error: 'deployId and outcome are required' })
+    res.json(await recordOutcome({ deployId, outcome, outcomeNote }))
+  } catch (err) { next(err) }
+})
+
+router.post('/release/rollback', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { rollbackOfDeployId, authorizedBy, reason } = req.body
+    if (!rollbackOfDeployId || !authorizedBy || !reason) return res.status(400).json({ error: 'rollbackOfDeployId, authorizedBy, and reason are required' })
+    res.json(await recordRollback({ rollbackOfDeployId, authorizedBy, reason }))
+  } catch (err) { next(err) }
+})
+
+router.post('/release/override', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { decisionId, approver1, approver2, reason } = req.body
+    if (!decisionId || !approver1 || !approver2 || !reason) return res.status(400).json({ error: 'decisionId, approver1, approver2, and reason are all required' })
+    res.json(await emergencyOverride({ decisionId, approver1, approver2, reason }))
+  } catch (err) { next(err) }
+})
+
+router.get('/release/decisions', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const env   = req.query.environment as string | undefined
+    const limit = parseInt(req.query.limit as string ?? '20', 10)
+    res.json(await listDecisions(env, limit))
+  } catch (err) { next(err) }
+})
+
+router.get('/release/deployments', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const env   = req.query.environment as string | undefined
+    const limit = parseInt(req.query.limit as string ?? '20', 10)
+    res.json(await listDeployments(env, limit))
+  } catch (err) { next(err) }
+})
+
+// ─── Incident Registry ────────────────────────────────────────────────────────
+//
+// GET  /admin/release/incidents              → open incidents (affects release decisions)
+// POST /admin/release/incidents              → declare a new incident
+// PATCH /admin/release/incidents/:id/resolve → resolve an incident
+
+const ACTIVE_INCIDENT_STATUSES = ['NEW', 'TRIAGING', 'IN_PROGRESS', 'ON_HOLD']
+
+router.get('/release/incidents', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const incidents = await prisma.incident.findMany({
+      where:   { status: { in: [...ACTIVE_INCIDENT_STATUSES, 'RESOLVED'] } },
+      orderBy: { createdAt: 'desc' },
+      take:    30,
+      select:  { id: true, number: true, title: true, priority: true, status: true, description: true, createdAt: true, resolvedAt: true, resolution: true },
+    })
+    res.json(incidents)
+  } catch (err) { next(err) }
+})
+
+router.post('/release/incidents', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { title, priority, description } = req.body
+    if (!title || !priority) return res.status(400).json({ error: 'title and priority are required' })
+    if (!['P1-CRITICAL', 'P2-HIGH', 'P3-MEDIUM', 'P4-LOW'].includes(priority)) {
+      return res.status(400).json({ error: 'priority must be P1-CRITICAL | P2-HIGH | P3-MEDIUM | P4-LOW' })
+    }
+
+    // Generate incident number
+    const year   = new Date().getFullYear()
+    const prefix = `INC-${year}-`
+    const last   = await prisma.incident.findFirst({ where: { number: { startsWith: prefix } }, orderBy: { createdAt: 'desc' }, select: { number: true } })
+    const seq    = last ? parseInt(last.number.split('-')[2] ?? '0', 10) + 1 : 1
+    const number = `${prefix}${String(seq).padStart(6, '0')}`
+
+    const adminId = (req as any).user?.userId ?? 'ADMIN'
+    const incident = await prisma.incident.create({
+      data: {
+        number,
+        title,
+        priority,
+        description: description ?? '',
+        status:      'NEW',
+        reportedById: adminId,
+        slaDeadline: priority === 'P1-CRITICAL' ? new Date(Date.now() + 60 * 60 * 1000) : priority === 'P2-HIGH' ? new Date(Date.now() + 4 * 60 * 60 * 1000) : null,
+      },
+      select: { id: true, number: true, title: true, priority: true, status: true, createdAt: true },
+    })
+
+    // AEGIS — policy violation (P0/P1 active incidents block deployments)
+    if (priority === 'P1-CRITICAL' || priority === 'P2-HIGH') {
+      await AegisLedger.logPolicyViolation({
+        policy:   'INCIDENT_DECLARED',
+        actor:    adminId,
+        system:   'RGS',
+        detail:   `${number}: ${title}`,
+        severity: priority === 'P1-CRITICAL' ? 'CRITICAL' : 'HIGH',
+        metadata: { incidentId: incident.id, number, priority },
+      })
+    }
+
+    res.status(201).json(incident)
+  } catch (err) { next(err) }
+})
+
+router.patch('/release/incidents/:id/resolve', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { resolution } = req.body
+    const adminId = (req as any).user?.userId ?? 'ADMIN'
+    const incident = await prisma.incident.update({
+      where: { id: req.params.id },
+      data:  { status: 'RESOLVED', resolvedAt: new Date(), resolution: `${resolution ?? 'Resolved'} — by ${adminId}` },
+      select: { id: true, number: true, title: true, priority: true, status: true, resolvedAt: true },
+    })
+    res.json(incident)
+  } catch (err) { next(err) }
+})
+
+// ─── Deployment Provenance ────────────────────────────────────────────────────
+
+router.get('/release/deployments/:deployId/provenance', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { deployId } = req.params
+
+    const deployment = await (prisma as any).deploymentRecord.findUnique({
+      where:   { deployId },
+      include: { environment: true, decision: { select: { decisionId: true, verdict: true, emergencyOverride: true, evaluatedAt: true, approvals: true, sha256: true } } },
+    })
+    if (!deployment) return res.status(404).json({ error: 'Deployment not found' })
+
+    const cert = deployment.certId
+      ? await (prisma as any).qEFCertificate.findUnique({
+          where:  { certId: deployment.certId },
+          select: { certId: true, level: true, overallScore: true, gitCommit: true, dockerImage: true, issuedAt: true, certifiedBy: true, qefSchemaVersion: true },
+        }).catch(() => null)
+      : null
+
+    res.json({
+      deployId:       deployment.deployId,
+      rgsVersion:     deployment.rgsVersion,
+      decisionId:     deployment.decision?.decisionId ?? null,
+      verdict:        deployment.decision?.verdict ?? null,
+      emergencyOverride: deployment.decision?.emergencyOverride ?? false,
+      approvals:      deployment.decision?.approvals ?? [],
+      certId:         deployment.certId,
+      certLevel:      deployment.certLevel,
+      certScore:      cert?.overallScore ?? null,
+      certIssuedAt:   cert?.issuedAt ?? null,
+      certifiedBy:    cert?.certifiedBy ?? null,
+      gitCommit:      cert?.gitCommit ?? null,
+      dockerImage:    cert?.dockerImage ?? null,
+      environment:    deployment.environment?.name ?? null,
+      environmentCode: deployment.environment?.code ?? null,
+      deployedBy:     deployment.deployedBy,
+      deployedAt:     deployment.deployedAt,
+      outcome:        deployment.outcome,
+      rollbackOf:     deployment.rollbackOf ?? null,
+      sha256Deploy:   deployment.sha256,
+      sha256Decision: deployment.decision?.sha256 ?? null,
+    })
+  } catch (err) { next(err) }
+})
+
+// ─── Platform Flight Recorder ─────────────────────────────────────────────────
+
+router.get('/flight-recorder/events', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { from, to, types, sources, limit = '50', offset = '0' } = req.query
+    const result = await getFlightEvents({
+      from:    from    ? new Date(from as string)    : undefined,
+      to:      to      ? new Date(to as string)      : undefined,
+      types:   types   ? (types   as string).split(',').filter(Boolean) : undefined,
+      sources: sources ? (sources as string).split(',').filter(Boolean) as any[] : undefined,
+      limit:   Math.min(200, Math.max(1, parseInt(limit   as string) || 50)),
+      offset:  Math.max(0, parseInt(offset as string) || 0),
+    })
+    res.json(result)
+  } catch (err) { next(err) }
+})
+
+// ─── Gate 8 — Operational Intelligence + 8.1 Forecast + 8.2 Recommendations ─
+
+// Live OIS computation (no snapshot written)
+router.get('/gate8/score', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const result = await computeGate8()
+    res.json(result)
+  } catch (err) { next(err) }
+})
+
+// Create a snapshot (for trend history)
+router.post('/gate8/snapshot', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { triggeredBy, deployId } = req.body as { triggeredBy?: 'MANUAL' | 'POST_DEPLOY' | 'AUTO'; deployId?: string }
+    const snapshot = await createGate8Snapshot(triggeredBy ?? 'MANUAL', deployId)
+    res.status(201).json(snapshot)
+  } catch (err) { next(err) }
+})
+
+// OIS history (for trend chart)
+router.get('/gate8/history', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit as string || '30', 10), 90)
+    const history = await getGate8History(limit)
+    res.json(history)
+  } catch (err) { next(err) }
+})
+
+// Gate 8.1 — Enterprise Forecast™
+router.get('/gate8/forecast', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const horizon = Math.min(parseInt(req.query.horizon as string || '30', 10), 90)
+    const forecast = await computeForecast(horizon)
+    res.json(forecast)
+  } catch (err) { next(err) }
+})
+
+// Gate 8.2 — Recommendation Engine™
+router.get('/gate8/recommendations', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const recs = await computeRecommendations()
+    res.json(recs)
+  } catch (err) { next(err) }
+})
+
+// ─── Enterprise Definition ────────────────────────────────────────────────────
+router.get('/enterprise/definition', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const def = await getActiveDefinition()
+    res.json(def ?? { active: false })
+  } catch (err) { next(err) }
+})
+
+router.post('/enterprise/definition', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { name, goals } = req.body
+    if (!name || !Array.isArray(goals) || goals.length === 0) {
+      return res.status(400).json({ error: 'name and goals[] required' })
+    }
+    const def = await upsertDefinition(name, goals)
+    res.status(201).json(def)
+  } catch (err) { next(err) }
+})
+
+// ─── EMI™ — WAANDA Enterprise Maturity Index ─────────────────────────────────
+router.get('/enterprise/maturity', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const emi = await computeEMI()
+    res.json(emi)
+  } catch (err) { next(err) }
+})
+
+// ─── COIG — Triple Number ─────────────────────────────────────────────────────
+router.get('/enterprise/coig', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const horizon = parseInt(req.query.horizon as string) || 30
+    const coig = await computeCOIG(horizon)
+    res.json(coig)
+  } catch (err) { next(err) }
+})
+
+// ─── Enterprise Pulse ─────────────────────────────────────────────────────────
+router.get('/enterprise/pulse', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const pulse = await computePulse()
+    res.json(pulse)
+  } catch (err) { next(err) }
+})
+
+// ─── Enterprise DNA ───────────────────────────────────────────────────────────
+router.get('/enterprise/dna', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    let dna = await getDNA() as any
+    // Auto-recompute if missing or stale (>24h)
+    if (!dna || (Date.now() - new Date((dna as any).computedAt).getTime()) > 24 * 60 * 60 * 1000) {
+      dna = await computeAndSaveDNA()
+    }
+    res.json(dna ?? { computed: false })
+  } catch (err) { next(err) }
+})
+
+router.post('/enterprise/dna/compute', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const dna = await computeAndSaveDNA()
+    res.json(dna)
+  } catch (err) { next(err) }
+})
+
+// ─── Customer Zero Report ─────────────────────────────────────────────────────
+router.get('/enterprise/customer-zero', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const report = await computeCustomerZeroReport()
+    res.json(report)
+  } catch (err) { next(err) }
+})
+
+// ─── Adoption Event Logging ────────────────────────────────────────────────────
+router.post('/adoption/event', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { eventType, entityType, entityId, metadata } = req.body
+    const validTypes = ['SESSION', 'AGENT_INVOKE', 'WORKFLOW_TRIGGER', 'DECISION_ACCEPT', 'DECISION_REJECT', 'OVERRIDE', 'REC_ACTED', 'REC_IGNORED']
+    if (!validTypes.includes(eventType)) {
+      return res.status(400).json({ error: `Invalid eventType. Must be one of: ${validTypes.join(', ')}` })
+    }
+    const created = await logAdoptionEvent(eventType, (req as any).user?.id, entityType, entityId, metadata)
+    res.status(201).json({ id: created.id, eventType })
+  } catch (err) { next(err) }
+})
+
+// Save baseline snapshot
+router.post('/gate8/baseline', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const snap = await createGate8Snapshot('MANUAL', undefined, 'BASELINE')
+    res.status(201).json(snap)
+  } catch (err) { next(err) }
+})
+
+// ─── Enterprise Coach™ ────────────────────────────────────────────────────────
+
+router.get('/enterprise/coach', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const insights = await getLatestCoachingInsights()
+    res.json(insights)
+  } catch (err) { next(err) }
+})
+
+router.post('/enterprise/coach/refresh', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const insights = await computeCoachingInsights()
+    res.json(insights)
+  } catch (err) { next(err) }
+})
+
+router.post('/enterprise/coach/:id/act', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    await markInsightActed(req.params.id)
+    await logAdoptionEvent('REC_ACTED', (req as any).user?.id, 'coaching_insight', req.params.id, { source: 'enterprise_coach' })
+    res.json({ ok: true })
+  } catch (err) { next(err) }
+})
+
+// ─── Decision Engine (Track C) ────────────────────────────────────────────────
+
+// GET /admin/enterprise/decisions — list recent decisions (optional ?status=OPEN)
+router.get('/enterprise/decisions', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const status = req.query.status as string | undefined
+    res.json(await listEnterpriseDecisions(status))
+  } catch (err) { next(err) }
+})
+
+// POST /admin/enterprise/decisions — ask WAANDA a strategic question
+router.post('/enterprise/decisions', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { question } = req.body as { question?: string }
+    if (!question?.trim()) { res.status(400).json({ error: 'question required' }); return }
+    await logAdoptionEvent('AGENT_INVOKE', (req as any).user?.id, 'decision_engine', undefined, { question: question.slice(0, 100) })
+    const decision = await createDecision(question.trim())
+    res.json(decision)
+  } catch (err) { next(err) }
+})
+
+// GET /admin/enterprise/decisions/:id — get single decision
+router.get('/enterprise/decisions/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const d = await getDecision(req.params.id)
+    if (!d) { res.status(404).json({ error: 'not found' }); return }
+    res.json(d)
+  } catch (err) { next(err) }
+})
+
+// POST /admin/enterprise/decisions/:id/resolve — pick an option
+router.post('/enterprise/decisions/:id/resolve', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { selected } = req.body as { selected?: string }
+    if (!selected) { res.status(400).json({ error: 'selected option label required' }); return }
+    const userId = (req as any).user?.id ?? 'ADMIN'
+    await logAdoptionEvent('DECISION_ACCEPT', userId, 'enterprise_decision', req.params.id, { selected })
+    res.json(await resolveDecision(req.params.id, selected, userId))
+  } catch (err) { next(err) }
+})
+
+// Policy Engine
+router.get('/enterprise/policies', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { res.json(await listPolicies()) } catch (err) { next(err) }
+})
+
+router.post('/enterprise/policies', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { name, description, trigger, condition, effect, priority } = req.body
+    if (!name || !trigger || !effect) { res.status(400).json({ error: 'name, trigger, effect required' }); return }
+    res.status(201).json(await createPolicy({ name, description: description ?? '', trigger, condition: condition ?? {}, effect, priority: priority ?? 0 }))
+  } catch (err) { next(err) }
+})
+
+router.patch('/enterprise/policies/:id/toggle', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { enabled } = req.body as { enabled: boolean }
+    res.json(await togglePolicy(req.params.id, enabled))
+  } catch (err) { next(err) }
+})
+
+router.delete('/enterprise/policies/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { await deletePolicy(req.params.id); res.json({ ok: true }) } catch (err) { next(err) }
+})
+
+// Policy check (used internally by agents — also exposed for testing)
+router.post('/enterprise/policies/check', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { trigger, params } = req.body as { trigger: string; params: Record<string, unknown> }
+    res.json(await checkPolicy(trigger, params ?? {}))
+  } catch (err) { next(err) }
+})
+
+// ─── Customer Success Platform ────────────────────────────────────────────────
+
+router.get('/enterprise/deployments', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const deployments = await prisma.customerDeployment.findMany({
+      orderBy: { createdAt: 'desc' },
+    })
+    res.json(deployments)
+  } catch (err) { next(err) }
+})
+
+router.post('/enterprise/deployments', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { customerName, industry, pack, contactName, contactEmail, notes } = req.body as {
+      customerName: string; industry: string; pack: string
+      contactName?: string; contactEmail?: string; notes?: string
+    }
+    if (!customerName || !industry) { res.status(400).json({ error: 'customerName and industry required' }); return }
+    const d = await prisma.customerDeployment.create({
+      data: { customerName, industry, pack: pack ?? 'professional-services', contactName, contactEmail, notes },
+    })
+    res.status(201).json(d)
+  } catch (err) { next(err) }
+})
+
+router.patch('/enterprise/deployments/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { currentOis, coig, milestone, goLiveAt, baselineSnapshotId, notes } = req.body
+    const d = await prisma.customerDeployment.update({
+      where: { id: req.params.id },
+      data:  { currentOis, coig, milestone, goLiveAt: goLiveAt ? new Date(goLiveAt) : undefined, baselineSnapshotId, notes },
+    })
+    res.json(d)
+  } catch (err) { next(err) }
+})
+
+router.delete('/enterprise/deployments/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { await prisma.customerDeployment.delete({ where: { id: req.params.id } }); res.json({ ok: true }) }
+  catch (err) { next(err) }
+})
+
+// ─── Enterprise Blueprint ──────────────────────────────────────────────────────
+// The portable, versioned deployment spec. WAANDA reads it. The customer owns it.
+
+// GET  /admin/enterprise/blueprints            — list all blueprints
+router.get('/enterprise/blueprints', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { res.json(await listBlueprints()) } catch (err) { next(err) }
+})
+
+// GET  /admin/enterprise/blueprints/:id        — get single blueprint (full spec)
+router.get('/enterprise/blueprints/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const blueprint = await getBlueprint(req.params.id)
+    if (!blueprint) return res.status(404).json({ error: 'Blueprint not found' })
+    res.json(blueprint)
+  } catch (err) { next(err) }
+})
+
+// POST /admin/enterprise/blueprints/generate   — assemble Blueprint from live DB state
+router.post('/enterprise/blueprints/generate', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { name = 'Enterprise Blueprint', orgName = 'Kangqore' } = req.body
+    const result = await generateBlueprint(name, orgName)
+    res.json(result)
+  } catch (err) { next(err) }
+})
+
+// POST /admin/enterprise/blueprints/validate   — validate a Blueprint spec before import
+router.post('/enterprise/blueprints/validate', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { res.json(validateBlueprint(req.body.spec)) } catch (err) { next(err) }
+})
+
+// POST /admin/enterprise/blueprints/import     — provision from Blueprint spec
+router.post('/enterprise/blueprints/import', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { spec, name = 'Imported Blueprint' } = req.body
+    if (!spec) return res.status(400).json({ error: 'spec is required' })
+    const result = await importBlueprint(spec, name)
+    res.status(201).json(result)
+  } catch (err) { next(err) }
+})
+
+// PATCH /admin/enterprise/blueprints/:id/activate — mark as ACTIVE + set deployedAt
+router.patch('/enterprise/blueprints/:id/activate', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { res.json(await activateBlueprint(req.params.id)) } catch (err) { next(err) }
+})
+
+// PATCH /admin/enterprise/blueprints/:id/archive — archive a blueprint
+router.patch('/enterprise/blueprints/:id/archive', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { res.json(await archiveBlueprint(req.params.id)) } catch (err) { next(err) }
+})
+
+// ─── Wave 1: Project Operational State ────────────────────────────────────────
+
+// GET /admin/projects/:id/ops — cached state; triggers assessment if stale >6h
+router.get('/projects/:id/ops', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params
+    let state = await getProjectOps(id)
+    if (!state || new Date(state.lastAssessment).getTime() < Date.now() - 6 * 3600_000) {
+      state = await assessProject(id)
+    }
+    res.json(state)
+  } catch (err) { next(err) }
+})
+
+// POST /admin/projects/:id/ops — force re-assessment
+router.post('/projects/:id/ops', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const state = await assessProject(req.params.id)
+    res.json(state)
+  } catch (err) { next(err) }
+})
+
+// POST /admin/projects/ops/sweep — daily sweep of all active projects
+router.post('/projects/ops/sweep', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const result = await sweepAllProjects()
+    res.json(result)
+  } catch (err) { next(err) }
+})
+
+// GET /admin/projects/ops/portfolio — all project ops states for Mission Control
+router.get('/projects/ops/portfolio', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { PrismaClient } = await import('@prisma/client')
+    const db = new PrismaClient()
+    const states = await db.projectOperationalState.findMany({
+      orderBy: { health: 'asc' },
+      include: { project: { select: { title: true, dueDate: true } } },
+    })
+    await db.$disconnect()
+    res.json(states)
+  } catch (err) { next(err) }
+})
+
+// ─── Wave 1: Project Digital Twin™ ────────────────────────────────────────────
+
+// GET /admin/projects/:id/twin — cached twin or compute fresh
+router.get('/projects/:id/twin', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params
+    let twin = await getTwin(id)
+    if (!twin || new Date(twin.simulatedAt).getTime() < Date.now() - 6 * 3600_000) {
+      twin = await simulateTwin(id)
+    }
+    res.json(twin)
+  } catch (err) { next(err) }
+})
+
+// POST /admin/projects/:id/twin/simulate — on-demand simulation with params
+router.post('/projects/:id/twin/simulate', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { extraResources } = req.body ?? {}
+    const twin = await simulateTwin(req.params.id, extraResources ?? 0)
+    res.json(twin)
+  } catch (err) { next(err) }
+})
+
+// ─── Gate 8.3 — Enterprise Digital Twin™ ─────────────────────────────────────
+
+// POST /admin/gate8/twin/simulate — run a "what if" enterprise scenario
+router.post('/gate8/twin/simulate', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { scenario, horizon = 30 } = req.body ?? {}
+    if (!scenario || typeof scenario !== 'string' || scenario.trim().length < 5) {
+      return res.status(400).json({ error: 'scenario is required (min 5 chars)' })
+    }
+    const h = [30, 60, 90].includes(Number(horizon)) ? Number(horizon) as 30|60|90 : 30
+    const result = await simulateEnterpriseTwin(scenario.trim(), h)
+    res.json(result)
+  } catch (err) { next(err) }
+})
+
+// GET /admin/gate8/twin/scenarios — list past simulation results
+router.get('/gate8/twin/scenarios', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const limit = Math.min(Number(req.query.limit ?? 10), 50)
+    res.json(await listTwinScenarios(limit))
+  } catch (err) { next(err) }
 })
 
 export default router;

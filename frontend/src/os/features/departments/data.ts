@@ -3,7 +3,7 @@ import type { Department, OrgNode, DeptBudget } from './types'
 export const DEPARTMENTS: Department[] = [
   {
     id: 'd1', name: 'KANGQORE COGNITION™', shortName: 'COGNITION',
-    head: 'Mahesh Kumar', headTitle: 'CEO · Division Head',
+    head: 'C.O.D.E.', headTitle: 'CEO · Division Head',
     status: 'scaling', headcount: 4, openRoles: 2, budget: 580, spent: 260,
     budgetStatus: 'on-track', costCenter: 'CC-COG', color: '#7c3aed',
     description: 'AI intelligence, machine learning, predictive analytics, and cognitive automation services. The AI brain behind Kangqore\'s cross-sector intelligence offerings.',
@@ -106,7 +106,7 @@ export const DEPARTMENTS: Department[] = [
 ]
 
 export const ORG_NODES: OrgNode[] = [
-  { id: 'o1',  name: 'Mahesh Kumar',  title: 'CEO',                     department: 'KANGQORE COGNITION™',  level: 0 },
+  { id: 'o1',  name: 'C.O.D.E.',  title: 'CEO',                     department: 'KANGQORE COGNITION™',  level: 0 },
   { id: 'o2',  name: 'Dev Patel',     title: 'CTO',                     department: 'KANGQORE FOUNDRY™',    level: 1, reportsTo: 'o1', headcount: 6 },
   { id: 'o3',  name: 'Anika Roy',     title: 'Head of Strategy',        department: 'KANGQORE REIMAGINE™',  level: 1, reportsTo: 'o1', headcount: 3 },
   { id: 'o4',  name: 'Sofia Mendez',  title: 'Head of Growth',          department: 'KANGQORE GROWTH™',     level: 1, reportsTo: 'o1', headcount: 3 },

@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }        from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 export async function runGeoValidationAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start   = Date.now()
@@ -28,6 +31,10 @@ export async function runGeoValidationAgent(ctx: AgentContext): Promise<AegisAge
   const dualState = [...activatedSet].filter(a => deniedSet.has(a))
 
   const verdict = dualState.length > 0 ? 'WARN' : 'PASS'
+
+  const llmSummary = await callLLM(SYSTEM,
+    `Geo/origin validation (24h): ${activatedSet.size} unique activated actors, ${deniedSet.size} unique denied actors, ${dualState.length} dual-state actors (both activated and denied): ${dualState.join(', ') || 'none'}. Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
 
   return {
     agentId:  'sentinel.geo-validation',

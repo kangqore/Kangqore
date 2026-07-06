@@ -4,17 +4,18 @@
  */
 import { useEffect } from 'react'
 import { Video, Phone, MapPin, ExternalLink, Calendar, Clock, User, Plus } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { useClientMeetings } from '../useClientData'
 import { useNavigate } from 'react-router-dom'
 
 // ── Design tokens (same 4-surface system) ────────────────────────────────────
 
-const BG    = '#080c18'
-const CARD  = 'rgba(15, 23, 42, 0.4)'
-const RAISE = 'rgba(30, 41, 59, 0.6)'
-const EDGE  = 'rgba(30, 41, 59, 0.6)'
+const BG    = 'var(--os-bg)'
+const CARD  = 'var(--os-card)'
+const RAISE = 'var(--os-surface)'
+const EDGE  = 'var(--os-border)'
 
-const BLUE   = '#2564ea'
+const BLUE   = '#579bfc'
 const PURPLE = '#7f53f9'
 const GREEN  = '#00c875'
 const AMBER  = '#fdab3d'
@@ -33,11 +34,11 @@ const anim = (d: number): React.CSSProperties => ({ animation: `_fadeUp 0.55s ${
 // ── Platform config ───────────────────────────────────────────────────────────
 
 const PLATFORM: Record<string, { label: string; color: string; bg: string; Icon: React.ElementType }> = {
-  ZOOM:        { label: 'Zoom',        color: '#2D8CFF', bg: 'rgba(45,140,255,0.1)',  Icon: Video  },
-  GOOGLE_MEET: { label: 'Google Meet', color: '#34a853', bg: 'rgba(52,168,83,0.1)',   Icon: Video  },
-  TEAMS:       { label: 'Teams',       color: '#5059c9', bg: 'rgba(80,89,201,0.1)',   Icon: Video  },
-  PHONE:       { label: 'Phone',       color: '#64748b', bg: 'rgba(100,116,139,0.1)', Icon: Phone  },
-  IN_PERSON:   { label: 'In Person',   color: AMBER,     bg: 'rgba(253,171,61,0.1)',  Icon: MapPin },
+  ZOOM:        { label: 'Zoom',        color: '#fff', bg: '#2D8CFF', Icon: Video  },
+  GOOGLE_MEET: { label: 'Google Meet', color: '#fff', bg: '#34a853', Icon: Video  },
+  TEAMS:       { label: 'Teams',       color: '#fff', bg: '#5059c9', Icon: Video  },
+  PHONE:       { label: 'Phone',       color: '#fff', bg: 'var(--os-text-2)', Icon: Phone  },
+  IN_PERSON:   { label: 'In Person',   color: '#fff', bg: AMBER,     Icon: MapPin },
 }
 const getPlatform = (key: string) => PLATFORM[key] ?? PLATFORM.ZOOM
 
@@ -94,7 +95,7 @@ const MOCK_MEETINGS = [
     platform: 'ZOOM',
     startTime: '2026-05-28T09:00:00', endTime: '2026-05-28T10:30:00',
     status: 'COMPLETED', joinLink: null,
-    creator: { name: 'Mahesh Kumar' },
+    creator: { name: 'C.O.D.E.' },
     agenda: [],
   },
   {
@@ -130,7 +131,7 @@ function NextMeetingHero({ meeting }: { meeting: Meeting }) {
       borderRadius: 20,
       background: `linear-gradient(145deg, ${RAISE} 0%, ${CARD} 70%)`,
       border: `1px solid ${EDGE}`,
-      boxShadow: `inset 0 1px 0 rgba(13,17,23,0.4), 0 0 0 0 ${p.color}`,
+      boxShadow: `0 1px 3px rgba(0,0,0,0.06), 0 4px 20px rgba(37,100,234,0.07), 0 0 0 0 ${p.color}`,
       padding: 28,
       position: 'relative',
       overflow: 'hidden',
@@ -144,7 +145,7 @@ function NextMeetingHero({ meeting }: { meeting: Meeting }) {
       <div style={{ position: 'relative' }}>
         {/* Label row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#334155' }}>
+          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--os-text-2)' }}>
             Next Meeting
           </span>
           <span style={{
@@ -159,17 +160,17 @@ function NextMeetingHero({ meeting }: { meeting: Meeting }) {
         </div>
 
         {/* Title */}
-        <h3 style={{ fontSize: 24, fontWeight: 700, color: '#f1f5f9', margin: '0 0 10px', lineHeight: 1.2 }}>
+        <h3 style={{ fontSize: 24, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 10px', lineHeight: 1.2 }}>
           {meeting.title}
         </h3>
 
         {/* Time + organiser */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 20, flexWrap: 'wrap' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#64748b' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--os-text-2)' }}>
             <Clock style={{ width: 13, height: 13 }} />
             {cld} · {dur}
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#475569' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--os-text-2)' }}>
             <User style={{ width: 12, height: 12 }} />
             {meeting.creator?.name}
           </span>
@@ -178,14 +179,14 @@ function NextMeetingHero({ meeting }: { meeting: Meeting }) {
         {/* Agenda if available */}
         {meeting.agenda?.length > 0 && (
           <div style={{ marginBottom: 24 }}>
-            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', marginBottom: 10 }}>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 10 }}>
               Agenda
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {meeting.agenda.map((item, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div style={{ width: 4, height: 4, borderRadius: '50%', background: p.color, flexShrink: 0 }} />
-                  <span style={{ fontSize: 12, color: '#94a3b8' }}>{item}</span>
+                  <span style={{ fontSize: 12, color: 'var(--os-text-2)' }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -215,11 +216,11 @@ function NextMeetingHero({ meeting }: { meeting: Meeting }) {
             display: 'flex', alignItems: 'center', gap: 8,
             padding: '10px 16px', borderRadius: 10,
             background: RAISE, border: `1px solid ${EDGE}`,
-            color: '#64748b', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+            color: 'var(--os-text-2)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
             transition: `border-color 0.15s, color 0.15s`,
           }}
-          onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = `${BLUE}40`; el.style.color = '#94a3b8' }}
-          onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = EDGE; el.style.color = '#64748b' }}>
+          onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = `${BLUE}40`; el.style.color = 'var(--os-text-2)' }}
+          onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = EDGE; el.style.color = 'var(--os-text-2)' }}>
             <Calendar style={{ width: 13, height: 13 }} />
             Add to Calendar
           </button>
@@ -269,24 +270,24 @@ function MeetingRow({ meeting, delay = 0 }: { meeting: Meeting; delay?: number }
         <p style={{
           fontSize: 22, fontWeight: 800, lineHeight: 1, margin: 0,
           fontVariantNumeric: 'tabular-nums',
-          color: isPast ? '#334155' : p.color,
+          color: isPast ? 'var(--os-text-2)' : p.color,
         }}>{day}</p>
-        <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', margin: '3px 0 0', color: '#334155' }}>
+        <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', margin: '3px 0 0', color: 'var(--os-text-2)' }}>
           {mon}
         </p>
       </div>
 
       {/* Content */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 14, fontWeight: 600, margin: 0, color: isPast ? '#475569' : '#f1f5f9', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <p style={{ fontSize: 14, fontWeight: 600, margin: 0, color: 'var(--os-text-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {meeting.title}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 5, flexWrap: 'wrap' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#475569' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: 'var(--os-text-2)' }}>
             <Clock style={{ width: 10, height: 10 }} />
             {time} · {dur}
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#334155' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: 'var(--os-text-2)' }}>
             <User style={{ width: 10, height: 10 }} />
             {meeting.creator?.name}
           </span>
@@ -313,7 +314,7 @@ function MeetingRow({ meeting, delay = 0 }: { meeting: Meeting; delay?: number }
       ) : isPast ? (
         <span style={{
           fontSize: 10, fontWeight: 600, padding: '4px 10px', borderRadius: 999,
-          background: RAISE, color: '#334155', flexShrink: 0,
+          background: RAISE, color: 'var(--os-text-2)', flexShrink: 0,
           border: `1px solid ${EDGE}`,
         }}>
           Completed
@@ -342,14 +343,14 @@ const QUICK_SLOTS = [
 function QuickSchedule({ onRequest, delay = 0 }: { onRequest: () => void; delay?: number }) {
   return (
     <div style={{ ...anim(delay), display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', margin: '0 0 4px' }}>
+      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--os-text-2)', margin: '0 0 4px' }}>
         Request a Meeting
       </p>
       {QUICK_SLOTS.map((slot, i) => (
         <button key={slot.dur} onClick={onRequest}
           style={{
             textAlign: 'left', padding: '14px 16px', borderRadius: 14,
-            background: CARD, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)', border: `1px solid ${EDGE}`,
+            background: CARD, boxShadow: '0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(37,100,234,0.06)', border: `1px solid ${EDGE}`,
             cursor: 'pointer', width: '100%',
             transition: `border-color 0.15s ${EASE}, transform 0.15s ${EASE}`,
             animation: `_fadeUp 0.55s ${EASE} ${delay + i * 60}ms both`,
@@ -367,10 +368,10 @@ function QuickSchedule({ onRequest, delay = 0 }: { onRequest: () => void; delay?
               </span>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>{slot.label}</p>
-              <p style={{ fontSize: 11, color: '#475569', margin: '2px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{slot.desc}</p>
+              <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--os-text-1)', margin: 0 }}>{slot.label}</p>
+              <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '2px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{slot.desc}</p>
             </div>
-            <Plus style={{ width: 14, height: 14, color: '#334155', flexShrink: 0 }} />
+            <Plus style={{ width: 14, height: 14, color: 'var(--os-text-2)', flexShrink: 0 }} />
           </div>
         </button>
       ))}
@@ -398,11 +399,12 @@ export function ClientMeetings() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+      <KIMMPSignalBar module="Meetings" />
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <div style={anim(0)}>
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>Meetings</h2>
-        <p style={{ fontSize: 13, color: '#475569', margin: '6px 0 0' }}>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)', margin: 0 }}>Meetings</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'var(--os-text-2)', margin: '6px 0 0' }}>
           {upcoming.length} upcoming · {past.length} completed
         </p>
       </div>
@@ -414,11 +416,11 @@ export function ClientMeetings() {
         <div style={{
           ...anim(60),
           borderRadius: 20, padding: 32, textAlign: 'center',
-          background: CARD, backdropFilter: 'blur(32px) saturate(200%)', WebkitBackdropFilter: 'blur(32px) saturate(200%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.3)', border: `1px dashed ${EDGE}`,
+          background: CARD, boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(37,100,234,0.05)', border: `1px dashed ${EDGE}`,
         }}>
-          <Calendar style={{ width: 32, height: 32, color: '#1e2b40', margin: '0 auto 12px' }} />
-          <p style={{ fontSize: 14, fontWeight: 600, color: '#334155', margin: 0 }}>No meetings scheduled</p>
-          <p style={{ fontSize: 12, color: '#1e2b40', margin: '6px 0 0' }}>Request one below and your team will confirm within 24h.</p>
+          <Calendar style={{ width: 32, height: 32, color: 'var(--os-text-3)', margin: '0 auto 12px' }} />
+          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--os-text-2)', margin: 0 }}>No meetings scheduled</p>
+          <p style={{ fontSize: 12, color: 'var(--os-text-3)', margin: '6px 0 0' }}>Request one below and your team will confirm within 24h.</p>
         </div>
       )}
 
@@ -429,7 +431,7 @@ export function ClientMeetings() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           {upcoming.length > 1 && (
             <div>
-              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', margin: '0 0 12px' }}>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--os-text-2)', margin: '0 0 12px' }}>
                 All Upcoming
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -440,7 +442,7 @@ export function ClientMeetings() {
             </div>
           )}
           {upcoming.length === 0 && (
-            <p style={{ fontSize: 13, color: '#334155', padding: '24px 0', textAlign: 'center' }}>
+            <p style={{ fontSize: 13, color: 'var(--os-text-2)', padding: '24px 0', textAlign: 'center' }}>
               No other meetings scheduled.
             </p>
           )}
@@ -453,7 +455,7 @@ export function ClientMeetings() {
       {/* ── Past meetings ──────────────────────────────────────────────────── */}
       {past.length > 0 && (
         <div style={anim(300)}>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', margin: '0 0 12px' }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--os-text-2)', margin: '0 0 12px' }}>
             Past Meetings
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

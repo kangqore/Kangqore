@@ -62,7 +62,7 @@ router.post('/', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRe
 
     // Gap 7: Enterprise Escalation Trigger
     if (severity === 'HIGH' || severity === 'CRITICAL') {
-        await notifyGovernanceRole(clientId, { type: 'ESCALATION', levelOrRole: 'L1' }, `High Severity Risk Reported: ${title}`, `/dashboard/client/risks`);
+        await notifyGovernanceRole(clientId, { type: 'ESCALATION', levelOrRole: 'L1' }, `High Severity Risk Reported: ${title}`, `/kangqore-view/client/risks`);
     }
 
     res.status(201).json(risk);

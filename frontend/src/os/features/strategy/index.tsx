@@ -47,17 +47,17 @@ export function StrategyModule() {
 
   return (
     <div className="space-y-0">
-      <div className="flex items-center gap-2 border-b border-white/10 border-t-white/20 mb-8 mt-1">
+      <div className="flex items-center gap-0.5 border-b border-[var(--os-border)] mb-6 -mt-2">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
             to={tab.path === '' ? '/kangqore-view/admin/strategy' : `/kangqore-view/admin/strategy/${tab.path}`}
             end={tab.path === ''}
             className={({ isActive }) => cn(
-              'flex items-center gap-2.5 px-5 py-3 text-sm font-medium border-b-2 -mb-px transition-all',
+              'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
-                ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
+                ? 'border-[#579bfc] text-[#579bfc]'
+                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />

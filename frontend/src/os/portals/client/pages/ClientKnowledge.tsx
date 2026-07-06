@@ -266,7 +266,7 @@ function ArticleViewer({ article, onBack }: { article: Article; onBack: () => vo
           </span>
           <span className="text-xs text-slate-600">{fmtDate(article.date)}</span>
         </div>
-        <h1 className="text-2xl font-bold text-white leading-tight">{article.title}</h1>
+        <h1 className="text-2xl font-black tracking-tight leading-tight" style={{ color: 'var(--os-text-1)' }}>{article.title}</h1>
         <p className="text-sm text-slate-400 mt-2">{article.excerpt}</p>
       </div>
 
@@ -300,7 +300,7 @@ export function ClientKnowledge() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-xl font-bold text-white">Knowledge Base</h2>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Knowledge Base</h2>
         <p className="text-sm text-slate-500 mt-0.5">{ARTICLES.length} articles across {CATEGORIES.length - 1} categories</p>
       </div>
 
@@ -331,7 +331,7 @@ export function ClientKnowledge() {
               style={{
                 background:  active ? (meta ? `${meta.color}18` : 'rgba(37,100,234,0.12)') : CARD,
                 border:      `1px solid ${active ? (meta ? `${meta.color}40` : 'rgba(37,100,234,0.4)') : EDGE}`,
-                color:       active ? (meta ? meta.color : '#60a5fa') : '#64748b',
+                color:       active ? (meta ? meta.color : '#60a5fa') : 'var(--os-text-2)',
               }}
             >
               {meta && <meta.icon className="w-3 h-3" />}
@@ -377,7 +377,7 @@ export function ClientKnowledge() {
                   </span>
                   <ChevronRight className="w-4 h-4 text-slate-700 group-hover:text-slate-400 transition-colors flex-shrink-0 mt-0.5" />
                 </div>
-                <p className="text-sm font-semibold text-white mb-1.5 leading-snug">{a.title}</p>
+                <p className="text-sm font-semibold mb-1.5 leading-snug" style={{ color: 'var(--os-text-1)' }}>{a.title}</p>
                 <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mb-3">{a.excerpt}</p>
                 <div className="flex items-center gap-3 text-[11px] text-slate-600">
                   <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{a.readMin} min read</span>

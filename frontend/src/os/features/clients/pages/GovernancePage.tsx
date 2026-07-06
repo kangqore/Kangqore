@@ -30,13 +30,13 @@ const TYPE_ICON: Record<GovernanceType, React.ElementType> = {
   escalation:      AlertTriangle,
 }
 const TYPE_COLOR: Record<GovernanceType, string> = {
-  decision:        'bg-os-blue/10 text-os-blue',
+  decision:        'bg-[#579bfc]/10 text-[#579bfc]',
   'change-request':'bg-amber-100 text-amber-600',
-  steering:        'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300',
+  steering:        'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]',
   escalation:      'bg-red-100 text-red-600',
 }
-const inputStyle = { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)' }
-const inputClass = 'w-full rounded-lg px-3 py-2 text-[13px] text-slate-200 placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
+const inputStyle = { background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }
+const inputClass = 'w-full rounded-lg px-3 py-2 text-[13px] text-[var(--os-text-1)] placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
 
 function AddGovernanceModal({ clients, onClose }: { clients: { id: string; name: string }[]; onClose: () => void }) {
   const qc = useQueryClient()
@@ -50,21 +50,21 @@ function AddGovernanceModal({ clients, onClose }: { clients: { id: string; name:
     <div className="fixed inset-0 z-[60] flex items-center justify-center">
       <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(2px)' }} onClick={onClose} />
       <div className="relative z-10 w-full max-w-[440px] rounded-2xl p-5 flex flex-col gap-3"
-        style={{ background: 'rgba(10,13,24,0.98)', border: '1px solid rgba(255,255,255,0.09)', boxShadow: '0 32px 64px rgba(0,0,0,0.7)' }}>
+        style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', boxShadow: '0 32px 64px rgba(0,0,0,0.7)' }}>
         <div className="flex items-center justify-between mb-1">
           <h3 className="text-[14px] font-bold text-slate-100">Add Governance Item</h3>
-          <button onClick={onClose} className="text-slate-600 hover:text-slate-300 text-lg leading-none">×</button>
+          <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)] text-lg leading-none">×</button>
         </div>
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Client *</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Client *</label>
             <select required value={form.clientId} onChange={set('clientId')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
               <option value="">Select…</option>
               {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Type</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Type</label>
             <select value={form.type} onChange={set('type')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
               <option value="decision">Decision</option>
               <option value="change-request">Change Request</option>
@@ -74,37 +74,37 @@ function AddGovernanceModal({ clients, onClose }: { clients: { id: string; name:
           </div>
         </div>
         <div>
-          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Title *</label>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Title *</label>
           <input value={form.title} onChange={set('title')} placeholder="e.g. Scope change for Phase 2" className={inputClass} style={inputStyle} />
         </div>
         <div>
-          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Description</label>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Description</label>
           <textarea value={form.description} onChange={set('description')} rows={2} placeholder="Details, impact, context…" className={`${inputClass} resize-none`} style={inputStyle} />
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Status</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Status</label>
             <select value={form.status} onChange={set('status')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
               {['open','pending','approved','closed','rejected'].map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Priority</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Priority</label>
             <select value={form.priority} onChange={set('priority')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }}>
               {['critical','high','medium','low'].map(p => <option key={p} value={p}>{p}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Date</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Date</label>
             <input type="date" value={form.date} onChange={set('date')} className={inputClass} style={{ ...inputStyle, colorScheme: 'dark' }} />
           </div>
         </div>
         <div>
-          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Owner</label>
-          <input value={form.owner} onChange={set('owner')} placeholder="e.g. Mahesh Kumar" className={inputClass} style={inputStyle} />
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-1.5">Owner</label>
+          <input value={form.owner} onChange={set('owner')} placeholder="e.g. C.O.D.E." className={inputClass} style={inputStyle} />
         </div>
         <div className="flex justify-end gap-2 pt-1">
-          <button onClick={onClose} className="px-3 py-1.5 text-[13px] text-slate-500 hover:text-slate-300">Cancel</button>
+          <button onClick={onClose} className="px-3 py-1.5 text-[13px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
           <button onClick={() => mutate()} disabled={isPending || !form.clientId || !form.title}
             className="px-4 py-1.5 rounded-lg text-[13px] font-semibold text-white disabled:opacity-50"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
@@ -150,14 +150,14 @@ export function GovernancePage() {
 
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-xl font-bold text-white">Governance</h2>
-          <p className="text-sm text-slate-500 mt-0.5">{governance.length} items · decisions, changes, steering, escalations</p>
+          <h2 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Governance</h2>
+          <p className="text-sm text-[var(--os-text-2)] mt-0.5">{governance.length} items · decisions, changes, steering, escalations</p>
         </div>
         <div className="flex items-center gap-2">
           {critical > 0 && <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-red-50 text-red-700 border border-red-200"><AlertTriangle className="w-3.5 h-3.5"/>{critical} critical open</span>}
           {governance.length > 0 && <>
             <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200">{open} open</span>
-            <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-900 text-slate-300 border border-white/10 border-t-white/20">{pending} pending</span>
+            <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-[var(--os-surface-0)] text-[var(--os-text-2)] border border-[var(--os-border)]">{pending} pending</span>
           </>}
           <button onClick={() => setShowAdd(true)}
             className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-white text-[13px] font-semibold"
@@ -170,8 +170,8 @@ export function GovernancePage() {
       {governance.length === 0 && (
         <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
           <BookOpen className="w-10 h-10 text-slate-800" />
-          <p className="text-sm font-semibold text-slate-600">No governance items yet</p>
-          <p className="text-xs text-slate-700 max-w-xs">Track decisions, change requests, steering discussions, and escalations across all client engagements.</p>
+          <p className="text-sm font-semibold text-[var(--os-text-2)]">No governance items yet</p>
+          <p className="text-xs text-[var(--os-text-2)] max-w-xs">Track decisions, change requests, steering discussions, and escalations across all client engagements.</p>
           <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-lg text-white text-[13px] font-semibold mt-2"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             <Plus className="w-3.5 h-3.5" /> Add first item
@@ -184,7 +184,7 @@ export function GovernancePage() {
       <div className="flex items-center gap-3 flex-wrap">
         <Input placeholder="Search…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-52" value={search} onChange={e => setSearch(e.target.value)} />
         <select value={typeFilter} onChange={e => setType(e.target.value as GovernanceType | 'all')}
-          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
+          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20">
           <option value="all">All Types</option>
           <option value="decision">Decisions</option>
           <option value="change-request">Change Requests</option>
@@ -192,7 +192,7 @@ export function GovernancePage() {
           <option value="escalation">Escalations</option>
         </select>
         <select value={statusFilter} onChange={e => setStatus(e.target.value as GovernanceStatus | 'all')}
-          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
+          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20">
           <option value="all">All Statuses</option>
           <option value="open">Open</option>
           <option value="pending">Pending</option>
@@ -201,11 +201,11 @@ export function GovernancePage() {
           <option value="rejected">Rejected</option>
         </select>
         <select value={clientFilter} onChange={e => setClient(e.target.value)}
-          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20">
+          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20">
           <option value="all">All Clients</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
-        <span className="ml-auto text-sm text-slate-500">{visible.length} items</span>
+        <span className="ml-auto text-sm text-[var(--os-text-2)]">{visible.length} items</span>
       </div>
 
       {/* Items */}
@@ -223,7 +223,7 @@ export function GovernancePage() {
                   <div className="flex items-start justify-between gap-3 flex-wrap mb-2">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-semibold text-white text-sm">{item.title}</h3>
+                        <h3 className="font-semibold text-[var(--os-text-1)] text-sm">{item.title}</h3>
                         <InlineSelect
                           value={item.priority}
                           options={GOV_PRIORITY_OPTIONS}
@@ -235,20 +235,20 @@ export function GovernancePage() {
                           onChange={v => patchGovernance(item.id, { status: v as GovernanceStatus })}
                         />
                       </div>
-                      <p className="text-xs text-slate-500 mt-0.5 capitalize">{item.type.replace('-',' ')} · {client?.name}</p>
+                      <p className="text-xs text-[var(--os-text-2)] mt-0.5 capitalize">{item.type.replace('-',' ')} · {client?.name}</p>
                     </div>
-                    <span className="text-xs text-slate-500 flex-shrink-0">{new Date(item.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                    <span className="text-xs text-[var(--os-text-2)] flex-shrink-0">{new Date(item.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                   </div>
-                  <p className="text-sm text-slate-500 leading-relaxed">{item.description}</p>
+                  <p className="text-sm text-[var(--os-text-2)] leading-relaxed">{item.description}</p>
                   {item.resolution && (
                     <div className="mt-2 flex items-start gap-2 p-2.5 bg-green-50 rounded-xl">
                       <CheckCircle className="w-3.5 h-3.5 text-green-600 flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-green-700">{item.resolution}</p>
                     </div>
                   )}
-                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/10 border-t-white/20">
+                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[var(--os-border)]">
                     <Avatar name={item.owner} size="xs" />
-                    <span className="text-xs text-slate-500">{item.owner}</span>
+                    <span className="text-xs text-[var(--os-text-2)]">{item.owner}</span>
                   </div>
                 </div>
               </div>
@@ -256,7 +256,7 @@ export function GovernancePage() {
           )
         })}
         {visible.length === 0 && (
-          <div className="py-12 text-center text-sm text-slate-500">No governance items match your filters.</div>
+          <div className="py-12 text-center text-sm text-[var(--os-text-2)]">No governance items match your filters.</div>
         )}
       </div>
       </>}

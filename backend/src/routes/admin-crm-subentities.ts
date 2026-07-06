@@ -8,6 +8,8 @@
 import { Router, Response, NextFunction } from 'express'
 import { prisma } from '../lib/prisma'
 import { authenticate, authorize, AuthenticatedRequest } from '../middleware/auth'
+import { createNotification } from '../services/notificationService'
+import { notifyClient } from '../services/clientEmail.service'
 
 const router = Router()
 const AUTH = [authenticate, authorize(['ADMIN'])] as const
@@ -118,6 +120,15 @@ router.post('/milestones', ...AUTH, async (req: AuthenticatedRequest, res: Respo
 router.patch('/milestones/:id', ...AUTH, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const { title, description, dueDate, completedDate, status, owner } = req.body ?? {}
+
+    // Read before update so we can detect a transition to 'completed'
+    const existing = status === 'completed'
+      ? await prisma.clientMilestone.findUnique({
+          where: { id: req.params.id },
+          include: { client: { include: { contacts: { where: { isPrimary: true }, take: 1 } } } },
+        })
+      : null
+
     const row = await prisma.clientMilestone.update({
       where: { id: req.params.id },
       data: {
@@ -129,6 +140,28 @@ router.patch('/milestones/:id', ...AUTH, async (req: AuthenticatedRequest, res: 
         ...(owner         !== undefined && { owner }),
       },
     })
+
+    // Notify client when milestone is marked complete (only on transition)
+    if (status === 'completed' && existing && existing.status !== 'completed') {
+      const primaryEmail = existing.client?.contacts[0]?.email
+      if (primaryEmail) {
+        const user = await prisma.user.findUnique({ where: { email: primaryEmail } })
+        if (user) {
+          await createNotification({
+            userId: user.id,
+            title: 'Milestone completed',
+            message: `"${existing.title}" has been marked complete — please review.`,
+            type: 'SUCCESS',
+            link: '/kangqore-view/client/projects',
+          })
+          await notifyClient(user.id, {
+            type: 'MILESTONE_COMPLETE',
+            milestoneTitle: existing.title,
+          })
+        }
+      }
+    }
+
     res.json(row)
   } catch (err) { next(err) }
 })

@@ -1,25 +1,20 @@
 import { useState, useMemo } from 'react'
 import { Trash2, Lightbulb, AlertTriangle, CheckCircle2 } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
-import { Card } from '@design-system/components/Card'
-import { Badge } from '@design-system/components/Badge'
 import { Avatar } from '@design-system/components/Avatar'
 import { Input } from '@design-system/components/Input'
-import { Progress } from '@design-system/components/Progress'
 import { cn } from '@design-system/cn'
 import { useResourcesStore } from '../store'
 import type { TeamMember } from '../types'
 
-// ─── preset scenarios ─────────────────────────────────────────────────────────
-
 const PRESETS = [
-  { label: 'Small project (8h/wk)', hoursPerWeek: 8,  duration: 12, skills: ['React', 'Node.js'] },
+  { label: 'Small project (8h/wk)',   hoursPerWeek: 8,  duration: 12, skills: ['React', 'Node.js'] },
   { label: 'Medium project (20h/wk)', hoursPerWeek: 20, duration: 16, skills: ['React', 'Python', 'PostgreSQL'] },
-  { label: 'Large project (40h/wk)', hoursPerWeek: 40, duration: 24, skills: ['Architecture', 'React', 'Node.js', 'PostgreSQL', 'CI/CD'] },
-  { label: 'AI/ML engagement',       hoursPerWeek: 16, duration: 20, skills: ['Python', 'AI/ML', 'FastAPI', 'RAG'] },
+  { label: 'Large project (40h/wk)',  hoursPerWeek: 40, duration: 24, skills: ['Architecture', 'React', 'Node.js', 'PostgreSQL', 'CI/CD'] },
+  { label: 'AI/ML engagement',        hoursPerWeek: 16, duration: 20, skills: ['Python', 'AI/ML', 'FastAPI', 'RAG'] },
 ]
 
-const ALL_SKILLS = [
+const FALLBACK_SKILLS = [
   'React', 'TypeScript', 'Node.js', 'Python', 'PostgreSQL', 'FastAPI', 'Docker',
   'AI/ML', 'RAG', 'LangChain', 'AWS', 'Kubernetes', 'CI/CD',
   'Architecture', 'Design Systems', 'Figma', 'UX Research',
@@ -29,17 +24,14 @@ const ALL_SKILLS = [
 interface ScenarioConfig {
   name:         string
   hoursPerWeek: number
-  duration:     number   // weeks
+  duration:     number
   skills:       string[]
 }
 
 const EMPTY: ScenarioConfig = { name: '', hoursPerWeek: 16, duration: 12, skills: [] }
 
-// ─── analysis engine ──────────────────────────────────────────────────────────
-
 function analyseScenario(team: TeamMember[], cfg: ScenarioConfig) {
   const neededSkills = cfg.skills
-
   return team.map(member => {
     const freeHours     = member.availability * (1 - member.utilization / 100)
     const canContribute = Math.min(freeHours, cfg.hoursPerWeek)
@@ -50,30 +42,21 @@ function analyseScenario(team: TeamMember[], cfg: ScenarioConfig) {
     const matchedSkills = neededSkills.filter(s => member.skills.includes(s))
     const missingSkills = neededSkills.filter(s => !member.skills.includes(s))
     const newUtil       = Math.min(100, member.utilization + Math.round((canContribute / member.availability) * 100))
-
     return {
-      member,
-      freeHours:     Math.round(freeHours * 10) / 10,
-      canContribute: Math.round(canContribute * 10) / 10,
-      pctOfNeeded,
-      skillMatch,
-      matchedSkills,
-      missingSkills,
-      newUtil,
-      viable:        freeHours >= cfg.hoursPerWeek * 0.5 && skillMatch >= 50,
+      member, freeHours: Math.round(freeHours * 10) / 10, canContribute: Math.round(canContribute * 10) / 10,
+      pctOfNeeded, skillMatch, matchedSkills, missingSkills, newUtil,
+      viable: freeHours >= cfg.hoursPerWeek * 0.5 && skillMatch >= 50,
     }
   }).sort((a, b) => {
-    // Sort: viable first, then by skill match desc, then by free hours desc
     if (a.viable !== b.viable) return a.viable ? -1 : 1
     if (b.skillMatch !== a.skillMatch) return b.skillMatch - a.skillMatch
     return b.freeHours - a.freeHours
   })
 }
 
-// ─── page ─────────────────────────────────────────────────────────────────────
-
 export function ScenarioPlanningPage() {
-  const { team } = useResourcesStore()
+  const { team, allSkills } = useResourcesStore()
+  const ALL_SKILLS = allSkills().length > 0 ? allSkills() : FALLBACK_SKILLS
   const [cfg, setCfg] = useState<ScenarioConfig>({ ...EMPTY })
 
   const set = <K extends keyof ScenarioConfig>(k: K, v: ScenarioConfig[K]) => {
@@ -87,15 +70,12 @@ export function ScenarioPlanningPage() {
     )
   }
 
-  const results = useMemo(() => analyseScenario(team, cfg), [team, cfg])
-  const viable  = results.filter(r => r.viable)
-  const totalCoverable = results.reduce((s, r) => s + r.canContribute, 0)
-  const coveragePct    = cfg.hoursPerWeek > 0
-    ? Math.min(100, Math.round((totalCoverable / cfg.hoursPerWeek) * 100))
-    : 0
-
-  // Missing skills — no one on team has them
-  const uncoveredSkills = cfg.skills.filter(s => !team.some(m => m.skills.includes(s)))
+  const results          = useMemo(() => analyseScenario(team, cfg), [team, cfg])
+  const viable           = results.filter(r => r.viable)
+  const totalCoverable   = results.reduce((s, r) => s + r.canContribute, 0)
+  const coveragePct      = cfg.hoursPerWeek > 0 ? Math.min(100, Math.round((totalCoverable / cfg.hoursPerWeek) * 100)) : 0
+  const uncoveredSkills  = cfg.skills.filter(s => !team.some(m => m.skills.includes(s)))
+  const coverageColor    = coveragePct >= 80 ? '#00c875' : coveragePct >= 50 ? '#fdab3d' : '#e2445c'
 
   function applyPreset(p: typeof PRESETS[0]) {
     setCfg({ name: p.label, hoursPerWeek: p.hoursPerWeek, duration: p.duration, skills: p.skills })
@@ -105,23 +85,33 @@ export function ScenarioPlanningPage() {
     <div className="space-y-6">
       <KIMMPSignalBar module="Scenario Planning" />
 
+      {/* Header */}
       <div>
-        <h2 className="text-xl font-bold text-white">Scenario Planning</h2>
-        <p className="text-sm text-slate-500 mt-0.5">
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Scenario Planning</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>
           Model a new engagement and see who can staff it — before committing.
         </p>
       </div>
 
       {/* Config card */}
-      <Card>
-        <div className="flex items-center justify-between gap-3 mb-4">
-          <p className="text-sm font-semibold text-slate-300">Define scenario</p>
+      <div className="os-card p-5">
+        <div className="flex items-center justify-between gap-3 mb-5">
+          <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>Define scenario</p>
           <div className="flex items-center gap-2 flex-wrap">
             {PRESETS.map(p => (
               <button
                 key={p.label}
                 onClick={() => applyPreset(p)}
-                className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                className="px-2.5 py-1 text-[11px] font-bold rounded-full transition-all"
+                style={{ background: 'var(--os-surface-0)', color: 'var(--os-text-2)', border: '1px solid var(--os-border)' }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = '#579bfc20'
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#579bfc'
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = 'var(--os-surface-0)'
+                  ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--os-text-2)'
+                }}
               >
                 {p.label}
               </button>
@@ -129,166 +119,171 @@ export function ScenarioPlanningPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
           <div>
-            <label className="block text-xs font-semibold text-slate-500 mb-1.5">Project / engagement name</label>
+            <label className="block text-[10px] uppercase tracking-widest font-semibold mb-1.5" style={{ color: 'var(--os-text-2)' }}>
+              Project / engagement name
+            </label>
             <Input value={cfg.name} onChange={e => set('name', e.target.value)} placeholder="e.g. GCC Market Entry" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-500 mb-1.5">Hours per week needed</label>
-            <Input
-              type="number"
-              value={cfg.hoursPerWeek}
-              onChange={e => set('hoursPerWeek', Number(e.target.value))}
-              min={1} max={200}
-            />
+            <label className="block text-[10px] uppercase tracking-widest font-semibold mb-1.5" style={{ color: 'var(--os-text-2)' }}>
+              Hours per week needed
+            </label>
+            <Input type="number" value={cfg.hoursPerWeek} onChange={e => set('hoursPerWeek', Number(e.target.value))} min={1} max={200} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-500 mb-1.5">Duration (weeks)</label>
-            <Input
-              type="number"
-              value={cfg.duration}
-              onChange={e => set('duration', Number(e.target.value))}
-              min={1} max={104}
-            />
+            <label className="block text-[10px] uppercase tracking-widest font-semibold mb-1.5" style={{ color: 'var(--os-text-2)' }}>
+              Duration (weeks)
+            </label>
+            <Input type="number" value={cfg.duration} onChange={e => set('duration', Number(e.target.value))} min={1} max={104} />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-2">Required skills</label>
+          <label className="block text-[10px] uppercase tracking-widest font-semibold mb-2" style={{ color: 'var(--os-text-2)' }}>
+            Required skills
+          </label>
           <div className="flex flex-wrap gap-2">
             {ALL_SKILLS.map(skill => (
               <button
                 key={skill}
                 onClick={() => toggleSkill(skill)}
-                className={cn(
-                  'px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all',
-                  cfg.skills.includes(skill)
-                    ? 'bg-os-blue text-white border-os-blue'
-                    : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border-white/10 border-t-white/20 hover:border-blue-300'
-                )}
+                className="px-3 py-1.5 text-xs font-bold rounded-full transition-all"
+                style={cfg.skills.includes(skill)
+                  ? { background: '#579bfc', color: '#fff' }
+                  : { background: 'var(--os-surface-0)', color: 'var(--os-text-2)', border: '1px solid var(--os-border)' }
+                }
               >
                 {skill}
               </button>
             ))}
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Results */}
       <div className="space-y-4">
-        {/* Summary */}
+        {/* Summary stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <Card className="text-center py-4">
-            <div className={cn('text-2xl font-bold tracking-tight', coveragePct >= 80 ? 'text-green-600' : coveragePct >= 50 ? 'text-amber-600' : 'text-red-600')}>
-              {coveragePct}%
+          {[
+            { label: 'Capacity coverage',  value: `${coveragePct}%`,                                                      accent: coverageColor },
+            { label: 'Viable contributors', value: viable.length,                                                          accent: '#579bfc'    },
+            { label: 'Skill gaps',          value: uncoveredSkills.length,                                                 accent: uncoveredSkills.length > 0 ? '#e2445c' : '#00c875' },
+            { label: 'Est. cost / week',    value: `₹${Math.round(viable.reduce((s, r) => s + r.canContribute * r.member.billableRate, 0) / 1000)}k`, accent: 'var(--os-text-1)' },
+          ].map(c => (
+            <div key={c.label} className="os-card p-5 text-center">
+              <p className="text-3xl font-black tracking-tight mb-1" style={{ color: c.accent }}>{c.value}</p>
+              <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'var(--os-text-2)' }}>{c.label}</p>
             </div>
-            <div className="text-xs text-slate-500 mt-0.5">Capacity coverage</div>
-          </Card>
-          <Card className="text-center py-4">
-            <div className="text-2xl font-bold tracking-tight text-os-blue">{viable.length}</div>
-            <div className="text-xs text-slate-500 mt-0.5">Viable contributors</div>
-          </Card>
-          <Card className="text-center py-4">
-            <div className={cn('text-2xl font-bold tracking-tight', uncoveredSkills.length > 0 ? 'text-red-600' : 'text-green-600')}>
-              {uncoveredSkills.length}
-            </div>
-            <div className="text-xs text-slate-500 mt-0.5">Skill gaps</div>
-          </Card>
-          <Card className="text-center py-4">
-            <div className="text-2xl font-bold tracking-tight text-slate-300">
-              ₹{Math.round(viable.reduce((s, r) => s + r.canContribute * r.member.billableRate, 0) / 1000)}k
-            </div>
-            <div className="text-xs text-slate-500 mt-0.5">Est. cost / week</div>
-          </Card>
+          ))}
         </div>
 
         {/* Skill gap alert */}
         {uncoveredSkills.length > 0 && (
-          <div className="flex items-start gap-2.5 p-4 bg-red-50 border border-red-200 rounded-2xl">
-            <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: '#e2445c10', border: '1px solid #e2445c40' }}>
+            <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#e2445c' }} />
             <div>
-              <p className="text-sm font-semibold text-red-800">Hiring required for these skills</p>
-              <div className="flex flex-wrap gap-1.5 mt-1.5">
-                {uncoveredSkills.map(s => <Badge key={s} variant="danger" size="sm">{s}</Badge>)}
+              <p className="text-sm font-bold mb-1.5" style={{ color: '#e2445c' }}>Hiring required for these skills</p>
+              <div className="flex flex-wrap gap-1.5">
+                {uncoveredSkills.map(s => (
+                  <span key={s} className="text-[11px] font-bold px-2.5 py-0.5 rounded-full" style={{ background: '#e2445c20', color: '#e2445c' }}>
+                    {s}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
         )}
 
         {/* Capacity coverage bar */}
-        <Card>
+        <div className="os-card p-5">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-semibold text-slate-500">
+            <p className="text-xs font-semibold" style={{ color: 'var(--os-text-2)' }}>
               Capacity coverage — {Math.round(totalCoverable * 10) / 10}h available / {cfg.hoursPerWeek}h needed per week
             </p>
-            <span className={cn('text-xs font-bold', coveragePct >= 80 ? 'text-green-600' : 'text-amber-600')}>
+            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full" style={{ background: coverageColor + '20', color: coverageColor }}>
               {coveragePct}%
             </span>
           </div>
-          <Progress
-            value={coveragePct}
-            color={coveragePct >= 80 ? 'success' : coveragePct >= 50 ? 'warning' : 'danger'}
-          />
+          <div className="h-1.5 rounded-full" style={{ background: 'var(--os-surface-0)' }}>
+            <div
+              className="h-1.5 rounded-full transition-all"
+              style={{ width: `${coveragePct}%`, background: coverageColor }}
+            />
+          </div>
           {coveragePct < 80 && (
-            <p className="text-xs text-amber-600 mt-2 flex items-center gap-1.5">
+            <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#fdab3d' }}>
               <Lightbulb className="w-3.5 h-3.5" />
               You may need contractor support or to reduce scope to {Math.round(totalCoverable)}h/wk.
             </p>
           )}
-        </Card>
+        </div>
 
         {/* Per-person breakdown */}
-        <Card padding="none">
-          <div className="px-5 py-4 border-b border-white/10 border-t-white/20">
-            <p className="text-sm font-semibold text-slate-300">Team capacity breakdown</p>
-            <p className="text-xs text-slate-500 mt-0.5">Sorted by viability — skill match + available hours</p>
+        <div className="os-card" style={{ padding: 0 }}>
+          <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--os-border)' }}>
+            <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>Team capacity breakdown</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--os-text-2)' }}>Sorted by viability — skill match + available hours</p>
           </div>
-          <div className="divide-y divide-[#2E2854]">
-            {results.map(r => (
-              <div key={r.member.id} className={cn('flex items-start gap-4 px-5 py-4', !r.viable && 'opacity-50')}>
-                <Avatar name={r.member.name} size="sm" className="flex-shrink-0 mt-0.5" />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className="text-sm font-semibold text-white">{r.member.name}</span>
-                    <span className="text-xs text-slate-500">{r.member.role}</span>
-                    {r.viable
-                      ? <Badge variant="success" size="sm">Viable</Badge>
-                      : <Badge variant="neutral" size="sm">Low capacity</Badge>
-                    }
-                  </div>
-                  <div className="flex items-center gap-4 text-xs text-slate-500 mb-2 flex-wrap">
-                    <span>{r.freeHours}h free / week</span>
-                    <span>Can give {r.canContribute}h ({r.pctOfNeeded}% of need)</span>
-                    <span className={cn(r.skillMatch >= 75 ? 'text-green-600' : r.skillMatch >= 50 ? 'text-amber-600' : 'text-red-600')}>
-                      {r.skillMatch}% skill match
-                    </span>
-                  </div>
-                  {cfg.skills.length > 0 && (
-                    <div className="flex items-center gap-2 flex-wrap">
-                      {r.matchedSkills.map(s => (
-                        <span key={s} className="flex items-center gap-1 text-[11px] text-green-700">
-                          <CheckCircle2 className="w-3 h-3" />{s}
-                        </span>
-                      ))}
-                      {r.missingSkills.map(s => (
-                        <span key={s} className="flex items-center gap-1 text-[11px] text-slate-500">
-                          <Trash2 className="w-3 h-3" />{s}
-                        </span>
-                      ))}
+          <div>
+            {results.map(r => {
+              const newUtilColor = r.newUtil >= 100 ? '#e2445c' : r.newUtil >= 85 ? '#fdab3d' : '#00c875'
+              return (
+                <div
+                  key={r.member.id}
+                  className="flex items-start gap-4 px-5 py-4 transition-colors"
+                  style={{
+                    borderBottom: '1px solid var(--os-border)',
+                    opacity: r.viable ? 1 : 0.45,
+                  }}
+                >
+                  <Avatar name={r.member.name} size="sm" className="flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <span className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{r.member.name}</span>
+                      <span className="text-xs" style={{ color: 'var(--os-text-2)' }}>{r.member.role}</span>
+                      <span
+                        className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
+                        style={r.viable
+                          ? { background: '#00c87520', color: '#00c875' }
+                          : { background: 'var(--os-surface-0)', color: 'var(--os-text-2)' }
+                        }
+                      >
+                        {r.viable ? 'Viable' : 'Low capacity'}
+                      </span>
                     </div>
-                  )}
-                </div>
-                <div className="flex-shrink-0 text-right">
-                  <div className="text-xs font-semibold text-slate-500 mb-1">New util</div>
-                  <div className={cn('text-sm font-bold', r.newUtil >= 100 ? 'text-red-600' : r.newUtil >= 85 ? 'text-amber-600' : 'text-green-600')}>
-                    {r.newUtil}%
+                    <div className="flex items-center gap-4 text-xs mb-2 flex-wrap" style={{ color: 'var(--os-text-2)' }}>
+                      <span>{r.freeHours}h free / week</span>
+                      <span>Can give {r.canContribute}h ({r.pctOfNeeded}% of need)</span>
+                      <span style={{ color: r.skillMatch >= 75 ? '#00c875' : r.skillMatch >= 50 ? '#fdab3d' : '#e2445c', fontWeight: 600 }}>
+                        {r.skillMatch}% skill match
+                      </span>
+                    </div>
+                    {cfg.skills.length > 0 && (
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {r.matchedSkills.map(s => (
+                          <span key={s} className="flex items-center gap-1 text-[11px]" style={{ color: '#00c875' }}>
+                            <CheckCircle2 className="w-3 h-3" />{s}
+                          </span>
+                        ))}
+                        {r.missingSkills.map(s => (
+                          <span key={s} className="flex items-center gap-1 text-[11px]" style={{ color: 'var(--os-text-2)' }}>
+                            <Trash2 className="w-3 h-3" />{s}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-shrink-0 text-right">
+                    <div className="text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'var(--os-text-2)' }}>New util</div>
+                    <div className="text-sm font-black" style={{ color: newUtilColor }}>{r.newUtil}%</div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   )

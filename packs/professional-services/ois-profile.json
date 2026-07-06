@@ -1,0 +1,27 @@
+{
+  "profile": "professional-services-v1",
+  "description": "OIS configuration tuned for professional services firms.",
+  "pillarWeights": {
+    "decision":   0.20,
+    "enterprise": 0.18,
+    "workflow":   0.15,
+    "goal":       0.14,
+    "ai":         0.10,
+    "business":   0.10,
+    "trust":      0.08,
+    "adoption":   0.05
+  },
+  "maturityLevels": {
+    "L1": { "label": "Aware",      "minComposite": 0,  "description": "Platform deployed, baseline captured." },
+    "L2": { "label": "Managed",    "minComposite": 40, "description": "Core workflows running, WAANDA making proposals." },
+    "L3": { "label": "Optimised",  "minComposite": 60, "description": "Delivery and finance on WAANDA. Coach insights surfacing." },
+    "L4": { "label": "Predictive", "minComposite": 75, "description": "Digital Twin active. COIG tracked. Customer Zero Report generated." },
+    "L5": { "label": "Adaptive",   "minComposite": 85, "description": "Enterprise continuously improves. Pack extracted and reusable." }
+  },
+  "emiWeights": {
+    "intelligence": 0.40,
+    "autonomy":     0.25,
+    "adoption":     0.20,
+    "governance":   0.15
+  }
+}

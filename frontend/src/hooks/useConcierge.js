@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getPageContext } from './pageContextMap';
+import { getVisitorUuid, getSessionUuid } from './useVisitorIdentity';
+import { behaviorEngine } from '../lib/hcip/BehaviorEngine';
 
 const BASE = import.meta.env.VITE_BACKEND_URL || '';
-const ENDPOINT = `${BASE}/api/ai/concierge`;
+const ENDPOINT        = `${BASE}/api/ai/concierge`;
+const VISITOR_EVENT   = `${BASE}/api/public/visitor/event`;
 const HISTORY_ENDPOINT = (id) =>
   `${BASE}/api/ai/concierge/conversations/${encodeURIComponent(id)}`;
 const FEEDBACK_ENDPOINT = `${BASE}/api/ai/concierge/feedback`;
@@ -191,6 +194,62 @@ export function useConcierge(options = {}) {
       setMessages((prev) => [...prev, userMsg, assistantMsg]);
       setStreaming(true);
 
+      // Log eQORE query for visitor footprint
+      const vUuid = getVisitorUuid()
+      if (vUuid) {
+        fetch(VISITOR_EVENT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ visitorUuid: vUuid, type: 'EQORE_QUERY', path: window.location.pathname, data: { query: trimmed } }),
+        }).catch(() => {})
+      }
+
+      let payloadMessage = trimmed;
+
+      // Log chat to HCIP Behavior Engine
+      let chatEvent = 'CHAT_EVENT';
+      if (/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/.test(trimmed)) {
+        chatEvent = 'CORPORATE_EMAIL_SUBMITTED';
+      } else if (trimmed.toLowerCase().includes('compare') || trimmed.toLowerCase().includes('difference')) {
+        chatEvent = 'COMPARISON_QUESTION_ASKED';
+      }
+      behaviorEngine.logPhysics('CHAT_EVENT', { semanticEvent: chatEvent, path: window.location.pathname });
+
+      // Fetch the latest HCO from the Backend ReasoningEngine
+      let hco = {};
+      let recommendation = {};
+      try {
+        const res = await fetch(`${BASE}/api/hcip/recommendations/${getSessionUuid()}?visitorId=${getVisitorUuid()}`);
+        const data = await res.json();
+        hco = data.hco;
+        recommendation = data.recommendation;
+      } catch (e) {}
+
+      // Stealth Lead Enrichment & WAANDA Sync
+      const emailMatch = trimmed.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/);
+      if (emailMatch) {
+        try {
+          const enrichRes = await fetch(`${BASE}/api/public/visitor/enrich`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: emailMatch[1] })
+          });
+          const enriched = await enrichRes.json();
+          if (enriched && enriched.isEnterprise) {
+            // Alert WAANDA immediately
+            fetch(`${BASE}/api/public/visitor/hot-lead`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: emailMatch[1], summary: trimmed })
+            }).catch(() => {});
+          }
+        } catch(e) {
+          // Silent fail for enrichment, continue with chat
+        }
+      }
+      // Inject the canonical HumanContextObject (HCO) and Recommendation as JSON metadata for the LLM
+      payloadMessage = `[SYSTEM STEALTH INJECT: HUMAN_CONTEXT_OBJECT=${JSON.stringify(hco)}\nRECOMMENDATION=${JSON.stringify(recommendation)}]\n\n${trimmed}`;
+
       const controller = new AbortController();
       abortRef.current = controller;
 
@@ -198,7 +257,7 @@ export function useConcierge(options = {}) {
         const res = await fetch(ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: trimmed, conversationId }),
+          body: JSON.stringify({ message: payloadMessage, conversationId, visitorUuid: getVisitorUuid() }),
           signal: controller.signal,
         });
 

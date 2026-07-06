@@ -1,0 +1,26 @@
+{
+  "description": "Canonical ontology entity types for a professional services firm.",
+  "types": [
+    { "name": "Client",        "color": "#579bfc", "icon": "building2",    "description": "An organization purchasing professional services." },
+    { "name": "Project",       "color": "#00c875", "icon": "folder-kanban","description": "A scoped engagement delivered for a client." },
+    { "name": "Deliverable",   "color": "#0ea5e9", "icon": "file-check",   "description": "A specific output or artifact produced within a project." },
+    { "name": "Milestone",     "color": "#a855f7", "icon": "flag",         "description": "A time-bound checkpoint within a project." },
+    { "name": "Invoice",       "color": "#fdab3d", "icon": "receipt",      "description": "A billing document issued to a client." },
+    { "name": "Risk",          "color": "#e2445c", "icon": "alert-triangle","description": "A potential issue that could affect delivery or revenue." },
+    { "name": "Lead",          "color": "#7c3aed", "icon": "user-plus",    "description": "A prospective client in the sales pipeline." },
+    { "name": "Proposal",      "color": "#eab308", "icon": "file-text",    "description": "A formal commercial proposal submitted to a prospect." },
+    { "name": "Resource",      "color": "#66ccff", "icon": "user-check",   "description": "A person or capacity unit assigned to project work." },
+    { "name": "ChangeRequest", "color": "#f97316", "icon": "git-pull-request","description": "A formal request to modify project scope, timeline, or budget." }
+  ],
+  "relationships": [
+    { "from": "Client",    "to": "Project",     "type": "HAS_PROJECT",        "description": "A client owns one or more projects." },
+    { "from": "Project",   "to": "Deliverable", "type": "CONTAINS",           "description": "A project contains deliverables." },
+    { "from": "Project",   "to": "Milestone",   "type": "HAS_MILESTONE",      "description": "A project has time-bound milestones." },
+    { "from": "Project",   "to": "Risk",        "type": "EXPOSES",            "description": "A project exposes risks." },
+    { "from": "Client",    "to": "Invoice",     "type": "BILLED_VIA",         "description": "A client is billed via invoices." },
+    { "from": "Lead",      "to": "Proposal",    "type": "RECEIVES_PROPOSAL",  "description": "A lead receives a commercial proposal." },
+    { "from": "Lead",      "to": "Client",      "type": "CONVERTS_TO",        "description": "A won lead converts to a client." },
+    { "from": "Resource",  "to": "Project",     "type": "ASSIGNED_TO",        "description": "A resource is assigned to a project." },
+    { "from": "Project",   "to": "ChangeRequest","type": "SUBJECT_TO",        "description": "A project may be subject to change requests." }
+  ]
+}

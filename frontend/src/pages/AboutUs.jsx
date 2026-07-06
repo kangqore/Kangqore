@@ -203,7 +203,7 @@ export default function AboutUs() {
   ];
 
   const leadership = [
-    { name: 'Mahesh Kumar', title: 'Founder & CEO', bio: 'Visionary technologist who founded Kangqore to bridge technology potential with real-world business execution.', img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80' },
+    { name: 'C.O.D.E.', title: 'Founder & CEO', bio: 'Visionary technologist who founded Kangqore to bridge technology potential with real-world business execution.', img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80' },
     { name: 'Open Position', title: 'Chief Technology Officer', bio: 'We are looking for a seasoned engineering leader to drive our technology strategy and AI innovation.', hiring: true },
     { name: 'Open Position', title: 'VP of Delivery', bio: 'A delivery leader to own client success, project excellence, and the Kangqore Zero Distance model.', hiring: true },
   ];

@@ -1,0 +1,37 @@
+{
+  "description": "Four delivery workflow DAGs for professional services. Seeded into kimmp_workflows table.",
+  "workflows": [
+    {
+      "name":    "Project Kick-off",
+      "trigger": "SIGNAL",
+      "steps":   6,
+      "agents":  ["PROJECT_HEALTH", "DELIVERY_MONITOR"],
+      "approvalGates": [],
+      "description": "Briefs WAANDA on new project, sets goals, generates milestone plan, assigns initial risks, notifies client."
+    },
+    {
+      "name":    "Milestone Review",
+      "trigger": "SCHEDULE",
+      "steps":   6,
+      "agents":  ["PROJECT_HEALTH", "DELIVERY_MONITOR"],
+      "approvalGates": [],
+      "description": "7-day pre-milestone health check. Routes to internal flag or client update based on status."
+    },
+    {
+      "name":    "Risk Escalation",
+      "trigger": "SIGNAL",
+      "steps":   6,
+      "agents":  ["PROJECT_HEALTH", "DELIVERY_MONITOR"],
+      "approvalGates": ["L3"],
+      "description": "CRITICAL risk triggers: assessment → decision proposal → L3 approval → client notification."
+    },
+    {
+      "name":    "Project Closure",
+      "trigger": "SIGNAL",
+      "steps":   6,
+      "agents":  ["PROJECT_HEALTH", "ENTERPRISE_COACH"],
+      "approvalGates": ["L2 (client)"],
+      "description": "Quality check → WAANDA brief → client sign-off → COIG checkpoint → lessons learned."
+    }
+  ]
+}

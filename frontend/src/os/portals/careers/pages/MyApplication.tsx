@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { CheckCircle2, Clock, Circle, MessageSquare, Calendar, User } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Spinner } from '@design-system/components/Spinner'
@@ -61,17 +62,18 @@ export function MyApplication() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center gap-2 text-sm text-slate-500 px-6 lg:px-10 py-10">
+      <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)] px-6 lg:px-10 py-10">
         <Spinner size="sm" /> Loading your application…
       </div>
     )
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
+    <div className="space-y-8">
+      <KIMMPSignalBar module="My Application" />
       <div>
-        <h2 className="text-xl font-bold text-white">My Application</h2>
-        <p className="text-sm text-slate-500 mt-1">Track your application progress for {application.role} at Kangqore.</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>My Application</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>Track your application progress for {application.role} at Kangqore</p>
       </div>
 
       {/* Role card */}
@@ -79,8 +81,8 @@ export function MyApplication() {
         <CardBody className="p-6">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
-              <h3 className="text-lg font-bold text-white">{application.role}</h3>
-              <p className="text-sm text-slate-500 mt-1">{application.location} · {application.salary}</p>
+              <h3 className="text-lg font-bold" style={{ color: 'var(--os-text-1)' }}>{application.role}</h3>
+              <p className="text-sm text-[var(--os-text-2)] mt-1">{application.location} · {application.salary}</p>
             </div>
             <Badge variant="info" size="sm" dot>In Progress</Badge>
           </div>
@@ -90,9 +92,9 @@ export function MyApplication() {
               { label: 'Current Stage', value: STAGES.find(s => s.id === currentStage)?.label ?? '—' },
               { label: 'Salary',        value: application.salary                           },
             ].map(item => (
-              <div key={item.label} className="bg-slate-900 rounded-xl p-3">
-                <p className="text-xs text-slate-500 mb-0.5">{item.label}</p>
-                <p className="text-sm font-semibold text-white">{item.value}</p>
+              <div key={item.label} className="rounded-xl p-3" style={{ background: 'var(--os-surface)', border: '1px solid var(--os-border)' }}>
+                <p className="text-xs text-[var(--os-text-2)] mb-0.5">{item.label}</p>
+                <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{item.value}</p>
               </div>
             ))}
           </div>
@@ -113,13 +115,13 @@ export function MyApplication() {
                 <div key={stage.id} className="flex gap-4">
                   <div className="flex flex-col items-center">
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      isDone ? 'bg-green-100' : isActive ? 'bg-blue-100' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10'
+                      isDone ? 'bg-green-100' : isActive ? 'bg-blue-100' : ''
                     }`}>
                       {isDone
                         ? <CheckCircle2 className="w-4 h-4 text-green-600" />
                         : isActive
                           ? <Clock className="w-4 h-4 text-blue-600" />
-                          : <Circle className="w-4 h-4 text-slate-300" />
+                          : <Circle className="w-4 h-4 text-[var(--os-text-1)]" />
                       }
                     </div>
                     {i < STAGES.length - 1 && (
@@ -129,16 +131,16 @@ export function MyApplication() {
 
                   <div className={`pb-4 flex-1 ${isFuture ? 'opacity-50' : ''}`}>
                     <div className="flex items-center gap-2">
-                      <p className={`text-sm font-semibold ${isActive ? 'text-blue-700' : 'text-white'}`}>{stage.label}</p>
+                      <p className={`text-sm font-semibold ${isActive ? 'text-blue-700' : ''}`} style={!isActive ? { color: 'var(--os-text-1)' } : undefined}>{stage.label}</p>
                       {isActive && <Badge variant="info" size="sm" dot>Current</Badge>}
                     </div>
                     {isActive && application.interviewedAt && (
-                      <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                      <p className="text-xs text-[var(--os-text-2)] mt-0.5 flex items-center gap-1">
                         <Calendar className="w-3 h-3" />{application.interviewedAt}
                       </p>
                     )}
                     {isActive && application.notes && (
-                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">{application.notes}</p>
+                      <p className="text-xs text-[var(--os-text-2)] mt-1 leading-relaxed">{application.notes}</p>
                     )}
                   </div>
                 </div>
@@ -161,17 +163,17 @@ export function MyApplication() {
               return (
                 <div key={i} className={`flex gap-3 ${isMe ? 'flex-row-reverse' : ''}`}>
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ${
-                    isMe ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-500'
+                    isMe ? 'bg-blue-600 text-white' : 'bg-slate-200 text-[var(--os-text-2)]'
                   }`}>
                     {isMe ? 'Me' : <User className="w-3.5 h-3.5" />}
                   </div>
                   <div className={`flex-1 max-w-[85%] ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
                     <div className={`rounded-xl px-3 py-2 text-sm ${
-                      isMe ? 'bg-blue-600 text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-200'
+                      isMe ? 'bg-blue-600 text-white' : 'text-[var(--os-text-1)]'
                     }`}>
                       {msg.text}
                     </div>
-                    <p className="text-[10px] text-slate-500 mt-1">{isMe ? 'You' : msg.from} · {msg.date}</p>
+                    <p className="text-[10px] text-[var(--os-text-2)] mt-1">{isMe ? 'You' : msg.from} · {msg.date}</p>
                   </div>
                 </div>
               )

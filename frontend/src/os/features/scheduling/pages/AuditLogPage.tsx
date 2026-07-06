@@ -56,17 +56,17 @@ export function AuditLogPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-lg font-bold text-white">Audit Log</h2>
-        <p className="text-sm text-slate-500 mt-1">All scheduling actions and changes.</p>
+        <h2 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Audit Log</h2>
+        <p className="text-sm text-[var(--os-text-2)] mt-1">All scheduling actions and changes.</p>
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
-        <Filter className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+        <Filter className="w-3.5 h-3.5 text-[var(--os-text-2)] shrink-0" />
         <select
           value={action}
           onChange={e => { setAction(e.target.value); setPage(1) }}
-          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
         >
           <option value="">All actions</option>
           {ACTION_OPTIONS.map(a => <option key={a} value={a}>{a}</option>)}
@@ -75,37 +75,37 @@ export function AuditLogPage() {
           type="date"
           value={from}
           onChange={e => { setFrom(e.target.value); setPage(1) }}
-          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
         />
-        <span className="text-slate-500 text-sm">to</span>
+        <span className="text-[var(--os-text-2)] text-sm">to</span>
         <input
           type="date"
           value={to}
           onChange={e => { setTo(e.target.value); setPage(1) }}
-          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
         />
         {(action || from || to) && (
           <button
             onClick={() => { setAction(''); setFrom(''); setTo(''); setPage(1) }}
-            className="text-xs text-slate-500 hover:text-white transition-colors"
+            className="text-xs text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors"
           >
             Clear
           </button>
         )}
       </div>
 
-      {isLoading && <div className="flex items-center gap-2 text-sm text-slate-500"><Spinner size="sm" /> Loading…</div>}
+      {isLoading && <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)]"><Spinner size="sm" /> Loading…</div>}
 
       {!isLoading && entries.length === 0 && (
         <Card><CardBody className="text-center py-12">
-          <ScrollText className="w-8 h-8 text-slate-500 mx-auto mb-3" />
-          <p className="text-sm text-slate-400">No audit entries found</p>
+          <ScrollText className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-3" />
+          <p className="text-sm text-[var(--os-text-2)]">No audit entries found</p>
         </CardBody></Card>
       )}
 
       {entries.length > 0 && (
         <Card>
-          <div className="divide-y divide-[#2E2854]">
+          <div className="divide-y divide-[var(--os-border)]">
             {entries.map(entry => (
               <div key={entry.id} className="flex items-start gap-4 px-5 py-3.5">
                 <div className="flex-1 min-w-0">
@@ -114,10 +114,10 @@ export function AuditLogPage() {
                       {entry.action}
                     </Badge>
                   </div>
-                  <p className="text-sm text-slate-300 truncate">{entry.description}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{entry.performedBy}</p>
+                  <p className="text-sm text-[var(--os-text-1)] truncate">{entry.description}</p>
+                  <p className="text-xs text-[var(--os-text-2)] mt-0.5">{entry.performedBy}</p>
                 </div>
-                <time className="text-xs text-slate-500 whitespace-nowrap shrink-0">
+                <time className="text-xs text-[var(--os-text-2)] whitespace-nowrap shrink-0">
                   {new Date(entry.createdAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                 </time>
               </div>
@@ -127,14 +127,14 @@ export function AuditLogPage() {
       )}
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-between text-sm text-slate-500">
+        <div className="flex items-center justify-between text-sm text-[var(--os-text-2)]">
           <span>{total} total</span>
           <div className="flex items-center gap-2">
-            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 disabled:opacity-30">
+            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="p-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-[var(--os-border)] disabled:opacity-30">
               <ChevronLeft className="w-4 h-4" />
             </button>
             <span>Page {page} of {totalPages}</span>
-            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 disabled:opacity-30">
+            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} className="p-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-[var(--os-border)] disabled:opacity-30">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>

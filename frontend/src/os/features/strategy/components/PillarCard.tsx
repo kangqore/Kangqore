@@ -14,7 +14,7 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
   return (
     <Card
       padding="lg"
-      className="group cursor-pointer hover:border-white/10 border-t-white/20/80 hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col justify-between h-full bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20"
+      className="group cursor-pointer hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col justify-between h-full bg-[var(--os-card)] border border-[var(--os-border)]"
       onClick={() => navigate(`/kangqore-view/admin/strategy/pillars/${pillar.id}`)}
     >
       <div>
@@ -26,20 +26,20 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
 
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-white text-base tracking-tight truncate">{pillar.name}</h3>
-            <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed font-normal">{pillar.description}</p>
+            <h3 className="font-bold text-[var(--os-text-1)] text-base tracking-tight truncate">{pillar.name}</h3>
+            <p className="text-xs text-[var(--os-text-2)] mt-2 line-clamp-2 leading-relaxed font-normal">{pillar.description}</p>
           </div>
           <HealthBadge status={pillar.health} />
         </div>
 
         {/* Stats row */}
-        <div className="flex items-center gap-5 mb-5 text-xs text-slate-500 font-medium">
+        <div className="flex items-center gap-5 mb-5 text-xs text-[var(--os-text-2)] font-medium">
           <span className="flex items-center gap-2">
-            <LayoutDashboard className="w-4 h-4 text-slate-500" />
+            <LayoutDashboard className="w-4 h-4 text-[var(--os-text-2)]" />
             {pillar.programCount} programs
           </span>
           <span className="flex items-center gap-2">
-            <Target className="w-4 h-4 text-slate-500" />
+            <Target className="w-4 h-4 text-[var(--os-text-2)]" />
             {pillar.okrCount} OKRs
           </span>
         </div>
@@ -56,12 +56,12 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
         />
 
         {/* Footer */}
-        <div className={cn('flex items-center justify-between mt-5 pt-4 border-t border-white/10 border-t-white/20/80')}>
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <Avatar name={pillar.owner} size="xs" className="ring-2 ring-slate-50" />
-            <span className="font-semibold text-slate-300">{pillar.owner}</span>
+        <div className={cn('flex items-center justify-between mt-5 pt-4 border-t border-[var(--os-border)]')}>
+          <div className="flex items-center gap-2 text-xs text-[var(--os-text-2)]">
+            <Avatar name={pillar.owner} size="xs" />
+            <span className="font-semibold text-[var(--os-text-1)]">{pillar.owner}</span>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-slate-350 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+          <ArrowRight className="w-3.5 h-3.5 text-[var(--os-text-2)] group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
         </div>
       </div>
     </Card>

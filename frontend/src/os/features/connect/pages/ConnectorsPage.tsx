@@ -162,7 +162,7 @@ const connectors: Connector[] = [
 const STATUS_CONFIG: Record<ConnectorStatus, { label: string; color: string; icon: React.ReactNode }> = {
   active:    { label: 'Active',     color: '#10B981', icon: <CheckCircle className="w-3.5 h-3.5" /> },
   setup:     { label: 'In Setup',   color: '#F59E0B', icon: <AlertCircle className="w-3.5 h-3.5" /> },
-  available: { label: 'Available',  color: '#475569', icon: <Circle      className="w-3.5 h-3.5" /> },
+  available: { label: 'Available',  color: 'var(--os-text-2)', icon: <Circle      className="w-3.5 h-3.5" /> },
 }
 
 const WEIGHT_COLOR: Record<string, string> = { high: '#e2445c', medium: '#fdab3d', low: '#6B7280' }
@@ -187,17 +187,17 @@ export function ConnectorsPage() {
         <Zap className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-semibold text-white mb-1">Signal ingestion, not replacement</p>
-          <p className="text-xs text-slate-500 leading-relaxed">
-            Each connector ships a <span className="text-slate-300 font-medium">Signal Schema</span> (maps tool events to Kangqore entities),
-            a <span className="text-slate-300 font-medium">KIMMP Interpreter</span> (weights each signal in correlation),
-            and a <span className="text-slate-300 font-medium">Confidence Decay</span> (how quickly signal relevance fades without follow-on events).
+          <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
+            Each connector ships a <span className="text-[var(--os-text-1)] font-medium">Signal Schema</span> (maps tool events to Kangqore entities),
+            a <span className="text-[var(--os-text-1)] font-medium">KIMMP Interpreter</span> (weights each signal in correlation),
+            and a <span className="text-[var(--os-text-1)] font-medium">Confidence Decay</span> (how quickly signal relevance fades without follow-on events).
             You keep every existing tool. Kangqore synthesises above them.
           </p>
         </div>
       </div>
 
       {/* Filter tabs */}
-      <div className="flex items-center gap-1 border-b border-white/10">
+      <div className="flex items-center gap-1 border-b border-[var(--os-border)]">
         {([['all', 'All', connectors.length], ['active', 'Active', activeCount], ['setup', 'In Setup', setupCount], ['available', 'Available', availableCount]] as [FilterTab, string, number][]).map(([id, label, count]) => (
           <button
             key={id}
@@ -205,11 +205,11 @@ export function ConnectorsPage() {
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all ${
               filter === id
                 ? 'border-[#2564ea] text-[#2564ea]'
-                : 'border-transparent text-slate-500 hover:text-slate-300 hover:border-white/10'
+                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[var(--os-border)]'
             }`}
           >
             {label}
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-500">{count}</span>
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-800 text-[var(--os-text-2)]">{count}</span>
           </button>
         ))}
       </div>
@@ -218,8 +218,8 @@ export function ConnectorsPage() {
       {tier1.length > 0 && (
         <section>
           <div className="flex items-center gap-2 mb-4">
-            <h2 className="text-xs font-black tracking-widest uppercase text-slate-600">Tier 1 — Enterprise Core</h2>
-            <span className="text-[9px] text-slate-700">Required for 80% of enterprise deals</span>
+            <h2 className="text-xs font-black tracking-widest uppercase text-[var(--os-text-2)]">Tier 1 — Enterprise Core</h2>
+            <span className="text-[9px] text-[var(--os-text-2)]">Required for 80% of enterprise deals</span>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {tier1.map(c => <ConnectorCard key={c.id} c={c} />)}
@@ -231,8 +231,8 @@ export function ConnectorsPage() {
       {tier2.length > 0 && (
         <section>
           <div className="flex items-center gap-2 mb-4">
-            <h2 className="text-xs font-black tracking-widest uppercase text-slate-600">Tier 2 — Regulated Verticals</h2>
-            <span className="text-[9px] text-slate-700">Healthcare, Financial Services, Pharma</span>
+            <h2 className="text-xs font-black tracking-widest uppercase text-[var(--os-text-2)]">Tier 2 — Regulated Verticals</h2>
+            <span className="text-[9px] text-[var(--os-text-2)]">Healthcare, Financial Services, Pharma</span>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {tier2.map(c => <ConnectorCard key={c.id} c={c} />)}
@@ -247,7 +247,7 @@ function ConnectorCard({ c }: { c: Connector }) {
   const cfg = STATUS_CONFIG[c.status]
 
   return (
-    <div className={`p-5 rounded-2xl border bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 transition-all hover:border-white/20 ${c.status === 'active' ? 'border-white/15' : 'border-white/10'}`}>
+    <div className={`p-5 rounded-2xl border bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 transition-all hover:border-[var(--os-border)] ${c.status === 'active' ? 'border-white/15' : 'border-[var(--os-border)]'}`}>
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black text-white flex-shrink-0" style={{ background: `${c.logoColor}25`, border: `1px solid ${c.logoColor}40` }}>
@@ -255,7 +255,7 @@ function ConnectorCard({ c }: { c: Connector }) {
           </div>
           <div>
             <p className="font-bold text-white text-sm">{c.name}</p>
-            <p className="text-[10px] text-slate-600 font-medium uppercase tracking-wide">{c.category}</p>
+            <p className="text-[10px] text-[var(--os-text-2)] font-medium uppercase tracking-wide">{c.category}</p>
           </div>
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0" style={{ color: cfg.color }}>
@@ -264,28 +264,28 @@ function ConnectorCard({ c }: { c: Connector }) {
         </div>
       </div>
 
-      <p className="text-xs text-slate-500 leading-relaxed mb-4">{c.description}</p>
+      <p className="text-xs text-[var(--os-text-2)] leading-relaxed mb-4">{c.description}</p>
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
-            <span className="text-[9px] font-black uppercase text-slate-700">KIMMP weight</span>
+            <span className="text-[9px] font-black uppercase text-[var(--os-text-2)]">KIMMP weight</span>
             <span className="text-[10px] font-bold" style={{ color: WEIGHT_COLOR[c.kimmpWeight] }}>{c.kimmpWeight}</span>
           </div>
           {c.signalsToday !== undefined && (
             <>
               <span className="text-slate-800">·</span>
-              <span className="text-[10px] text-slate-600"><span className="font-bold text-slate-400">{c.signalsToday.toLocaleString()}</span> signals today</span>
+              <span className="text-[10px] text-[var(--os-text-2)]"><span className="font-bold text-[var(--os-text-2)]">{c.signalsToday.toLocaleString()}</span> signals today</span>
             </>
           )}
           {c.lastSync && (
             <>
               <span className="text-slate-800">·</span>
-              <span className="text-[10px] text-slate-600">synced {c.lastSync}</span>
+              <span className="text-[10px] text-[var(--os-text-2)]">synced {c.lastSync}</span>
             </>
           )}
         </div>
-        <button className="flex items-center gap-1 text-[10px] font-bold text-slate-600 hover:text-slate-300 transition-colors">
+        <button className="flex items-center gap-1 text-[10px] font-bold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors">
           {c.status === 'active' ? <><Settings className="w-3 h-3" />Configure</> : <><ExternalLink className="w-3 h-3" />Setup</>}
         </button>
       </div>

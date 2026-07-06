@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }        from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 // Actors permitted to trigger KIMMP activations
 const APPROVED_ACTORS = new Set(['ADMIN', 'SCHEDULER', 'KIMMP', 'SYSTEM'])
@@ -21,6 +24,10 @@ export async function runRoleValidatorAgent(ctx: AgentContext): Promise<AegisAge
   const total   = activations.length
 
   const verdict = unknown.length > 0 ? 'CRITICAL' : denied > 5 ? 'WARN' : total > 0 ? 'PASS' : 'INFO'
+
+  const llmSummary = await callLLM(SYSTEM,
+    `Role validator (24h): ${total} activations total, ${unknown.length} from unapproved actors, ${denied} access denials. Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
 
   return {
     agentId:  'sentinel.role-validator',

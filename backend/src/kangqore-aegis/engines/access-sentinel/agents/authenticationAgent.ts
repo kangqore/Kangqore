@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }        from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 export async function runAuthenticationAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start  = Date.now()
@@ -23,6 +26,10 @@ export async function runAuthenticationAgent(ctx: AgentContext): Promise<AegisAg
   )
   const denialRate = activationCount > 0 ? (deniedTotal / (activationCount + deniedTotal)) : 0
   const verdict    = deniedTotal > 20 ? 'CRITICAL' : deniedTotal > 5 ? 'WARN' : 'PASS'
+
+  const llmSummary = await callLLM(SYSTEM,
+    `Authentication audit (6h): ${activationCount} activations, ${deniedTotal} access denials, denial rate ${(denialRate * 100).toFixed(1)}%. Denials by system: ${Object.entries(systemMap).map(([s, c]) => `${s}:${c}`).join(', ') || 'none'}. Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
 
   return {
     agentId:  'sentinel.authentication',

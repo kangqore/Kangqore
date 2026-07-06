@@ -1,5 +1,29 @@
 import { useState } from 'react'
-import { Brain, Link2, ChevronDown, ChevronUp, FileText, CircleDot } from 'lucide-react'
+import { Brain, Link2, ChevronDown, ChevronUp, FileText, CircleDot, Database } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@lib/api'
+
+interface LiveProject { id: string; name: string; health: string; status: string }
+interface AuditLogsResponse { logs: { id: string; action: string; createdAt: string }[]; pagination: { total: number } }
+
+function useLiveRCAData() {
+  const projects = useQuery<{ projects: LiveProject[] } | LiveProject[]>({
+    queryKey: ['projects'],
+    queryFn: () => api.get('/projects').then(r => r.data),
+    staleTime: 60_000,
+  })
+  const auditLogs = useQuery<AuditLogsResponse>({
+    queryKey: ['audit-logs'],
+    queryFn: () => api.get('/admin/audit-logs').then(r => r.data),
+    staleTime: 60_000,
+  })
+  return { projects, auditLogs }
+}
+
+function getProjects(data: { projects: LiveProject[] } | LiveProject[] | undefined): LiveProject[] {
+  if (!data) return []
+  return Array.isArray(data) ? data : (data.projects ?? [])
+}
 
 interface IssueRef {
   id: string
@@ -91,81 +115,80 @@ const CLUSTERS: Cluster[] = [
 const CLASS_COLOR: Record<Cluster['classification'], string> = {
   Systemic:   '#e2445c',
   Correlated: '#fdab3d',
-  Isolated:   '#2564ea',
+  Isolated:   '#579bfc',
 }
 
 function ClusterCard({ cluster }: { cluster: Cluster }) {
   const [open, setOpen] = useState(false)
   const classColor = CLASS_COLOR[cluster.classification]
 
+  const statusColor = cluster.status === 'resolved' ? '#00c875' : cluster.status === 'investigating' ? '#fdab3d' : 'var(--os-text-3)'
+  const statusBg    = cluster.status === 'resolved' ? '#00c87512' : cluster.status === 'investigating' ? '#fdab3d12' : 'var(--os-surface-0)'
+  const statusBorder = cluster.status === 'resolved' ? '#00c87530' : cluster.status === 'investigating' ? '#fdab3d30' : 'var(--os-border)'
+
   return (
-    <div className="rounded-xl overflow-hidden"
-      style={{ background: '#0d1117', border: `1px solid #2E2854`, borderLeft: `3px solid ${classColor}` }}>
+    <div className="os-card overflow-hidden" style={{ borderLeft: `4px solid ${classColor}` }}>
       <div className="p-4">
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center"
-            style={{ background: `${classColor}14`, border: `1px solid ${classColor}28` }}>
+            style={{ background: classColor + '14', border: `1px solid ${classColor}28` }}>
             <Link2 className="w-4 h-4" style={{ color: classColor }} />
           </div>
 
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold text-white leading-tight">{cluster.title}</p>
+                <p className="text-sm font-semibold leading-tight" style={{ color: 'var(--os-text-1)' }}>{cluster.title}</p>
                 <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-md"
-                    style={{ color: classColor, background: `${classColor}14`, border: `1px solid ${classColor}28` }}>
+                    style={{ color: classColor, background: classColor + '14', border: `1px solid ${classColor}28` }}>
                     {cluster.classification}
                   </span>
-                  <span className="text-[10px] text-slate-500">{cluster.id}</span>
-                  <span className="text-[10px] text-slate-600">·</span>
-                  <span className="text-[10px] text-slate-500">{cluster.issues.length} issue{cluster.issues.length !== 1 ? 's' : ''}</span>
-                  <span className="text-[10px] text-slate-600">·</span>
-                  <span className="text-[10px] text-slate-500">{cluster.entities.join(', ')}</span>
+                  <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>{cluster.id}</span>
+                  <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>·</span>
+                  <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>{cluster.issues.length} issue{cluster.issues.length !== 1 ? 's' : ''}</span>
+                  <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>·</span>
+                  <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>{cluster.entities.join(', ')}</span>
                 </div>
               </div>
               <span className="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg capitalize"
-                style={{
-                  color: cluster.status === 'resolved' ? '#00c875' : cluster.status === 'investigating' ? '#fdab3d' : '#64748b',
-                  background: cluster.status === 'resolved' ? 'rgba(0,200,117,0.1)' : cluster.status === 'investigating' ? 'rgba(253,171,61,0.1)' : 'rgba(100,116,139,0.1)',
-                  border: `1px solid ${cluster.status === 'resolved' ? 'rgba(0,200,117,0.3)' : cluster.status === 'investigating' ? 'rgba(253,171,61,0.3)' : 'rgba(100,116,139,0.2)'}`,
-                }}>
+                style={{ color: statusColor, background: statusBg, border: `1px solid ${statusBorder}` }}>
                 {cluster.status}
               </span>
             </div>
 
             {/* KIMMP root cause */}
             <div className="mt-2.5 px-3 py-2 rounded-lg"
-              style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.15)' }}>
+              style={{ background: '#7c3aed08', border: '1px solid #7c3aed18' }}>
               <div className="flex items-center gap-1.5 mb-1.5">
-                <Brain className="w-3 h-3 text-purple-400 flex-shrink-0" />
-                <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">
+                <Brain className="w-3 h-3 flex-shrink-0" style={{ color: '#7c3aed' }} />
+                <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: '#7c3aed' }}>
                   KIMMP Root Cause · {cluster.kimmpConfidence}% confidence
                 </span>
               </div>
-              <p className="text-[11px] text-slate-300 leading-relaxed">{cluster.rootCause}</p>
+              <p className="text-[11px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{cluster.rootCause}</p>
             </div>
 
             {/* Linked issues */}
             <div className="mt-2.5 flex flex-wrap gap-1.5">
               {cluster.issues.map(iss => (
                 <span key={iss.id} className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-lg"
-                  style={{ background: '#1a2035', border: '1px solid #2E2854', color: '#94a3b8' }}>
-                  <CircleDot className="w-2.5 h-2.5 text-slate-600" />
+                  style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
+                  <CircleDot className="w-2.5 h-2.5" style={{ color: 'var(--os-text-3)' }} />
                   {iss.id} · {iss.severity}
                 </span>
               ))}
             </div>
 
             {open && (
-              <div className="mt-3 pt-3 space-y-2.5" style={{ borderTop: '1px solid #1f2a4a' }}>
+              <div className="mt-3 pt-3 space-y-2.5 border-t border-[var(--os-border)]">
                 <div>
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Resolution Hypothesis</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">{cluster.hypothesis}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--os-text-3)' }}>Resolution Hypothesis</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{cluster.hypothesis}</p>
                 </div>
                 {cluster.pirReady && (
                   <button className="flex items-center gap-2 text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all hover:opacity-80"
-                    style={{ background: 'rgba(0,200,117,0.08)', border: '1px solid rgba(0,200,117,0.2)', color: '#00c875' }}>
+                    style={{ background: '#00c87510', border: '1px solid #00c87525', color: '#00c875' }}>
                     <FileText className="w-3.5 h-3.5" />
                     Open Post-Issue Review (PIR) Template
                   </button>
@@ -174,7 +197,8 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
             )}
 
             <button onClick={() => setOpen(o => !o)}
-              className="mt-2 flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-os-blue transition-colors">
+              className="mt-2 flex items-center gap-1 text-xs font-medium transition-colors hover:text-[#579bfc]"
+              style={{ color: 'var(--os-text-3)' }}>
               {open ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               {open ? 'Collapse' : 'Expand hypothesis'}
             </button>
@@ -189,33 +213,58 @@ export function RootCausePage() {
   const systemic   = CLUSTERS.filter(c => c.classification === 'Systemic').length
   const correlated = CLUSTERS.filter(c => c.classification === 'Correlated').length
 
+  const { projects: { data: projectData, isLoading: projectsLoading }, auditLogs: { data: auditData, isLoading: auditLoading } } = useLiveRCAData()
+  const projects = getProjects(projectData)
+  const atRiskProjects = projects.filter(p =>
+    p.health === 'at-risk' || p.health === 'AT_RISK' ||
+    p.health === 'critical' || p.health === 'CRITICAL' ||
+    p.health === 'behind' || p.health === 'BEHIND'
+  )
+  const auditTotal = auditData?.pagination?.total ?? 0
+  const isLoading = projectsLoading || auditLoading
+
   return (
     <div className="space-y-5">
-      {/* Header stats */}
+      {/* Live data context */}
+      <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
+        style={{ background: '#579bfc08', border: '1px solid #579bfc20' }}>
+        <Database className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#579bfc' }} />
+        <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>
+          {isLoading ? (
+            <span style={{ color: 'var(--os-text-3)' }}>Loading data signals…</span>
+          ) : (
+            <>
+              Analysis based on{' '}
+              {projects.length > 0 && <><span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{projects.length}</span> projects (<span style={{ color: '#fdab3d' }}>{atRiskProjects.length}</span> at risk) · </>}
+              {auditTotal > 0 && <><span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{auditTotal}</span> governance events</>}
+            </>
+          )}
+        </p>
+      </div>
+
+      {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
-        {([
+        {[
           { label: 'Systemic',   count: systemic,   color: '#e2445c', desc: 'Root cause spans multiple entities' },
           { label: 'Correlated', count: correlated,  color: '#fdab3d', desc: 'Issues share timing or entity proximity' },
-          { label: 'Isolated',   count: CLUSTERS.filter(c => c.classification === 'Isolated').length, color: '#2564ea', desc: 'Single-entity, contained root cause' },
-        ] as const).map(s => (
-          <div key={s.label} className="rounded-xl p-3.5"
-            style={{ background: '#0d1117', border: `1px solid ${s.color}20` }}>
+          { label: 'Isolated',   count: CLUSTERS.filter(c => c.classification === 'Isolated').length, color: '#579bfc', desc: 'Single-entity, contained root cause' },
+        ].map(s => (
+          <div key={s.label} className="os-card p-3.5">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-bold text-white tabular-nums">{s.count}</span>
+              <span className="text-2xl font-black tabular-nums" style={{ color: s.color }}>{s.count}</span>
               <span className="text-[11px] font-bold" style={{ color: s.color }}>{s.label}</span>
             </div>
-            <p className="text-[10px] text-slate-600 mt-0.5">{s.desc}</p>
+            <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-3)' }}>{s.desc}</p>
           </div>
         ))}
       </div>
 
-      {/* Signal pyramid note */}
-      <div className="rounded-xl p-4 flex items-start gap-3"
-        style={{ background: 'rgba(124,58,237,0.05)', border: '1px solid rgba(124,58,237,0.12)' }}>
-        <Brain className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
+      {/* KIMMP note */}
+      <div className="os-card p-4 flex items-start gap-3">
+        <Brain className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#7c3aed' }} />
         <div>
-          <p className="text-[11px] font-bold text-purple-300 mb-1">KIMMP Correlation Engine — Level 3 Signal Processing</p>
-          <p className="text-[11px] text-slate-400 leading-relaxed">
+          <p className="text-[11px] font-bold mb-1" style={{ color: '#7c3aed' }}>KIMMP Correlation Engine — Level 3 Signal Processing</p>
+          <p className="text-[11px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>
             KIMMP groups issues by entity overlap, timing proximity, and domain pattern. Clusters classified as Systemic require strategic intervention.
             Correlated clusters share a probable common trigger. Isolated issues are self-contained and addressable independently.
           </p>

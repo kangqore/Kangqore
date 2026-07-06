@@ -1,6 +1,9 @@
 import { AegisSovereignty } from '../../../aegisSovereignty.service'
 import { prisma }            from '../../../../lib/prisma'
+import { callLLM }           from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess intelligence sovereignty — ownership, custody, attribution, and approval chains for all knowledge assets. Flag any unapproved actors or breaches. Write 2 sentences.'
 
 export async function runClassificationAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start   = Date.now()

@@ -37,28 +37,28 @@ const REPORT_TYPES: {
     label: 'Daily Briefing',
     desc:  'Morning intelligence brief — signals, priorities, and actions for today.',
     icon:  ({ className }) => <Sun       className={className} />,
-    color: 'bg-amber-50 border-amber-200 hover:border-amber-400 text-amber-700',
+    color: '#f59e0b',
   },
   {
     type:  'WEEKLY_EXECUTIVE',
     label: 'Weekly Executive',
     desc:  'Cross-module summary for leadership — pipeline, risks, and opportunities.',
     icon:  ({ className }) => <Briefcase className={className} />,
-    color: 'bg-blue-50 border-blue-200 hover:border-blue-400 text-blue-700',
+    color: '#3b82f6',
   },
   {
     type:  'MONTHLY_BOARD',
     label: 'Monthly Board Report',
     desc:  'Board-level narrative — strategic position, competitive moves, key decisions.',
     icon:  ({ className }) => <Calendar  className={className} />,
-    color: 'bg-purple-50 border-purple-200 hover:border-purple-400 text-purple-700',
+    color: '#a855f7',
   },
   {
     type:  'SALES_PIPELINE',
     label: 'Sales Pipeline Report',
     desc:  'Pipeline health, deal velocity, cold leads, and revenue forecast.',
     icon:  ({ className }) => <TrendingUp className={className} />,
-    color: 'bg-green-50 border-green-200 hover:border-green-400 text-green-700',
+    color: '#10b981',
   },
 ]
 
@@ -86,63 +86,61 @@ function ReportCard({ report }: { report: Report }) {
   const Icon = cfg?.icon ?? (({ className }) => <FileText className={className} />)
 
   return (
-    <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl shadow-sm overflow-hidden">
-      <div className="p-4 space-y-3">
-        <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0">
-            <Icon className="w-4 h-4 text-slate-500" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-white">{report.title}</p>
-            <div className="flex items-center gap-2 mt-1">
-              <Badge variant="neutral" size="sm">{cfg?.label ?? report.type}</Badge>
-              <span className="text-[10px] text-slate-500 flex items-center gap-1">
-                <Clock className="w-2.5 h-2.5" />
-                {formatRelative(report.generatedAt)}
-              </span>
-              <span className="text-[10px] text-slate-300">{formatDateTime(report.generatedAt)}</span>
-            </div>
+    <div className="p-6 space-y-4 transition-transform hover:-translate-y-1" style={{ background: 'var(--os-card)', borderRadius: 'var(--os-radius-xl)', boxShadow: '0 32px 64px rgba(0,0,0,0.04)' }}>
+      <div className="flex items-start gap-4">
+        <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${cfg?.color}15` }}>
+          <Icon className="w-5 h-5" style={{ color: cfg?.color }} />
+        </div>
+        <div className="flex-1 min-w-0 mt-0.5">
+          <p className="text-base font-bold text-[var(--os-text-1)] leading-tight">{report.title}</p>
+          <div className="flex items-center gap-2 mt-2">
+            <Badge variant="neutral" size="sm">{cfg?.label ?? report.type}</Badge>
+            <span className="text-[11px] font-bold text-[var(--os-text-2)] flex items-center gap-1.5 ml-2">
+              <Clock className="w-3.5 h-3.5" />
+              {formatRelative(report.generatedAt)}
+            </span>
+            <span className="text-[11px] font-bold text-[var(--os-text-2)] border-l border-[var(--os-border)] pl-3 ml-1">{formatDateTime(report.generatedAt)}</span>
           </div>
         </div>
-
-        {/* Content preview */}
-        <div className={`ml-11 text-sm text-slate-500 leading-relaxed ${!expanded ? 'line-clamp-3' : ''}`}>
-          {report.content}
-        </div>
-
-        {/* Highlights */}
-        {report.highlights?.length > 0 && expanded && (
-          <div className="ml-11 space-y-1.5">
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Key Highlights</p>
-            {report.highlights.map((h, i) => (
-              <div key={i} className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0 mt-1.5" />
-                <p className="text-xs text-slate-300">{h}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Sections */}
-        {report.sections?.length > 0 && expanded && (
-          <div className="ml-11 space-y-4 pt-3 border-t border-white/10 border-t-white/20">
-            {report.sections.map((s, i) => (
-              <div key={i}>
-                <p className="text-xs font-bold text-slate-300 mb-1">{s.heading}</p>
-                <p className="text-xs text-slate-500 leading-relaxed">{s.body}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <button
-          onClick={() => setExpanded(e => !e)}
-          className="ml-11 flex items-center gap-1 text-xs text-blue-600 font-medium hover:text-blue-800 transition-colors"
-        >
-          {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-          {expanded ? 'Collapse' : 'Read full report'}
-        </button>
       </div>
+
+      {/* Content preview */}
+      <div className={`ml-14 text-sm font-semibold text-[var(--os-text-2)] leading-relaxed ${!expanded ? 'line-clamp-3' : ''}`}>
+        {report.content}
+      </div>
+
+      {/* Highlights */}
+      {report.highlights?.length > 0 && expanded && (
+        <div className="ml-14 space-y-2 mt-4">
+          <p className="text-[11px] font-bold text-[var(--os-text-2)] uppercase tracking-widest mb-3">Key Highlights</p>
+          {report.highlights.map((h, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <span className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0 mt-1.5 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+              <p className="text-sm font-medium text-[var(--os-text-1)]">{h}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Sections */}
+      {report.sections?.length > 0 && expanded && (
+        <div className="ml-14 space-y-5 pt-5 border-t border-[var(--os-border)] mt-5">
+          {report.sections.map((s, i) => (
+            <div key={i}>
+              <p className="text-sm font-bold text-[var(--os-text-1)] mb-2">{s.heading}</p>
+              <p className="text-sm font-medium text-[var(--os-text-2)] leading-relaxed">{s.body}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <button
+        onClick={() => setExpanded(e => !e)}
+        className="ml-14 flex items-center gap-1.5 text-xs text-blue-600 font-bold hover:text-blue-800 transition-colors mt-4"
+      >
+        {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        {expanded ? 'Collapse' : 'Read full report'}
+      </button>
     </div>
   )
 }
@@ -178,24 +176,24 @@ export function ReportsPage() {
   }
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8">
 
       {/* Header */}
-      <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg">
-          <FileText className="w-6 h-6 text-white" />
+      <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+          <FileText className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
-          <h2 className="text-xl font-bold text-white">Report Generator</h2>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <h2 className="text-base font-bold text-[var(--os-text-1)]">Report Generator</h2>
+          <p className="text-xs text-[var(--os-text-2)] mt-0.5">
             KIMMP synthesises live signals, pipeline data, and goals into structured executive reports.
           </p>
         </div>
         <button
           onClick={() => refetch()}
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
         </button>
       </div>
 
@@ -205,22 +203,23 @@ export function ReportsPage() {
           const Icon = rt.icon
           const isRunning = generating === rt.type
           return (
-            <div key={rt.type} className={`border rounded-xl p-4 transition-all ${rt.color}`}>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/60 flex items-center justify-center flex-shrink-0">
-                  <Icon className="w-4 h-4" />
+            <div key={rt.type} className={`p-6 transition-transform hover:-translate-y-1`} style={{ background: `${rt.color}0A`, borderRadius: 'var(--os-radius-xl)', boxShadow: `0 16px 32px ${rt.color}15` }}>
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${rt.color}20`, color: rt.color }}>
+                  <Icon className="w-5 h-5" />
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold">{rt.label}</p>
-                  <p className="text-[11px] opacity-80 mt-0.5 leading-snug">{rt.desc}</p>
+                <div className="flex-1 mt-0.5">
+                  <p className="text-base font-bold text-[var(--os-text-1)]">{rt.label}</p>
+                  <p className="text-sm font-semibold text-[var(--os-text-2)] mt-1.5 leading-snug">{rt.desc}</p>
                 </div>
               </div>
               <button
                 onClick={() => generate(rt.type)}
                 disabled={!!generating}
-                className="flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/70 text-xs font-bold hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/90 transition-colors disabled:opacity-50 border border-current/20"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[var(--os-card)] shadow-[0_8px_16px_rgba(0,0,0,0.04)] text-xs font-bold transition-all disabled:opacity-50"
+                style={{ color: rt.color }}
               >
-                {isRunning ? <Spinner size="sm" /> : <Play className="w-3 h-3" />}
+                {isRunning ? <Spinner size="sm" /> : <Play className="w-4 h-4" />}
                 {isRunning ? 'Generating…' : 'Generate Now'}
               </button>
             </div>
@@ -235,8 +234,8 @@ export function ReportsPage() {
       {/* Latest generated */}
       {latest && (
         <div>
-          <h3 className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-            <Play className="w-4 h-4 text-indigo-500" />
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-3 flex items-center gap-2">
+            <Play className="w-3.5 h-3.5 text-[#579bfc]" />
             Just Generated
           </h3>
           <ReportCard report={latest} />
@@ -245,16 +244,19 @@ export function ReportsPage() {
 
       {/* History */}
       <div>
-        <h3 className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-          <Clock className="w-4 h-4 text-slate-500" />
+        <h3 className="text-[11px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-3 flex items-center gap-2">
+          <Clock className="w-3.5 h-3.5" />
           Report History ({reports.length})
         </h3>
         {isLoading ? (
           <div className="flex justify-center py-8"><Spinner /></div>
         ) : reports.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl text-center">
-            <FileText className="w-8 h-8 text-slate-200 mb-3" />
-            <p className="text-sm text-slate-500">No reports generated yet.</p>
+          <div className="flex flex-col items-center justify-center py-24 bg-[var(--os-card)] shadow-[0_32px_64px_rgba(0,0,0,0.04)] text-center" style={{ borderRadius: 'var(--os-radius-xl)' }}>
+            <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mb-6">
+              <FileText className="w-8 h-8 text-[var(--os-text-2)]" />
+            </div>
+            <p className="text-lg font-bold text-[var(--os-text-1)]">No reports generated yet</p>
+            <p className="text-sm font-semibold text-[var(--os-text-2)] mt-2">Generate a new report to see it here.</p>
           </div>
         ) : (
           <div className="space-y-4">

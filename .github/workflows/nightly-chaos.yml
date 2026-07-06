@@ -1,0 +1,597 @@
+name: Nightly Quality Gates — Gates 1–6 Full Platform Validation
+
+on:
+  schedule:
+    # Every day at 02:00 UTC (no disruption to business hours)
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      backend_url:
+        description: 'Backend URL to test'
+        required: false
+        default: 'http://localhost:5050'
+
+env:
+  NODE_VERSION: '20'
+  POSTGRES_DB: kangqore_test
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+
+jobs:
+
+  # ── Gate 1: Smoke Tests ───────────────────────────────────────────────────
+  smoke:
+    name: Gate 1 — Functional Correctness
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: kangqore_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend deps
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate Prisma client
+        working-directory: backend
+        run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+
+      - name: Run DB migrations
+        working-directory: backend
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+
+      - name: Run smoke tests
+        working-directory: backend
+        run: npx ts-node src/scripts/smoke.ts
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'test-secret-32-chars-minimum-len' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY || '' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || '' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || '' }}
+
+  # ── Gate 2: Chaos Tests ───────────────────────────────────────────────────
+  chaos:
+    name: Gate 2 — Infrastructure Resilience
+    runs-on: ubuntu-latest
+    needs: smoke
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: kangqore_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend deps
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate Prisma client + migrate
+        working-directory: backend
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+
+      - name: Build backend
+        working-directory: backend
+        run: npx tsc --noEmit
+
+      - name: Start backend
+        working-directory: backend
+        run: |
+          npm run start &
+          echo $! > /tmp/backend.pid
+          sleep 8
+          curl --retry 5 --retry-delay 2 -sf http://localhost:3000/health || (cat /tmp/backend.log; exit 1)
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+          REDIS_URL: redis://localhost:6379
+          PORT: 3000
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'test-secret-32-chars-minimum-len' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY || '' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || '' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || '' }}
+          MOCK_REDIS: 'false'
+          LOG_FILE: /tmp/backend.log
+
+      - name: Generate chaos test JWT
+        id: jwt
+        run: |
+          TOKEN=$(node -e "
+            const jwt=require('jsonwebtoken');
+            const {v4}=require('uuid');
+            const t=jwt.sign({userId:'chaos-admin',role:'ADMIN',sessionId:v4(),sub:'chaos-admin'}, '${{ secrets.JWT_SECRET || 'test-secret-32-chars-minimum-len' }}', {expiresIn:'1h',issuer:'kangqore',audience:'kangqore-client'});
+            console.log(t)
+          ")
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+        working-directory: backend
+
+      - name: Run LLM chaos test
+        run: bash backend/src/scripts/chaos/chaos-llm.sh http://localhost:3000 "${{ steps.jwt.outputs.token }}"
+
+      - name: Run Redis chaos test
+        run: bash backend/src/scripts/chaos/chaos-redis.sh http://localhost:3000 "${{ steps.jwt.outputs.token }}" ""
+        # Redis container name is empty in CI — script handles gracefully
+
+      - name: Run Postgres chaos test
+        run: bash backend/src/scripts/chaos/chaos-postgres.sh http://localhost:3000 "${{ steps.jwt.outputs.token }}" ""
+        # PG container name is empty in CI — script handles gracefully
+
+      - name: Stop backend
+        if: always()
+        run: kill $(cat /tmp/backend.pid) 2>/dev/null || true
+
+  # ── Gate 3: AI Reliability Benchmarks ───────────────────────────────────
+  benchmarks:
+    name: Gate 3 — AI Reliability Benchmarks
+    runs-on: ubuntu-latest
+    needs: smoke
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: kangqore_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend deps
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate Prisma client + migrate
+        working-directory: backend
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+
+      - name: Start backend
+        working-directory: backend
+        run: |
+          npm run start &
+          echo $! > /tmp/backend.pid
+          sleep 8
+          curl --retry 5 --retry-delay 2 -sf http://localhost:3000/health || exit 1
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+          REDIS_URL: redis://localhost:6379
+          PORT: 3000
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'test-secret-32-chars-minimum-len' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY || '' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || '' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || '' }}
+
+      - name: Generate benchmark JWT
+        id: jwt
+        run: |
+          TOKEN=$(node -e "
+            const jwt=require('jsonwebtoken');
+            const {v4}=require('uuid');
+            const t=jwt.sign({userId:'benchmark-admin',role:'ADMIN',sessionId:v4(),sub:'benchmark-admin'}, '${{ secrets.JWT_SECRET || 'test-secret-32-chars-minimum-len' }}', {expiresIn:'1h',issuer:'kangqore',audience:'kangqore-client'});
+            console.log(t)
+          ")
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+        working-directory: backend
+
+      - name: Run AI benchmarks (Gate 3)
+        working-directory: backend
+        run: |
+          npx ts-node src/scripts/benchmarks/runBenchmarks.ts \
+            --url http://localhost:3000 \
+            --token "${{ steps.jwt.outputs.token }}" \
+            --trigger nightly
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+
+      - name: Stop backend
+        if: always()
+        run: kill $(cat /tmp/backend.pid) 2>/dev/null || true
+
+  # ── Gate 3.5: Runtime Intelligence ───────────────────────────────────────
+  runtime-intelligence:
+    name: Gate 3.5 — Runtime Intelligence
+    runs-on: ubuntu-latest
+    needs: [smoke, benchmarks]
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: kangqore_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend deps
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate Prisma client + migrate
+        working-directory: backend
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+
+      - name: Run Gate 3.5 — Runtime Intelligence
+        working-directory: backend
+        run: npx ts-node src/scripts/gate35/gate35Runner.ts --trigger nightly
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'test-secret-32-chars-minimum-len' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY || '' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || '' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || '' }}
+
+  # ── Gate 4: Autonomous Operations ────────────────────────────────────────
+  autonomous:
+    name: Gate 4 — Autonomous Operations
+    runs-on: ubuntu-latest
+    needs: smoke
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: kangqore_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend deps
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate Prisma client + migrate
+        working-directory: backend
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+
+      - name: Run Gate 4 — Autonomous Operations (direct DB)
+        working-directory: backend
+        run: npx ts-node src/scripts/gate4/gate4Runner.ts --trigger nightly
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'test-secret-32-chars-minimum-len' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY || '' }}
+
+  # ── Gate 5: Interaction Quality ──────────────────────────────────────────
+  interaction:
+    name: Gate 5 — Interaction Quality
+    runs-on: ubuntu-latest
+    needs: smoke
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: kangqore_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Install deps (backend + frontend)
+        run: |
+          cd backend && npm ci
+          cd ../frontend && npm ci
+
+      - name: Install Playwright browsers
+        working-directory: frontend
+        run: npx playwright install chromium --with-deps
+
+      - name: Generate Prisma client + migrate
+        working-directory: backend
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+
+      - name: Start backend
+        working-directory: backend
+        run: |
+          npm run start &
+          echo $! > /tmp/backend.pid
+          sleep 8
+          curl --retry 5 --retry-delay 2 -sf http://localhost:3000/health || exit 1
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+          REDIS_URL: redis://localhost:6379
+          PORT: 3000
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'test-secret-32-chars-minimum-len' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY || '' }}
+
+      - name: Start frontend
+        working-directory: frontend
+        run: |
+          npm run dev -- --port 3001 &
+          echo $! > /tmp/frontend.pid
+          sleep 15
+          curl --retry 10 --retry-delay 2 -sf http://localhost:3001 || exit 1
+        env:
+          VITE_API_URL: http://localhost:3000
+
+      - name: Run Gate 5 — Interaction Quality (Playwright)
+        working-directory: frontend
+        run: |
+          npx playwright test \
+            e2e/gate5-canvas.spec.ts \
+            e2e/gate5-perf.spec.ts \
+            e2e/gate5-nav.spec.ts \
+            --reporter=github
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3001
+
+      - name: Stop servers
+        if: always()
+        run: |
+          kill $(cat /tmp/backend.pid) 2>/dev/null || true
+          kill $(cat /tmp/frontend.pid) 2>/dev/null || true
+
+  # ── Gate 6: Enterprise Readiness ─────────────────────────────────────────
+  enterprise:
+    name: Gate 6 — Enterprise Readiness
+    runs-on: ubuntu-latest
+    needs: smoke
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: kangqore_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend deps
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate Prisma client + migrate
+        working-directory: backend
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+
+      - name: Run Gate 6 — Enterprise Readiness
+        working-directory: backend
+        run: npx ts-node src/scripts/gate6/gate6Runner.ts --trigger nightly
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kangqore_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'test-secret-32-chars-minimum-len' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY || '' }}
+
+  # ── Nightly Report ────────────────────────────────────────────────────────
+  report:
+    name: Quality Gate Report
+    runs-on: ubuntu-latest
+    needs: [smoke, chaos, benchmarks, runtime-intelligence, autonomous, interaction, enterprise]
+    if: always()
+
+    steps:
+      - name: Evaluate gates
+        run: |
+          SMOKE="${{ needs.smoke.result }}"
+          CHAOS="${{ needs.chaos.result }}"
+          BENCH="${{ needs.benchmarks.result }}"
+          RTIN="${{ needs.runtime-intelligence.result }}"
+          AUTO="${{ needs.autonomous.result }}"
+          INTR="${{ needs.interaction.result }}"
+          ENT="${{ needs.enterprise.result }}"
+          echo "Gate 1   — Functional Correctness:    $SMOKE"
+          echo "Gate 2   — Infrastructure Resilience: $CHAOS"
+          echo "Gate 3   — AI Reliability:            $BENCH"
+          echo "Gate 3.5 — Runtime Intelligence:      $RTIN"
+          echo "Gate 4   — Autonomous Operations:     $AUTO"
+          echo "Gate 5   — Interaction Quality:       $INTR"
+          echo "Gate 6   — Enterprise Readiness:      $ENT"
+          echo "Gate 7   — Release Readiness:         PENDING"
+          FAILED=0
+          [[ "$SMOKE" != "success" ]] && echo "  ❌ Gate 1   (Smoke) failed"              && FAILED=1
+          [[ "$CHAOS" != "success" ]] && echo "  ❌ Gate 2   (Chaos) failed"              && FAILED=1
+          [[ "$BENCH" != "success" ]] && echo "  ❌ Gate 3   (Benchmarks) failed"         && FAILED=1
+          [[ "$RTIN"  != "success" ]] && echo "  ⚠️  Gate 3.5 (Runtime Intel) warning"    # warning only
+          [[ "$AUTO"  != "success" ]] && echo "  ❌ Gate 4   (Autonomous Ops) failed"     && FAILED=1
+          [[ "$INTR"  != "success" ]] && echo "  ❌ Gate 5   (Interaction) failed"        && FAILED=1
+          [[ "$ENT"   != "success" ]] && echo "  ⚠️  Gate 6   (Enterprise) warning"       # warning only — PARTIAL is acceptable
+          if [[ $FAILED -eq 0 ]]; then
+            echo "🟢 All blocking gates passed — platform healthy"
+          else
+            echo "🔴 One or more quality gates failed"
+            exit 1
+          fi

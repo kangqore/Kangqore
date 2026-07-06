@@ -1,5 +1,28 @@
-import { Brain, Clock, User, ChevronDown, ChevronUp } from 'lucide-react'
+import { Brain, Clock, User, ChevronDown, ChevronUp, Database } from 'lucide-react'
 import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@lib/api'
+
+interface AuditLogEntry {
+  id: string
+  action: string
+  resource: string
+  createdAt: string
+  user?: { name: string; role: string }
+}
+
+interface AuditLogsResponse {
+  logs: AuditLogEntry[]
+  pagination: { total: number; totalPages: number }
+}
+
+function useLiveAuditCount() {
+  return useQuery<AuditLogsResponse>({
+    queryKey: ['audit-logs'],
+    queryFn: () => api.get('/admin/audit-logs').then(r => r.data),
+    staleTime: 60_000,
+  })
+}
 
 type ChangeType = 'IT' | 'Product' | 'Process' | 'Commercial' | 'Org'
 type ChangeStatus = 'pending' | 'approved' | 'in-progress' | 'completed' | 'rejected'
@@ -26,7 +49,7 @@ const CHANGES: Change[] = [
     type: 'Org',
     status: 'pending',
     riskScore: 71,
-    raisedBy: 'Mahesh Kumar',
+    raisedBy: 'C.O.D.E.',
     affectedEntities: ['Aarav Shah', 'Project Phoenix', 'Project Atlas'],
     summary: 'Temporary reallocation to resolve P1 delivery dependency on Synapse Health milestone. Atlas timeline will extend by approximately 2 weeks.',
     kimmpRiskReason: 'High risk: Project Atlas also has contractual commitments in this window. Reallocation resolves Phoenix P1 but creates Atlas amber risk. Recommend explicit stakeholder sign-off from Atlas client before proceeding.',
@@ -96,7 +119,7 @@ const CHANGES: Change[] = [
     type: 'Commercial',
     status: 'pending',
     riskScore: 68,
-    raisedBy: 'Mahesh Kumar',
+    raisedBy: 'C.O.D.E.',
     affectedEntities: ['Synapse Health', 'Project Phoenix', 'Synapse Retainer'],
     summary: 'Formal proposal to extend Sprint 14 milestone by 8 calendar days. Compensation: one additional sprint of free support. Requires client sign-off before breach triggers penalty clause in Synapse Retainer (CMT-009 review in 5 days).',
     kimmpRiskReason: 'High risk: client relationship and contract are both at stake. However, proactive proposal with compensation offer is significantly better than breach without notice. KIMMP recommends acting within 24 hours to preserve relationship capital.',
@@ -121,55 +144,40 @@ const CHANGES: Change[] = [
 ]
 
 const TYPE_COLOR: Record<ChangeType, string> = {
-  IT:         '#2564ea',
-  Product:    '#7f53f9',
+  IT:         '#579bfc',
+  Product:    '#7c3aed',
   Process:    '#fdab3d',
   Commercial: '#00c875',
   Org:        '#e2445c',
 }
 
 const STATUS_COLOR: Record<ChangeStatus, string> = {
-  pending:     '#64748b',
-  approved:    '#00c875',
-  'in-progress': '#2564ea',
-  completed:   '#00c875',
-  rejected:    '#e2445c',
+  pending:       'var(--os-text-2)',
+  approved:      '#00c875',
+  'in-progress': '#579bfc',
+  completed:     '#00c875',
+  rejected:      '#e2445c',
 }
 
-function RiskBadge({ score }: { score: number }) {
-  const color = score >= 60 ? '#e2445c' : score >= 30 ? '#fdab3d' : '#00c875'
-  const label = score >= 60 ? 'High' : score >= 30 ? 'Medium' : 'Low'
-  return (
-    <div className="flex items-center gap-1.5 flex-shrink-0">
-      <div className="w-14 h-1.5 rounded-full overflow-hidden" style={{ background: '#1f2a4a' }}>
-        <div className="h-full rounded-full" style={{ width: `${score}%`, background: color }} />
-      </div>
-      <span className="text-[10px] font-bold" style={{ color }}>{score} · {label}</span>
-    </div>
-  )
+function riskAccent(score: number) {
+  return score >= 60 ? '#e2445c' : score >= 30 ? '#fdab3d' : '#00c875'
 }
 
 function ChangeRow({ change }: { change: Change }) {
   const [open, setOpen] = useState(false)
   const typeColor   = TYPE_COLOR[change.type]
   const statusColor = STATUS_COLOR[change.status]
+  const rColor      = riskAccent(change.riskScore)
 
   return (
-    <div className="rounded-xl overflow-hidden transition-all"
-      style={{ background: '#0d1117', border: `1px solid #2E2854` }}>
+    <div className="os-card overflow-hidden" style={{ borderLeft: `4px solid ${rColor}` }}>
       <div className="p-4">
         <div className="flex items-start gap-3">
-          {/* Risk dial */}
+          {/* Risk score */}
           <div className="flex-shrink-0 w-10 h-10 rounded-lg flex flex-col items-center justify-center"
-            style={{
-              background: change.riskScore >= 60 ? 'rgba(226,68,92,0.1)' : change.riskScore >= 30 ? 'rgba(253,171,61,0.1)' : 'rgba(0,200,117,0.1)',
-              border: `1px solid ${change.riskScore >= 60 ? 'rgba(226,68,92,0.3)' : change.riskScore >= 30 ? 'rgba(253,171,61,0.3)' : 'rgba(0,200,117,0.3)'}`,
-            }}>
-            <span className="text-[11px] font-black tabular-nums"
-              style={{ color: change.riskScore >= 60 ? '#e2445c' : change.riskScore >= 30 ? '#fdab3d' : '#00c875' }}>
-              {change.riskScore}
-            </span>
-            <span className="text-[8px] text-slate-600">risk</span>
+            style={{ background: rColor + '18', border: `1px solid ${rColor}30` }}>
+            <span className="text-[11px] font-black tabular-nums" style={{ color: rColor }}>{change.riskScore}</span>
+            <span className="text-[8px]" style={{ color: 'var(--os-text-3)' }}>risk</span>
           </div>
 
           <div className="flex-1 min-w-0">
@@ -178,66 +186,68 @@ function ChangeRow({ change }: { change: Change }) {
                 <div className="flex items-center gap-2 flex-wrap mb-1">
                   {change.emergencyChange && (
                     <span className="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wide"
-                      style={{ background: 'rgba(226,68,92,0.12)', color: '#e2445c', border: '1px solid rgba(226,68,92,0.3)' }}>
+                      style={{ background: '#e2445c12', color: '#e2445c', border: '1px solid #e2445c30' }}>
                       Emergency
                     </span>
                   )}
                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded"
-                    style={{ color: typeColor, background: `${typeColor}14`, border: `1px solid ${typeColor}25` }}>
+                    style={{ color: typeColor, background: typeColor + '14', border: `1px solid ${typeColor}25` }}>
                     {change.type}
                   </span>
-                  <span className="text-[9px] text-slate-600">{change.id}</span>
+                  <span className="text-[9px]" style={{ color: 'var(--os-text-3)' }}>{change.id}</span>
                 </div>
-                <p className="text-[13px] font-semibold text-white leading-tight">{change.title}</p>
+                <p className="text-[13px] font-semibold leading-tight" style={{ color: 'var(--os-text-1)' }}>{change.title}</p>
               </div>
               <span className="text-[10px] font-bold px-2 py-1 rounded-lg capitalize flex-shrink-0"
-                style={{
-                  color: statusColor,
-                  background: `${statusColor}12`,
-                  border: `1px solid ${statusColor}30`,
-                }}>
+                style={{ color: statusColor, background: statusColor + '12', border: `1px solid ${statusColor}30` }}>
                 {change.status}
               </span>
             </div>
 
             <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-              <span className="flex items-center gap-1 text-[10px] text-slate-500">
+              <span className="flex items-center gap-1 text-[10px]" style={{ color: 'var(--os-text-3)' }}>
                 <User className="w-2.5 h-2.5" />
                 {change.raisedBy}
               </span>
-              <span className="flex items-center gap-1 text-[10px] text-slate-500">
+              <span className="flex items-center gap-1 text-[10px]" style={{ color: 'var(--os-text-3)' }}>
                 <Clock className="w-2.5 h-2.5" />
                 Review by {change.reviewDeadline}
               </span>
-              <span className="text-[10px] text-slate-600">Proposed: {change.proposedDate}</span>
+              <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>Proposed: {change.proposedDate}</span>
             </div>
 
-            <div className="mt-2">
-              <RiskBadge score={change.riskScore} />
+            {/* Risk bar */}
+            <div className="mt-2 flex items-center gap-2">
+              <div className="w-14 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
+                <div className="h-full rounded-full" style={{ width: `${change.riskScore}%`, background: rColor }} />
+              </div>
+              <span className="text-[10px] font-bold" style={{ color: rColor }}>
+                {change.riskScore} · {change.riskScore >= 60 ? 'High' : change.riskScore >= 30 ? 'Medium' : 'Low'}
+              </span>
             </div>
 
             {/* KIMMP risk reason */}
             <div className="mt-2.5 flex items-start gap-2 px-3 py-2 rounded-lg"
-              style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.15)' }}>
-              <Brain className="w-3 h-3 text-purple-400 flex-shrink-0 mt-0.5" />
+              style={{ background: '#7c3aed08', border: '1px solid #7c3aed20' }}>
+              <Brain className="w-3 h-3 flex-shrink-0 mt-0.5" style={{ color: '#7c3aed' }} />
               <div className="flex-1 min-w-0">
-                <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">KIMMP Risk Assessment</span>
-                <p className="text-[11px] text-slate-300 mt-0.5 leading-relaxed line-clamp-2">{change.kimmpRiskReason}</p>
+                <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: '#7c3aed' }}>KIMMP Risk Assessment</span>
+                <p className="text-[11px] mt-0.5 leading-relaxed line-clamp-2" style={{ color: 'var(--os-text-2)' }}>{change.kimmpRiskReason}</p>
               </div>
             </div>
 
             {open && (
-              <div className="mt-3 pt-3 space-y-2" style={{ borderTop: '1px solid #1f2a4a' }}>
+              <div className="mt-3 pt-3 space-y-2 border-t border-[var(--os-border)]">
                 <div>
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Change Summary</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">{change.summary}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--os-text-3)' }}>Change Summary</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{change.summary}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Affected Entities</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--os-text-3)' }}>Affected Entities</p>
                   <div className="flex flex-wrap gap-1.5">
                     {change.affectedEntities.map(e => (
                       <span key={e} className="text-[10px] font-semibold px-2 py-0.5 rounded-md"
-                        style={{ background: '#1a2035', border: '1px solid #2E2854', color: '#94a3b8' }}>
+                        style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
                         {e}
                       </span>
                     ))}
@@ -247,7 +257,8 @@ function ChangeRow({ change }: { change: Change }) {
             )}
 
             <button onClick={() => setOpen(o => !o)}
-              className="mt-2 flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-os-blue transition-colors">
+              className="mt-2 flex items-center gap-1 text-xs font-medium transition-colors hover:text-[#579bfc]"
+              style={{ color: 'var(--os-text-3)' }}>
               {open ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               {open ? 'Collapse' : 'Full detail + affected entities'}
             </button>
@@ -265,37 +276,57 @@ export function ChangeLogPage() {
   const avgRisk   = Math.round(CHANGES.reduce((s, c) => s + c.riskScore, 0) / CHANGES.length)
 
   const filtered = CHANGES.filter(c => filter === 'all' || c.type === filter)
+  const { data: auditData, isLoading: auditLoading } = useLiveAuditCount()
+  const auditTotal = auditData?.pagination?.total ?? 0
 
   return (
     <div className="space-y-5">
-      {/* Stats */}
+      {/* Live governance count */}
+      <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
+        style={{ background: '#579bfc08', border: '1px solid #579bfc20' }}>
+        <Database className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#579bfc' }} />
+        <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>
+          {auditLoading ? (
+            <span style={{ color: 'var(--os-text-3)' }}>Loading governance log…</span>
+          ) : auditTotal > 0 ? (
+            <><span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{auditTotal}</span> governance events recorded in the audit log (risks, decisions, change requests, deliverables)</>
+          ) : (
+            <span style={{ color: 'var(--os-text-3)' }}>No governance events in audit log yet</span>
+          )}
+        </p>
+      </div>
+
+      {/* Stats row */}
       <div className="grid grid-cols-3 gap-3">
-        {([
+        {[
           { label: 'Pending CAB Review', count: pending,   color: '#fdab3d' },
           { label: 'Emergency Changes',  count: emergency, color: '#e2445c' },
-          { label: 'Avg KIMMP Risk',     count: avgRisk,   color: '#7f53f9', suffix: '' },
-        ] as const).map(s => (
-          <div key={s.label} className="rounded-xl p-3.5"
-            style={{ background: '#0d1117', border: `1px solid ${s.color}20` }}>
-            <span className="text-2xl font-bold text-white tabular-nums">{s.count}</span>
-            <p className="text-[10px] mt-0.5" style={{ color: s.color }}>{s.label}</p>
+          { label: 'Avg KIMMP Risk',     count: avgRisk,   color: '#7c3aed' },
+        ].map(s => (
+          <div key={s.label} className="os-card p-3.5">
+            <span className="text-2xl font-black tabular-nums" style={{ color: s.color }}>{s.count}</span>
+            <p className="text-[10px] mt-0.5 font-semibold" style={{ color: s.color }}>{s.label}</p>
           </div>
         ))}
       </div>
 
       {/* Type filter */}
       <div className="flex gap-2 flex-wrap">
-        {(['all', ...Object.keys(TYPE_COLOR)] as const).map(t => (
-          <button key={t} onClick={() => setFilter(t as ChangeType | 'all')}
-            className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
-            style={{
-              background: filter === t ? (t === 'all' ? 'rgba(124,58,237,0.12)' : `${TYPE_COLOR[t as ChangeType]}14`) : '#0d1117',
-              border: `1px solid ${filter === t ? (t === 'all' ? 'rgba(124,58,237,0.35)' : `${TYPE_COLOR[t as ChangeType]}35`) : '#2E2854'}`,
-              color: filter === t ? (t === 'all' ? '#a78bfa' : TYPE_COLOR[t as ChangeType]) : '#64748b',
-            }}>
-            {t === 'all' ? 'All Types' : t}
-          </button>
-        ))}
+        {(['all', ...Object.keys(TYPE_COLOR)] as const).map(t => {
+          const isActive = filter === t
+          const color = t === 'all' ? '#7c3aed' : TYPE_COLOR[t as ChangeType]
+          return (
+            <button key={t} onClick={() => setFilter(t as ChangeType | 'all')}
+              className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
+              style={{
+                background: isActive ? color + '14' : 'var(--os-surface-0)',
+                border: `1px solid ${isActive ? color + '35' : 'var(--os-border)'}`,
+                color: isActive ? color : 'var(--os-text-2)',
+              }}>
+              {t === 'all' ? 'All Types' : t}
+            </button>
+          )
+        })}
       </div>
 
       {/* Change list */}

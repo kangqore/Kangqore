@@ -19,10 +19,10 @@ const DELIVERABLE_DESC: Record<string, string> = {
 
 type DStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETE'
 
-const STATUS_CONFIG: Record<DStatus, { icon: typeof CheckCircle; label: string; chip: string }> = {
-  COMPLETE:    { icon: CheckCircle, label: 'Complete',     chip: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300' },
-  IN_PROGRESS: { icon: Clock,       label: 'In Progress',  chip: 'bg-amber-500/10 border-amber-500/20 text-amber-300'       },
-  PENDING:     { icon: Circle,      label: 'Pending',      chip: 'bg-white/5 border-white/10 text-slate-400'                },
+const STATUS_CONFIG: Record<DStatus, { icon: typeof CheckCircle; label: string; color: string }> = {
+  COMPLETE:    { icon: CheckCircle, label: 'Complete',    color: '#00c875' },
+  IN_PROGRESS: { icon: Clock,       label: 'In Progress', color: '#fdab3d' },
+  PENDING:     { icon: Circle,      label: 'Pending',     color: 'var(--os-text-2)' },
 }
 
 const STATUS_CYCLE: DStatus[] = ['PENDING', 'IN_PROGRESS', 'COMPLETE']
@@ -60,11 +60,11 @@ export function DeliverablesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header + engagement selector */}
+      {/* Header */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h2 className="text-base font-semibold text-slate-100">Deliverables Tracker</h2>
-          <p className="text-sm text-slate-400 mt-0.5">
+          <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Deliverables Tracker</h2>
+          <p className="text-sm mt-0.5" style={{ color: 'var(--os-text-2)' }}>
             Track the 10 standard deliverables for each engagement.
           </p>
         </div>
@@ -72,83 +72,96 @@ export function DeliverablesPage() {
           <select
             value={selectedId}
             onChange={e => setSelectedId(e.target.value)}
-            className="appearance-none bg-white/5 border border-white/10 rounded-xl pl-4 pr-9 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-os-blue/50 min-w-[220px]"
+            className="appearance-none rounded-xl pl-4 pr-9 py-2.5 text-sm focus:outline-none min-w-[220px]"
+            style={{
+              background: 'var(--os-card)',
+              border: '1px solid var(--os-border)',
+              color: 'var(--os-text-1)',
+            }}
           >
-            <option value="" className="bg-slate-900">Select engagement…</option>
+            <option value="">Select engagement…</option>
             {engagements.map(e => (
-              <option key={e.id} value={e.id} className="bg-slate-900">
-                {e.clientName} ({e.industry})
-              </option>
+              <option key={e.id} value={e.id}>{e.clientName} ({e.industry})</option>
             ))}
           </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--os-text-3)' }} />
         </div>
       </div>
 
-      {/* Progress bar (when engagement selected) */}
+      {/* Progress summary (when engagement selected) */}
       {selected && (
-        <div className="bg-white/5 border border-white/10 rounded-xl px-5 py-4 flex items-center gap-6 flex-wrap">
+        <div className="os-card px-5 py-4 flex items-center gap-6 flex-wrap">
           <div className="flex-1 min-w-[200px]">
-            <div className="flex justify-between text-xs text-slate-400 mb-2">
-              <span className="font-medium text-slate-200">{selected.clientName}</span>
-              <span>{done}/10 complete</span>
+            <div className="flex justify-between text-xs mb-2">
+              <span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{selected.clientName}</span>
+              <span style={{ color: 'var(--os-text-3)' }}>{done}/10 complete</span>
             </div>
-            <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
               <div
-                className="h-full rounded-full bg-gradient-to-r from-os-blue to-os-cyan transition-all duration-500"
-                style={{ width: `${(done / 10) * 100}%` }}
+                className="h-full rounded-full transition-all duration-500"
+                style={{ width: `${(done / 10) * 100}%`, background: '#579bfc' }}
               />
             </div>
           </div>
-          <div className="flex items-center gap-4 text-xs">
-            <span className="text-emerald-300 font-semibold">{done} Complete</span>
-            <span className="text-amber-300 font-semibold">{inProg} In Progress</span>
-            <span className="text-slate-400">{10 - done - inProg} Pending</span>
+          <div className="flex items-center gap-4 text-xs flex-shrink-0">
+            <span className="font-semibold" style={{ color: '#00c875' }}>{done} Complete</span>
+            <span className="font-semibold" style={{ color: '#fdab3d' }}>{inProg} In Progress</span>
+            <span style={{ color: 'var(--os-text-3)' }}>{10 - done - inProg} Pending</span>
           </div>
         </div>
       )}
 
       {/* Deliverables list */}
       {!selected ? (
-        <div className="space-y-2">
-          {/* Static preview — no engagement selected */}
-          {Object.entries(DELIVERABLE_DESC).map(([ name, desc ], i) => (
-            <div key={name} className="flex items-center gap-4 px-5 py-4 rounded-xl border border-white/10 bg-white/[0.02]">
-              <span className="w-7 h-7 rounded-lg bg-os-blue/10 text-os-cyan text-xs font-bold flex items-center justify-center flex-shrink-0">
+        <div className="space-y-1">
+          {Object.entries(DELIVERABLE_DESC).map(([name, desc], i) => (
+            <div key={name} className="flex items-center gap-4 px-5 py-4 rounded-lg border-b border-[var(--os-border)]"
+              style={{ background: 'var(--os-card)' }}>
+              <span className="w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center flex-shrink-0"
+                style={{ background: '#579bfc18', color: '#579bfc' }}>
                 {i + 1}
               </span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-100">{name}</p>
-                <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">{desc}</p>
+                <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{name}</p>
+                <p className="text-xs mt-0.5 line-clamp-1" style={{ color: 'var(--os-text-3)' }}>{desc}</p>
               </div>
-              <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-semibold bg-white/5 border-white/10 text-slate-400 flex-shrink-0">
+              <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold flex-shrink-0"
+                style={{ background: '#64748b18', color: 'var(--os-text-2)', border: '1px solid #64748b30' }}>
                 <Circle className="w-3 h-3" />
                 Pending
               </span>
             </div>
           ))}
-          <p className="text-center text-xs text-slate-500 pt-2">Select an engagement above to start tracking progress</p>
+          <p className="text-center text-xs pt-4" style={{ color: 'var(--os-text-3)' }}>
+            Select an engagement above to start tracking progress
+          </p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-1">
           {deliverables.map((d: any) => {
             const S = STATUS_CONFIG[d.status as DStatus] ?? STATUS_CONFIG.PENDING
             const Icon = S.icon
             return (
               <div key={d.n} className={cn(
-                'flex items-center gap-4 px-5 py-4 rounded-xl border transition-colors',
-                d.status === 'COMPLETE' ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-white/10 bg-white/[0.02] hover:bg-white/5'
-              )}>
-                <span className="w-7 h-7 rounded-lg bg-os-blue/10 text-os-cyan text-xs font-bold flex items-center justify-center flex-shrink-0">
+                'flex items-center gap-4 px-5 py-4 rounded-lg border-b border-[var(--os-border)] last:border-0 transition-colors',
+                d.status === 'COMPLETE'
+                  ? 'opacity-75'
+                  : 'hover:bg-[var(--os-surface-0)]'
+              )} style={{ background: 'var(--os-card)' }}>
+                <span className="w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center flex-shrink-0"
+                  style={{ background: '#579bfc18', color: '#579bfc' }}>
                   {d.n}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className={cn('text-sm font-semibold', d.status === 'COMPLETE' ? 'text-slate-400 line-through' : 'text-slate-100')}>
+                  <p className={cn('text-sm font-semibold', d.status === 'COMPLETE' ? 'line-through' : '')}
+                    style={{ color: d.status === 'COMPLETE' ? 'var(--os-text-3)' : 'var(--os-text-1)' }}>
                     {d.name}
                   </p>
-                  <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{DELIVERABLE_DESC[d.name]}</p>
+                  <p className="text-xs mt-0.5 line-clamp-1" style={{ color: 'var(--os-text-3)' }}>
+                    {DELIVERABLE_DESC[d.name]}
+                  </p>
                   {d.completedAt && (
-                    <p className="text-[10px] text-emerald-400 mt-0.5">
+                    <p className="text-[10px] mt-0.5" style={{ color: '#00c875' }}>
                       Completed {new Date(d.completedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                     </p>
                   )}
@@ -156,10 +169,8 @@ export function DeliverablesPage() {
                 <button
                   onClick={() => cycleStatus(d)}
                   disabled={updateDl.isPending}
-                  className={cn(
-                    'flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-semibold flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity',
-                    S.chip
-                  )}
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+                  style={{ background: S.color + '18', color: S.color, border: `1px solid ${S.color}30` }}
                 >
                   {updateDl.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Icon className="w-3 h-3" />}
                   {S.label}
@@ -171,12 +182,12 @@ export function DeliverablesPage() {
       )}
 
       {/* Info footer */}
-      <div className="bg-white/5 border border-white/10 rounded-xl p-5">
+      <div className="os-card p-5">
         <div className="flex items-start gap-3">
-          <FileText className="w-4 h-4 text-os-cyan mt-0.5 flex-shrink-0" />
+          <FileText className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#579bfc' }} />
           <div>
-            <p className="text-sm font-semibold text-slate-200">All 10 deliverables are standard for every engagement</p>
-            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+            <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>All 10 deliverables are standard for every engagement</p>
+            <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--os-text-3)' }}>
               Click any deliverable status badge to cycle it: Pending → In Progress → Complete.
               Completions are timestamped and tracked per engagement.
             </p>

@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%" fx="50%" fy="30%">
+      <stop offset="0%" stop-color="#140f2d" />
+      <stop offset="60%" stop-color="#080714" />
+      <stop offset="100%" stop-color="#020205" />
+    </radialGradient>
+
+    <!-- Glass Gradients -->
+    <linearGradient id="glass-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+
+    <!-- Neon Gradients -->
+    <linearGradient id="purple-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+
+    <!-- Glow Filters -->
+    <filter id="neon-glow-purple" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="neon-glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Card Shadow -->
+    <filter id="thick-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="15" flood-color="#000000" flood-opacity="0.7" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-grad)" />
+
+  <!-- Tech Grid Grid -->
+  <g stroke="#ffffff" stroke-opacity="0.02" stroke-width="1">
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+    <line x1="100" y1="0" x2="100" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="300" y1="0" x2="300" y2="600" />
+    <line x1="400" y1="0" x2="400" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="600" y1="0" x2="600" y2="600" />
+    <line x1="700" y1="0" x2="700" y2="600" />
+  </g>
+
+  <!-- Ambient background glow -->
+  <circle cx="400" cy="300" r="280" fill="#a855f7" opacity="0.07" filter="url(#neon-glow-purple)" />
+  <circle cx="400" cy="220" r="180" fill="#00f0ff" opacity="0.06" filter="url(#neon-glow-cyan)" />
+
+  <!-- Vertical Connecting Data Cables (Behind Plates) -->
+  <g stroke="url(#cyan-glow)" stroke-linecap="round" opacity="0.3">
+    <!-- Center Line -->
+    <line x1="400" y1="180" x2="400" y2="480" stroke-width="3" filter="url(#neon-glow-cyan)" />
+    <!-- Outer Lines -->
+    <line x1="320" y1="240" x2="320" y2="420" stroke-width="1.5" />
+    <line x1="480" y1="200" x2="480" y2="380" stroke-width="1.5" />
+  </g>
+
+  <!-- Stacked Plates -->
+
+  <!-- PLATE 1: BOTTOM (IaaS Layer) -->
+  <g filter="url(#thick-shadow)" transform="translate(0, 150)">
+    <!-- Plate Top Face -->
+    <polygon points="400,240 600,320 400,400 200,320" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1.5" />
+    <!-- Front Bevel Thickness -->
+    <path d="M 200,320 L 200,332 A 4,4 0 0 0 202,335 L 398,415 A 4,4 0 0 0 402,415 L 598,335 A 4,4 0 0 0 600,332 L 600,320 L 598,321 L 400,400 L 200,320" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    
+    <!-- Circuits on Plate -->
+    <path d="M 300,320 L 350,345 L 400,320 L 450,345" fill="none" stroke="#a855f7" stroke-opacity="0.4" stroke-width="1.5" />
+    <circle cx="350" cy="345" r="3" fill="#a855f7" fill-opacity="0.6" />
+    <circle cx="400" cy="320" r="3" fill="#a855f7" fill-opacity="0.6" />
+  </g>
+
+  <!-- PLATE 2: MIDDLE (PaaS Layer) -->
+  <g filter="url(#thick-shadow)" transform="translate(0, 50)">
+    <!-- Plate Top Face -->
+    <polygon points="400,240 600,320 400,400 200,320" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.8" />
+    <!-- Front Bevel Thickness -->
+    <path d="M 200,320 L 200,332 A 4,4 0 0 0 202,335 L 398,415 A 4,4 0 0 0 402,415 L 598,335 A 4,4 0 0 0 600,332 L 600,320 L 598,321 L 400,400 L 200,320" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1" />
+
+    <!-- Database Cylinder floating in center of middle plate -->
+    <g transform="translate(370, 275)" opacity="0.8">
+      <ellipse cx="30" cy="20" rx="35" ry="15" fill="#00f0ff" fill-opacity="0.15" stroke="#00f0ff" stroke-width="1.5" filter="url(#neon-glow-cyan)" />
+      <path d="M -5,20 L -5,45 A 35,15 0 0 0 65,45 L 65,20" fill="none" stroke="#00f0ff" stroke-width="1.5" filter="url(#neon-glow-cyan)" />
+    </g>
+  </g>
+
+  <!-- PLATE 3: TOP (SaaS Layer) -->
+  <g filter="url(#thick-shadow)" transform="translate(0, -50)">
+    <!-- Plate Top Face -->
+    <polygon points="400,240 600,320 400,400 200,320" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.2" stroke-width="2" />
+    <!-- Front Bevel Thickness -->
+    <path d="M 200,320 L 200,332 A 4,4 0 0 0 202,335 L 398,415 A 4,4 0 0 0 402,415 L 598,335 A 4,4 0 0 0 600,332 L 600,320 L 598,321 L 400,400 L 200,320" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1" />
+
+    <!-- Glowing CPU Core / Network grid -->
+    <polygon points="400,280 460,310 400,340 340,310" fill="url(#cyan-glow)" fill-opacity="0.3" stroke="#00f0ff" stroke-width="2" filter="url(#neon-glow-cyan)" />
+    <!-- Micro-lines spreading out -->
+    <line x1="340" y1="310" x2="300" y2="290" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+    <line x1="460" y1="310" x2="500" y2="290" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+    <line x1="400" y1="280" x2="400" y2="260" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+    <line x1="400" y1="340" x2="400" y2="360" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+  </g>
+
+  <!-- Glowing Nodes/Particles Floating Upward -->
+  <g filter="url(#neon-glow-cyan)">
+    <circle cx="400" cy="240" r="5" fill="#00f0ff" />
+    <circle cx="370" cy="330" r="3.5" fill="#00f0ff" opacity="0.8" />
+    <circle cx="430" cy="180" r="4" fill="#00f0ff" opacity="0.9" />
+    <circle cx="460" cy="290" r="3" fill="#00f0ff" opacity="0.6" />
+    <circle cx="340" cy="220" r="2.5" fill="#00f0ff" opacity="0.7" />
+  </g>
+  
+  <g filter="url(#neon-glow-purple)">
+    <circle cx="400" cy="110" r="6" fill="#a855f7" />
+    <circle cx="440" cy="80" r="4.5" fill="#a855f7" opacity="0.8" />
+    <circle cx="350" cy="140" r="3" fill="#a855f7" opacity="0.5" />
+  </g>
+</svg>

@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Provide executive governance summaries — direct, no fluff, 2 sentences.'
 
 export async function runAlertingAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start = Date.now()
@@ -15,6 +18,8 @@ export async function runAlertingAgent(ctx: AgentContext): Promise<AegisAgentRes
   const verdict = (criticalRuns > 0 || policyViolations > 0) ? 'CRITICAL'
     : (warnRuns > 2  || accessDenied > 5)                    ? 'WARN'
     : 'PASS'
+
+  const llmSummary = await callLLM(SYSTEM, `AEGIS Alerting (last 1h): ${criticalRuns} CRITICAL agent findings, ${warnRuns} WARN findings, ${policyViolations} policy violations, ${accessDenied} access denied events.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   const rawFindings = [
     criticalRuns    > 0 && `${criticalRuns} CRITICAL agent findings in last 1h`,

@@ -10,18 +10,18 @@ const button = cva(
   {
     variants: {
       variant: {
-        primary:   'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white hover:opacity-90 focus-visible:ring-[#2564ea] shadow-sm',
-        secondary: 'bg-[#0F172A] text-slate-300 border border-[#2E2854] hover:bg-[#151C2F] hover:text-white focus-visible:ring-slate-400 shadow-sm',
-        ghost:     'text-slate-500 hover:text-white hover:bg-[#0F172A] focus-visible:ring-slate-400',
-        danger:    'bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-500 shadow-sm',
-        success:   'bg-[#00c875] text-white hover:bg-[#00c875]/90 focus-visible:ring-[#00c875] shadow-sm',
-        brand:     'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white hover:opacity-90 focus-visible:ring-[#2564ea] shadow-sm',
+        primary:   'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white hover:opacity-90 focus-visible:ring-[#2564ea] shadow-[0_8px_24px_rgba(37,100,234,0.35)]',
+        secondary: 'bg-[var(--os-card)] text-[var(--os-text-1)] border border-[var(--os-border)] hover:bg-[var(--os-surface-2)] shadow-[var(--os-shadow-md)]',
+        ghost:     'text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-2)] focus-visible:ring-[var(--os-border)]',
+        danger:    'bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-500 shadow-[0_8px_24px_rgba(239,68,68,0.35)]',
+        success:   'bg-[#00c875] text-white hover:bg-[#00c875]/90 focus-visible:ring-[#00c875] shadow-[0_8px_24px_rgba(0,200,117,0.35)]',
+        brand:     'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white hover:opacity-90 focus-visible:ring-[#2564ea] shadow-[0_8px_24px_rgba(37,100,234,0.35)]',
       },
       size: {
-        sm:   'h-8 px-3 text-xs rounded-lg',
-        md:   'h-9 px-4 text-sm rounded-xl',
-        lg:   'h-11 px-6 text-base rounded-xl',
-        icon: 'h-9 w-9 rounded-xl',
+        sm:   'h-8 px-4 text-xs rounded-full',
+        md:   'h-10 px-5 text-sm rounded-full',
+        lg:   'h-12 px-6 text-base rounded-full',
+        icon: 'h-10 w-10 rounded-full',
       },
     },
     defaultVariants: {

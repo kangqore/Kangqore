@@ -10,19 +10,27 @@ export interface SearchResult {
 export class WebSearchService {
   static async search(query: string, count = 5): Promise<SearchResult[]> {
     // Waterfall: try each configured provider in order, fall through on failure
+    const keysConfigured: string[] = []
     if (process.env.BRAVE_SEARCH_API_KEY) {
+      keysConfigured.push('Brave')
       const r = await this.brave(query, count).catch((e) => { logger.debug(`[KIMMP:SCOUT] Brave failed: ${e.message}`); return null })
       if (r) return r
     }
     if (process.env.SERPER_API_KEY) {
+      keysConfigured.push('Serper')
       const r = await this.serper(query, count).catch((e) => { logger.debug(`[KIMMP:SCOUT] Serper failed: ${e.message}`); return null })
       if (r) return r
     }
     if (process.env.TAVILY_API_KEY) {
+      keysConfigured.push('Tavily')
       const r = await this.tavily(query, count).catch((e) => { logger.debug(`[KIMMP:SCOUT] Tavily failed: ${e.message}`); return null })
       if (r) return r
     }
-    logger.warn('[KIMMP:SCOUT] No search API key configured — set BRAVE_SEARCH_API_KEY, SERPER_API_KEY, or TAVILY_API_KEY')
+    if (keysConfigured.length === 0) {
+      logger.warn('[KIMMP:SCOUT] No search API key configured — set BRAVE_SEARCH_API_KEY, SERPER_API_KEY, or TAVILY_API_KEY')
+    } else {
+      logger.debug(`[KIMMP:SCOUT] All providers failed (${keysConfigured.join(', ')}) — check API limits`)
+    }
     return []
   }
 

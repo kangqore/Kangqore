@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%" fx="50%" fy="30%">
+      <stop offset="0%" stop-color="#120e2a" />
+      <stop offset="60%" stop-color="#070612" />
+      <stop offset="100%" stop-color="#020205" />
+    </radialGradient>
+
+    <!-- Glass Gradients -->
+    <linearGradient id="glass-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+
+    <!-- Neon Gradients -->
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="indigo-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+
+    <!-- Glow Filters -->
+    <filter id="neon-glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="neon-glow-indigo" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Card Shadow -->
+    <filter id="thick-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="15" flood-color="#000000" flood-opacity="0.75" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-grad)" />
+
+  <!-- Tech Grid Grid -->
+  <g stroke="#ffffff" stroke-opacity="0.015" stroke-width="1">
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+    <line x1="100" y1="0" x2="100" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="300" y1="0" x2="300" y2="600" />
+    <line x1="400" y1="0" x2="400" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="600" y1="0" x2="600" y2="600" />
+    <line x1="700" y1="0" x2="700" y2="600" />
+  </g>
+
+  <!-- Ambient background glow -->
+  <circle cx="400" cy="300" r="240" fill="#4f46e5" opacity="0.06" filter="url(#neon-glow-indigo)" />
+  <circle cx="400" cy="300" r="150" fill="#00f0ff" opacity="0.05" filter="url(#neon-glow-cyan)" />
+
+  <!-- Neon Pipelines Connecting Cards to Core -->
+  <g fill="none" stroke-linecap="round">
+    <!-- Top-Left connection -->
+    <path d="M 270,220 L 350,270" stroke="url(#cyan-glow)" stroke-width="3" filter="url(#neon-glow-cyan)" opacity="0.75" />
+    <circle cx="310" cy="245" r="2.5" fill="#ffffff" />
+    
+    <!-- Top-Right connection -->
+    <path d="M 530,220 L 450,270" stroke="url(#indigo-glow)" stroke-width="3" filter="url(#neon-glow-indigo)" opacity="0.7" />
+    <circle cx="490" cy="245" r="2.5" fill="#ffffff" />
+    
+    <!-- Bottom-Left connection -->
+    <path d="M 270,380 L 350,330" stroke="url(#indigo-glow)" stroke-width="3" filter="url(#neon-glow-indigo)" opacity="0.7" />
+    <circle cx="310" cy="355" r="2.5" fill="#ffffff" />
+    
+    <!-- Bottom-Right connection -->
+    <path d="M 530,380 L 450,330" stroke="url(#cyan-glow)" stroke-width="3" filter="url(#neon-glow-cyan)" opacity="0.75" />
+    <circle cx="490" cy="355" r="2.5" fill="#ffffff" />
+  </g>
+
+  <!-- CENTRAL CORE GATEWAY (Thick floating block) -->
+  <g filter="url(#thick-shadow)" transform="translate(0, 0)">
+    <!-- Core plate -->
+    <polygon points="400,260 460,295 400,330 340,295" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.2" stroke-width="2" />
+    
+    <!-- Core glowing center -->
+    <polygon points="400,275 435,295 400,315 365,295" fill="url(#cyan-glow)" fill-opacity="0.3" stroke="#00f0ff" stroke-width="1.5" filter="url(#neon-glow-cyan)" />
+    
+    <!-- Inner central beacon -->
+    <circle cx="400" cy="295" r="6" fill="#ffffff" filter="url(#neon-glow-cyan)" />
+    
+    <!-- Concentric radar waves -->
+    <ellipse cx="400" cy="295" rx="100" ry="50" fill="none" stroke="#4f46e5" stroke-opacity="0.25" stroke-width="1" />
+  </g>
+
+  <!-- 4 ENDPOINT NODES (Thick Glass Tiles) -->
+
+  <!-- Card 1: Top-Left (Request endpoint) -->
+  <g filter="url(#thick-shadow)" transform="translate(190, 160)">
+    <polygon points="40,20 80,40 40,60 0,40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5" />
+    <path d="M 0,40 L 0,46 A 2,2 0 0 0 1,48 L 39,68 A 2,2 0 0 0 41,68 L 79,48 A 2,2 0 0 0 80,46 L 80,40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    <!-- API Label -->
+    <text x="40" y="44" fill="#00f0ff" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle" letter-spacing="1">GET</text>
+  </g>
+
+  <!-- Card 2: Top-Right (Process node) -->
+  <g filter="url(#thick-shadow)" transform="translate(530, 160)">
+    <polygon points="40,20 80,40 40,60 0,40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5" />
+    <path d="M 0,40 L 0,46 A 2,2 0 0 0 1,48 L 39,68 A 2,2 0 0 0 41,68 L 79,48 A 2,2 0 0 0 80,46 L 80,40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    <!-- Event label -->
+    <text x="40" y="44" fill="#818cf8" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle" letter-spacing="1">PUB</text>
+  </g>
+
+  <!-- Card 3: Bottom-Left (Database sync) -->
+  <g filter="url(#thick-shadow)" transform="translate(190, 320)">
+    <polygon points="40,20 80,40 40,60 0,40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5" />
+    <path d="M 0,40 L 0,46 A 2,2 0 0 0 1,48 L 39,68 A 2,2 0 0 0 41,68 L 79,48 A 2,2 0 0 0 80,46 L 80,40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    <text x="40" y="44" fill="#818cf8" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle" letter-spacing="1">SYNC</text>
+  </g>
+
+  <!-- Card 4: Bottom-Right (Response node) -->
+  <g filter="url(#thick-shadow)" transform="translate(530, 320)">
+    <polygon points="40,20 80,40 40,60 0,40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5" />
+    <path d="M 0,40 L 0,46 A 2,2 0 0 0 1,48 L 39,68 A 2,2 0 0 0 41,68 L 79,48 A 2,2 0 0 0 80,46 L 80,40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    <text x="40" y="44" fill="#00f0ff" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle" letter-spacing="1">POST</text>
+  </g>
+
+  <!-- Floating Data Particles -->
+  <circle cx="280" cy="120" r="1.5" fill="#00f0ff" opacity="0.6" />
+  <circle cx="530" cy="110" r="2.5" fill="#818cf8" opacity="0.7" />
+  <circle cx="340" cy="420" r="2" fill="#00f0ff" opacity="0.5" />
+  <circle cx="480" cy="430" r="1.5" fill="#818cf8" opacity="0.5" />
+</svg>

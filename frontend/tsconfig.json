@@ -16,6 +16,7 @@
     "paths": {
       "@features/*":      ["./src/os/features/*"],
       "@components/*":    ["./src/os/components/*"],
+      "@hooks/*":         ["./src/os/hooks/*"],
       "@store/*":         ["./src/os/store/*"],
       "@lib/*":           ["./src/os/lib/*"],
       "@design-system/*": ["./src/os/design-system/*"],

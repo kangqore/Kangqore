@@ -1,15 +1,18 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Zap, Briefcase, TrendingUp,
-  Target, LayoutDashboard, Activity, Users, DollarSign,
-  Brain, AlertTriangle, CheckCircle2, Clock,
-  ArrowRight, RefreshCw, BarChart3, Shield, Crosshair,
-  Calendar,
+  Zap, Briefcase, TrendingUp, Target, LayoutDashboard, Activity,
+  Users, DollarSign, Brain, AlertTriangle, CheckCircle2, Clock,
+  ArrowRight, RefreshCw, BarChart3, Shield, Crosshair, Calendar,
 } from 'lucide-react'
 import { api } from '@lib/api'
-import { staggerContainer, staggerChild, spring, tween, fadeScale, float } from '@os/motion'
+import {
+  AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer,
+  PieChart, Pie, Cell
+} from 'recharts'
+import { staggerContainer, staggerChild, spring, fadeScale, float } from '@os/motion'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -38,184 +41,204 @@ function fmt(n: number) {
   return (n / 1e7).toFixed(2)
 }
 
-// ─── Skeleton ─────────────────────────────────────────────────────────────────
-
-function Skeleton({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse rounded-lg bg-os-cyan/20 ${className}`} />
-}
+// ─── Skeletons ────────────────────────────────────────────────────────────────
 
 function SkeletonLight({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 ${className}`} />
+  return <div className={`animate-pulse rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] ${className}`} />
 }
 
-// ─── Hero ─────────────────────────────────────────────────────────────────────
+// ─── Color Constants ──────────────────────────────────────────────────────────
 
-function Hero({
-  kpis, analytics, twinData, kpisLoading, navigate,
+const STAGE_ORDER = ['NEW', 'CONTACTED', 'QUALIFIED', 'PROPOSAL', 'NEGOTIATION', 'WON', 'LOST']
+
+const STAGE_CARD_COLOR: Record<string, string> = {
+  NEW: '#579bfc', CONTACTED: '#00c875', QUALIFIED: '#fdab3d',
+  PROPOSAL: '#7c3aed', NEGOTIATION: '#323338', WON: '#00c875', LOST: '#e2445c',
+}
+
+const PIPELINE_CFG: Record<string, { bg: string }> = {
+  NEW:         { bg: '#579bfc' },
+  CONTACTED:   { bg: '#00c875' },
+  QUALIFIED:   { bg: '#fdab3d' },
+  PROPOSAL:    { bg: '#7c3aed' },
+  NEGOTIATION: { bg: '#323338' },
+  WON:         { bg: '#10b981' },
+  LOST:        { bg: '#e2445c' },
+}
+
+const VERDICT_CFG: Record<string, { color: string; label: string }> = {
+  PASS:     { color: '#00c875', label: 'All Clear'  },
+  WARN:     { color: '#fdab3d', label: 'Warnings'   },
+  CRITICAL: { color: '#e2445c', label: 'Critical'   },
+}
+
+// ─── Shared card style ────────────────────────────────────────────────────────
+
+const card: React.CSSProperties = {
+  background: 'var(--os-card)',
+  border: '1px solid var(--os-border)',
+  borderRadius: 12,
+  boxShadow: 'var(--os-shadow-card)',
+}
+
+// ─── Page Header ──────────────────────────────────────────────────────────────
+
+function PageHeader({
+  twinData, navigate,
 }: {
-  kpis: any; analytics: any; twinData: any; kpisLoading: boolean; navigate: (p: string) => void
+  twinData: any; navigate: (p: string) => void
 }) {
-  const score = twinData?.overallScore ?? 0
+  const score       = twinData?.overallScore ?? 0
   const healthLabel = score >= 70 ? 'Healthy' : score >= 40 ? 'Moderate' : score > 0 ? 'At Risk' : null
   const healthColor = score >= 70 ? '#00c875' : score >= 40 ? '#fdab3d' : '#e2445c'
 
-  const mrrCr   = kpis?.revenueMTD    > 0 ? `₹${fmt(kpis.revenueMTD)} Cr`             : null
-  const clients  = analytics?.clients  > 0 ? analytics.clients                          : null
-  const pipeline = kpis?.pipelineValue > 0 ? `₹${(kpis.pipelineValue / 1e7).toFixed(1)} Cr` : null
-
   return (
     <div
-      className="rounded-2xl mb-6 px-8 py-7 relative overflow-hidden"
-      style={{
-        background: 'linear-gradient(135deg, rgba(13,17,23,0.4) 0%, rgba(10,15,30,0.5) 50%, rgba(6,11,24,0.6) 100%)',
-        backdropFilter: 'blur(24px)',
-        WebkitBackdropFilter: 'blur(24px) saturate(200%)',
-        border: '1px solid rgba(255,255,255,0.1)',
-        borderTop: '1px solid rgba(255,255,255,0.2)',
-        boxShadow: '0 4px 40px rgba(37,100,234,0.15)',
-      }}
+      className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7 px-1"
     >
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: 'linear-gradient(#2564ea 1px, transparent 1px), linear-gradient(90deg, #2564ea 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
-      <div
-        className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl"
-        style={{ background: '#2bbdff', transform: 'translate(30%, -30%)' }}
-      />
-
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-6">
-        <div className="space-y-3">
-          <div>
-            <p className="text-slate-500 text-xs font-medium tracking-widest uppercase mb-1">{formatDate()}</p>
-            <h1 className="text-3xl font-bold tracking-tight text-os-cyan" style={{ fontFamily: 'var(--font-display, inherit)' }}>
-              {getGreeting()}, Mahesh
-            </h1>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {healthLabel && (
-              <span
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border"
-                style={{ color: healthColor, borderColor: `${healthColor}40`, background: `${healthColor}12` }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ background: healthColor }} />
-                WAANDA {healthLabel} · {score}/100
-              </span>
-            )}
-            {kpisLoading ? (
-              <Skeleton className="h-6 w-24" />
-            ) : mrrCr ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-[#2bbdff] border border-[#2bbdff]/20 bg-[#2bbdff]/8">
-                <TrendingUp className="w-3 h-3" /> MRR {mrrCr}
-              </span>
-            ) : null}
-            {clients ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-300 border border-slate-700 bg-os-cyan/10">
-                <Briefcase className="w-3 h-3" /> {clients} Clients
-              </span>
-            ) : null}
-            {pipeline ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-300 border border-slate-700 bg-os-cyan/10">
-                <Zap className="w-3 h-3" /> Pipeline {pipeline}
-              </span>
-            ) : null}
-          </div>
+      {/* Avatar + greeting */}
+      <div className="flex items-center gap-4">
+        <div className="relative flex-shrink-0">
+          <img
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80"
+            alt="C.O.D.E."
+            className="w-12 h-12 rounded-full object-cover"
+            style={{ border: '2px solid var(--os-border)', boxShadow: '0 2px 8px rgba(0,0,0,0.10)' }}
+          />
+          <span className="absolute bottom-0 right-0 w-3 h-3 bg-[#00c875] rounded-full border-2 border-white dark:border-black" />
         </div>
-
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <button
-            onClick={() => navigate('/kangqore-view/admin/leads')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-os-cyan transition-all duration-150 hover:opacity-90 hover:scale-[1.02] active:scale-95"
-            style={{ background: '#2564ea', boxShadow: '0 2px 12px rgba(37,100,234,0.4)' }}
-          >
-            <Zap className="w-3.5 h-3.5" /> New Lead
-          </button>
-          <button
-            onClick={() => navigate('/kangqore-view/admin/projects')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-slate-200 border border-slate-700 bg-os-cyan/10 hover:bg-os-cyan/20 hover:border-slate-600 transition-all duration-150 active:scale-95"
-          >
-            <LayoutDashboard className="w-3.5 h-3.5" /> New Project
-          </button>
-          <button
-            onClick={() => navigate('/kangqore-view/admin/WAANDA')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-150 hover:opacity-90 hover:scale-[1.02] active:scale-95"
-            style={{ color: '#2bbdff', border: '1px solid rgba(43,189,255,0.3)', background: 'rgba(43,189,255,0.08)', boxShadow: '0 2px 12px rgba(43,189,255,0.15)' }}
-          >
-            <Brain className="w-3.5 h-3.5" /> Waanda.AI
-          </button>
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-widest mb-0.5" style={{ color: 'var(--os-text-2)' }}>
+            {formatDate()}
+          </p>
+          <h1 className="text-[22px] font-black tracking-tight leading-none mb-1" style={{ color: 'var(--os-text-1)' }}>
+            {getGreeting()}, C.O.D.E.
+          </h1>
+          {healthLabel && (
+            <span
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold"
+              style={{ color: healthColor, background: `${healthColor}18`, border: `1px solid ${healthColor}28` }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: healthColor }} />
+              WAANDA {healthLabel} · {score}/100
+            </span>
+          )}
         </div>
+      </div>
+
+      {/* Action buttons */}
+      <div className="flex flex-wrap items-center gap-2.5">
+        <button
+          onClick={() => navigate('/kangqore-view/admin/leads')}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold text-white transition-all hover:-translate-y-1"
+          style={{ background: 'linear-gradient(135deg, #579bfc 0%, #2564ea 100%)', boxShadow: '0 8px 24px rgba(37,100,234,0.35)' }}
+        >
+          <Zap className="w-3.5 h-3.5" /> New Lead
+        </button>
+        <button
+          onClick={() => navigate('/kangqore-view/admin/projects')}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-all hover:-translate-y-1"
+          style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)', boxShadow: 'var(--os-shadow-md)' }}
+        >
+          <Briefcase className="w-3.5 h-3.5" style={{ color: 'var(--os-text-2)' }} /> New Project
+        </button>
+        <button
+          onClick={() => navigate('/kangqore-view/admin/WAANDA')}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-all hover:-translate-y-1"
+          style={{ background: '#00c87514', border: '1px solid #00c87528', color: '#00c875', boxShadow: '0 8px 24px rgba(0,200,117,0.15)' }}
+        >
+          <Brain className="w-3.5 h-3.5" /> WAANDA
+        </button>
       </div>
     </div>
   )
 }
 
-// ─── KPI strip ────────────────────────────────────────────────────────────────
+// ─── KPI Bar ──────────────────────────────────────────────────────────────────
 
 const KPI_DEFS = [
-  { key: 'MRR',      icon: TrendingUp,   color: '#2564ea', getValue: (k: any)        => k == null ? null : k.revenueMTD       > 0 ? `₹${fmt(k.revenueMTD)} Cr`              : '₹0', sub: 'Month to date' },
-  { key: 'ARR',      icon: BarChart3,    color: '#7c3aed', getValue: (k: any)        => k == null ? null : k.arr              > 0 ? `₹${fmt(k.arr)} Cr`                      : '₹0', sub: 'Annualised'    },
-  { key: 'Revenue',  icon: DollarSign,   color: '#059669', getValue: (k: any)        => k == null ? null : k.revenueLastMonth > 0 ? `₹${fmt(k.revenueLastMonth)} Cr`         : '₹0', sub: 'Last month'    },
-  { key: 'Pipeline', icon: Zap,          color: '#d97706', getValue: (k: any)        => k == null ? null : k.pipelineValue    > 0 ? `₹${(k.pipelineValue/1e7).toFixed(1)} Cr` : '₹0', sub: 'Active deals' },
-  { key: 'Clients',  icon: Briefcase,    color: '#0ea5e9', getValue: (_: any, a: any) => a == null ? null : a.clients         > 0 ? String(a.clients)                         : '0',  sub: 'Active'        },
-  { key: 'Team',     icon: Users,        color: '#6366f1', getValue: (k: any, a: any) => {
-    if (k == null && a == null) return null
-    const v = a?.total_users ?? k?.totalTeam ?? 0
-    return v > 0 ? String(v) : '0'
-  }, sub: 'Members' },
+  { key: 'MRR',      icon: TrendingUp,  color: '#579bfc', sub: 'Month to date',
+    getValue: (k: any, _a: any) => k == null ? null : k.revenueMTD       > 0 ? `₹${fmt(k.revenueMTD)} Cr`              : '₹0' },
+  { key: 'ARR',      icon: BarChart3,   color: '#7c3aed', sub: 'Annualised',
+    getValue: (k: any, _a: any) => k == null ? null : k.arr              > 0 ? `₹${fmt(k.arr)} Cr`                      : '₹0' },
+  { key: 'Revenue',  icon: DollarSign,  color: '#00c875', sub: 'Last month',
+    getValue: (k: any, _a: any) => k == null ? null : k.revenueLastMonth > 0 ? `₹${fmt(k.revenueLastMonth)} Cr`         : '₹0' },
+  { key: 'Pipeline', icon: Zap,         color: '#fdab3d', sub: 'Active deals',
+    getValue: (k: any, _a: any) => k == null ? null : k.pipelineValue    > 0 ? `₹${(k.pipelineValue/1e7).toFixed(1)} Cr` : '₹0' },
+  { key: 'Clients',  icon: Briefcase,   color: '#0ea5e9', sub: 'Active',
+    getValue: (_k: any, a: any) => a == null ? null : a.clients          > 0 ? String(a.clients)                         : '0'  },
+  { key: 'Team',     icon: Users,       color: '#6366f1', sub: 'Members',
+    getValue: (k: any, a: any) => { if (k == null && a == null) return null; const v = a?.total_users ?? k?.totalTeam ?? 0; return v > 0 ? String(v) : '0' } },
 ]
 
-function KpiStrip({ kpis, analytics, loading }: { kpis: any; analytics: any; loading: boolean }) {
+function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loading: boolean }) {
   return (
     <motion.div
-      className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6"
-      variants={staggerContainer(0.05)}
+      className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-7"
+      variants={staggerContainer(0.04)}
       initial="hidden"
       animate="visible"
     >
       {KPI_DEFS.map(def => {
         const Icon = def.icon
         const val = loading ? null : def.getValue(kpis, analytics)
+        const isEmpty = val === '₹0' || val === '0'
+        const isPositive = !isEmpty && val != null
         return (
           <motion.div
             key={def.key}
             variants={staggerChild}
-            whileHover={{ y: -3, transition: spring.smooth }}
-            className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-xl border border-white/10 border-t-white/20 px-4 py-4 hover:shadow-lg hover:shadow-[#4ab6d4]/10 cursor-pointer group"
+            whileHover={{ y: -6, scale: 1.02, transition: spring.smooth }}
+            className="cursor-pointer relative overflow-hidden flex flex-col p-5 transition-all duration-300"
+            style={{ 
+              background: def.color, 
+              color: '#ffffff',
+              borderRadius: 'var(--os-radius-xl)', /* Using our massive global corner variable */
+              boxShadow: `0 12px 32px ${def.color}60`, /* Massive glowing soft shadow */
+              border: 'none'
+            }}
           >
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{def.key}</p>
-              <div
-                className="w-7 h-7 rounded-lg flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity"
-                style={{ background: `${def.color}18` }}
-              >
-                <Icon className="w-3.5 h-3.5" style={{ color: def.color }} />
-              </div>
+            {/* Subtle inner background shine effect */}
+            <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: '50%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15))', pointerEvents: 'none' }} />
+
+            {/* Icon */}
+            <div className="w-9 h-9 rounded-2xl flex items-center justify-center mb-3" style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(10px)' }}>
+              <Icon style={{ width: 18, height: 18, color: '#ffffff' }} />
             </div>
+
+            {/* Value */}
             {loading ? (
-              <SkeletonLight className="h-7 w-24 mb-1" />
+              <div className="animate-pulse rounded-lg bg-white/30 h-8 w-20 mb-2" />
             ) : val != null ? (
               <AnimatePresence mode="wait">
                 <motion.p
                   key={val}
-                  initial={{ opacity: 0, y: 5 }}
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ ...spring.snappy, opacity: { ...tween.fast } }}
-                  className="text-xl font-bold leading-none tracking-tight"
-                  style={{ color: val === '₹0' || val === '0' ? '#475569' : '#ffffff' }}
+                  className="text-3xl font-black tracking-tight leading-none mb-1.5"
+                  style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
                 >
                   {val}
                 </motion.p>
               </AnimatePresence>
             ) : (
-              <p className="text-xl font-bold leading-none" style={{ color: '#1e293b' }}>—</p>
+              <p className="text-3xl font-black tracking-tight leading-none mb-1.5" style={{ color: 'rgba(255,255,255,0.5)' }}>—</p>
             )}
-            <p className="text-[10px] mt-1.5" style={{ color: val === '₹0' ? '#334155' : '#64748b' }}>
-              {val === '₹0' ? 'No activity yet' : def.sub}
+
+            <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: 'rgba(255,255,255,0.9)' }}>
+              {def.key}
             </p>
+            <p className="text-[9px] leading-none font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>{def.sub}</p>
+
+            {/* Delta badge */}
+            {isPositive && (
+              <span
+                className="mt-3 self-start text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm"
+                style={{ background: '#ffffff', color: def.color }}
+              >
+                ↑ Live
+              </span>
+            )}
           </motion.div>
         )
       })}
@@ -223,15 +246,13 @@ function KpiStrip({ kpis, analytics, loading }: { kpis: any; analytics: any; loa
   )
 }
 
-// ─── Status Bar ───────────────────────────────────────────────────────────────
+// ─── Work Queue (Left Column) ─────────────────────────────────────────────────
 
-const STAGE_ORDER = ['NEW', 'CONTACTED', 'QUALIFIED', 'PROPOSAL', 'NEGOTIATION', 'WON', 'LOST']
-const STAGE_COLOR: Record<string, string> = {
-  NEW: '#2564ea', CONTACTED: '#0ea5e9', QUALIFIED: '#7c3aed',
-  PROPOSAL: '#f59e0b', NEGOTIATION: '#f97316', WON: '#10b981', LOST: '#ef4444',
-}
+type WQTab = 'pipeline' | 'today' | 'won'
 
-function StatusBar({ navigate }: { navigate: (p: string) => void }) {
+function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
+  const [tab, setTab] = useState<WQTab>('pipeline')
+
   const { data: kimmpHealth } = useQuery({
     queryKey: ['kimmp-health'],
     queryFn:  () => api.get('/admin/kangqore-immp/health').then(r => r.data),
@@ -242,448 +263,268 @@ function StatusBar({ navigate }: { navigate: (p: string) => void }) {
     queryFn:  () => api.get('/admin/eqore/leads', { params: { limit: 200 } }).then(r => r.data),
     staleTime: 60_000,
   })
-  const { data: aegisData } = useQuery({
-    queryKey: ['aegis-summary'],
-    queryFn:  () => api.get('/admin/aegis/agents/summary').then(r => r.data),
-    staleTime: 60_000,
-  })
   const { data: consultData } = useQuery({
     queryKey: ['home-consult-summary'],
     queryFn:  () => api.get('/consultations', { params: { limit: 100 } }).then(r => r.data),
     staleTime: 60_000,
   })
 
-  // Lead pipeline distribution
-  const allLeads: any[] = leadsRaw?.leads ?? (Array.isArray(leadsRaw) ? leadsRaw : [])
-  const stageCounts = STAGE_ORDER.reduce<Record<string, number>>((acc, s) => {
-    acc[s] = allLeads.filter(l => (l.status ?? l.stage ?? 'NEW') === s).length
-    return acc
-  }, {})
-  const totalLeads = allLeads.length
-  const activeLeads = allLeads.filter(l => !['WON','LOST'].includes(l.status ?? l.stage ?? '')).length
+  const allLeads: any[]  = leadsRaw?.leads ?? (Array.isArray(leadsRaw) ? leadsRaw : [])
+  const kimmpOk          = kimmpHealth?.status === 'OK'
+  const kimmpVersion     = kimmpHealth?.version ?? '—'
+  const tier2            = kimmpHealth?.tier2 === 'ENABLED'
+  const totalConsults    = consultData?.pagination?.total ?? (consultData?.consultations ?? []).length
+  const pendingConsults  = (consultData?.consultations ?? []).filter((c: any) => (c.status ?? 'PENDING') === 'PENDING').length
 
-  // KIMMP status
-  const kimmpOk      = kimmpHealth?.status === 'OK'
-  const kimmpVersion = kimmpHealth?.version ?? '—'
-  const tier2        = kimmpHealth?.tier2   === 'ENABLED'
+  const displayLeads =
+    tab === 'pipeline' ? allLeads.filter(l => !['WON','LOST'].includes(l.status ?? l.stage ?? '')).slice(0, 6)
+    : tab === 'today'  ? allLeads.filter(l => { const d = new Date(l.createdAt ?? ''); const n = new Date(); return d.toDateString() === n.toDateString() }).slice(0, 6)
+    :                    allLeads.filter(l => (l.status ?? l.stage) === 'WON').slice(0, 6)
 
-  // AEGIS
-  const aegisVerdict   = aegisData?.overallVerdict ?? null
-  const aegisScore     = aegisData?.healthScore    ?? null
-  const aegisCritical  = aegisData?.critical24h    ?? 0
-  const aegisEngines   = aegisData?.engines        ?? []
-  const aegisChecked   = aegisEngines.filter((e: any) => e.latest).length
-
-  // Consultations
-  const consults    = consultData?.consultations ?? []
-  const totalC      = consultData?.pagination?.total ?? consults.length
-  const pendingC    = consults.filter((c: any) => (c.status ?? 'PENDING') === 'PENDING').length
-  const confirmedC  = consults.filter((c: any) => c.status === 'CONFIRMED').length
-
-  const AEGIS_VS: Record<string, { color: string; label: string }> = {
-    PASS:     { color: '#10b981', label: 'All Clear'  },
-    WARN:     { color: '#f59e0b', label: 'Warnings'   },
-    CRITICAL: { color: '#ef4444', label: 'Critical'   },
-  }
-  const avs = aegisVerdict ? (AEGIS_VS[aegisVerdict] ?? AEGIS_VS.PASS) : null
-
-  const CARD = 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10'
+  const TABS: { id: WQTab; label: string }[] = [
+    { id: 'pipeline', label: 'Pipeline' },
+    { id: 'today',    label: 'Today'    },
+    { id: 'won',      label: 'Won'      },
+  ]
 
   return (
-    <motion.div
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6"
-      variants={staggerContainer(0.06)}
-      initial="hidden"
-      animate="visible"
-    >
-      {/* Card 1: KIMMP Health */}
-      <motion.div
-        variants={staggerChild}
-        onClick={() => navigate('/kangqore-view/admin/kangqore-immp')}
-        className={`${CARD} rounded-xl p-4 cursor-pointer hover:ring-white/20 transition-all`}
-      >
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Brain className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">KIMMP</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: kimmpOk ? '#10b981' : kimmpHealth ? '#ef4444' : '#334155' }}
-            />
-            <span className="text-[9px] font-semibold text-slate-500">
-              {kimmpHealth ? (kimmpOk ? 'ONLINE' : 'OFFLINE') : '—'}
-            </span>
-          </div>
-        </div>
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-slate-600">Version</span>
-            <span className="text-[10px] font-mono font-bold text-slate-300">{kimmpVersion}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-slate-600">Tier 2 AI</span>
-            <span className="text-[10px] font-semibold text-slate-300">
-              {kimmpHealth ? (tier2 ? 'Active' : 'Inactive') : '—'}
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-slate-600">Intelligence</span>
-            <span className="text-[10px] font-semibold text-slate-300">WAANDA</span>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Card 2: Lead Pipeline */}
-      <motion.div
-        variants={staggerChild}
-        onClick={() => navigate('/kangqore-view/admin/leads')}
-        className={`${CARD} rounded-xl p-4 cursor-pointer hover:ring-white/20 transition-all`}
-      >
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Zap className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Pipeline</span>
-          </div>
-          <div className="text-right">
-            <span className="text-sm font-bold text-white">{totalLeads}</span>
-            <span className="text-[9px] text-slate-600 ml-1">leads</span>
-          </div>
-        </div>
-        {totalLeads === 0 ? (
-          <p className="text-[10px] text-slate-700 text-center py-2">No leads yet</p>
-        ) : (
-          <div className="space-y-1.5">
-            <div className="flex h-1 rounded-full overflow-hidden gap-px">
-              {STAGE_ORDER.filter(s => stageCounts[s] > 0).map(s => (
-                <div
-                  key={s}
-                  className="h-full transition-all duration-700"
-                  style={{ width: `${(stageCounts[s] / totalLeads) * 100}%`, background: STAGE_COLOR[s] }}
-                  title={`${s}: ${stageCounts[s]}`}
-                />
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
-              {STAGE_ORDER.filter(s => stageCounts[s] > 0).slice(0, 4).map(s => (
-                <div key={s} className="flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: STAGE_COLOR[s] }} />
-                  <span className="text-[9px] text-slate-600">{s.charAt(0) + s.slice(1).toLowerCase()}</span>
-                  <span className="text-[9px] font-bold text-slate-300">{stageCounts[s]}</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-[9px] text-slate-600 mt-1">{activeLeads} active · {stageCounts.WON ?? 0} won</p>
-          </div>
-        )}
-      </motion.div>
-
-      {/* Card 3: AEGIS Corps */}
-      <motion.div
-        variants={staggerChild}
-        onClick={() => navigate('/kangqore-view/admin/aegis')}
-        className={`${CARD} rounded-xl p-4 cursor-pointer hover:ring-white/20 transition-all`}
-      >
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Shield className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">AEGIS</span>
-          </div>
-          {avs ? (
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: avs.color }} />
-              <span className="text-[9px] font-semibold text-slate-400">{avs.label}</span>
-            </div>
-          ) : (
-            <span className="text-[9px] text-slate-700">—</span>
-          )}
-        </div>
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-slate-600">Agent Corps</span>
-            <span className="text-[10px] font-bold text-slate-300">80 agents</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-slate-600">Engines checked</span>
-            <span className="text-[10px] font-bold text-slate-300">{aegisChecked}/10</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-slate-600">Health score</span>
-            <span className="text-[10px] font-bold text-slate-300">
-              {aegisScore != null ? `${aegisScore}/100` : '—'}
-            </span>
-          </div>
-          {aegisCritical > 0 && (
-            <div className="flex items-center gap-1 mt-1 rounded-md px-2 py-1 bg-white/5 border border-white/10">
-              <AlertTriangle className="w-3 h-3 text-slate-400 flex-shrink-0" />
-              <span className="text-[9px] font-semibold text-slate-400">{aegisCritical} critical in 24h</span>
-            </div>
-          )}
-        </div>
-      </motion.div>
-
-      {/* Card 4: Consultations Queue */}
-      <motion.div
-        variants={staggerChild}
-        onClick={() => navigate('/kangqore-view/admin/consultations')}
-        className={`${CARD} rounded-xl p-4 cursor-pointer hover:ring-white/20 transition-all`}
-      >
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Consultations</span>
-          </div>
-          <div className="text-right">
-            <span className="text-sm font-bold text-white">{totalC}</span>
-            <span className="text-[9px] text-slate-600 ml-1">total</span>
-          </div>
-        </div>
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-slate-600">Pending review</span>
-            <span className="text-[10px] font-semibold text-slate-300">{pendingC > 0 ? pendingC : '—'}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-slate-600">Confirmed</span>
-            <span className="text-[10px] font-semibold text-slate-300">{confirmedC > 0 ? confirmedC : '—'}</span>
-          </div>
-          {totalC === 0 && (
-            <p className="text-[10px] text-slate-700 text-center pt-1">No consultations yet</p>
-          )}
-          {pendingC > 0 && (
-            <div className="flex items-center gap-1 mt-1 rounded-md px-2 py-1 bg-white/5 border border-white/10">
-              <Clock className="w-3 h-3 text-slate-500 flex-shrink-0" />
-              <span className="text-[9px] font-semibold text-slate-500">{pendingC} awaiting response</span>
-            </div>
-          )}
-        </div>
-      </motion.div>
-    </motion.div>
-  )
-}
-
-// ─── AEGIS Security Pulse ────────────────────────────────────────────────────
-
-const VERDICT_STYLE: Record<string, { color: string; label: string; bg: string }> = {
-  PASS:     { color: '#10b981', label: 'All Clear',   bg: '#10b98115' },
-  WARN:     { color: '#f59e0b', label: 'Warnings',    bg: '#f59e0b15' },
-  CRITICAL: { color: '#ef4444', label: 'Critical',    bg: '#ef444415' },
-}
-
-function AegisPulse({ navigate }: { navigate: (p: string) => void }) {
-  const { data, isLoading } = useQuery({
-    queryKey: ['aegis-summary'],
-    queryFn:  () => api.get('/admin/aegis/agents/summary').then(r => r.data),
-    staleTime: 60_000,
-    refetchInterval: 120_000,
-  })
-
-  const verdict     = data?.overallVerdict ?? 'PASS'
-  const healthScore = data?.healthScore    ?? null
-  const critical24h = data?.critical24h    ?? 0
-  const warn24h     = data?.warn24h        ?? 0
-  const engines     = data?.engines        ?? []
-  const vs          = VERDICT_STYLE[verdict] ?? VERDICT_STYLE.PASS
-
-  const passEngines     = engines.filter((e: any) => e.latest?.verdict === 'PASS').length
-  const criticalEngines = engines.filter((e: any) => e.latest?.verdict === 'CRITICAL').length
-  const warnEngines     = engines.filter((e: any) => e.latest?.verdict === 'WARN').length
-  const totalEngines    = engines.length || 10
-
-  return (
-    <div className="bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 border border-white/10 border-t-white/10 rounded-2xl p-5 flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md flex items-center justify-center bg-white/5">
-            <Shield className="w-3 h-3 text-slate-400" />
-          </div>
-          AEGIS Shield
-        </h3>
-        <button
-          onClick={() => navigate('/kangqore-view/admin/aegis')}
-          className="text-xs font-medium text-slate-500 hover:text-slate-300 flex items-center gap-0.5 transition-colors"
-        >
-          Open <ArrowRight className="w-3 h-3" />
-        </button>
+    <div className="flex flex-col gap-3">
+      {/* Header */}
+      <div className="flex items-center justify-between px-1">
+        <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
+          Work Queue
+        </p>
+        <span className="text-[10px] font-bold" style={{ color: 'var(--os-text-3)' }}>
+          {allLeads.length} leads
+        </span>
       </div>
 
-      {isLoading ? (
-        <div className="space-y-3">
-          <SkeletonLight className="h-10 w-full" />
-          <SkeletonLight className="h-3 w-full" />
-          <SkeletonLight className="h-16 w-full" />
-        </div>
-      ) : (
-        <>
-          <div
-            className="flex items-center gap-3 rounded-xl px-4 py-3"
-            style={{ background: vs.bg, border: `1px solid ${vs.color}25` }}
-          >
-            <div className="w-2.5 h-2.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: vs.color, boxShadow: `0 0 8px ${vs.color}` }} />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold" style={{ color: vs.color }}>{vs.label}</p>
-              <p className="text-[10px] text-slate-500">
-                {critical24h > 0 ? `${critical24h} critical` : warn24h > 0 ? `${warn24h} warnings` : 'No active threats'}
-                {' '}· 24h window
-              </p>
-            </div>
-            {healthScore != null && (
-              <span className="text-lg font-bold flex-shrink-0" style={{ color: healthScore >= 70 ? '#10b981' : healthScore >= 40 ? '#f59e0b' : '#ef4444' }}>
-                {healthScore}
-              </span>
-            )}
-          </div>
-
-          {healthScore != null && (
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-600">Health Score</span>
-                <span className="text-[10px] font-bold text-slate-400">{healthScore}/100</span>
-              </div>
-              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                <div
-                  className="h-full rounded-full transition-all duration-700"
-                  style={{
-                    width: `${healthScore}%`,
-                    background: healthScore >= 70 ? '#10b981' : healthScore >= 40 ? '#f59e0b' : '#ef4444',
-                  }}
-                />
-              </div>
-            </div>
-          )}
-
-          <div className="grid grid-cols-3 gap-2 text-center">
-            {[
-              { label: 'Pass', count: passEngines,     color: '#10b981' },
-              { label: 'Warn', count: warnEngines,     color: '#f59e0b' },
-              { label: 'Crit', count: criticalEngines, color: '#ef4444' },
-            ].map(e => (
-              <div key={e.label} className="rounded-lg py-2" style={{ background: `${e.color}08` }}>
-                <p className="text-base font-bold" style={{ color: e.color }}>{e.count}</p>
-                <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: `${e.color}80` }}>{e.label}</p>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-[10px] text-slate-600 text-center">
-            {totalEngines} engines · {engines.filter((e: any) => e.latest).length} checked
-          </p>
-        </>
-      )}
-    </div>
-  )
-}
-
-// ─── BIDS™ Snapshot ───────────────────────────────────────────────────────────
-
-const STATUS_COLOR: Record<string, string> = {
-  ACTIVE: '#10b981', DRAFT: '#64748b', PAUSED: '#f59e0b', COMPLETED: '#7c3aed',
-}
-
-function BidsSnapshot({ navigate }: { navigate: (p: string) => void }) {
-  const { data, isLoading } = useQuery({
-    queryKey: ['bids-engagements-home'],
-    queryFn:  () => api.get('/admin/bids/engagements').then(r => r.data),
-    staleTime: 60_000,
-  })
-
-  const engagements = (data?.engagements ?? []).slice(0, 4)
-  const stats       = data?.stats ?? {}
-  const total       = stats.total  ?? 0
-  const active      = stats.ACTIVE ?? 0
-
-  return (
-    <div className="bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 border border-white/10 border-t-white/10 rounded-2xl p-5 flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md flex items-center justify-center bg-white/5">
-            <Crosshair className="w-3 h-3 text-slate-400" />
-          </div>
-          BIDS™
-        </h3>
-        <button
-          onClick={() => navigate('/kangqore-view/admin/bids')}
-          className="text-xs font-medium text-slate-500 hover:text-slate-300 flex items-center gap-0.5 transition-colors"
-        >
-          Open <ArrowRight className="w-3 h-3" />
-        </button>
-      </div>
-
-      {isLoading ? (
-        <div className="space-y-3">
-          <SkeletonLight className="h-10 w-full" />
-          <SkeletonLight className="h-8 w-full" />
-          <SkeletonLight className="h-8 w-full" />
-        </div>
-      ) : total === 0 ? (
-        <motion.div className="flex flex-col items-center justify-center py-6 text-center" variants={fadeScale} initial="hidden" animate="visible">
-          <div className="w-10 h-10 rounded-xl mb-3 flex items-center justify-center bg-white/5 border border-white/10">
-            <Crosshair className="w-5 h-5 text-slate-600" />
-          </div>
-          <p className="text-xs font-semibold text-slate-400 mb-1">No engagements yet</p>
-          <p className="text-[10px] text-slate-600 mb-3 max-w-[140px] leading-relaxed">
-            Launch your first Business Diagnostic Intelligence assessment
-          </p>
+      {/* Tab strip */}
+      <div
+        className="flex gap-1 p-1 rounded-xl"
+        style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}
+      >
+        {TABS.map(t => (
           <button
-            onClick={() => navigate('/kangqore-view/admin/bids/engagements')}
-            className="text-[10px] font-semibold px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:bg-white/5 transition-all"
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className="flex-1 rounded-lg text-[11px] font-bold py-1.5 transition-all text-center"
+            style={tab === t.id
+              ? { background: 'var(--os-card)', color: 'var(--os-text-1)', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }
+              : { color: 'var(--os-text-2)' }}
           >
-            Start Assessment
+            {t.label}
           </button>
-        </motion.div>
-      ) : (
-        <>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="rounded-xl px-3 py-2.5 bg-white/5 border border-white/10">
-              <p className="text-lg font-bold text-slate-200">{active}</p>
-              <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">Active</p>
-            </div>
-            <div className="rounded-xl px-3 py-2.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <p className="text-lg font-bold text-slate-300">{total}</p>
-              <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">Total</p>
-            </div>
-          </div>
+        ))}
+      </div>
 
-          <ul className="space-y-2">
-            {engagements.map((e: any) => {
-              const done  = (e.deliverables ?? []).filter((d: any) => d.status === 'COMPLETE').length
-              const tot   = (e.deliverables ?? []).length || 10
-              const pct   = Math.round((done / tot) * 100)
-              const col   = STATUS_COLOR[e.status] ?? '#64748b'
-              return (
-                <li key={e.id} className="rounded-lg p-2.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <p className="text-[11px] font-semibold text-slate-200 truncate flex-1">{e.clientName}</p>
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md flex-shrink-0" style={{ color: col, background: `${col}15` }}>
-                      {e.status}
+      {/* Lead cards — solid colored backgrounds */}
+      {displayLeads.length === 0 ? (
+        <div className="os-card p-6 text-center rounded-2xl">
+          <Zap className="w-5 h-5 block mx-auto mb-2" style={{ color: 'var(--os-text-3)' }} />
+          <p className="text-xs" style={{ color: 'var(--os-text-2)' }}>No leads here</p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {displayLeads.map((l: any) => {
+            const stage = (l.status ?? l.stage ?? 'NEW').toUpperCase()
+            const score = l.score ?? l.leadScore ?? 0
+            const name  = l.name ?? l.companyName ?? l.email ?? 'Lead'
+            const company = l.company ?? l.companyName ?? ''
+            const color = STAGE_CARD_COLOR[stage] ?? '#579bfc'
+            return (
+              <motion.div
+                key={l.id}
+                whileHover={{ x: 4, scale: 1.01, transition: { duration: 0.1 } }}
+                onClick={() => navigate('/kangqore-view/admin/leads')}
+                className="p-5 cursor-pointer transition-all"
+                style={{
+                  background: color, color: '#fff',
+                  borderRadius: 'var(--os-radius-xl)',
+                  height: 120, boxShadow: `0 12px 32px ${color}50`,
+                  display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                }}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-[12px] font-bold truncate leading-snug">{name}</p>
+                    {company && <p className="text-[10px] opacity-75 truncate mt-0.5">{company}</p>}
+                  </div>
+                  {score > 0 && (
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full flex-shrink-0"
+                          style={{ background: 'rgba(255,255,255,0.25)', color: '#fff' }}>
+                      {score}
                     </span>
-                  </div>
-                  <div className="h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                    <div className="h-full rounded-full" style={{ width: `${pct}%`, background: '#f59e0b' }} />
-                  </div>
-                  <p className="text-[9px] text-slate-600 mt-1">{done}/{tot} deliverables</p>
-                </li>
-              )
-            })}
-          </ul>
-        </>
+                  )}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[9px] font-bold uppercase tracking-wide opacity-80">{stage}</span>
+                  <span className="text-[9px] opacity-60">{l.createdAt ? timeAgo(l.createdAt) : ''}</span>
+                </div>
+              </motion.div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Consultations pill */}
+      <div
+        onClick={() => navigate('/kangqore-view/admin/consultations')}
+        className="os-card p-3 cursor-pointer flex items-center gap-3 hover:translate-x-1 rounded-xl transition-all"
+      >
+        <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#0ea5e914' }}>
+          <Calendar className="w-4 h-4" style={{ color: '#0ea5e9' }} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[11px] font-bold leading-tight" style={{ color: 'var(--os-text-1)' }}>Consultations</p>
+          <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-3)' }}>
+            {totalConsults} total · {pendingConsults > 0 ? `${pendingConsults} pending` : 'none pending'}
+          </p>
+        </div>
+        <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--os-text-3)' }} />
+      </div>
+
+      {/* KIMMP status */}
+      <div className="os-card p-3 flex items-center gap-3 rounded-xl">
+        <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0`}
+             style={{ background: kimmpOk ? '#00c87514' : 'var(--os-surface-0)' }}>
+          <Brain className="w-4 h-4" style={{ color: kimmpOk ? '#00c875' : 'var(--os-text-3)' }} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[11px] font-bold leading-tight" style={{ color: 'var(--os-text-1)' }}>KIMMP v{kimmpVersion}</p>
+          <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-3)' }}>Tier 2: {kimmpHealth ? (tier2 ? 'Active' : 'Inactive') : '—'}</p>
+        </div>
+        <span className="w-2 h-2 rounded-full flex-shrink-0"
+              style={{ background: kimmpHealth ? (kimmpOk ? '#00c875' : '#e2445c') : 'var(--os-text-3)' }} />
+      </div>
+    </div>
+  )
+}
+
+// ─── Pipeline Kanban (Center top) ─────────────────────────────────────────────
+
+function PipelineKanban({ navigate, leads }: { navigate: (p: string) => void; leads: any[] }) {
+  const allLeads: any[] = leads
+
+  // Sort leads by score descending, then date
+  const sortedLeads = [...allLeads].sort((a, b) => {
+    const scoreA = a.score ?? a.leadScore ?? 0
+    const scoreB = b.score ?? b.leadScore ?? 0
+    if (scoreB !== scoreA) return scoreB - scoreA
+    return new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
+  })
+
+  return (
+    <div className="os-card p-5 rounded-2xl">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <h3 style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, display: 'flex', alignItems: 'center', gap: 7 }}>
+          <Zap style={{ width: 14, height: 14, color: '#fdab3d' }} />
+          Lead Pipeline
+        </h3>
+        <button
+          onClick={() => navigate('/kangqore-view/admin/leads')}
+          style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-2)', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3 }}
+        >
+          All leads <ArrowRight style={{ width: 11, height: 11 }} />
+        </button>
+      </div>
+
+      {sortedLeads.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <Zap style={{ width: 24, height: 24, color: 'var(--os-text-3)', margin: '0 auto 8px', display: 'block' }} />
+          <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0 }}>No leads yet — add your first to get started</p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse" style={{ minWidth: 500 }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid var(--os-border)' }}>
+                <th className="pb-3 text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-3)]">Name & Company</th>
+                <th className="pb-3 text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-3)]">Stage</th>
+                <th className="pb-3 text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-3)] text-center">Score</th>
+                <th className="pb-3 text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-3)] text-right">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedLeads.slice(0, 5).map((l: any) => {
+                const stage = (l.status ?? l.stage ?? 'NEW').toUpperCase()
+                const cfg = PIPELINE_CFG[stage] ?? PIPELINE_CFG.NEW
+                const name = l.name ?? l.companyName ?? l.email ?? 'Lead'
+                const company = l.companyName ?? l.company ?? '—'
+                const score = l.score ?? l.leadScore ?? 0
+                const val = l.projectedValue ?? l.value ?? 0
+                const formattedVal = val > 0 ? `₹${val.toLocaleString('en-IN')}` : '—'
+                
+                return (
+                  <tr 
+                    key={l.id}
+                    onClick={() => navigate('/kangqore-view/admin/leads')}
+                    className="group cursor-pointer hover:bg-slate-200/30 dark:hover:bg-white/[0.02] transition-colors"
+                    style={{ borderBottom: '1px solid var(--os-border)' }}
+                  >
+                    <td className="py-3 pr-3">
+                      <p className="text-[12px] font-bold text-[var(--os-text-1)] margin-0 truncate max-w-[180px]">{name}</p>
+                      <p className="text-[10px] text-[var(--os-text-3)] margin-0 mt-0.5 truncate max-w-[180px]">{company}</p>
+                    </td>
+                    <td className="py-3 pr-3">
+                      <span 
+                        className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wide text-white animate-fade-in"
+                        style={{ backgroundColor: cfg.bg }}
+                      >
+                        {stage}
+                      </span>
+                    </td>
+                    <td className="py-3 pr-3 text-center">
+                      {score > 0 ? (
+                        <span 
+                          className="inline-flex items-center justify-center w-7 h-7 rounded-full text-[11px] font-black"
+                          style={{
+                            background: score >= 80 ? 'rgba(0, 200, 117, 0.12)' : 'rgba(87, 155, 252, 0.12)',
+                            color: score >= 80 ? '#00c875' : '#579bfc',
+                          }}
+                        >
+                          {score}
+                        </span>
+                      ) : (
+                        <span className="text-[11px] text-[var(--os-text-3)]">—</span>
+                      )}
+                    </td>
+                    <td className="py-3 text-right text-[12px] font-bold text-[var(--os-text-1)]">
+                      {formattedVal}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+          {sortedLeads.length > 5 && (
+            <div className="pt-3 text-center">
+              <button 
+                onClick={() => navigate('/kangqore-view/admin/leads')}
+                className="text-[11px] font-bold bg-transparent border-none cursor-pointer hover:underline"
+                style={{ color: '#2564ea' }}
+              >
+                View all {sortedLeads.length} leads
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   )
 }
 
-// ─── My Focus panel ───────────────────────────────────────────────────────────
+// ─── My Focus Panel (Center middle) ──────────────────────────────────────────
 
 function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
   const { data: goalsData, isLoading: goalsLoading } = useQuery({
     queryKey: ['dashboard-goals'],
-    queryFn: () => api.get('/admin/kangqore-immp/goals', { params: { limit: 4 } }).then(r => r.data),
+    queryFn:  () => api.get('/admin/kangqore-immp/goals', { params: { limit: 4 } }).then(r => r.data),
     staleTime: 120_000,
   })
   const { data: approvalsData } = useQuery({
     queryKey: ['kimmp-approvals'],
-    queryFn: () => api.get('/admin/kangqore-immp/authority/approvals').then(r => r.data),
+    queryFn:  () => api.get('/admin/kangqore-immp/authority/approvals').then(r => r.data),
     staleTime: 60_000,
   })
 
@@ -691,108 +532,116 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
   const approvals = (approvalsData?.approvals ?? []).slice(0, 3)
 
   return (
-    <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-white/10 border-t-white/20 rounded-2xl p-5 flex flex-col gap-5">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-white flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md bg-white/5 flex items-center justify-center">
-            <Target className="w-3 h-3 text-slate-400" />
-          </div>
+    <div className="os-card p-5 rounded-2xl">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-[13px] font-bold flex items-center gap-2" style={{ color: 'var(--os-text-1)', margin: 0 }}>
+          <Target className="w-4 h-4" style={{ color: '#7c3aed' }} />
           My Focus
         </h3>
         <button
           onClick={() => navigate('/kangqore-view/admin/kangqore-immp/goals')}
-          className="text-xs text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-0.5 font-medium"
+          className="text-[11px] font-bold bg-transparent border-none cursor-pointer flex items-center gap-1 hover:opacity-80 transition-opacity"
+          style={{ color: 'var(--os-text-2)' }}
         >
           All goals <ArrowRight className="w-3 h-3" />
         </button>
       </div>
 
       {goalsLoading ? (
-        <div className="space-y-3">
+        <div className="flex flex-col gap-2">
           {[1,2,3].map(i => <SkeletonLight key={i} className="h-12 w-full" />)}
         </div>
       ) : goals.length === 0 ? (
         <motion.div
-          className="flex flex-col items-center justify-center py-8 text-center"
-          variants={fadeScale}
-          initial="hidden"
-          animate="visible"
+          className="text-center py-5"
+          variants={fadeScale} initial="hidden" animate="visible"
         >
           <motion.div
-            className="w-14 h-14 rounded-2xl mb-4 flex items-center justify-center bg-white/5 border border-white/10"
-            variants={float}
-            animate="float"
+            className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-2.5"
+            style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}
+            variants={float} animate="float"
           >
-            <Target className="w-6 h-6 text-slate-500" />
+            <Target className="w-5 h-5" style={{ color: 'var(--os-text-3)' }} />
           </motion.div>
-          <p className="text-sm font-semibold text-white mb-1.5">Nothing in focus yet</p>
-          <p className="text-xs text-slate-500 max-w-[190px] leading-relaxed">
-            Set a goal to track what matters — progress shows here as you move.
-          </p>
+          <p className="text-[13px] font-bold mb-1" style={{ color: 'var(--os-text-1)' }}>Nothing in focus yet</p>
+          <p className="text-[11px] mb-3" style={{ color: 'var(--os-text-2)' }}>Set a goal to track what matters.</p>
           <button
             onClick={() => navigate('/kangqore-view/admin/kangqore-immp/goals')}
-            className="mt-4 flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/5 transition-all duration-150 active:scale-95"
+            className="text-[11px] font-bold px-4 py-1.5 rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+            style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}
           >
-            <Target className="w-3 h-3" />
-            Create a goal
-            <ArrowRight className="w-3 h-3" />
+            Create a goal →
           </button>
         </motion.div>
       ) : (
-        <ul className="space-y-4">
+        <div className="flex flex-col gap-1">
           {goals.map((g: any) => {
-            const pct      = Math.round((g.currentValue / Math.max(g.targetValue, 1)) * 100)
-            const barColor = pct >= 70 ? '#059669' : pct >= 40 ? '#d97706' : '#e2445c'
+            const pct      = Math.min(Math.round((g.currentValue / Math.max(g.targetValue, 1)) * 100), 100)
+            const isDone   = pct >= 100
+            const barColor = pct >= 70 ? '#00c875' : pct >= 40 ? '#fdab3d' : '#e2445c'
+
             return (
-              <li key={g.id}>
-                <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <p className="text-xs font-semibold text-slate-200 truncate flex-1">{g.title}</p>
-                  <span
-                    className="text-[10px] font-bold px-1.5 py-0.5 rounded-md flex-shrink-0"
-                    style={{ color: barColor, background: `${barColor}15` }}
-                  >
-                    {g.status?.replace(/_/g, ' ')}
-                  </span>
+              <div key={g.id} className="asana-task-row flex items-center gap-3">
+                <div className={`asana-circular-checkbox flex-shrink-0 ${isDone ? 'checked' : ''}`}>
+                  {isDone && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
                 </div>
-                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                  <div
-                    className="h-full rounded-full transition-all duration-700"
-                    style={{ width: `${Math.min(pct, 100)}%`, background: barColor }}
-                  />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-4 mb-1">
+                    <p className="text-[12px] font-bold truncate leading-snug"
+                       style={{ color: isDone ? 'var(--os-text-3)' : 'var(--os-text-1)', textDecoration: isDone ? 'line-through' : 'none' }}>
+                      {g.title}
+                    </p>
+                    <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase flex-shrink-0"
+                          style={{ color: barColor, background: `${barColor}15` }}>
+                      {g.status?.replace(/_/g, ' ')}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-[4px] rounded-full overflow-hidden" style={{ background: 'var(--os-border)' }}>
+                      <div className="h-full rounded-full transition-all duration-700"
+                           style={{ background: barColor, width: `${pct}%` }} />
+                    </div>
+                    <span className="text-[10px] font-bold w-7 text-right flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>{pct}%</span>
+                  </div>
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1">{pct}% of target</p>
-              </li>
+              </div>
             )
           })}
-        </ul>
+        </div>
       )}
 
       {approvals.length > 0 && (
         <>
-          <div className="h-px bg-slate-800" />
+          <div className="h-px my-4" style={{ background: 'var(--os-border)' }} />
           <div>
-            <p className="text-xs font-bold text-slate-300 mb-3 flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-amber-500" />
+            <p className="text-[10px] font-semibold uppercase tracking-widest mb-2.5 flex items-center gap-1.5" style={{ color: 'var(--os-text-2)' }}>
+              <Clock className="w-3.5 h-3.5" style={{ color: '#fdab3d' }} />
               Pending Approvals
-              <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-500">{approvals.length}</span>
+              <span className="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: '#fdab3d14', color: '#fdab3d' }}>
+                {approvals.length}
+              </span>
             </p>
-            <ul className="space-y-2.5">
+            <div className="flex flex-col gap-2">
               {approvals.map((a: any) => (
-                <li key={a.id} className="flex items-start gap-2 group">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+                <div key={a.id} className="flex items-start gap-2.5 p-2 rounded-lg"
+                     style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+                  <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#fdab3d' }} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs text-slate-300 leading-snug truncate">{a.description ?? a.actionType}</p>
-                    <p className="text-[10px] text-slate-500">{timeAgo(a.requestedAt ?? a.createdAt)}</p>
+                    <p className="text-[11px] font-semibold leading-normal truncate" style={{ color: 'var(--os-text-1)' }}>
+                      {a.description ?? a.actionType}
+                    </p>
+                    <p className="text-[9px] mt-0.5" style={{ color: 'var(--os-text-3)' }}>{timeAgo(a.requestedAt ?? a.createdAt)}</p>
                   </div>
                   <button
                     onClick={() => navigate('/kangqore-view/admin/kangqore-immp/actions')}
-                    className="text-[10px] text-slate-500 hover:text-slate-300 font-semibold hover:underline flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="text-[10px] font-bold bg-transparent border-none cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity"
+                    style={{ color: '#579bfc' }}
                   >
                     Review
                   </button>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </>
       )}
@@ -800,291 +649,443 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
   )
 }
 
-// ─── WAANDA Live panel ────────────────────────────────────────────────────────
+// ─── BIDS Snapshot (Center bottom) ────────────────────────────────────────────
 
-function WaandaLivePanel({ navigate }: { navigate: (p: string) => void }) {
-  const { data: alertsData } = useQuery({
-    queryKey: ['proactive-alerts'],
-    queryFn: () => api.get('/admin/kangqore-immp/proactive/alerts').then(r => r.data),
+const BIDS_STATUS_COLOR: Record<string, string> = {
+  ACTIVE: '#00c875', DRAFT: '#c5c7d0', PAUSED: '#fdab3d', COMPLETED: '#7c3aed',
+}
+
+function BidsPanel({ navigate }: { navigate: (p: string) => void }) {
+  const { data, isLoading } = useQuery({
+    queryKey: ['bids-engagements-home'],
+    queryFn:  () => api.get('/admin/bids/engagements').then(r => r.data),
     staleTime: 60_000,
   })
+
+  const engagements = (data?.engagements ?? []).slice(0, 3)
+  const stats       = data?.stats ?? {}
+  const total       = stats.total  ?? 0
+  const active      = stats.ACTIVE ?? 0
+
+  return (
+    <div className="os-card p-5 rounded-2xl">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+        <h3 style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, display: 'flex', alignItems: 'center', gap: 7 }}>
+          <Crosshair style={{ width: 14, height: 14, color: '#fdab3d' }} />
+          BIDS™ Engagements
+        </h3>
+        <button
+          onClick={() => navigate('/kangqore-view/admin/bids')}
+          style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-2)', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3 }}
+        >
+          Open <ArrowRight style={{ width: 11, height: 11 }} />
+        </button>
+      </div>
+
+      {isLoading ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[1,2].map(i => <SkeletonLight key={i} className="h-12 w-full" />)}
+        </div>
+      ) : total === 0 ? (
+        <div style={{ textAlign: 'center', padding: '16px 0' }}>
+          <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0 }}>No engagements yet</p>
+          <button
+            onClick={() => navigate('/kangqore-view/admin/bids/engagements')}
+            style={{ marginTop: 10, fontSize: 11, fontWeight: 600, padding: '6px 14px', borderRadius: 8, background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)', cursor: 'pointer' }}
+          >
+            Start Assessment
+          </button>
+        </div>
+      ) : (
+        <>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
+            {[{ label: 'Active', val: active, color: '#00c875' }, { label: 'Total', val: total, color: 'var(--os-text-2)' }].map(s => (
+              <div key={s.label} style={{ flex: 1, borderRadius: 10, padding: '10px 14px', background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+                <p style={{ fontSize: 20, fontWeight: 800, color: s.color, margin: 0 }}>{s.val}</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-3)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {engagements.map((e: any) => {
+              const done = (e.deliverables ?? []).filter((d: any) => d.status === 'COMPLETE').length
+              const tot  = (e.deliverables ?? []).length || 10
+              const pct  = Math.round((done / tot) * 100)
+              const col  = BIDS_STATUS_COLOR[e.status] ?? '#c5c7d0'
+              return (
+                <li key={e.id} style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', borderRadius: 10, padding: '10px 12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--os-text-1)', margin: 0 }} className="truncate">{e.clientName}</p>
+                    <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 4, color: col, background: `${col}15`, flexShrink: 0, marginLeft: 8 }}>
+                      {e.status}
+                    </span>
+                  </div>
+                  <div style={{ height: 4, borderRadius: 2, background: 'var(--os-border)' }}>
+                    <div style={{ height: '100%', borderRadius: 2, background: '#fdab3d', width: `${pct}%` }} />
+                  </div>
+                  <p style={{ fontSize: 9, color: 'var(--os-text-3)', margin: '4px 0 0' }}>{done}/{tot} deliverables</p>
+                </li>
+              )
+            })}
+          </ul>
+        </>
+      )}
+    </div>
+  )
+}
+
+// ─── WAANDA Score Ring ────────────────────────────────────────────────────────
+
+function WaandaScoreRing({ score }: { score: number }) {
+  const R    = 54
+  const circ = 2 * Math.PI * R
+  const dash = Math.max((score / 100) * circ, 0)
+
+  return (
+    <div className="relative w-40 h-40 mx-auto mb-4 flex items-center justify-center">
+      <svg width="160" height="160" style={{ transform: 'rotate(-90deg)' }}>
+        <defs>
+          <linearGradient id="waandaGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"    stopColor="#e2445c" />
+            <stop offset="20%"   stopColor="#fdab3d" />
+            <stop offset="40%"   stopColor="#f59e0b" />
+            <stop offset="60%"   stopColor="#00c875" />
+            <stop offset="80%"   stopColor="#579bfc" />
+            <stop offset="100%"  stopColor="#7c3aed" />
+          </linearGradient>
+        </defs>
+        {/* Track */}
+        <circle cx="80" cy="80" r={R} fill="none" stroke="var(--os-border)" strokeWidth="10" />
+        {/* Arc */}
+        {score > 0 && (
+          <circle
+            cx="80" cy="80" r={R} fill="none"
+            stroke="url(#waandaGradient)" strokeWidth="10"
+            strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
+            style={{ filter: 'drop-shadow(0 0 6px rgba(87,155,252,0.35))', transition: 'stroke-dasharray 1s ease' }}
+          />
+        )}
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
+        <span className="text-[36px] font-black tracking-tight leading-none" style={{ color: 'var(--os-text-1)' }}>
+          {score > 0 ? score : '—'}
+        </span>
+        <span className="text-[8px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
+          WAANDA SCORE
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// ─── Right Column — WAANDA Panel ──────────────────────────────────────────────
+
+const TWIN_DIMS = [
+  { key: 'overallScore',      label: 'Overall',   color: '#579bfc' },
+  { key: 'revenueHealth',     label: 'Revenue',   color: '#00c875' },
+  { key: 'pipelineVelocity',  label: 'Pipeline',  color: '#7c3aed' },
+  { key: 'marketPosition',    label: 'Market',    color: '#fdab3d' },
+  { key: 'executionCapacity', label: 'Execution', color: '#0ea5e9' },
+  { key: 'riskExposure',      label: 'Risk',      color: '#e2445c' },
+]
+
+function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
   const { data: twinData } = useQuery({
     queryKey: ['kimmp-twin'],
-    queryFn: () => api.get('/admin/kangqore-immp/twin/current').then(r => r.data),
+    queryFn:  () => api.get('/admin/kangqore-immp/twin/current').then(r => r.data),
+    staleTime: 60_000,
+  })
+  const { data: alertsData } = useQuery({
+    queryKey: ['proactive-alerts'],
+    queryFn:  () => api.get('/admin/kangqore-immp/proactive/alerts').then(r => r.data),
     staleTime: 60_000,
   })
   const { data: signalData } = useQuery({
     queryKey: ['dashboard-signals'],
-    queryFn: () => api.get('/admin/kangqore-immp/signals', { params: { limit: 5 } }).then(r => r.data),
+    queryFn:  () => api.get('/admin/kangqore-immp/signals', { params: { limit: 5 } }).then(r => r.data),
     staleTime: 60_000,
   })
 
-  const alerts  = (alertsData?.alerts  ?? []).slice(0, 3)
-  const signals = (signalData?.signals ?? []).slice(0, 4)
-
-  const TWIN_DIMS = [
-    { key: 'overallScore',      label: 'Overall',   color: '#2564ea' },
-    { key: 'revenueHealth',     label: 'Revenue',   color: '#059669' },
-    { key: 'pipelineVelocity',  label: 'Pipeline',  color: '#7c3aed' },
-    { key: 'marketPosition',    label: 'Market',    color: '#d97706' },
-    { key: 'executionCapacity', label: 'Execution', color: '#0ea5e9' },
-    { key: 'riskExposure',      label: 'Risk',      color: '#ef4444' },
-  ]
+  const alerts  = (alertsData?.alerts  ?? []).slice(0, 3).map((a: any) => ({
+    ...a,
+    message: a.message || a.description || a.title || '',
+  }))
+  const signals = (signalData?.signals ?? []).slice(0, 3).map((s: any) => ({
+    ...s,
+    title: s.title || s.signalType || 'Signal',
+    category: s.category || s.signalCategory || '',
+  }))
+  const score   = twinData?.overallScore ?? 0
   const allZero = twinData ? TWIN_DIMS.every(d => (twinData[d.key] ?? 0) === 0) : false
 
-  const SEV_STYLE: Record<string, { color: string }> = {
-    CRITICAL: { color: '#ef4444' },
-    HIGH:     { color: '#f97316' },
-    MODERATE: { color: '#f59e0b' },
-    LOW:      { color: '#64748b' },
+  const SEV_COLOR: Record<string, string> = {
+    CRITICAL: '#e2445c', HIGH: '#fdab3d', MODERATE: '#fdab3d', LOW: '#c5c7d0',
   }
 
   return (
-    <div className="bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 border border-white/10 border-t-white/10 rounded-2xl p-5 flex flex-col gap-5">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md flex items-center justify-center bg-white/5">
-            <Brain className="w-3 h-3 text-slate-400" />
-          </div>
-          WAANDA Live
-        </h3>
-        <button
-          onClick={() => navigate('/kangqore-view/admin/WAANDA')}
-          className="text-xs font-medium text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-0.5"
-        >
-          Mission Control <ArrowRight className="w-3 h-3" />
-        </button>
-      </div>
-
-      {twinData ? (
-        <div className="space-y-2.5">
-          <div className="flex items-center justify-between">
-            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">Digital Twin · Health Matrix</p>
-            {allZero && (
-              <span className="text-[8px] font-bold uppercase tracking-widest text-slate-700 animate-pulse">Calibrating</span>
-            )}
-          </div>
-          {TWIN_DIMS.map(d => {
-            const val = twinData[d.key] ?? 0
-            return (
-              <div key={d.key} className="flex items-center gap-2">
-                <span className="text-[10px] w-16 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.5)' }}>{d.label}</span>
-                <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(10,15,30,0.5)' }}>
-                  {allZero ? (
-                    <div className="h-full w-full rounded-full animate-pulse bg-white/5" />
-                  ) : (
-                    <div
-                      className="h-full rounded-full transition-all duration-700"
-                      style={{ width: `${Math.min(val, 100)}%`, background: d.color, boxShadow: `0 0 6px ${d.color}60` }}
-                    />
-                  )}
-                </div>
-                <span className="text-[10px] font-mono w-6 text-right flex-shrink-0" style={{ color: allZero ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.4)' }}>
-                  {allZero ? '·' : val}
-                </span>
-              </div>
-            )
-          })}
-          {allZero && (
-            <p className="text-[10px] leading-relaxed pt-1" style={{ color: 'rgba(255,255,255,0.2)' }}>
-              Health model builds from your live signals. Accurate within 24h.
-            </p>
-          )}
+    <div className="flex flex-col gap-3.5">
+      {/* WAANDA score ring card */}
+      <div className="os-card p-5 rounded-2xl">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-[13px] font-bold flex items-center gap-2" style={{ color: 'var(--os-text-1)', margin: 0 }}>
+            <Brain className="w-4 h-4" style={{ color: '#00c875' }} />
+            WAANDA Live
+          </h3>
+          <button
+            onClick={() => navigate('/kangqore-view/admin/WAANDA')}
+            className="text-[10px] font-bold bg-transparent border-none cursor-pointer flex items-center gap-1 hover:opacity-80 transition-opacity"
+            style={{ color: 'var(--os-text-2)' }}
+          >
+            Mission Control <ArrowRight className="w-3 h-3" />
+          </button>
         </div>
-      ) : (
-        <div className="space-y-2">
-          {[1,2,3,4,5,6].map(i => (
-            <div key={i} className="flex items-center gap-2">
-              <Skeleton className="w-14 h-3" />
-              <Skeleton className="flex-1 h-1" />
-              <Skeleton className="w-5 h-3" />
-            </div>
-          ))}
-        </div>
-      )}
 
-      {alerts.length > 0 && (
-        <>
-          <div className="h-px" style={{ background: 'rgba(10,15,30,0.5)' }} />
-          <div className="space-y-2">
-            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">Proactive Alerts</p>
-            {alerts.map((a: any) => {
-              const style = SEV_STYLE[a.severity] ?? SEV_STYLE.LOW
+        <WaandaScoreRing score={score} />
+
+        {allZero && (
+          <p className="text-[10px] text-center mb-3" style={{ color: 'var(--os-text-3)' }}>
+            Calibrating — accurate within 24h
+          </p>
+        )}
+
+        {/* Digital twin bars */}
+        {twinData ? (
+          <div className="flex flex-col gap-2.5 mt-2">
+            {TWIN_DIMS.map(d => {
+              const val = twinData[d.key] ?? 0
               return (
-                <div key={a.id} className="flex items-start gap-2 rounded-lg p-2.5" style={{ background: 'rgba(13,17,23,0.4)', border: '1px solid rgba(10,15,30,0.5)' }}>
-                  <AlertTriangle className="w-3 h-3 flex-shrink-0 mt-0.5" style={{ color: style.color }} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[11px] leading-snug line-clamp-2" style={{ color: 'rgba(255,255,255,0.8)' }}>{a.message}</p>
-                    <p className="text-[9px] mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{a.severity} · {timeAgo(a.createdAt)}</p>
+                <div key={d.key} className="flex items-center gap-3">
+                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: d.color }} />
+                  <span className="text-[10px] font-bold w-14 flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>{d.label}</span>
+                  <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--os-border)' }}>
+                    {allZero ? (
+                      <div className="h-full rounded-full w-full animate-pulse" style={{ background: 'var(--os-surface-0)' }} />
+                    ) : (
+                      <div className="h-full rounded-full transition-all duration-700"
+                           style={{ background: d.color, width: `${Math.min(val, 100)}%`, boxShadow: `0 0 4px ${d.color}30` }} />
+                    )}
                   </div>
+                  <span className="text-[10px] font-bold w-5 text-right flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>
+                    {allZero ? '·' : val}
+                  </span>
                 </div>
               )
             })}
           </div>
-        </>
+        ) : (
+          <div className="flex flex-col gap-2 mt-2">
+            {[1,2,3,4,5,6].map(i => <SkeletonLight key={i} className="h-4 w-full" />)}
+          </div>
+        )}
+      </div>
+
+      {/* Proactive Alerts */}
+      {alerts.length > 0 && (
+        <div className="os-card p-4 rounded-2xl">
+          <p className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--os-text-2)' }}>
+            Proactive Alerts
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {alerts.map((a: any) => {
+              const color = SEV_COLOR[a.severity] ?? '#c5c7d0'
+              return (
+                <div key={a.id} style={{
+                  padding: '9px 12px', borderRadius: 9,
+                  borderLeft: `3px solid ${color}`,
+                  background: `${color}08`,
+                  border: `1px solid ${color}20`,
+                  borderLeftWidth: 3,
+                }}>
+                  <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: '0 0 2px', lineHeight: 1.4 }} className="line-clamp-2">
+                    {a.message}
+                  </p>
+                  <p style={{ fontSize: 9, color: 'var(--os-text-3)', margin: 0 }}>
+                    {a.severity} · {timeAgo(a.createdAt)}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
       )}
 
+      {/* Signal stream */}
       {signals.length > 0 && (
-        <>
-          <div className="h-px" style={{ background: 'rgba(10,15,30,0.5)' }} />
-          <div className="space-y-2">
-            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">Signal Stream</p>
+        <div className="os-card p-4 rounded-2xl">
+          <p className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--os-text-2)' }}>
+            Signal Stream
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
             {signals.map((s: any) => (
-              <div key={s.id} className="flex items-start gap-2">
-                <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#2bbdff' }} />
-                <div className="flex-1 min-w-0">
-                  <p className="text-[11px] truncate" style={{ color: 'rgba(255,255,255,0.7)' }}>{s.title}</p>
-                  <p className="text-[9px]" style={{ color: 'rgba(255,255,255,0.3)' }}>{s.category} · {timeAgo(s.createdAt)}</p>
+              <div key={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#579bfc', flexShrink: 0, marginTop: 4 }} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: 0 }} className="truncate">{s.title}</p>
+                  <p style={{ fontSize: 9, color: 'var(--os-text-3)', margin: 0 }}>{s.category} · {timeAgo(s.createdAt)}</p>
                 </div>
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
 
       {!twinData && alerts.length === 0 && signals.length === 0 && (
-        <motion.div
-          className="flex flex-col items-center justify-center py-6 text-center"
-          variants={fadeScale}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="w-10 h-10 rounded-2xl mb-3 flex items-center justify-center bg-white/5 border border-white/10">
-            <Brain className="w-5 h-5 animate-pulse text-slate-600" />
-          </div>
-          <p className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.4)' }}>WAANDA is waking up</p>
-          <p className="text-[10px] mt-1 max-w-[160px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.2)' }}>Intelligence arrives with your first signals</p>
-        </motion.div>
+        <div className="os-card p-6 text-center rounded-2xl">
+          <Brain style={{ width: 24, height: 24, color: 'var(--os-text-3)', margin: '0 auto 8px', display: 'block' }} className="animate-pulse" />
+          <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--os-text-2)', margin: '0 0 4px' }}>WAANDA is waking up</p>
+          <p style={{ fontSize: 11, color: 'var(--os-text-3)', margin: 0 }}>Intelligence arrives with your first signals</p>
+        </div>
       )}
     </div>
   )
 }
 
-// ─── CRM Summary Bar ──────────────────────────────────────────────────────────
+// ─── AEGIS Wide Card (Bottom full-width) ─────────────────────────────────────
 
-const LEAD_STAGE_COLOR: Record<string, string> = {
-  NEW: '#2564ea', CONTACTED: '#0ea5e9', QUALIFIED: '#7c3aed',
-  PROPOSAL: '#f59e0b', NEGOTIATION: '#f97316', WON: '#10b981', LOST: '#ef4444',
-}
-
-function CrmSummaryBar({ navigate }: { navigate: (p: string) => void }) {
-  const { data: leadsData } = useQuery({
-    queryKey: ['home-leads-summary'],
-    queryFn:  () => api.get('/admin/eqore/leads', { params: { limit: 3 } }).then(r => r.data),
+function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
+  const { data, isLoading } = useQuery({
+    queryKey: ['aegis-summary'],
+    queryFn:  () => api.get('/admin/aegis/agents/summary').then(r => r.data),
     staleTime: 60_000,
-  })
-  const { data: consultData } = useQuery({
-    queryKey: ['home-consult-summary'],
-    queryFn:  () => api.get('/consultations', { params: { limit: 3 } }).then(r => r.data),
-    staleTime: 60_000,
+    refetchInterval: 120_000,
   })
 
-  const leads         = leadsData?.leads         ?? (Array.isArray(leadsData) ? leadsData : [])
-  const consultations = consultData?.consultations ?? []
-  const totalLeads    = leadsData?.total          ?? leads.length
-  const totalConsults = consultData?.pagination?.total ?? consultData?.total ?? consultations.length
+  const verdict         = data?.overallVerdict ?? 'PASS'
+  const healthScore     = data?.healthScore    ?? null
+  const critical24h     = data?.critical24h    ?? 0
+  const warn24h         = data?.warn24h        ?? 0
+  const engines: any[]  = data?.engines        ?? []
+  const vs              = VERDICT_CFG[verdict] ?? VERDICT_CFG.PASS
+
+  const passEngines     = engines.filter(e => e.latest?.verdict === 'PASS').length
+  const critEngines     = engines.filter(e => e.latest?.verdict === 'CRITICAL').length
+  const warnEngines     = engines.filter(e => e.latest?.verdict === 'WARN').length
+  const checkedEngines  = engines.filter(e => e.latest).length
+  const totalEngines    = engines.length || 10
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-      <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-2xl p-5">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-            <Zap className="w-3.5 h-3.5 text-slate-500" />
-            Recent Leads
-            {totalLeads > 0 && (
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-white/5 text-slate-400">{totalLeads}</span>
-            )}
-          </h3>
-          <button
-            onClick={() => navigate('/kangqore-view/admin/leads')}
-            className="text-xs font-medium text-slate-500 hover:text-slate-300 flex items-center gap-0.5 transition-colors"
-          >
-            All leads <ArrowRight className="w-3 h-3" />
-          </button>
-        </div>
-        {leads.length === 0 ? (
-          <div className="flex items-center justify-center py-6 text-center">
-            <div>
-              <Zap className="w-6 h-6 text-slate-800 mx-auto mb-2" />
-              <p className="text-xs text-slate-600">No leads yet</p>
-            </div>
-          </div>
-        ) : (
-          <ul className="space-y-2.5">
-            {leads.slice(0, 3).map((l: any) => {
-              const stage = l.stage ?? l.status ?? 'NEW'
-              const col = LEAD_STAGE_COLOR[stage] ?? '#64748b'
-              return (
-                <li key={l.id} className="flex items-center gap-3 rounded-lg px-3 py-2.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-xs" style={{ background: `${col}18`, color: col }}>
-                    {(l.name ?? l.companyName ?? '?').charAt(0).toUpperCase()}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-200 truncate">{l.name ?? l.companyName ?? l.email}</p>
-                    <p className="text-[10px] text-slate-500 truncate">{l.email}</p>
-                  </div>
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md flex-shrink-0" style={{ color: col, background: `${col}15` }}>
-                    {stage}
-                  </span>
-                </li>
-              )
-            })}
-          </ul>
-        )}
+    <div className="os-card p-5 rounded-2xl">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+        <h3 style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, display: 'flex', alignItems: 'center', gap: 7 }}>
+          <Shield style={{ width: 14, height: 14, color: vs.color }} />
+          AEGIS Shield
+        </h3>
+        <button
+          onClick={() => navigate('/kangqore-view/admin/aegis')}
+          style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-2)', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3 }}
+        >
+          Open <ArrowRight style={{ width: 11, height: 11 }} />
+        </button>
       </div>
 
-      <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-2xl p-5">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-            <Calendar className="w-3.5 h-3.5 text-slate-500" />
-            Consultations
-            {totalConsults > 0 && (
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-white/5 text-slate-400">{totalConsults}</span>
-            )}
-          </h3>
-          <button
-            onClick={() => navigate('/kangqore-view/admin/consultations')}
-            className="text-xs font-medium text-slate-500 hover:text-slate-300 flex items-center gap-0.5 transition-colors"
-          >
-            All bookings <ArrowRight className="w-3 h-3" />
-          </button>
+      {isLoading ? (
+        <div style={{ display: 'flex', gap: 20 }}>
+          {[1,2,3].map(i => <SkeletonLight key={i} className="h-16 flex-1" />)}
         </div>
-        {consultations.length === 0 ? (
-          <div className="flex items-center justify-center py-6 text-center">
-            <div>
-              <Calendar className="w-6 h-6 text-slate-800 mx-auto mb-2" />
-              <p className="text-xs text-slate-600">No consultations yet</p>
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+          {/* Verdict badge with animated pulse dot */}
+          <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+            padding: '14px 20px', borderRadius: 12, background: `${vs.color}10`,
+            border: `1px solid ${vs.color}25`, flexShrink: 0, minWidth: 120,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 9, height: 9, borderRadius: '50%', background: vs.color, display: 'inline-block' }} className="animate-pulse" />
+              <span style={{ fontSize: 16, fontWeight: 800, color: vs.color }}>{vs.label}</span>
+            </div>
+            {healthScore != null && (
+              <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-2)' }}>{healthScore}/100</span>
+            )}
+            <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0, textAlign: 'center' }}>
+              {critical24h > 0 ? `${critical24h} critical 24h` : warn24h > 0 ? `${warn24h} warnings 24h` : 'No threats 24h'}
+            </p>
+          </div>
+
+          {/* 3 stat blocks */}
+          <div style={{ display: 'flex', gap: 10, flex: 1, minWidth: 180 }}>
+            {[
+              { label: 'Pass',     count: passEngines, color: '#00c875' },
+              { label: 'Warn',     count: warnEngines, color: '#fdab3d' },
+              { label: 'Critical', count: critEngines, color: '#e2445c' },
+            ].map(e => (
+              <div key={e.label} style={{
+                flex: 1, textAlign: 'center', padding: '10px 0', borderRadius: 10,
+                background: `${e.color}08`, border: `1px solid ${e.color}18`,
+              }}>
+                <p style={{ fontSize: 20, fontWeight: 800, color: e.color, margin: 0 }}>{e.count}</p>
+                <p style={{ fontSize: 9, fontWeight: 700, color: `${e.color}90`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{e.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* 10-square engine heatmap */}
+          <div style={{ flexShrink: 0 }}>
+            <p style={{ fontSize: 10, fontWeight: 600, color: 'var(--os-text-3)', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+              Engines ({checkedEngines}/{totalEngines})
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 5 }}>
+              {Array.from({ length: totalEngines }).map((_, i) => {
+                const eng     = engines[i]
+                const eVerdict = eng?.latest?.verdict ?? null
+                const color   = eVerdict === 'PASS' ? '#00c875' : eVerdict === 'WARN' ? '#fdab3d' : eVerdict === 'CRITICAL' ? '#e2445c' : 'var(--os-border)'
+                return (
+                  <div key={i} title={eng?.name ?? `Engine ${i+1}`} style={{
+                    width: 20, height: 20, borderRadius: 5,
+                    background: color, opacity: eVerdict ? 1 : 0.4,
+                  }} />
+                )
+              })}
             </div>
           </div>
-        ) : (
-          <ul className="space-y-2.5">
-            {consultations.slice(0, 3).map((c: any) => {
-              const scheduled = c.scheduledAt ? new Date(c.scheduledAt) : null
-              return (
-                <li key={c.id} className="flex items-center gap-3 rounded-lg px-3 py-2.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 bg-emerald-500/10">
-                    <Calendar className="w-3.5 h-3.5 text-slate-500" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-200 truncate">{c.name ?? c.email}</p>
-                    <p className="text-[10px] text-slate-500 truncate">
-                      {scheduled
-                        ? scheduled.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-                        : 'Unscheduled'}
-                    </p>
-                  </div>
-                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md flex-shrink-0 ${
-                    c.status === 'CONFIRMED' ? 'text-slate-300 bg-white/5' :
-                    c.status === 'PENDING'   ? 'text-slate-400 bg-white/5' :
-                    'text-slate-600 bg-white/5'
-                  }`}>
-                    {c.status ?? 'PENDING'}
-                  </span>
-                </li>
-              )
-            })}
-          </ul>
-        )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Module Grid (Quick Access) ───────────────────────────────────────────────
+
+const MODULES = [
+  { label: 'Leads',     icon: Zap,             color: '#579bfc', path: '/kangqore-view/admin/leads'       },
+  { label: 'Projects',  icon: LayoutDashboard, color: '#00c875', path: '/kangqore-view/admin/projects'    },
+  { label: 'BIDS™',    icon: Crosshair,        color: '#fdab3d', path: '/kangqore-view/admin/bids'        },
+  { label: 'AEGIS',    icon: Shield,           color: '#e2445c', path: '/kangqore-view/admin/aegis'       },
+  { label: 'Finance',  icon: DollarSign,       color: '#7c3aed', path: '/kangqore-view/admin/finance'     },
+  { label: 'Clients',  icon: Briefcase,        color: '#0ea5e9', path: '/kangqore-view/admin/clients'     },
+  { label: 'Schedule', icon: Calendar,         color: '#f97316', path: '/kangqore-view/admin/scheduling'  },
+  { label: 'Comms',    icon: Activity,         color: '#10b981', path: '/kangqore-view/admin/comms'       },
+]
+
+function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
+  return (
+    <div className="os-card p-5 rounded-2xl">
+      <p className="text-[10px] font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--os-text-2)' }}>
+        Quick Access
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+        {MODULES.map(m => {
+          const Icon = m.icon
+          return (
+            <motion.button
+              key={m.label}
+              onClick={() => navigate(m.path)}
+              whileHover={{ y: -3, transition: spring.smooth }}
+              whileTap={{ scale: 0.96 }}
+              className="flex flex-col items-center gap-2 rounded-2xl cursor-pointer transition-all"
+              style={{
+                padding: '14px 8px', border: '1px solid var(--os-border)',
+                background: 'var(--os-surface-0)',
+                width: 80, height: 80,
+              }}
+            >
+              <div style={{ width: 32, height: 32, borderRadius: 9, background: `${m.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Icon style={{ width: 15, height: 15, color: m.color }} />
+              </div>
+              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-1)', textAlign: 'center', lineHeight: 1.2 }}>{m.label}</span>
+            </motion.button>
+          )
+        })}
       </div>
     </div>
   )
@@ -1092,81 +1093,209 @@ function CrmSummaryBar({ navigate }: { navigate: (p: string) => void }) {
 
 // ─── Activity Feed ────────────────────────────────────────────────────────────
 
+const PRIORITY_DOT: Record<string, string> = {
+  critical: '#e2445c', high: '#fdab3d', medium: '#579bfc', low: '#c5c7d0',
+}
+
 function ActivityFeed() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['dashboard-signals'],
-    queryFn: () => api.get('/admin/kangqore-immp/signals', { params: { limit: 8 } }).then(r => r.data),
+    queryFn:  () => api.get('/admin/kangqore-immp/signals', { params: { limit: 8 } }).then(r => r.data),
     staleTime: 60_000,
   })
-  const signals: any[] = data?.signals ?? []
-
-  const PRIORITY_COLOR: Record<string, string> = {
-    critical: '#ef4444', high: '#f97316', medium: '#2564ea', low: '#94a3b8',
-  }
+  const rawSignals: any[] = data?.signals ?? []
+  const signals = rawSignals.map((s: any) => {
+    const severityLower = s.severity?.toLowerCase()
+    const priority = severityLower === 'moderate' ? 'medium' : (severityLower || s.priority || 'low')
+    return {
+      ...s,
+      summary: s.summary || s.signalValue || '',
+      module: s.module || s.sourceModule || '',
+      category: s.category || s.signalCategory || '',
+      priority,
+    }
+  })
 
   return (
-    <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-white/10 border-t-white/20 rounded-2xl p-5">
-      <div className="flex items-center justify-between mb-5">
-        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-          <Activity className="w-3.5 h-3.5" />
+    <div className="os-card p-5 rounded-2xl">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+        <h3 style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, display: 'flex', alignItems: 'center', gap: 7 }}>
+          <Activity style={{ width: 14, height: 14, color: '#579bfc' }} />
           Recent Activity
         </h3>
         <button
           onClick={() => refetch()}
-          className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-300 transition-colors"
+          style={{ width: 28, height: 28, borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', cursor: 'pointer', color: 'var(--os-text-2)' }}
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw style={{ width: 13, height: 13 }} className={isLoading ? 'animate-spin' : ''} />
         </button>
       </div>
 
       {isLoading ? (
-        <div className="space-y-4">
-          {[1,2,3,4].map(i => (
-            <div key={i} className="flex gap-3">
-              <SkeletonLight className="w-3 h-3 rounded-full mt-1 flex-shrink-0" />
-              <div className="flex-1 space-y-1.5">
-                <SkeletonLight className="h-4 w-3/4" />
-                <SkeletonLight className="h-3 w-1/2" />
-              </div>
-            </div>
-          ))}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {[1,2,3].map(i => <SkeletonLight key={i} className="h-10 w-full" />)}
         </div>
       ) : signals.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-10 text-center">
-          <CheckCircle2 className="w-8 h-8 text-slate-700 mb-3" />
-          <p className="text-sm font-medium text-slate-500">No signals yet</p>
-          <p className="text-xs text-slate-600 mt-1">WAANDA will surface intelligence here as it learns.</p>
+        <div style={{ textAlign: 'center', padding: '24px 0' }}>
+          <CheckCircle2 style={{ width: 28, height: 28, color: 'var(--os-text-3)', margin: '0 auto 8px', display: 'block' }} />
+          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--os-text-2)', margin: '0 0 4px' }}>No signals yet</p>
+          <p style={{ fontSize: 11, color: 'var(--os-text-3)', margin: 0 }}>WAANDA will surface intelligence here as it learns.</p>
         </div>
       ) : (
-        <div className="relative">
-          <div className="absolute left-[5px] top-2 bottom-2 w-px bg-slate-800" />
-          <ul className="space-y-5 pl-5">
+        <div style={{ position: 'relative' }}>
+          <div style={{ position: 'absolute', left: 5, top: 4, bottom: 4, width: 1, background: 'var(--os-border)' }} />
+          <ul style={{ listStyle: 'none', margin: 0, padding: '0 0 0 22px', display: 'flex', flexDirection: 'column', gap: 18 }}>
             {signals.map((s: any) => (
-              <li key={s.id} className="relative group">
-                <span
-                  className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full ring-2 ring-os-s1 flex-shrink-0 transition-transform group-hover:scale-125"
-                  style={{ background: PRIORITY_COLOR[s.priority] ?? '#94a3b8' }}
-                />
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-200 leading-snug">{s.title}</p>
-                    {s.summary && <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{s.summary}</p>}
-                    <div className="flex items-center gap-2 mt-1.5">
+              <li key={s.id} style={{ position: 'relative' }}>
+                <span style={{
+                  position: 'absolute', left: -22, top: 4, width: 10, height: 10, borderRadius: '50%',
+                  background: PRIORITY_DOT[s.priority] ?? '#c5c7d0',
+                  border: '2px solid var(--os-card)',
+                }} />
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    {s.summary && <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: '0 0 4px', lineHeight: 1.4 }} className="line-clamp-1">{s.summary}</p>}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       {s.module && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-800 text-slate-400 font-semibold">{s.module}</span>
+                        <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 4, background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>{s.module}</span>
                       )}
-                      {s.category && (
-                        <span className="text-[10px] text-slate-500">{s.category}</span>
-                      )}
+                      {s.category && <span style={{ fontSize: 10, color: 'var(--os-text-3)' }}>{s.category}</span>}
                     </div>
                   </div>
-                  <span className="text-[10px] text-slate-500 flex-shrink-0 pt-1 whitespace-nowrap">{timeAgo(s.createdAt)}</span>
+                  <span style={{ fontSize: 10, color: 'var(--os-text-3)', flexShrink: 0 }}>{timeAgo(s.createdAt)}</span>
                 </div>
               </li>
             ))}
           </ul>
         </div>
       )}
+    </div>
+  )
+}
+
+function PipelineTrendChart() {
+  const trendData = [
+    { month: 'Jan', revenue: 120000, leads: 5 },
+    { month: 'Feb', revenue: 185000, leads: 8 },
+    { month: 'Mar', revenue: 150000, leads: 6 },
+    { month: 'Apr', revenue: 240000, leads: 11 },
+    { month: 'May', revenue: 310000, leads: 14 },
+    { month: 'Jun', revenue: 450000, leads: 18 },
+  ]
+
+  return (
+    <div className="os-card p-5 rounded-2xl h-[300px] flex flex-col justify-between">
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
+            Pipeline & Revenue Growth
+          </p>
+          <p className="text-lg font-black mt-0.5" style={{ color: 'var(--os-text-1)' }}>
+            ₹4.50L <span className="text-xs font-bold text-[#00c875] ml-1">↑ 45.1% this month</span>
+          </p>
+        </div>
+        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
+          H1 2026
+        </span>
+      </div>
+
+      <div className="flex-1 w-full min-h-0">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={trendData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+            <defs>
+              <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#2564ea" stopOpacity={0.25}/>
+                <stop offset="95%" stopColor="#2564ea" stopOpacity={0.01}/>
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--os-border)" />
+            <XAxis dataKey="month" stroke="var(--os-text-3)" fontSize={9} tickLine={false} axisLine={false} />
+            <YAxis stroke="var(--os-text-3)" fontSize={9} tickLine={false} axisLine={false} tickFormatter={v => `₹${v/1000}k`} />
+            <RechartsTooltip 
+              contentStyle={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-md)' }}
+              labelStyle={{ fontSize: 11, fontWeight: 750, color: 'var(--os-text-1)' }}
+              itemStyle={{ fontSize: 11, color: 'var(--os-text-2)' }}
+              formatter={(v: any) => [`₹${Number(v).toLocaleString('en-IN')}`, 'Projected Revenue']}
+            />
+            <Area type="monotone" dataKey="revenue" stroke="#2564ea" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRevenue)" />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  )
+}
+
+function LeadDistributionChart({ leads }: { leads: any[] }) {
+  const stageCounts = leads.reduce((acc: Record<string, number>, l: any) => {
+    const stage = (l.status ?? l.stage ?? 'NEW').toUpperCase()
+    acc[stage] = (acc[stage] ?? 0) + 1
+    return acc
+  }, {})
+
+  const chartData = Object.entries(stageCounts).map(([name, value]) => ({
+    name: name.charAt(0) + name.slice(1).toLowerCase(),
+    value,
+    color: STAGE_CARD_COLOR[name] ?? '#579bfc'
+  })).filter(d => d.value > 0)
+
+  const displayData = chartData.length > 0 ? chartData : [
+    { name: 'New', value: 3, color: '#579bfc' },
+    { name: 'Contacted', value: 2, color: '#00c875' },
+    { name: 'Qualified', value: 1, color: '#fdab3d' },
+  ]
+
+  return (
+    <div className="os-card p-5 rounded-2xl h-[300px] flex flex-col justify-between">
+      <div>
+        <p className="text-[10px] font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--os-text-2)' }}>
+          Lead Pipeline Distribution
+        </p>
+      </div>
+
+      <div className="flex-1 w-full min-h-0 relative flex items-center justify-center">
+        <ResponsiveContainer width="100%" height="90%">
+          <PieChart>
+            <Pie
+              data={displayData}
+              cx="50%"
+              cy="50%"
+              innerRadius={48}
+              outerRadius={75}
+              paddingAngle={4}
+              dataKey="value"
+            >
+              {displayData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+            <RechartsTooltip
+              contentStyle={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-md)' }}
+              itemStyle={{ fontSize: 11, color: 'var(--os-text-1)', fontWeight: 700 }}
+              formatter={(v: any) => [v, 'Leads']}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+        
+        {/* Center overlay score/stat */}
+        <div className="absolute flex flex-col items-center justify-center">
+          <p className="text-xl font-black leading-none m-0" style={{ color: 'var(--os-text-1)' }}>
+            {leads.length}
+          </p>
+          <p className="text-[9px] uppercase tracking-wider text-[var(--os-text-3)] font-bold m-0 mt-0.5">
+            Total Leads
+          </p>
+        </div>
+      </div>
+
+      {/* Legend list */}
+      <div className="flex flex-wrap gap-x-3 gap-y-1 justify-center mt-2">
+        {displayData.map((d) => (
+          <div key={d.name} className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: d.color }} />
+            <span className="text-[9px] font-bold text-[var(--os-text-2)]">{d.name} ({d.value})</span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -1178,46 +1307,72 @@ export function DashboardHome() {
 
   const { data: kpis, isLoading: kpisLoading } = useQuery({
     queryKey: ['financial-kpis'],
-    queryFn: () => api.get('/admin/financial-kpis').then(r => r.data),
+    queryFn:  () => api.get('/admin/financial-kpis').then(r => r.data),
     staleTime: 60_000,
     refetchInterval: 120_000,
   })
   const { data: analytics } = useQuery({
     queryKey: ['ov-analytics'],
-    queryFn: () => api.get('/analytics').then(r => r.data),
+    queryFn:  () => api.get('/analytics').then(r => r.data),
     staleTime: 120_000,
   })
   const { data: twinData } = useQuery({
     queryKey: ['kimmp-twin'],
-    queryFn: () => api.get('/admin/kangqore-immp/twin/current').then(r => r.data),
+    queryFn:  () => api.get('/admin/kangqore-immp/twin/current').then(r => r.data),
+    staleTime: 60_000,
+  })
+  const { data: leadsRaw } = useQuery({
+    queryKey: ['home-leads-summary'],
+    queryFn:  () => api.get('/admin/eqore/leads', { params: { limit: 200 } }).then(r => r.data),
     staleTime: 60_000,
   })
 
+  const allLeads = leadsRaw?.leads ?? (Array.isArray(leadsRaw) ? leadsRaw : [])
+
   return (
-    <div className="max-w-[1400px]">
-      {/* 1. Hero banner */}
-      <Hero kpis={kpis} analytics={analytics} twinData={twinData} kpisLoading={kpisLoading} navigate={navigate} />
+    <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 w-full overflow-hidden">
+      {/* 1. Header */}
+      <PageHeader twinData={twinData} navigate={navigate} />
 
-      {/* 2. KPI strip */}
-      <KpiStrip kpis={kpis} analytics={analytics} loading={kpisLoading} />
+      {/* 2. KPI bar */}
+      <KpiBar kpis={kpis} analytics={analytics} loading={kpisLoading} />
 
-      {/* 3. Status bar — KIMMP, Pipeline, AEGIS, Consultations */}
-      <StatusBar navigate={navigate} />
-
-      {/* 4. Middle row — 3 columns */}
-      <div className="grid grid-cols-1 lg:grid-cols-[44fr_32fr_24fr] gap-4 mb-6">
-        <MyFocusPanel navigate={navigate} />
-        <WaandaLivePanel navigate={navigate} />
-        <div className="flex flex-col gap-4">
-          <AegisPulse navigate={navigate} />
-          <BidsSnapshot navigate={navigate} />
+      {/* 2.5 Infographics Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
+        <div className="lg:col-span-8 col-span-1 w-full">
+          <PipelineTrendChart />
+        </div>
+        <div className="lg:col-span-4 col-span-1 w-full">
+          <LeadDistributionChart leads={allLeads} />
         </div>
       </div>
 
-      {/* 5. CRM snapshot — Leads + Consultations */}
-      <CrmSummaryBar navigate={navigate} />
+      {/* 3. Three-column main body */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5 items-start">
+        <div className="lg:col-span-3 col-span-1 w-full">
+          <WorkQueuePanel navigate={navigate} />
+        </div>
+        <div className="lg:col-span-6 col-span-1 min-w-0 flex flex-col gap-4 w-full">
+          <PipelineKanban navigate={navigate} leads={allLeads} />
+          <MyFocusPanel navigate={navigate} />
+          <BidsPanel navigate={navigate} />
+        </div>
+        <div className="lg:col-span-3 col-span-1 w-full">
+          <WaandaRightPanel navigate={navigate} />
+        </div>
+      </div>
 
-      {/* 6. Activity Feed */}
+      {/* 4. Bottom row: AEGIS full-width + Module Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
+        <div className="lg:col-span-7 col-span-1 w-full">
+          <AegisWideCard navigate={navigate} />
+        </div>
+        <div className="lg:col-span-5 col-span-1 w-full">
+          <ModuleGrid navigate={navigate} />
+        </div>
+      </div>
+
+      {/* 5. Activity Feed */}
       <ActivityFeed />
     </div>
   )

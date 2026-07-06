@@ -15,18 +15,36 @@ import { generateCustomId } from '../utils/idGenerator';
 
 const router = Router();
 
+// ── Visitor stitch helper (fire-and-forget) ────────────────────────────────
+async function stitchVisitor(visitorUuid: string | undefined, userId: string) {
+  if (!visitorUuid) return
+  try {
+    const visitor = await prisma.anonymousVisitor.findUnique({ where: { visitorUuid } })
+    if (!visitor || visitor.stitchedToId) return
+    await prisma.anonymousVisitor.update({
+      where: { id: visitor.id },
+      data:  { stitchedToId: userId, stitchedAt: new Date() },
+    })
+    logger.info(`visitor.stitch: ${visitorUuid} → user ${userId}`)
+  } catch (err: any) {
+    logger.warn(`visitor.stitch.warn: ${err.message}`)
+  }
+}
+
 const registerSchema = Joi.object<RegisterRequest>({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
   name: Joi.string().min(2).required(),
   company: Joi.string().optional(),
   phone: Joi.string().optional(),
-  role: Joi.string().valid('ADMIN', 'CLIENT', 'PARTNER', 'INVESTOR', 'JOB_SEEKER', 'JOURNALIST', 'ANALYST', 'VISITOR', 'TEAM', 'EXECUTIVE').default('CLIENT')
+  role: Joi.string().valid('ADMIN', 'CLIENT', 'PARTNER', 'INVESTOR', 'JOB_SEEKER', 'JOURNALIST', 'ANALYST', 'VISITOR', 'TEAM', 'EXECUTIVE').default('CLIENT'),
+  visitorUuid: Joi.string().uuid().optional().allow('', null),
 });
 
 const loginSchema = Joi.object<LoginRequest>({
   email: Joi.string().email().required(),
-  password: Joi.string().required()
+  password: Joi.string().required(),
+  visitorUuid: Joi.string().uuid().optional().allow('', null),
 });
 
 // Register
@@ -37,7 +55,7 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
       throw createError(error.details[0].message, 400);
     }
 
-    const { email, password, name, company, role } = value;
+    const { email, password, name, company, role, visitorUuid } = value;
 
     // Check if user exists
     const existingUser = await prisma.user.findUnique({
@@ -97,6 +115,8 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
       token: tokens.accessToken,
       refreshToken: tokens.refreshToken
     });
+
+    stitchVisitor(value.visitorUuid, user.id).catch(() => {})
   } catch (error) {
     next(error);
   }
@@ -110,7 +130,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
       throw createError(error.details[0].message, 400);
     }
 
-    const { email, password } = value;
+    const { email, password, visitorUuid } = value;
 
     // Find user
     const user = await prisma.user.findUnique({
@@ -170,6 +190,8 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
       token: tokens.accessToken,
       refreshToken: tokens.refreshToken
     });
+
+    stitchVisitor(visitorUuid, user.id).catch(() => {})
   } catch (error) {
     next(error);
   }
@@ -326,5 +348,36 @@ router.post('/reset-password', async (req, res) => {
     res.status(500).json({ message: 'Error resetting password' });
   }
 });
+
+// ── Switch active org (issues a new JWT with updated currentOrgId) ────────────
+router.post('/switch-org', requireAuth, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = (req.user as any).userId
+    const { orgId } = req.body
+    if (!orgId) throw createError('orgId is required', 400)
+
+    const membership = await prisma.orgMembership.findUnique({
+      where: { organizationId_userId: { organizationId: orgId, userId } },
+      include: { organization: true },
+    })
+    if (!membership) throw createError('Not a member of this organisation', 403)
+
+    const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } })
+    const metadata = extractRequestMetadata(req)
+    const { tokens } = await createSession({
+      userId,
+      role:         user.role,
+      currentOrgId: orgId,
+      ipAddress:    metadata.ipAddress,
+      userAgent:    metadata.userAgent,
+    })
+
+    res.json({
+      token:        tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      org:          membership.organization,
+    })
+  } catch (e) { next(e) }
+})
 
 export default router;

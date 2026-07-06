@@ -11,6 +11,8 @@ const ROLE_CODES: Record<Role, string> = {
   VISITOR:    'VS',
   JOURNALIST: 'JR',
   ANALYST:    'AN',
+  TEAM:       'TM',
+  EXECUTIVE:  'EX',
 };
 
 /**

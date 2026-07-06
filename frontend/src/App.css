@@ -249,3 +249,23 @@ body.high-contrast * {
 .animate-slide-up {
     animation: slide-up 0.4s ease-out forwards;
 }
+
+/* Mic Drawing Animation */
+@keyframes draw-mic {
+    0% {
+        stroke-dashoffset: 150;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.animate-draw-mic path,
+.animate-draw-mic circle,
+.animate-draw-mic line,
+.animate-draw-mic polyline,
+.animate-draw-mic rect {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 150;
+    animation: draw-mic 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}

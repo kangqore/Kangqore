@@ -9,7 +9,7 @@ export const DECISIONS: Decision[] = [
     tradeoffs: 'Lose real-time indexing speed beyond ~5M records. Acceptable given 18-month growth projections.',
     impactTime: 'None', impactCost: -24000, impactRisk: 'LOW',
     project: { title: 'Alpha CRM Platform' }, client: { name: 'TechNova Inc.', company: 'TechNova Inc.' },
-    approver: { name: 'Mahesh Kumar', authorityRole: 'CTO' },
+    approver: { name: 'C.O.D.E.', authorityRole: 'CTO' },
     createdAt: '2026-05-10T09:00:00Z', updatedAt: '2026-05-12T14:00:00Z',
   },
   {
@@ -20,7 +20,7 @@ export const DECISIONS: Decision[] = [
     tradeoffs: 'Phase 2 addition will require a separate BAA amendment with the storage provider.',
     impactTime: '-1 week', impactCost: -5000, impactRisk: 'LOW',
     project: { title: 'Patient Portal v2' }, client: { name: 'GlobeMed Group', company: 'GlobeMed Group' },
-    approver: { name: 'Mahesh Kumar', authorityRole: 'CTO' },
+    approver: { name: 'C.O.D.E.', authorityRole: 'CTO' },
     createdAt: '2026-05-05T10:00:00Z', updatedAt: '2026-05-06T11:00:00Z',
   },
   {
@@ -53,7 +53,7 @@ export const DECISIONS: Decision[] = [
     tradeoffs: 'Client will use manual CSV export from Bloomberg for Phase 1. Phase 2 can revisit.',
     impactTime: '+6 weeks', impactCost: 25000, impactRisk: 'LOW',
     project: { title: 'FinTrack Analytics Suite' }, client: { name: 'Meridian Capital', company: 'Meridian Capital' },
-    approver: { name: 'Mahesh Kumar', authorityRole: 'CTO' },
+    approver: { name: 'C.O.D.E.', authorityRole: 'CTO' },
     createdAt: '2026-04-28T14:00:00Z', updatedAt: '2026-05-03T10:00:00Z',
   },
   {
@@ -96,7 +96,7 @@ export const CHANGE_REQUESTS: ChangeRequest[] = [
     id: 'cr4', title: 'Remove patient photo upload from MVP',
     description: 'Scope reduction — remove photo upload to reduce HIPAA surface area for MVP.',
     priority: 'LOW', status: 'IMPLEMENTED',
-    costImpact: -5000, timeImpact: '-1 week', requestedBy: 'Mahesh Kumar', decisionType: 'Scope Reduction',
+    costImpact: -5000, timeImpact: '-1 week', requestedBy: 'C.O.D.E.', decisionType: 'Scope Reduction',
     project: { title: 'Patient Portal v2' }, client: { name: 'GlobeMed Group', company: 'GlobeMed Group' },
     createdAt: '2026-05-05T10:00:00Z', updatedAt: '2026-05-12T09:00:00Z',
   },
@@ -112,16 +112,16 @@ export const CHANGE_REQUESTS: ChangeRequest[] = [
 ]
 
 export const AUDIT_LOGS: AuditLog[] = [
-  { id: 'al1', action: 'RISK_ESCALATED',             resource: 'Risk: eQORE lead score drops to 0 on re-sync',      userId: 'u1', user: { name: 'Mahesh Kumar', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-06-02T10:00:00Z' },
-  { id: 'al2', action: 'DECISION_PROPOSED',           resource: 'Decision: eQORE ML pipeline migration',             userId: 'u1', user: { name: 'Mahesh Kumar', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-06-01T10:00:00Z' },
+  { id: 'al1', action: 'RISK_ESCALATED',             resource: 'Risk: eQORE lead score drops to 0 on re-sync',      userId: 'u1', user: { name: 'C.O.D.E.', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-06-02T10:00:00Z' },
+  { id: 'al2', action: 'DECISION_PROPOSED',           resource: 'Decision: eQORE ML pipeline migration',             userId: 'u1', user: { name: 'C.O.D.E.', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-06-01T10:00:00Z' },
   { id: 'al3', action: 'CHANGE_REQUEST_SUBMITTED',    resource: 'CR: Add offline mode to Patient Portal',            userId: 'u2', user: { name: 'Dr. Sarah Mitchell', email: 'sarah@globemed.com', role: 'CLIENT', company: 'GlobeMed Group' }, createdAt: '2026-06-01T09:30:00Z' },
-  { id: 'al4', action: 'RISK_CREATED',                resource: 'Risk: GlobeMed HIPAA compliance gap',               userId: 'u1', user: { name: 'Mahesh Kumar', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-30T08:00:00Z' },
+  { id: 'al4', action: 'RISK_CREATED',                resource: 'Risk: GlobeMed HIPAA compliance gap',               userId: 'u1', user: { name: 'C.O.D.E.', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-30T08:00:00Z' },
   { id: 'al5', action: 'DECISION_APPROVED',           resource: 'Decision: GCC multi-language support',              userId: 'u3', user: { name: 'Yasmin Al-Hassan', email: 'yasmin@globemed.ae', role: 'CLIENT', company: 'GlobeMed Group' }, createdAt: '2026-05-20T14:00:00Z' },
-  { id: 'al6', action: 'CHANGE_REQUEST_APPROVED',     resource: 'CR: Multi-language support (Arabic + French)',       userId: 'u1', user: { name: 'Mahesh Kumar', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-20T13:45:00Z' },
+  { id: 'al6', action: 'CHANGE_REQUEST_APPROVED',     resource: 'CR: Multi-language support (Arabic + French)',       userId: 'u1', user: { name: 'C.O.D.E.', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-20T13:45:00Z' },
   { id: 'al7', action: 'DELIVERABLE_ACCEPTED',        resource: 'Deliverable: Sprint 12 Frontend Build',             userId: 'u2', user: { name: 'Dr. Sarah Mitchell', email: 'sarah@globemed.com', role: 'CLIENT', company: 'GlobeMed Group' }, createdAt: '2026-05-19T16:00:00Z' },
   { id: 'al8', action: 'RISK_ACCEPTED',               resource: 'Risk: Zoom API rate limits',                        userId: 'u4', user: { name: 'Tom Chen', email: 'tom@meridian.com', role: 'CLIENT', company: 'Meridian Capital' }, createdAt: '2026-05-15T10:00:00Z' },
-  { id: 'al9', action: 'CHANGE_REQUEST_REJECTED',     resource: 'CR: Real-time P&L feed from Bloomberg',             userId: 'u1', user: { name: 'Mahesh Kumar', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-03T10:00:00Z' },
-  { id: 'al10',action: 'DECISION_APPROVED',           resource: 'Decision: Defer patient photo upload to Phase 2',   userId: 'u1', user: { name: 'Mahesh Kumar', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-06T11:00:00Z' },
-  { id: 'al11',action: 'DECISION_APPROVED',           resource: 'Decision: PostgreSQL FTS over Elasticsearch',       userId: 'u1', user: { name: 'Mahesh Kumar', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-12T14:00:00Z' },
+  { id: 'al9', action: 'CHANGE_REQUEST_REJECTED',     resource: 'CR: Real-time P&L feed from Bloomberg',             userId: 'u1', user: { name: 'C.O.D.E.', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-03T10:00:00Z' },
+  { id: 'al10',action: 'DECISION_APPROVED',           resource: 'Decision: Defer patient photo upload to Phase 2',   userId: 'u1', user: { name: 'C.O.D.E.', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-06T11:00:00Z' },
+  { id: 'al11',action: 'DECISION_APPROVED',           resource: 'Decision: PostgreSQL FTS over Elasticsearch',       userId: 'u1', user: { name: 'C.O.D.E.', email: 'mahesh@kangqore.com', role: 'ADMIN' }, createdAt: '2026-05-12T14:00:00Z' },
   { id: 'al12',action: 'CHANGE_REQUEST_SUBMITTED',    resource: 'CR: Integrate with Salesforce CRM',                 userId: 'u4', user: { name: 'James Okello', email: 'james@meridian.com', role: 'CLIENT', company: 'Meridian Capital' }, createdAt: '2026-05-25T09:00:00Z' },
 ]

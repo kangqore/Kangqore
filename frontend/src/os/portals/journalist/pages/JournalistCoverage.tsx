@@ -1,47 +1,41 @@
-import { ExternalLink, TrendingUp, Globe, Star } from 'lucide-react'
+import { ExternalLink, TrendingUp, Globe, Star, AlertTriangle } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 
 const COVERAGE = [
   {
     id: 'c1', pub: 'Forbes', tier: 'Tier 1', date: 'June 2026',
     headline: 'Kangqore Launches BIDS™ Intelligence Suite — The ServiceNow for AI-Native Businesses',
     excerpt: 'Kangqore\'s BIDS™ platform consolidates 16 intelligence pillars into a single operating layer, targeting the fast-growing mid-market AI services segment.',
-    url: '#',
   },
   {
     id: 'c2', pub: 'TechCrunch', tier: 'Tier 1', date: 'May 2026',
     headline: 'How Kangqore\'s WAANDA AI Is Redefining the Consulting OS',
     excerpt: 'The WAANDA system — a digital twin of the company\'s operations — monitors 6 strategic dimensions in real time and surfaces autonomous recommendations.',
-    url: '#',
   },
   {
     id: 'c3', pub: 'Wired', tier: 'Tier 1', date: 'May 2026',
     headline: 'The Rise of the Agentic Consultancy',
     excerpt: 'Kangqore is among a handful of firms building AI systems that can act autonomously on behalf of clients — from procurement to performance management.',
-    url: '#',
   },
   {
     id: 'c4', pub: 'Business Insider', tier: 'Tier 2', date: 'April 2026',
     headline: 'Kangqore Recognised Among Top AI-Native Consulting Firms in 2026',
     excerpt: 'The company placed in the top 10 of Business Insider\'s annual ranking of AI-native professional services providers.',
-    url: '#',
   },
   {
     id: 'c5', pub: 'The Information', tier: 'Tier 1', date: 'April 2026',
     headline: 'New Agentic AI Capabilities Change the Unit Economics of Consulting',
     excerpt: 'Kangqore\'s platform-first model enables delivery ratios that traditional consulting firms struggle to match, with AI handling 60–70% of research and analysis tasks.',
-    url: '#',
   },
   {
     id: 'c6', pub: 'VentureBeat', tier: 'Tier 2', date: 'March 2026',
     headline: 'Inside the Platform That Wants to Become the OS for Every AI Business',
     excerpt: 'A deep-dive into Kangqore OS\'s architecture and the ambition to replace fragmented enterprise software stacks with a single, AI-wired operating environment.',
-    url: '#',
   },
   {
     id: 'c7', pub: 'Financial Times', tier: 'Tier 1', date: 'February 2026',
     headline: 'AI Consulting Firms Post Record Growth as Enterprise Adoption Accelerates',
     excerpt: 'Kangqore was cited alongside three other AI-native firms showing ARR growth above 40% year-on-year, outpacing the broader consulting market by 8x.',
-    url: '#',
   },
 ]
 
@@ -53,53 +47,64 @@ const STATS = [
 
 const TIER_COLOR: Record<string, string> = {
   'Tier 1': 'bg-os-blue/10 text-os-blue',
-  'Tier 2': 'bg-slate-500/10 text-slate-400',
+  'Tier 2': 'bg-slate-500/10 text-[var(--os-text-2)]',
 }
 
 export function JournalistCoverage() {
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
+    <div className="space-y-8">
+      <KIMMPSignalBar module="Press Coverage" />
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">Press Coverage</h1>
-        <p className="text-slate-500 mt-1 text-sm">Recent press coverage and media appearances for Kangqore. H1 2026.</p>
+        <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Press Coverage</h1>
+        <p className="text-[var(--os-text-2)] mt-1 text-sm">Sample press coverage and media appearances. H1 2026.</p>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="flex items-start gap-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30">
+        <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+        <p className="text-xs text-amber-300 leading-relaxed">
+          <span className="font-bold">ILLUSTRATIVE SAMPLE — Not verified coverage.</span> Headlines, excerpts, and statistics shown are placeholders representing the type of coverage Kangqore is pursuing. They do not represent confirmed or published articles. Contact{' '}
+          <a href="mailto:press@kangqore.com" className="underline">press@kangqore.com</a> to verify coverage or arrange a media briefing.
+        </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         {STATS.map(({ label, value, icon: Icon }) => (
-          <div key={label} className="p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-center">
+          <div key={label} className="os-card p-4 text-center">
             <Icon className="w-5 h-5 text-pink-400 mx-auto mb-2" />
-            <p className="text-2xl font-extrabold text-white">{value}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{label}</p>
+            <p className="text-2xl font-extrabold" style={{ color: 'var(--os-text-1)' }}>{value}</p>
+            <p className="text-xs text-[var(--os-text-2)] mt-0.5">{label}</p>
+            <p className="text-[10px] text-amber-400/70 mt-0.5 italic">illustrative</p>
           </div>
         ))}
       </div>
 
       {/* Coverage list */}
       <section>
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Recent Coverage</h2>
+        <h2 className="text-sm font-semibold text-[var(--os-text-2)] uppercase tracking-wider mb-4">Sample Coverage</h2>
         <div className="space-y-3">
-          {COVERAGE.map(({ id, pub, tier, date, headline, excerpt, url }) => (
-            <div key={id} className="p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 transition-colors group">
+          {COVERAGE.map(({ id, pub, tier, date, headline, excerpt }) => (
+            <div
+              key={id}
+              title="Coverage link available on request — contact press@kangqore.com"
+              className="os-card p-4 hover:shadow-md transition-all group cursor-default"
+            >
               <div className="flex items-start justify-between gap-3 mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-white">{pub}</span>
+                  <span className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{pub}</span>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TIER_COLOR[tier]}`}>{tier}</span>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-xs text-slate-500">{date}</span>
-                  <a
-                    href={url}
-                    onClick={e => e.preventDefault()}
-                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-pink-400 transition-colors"
-                  >
+                  <span className="text-xs text-[var(--os-text-2)]">{date}</span>
+                  <span className="flex items-center gap-1 text-xs text-[var(--os-text-2)] group-hover:text-amber-400 transition-colors">
                     <ExternalLink className="w-3.5 h-3.5" />
-                    Read
-                  </a>
+                    On request
+                  </span>
                 </div>
               </div>
-              <p className="text-sm font-semibold text-slate-200 mb-1">{headline}</p>
-              <p className="text-xs text-slate-500 line-clamp-2">{excerpt}</p>
+              <p className="text-sm font-semibold text-[var(--os-text-1)] mb-1">{headline}</p>
+              <p className="text-xs text-[var(--os-text-2)] line-clamp-2">{excerpt}</p>
             </div>
           ))}
         </div>

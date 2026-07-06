@@ -24,9 +24,10 @@ export const departmentsData = {
     bannerBrandSlug: 'eqore',
     icon: Brain,
     accentColor: '#2564ea',
-    serviceCount: 11,
+    serviceCount: 12,
     serviceSlugs: [
       'agentic-ai',
+      'agentic-ai-led-application-modernization',
       'ai-cognitive-computing',
       'data-science-ai',
       'genai-business-services',
@@ -39,7 +40,7 @@ export const departmentsData = {
       'intelligent-automation',
     ],
     heroBody:
-      'Kangqore Cognition delivers 11 services across agentic AI, generative AI, MLOps, data science, analytics, and intelligent automation for Chief AI Officers and Chief Data Officers — building production-ready AI systems with governance and observability baked in from day one.',
+      'Kangqore Cognition delivers 12 services across agentic AI, application modernization, generative AI, MLOps, data science, analytics, and intelligent automation for Chief AI Officers and Chief Data Officers — building production-ready AI systems with governance and observability baked in from day one.',
     heroServiceSlugs: [
       'agentic-ai',
       'genai-business-services',

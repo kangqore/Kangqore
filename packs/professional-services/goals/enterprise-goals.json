@@ -1,0 +1,10 @@
+{
+  "description": "Default enterprise goal targets for a professional services firm. Adjust targets to match the specific deployment.",
+  "goals": [
+    { "pillar": "REVENUE",        "label": "Annual Revenue",          "target": 10,   "unit": "₹ Cr",  "weight": 1.5, "notes": "Top-line revenue target. Tracked against invoices issued and collected." },
+    { "pillar": "MARGIN",         "label": "Project Margin",          "target": 35,   "unit": "%",     "weight": 1.3, "notes": "Average gross margin across all active projects. Tracked against budget vs actuals." },
+    { "pillar": "NPS",            "label": "Client NPS",              "target": 75,   "unit": "score", "weight": 1.0, "notes": "Net Promoter Score from quarterly client feedback surveys." },
+    { "pillar": "DELIVERY_SLA",   "label": "Delivery SLA Adherence",  "target": 98,   "unit": "%",     "weight": 1.2, "notes": "% of milestones delivered on or before due date. Tracked per project by PROJECT_HEALTH agent." },
+    { "pillar": "UTILIZATION",    "label": "Employee Utilization",    "target": 82,   "unit": "%",     "weight": 1.0, "notes": "Billable hours as % of available hours. Tracked against task assignments." }
+  ]
+}

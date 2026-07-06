@@ -173,7 +173,7 @@ function RequestAddOnDrawer({ onClose }: { onClose: () => void }) {
           <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
             <Check className="w-5 h-5 text-emerald-400" />
           </div>
-          <p className="text-sm font-semibold text-white mb-1">Request submitted</p>
+          <p className="text-sm font-semibold mb-1" style={{ color: 'var(--os-text-1)' }}>Request submitted</p>
           <p className="text-xs text-slate-500">Your account manager will contact you within 2 business days with pricing and next steps.</p>
         </div>
       ) : (
@@ -198,7 +198,7 @@ function RequestAddOnDrawer({ onClose }: { onClose: () => void }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2 mb-0.5">
-                      <p className="text-sm font-semibold text-white">{ao.name}</p>
+                      <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{ao.name}</p>
                       <span className="text-xs font-bold text-slate-400 flex-shrink-0">{ao.price}</span>
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed">{ao.description}</p>
@@ -240,7 +240,7 @@ export function ClientServices() {
       {/* Header */}
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-white">Services</h2>
+          <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Services</h2>
           <p className="text-sm text-slate-500 mt-0.5">{SERVICES.length} contracted services</p>
         </div>
         <Button variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />} onClick={() => setAddOnOpen(true)}>
@@ -286,7 +286,7 @@ export function ClientServices() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                    <p className="text-sm font-bold text-white">{svc.name}</p>
+                    <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{svc.name}</p>
                     <Badge variant={status.variant} dot size="sm">{status.label}</Badge>
                   </div>
                   <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{svc.description}</p>
@@ -308,7 +308,7 @@ export function ClientServices() {
                   <span
                     key={h}
                     className="text-[10px] font-semibold px-2 py-1 rounded-lg"
-                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: '#64748b' }}
+                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: 'var(--os-text-2)' }}
                   >
                     {h}
                   </span>
@@ -361,7 +361,7 @@ export function ClientServices() {
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="text-sm font-semibold text-white mb-1">{ao.name}</p>
+                  <p className="text-sm font-semibold mb-1" style={{ color: 'var(--os-text-1)' }}>{ao.name}</p>
                   <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{ao.description}</p>
                 </div>
                 <ChevronRight className="w-4 h-4 text-slate-700 group-hover:text-slate-400 transition-colors flex-shrink-0 mt-0.5" />
@@ -390,7 +390,7 @@ export function ClientServices() {
             { priority: 'P1 — Critical', desc: 'System down, data loss, security breach', enterprise: '< 1 hour', standard: '< 2 hours',       p1Color: '#f87171' },
             { priority: 'P2 — High',     desc: 'Major feature impaired, workaround unavailable', enterprise: '< 4 hours', standard: '< 8 hours', p1Color: '#fbbf24' },
             { priority: 'P3 — Medium',   desc: 'Feature impaired, workaround available', enterprise: '< 1 day',   standard: '< 2 days',         p1Color: '#60a5fa' },
-            { priority: 'P4 — Low',      desc: 'Minor issue, cosmetic, enhancement request', enterprise: '< 3 days', standard: '< 5 days',       p1Color: '#94a3b8' },
+            { priority: 'P4 — Low',      desc: 'Minor issue, cosmetic, enhancement request', enterprise: '< 3 days', standard: '< 5 days',       p1Color: 'var(--os-text-2)' },
           ].map((row, i) => (
             <div
               key={row.priority}

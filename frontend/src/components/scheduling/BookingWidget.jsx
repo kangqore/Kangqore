@@ -469,7 +469,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                       <input 
                         required
                         type="text"
-                        placeholder="Mahesh Kumar"
+                        placeholder="C.O.D.E."
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                         className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl focus:ring-2 focus:ring-brand-blue transition-all outline-none"

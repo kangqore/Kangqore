@@ -1,0 +1,14 @@
+{
+  "profile": "professional-services-v1",
+  "description": "QEF certification thresholds for professional services deployments.",
+  "gates": {
+    "G1_ContextAssembly":        { "minScore": 80, "rationale": "Context must accurately reflect project, finance, and pipeline data." },
+    "G2_DecisionQuality":        { "minScore": 75, "rationale": "WAANDA decisions must be traceable to evidence before L3 approval." },
+    "G3_PlanningAccuracy":       { "minScore": 70, "rationale": "Workflow plans must match execution within acceptable variance." },
+    "G4_ExecutionReliability":   { "minScore": 85, "rationale": "Approved workflows must complete without failure >85% of the time." },
+    "G5_WorkflowCanvas":         { "minScore": 70, "rationale": "Canvas must render all 9 seeded workflows correctly." },
+    "G6_RealTimeIntelligence":   { "minScore": 75, "rationale": "Signals must surface within 60s of triggering events." },
+    "G7_ReleaseGovernance":      { "minScore": 80, "rationale": "All deployments must pass RGS pre-flight before production." },
+    "G8_OIS":                    { "minScore": 60, "rationale": "Minimum OIS of 60/100 before Customer Zero Report is considered credible." }
+  }
+}

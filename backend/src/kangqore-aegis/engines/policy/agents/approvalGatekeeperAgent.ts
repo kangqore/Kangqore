@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess policy compliance and enforcement. Flag violations, exceptions, and decisions requiring ADMIN review. Write 2 sentences, direct.'
 
 // High-sensitivity triggers that must come from ADMIN or SCHEDULER
 const SENSITIVE_TRIGGERS = /^event\.(KNOWLEDGE_ASSET|EGRESS|CRITICAL_ACTIVATION)/

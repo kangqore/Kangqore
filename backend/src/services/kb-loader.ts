@@ -1,8 +1,20 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
-import matter from 'gray-matter';
+import yaml from 'js-yaml';
 import logger from '../utils/logger';
+
+// Inline frontmatter parser — replaces gray-matter to avoid js-yaml v3/v4 conflict
+function parseFrontmatter(raw: string): { data: Record<string, any>; content: string } {
+  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  if (!match) return { data: {}, content: raw };
+  try {
+    const data = (yaml.load(match[1]) as Record<string, any>) ?? {};
+    return { data, content: match[2] };
+  } catch {
+    return { data: {}, content: match[2] };
+  }
+}
 
 export interface KBChunk {
   id: string;
@@ -70,7 +82,7 @@ function slugify(s: string): string {
 
 function parseFile(filePath: string): ParsedFile | null {
   const raw = fs.readFileSync(filePath, 'utf-8');
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
   if (!data.id || !data.title) {
     logger.warn(`KB file missing id/title in frontmatter: ${filePath}`);
     return null;

@@ -5,8 +5,9 @@
 // never blocks the operation being recorded.
 // ---------------------------------------------------------------------------
 
-import { prisma } from '../lib/prisma'
-import logger from '../utils/logger'
+import { prisma }        from '../lib/prisma'
+import logger             from '../utils/logger'
+import { emitToAdmins }  from '../socket'
 
 export type AegisEventType =
   | 'ACTIVATION'
@@ -15,6 +16,11 @@ export type AegisEventType =
   | 'KNOWLEDGE_ASSET'
   | 'EGRESS'
   | 'POLICY_VIOLATION'
+  | 'DEPLOYMENT_AUTHORIZED'
+  | 'DEPLOYMENT_BLOCKED'
+  | 'DEPLOYMENT_EMERGENCY_OVERRIDE'
+  | 'DEPLOYMENT_ROLLBACK_INITIATED'
+  | 'DEPLOYMENT_COMPLETED'
 
 export interface ActivationInput {
   system: string
@@ -70,6 +76,11 @@ export class AegisLedger {
   }): Promise<string | null> {
     try {
       const row = await (prisma as any).aegisAuditLog.create({ data })
+      // Broadcast every governance event to admin sockets for live feed
+      emitToAdmins('aegis:event', {
+        ...row,
+        createdAt: row.createdAt?.toISOString?.() ?? new Date().toISOString(),
+      })
       return row.id as string
     } catch (err) {
       logger.warn('[AEGIS] Ledger write failed: ' + (err as Error).message)
@@ -143,6 +154,42 @@ export class AegisLedger {
       priority:  input.severity,
       trigger:   input.policy,
       metadata:  { detail: input.detail, ...input.metadata },
+    })
+  }
+
+  static async logDeployment(input: {
+    eventType:  'DEPLOYMENT_AUTHORIZED' | 'DEPLOYMENT_BLOCKED' | 'DEPLOYMENT_EMERGENCY_OVERRIDE' | 'DEPLOYMENT_ROLLBACK_INITIATED' | 'DEPLOYMENT_COMPLETED'
+    decisionId: string
+    deployId?:  string
+    certId:     string
+    environment: string
+    verdict?:   string
+    actor:      string
+    blockers?:  string[]
+    reason?:    string
+    outcome?:   string
+    metadata?:  Record<string, unknown>
+  }): Promise<string | null> {
+    const priority = input.eventType === 'DEPLOYMENT_BLOCKED' || input.eventType === 'DEPLOYMENT_EMERGENCY_OVERRIDE'
+      ? 'HIGH'
+      : 'NORMAL'
+    return AegisLedger.write({
+      eventType: input.eventType,
+      system:    'RGS',
+      trigger:   input.decisionId,
+      actor:     input.actor,
+      priority,
+      metadata: {
+        decisionId:  input.decisionId,
+        deployId:    input.deployId,
+        certId:      input.certId,
+        environment: input.environment,
+        verdict:     input.verdict,
+        blockers:    input.blockers,
+        reason:      input.reason,
+        outcome:     input.outcome,
+        ...input.metadata,
+      },
     })
   }
 

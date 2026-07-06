@@ -6,6 +6,8 @@ import { smsService } from '../services/sms.service';
 import { WorkflowExecutor } from './WorkflowExecutor';
 import { addMinutes, addHours } from 'date-fns';
 import logger from '../utils/logger';
+import { createNotification } from '../services/notificationService';
+import { notifyClient } from '../services/clientEmail.service';
 
 const accountabilityService = new AccountabilityService();
 
@@ -18,6 +20,7 @@ export class CronManager {
     this.scheduleImpactAccrual();
     this.scheduleMeetingReminders();
     this.scheduleWorkflowExecutor();
+    this.scheduleInvoiceNotifications();
   }
 
   /**
@@ -192,5 +195,74 @@ export class CronManager {
       }
     });
     console.log('   -> Meeting Reminders scheduled (every 15 min — 24h + 1h pre-meeting)');
+  }
+
+  /**
+   * Run daily at 08:00 — notify clients about invoices due in 3 days and mark/notify overdue.
+   */
+  private static scheduleInvoiceNotifications() {
+    cron.schedule('0 8 * * *', async () => {
+      try {
+        const now = new Date();
+        const in3Days = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+        const in4Days = new Date(now.getTime() + 4 * 24 * 60 * 60 * 1000);
+
+        // Due-in-3-days: window between 3d and 4d out to avoid re-notifying daily
+        const dueSoon = await prisma.invoice.findMany({
+          where: {
+            status: { notIn: ['PAID', 'CANCELLED', 'DRAFT'] },
+            dueDate: { gte: in3Days, lt: in4Days },
+          },
+          select: { id: true, invoiceNumber: true, clientId: true, dueDate: true },
+        });
+
+        for (const inv of dueSoon) {
+          await createNotification({
+            userId: inv.clientId,
+            title: 'Invoice due in 3 days',
+            message: `Invoice ${inv.invoiceNumber} is due on ${new Date(inv.dueDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}.`,
+            type: 'WARNING',
+            link: '/kangqore-view/client/invoices',
+          });
+          await notifyClient(inv.clientId, {
+            type: 'INVOICE_DUE',
+            invoiceNumber: inv.invoiceNumber,
+            dueDate: new Date(inv.dueDate),
+          });
+        }
+
+        // Overdue: dueDate in the past, still unpaid — notify once (today they crossed the line)
+        const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        const nowOverdue = await prisma.invoice.findMany({
+          where: {
+            status: { notIn: ['PAID', 'CANCELLED', 'DRAFT', 'OVERDUE'] },
+            dueDate: { gte: yesterday, lt: now },
+          },
+          select: { id: true, invoiceNumber: true, clientId: true },
+        });
+
+        for (const inv of nowOverdue) {
+          await prisma.invoice.update({ where: { id: inv.id }, data: { status: 'OVERDUE' } });
+          await createNotification({
+            userId: inv.clientId,
+            title: 'Invoice overdue',
+            message: `Invoice ${inv.invoiceNumber} is now overdue. Please arrange payment.`,
+            type: 'ERROR',
+            link: '/kangqore-view/client/invoices',
+          });
+          await notifyClient(inv.clientId, {
+            type: 'INVOICE_OVERDUE',
+            invoiceNumber: inv.invoiceNumber,
+          });
+        }
+
+        if (dueSoon.length + nowOverdue.length > 0) {
+          console.log(`   -> Invoice notifications: ${dueSoon.length} due-soon, ${nowOverdue.length} overdue`);
+        }
+      } catch (err) {
+        console.error('❌ Error in Invoice Notifications:', err);
+      }
+    });
+    console.log('   -> Invoice Notifications scheduled (08:00 Daily)');
   }
 }

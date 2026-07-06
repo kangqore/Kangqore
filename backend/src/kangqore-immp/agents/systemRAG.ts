@@ -34,17 +34,19 @@ import { AegisLedger } from '../../kangqore-aegis/aegisLedger.service'
 export type RAGSystem = SystemType | 'KIMMP'
 
 export const RAG_SYSTEMS: RAGSystem[] = [
-  'EQORE', 'LEAD_INTEL', 'ALIS', 'VIS', 'SENTINEL', 'KIMMP',
+  'EQORE', 'LEAD_INTEL', 'ALIS', 'VIS', 'SENTINEL', 'DELIVERY_OPS', 'FINANCE_OPS', 'KIMMP',
 ]
 
 // Canonical doc types per system — informational, not enforced at DB level.
 export const SYSTEM_DOC_TYPES: Record<RAGSystem, string[]> = {
-  EQORE:      ['meeting', 'client_note', 'action_item', 'conversation', 'org_knowledge', 'briefing'],
-  LEAD_INTEL: ['scoring_rationale', 'deal_history', 'win_loss', 'tender', 'prospect_note', 'briefing'],
-  ALIS:       ['playbook', 'sop', 'campaign_brief', 'workflow_template', 'performance_report', 'briefing'],
-  VIS:        ['report', 'exec_summary', 'competitor_intel', 'market_research', 'strategy_doc', 'briefing'],
-  SENTINEL:   ['cve', 'incident_report', 'compliance_doc', 'security_policy', 'audit_log', 'briefing'],
-  KIMMP:      ['loop_synthesis', 'strategic_decision', 'cross_system_pattern', 'board_doc', 'briefing'],
+  EQORE:        ['meeting', 'client_note', 'action_item', 'conversation', 'org_knowledge', 'briefing'],
+  LEAD_INTEL:   ['scoring_rationale', 'deal_history', 'win_loss', 'tender', 'prospect_note', 'briefing'],
+  ALIS:         ['playbook', 'sop', 'campaign_brief', 'workflow_template', 'performance_report', 'briefing'],
+  VIS:          ['report', 'exec_summary', 'competitor_intel', 'market_research', 'strategy_doc', 'briefing'],
+  SENTINEL:     ['cve', 'incident_report', 'compliance_doc', 'security_policy', 'audit_log', 'briefing'],
+  DELIVERY_OPS: ['project_health_report', 'delivery_retrospective', 'milestone_escalation', 'twin_simulation', 'portfolio_assessment', 'briefing'],
+  FINANCE_OPS:  ['invoice_validation', 'collections_escalation', 'budget_variance', 'deal_coaching', 'pipeline_assessment', 'briefing'],
+  KIMMP:        ['loop_synthesis', 'strategic_decision', 'cross_system_pattern', 'board_doc', 'briefing'],
 }
 
 export interface RAGChunk {

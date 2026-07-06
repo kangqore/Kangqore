@@ -34,6 +34,7 @@ import sessionsRoutes from '../routes/sessions';
 import ticketsRoutes from '../routes/tickets';
 import uploadsRoutes from '../routes/uploads';
 import oauthRoutes from '../routes/oauth';
+import channelsRoutes from '../routes/channels';
 
 const router = Router();
 
@@ -67,6 +68,7 @@ v1Router.use('/public', publicContentRoutes);
 v1Router.use('/media', mediaRoutes);
 
 // Communication routes
+v1Router.use('/channels', channelsRoutes);
 v1Router.use('/messages', messagesRoutes);
 v1Router.use('/notifications', notificationsRoutes);
 v1Router.use('/newsletter', newsletterRoutes);

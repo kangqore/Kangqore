@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import {
-  Activity, RefreshCw, GitMerge, Filter,
+  Activity, RefreshCw, GitMerge, Filter, ChevronDown,
   AlertTriangle, TrendingUp, Lightbulb, Zap, Shield,
 } from 'lucide-react'
 import { Badge } from '@design-system/components/Badge'
@@ -39,11 +39,11 @@ const SEV_CONFIG: Record<string, { badge: 'danger' | 'warning' | 'info' | 'neutr
 }
 
 const CAT_CONFIG: Record<string, { icon: React.FC<{ className?: string }>; color: string }> = {
-  COMPETITOR:  { icon: ({ className }) => <AlertTriangle className={className} />, color: 'text-red-500 bg-red-50'    },
-  OPPORTUNITY: { icon: ({ className }) => <Lightbulb    className={className} />, color: 'text-green-600 bg-green-50' },
-  MARKET:      { icon: ({ className }) => <TrendingUp   className={className} />, color: 'text-blue-500 bg-blue-50'  },
-  RISK:        { icon: ({ className }) => <Shield       className={className} />, color: 'text-amber-500 bg-amber-50'},
-  SYSTEM:      { icon: ({ className }) => <Zap          className={className} />, color: 'text-purple-500 bg-purple-50'},
+  COMPETITOR:  { icon: ({ className }) => <AlertTriangle className={className} />, color: '#ef4444' },
+  OPPORTUNITY: { icon: ({ className }) => <Lightbulb    className={className} />, color: '#16a34a' },
+  MARKET:      { icon: ({ className }) => <TrendingUp   className={className} />, color: '#3b82f6' },
+  RISK:        { icon: ({ className }) => <Shield       className={className} />, color: '#f59e0b' },
+  SYSTEM:      { icon: ({ className }) => <Zap          className={className} />, color: '#a855f7' },
 }
 
 function formatRelative(iso: string) {
@@ -59,25 +59,60 @@ function formatRelative(iso: string) {
 // ─── Signal row ───────────────────────────────────────────────────────────────
 
 function SignalRow({ signal }: { signal: Signal }) {
+  const [expanded, setExpanded] = useState(false)
   const sev = SEV_CONFIG[signal.severity] ?? SEV_CONFIG.LOW
   const cat = CAT_CONFIG[signal.signalCategory] ?? CAT_CONFIG.SYSTEM
   const Icon = cat.icon
+  const meta = signal.metadata ?? {}
+  const hasDetail = Object.keys(meta).length > 0
 
   return (
-    <div className="flex items-start gap-3 py-3 px-4 border-b border-white/10 border-t-white/20 last:border-0 hover:bg-slate-900/60 transition-colors">
-      <div className={`w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 ${cat.color}`}>
-        <Icon className="w-3 h-3" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-xs text-slate-200 leading-snug line-clamp-2">{signal.signalValue}</p>
-        <div className="flex items-center gap-2 mt-1 flex-wrap">
-          <Badge variant={sev.badge} size="sm" dot>{signal.severity}</Badge>
-          <span className="text-[10px] text-slate-500">{signal.signalType.replace(/_/g, ' ')}</span>
-          <span className="text-[10px] text-slate-500 border-l border-white/10 border-t-white/20 pl-2">{signal.sourceModule}</span>
-          <span className="text-[10px] text-slate-300 ml-auto">{signal.confidence}% conf</span>
+    <div className={`border-b border-[var(--os-border)] last:border-0 transition-colors ${expanded ? 'bg-[var(--os-surface-0)]' : 'hover:bg-[var(--os-surface-0)]'}`}>
+      <div
+        className="flex items-start gap-4 py-4 px-6 cursor-pointer select-none"
+        onClick={() => setExpanded(e => !e)}
+      >
+        <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${cat.color}20`, color: cat.color }}>
+          <Icon className="w-5 h-5" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className={`text-sm font-bold text-[var(--os-text-1)] leading-snug ${expanded ? '' : 'line-clamp-2'}`}>{signal.signalValue}</p>
+          <div className="flex items-center gap-2 mt-2 flex-wrap">
+            <Badge variant={sev.badge} size="sm" dot>{signal.severity}</Badge>
+            <span className="text-[11px] font-bold text-[var(--os-text-2)]">{signal.signalType.replace(/_/g, ' ')}</span>
+            <span className="text-[11px] font-bold text-[var(--os-text-2)] border-l border-[var(--os-border)] pl-2">{signal.sourceModule}</span>
+            <span className="text-[11px] font-bold text-blue-600 ml-auto bg-blue-50 px-2 py-0.5 rounded-md">{signal.confidence}% conf</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0 mt-0.5">
+          <span className="text-[11px] font-bold text-[var(--os-text-2)]">{formatRelative(signal.createdAt)}</span>
+          <ChevronDown className={`w-4 h-4 text-[var(--os-text-2)] transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
         </div>
       </div>
-      <span className="text-[10px] text-slate-500 flex-shrink-0 mt-0.5">{formatRelative(signal.createdAt)}</span>
+
+      {expanded && (
+        <div className="px-6 pb-5">
+          <div className="ml-14 rounded-xl border border-[var(--os-border)] overflow-hidden" style={{ background: 'var(--os-card)' }}>
+            <div className="px-4 py-2.5 border-b border-[var(--os-border)]" style={{ background: 'var(--os-surface-0)' }}>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)]">Signal Detail</p>
+            </div>
+            {hasDetail ? (
+              <div className="divide-y divide-[var(--os-border)]">
+                {Object.entries(meta).map(([k, v]) => (
+                  <div key={k} className="flex gap-4 px-4 py-2.5">
+                    <span className="text-[11px] font-bold text-[var(--os-text-2)] w-36 flex-shrink-0 pt-px">{k.replace(/_/g, ' ')}</span>
+                    <span className="text-[11px] text-[var(--os-text-1)] break-all whitespace-pre-wrap font-mono leading-relaxed">
+                      {typeof v === 'object' ? JSON.stringify(v, null, 2) : String(v)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="px-4 py-4 text-[11px] font-bold text-[var(--os-text-2)] italic">No additional metadata for this signal.</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -86,22 +121,31 @@ function SignalRow({ signal }: { signal: Signal }) {
 
 function PatternCard({ pattern }: { pattern: CorrelationPattern }) {
   return (
-    <div className="bg-purple-50 border border-purple-100 rounded-xl p-4 space-y-2">
-      <div className="flex items-start gap-2">
-        <GitMerge className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-        <p className="text-sm font-semibold text-white">{pattern.pattern}</p>
-        <span className="ml-auto text-[10px] font-bold text-purple-600 bg-purple-100 px-1.5 py-0.5 rounded-md flex-shrink-0">
-          {pattern.confidence}%
-        </span>
-      </div>
-      <p className="text-xs text-slate-500 leading-relaxed ml-6">{pattern.recommendation}</p>
-      {pattern.signals?.length > 0 && (
-        <div className="flex flex-wrap gap-1 ml-6">
-          {pattern.signals.map((s, i) => (
-            <span key={i} className="text-[10px] bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-purple-200 text-purple-600 px-1.5 py-0.5 rounded-md">{s}</span>
-          ))}
+    <div
+      className="rounded-[32px] p-6 space-y-3 transition-transform hover:-translate-y-1"
+      style={{ background: '#7c3aed0A', boxShadow: '0 16px 32px rgba(124,58,237,0.1)' }}
+    >
+      <div className="flex items-start gap-4">
+        <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 bg-purple-100/50">
+          <GitMerge className="w-5 h-5 text-purple-600" />
         </div>
-      )}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3">
+            <p className="text-base font-bold text-[var(--os-text-1)]">{pattern.pattern}</p>
+            <span className="ml-auto text-[11px] font-bold px-2 py-1 rounded-md flex-shrink-0 text-purple-600 bg-purple-100">
+              {pattern.confidence}%
+            </span>
+          </div>
+          <p className="text-sm font-semibold text-[var(--os-text-2)] leading-relaxed mt-1.5">{pattern.recommendation}</p>
+          {pattern.signals?.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-3">
+              {pattern.signals.map((s, i) => (
+                <span key={i} className="text-[10px] font-bold px-2 py-1 rounded-md text-purple-600 bg-purple-50">{s}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
@@ -149,30 +193,31 @@ export function SignalsPage() {
   }
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8">
 
       {/* Header */}
-      <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center flex-shrink-0 shadow-lg">
-          <Activity className="w-6 h-6 text-white" />
+      <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center flex-shrink-0 shadow-lg">
+          <Activity className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
-          <h2 className="text-xl font-bold text-white">Signal Ledger + Correlation</h2>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <h2 className="text-base font-bold text-[var(--os-text-1)]">Signal Ledger + Correlation</h2>
+          <p className="text-xs text-[var(--os-text-2)] mt-0.5">
             Every signal KIMMP has observed — from Scout, Proactive Engine, and cross-module triggers.
           </p>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => refetch()}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin' : ''}`} />
           </button>
           <button
             onClick={runCorrelation}
             disabled={analyzing}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 text-white text-sm font-semibold hover:bg-purple-700 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-2.5 rounded-full text-white text-[12px] font-bold hover:-translate-y-1 transition-all disabled:opacity-50"
+            style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #2564ea 100%)', boxShadow: '0 8px 24px rgba(124,58,237,0.35)' }}
           >
             {analyzing ? <Spinner size="sm" /> : <GitMerge className="w-4 h-4" />}
             Analyze Patterns
@@ -181,16 +226,33 @@ export function SignalsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-4 gap-4">
         {[
-          { label: 'Critical', count: counts.CRITICAL, color: 'text-red-600'   },
-          { label: 'High',     count: counts.HIGH,     color: 'text-amber-600' },
-          { label: 'Moderate', count: counts.MODERATE, color: 'text-blue-600'  },
-          { label: 'Low',      count: counts.LOW,      color: 'text-slate-500' },
+          { label: 'Critical',   value: counts.CRITICAL, accent: '#e2445c', icon: AlertTriangle },
+          { label: 'High',       value: counts.HIGH,     accent: '#fdab3d', icon: Shield        },
+          { label: 'Correlated', value: counts.MODERATE, accent: '#7c3aed', icon: GitMerge      },
+          { label: 'Sources',    value: counts.LOW,      accent: '#579bfc', icon: Activity      },
         ].map(s => (
-          <div key={s.label} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-4 shadow-sm text-center">
-            <p className={`text-2xl font-bold tracking-tight ${s.color}`}>{s.count}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+          <div key={s.label} className="relative overflow-hidden flex flex-col p-5 transition-all duration-300"
+            style={{
+              background: s.accent,
+              color: '#ffffff',
+              borderRadius: 'var(--os-radius-xl)',
+              boxShadow: `0 12px 32px ${s.accent}60`,
+              border: 'none',
+            }}
+          >
+            <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: '50%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15))', pointerEvents: 'none' }} />
+            
+            <div className="w-9 h-9 rounded-2xl flex items-center justify-center mb-3" style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(10px)' }}>
+              <s.icon style={{ width: 18, height: 18, color: '#ffffff' }} />
+            </div>
+            <p className="text-3xl font-black tracking-tight leading-none mb-1.5" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+              {s.value}
+            </p>
+            <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.9)' }}>
+              {s.label}
+            </p>
           </div>
         ))}
       </div>
@@ -206,18 +268,17 @@ export function SignalsPage() {
         </div>
       )}
 
-      {/* Filters */}
-      <div className="space-y-2">
+      <div className="space-y-3">
         <div className="flex items-center gap-2 flex-wrap">
-          <Filter className="w-3.5 h-3.5 text-slate-500" />
+          <Filter className="w-4 h-4 text-[var(--os-text-2)]" />
           {SEVERITY_FILTERS.map(f => (
             <button
               key={f}
               onClick={() => setSevFilter(f)}
-              className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
+              className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 sevFilter === f
-                  ? 'bg-slate-900 text-white border-slate-900'
-                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border-white/10 border-t-white/20 hover:border-slate-400'
+                  ? 'bg-slate-900 text-white shadow-sm'
+                  : 'bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-slate-100'
               }`}
             >
               {f === 'ALL' ? 'All Severities' : f}
@@ -225,15 +286,15 @@ export function SignalsPage() {
           ))}
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="w-3.5 h-3.5 flex-shrink-0" />
+          <span className="w-4 h-4 flex-shrink-0" />
           {CATEGORY_FILTERS.map(f => (
             <button
               key={f}
               onClick={() => setCatFilter(f)}
-              className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
+              className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 catFilter === f
-                  ? 'bg-purple-600 text-white border-purple-600'
-                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border-white/10 border-t-white/20 hover:border-slate-400'
+                  ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/20'
+                  : 'bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-slate-100'
               }`}
             >
               {f === 'ALL' ? 'All Categories' : f}
@@ -243,19 +304,22 @@ export function SignalsPage() {
       </div>
 
       {/* Signal list */}
-      <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-[var(--os-card)] shadow-[0_32px_64px_rgba(0,0,0,0.04)] overflow-hidden" style={{ borderRadius: 'var(--os-radius-xl)' }}>
         {isLoading ? (
-          <div className="flex justify-center py-12"><Spinner /></div>
+          <div className="flex justify-center py-20"><Spinner /></div>
         ) : signals.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Activity className="w-8 h-8 text-slate-200 mb-3" />
-            <p className="text-sm text-slate-500">No signals match the current filter.</p>
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mb-6">
+              <Activity className="w-8 h-8 text-slate-400" />
+            </div>
+            <p className="text-lg font-bold text-[var(--os-text-1)]">No signals match</p>
+            <p className="text-sm font-semibold text-[var(--os-text-2)] mt-2">Try widening the filter criteria.</p>
           </div>
         ) : (
           <>
-            <div className="px-4 py-2.5 border-b border-white/10 border-t-white/20 bg-slate-900 flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">{signals.length} signals</span>
-              <span className="text-[10px] text-slate-500">Latest first</span>
+            <div className="px-6 py-4 border-b border-[var(--os-border)] bg-[var(--os-surface-0)]/50 flex items-center justify-between">
+              <span className="text-xs font-bold text-[var(--os-text-2)] uppercase tracking-wider">{signals.length} signals</span>
+              <span className="text-[11px] font-bold text-[var(--os-text-2)]">Latest first</span>
             </div>
             {signals.map(signal => <SignalRow key={signal.id} signal={signal} />)}
           </>

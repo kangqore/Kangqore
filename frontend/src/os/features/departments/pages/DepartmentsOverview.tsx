@@ -28,7 +28,7 @@ const BUDGET_TEXT: Record<string, string> = {
 function TrendIcon({ trend }: { trend: 'up' | 'down' | 'neutral' }) {
   if (trend === 'up')   return <TrendingUp   className="w-3 h-3 text-os-success" />
   if (trend === 'down') return <TrendingDown className="w-3 h-3 text-os-danger" />
-  return                       <Minus        className="w-3 h-3 text-slate-500" />
+  return                       <Minus        className="w-3 h-3 text-[var(--os-text-2)]" />
 }
 
 function DeptCard({ dept }: { dept: Department }) {
@@ -40,7 +40,7 @@ function DeptCard({ dept }: { dept: Department }) {
     <motion.div
       variants={staggerChild}
       whileHover={{ y: -3, transition: spring.smooth }}
-      className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-xl border border-white/10 border-t-white/20 overflow-hidden shadow-sm flex flex-col"
+      className="bg-[var(--os-card)] rounded-xl border border-[var(--os-border)] overflow-hidden shadow-sm flex flex-col"
       style={{ borderTop: `2px solid ${dept.color}` }}
     >
       {/* Header */}
@@ -53,8 +53,8 @@ function DeptCard({ dept }: { dept: Department }) {
             <Building2 className="w-4 h-4" style={{ color: dept.color }} />
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-bold text-white leading-tight truncate">{dept.name}</p>
-            <p className="text-[10px] text-slate-500 font-mono mt-0.5">{dept.costCenter}</p>
+            <p className="text-sm font-bold text-[var(--os-text-1)] leading-tight truncate">{dept.name}</p>
+            <p className="text-[10px] text-[var(--os-text-2)] font-mono mt-0.5">{dept.costCenter}</p>
           </div>
         </div>
         <Badge variant={STATUS_BADGE[dept.status]} size="sm" dot>
@@ -70,18 +70,18 @@ function DeptCard({ dept }: { dept: Department }) {
         >
           <Avatar name={dept.head} size="sm" />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-white truncate">{dept.head}</p>
-            <p className="text-[10px] text-slate-500 truncate">{dept.headTitle}</p>
+            <p className="text-xs font-semibold text-[var(--os-text-1)] truncate">{dept.head}</p>
+            <p className="text-[10px] text-[var(--os-text-2)] truncate">{dept.headTitle}</p>
           </div>
           <div className="flex gap-3 text-center flex-shrink-0">
             <div>
-              <p className="text-sm font-bold text-white">{dept.headcount}</p>
-              <p className="text-[10px] text-slate-500">FTE</p>
+              <p className="text-sm font-bold text-[var(--os-text-1)]">{dept.headcount}</p>
+              <p className="text-[10px] text-[var(--os-text-2)]">FTE</p>
             </div>
             {dept.openRoles > 0 && (
               <div>
                 <p className="text-sm font-bold text-os-warning">{dept.openRoles}</p>
-                <p className="text-[10px] text-slate-500">Open</p>
+                <p className="text-[10px] text-[var(--os-text-2)]">Open</p>
               </div>
             )}
           </div>
@@ -91,33 +91,33 @@ function DeptCard({ dept }: { dept: Department }) {
       {/* Revenue stats */}
       <div className="grid grid-cols-3 gap-3 px-5 pb-4">
         <div>
-          <p className="text-[10px] text-slate-500 uppercase tracking-wide mb-1">Revenue MTD</p>
-          <p className="text-sm font-bold text-white">₹{dept.revenue}Cr</p>
+          <p className="text-[10px] text-[var(--os-text-2)] uppercase tracking-wide mb-1">Revenue MTD</p>
+          <p className="text-sm font-bold text-[var(--os-text-1)]">₹{dept.revenue}Cr</p>
           <p className="text-[10px] font-semibold" style={{ color: growthPos ? '#059669' : '#ef4444' }}>
             {dept.revenueGrowth}
           </p>
         </div>
         <div>
-          <p className="text-[10px] text-slate-500 uppercase tracking-wide mb-1">Pipeline</p>
-          <p className="text-sm font-bold text-white">₹{dept.pipeline}Cr</p>
-          <p className="text-[10px] text-slate-500">{dept.activeClients} clients</p>
+          <p className="text-[10px] text-[var(--os-text-2)] uppercase tracking-wide mb-1">Pipeline</p>
+          <p className="text-sm font-bold text-[var(--os-text-1)]">₹{dept.pipeline}Cr</p>
+          <p className="text-[10px] text-[var(--os-text-2)]">{dept.activeClients} clients</p>
         </div>
         <div>
-          <p className="text-[10px] text-slate-500 uppercase tracking-wide mb-1">Projects</p>
-          <p className="text-sm font-bold text-white">{dept.activeProjects}</p>
-          <p className="text-[10px] text-slate-500">active</p>
+          <p className="text-[10px] text-[var(--os-text-2)] uppercase tracking-wide mb-1">Projects</p>
+          <p className="text-sm font-bold text-[var(--os-text-1)]">{dept.activeProjects}</p>
+          <p className="text-[10px] text-[var(--os-text-2)]">active</p>
         </div>
       </div>
 
       {/* Delivery health */}
       <div className="px-5 pb-4">
         <div className="flex items-center justify-between mb-1.5">
-          <p className="text-[10px] text-slate-500 uppercase tracking-wide">Delivery Health</p>
+          <p className="text-[10px] text-[var(--os-text-2)] uppercase tracking-wide">Delivery Health</p>
           <p className="text-[11px] font-bold" style={{ color: healthColor }}>
             {dept.deliveryHealth}%
           </p>
         </div>
-        <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-full overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-700"
             style={{
@@ -132,7 +132,7 @@ function DeptCard({ dept }: { dept: Department }) {
       {/* Budget utilisation */}
       <div className="px-5 pb-4">
         <div className="flex items-center justify-between mb-1.5">
-          <p className="text-[10px] text-slate-500 uppercase tracking-wide">H1 Budget</p>
+          <p className="text-[10px] text-[var(--os-text-2)] uppercase tracking-wide">H1 Budget</p>
           <p className={`text-[11px] font-bold ${BUDGET_TEXT[dept.budgetStatus]}`}>
             ₹{dept.spent}k / ₹{Math.round(dept.budget * 0.5)}k
           </p>
@@ -148,17 +148,17 @@ function DeptCard({ dept }: { dept: Department }) {
       <div className="px-5 pb-4 flex-1">
         <div className="grid grid-cols-2 gap-2">
           {dept.kpis.slice(0, 4).map(kpi => (
-            <div key={kpi.metric} className="bg-slate-900 rounded-lg p-2.5">
+            <div key={kpi.metric} className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-2.5">
               <TrendIcon trend={kpi.trend} />
-              <p className="text-xs font-semibold text-white leading-tight mt-1">{kpi.value}</p>
-              <p className="text-[10px] text-slate-500 leading-tight mt-0.5 truncate">{kpi.metric}</p>
+              <p className="text-xs font-semibold text-[var(--os-text-1)] leading-tight mt-1">{kpi.value}</p>
+              <p className="text-[10px] text-[var(--os-text-2)] leading-tight mt-0.5 truncate">{kpi.metric}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Services footer */}
-      <div className="px-5 py-3 border-t border-white/10 border-t-white/20 flex flex-wrap gap-1.5">
+      <div className="px-5 py-3 border-t border-[var(--os-border)] flex flex-wrap gap-1.5">
         {dept.services.slice(0, 3).map(s => (
           <span
             key={s}
@@ -169,7 +169,7 @@ function DeptCard({ dept }: { dept: Department }) {
           </span>
         ))}
         {dept.services.length > 3 && (
-          <span className="text-[10px] px-2 py-0.5 rounded-md text-slate-500 bg-slate-900 font-medium">
+          <span className="text-[10px] px-2 py-0.5 rounded-md text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] font-medium">
             +{dept.services.length - 3} more
           </span>
         )}
@@ -189,6 +189,11 @@ export function DepartmentsOverview() {
 
   return (
     <div className="space-y-8">
+      <div>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'var(--os-text-3)' }}>Organisation</p>
+        <h1 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Departments</h1>
+        <p className="text-sm mt-1" style={{ color: 'var(--os-text-2)' }}>Headcount, budgets, and org structure</p>
+      </div>
 
       {/* KPI strip */}
       <motion.div

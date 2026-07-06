@@ -315,4 +315,84 @@ router.get('/feedback', adminGuard, async (req: AuthRequest, res: Response, next
   }
 });
 
+router.get('/transcripts', adminGuard, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const page       = Math.max(1, parseInt(String(req.query.page  || '1'),  10) || 1);
+    const limit      = Math.min(50, parseInt(String(req.query.limit || '20'), 10) || 20);
+    const skip       = (page - 1) * limit;
+    const visitorUuid = req.query.visitorUuid ? String(req.query.visitorUuid) : undefined;
+
+    const where: any = { kind: 'concierge' };
+    if (visitorUuid) {
+      where.meta = { path: ['visitorUuid'], equals: visitorUuid };
+    }
+
+    const [conversations, total] = await Promise.all([
+      prisma.conversation.findMany({
+        where,
+        orderBy: { updatedAt: 'desc' },
+        skip,
+        take: limit,
+        select: { id: true, messages: true, meta: true, createdAt: true, updatedAt: true },
+      }),
+      prisma.conversation.count({ where }),
+    ]);
+
+    const transcripts = conversations.map((c) => {
+      const msgs  = Array.isArray(c.messages) ? (c.messages as any[]) : [];
+      const meta  = (c.meta as any) || {};
+      const userMsgs  = msgs.filter((m: any) => m.role === 'user');
+      const firstUser = userMsgs[0]?.content ?? null;
+      const intents   = meta.intents ? Object.keys(meta.intents) : [];
+      return {
+        id:           c.id,
+        createdAt:    c.createdAt,
+        updatedAt:    c.updatedAt,
+        messageCount: msgs.length,
+        turnCount:    userMsgs.length,
+        firstMessage: firstUser ? String(firstUser).slice(0, 160) : null,
+        intents,
+        leadCaptured: !!(meta.leadCaptured),
+        visitorUuid:  meta.visitorUuid ?? null,
+      };
+    });
+
+    res.json({ transcripts, total, page, pages: Math.ceil(total / limit) });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/transcripts/:id', adminGuard, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const conv = await prisma.conversation.findUnique({
+      where: { id },
+      select: { id: true, messages: true, meta: true, createdAt: true, updatedAt: true },
+    });
+    if (!conv || (conv as any).kind === undefined) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+    const msgs  = Array.isArray(conv.messages) ? (conv.messages as any[]) : [];
+    const meta  = (conv.meta as any) || {};
+    const turns: any[] = Array.isArray(meta.turns) ? meta.turns : [];
+    const enriched = msgs.map((m: any, i: number) => {
+      if (m?.role !== 'assistant') return { role: m.role, content: m.content, timestamp: m.timestamp };
+      const turn = turns[Math.floor(i / 2)];
+      return { role: 'assistant', content: m.content, timestamp: m.timestamp, citations: turn?.citations || [] };
+    });
+    res.json({
+      id:          conv.id,
+      createdAt:   conv.createdAt,
+      updatedAt:   conv.updatedAt,
+      messages:    enriched,
+      intents:     meta.intents ?? {},
+      leadCaptured: !!(meta.leadCaptured),
+      visitorUuid: meta.visitorUuid ?? null,
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
 export default router;

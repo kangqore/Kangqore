@@ -19,7 +19,7 @@ interface Signal {
 }
 
 const LEVEL_CONFIG: Record<SignalLevel, { label: string; color: string; description: string }> = {
-  L1: { label: 'Raw Event',    color: '#475569', description: 'Unprocessed inbound event from connector' },
+  L1: { label: 'Raw Event',    color: 'var(--os-text-2)', description: 'Unprocessed inbound event from connector' },
   L2: { label: 'Signal',       color: '#2564ea', description: 'Normalised, entity-tagged, weight-scored' },
   L3: { label: 'Correlation',  color: '#7f53f9', description: 'Two or more signals with shared entity overlap' },
   L4: { label: 'Intelligence', color: '#fdab3d', description: 'KIMMP pattern matched, hypothesis formed' },
@@ -32,7 +32,7 @@ const DOMAIN_COLOR: Record<SignalDomain, string> = {
   People:     '#7f53f9',
   Finance:    '#fdab3d',
   Compliance: '#e2445c',
-  Operations: '#64748b',
+  Operations: 'var(--os-text-2)',
 }
 
 const signals: Signal[] = [
@@ -155,12 +155,12 @@ export function SignalsPage() {
               className={`p-3 rounded-xl border text-center transition-all ${
                 levelFilter === level
                   ? 'border-white/25 bg-slate-800/60'
-                  : 'border-white/10 bg-slate-900/40 hover:border-white/20'
+                  : 'border-[var(--os-border)] bg-slate-900/40 hover:border-[var(--os-border)]'
               }`}
             >
               <p className="text-lg font-bold" style={{ color: cfg.color }}>{count}</p>
               <p className="text-[10px] font-black uppercase tracking-wider mt-1" style={{ color: cfg.color }}>{level}</p>
-              <p className="text-[9px] text-slate-600 mt-0.5 leading-tight">{cfg.label}</p>
+              <p className="text-[9px] text-[var(--os-text-2)] mt-0.5 leading-tight">{cfg.label}</p>
             </button>
           )
         })}
@@ -170,15 +170,15 @@ export function SignalsPage() {
       <div className="flex items-center gap-6 text-sm">
         <div className="flex items-center gap-2">
           <Activity className="w-3.5 h-3.5 text-blue-400" />
-          <span className="text-slate-400"><span className="font-bold text-white">{totalToday.toLocaleString()}</span> raw events ingested today</span>
+          <span className="text-[var(--os-text-2)]"><span className="font-bold text-white">{totalToday.toLocaleString()}</span> raw events ingested today</span>
         </div>
         <div className="flex items-center gap-2">
           <Brain className="w-3.5 h-3.5 text-purple-400" />
-          <span className="text-slate-400"><span className="font-bold text-white">{l4Count + l5Count}</span> require attention</span>
+          <span className="text-[var(--os-text-2)]"><span className="font-bold text-white">{l4Count + l5Count}</span> require attention</span>
         </div>
         <div className="flex items-center gap-2">
           <Zap className="w-3.5 h-3.5 text-red-400" />
-          <span className="text-slate-400"><span className="font-bold text-white">{l5Count}</span> L5 decisions outstanding</span>
+          <span className="text-[var(--os-text-2)]"><span className="font-bold text-white">{l5Count}</span> L5 decisions outstanding</span>
         </div>
       </div>
 
@@ -187,10 +187,10 @@ export function SignalsPage() {
         {visible.map(sig => {
           const cfg = LEVEL_CONFIG[sig.level]
           return (
-            <div key={sig.id} className="p-5 rounded-2xl border border-white/10 bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 hover:border-white/20 transition-colors">
+            <div key={sig.id} className="p-5 rounded-2xl border border-[var(--os-border)] bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 hover:border-[var(--os-border)] transition-colors">
               <div className="flex items-start gap-4">
                 {/* Source logo */}
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black text-white flex-shrink-0 bg-slate-800 border border-white/10">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black text-white flex-shrink-0 bg-slate-800 border border-[var(--os-border)]">
                   {sig.sourceLogo}
                 </div>
 
@@ -205,18 +205,18 @@ export function SignalsPage() {
                       {sig.domain}
                     </span>
                     {/* Entity */}
-                    <span className="text-[10px] font-semibold text-slate-500 bg-slate-800 px-2 py-0.5 rounded-full">{sig.entity}</span>
-                    <span className="text-[9px] text-slate-700 ml-auto">{sig.source} · {sig.timestamp}</span>
+                    <span className="text-[10px] font-semibold text-[var(--os-text-2)] bg-slate-800 px-2 py-0.5 rounded-full">{sig.entity}</span>
+                    <span className="text-[9px] text-[var(--os-text-2)] ml-auto">{sig.source} · {sig.timestamp}</span>
                   </div>
 
-                  <p className="text-sm text-slate-300 leading-relaxed mb-2">{sig.description}</p>
+                  <p className="text-sm text-[var(--os-text-1)] leading-relaxed mb-2">{sig.description}</p>
 
                   {sig.kimmpAction && (
                     <div className="flex items-start gap-2 mt-3 p-3 rounded-xl bg-[#0d1117] border border-[#2E2854]">
                       <Brain className="w-3.5 h-3.5 text-purple-400 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-[9px] font-black tracking-widest text-purple-400 uppercase">KIMMP Recommendation</span>
-                        <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{sig.kimmpAction}</p>
+                        <p className="text-xs text-[var(--os-text-2)] mt-0.5 leading-relaxed">{sig.kimmpAction}</p>
                       </div>
                       {sig.confidence && (
                         <span className="text-[10px] font-bold text-purple-400/60 ml-auto flex-shrink-0">{sig.confidence}%</span>
@@ -227,8 +227,8 @@ export function SignalsPage() {
 
                 {/* Weight */}
                 <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                  <span className="text-sm font-bold text-slate-300">{sig.weight.toFixed(1)}</span>
-                  <span className="text-[9px] text-slate-700">weight</span>
+                  <span className="text-sm font-bold text-[var(--os-text-1)]">{sig.weight.toFixed(1)}</span>
+                  <span className="text-[9px] text-[var(--os-text-2)]">weight</span>
                 </div>
               </div>
             </div>

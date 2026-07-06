@@ -2,6 +2,7 @@ import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend,
 } from 'recharts'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { TrendingUp, Users, DollarSign, Activity } from 'lucide-react'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
@@ -46,10 +47,11 @@ export function InvestorReports() {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6">
+      <KIMMPSignalBar module="Performance Reports" />
       <div>
-        <h2 className="text-xl font-bold text-white">Performance Reports</h2>
-        <p className="text-sm text-slate-500 mt-0.5">ARR, cohort analysis and segment breakdown — as of June 2026</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Performance Reports</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>ARR, cohort analysis and segment breakdown — as of June 2026</p>
       </div>
 
       {/* KPIs */}
@@ -98,19 +100,19 @@ export function InvestorReports() {
             const pct = Math.round((seg.arr / TOP_SEGMENTS[0].arr) * 100)
             return (
               <div key={seg.name} className="flex items-center gap-4">
-                <div className="w-5 text-xs font-bold text-slate-500">{i + 1}</div>
+                <div className="w-5 text-xs font-bold text-[var(--os-text-2)]">{i + 1}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-slate-300">{seg.name}</span>
+                    <span className="text-xs font-medium text-[var(--os-text-1)]">{seg.name}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-slate-500">{seg.clients} clients</span>
+                      <span className="text-xs text-[var(--os-text-2)]">{seg.clients} clients</span>
                       <Badge variant="success" size="sm">{seg.growth}</Badge>
-                      <span className="text-xs font-bold text-slate-200 w-20 text-right">
+                      <span className="text-xs font-bold text-[var(--os-text-1)] w-20 text-right">
                         £{(seg.arr / 1000).toFixed(0)}k
                       </span>
                     </div>
                   </div>
-                  <div className="h-1.5 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full overflow-hidden">
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--os-surface)' }}>
                     <div
                       className="h-full rounded-full bg-violet-500 transition-all duration-500"
                       style={{ width: `${pct}%` }}

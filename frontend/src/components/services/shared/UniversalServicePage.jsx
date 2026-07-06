@@ -13,7 +13,7 @@ import {
   TrendingUp, Users, BrainCircuit,
   ChevronDown, Activity, Shield,
   Globe, BarChart3, Network, Settings,
-  Plus, X, Download,
+  Plus, X, Download, ShieldCheck, Eye, Database,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
@@ -21,6 +21,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import SvcRuler from './SvcRuler';
 import ConciergeSection from '../../concierge/ConciergeSection';
+import { AIToolsSection } from '../cognition/AICustomSections';
 import { servicesData } from '../../../data/servicesData';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -69,6 +70,193 @@ const HOW_WE_WORK = [
   { n: '06', color: CAP_COLORS[5], title: 'Adaptive Scope Management',    desc: 'We adjust scope, pace, and approach as your business context evolves. Rigidity is a delivery risk — adaptability is built in.' },
 ];
 
+
+// ─── 3D Realistic Card Object Component ───────────────────────────────────────
+const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, service }) => {
+  const [tilt, setTilt] = useState({ x: 0, y: 0, active: false });
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current || isExpanded) return;
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
+    
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((centerY - y) / centerY) * 8; 
+    const rotateY = ((x - centerX) / centerX) * 8;
+    
+    setTilt({ x: rotateX, y: rotateY, active: true });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0, active: false });
+  };
+
+  const transformStyle = tilt.active
+    ? {
+        transform: `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.025, 1.025, 1.025)`,
+        transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease',
+      }
+    : {
+        transform: 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+        transition: 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease',
+      };
+
+  const bgImage = cap.image || service.image || '';
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={transformStyle}
+      className={`group svc-cap-group relative rounded-2xl overflow-hidden transition-all duration-500 ${cardClass} ${
+        isVibrant 
+          ? (isExpanded 
+              ? 'bg-white border border-gray-200 shadow-2xl' 
+              : 'bg-white border border-gray-200/80 shadow-xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)]'
+            ) 
+          : (isExpanded 
+              ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' 
+              : 'bg-[#0d0e12] border border-white/[0.08] shadow-[0_15px_35px_-5px_rgba(0,0,0,0.85),0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_25px_50px_-8px_rgba(37,100,234,0.3),0_10px_20px_rgba(0,0,0,0.8)]'
+            )
+      }`}
+    >
+      {/* 3D Realistic Bevel & Edge Highlights */}
+      {!isVibrant && !isExpanded && (
+        <>
+          {/* Inner border to look like thick beveled edge */}
+          <div className="absolute inset-0 z-30 pointer-events-none rounded-2xl border border-white/[0.06] shadow-[inset_0_1.5px_0_0_rgba(255,255,255,0.15),inset_0_-1.5px_0_0_rgba(0,0,0,0.6)]" />
+          {/* Subtle bottom shadow ridge for realistic depth */}
+          <div className="absolute inset-x-0 bottom-0 h-[3px] bg-black/40 z-30 pointer-events-none" />
+        </>
+      )}
+
+      {/* Glossy reflection sweep overlay */}
+      {!isExpanded && (
+        <div 
+          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" 
+          style={{
+            transform: tilt.active ? `translate3d(${-tilt.y * 1.5}px, ${tilt.x * 1.5}px, 0)` : 'none',
+            transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)'
+          }}
+        />
+      )}
+
+      {/* Background Image */}
+      <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        {bgImage && (
+          <img 
+            src={bgImage} 
+            alt={cap.title} 
+            className="w-full h-full object-cover transition-transform duration-700" 
+            style={{
+              transform: tilt.active ? `translate3d(${-tilt.y * 0.5}px, ${tilt.x * 0.5}px, 0) scale3d(1.03, 1.03, 1.03)` : 'none',
+              transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)'
+            }}
+          />
+        )}
+        {!isVibrant && (
+          <>
+            <div className="absolute inset-0 bg-black/35 z-[1]" />
+            <div className="absolute inset-x-0 top-0 h-1/2 z-[2]" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.45) 45%,rgba(0,0,0,0) 100%)' }} />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 z-[2]" style={{ background: 'linear-gradient(0deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 50%,rgba(0,0,0,0) 100%)' }} />
+          </>
+        )}
+        {isVibrant && (
+          <>
+            <div className="absolute inset-0 bg-white/20 z-[1]" />
+            <div className="absolute inset-x-0 top-0 h-1/2 z-[2]" style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.6) 45%,rgba(255,255,255,0) 100%)' }} />
+          </>
+        )}
+      </div>
+
+      {/* Hover Gradient Overlay */}
+      {!isExpanded && !isVibrant && (
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2564ea]/20 to-[#4ab6d4]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
+      )}
+      {!isExpanded && isVibrant && (
+        <div className="absolute inset-0 bg-white/95 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
+      )}
+
+      {/* Default Content */}
+      <div className={`relative z-20 h-full flex flex-col justify-between p-8 lg:p-10 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <div className="flex flex-col h-full">
+          <h3 className={`text-2xl lg:text-3xl font-bold mb-2 transition-transform duration-300 shrink-0 ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
+            {cap.title}
+          </h3>
+          <p className={`text-xs lg:text-sm font-semibold mb-6 shrink-0 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>
+            {cap.items.length} Key Capabilities
+          </p>
+          <div className="relative flex-1">
+            <p className={`svc-cap-desc absolute inset-0 leading-relaxed text-sm lg:text-[15px] ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
+              {cap.desc}
+            </p>
+            <ul className={`svc-cap-items absolute inset-0 space-y-2.5 ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
+              <span className={`block text-xs font-bold uppercase tracking-widest mb-2.5 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>Key Capabilities:</span>
+              {cap.items.slice(0, 6).map((item, j) => (
+                <li key={j} className="flex items-start text-[13px] lg:text-sm font-medium">
+                  <span className={`mr-2 opacity-80 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>✦</span>
+                  {item.includes(':') ? item.split(':')[0] : item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className={`inline-flex items-center font-bold w-fit mt-4 shrink-0 transition-all duration-300 text-sm lg:text-base ${isVibrant ? 'text-gray-900 group-hover:text-blue-600' : 'text-white'}`}>
+          Explore Capability
+          <ArrowRight className="ml-2 w-5 h-5" />
+        </div>
+      </div>
+
+      {/* Expanded Detail Overlay */}
+      <div className={`absolute inset-0 z-30 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t backdrop-blur-xl ${isVibrant ? 'bg-white/98 border-gray-200' : 'bg-[#0a0a0c]/98 border-white/10'} ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`}>
+        <div className="flex flex-col text-left">
+          <div className="flex items-center justify-between mb-4">
+            <span className={`text-[9px] sm:text-xs font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border font-mono ${isVibrant ? 'text-gray-700 bg-gray-100/50 border-gray-300' : 'text-slate-300 bg-white/5 border-white/10'}`}>
+              {cap.items.length} Sub-Capabilities
+            </span>
+            <span className={`text-[10px] font-black tracking-[0.3em] uppercase font-mono ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>{cap.n}</span>
+          </div>
+          <h4 className={`text-xl sm:text-2xl font-bold mb-2 tracking-tight ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
+            {cap.title}
+          </h4>
+          <p className={`text-xs sm:text-sm mb-5 leading-relaxed ${isVibrant ? 'text-gray-700' : 'text-slate-400'}`}>
+            {cap.desc}
+          </p>
+          <ul className="space-y-3">
+            {cap.items.map((item, j) => (
+              <li key={j} className={`flex items-start gap-2 text-sm leading-snug ${isVibrant ? 'text-gray-800' : 'text-slate-300'}`}>
+                <span className={`font-bold shrink-0 mt-0.5 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>✦</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className={`pt-4 border-t mt-6 flex justify-between items-center pr-14 ${isVibrant ? 'border-gray-200' : 'border-white/5'}`}>
+          <a href="/contact" className={`inline-flex items-center gap-2 text-xs sm:text-sm font-bold transition-colors group/link ${isVibrant ? 'text-gray-900 hover:text-blue-600' : 'text-white hover:text-cyan-400'}`}>
+            Discuss This Capability
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
+          </a>
+        </div>
+      </div>
+
+      {/* Plus / X Toggle */}
+      <button
+        onClick={(e) => { e.stopPropagation(); setExpandedCaps(p => ({ ...p, [i]: !p[i] })); }}
+        className={`absolute bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl ${isExpanded ? 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-110 active:scale-95' : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 hover:scale-110 active:scale-95'}`}
+        aria-label={isExpanded ? 'Collapse' : 'Expand'}
+      >
+        {isExpanded ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+      </button>
+    </div>
+  );
+};
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function UniversalServicePage({ service, department }) {
@@ -144,7 +332,7 @@ const featureMicros   = service.featureMicros
   const featureIcons    = featureLabels.map((_, i) => ICON_POOL[i % ICON_POOL.length]);
 
   // ── State ─────────────────────────────────────────────────────────────────
-  const [openFaq,          setOpenFaq]          = useState(null);
+  const [openFaq,          setOpenFaq]          = useState(0);
   const [activeCapability, setActiveCapability] = useState(0);
   const [expandedCaps,     setExpandedCaps]     = useState({});
 
@@ -320,144 +508,382 @@ const featureMicros   = service.featureMicros
 
           <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start mb-20">
             <div>
-              <p className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-10 font-light max-w-xl">{service.shortDescription}</p>
+              <p className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-8 font-light max-w-xl">{service.shortDescription}</p>
               <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-xl text-white/60 mb-0">
                 {service.whatIsPara2 || <>A service can be technically delivered and still fail if the strategy and execution are misaligned.{' '}<span className="text-white">Kangqore closes that gap.</span></>}
               </p>
+              {service.whatIsPara3 && <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-xl text-white/60 mt-8 mb-0">{service.whatIsPara3}</p>}
+              {service.whatIsPara4 && <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-xl text-white/60 mt-8 mb-0">{service.whatIsPara4}</p>}
             </div>
 
             {service.capabilityAreas ? (
-              /* ── Agentic AI Flow Diagram ── */
-              <div className="flex items-center justify-center w-full">
-                <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-h-[420px]">
-                  <defs>
-                    <linearGradient id="brand-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#2564ea"/>
-                      <stop offset="100%" stopColor="#4ab6d4"/>
-                    </linearGradient>
-                    <marker id="diag-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                      <path d="M0,0.5 L5,3 L0,5.5" stroke="white" strokeWidth="1" fill="none" strokeOpacity="0.8"/>
-                    </marker>
-                    <clipPath id="capsule-clip">
-                      <rect x="40" y="274" width="460" height="90" rx="30"/>
-                    </clipPath>
-                  </defs>
+              service.slug === 'agentic-ai-led-application-modernization' ? (
+                /* ── Agentic AI-led Modernization Flow Diagram ── */
+                <div className="flex items-center justify-center w-full">
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-h-[420px]">
+                    <defs>
+                      <linearGradient id="brand-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#2564ea"/>
+                        <stop offset="100%" stopColor="#4ab6d4"/>
+                      </linearGradient>
+                      <linearGradient id="legacy-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ea580c"/>
+                        <stop offset="100%" stopColor="#a855f7"/>
+                      </linearGradient>
+                      <linearGradient id="modern-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#2564ea"/>
+                        <stop offset="100%" stopColor="#00f0ff"/>
+                      </linearGradient>
+                      <filter id="glow-modern">
+                        <feGaussianBlur stdDeviation="5" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-agent">
+                        <feGaussianBlur stdDeviation="8" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <marker id="diag-arrow-cyan" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#00f0ff" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <clipPath id="capsule-clip-mod">
+                        <rect x="40" y="274" width="460" height="90" rx="30"/>
+                      </clipPath>
+                    </defs>
 
-                  {/* ── LEFT: Automation / Workflow stack ── */}
-                  <rect x="68" y="14" width="52" height="22" rx="11" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <line x1="94" y1="36" x2="78" y2="50" stroke="white" strokeWidth="1.2" strokeOpacity="0.5"/>
-                  {/* Gear 1 */}
-                  <circle cx="76" cy="64" r="16" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <circle cx="76" cy="64" r="8" stroke="white" strokeWidth="1" strokeOpacity="0.4"/>
-                  <rect x="73" y="45" width="6" height="5" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  <rect x="73" y="78" width="6" height="5" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  <rect x="57" y="61" width="5" height="6" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  <rect x="90" y="61" width="5" height="6" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  {/* Gear 2 */}
-                  <circle cx="104" cy="80" r="12" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <circle cx="104" cy="80" r="6" stroke="white" strokeWidth="1" strokeOpacity="0.4"/>
-                  <rect x="101" y="65" width="6" height="4" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  <rect x="101" y="91" width="6" height="4" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  <rect x="89" y="77" width="4" height="6" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  <rect x="113" y="77" width="4" height="6" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  {/* Box stack + capsule */}
-                  <line x1="76" y1="80" x2="38" y2="98" stroke="white" strokeWidth="1.2" strokeOpacity="0.5"/>
-                  <rect x="10" y="98" width="52" height="20" rx="4" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <line x1="36" y1="118" x2="36" y2="132" stroke="white" strokeWidth="1.2" strokeOpacity="0.5"/>
-                  <rect x="6" y="132" width="60" height="20" rx="10" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <line x1="36" y1="152" x2="36" y2="166" stroke="white" strokeWidth="1.2" strokeOpacity="0.5"/>
-                  <rect x="10" y="166" width="52" height="20" rx="4" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <line x1="52" y1="186" x2="60" y2="198" stroke="white" strokeWidth="1.2" strokeOpacity="0.5"/>
-                  {/* Bottom gear */}
-                  <circle cx="64" cy="214" r="16" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <circle cx="64" cy="214" r="8" stroke="white" strokeWidth="1" strokeOpacity="0.4"/>
-                  <rect x="61" y="196" width="6" height="5" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  <rect x="61" y="227" width="6" height="5" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  <rect x="46" y="211" width="5" height="6" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  <rect x="79" y="211" width="5" height="6" rx="1" stroke="white" strokeWidth="1.2" strokeOpacity="0.8" fill="none"/>
-                  {/* Dashed connector to agent circle */}
-                  <path d="M 80 214 C 115 220 138 200 142 170" stroke="white" strokeWidth="1.2" strokeOpacity="0.35" strokeDasharray="3 3"/>
+                    {/* ── LEFT: Legacy Server Stack / Monolith ── */}
+                    <rect x="30" y="70" width="90" height="26" rx="4" fill="#0c0e14" stroke="url(#legacy-orange)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <rect x="25" y="106" width="100" height="26" rx="4" fill="#0c0e14" stroke="url(#legacy-orange)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <rect x="20" y="142" width="110" height="26" rx="4" fill="#0c0e14" stroke="url(#legacy-orange)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    {/* Monolith lines/connections (Spaghetti logic) */}
+                    <path d="M 45,83 L 105,83 M 40,119 L 110,119 M 35,155 L 115,155" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
+                    <circle cx="50" cy="83" r="2.5" fill="#ea580c" fillOpacity="0.7"/>
+                    <circle cx="100" cy="119" r="2.5" fill="#a855f7" fillOpacity="0.7"/>
+                    <circle cx="75" cy="155" r="2.5" fill="#ea580c" fillOpacity="0.7"/>
+                    {/* Text labels on left stack */}
+                    <text x="75" y="60" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">LEGACY CORE</text>
+                    <text x="75" y="121" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="8" fontFamily="monospace" letterSpacing="0.5">MONOLITH</text>
 
-                  {/* ── MIDDLE: AI Agent circle ── */}
-                  <circle cx="204" cy="122" r="68" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <circle cx="204" cy="96" r="15" stroke="white" strokeWidth="1.5" strokeOpacity="0.7"/>
-                  <rect x="190" y="92" width="28" height="8" rx="4" fill="url(#brand-grad)" stroke="white" strokeWidth="1" strokeOpacity="0.6"/>
-                  <path d="M 186 122 C 192 136 216 136 222 122" stroke="white" strokeWidth="1.5" strokeOpacity="0.5" fill="none"/>
+                    {/* ── CENTER: Modernization Agent Engine ── */}
+                    <circle cx="270" cy="120" r="54" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <circle cx="270" cy="120" r="48" fill="url(#modern-blue)" fillOpacity="0.12" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.6"/>
+                    
+                    {/* Internal Processor design */}
+                    <rect x="256" y="106" width="28" height="28" rx="4" fill="#111" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    {/* Processor Pins */}
+                    <line x1="262" y1="102" x2="262" y2="106" stroke="white" strokeWidth="1.2"/>
+                    <line x1="270" y1="102" x2="270" y2="106" stroke="white" strokeWidth="1.2"/>
+                    <line x1="278" y1="102" x2="278" y2="106" stroke="white" strokeWidth="1.2"/>
+                    <line x1="262" y1="134" x2="262" y2="138" stroke="white" strokeWidth="1.2"/>
+                    <line x1="270" y1="134" x2="270" y2="138" stroke="white" strokeWidth="1.2"/>
+                    <line x1="278" y1="134" x2="278" y2="138" stroke="white" strokeWidth="1.2"/>
+                    <line x1="252" y1="112" x2="256" y2="112" stroke="white" strokeWidth="1.2"/>
+                    <line x1="252" y1="120" x2="256" y2="120" stroke="white" strokeWidth="1.2"/>
+                    <line x1="252" y1="128" x2="256" y2="128" stroke="white" strokeWidth="1.2"/>
+                    <line x1="284" y1="112" x2="288" y2="112" stroke="white" strokeWidth="1.2"/>
+                    <line x1="284" y1="120" x2="288" y2="120" stroke="white" strokeWidth="1.2"/>
+                    <line x1="284" y1="128" x2="288" y2="128" stroke="white" strokeWidth="1.2"/>
+                    
+                    {/* Central Node Spark */}
+                    <circle cx="270" cy="120" r="3.5" fill="#00f0ff"/>
 
-                  {/* ── MIDDLE: Human Reviewer circle ── */}
-                  <circle cx="338" cy="144" r="58" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <circle cx="328" cy="120" r="13" stroke="white" strokeWidth="1.5" strokeOpacity="0.7"/>
-                  <rect x="308" y="138" width="48" height="26" rx="3" stroke="white" strokeWidth="1.5" strokeOpacity="0.7"/>
-                  <line x1="306" y1="164" x2="368" y2="164" stroke="white" strokeWidth="1.8" strokeOpacity="0.8"/>
-                  <line x1="322" y1="132" x2="312" y2="148" stroke="white" strokeWidth="1.2" strokeOpacity="0.4"/>
-                  <line x1="334" y1="132" x2="356" y2="148" stroke="white" strokeWidth="1.2" strokeOpacity="0.4"/>
+                    {/* Text labels in center */}
+                    <text x="270" y="55" textAnchor="middle" fill="#00f0ff" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="sans-serif" letterSpacing="0.8">COGNITIVE ENGINE</text>
+                    <text x="270" y="195" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">MODERNIZATION ENGINE</text>
 
-                  {/* Bidirectional arcs */}
-                  <path d="M 262 80 C 286 46 322 48 344 78" stroke="white" strokeWidth="1.5" strokeOpacity="0.8" markerEnd="url(#diag-arrow)"/>
-                  <path d="M 328 200 C 306 230 278 224 260 196" stroke="white" strokeWidth="1.5" strokeOpacity="0.8" markerEnd="url(#diag-arrow)"/>
+                    {/* ── RIGHT: Cloud Native Target ── */}
+                    <circle cx="450" cy="70" r="18" fill="#0c0e14" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <circle cx="410" cy="140" r="18" fill="#0c0e14" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <circle cx="490" cy="140" r="18" fill="#0c0e14" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    
+                    {/* Connecting lines of the target mesh */}
+                    <line x1="438" y1="83" x2="422" y2="124" stroke="#00f0ff" strokeWidth="1" strokeOpacity="0.5"/>
+                    <line x1="462" y1="83" x2="478" y2="124" stroke="#00f0ff" strokeWidth="1" strokeOpacity="0.5"/>
+                    <line x1="428" y1="140" x2="472" y2="140" stroke="#00f0ff" strokeWidth="1" strokeOpacity="0.5"/>
 
-                  {/* ── RIGHT: Binary output speech bubble ── */}
-                  <line x1="396" y1="118" x2="418" y2="108" stroke="white" strokeWidth="1" strokeOpacity="0.5"/>
-                  <rect x="418" y="52" width="110" height="80" rx="10" fill="#111111" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <path d="M 418 96 L 402 108 L 422 106 Z" fill="#111111" stroke="white" strokeWidth="1.2" strokeOpacity="0.8"/>
-                  <text x="473" y="82" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="12" fontFamily="monospace" letterSpacing="1">01011</text>
-                  <text x="473" y="99" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="12" fontFamily="monospace" letterSpacing="1">10110</text>
-                  <text x="473" y="116" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="12" fontFamily="monospace" letterSpacing="1">01101</text>
+                    {/* Labels inside microservices */}
+                    <text x="450" y="73" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">API</text>
+                    <text x="410" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">DB</text>
+                    <text x="490" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">K8S</text>
 
-                  {/* ── BOTTOM: Data & Tool Capsule ── */}
-                  <rect x="40" y="274" width="460" height="90" rx="30" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  {/* Phone section dark fill */}
-                  <rect x="155" y="274" width="115" height="90" fill="#1a1a1a" clipPath="url(#capsule-clip)"/>
-                  {/* Section dividers */}
-                  <line x1="155" y1="274" x2="155" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.4"/>
-                  <line x1="270" y1="274" x2="270" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.4"/>
-                  <line x1="385" y1="274" x2="385" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.4"/>
+                    {/* Text labels on right target */}
+                    <text x="450" y="44" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">CLOUD NATIVE</text>
+                    <text x="450" y="180" textAnchor="middle" fill="#00f0ff" fillOpacity="0.8" fontSize="8" fontFamily="monospace" letterSpacing="0.5">MICROSERVICES</text>
 
-                  {/* Section 1: Document folders */}
-                  <rect x="62" y="308" width="34" height="28" rx="3" stroke="white" strokeWidth="1.5" strokeOpacity="0.6"/>
-                  <rect x="70" y="300" width="34" height="28" rx="3" fill="#0a0a0a" stroke="white" strokeWidth="1.5" strokeOpacity="0.7"/>
-                  <rect x="78" y="292" width="34" height="28" rx="3" fill="#0a0a0a" stroke="white" strokeWidth="1.5" strokeOpacity="0.9"/>
-                  <line x1="83" y1="300" x2="106" y2="300" stroke="white" strokeWidth="1" strokeOpacity="0.5"/>
-                  <line x1="83" y1="306" x2="106" y2="306" stroke="white" strokeWidth="1" strokeOpacity="0.5"/>
-                  <line x1="83" y1="312" x2="106" y2="312" stroke="white" strokeWidth="1" strokeOpacity="0.5"/>
+                    {/* ── Pipelines from Legacy to Engine, and Engine to Microservices ── */}
+                    <path d="M 130 120 Q 180 90 216 120" fill="none" stroke="url(#legacy-orange)" strokeWidth="1.5" strokeOpacity="0.5" strokeDasharray="3 3"/>
+                    <path d="M 130 138 Q 180 168 216 120" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.3" strokeDasharray="3 3"/>
+                    
+                    <path d="M 324 120 Q 370 90 412 120" fill="none" stroke="url(#modern-blue)" strokeWidth="1.8" strokeOpacity="0.8" markerEnd="url(#diag-arrow-cyan)"/>
+                    <path d="M 324 120 Q 370 150 412 120" fill="none" stroke="#00f0ff" strokeWidth="1.2" strokeOpacity="0.4" strokeDasharray="4 4"/>
 
-                  {/* Section 2: Phone with binary */}
-                  <rect x="195" y="288" width="40" height="64" rx="6" fill="#222" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <rect x="207" y="346" width="16" height="4" rx="2" stroke="white" strokeWidth="1" strokeOpacity="0.5" fill="none"/>
-                  <text x="215" y="310" textAnchor="middle" fill="white" fillOpacity="0.7" fontSize="7" fontFamily="monospace">0101</text>
-                  <text x="215" y="321" textAnchor="middle" fill="white" fillOpacity="0.7" fontSize="7" fontFamily="monospace">1010</text>
-                  <text x="215" y="332" textAnchor="middle" fill="white" fillOpacity="0.7" fontSize="7" fontFamily="monospace">0110</text>
+                    {/* ── BOTTOM: Modernization Metrics & Status Panel ── */}
+                    <rect x="40" y="274" width="460" height="90" rx="30" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    {/* Segment fills */}
+                    <rect x="155" y="274" width="115" height="90" fill="#1a1a1a" fillOpacity="0.5" clipPath="url(#capsule-clip-mod)"/>
+                    <rect x="385" y="274" width="115" height="90" fill="url(#modern-blue)" fillOpacity="0.1" clipPath="url(#capsule-clip-mod)"/>
+                    
+                    {/* Dividers */}
+                    <line x1="155" y1="274" x2="155" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
+                    <line x1="270" y1="274" x2="270" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
+                    <line x1="385" y1="274" x2="385" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
 
-                  {/* Section 3: Robot (purple) */}
-                  <line x1="318" y1="300" x2="318" y2="289" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                  <circle cx="318" cy="285" r="4" fill="url(#brand-grad)" stroke="white" strokeWidth="1" strokeOpacity="0.8"/>
-                  <rect x="294" y="300" width="48" height="38" rx="8" fill="url(#brand-grad)" stroke="white" strokeWidth="1" strokeOpacity="0.4"/>
-                  <circle cx="308" cy="316" r="6" fill="white"/>
-                  <circle cx="330" cy="316" r="6" fill="white"/>
-                  <circle cx="308" cy="316" r="3" fill="url(#brand-grad)"/>
-                  <circle cx="330" cy="316" r="3" fill="url(#brand-grad)"/>
-                  <path d="M 305 331 Q 318 340 331 331" stroke="white" strokeWidth="1.5" strokeOpacity="0.9" fill="none"/>
-                  <rect x="338" y="287" width="36" height="22" rx="6" fill="#0a0a0a" stroke="white" strokeWidth="1" strokeOpacity="0.6"/>
-                  <path d="M 338 304 L 332 310 L 340 310 Z" fill="#0a0a0a" stroke="white" strokeWidth="1" strokeOpacity="0.6"/>
-                  <circle cx="347" cy="298" r="2.5" fill="white" fillOpacity="0.6"/>
-                  <circle cx="356" cy="298" r="2.5" fill="white" fillOpacity="0.6"/>
-                  <circle cx="365" cy="298" r="2.5" fill="white" fillOpacity="0.6"/>
+                    {/* Section 1: Code Scanning */}
+                    <g transform="translate(82, 290)">
+                      <rect x="0" y="5" width="22" height="30" rx="3" stroke="white" strokeWidth="1.2" strokeOpacity="0.7" fill="none"/>
+                      <line x1="4" y1="12" x2="18" y2="12" stroke="white" strokeWidth="1" strokeOpacity="0.5"/>
+                      <line x1="4" y1="18" x2="18" y2="18" stroke="white" strokeWidth="1" strokeOpacity="0.5"/>
+                      <line x1="4" y1="24" x2="12" y2="24" stroke="white" strokeWidth="1" strokeOpacity="0.5"/>
+                      {/* Scanning radar line */}
+                      <line x1="-5" y1="16" x2="27" y2="16" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-modern)"/>
+                    </g>
+                    <text x="97" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">1. CODE SCAN</text>
 
-                  {/* Section 4: Analytics — upward arrows */}
-                  <line x1="402" y1="360" x2="468" y2="360" stroke="white" strokeWidth="1.2" strokeOpacity="0.5"/>
-                  <line x1="412" y1="360" x2="412" y2="342" stroke="white" strokeWidth="2" strokeOpacity="0.8"/>
-                  <path d="M 407 348 L 412 342 L 417 348" stroke="white" strokeWidth="1.5" strokeOpacity="0.8" fill="none"/>
-                  <line x1="430" y1="360" x2="430" y2="328" stroke="white" strokeWidth="2" strokeOpacity="0.8"/>
-                  <path d="M 425 334 L 430 328 L 435 334" stroke="white" strokeWidth="1.5" strokeOpacity="0.8" fill="none"/>
-                  <line x1="448" y1="360" x2="448" y2="312" stroke="white" strokeWidth="2" strokeOpacity="0.8"/>
-                  <path d="M 443 318 L 448 312 L 453 318" stroke="white" strokeWidth="1.5" strokeOpacity="0.8" fill="none"/>
+                    {/* Section 2: Code Refactoring */}
+                    <g transform="translate(192, 290)">
+                      {/* Input logic block */}
+                      <rect x="0" y="10" width="14" height="14" rx="2" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
+                      <text x="7" y="20" textAnchor="middle" fill="white" fillOpacity="0.6" fontSize="8" fontFamily="monospace">&lt;</text>
+                      {/* Transform arrow */}
+                      <path d="M 18 17 L 26 17" stroke="#00f0ff" strokeWidth="1.5" markerEnd="url(#diag-arrow-cyan)"/>
+                      {/* Output microservices */}
+                      <circle cx="36" cy="11" r="5" fill="none" stroke="#00f0ff" strokeWidth="1.2"/>
+                      <circle cx="36" cy="23" r="5" fill="none" stroke="#00f0ff" strokeWidth="1.2"/>
+                    </g>
+                    <text x="212" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">2. REFACTOR</text>
 
-                  {/* Dashed connectors from circles to capsule */}
-                  <path d="M 180 186 C 172 230 162 255 148 274" stroke="white" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="4 3"/>
-                  <path d="M 338 202 C 330 235 316 256 302 274" stroke="white" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="4 3"/>
-                </svg>
-              </div>
-            ) : (
+                    {/* Section 3: Automated QA / Test */}
+                    <g transform="translate(312, 290)">
+                      {/* Shield icon */}
+                      <path d="M 15 5 C 22 5 27 8 27 15 C 27 23 15 29 15 29 C 15 29 3 23 3 15 C 3 8 8 5 15 5 Z" fill="none" stroke="#00f0ff" strokeWidth="1.5" filter="url(#glow-modern)"/>
+                      {/* Checkmark inside */}
+                      <path d="M 10 16 L 13 19 L 20 12" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </g>
+                    <text x="327" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">3. AUTO QA</text>
+
+                    {/* Section 4: Machine Speed stats */}
+                    <g transform="translate(415, 290)">
+                      {/* Speedometer arch */}
+                      <path d="M 5 25 A 20 20 0 0 1 45 25" fill="none" stroke="white" strokeWidth="2.5" strokeOpacity="0.3" strokeLinecap="round"/>
+                      <path d="M 5 25 A 20 20 0 0 1 35 11" fill="none" stroke="#00f0ff" strokeWidth="3" strokeLinecap="round" filter="url(#glow-modern)"/>
+                      {/* Indicator needle */}
+                      <line x1="25" y1="25" x2="35" y2="12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="25" cy="25" r="3" fill="white"/>
+                    </g>
+                    <text x="442" y="348" textAnchor="middle" fill="#00f0ff" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">4. MACHINE SPEED</text>
+                  </svg>
+                </div>
+              ) : (
+                /* ── Agentic AI Flow Diagram ── */
+                <div className="flex items-center justify-center w-full lg:-mt-16">
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-h-[420px]">
+                    <defs>
+                      <linearGradient id="agentic-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ea580c"/>
+                        <stop offset="100%" stopColor="#f59e0b"/>
+                      </linearGradient>
+                      <linearGradient id="agentic-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7f53f9"/>
+                        <stop offset="100%" stopColor="#a78bfa"/>
+                      </linearGradient>
+                      <linearGradient id="agentic-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#00c875"/>
+                        <stop offset="100%" stopColor="#34d399"/>
+                      </linearGradient>
+                      <linearGradient id="agentic-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#2564ea"/>
+                        <stop offset="100%" stopColor="#00f0ff"/>
+                      </linearGradient>
+                      <filter id="glow-orange">
+                        <feGaussianBlur stdDeviation="5" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-purple">
+                        <feGaussianBlur stdDeviation="6" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-green">
+                        <feGaussianBlur stdDeviation="5" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-cyan">
+                        <feGaussianBlur stdDeviation="5" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <marker id="diag-arrow-purple" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#a78bfa" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="diag-arrow-green" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#34d399" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <clipPath id="capsule-clip-agent">
+                        <rect x="40" y="274" width="460" height="90" rx="30"/>
+                      </clipPath>
+                    </defs>
+
+                    {/* ── LEFT: Workflow Triggers & Inputs ── */}
+                    <rect x="25" y="70" width="100" height="26" rx="6" fill="#0c0e14" stroke="url(#agentic-orange)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <rect x="20" y="106" width="110" height="26" rx="6" fill="#0c0e14" stroke="url(#agentic-orange)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <rect x="25" y="142" width="100" height="26" rx="6" fill="#0c0e14" stroke="url(#agentic-orange)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    
+                    {/* Inner items lines */}
+                    <line x1="45" y1="83" x2="105" y2="83" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
+                    <line x1="40" y1="119" x2="110" y2="119" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
+                    <line x1="45" y1="155" x2="105" y2="155" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
+                    
+                    {/* Active inputs indicator circles */}
+                    <circle cx="38" cy="83" r="2.5" fill="#ea580c"/>
+                    <circle cx="34" cy="119" r="2.5" fill="#f59e0b"/>
+                    <circle cx="38" cy="155" r="2.5" fill="#ea580c"/>
+
+                    {/* Text tags inside inputs */}
+                    <text x="75" y="86" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="7.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">SSE / WEBHOOKS</text>
+                    <text x="75" y="122" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="7.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">REST / GQL API</text>
+                    <text x="75" y="158" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="7.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">AMQP / KAFKA</text>
+
+                    <text x="75" y="52" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">WORKFLOW TRIGGERS</text>
+                    <text x="75" y="186" textAnchor="middle" fill="#ea580c" fillOpacity="0.8" fontSize="8" fontFamily="monospace" letterSpacing="0.5">INCOMING EVENTS</text>
+
+                    {/* ── CENTER: Cognitive Orchestrator & Planner Loop ── */}
+                    {/* Main Orb */}
+                    <circle cx="270" cy="120" r="54" stroke="white" strokeWidth="1.5" strokeOpacity="0.3"/>
+                    <circle cx="270" cy="120" r="48" fill="url(#agentic-purple)" fillOpacity="0.08" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    
+                    {/* Central Brain Hub */}
+                    <rect x="256" y="106" width="28" height="28" rx="6" fill="#111" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <circle cx="270" cy="120" r="4" fill="#7f53f9" filter="url(#glow-purple)"/>
+
+                    {/* Pin lines */}
+                    <line x1="262" y1="102" x2="262" y2="106" stroke="white" strokeWidth="1.2"/>
+                    <line x1="270" y1="102" x2="270" y2="106" stroke="white" strokeWidth="1.2"/>
+                    <line x1="278" y1="102" x2="278" y2="106" stroke="white" strokeWidth="1.2"/>
+                    <line x1="262" y1="134" x2="262" y2="138" stroke="white" strokeWidth="1.2"/>
+                    <line x1="270" y1="134" x2="270" y2="138" stroke="white" strokeWidth="1.2"/>
+                    <line x1="278" y1="134" x2="278" y2="138" stroke="white" strokeWidth="1.2"/>
+                    
+                    {/* Rotating Sub-Agent Satellites */}
+                    {/* Satellite 1: CRM subagent */}
+                    <circle cx="204" cy="120" r="12" fill="#0c0e14" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.9"/>
+                    <text x="204" y="123" textAnchor="middle" fill="white" fontSize="7" fontWeight="black" fontFamily="monospace">RAG</text>
+                    {/* Satellite 2: Document parser subagent */}
+                    <circle cx="270" cy="52" r="12" fill="#0c0e14" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.9"/>
+                    <text x="270" y="55" textAnchor="middle" fill="white" fontSize="7" fontWeight="black" fontFamily="monospace">PLAN</text>
+                    {/* Satellite 3: API call executor subagent */}
+                    <circle cx="336" cy="120" r="12" fill="#0c0e14" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.9"/>
+                    <text x="336" y="123" textAnchor="middle" fill="white" fontSize="7" fontWeight="black" fontFamily="monospace">EXEC</text>
+
+                    {/* Satellite Orbits */}
+                    <path d="M 270 52 C 200 52 204 120 204 120" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
+                    <path d="M 204 120 C 204 120 208 188 270 188" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
+                    <path d="M 270 188 C 332 188 336 120 336 120" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
+                    <path d="M 336 120 C 336 120 332 52 270 52" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
+
+                    {/* Text labels in center */}
+                    <text x="270" y="206" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">COGNITIVE ROUTING</text>
+
+                    {/* ── RIGHT: Targets & Orchestrated Outcomes ── */}
+                    <circle cx="450" cy="70" r="18" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
+                    <circle cx="410" cy="140" r="18" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
+                    <circle cx="490" cy="140" r="18" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
+                    
+                    {/* Connecting lines of target node mesh */}
+                    <line x1="438" y1="83" x2="422" y2="124" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.5"/>
+                    <line x1="462" y1="83" x2="478" y2="124" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.5"/>
+                    <line x1="428" y1="140" x2="472" y2="140" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.5"/>
+
+                    {/* Labels inside nodes */}
+                    <text x="450" y="73" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">MUTATE</text>
+                    <text x="410" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">COMMIT</text>
+                    <text x="490" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">CALLBACK</text>
+
+                    {/* Text labels on right target */}
+                    <text x="474" y="44" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">WORKFLOW OUTCOME</text>
+                    <text x="450" y="180" textAnchor="middle" fill="#00c875" fillOpacity="0.8" fontSize="8" fontFamily="monospace" letterSpacing="0.5">AUTONOMOUS SYNC</text>
+
+                    {/* ── Connecting Pipelines ── */}
+                    <path d="M 130 120 Q 170 90 190 120" fill="none" stroke="url(#agentic-orange)" strokeWidth="1.5" strokeOpacity="0.5" strokeDasharray="3 3"/>
+                    <path d="M 350 120 Q 380 90 410 120" fill="none" stroke="url(#agentic-green)" strokeWidth="1.8" strokeOpacity="0.8" markerEnd="url(#diag-arrow-green)"/>
+
+                    {/* Resolved Checklist speech bubble */}
+                    <line x1="396" y1="118" x2="418" y2="108" stroke="white" strokeWidth="1" strokeOpacity="0.5"/>
+                    <rect x="418" y="52" width="112" height="80" rx="12" fill="#0b0f19" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-green)"/>
+                    <path d="M 418 96 L 402 108 L 422 106 Z" fill="#0b0f19" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.8"/>
+                    
+                    <text x="430" y="78" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="78" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">Payload parsed</text>
+                    <text x="430" y="96" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="96" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">DAG orchestrated</text>
+                    <text x="430" y="114" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="114" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">Tx committed</text>
+
+                    {/* ── BOTTOM: Modernization Metrics & Status Panel ── */}
+                    <rect x="40" y="274" width="460" height="90" rx="30" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    {/* Segment fills */}
+                    <rect x="155" y="274" width="115" height="90" fill="#1a1a1a" fillOpacity="0.5" clipPath="url(#capsule-clip-agent)"/>
+                    <rect x="385" y="274" width="115" height="90" fill="url(#agentic-green)" fillOpacity="0.1" clipPath="url(#capsule-clip-agent)"/>
+                    
+                    {/* Dividers */}
+                    <line x1="155" y1="274" x2="155" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
+                    <line x1="270" y1="274" x2="270" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
+                    <line x1="385" y1="274" x2="385" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
+
+                    {/* Section 1: Ingest */}
+                    <g transform="translate(82, 290)">
+                      <circle cx="15" cy="15" r="12" fill="none" stroke="white" strokeOpacity="0.4" strokeWidth="1.2" />
+                      <circle cx="15" cy="15" r="6" fill="none" stroke="#ea580c" strokeOpacity="0.6" strokeWidth="1.2" />
+                      <line x1="15" y1="0" x2="15" y2="30" stroke="white" strokeOpacity="0.3" />
+                      <line x1="0" y1="15" x2="30" y2="15" stroke="white" strokeOpacity="0.3" />
+                      <line x1="-5" y1="15" x2="35" y2="15" stroke="#ea580c" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-orange)" />
+                    </g>
+                    <text x="97" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">1. INGEST</text>
+
+                    {/* Section 2: Orchestrate */}
+                    <g transform="translate(192, 290)">
+                      <circle cx="15" cy="8" r="4.5" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
+                      <circle cx="6" cy="20" r="4.5" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
+                      <circle cx="24" cy="20" r="4.5" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
+                      <line x1="12" y1="11" x2="8" y2="17" stroke="#7f53f9" strokeWidth="1.2" />
+                      <line x1="18" y1="11" x2="22" y2="17" stroke="#7f53f9" strokeWidth="1.2" />
+                      <line x1="10.5" y1="20" x2="19.5" y2="20" stroke="#7f53f9" strokeWidth="1.2" />
+                      <circle cx="15" cy="8" r="2" fill="#7f53f9" filter="url(#glow-purple)"/>
+                    </g>
+                    <text x="212" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">2. ORCHESTRATE</text>
+
+                    {/* Section 3: Execute */}
+                    <g transform="translate(312, 290)">
+                      <rect x="5" y="4" width="20" height="22" rx="3" fill="none" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-cyan)"/>
+                      <path d="M 11 12 L 19 12 M 11 17 L 17 17 M 15 8 L 19 8" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+                    </g>
+                    <text x="327" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">3. EXECUTE</text>
+
+                    {/* Section 4: Sync */}
+                    <g transform="translate(415, 290)">
+                      <path d="M 5 25 A 20 20 0 0 1 45 25" fill="none" stroke="white" strokeWidth="2.5" strokeOpacity="0.3" strokeLinecap="round"/>
+                      <path d="M 5 25 A 20 20 0 0 1 35 11" fill="none" stroke="#00c875" strokeWidth="3" strokeLinecap="round" filter="url(#glow-green)"/>
+                      <line x1="25" y1="25" x2="35" y2="12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="25" cy="25" r="3" fill="white"/>
+                    </g>
+                    <text x="442" y="348" textAnchor="middle" fill="#00c875" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">4. SYNC</text>
+                  </svg>
+                </div>
+              ) ) : (
               <div className="space-y-4">
                 <div className="group p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl relative overflow-hidden hover:border-transparent transition-all duration-500">
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
@@ -485,7 +911,7 @@ const featureMicros   = service.featureMicros
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pt-12 border-t border-white/[0.08] mb-16">
             {service.businessMetrics ? service.businessMetrics.map((m, i) => (
               <div key={i}>
-                <p className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-none mb-1">
+                <p className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
                   {m.value}<span className="text-cyan-400">{m.suffix}</span>
                 </p>
                 <p className="text-white font-bold text-xs uppercase tracking-widest mb-2">{m.metricLabel}</p>
@@ -602,6 +1028,43 @@ const featureMicros   = service.featureMicros
         ]} />
       </div>
 
+      {/* ══════════════════════ WHY SHIFT ══════════════════════ */}
+      {service.whyShift && (
+        <section className="py-24 relative" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <p className="text-[10px] font-black tracking-[0.3em] text-cyan-400/70 uppercase mb-5">{service.whyShift.label || 'Why This Approach'}</p>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-14">{service.whyShift.title}</h2>
+            <div className="grid sm:grid-cols-2 gap-6">
+              {service.whyShift.items.map((item, i) => (
+                <div key={i} className="flex gap-6 p-8 border border-white/[0.06] rounded-2xl bg-[#03060d] hover:border-white/[0.12] transition-colors duration-300">
+                  <span className="text-5xl font-black text-white/[0.07] leading-none flex-shrink-0 select-none tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="text-white/55 text-base leading-relaxed font-light pt-1">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ══════════════════════ FRAMEWORK ══════════════════════ */}
+      {service.modernizationFramework && (
+        <section className="py-24 relative border-t border-white/[0.04]" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <p className="text-[10px] font-black tracking-[0.3em] text-cyan-400/70 uppercase mb-5">{service.modernizationFramework.label || 'Our Framework'}</p>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-16">{service.modernizationFramework.title}</h2>
+            <div className="grid sm:grid-cols-3 gap-10 lg:gap-16">
+              {service.modernizationFramework.steps.map((step, i) => (
+                <div key={i}>
+                  <div className="text-[72px] font-black text-white/[0.05] leading-none mb-3 select-none tabular-nums">{String(i + 1).padStart(2, '0')}</div>
+                  <div className="w-10 h-[2px] mb-6" style={{ background: 'linear-gradient(90deg,#2564ea,#4ab6d4)' }} />
+                  <p className="text-white/55 text-base leading-relaxed font-light">{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ══════════════════════ CAPABILITIES ══════════════════════ */}
       {service.capabilityAreas ? (
         /* ── BENTO GRID (when capabilityAreas override is set) ── */
@@ -653,103 +1116,31 @@ const featureMicros   = service.featureMicros
             <div className={`grid gap-3 grid-cols-1 ${capabilities.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
               {capabilities.map((cap, i) => {
                 const isExpanded = !!expandedCaps[i];
-                const cardClass = capabilities.length === 3
-                  ? i === 0
-                    ? 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]'
-                    : 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]'
-                  : 'col-span-1 h-[380px] lg:h-[400px]';
-                const bgImage = cap.image || service.image || '';
+                const isVibrant = service.capabilitiesTheme === 'vibrant-bento';
+                const isDarkBento7 = service.capabilitiesTheme === 'dark-bento-7';
+                
+                let cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                
+                if (isDarkBento7 && capabilities.length === 7) {
+                  if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 3) {
+                  if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                }
 
                 return (
-                  <div
+                  <BentoCard
                     key={i}
-                    className={`group svc-cap-group relative rounded-2xl overflow-hidden shadow-sm transition-all duration-500 ${cardClass} ${isExpanded ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' : 'border border-transparent hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)] hover:-translate-y-1'}`}
-                  >
-                    {/* Background Image */}
-                    <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                      {bgImage && (
-                        <img src={bgImage} alt={cap.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                      )}
-                      <div className="absolute inset-0 bg-black/30 z-[1]" />
-                      <div className="absolute inset-x-0 top-0 h-1/2 z-[2]" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.45) 45%,rgba(0,0,0,0) 100%)' }} />
-                    </div>
-
-                    {/* Hover Gradient Overlay */}
-                    {!isExpanded && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#2564ea]/90 to-[#4ab6d4]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-                    )}
-
-                    {/* Default Content */}
-                    <div className={`relative z-20 h-full flex flex-col justify-between p-8 lg:p-10 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                      <div className="flex flex-col h-full">
-                        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2 transition-transform duration-300 shrink-0">
-                          {cap.title}
-                        </h3>
-                        <p className="text-xs lg:text-sm font-semibold text-cyan-400 mb-6 shrink-0">
-                          {cap.items.length} Key Capabilities
-                        </p>
-                        <div className="relative flex-1">
-                          <p className="svc-cap-desc absolute inset-0 text-white/90 leading-relaxed text-sm lg:text-[15px]">
-                            {cap.desc}
-                          </p>
-                          <ul className="svc-cap-items absolute inset-0 space-y-2.5">
-                            <span className="block text-xs font-bold uppercase tracking-widest text-cyan-400 mb-2.5">Key Capabilities:</span>
-                            {cap.items.slice(0, 6).map((item, j) => (
-                              <li key={j} className="flex items-start text-white/90 text-[13px] lg:text-sm font-medium">
-                                <span className="mr-2 text-cyan-400 opacity-80">✦</span>
-                                {item.includes(':') ? item.split(':')[0] : item}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="inline-flex items-center text-white font-bold w-fit mt-4 shrink-0 transition-all duration-300 text-sm lg:text-base">
-                        Explore Capability
-                        <ArrowRight className="ml-2 w-5 h-5" />
-                      </div>
-                    </div>
-
-                    {/* Expanded Detail Overlay */}
-                    <div className={`absolute inset-0 z-30 bg-[#0a0a0c]/98 backdrop-blur-xl p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t border-white/10 ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`}>
-                      <div className="flex flex-col text-left">
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-[9px] sm:text-xs font-bold text-slate-300 uppercase tracking-widest bg-white/5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/10 font-mono">
-                            {cap.items.length} Sub-Capabilities
-                          </span>
-                          <span className="text-[10px] font-black tracking-[0.3em] text-cyan-400 uppercase font-mono">{cap.n}</span>
-                        </div>
-                        <h4 className="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight">
-                          {cap.title}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-400 mb-5 leading-relaxed">
-                          {cap.desc}
-                        </p>
-                        <ul className="space-y-3">
-                          {cap.items.map((item, j) => (
-                            <li key={j} className="flex items-start gap-2 text-sm text-slate-300 leading-snug">
-                              <span className="text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="pt-4 border-t border-white/5 mt-6 flex justify-between items-center pr-14">
-                        <a href="/contact" className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-cyan-400 transition-colors group/link">
-                          Discuss This Capability
-                          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* Plus / X Toggle */}
-                    <button
-                      onClick={(e) => { e.stopPropagation(); setExpandedCaps(p => ({ ...p, [i]: !p[i] })); }}
-                      className={`absolute bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl ${isExpanded ? 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-110 active:scale-95' : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 hover:scale-110 active:scale-95'}`}
-                      aria-label={isExpanded ? 'Collapse' : 'Expand'}
-                    >
-                      {isExpanded ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-                    </button>
-                  </div>
+                    cap={cap}
+                    i={i}
+                    cardClass={cardClass}
+                    isVibrant={isVibrant}
+                    isExpanded={isExpanded}
+                    setExpandedCaps={setExpandedCaps}
+                    service={service}
+                  />
                 );
               })}
             </div>
@@ -987,7 +1378,7 @@ const featureMicros   = service.featureMicros
                 const LAYER_COLORS = ['#2564ea', '#4ab6d4', '#6366f1', '#10b981'];
                 const color = LAYER_COLORS[idx % LAYER_COLORS.length];
                 return (
-                  <div key={idx} className="px-8 first:pl-0 last:pr-0 flex flex-col gap-4 py-2">
+                  <div key={idx} className="px-8 first:pl-0 last:pr-0 flex flex-col gap-4 py-2 rounded-xl transition-colors duration-300 hover:bg-[#06090f]">
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-[8px] font-black tracking-[0.3em] text-white/15">
                         {String(idx + 1).padStart(2, '0')}
@@ -1029,7 +1420,7 @@ const featureMicros   = service.featureMicros
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.industryUseCases.map((item, idx) => (
-                <div key={idx} className="bg-[#000000] p-8 flex flex-col gap-4">
+                <div key={idx} className="bg-[#000000] p-8 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
                   <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/40">{item.industry}</span>
                   <p className="text-white font-bold text-lg leading-snug">{item.headline}</p>
                   <ul className="space-y-2 mt-1">
@@ -1262,7 +1653,7 @@ const featureMicros   = service.featureMicros
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.servicePackages.map((pkg, idx) => (
-                <div key={idx} className="bg-[#000000] p-7 flex flex-col gap-4">
+                <div key={idx} className="bg-[#000000] p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
                   <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/30">0{idx + 1}</span>
                   <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
                   <p className="text-white/40 text-sm font-medium leading-relaxed flex-1">{pkg.description}</p>
@@ -1383,6 +1774,11 @@ const featureMicros   = service.featureMicros
         </section>
       )}
 
+      {/* ══════════════════════ TOOLS & TECHNOLOGY ══════════════════════ */}
+      {service.toolsStack && (
+        <AIToolsSection title={service.toolsStack.title} items={service.toolsStack.items} />
+      )}
+
       {/* ══════════════════════ FAQ ══════════════════════ */}
       <section id="svc-faq" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div ref={faqRef} className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${faqVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
@@ -1394,7 +1790,7 @@ const featureMicros   = service.featureMicros
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.2] tracking-tight text-white">
                 The hard questions,<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">answered.</span>
+                <span className="bg-brand-gradient bg-clip-text text-transparent">answered (FAQ).</span>
               </h2>
             </div>
             <div className="lg:pb-3 flex flex-col items-start gap-6">

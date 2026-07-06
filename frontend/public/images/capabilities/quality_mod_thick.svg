@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%" fx="50%" fy="30%">
+      <stop offset="0%" stop-color="#1b0b1c" />
+      <stop offset="60%" stop-color="#0c050d" />
+      <stop offset="100%" stop-color="#040105" />
+    </radialGradient>
+
+    <!-- Glass Gradients -->
+    <linearGradient id="glass-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+
+    <!-- Neon Gradients -->
+    <linearGradient id="pink-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#d946ef" />
+    </linearGradient>
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+
+    <!-- Glow Filters -->
+    <filter id="neon-glow-pink" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="neon-glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Card Shadow -->
+    <filter id="thick-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="15" flood-color="#000000" flood-opacity="0.75" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-grad)" />
+
+  <!-- Tech Grid Grid -->
+  <g stroke="#ffffff" stroke-opacity="0.015" stroke-width="1">
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+    <line x1="100" y1="0" x2="100" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="300" y1="0" x2="300" y2="600" />
+    <line x1="400" y1="0" x2="400" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="600" y1="0" x2="600" y2="600" />
+    <line x1="700" y1="0" x2="700" y2="600" />
+  </g>
+
+  <!-- Ambient background glow -->
+  <circle cx="300" cy="300" r="220" fill="#ec4899" opacity="0.06" filter="url(#neon-glow-pink)" />
+  <circle cx="500" cy="300" r="220" fill="#00f0ff" opacity="0.06" filter="url(#neon-glow-cyan)" />
+
+  <!-- Infinity Loop (CI/CD DevOps Loop) -->
+  <g filter="url(#thick-shadow)" transform="translate(0, 0)">
+    
+    <!-- Deep Track Base (Dark Solid Glass Track) -->
+    <path d="M 400,300 C 320,180 180,180 180,300 C 180,420 320,420 400,300 C 480,180 620,180 620,300 C 620,420 480,420 400,300 Z" 
+          fill="none" stroke="url(#glass-top)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" opacity="0.15" />
+          
+    <path d="M 400,300 C 320,180 180,180 180,300 C 180,420 320,420 400,300 C 480,180 620,180 620,300 C 620,420 480,420 400,300 Z" 
+          fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Neon Glowing Rails inside the Track -->
+    
+    <!-- Left Loop (CI/Development - pink) -->
+    <path d="M 400,300 C 320,180 180,180 180,300 C 180,420 320,420 400,300" 
+          fill="none" stroke="url(#pink-glow)" stroke-width="6" stroke-linecap="round" filter="url(#neon-glow-pink)" />
+          
+    <!-- Right Loop (CD/Operations - cyan) -->
+    <path d="M 400,300 C 480,180 620,180 620,300 C 620,420 480,420 400,300" 
+          fill="none" stroke="url(#cyan-glow)" stroke-width="6" stroke-linecap="round" filter="url(#neon-glow-cyan)" />
+
+    <!-- Inner thin core wire -->
+    <path d="M 400,300 C 320,180 180,180 180,300 C 180,420 320,420 400,300 C 480,180 620,180 620,300 C 620,420 480,420 400,300 Z" 
+          fill="none" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.8" />
+  </g>
+
+  <!-- Glowing Nodes/Release Indicators (Pulsing along CI/CD loop) -->
+  
+  <!-- Left Side: Code Commit / Build -->
+  <g transform="translate(240, 210)" filter="url(#neon-glow-pink)">
+    <circle cx="0" cy="0" r="8" fill="#ec4899" />
+    <circle cx="0" cy="0" r="3" fill="#ffffff" />
+  </g>
+  <text x="240" y="190" fill="#ec4899" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" letter-spacing="1">BUILD</text>
+
+  <!-- Center Cross: Integration Gateway -->
+  <g transform="translate(400, 300)" filter="url(#neon-glow-cyan)">
+    <circle cx="0" cy="0" r="10" fill="#00f0ff" />
+    <polygon points="-3,-5 5,0 -3,5" fill="#ffffff" />
+  </g>
+  <text x="400" y="275" fill="#00f0ff" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" letter-spacing="1">TEST GATE</text>
+
+  <!-- Right Side: Release / Deploy -->
+  <g transform="translate(560, 390)" filter="url(#neon-glow-cyan)">
+    <circle cx="0" cy="0" r="8" fill="#00f0ff" />
+    <circle cx="0" cy="0" r="3" fill="#ffffff" />
+  </g>
+  <text x="560" y="420" fill="#00f0ff" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" letter-spacing="1">DEPLOY</text>
+
+  <!-- Checkmark / Quality Indicators -->
+  <g transform="translate(210, 340)" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8">
+    <rect x="-10" y="-10" width="20" height="20" rx="4" fill="#0a0a0c" stroke-width="1.5" />
+    <polyline points="-4,0 -1,3 5,-3" filter="url(#neon-glow-cyan)" />
+  </g>
+  
+  <g transform="translate(580, 220)" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8">
+    <rect x="-10" y="-10" width="20" height="20" rx="4" fill="#0a0a0c" stroke-width="1.5" />
+    <polyline points="-4,0 -1,3 5,-3" filter="url(#neon-glow-cyan)" />
+  </g>
+
+  <!-- Orbiting particles -->
+  <circle cx="340" cy="350" r="2.5" fill="#ec4899" opacity="0.7" filter="url(#neon-glow-pink)" />
+  <circle cx="480" cy="230" r="2" fill="#00f0ff" opacity="0.6" filter="url(#neon-glow-cyan)" />
+  <circle cx="160" cy="270" r="3.5" fill="#ffffff" opacity="0.4" />
+</svg>

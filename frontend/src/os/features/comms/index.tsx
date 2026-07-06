@@ -79,7 +79,7 @@ export function CommsModule() {
   return (
     <div>
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-white/10 border-t-white/20 mb-6 -mt-2 overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[var(--os-border)] border-t-white/20 mb-6 -mt-2 overflow-x-auto">
         {NAV_TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -88,8 +88,8 @@ export function CommsModule() {
             className={({ isActive }) => cn(
               'flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
               isActive
-                ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
+                ? 'border-[#579bfc] text-[#579bfc]'
+                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />

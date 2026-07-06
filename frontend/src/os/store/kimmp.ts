@@ -116,7 +116,7 @@ export const KIMMP_MOCK: Insight[] = [
     title: 'TechForward Partners — ARR bridge model overdue',
     summary: 'Sophia Müller requested updated financial model 6 days ago. Not delivered. Silent deal-blocker.',
     detail: 'TechForward Partners (Series A lead) requested ARR bridge model on 2026-05-25. Next follow-up 2026-06-05 — model must be ready before that.',
-    action: 'Mahesh to send updated ARR bridge model to Sophia Müller by 2026-06-04.',
+    action: 'C.O.D.E. to send updated ARR bridge model to Sophia Müller by 2026-06-04.',
   },
   {
     id: 'k7', type: 'reactive', category: 'revenue', priority: 'high', module: 'Leads', confidence: 67, impact: '£95k ARR',

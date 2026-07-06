@@ -5,6 +5,7 @@
 
 import { prisma }              from '../lib/prisma'
 import { createNotification }  from '../services/notificationService'
+import { emitToAdmins }        from '../socket'
 import type { AegisAgentResult } from './agents/types'
 
 let cachedAdminId: string | null = null
@@ -47,4 +48,15 @@ export async function notifyAegisVerdict(result: AegisAgentResult): Promise<void
   const link        = '/kangqore-view/admin/aegis/agents'
 
   await createNotification({ userId: adminId, title, message, type, link }).catch(() => {})
+
+  // Real-time push to admin dashboard (Phase 2)
+  emitToAdmins('aegis:verdict', {
+    agentId:  result.agentId,
+    engine:   result.engine,
+    verdict:  result.verdict,
+    summary:  result.summary,
+    findings: result.findings,
+    actions:  result.actions,
+    raisedAt: result.raisedAt,
+  })
 }

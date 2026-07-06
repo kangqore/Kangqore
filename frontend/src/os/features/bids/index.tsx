@@ -2,11 +2,12 @@ import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { LayoutDashboard, Layers, Cpu, Briefcase, FileText } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BidsOverviewPage }  from './pages/BidsOverviewPage'
-import { PillarsPage }       from './pages/PillarsPage'
-import { EnginesPage }       from './pages/EnginesPage'
-import { EngagementsPage }   from './pages/EngagementsPage'
-import { DeliverablesPage }  from './pages/DeliverablesPage'
+import { BidsOverviewPage }     from './pages/BidsOverviewPage'
+import { PillarsPage }           from './pages/PillarsPage'
+import { EnginesPage }           from './pages/EnginesPage'
+import { EngagementsPage }       from './pages/EngagementsPage'
+import { DeliverablesPage }      from './pages/DeliverablesPage'
+import { BidsConsultantPage }    from './pages/BidsConsultantPage'
 
 const BASE = '/kangqore-view/admin/bids'
 
@@ -20,11 +21,12 @@ const TABS = [
 
 export function BidsModule() {
   const { pathname } = useLocation()
+  const isDetail = /\/engagements\/[^/]+/.test(pathname)
 
   return (
     <div className="space-y-0">
-      {/* Tab bar */}
-      <div className="flex items-center gap-1 border-b border-white/10 mb-8 mt-1 overflow-x-auto">
+      {/* Tab bar — hidden on engagement detail page */}
+      <div className={`flex items-center gap-0 border-b border-[var(--os-border)] mb-8 mt-1 overflow-x-auto${isDetail ? ' hidden' : ''}`}>
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -33,8 +35,8 @@ export function BidsModule() {
             className={({ isActive }) => cn(
               'flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap',
               isActive
-                ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10'
+                ? 'border-[#579bfc] text-[#579bfc]'
+                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[var(--os-border)]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -52,12 +54,13 @@ export function BidsModule() {
           transition={{ duration: 0.15, ease: 'easeOut' }}
         >
           <Routes>
-            <Route index                  element={<BidsOverviewPage />}  />
-            <Route path="pillars"         element={<PillarsPage />}       />
-            <Route path="engines"         element={<EnginesPage />}       />
-            <Route path="engagements"     element={<EngagementsPage />}   />
-            <Route path="deliverables"    element={<DeliverablesPage />}  />
-            <Route path="*"               element={<Navigate to={BASE} replace />} />
+            <Route index                          element={<BidsOverviewPage />}     />
+            <Route path="pillars"                 element={<PillarsPage />}          />
+            <Route path="engines"                 element={<EnginesPage />}          />
+            <Route path="engagements"             element={<EngagementsPage />}      />
+            <Route path="engagements/:id"         element={<BidsConsultantPage />}   />
+            <Route path="deliverables"            element={<DeliverablesPage />}     />
+            <Route path="*"                       element={<Navigate to={BASE} replace />} />
           </Routes>
         </motion.div>
       </AnimatePresence>

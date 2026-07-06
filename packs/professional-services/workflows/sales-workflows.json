@@ -1,0 +1,21 @@
+{
+  "description": "Two sales workflow DAGs for professional services.",
+  "workflows": [
+    {
+      "name":    "Lead Qualification Flow",
+      "trigger": "SIGNAL",
+      "steps":   6,
+      "agents":  ["DEAL_COACH"],
+      "approvalGates": ["L2 (nurture/decline)"],
+      "description": "Score ≥ 70 auto-qualifies. 40–69 routes to L2 nurture decision. < 40 routes to L2 decline confirmation. Creates tasks on acceptance."
+    },
+    {
+      "name":    "Proposal Follow-up",
+      "trigger": "SCHEDULE",
+      "steps":   6,
+      "agents":  ["DEAL_COACH"],
+      "approvalGates": ["L2 (deals ≥ ₹5L)"],
+      "description": "5-day no-response trigger. DEAL_COACH drafts follow-up. Auto-sends for small deals, L2 review for large."
+    }
+  ]
+}

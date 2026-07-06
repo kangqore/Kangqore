@@ -296,12 +296,12 @@ const Header = ({ onMenuClick }) => {
                   <>
                     <Link 
                       to={
-                        user.role === 'ADMIN' ? '/dashboard/admin' :
-                        user.role === 'CLIENT' ? '/dashboard/client' :
-                        user.role === 'PARTNER' ? '/dashboard/partner' :
-                        user.role === 'INVESTOR' ? '/dashboard/investor' :
-                        user.role === 'JOB_SEEKER' ? '/dashboard/careers' :
-                        '/client-portal'
+                        user.role === 'ADMIN'      ? '/kangqore-view/admin'    :
+                        user.role === 'CLIENT'     ? '/kangqore-view/client'   :
+                        user.role === 'PARTNER'    ? '/kangqore-view/partner'  :
+                        user.role === 'INVESTOR'   ? '/kangqore-view/investor' :
+                        user.role === 'JOB_SEEKER' ? '/kangqore-view/careers'  :
+                        '/kangqore-view/client'
                       }
                       className={`flex items-center gap-1 transition-colors font-medium ${(isLightBackground && !isInHero) ? 'hover:text-gray-600' : 'hover:text-white/80'}`}
                     >

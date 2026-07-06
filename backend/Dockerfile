@@ -12,7 +12,7 @@ RUN npm run build
 # node:20-slim (Debian) used here — Alpine lacks libssl.so.1.1 which Prisma requires
 FROM node:20-slim
 WORKDIR /app/backend
-RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends openssl espeak-ng && rm -rf /var/lib/apt/lists/*
 COPY backend/package*.json ./
 RUN npm install --ignore-scripts
 COPY backend/prisma   ./prisma

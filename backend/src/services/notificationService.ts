@@ -74,7 +74,7 @@ export async function notifyMeetingScheduled(
     title: 'New Meeting Scheduled',
     message: `Meeting: ${meetingTitle}`,
     type: 'INFO',
-    link: `/dashboard/${recipientRole.toLowerCase()}/meetings`
+    link: `/kangqore-view/${recipientRole.toLowerCase()}/meetings`
   });
 }
 
@@ -91,7 +91,7 @@ export async function notifyNewMessage(
     title: 'New Message',
     message: `You have a new message from ${senderName}`,
     type: 'INFO',
-    link: `/dashboard/${recipientRole.toLowerCase()}/messages`
+    link: `/kangqore-view/${recipientRole.toLowerCase()}/messages`
   });
 }
 
@@ -103,12 +103,16 @@ export async function notifyTicketUpdate(
   ticketSubject: string,
   status: string
 ) {
+  const isReply    = status === 'reply';
+  const isResolved = status === 'resolved';
   return createNotification({
     userId: clientId,
-    title: 'Ticket Updated',
-    message: `Ticket "${ticketSubject}" is now ${status}`,
-    type: status === 'resolved' ? 'SUCCESS' : 'INFO',
-    link: `/dashboard/client/support`
+    title: isReply ? 'New reply on your ticket' : 'Ticket Updated',
+    message: isReply
+      ? `Support replied to "${ticketSubject}"`
+      : `Ticket "${ticketSubject}" is now ${status}`,
+    type: isResolved ? 'SUCCESS' : 'INFO',
+    link: '/kangqore-view/client/support',
   });
 }
 
@@ -125,7 +129,7 @@ export async function notifyNewEmail(
     title: 'New Email',
     message: `You received: "${subject}"`,
     type: 'INFO',
-    link: `/dashboard/${recipientRole.toLowerCase()}/emails`
+    link: `/kangqore-view/${recipientRole.toLowerCase()}/emails`
   });
 }
 /**

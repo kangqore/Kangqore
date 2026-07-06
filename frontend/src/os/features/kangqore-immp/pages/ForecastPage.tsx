@@ -19,11 +19,11 @@ const CATEGORY_CONFIG: Record<InsightCategory, {
   talent:      { label: 'Talent',      color: 'text-[#7f53f9]', bg: 'bg-[#7f53f9]', Icon: ({ className }) => <Target        className={className ?? 'w-4 h-4'} /> },
 }
 
-const PRIORITY_BORDER: Record<string, string> = {
-  critical: 'border-l-[#e2445c]',
-  high:     'border-l-[#fdab3d]',
-  medium:   'border-l-[#0073ea]',
-  low:      'border-l-[#c4c4c4]',
+const PRIORITY_COLOR: Record<string, string> = {
+  critical: '#e2445c',
+  high:     '#fdab3d',
+  medium:   '#0073ea',
+  low:      '#c4c4c4',
 }
 
 const PRIORITY_BADGE: Record<string, 'danger' | 'warning' | 'info' | 'neutral'> = {
@@ -34,31 +34,33 @@ function ForecastCard({ insight }: { insight: Insight }) {
   const [expanded, setExpanded] = useState(false)
   const config = CATEGORY_CONFIG[insight.category]
 
+  const c = PRIORITY_COLOR[insight.priority]
+
   return (
-    <div className={`bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-xl border border-white/10 border-t-white/20 border-l-4 shadow-sm ${PRIORITY_BORDER[insight.priority]}`}>
+    <div className="rounded-[32px] overflow-hidden transition-all" style={{ background: `${c}10`, boxShadow: `0 24px 48px ${c}20` }}>
       {/* Forecast badge strip */}
-      <div className="flex items-center gap-2 px-5 pt-3.5 pb-0">
-        <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-violet-100 text-violet-700 uppercase tracking-wider">
+      <div className="flex items-center gap-2 px-8 pt-6 pb-2">
+        <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-[#7c3aed20] text-[#7c3aed] uppercase tracking-widest">
           <TrendingUp className="w-2.5 h-2.5" />
           Forecast
         </span>
         {insight.forecastHorizon && (
-          <span className="flex items-center gap-1 text-[10px] text-slate-500">
+          <span className="flex items-center gap-1 text-[10px] text-[var(--os-text-2)]">
             <Clock className="w-2.5 h-2.5" />
             {insight.forecastHorizon}
           </span>
         )}
-        <span className="ml-auto text-[10px] text-slate-500">{insight.confidence}% confidence</span>
+        <span className="ml-auto text-[10px] text-[var(--os-text-2)]">{insight.confidence}% confidence</span>
       </div>
 
-      <div className="p-5 pt-3">
+      <div className="p-8 pt-3">
         <div className="flex items-start justify-between gap-3 mb-2.5">
           <div className="flex items-start gap-3">
             <div className={`mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${config.bg} text-white shadow-sm`}>
               <config.Icon className="w-4 h-4" />
             </div>
             <div>
-              <p className="font-semibold text-white leading-tight">{insight.title}</p>
+              <p className="font-semibold text-[var(--os-text-1)] leading-tight">{insight.title}</p>
               <div className="flex items-center gap-2 mt-1 flex-wrap">
                 <Badge variant={PRIORITY_BADGE[insight.priority]} size="sm" dot>
                   {insight.priority.charAt(0).toUpperCase() + insight.priority.slice(1)}
@@ -72,30 +74,30 @@ function ForecastCard({ insight }: { insight: Insight }) {
           </span>
         </div>
 
-        <p className="text-sm text-slate-500 leading-relaxed mb-3 ml-11">{insight.summary}</p>
+        <p className="text-sm text-[var(--os-text-2)] leading-relaxed mb-3 ml-11">{insight.summary}</p>
 
         {expanded && (
-          <div className="ml-11 space-y-3 mb-3 pt-3 border-t border-white/10 border-t-white/20">
-            <p className="text-sm text-slate-300 leading-relaxed">{insight.detail}</p>
+          <div className="ml-11 space-y-3 mb-3 pt-3 border-t border-[var(--os-border)]">
+            <p className="text-sm text-[var(--os-text-1)] leading-relaxed">{insight.detail}</p>
             {insight.forecastBasis && (
-              <div className="flex items-start gap-2 bg-violet-50 border border-violet-100 rounded-xl p-3">
-                <Database className="w-4 h-4 text-violet-400 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-2 bg-[#7c3aed10] border border-[var(--os-border)] rounded-xl p-3">
+                <Database className="w-4 h-4 text-[#7c3aed] flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-[10px] font-bold text-violet-600 uppercase tracking-wider mb-0.5">Forecast basis</p>
-                  <p className="text-xs text-violet-800">{insight.forecastBasis}</p>
+                  <p className="text-[10px] font-bold text-[#7c3aed] uppercase tracking-widest mb-0.5">Forecast basis</p>
+                  <p className="text-xs text-[var(--os-text-1)]">{insight.forecastBasis}</p>
                 </div>
               </div>
             )}
-            <div className="flex items-start gap-2 bg-blue-50 rounded-xl p-3">
-              <ArrowRight className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
-              <p className="text-sm font-medium text-blue-800">{insight.action}</p>
+            <div className="flex items-start gap-2 bg-[#579bfc10] border border-[var(--os-border)] rounded-xl p-3">
+              <ArrowRight className="w-4 h-4 text-[#579bfc] flex-shrink-0 mt-0.5" />
+              <p className="text-sm font-medium text-[var(--os-text-1)]">{insight.action}</p>
             </div>
           </div>
         )}
 
         <button
           onClick={() => setExpanded(e => !e)}
-          className="ml-11 flex items-center gap-1 text-xs text-blue-600 font-medium hover:text-blue-800 transition-colors"
+          className="ml-11 flex items-center gap-1 text-xs text-[#579bfc] font-medium hover:text-[#3d85e8] transition-colors"
         >
           {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
           {expanded ? 'Show less' : 'View prediction detail & action'}
@@ -115,16 +117,16 @@ export function ForecastPage() {
   const highCount     = forecasts.filter(i => i.priority === 'high').length
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8">
 
       {/* Header */}
-      <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-lg">
-          <TrendingUp className="w-6 h-6 text-white" />
+      <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+          <TrendingUp className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
-          <h2 className="text-xl font-bold text-white">KIMMP Forecast</h2>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <h2 className="text-base font-bold text-[var(--os-text-1)]">KIMMP Forecast</h2>
+          <p className="text-xs text-[var(--os-text-2)] mt-0.5">
             Predictive intelligence — what KIMMP sees coming before it arrives.
           </p>
         </div>
@@ -134,18 +136,30 @@ export function ForecastPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: 'Active Forecasts', value: forecasts.length,  color: 'text-violet-600 bg-violet-50', icon: TrendingUp    },
-          { label: 'Critical Risk',    value: criticalCount,     color: 'text-red-600 bg-red-50',       icon: AlertTriangle },
-          { label: 'High Priority',    value: highCount,         color: 'text-orange-600 bg-orange-50', icon: Zap           },
+          { label: 'Active Forecasts', value: forecasts.length, accent: '#7c3aed', icon: TrendingUp    },
+          { label: 'Critical Risk',    value: criticalCount,    accent: '#e2445c', icon: AlertTriangle },
+          { label: 'High Priority',    value: highCount,        accent: '#fdab3d', icon: Zap           },
         ].map(s => (
-          <div key={s.label} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-5 flex items-center gap-4 shadow-sm">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color}`}>
-              <s.icon className="w-5 h-5" />
+          <div key={s.label} className="relative overflow-hidden flex flex-col p-5 transition-all duration-300"
+            style={{
+              background: s.accent,
+              color: '#ffffff',
+              borderRadius: 'var(--os-radius-xl)',
+              boxShadow: `0 12px 32px ${s.accent}60`,
+              border: 'none',
+            }}
+          >
+            <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: '50%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15))', pointerEvents: 'none' }} />
+            
+            <div className="w-9 h-9 rounded-2xl flex items-center justify-center mb-3" style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(10px)' }}>
+              <s.icon className="w-4 h-4 text-white" />
             </div>
-            <div>
-              <p className="text-2xl font-bold tracking-tight text-white">{s.value}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
-            </div>
+            <p className="text-3xl font-black tracking-tight leading-none mb-1.5" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+              {s.value}
+            </p>
+            <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.9)' }}>
+              {s.label}
+            </p>
           </div>
         ))}
       </div>
@@ -161,13 +175,13 @@ export function ForecastPage() {
               onClick={() => setFilter(cat)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
                 filter === cat
-                  ? 'bg-violet-600 text-white border-violet-600'
-                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border-white/10 border-t-white/20 hover:border-violet-300'
+                  ? 'bg-[#7c3aed] text-white border-[#7c3aed]'
+                  : 'bg-[var(--os-card)] text-[var(--os-text-2)] border-[var(--os-border)] hover:border-[#7c3aed] hover:text-[#7c3aed]'
               }`}
             >
               {cat === 'all' ? 'All Forecasts' : CATEGORY_CONFIG[cat].label}
               <span className={`inline-flex items-center justify-center min-w-[1.1rem] h-[1.1rem] px-1 rounded-full text-[10px] font-bold ${
-                filter === cat ? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10/20 text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'
+                filter === cat ? 'bg-white/20 text-white' : 'bg-[var(--os-surface-0)] text-[var(--os-text-2)]'
               }`}>{count}</span>
             </button>
           )
@@ -184,12 +198,12 @@ export function ForecastPage() {
           .map(insight => <ForecastCard key={insight.id} insight={insight} />)
         }
         {filtered.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-center bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-2xl border border-white/10 border-t-white/20">
-            <div className="w-12 h-12 rounded-2xl bg-violet-50 flex items-center justify-center mb-4">
-              <TrendingUp className="w-6 h-6 text-violet-300" />
+          <div className="flex flex-col items-center justify-center py-20 text-center" style={{ background: 'var(--os-card)', borderRadius: 'var(--os-radius-xl)', boxShadow: '0 32px 64px rgba(0,0,0,0.04)' }}>
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ backgroundColor: '#7c3aed20', color: '#7c3aed' }}>
+              <TrendingUp className="w-6 h-6" />
             </div>
-            <p className="text-sm font-semibold text-slate-300">No forecasts in this category</p>
-            <p className="text-xs text-slate-500 mt-1">Try widening the filter.</p>
+            <p className="text-base font-bold text-[var(--os-text-1)]">No forecasts in this category</p>
+            <p className="text-sm text-[var(--os-text-2)] mt-1.5">Try widening the filter.</p>
           </div>
         )}
       </div>

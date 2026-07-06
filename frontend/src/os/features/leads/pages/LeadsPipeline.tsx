@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import {
   DndContext, DragOverlay, closestCorners,
@@ -17,15 +18,78 @@ import { InlineSelect } from '@components/InlineSelect'
 import { BulkActionBar } from '@components/BulkActionBar'
 import { useLeadsStore } from '../store'
 import { api, isDemo } from '@lib/api'
+import { LEADS, EQORE_SIGNALS, ACTIVITIES, NURTURE_SEQUENCES } from '../data'
 import type { Lead, LeadStage } from '../types'
 
-const STAGES: { id: LeadStage; label: string; color: string }[] = [
-  { id: 'new',         label: 'New',         color: '#94a3b8' },
-  { id: 'qualified',   label: 'Qualified',   color: '#3b82f6' },
-  { id: 'proposal',    label: 'Proposal',    color: '#f59e0b' },
-  { id: 'negotiation', label: 'Negotiation', color: '#8b5cf6' },
-  { id: 'won',         label: 'Won',         color: '#22c55e' },
-  { id: 'lost',        label: 'Lost',        color: '#ef4444' },
+interface EqoreLeadRaw {
+  id?: unknown
+  companyName?: unknown
+  company?: unknown
+  name?: unknown
+  contactName?: unknown
+  role?: unknown
+  contactRole?: unknown
+  jobTitle?: unknown
+  email?: unknown
+  phone?: unknown
+  country?: unknown
+  industry?: unknown
+  stage?: unknown
+  source?: unknown
+  leadScore?: unknown
+  score?: unknown
+  eqoreScore?: unknown
+  value?: unknown
+  dealValue?: unknown
+  projectedValue?: unknown
+  probability?: unknown
+  winProbability?: unknown
+  pipelineWeight?: unknown
+  owner?: unknown
+  assignedTo?: unknown
+  createdAt?: unknown
+  updatedAt?: unknown
+  lastActivity?: unknown
+  tags?: unknown
+  description?: unknown
+  notes?: unknown
+}
+
+const VALID_STAGES: Lead['stage'][] = ['new', 'qualified', 'proposal', 'negotiation', 'won', 'lost']
+const VALID_SOURCES: Lead['source'][] = ['inbound', 'outbound', 'referral', 'eQORE', 'event', 'website']
+
+function toLead(e: EqoreLeadRaw, i: number): Lead {
+  const rawStage  = String(e.stage  ?? 'new').toLowerCase()
+  const rawSource = String(e.source ?? 'inbound')
+  return {
+    id:           String(e.id ?? `l${i}`),
+    company:      String(e.companyName ?? e.company ?? 'Unknown'),
+    contactName:  String(e.contactName ?? e.name ?? ''),
+    contactRole:  String(e.contactRole ?? e.role ?? e.jobTitle ?? ''),
+    email:        String(e.email ?? ''),
+    phone:        e.phone ? String(e.phone) : undefined,
+    country:      String(e.country ?? 'UK'),
+    industry:     String(e.industry ?? ''),
+    stage:        VALID_STAGES.includes(rawStage as Lead['stage']) ? rawStage as Lead['stage'] : 'new',
+    source:       VALID_SOURCES.includes(rawSource as Lead['source']) ? rawSource as Lead['source'] : 'inbound',
+    score:        Number(e.score ?? e.eqoreScore ?? e.leadScore ?? 50),
+    value:        Number(e.value ?? e.dealValue ?? e.projectedValue ?? 0),
+    probability:  Number(e.probability ?? e.winProbability ?? e.pipelineWeight ?? 30),
+    owner:        String(e.owner ?? e.assignedTo ?? 'Unassigned'),
+    createdAt:    String(e.createdAt ?? '').slice(0, 10),
+    lastActivity: String(e.updatedAt ?? e.lastActivity ?? '').slice(0, 10),
+    tags:         Array.isArray(e.tags) ? (e.tags as string[]) : [],
+    description:  String(e.description ?? e.notes ?? ''),
+  }
+}
+
+const STAGES: { id: LeadStage; label: string; color: string; bg: string }[] = [
+  { id: 'new',         label: 'New',         color: '#579bfc', bg: '#579bfc' },
+  { id: 'qualified',   label: 'Qualified',   color: '#fdab3d', bg: '#fdab3d' },
+  { id: 'proposal',    label: 'Proposal',    color: '#7c3aed', bg: '#7c3aed' },
+  { id: 'negotiation', label: 'Negotiation', color: '#323338', bg: '#323338' },
+  { id: 'won',         label: 'Won',         color: '#00c875', bg: '#00c875' },
+  { id: 'lost',        label: 'Lost',        color: '#e2445c', bg: '#e2445c' },
 ]
 
 const STAGE_OPTIONS: { value: LeadStage; label: string; variant: 'neutral' | 'info' | 'warning' | 'brand' | 'success' | 'danger' }[] = [
@@ -43,17 +107,22 @@ const SOURCE_BADGE = {
 } as const
 
 const STAGE_DOT: Record<LeadStage, string> = {
-  new: '#94a3b8', qualified: '#3b82f6', proposal: '#f59e0b',
-  negotiation: '#8b5cf6', won: '#22c55e', lost: '#ef4444',
+  new: '#579bfc', qualified: '#fdab3d', proposal: '#7c3aed',
+  negotiation: '#323338', won: '#00c875', lost: '#e2445c',
 }
 
-function ScoreDot({ score }: { score: number }) {
-  const color = score >= 80 ? 'bg-green-500' : score >= 60 ? 'bg-amber-400' : 'bg-slate-300'
+const STAGE_BG: Record<LeadStage, string> = {
+  new: '#579bfc', qualified: '#fdab3d', proposal: '#7c3aed',
+  negotiation: '#323338', won: '#00c875', lost: '#e2445c',
+}
+
+function ScoreBadge({ score }: { score: number }) {
+  const bg = score >= 80 ? '#00c87522' : score >= 60 ? '#fdab3d22' : '#57575722'
+  const color = score >= 80 ? '#00c875' : score >= 60 ? '#fdab3d' : 'var(--os-text-2)'
   return (
-    <div className="flex items-center gap-1.5">
-      <div className={`w-2 h-2 rounded-full ${color}`} />
-      <span className="text-xs font-bold text-slate-300">{score}</span>
-    </div>
+    <span className="text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: bg, color }}>
+      {score}
+    </span>
   )
 }
 
@@ -64,48 +133,53 @@ function LeadCard({
   selected?: boolean; onToggle?: () => void
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: lead.id })
+  const stageBg = STAGE_BG[lead.stage]
+  const initials = lead.company.slice(0, 2).toUpperCase()
   return (
     <div
       ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
+      style={{ transform: CSS.Transform.toString(transform), transition, background: stageBg }}
       className={cn(
-        'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border rounded-xl p-3 select-none shadow-sm',
-        'hover:shadow-lg hover:shadow-[#4ab6d4]/10 hover:scale-[1.02] hover:border-os-blue/30 transition-all duration-150',
+        'rounded-xl p-3 select-none text-white shadow-sm transition-all duration-150',
+        'hover:brightness-110 hover:scale-[1.02]',
         isDragging && !dragging && 'opacity-30',
         dragging && 'shadow-xl rotate-1 scale-105',
-        selected ? 'border-os-blue/60 bg-[#1a2440]' : 'border-white/10 border-t-white/20',
+        selected ? 'ring-2 ring-white/60' : '',
       )}
     >
-      <div className="flex items-start justify-between gap-2 mb-2">
-        {onToggle && (
-          <input
-            type="checkbox"
-            checked={selected}
-            onChange={onToggle}
-            onClick={e => e.stopPropagation()}
-            className="mt-0.5 w-3.5 h-3.5 rounded border-white/10 border-t-white/20 bg-slate-900 accent-[#2564ea] cursor-pointer flex-shrink-0"
-          />
-        )}
-        <div className="min-w-0 flex-1 cursor-pointer" onClick={onClick}>
-          <p className="text-sm font-semibold text-white truncate">{lead.company}</p>
-          <p className="text-xs text-slate-500 truncate">{lead.contactName} · {lead.contactRole}</p>
+      <div className="flex items-center justify-between gap-2 mb-2.5">
+        <div className="flex items-center gap-2 min-w-0 flex-1 cursor-pointer" onClick={onClick}>
+          {onToggle && (
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={onToggle}
+              onClick={e => e.stopPropagation()}
+              className="w-3.5 h-3.5 rounded bg-white/20 border-white/40 accent-white cursor-pointer flex-shrink-0"
+            />
+          )}
+          <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
+            <span className="text-[11px] font-bold text-white">{initials}</span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[13px] font-bold text-white truncate leading-tight">{lead.company}</p>
+            <p className="text-[11px] text-white/70 truncate">{lead.contactName}</p>
+          </div>
         </div>
-        <button {...attributes} {...listeners} className="text-slate-200 hover:text-slate-500 flex-shrink-0 cursor-grab active:cursor-grabbing mt-0.5" onClick={e => e.stopPropagation()}>
-          ⋮⋮
-        </button>
+        <div className="flex items-center gap-1 flex-shrink-0">
+          <ScoreBadge score={lead.score} />
+          <button {...attributes} {...listeners} className="text-white/50 hover:text-[var(--os-text-1)] flex-shrink-0 cursor-grab active:cursor-grabbing" onClick={e => e.stopPropagation()}>
+            ⋮⋮
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center justify-between mb-2" onClick={onClick}>
-        <span className="text-sm font-bold text-slate-200 cursor-pointer">₹{(lead.value / 1000).toFixed(0)}k</span>
-        <ScoreDot score={lead.score} />
+        <span className="text-sm font-bold text-white cursor-pointer">₹{(lead.value / 1000).toFixed(0)}k</span>
+        <span className="text-[11px] text-white/70">{lead.probability}% win</span>
       </div>
 
-      <div className="flex items-center gap-1.5 flex-wrap" onClick={onClick}>
-        <Badge variant={SOURCE_BADGE[lead.source]} size="sm">{lead.source}</Badge>
-        <span className="text-[10px] text-slate-500">{lead.probability}% win</span>
-      </div>
-
-      <div className="mt-2 pt-2 border-t border-white/10 border-t-white/20">
+      <div className="pt-2 border-t border-[var(--os-border)]">
         <InlineSelect
           value={lead.stage}
           options={STAGE_OPTIONS}
@@ -134,75 +208,79 @@ function TableView({
 }) {
   const allSelected = leads.length > 0 && leads.every(l => selected.has(l.id))
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/10 border-t-white/20">
+    <div className="overflow-x-auto rounded-xl border border-[var(--os-border)] shadow-[var(--os-shadow-card)]">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
-            <th className="w-10 px-3 py-2.5">
+          <tr className="border-b border-[var(--os-border)]" style={{ background: 'var(--os-surface-0)' }}>
+            <th className="w-10 px-4 py-3">
               <input
                 type="checkbox"
                 checked={allSelected}
                 onChange={onToggleAll}
-                className="w-3.5 h-3.5 rounded border-white/10 border-t-white/20 bg-slate-900 accent-[#2564ea]"
+                className="w-3.5 h-3.5 rounded accent-[#579bfc]"
               />
             </th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Company</th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Contact</th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Stage</th>
-            <th className="px-3 py-2.5 text-right text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Value</th>
-            <th className="px-3 py-2.5 text-right text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Score</th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Source</th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Owner</th>
+            <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>Company</th>
+            <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>Contact</th>
+            <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>Stage</th>
+            <th className="px-4 py-3 text-right text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>Value</th>
+            <th className="px-4 py-3 text-center text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>Score</th>
+            <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>Source</th>
+            <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>Owner</th>
           </tr>
         </thead>
         <tbody>
-          {leads.map((lead, i) => (
+          {leads.map((lead) => (
             <tr
               key={lead.id}
               className={cn(
-                'border-b border-white/10 border-t-white/20 transition-colors',
-                selected.has(lead.id) ? 'bg-[#1a2440]' : i % 2 === 0 ? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10' : 'bg-slate-900',
-                'hover:bg-[#1E2D4A] cursor-pointer',
+                'border-b border-[var(--os-border)] transition-colors cursor-pointer',
+                selected.has(lead.id) ? 'bg-[#579bfc]/8' : 'hover:bg-[var(--os-surface-0)]',
               )}
             >
-              <td className="px-3 py-2.5" onClick={e => e.stopPropagation()}>
+              <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
                 <input
                   type="checkbox"
                   checked={selected.has(lead.id)}
                   onChange={() => onToggle(lead.id)}
-                  className="w-3.5 h-3.5 rounded border-white/10 border-t-white/20 bg-slate-900 accent-[#2564ea]"
+                  className="w-3.5 h-3.5 rounded accent-[#579bfc]"
                 />
               </td>
-              <td className="px-3 py-2.5" onClick={() => onOpen(lead.id)}>
-                <span className="font-semibold text-white">{lead.company}</span>
+              <td className="px-4 py-3" onClick={() => onOpen(lead.id)}>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0" style={{ background: STAGE_DOT[lead.stage] }}>
+                    {lead.company.slice(0,2).toUpperCase()}
+                  </div>
+                  <span className="font-semibold text-white">{lead.company}</span>
+                </div>
               </td>
-              <td className="px-3 py-2.5 text-slate-400" onClick={() => onOpen(lead.id)}>
-                <span className="truncate max-w-[140px] block">{lead.contactName}</span>
-                <span className="text-[11px] text-slate-600">{lead.contactRole}</span>
+              <td className="px-4 py-3" onClick={() => onOpen(lead.id)}>
+                <span className="block text-sm font-medium" style={{ color: 'var(--os-text-1)' }}>{lead.contactName}</span>
+                <span className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>{lead.contactRole}</span>
               </td>
-              <td className="px-3 py-2.5" onClick={e => e.stopPropagation()}>
+              <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: STAGE_DOT[lead.stage] }} />
                   <InlineSelect value={lead.stage} options={STAGE_OPTIONS} onChange={s => onStageChange(lead.id, s)} size="sm" />
                 </div>
               </td>
-              <td className="px-3 py-2.5 text-right font-semibold text-slate-200" onClick={() => onOpen(lead.id)}>
+              <td className="px-4 py-3 text-right font-bold text-white" onClick={() => onOpen(lead.id)}>
                 ₹{(lead.value / 1000).toFixed(0)}k
               </td>
-              <td className="px-3 py-2.5 text-right" onClick={() => onOpen(lead.id)}>
-                <ScoreDot score={lead.score} />
+              <td className="px-4 py-3 text-center" onClick={() => onOpen(lead.id)}>
+                <ScoreBadge score={lead.score} />
               </td>
-              <td className="px-3 py-2.5" onClick={() => onOpen(lead.id)}>
+              <td className="px-4 py-3" onClick={() => onOpen(lead.id)}>
                 <Badge variant={SOURCE_BADGE[lead.source]} size="sm">{lead.source}</Badge>
               </td>
-              <td className="px-3 py-2.5 text-slate-400 text-xs" onClick={() => onOpen(lead.id)}>
+              <td className="px-4 py-3 text-xs font-medium" style={{ color: 'var(--os-text-2)' }} onClick={() => onOpen(lead.id)}>
                 {lead.owner.split(' ')[0]}
               </td>
             </tr>
           ))}
           {leads.length === 0 && (
             <tr>
-              <td colSpan={8} className="px-4 py-10 text-center text-slate-500 text-sm">No leads match your search</td>
+              <td colSpan={8} className="px-4 py-12 text-center text-sm" style={{ color: 'var(--os-text-2)' }}>No leads match your search</td>
             </tr>
           )}
         </tbody>
@@ -212,12 +290,28 @@ function TableView({
 }
 
 export function LeadsPipeline() {
-  const { leads, moveLeadStage, updateLead, bulkUpdateLeads, bulkDeleteLeads, setSelected, pipelineValue, forecastValue } = useLeadsStore()
+  const { leads, isLoading, hydrate, moveLeadStage, updateLead, bulkUpdateLeads, bulkDeleteLeads, setSelected, pipelineValue, forecastValue } = useLeadsStore()
   const navigate = useNavigate()
   const [activeId, setActiveId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [viewMode, setViewMode] = useState<'kanban' | 'table'>('kanban')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+
+  const { data: rawLeads } = useQuery({
+    queryKey: ['leads-pipeline'],
+    queryFn: () => api.get('/admin/eqore/leads').then(r => (r.data.leads ?? r.data ?? []) as EqoreLeadRaw[]),
+    staleTime: 60_000,
+    enabled: !isDemo(),
+  })
+
+  useEffect(() => {
+    if (isDemo()) {
+      hydrate(LEADS)
+      useLeadsStore.setState({ signals: EQORE_SIGNALS, activities: ACTIVITIES, nurtureSequences: NURTURE_SEQUENCES })
+    } else if (rawLeads !== undefined) {
+      hydrate(rawLeads.map((e, i) => toLead(e, i)))
+    }
+  }, [rawLeads, hydrate])
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
   const activeLead = leads.find(l => l.id === activeId)
@@ -282,27 +376,45 @@ export function LeadsPipeline() {
   const wonValue       = leads.filter(l => l.stage === 'won').reduce((s, l) => s + l.value, 0)
   const activeCount    = filteredLeads.filter(l => !['won','lost'].includes(l.stage)).length
 
+  if (isLoading && leads.length === 0) {
+    return (
+      <div className="space-y-5">
+        <div className="h-8 w-64 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-24 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+          ))}
+        </div>
+        <div className="flex gap-3 overflow-x-auto pb-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="min-w-[210px] w-[210px] h-64 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-5">
       <KIMMPSignalBar module="Leads" />
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-xl font-bold text-white">Lead Pipeline</h2>
-          <p className="text-sm text-slate-500 mt-0.5">{leads.length} leads · drag to move stages</p>
+          <p className="text-sm text-[var(--os-text-2)] mt-0.5">{leads.length} leads · drag to move stages</p>
         </div>
         <div className="flex items-center gap-2">
           <Input placeholder="Search leads…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-52" value={search} onChange={e => setSearch(e.target.value)} />
-          <div className="flex items-center gap-1 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-lg p-1">
+          <div className="flex items-center gap-1 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-[var(--os-border)] border-t-white/20 rounded-lg p-1">
             <button
               onClick={() => setViewMode('kanban')}
-              className={cn('p-1.5 rounded-md transition-colors', viewMode === 'kanban' ? 'bg-os-blue text-white' : 'text-slate-500 hover:text-white')}
+              className={cn('p-1.5 rounded-md transition-colors', viewMode === 'kanban' ? 'bg-os-blue text-white' : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]')}
               title="Kanban view"
             >
               <Kanban className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setViewMode('table')}
-              className={cn('p-1.5 rounded-md transition-colors', viewMode === 'table' ? 'bg-os-blue text-white' : 'text-slate-500 hover:text-white')}
+              className={cn('p-1.5 rounded-md transition-colors', viewMode === 'table' ? 'bg-os-blue text-white' : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]')}
               title="Table view"
             >
               <LayoutList className="w-3.5 h-3.5" />
@@ -313,10 +425,19 @@ export function LeadsPipeline() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <StatCard label="Pipeline Value"  value={`₹${(totalPipeline/1000).toFixed(0)}k`}  icon={<TrendingUp className="w-5 h-5"/>} iconColor="bg-os-blue/10 text-os-blue"  />
-        <StatCard label="Forecast Value"  value={`₹${(totalForecast/1000).toFixed(0)}k`}  icon={<TrendingUp className="w-5 h-5"/>} iconColor="bg-amber-100 text-amber-600"     />
-        <StatCard label="Won YTD"          value={`₹${(wonValue/1000).toFixed(0)}k`}       icon={<TrendingUp className="w-5 h-5"/>} iconColor="bg-green-100 text-green-600"     />
-        <StatCard label="Active Leads"     value={activeCount}                              icon={<TrendingUp className="w-5 h-5"/>} iconColor="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300"     />
+        {[
+          { label: 'Pipeline Value',  value: `₹${(totalPipeline/1000).toFixed(0)}k`, sub: 'total active',  bg: 'linear-gradient(135deg,#2564ea 0%,#4ab6d4 100%)', glow: '#2564ea' },
+          { label: 'Forecast Value',  value: `₹${(totalForecast/1000).toFixed(0)}k`, sub: 'weighted',      bg: 'linear-gradient(135deg,#fdab3d 0%,#f59e0b 100%)', glow: '#fdab3d' },
+          { label: 'Won YTD',         value: `₹${(wonValue/1000).toFixed(0)}k`,       sub: 'closed won',    bg: 'linear-gradient(135deg,#00c875 0%,#00a86b 100%)', glow: '#00c875' },
+          { label: 'Active Leads',    value: activeCount,                              sub: 'in pipeline',   bg: 'linear-gradient(135deg,#7c3aed 0%,#9d4edd 100%)', glow: '#7c3aed' },
+        ].map(t => (
+          <div key={t.label} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: t.bg, boxShadow: `0 4px 20px ${t.glow}40` }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.30) 0%, transparent 60%)' }} />
+            <p className="relative text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{t.label}</p>
+            <p className="relative text-3xl font-black tracking-tight" style={{ color: '#ffffff' }}>{t.value}</p>
+            <p className="relative text-[11px] mt-2" style={{ color: 'rgba(255,255,255,0.72)' }}>{t.sub}</p>
+          </div>
+        ))}
       </div>
 
       {viewMode === 'table' ? (
@@ -336,20 +457,25 @@ export function LeadsPipeline() {
               const stageLeads = filteredLeads.filter(l => l.stage === stage.id)
               const stageValue = stageLeads.reduce((s, l) => s + l.value, 0)
               return (
-                <div key={stage.id} className="flex flex-col min-w-[210px] w-[210px]">
-                  <div className="flex items-center gap-2 mb-2 px-1">
-                    <div className="w-2.5 h-2.5 rounded-full" style={{ background: stage.color }} />
-                    <span className="text-xs font-semibold text-slate-300">{stage.label}</span>
-                    <span className="ml-auto text-[10px] font-bold text-slate-300 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full px-1.5 py-0.5">{stageLeads.length}</span>
+                <div key={stage.id} className="flex flex-col min-w-[220px] w-[220px]">
+                  {/* Column header with colored top bar */}
+                  <div className="rounded-xl overflow-hidden mb-2">
+                    <div className="h-1 w-full" style={{ background: stage.bg }} />
+                    <div className="flex items-center gap-2 px-3 py-2" style={{ background: 'var(--os-surface-0)' }}>
+                      <span className="text-xs font-bold" style={{ color: 'var(--os-text-1)' }}>{stage.label}</span>
+                      <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full text-white" style={{ background: stage.bg }}>{stageLeads.length}</span>
+                    </div>
+                    {stageValue > 0 && (
+                      <div className="px-3 pb-2" style={{ background: 'var(--os-surface-0)' }}>
+                        <p className="text-[10px] font-semibold" style={{ color: 'var(--os-text-2)' }}>₹{(stageValue/1000).toFixed(0)}k</p>
+                      </div>
+                    )}
                   </div>
-                  {stageValue > 0 && (
-                    <p className="text-[10px] text-slate-500 mb-2 px-1">₹{(stageValue/1000).toFixed(0)}k</p>
-                  )}
                   <SortableContext id={stage.id} items={stageLeads.map(l => l.id)} strategy={verticalListSortingStrategy}>
-                    <div className={cn('flex flex-col gap-2 p-2 rounded-xl bg-slate-900 border border-white/10 border-t-white/20 min-h-[100px] flex-1',
+                    <div className={cn('flex flex-col gap-2 p-2 rounded-xl min-h-[100px] flex-1 border border-[var(--os-border)]',
                       stageLeads.length === 0 && 'items-center justify-center'
-                    )}>
-                      {stageLeads.length === 0 && <p className="text-xs text-slate-300 py-4">Drop here</p>}
+                    )} style={{ background: 'var(--os-surface-0)' }}>
+                      {stageLeads.length === 0 && <p className="text-xs py-4" style={{ color: 'var(--os-text-2)' }}>Drop here</p>}
                       {stageLeads.map(lead => (
                         <LeadCard
                           key={lead.id}

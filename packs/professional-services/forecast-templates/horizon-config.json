@@ -1,0 +1,11 @@
+{
+  "description": "Gate 8.1 forecast horizon configuration for professional services.",
+  "horizons": [
+    { "days": 30,  "label": "30-day",  "use": "Standard QBR planning horizon. COIG expected number uses this." },
+    { "days": 60,  "label": "60-day",  "use": "Pipeline conversion forecast. Proposal follow-up timing." },
+    { "days": 90,  "label": "90-day",  "use": "Customer Zero Report period. Revenue target alignment." }
+  ],
+  "defaultHorizon": 30,
+  "forecastMethod": "LINEAR_VELOCITY",
+  "notes": "Linear velocity extrapolation from 7-day OIS trend. Sufficient for PS firms where operational changes have a 2–4 week lag before appearing in OIS. Switch to weighted moving average after 90+ days of data."
+}

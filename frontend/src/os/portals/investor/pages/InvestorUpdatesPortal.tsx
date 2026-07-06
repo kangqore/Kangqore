@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Send, TrendingUp, TrendingDown, Users, CheckCircle2, AlertCircle } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { useInvestorsStore } from '@features/investors/store'
@@ -63,14 +64,14 @@ function mapInvestorUpdate(u: any, i: number): RichUpdate {
 
 function MetricTile({ label, value, sub, trend }: { label: string; value: string | number; sub?: string; trend?: 'up' | 'down' }) {
   return (
-    <div className="bg-slate-900 rounded-xl p-4">
-      <p className="text-xs text-slate-500 mb-1">{label}</p>
+    <div className="rounded-xl p-4" style={{ background: 'var(--os-surface)', border: '1px solid var(--os-border)' }}>
+      <p className="text-xs text-[var(--os-text-2)] mb-1">{label}</p>
       <div className="flex items-end gap-1.5">
-        <p className="text-xl font-bold text-white">{value}</p>
+        <p className="text-xl font-bold" style={{ color: 'var(--os-text-1)' }}>{value}</p>
         {trend === 'up'   && <TrendingUp   className="w-4 h-4 text-green-500 mb-0.5" />}
         {trend === 'down' && <TrendingDown className="w-4 h-4 text-red-500 mb-0.5"   />}
       </div>
-      {sub && <p className="text-xs text-slate-500 mt-0.5">{sub}</p>}
+      {sub && <p className="text-xs text-[var(--os-text-2)] mt-0.5">{sub}</p>}
     </div>
   )
 }
@@ -86,15 +87,16 @@ export function InvestorUpdatesPortal() {
   const [openId, setOpenId] = useState<string>(updates[0]?.id ?? '')
 
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-6">
+    <div className="space-y-6">
+      <KIMMPSignalBar module="Investor Updates" />
       {isLoading && !isDemo() && (
-        <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
+        <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)] mb-4">
           <Spinner size="sm" /> Loading announcements…
         </div>
       )}
       <div>
-        <h2 className="text-xl font-bold text-white">Investor Updates</h2>
-        <p className="text-sm text-slate-500 mt-1">Monthly and milestone updates from the Kangqore team.</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Investor Updates</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>Monthly and milestone updates from the Kangqore team</p>
       </div>
 
       <div className="space-y-4">
@@ -104,7 +106,7 @@ export function InvestorUpdatesPortal() {
           return (
             <Card key={u.id} className="overflow-hidden">
               <div
-                className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-slate-900 transition-colors"
+                className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-[var(--os-surface)] transition-colors"
                 onClick={() => setOpenId(isOpen ? '' : u.id)}
               >
                 <div className="flex items-center gap-3">
@@ -112,13 +114,13 @@ export function InvestorUpdatesPortal() {
                     <Send className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <p className="font-semibold text-white">{u.title}</p>
-                    <p className="text-xs text-slate-500">Sent {u.sentDate}</p>
+                    <p className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{u.title}</p>
+                    <p className="text-xs text-[var(--os-text-2)]">Sent {u.sentDate}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right hidden sm:block">
-                    <p className="text-sm font-bold text-white">£{(m.mrr / 1000).toFixed(0)}k MRR</p>
+                    <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>£{(m.mrr / 1000).toFixed(0)}k MRR</p>
                     <p className="text-xs text-green-600">+{m.mrrGrowth}% MoM</p>
                   </div>
                   <Badge variant={isOpen ? 'brand' : 'neutral'} size="sm">{isOpen ? 'Reading' : 'View'}</Badge>
@@ -126,7 +128,7 @@ export function InvestorUpdatesPortal() {
               </div>
 
               {isOpen && (
-                <div className="border-t border-white/10 border-t-white/20 px-5 pb-5 pt-4 space-y-5">
+                <div className="px-5 pb-5 pt-4 space-y-5" style={{ borderTop: '1px solid var(--os-border)' }}>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <MetricTile label="MRR"       value={`£${(m.mrr / 1000).toFixed(1)}k`} sub={`+${m.mrrGrowth}% MoM`} trend="up" />
                     <MetricTile label="ARR"       value={`£${(m.arr / 1000).toFixed(0)}k`} sub="Annualised" trend="up" />
@@ -138,11 +140,11 @@ export function InvestorUpdatesPortal() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <CheckCircle2 className="w-4 h-4 text-green-500" />
-                        <p className="text-sm font-semibold text-slate-300">Highlights</p>
+                        <p className="text-sm font-semibold text-[var(--os-text-1)]">Highlights</p>
                       </div>
                       <ul className="space-y-1.5">
                         {u.highlights.map((h, i) => (
-                          <li key={i} className="text-sm text-slate-500 flex gap-2">
+                          <li key={i} className="text-sm text-[var(--os-text-2)] flex gap-2">
                             <span className="text-green-500 flex-shrink-0">•</span>{h}
                           </li>
                         ))}
@@ -151,11 +153,11 @@ export function InvestorUpdatesPortal() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <AlertCircle className="w-4 h-4 text-orange-500" />
-                        <p className="text-sm font-semibold text-slate-300">Challenges</p>
+                        <p className="text-sm font-semibold text-[var(--os-text-1)]">Challenges</p>
                       </div>
                       <ul className="space-y-1.5">
                         {u.challenges.map((c, i) => (
-                          <li key={i} className="text-sm text-slate-500 flex gap-2">
+                          <li key={i} className="text-sm text-[var(--os-text-2)] flex gap-2">
                             <span className="text-orange-500 flex-shrink-0">•</span>{c}
                           </li>
                         ))}
@@ -164,11 +166,11 @@ export function InvestorUpdatesPortal() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <Users className="w-4 h-4 text-blue-500" />
-                        <p className="text-sm font-semibold text-slate-300">Ask</p>
+                        <p className="text-sm font-semibold text-[var(--os-text-1)]">Ask</p>
                       </div>
                       <ul className="space-y-1.5">
                         {u.askItems.map((a, i) => (
-                          <li key={i} className="text-sm text-slate-500 flex gap-2">
+                          <li key={i} className="text-sm text-[var(--os-text-2)] flex gap-2">
                             <span className="text-blue-500 flex-shrink-0">•</span>{a}
                           </li>
                         ))}

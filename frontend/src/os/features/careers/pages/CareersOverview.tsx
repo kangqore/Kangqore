@@ -27,7 +27,7 @@ const DEPT_COLOR: Record<string, string> = {
   product: 'bg-purple-50 text-purple-700',
   sales: 'bg-green-50 text-green-700',
   delivery: 'bg-orange-50 text-orange-700',
-  ops: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300',
+  ops: 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]',
   design: 'bg-pink-50 text-pink-700',
 }
 
@@ -65,20 +65,26 @@ export function CareersOverview() {
     <div className="space-y-8">
       <KIMMPSignalBar module="Careers" />
 
+      <div>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'var(--os-text-3)' }}>People</p>
+        <h1 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Careers</h1>
+        <p className="text-sm mt-1" style={{ color: 'var(--os-text-2)' }}>Open roles, applications, and hiring pipeline</p>
+      </div>
+
       {/* New role modal */}
       <Modal open={showNew} onClose={() => setShowNew(false)} title="Post a new role" size="md">
         <div className="space-y-4 p-6">
           <Input label="Job title" value={form.title} onChange={e => set('title', e.target.value)} placeholder="e.g. Senior Backend Engineer" />
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1.5">Department</label>
-              <select value={form.department} onChange={e => set('department', e.target.value)} className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30">
+              <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Department</label>
+              <select value={form.department} onChange={e => set('department', e.target.value)} className="w-full border border-[var(--os-border)] rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30">
                 {['engineering','product','sales','delivery','ops','design'].map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1.5">Type</label>
-              <select value={form.type} onChange={e => set('type', e.target.value)} className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30">
+              <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Type</label>
+              <select value={form.type} onChange={e => set('type', e.target.value)} className="w-full border border-[var(--os-border)] rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30">
                 {['full-time','part-time','contract','freelance'].map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
@@ -117,12 +123,12 @@ export function CareersOverview() {
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="font-semibold text-white">{role.title}</h3>
+                      <h3 className="font-semibold text-[var(--os-text-1)]">{role.title}</h3>
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${DEPT_COLOR[role.department]}`}>
                         {role.department}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-[var(--os-text-2)] mt-1">
                       {role.location} · {role.remote ? 'Remote OK' : 'On-site'} · {role.type}
                       {(role.salaryRange || role.salaryMin > 0) && (
                         <> · {role.salaryRange || `₹${role.salaryMin}k–₹${role.salaryMax}k`}</>
@@ -134,14 +140,14 @@ export function CareersOverview() {
                   </Badge>
                 </div>
 
-                <p className="text-sm text-slate-500 mb-3 line-clamp-2">{role.description}</p>
+                <p className="text-sm text-[var(--os-text-2)] mb-3 line-clamp-2">{role.description}</p>
 
-                <div className="flex items-center justify-between text-xs text-slate-500">
+                <div className="flex items-center justify-between text-xs text-[var(--os-text-2)]">
                   <div className="flex gap-4">
-                    <span><span className="font-semibold text-slate-200">{role.applications}</span> applications</span>
-                    <span><span className="font-semibold text-slate-200">{pipelineByRole[role.id] ?? role.inPipeline}</span> in pipeline</span>
+                    <span><span className="font-semibold text-[var(--os-text-1)]">{role.applications}</span> applications</span>
+                    <span><span className="font-semibold text-[var(--os-text-1)]">{pipelineByRole[role.id] ?? role.inPipeline}</span> in pipeline</span>
                     {role.targetStartDate && (
-                      <span>Target start: <span className="font-semibold text-slate-200">{role.targetStartDate}</span></span>
+                      <span>Target start: <span className="font-semibold text-[var(--os-text-1)]">{role.targetStartDate}</span></span>
                     )}
                   </div>
                   <span>HM: {role.hiringManager}</span>
@@ -157,7 +163,7 @@ export function CareersOverview() {
             <CardTitle>Active Candidates</CardTitle>
           </CardHeader>
           <CardBody className="p-0">
-            <div className="divide-y divide-[#2E2854]">
+            <div className="divide-y divide-[var(--os-border)]">
               {candidates
                 .filter(c => !['rejected'].includes(c.stage))
                 .sort((a, b) => (b.cvScore ?? 0) - (a.cvScore ?? 0))
@@ -167,13 +173,13 @@ export function CareersOverview() {
                     <div key={c.id} className="flex items-center gap-3 px-4 py-3">
                       <Avatar name={c.name} size="sm" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-white truncate">{c.name}</p>
-                        <p className="text-xs text-slate-500 truncate">{role?.title}</p>
+                        <p className="text-sm font-medium text-[var(--os-text-1)] truncate">{c.name}</p>
+                        <p className="text-xs text-[var(--os-text-2)] truncate">{role?.title}</p>
                       </div>
                       <div className="flex flex-col items-end gap-1">
                         <Badge variant={STAGE_BADGE[c.stage] ?? 'neutral'} size="sm">{c.stage}</Badge>
                         {c.cvScore && (
-                          <span className={`text-xs font-semibold ${c.cvScore >= 80 ? 'text-green-600' : c.cvScore >= 65 ? 'text-orange-600' : 'text-slate-500'}`}>
+                          <span className={`text-xs font-semibold ${c.cvScore >= 80 ? 'text-green-600' : c.cvScore >= 65 ? 'text-orange-600' : 'text-[var(--os-text-2)]'}`}>
                             {c.cvScore}pts
                           </span>
                         )}

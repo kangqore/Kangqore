@@ -6,8 +6,9 @@ import {
   CheckCircle2, AlertTriangle, XCircle, RefreshCw,
   Brain, Activity, Database, Wifi, WifiOff,
   Play, ChevronDown, ChevronRight, Server,
-  Clock, BarChart3, Shield, LayoutGrid,
+  Clock, BarChart3, Shield, LayoutGrid, Radio,
 } from 'lucide-react'
+import { DataFabricTab } from './DataFabricTab'
 import { cn } from '@design-system/cn'
 import { api } from '@lib/api'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -57,19 +58,17 @@ function Kpi({ label, value, sub, color = '#2564ea' }: {
   label: string; value: string | number | null; sub?: string; color?: string
 }) {
   return (
-    <div className="rounded-xl px-4 py-3" style={{ background: `${color}08`, border: `1px solid ${color}18` }}>
-      <p className="text-[9px] font-bold uppercase tracking-wider mb-1" style={{ color: `${color}70` }}>{label}</p>
-      {value == null
-        ? <p className="text-xl font-bold text-slate-600">—</p>
-        : <p className="text-xl font-bold text-white">{value}</p>
-      }
-      {sub && <p className="text-[10px] mt-0.5 text-slate-600">{sub}</p>}
+    <div className="rounded-2xl p-5 relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${color} 0%, ${color}cc 100%)`, boxShadow: `0 4px 20px ${color}40` }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.28) 0%, transparent 60%)' }} />
+      <p className="relative text-[9px] font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{label}</p>
+      <p className="relative text-2xl font-black tracking-tight" style={{ color: value == null ? 'rgba(255,255,255,0.4)' : '#ffffff' }}>{value ?? '—'}</p>
+      {sub && <p className="relative text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.72)' }}>{sub}</p>}
     </div>
   )
 }
 
 function SLabel({ text }: { text: string }) {
-  return <p className="text-[9px] font-bold uppercase tracking-widest mt-5 mb-2.5" style={{ color: 'rgba(43,189,255,0.4)' }}>{text}</p>
+  return <p className="text-[9px] font-bold uppercase tracking-widest mt-5 mb-2.5" style={{ color: 'var(--os-text-2)' }}>{text}</p>
 }
 
 function ABtn({ icon: Icon, label, loading, onClick, color }: {
@@ -167,11 +166,11 @@ function OverviewTab({ onRefreshAll }: { onRefreshAll: () => void }) {
       {/* Global health banner */}
       <div
         className="rounded-2xl px-6 py-5 flex items-center justify-between flex-wrap gap-4"
-        style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${healthy === 4 ? 'rgba(5,150,105,0.2)' : 'rgba(217,119,6,0.2)'}` }}
+        style={{ background: 'var(--os-card)', border: `1px solid ${healthy === 4 ? 'rgba(5,150,105,0.2)' : 'rgba(217,119,6,0.2)'}`, boxShadow: 'var(--os-shadow-card)' }}
       >
         <div>
           <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Fleet Status</p>
-          <p className="text-2xl font-bold tracking-tight text-white">{healthy}/4 <span className="text-base font-normal text-slate-400">systems healthy</span></p>
+          <p className="text-2xl font-bold tracking-tight" style={{ color: 'var(--os-text-1)' }}>{healthy}/4 <span className="text-base font-normal" style={{ color: 'var(--os-text-2)' }}>systems healthy</span></p>
         </div>
         <div className="flex flex-wrap gap-4">
           {systems.map(s => {
@@ -183,7 +182,7 @@ function OverviewTab({ onRefreshAll }: { onRefreshAll: () => void }) {
                   <s.icon className="w-3.5 h-3.5 text-white" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-white group-hover:text-slate-200">{s.name}</p>
+                  <p className="text-xs font-bold" style={{ color: 'var(--os-text-1)' }}>{s.name}</p>
                   <div className="flex items-center gap-1">
                     <div className="w-1.5 h-1.5 rounded-full" style={{ background: cfg.color }} />
                     <span className="text-[10px] font-semibold" style={{ color: cfg.color }}>{cfg.label}</span>
@@ -197,8 +196,8 @@ function OverviewTab({ onRefreshAll }: { onRefreshAll: () => void }) {
 
       {/* Action centre */}
       <div>
-        <p className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-          <BarChart3 className="w-4 h-4 text-blue-400" />
+        <p className="text-sm font-bold mb-3 flex items-center gap-2" style={{ color: 'var(--os-text-1)' }}>
+          <BarChart3 className="w-4 h-4" style={{ color: '#2564ea' }} />
           Action Centre
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -223,7 +222,7 @@ function OverviewTab({ onRefreshAll }: { onRefreshAll: () => void }) {
 
       {/* Quick KPI snapshot across systems */}
       <div>
-        <p className="text-sm font-bold text-white mb-3">Cross-System KPIs</p>
+        <p className="text-sm font-bold mb-3" style={{ color: 'var(--os-text-1)' }}>Cross-System KPIs</p>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <Kpi label="Graph Nodes"   value={graphStats?.totalNodes ?? null} color="#2564ea" sub="eQORE entities" />
           <Kpi label="Graph Edges"   value={graphStats?.totalEdges ?? null} color="#2564ea" sub="relationships" />
@@ -306,8 +305,8 @@ function EqoreTab() {
             <MessageSquare className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-white">eQORE</h2>
-            <p className="text-xs text-slate-500">AI Concierge · Inbound Lead Engine</p>
+            <h2 className="text-base font-bold" style={{ color: 'var(--os-text-1)' }}>eQORE</h2>
+            <p className="text-xs" style={{ color: 'var(--os-text-2)' }}>AI Concierge · Inbound Lead Engine</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -339,7 +338,7 @@ function EqoreTab() {
               >
                 <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: r.ok ? '#059669' : '#ef4444' }} />
                 <span className="text-sm text-slate-400 flex-1">{r.label}</span>
-                <span className="text-sm font-mono font-semibold text-white">{r.value}</span>
+                <span className="text-sm font-mono font-semibold" style={{ color: 'var(--os-text-1)' }}>{r.value}</span>
               </div>
             ))}
           </div>
@@ -355,8 +354,8 @@ function EqoreTab() {
                 <Brain className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-white">{a.name}</p>
-                <p className="text-xs text-slate-500 mt-0.5">{a.role}</p>
+                <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{a.name}</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--os-text-2)' }}>{a.role}</p>
               </div>
               <span className="text-[10px] font-mono px-2 py-1 rounded flex-shrink-0" style={{ color: '#7c3aed', background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.2)' }}>{a.model}</span>
             </div>
@@ -378,7 +377,7 @@ function EqoreTab() {
                   {(l.name ?? l.email ?? '?').charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white truncate">{l.name ?? l.email ?? `Lead #${i + 1}`}</p>
+                  <p className="text-sm font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{l.name ?? l.email ?? `Lead #${i + 1}`}</p>
                   {l.email && l.name && <p className="text-xs text-slate-500 truncate">{l.email}</p>}
                 </div>
                 {l.score != null && (
@@ -428,8 +427,8 @@ function LeadIntelTab() {
             <Zap className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-white">Lead Intelligence</h2>
-            <p className="text-xs text-slate-500">Scoring · Knowledge Graph · Sales Pipeline</p>
+            <h2 className="text-base font-bold" style={{ color: 'var(--os-text-1)' }}>Lead Intelligence</h2>
+            <p className="text-xs" style={{ color: 'var(--os-text-2)' }}>Scoring · Knowledge Graph · Sales Pipeline</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -456,8 +455,8 @@ function LeadIntelTab() {
               return (
                 <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: 'rgba(37,100,234,0.04)', border: '1px solid rgba(37,100,234,0.1)' }}>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-white truncate">{o.name ?? o.title ?? `Opportunity #${i + 1}`}</p>
-                    {o.value && <p className="text-xs text-slate-500 mt-0.5">₹{Number(o.value).toLocaleString('en-IN')}</p>}
+                    <p className="text-sm font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{o.name ?? o.title ?? `Opportunity #${i + 1}`}</p>
+                    {o.value && <p className="text-xs mt-0.5" style={{ color: 'var(--os-text-2)' }}>₹{Number(o.value).toLocaleString('en-IN')}</p>}
                     {o.createdAt && <p className="text-[10px] text-slate-600 mt-0.5">{timeAgo(o.createdAt)}</p>}
                   </div>
                   <span className="text-[10px] font-bold px-2 py-1 rounded-lg flex-shrink-0" style={{ color: stColor, background: `${stColor}15`, border: `1px solid ${stColor}25` }}>{o.stage ?? '—'}</span>
@@ -497,8 +496,8 @@ function LeadIntelTab() {
             <div key={e.name} className="flex items-start gap-3 px-4 py-3 rounded-xl" style={{ background: 'rgba(37,100,234,0.04)', border: '1px solid rgba(37,100,234,0.08)' }}>
               <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#059669' }} />
               <div>
-                <p className="text-sm font-semibold text-white">{e.name}</p>
-                <p className="text-xs text-slate-500 mt-0.5">{e.desc}</p>
+                <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{e.name}</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--os-text-2)' }}>{e.desc}</p>
               </div>
             </div>
           ))}
@@ -542,8 +541,8 @@ function AlisTab() {
             <TrendingUp className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-white">ALIS</h2>
-            <p className="text-xs text-slate-500">Market Intelligence · Demand Analysis · Content Strategy</p>
+            <h2 className="text-base font-bold" style={{ color: 'var(--os-text-1)' }}>ALIS</h2>
+            <p className="text-xs" style={{ color: 'var(--os-text-2)' }}>Market Intelligence · Demand Analysis · Content Strategy</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -570,7 +569,7 @@ function AlisTab() {
               <div key={i} className="flex gap-3 items-start px-4 py-3 rounded-xl" style={{ background: 'rgba(217,119,6,0.06)', border: '1px solid rgba(217,119,6,0.12)' }}>
                 <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0 text-amber-400" />
                 <div className="flex-1">
-                  <p className="text-sm text-slate-200 leading-snug">{a.message ?? a.title ?? a.text ?? JSON.stringify(a).slice(0, 100)}</p>
+                  <p className="text-sm leading-snug" style={{ color: 'var(--os-text-1)' }}>{a.message ?? a.title ?? a.text ?? JSON.stringify(a).slice(0, 100)}</p>
                   {a.createdAt && <p className="text-[10px] text-slate-600 mt-1">{timeAgo(a.createdAt)}</p>}
                 </div>
                 {a.severity && (
@@ -588,9 +587,9 @@ function AlisTab() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {recList.map((r: any, i: number) => (
               <div key={i} className="px-4 py-4 rounded-xl" style={{ background: 'rgba(5,150,105,0.05)', border: '1px solid rgba(5,150,105,0.12)' }}>
-                <p className="text-sm font-semibold text-white">{r.title ?? r.recommendation ?? r.action ?? `Recommendation ${i + 1}`}</p>
+                <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{r.title ?? r.recommendation ?? r.action ?? `Recommendation ${i + 1}`}</p>
                 {(r.description ?? r.detail ?? r.rationale) && (
-                  <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{r.description ?? r.detail ?? r.rationale}</p>
+                  <p className="text-xs mt-1.5 leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{r.description ?? r.detail ?? r.rationale}</p>
                 )}
                 {r.impact && <p className="text-[10px] font-bold mt-2 text-emerald-400">Impact: {r.impact}</p>}
               </div>
@@ -607,7 +606,7 @@ function AlisTab() {
               <div key={i} className="flex gap-3 items-start px-4 py-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.12)' }}>
                 <XCircle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-red-400" />
                 <div className="flex-1">
-                  <p className="text-sm text-slate-300">{g.topic ?? g.gap ?? g.keyword ?? JSON.stringify(g).slice(0, 80)}</p>
+                  <p className="text-sm" style={{ color: 'var(--os-text-1)' }}>{g.topic ?? g.gap ?? g.keyword ?? JSON.stringify(g).slice(0, 80)}</p>
                   {g.volume && <p className="text-[10px] text-slate-600 mt-0.5">Search volume: {g.volume}</p>}
                 </div>
                 {g.priority && <span className="text-[10px] font-bold text-red-400 flex-shrink-0">{g.priority}</span>}
@@ -631,8 +630,8 @@ function AlisTab() {
             <div key={e.name} className="flex items-start gap-2.5 px-4 py-3 rounded-xl" style={{ background: 'rgba(5,150,105,0.04)', border: '1px solid rgba(5,150,105,0.1)' }}>
               <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#059669' }} />
               <div>
-                <p className="text-sm font-semibold text-white">{e.name}</p>
-                <p className="text-xs text-slate-500 mt-0.5">{e.desc}</p>
+                <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{e.name}</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--os-text-2)' }}>{e.desc}</p>
               </div>
             </div>
           ))}
@@ -673,8 +672,8 @@ function VisTab() {
             <Globe className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-white">Kangqore VIS</h2>
-            <p className="text-xs text-slate-500">Visibility Engine · SEO · AI Answerability · Governance</p>
+            <h2 className="text-base font-bold" style={{ color: 'var(--os-text-1)' }}>Kangqore VIS</h2>
+            <p className="text-xs" style={{ color: 'var(--os-text-2)' }}>Visibility Engine · SEO · AI Answerability · Governance</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -695,8 +694,8 @@ function VisTab() {
                 style={{ borderBottom: i < kpis.length - 1 ? '1px solid rgba(13,17,23,0.4)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}
               >
                 <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: k.status === 'live' ? '#059669' : '#64748b' }} />
-                <span className="text-sm text-slate-400 flex-1">{k.label}</span>
-                <span className="text-sm font-bold text-white">{k.value ?? '—'}</span>
+                <span className="text-sm flex-1" style={{ color: 'var(--os-text-2)' }}>{k.label}</span>
+                <span className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{k.value ?? '—'}</span>
                 <span className="text-[10px] text-slate-600 w-16 text-right font-mono">{k.source}</span>
               </div>
             ))}
@@ -729,8 +728,8 @@ function VisTab() {
         {govMode?.mode && (
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl mb-3" style={{ background: 'rgba(14,165,233,0.06)', border: '1px solid rgba(14,165,233,0.12)' }}>
             <Shield className="w-4 h-4 flex-shrink-0" style={{ color: '#0ea5e9' }} />
-            <span className="text-sm text-slate-300">Governance Mode</span>
-            <span className="text-sm font-bold text-white uppercase ml-auto">{govMode.mode}</span>
+            <span className="text-sm" style={{ color: 'var(--os-text-2)' }}>Governance Mode</span>
+            <span className="text-sm font-bold uppercase ml-auto" style={{ color: 'var(--os-text-1)' }}>{govMode.mode}</span>
           </div>
         )}
         {auditEntries.length > 0 && (
@@ -738,7 +737,7 @@ function VisTab() {
             {auditEntries.map((e: any, i: number) => (
               <div key={i} className="flex items-start gap-3 px-4 py-3" style={{ borderBottom: i < auditEntries.length - 1 ? '1px solid rgba(13,17,23,0.4)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}>
                 <Clock className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-slate-600" />
-                <p className="text-sm text-slate-300 flex-1">{e.action ?? e.event ?? e.message ?? `Entry ${i + 1}`}</p>
+                <p className="text-sm flex-1" style={{ color: 'var(--os-text-1)' }}>{e.action ?? e.event ?? e.message ?? `Entry ${i + 1}`}</p>
                 {e.createdAt && <span className="text-[10px] text-slate-600 flex-shrink-0">{timeAgo(e.createdAt)}</span>}
               </div>
             ))}
@@ -766,8 +765,8 @@ function VisTab() {
             { name: 'KPI',              desc: 'Metric snapshots & aggregation' },
           ].map(m => (
             <div key={m.name} className="px-3 py-2.5 rounded-xl" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.1)' }}>
-              <p className="text-xs font-bold text-white">{m.name}</p>
-              <p className="text-[10px] text-slate-500 mt-0.5">{m.desc}</p>
+              <p className="text-xs font-bold" style={{ color: 'var(--os-text-1)' }}>{m.name}</p>
+              <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-2)' }}>{m.desc}</p>
             </div>
           ))}
         </div>
@@ -868,8 +867,8 @@ function KimmpSystemsPanel() {
         <div className="flex items-start justify-between gap-4 flex-wrap mb-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">WAANDA — Governed by KIMMP</p>
-            <p className="text-xl font-bold text-white">5 Systems · 35 Agents · claude-opus-4-8</p>
-            <p className="text-xs text-slate-500 mt-1">LEAD INTEL → ALIS → EQORE → VIS · SENTINEL always-on</p>
+            <p className="text-xl font-bold" style={{ color: 'var(--os-text-1)' }}>5 Systems · 35 Agents · claude-opus-4-8</p>
+            <p className="text-xs mt-1" style={{ color: 'var(--os-text-2)' }}>LEAD INTEL → ALIS → EQORE → VIS · SENTINEL always-on</p>
           </div>
           <button
             onClick={runLoop}
@@ -885,8 +884,8 @@ function KimmpSystemsPanel() {
           value={triggerInput}
           onChange={e => setTriggerInput(e.target.value)}
           placeholder="Optional context / input for this run…"
-          className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none"
-          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+          className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
+          style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}
         />
       </div>
 
@@ -901,8 +900,8 @@ function KimmpSystemsPanel() {
                   <Brain className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-white">{sys.label}</p>
-                  <p className="text-[10px] text-slate-500 truncate">{sys.fullName}</p>
+                  <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{sys.label}</p>
+                  <p className="text-[10px] truncate" style={{ color: 'var(--os-text-2)' }}>{sys.fullName}</p>
                 </div>
                 <span className="text-[9px] font-mono px-2 py-0.5 rounded flex-shrink-0" style={{ color, background: `${color}15`, border: `1px solid ${color}25` }}>{sys.agents} agents</span>
               </div>
@@ -937,8 +936,8 @@ function KimmpSystemsPanel() {
               <Brain className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-sm font-bold text-white">KIMMP / WAANDA</p>
-              <p className="text-[10px] text-slate-500">Governing Brain</p>
+              <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>KIMMP / WAANDA</p>
+              <p className="text-[10px]" style={{ color: 'var(--os-text-2)' }}>Governing Brain</p>
             </div>
           </div>
           <p className="text-xs text-slate-500 leading-relaxed">Governs all 5 systems. Synthesises every LOOPS cascade. Runs on claude-opus-4-8. Activates automatically at end of each cascade.</p>
@@ -999,13 +998,13 @@ function KimmpBriefingsPanel() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <span className="text-xs font-bold text-white">{b.system}</span>
+                  <span className="text-xs font-bold" style={{ color: 'var(--os-text-1)' }}>{b.system}</span>
                   <span className="text-[10px] font-mono text-slate-600">{b.trigger}</span>
                   {b.priority && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ color: PRIORITY_COLOR[b.priority] ?? '#64748b', background: `${PRIORITY_COLOR[b.priority] ?? '#64748b'}15` }}>{b.priority}</span>}
                   {alerts.length > 0 && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded text-red-400 bg-red-400/10">{alerts.length} alert{alerts.length > 1 ? 's' : ''}</span>}
                   {fbDone && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ color: fbDone === 'ACCEPTED' ? '#059669' : fbDone === 'DISMISSED' ? '#e2445c' : '#fdab3d', background: fbDone === 'ACCEPTED' ? 'rgba(5,150,105,0.1)' : fbDone === 'DISMISSED' ? 'rgba(226,68,92,0.1)' : 'rgba(253,171,61,0.1)' }}>{fbDone}</span>}
                 </div>
-                <p className="text-xs text-slate-400 leading-snug line-clamp-2">{b.summary}</p>
+                <p className="text-xs leading-snug line-clamp-2" style={{ color: 'var(--os-text-2)' }}>{b.summary}</p>
                 <div className="flex items-center gap-3 mt-1.5">
                   <ConfBar value={b.confidence ?? 0} color={color} />
                   <span className="text-[10px] text-slate-600 flex-shrink-0">{timeAgo(b.createdAt)}</span>
@@ -1057,8 +1056,8 @@ function KimmpBriefingsPanel() {
                           onChange={e => setCorrText(e.target.value)}
                           placeholder="What should the system have done differently?"
                           rows={2}
-                          className="w-full px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none resize-none"
-                          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                          className="w-full px-3 py-2 rounded-xl text-xs outline-none resize-none"
+                          style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}
                         />
                         <div className="flex gap-2">
                           <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'CORRECTED', correction: correctionText })} disabled={!correctionText.trim() || feedbackMutation.isPending} className="px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40" style={{ color: '#fdab3d', background: 'rgba(253,171,61,0.12)', border: '1px solid rgba(253,171,61,0.25)' }}>Submit Correction</button>
@@ -1110,8 +1109,8 @@ function KimmpLearningPanel() {
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: color }}>
                   <Brain className="w-3.5 h-3.5 text-white" />
                 </div>
-                <p className="text-sm font-bold text-white">{sys.label}</p>
-                <span className="ml-auto text-[10px] font-bold text-slate-500">{s.totalRecords ?? 0} runs</span>
+                <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{sys.label}</p>
+                <span className="ml-auto text-[10px] font-bold" style={{ color: 'var(--os-text-2)' }}>{s.totalRecords ?? 0} runs</span>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <div className="rounded-xl px-3 py-2 text-center" style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.12)' }}>
@@ -1122,8 +1121,8 @@ function KimmpLearningPanel() {
                   <p className="text-base font-bold text-red-400">{s.dismissalRate ?? 0}%</p>
                   <p className="text-[9px] text-slate-600 mt-0.5">Dismissed</p>
                 </div>
-                <div className="rounded-xl px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p className="text-base font-bold text-white">{s.withFeedback ?? 0}</p>
+                <div className="rounded-xl px-3 py-2 text-center" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+                  <p className="text-base font-bold" style={{ color: 'var(--os-text-1)' }}>{s.withFeedback ?? 0}</p>
                   <p className="text-[9px] text-slate-600 mt-0.5">Rated</p>
                 </div>
               </div>
@@ -1222,7 +1221,7 @@ function KimmpKnowledgePanel() {
           return (
             <button key={s} onClick={() => setSelectedSys(s)} className="rounded-xl px-3 py-2.5 text-center transition-all" style={{ background: s === selectedSys ? `${c}15` : 'rgba(255,255,255,0.02)', border: `1px solid ${s === selectedSys ? c : 'rgba(255,255,255,0.06)'}` }}>
               <p className="text-[10px] font-bold truncate" style={{ color: s === selectedSys ? c : '#64748b' }}>{s.replace('_', '_')}</p>
-              <p className="text-base font-bold text-white mt-0.5">{st.chunks ?? 0}</p>
+              <p className="text-base font-bold mt-0.5" style={{ color: 'var(--os-text-1)' }}>{st.chunks ?? 0}</p>
               <p className="text-[9px] text-slate-600">docs</p>
             </button>
           )
@@ -1231,21 +1230,21 @@ function KimmpKnowledgePanel() {
 
       <div className="rounded-2xl p-4 space-y-4" style={{ background: `${color}07`, border: `1px solid ${color}18` }}>
         <div className="flex items-center justify-between">
-          <p className="text-sm font-bold text-white">{selectedSys} Knowledge Base</p>
+          <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{selectedSys} Knowledge Base</p>
           <button onClick={() => setShowIngest(v => !v)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold" style={{ color, background: `${color}12`, border: `1px solid ${color}25` }}>+ Ingest Document</button>
         </div>
 
         {showIngest && (
           <div className="space-y-3 pt-2 border-t" style={{ borderColor: `${color}15` }}>
             <div className="grid grid-cols-2 gap-3">
-              <select value={ingestForm.docType} onChange={e => setIngestForm(f => ({ ...f, docType: e.target.value }))} className="px-3 py-2 rounded-xl text-xs text-white outline-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <select value={ingestForm.docType} onChange={e => setIngestForm(f => ({ ...f, docType: e.target.value }))} className="px-3 py-2 rounded-xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}>
                 <option value="">Doc Type *</option>
                 {docTypes.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
-              <input value={ingestForm.source} onChange={e => setIngestForm(f => ({ ...f, source: e.target.value }))} placeholder="Source (optional)" className="px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }} />
+              <input value={ingestForm.source} onChange={e => setIngestForm(f => ({ ...f, source: e.target.value }))} placeholder="Source (optional)" className="px-3 py-2 rounded-xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
             </div>
-            <input value={ingestForm.title} onChange={e => setIngestForm(f => ({ ...f, title: e.target.value }))} placeholder="Title *" className="w-full px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }} />
-            <textarea value={ingestForm.body} onChange={e => setIngestForm(f => ({ ...f, body: e.target.value }))} placeholder="Document content *" rows={4} className="w-full px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none resize-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }} />
+            <input value={ingestForm.title} onChange={e => setIngestForm(f => ({ ...f, title: e.target.value }))} placeholder="Title *" className="w-full px-3 py-2 rounded-xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
+            <textarea value={ingestForm.body} onChange={e => setIngestForm(f => ({ ...f, body: e.target.value }))} placeholder="Document content *" rows={4} className="w-full px-3 py-2 rounded-xl text-xs outline-none resize-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
             <button onClick={() => ingestMutation.mutate(ingestForm)} disabled={!ingestForm.title || !ingestForm.body || !ingestForm.docType || ingestMutation.isPending} className="px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40" style={{ color, background: `${color}15`, border: `1px solid ${color}30` }}>
               {ingestMutation.isPending ? 'Embedding…' : 'Ingest & Embed'}
             </button>
@@ -1255,7 +1254,7 @@ function KimmpKnowledgePanel() {
         <div className="space-y-2">
           <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600">Test Retrieval</p>
           <div className="flex gap-2">
-            <input value={testQuery} onChange={e => setTestQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && testRetrieval()} placeholder="Query the knowledge base…" className="flex-1 px-3 py-2 rounded-xl text-xs text-white placeholder:text-slate-600 outline-none" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }} />
+            <input value={testQuery} onChange={e => setTestQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && testRetrieval()} placeholder="Query the knowledge base…" className="flex-1 px-3 py-2 rounded-xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
             <button onClick={testRetrieval} disabled={testLoading || !testQuery.trim()} className="px-3 py-2 rounded-xl text-xs font-bold disabled:opacity-40" style={{ color, background: `${color}12`, border: `1px solid ${color}25` }}>
               {testLoading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : 'Search'}
             </button>
@@ -1316,8 +1315,8 @@ function KimmpTab() {
           <Brain className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h2 className="text-base font-bold text-white">KIMMP / WAANDA</h2>
-          <p className="text-xs text-slate-500">AI-Governed Intelligence Systems · 5 LLMs · 35 Agents</p>
+          <h2 className="text-base font-bold" style={{ color: 'var(--os-text-1)' }}>KIMMP / WAANDA</h2>
+          <p className="text-xs" style={{ color: 'var(--os-text-2)' }}>AI-Governed Intelligence Systems · 5 LLMs · 35 Agents</p>
         </div>
         <div className="flex gap-1 flex-wrap">
           {SUB_TABS.map(t => (
@@ -1341,7 +1340,8 @@ const TABS = [
   { path: 'lead-intel', end: false, label: 'Lead Intelligence', icon: Zap           },
   { path: 'alis',      end: false, label: 'ALIS',               icon: TrendingUp    },
   { path: 'vis',       end: false, label: 'VIS',                icon: Globe         },
-  { path: 'kimmp',     end: false, label: 'KIMMP',              icon: Brain         },
+  { path: 'kimmp',       end: false, label: 'KIMMP',        icon: Brain  },
+  { path: 'data-fabric', end: false, label: 'Data Fabric',   icon: Radio  },
 ]
 
 const ACCENT: Record<string, string> = {
@@ -1350,7 +1350,8 @@ const ACCENT: Record<string, string> = {
   'lead-intel': '#2564ea',
   'alis':       '#059669',
   'vis':        '#0ea5e9',
-  'kimmp':      '#2564ea',
+  'kimmp':        '#2564ea',
+  'data-fabric':  '#00c875',
 }
 
 export function SystemsModule() {
@@ -1375,11 +1376,11 @@ export function SystemsModule() {
       {/* Page header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-xl font-bold text-white flex items-center gap-2.5">
-            <Server className="w-5 h-5 text-blue-400" />
+          <h1 className="text-[22px] font-black tracking-tight flex items-center gap-2.5" style={{ color: 'var(--os-text-1)' }}>
+            <Server className="w-5 h-5" style={{ color: '#2564ea' }} />
             Systems Monitor
           </h1>
-          <p className="text-sm text-slate-500 mt-1">Live health, metrics and controls for all Kangqore sub-systems</p>
+          <p className="text-sm mt-1" style={{ color: 'var(--os-text-2)' }}>Live health, metrics and controls for all Kangqore sub-systems</p>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-1.5 text-[10px] text-slate-600">
@@ -1389,8 +1390,8 @@ export function SystemsModule() {
           <Ticker interval={60} onTick={refreshAll} />
           <button
             onClick={refreshAll}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg text-white"
-            style={{ background: 'rgba(37,100,234,0.15)', border: '1px solid rgba(37,100,234,0.3)' }}
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg"
+            style={{ background: 'rgba(37,100,234,0.10)', border: '1px solid rgba(37,100,234,0.25)', color: '#2564ea' }}
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Refresh All
@@ -1399,7 +1400,7 @@ export function SystemsModule() {
       </div>
 
       {/* Tab bar */}
-      <div className="flex items-center gap-0.5 border-b border-white/10 border-t-white/20 -mb-1 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-0.5 -mb-1 overflow-x-auto scrollbar-none" style={{ borderBottom: '1px solid var(--os-border)' }}>
         {TABS.map(tab => {
           const accent = ACCENT[tab.path]
           return (
@@ -1411,7 +1412,7 @@ export function SystemsModule() {
                 'flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
                 isActive
                   ? 'border-[--tab-accent] text-[--tab-accent]'
-                  : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
+                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
               )}
               style={{ '--tab-accent': accent } as React.CSSProperties}
             >
@@ -1433,6 +1434,7 @@ export function SystemsModule() {
           <Route path="alis"          element={<AlisTab />} />
           <Route path="vis"           element={<VisTab />} />
           <Route path="kimmp"         element={<KimmpTab />} />
+          <Route path="data-fabric"   element={<DataFabricTab />} />
           <Route path="*"             element={<Navigate to={BASE} replace />} />
         </Routes>
         </motion.div>

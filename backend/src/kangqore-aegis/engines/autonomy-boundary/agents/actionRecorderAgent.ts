@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
 export async function runActionRecorderAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start   = Date.now()
@@ -15,11 +18,15 @@ export async function runActionRecorderAgent(ctx: AgentContext): Promise<AegisAg
   const recordCompleteness = total > 0 ? Math.round(((withSystem + withDuration + withAgentsRun) / (total * 3)) * 100) : 100
   const verdict = recordCompleteness < 70 ? 'WARN' : 'PASS'
 
+  const llmSummary = await callLLM(SYSTEM,
+    `Action record completeness (24h): ${total} autonomous events. System field: ${withSystem}/${total}, durationMs: ${withDuration}/${total}, agentsRun: ${withAgentsRun}/${total}. Overall completeness: ${recordCompleteness}%. Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
+
   return {
     agentId:   'autonomy.action-recorder',
     engine:    'AUTONOMY_BOUNDARY',
     verdict,
-    summary:   `Autonomous action record completeness: ${recordCompleteness}% across ${total} autonomous events (24h).`,
+    summary:   llmSummary || `Autonomous action record completeness: ${recordCompleteness}% across ${total} autonomous events (24h).`,
     findings: [
       `Autonomous actions (24h): ${total}`,
       `With system: ${withSystem}/${total}`,

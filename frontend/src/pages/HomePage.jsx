@@ -395,7 +395,7 @@ const HeroCarousel = () => {
                 {/* Chat widget for slide 2 */}
                 {slide.type === 'chat' && (
                   <div className="py-4 sm:py-6 hero-chat-widget" style={{ overflow: 'visible' }}>
-                    <HeroChatWidget />
+                    <HeroChatWidget isActive={index === activeSlide} />
                   </div>
                 )}
 
@@ -466,7 +466,7 @@ const HeroCarousel = () => {
                 e.stopPropagation();
                 setIsManuallyPaused(prev => !prev);
               }}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95 opacity-25 hover:opacity-100"
               aria-label={isManuallyPaused ? "Start autoplay" : "Pause autoplay"}
             >
               {isManuallyPaused ? (
@@ -480,7 +480,7 @@ const HeroCarousel = () => {
                 e.stopPropagation();
                 goToSlide((activeSlide + 1) % slideCount);
               }}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95 opacity-25 hover:opacity-100"
               aria-label="Next slide"
             >
               <SkipForward className="w-5 h-5 fill-current" />
@@ -1544,7 +1544,7 @@ const LeadershipSection = () => {
             <div className="relative overflow-hidden shadow-2xl max-w-sm sm:max-w-md mx-auto lg:mx-0 aspect-[4/5] rounded-xl border border-gray-100 dark:border-neutral-900">
               <img 
                 src="/images/leadership/ceo-mahesh-kumar.png" 
-                alt="Mahesh Kumar, Founder and CEO" 
+                alt="C.O.D.E., Founder and CEO" 
                 className="w-full h-full object-cover object-top block transform scale-[1.01] group-hover:scale-105 transition-transform duration-[1.2s]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none"></div>
@@ -1569,7 +1569,7 @@ const LeadershipSection = () => {
             {/* Editorial Attribution & Minimalist Links */}
             <div className="pt-6 border-t border-gray-200 dark:border-neutral-800 flex items-center justify-between mt-8">
               <div>
-                <p className="text-gray-900 dark:text-white font-semibold text-lg tracking-tight">Mahesh Kumar</p>
+                <p className="text-gray-900 dark:text-white font-semibold text-lg tracking-tight">C.O.D.E.</p>
                 <p className="text-xs text-neutral-500 font-medium tracking-wider uppercase mt-0.5">Founder & CEO, Kangqore</p>
               </div>
 
@@ -1812,6 +1812,37 @@ const CareersSection = () => {
 // ============================================================================
 const HomePage = () => {
   const bookingRef = useRef(null);
+  const [lockedIntent, setLockedIntent] = useState(null);
+
+  useEffect(() => {
+    const handleNBALock = (e) => {
+      const hco = e.detail;
+      if (hco.persona === 'ENTERPRISE_BUYER' || hco.decisionState === 'VENDOR_SELECTION') {
+        setLockedIntent('enterpriseBuyer');
+      } else if (hco.persona === 'DEVELOPER' || hco.decisionState === 'EVALUATION') {
+        setLockedIntent('developer');
+      }
+    };
+    window.addEventListener('kq_nba_locked', handleNBALock);
+    
+    // Check initial state from HCIP backend
+    if (typeof window !== 'undefined') {
+      import('../hooks/useVisitorIdentity').then(({ getSessionUuid, getVisitorUuid }) => {
+        const BASE = import.meta.env.VITE_BACKEND_URL || '';
+        fetch(`${BASE}/api/hcip/recommendations/${getSessionUuid()}?visitorId=${getVisitorUuid()}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.hco && data.hco.confidence.overall > 70) {
+              if (data.hco.persona === 'ENTERPRISE_BUYER') setLockedIntent('enterpriseBuyer');
+              else if (data.hco.persona === 'DEVELOPER') setLockedIntent('developer');
+            }
+          })
+          .catch(() => {});
+      });
+    }
+
+    return () => window.removeEventListener('kq_nba_locked', handleNBALock);
+  }, []);
 
   return (
     <>
@@ -1834,17 +1865,44 @@ const HomePage = () => {
       />
       <HomeRuler />
       <HeroCarousel />
-      <TrustIntelligenceLayer />
+      {/* Dynamic AI Banner if website shifted */}
+      {lockedIntent && (
+        <div className="w-full bg-brand-blue/10 border-b border-brand-cyan/20 py-3 text-center animate-fade-in z-50 relative">
+          <span className="text-brand-cyan font-bold text-[10px] sm:text-xs tracking-[0.2em] uppercase">
+            <span className="inline-block w-2 h-2 rounded-full bg-brand-cyan animate-pulse mr-2" />
+            System Realigned: {lockedIntent === 'enterpriseBuyer' ? 'Enterprise Architecture Mode' : 'Developer Docs Mode'} Active
+          </span>
+        </div>
+      )}
+
+      {/* Dynamic Layout Shift */}
+      {lockedIntent === 'enterpriseBuyer' ? (
+        <>
+          <div id="home-services"><DepartmentCarousel /></div>
+          <div id="home-industries"><IndustriesWeServe /></div>
+          <TrustIntelligenceLayer />
+        </>
+      ) : (
+        <TrustIntelligenceLayer />
+      )}
+
       <div id="home-concierge">
         <Suspense fallback={<div className="w-full h-[200px]" aria-hidden="true" />}>
           <ConciergeSection />
         </Suspense>
       </div>
+
       {/* ── Intelligent Solutions 3-card section ── */}
       <section className="py-20 bg-black overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white mb-16 max-w-3xl">
-            Intelligent solutions that power up your <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">business</span>.
+            {lockedIntent === 'enterpriseBuyer' ? (
+              <>Enterprise cloud infrastructure that powers up your <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">scale</span>.</>
+            ) : lockedIntent === 'developer' ? (
+              <>Developer tools that power up your <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">code</span>.</>
+            ) : (
+              <>Intelligent solutions that power up your <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">business</span>.</>
+            )}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
@@ -1908,11 +1966,13 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Phase D — 6-department canonical grid replaces the legacy 15-dept carousel.
-          ExploreServices is no longer rendered (kept in repo only as fallback during transition;
-          deletion scheduled for the cleanup PR after Phase F). */}
-      <div id="home-services"><DepartmentCarousel /></div>
-      <div id="home-industries"><IndustriesWeServe /></div>
+      {/* Phase D — 6-department canonical grid replaces the legacy 15-dept carousel. */}
+      {lockedIntent !== 'enterpriseBuyer' && (
+        <>
+          <div id="home-services"><DepartmentCarousel /></div>
+          <div id="home-industries"><IndustriesWeServe /></div>
+        </>
+      )}
       <TrustStatementSection />
       <PartnerBadgesStrip />
       <div id="home-bids"><BIDSPhilosophySection /></div>

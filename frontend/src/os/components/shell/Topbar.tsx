@@ -1,17 +1,25 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Search, Bell, Settings, LogOut, User,
   ChevronDown, Grid3X3, ChevronRight, Plus, Maximize2, Minimize2,
-  Brain,
+  Brain, Home, ArrowUpRight, Sun, Moon, Eye, Building2, Check, Loader2,
 } from 'lucide-react'
-import { LightningIcon, SquaresFourIcon, TargetIcon, CpuIcon } from '@phosphor-icons/react'
+import {
+  LightningIcon, SquaresFourIcon, TargetIcon, CpuIcon,
+  UsersThreeIcon, UserCircleIcon, CrownSimpleIcon, HandshakeIcon,
+  TrendUpIcon, GlobeIcon, ChatCircleDotsIcon,
+} from '@phosphor-icons/react'
+import { useRelayStore } from '@features/relay/store'
 import { Tooltip } from '@design-system/components/Tooltip'
+import { usePagePresence } from '@hooks/usePagePresence'
+import { PagePresenceBubbles } from '../PagePresenceBubbles'
 import {
   DropdownRoot, DropdownTrigger, DropdownContent,
   DropdownItem, DropdownSeparator, DropdownPortal,
 } from '@design-system/components/Dropdown'
 import { useQuery } from '@tanstack/react-query'
+import { LivePresencePanel } from '../LivePresencePanel'
 import { useUIStore }  from '@store/ui'
 import { useAuthStore } from '@store/auth'
 import { allNavItems } from '@lib/nav'
@@ -23,6 +31,16 @@ const ROLE_LABEL: Record<string, string> = {
   ADMIN: 'Admin', CLIENT: 'Client', PARTNER: 'Partner',
   INVESTOR: 'Investor', JOB_SEEKER: 'Applicant',
 }
+
+const PORTALS = [
+  { id: 'admin',     label: 'Admin Dashboard',  path: '/kangqore-view/admin',     icon: CpuIcon,          color: '#2564ea', roles: ['ADMIN'] },
+  { id: 'team',      label: 'Team Portal',       path: '/kangqore-view/team',      icon: UsersThreeIcon,   color: '#8B5CF6', roles: ['TEAM', 'ADMIN'] },
+  { id: 'executive', label: 'Executive Portal',  path: '/kangqore-view/executive', icon: CrownSimpleIcon,  color: '#F59E0B', roles: ['EXECUTIVE', 'ADMIN'] },
+  { id: 'client',    label: 'Client Portal',     path: '/kangqore-view/client',    icon: UserCircleIcon,   color: '#14B8A6', roles: ['CLIENT', 'ADMIN'] },
+  { id: 'partner',   label: 'Partner Portal',    path: '/kangqore-view/partner',   icon: HandshakeIcon,    color: '#EC4899', roles: ['PARTNER', 'ADMIN'] },
+  { id: 'investor',  label: 'Investor Portal',   path: '/kangqore-view/investor',  icon: TrendUpIcon,      color: '#10B981', roles: ['INVESTOR', 'ADMIN'] },
+  { id: 'analyst',   label: 'Analyst Portal',    path: '/kangqore-view/analyst',   icon: SquaresFourIcon,  color: '#06B6D4', roles: ['ANALYST', 'ADMIN'] },
+] as const
 
 const NEW_ACTIONS: Array<{
   label: string
@@ -36,7 +54,6 @@ const NEW_ACTIONS: Array<{
   { label: 'Ask WAANDA',  icon: CpuIcon,         path: '/kangqore-view/admin/WAANDA' },
 ]
 
-// Custom avatar — no design system component, no teal
 function UserMonogram({ name, size = 28 }: { name: string; size?: number }) {
   const initials = name.split(' ').map(n => n[0] ?? '').join('').slice(0, 2).toUpperCase()
   return (
@@ -54,21 +71,30 @@ function UserMonogram({ name, size = 28 }: { name: string; size?: number }) {
 }
 
 const PANEL_STYLE = {
-  background: 'rgba(8,12,22,0.97)',
-  backdropFilter: 'blur(24px)',
-  border: '1px solid rgba(255,255,255,0.07)',
-  boxShadow: '0 20px 48px rgba(0,0,0,0.6)',
+  background: 'var(--os-card)',
+  border: '1px solid var(--os-border)',
+  boxShadow: 'var(--os-shadow-md)',
 } as const
 
-export function Topbar() {
+export function Topbar({ config }: { config?: any }) {
   const { openNotificationPanel } = useUIStore()
-  const { user, logout } = useAuthStore()
+  const { user, logout, currentOrg, switchOrg } = useAuthStore()
   const navigate = useNavigate()
   const { setOpen: openSearch } = useCommandPalette()
-  const [newOpen, setNewOpen] = useState(false)
+  const [newOpen, setNewOpen]         = useState(false)
+  const [presenceOpen, setPresenceOpen] = useState(false)
   const [createMode, setCreateMode] = useState<CreateMode>(null)
   const newRef = useRef<HTMLDivElement>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [switcherOpen, setSwitcherOpen] = useState(false)
+  const switcherRef = useRef<HTMLDivElement>(null)
+  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'))
+
+  const toggleTheme = useCallback(() => {
+    const nowDark = document.documentElement.classList.toggle('dark')
+    localStorage.setItem('kq-theme', nowDark ? 'dark' : 'light')
+    setIsDark(nowDark)
+  }, [])
 
   useEffect(() => {
     const onChange = () => setIsFullscreen(!!document.fullscreenElement)
@@ -92,6 +118,15 @@ export function Topbar() {
     return () => document.removeEventListener('mousedown', onClick)
   }, [newOpen])
 
+  useEffect(() => {
+    if (!switcherOpen) return
+    const onClick = (e: MouseEvent) => {
+      if (switcherRef.current && !switcherRef.current.contains(e.target as Node)) setSwitcherOpen(false)
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [switcherOpen])
+
   const { data: notifData } = useQuery({
     queryKey: ['notifications'],
     queryFn: () => api.get('/notifications?limit=20').then(r => r.data.notifications ?? []),
@@ -103,214 +138,397 @@ export function Topbar() {
     ? notifData.filter((n: { isRead?: boolean; read?: boolean }) => !(n.isRead ?? n.read)).length
     : 0
 
-  const { data: kimmpStats } = useQuery({
-    queryKey: ['kimmp-router-stats-topbar'],
-    queryFn: () => api.get('/admin/kangqore-immp/learning/router/stats').then(r => r.data),
-    enabled: !isDemo(),
+  const { data: orgsData } = useQuery({
+    queryKey: ['my-orgs'],
+    queryFn:  () => api.get('/orgs').then(r => r.data.orgs ?? []),
+    enabled:  !isDemo(),
     staleTime: 60_000,
-    refetchInterval: 120_000,
   })
-  const distillationCount: number = kimmpStats?.distillationCount ?? 0
+  const myOrgs: Array<{ id: string; name: string; slug: string; logoUrl: string | null; role: string }> = orgsData ?? []
+  const [switchingOrgId, setSwitchingOrgId] = useState<string | null>(null)
 
   const location = useLocation()
+  const pageKey = location.pathname.replace(/\//g, ':').slice(1)
+  const { viewers: pageViewers } = usePagePresence(pageKey)
   const currentModule = allNavItems.find(item => location.pathname.startsWith(item.path))
+
+  const currentPortalId = location.pathname.startsWith('/kangqore-view/admin')     ? 'admin'
+    : location.pathname.startsWith('/kangqore-view/team')      ? 'team'
+    : location.pathname.startsWith('/kangqore-view/executive') ? 'executive'
+    : location.pathname.startsWith('/kangqore-view/client')    ? 'client'
+    : location.pathname.startsWith('/kangqore-view/partner')   ? 'partner'
+    : location.pathname.startsWith('/kangqore-view/investor')  ? 'investor'
+    : location.pathname.startsWith('/kangqore-view/analyst')   ? 'analyst'
+    : null
+
+  const portalLabel = config?.label ?? (
+    currentPortalId === 'admin'     ? 'Admin'
+    : currentPortalId === 'team'      ? 'Team'
+    : currentPortalId === 'executive' ? 'Executive'
+    : 'OS'
+  )
+
+  const accessiblePortals = PORTALS.filter(p =>
+    user?.role === 'ADMIN' || (p.roles as readonly string[]).includes(user?.role ?? '')
+  )
 
   const displayName  = user?.name  ?? 'User'
   const displayEmail = user?.email ?? ''
   const displayRole  = ROLE_LABEL[user?.role ?? ''] ?? user?.role ?? 'Admin'
 
+  const totalMentions = useRelayStore(
+    (s) => Object.values(s.unreadCounts).reduce((sum, c) => sum + c.mentions, 0),
+  )
+
+  const userDropdown = (align: 'start' | 'end' = 'end') => (
+    <DropdownPortal>
+      <DropdownContent
+        align={align}
+        sideOffset={8}
+        className="z-50 min-w-[210px] rounded-xl p-1.5 animate-in fade-in-0 zoom-in-95 duration-150"
+        style={PANEL_STYLE}
+      >
+        <div className="flex items-center gap-2.5 px-2.5 py-2.5 mb-1" style={{ borderBottom: '1px solid var(--os-border)' }}>
+          <UserMonogram name={displayName} size={32} />
+          <div className="min-w-0">
+            <p className="text-[13px] font-semibold text-[var(--os-text-1)] leading-none mb-1 truncate">{displayName}</p>
+            <p className="text-[11px] text-slate-500 truncate leading-none">{displayEmail}</p>
+          </div>
+        </div>
+        <div className="px-2.5 pt-2 pb-1.5 mb-1" style={{ borderBottom: '1px solid var(--os-border)' }}>
+          <span
+            className="inline-block text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md"
+            style={{ background: 'var(--os-blue-dim)', color: 'var(--os-blue)', border: '1px solid var(--os-border)' }}
+          >
+            {displayRole}
+          </span>
+        </div>
+        <DropdownItem
+          onClick={() => navigate('/kangqore-view/admin/settings/profile')}
+          className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-[var(--os-text-2)] rounded-lg cursor-pointer outline-none hover:bg-slate-100 dark:hover:bg-white/5 hover:text-[var(--os-text-1)] transition-colors"
+        >
+          <User className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+          Profile
+        </DropdownItem>
+        <DropdownItem
+          onClick={() => navigate('/kangqore-view/admin/settings')}
+          className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-[var(--os-text-2)] rounded-lg cursor-pointer outline-none hover:bg-slate-100 dark:hover:bg-white/5 hover:text-[var(--os-text-1)] transition-colors"
+        >
+          <Settings className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+          Settings
+        </DropdownItem>
+        <DropdownSeparator className="my-1 h-px mx-1" style={{ background: 'var(--os-border)' }} />
+        <DropdownItem
+          onClick={logout}
+          className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-red-500 rounded-lg cursor-default outline-none hover:bg-red-500/10 transition-colors"
+        >
+          <LogOut className="w-3.5 h-3.5 flex-shrink-0" />
+          Sign out
+        </DropdownItem>
+      </DropdownContent>
+    </DropdownPortal>
+  )
+
   return (
     <>
     <header
-      className="flex-shrink-0 h-[60px] flex items-center gap-4 px-4"
-      style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+      className="flex-shrink-0 h-[60px] flex items-center justify-between w-full px-6 sticky top-0"
+      style={{
+        zIndex: 40,
+        background: 'var(--os-topbar-bg, var(--os-card))',
+        borderBottom: '1px solid var(--os-topbar-border, var(--os-border))',
+      }}
     >
-
-      {/* ── Left: breadcrumb ── */}
-      <div className="flex items-center gap-2.5 flex-shrink-0 min-w-0">
-        <Tooltip content="App launcher" side="bottom">
-          <button className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-300 hover:bg-white/5 transition-all duration-150 flex-shrink-0">
-            <Grid3X3 className="w-[15px] h-[15px]" />
-          </button>
-        </Tooltip>
-
-        <div className="hidden md:flex items-center gap-1.5 text-sm min-w-0">
-          <span className="text-slate-600 font-medium flex-shrink-0">Kangqore View</span>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-800 flex-shrink-0" />
-          <span className="text-white font-semibold truncate">{currentModule?.label ?? 'Overview'}</span>
+      {/* LEFT AREA: "Kangqore view" logo */}
+      <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 select-none group">
+        <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm transition-transform duration-300 group-hover:scale-105 flex items-center justify-center bg-gradient-to-tr from-[#2564ea] to-[#0ea5e9]">
+          <img
+            src="/favicon.jpg"
+            alt="Kangqore"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+          <Brain className="w-4 h-4 text-white absolute" style={{ zIndex: -1 }} />
         </div>
-      </div>
+        <div className="flex flex-col">
+          <span className="text-[14px] font-black tracking-tight leading-none text-[var(--os-text-1)]">
+            Kangqore
+          </span>
+          <span className="text-[10px] font-semibold text-[#2564ea] tracking-wider uppercase leading-none mt-0.5">
+            View
+          </span>
+        </div>
+      </Link>
 
-      {/* ── Centre: search ── */}
-      <div className="flex-1 flex justify-center">
+      {/* CENTER AREA: Switcher & Breadcrumbs + Search capsule */}
+      <div className="flex-1 flex items-center justify-center gap-4 max-w-[580px] mx-4 hidden md:flex min-w-0">
+        {/* Switcher & Breadcrumbs */}
+        <div className="flex items-center gap-2.5 flex-shrink-0 min-w-0">
+          <div className="relative" ref={switcherRef}>
+            <button
+              onClick={() => setSwitcherOpen(o => !o)}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all"
+              style={{
+                background: 'rgba(37, 100, 234, 0.08)',
+                color: '#2564ea',
+                border: '1px solid rgba(37, 100, 234, 0.15)',
+              }}
+            >
+              {portalLabel}
+              <ChevronDown className="w-3 h-3" />
+            </button>
+
+            {switcherOpen && (
+              <div className="absolute left-0 top-full mt-2 w-64 rounded-2xl py-2 z-50 animate-in fade-in-50 slide-in-from-top-2 duration-150" style={PANEL_STYLE}>
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--os-text-2)] px-3 pb-2">
+                  Switch Portal
+                </p>
+                {accessiblePortals.map(portal => {
+                  const Icon = portal.icon
+                  const isActive = currentPortalId === portal.id
+                  return (
+                    <button
+                      key={portal.id}
+                      onClick={() => { navigate(portal.path); setSwitcherOpen(false) }}
+                      className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 hover:bg-[var(--os-surface-0)] text-left"
+                      style={isActive ? { background: `${portal.color}10`, outline: `1px solid ${portal.color}30` } : {}}
+                    >
+                      <div
+                        className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{ background: `${portal.color}18`, border: `1px solid ${portal.color}28` }}
+                      >
+                        <Icon weight="duotone" className="w-4 h-4" style={{ color: portal.color }} />
+                      </div>
+                      <span className={`text-[13px] font-semibold flex-1 ${isActive ? 'text-[var(--os-text-1)]' : 'text-[var(--os-text-2)]'}`}>
+                        {portal.label}
+                      </span>
+                      {isActive && (
+                        <span
+                          className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md flex-shrink-0"
+                          style={{ background: `${portal.color}20`, color: portal.color }}
+                        >
+                          Active
+                        </span>
+                      )}
+                    </button>
+                  )
+                })}
+                {myOrgs.length > 0 && (
+                  <div className="mt-2 pt-2 mx-3 border-t border-[var(--os-border)]">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--os-text-2)] pb-1.5">
+                      Organisation
+                    </p>
+                    {myOrgs.map(org => {
+                      const isActive = currentOrg?.id === org.id
+                      return (
+                        <button
+                          key={org.id}
+                          disabled={switchingOrgId !== null}
+                          onClick={async () => {
+                            if (isActive) return
+                            setSwitchingOrgId(org.id)
+                            try { await switchOrg(org.id) } finally { setSwitchingOrgId(null) }
+                          }}
+                          className="flex items-center gap-2.5 w-full py-2 text-[12px] rounded-lg transition-colors hover:bg-[var(--os-surface-0)] px-1 text-left"
+                          style={isActive ? { color: '#2564ea' } : { color: 'var(--os-text-2)' }}
+                        >
+                          <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
+                          <span className="flex-1 truncate font-medium">{org.name}</span>
+                          {switchingOrgId === org.id
+                            ? <Loader2 className="w-3 h-3 animate-spin" />
+                            : isActive && <Check className="w-3 h-3" />}
+                        </button>
+                      )
+                    })}
+                    <button
+                      onClick={() => { navigate('/kangqore-view/admin/settings/organization'); setSwitcherOpen(false) }}
+                      className="flex items-center gap-2.5 w-full py-2 text-[11px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors px-1 mt-0.5"
+                    >
+                      <Settings className="w-3 h-3 flex-shrink-0" />
+                      Manage organisation
+                    </button>
+                  </div>
+                )}
+
+                <div className="mt-2 pt-2 mx-3 space-y-0.5 border-t border-[var(--os-border)]">
+                  <a href="/" className="flex items-center gap-2.5 py-2 text-[12px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors group">
+                    <Home className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span className="flex-1">Back to Kangqore.com</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </a>
+                  <a href="/login" className="flex items-center gap-2.5 py-2 text-[12px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors group">
+                    <GlobeIcon weight="duotone" className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span className="flex-1">Login Page</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <ChevronRight className="w-3 h-3 text-[var(--os-text-3)] flex-shrink-0" />
+          <span className="text-[12px] font-semibold text-[var(--os-text-1)] truncate">{currentModule?.label ?? 'Overview'}</span>
+        </div>
+
+        {/* Search capsule */}
         <button
           onClick={() => openSearch(true)}
-          className="group relative h-9 w-full max-w-[400px] rounded-full flex items-center gap-2 pl-9 pr-3 text-sm text-slate-500 text-left transition-all duration-150 hover:text-slate-300"
+          className="flex-1 h-9 flex items-center gap-2.5 px-4 text-[12px] rounded-lg transition-colors min-w-0"
           style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.07)',
+            background: 'var(--os-surface-0)',
+            border: '1px solid var(--os-border)',
+            color: 'var(--os-text-2)',
           }}
         >
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-[15px] h-[15px] text-slate-600 pointer-events-none group-hover:text-slate-500 transition-colors" />
-          <span className="flex-1 leading-none">Search anything…</span>
+          <Search className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--os-text-3)' }} />
+          <span className="flex-1 text-left truncate" style={{ color: 'var(--os-text-2)' }}>Search...</span>
           <kbd
-            className="hidden lg:flex items-center gap-px text-[10px] text-slate-700 font-sans rounded px-1.5 py-1 leading-none flex-shrink-0"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
+            className="hidden lg:flex items-center justify-center text-[9px] font-sans rounded-md px-1.5 py-0.5 leading-none flex-shrink-0"
+            style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}
           >
-            <span style={{ fontSize: 13, lineHeight: 1 }}>⌘</span>K
+            ⌘K
           </kbd>
         </button>
       </div>
 
-      {/* ── Right: actions ── */}
-      <div className="flex items-center gap-1.5 flex-shrink-0">
+      {/* RIGHT AREA: Utility cluster, Profile, New (+) action */}
+      <div className="flex items-center gap-4">
+        {/* Utility Group */}
+        <div className="flex items-center gap-1">
+          <PagePresenceBubbles viewers={pageViewers} />
+          <Tooltip content="Messages" side="bottom">
+            <button
+              onClick={() => navigate(`/kangqore-view/${currentPortalId ?? 'admin'}/relay`)}
+              className="relative w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+            >
+              <ChatCircleDotsIcon weight="duotone" className="w-[18px] h-[18px]" />
+              {totalMentions > 0 && (
+                <span
+                  className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full bg-rose-500 text-white text-[8px] font-black flex items-center justify-center leading-none"
+                  style={{ padding: '0 3px' }}
+                >
+                  {totalMentions > 9 ? '9+' : totalMentions}
+                </span>
+              )}
+            </button>
+          </Tooltip>
 
-        {/* + New */}
-        <div className="relative" ref={newRef}>
-          <button
-            onClick={() => setNewOpen(o => !o)}
-            className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-white text-[13px] font-semibold transition-opacity hover:opacity-85 flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #2564ea 0%, #0ea5e9 100%)' }}
-          >
-            <Plus className="w-3.5 h-3.5" />
-            New
-          </button>
-          {newOpen && (
-            <div className="absolute right-0 top-full mt-2 w-52 rounded-xl py-1.5 z-50" style={PANEL_STYLE}>
-              {NEW_ACTIONS.map(a => {
-                const Icon = a.icon
-                return (
-                  <button
-                    key={a.label}
-                    onClick={() => {
-                      setNewOpen(false)
-                      if (a.mode) { setCreateMode(a.mode) }
-                      else if (a.path) { navigate(a.path) }
-                    }}
-                    className="flex items-center gap-2.5 w-full px-3 py-2 text-[13px] text-slate-400 hover:text-white hover:bg-white/5 transition-colors text-left"
-                  >
-                    <Icon weight="fill" className="w-4 h-4 text-slate-600 flex-shrink-0" />
-                    {a.label}
-                  </button>
-                )
-              })}
-            </div>
+          {user?.role === 'ADMIN' && (
+            <Tooltip content="Live visitors" side="bottom">
+              <div className="relative">
+                <button
+                  onClick={() => setPresenceOpen(o => !o)}
+                  className="relative w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+                >
+                  <Eye className="w-[17px] h-[17px]" />
+                  <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-green-500 border-2 border-[var(--os-card)] animate-pulse" />
+                </button>
+                {presenceOpen && <LivePresencePanel onClose={() => setPresenceOpen(false)} />}
+              </div>
+            </Tooltip>
           )}
+
+          <Tooltip content="Notifications" side="bottom">
+            <button
+              onClick={openNotificationPanel}
+              className="relative w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+            >
+              <Bell className="w-[17px] h-[17px]" />
+              {unreadCount > 0 && (
+                <span
+                  className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full bg-red-500 text-white text-[8px] font-black flex items-center justify-center leading-none"
+                  style={{ padding: '0 3px' }}
+                >
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </button>
+          </Tooltip>
+
+          <Tooltip content={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'} side="bottom">
+            <button
+              onClick={toggleFullscreen}
+              className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+            >
+              {isFullscreen ? <Minimize2 className="w-[15px] h-[15px]" /> : <Maximize2 className="w-[15px] h-[15px]" />}
+            </button>
+          </Tooltip>
+
+          <Tooltip content={isDark ? 'Light mode' : 'Dark mode'} side="bottom">
+            <button
+              onClick={toggleTheme}
+              className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+            >
+              {isDark ? <Sun className="w-[15px] h-[15px]" /> : <Moon className="w-[16px] h-[16px]" />}
+            </button>
+          </Tooltip>
+
+          <Tooltip content="Quick Create" side="bottom">
+            <div className="relative" ref={newRef}>
+              <button
+                onClick={() => setNewOpen(o => !o)}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors active:scale-95 flex-shrink-0"
+              >
+                <Plus className="w-[16px] h-[16px]" />
+              </button>
+              {newOpen && (
+                <div className="absolute right-0 top-full mt-2 w-48 rounded-xl py-1 z-50 animate-in fade-in-50 slide-in-from-top-2 duration-150" style={PANEL_STYLE}>
+                  {NEW_ACTIONS.filter(a =>
+                    user?.role === 'ADMIN' || (a.mode === 'project' || a.mode === 'goal')
+                  ).map(a => {
+                    const Icon = a.icon
+                    return (
+                      <button
+                        key={a.label}
+                        onClick={() => {
+                          setNewOpen(false)
+                          if (a.mode) { setCreateMode(a.mode) }
+                          else if (a.path) { navigate(a.path) }
+                        }}
+                        className="flex items-center gap-2.5 w-full px-3 py-2 text-[13px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors text-left"
+                      >
+                        <Icon weight="fill" className="w-4 h-4 text-[var(--os-text-3)] flex-shrink-0" />
+                        {a.label}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          </Tooltip>
         </div>
 
-        {/* KIMMP live indicator */}
-        <Tooltip content={`KIMMP · ${distillationCount.toLocaleString()} training examples`} side="bottom">
-          <button
-            onClick={() => navigate('/kangqore-view/admin/kangqore-immp/briefing')}
-            className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg transition-all duration-150 hover:bg-white/5 flex-shrink-0"
-            style={{ border: '1px solid rgba(127,83,249,0.2)', background: 'rgba(127,83,249,0.06)' }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse flex-shrink-0" />
-            <Brain className="w-3 h-3 text-violet-400" />
-            <span className="hidden lg:block text-[10px] font-bold text-violet-400 leading-none">KIMMP</span>
-          </button>
-        </Tooltip>
+        {/* Separator */}
+        <div className="w-px h-5 bg-[var(--os-border)] flex-shrink-0" />
 
-        {/* Divider */}
-        <div className="w-px h-5 mx-0.5 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.07)' }} />
-
-        {/* Bell */}
-        <Tooltip content="Notifications" side="bottom">
-          <button
-            onClick={openNotificationPanel}
-            className="relative w-8 h-8 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all duration-150"
-          >
-            <Bell className="w-[17px] h-[17px]" />
-            {unreadCount > 0 && (
-              <span
-                className="absolute -top-1.5 -right-1.5 min-w-[17px] h-[17px] rounded-full bg-red-500 text-white text-[9px] font-black flex items-center justify-center leading-none tabular-nums"
-                style={{ padding: '0 4px', boxShadow: '0 0 0 2px #0B1121, 0 2px 8px rgba(239,68,68,0.35)' }}
-              >
-                {unreadCount > 9 ? '9+' : unreadCount}
-              </span>
-            )}
-          </button>
-        </Tooltip>
-
-        {/* Fullscreen */}
-        <Tooltip content={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'} side="bottom">
-          <button
-            onClick={toggleFullscreen}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all duration-150"
-          >
-            {isFullscreen
-              ? <Minimize2 className="w-[15px] h-[15px]" />
-              : <Maximize2 className="w-[15px] h-[15px]" />}
-          </button>
-        </Tooltip>
-
-        {/* Divider */}
-        <div className="w-px h-5 mx-0.5 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.07)' }} />
-
-        {/* User menu */}
+        {/* User profile dropdown */}
         <DropdownRoot>
           <DropdownTrigger asChild>
-            <button className="flex items-center gap-2 h-8 pl-1 pr-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-150">
-              <UserMonogram name={displayName} size={26} />
-              <span className="hidden lg:block text-[13px] font-semibold text-white leading-none">{displayName}</span>
-              <ChevronDown className="w-3 h-3 text-slate-600 hidden lg:block" />
+            <button className="flex items-center gap-2 h-9 px-1.5 rounded-xl hover:bg-[var(--os-surface-0)] transition-colors flex-shrink-0 group">
+              <div className="relative flex-shrink-0">
+                <img
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&h=100&q=80"
+                  alt={displayName}
+                  className="w-[28px] h-[28px] rounded-full object-cover border border-slate-200 dark:border-slate-800"
+                />
+                <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border border-white dark:border-black rounded-full" />
+              </div>
+              <div className="text-left hidden md:block min-w-0">
+                <p className="text-[12px] font-bold text-[var(--os-text-1)] leading-none mb-0.5 truncate group-hover:text-[#2564ea] transition-colors">{displayName}</p>
+                <p className="text-[9px] text-slate-500 leading-none">{displayRole}</p>
+              </div>
+              <ChevronDown className="w-3.5 h-3.5 text-[var(--os-text-3)] group-hover:text-[var(--os-text-2)] transition-colors flex-shrink-0" />
             </button>
           </DropdownTrigger>
-          <DropdownPortal>
-            <DropdownContent
-              align="end"
-              sideOffset={8}
-              className="z-50 min-w-[210px] rounded-xl p-1.5 animate-in fade-in-0 zoom-in-95 duration-150"
-              style={PANEL_STYLE}
-            >
-              {/* User info header */}
-              <div className="flex items-center gap-2.5 px-2.5 py-2.5 mb-1" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                <UserMonogram name={displayName} size={32} />
-                <div className="min-w-0">
-                  <p className="text-[13px] font-semibold text-white leading-none mb-1 truncate">{displayName}</p>
-                  <p className="text-[11px] text-slate-500 truncate leading-none">{displayEmail}</p>
-                </div>
-              </div>
-
-              {/* Role chip */}
-              <div className="px-2.5 pt-2 pb-1.5 mb-1" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                <span
-                  className="inline-block text-[9px] font-bold uppercase tracking-[0.1em] px-2 py-1 rounded-md"
-                  style={{ background: 'rgba(37,100,234,0.1)', color: '#60a5fa', border: '1px solid rgba(37,100,234,0.18)' }}
-                >
-                  {displayRole}
-                </span>
-              </div>
-
-              <DropdownItem
-                onClick={() => navigate('/kangqore-view/admin/settings/profile')}
-                className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-slate-400 rounded-lg cursor-pointer outline-none hover:bg-white/5 hover:text-white transition-colors"
-              >
-                <User className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />
-                Profile
-              </DropdownItem>
-              <DropdownItem
-                onClick={() => navigate('/kangqore-view/admin/settings')}
-                className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-slate-400 rounded-lg cursor-pointer outline-none hover:bg-white/5 hover:text-white transition-colors"
-              >
-                <Settings className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />
-                Settings
-              </DropdownItem>
-              <DropdownSeparator className="my-1 h-px mx-1" style={{ background: 'rgba(255,255,255,0.06)' }} />
-              <DropdownItem
-                onClick={logout}
-                className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-red-500 rounded-lg cursor-default outline-none hover:bg-red-500/10 transition-colors"
-              >
-                <LogOut className="w-3.5 h-3.5 flex-shrink-0" />
-                Sign out
-              </DropdownItem>
-            </DropdownContent>
-          </DropdownPortal>
+          {userDropdown('end')}
         </DropdownRoot>
+
       </div>
     </header>
 
     <QuickCreateModal mode={createMode} onClose={() => setCreateMode(null)} />
-  </>
+    </>
   )
 }

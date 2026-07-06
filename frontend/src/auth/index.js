@@ -56,11 +56,11 @@ export const ROLES = {
 
 // Dashboard paths by role
 export const DASHBOARD_PATHS = {
-  ADMIN: '/admin',
-  CLIENT: '/dashboard/client',
-  PARTNER: '/dashboard/partner',
-  INVESTOR: '/dashboard/investor',
-  JOB_SEEKER: '/dashboard/job-seeker'
+  ADMIN:      '/kangqore-view/admin',
+  CLIENT:     '/kangqore-view/client',
+  PARTNER:    '/kangqore-view/partner',
+  INVESTOR:   '/kangqore-view/investor',
+  JOB_SEEKER: '/kangqore-view/careers',
 };
 
 export const getDashboardPath = (role) => {

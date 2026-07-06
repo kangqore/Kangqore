@@ -277,7 +277,7 @@ function AppContent() {
             <Route path="aegis/*"          element={<AegisModule />}            />
             <Route path="ontology/*"       element={<OntologyModule />}         />
             <Route path="neural-network/*" element={<NeuralNetworkModule />}    />
-            <Route path="urgi-studio/*"    element={<UrgiStudioModule />}       />
+            <Route path="kangqore-urgi/*"    element={<UrgiStudioModule />}       />
             <Route path="settings/*"       element={<SettingsModule />}      />
             <Route path="relay/*"          element={<RelayPage />}           />
           </Route>

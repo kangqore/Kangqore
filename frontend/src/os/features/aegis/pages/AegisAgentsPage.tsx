@@ -27,33 +27,33 @@ const ENGINE_COLORS: Record<string, string> = {
 function RunRow({ run }: { run: any }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border border-white/10 rounded-lg overflow-hidden">
+    <div className="border border-[var(--os-border)] rounded-lg overflow-hidden">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/[0.03] transition-colors text-left"
+        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--os-surface-0)] transition-colors text-left"
       >
-        {open ? <ChevronDown className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
-               : <ChevronRight className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />}
+        {open ? <ChevronDown className="w-3.5 h-3.5 text-[var(--os-text-2)] flex-shrink-0" />
+               : <ChevronRight className="w-3.5 h-3.5 text-[var(--os-text-2)] flex-shrink-0" />}
         <span className={`text-[11px] font-mono px-2 py-0.5 border rounded flex-shrink-0 ${VERDICT_STYLES[run.verdict] ?? VERDICT_STYLES.INFO}`}>
           {run.verdict}
         </span>
-        <span className="text-xs text-slate-300 font-mono flex-shrink-0">{run.agentId}</span>
-        <span className={`text-[10px] flex-shrink-0 ${ENGINE_COLORS[run.engine] ?? 'text-slate-400'}`}>[{run.engine}]</span>
-        <span className="text-xs text-slate-400 flex-1 truncate">{run.summary}</span>
-        <span className="text-[10px] text-slate-500 font-mono flex-shrink-0 ml-auto">
+        <span className="text-xs text-[var(--os-text-1)] font-mono flex-shrink-0">{run.agentId}</span>
+        <span className={`text-[10px] flex-shrink-0 ${ENGINE_COLORS[run.engine] ?? 'text-[var(--os-text-2)]'}`}>[{run.engine}]</span>
+        <span className="text-xs text-[var(--os-text-2)] flex-1 truncate">{run.summary}</span>
+        <span className="text-[10px] text-[var(--os-text-2)] font-mono flex-shrink-0 ml-auto">
           {run.durationMs}ms · {new Date(run.raisedAt).toLocaleTimeString()}
         </span>
       </button>
 
       {open && (
-        <div className="border-t border-white/10 px-4 py-3 bg-white/[0.02] space-y-3">
+        <div className="border-t border-[var(--os-border)] px-4 py-3 bg-[var(--os-surface-0)] space-y-3">
           {run.findings?.length > 0 && (
             <div>
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-1.5">Findings</p>
+              <p className="text-[10px] text-[var(--os-text-2)] uppercase tracking-widest mb-1.5">Findings</p>
               <ul className="space-y-1">
                 {run.findings.map((f: string, i: number) => (
-                  <li key={i} className="text-xs text-slate-300 flex gap-2">
-                    <span className="text-slate-600">·</span>{f}
+                  <li key={i} className="text-xs text-[var(--os-text-1)] flex gap-2">
+                    <span className="text-[var(--os-text-2)]">·</span>{f}
                   </li>
                 ))}
               </ul>
@@ -61,7 +61,7 @@ function RunRow({ run }: { run: any }) {
           )}
           {run.actions?.length > 0 && (
             <div>
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-1.5">Recommended Actions</p>
+              <p className="text-[10px] text-[var(--os-text-2)] uppercase tracking-widest mb-1.5">Recommended Actions</p>
               <ul className="space-y-1">
                 {run.actions.map((a: string, i: number) => (
                   <li key={i} className="text-xs text-amber-300 flex gap-2">
@@ -116,23 +116,23 @@ export function AegisAgentsPage() {
         <Bot className="w-4 h-4 text-violet-400 mt-0.5 flex-shrink-0" />
         <div className="flex-1">
           <p className="text-sm font-semibold text-violet-300 mb-0.5">AEGIS Agent Corps</p>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
             {registryData?.total ?? 80} agents across {engines.length} engines — continuously monitoring KIMMP governance.
             Phase 1 (Governance Ops) is fully active. Phases 2–4 run with live ledger data.
           </p>
         </div>
         <div className="flex gap-3 text-right flex-shrink-0">
           <div>
-            <p className="text-lg font-bold text-white">{registryData?.total ?? 80}</p>
-            <p className="text-[10px] text-slate-500">agents</p>
+            <p className="text-lg font-bold text-[var(--os-text-1)]">{registryData?.total ?? 80}</p>
+            <p className="text-[10px] text-[var(--os-text-2)]">agents</p>
           </div>
           <div>
             <p className="text-lg font-bold text-red-400">{criticalCount}</p>
-            <p className="text-[10px] text-slate-500">critical</p>
+            <p className="text-[10px] text-[var(--os-text-2)]">critical</p>
           </div>
           <div>
             <p className="text-lg font-bold text-amber-400">{warnCount}</p>
-            <p className="text-[10px] text-slate-500">warn</p>
+            <p className="text-[10px] text-[var(--os-text-2)]">warn</p>
           </div>
         </div>
       </div>
@@ -148,7 +148,7 @@ export function AegisAgentsPage() {
                 'text-[10px] font-mono px-2.5 py-1 rounded-md border transition-all',
                 engineFilter === eng
                   ? 'bg-violet-500/20 border-violet-500/40 text-violet-300'
-                  : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20'
+                  : 'bg-[var(--os-surface-0)] border-[var(--os-border)] text-[var(--os-text-2)] hover:border-[var(--os-border)]'
               )}
             >
               {eng} · {count as number}
@@ -162,7 +162,7 @@ export function AegisAgentsPage() {
         <select
           value={verdictFilter}
           onChange={e => { setVerdictFilter(e.target.value); setPage(0) }}
-          className="text-xs bg-white/5 border border-white/10 text-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:border-violet-500/50"
+          className="text-xs bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] rounded-lg px-3 py-1.5 focus:outline-none focus:border-violet-500/50"
         >
           <option value="">All verdicts</option>
           <option value="CRITICAL">CRITICAL</option>
@@ -171,7 +171,7 @@ export function AegisAgentsPage() {
           <option value="INFO">INFO</option>
         </select>
 
-        <span className="text-xs text-slate-500 ml-auto">{total} runs</span>
+        <span className="text-xs text-[var(--os-text-2)] ml-auto">{total} runs</span>
 
         <button
           onClick={() => refetch()}
@@ -185,13 +185,13 @@ export function AegisAgentsPage() {
       {/* Run history */}
       {isLoading ? (
         <div className="space-y-2">
-          {[...Array(8)].map((_, i) => <div key={i} className="h-12 bg-white/5 rounded-lg animate-pulse" />)}
+          {[...Array(8)].map((_, i) => <div key={i} className="h-12 bg-[var(--os-surface-0)] rounded-lg animate-pulse" />)}
         </div>
       ) : runs.length === 0 ? (
         <div className="text-center py-16 space-y-2">
-          <Bot className="w-8 h-8 text-slate-700 mx-auto" />
-          <p className="text-slate-500 text-sm">No agent runs yet.</p>
-          <p className="text-slate-600 text-xs">The AEGIS scheduler fires within 5s of server boot.</p>
+          <Bot className="w-8 h-8 text-[var(--os-text-2)] mx-auto" />
+          <p className="text-[var(--os-text-2)] text-sm">No agent runs yet.</p>
+          <p className="text-[var(--os-text-2)] text-xs">The AEGIS scheduler fires within 5s of server boot.</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -202,12 +202,12 @@ export function AegisAgentsPage() {
       {total > PAGE_SIZE && (
         <div className="flex items-center justify-between pt-2">
           <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
-            className="text-xs text-slate-400 hover:text-white disabled:opacity-30 transition-colors">
+            className="text-xs text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-30 transition-colors">
             ← Prev
           </button>
-          <span className="text-xs text-slate-500">Page {page + 1} of {Math.ceil(total / PAGE_SIZE)}</span>
+          <span className="text-xs text-[var(--os-text-2)]">Page {page + 1} of {Math.ceil(total / PAGE_SIZE)}</span>
           <button onClick={() => setPage(p => p + 1)} disabled={(page + 1) * PAGE_SIZE >= total}
-            className="text-xs text-slate-400 hover:text-white disabled:opacity-30 transition-colors">
+            className="text-xs text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-30 transition-colors">
             Next →
           </button>
         </div>

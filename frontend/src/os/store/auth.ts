@@ -10,6 +10,15 @@ export interface AuthUser {
   role: UserRole
   company?: string
   avatarUrl?: string
+  bidsActive?: boolean
+}
+
+export interface OrgContext {
+  id:      string
+  name:    string
+  slug:    string
+  logoUrl: string | null
+  role:    string
 }
 
 interface AuthStore {
@@ -19,15 +28,18 @@ interface AuthStore {
   isDemo: boolean
   isLoading: boolean
   error: string | null
+  currentOrg: OrgContext | null
 
   login:          (email: string, password: string) => Promise<void>
   signup:         (data: SignupPayload) => Promise<void>
   loginAsDemo:    (role?: UserRole) => void
   logout:         () => void
   clearError:     () => void
-  syncFromWebsite: () => boolean   // hydrate from website session if present
+  syncFromWebsite: () => boolean
   patchUser:      (patch: Partial<AuthUser>) => void
   setUserFromSSO: (user: AuthUser, token: string) => void
+  switchOrg:      (orgId: string) => Promise<void>
+  setCurrentOrg:  (org: OrgContext) => void
 }
 
 export interface SignupPayload {
@@ -111,12 +123,24 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
   consumeAuthHash()
   // Hydrate from whatever session is now present (hash-forwarded, website, or own)
   const websiteSession = readWebsiteSession()
+  
+  // Auto-migrate any existing cached sessions to the new C.O.D.E. identity
+  if (websiteSession?.user && (websiteSession.user.name === 'C.O.D.E.' || websiteSession.user.name === 'Mahesh')) {
+    websiteSession.user.name = 'C.O.D.E.'
+    persistToWebsiteKeys(websiteSession.token, websiteSession.user)
+  }
+
   const initial = websiteSession
     ? { user: websiteSession.user, token: websiteSession.token, isAuthenticated: true, isDemo: websiteSession.token === DEMO_TOKEN }
     : { user: null, token: null, isAuthenticated: false, isDemo: false }
 
+  const storedOrg = (() => {
+    try { return JSON.parse(localStorage.getItem('kq-current-org') ?? 'null') } catch { return null }
+  })()
+
   return {
     ...initial,
+    currentOrg: storedOrg,
     isLoading: false,
     error: null,
 
@@ -154,7 +178,7 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
 
     loginAsDemo: (role: UserRole = 'ADMIN') => {
       const demoUsers: Record<UserRole, AuthUser> = {
-        ADMIN:      { id: 'demo-admin',      name: 'Mahesh Kumar',    email: 'admin@kangqore.com',       role: 'ADMIN'      },
+        ADMIN:      { id: 'demo-admin',      name: 'C.O.D.E.',    email: 'admin@kangqore.com',       role: 'ADMIN'      },
         CLIENT:     { id: 'demo-client',     name: 'Dr. Priya Rao',   email: 'priya@synapsehealth.com',  role: 'CLIENT'     },
         PARTNER:    { id: 'demo-partner',    name: 'Dev Patel',       email: 'dev@kangqore.com',         role: 'PARTNER'    },
         INVESTOR:   { id: 'demo-investor',   name: 'James Whitfield', email: 'james@whitfieldvc.com',    role: 'INVESTOR'   },
@@ -171,11 +195,26 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
 
     logout: () => {
       clearWebsiteKeys()
-      set({ user: null, token: null, isAuthenticated: false, error: null })
+      localStorage.removeItem('kq-current-org')
+      set({ user: null, token: null, isAuthenticated: false, error: null, currentOrg: null })
       window.location.href = '/login'
     },
 
     clearError: () => set({ error: null }),
+
+    setCurrentOrg: (org) => {
+      localStorage.setItem('kq-current-org', JSON.stringify(org))
+      set({ currentOrg: org })
+    },
+
+    switchOrg: async (orgId) => {
+      const { data } = await api.post<{ token: string; refreshToken: string; org: OrgContext }>(
+        '/auth/switch-org', { orgId }
+      )
+      persistToWebsiteKeys(data.token, _get().user!, data.refreshToken)
+      localStorage.setItem('kq-current-org', JSON.stringify({ ...data.org, role: 'MEMBER' }))
+      set({ token: data.token, currentOrg: { ...data.org, role: 'MEMBER' } })
+    },
 
     patchUser: (patch) => {
       const current = _get().user

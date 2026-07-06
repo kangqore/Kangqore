@@ -14,90 +14,207 @@ const router = Router();
 router.get('/actions', requireAuth, requireRole(['CLIENT', 'ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user!.userId;
+    const sevenDaysOut = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-    // 1. Pending Deliverables (Waiting for Acceptance)
-    const pendingDeliverables = await prisma.deliverable.findMany({
-      where: {
-        clientId: userId,
-        status: { in: ['SUBMITTED', 'PENDING_ACCEPTANCE'] } 
-      },
-      select: { id: true, title: true, status: true, updatedAt: true }
-    });
+    const [pendingDeliverables, pendingChanges, dueInvoices, ticketsWithAdminReply] = await Promise.all([
+      // 1. Deliverables waiting for client acceptance
+      prisma.deliverable.findMany({
+        where: { clientId: userId, status: { in: ['SUBMITTED', 'PENDING_ACCEPTANCE'] } },
+        select: { id: true, title: true, status: true, updatedAt: true },
+      }),
+      // 2. Change requests awaiting client decision (PROPOSED = new, UNDER_REVIEW = being reviewed)
+      prisma.changeRequest.findMany({
+        where: {
+          clientId: userId,
+          status: { in: ['PROPOSED', 'UNDER_REVIEW'] },
+          acknowledgedAt: null,
+        },
+        select: { id: true, title: true, status: true, costImpact: true, timeImpact: true, priority: true },
+      }),
+      // 3. Invoices overdue or due within 7 days
+      prisma.invoice.findMany({
+        where: {
+          clientId: userId,
+          status: { notIn: ['PAID', 'CANCELLED', 'DRAFT'] },
+          dueDate: { lte: sevenDaysOut },
+        },
+        select: { id: true, invoiceNumber: true, amount: true, dueDate: true, status: true },
+        orderBy: { dueDate: 'asc' },
+      }),
+      // 4. Open tickets that have at least one reply from a non-client (admin reply awaiting client read)
+      prisma.ticket.findMany({
+        where: {
+          clientId: userId,
+          status: { in: ['open', 'pending'] },
+          messages: { some: { sender: { role: { not: 'CLIENT' } } } },
+        },
+        select: { id: true, subject: true, status: true, updatedAt: true },
+        orderBy: { updatedAt: 'desc' },
+        take: 5,
+      }),
+    ]);
 
-    // 2. Open Risks (Client Owned)
-    const openRisks = await prisma.risk.findMany({
-      where: {
-        clientId: userId,
-        status: 'OPEN',
-        owner: 'CLIENT' // Explicit client ownership
-      },
-      select: { id: true, title: true, status: true, impact: true, updatedAt: true }
-    });
+    const now = new Date();
 
-    // 3. Pending Decisions (Client needs to Approve)
-    // Assuming 'PENDING_APPROVAL' status implies needing approval.
-    // Ideally we check if `approverId` is this user, OR if it's assigned to Client side generically.
-    const pendingDecisions = await prisma.decision.findMany({
-      where: {
-        clientId: userId,
-        status: 'PENDING_APPROVAL'
-      },
-      select: { id: true, title: true, status: true, dueDate: true, priority: true }
-    });
-
-    // 4. Change Requests (New/Analysis phase needing Client input)
-    const pendingChanges = await prisma.changeRequest.findMany({
-      where: {
-        clientId: userId,
-        status: { in: ['NEW', 'ANALYSIS', 'PENDING_APPROVAL'] }
-      },
-      select: { id: true, title: true, status: true, costImpact: true, timeImpact: true }
-    });
-
-    // Transform to standardized "Action Item" format
     const actions = [
-      ...pendingDeliverables.map(d => ({
-        type: 'DELIVERABLE',
-        id: d.id,
-        title: d.title,
-        status: d.status,
-        impact: 'Blocks Completion', // Static for now, could be dynamic
-        dueDate: null, // Deliverables don't have explicit due dates in schema yet
-        meta: { updatedAt: d.updatedAt }
-      })),
-      ...openRisks.map(r => ({
-        type: 'RISK',
-        id: r.id,
-        title: r.title,
-        status: r.status,
-        impact: r.impact || 'High Liability',
-        dueDate: null,
-        meta: { updatedAt: r.updatedAt }
-      })),
-      ...pendingDecisions.map(d => ({
-        type: 'DECISION',
-        id: d.id,
-        title: d.title,
-        status: d.status,
-        impact: d.priority === 'HIGH' ? 'Critical Blocker' : 'Decision Required',
-        dueDate: d.dueDate,
-        meta: { priority: d.priority }
+      ...dueInvoices.map(i => ({
+        type: 'INVOICE',
+        id: i.id,
+        title: `Invoice ${i.invoiceNumber}`,
+        subtitle: new Date(i.dueDate) < now
+          ? 'Overdue — payment required'
+          : `Due ${new Date(i.dueDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`,
+        dueDate: i.dueDate,
+        urgency: new Date(i.dueDate) < now ? 'high' : 'medium',
+        link: '/kangqore-view/client/invoices',
+        meta: { amount: Number(i.amount), invoiceNumber: i.invoiceNumber },
       })),
       ...pendingChanges.map(c => ({
         type: 'CHANGE_REQUEST',
         id: c.id,
         title: c.title,
-        status: c.status,
-        impact: c.timeImpact ? `Timeline: ${c.timeImpact}` : (c.costImpact ? 'Budget Impact' : 'Scope Change'),
+        subtitle: c.timeImpact ? `Timeline impact: ${c.timeImpact}` : c.costImpact ? 'Budget impact — review required' : 'Awaiting your sign-off',
         dueDate: null,
-        meta: { cost: c.costImpact, time: c.timeImpact }
-      }))
-    ];
+        urgency: (c.priority === 'HIGH' || c.priority === 'CRITICAL') ? 'high' : 'medium',
+        link: '/kangqore-view/client/change-requests',
+        meta: { cost: c.costImpact, time: c.timeImpact },
+      })),
+      ...pendingDeliverables.map(d => ({
+        type: 'DELIVERABLE',
+        id: d.id,
+        title: d.title,
+        subtitle: 'Review & acceptance required',
+        dueDate: null,
+        urgency: 'medium',
+        link: '/kangqore-view/client/projects',
+        meta: { updatedAt: d.updatedAt },
+      })),
+      ...ticketsWithAdminReply.map(t => ({
+        type: 'TICKET',
+        id: t.id,
+        title: t.subject,
+        subtitle: 'New reply from support team',
+        dueDate: t.updatedAt,
+        urgency: 'medium',
+        link: '/kangqore-view/client/support',
+        meta: { updatedAt: t.updatedAt },
+      })),
+    ].sort((a, b) => (a.urgency === 'high' ? -1 : b.urgency === 'high' ? 1 : 0));
 
     res.json({ actions });
   } catch (error) {
     next(error);
   }
+});
+
+// ==========================================
+// CLIENT PROJECTS (normalized portal view)
+// ==========================================
+// GET /api/client/projects
+router.get('/projects', requireAuth, requireRole(['CLIENT', 'ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.userId;
+    const rows = await prisma.project.findMany({
+      where: { clientId: userId },
+      select: {
+        id: true, title: true, description: true, status: true,
+        progress: true, budget: true, spend: true,
+        createdAt: true, dueDate: true, health: true, nextGate: true,
+        lead: { select: { name: true } },
+        deliverables: {
+          select: { id: true, title: true, status: true, dueDate: true },
+          orderBy: { dueDate: 'asc' },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    const projects = rows.map(p => {
+      const health = p.health >= 80 ? 'on-track' : p.health >= 50 ? 'at-risk' : 'behind';
+      // Next incomplete deliverable becomes the milestone label
+      const nextDel = p.deliverables.find(d => d.status !== 'COMPLETED' && d.status !== 'APPROVED');
+      return {
+        id:            p.id,
+        name:          p.title,
+        description:   p.description ?? '',
+        progress:      p.progress ?? 0,
+        health,
+        budget:        Number(p.budget ?? 0),
+        spent:         Number(p.spend ?? 0),
+        startDate:     p.createdAt.toISOString().slice(0, 10),
+        targetDate:    p.dueDate ? p.dueDate.toISOString().slice(0, 10) : '',
+        nextMilestone: nextDel?.title ?? p.nextGate ?? '—',
+        milestoneDate: nextDel?.dueDate
+          ? nextDel.dueDate.toISOString().slice(0, 10)
+          : p.dueDate ? p.dueDate.toISOString().slice(0, 10) : '',
+        status:        p.status,
+        lead:          p.lead?.name ?? 'Kangqore',
+        deliverables:  p.deliverables.map(d => ({
+          id:      d.id,
+          title:   d.title,
+          status:  d.status,
+          dueDate: d.dueDate ? d.dueDate.toISOString().slice(0, 10) : null,
+        })),
+      };
+    });
+    res.json({ projects });
+  } catch (error) { next(error); }
+});
+
+// ==========================================
+// CLIENT RISKS (open, client-visible)
+// ==========================================
+// GET /api/client/risks
+router.get('/risks', requireAuth, requireRole(['CLIENT', 'ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.userId;
+    const risks = await prisma.risk.findMany({
+      where: { clientId: userId, status: 'OPEN', isClientVisible: true },
+      select: { id: true, title: true, severity: true, owner: true, status: true },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json({ risks: risks.map(r => ({ ...r, due: '' })) });
+  } catch (error) { next(error); }
+});
+
+// ==========================================
+// NOTIFICATIONS
+// ==========================================
+// GET /api/client/notifications
+router.get('/notifications', requireAuth, requireRole(['CLIENT', 'ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.userId;
+    const notifications = await prisma.notification.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 30,
+    });
+    res.json({ notifications });
+  } catch (error) { next(error); }
+});
+
+// PATCH /api/client/notifications/read-all — must come before /:id/read
+router.patch('/notifications/read-all', requireAuth, requireRole(['CLIENT', 'ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.userId;
+    await prisma.notification.updateMany({
+      where: { userId, isRead: false },
+      data: { isRead: true },
+    });
+    res.json({ success: true });
+  } catch (error) { next(error); }
+});
+
+// PATCH /api/client/notifications/:id/read
+router.patch('/notifications/:id/read', requireAuth, requireRole(['CLIENT', 'ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user!.userId;
+    await prisma.notification.updateMany({
+      where: { id, userId },
+      data: { isRead: true },
+    });
+    res.json({ success: true });
+  } catch (error) { next(error); }
 });
 
 // Governance Acknowledgement (Pillar 3 Polish)

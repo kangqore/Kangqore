@@ -47,7 +47,7 @@ const GROUPS: { id: 'today' | 'week' | 'later'; label: string }[] = [
 function StatusIcon({ status }: { status: TaskStatus }) {
   if (status === 'DONE')        return <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
   if (status === 'IN_PROGRESS') return <AlertCircle  className="w-4 h-4 text-orange-400  flex-shrink-0" />
-  return                               <Circle       className="w-4 h-4 text-slate-600   flex-shrink-0" />
+  return                               <Circle       className="w-4 h-4 text-[var(--os-text-2)]   flex-shrink-0" />
 }
 
 export function TeamTasks() {
@@ -77,7 +77,7 @@ export function TeamTasks() {
         </div>
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">My Tasks</h1>
-          <p className="text-slate-500 mt-1 text-sm">All tasks assigned to you across every project.</p>
+          <p className="text-[var(--os-text-2)] mt-1 text-sm">All tasks assigned to you across every project.</p>
         </div>
       </div>
 
@@ -85,15 +85,15 @@ export function TeamTasks() {
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-2">
           <AlertCircle className="w-3.5 h-3.5 text-orange-400" />
-          <span className="text-sm text-slate-400"><span className="font-bold text-white">{inProgressCount}</span> in progress</span>
+          <span className="text-sm text-[var(--os-text-2)]"><span className="font-bold text-white">{inProgressCount}</span> in progress</span>
         </div>
         <div className="flex items-center gap-2">
           <Clock className="w-3.5 h-3.5 text-red-400" />
-          <span className="text-sm text-slate-400"><span className="font-bold text-white">{dueToday}</span> due today</span>
+          <span className="text-sm text-[var(--os-text-2)]"><span className="font-bold text-white">{dueToday}</span> due today</span>
         </div>
         <div className="flex items-center gap-2">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="text-sm text-slate-400"><span className="font-bold text-white">{doneCount}</span> done</span>
+          <span className="text-sm text-[var(--os-text-2)]"><span className="font-bold text-white">{doneCount}</span> done</span>
         </div>
       </div>
 
@@ -106,11 +106,11 @@ export function TeamTasks() {
             className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all ${
               filter === f.id
                 ? 'border-orange-500 text-orange-400'
-                : 'border-transparent text-slate-500 hover:text-slate-300 hover:border-white/10'
+                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-white/10'
             }`}
           >
             {f.label}
-            <span className="ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-500">
+            <span className="ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-800 text-[var(--os-text-2)]">
               {f.id === 'all'         ? tasks.length
                : f.id === 'in_progress' ? inProgressCount
                : f.id === 'todo'        ? tasks.filter(t => t.status === 'TODO').length
@@ -125,18 +125,18 @@ export function TeamTasks() {
         .filter(({ group }) => group.length > 0)
         .map(({ group, label }) => (
           <section key={label}>
-            <h2 className="text-xs font-black tracking-widest uppercase text-slate-600 mb-3">{label}</h2>
+            <h2 className="text-xs font-black tracking-widest uppercase text-[var(--os-text-2)] mb-3">{label}</h2>
             <div className="space-y-2">
               {group.map(t => (
                 <div key={t.id} className={`flex items-center gap-4 p-4 rounded-2xl border bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 hover:border-white/20 transition-colors ${t.status === 'DONE' ? 'border-white/5 opacity-60' : 'border-white/10'}`}>
                   <StatusIcon status={t.status} />
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-semibold ${t.status === 'DONE' ? 'text-slate-500 line-through' : 'text-white'}`}>{t.title}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{t.project}</p>
+                    <p className={`text-sm font-semibold ${t.status === 'DONE' ? 'text-[var(--os-text-2)] line-through' : 'text-white'}`}>{t.title}</p>
+                    <p className="text-xs text-[var(--os-text-2)] mt-0.5">{t.project}</p>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ color: PRIORITY_COLOR[t.priority], background: `${PRIORITY_COLOR[t.priority]}18`, border: `1px solid ${PRIORITY_COLOR[t.priority]}30` }}>{t.priority}</span>
-                    <span className="text-xs text-slate-600 w-20 text-right">{t.due}</span>
+                    <span className="text-xs text-[var(--os-text-2)] w-20 text-right">{t.due}</span>
                   </div>
                 </div>
               ))}
@@ -149,7 +149,7 @@ export function TeamTasks() {
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <CheckCircle2 className="w-10 h-10 text-emerald-400 mb-3" />
           <p className="text-white font-semibold">All clear</p>
-          <p className="text-slate-500 text-sm mt-1">No tasks in this filter.</p>
+          <p className="text-[var(--os-text-2)] text-sm mt-1">No tasks in this filter.</p>
         </div>
       )}
     </div>

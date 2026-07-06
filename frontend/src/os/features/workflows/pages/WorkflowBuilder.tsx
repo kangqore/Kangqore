@@ -13,16 +13,16 @@ import type { WorkflowStep, Workflow } from '../types'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
-const BG    = '#080c18'
-const CARD  = '#0d1117'
-const RAISE = '#121d30'
-const EDGE  = '#1e2b40'
+const BG    = 'var(--os-bg)'
+const CARD  = 'var(--os-card)'
+const RAISE = 'var(--os-surface-0)'
+const EDGE  = 'var(--os-border)'
 const BLUE   = '#2564ea'
 const PURPLE = '#7f53f9'
 const GREEN  = '#00c875'
 const AMBER  = '#fdab3d'
 const RED    = '#e2445c'
-const SLATE  = '#64748b'
+const SLATE  = 'var(--os-text-2)'
 const EASE   = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
 let _inj = false
@@ -37,8 +37,16 @@ const anim = (d: number): React.CSSProperties => ({ animation: `_fadeUp 0.55s ${
 // ── Step type config (all dark) ────────────────────────────────────────────────
 
 const STEP_CONFIG: Record<string, { label: string; color: string; Icon: React.ElementType }> = {
-  action:       { label: 'Action',      color: BLUE,   Icon: Play         },
-  condition:    { label: 'Condition',   color: AMBER,  Icon: GitBranch    },
+  // WVIS canonical 7 types
+  notify:    { label: 'Notify',     color: GREEN,  Icon: Bell         },
+  wait:      { label: 'Wait',       color: SLATE,  Icon: Clock        },
+  agent:     { label: 'Agent',      color: BLUE,   Icon: Play         },
+  event:     { label: 'Event',      color: PURPLE, Icon: Zap          },
+  create:    { label: 'Create',     color: '#00b4d8', Icon: Play      },
+  integrate: { label: 'Integrate',  color: RED,    Icon: Link         },
+  condition: { label: 'Condition',  color: AMBER,  Icon: GitBranch    },
+  // Legacy aliases — kept for existing DB workflows
+  action:       { label: 'Agent',       color: BLUE,   Icon: Play         },
   notification: { label: 'Notify',      color: GREEN,  Icon: Bell         },
   delay:        { label: 'Wait',        color: SLATE,  Icon: Clock        },
   approval:     { label: 'Approval',    color: PURPLE, Icon: CheckSquare  },
@@ -81,7 +89,7 @@ function StepNode({
           background: isSelected ? `${color}20` : RAISE,
           border: `1px solid ${isSelected ? color : EDGE}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 10, fontWeight: 700, color: isSelected ? color : '#334155',
+          fontSize: 10, fontWeight: 700, color: isSelected ? color : 'var(--os-text-2)',
           fontVariantNumeric: 'tabular-nums', marginTop: 14,
         }}>
           {index + 1}
@@ -129,8 +137,8 @@ function StepNode({
           </span>
         </div>
 
-        <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: '0 0 4px' }}>{step.name}</p>
-        <p style={{ fontSize: 11, color: '#475569', margin: 0, lineHeight: 1.5 }}>{step.description}</p>
+        <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--os-text-1)', margin: '0 0 4px' }}>{step.name}</p>
+        <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: 0, lineHeight: 1.5 }}>{step.description}</p>
       </button>
     </div>
   )
@@ -173,7 +181,7 @@ function WorkflowRow({ wf, isSelected, onClick }: { wf: Workflow; isSelected: bo
       {/* Name + meta */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{
-          fontSize: 12, fontWeight: 600, color: isSelected ? '#f1f5f9' : '#94a3b8',
+          fontSize: 12, fontWeight: 600, color: isSelected ? 'var(--os-text-1)' : 'var(--os-text-2)',
           margin: '0 0 4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
         }}>
           {wf.name}
@@ -182,11 +190,11 @@ function WorkflowRow({ wf, isSelected, onClick }: { wf: Workflow; isSelected: bo
           <span style={{ fontSize: 9, fontWeight: 700, color: catColor, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             {wf.category}
           </span>
-          <span style={{ fontSize: 9, color: '#1e2b40' }}>·</span>
-          <span style={{ fontSize: 10, color: '#334155' }}>{wf.steps.length} steps</span>
+          <span style={{ fontSize: 9, color: 'var(--os-text-2)' }}>·</span>
+          <span style={{ fontSize: 10, color: 'var(--os-text-2)' }}>{wf.steps.length} steps</span>
           {rate !== null && (
             <>
-              <span style={{ fontSize: 9, color: '#1e2b40' }}>·</span>
+              <span style={{ fontSize: 9, color: 'var(--os-text-2)' }}>·</span>
               <span style={{ fontSize: 10, color: rate >= 90 ? GREEN : rate >= 70 ? AMBER : RED }}>
                 {rate}%
               </span>
@@ -195,7 +203,7 @@ function WorkflowRow({ wf, isSelected, onClick }: { wf: Workflow; isSelected: bo
         </div>
       </div>
 
-      <ChevronRight style={{ width: 13, height: 13, color: '#334155', flexShrink: 0 }} />
+      <ChevronRight style={{ width: 13, height: 13, color: 'var(--os-text-2)', flexShrink: 0 }} />
     </button>
   )
 }
@@ -221,7 +229,7 @@ function StepDetail({ step }: { step: WorkflowStep }) {
           <cfg.Icon style={{ width: 14, height: 14, color: cfg.color }} />
         </div>
         <div>
-          <p style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>{step.name}</p>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>{step.name}</p>
           <p style={{ fontSize: 10, color: cfg.color, margin: '2px 0 0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Step {step.order} · {cfg.label}
           </p>
@@ -230,7 +238,7 @@ function StepDetail({ step }: { step: WorkflowStep }) {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
         <div style={{ padding: '10px 12px', borderRadius: 10, background: RAISE, border: `1px solid ${EDGE}` }}>
-          <p style={{ fontSize: 9, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 4px' }}>Type</p>
+          <p style={{ fontSize: 9, color: 'var(--os-text-2)', textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 4px' }}>Type</p>
           <span style={{
             fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 999,
             color: cfg.color, background: `${cfg.color}14`, border: `1px solid ${cfg.color}25`,
@@ -239,14 +247,14 @@ function StepDetail({ step }: { step: WorkflowStep }) {
           </span>
         </div>
         <div style={{ padding: '10px 12px', borderRadius: 10, background: RAISE, border: `1px solid ${EDGE}` }}>
-          <p style={{ fontSize: 9, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 4px' }}>Order</p>
-          <p style={{ fontSize: 13, fontWeight: 700, color: '#e2e8f0', margin: 0 }}>Step {step.order}</p>
+          <p style={{ fontSize: 9, color: 'var(--os-text-2)', textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 4px' }}>Order</p>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>Step {step.order}</p>
         </div>
       </div>
 
       <div style={{ padding: '12px 14px', borderRadius: 10, background: RAISE, border: `1px solid ${EDGE}` }}>
-        <p style={{ fontSize: 9, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 6px' }}>Description</p>
-        <p style={{ fontSize: 12, color: '#94a3b8', margin: 0, lineHeight: 1.6 }}>{step.description}</p>
+        <p style={{ fontSize: 9, color: 'var(--os-text-2)', textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 6px' }}>Description</p>
+        <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0, lineHeight: 1.6 }}>{step.description}</p>
       </div>
     </div>
   )
@@ -264,7 +272,7 @@ export function WorkflowBuilder() {
   const step = wf?.steps.find(s => s.id === selectedStep)
 
   if (!wf) return (
-    <div style={{ padding: 48, textAlign: 'center', color: '#334155', fontSize: 13 }}>
+    <div style={{ padding: 48, textAlign: 'center', color: 'var(--os-text-2)', fontSize: 13 }}>
       No workflows found.
     </div>
   )
@@ -286,7 +294,7 @@ export function WorkflowBuilder() {
         <div style={{ padding: '14px 16px', borderBottom: `1px solid ${EDGE}` }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <GitBranch style={{ width: 14, height: 14, color: BLUE }} />
-            <p style={{ fontSize: 12, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>Workflows</p>
+            <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>Workflows</p>
             <span style={{
               marginLeft: 'auto', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
               color: BLUE, background: `${BLUE}14`, border: `1px solid ${BLUE}25`,
@@ -326,7 +334,7 @@ export function WorkflowBuilder() {
           }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>{wf.name}</h3>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>{wf.name}</h3>
                 <span style={{
                   fontSize: 9, fontWeight: 700, padding: '3px 7px', borderRadius: 999, flexShrink: 0,
                   color: catColor, background: `${catColor}14`, border: `1px solid ${catColor}25`,
@@ -335,7 +343,7 @@ export function WorkflowBuilder() {
                   {wf.category}
                 </span>
               </div>
-              <p style={{ fontSize: 11, color: '#475569', margin: '4px 0 0', lineHeight: 1.5 }}>{wf.description}</p>
+              <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '4px 0 0', lineHeight: 1.5 }}>{wf.description}</p>
             </div>
 
             {/* Stats row */}
@@ -343,12 +351,12 @@ export function WorkflowBuilder() {
               {wf.runsTotal > 0 && (
                 <>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontSize: 10, color: '#334155', margin: '0 0 2px' }}>Runs</p>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: '#94a3b8', margin: 0, fontVariantNumeric: 'tabular-nums' }}>{wf.runsTotal}</p>
+                    <p style={{ fontSize: 10, color: 'var(--os-text-2)', margin: '0 0 2px' }}>Runs</p>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--os-text-2)', margin: 0, fontVariantNumeric: 'tabular-nums' }}>{wf.runsTotal}</p>
                   </div>
                   {successRate !== null && (
                     <div style={{ textAlign: 'right' }}>
-                      <p style={{ fontSize: 10, color: '#334155', margin: '0 0 2px' }}>Success</p>
+                      <p style={{ fontSize: 10, color: 'var(--os-text-2)', margin: '0 0 2px' }}>Success</p>
                       <p style={{
                         fontSize: 14, fontWeight: 700, margin: 0, fontVariantNumeric: 'tabular-nums',
                         color: successRate >= 90 ? GREEN : successRate >= 70 ? AMBER : RED,
@@ -357,8 +365,8 @@ export function WorkflowBuilder() {
                   )}
                   {wf.avgDuration > 0 && (
                     <div style={{ textAlign: 'right' }}>
-                      <p style={{ fontSize: 10, color: '#334155', margin: '0 0 2px' }}>Avg</p>
-                      <p style={{ fontSize: 14, fontWeight: 700, color: '#94a3b8', margin: 0 }}>{wf.avgDuration}m</p>
+                      <p style={{ fontSize: 10, color: 'var(--os-text-2)', margin: '0 0 2px' }}>Avg</p>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--os-text-2)', margin: 0 }}>{wf.avgDuration}m</p>
                     </div>
                   )}
                 </>
@@ -417,7 +425,7 @@ export function WorkflowBuilder() {
                 <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: PURPLE, margin: '0 0 4px' }}>
                   Trigger
                 </p>
-                <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0 }}>{wf.triggerConfig}</p>
+                <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--os-text-1)', margin: 0 }}>{wf.triggerConfig}</p>
               </div>
             </div>
 
@@ -453,11 +461,11 @@ export function WorkflowBuilder() {
           {/* Tags */}
           {wf.tags.length > 0 && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Tag style={{ width: 11, height: 11, color: '#334155' }} />
+              <Tag style={{ width: 11, height: 11, color: 'var(--os-text-2)' }} />
               {wf.tags.map(t => (
                 <span key={t} style={{
                   fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 999,
-                  color: '#475569', background: RAISE, border: `1px solid ${EDGE}`,
+                  color: 'var(--os-text-2)', background: RAISE, border: `1px solid ${EDGE}`,
                 }}>
                   {t}
                 </span>
@@ -478,14 +486,14 @@ export function WorkflowBuilder() {
             }}>
               {wf.owner.charAt(0)}
             </div>
-            <span style={{ fontSize: 11, color: '#475569' }}>{wf.owner}</span>
+            <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>{wf.owner}</span>
           </div>
 
           {/* Last run */}
           {wf.lastRun && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <RotateCcw style={{ width: 11, height: 11, color: '#334155' }} />
-              <span style={{ fontSize: 11, color: '#475569' }}>
+              <RotateCcw style={{ width: 11, height: 11, color: 'var(--os-text-2)' }} />
+              <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>
                 Last: {wf.lastRun.slice(0, 16).replace('T', ' ')}
               </span>
             </div>
@@ -494,8 +502,8 @@ export function WorkflowBuilder() {
           {/* Next run */}
           {wf.nextRun && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Timer style={{ width: 11, height: 11, color: '#334155' }} />
-              <span style={{ fontSize: 11, color: '#475569' }}>
+              <Timer style={{ width: 11, height: 11, color: 'var(--os-text-2)' }} />
+              <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>
                 Next: {wf.nextRun.slice(0, 16).replace('T', ' ')}
               </span>
             </div>
@@ -504,7 +512,7 @@ export function WorkflowBuilder() {
           {/* Success rate bar */}
           {successRate !== null && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <TrendingUp style={{ width: 11, height: 11, color: '#334155' }} />
+              <TrendingUp style={{ width: 11, height: 11, color: 'var(--os-text-2)' }} />
               <div style={{ width: 60, height: 4, borderRadius: 99, background: EDGE, overflow: 'hidden' }}>
                 <div style={{
                   height: '100%', borderRadius: 99,
@@ -513,7 +521,7 @@ export function WorkflowBuilder() {
                   transition: `width 0.8s ${EASE}`,
                 }} />
               </div>
-              <span style={{ fontSize: 10, color: '#475569', fontVariantNumeric: 'tabular-nums' }}>
+              <span style={{ fontSize: 10, color: 'var(--os-text-2)', fontVariantNumeric: 'tabular-nums' }}>
                 {wf.runsSuccess}/{wf.runsTotal}
               </span>
             </div>

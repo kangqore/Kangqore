@@ -29,9 +29,10 @@ export interface AegisAgentResult {
 }
 
 export interface AgentContext {
-  trigger:   AgentTrigger | string
-  metadata?: Record<string, unknown>
-  userId?:   string
+  trigger:    AgentTrigger | string
+  metadata?:  Record<string, unknown>
+  userId?:    string
+  fromEvent?: boolean  // true when triggered by event.CRITICAL_ACTIVATION — prevents cascade re-emit
 }
 
 export interface AegisAgentDef {

@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Search, X, ChevronLeft, ChevronRight, Calendar, RefreshCw } from 'lucide-react'
-import { Card, CardBody } from '@design-system/components/Card'
+import { Search, X, ChevronLeft, ChevronRight, Calendar, RefreshCw, Clock } from 'lucide-react'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
 import { Spinner } from '@design-system/components/Spinner'
@@ -18,11 +17,15 @@ interface Event {
   joinUrl?: string | null
 }
 
+const STATUS_COLOR: Record<string, string> = {
+  CONFIRMED: '#00c875',
+  COMPLETED: '#9aa0b0',
+  CANCELLED: '#e2445c',
+  NO_SHOW:   '#fdab3d',
+}
+
 const STATUS_VARIANT: Record<string, 'success' | 'warning' | 'danger' | 'neutral'> = {
-  CONFIRMED: 'success',
-  COMPLETED: 'neutral',
-  CANCELLED: 'danger',
-  NO_SHOW:   'warning',
+  CONFIRMED: 'success', COMPLETED: 'neutral', CANCELLED: 'danger', NO_SHOW: 'warning',
 }
 
 const PAGE_SIZE = 15
@@ -43,7 +46,6 @@ export function BookingsPage() {
 
   const allEvents: Event[] = data ?? []
 
-  // client-side filter + paginate (backend returns all for host)
   const filtered = useMemo(() => {
     return allEvents.filter(e => {
       const invitee = e.invitees[0]
@@ -67,24 +69,52 @@ export function BookingsPage() {
     },
   })
 
+  // Stats strip
+  const confirmed  = allEvents.filter(e => e.status === 'CONFIRMED').length
+  const completed  = allEvents.filter(e => e.status === 'COMPLETED').length
+  const cancelled  = allEvents.filter(e => e.status === 'CANCELLED').length
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
+      {/* Page header */}
+      <div>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'var(--os-text-2)' }}>Scheduling</p>
+        <h2 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Bookings</h2>
+      </div>
+
+      {/* Quick stats */}
+      {allEvents.length > 0 && (
+        <div className="grid grid-cols-3 gap-4">
+          {[
+            { label: 'Confirmed', value: confirmed, bg: 'linear-gradient(135deg,#00c875 0%,#00a86b 100%)', glow: '#00c875' },
+            { label: 'Completed', value: completed, bg: 'linear-gradient(135deg,#2564ea 0%,#579bfc 100%)', glow: '#2564ea' },
+            { label: 'Cancelled', value: cancelled, bg: 'linear-gradient(135deg,#e2445c 0%,#c0392b 100%)', glow: '#e2445c' },
+          ].map(s => (
+            <div key={s.label} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: s.bg, boxShadow: `0 4px 20px ${s.glow}40` }}>
+              <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.30) 0%, transparent 60%)' }} />
+              <p className="relative text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{s.label}</p>
+              <p className="relative text-3xl font-black tracking-tight" style={{ color: '#ffffff' }}>{s.value}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[220px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--os-text-2)]" />
           <input
             type="text"
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1) }}
             placeholder="Search by name, email or event type…"
-            className="w-full h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white pl-9 pr-3 focus:outline-none focus:border-blue-400"
+            className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] pl-9 pr-3 focus:outline-none focus:border-[#579bfc]"
           />
         </div>
         <select
           value={status}
           onChange={e => { setStatus(e.target.value); setPage(1) }}
-          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-[#579bfc]"
         >
           <option value="">All statuses</option>
           <option value="CONFIRMED">Confirmed</option>
@@ -94,58 +124,72 @@ export function BookingsPage() {
         </select>
       </div>
 
-      {isLoading && <div className="flex items-center gap-2 text-sm text-slate-500"><Spinner size="sm" /> Loading…</div>}
+      {isLoading && <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)]"><Spinner size="sm" /> Loading…</div>}
 
       {!isLoading && paged.length === 0 && (
-        <Card><CardBody className="text-center py-12">
-          <Calendar className="w-8 h-8 text-slate-500 mx-auto mb-3" />
-          <p className="text-sm text-slate-400">No bookings found</p>
-        </CardBody></Card>
+        <div className="os-card p-12 text-center">
+          <Calendar className="w-10 h-10 text-[var(--os-text-2)] mx-auto mb-3" />
+          <p className="text-sm text-[var(--os-text-2)] font-medium">No bookings found</p>
+        </div>
       )}
 
       {paged.length > 0 && (
-        <Card>
-          <div className="divide-y divide-[#2E2854]">
+        <div className="os-card overflow-hidden">
+          <div className="divide-y divide-[var(--os-border)]">
             {paged.map(e => {
               const invitee = e.invitees[0]
+              const sc = STATUS_COLOR[e.status] ?? '#9aa0b0'
+              const initials = (invitee?.name ?? '?').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
               return (
                 <div
                   key={e.id}
-                  className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-900/40 transition-colors cursor-pointer"
+                  className="flex items-center gap-4 px-4 py-3 hover:bg-[var(--os-surface-0)] transition-colors cursor-pointer"
                   onClick={() => setSelected(e)}
                 >
+                  {/* Avatar initials */}
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: sc }}>
+                    {initials}
+                  </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white truncate">{e.eventType?.name ?? 'Meeting'}</p>
-                    <p className="text-xs text-slate-500 truncate">
+                    <p className="text-sm font-semibold text-[var(--os-text-1)] truncate">{e.eventType?.name ?? 'Meeting'}</p>
+                    <p className="text-xs text-[var(--os-text-2)] truncate">
                       {invitee?.name ?? '—'}{invitee?.email ? ` · ${invitee.email}` : ''}
                     </p>
                   </div>
-                  <div className="text-right shrink-0">
-                    <p className="text-xs text-slate-400">{new Date(e.startTime).toLocaleDateString()}</p>
-                    <p className="text-xs text-slate-500">
-                      {new Date(e.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </p>
+                  {/* Time block */}
+                  <div className="flex items-center gap-1.5 text-xs text-[var(--os-text-2)] flex-shrink-0">
+                    <Clock className="w-3.5 h-3.5" />
+                    <span>{new Date(e.startTime).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
+                    <span>{new Date(e.startTime).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
                   </div>
-                  <Badge variant={STATUS_VARIANT[e.status] ?? 'neutral'} size="sm">{e.status}</Badge>
+                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full flex-shrink-0" style={{ background: `${sc}20`, color: sc }}>
+                    {e.status}
+                  </span>
                 </div>
               )
             })}
           </div>
-        </Card>
+        </div>
       )}
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between text-sm text-slate-500">
+        <div className="flex items-center justify-between text-sm text-[var(--os-text-2)]">
           <span>{filtered.length} total</span>
           <div className="flex items-center gap-2">
-            <button disabled={page === 1} onClick={() => setPage(p => p - 1)}
-              className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 disabled:opacity-30">
+            <button
+              disabled={page === 1}
+              onClick={() => setPage(p => p - 1)}
+              className="p-1.5 rounded-lg border border-[var(--os-border)] hover:bg-[var(--os-surface-0)] disabled:opacity-30"
+            >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <span>Page {page} of {totalPages}</span>
-            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}
-              className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 disabled:opacity-30">
+            <button
+              disabled={page === totalPages}
+              onClick={() => setPage(p => p + 1)}
+              className="p-1.5 rounded-lg border border-[var(--os-border)] hover:bg-[var(--os-surface-0)] disabled:opacity-30"
+            >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -155,31 +199,35 @@ export function BookingsPage() {
       {/* Detail modal */}
       {selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSelected(null)}>
-          <div className="bg-os-s0 border border-white/10 border-t-white/20 rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-start justify-between">
-              <h3 className="font-bold text-white text-lg">{selected.eventType?.name ?? 'Meeting'}</h3>
-              <button onClick={() => setSelected(null)} className="text-slate-500 hover:text-white">
+              <div>
+                <h3 className="font-black text-[var(--os-text-1)] text-lg">{selected.eventType?.name ?? 'Meeting'}</h3>
+                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full mt-1 inline-flex" style={{ background: `${STATUS_COLOR[selected.status] ?? '#9aa0b0'}20`, color: STATUS_COLOR[selected.status] ?? '#9aa0b0' }}>
+                  {selected.status}
+                </span>
+              </div>
+              <button onClick={() => setSelected(null)} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="space-y-2 text-sm">
               {selected.invitees[0] && <>
-                <div className="flex justify-between"><span className="text-slate-500">Attendee</span><span className="text-white">{selected.invitees[0].name}</span></div>
-                <div className="flex justify-between"><span className="text-slate-500">Email</span><span className="text-white">{selected.invitees[0].email}</span></div>
+                <div className="flex justify-between"><span className="text-[var(--os-text-2)]">Attendee</span><span className="text-[var(--os-text-1)] font-medium">{selected.invitees[0].name}</span></div>
+                <div className="flex justify-between"><span className="text-[var(--os-text-2)]">Email</span><span className="text-[var(--os-text-1)]">{selected.invitees[0].email}</span></div>
               </>}
-              <div className="flex justify-between"><span className="text-slate-500">When</span><span className="text-white">{new Date(selected.startTime).toLocaleString()}</span></div>
-              <div className="flex justify-between items-center"><span className="text-slate-500">Status</span><Badge variant={STATUS_VARIANT[selected.status] ?? 'neutral'} size="sm">{selected.status}</Badge></div>
+              <div className="flex justify-between"><span className="text-[var(--os-text-2)]">When</span><span className="text-[var(--os-text-1)] font-medium">{new Date(selected.startTime).toLocaleString()}</span></div>
               {selected.joinUrl && (
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-500">Meeting link</span>
-                  <a href={selected.joinUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 text-xs underline">Join</a>
+                  <span className="text-[var(--os-text-2)]">Meeting link</span>
+                  <a href={selected.joinUrl} target="_blank" rel="noopener noreferrer" className="text-[#579bfc] text-xs underline">Join</a>
                 </div>
               )}
             </div>
 
             {selected.status === 'CONFIRMED' && (
-              <div className="flex gap-2 pt-2 border-t border-white/10 border-t-white/20">
+              <div className="flex gap-2 pt-2 border-t border-[var(--os-border)]">
                 <Button size="sm" variant="ghost" leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
                   onClick={() => window.open(`/booking/reschedule/${selected.id}`, '_blank')}>
                   Reschedule

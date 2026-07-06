@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { FileText, Download, Eye, FolderOpen, Lock } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { api } from '@lib/api'
@@ -63,33 +64,34 @@ export function CareersDocuments() {
   const available = folders.reduce((s, f) => s + f.docs.filter((d: DocItem) => d.date).length, 0)
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6">
+      <KIMMPSignalBar module="Documents" />
       <div>
-        <h2 className="text-xl font-bold text-white">Documents</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{available} of {total} documents available</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Documents</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>{available} of {total} documents available</p>
       </div>
 
       {folders.map(folder => (
         <div key={folder.folder}>
           <div className="flex items-center gap-2 mb-3">
-            <FolderOpen className="w-4 h-4 text-slate-500" />
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{folder.folder}</p>
+            <FolderOpen className="w-4 h-4 text-[var(--os-text-2)]" />
+            <p className="text-xs font-bold text-[var(--os-text-2)] uppercase tracking-widest">{folder.folder}</p>
           </div>
           <Card padding="none">
-            <ul className="divide-y divide-[#2E2854]">
+            <ul className="divide-y divide-[var(--os-border)]">
               {folder.docs.map(doc => {
                 const locked = !doc.date
                 return (
-                  <li key={doc.id} className={`flex items-center gap-4 px-5 py-3.5 transition-colors ${locked ? 'opacity-50' : 'hover:bg-slate-900 group'}`}>
+                  <li key={doc.id} className={`flex items-center gap-4 px-5 py-3.5 transition-colors ${locked ? 'opacity-50' : 'hover:bg-[var(--os-surface)] group'}`}>
                     <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
                       {locked
-                        ? <Lock className="w-4 h-4 text-slate-500" />
+                        ? <Lock className="w-4 h-4 text-[var(--os-text-2)]" />
                         : <FileText className="w-4 h-4 text-amber-600" />
                       }
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-200 truncate">{doc.title}</p>
-                      <div className="flex items-center gap-3 mt-0.5 text-xs text-slate-500">
+                      <p className="text-sm font-medium text-[var(--os-text-1)] truncate">{doc.title}</p>
+                      <div className="flex items-center gap-3 mt-0.5 text-xs text-[var(--os-text-2)]">
                         <Badge variant={TYPE_V[doc.type] ?? 'neutral'} size="sm">{doc.type}</Badge>
                         {!locked && <><span>{doc.format}</span><span>{doc.size}</span></>}
                         <span>{fmtDate(doc.date)}</span>
@@ -97,10 +99,10 @@ export function CareersDocuments() {
                     </div>
                     {!locked && (
                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500 hover:text-slate-500">
+                        <button className="p-1.5 rounded-lg hover:bg-[var(--os-surface)] text-[var(--os-text-2)]">
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500 hover:text-slate-500">
+                        <button className="p-1.5 rounded-lg hover:bg-[var(--os-surface)] text-[var(--os-text-2)]">
                           <Download className="w-4 h-4" />
                         </button>
                       </div>

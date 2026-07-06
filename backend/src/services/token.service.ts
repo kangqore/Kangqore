@@ -10,6 +10,7 @@ export interface TokenPayload {
   role: string;
   sessionId: string;
   sub?: string;
+  currentOrgId?: string;
 }
 
 export interface TokenPair {
@@ -20,14 +21,15 @@ export interface TokenPair {
 /**
  * Generate access and refresh tokens for a user
  */
-export const generateTokenPair = (userId: string, role: string): TokenPair => {
+export const generateTokenPair = (userId: string, role: string, currentOrgId?: string): TokenPair => {
   const sessionId = uuidv4();
-  
+
   const payload: TokenPayload = {
     userId,
     role,
     sessionId,
-    sub: userId // Standard claim required by auth middleware
+    sub: userId,
+    ...(currentOrgId ? { currentOrgId } : {}),
   };
 
   const accessToken = jwt.sign(payload, JWT_SECRET, {

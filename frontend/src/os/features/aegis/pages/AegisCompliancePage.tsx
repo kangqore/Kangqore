@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { Brain, CheckCircle, AlertTriangle, XCircle, Download, ChevronDown, ChevronUp, Clock, TrendingUp, Zap, Flag } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { Brain, CheckCircle, AlertTriangle, XCircle, Download, ChevronDown, ChevronUp, Clock, TrendingUp, Zap, Flag, Radio } from 'lucide-react'
+import { api } from '@lib/api'
 
 type ControlStatus = 'PASS' | 'WARN' | 'FAIL'
 type Framework = 'SOC 2' | 'ISO 27001' | 'NIST CSF'
@@ -247,16 +249,16 @@ const CERTS = [
   { name: 'SOC 2 Type II', done: false, date: '2026-10',  daysLeft: 47, current: true, readiness: 73, target: 85,     unlocks: 'Enterprise procurement approval',          color: '#7f53f9' },
   { name: 'ISO 27001',     done: false, date: '2027-06', unlocks: 'European enterprises, regulated industries',        color: '#2564ea' },
   { name: 'HIPAA BAA',     done: false, date: '2027-12', unlocks: 'Healthcare vertical ($50B TAM)',                    color: '#fdab3d' },
-  { name: 'FedRAMP',       done: false, date: '2028-12', unlocks: 'US Federal / DoD (largest contracts)',              color: '#64748b' },
+  { name: 'FedRAMP',       done: false, date: '2028-12', unlocks: 'US Federal / DoD (largest contracts)',              color: 'var(--os-text-2)' },
 ] as const
 
 function CertificationRoadmap() {
   return (
-    <div className="rounded-xl p-5" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
+    <div className="rounded-xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
       <div className="flex items-center gap-2 mb-4">
         <Flag className="w-3.5 h-3.5 text-violet-400" />
-        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Certification Roadmap</p>
-        <span className="ml-auto text-[10px] text-slate-600">SOC 2 Type I complete → working toward enterprise procurement gate</span>
+        <p className="text-[11px] font-bold text-[var(--os-text-2)] uppercase tracking-wider">Certification Roadmap</p>
+        <span className="ml-auto text-[10px] text-[var(--os-text-2)]">SOC 2 Type I complete → working toward enterprise procurement gate</span>
       </div>
 
       <div className="relative">
@@ -268,8 +270,8 @@ function CertificationRoadmap() {
             <div key={cert.name} className="flex flex-col items-center gap-2 text-center">
               <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 relative z-10"
                 style={{
-                  background: cert.done ? `${cert.color}18` : cert.current ? `${cert.color}12` : '#0d1117',
-                  border: `2px solid ${cert.done || cert.current ? cert.color : '#2E2854'}`,
+                  background: cert.done ? `${cert.color}18` : cert.current ? `${cert.color}12` : 'var(--os-card)',
+                  border: `2px solid ${cert.done || cert.current ? cert.color : 'var(--os-border)'}`,
                   boxShadow: cert.current ? `0 0 12px ${cert.color}40` : 'none',
                 }}>
                 {cert.done
@@ -281,8 +283,8 @@ function CertificationRoadmap() {
               </div>
 
               <div>
-                <p className="text-[10px] font-bold leading-tight" style={{ color: cert.done || cert.current ? cert.color : '#475569' }}>{cert.name}</p>
-                <p className="text-[9px] text-slate-600 mt-0.5">{cert.date}</p>
+                <p className="text-[10px] font-bold leading-tight" style={{ color: cert.done || cert.current ? cert.color : 'var(--os-text-2)' }}>{cert.name}</p>
+                <p className="text-[9px] text-[var(--os-text-2)] mt-0.5">{cert.date}</p>
                 {cert.current && 'daysLeft' in cert && (
                   <p className="text-[9px] font-bold mt-0.5" style={{ color: cert.color }}>
                     {cert.daysLeft}d remaining
@@ -291,7 +293,7 @@ function CertificationRoadmap() {
                 {cert.done && <p className="text-[9px] text-emerald-600 font-bold mt-0.5">Complete</p>}
               </div>
 
-              <p className="text-[9px] text-slate-600 leading-tight hidden lg:block">{cert.unlocks}</p>
+              <p className="text-[9px] text-[var(--os-text-2)] leading-tight hidden lg:block">{cert.unlocks}</p>
             </div>
           ))}
         </div>
@@ -315,11 +317,11 @@ function AuditCountdown() {
         <p className="text-4xl font-black tabular-nums" style={{ color: urgency }}>{daysLeft}</p>
         <p className="text-[10px] font-bold" style={{ color: urgency }}>days</p>
       </div>
-      <div className="w-px h-12 bg-[#2E2854] flex-shrink-0" />
+      <div className="w-px h-12 bg-[var(--os-border)] flex-shrink-0" />
       <div className="flex-1 min-w-0">
-        <p className="text-[11px] font-bold text-white mb-0.5">SOC 2 Type II Audit</p>
-        <p className="text-[11px] text-slate-500">Current readiness <span className="font-bold text-amber-400">{readiness}%</span> — target <span className="font-bold text-emerald-400">{target}%</span> — gap <span className="font-bold" style={{ color: urgency }}>+{gap}% needed</span></p>
-        <div className="mt-2 h-1.5 rounded-full" style={{ background: '#1f2a4a' }}>
+        <p className="text-[11px] font-bold text-[var(--os-text-1)] mb-0.5">SOC 2 Type II Audit</p>
+        <p className="text-[11px] text-[var(--os-text-2)]">Current readiness <span className="font-bold text-amber-400">{readiness}%</span> — target <span className="font-bold text-emerald-400">{target}%</span> — gap <span className="font-bold" style={{ color: urgency }}>+{gap}% needed</span></p>
+        <div className="mt-2 h-1.5 rounded-full" style={{ background: 'var(--os-border)' }}>
           <div className="h-full rounded-full relative" style={{ width: `${readiness}%`, background: `linear-gradient(90deg, ${urgency}88, ${urgency})` }}>
             <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[6px]" style={{ borderBottomColor: '#00c875', transform: `translateX(${(target - readiness) / readiness * 100}%) translateY(-50%)` }} />
           </div>
@@ -328,7 +330,7 @@ function AuditCountdown() {
             <div className="w-px h-3 absolute top-0" style={{ background: '#00c875', left: 0, marginTop: '-3px' }} />
           </div>
         </div>
-        <p className="text-[10px] text-slate-600 mt-1">Close ISS-005 + schedule DR test + run vuln scan → readiness reaches {target}%</p>
+        <p className="text-[10px] text-[var(--os-text-2)] mt-1">Close ISS-005 + schedule DR test + run vuln scan → readiness reaches {target}%</p>
       </div>
     </div>
   )
@@ -371,29 +373,29 @@ function ResolutionImpact({ currentScore }: { currentScore: number }) {
   const projScore   = Math.min(100, currentScore + totalGain)
 
   return (
-    <div className="rounded-xl p-5" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
+    <div className="rounded-xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
       <div className="flex items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">KIMMP Resolution Impact</p>
+          <p className="text-[11px] font-bold text-[var(--os-text-2)] uppercase tracking-wider">KIMMP Resolution Impact</p>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-[11px] text-slate-500">Current</span>
+          <span className="text-[11px] text-[var(--os-text-2)]">Current</span>
           <span className="text-base font-black text-amber-400">{currentScore}%</span>
-          <span className="text-slate-600 text-sm">→</span>
+          <span className="text-[var(--os-text-2)] text-sm">→</span>
           <span className="text-base font-black text-emerald-400">{projScore}%</span>
-          <span className="text-[11px] text-slate-500">after 3 fixes</span>
+          <span className="text-[11px] text-[var(--os-text-2)]">after 3 fixes</span>
         </div>
       </div>
 
       <div className="space-y-2">
         {QUICK_WINS.map((w) => (
           <div key={w.action} className="flex items-start gap-3 rounded-lg p-3"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid #1f2a4a' }}>
+            style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
             <Zap className="w-3.5 h-3.5 text-violet-400 flex-shrink-0 mt-0.5" />
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2 mb-0.5">
-                <p className="text-[12px] font-semibold text-white leading-tight">{w.action}</p>
+                <p className="text-[12px] font-semibold text-[var(--os-text-1)] leading-tight">{w.action}</p>
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded"
                     style={{ color: w.effortColor, background: `${w.effortColor}10`, border: `1px solid ${w.effortColor}25` }}>
@@ -402,7 +404,7 @@ function ResolutionImpact({ currentScore }: { currentScore: number }) {
                   <span className="text-[11px] font-black text-emerald-400">+{w.scoreGain}%</span>
                 </div>
               </div>
-              <p className="text-[10px] text-slate-500 mb-1.5">{w.detail}</p>
+              <p className="text-[10px] text-[var(--os-text-2)] mb-1.5">{w.detail}</p>
               <div className="flex flex-wrap gap-1">
                 {w.frameworks.map(f => (
                   <span key={f} className="text-[9px] font-mono px-1.5 py-0.5 rounded"
@@ -431,36 +433,83 @@ const FRAMEWORK_COLOR: Record<Framework, string> = {
   'NIST CSF': '#00c875',
 }
 
+// ── Live AEGIS engine mapping per control ─────────────────────────────────────
+
+const ENGINE_FOR_CONTROL: Record<string, string> = {
+  // SOC 2 — CC6 Logical Access → Access Sentinel
+  'CC6.1': 'ACCESS_SENTINEL', 'CC6.2': 'ACCESS_SENTINEL', 'CC6.3': 'ACCESS_SENTINEL',
+  'CC6.6': 'ACCESS_SENTINEL', 'CC6.7': 'ACCESS_SENTINEL',
+  // SOC 2 — CC7 System Operations → Governance Ops
+  'CC7.1': 'GOVERNANCE_OPS',  'CC7.2': 'GOVERNANCE_OPS', 'CC7.4': 'GOVERNANCE_OPS',
+  // SOC 2 — CC8 Change Management → Policy
+  'CC8.1': 'POLICY',
+  // SOC 2 — CC9 Risk → Risk Intelligence
+  'CC9.1': 'RISK_INTELLIGENCE', 'CC9.2': 'RISK_INTELLIGENCE',
+  // Availability → Governance Ops
+  'A1.1': 'GOVERNANCE_OPS', 'A1.2': 'GOVERNANCE_OPS',
+  // ISO 27001 — Asset Management → Intelligence Registry
+  'A5.1': 'AUDIT_LEDGER',  'A5.2': 'AUDIT_LEDGER',
+  'A6.1': 'AUDIT_LEDGER',  'A6.2': 'AUDIT_LEDGER',
+  'A8.1': 'INTELLIGENCE_REGISTRY', 'A8.2': 'INTELLIGENCE_REGISTRY', 'A8.3': 'INTELLIGENCE_REGISTRY',
+  // ISO 27001 — Access Control → Access Sentinel
+  'A9.1': 'ACCESS_SENTINEL', 'A9.2': 'ACCESS_SENTINEL',
+  'A9.3': 'ACCESS_SENTINEL', 'A9.4': 'ACCESS_SENTINEL',
+  // ISO 27001 — Operations → Governance Ops
+  'A12.1': 'GOVERNANCE_OPS', 'A12.2': 'GOVERNANCE_OPS',
+  'A12.4': 'AUDIT_LEDGER',
+  // ISO 27001 — Compliance → Trust Compliance
+  'A18.1': 'TRUST_COMPLIANCE', 'A18.2': 'TRUST_COMPLIANCE',
+  // NIST — Identify/Protect → Autonomy Boundary
+  'ID.AM': 'INTELLIGENCE_REGISTRY', 'PR.AC': 'ACCESS_SENTINEL',
+  'PR.DS': 'EGRESS_CONTROL',        'PR.IP': 'POLICY',
+  // NIST — Detect/Respond/Recover → Risk Intelligence
+  'DE.AE': 'RISK_INTELLIGENCE',     'RS.RP': 'RISK_INTELLIGENCE', 'RC.RP': 'GOVERNANCE_OPS',
+}
+
+function aegisVerdictToStatus(verdict: string | undefined): ControlStatus | null {
+  if (!verdict) return null
+  if (verdict === 'CRITICAL') return 'FAIL'
+  if (verdict === 'WARN')     return 'WARN'
+  if (verdict === 'PASS' || verdict === 'INFO') return 'PASS'
+  return null
+}
+
 function StatusIcon({ status }: { status: ControlStatus }) {
   if (status === 'PASS') return <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
   if (status === 'WARN') return <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
   return <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
 }
 
-function ControlRow({ control }: { control: ComplianceControl }) {
-  const [open, setOpen] = useState(control.status === 'FAIL')
-  const sc = STATUS_COLOR[control.status]
+function ControlRow({ control, liveStatus, liveCheckedAt, engineId }: {
+  control: ComplianceControl
+  liveStatus?: ControlStatus | null
+  liveCheckedAt?: string
+  engineId?: string
+}) {
+  const effectiveStatus = liveStatus ?? control.status
+  const [open, setOpen] = useState(effectiveStatus === 'FAIL')
+  const sc = STATUS_COLOR[effectiveStatus]
 
   return (
     <div className="rounded-xl overflow-hidden transition-all"
       style={{
-        background: '#0d1117',
-        border: `1px solid ${control.status === 'FAIL' ? '#e2445c30' : '#2E2854'}`,
+        background: 'var(--os-card)',
+        border: `1px solid ${effectiveStatus === 'FAIL' ? '#e2445c30' : 'var(--os-border)'}`,
         borderLeft: `3px solid ${sc}`,
       }}>
       <div className="p-4">
         <div className="flex items-start gap-3">
-          <StatusIcon status={control.status} />
+          <StatusIcon status={effectiveStatus} />
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <span className="text-[10px] font-black text-slate-300 font-mono">{control.criterion}</span>
+                  <span className="text-[10px] font-black text-[var(--os-text-1)] font-mono">{control.criterion}</span>
                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded"
                     style={{ color: FRAMEWORK_COLOR[control.framework], background: `${FRAMEWORK_COLOR[control.framework]}14`, border: `1px solid ${FRAMEWORK_COLOR[control.framework]}25` }}>
                     {control.framework}
                   </span>
-                  <span className="text-[9px] text-slate-600">{control.category}</span>
+                  <span className="text-[9px] text-[var(--os-text-2)]">{control.category}</span>
                   {control.issueRef && (
                     <span className="text-[9px] font-bold px-1.5 py-0.5 rounded"
                       style={{ background: 'rgba(226,68,92,0.1)', color: '#e2445c', border: '1px solid rgba(226,68,92,0.25)' }}>
@@ -468,38 +517,48 @@ function ControlRow({ control }: { control: ComplianceControl }) {
                     </span>
                   )}
                 </div>
-                <p className="text-[13px] font-semibold text-white leading-tight">{control.description}</p>
+                <p className="text-[13px] font-semibold text-[var(--os-text-1)] leading-tight">{control.description}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
+                {liveStatus && (
+                  <span className="flex items-center gap-1 text-[9px] font-bold text-green-400 bg-green-500/10 border border-green-500/20 px-1.5 py-0.5 rounded-full">
+                    <Radio className="w-2 h-2" /> LIVE
+                  </span>
+                )}
                 <span className="text-[10px] font-bold px-2 py-1 rounded-lg"
                   style={{ color: sc, background: `${sc}10`, border: `1px solid ${sc}30` }}>
-                  {control.status}
+                  {effectiveStatus}
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-1.5 mt-1.5">
-              <Clock className="w-2.5 h-2.5 text-slate-600" />
-              <span className="text-[10px] text-slate-600">Last checked {control.lastChecked}</span>
+              <Clock className="w-2.5 h-2.5 text-[var(--os-text-2)]" />
+              <span className="text-[10px] text-[var(--os-text-2)]">
+                {liveCheckedAt
+                  ? <>AEGIS {engineId} · {new Date(liveCheckedAt).toLocaleString()}</>
+                  : <>Last checked {control.lastChecked}</>
+                }
+              </span>
             </div>
 
             {control.kimmpSignal && (
               <div className="mt-2.5 flex items-start gap-2 px-3 py-2 rounded-lg"
                 style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.15)' }}>
                 <Brain className="w-3 h-3 text-purple-400 flex-shrink-0 mt-0.5" />
-                <p className="text-[11px] text-slate-300 leading-relaxed">{control.kimmpSignal}</p>
+                <p className="text-[11px] text-[var(--os-text-1)] leading-relaxed">{control.kimmpSignal}</p>
               </div>
             )}
 
             {open && (
-              <div className="mt-2.5 pt-2.5" style={{ borderTop: '1px solid #1f2a4a' }}>
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Evidence</p>
-                <p className="text-xs text-slate-400 leading-relaxed">{control.evidence}</p>
+              <div className="mt-2.5 pt-2.5" style={{ borderTop: '1px solid var(--os-border)' }}>
+                <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider mb-1">Evidence</p>
+                <p className="text-xs text-[var(--os-text-2)] leading-relaxed">{control.evidence}</p>
               </div>
             )}
 
             <button onClick={() => setOpen(o => !o)}
-              className="mt-2 flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-violet-400 transition-colors">
+              className="mt-2 flex items-center gap-1 text-xs font-medium text-[var(--os-text-2)] hover:text-violet-400 transition-colors">
               {open ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               {open ? 'Hide evidence' : 'View evidence'}
             </button>
@@ -515,11 +574,11 @@ function BreachReadinessScore() {
   const color = score >= 80 ? '#00c875' : score >= 60 ? '#fdab3d' : '#e2445c'
 
   return (
-    <div className="rounded-xl p-5" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
+    <div className="rounded-xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
       <div className="flex items-start justify-between gap-4 mb-4">
         <div>
-          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">KIMMP Breach Readiness Score</p>
-          <p className="text-[11px] text-slate-500 leading-relaxed max-w-xs">
+          <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider mb-1">KIMMP Breach Readiness Score</p>
+          <p className="text-[11px] text-[var(--os-text-2)] leading-relaxed max-w-xs">
             If a breach occurred today, how prepared is Kangqore to detect, respond, and recover?
           </p>
         </div>
@@ -530,7 +589,7 @@ function BreachReadinessScore() {
       </div>
 
       {/* Score bar */}
-      <div className="h-2 rounded-full mb-4" style={{ background: '#1f2a4a' }}>
+      <div className="h-2 rounded-full mb-4" style={{ background: 'var(--os-border)' }}>
         <div className="h-full rounded-full transition-all" style={{ width: `${score}%`, background: `linear-gradient(90deg, ${color}88, ${color})` }} />
       </div>
 
@@ -540,11 +599,11 @@ function BreachReadinessScore() {
           { label: 'Response',   score: 74, note: 'IRP documented; DR test overdue' },
           { label: 'Recovery',   score: 58, note: 'RPO/RTO untested since H1 2025' },
         ] as const).map(d => (
-          <div key={d.label} className="rounded-lg p-2.5" style={{ background: '#111827', border: '1px solid #1f2a4a' }}>
+          <div key={d.label} className="rounded-lg p-2.5" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
             <p className="text-lg font-bold tabular-nums"
               style={{ color: d.score >= 80 ? '#00c875' : d.score >= 60 ? '#fdab3d' : '#e2445c' }}>{d.score}</p>
-            <p className="text-[10px] font-bold text-slate-400">{d.label}</p>
-            <p className="text-[9px] text-slate-600 mt-0.5 leading-tight">{d.note}</p>
+            <p className="text-[10px] font-bold text-[var(--os-text-2)]">{d.label}</p>
+            <p className="text-[9px] text-[var(--os-text-2)] mt-0.5 leading-tight">{d.note}</p>
           </div>
         ))}
       </div>
@@ -556,15 +615,45 @@ export function AegisCompliancePage() {
   const [frameworkFilter, setFrameworkFilter] = useState<Framework | 'all'>('all')
   const [statusFilter, setStatusFilter] = useState<ControlStatus | 'issues'>('issues')
 
-  const pass = CONTROLS.filter(c => c.status === 'PASS').length
-  const warn = CONTROLS.filter(c => c.status === 'WARN').length
-  const fail = CONTROLS.filter(c => c.status === 'FAIL').length
+  // Live AEGIS engine verdicts
+  const { data: agentSummary } = useQuery({
+    queryKey: ['aegis-agents-summary'],
+    queryFn: () => api.get('/admin/aegis/agents/summary').then(r => r.data),
+    staleTime: 60_000,
+    refetchInterval: 120_000,
+  })
+
+  // Build a map: engineId → { verdict, raisedAt }
+  const engineVerdicts: Record<string, { verdict: string; raisedAt: string }> = {}
+  if (agentSummary?.engines) {
+    for (const e of agentSummary.engines) {
+      if (e.latest) engineVerdicts[e.engine] = e.latest
+    }
+  }
+
+  // Resolve per-control live status
+  function resolveControl(c: ComplianceControl) {
+    const engineId = ENGINE_FOR_CONTROL[c.id]
+    const live = engineId ? engineVerdicts[engineId] : undefined
+    const liveStatus = live ? aegisVerdictToStatus(live.verdict) : null
+    return { liveStatus, liveCheckedAt: live?.raisedAt, engineId }
+  }
+
+  const resolvedControls = CONTROLS.map(c => ({ ...c, ...resolveControl(c) }))
+
+  const pass  = resolvedControls.filter(c => (c.liveStatus ?? c.status) === 'PASS').length
+  const warn  = resolvedControls.filter(c => (c.liveStatus ?? c.status) === 'WARN').length
+  const fail  = resolvedControls.filter(c => (c.liveStatus ?? c.status) === 'FAIL').length
   const total = CONTROLS.length
   const score = Math.round((pass + warn * 0.5) / total * 100)
+  const liveCount = resolvedControls.filter(c => c.liveStatus !== null).length
 
-  const filtered = CONTROLS
+  const filtered = resolvedControls
     .filter(c => frameworkFilter === 'all' || c.framework === frameworkFilter)
-    .filter(c => statusFilter === 'all' || (statusFilter === 'issues' ? c.status !== 'PASS' : c.status === statusFilter))
+    .filter(c => {
+      const s = c.liveStatus ?? c.status
+      return statusFilter === 'all' || (statusFilter === 'issues' ? s !== 'PASS' : s === statusFilter)
+    })
 
   const frameworks: Framework[] = ['SOC 2', 'ISO 27001', 'NIST CSF']
 
@@ -583,10 +672,15 @@ export function AegisCompliancePage() {
       {/* Summary strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="rounded-xl p-4 col-span-2 lg:col-span-1"
-          style={{ background: '#0d1117', border: '1px solid rgba(124,58,237,0.25)' }}>
-          <p className="text-4xl font-black text-white tabular-nums">{score}<span className="text-lg text-slate-600">%</span></p>
+          style={{ background: 'var(--os-card)', border: '1px solid rgba(124,58,237,0.25)' }}>
+          <p className="text-4xl font-black text-[var(--os-text-1)] tabular-nums">{score}<span className="text-lg text-[var(--os-text-2)]">%</span></p>
           <p className="text-[10px] text-purple-400 font-bold mt-0.5">Overall compliance score</p>
-          <p className="text-[9px] text-slate-600 mt-1">{total} controls across 3 frameworks</p>
+          <p className="text-[9px] text-[var(--os-text-2)] mt-1">{total} controls across 3 frameworks</p>
+          {liveCount > 0 && (
+            <p className="text-[9px] text-green-400 mt-0.5 flex items-center gap-1">
+              <Radio className="w-2.5 h-2.5" /> {liveCount} backed by live AEGIS data
+            </p>
+          )}
         </div>
         {([
           { label: 'Passing',  count: pass, color: '#00c875' },
@@ -594,8 +688,8 @@ export function AegisCompliancePage() {
           { label: 'Failing',  count: fail, color: '#e2445c' },
         ] as const).map(s => (
           <div key={s.label} className="rounded-xl p-4"
-            style={{ background: '#0d1117', border: `1px solid ${s.color}20` }}>
-            <p className="text-3xl font-bold text-white tabular-nums">{s.count}</p>
+            style={{ background: 'var(--os-card)', border: `1px solid ${s.color}20` }}>
+            <p className="text-3xl font-bold text-[var(--os-text-1)] tabular-nums">{s.count}</p>
             <p className="text-[10px] mt-0.5" style={{ color: s.color }}>{s.label}</p>
           </div>
         ))}
@@ -608,10 +702,10 @@ export function AegisCompliancePage() {
         </div>
 
         {/* Audit evidence export */}
-        <div className="rounded-xl p-5 flex flex-col gap-3" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
+        <div className="rounded-xl p-5 flex flex-col gap-3" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
           <div>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Audit Evidence Package</p>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
+            <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider mb-1">Audit Evidence Package</p>
+            <p className="text-[11px] text-[var(--os-text-2)] leading-relaxed">
               KIMMP compiles all logs, access records, policy docs, and change history into a regulator-ready export.
             </p>
           </div>
@@ -623,8 +717,8 @@ export function AegisCompliancePage() {
               { label: 'Agent audit trail', count: '80 agents'     },
             ] as const).map(r => (
               <div key={r.label} className="flex items-center justify-between text-[11px]">
-                <span className="text-slate-500">{r.label}</span>
-                <span className="text-slate-300 font-semibold tabular-nums">{r.count}</span>
+                <span className="text-[var(--os-text-2)]">{r.label}</span>
+                <span className="text-[var(--os-text-1)] font-semibold tabular-nums">{r.count}</span>
               </div>
             ))}
           </div>
@@ -633,7 +727,7 @@ export function AegisCompliancePage() {
             <Download className="w-3.5 h-3.5" />
             Export Audit Package
           </button>
-          <p className="text-[9px] text-slate-600 text-center">Formatted for Big Four auditor review</p>
+          <p className="text-[9px] text-[var(--os-text-2)] text-center">Formatted for Big Four auditor review</p>
         </div>
       </div>
 
@@ -642,9 +736,9 @@ export function AegisCompliancePage() {
         <button onClick={() => setStatusFilter('issues')}
           className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
           style={{
-            background: statusFilter === 'issues' ? 'rgba(226,68,92,0.1)' : '#0d1117',
-            border: `1px solid ${statusFilter === 'issues' ? 'rgba(226,68,92,0.3)' : '#2E2854'}`,
-            color: statusFilter === 'issues' ? '#e2445c' : '#64748b',
+            background: statusFilter === 'issues' ? 'rgba(226,68,92,0.1)' : 'var(--os-card)',
+            border: `1px solid ${statusFilter === 'issues' ? 'rgba(226,68,92,0.3)' : 'var(--os-border)'}`,
+            color: statusFilter === 'issues' ? '#e2445c' : 'var(--os-text-2)',
           }}>
           Issues only ({warn + fail})
         </button>
@@ -652,21 +746,21 @@ export function AegisCompliancePage() {
           <button key={s} onClick={() => setStatusFilter(s)}
             className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
             style={{
-              background: statusFilter === s ? `${STATUS_COLOR[s as ControlStatus] ?? 'rgba(100,116,139'}0.1)` : '#0d1117',
-              border: `1px solid ${statusFilter === s ? `${STATUS_COLOR[s as ControlStatus] ?? 'rgba(100,116,139'}0.3)` : '#2E2854'}`,
-              color: statusFilter === s ? (s === 'all' ? '#a78bfa' : STATUS_COLOR[s as ControlStatus]) : '#64748b',
+              background: statusFilter === s ? `${STATUS_COLOR[s as ControlStatus] ?? 'rgba(100,116,139'}0.1)` : 'var(--os-card)',
+              border: `1px solid ${statusFilter === s ? `${STATUS_COLOR[s as ControlStatus] ?? 'rgba(100,116,139'}0.3)` : 'var(--os-border)'}`,
+              color: statusFilter === s ? (s === 'all' ? '#a78bfa' : STATUS_COLOR[s as ControlStatus]) : 'var(--os-text-2)',
             }}>
             {s === 'all' ? 'All' : s}
           </button>
         ))}
-        <div className="w-px bg-[#2E2854]" />
+        <div className="w-px bg-[var(--os-border)]" />
         {frameworks.map(f => (
           <button key={f} onClick={() => setFrameworkFilter(frameworkFilter === f ? 'all' : f)}
             className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
             style={{
-              background: frameworkFilter === f ? `${FRAMEWORK_COLOR[f]}14` : '#0d1117',
-              border: `1px solid ${frameworkFilter === f ? `${FRAMEWORK_COLOR[f]}35` : '#2E2854'}`,
-              color: frameworkFilter === f ? FRAMEWORK_COLOR[f] : '#64748b',
+              background: frameworkFilter === f ? `${FRAMEWORK_COLOR[f]}14` : 'var(--os-card)',
+              border: `1px solid ${frameworkFilter === f ? `${FRAMEWORK_COLOR[f]}35` : 'var(--os-border)'}`,
+              color: frameworkFilter === f ? FRAMEWORK_COLOR[f] : 'var(--os-text-2)',
             }}>
             {f}
           </button>
@@ -677,11 +771,19 @@ export function AegisCompliancePage() {
       <div className="space-y-3">
         {filtered.length === 0 ? (
           <div className="py-16 flex flex-col items-center gap-3 rounded-2xl"
-            style={{ background: '#0d1117', border: '1px solid #1f2a4a' }}>
+            style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
             <CheckCircle className="w-8 h-8 text-emerald-500" />
-            <p className="text-sm font-semibold text-slate-400">All controls passing for this filter</p>
+            <p className="text-sm font-semibold text-[var(--os-text-2)]">All controls passing for this filter</p>
           </div>
-        ) : filtered.map(c => <ControlRow key={c.id} control={c} />)}
+        ) : filtered.map(c => (
+          <ControlRow
+            key={c.id}
+            control={c}
+            liveStatus={c.liveStatus}
+            liveCheckedAt={c.liveCheckedAt}
+            engineId={c.engineId}
+          />
+        ))}
       </div>
     </div>
   )

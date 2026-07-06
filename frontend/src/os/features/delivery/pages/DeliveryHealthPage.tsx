@@ -7,7 +7,6 @@ import { Activity, TrendingDown, AlertTriangle, CheckCircle2, ChevronDown } from
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
-import { StatCard } from '@design-system/components/StatCard'
 import { Badge } from '@design-system/components/Badge'
 import { cn } from '@design-system/cn'
 import { useProjectsStore } from '@features/projects/store'
@@ -107,7 +106,7 @@ function ProjectRadarCard({ project }: { project: Project }) {
             <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: project.pillarColor }} />
             <h3 className="text-sm font-semibold text-white truncate">{project.name}</h3>
           </div>
-          <p className="text-xs text-slate-500 truncate">{project.client}</p>
+          <p className="text-xs text-[var(--os-text-2)] truncate">{project.client}</p>
         </div>
         <div className="flex flex-col items-end gap-1 flex-shrink-0">
           <span className="text-2xl font-bold tracking-tight" style={{ color }}>{overall}</span>
@@ -117,10 +116,10 @@ function ProjectRadarCard({ project }: { project: Project }) {
 
       <ResponsiveContainer width="100%" height={200}>
         <RadarChart data={radarData} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
-          <PolarGrid stroke="#e2e8f0" />
+          <PolarGrid stroke="var(--os-border)" />
           <PolarAngleAxis
             dataKey="subject"
-            tick={{ fontSize: 10, fill: '#64748b', fontWeight: 500 }}
+            tick={{ fontSize: 10, fill: 'var(--os-text-2)', fontWeight: 500 }}
           />
           <Radar
             name="Health"
@@ -141,7 +140,7 @@ function ProjectRadarCard({ project }: { project: Project }) {
       <div className="grid grid-cols-3 gap-2">
         {(Object.keys(health) as (keyof HealthDimensions)[]).map(k => (
           <div key={k} className="text-center">
-            <div className="text-[11px] text-slate-500 mb-0.5 capitalize">{DIMENSION_LABELS[k]}</div>
+            <div className="text-[11px] text-[var(--os-text-2)] mb-0.5 capitalize">{DIMENSION_LABELS[k]}</div>
             <div
               className="text-xs font-bold"
               style={{ color: scoreColor(health[k]) }}
@@ -174,43 +173,34 @@ export function DeliveryHealthPage() {
   const openRisks      = risks.filter(r => r.status === 'OPEN' || r.status === 'ESCALATED').length
   const escalated      = risks.filter(r => r.status === 'ESCALATED').length
 
+  const healthColor = (score: number) =>
+    score >= 78 ? '#00c875' : score >= 55 ? '#fdab3d' : '#e2445c'
+
   return (
     <div className="space-y-6">
       <KIMMPSignalBar module="Delivery" />
 
       <div>
-        <h2 className="text-xl font-bold text-white">Delivery Health</h2>
-        <p className="text-sm text-slate-500 mt-0.5">
+        <h2 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Delivery Health</h2>
+        <p className="text-sm mt-0.5" style={{ color: 'var(--os-text-2)' }}>
           {activeProjects.length} active projects · 6-dimension health across schedule, budget, quality, team, client & tech
         </p>
       </div>
 
       {/* Portfolio KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          label="Avg Portfolio Health"
-          value={`${avgHealth}/100`}
-          icon={<Activity className="w-5 h-5" />}
-          iconColor={avgHealth >= 78 ? 'bg-green-100 text-green-600' : avgHealth >= 55 ? 'bg-amber-100 text-amber-600' : 'bg-red-100 text-red-600'}
-        />
-        <StatCard
-          label="At Risk"
-          value={atRisk}
-          icon={<AlertTriangle className="w-5 h-5" />}
-          iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'}
-        />
-        <StatCard
-          label="Critical"
-          value={critical}
-          icon={<TrendingDown className="w-5 h-5" />}
-          iconColor={critical > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'}
-        />
-        <StatCard
-          label="Open Risks"
-          value={openRisks}
-          icon={<CheckCircle2 className="w-5 h-5" />}
-          iconColor={escalated > 0 ? 'bg-red-100 text-red-600' : openRisks > 0 ? 'bg-amber-100 text-amber-600' : 'bg-green-100 text-green-600'}
-        />
+        {[
+          { label: 'Avg Portfolio Health', value: `${avgHealth}/100`, bg: 'linear-gradient(135deg,#2564ea 0%,#4ab6d4 100%)', glow: '#2564ea' },
+          { label: 'At Risk',    value: atRisk,   bg: atRisk > 0 ? 'linear-gradient(135deg,#fdab3d 0%,#f59e0b 100%)' : 'linear-gradient(135deg,#00c875 0%,#00a86b 100%)', glow: atRisk > 0 ? '#fdab3d' : '#00c875' },
+          { label: 'Critical',   value: critical, bg: critical > 0 ? 'linear-gradient(135deg,#e2445c 0%,#c0392b 100%)' : 'linear-gradient(135deg,#00c875 0%,#00a86b 100%)', glow: critical > 0 ? '#e2445c' : '#00c875' },
+          { label: 'Open Risks', value: openRisks, bg: openRisks > 0 ? 'linear-gradient(135deg,#fdab3d 0%,#f59e0b 100%)' : 'linear-gradient(135deg,#64748b 0%,#475569 100%)', glow: openRisks > 0 ? '#fdab3d' : '#64748b' },
+        ].map(stat => (
+          <div key={stat.label} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: stat.bg, boxShadow: `0 4px 20px ${stat.glow}40` }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.30) 0%, transparent 60%)' }} />
+            <p className="relative text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{stat.label}</p>
+            <p className="relative text-3xl font-black tracking-tight" style={{ color: '#ffffff' }}>{stat.value}</p>
+          </div>
+        ))}
       </div>
 
       {/* Health bar summary */}
@@ -221,23 +211,15 @@ export function DeliveryHealthPage() {
             .sort((a, b) => a.score - b.score)
             .map(({ p, score }) => (
               <div key={p.id} className="flex items-center gap-3">
-                <div
-                  className="w-2 h-2 rounded-full flex-shrink-0"
-                  style={{ background: p.pillarColor }}
-                />
-                <span className="text-xs text-slate-500 w-40 truncate">{p.name}</span>
-                <div className="flex-1 h-2 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full overflow-hidden">
+                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: p.pillarColor }} />
+                <span className="text-xs w-40 truncate" style={{ color: 'var(--os-text-2)' }}>{p.name}</span>
+                <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
                   <div
                     className="h-full rounded-full transition-all duration-500"
-                    style={{ width: `${score}%`, background: scoreColor(score) }}
+                    style={{ width: `${score}%`, background: healthColor(score) }}
                   />
                 </div>
-                <span
-                  className="text-xs font-bold w-8 text-right"
-                  style={{ color: scoreColor(score) }}
-                >
-                  {score}
-                </span>
+                <span className="text-xs font-bold w-8 text-right" style={{ color: healthColor(score) }}>{score}</span>
               </div>
             ))}
         </div>
@@ -246,8 +228,8 @@ export function DeliveryHealthPage() {
       {/* Radar grid */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <p className="text-sm font-semibold text-slate-300">Project deep-dive</p>
-          <p className="text-xs text-slate-500">Click dimensions for detail</p>
+          <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>Project deep-dive</p>
+          <p className="text-xs" style={{ color: 'var(--os-text-2)' }}>6-dimension radar per project</p>
         </div>
         <StaggerList className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           {displayed.map(p => <StaggerItem key={p.id}><ProjectRadarCard project={p} /></StaggerItem>)}
@@ -255,9 +237,8 @@ export function DeliveryHealthPage() {
         {activeProjects.length > 4 && (
           <button
             onClick={() => setShowAll(v => !v)}
-            className={cn(
-              'mt-3 flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-200 transition-colors mx-auto',
-            )}
+            className={cn('mt-3 flex items-center gap-1.5 text-xs transition-colors mx-auto')}
+            style={{ color: 'var(--os-text-2)' }}
           >
             <ChevronDown className={cn('w-3.5 h-3.5 transition-transform', showAll && 'rotate-180')} />
             {showAll ? 'Show less' : `Show ${activeProjects.length - 4} more projects`}

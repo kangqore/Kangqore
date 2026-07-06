@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Provide executive governance summaries — direct, no fluff, 2 sentences.'
 
 export async function runWorkflowAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start  = Date.now()
@@ -13,6 +16,8 @@ export async function runWorkflowAgent(ctx: AgentContext): Promise<AegisAgentRes
   ])
 
   const verdict = criticalCount > 5 ? 'WARN' : 'INFO'
+
+  const llmSummary = await callLLM(SYSTEM, `AEGIS Workflow (7d): ${totalRuns} agent runs — ${criticalCount} CRITICAL, ${warnCount} WARN. Policy violations: ${totalViolations}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'govops.workflow',

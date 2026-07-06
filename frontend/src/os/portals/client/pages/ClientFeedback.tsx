@@ -5,18 +5,19 @@
 import { useState, useEffect } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Send, CheckCircle2, Star } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { api, isDemo } from '@lib/api'
 import { useClientFeedback } from '../useClientData'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
-const CARD  = '#0d1117'
-const RAISE = '#121d30'
-const EDGE  = '#1e2b40'
+const CARD  = 'var(--os-card)'
+const RAISE = 'var(--os-surface)'
+const EDGE  = 'var(--os-border)'
 const GREEN  = '#00c875'
 const AMBER  = '#fdab3d'
 const RED    = '#e2445c'
-const BLUE   = '#2564ea'
+const BLUE   = '#579bfc'
 const EASE   = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
 let _inj = false
@@ -72,8 +73,8 @@ function NpsBtn({ score, selected, onSelect }: { score: number; selected: boolea
     <button onClick={onSelect} style={{
       width: 40, height: 40, borderRadius: 10, flexShrink: 0,
       fontSize: 13, fontWeight: 700, cursor: 'pointer',
-      background: selected ? color : `${color}12`,
-      border: `1px solid ${selected ? color : `${color}30`}`,
+      background: selected ? color : 'var(--os-surface)',
+      border: `1px solid ${selected ? color : 'var(--os-border)'}`,
       color: selected ? '#fff' : color,
       transform: selected ? 'scale(1.1)' : 'scale(1)',
       boxShadow: selected ? `0 0 14px ${color}50` : 'none',
@@ -97,7 +98,7 @@ function ScoreSummary({ avg, count }: { avg: number; count: number }) {
       borderRadius: 20, padding: '24px 28px',
       background: `linear-gradient(145deg, ${RAISE} 0%, ${CARD} 70%)`,
       border: `1px solid ${EDGE}`,
-      boxShadow: `inset 0 1px 0 rgba(13,17,23,0.4)`,
+      boxShadow: `0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(37,100,234,0.06)`,
       display: 'flex', alignItems: 'center', gap: 32,
       position: 'relative', overflow: 'hidden',
     }}>
@@ -111,7 +112,7 @@ function ScoreSummary({ avg, count }: { avg: number; count: number }) {
         <div style={{ fontSize: 56, fontWeight: 900, color, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
           {avg.toFixed(1)}
         </div>
-        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', marginTop: 6 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginTop: 6 }}>
           Your NPS
         </div>
       </div>
@@ -129,10 +130,10 @@ function ScoreSummary({ avg, count }: { avg: number; count: number }) {
           <Star style={{ width: 11, height: 11, color }} />
           <span style={{ fontSize: 11, fontWeight: 700, color }}>{label}</span>
         </div>
-        <p style={{ fontSize: 13, color: '#64748b', margin: 0 }}>
-          Based on <strong style={{ color: '#94a3b8' }}>{count}</strong> feedback submission{count !== 1 ? 's' : ''}
+        <p style={{ fontSize: 13, color: 'var(--os-text-2)', margin: 0 }}>
+          Based on <strong style={{ color: 'var(--os-text-2)' }}>{count}</strong> feedback submission{count !== 1 ? 's' : ''}
         </p>
-        <p style={{ fontSize: 11, color: '#334155', margin: '6px 0 0' }}>
+        <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '6px 0 0' }}>
           {avg >= 9 ? 'Your satisfaction is exceptional.' : avg >= 7 ? 'There is room to improve — we\'re listening.' : 'We take this seriously and will address your concerns.'}
         </p>
       </div>
@@ -171,23 +172,24 @@ export function ClientFeedback() {
 
   const labelCss = {
     fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const,
-    color: '#334155', display: 'block', marginBottom: 8,
+    color: 'var(--os-text-2)', display: 'block', marginBottom: 8,
   }
 
   const inputBase: React.CSSProperties = {
     width: '100%', background: RAISE, border: `1px solid ${EDGE}`,
-    borderRadius: 10, padding: '10px 12px', fontSize: 13, color: '#e2e8f0',
+    borderRadius: 10, padding: '10px 12px', fontSize: 13, color: 'var(--os-text-1)',
     outline: 'none', transition: `border-color 0.15s`, resize: 'vertical' as const,
     fontFamily: 'inherit',
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+      <KIMMPSignalBar module="Feedback" />
 
       {/* Header */}
       <div style={anim(0)}>
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>Feedback</h2>
-        <p style={{ fontSize: 13, color: '#475569', margin: '6px 0 0' }}>Your satisfaction matters — share how we're doing</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)', margin: 0 }}>Feedback</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'var(--os-text-2)', margin: '6px 0 0' }}>Your satisfaction matters — share how we're doing</p>
       </div>
 
       {/* Score summary */}
@@ -208,14 +210,14 @@ export function ClientFeedback() {
           }}>
             <CheckCircle2 style={{ width: 24, height: 24, color: GREEN }} />
           </div>
-          <p style={{ fontSize: 16, fontWeight: 700, color: '#f1f5f9', margin: '0 0 8px' }}>Thank you for your feedback!</p>
-          <p style={{ fontSize: 13, color: '#475569', margin: '0 0 24px' }}>We read every response and use it to improve.</p>
+          <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 8px' }}>Thank you for your feedback!</p>
+          <p style={{ fontSize: 13, color: 'var(--os-text-2)', margin: '0 0 24px' }}>We read every response and use it to improve.</p>
           <button
             onClick={() => { setSubmitted(false); setNps(null); setComment('') }}
             style={{
               padding: '9px 20px', borderRadius: 10,
               background: RAISE, border: `1px solid ${EDGE}`,
-              color: '#94a3b8', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              color: 'var(--os-text-2)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
             }}>
             Submit another
           </button>
@@ -227,8 +229,8 @@ export function ClientFeedback() {
           background: CARD, border: `1px solid ${EDGE}`,
           boxShadow: `inset 0 1px 0 rgba(255,255,255,0.03)`,
         }}>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: '#f1f5f9', margin: '0 0 6px' }}>Share your feedback</h3>
-          <p style={{ fontSize: 12, color: '#475569', margin: '0 0 24px' }}>How likely are you to recommend Kangqore to a colleague?</p>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 6px' }}>Share your feedback</h3>
+          <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: '0 0 24px' }}>How likely are you to recommend Kangqore to a colleague?</p>
 
           {/* Project */}
           <div style={{ marginBottom: 24 }}>
@@ -246,7 +248,7 @@ export function ClientFeedback() {
           {/* NPS scale */}
           <div style={{ marginBottom: 8 }}>
             <label style={labelCss}>
-              How likely are you to recommend us? <span style={{ color: '#334155', fontWeight: 500 }}>(0 = not likely · 10 = extremely likely)</span>
+              How likely are you to recommend us? <span style={{ color: 'var(--os-text-2)', fontWeight: 500 }}>(0 = not likely · 10 = extremely likely)</span>
             </label>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {Array.from({ length: 11 }, (_, i) => (
@@ -254,8 +256,8 @@ export function ClientFeedback() {
               ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
-              <span style={{ fontSize: 10, color: '#334155' }}>Not likely</span>
-              <span style={{ fontSize: 10, color: '#334155' }}>Extremely likely</span>
+              <span style={{ fontSize: 10, color: 'var(--os-text-2)' }}>Not likely</span>
+              <span style={{ fontSize: 10, color: 'var(--os-text-2)' }}>Extremely likely</span>
             </div>
           </div>
 
@@ -281,7 +283,7 @@ export function ClientFeedback() {
                 </div>
                 <div>
                   <span style={{ fontSize: 11, fontWeight: 700, color, letterSpacing: '0.04em' }}>{label}</span>
-                  <p style={{ fontSize: 12, color: '#64748b', margin: '2px 0 0' }}>{description}</p>
+                  <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: '2px 0 0' }}>{description}</p>
                 </div>
               </div>
             )
@@ -289,7 +291,7 @@ export function ClientFeedback() {
 
           {/* Comment */}
           <div style={{ marginBottom: 24 }}>
-            <label style={labelCss}>What's one thing we could do better? <span style={{ color: '#334155', fontWeight: 500 }}>(optional)</span></label>
+            <label style={labelCss}>What's one thing we could do better? <span style={{ color: 'var(--os-text-2)', fontWeight: 500 }}>(optional)</span></label>
             <textarea
               value={comment}
               onChange={e => setComment(e.target.value)}
@@ -310,7 +312,7 @@ export function ClientFeedback() {
                 display: 'flex', alignItems: 'center', gap: 8,
                 padding: '10px 20px', borderRadius: 10, border: 'none',
                 background: nps === null ? RAISE : BLUE,
-                color: nps === null ? '#334155' : '#fff',
+                color: nps === null ? 'var(--os-text-2)' : '#fff',
                 fontSize: 13, fontWeight: 600,
                 cursor: nps === null ? 'not-allowed' : 'pointer',
                 boxShadow: nps !== null ? `0 4px 14px ${BLUE}40` : 'none',
@@ -326,7 +328,7 @@ export function ClientFeedback() {
       {/* History */}
       {feedbacks.length > 0 && (
         <div style={anim(160)}>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', margin: '0 0 12px' }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--os-text-2)', margin: '0 0 12px' }}>
             Previous Submissions
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -356,12 +358,12 @@ export function ClientFeedback() {
                         fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 999,
                         color, background: `${color}14`, border: `1px solid ${color}25`,
                       }}>{label}</span>
-                      <span style={{ fontSize: 11, color: '#334155' }}>{f.project?.title}</span>
+                      <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>{f.project?.title}</span>
                     </div>
                     {f.comment && (
-                      <p style={{ fontSize: 13, color: '#64748b', margin: '0 0 6px', lineHeight: 1.6 }}>{f.comment}</p>
+                      <p style={{ fontSize: 13, color: 'var(--os-text-2)', margin: '0 0 6px', lineHeight: 1.6 }}>{f.comment}</p>
                     )}
-                    <p style={{ fontSize: 10, color: '#1e2b40', margin: 0 }}>{fmtDate(f.createdAt)}</p>
+                    <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0 }}>{fmtDate(f.createdAt)}</p>
                   </div>
                 </div>
               )

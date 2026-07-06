@@ -9,7 +9,6 @@ import {
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { InlineSelect } from '@components/InlineSelect'
 import { EditDrawer } from '@components/EditDrawer'
-import { StatCard } from '@design-system/components/StatCard'
 import { Badge } from '@design-system/components/Badge'
 import { Card } from '@design-system/components/Card'
 import { Button } from '@design-system/components/Button'
@@ -111,7 +110,7 @@ function ConsultationDrawer({
         {/* Status */}
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-slate-500 mb-1.5">Status</p>
+            <p className="text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Status</p>
             <InlineSelect
               value={consultation.status}
               options={STATUS_OPTIONS}
@@ -121,8 +120,8 @@ function ConsultationDrawer({
             />
           </div>
           <div className="text-right">
-            <p className="text-xs text-slate-500">Received</p>
-            <p className="text-sm font-medium text-slate-300">{fmtDate(consultation.createdAt)}</p>
+            <p className="text-xs text-[var(--os-text-2)]">Received</p>
+            <p className="text-sm font-medium text-[var(--os-text-1)]">{fmtDate(consultation.createdAt)}</p>
           </div>
         </div>
 
@@ -130,22 +129,22 @@ function ConsultationDrawer({
 
         {/* Contact */}
         <div>
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Contact</p>
+          <p className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-3">Contact</p>
           <div className="space-y-2">
             <div className="flex items-center gap-2.5">
-              <Mail className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+              <Mail className="w-3.5 h-3.5 text-[var(--os-text-2)] flex-shrink-0" />
               <a href={`mailto:${consultation.email}`} className="text-sm text-blue-600 hover:underline">{consultation.email}</a>
             </div>
             {consultation.phone && (
               <div className="flex items-center gap-2.5">
-                <Phone className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
-                <span className="text-sm text-slate-300">{consultation.phone}</span>
+                <Phone className="w-3.5 h-3.5 text-[var(--os-text-2)] flex-shrink-0" />
+                <span className="text-sm text-[var(--os-text-1)]">{consultation.phone}</span>
               </div>
             )}
             {consultation.company && (
               <div className="flex items-center gap-2.5">
-                <Building2 className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
-                <span className="text-sm text-slate-300">{consultation.company}</span>
+                <Building2 className="w-3.5 h-3.5 text-[var(--os-text-2)] flex-shrink-0" />
+                <span className="text-sm text-[var(--os-text-1)]">{consultation.company}</span>
               </div>
             )}
           </div>
@@ -155,18 +154,18 @@ function ConsultationDrawer({
 
         {/* Request */}
         <div>
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Request</p>
+          <p className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-3">Request</p>
           <div className="space-y-2.5">
             {consultation.service && (
               <div>
-                <span className="text-xs text-slate-500">Service</span>
-                <p className="text-sm font-medium text-slate-200">{consultation.service}</p>
+                <span className="text-xs text-[var(--os-text-2)]">Service</span>
+                <p className="text-sm font-medium text-[var(--os-text-1)]">{consultation.service}</p>
               </div>
             )}
             {consultation.topic && (
               <div>
-                <span className="text-xs text-slate-500">Topic</span>
-                <p className="text-sm text-slate-300">{consultation.topic}</p>
+                <span className="text-xs text-[var(--os-text-2)]">Topic</span>
+                <p className="text-sm text-[var(--os-text-1)]">{consultation.topic}</p>
               </div>
             )}
             {consultation.services && consultation.services.length > 1 && (
@@ -178,18 +177,18 @@ function ConsultationDrawer({
             )}
             {consultation.preferredDate && (
               <div className="flex items-center gap-2">
-                <Calendar className="w-3.5 h-3.5 text-slate-500" />
-                <span className="text-xs text-slate-500">Preferred date:</span>
-                <span className="text-xs font-medium text-slate-300">{fmtDate(consultation.preferredDate)}</span>
+                <Calendar className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
+                <span className="text-xs text-[var(--os-text-2)]">Preferred date:</span>
+                <span className="text-xs font-medium text-[var(--os-text-1)]">{fmtDate(consultation.preferredDate)}</span>
               </div>
             )}
             {consultation.message && (
-              <div className="p-3 bg-slate-900 rounded-xl">
+              <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl">
                 <div className="flex items-center gap-1.5 mb-1.5">
-                  <MessageSquare className="w-3 h-3 text-slate-500" />
-                  <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Message</span>
+                  <MessageSquare className="w-3 h-3 text-[var(--os-text-2)]" />
+                  <span className="text-[10px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Message</span>
                 </div>
-                <p className="text-xs text-slate-500 leading-relaxed">{consultation.message}</p>
+                <p className="text-xs text-[var(--os-text-2)] leading-relaxed">{consultation.message}</p>
               </div>
             )}
           </div>
@@ -199,10 +198,10 @@ function ConsultationDrawer({
 
         {/* Scheduling */}
         <div>
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Scheduling</p>
+          <p className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-3">Scheduling</p>
           <div className="space-y-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1.5">Scheduled date & time</label>
+              <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Scheduled date & time</label>
               <Input
                 type="datetime-local"
                 value={scheduledAt}
@@ -210,11 +209,11 @@ function ConsultationDrawer({
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1.5">Meeting mode</label>
+              <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Meeting mode</label>
               <select
                 value={meetingMode}
                 onChange={e => setMeetingMode(e.target.value)}
-                className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                className="w-full border border-[var(--os-border)] rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
               >
                 <option value="">Select…</option>
                 <option value="VIDEO">Video call</option>
@@ -223,7 +222,7 @@ function ConsultationDrawer({
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1.5">Meeting link / location</label>
+              <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Meeting link / location</label>
               <Input
                 placeholder="https://zoom.us/j/…"
                 value={meetingLink}
@@ -243,7 +242,7 @@ function ConsultationDrawer({
 
         {/* Notes */}
         <div>
-          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Internal notes</label>
+          <label className="block text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-2">Internal notes</label>
           <Textarea
             value={notes}
             onChange={e => setNotes(e.target.value)}
@@ -253,8 +252,8 @@ function ConsultationDrawer({
         </div>
 
         {/* Source + timestamps */}
-        <div className="flex items-center gap-4 text-xs text-slate-500 pt-1">
-          <span>Source: <span className="capitalize text-slate-500">{consultation.source}</span></span>
+        <div className="flex items-center gap-4 text-xs text-[var(--os-text-2)] pt-1">
+          <span>Source: <span className="capitalize text-[var(--os-text-2)]">{consultation.source}</span></span>
           {consultation.contactedAt && <span>Contacted: {fmtDate(consultation.contactedAt)}</span>}
         </div>
       </div>
@@ -310,8 +309,9 @@ export function ConsultationsQueue() {
       {/* Header */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <h2 className="text-xl font-bold text-white">Consultations</h2>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <h2 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Consultations</h2>
+          <p className="text-xs text-[var(--os-text-2)] mt-0.5 mb-0.5">Incoming prospect requests — your CRM inbox</p>
+          <p className="text-sm text-[var(--os-text-2)]">
             {stats.total} requests · {stats.pending} pending
             {overdueCount > 0 && (
               <span className="ml-2 inline-flex items-center gap-1 text-amber-600 font-medium">
@@ -324,11 +324,19 @@ export function ConsultationsQueue() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <StatCard label="Total"       value={stats.total}       icon={<MessageSquare className="w-5 h-5" />} iconColor="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300"   />
-        <StatCard label="Pending"     value={stats.pending}     icon={<Clock         className="w-5 h-5" />} iconColor={stats.pending > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'}  />
-        <StatCard label="Contacted"   value={stats.contacted}   icon={<Phone         className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"      />
-        <StatCard label="Scheduled"   value={stats.scheduled + stats.rescheduled} icon={<Calendar className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"    />
-        <StatCard label="Completed"   value={stats.completed}   icon={<Mail          className="w-5 h-5" />} iconColor="bg-purple-100 text-purple-600"  />
+        {[
+          { label: 'Total',     value: stats.total,                          bg: 'linear-gradient(135deg,#2564ea 0%,#579bfc 100%)', glow: '#2564ea' },
+          { label: 'Pending',   value: stats.pending,                        bg: 'linear-gradient(135deg,#fdab3d 0%,#f59e0b 100%)', glow: '#fdab3d' },
+          { label: 'Contacted', value: stats.contacted,                      bg: 'linear-gradient(135deg,#0ea5e9 0%,#38bdf8 100%)', glow: '#0ea5e9' },
+          { label: 'Scheduled', value: stats.scheduled + stats.rescheduled, bg: 'linear-gradient(135deg,#00c875 0%,#00a86b 100%)', glow: '#00c875' },
+          { label: 'Completed', value: stats.completed,                      bg: 'linear-gradient(135deg,#7c3aed 0%,#9d4edd 100%)', glow: '#7c3aed' },
+        ].map(({ label, value, bg, glow }) => (
+          <div key={label} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: bg, boxShadow: `0 4px 20px ${glow}40` }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.28) 0%, transparent 60%)' }} />
+            <p className="relative text-[9px] font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{label}</p>
+            <p className="relative text-2xl font-black tracking-tight" style={{ color: '#ffffff' }}>{value}</p>
+          </div>
+        ))}
       </div>
 
       {/* Filters */}
@@ -347,55 +355,55 @@ export function ConsultationsQueue() {
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                 statusFilter === s
-                  ? 'bg-os-blue text-white'
-                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-blue-300'
+                  ? 'bg-[#579bfc] text-white'
+                  : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
               }`}
             >
               {s === 'ALL' ? 'All' : s.charAt(0) + s.slice(1).toLowerCase()}
             </button>
           ))}
         </div>
-        <span className="ml-auto text-sm text-slate-500">{visible.length} requests</span>
+        <span className="ml-auto text-sm text-[var(--os-text-2)]">{visible.length} requests</span>
       </div>
 
       {/* Table */}
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/10 border-t-white/20 bg-slate-900">
+            <tr className="border-b border-[var(--os-border)] bg-[var(--os-surface-0)]">
               {['Name', 'Company', 'Service / Topic', 'Received', 'Preferred', 'Status', ''].map(h => (
-                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wider">{h}</th>
               ))}
             </tr>
           </thead>
-          <StaggerTableBody className="divide-y divide-[#2E2854]">
+          <StaggerTableBody className="divide-y divide-[var(--os-border)]">
             {visible.map(c => {
               const overdue = isOverdue(c)
               return (
                 <StaggerRow
                   key={c.id}
-                  className="hover:bg-slate-900 transition-colors cursor-pointer group"
+                  className="hover:bg-[var(--os-surface-0)] transition-colors cursor-pointer group"
                   onClick={() => setOpenId(c.id)}
                 >
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#579bfc] to-[#0ea5e9] flex items-center justify-center flex-shrink-0">
                         <span className="text-white text-[10px] font-bold">{c.name.charAt(0)}</span>
                       </div>
                       <div className="min-w-0">
-                        <p className="font-medium text-white truncate">{c.name}</p>
-                        <p className="text-[11px] text-slate-500 truncate">{c.email}</p>
+                        <p className="font-medium text-[var(--os-text-1)] truncate">{c.name}</p>
+                        <p className="text-[11px] text-[var(--os-text-2)] truncate">{c.email}</p>
                       </div>
                       {overdue && <AlertCircle className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />}
                     </div>
                   </td>
-                  <td className="px-4 py-3.5 text-slate-500 text-xs">{c.company ?? '—'}</td>
+                  <td className="px-4 py-3.5 text-[var(--os-text-2)] text-xs">{c.company ?? '—'}</td>
                   <td className="px-4 py-3.5 max-w-[200px]">
-                    <p className="text-xs font-medium text-slate-300 truncate">{c.service ?? '—'}</p>
-                    {c.topic && <p className="text-[11px] text-slate-500 truncate">{c.topic}</p>}
+                    <p className="text-xs font-medium text-[var(--os-text-1)] truncate">{c.service ?? '—'}</p>
+                    {c.topic && <p className="text-[11px] text-[var(--os-text-2)] truncate">{c.topic}</p>}
                   </td>
-                  <td className="px-4 py-3.5 text-xs text-slate-500 whitespace-nowrap">{timeAgo(c.createdAt)}</td>
-                  <td className="px-4 py-3.5 text-xs text-slate-500 whitespace-nowrap">{fmtDate(c.preferredDate)}</td>
+                  <td className="px-4 py-3.5 text-xs text-[var(--os-text-2)] whitespace-nowrap">{timeAgo(c.createdAt)}</td>
+                  <td className="px-4 py-3.5 text-xs text-[var(--os-text-2)] whitespace-nowrap">{fmtDate(c.preferredDate)}</td>
                   <td className="px-4 py-3.5" onClick={e => e.stopPropagation()}>
                     <InlineSelect
                       value={c.status}
@@ -406,7 +414,7 @@ export function ConsultationsQueue() {
                   </td>
                   <td className="px-4 py-3.5">
                     {c.scheduledAt && (
-                      <div className="flex items-center gap-1 text-[11px] text-slate-500 whitespace-nowrap">
+                      <div className="flex items-center gap-1 text-[11px] text-[var(--os-text-2)] whitespace-nowrap">
                         <Calendar className="w-3 h-3" />
                         {fmtTime(c.scheduledAt)}
                       </div>

@@ -8,8 +8,7 @@ import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../servic
 // Extended Request interface is no longer strictly needed if we augmented Express.User,
 // but for backward compatibility and specific JWT typing, we can keep it compatible.
 export interface AuthRequest extends Request {
-  // We don't need to redefine user if Express.User is augmented, 
-  // but to match previous specific JWT shape:
+  currentOrgId?: string
 }
 
 /**

@@ -225,6 +225,312 @@ export const servicesData = {
       'How do you handle enterprise compliance and audit requirements?',
       'Book an Agentic AI strategy session',
     ],
+    toolsStack: {
+      title: 'Agentic AI Tools & Technology',
+      subtitle: 'The production-grade toolchain behind every Kangqore agentic AI deployment.',
+      items: [
+        {
+          icon: 'Network',
+          title: 'Orchestration & Frameworks',
+          desc: 'Proprietary blueprints aligned with industry-standard agent frameworks',
+        },
+        {
+          icon: 'Cpu',
+          title: 'Models',
+          desc: 'Leading LLMs with RAG, fine-tuning, and enterprise controls',
+        },
+        {
+          icon: 'Layers',
+          title: 'Integration',
+          desc: 'APIs, microservices, and enterprise connectors',
+        },
+        {
+          icon: 'Shield',
+          title: 'Monitoring',
+          desc: 'Real-time governance, audit, and optimization tools',
+        },
+      ],
+    },
+  },
+
+  'agentic-ai-led-application-modernization': {
+    slug: 'agentic-ai-led-application-modernization',
+    name: 'Agentic AI-led Application Modernization',
+    heroTitle: 'Agentic AI-led Application\nModernization at Machine Speed',
+    heroMaxWidth: 'max-w-[82%]',
+    heroTitleSize: 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]',
+    heroBadge: 'Modernise Faster. Risk Less.',
+    departmentSlug: 'cognition',
+    bannerBrand: 'eQORE™',
+    bannerBrandDesc: 'Our enterprise agentic modernization platform',
+    shortDescription: 'Legacy systems accumulate technical debt, block cloud-native adoption, and make enterprise AI integration structurally impossible. Kangqore\'s agentic AI-led modernization model eliminates that constraint — deploying autonomous agents that assess, refactor, and re-platform legacy applications at machine speed, with enterprise-grade governance at every step.',
+    fullDescription: 'Deploy agentic AI modernization at enterprise scale — intelligent agents that assess, refactor, and re-platform legacy applications with cloud-native precision and human-in-the-loop governance built in.',
+    keyFeatures: ['Legacy Codebase Assessment', 'AI-driven Migration Blueprint', 'Microservices Decomposition', 'Cloud-native Re-platforming', 'Automated Test Generation'],
+    relatedServiceSlugs: ['agentic-ai', 'genai-business-services', 'ai-governance'],
+    featured: true,
+    image: '/images/capabilities/software-engineering.png',
+    hideBadgeStrip: true,
+
+    whatIsTitle: 'Own the',
+    whatIsHighlight: 'Agentic Modernization Era.',
+    whatIsPara2: 'Intelligent agents scan full codebases, extract business logic, and validate cloud-native deployments autonomously — human-in-the-loop governance at every critical milestone. The outcome: measurable technical debt reduction, faster time-to-modern, and a continuous modernization capability that scales across the entire application portfolio.',
+
+    businessMetrics: [
+      { title: 'Faster Time to Market',             desc: 'Agentic AI compresses modernization delivery cycles — getting applications to production faster than any traditional approach can match.',                             value: 'Faster Time to Market',             suffix: '',  metricLabel: '',  icon: 'Zap'        },
+      { title: 'Reduced Technical Debt',            desc: 'AI assessment agents identify, score, and eliminate accumulated debt systematically — reducing long-term maintenance burden across the modernised estate.',           value: 'Reduced Technical Debt',            suffix: '',  metricLabel: '',  icon: 'TrendingUp' },
+      { title: 'Improved Quality',                  desc: 'AI-generated test suites validate every migration milestone at near-complete coverage — quality that manual testing cannot replicate at enterprise scale.',           value: 'Improved Quality',                  suffix: '',  metricLabel: '',  icon: 'Target'     },
+      { title: 'Cost Efficiency & Controlled Risk', desc: 'Lower total modernization cost versus traditional SME-intensive approaches — with built-in AI governance keeping cost, quality, and risk measurable at every step.', value: 'Cost Efficiency & Controlled Risk',  suffix: '',  metricLabel: '',  icon: 'Shield'     },
+    ],
+
+    whyShift: {
+      label: 'Why Agentic Modernization',
+      title: 'Why Shift to Agentic Modernization',
+      items: [
+        'Agentic AI converts resource-intensive modernization programs into autonomous, goal-driven transformation — removing dependency on scarce SME bandwidth.',
+        'Traditional approaches are tool-heavy, manually intensive, and impossible to scale without proportional cost increase.',
+        'Intelligent agents map legacy systems, extract business logic, and execute end-to-end modernization workflows — with governance at every step.',
+        'Unlike one-off programs, agentic modernization learns, adapts, and compounds — turning transformation into a continuous organizational capability.',
+      ],
+    },
+
+    modernizationFramework: {
+      label: 'Our Approach',
+      title: 'Kangqore Application Modernization Framework',
+      steps: [
+        'Establish governance, security controls, and transformation readiness — before a single line of legacy code is touched.',
+        'Deploy agentic automation and intelligence to accelerate assessment, refactoring, and decision velocity at every stage.',
+        'Modernize end-to-end — application, data, infrastructure, and integration — to unlock revenue, operational efficiency, and compound ROI.',
+      ],
+    },
+
+    capabilitiesLabel: 'MODERNIZATION CAPABILITIES',
+    capabilitiesSectionTitle: 'Agentic AI Modernization',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesTheme: 'dark-bento-7',
+    capabilityAreas: [
+      {
+        title: 'Application Modernization',
+        image: '/images/capabilities/app_mod_thick.svg',
+        desc: 'Re-architect legacy applications into modular, API-driven, cloud-native systems — scalable, maintainable, and AI-ready from the ground up.',
+        items: [
+          'Legacy Re-architecture: Decompose monolithic applications into modular, independently deployable microservices.',
+          'API-driven Modernization: Replace legacy integration points with versioned RESTful and GraphQL APIs with full contract documentation.',
+          'Cloud-native Migration: Replatform applications to containerised, Kubernetes-native architectures on AWS, Azure, or GCP.',
+          'UI/UX Modernization: Rebuild legacy interfaces into responsive, accessible, and user-centric front-end experiences.',
+        ],
+      },
+      {
+        title: 'Cloud Modernization',
+        image: '/images/capabilities/cloud_mod_thick.svg',
+        desc: 'Migrate fast and migrate with confidence — enabling cloud-native, hybrid, and multi-cloud environments with lean, scalable, cost-optimised performance.',
+        items: [
+          'Cloud Strategy & Migration: Assess, plan, and execute lift-and-shift or re-platform migrations across AWS, Azure, and GCP.',
+          'Hybrid & Multi-cloud Architecture: Design resilient multi-cloud environments with consistent governance and cost control.',
+          'Cloud Cost Optimisation: Rightsizing, reserved capacity planning, and FinOps disciplines to eliminate cloud waste.',
+          'Cloud-native Enablement: Containerisation, Kubernetes orchestration, and serverless adoption for lean, scalable operations.',
+        ],
+      },
+      {
+        title: 'Data Modernization',
+        image: '/images/capabilities/data_mod_thick.svg',
+        desc: 'Transform disparate, siloed data into a unified, real-time asset — modernising data platforms for better governance and AI-powered insights.',
+        items: [
+          'Data Platform Modernization: Migrate from legacy warehouses to modern lakehouse architectures on cloud-native platforms.',
+          'Real-time Data Pipelines: Build streaming pipelines that deliver sub-second data freshness for operational analytics workloads.',
+          'Data Governance & Quality: Implement cataloguing, lineage tracking, and quality frameworks across unified data estates.',
+          'AI-ready Data Infrastructure: Structure and expose data to power analytics, ML models, and generative AI workloads.',
+        ],
+      },
+      {
+        title: 'Quality Engineering & DevOps',
+        image: '/images/capabilities/quality_mod_thick.svg',
+        desc: 'Accelerate delivery with built-in quality and automation — continuous testing, AI-driven validation, and optimised pipelines for faster, smarter releases.',
+        items: [
+          'Test Automation Modernization: Replace manual testing with AI-assisted frameworks across unit, integration, and regression.',
+          'CI/CD Pipeline Acceleration: Design modern delivery pipelines with automated gates, quality checks, and zero-downtime rollback.',
+          'Shift-left Quality Engineering: Embed validation at every stage of the development lifecycle — not just at release.',
+          'AI-driven Test Generation: Deploy intelligent agents that generate, execute, and triage test cases without manual intervention.',
+        ],
+      },
+      {
+        title: 'Security Modernization',
+        image: '/images/capabilities/security_mod_thick.svg',
+        desc: 'Security baked into every layer of the modernised estate — from identity controls and zero-trust architecture through continuous compliance oversight.',
+        items: [
+          'Security-by-Design: Embed controls, identity management, and threat modelling at every architecture and deployment layer.',
+          'Zero Trust Architecture: Implement identity-first access, microsegmentation, and continuous verification across the estate.',
+          'Compliance Modernization: Map and validate controls against ISO 27001, SOC 2, GDPR, HIPAA, and sector requirements.',
+          'Vulnerability Assessment & Remediation: Automated scanning, penetration testing, and remediation across modernised systems.',
+        ],
+      },
+      {
+        title: 'Integration & API Modernization',
+        image: '/images/capabilities/integration_mod_thick.svg',
+        desc: 'Ensure information flows everywhere — enabling flexible, API-led, event-driven integration layers for real-time, agile business processes at enterprise scale.',
+        items: [
+          'API-led Integration Architecture: Replace point-to-point integrations with reusable, versioned API layers across enterprise systems.',
+          'Event-driven Architecture: Implement Kafka, event mesh, and pub-sub patterns for real-time, decoupled business processes.',
+          'Legacy Middleware Modernisation: Retire legacy ESBs in favour of lightweight, cloud-native integration platforms.',
+          'iPaaS Modernisation: Migrate integration workloads to modern iPaaS platforms with monitoring, governance, and observability.',
+        ],
+      },
+      {
+        title: 'Infrastructure Modernization',
+        image: '/images/capabilities/infrastructure_mod_thick.svg',
+        desc: 'Ensure core infrastructure is scalable, observable, and resilient — improving performance and modernising recovery capabilities for enterprise-grade reliability.',
+        items: [
+          'Infrastructure as Code: Provision repeatable, governed infrastructure with Terraform, Pulumi, or CloudFormation.',
+          'Observability & Monitoring: Deploy unified observability stacks covering metrics, logs, traces, and alerting at full depth.',
+          'Resilience & Disaster Recovery: Modernise recovery architectures with automated failover, RTO/RPO validation, and chaos engineering.',
+          'Performance Engineering: Eliminate bottlenecks through load testing, capacity planning, and continuous optimisation.',
+        ],
+      },
+    ],
+
+    comparisonTable: {
+      colA: 'Traditional Modernization',
+      colB: 'Agentic AI-led Modernization',
+      rows: [
+        { dimension: 'Assessment',  before: 'Months of manual code review and dependency mapping.',                       after: 'AI agents deliver complete codebase analysis and dependency maps in days — not months.' },
+        { dimension: 'Planning',    before: 'Static migration playbook built on incomplete discovery.',                   after: 'Dynamic, AI-generated blueprint continuously updated as agents map more of the estate.' },
+        { dimension: 'Execution',   before: 'Human-driven, error-prone migration with frequent rollbacks.',               after: 'Autonomous execution with exception escalation and governed human-in-the-loop checkpoints.' },
+        { dimension: 'Testing',     before: 'Manual test coverage — slow, incomplete, and high-risk at scale.',           after: 'AI-generated test suites achieve 99% regression coverage before every go-live gate.' },
+        { dimension: 'Outcomes',    before: 'High risk, frequent delays, budget overruns, and missed milestones.',        after: 'Governed delivery with measurable milestones and immutable audit-ready documentation.' },
+      ],
+    },
+
+    architectureNodes: [
+      {
+        title: 'Assessment Agent',
+        icon: 'Search',
+        description: 'Scans, maps, and scores the legacy codebase — quantifying technical debt, identifying migration candidates, and generating the modernization blueprint.',
+        features: ['Legacy Code Scanning', 'Dependency Mapping', 'Tech Debt Scoring'],
+      },
+      {
+        title: 'Migration Planning Engine',
+        icon: 'Target',
+        description: 'Generates a dynamic, prioritised migration roadmap — decomposing monoliths into bounded contexts and sequencing execution by risk and business value.',
+        features: ['Bounded Context Discovery', 'Migration Sequencing', 'Risk Prioritisation'],
+      },
+      {
+        title: 'Execution Agent',
+        icon: 'Zap',
+        description: 'Autonomously executes code transformation, re-platforming, and API modernization — with exception handling and human-in-the-loop escalation at critical gates.',
+        features: ['Code Transformation', 'Cloud Re-platforming', 'API Generation'],
+      },
+      {
+        title: 'Validation & Governance Agent',
+        icon: 'Shield',
+        description: 'Generates test suites, validates performance against baselines, and enforces governance checkpoints — producing immutable audit trails for every migration step.',
+        features: ['Test Suite Generation', 'Performance Validation', 'Audit Trails'],
+      },
+    ],
+
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Core banking modernised. Compliance maintained.',
+        agents: ['Legacy core banking assessment and migration blueprint agent', 'API layer generation and end-to-end testing agent', 'Regulatory compliance validation and audit agent'],
+      },
+      {
+        industry: 'Healthcare',
+        headline: 'Clinical systems modernised without patient data risk.',
+        agents: ['EHR/EMR dependency analysis and migration sequencing agent', 'HIPAA compliance validation and immutable audit agent', 'Integration testing and regression coverage agent'],
+      },
+      {
+        industry: 'Manufacturing',
+        headline: 'ERP modernised and cloud-native without production disruption.',
+        agents: ['ERP dependency mapping and microservices decomposition agent', 'Cloud-native containerisation and deployment agent', 'Performance baseline validation and load testing agent'],
+      },
+      {
+        industry: 'Retail & E-Commerce',
+        headline: 'Monolith decomposed into scalable microservices.',
+        agents: ['E-commerce monolith bounded context discovery agent', 'Microservices scaffold generation and API contract agent', 'Load testing, performance optimisation, and go-live agent'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Policy administration re-platformed at scale.',
+        agents: ['Policy system assessment and technical debt scoring agent', 'Re-platforming execution and API modernisation agent', 'Regression test suite generation and validation agent'],
+      },
+      {
+        industry: 'Telecommunications',
+        headline: 'BSS/OSS modernised without service disruption.',
+        agents: ['BSS/OSS dependency mapping and migration risk assessment agent', 'Cloud-native re-platforming execution and integration agent', 'End-to-end validation and compliance reporting agent'],
+      },
+    ],
+
+    servicePackages: [
+      { name: 'Assessment & Blueprint', description: 'AI-powered legacy codebase analysis, dependency mapping, tech debt scoring, and prioritised modernisation roadmap.', duration: '2–3 weeks', tier: 'Advisory' },
+      { name: 'Pilot Modernization',    description: 'Targeted modernisation of one application, module, or service — from assessment through cloud-native deployment.', duration: '8 weeks', tier: 'Pilot' },
+      { name: 'Program Build',          description: 'End-to-end re-platforming with microservices decomposition, API generation, and full governance architecture across the application portfolio.', duration: '16–24 weeks', tier: 'Platform' },
+      { name: 'Governed Migration',     description: 'Monitored migration rollout with HITL checkpoints, AI-generated test suites, audit trails, and compliance validation at every milestone.', duration: 'Ongoing', tier: 'Managed' },
+      { name: 'Scale & Optimise',       description: 'Continuous modernisation sprints, performance optimisation, and AI capability integration across the modernised estate — so the work compounds.', duration: 'Ongoing', tier: 'Enterprise' },
+    ],
+
+    outcomeCard: {
+      metric: '60%',
+      metricLabel: 'Reduction in modernization timeline',
+      problem: 'A financial services firm faced a 3-year manual migration program for their legacy core banking system — requiring 40+ engineers, fragile manual testing, and continuous rollback risk that blocked two prior attempts.',
+      outcome: 'Kangqore deployed AI assessment agents to map dependencies in days, generated the microservices decomposition blueprint autonomously, and executed re-platforming sprints with 99% automated test coverage — cutting the modernization timeline by 60%.',
+    },
+    outcomeCard2: {
+      metric: '3×',
+      metricLabel: 'Faster assessment than manual code review',
+      problem: 'An insurance group needed a complete technical debt assessment of a 15-year-old policy administration system across 2.3M lines of code — a task that would take a manual team 6+ months and still produce an incomplete picture.',
+      outcome: 'AI assessment agents scanned the full codebase in 11 days, producing a dependency map, tech debt scorecard, and prioritised migration roadmap — enabling the board to commit to modernisation with evidence rather than estimates.',
+    },
+
+    customFAQs: [
+      { q: 'What is Agentic AI-led Application Modernization?', a: 'We don\'t migrate code — we deploy AI operators that understand legacy systems. Kangqore delivers autonomous agentic AI systems that assess entire codebases in days, generate dynamic migration blueprints, execute re-platforming to cloud-native architectures, and validate outcomes at 99% test coverage — compressing multi-year transformation programs into governed, measurable sprints.' },
+      { q: 'How does AI reduce the risk of application modernization?', a: 'Risk in traditional modernization comes from incomplete discovery, manual execution errors, and inadequate testing. Agentic AI eliminates all three. Assessment agents map every dependency before a single line is moved. Execution agents include exception escalation and human-in-the-loop gates so no critical step happens unsupervised. And test generation agents produce comprehensive regression packs that no manual QA team could match in speed or coverage.' },
+      { q: 'Which legacy systems can Agentic AI modernize?', a: 'Any legacy codebase that can be read. Kangqore\'s assessment agents work across COBOL, Java EE, .NET Framework, Oracle Forms, mainframe systems, on-premise ERPs, and custom enterprise platforms. If the code exists, the agents can assess it, plan the migration, and execute the transformation.' },
+      { q: 'How fast can modernization happen with AI agents?', a: 'Assessment in days. Blueprint in a week. First migrated module in under two months. Our AI-led approach compresses the discovery and planning phases that traditionally take 6–12 months into 2–3 weeks — so you\'re executing transformation by the time a traditional team has finished scoping it.' },
+      { q: 'Do you modernize to cloud-native architectures?', a: 'Yes. Kangqore\'s execution agents re-platform to containerised, Kubernetes-native architectures on AWS, Azure, or GCP — building microservices, generating API layers, and producing deployment-ready infrastructure-as-code alongside every migrated service.' },
+      { q: 'Can you modernize without disrupting live business operations?', a: 'Zero-disruption migration is the design constraint, not the aspiration. We execute in parallel tracks — legacy systems stay live while agents build, test, and validate the modern equivalent. Go-live only happens after human-in-the-loop sign-off at every milestone and automated regression packs confirm functional equivalence with the legacy system.' },
+      { q: 'What does the governance model look like during migration?', a: 'Every agent action is logged to an immutable audit trail. Human-in-the-loop checkpoints gate each migration milestone. Compliance validation runs continuously against GDPR, HIPAA, SOX, or sector standards relevant to your estate. You have full visibility at all times — what moved, when, by which agent, validated by whom.' },
+      { q: 'How do you handle large codebases with millions of lines of code?', a: 'Scale is the point. AI assessment agents scan millions of lines in days because they operate in parallel, not sequentially. Dependency analysis, tech debt scoring, and migration sequencing happen simultaneously across the full codebase — giving you a complete modernisation picture faster than a human team could review the first module.' },
+    ],
+
+    customJourney: [
+      { phase: 'ASSESS',     icon: 'Search',     title: 'Legacy Assessment',    desc: 'AI agents scan the full codebase, map dependencies, score technical debt, and identify migration candidates — producing a complete modernisation intelligence report in days.' },
+      { phase: 'BLUEPRINT',  icon: 'Target',     title: 'Migration Blueprint',  desc: 'Generate a dynamic, prioritised migration roadmap — decomposing monoliths into bounded contexts, sequencing by risk and business value, and defining governance architecture.', kangqore: true },
+      { phase: 'EXECUTE',    icon: 'Zap',        title: 'Execute & Migrate',    desc: 'Autonomous agents execute code transformation, microservices decomposition, API generation, and cloud-native re-platforming — with exception escalation and HITL checkpoints.', kangqore: true },
+      { phase: 'VALIDATE',   icon: 'Shield',     title: 'Test & Validate',      desc: 'AI-generated test suites achieve 99% regression coverage. Human sign-off gates every milestone. Compliance validation confirms the migrated estate meets all regulatory requirements.', kangqore: true },
+      { phase: 'SCALE',      icon: 'TrendingUp', title: 'Optimise & Extend',    desc: 'Continuous modernisation sprints across the remaining estate. Performance optimisation, tech debt elimination, and AI capability integration into the modernised architecture.', kangqore: true },
+    ],
+
+    heroStripItems: [
+      'Legacy Assessment',
+      'Codebase Analysis',
+      'Microservices Decomposition',
+      'Cloud-native Migration',
+      'API Modernization',
+      'Automated Test Generation',
+      'Technical Debt Elimination',
+      'Re-platforming Execution',
+    ],
+
+    featureMicros: [
+      'AI agents assess faster than any manual team.',
+      'Zero-disruption migration with governed checkpoints.',
+      '99% automated test coverage before go-live.',
+      'Full audit trail from assessment to deployment.',
+    ],
+
+    trustSignals: [
+      'AI-governed modernisation with human-in-the-loop checkpoints and immutable audit trails',
+      'Enterprise-grade compliance validation against GDPR, HIPAA, SOX, and sector standards',
+      'Proven delivery framework — from blueprint to production in weeks, not years',
+      'Open architecture: AWS, Azure, GCP, and on-premise hybrid targets all supported',
+    ],
+
+    conciergeChips: [
+      'How fast can you assess our legacy codebase?',
+      'How do AI agents handle monolith-to-microservices decomposition?',
+      'What does the governance model look like during migration?',
+      'Can you modernize without disrupting live operations?',
+      'Book an Application Modernization assessment',
+    ],
   },
 
   'ai-cognitive-computing': {

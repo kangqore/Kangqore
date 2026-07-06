@@ -3,6 +3,7 @@ import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
 import { StatCard } from '@design-system/components/StatCard'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { usePartnerProjects } from '../usePartnerData'
 
 const MOCK_PROJECTS = [
@@ -47,16 +48,17 @@ export function PartnerProjects() {
   const completed = projects.filter(p => p.status === 'COMPLETED').length
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6">
+      <KIMMPSignalBar module="Projects" />
       <div>
-        <h2 className="text-xl font-bold text-white">My Projects</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{projects.length} assigned projects</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>My Projects</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>{projects.length} assigned projects</p>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
         <StatCard label="Active"    value={active}    icon={<Briefcase className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
         <StatCard label="Completed" value={completed} icon={<Briefcase className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
-        <StatCard label="Total"     value={projects.length} icon={<Briefcase className="w-5 h-5" />} iconColor="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500" />
+        <StatCard label="Total"     value={projects.length} icon={<Briefcase className="w-5 h-5" />} iconColor="bg-slate-100 text-slate-500" />
       </div>
 
       <div className="space-y-4">
@@ -65,28 +67,28 @@ export function PartnerProjects() {
             <div className="flex items-start gap-3 mb-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h3 className="text-sm font-semibold text-white">{p.title}</h3>
+                  <h3 className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{p.title}</h3>
                   <Badge variant={STATUS_V[p.status] ?? 'neutral'} size="sm">{p.status}</Badge>
                   <Badge variant={HEALTH_V[p.health] ?? 'neutral'} dot size="sm">{p.health}</Badge>
                 </div>
-                <p className="text-xs text-slate-500 line-clamp-1">{p.description}</p>
+                <p className="text-xs text-[var(--os-text-2)] line-clamp-1">{p.description}</p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3 text-xs">
-              <div className="flex items-center gap-1.5 text-slate-500">
-                <Users className="w-3.5 h-3.5 text-slate-500" />
+              <div className="flex items-center gap-1.5 text-[var(--os-text-2)]">
+                <Users className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
                 {p.client.name}
               </div>
-              <div className="flex items-center gap-1.5 text-slate-500">
-                <Calendar className="w-3.5 h-3.5 text-slate-500" />
+              <div className="flex items-center gap-1.5 text-[var(--os-text-2)]">
+                <Calendar className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
                 Due {fmtDate(p.dueDate)}
               </div>
-              <div className="flex items-center gap-1.5 text-slate-500">
-                <DollarSign className="w-3.5 h-3.5 text-slate-500" />
+              <div className="flex items-center gap-1.5 text-[var(--os-text-2)]">
+                <DollarSign className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
                 {fmt(p.spent)} / {fmt(p.budget)}
               </div>
-              <div className="text-slate-500">
+              <div className="text-[var(--os-text-2)]">
                 {p.taskCount} tasks · {p.openIssues} issues
               </div>
             </div>
@@ -95,7 +97,7 @@ export function PartnerProjects() {
               <div className="flex-1">
                 <Progress value={p.progress} size="sm" color={p.health === 'at-risk' ? 'warning' : p.health === 'behind' ? 'danger' : 'brand'} />
               </div>
-              <span className="text-xs font-bold text-slate-300 w-8">{p.progress}%</span>
+              <span className="text-xs font-bold text-[var(--os-text-1)] w-8">{p.progress}%</span>
             </div>
           </Card>
         ))}

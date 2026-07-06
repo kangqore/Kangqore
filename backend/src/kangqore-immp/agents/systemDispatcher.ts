@@ -40,6 +40,7 @@ import { detectContradictions } from './contradictionDetector'
 import { crossIndexBriefings } from './crossSystemFlow'
 import { runDebatePhase } from './debatePhase'
 import { AegisLedger } from '../../kangqore-aegis/aegisLedger.service'
+import { WaandaTrainingPipeline, LocalReasonService } from '../../waanda-training'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
 
@@ -125,7 +126,7 @@ function parseJson<T>(raw: string, fallback: T): T {
 async function reasonPhase(
   system: SystemType,
   ctx: SystemContext,
-): Promise<{ selectedAgents: AgentType[]; reasoning: string; priority: 'CRITICAL' | 'HIGH' | 'NORMAL' }> {
+): Promise<{ selectedAgents: AgentType[]; reasoning: string; priority: 'CRITICAL' | 'HIGH' | 'NORMAL'; _train?: { systemPrompt: string; userPrompt: string; rawCompletion: string } }> {
   const persona    = SYSTEM_PERSONAE[system]
   const agentList  = SYSTEM_AGENTS[system]
 
@@ -145,8 +146,12 @@ async function reasonPhase(
   const ragBlock = ragChunks.status === 'fulfilled' && ragChunks.value.length > 0
     ? SystemRAG.formatRAGBlock(system, ragChunks.value) : undefined
 
+  const reasonSystemPrompt = 'You are an intelligent system making agent selection decisions. Return only valid JSON.'
   const prompt = buildReasonPrompt(persona, ctx, agentList, learningBlock, ragBlock)
-  const raw    = await llmCall(persona.model, 'You are an intelligent system making agent selection decisions. Return only valid JSON.', prompt, 500)
+
+  // Gen 2: try local fine-tuned model first; fall back to Claude if unavailable
+  const localResult = await LocalReasonService.reason(reasonSystemPrompt, prompt)
+  const raw = localResult?.completion ?? await llmCall(persona.model, reasonSystemPrompt, prompt, 500)
 
   const parsed = parseJson(raw, {
     selectedAgents: agentList,
@@ -162,6 +167,7 @@ async function reasonPhase(
     selectedAgents: validAgents.length >= 2 ? validAgents : agentList,
     reasoning:      parsed.reasoning ?? 'Agent selection complete',
     priority:       (['CRITICAL','HIGH','NORMAL'].includes(parsed.priority) ? parsed.priority : 'NORMAL') as 'CRITICAL' | 'HIGH' | 'NORMAL',
+    _train: raw ? { systemPrompt: reasonSystemPrompt, userPrompt: prompt, rawCompletion: raw } : undefined,
   }
 }
 
@@ -205,7 +211,8 @@ async function speakPhase(
   priority: 'CRITICAL' | 'HIGH' | 'NORMAL',
 ): Promise<{
   summary: string; keyFindings: string[]; recommendations: string[];
-  alerts: string[]; loopSignal: string | null; confidence: number
+  alerts: string[]; loopSignal: string | null; confidence: number;
+  _train?: { systemPrompt: string; userPrompt: string; rawCompletion: string }
 }> {
   const persona = SYSTEM_PERSONAE[system]
 
@@ -231,6 +238,7 @@ async function speakPhase(
     alerts:          Array.isArray(parsed.alerts)          ? parsed.alerts          : fallback.alerts,
     loopSignal:      parsed.loopSignal ? String(parsed.loopSignal) : null,
     confidence:      Number(parsed.confidence ?? 70),
+    _train: raw ? { systemPrompt: persona.systemPrompt, userPrompt: prompt, rawCompletion: raw } : undefined,
   }
 }
 
@@ -269,14 +277,14 @@ export class KimmpSystemDispatcher {
     logger.info(`[KIMMP:DISPATCH] ${system} (${persona.model}) activating — trigger: ${ctx.trigger ?? 'manual'}`)
 
     // Phase 1: REASON — system decides which agents to call
-    const { selectedAgents, reasoning, priority } = await reasonPhase(system, ctx)
+    const { selectedAgents, reasoning, priority, _train: reasonTrain } = await reasonPhase(system, ctx)
     logger.info(`[KIMMP:DISPATCH] ${system} selected ${selectedAgents.length} agents: ${selectedAgents.join(', ')} [${priority}]`)
 
     // Phase 2: EXECUTE — selected agents run
     const agentResults = await executePhase(system, selectedAgents, ctx)
 
     // Phase 3: SPEAK — system synthesises in its own voice
-    const speech = await speakPhase(system, ctx, agentResults, priority)
+    const { _train: speakTrain, ...speech } = await speakPhase(system, ctx, agentResults, priority)
 
     // Emit signal
     await SignalLedger.record({
@@ -310,6 +318,26 @@ export class KimmpSystemDispatcher {
     }
 
     const id = await persist(briefing)
+
+    // WAANDA training data capture — fire and forget
+    if (reasonTrain) {
+      WaandaTrainingPipeline.captureReason({
+        system, trigger: ctx.trigger, dispatchId: id, priority,
+        selectedAgents: selectedAgents as string[],
+        systemPrompt:   reasonTrain.systemPrompt,
+        userPrompt:     reasonTrain.userPrompt,
+        completion:     reasonTrain.rawCompletion,
+      })
+    }
+    if (speakTrain) {
+      WaandaTrainingPipeline.captureSpeak({
+        system, trigger: ctx.trigger, dispatchId: id, priority,
+        confidence:   speech.confidence,
+        systemPrompt: speakTrain.systemPrompt,
+        userPrompt:   speakTrain.userPrompt,
+        completion:   speakTrain.rawCompletion,
+      })
+    }
 
     // Record to learning system — fire and forget
     SystemLearning.record({
@@ -396,16 +424,21 @@ export class KimmpSystemDispatcher {
       `=== ${r.persona} [${r.model}] ===\nPriority: ${r.priority}\nSummary: ${r.summary}\nFindings: ${r.keyFindings.join('; ')}\nRecommendations: ${r.recommendations.join('; ')}\nAlerts: ${r.alerts.join('; ') || 'none'}\nLoop signal passed: ${r.loopSignal ?? 'none'}`
     ).join('\n\n')
 
+    const synthesisUserPrompt = `A full LOOPS cascade has completed. All 4 systems have spoken.\n\n${allContext}\n\nAs KIMMP, provide your governing synthesis: HEADLINE, CROSS-SYSTEM PATTERN, TOP 3 ACTIONS for the operator. Be specific. Plain text.`
     let kimmSynthesis = allContext
     if (process.env.ANTHROPIC_API_KEY) {
       try {
-        const raw = await llmCall(
-          'claude-opus-4-8',
-          KIMMP_GOVERN_PROMPT,
-          `A full LOOPS cascade has completed. All 4 systems have spoken.\n\n${allContext}\n\nAs KIMMP, provide your governing synthesis: HEADLINE, CROSS-SYSTEM PATTERN, TOP 3 ACTIONS for the operator. Be specific. Plain text.`,
-          900,
-        )
-        if (raw) kimmSynthesis = raw
+        const raw = await llmCall('claude-opus-4-8', KIMMP_GOVERN_PROMPT, synthesisUserPrompt, 900)
+        if (raw) {
+          kimmSynthesis = raw
+          // Capture KIMMP synthesis as training example (dispatchId links to this loop)
+          WaandaTrainingPipeline.captureSynthesis({
+            systemPrompt: KIMMP_GOVERN_PROMPT,
+            userPrompt:   synthesisUserPrompt,
+            completion:   raw,
+            dispatchId:   `loop-${start}`,
+          })
+        }
       } catch {}
     }
 

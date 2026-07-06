@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { Briefcase, CheckCircle2, AlertTriangle, Clock, Pencil, Trash2 } from 'lucide-react'
+import { Briefcase, Pencil, Trash2 } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { InlineSelect } from '@components/InlineSelect'
 import { EditDrawer } from '@components/EditDrawer'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
-import { StatCard } from '@design-system/components/StatCard'
-import { Progress } from '@design-system/components/Progress'
 import { Avatar, AvatarGroup } from '@design-system/components/Avatar'
 import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
@@ -28,9 +26,6 @@ const HEALTH_OPTIONS: { value: HealthStatus; label: string; variant: 'success' |
   { value: 'completed', label: 'Completed', variant: 'info'    },
 ]
 
-const HEALTH_VARIANT: Record<HealthStatus, 'success' | 'warning' | 'danger' | 'info'> = {
-  'on-track': 'success', 'at-risk': 'warning', behind: 'danger', completed: 'info',
-}
 
 function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: () => void }) {
   const { updateProject } = useProjectsStore()
@@ -74,29 +69,29 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
     >
       <div className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1.5">Project name</label>
+          <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Project name</label>
           <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1.5">Client</label>
+          <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Client</label>
           <Input value={form.client} onChange={e => setForm(f => ({ ...f, client: e.target.value }))} />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1.5">Owner</label>
+          <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Owner</label>
           <Input value={form.owner} onChange={e => setForm(f => ({ ...f, owner: e.target.value }))} />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1.5">Due date</label>
+          <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Due date</label>
           <Input type="date" value={form.endDate} onChange={e => setForm(f => ({ ...f, endDate: e.target.value }))} />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1.5">Budget (₹)</label>
+          <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Budget (₹)</label>
           <Input type="number" value={form.budget} onChange={e => setForm(f => ({ ...f, budget: e.target.value }))} />
         </div>
 
-        <div className="pt-2 border-t border-white/10 border-t-white/20 space-y-3">
+        <div className="pt-2 border-t border-[var(--os-border)] border-t-white/20 space-y-3">
           <div>
-            <label className="block text-xs font-semibold text-slate-500 mb-2">Status</label>
+            <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-2">Status</label>
             <InlineSelect
               value={project.status}
               options={STATUS_OPTIONS}
@@ -105,7 +100,7 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-500 mb-2">Health</label>
+            <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-2">Health</label>
             <InlineSelect
               value={project.health}
               options={HEALTH_OPTIONS}
@@ -121,7 +116,7 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
 }
 
 export function ProjectsOverview() {
-  const { projects, tasks, issues, updateProjectStatus, updateProjectHealth, deleteProject } = useProjectsStore()
+  const { projects, tasks, isLoading, updateProjectStatus, updateProjectHealth, deleteProject } = useProjectsStore()
   const [editingId, setEditingId] = useState<string | null>(null)
   const editingProject = projects.find(p => p.id === editingId)
 
@@ -140,43 +135,76 @@ export function ProjectsOverview() {
     if (!isDemo()) api.delete(`/projects/${id}`)
   }
 
-  const active     = projects.filter(p => p.status === 'active').length
-  const completed  = projects.filter(p => p.status === 'completed').length
-  const atRisk     = projects.filter(p => p.health === 'at-risk' || p.health === 'behind').length
-  const openIssues = issues.filter(i => i.status !== 'done').length
 
   const chartData = projects
     .filter(p => p.status !== 'planned')
     .map(p => ({ name: p.name.split(' ').slice(0, 2).join(' '), progress: p.progress, color: p.pillarColor }))
 
+  const HEALTH_COLOR: Record<HealthStatus, string> = {
+    'on-track': '#00c875', 'at-risk': '#fdab3d', behind: '#e2445c', completed: '#579bfc',
+  }
+  const HEALTH_LABEL: Record<HealthStatus, string> = {
+    'on-track': 'On Track', 'at-risk': 'At Risk', behind: 'Behind', completed: 'Completed',
+  }
+
+  const onTrack = projects.filter(p => p.health === 'on-track').length
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6 animate-pulse">
+        <div className="h-8 w-48 rounded-lg" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-24 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
+          ))}
+        </div>
+        <div className="h-48 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="space-y-3">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-24 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       <KIMMPSignalBar module="Projects" />
       <div>
-        <h2 className="text-xl font-bold text-white">Projects</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{projects.length} projects · {tasks.length} tasks tracked</p>
+        <h2 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Projects</h2>
+        <p className="text-sm mt-0.5" style={{ color: 'var(--os-text-2)' }}>{projects.length} projects · {tasks.length} tasks tracked</p>
       </div>
 
+      {/* 4-stat header */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Active Projects"  value={active}     icon={<Briefcase    className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
-        <StatCard label="Completed"        value={completed}  icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-green-100 text-green-600"   />
-        <StatCard label="At Risk / Behind" value={atRisk}     icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'} />
-        <StatCard label="Open Issues"      value={openIssues} icon={<Clock        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600"     />
+        {[
+          { label: 'Total Projects', value: projects.length,                                              bg: 'linear-gradient(135deg,#2564ea 0%,#4ab6d4 100%)', glow: '#2564ea' },
+          { label: 'On Track',       value: onTrack,                                                      bg: 'linear-gradient(135deg,#00c875 0%,#00a86b 100%)', glow: '#00c875' },
+          { label: 'At Risk',        value: projects.filter(p => p.health === 'at-risk').length,          bg: 'linear-gradient(135deg,#fdab3d 0%,#f59e0b 100%)', glow: '#fdab3d' },
+          { label: 'Behind',         value: projects.filter(p => p.health === 'behind').length,           bg: 'linear-gradient(135deg,#e2445c 0%,#c0392b 100%)', glow: '#e2445c' },
+        ].map(stat => (
+          <div key={stat.label} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: stat.bg, boxShadow: `0 4px 20px ${stat.glow}40` }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.30) 0%, transparent 60%)' }} />
+            <p className="relative text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{stat.label}</p>
+            <p className="relative text-3xl font-black tracking-tight" style={{ color: '#ffffff' }}>{stat.value}</p>
+          </div>
+        ))}
       </div>
 
       <Card>
         <CardHeader><CardTitle>Project Progress</CardTitle></CardHeader>
         <ResponsiveContainer width="100%" height={180}>
           <BarChart data={chartData} layout="vertical" barSize={14}>
-            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#2E2854" />
-            <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
-            <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 11, fill: '#e2e8f0' }} axisLine={false} tickLine={false} />
-            <Tooltip formatter={(v) => [`${v}%`, 'Progress']} contentStyle={{ borderRadius: 12, border: '1px solid #2E2854', background: '#151C2F', color: '#fff', fontSize: 12 }} />
-            <Bar dataKey="progress" radius={[0, 6, 6, 0]} fill="url(#brandGradient)" />
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--os-border)" />
+            <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: 'var(--os-text-2)' }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
+            <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 11, fill: 'var(--os-text-1)' }} axisLine={false} tickLine={false} />
+            <Tooltip formatter={(v) => [`${v}%`, 'Progress']} contentStyle={{ borderRadius: 10, border: '1px solid var(--os-border)', background: 'var(--os-card)', color: 'var(--os-text-1)', fontSize: 12 }} />
+            <Bar dataKey="progress" radius={[0, 6, 6, 0]} fill="url(#brandGradient2)" />
             <defs>
-              <linearGradient id="brandGradient" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#2564ea" />
-                <stop offset="100%" stopColor="#4ab6d4" />
+              <linearGradient id="brandGradient2" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#579bfc" />
+                <stop offset="100%" stopColor="#00c875" />
               </linearGradient>
             </defs>
           </BarChart>
@@ -184,13 +212,25 @@ export function ProjectsOverview() {
       </Card>
 
       <div className="space-y-3">
+        {projects.length === 0 && (
+          <div className="py-16 text-center" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12 }}>
+            <Briefcase className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--os-text-2)' }} />
+            <p className="font-medium" style={{ color: 'var(--os-text-1)' }}>No projects yet</p>
+            <p className="text-sm mt-1" style={{ color: 'var(--os-text-2)' }}>Projects you create will appear here.</p>
+          </div>
+        )}
         {projects.map(p => (
-          <Card key={p.id} className="hover:shadow-md transition-all duration-200 group">
-            <div className="flex items-start gap-4">
-              <div className="w-1 self-stretch rounded-full flex-shrink-0" style={{ background: p.pillarColor }} />
+          <div key={p.id} className="group transition-all duration-200 hover:shadow-md" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-card)' }}>
+            <div className="flex items-start gap-4 p-5">
+              {/* health accent bar */}
+              <div className="w-1 self-stretch rounded-full flex-shrink-0" style={{ background: HEALTH_COLOR[p.health] }} />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h3 className="font-semibold text-white text-sm">{p.name}</h3>
+                  <h3 className="font-semibold text-sm" style={{ color: 'var(--os-text-1)' }}>{p.name}</h3>
+                  {/* health badge */}
+                  <span className="rounded-full text-[11px] font-bold px-2.5 py-0.5 text-white" style={{ background: HEALTH_COLOR[p.health] }}>
+                    {HEALTH_LABEL[p.health]}
+                  </span>
                   <InlineSelect
                     value={p.status}
                     options={STATUS_OPTIONS}
@@ -205,18 +245,21 @@ export function ProjectsOverview() {
                     dot
                   />
                 </div>
-                <p className="text-xs text-slate-500 mb-3 line-clamp-1">{p.description}</p>
-                <div className="flex items-center gap-6 text-xs text-slate-500 mb-3">
-                  <span>Client: <span className="font-medium text-slate-200">{p.client}</span></span>
-                  <span>Due: <span className="font-medium text-slate-200">{new Date(p.endDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span></span>
-                  <span>Budget: <span className="font-medium text-slate-200">₹{(p.spent / 1000).toFixed(0)}k / ₹{(p.budget / 1000).toFixed(0)}k</span></span>
+                <p className="text-xs mb-3 line-clamp-1" style={{ color: 'var(--os-text-2)' }}>{p.description}</p>
+                <div className="flex items-center gap-6 text-xs mb-3" style={{ color: 'var(--os-text-2)' }}>
+                  <span>Client: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{p.client}</span></span>
+                  <span>Due: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{new Date(p.endDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span></span>
+                  <span>Budget: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>₹{(p.spent / 1000).toFixed(0)}k / ₹{(p.budget / 1000).toFixed(0)}k</span></span>
                   <span>{p.taskCount} tasks · {p.openIssues} issues</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="flex-1">
-                    <Progress value={p.progress} size="sm" color={HEALTH_VARIANT[p.health] === 'danger' ? 'danger' : HEALTH_VARIANT[p.health] === 'warning' ? 'warning' : 'brand'} />
+                  <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{ width: `${p.progress}%`, background: HEALTH_COLOR[p.health] }}
+                    />
                   </div>
-                  <span className="text-xs font-semibold text-white w-8">{p.progress}%</span>
+                  <span className="text-xs font-bold w-8" style={{ color: HEALTH_COLOR[p.health] }}>{p.progress}%</span>
                 </div>
               </div>
               <div className="flex flex-col items-end gap-2 flex-shrink-0">
@@ -242,7 +285,7 @@ export function ProjectsOverview() {
                 <AvatarGroup users={p.team.map(n => ({ name: n }))} max={3} size="xs" />
               </div>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
 

@@ -23,7 +23,7 @@ const teamMembers = [
   { name: 'Sneha Gupta',    role: 'Frontend',         status: 'offline', workingOn: 'Last seen 2h ago',                 avatar: 'SG' },
 ]
 
-const STATUS_DOT: Record<string, string> = { online: '#10B981', away: '#F59E0B', offline: '#475569' }
+const STATUS_DOT: Record<string, string> = { online: '#10B981', away: '#F59E0B', offline: 'var(--os-text-2)' }
 
 const kimmpInsight = {
   signal: 'Sprint 6 delivery velocity is 18% above baseline this week. Risk: Ops Centre Sprint 0 has 1 unresolved blocker (entity graph design freeze not confirmed). Recommend: Confirm design freeze today to keep Sprint 0 on track.',
@@ -50,7 +50,7 @@ export function TeamWorkspace() {
           </div>
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-white">My Workspace</h1>
-            <p className="text-slate-500 mt-1 text-sm">Your daily hub — projects, tasks, and team activity at a glance.</p>
+            <p className="text-[var(--os-text-2)] mt-1 text-sm">Your daily hub — projects, tasks, and team activity at a glance.</p>
           </div>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
@@ -68,7 +68,7 @@ export function TeamWorkspace() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{value}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{label}</p>
+              <p className="text-xs text-[var(--os-text-2)] mt-0.5">{label}</p>
             </div>
           </div>
         ))}
@@ -86,29 +86,29 @@ export function TeamWorkspace() {
             <Zap className="w-3.5 h-3.5 text-orange-400/50" />
           </div>
         </div>
-        <p className={`text-sm text-slate-300 mt-3 leading-relaxed ${expandKIMMP ? '' : 'line-clamp-2'}`}>{kimmpInsight.signal}</p>
+        <p className={`text-sm text-[var(--os-text-1)] mt-3 leading-relaxed ${expandKIMMP ? '' : 'line-clamp-2'}`}>{kimmpInsight.signal}</p>
         {!expandKIMMP && <p className="text-xs text-orange-400/60 mt-1">Tap to expand</p>}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* My Projects */}
         <section>
-          <h2 className="text-base font-bold text-slate-200 mb-4">My Projects</h2>
+          <h2 className="text-base font-bold text-[var(--os-text-1)] mb-4">My Projects</h2>
           <div className="space-y-3">
             {myProjects.map(({ name, role, progress, health, sprint, deadline }) => (
               <div key={name} className="p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10">
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <p className="font-semibold text-white text-sm">{name}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{role} · {sprint}</p>
+                    <p className="text-xs text-[var(--os-text-2)] mt-0.5">{role} · {sprint}</p>
                   </div>
-                  <span className="text-xs text-slate-500 flex-shrink-0 ml-2">Due {deadline}</span>
+                  <span className="text-xs text-[var(--os-text-2)] flex-shrink-0 ml-2">Due {deadline}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex-1 h-1.5 rounded-full bg-slate-800 overflow-hidden">
                     <div className="h-full rounded-full transition-all" style={{ width: `${progress}%`, background: health }} />
                   </div>
-                  <span className="text-xs font-bold text-slate-400 w-8 text-right">{progress}%</span>
+                  <span className="text-xs font-bold text-[var(--os-text-2)] w-8 text-right">{progress}%</span>
                 </div>
               </div>
             ))}
@@ -117,7 +117,7 @@ export function TeamWorkspace() {
 
         {/* Team Presence */}
         <section>
-          <h2 className="text-base font-bold text-slate-200 mb-4">Team Now</h2>
+          <h2 className="text-base font-bold text-[var(--os-text-1)] mb-4">Team Now</h2>
           <div className="space-y-2">
             {teamMembers.map(({ name, role, status, workingOn, avatar }) => (
               <div key={name} className="flex items-center gap-3 p-3.5 rounded-xl border border-white/10 bg-slate-900/30 hover:border-white/20 transition-colors">
@@ -127,9 +127,9 @@ export function TeamWorkspace() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-white">{name}</p>
-                  <p className="text-xs text-slate-500 truncate">{workingOn}</p>
+                  <p className="text-xs text-[var(--os-text-2)] truncate">{workingOn}</p>
                 </div>
-                <span className="text-[10px] text-slate-600 flex-shrink-0">{role}</span>
+                <span className="text-[10px] text-[var(--os-text-2)] flex-shrink-0">{role}</span>
               </div>
             ))}
           </div>
@@ -138,17 +138,17 @@ export function TeamWorkspace() {
 
       {/* Recent Activity */}
       <section>
-        <h2 className="text-base font-bold text-slate-200 mb-4">Recent Activity</h2>
+        <h2 className="text-base font-bold text-[var(--os-text-1)] mb-4">Recent Activity</h2>
         <div className="space-y-1">
           {recentActivity.map(({ action, time, actor }) => (
             <div key={action} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-900/30 transition-colors">
               <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
-                <Circle className="w-2 h-2 fill-slate-600 text-slate-600" />
+                <Circle className="w-2 h-2 fill-slate-600 text-[var(--os-text-2)]" />
               </div>
-              <p className="text-sm text-slate-400 flex-1">{action}</p>
+              <p className="text-sm text-[var(--os-text-2)] flex-1">{action}</p>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <span className="text-[10px] font-semibold text-slate-600">{actor}</span>
-                <span className="text-xs text-slate-700">{time}</span>
+                <span className="text-[10px] font-semibold text-[var(--os-text-2)]">{actor}</span>
+                <span className="text-xs text-[var(--os-text-2)]">{time}</span>
               </div>
             </div>
           ))}

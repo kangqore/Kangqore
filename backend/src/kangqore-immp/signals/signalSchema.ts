@@ -18,6 +18,7 @@ export const SIGNAL_SOURCE_MODULES = [
   'kimmp.debate',
   'scout',
   'contact-form',
+  'bids',
 ] as const;
 
 /** The kind of signal — drives which consumer cares about it. */

@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
 import { createError } from '../middleware/errorHandler';
 import { notifyTicketUpdate } from '../services/notificationService';
+import { notifyClient } from '../services/clientEmail.service';
 
 const router = Router();
 
@@ -134,6 +135,16 @@ router.post('/:id/reply', authenticate, async (req: AuthenticatedRequest, res: R
             where: { id },
             data: { updatedAt: new Date(), status: req.user!.role === 'ADMIN' ? 'in_progress' : 'open' }
         });
+
+        // Notify client when admin replies
+        if (req.user!.role === 'ADMIN' && ticket.clientId) {
+            await notifyTicketUpdate(ticket.clientId, ticket.subject, 'reply');
+            await notifyClient(ticket.clientId, {
+                type: 'TICKET_REPLY',
+                ticketSubject: ticket.subject,
+                replyPreview: content ? String(content).slice(0, 200) : undefined,
+            });
+        }
 
         res.status(201).json(message);
     } catch (error) {

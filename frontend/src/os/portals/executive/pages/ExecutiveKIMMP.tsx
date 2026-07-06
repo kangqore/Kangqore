@@ -1,4 +1,5 @@
 import { Brain, Zap, TrendingUp, AlertTriangle } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 
 const briefing = {
   headline: 'Three signals require executive attention this week.',
@@ -40,14 +41,15 @@ const trends = [
 
 export function ExecutiveKIMMP() {
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-10">
+    <div className="space-y-10">
+      <KIMMPSignalBar module="KIMMP Brief" />
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
           <Brain className="w-6 h-6 text-indigo-400" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">KIMMP Executive Brief</h1>
-          <p className="text-slate-500 mt-1 text-sm">Synthesised intelligence — updated every 24 hours.</p>
+          <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>KIMMP Executive Brief</h1>
+          <p className="text-[var(--os-text-2)] mt-1 text-sm">Synthesised intelligence — updated every 24 hours.</p>
         </div>
       </div>
 
@@ -57,28 +59,28 @@ export function ExecutiveKIMMP() {
           <Zap className="w-4 h-4 text-indigo-400" />
           <span className="text-xs font-black tracking-widest text-indigo-400 uppercase">KIMMP Intelligence Summary</span>
         </div>
-        <p className="text-white font-semibold text-[15px] mb-2">{briefing.headline}</p>
-        <p className="text-sm text-slate-400 leading-relaxed">{briefing.summary}</p>
+        <p className="font-semibold text-[15px] mb-2" style={{ color: 'var(--os-text-1)' }}>{briefing.headline}</p>
+        <p className="text-sm text-[var(--os-text-2)] leading-relaxed">{briefing.summary}</p>
       </div>
 
       {/* Actionable decisions */}
       <section>
-        <h2 className="text-base font-bold text-slate-200 mb-4 flex items-center gap-2">
+        <h2 className="text-base font-bold text-[var(--os-text-1)] mb-4 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-indigo-400" />
           Decisions Required
         </h2>
         <div className="space-y-4">
           {decisions.map(({ id, signal, recommendation, urgency, confidence }) => (
-            <div key={id} className="p-6 rounded-2xl border border-white/10 bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10">
+            <div key={id} className="os-card p-6">
               <div className="flex items-start justify-between gap-4 mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black text-slate-600 font-mono">{id}</span>
+                  <span className="text-[10px] font-black text-[var(--os-text-2)] font-mono">{id}</span>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ color: URGENCY_COLOR[urgency], background: `${URGENCY_COLOR[urgency]}18`, border: `1px solid ${URGENCY_COLOR[urgency]}30` }}>{urgency}</span>
                 </div>
-                <span className="text-xs text-slate-500 flex-shrink-0">Confidence: {confidence}%</span>
+                <span className="text-xs text-[var(--os-text-2)] flex-shrink-0">Confidence: {confidence}%</span>
               </div>
-              <p className="text-sm text-slate-300 mb-3"><span className="text-slate-500 font-medium">Signal: </span>{signal}</p>
-              <p className="text-sm text-white"><span className="text-indigo-400 font-semibold">→ </span>{recommendation}</p>
+              <p className="text-sm text-[var(--os-text-1)] mb-3"><span className="text-[var(--os-text-2)] font-medium">Signal: </span>{signal}</p>
+              <p className="text-sm" style={{ color: 'var(--os-text-1)' }}><span className="text-indigo-400 font-semibold">→ </span>{recommendation}</p>
             </div>
           ))}
         </div>
@@ -86,15 +88,15 @@ export function ExecutiveKIMMP() {
 
       {/* Trend confirmations */}
       <section>
-        <h2 className="text-base font-bold text-slate-200 mb-4 flex items-center gap-2">
+        <h2 className="text-base font-bold text-[var(--os-text-1)] mb-4 flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-indigo-400" />
           Trend Confirmations
         </h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {trends.map(({ label, value, direction }) => (
-            <div key={label} className="p-5 rounded-2xl border border-white/10 bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 flex flex-col gap-2">
-              <span className="text-2xl font-bold text-white">{value}</span>
-              <p className="text-xs text-slate-500 leading-snug">{label}</p>
+            <div key={label} className="os-card p-5 flex flex-col gap-2">
+              <span className="text-2xl font-bold" style={{ color: 'var(--os-text-1)' }}>{value}</span>
+              <p className="text-xs text-[var(--os-text-2)] leading-snug">{label}</p>
               <span className={`text-xs font-bold ${direction === 'up' ? 'text-emerald-400' : 'text-red-400'}`}>{direction === 'up' ? '↑ Positive trend' : '↓ Needs attention'}</span>
             </div>
           ))}

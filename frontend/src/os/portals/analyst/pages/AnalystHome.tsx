@@ -1,4 +1,5 @@
-import { LineChart, TrendingUp, FileBarChart, BarChart2, Mail } from 'lucide-react'
+import { LineChart, TrendingUp, FileBarChart, BarChart2, Mail, AlertTriangle } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 
 const reports = [
   { label: 'Q2 2026 Business Review',         date: 'June 2026',  status: 'Available' },
@@ -16,23 +17,24 @@ const kpis = [
 
 export function AnalystHome() {
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-10">
+    <div className="space-y-10">
+      <KIMMPSignalBar module="Analyst Portal" />
       {/* Header */}
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-xl bg-cyan-100 flex items-center justify-center flex-shrink-0">
           <LineChart className="w-6 h-6 text-cyan-600" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Analyst Intelligence Portal</h1>
-          <p className="text-slate-500 mt-1 text-sm">Authorised access to Kangqore performance data, reports, and briefing materials.</p>
+          <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Analyst Intelligence Portal</h1>
+          <p className="text-[var(--os-text-2)] mt-1 text-sm">Authorised access to Kangqore performance data, reports, and briefing materials.</p>
         </div>
       </div>
 
       {/* Analyst contact */}
       <div className="p-5 rounded-2xl bg-cyan-50 border border-cyan-100 flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <p className="font-semibold text-slate-200 text-sm">Analyst Relations</p>
-          <p className="text-slate-500 text-xs mt-0.5">Schedule a briefing or request additional data</p>
+          <p className="font-semibold text-[var(--os-text-1)] text-sm">Analyst Relations</p>
+          <p className="text-[var(--os-text-2)] text-xs mt-0.5">Schedule a briefing or request additional data</p>
         </div>
         <a
           href="mailto:analyst@kangqore.com"
@@ -43,18 +45,26 @@ export function AnalystHome() {
         </a>
       </div>
 
+      {/* Sample data disclaimer */}
+      <div className="flex items-start gap-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30">
+        <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+        <p className="text-xs text-amber-300 leading-relaxed">
+          <span className="font-bold">SAMPLE DATA — Illustrative only.</span> Figures shown are placeholders for demonstration purposes and are not audited, verified, or for investment or decision-making use. Contact <a href="mailto:analyst@kangqore.com" className="underline">analyst@kangqore.com</a> for verified data.
+        </p>
+      </div>
+
       {/* KPIs */}
       <section>
-        <h2 className="text-base font-bold text-slate-200 mb-4">Key Metrics</h2>
+        <h2 className="text-base font-bold text-[var(--os-text-1)] mb-4">Key Metrics <span className="text-xs font-normal text-amber-400">(illustrative)</span></h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {kpis.map(({ icon: Icon, label, value, sub }) => (
-            <div key={label} className="p-5 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-center">
+            <div key={label} className="os-card p-5 text-center">
               <div className="w-9 h-9 rounded-lg bg-cyan-50 flex items-center justify-center mx-auto mb-3">
                 <Icon className="w-5 h-5 text-cyan-600" />
               </div>
-              <p className="text-2xl font-extrabold text-white">{value}</p>
-              <p className="text-xs font-semibold text-slate-500 mt-0.5">{label}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{sub}</p>
+              <p className="text-2xl font-extrabold" style={{ color: 'var(--os-text-1)' }}>{value}</p>
+              <p className="text-xs font-semibold text-[var(--os-text-2)] mt-0.5">{label}</p>
+              <p className="text-xs text-[var(--os-text-2)] mt-0.5">{sub}</p>
             </div>
           ))}
         </div>
@@ -62,21 +72,21 @@ export function AnalystHome() {
 
       {/* Reports */}
       <section>
-        <h2 className="text-base font-bold text-slate-200 mb-4">Reports &amp; Briefings</h2>
+        <h2 className="text-base font-bold text-[var(--os-text-1)] mb-4">Reports &amp; Briefings</h2>
         <div className="space-y-3">
           {reports.map(({ label, date, status }) => (
-            <div key={label} className="flex items-center gap-4 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:shadow-sm transition-shadow">
-              <div className="w-9 h-9 rounded-lg bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0">
-                <FileBarChart className="w-5 h-5 text-slate-500" />
+            <div key={label} className="os-card flex items-center gap-4 p-4 hover:shadow-md transition-shadow">
+              <div className="w-9 h-9 rounded-lg bg-[var(--os-surface)] flex items-center justify-center flex-shrink-0" style={{ border: '1px solid var(--os-border)' }}>
+                <FileBarChart className="w-5 h-5 text-[var(--os-text-2)]" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-slate-200 text-sm">{label}</p>
-                <p className="text-slate-500 text-xs">{date}</p>
+                <p className="font-semibold text-[var(--os-text-1)] text-sm">{label}</p>
+                <p className="text-[var(--os-text-2)] text-xs">{date}</p>
               </div>
               <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
                 status === 'Available'
                   ? 'bg-emerald-100 text-emerald-700'
-                  : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500'
+                  : 'text-[var(--os-text-2)] bg-[var(--os-surface)]'
               }`}>
                 {status}
               </span>

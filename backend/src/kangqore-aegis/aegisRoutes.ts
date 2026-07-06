@@ -9,6 +9,7 @@ import { AegisLedger, AegisEventType }  from './aegisLedger.service'
 import { AegisSovereignty }             from './aegisSovereignty.service'
 import { AegisPolicyEngine }            from './aegisPolicy.service'
 import { AegisEngineDispatcher }        from './aegisEngineDispatcher'
+import { AegisActionExecutor }          from './aegisActionExecutor'
 import { prisma }                       from '../lib/prisma'
 
 export const aegisRouter = Router()
@@ -245,4 +246,45 @@ aegisRouter.post('/agents/:agentId/run', async (req: Request, res: Response) => 
   )
   if (!result) return res.status(404).json({ error: `Agent '${agentId}' not found` })
   res.json({ shield: 'AEGIS', result })
+})
+
+// ── Phase 2: Pending L3 Actions ───────────────────────────────────────────────
+
+aegisRouter.get('/actions/pending', async (_req: Request, res: Response) => {
+  const rows = await (prisma as any).aegisPendingAction.findMany({
+    where:   { status: 'PENDING' },
+    orderBy: { requestedAt: 'desc' },
+  })
+  res.json({ shield: 'AEGIS', domain: 'PENDING_ACTIONS', rows, total: rows.length })
+})
+
+aegisRouter.post('/actions/:id/approve', async (req: Request, res: Response) => {
+  const adminUserId = (req as any).user?.id ?? 'ADMIN'
+  const result = await AegisActionExecutor.approveAndExecute(req.params.id, adminUserId)
+  res.json({ shield: 'AEGIS', ...result })
+})
+
+aegisRouter.post('/actions/:id/reject', async (req: Request, res: Response) => {
+  const adminUserId = (req as any).user?.id ?? 'ADMIN'
+  await AegisActionExecutor.rejectPending(req.params.id, adminUserId)
+  res.json({ shield: 'AEGIS', rejected: true })
+})
+
+aegisRouter.get('/actions/log', async (req: Request, res: Response) => {
+  const { agentId, status, limit, offset } = req.query
+  const where: Record<string, unknown> = {}
+  if (agentId) where.agentId = agentId
+  if (status)  where.status  = status
+
+  const [rows, total] = await Promise.all([
+    (prisma as any).aegisActionLog.findMany({
+      where,
+      orderBy: { executedAt: 'desc' },
+      take:    limit  ? Number(limit)  : 50,
+      skip:    offset ? Number(offset) : 0,
+    }),
+    (prisma as any).aegisActionLog.count({ where }),
+  ])
+
+  res.json({ shield: 'AEGIS', domain: 'ACTION_LOG', rows, total })
 })

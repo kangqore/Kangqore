@@ -61,7 +61,7 @@ export const navGroups: NavGroup[] = [
     items: [
       { id: 'overview',      label: 'WAANDA',        icon: CompassIcon,         path: `${BASE}/WAANDA`         },
       { id: 'kangqore-immp', label: 'KIMMP',          icon: BrainIcon,           path: `${BASE}/kangqore-immp`  },
-      { id: 'urgi-studio',   label: 'Relationship Studio', icon: HeartbeatIcon,       path: `${BASE}/urgi-studio`    },
+      { id: 'urgi-studio',   label: 'Kangqore URGI', icon: HeartbeatIcon,       path: `${BASE}/kangqore-urgi`    },
       { id: 'systems',       label: 'Systems',        icon: HardDrivesIcon,      path: `${BASE}/systems`        },
       { id: 'aegis',         label: 'AEGIS',          icon: ShieldCheckeredIcon, path: `${BASE}/aegis`          },
       { id: 'ontology',      label: 'Ontology',       icon: GraphIcon,           path: `${BASE}/ontology`       },

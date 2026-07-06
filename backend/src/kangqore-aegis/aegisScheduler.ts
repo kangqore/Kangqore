@@ -24,20 +24,16 @@ export const AegisScheduler = {
     if (started) return
     started = true
 
-    // 1h cadence — health + alerting agents
-    setInterval(() => run('schedule.1h'), 60 * 60_000)
+    // All agents run every hour — no slow cadences
+    setInterval(() => run('schedule.1h'),  60 * 60_000)
+    setInterval(() => run('schedule.6h'),  60 * 60_000)
+    setInterval(() => run('schedule.24h'), 60 * 60_000)
 
-    // 6h cadence — coordination + workflow + escalation
-    setInterval(() => run('schedule.6h'), 6 * 60 * 60_000)
+    // Boot: fire all three triggers staggered to avoid a thundering herd
+    setTimeout(() => run('schedule.1h'),   5_000)
+    setTimeout(() => run('schedule.6h'),  15_000)
+    setTimeout(() => run('schedule.24h'), 25_000)
 
-    // 24h cadence — analytics + reporting
-    setInterval(() => run('schedule.24h'), 24 * 60 * 60_000)
-
-    // Boot: run 1h trigger immediately to populate first snapshot
-    setTimeout(() => run('schedule.1h'),  5_000)
-    // Stagger the 6h run 30s after boot
-    setTimeout(() => run('schedule.6h'),  30_000)
-
-    console.log('[AEGIS] Scheduler started — cadences: 1h / 6h / 24h')
+    console.log('[AEGIS] Scheduler started — all 80 agents on 1h cadence')
   },
 }

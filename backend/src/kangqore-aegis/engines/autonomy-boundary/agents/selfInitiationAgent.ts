@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
 // Approved sources for autonomous KIMMP actions
 const APPROVED_AUTONOMOUS_ACTORS  = new Set(['SCHEDULER', 'KIMMP'])
@@ -24,13 +27,17 @@ export async function runSelfInitiationAgent(ctx: AgentContext): Promise<AegisAg
   const total   = events.length
   const verdict = suspicious.length > 0 ? 'CRITICAL' : total > 0 ? 'PASS' : 'INFO'
 
+  const llmSummary = await callLLM(SYSTEM,
+    `Self-initiation check (24h): ${total} autonomous actions. ${suspicious.length} suspicious (unapproved actor or trigger). Approved actors: SCHEDULER, KIMMP. Approved triggers: schedule.* / event.*. Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
+
   return {
     agentId:   'autonomy.self-initiation',
     engine:    'AUTONOMY_BOUNDARY',
     verdict,
-    summary:   suspicious.length > 0
+    summary:   llmSummary || (suspicious.length > 0
       ? `CRITICAL: ${suspicious.length} suspicious self-initiating autonomous actions detected. KIMMP may be acting outside scheduler authority.`
-      : `All ${total} autonomous actions (24h) originate from approved actors and triggers.`,
+      : `All ${total} autonomous actions (24h) originate from approved actors and triggers.`),
     findings: [
       `Autonomous actions (24h): ${total}`,
       `Suspicious (unapproved actor/trigger): ${suspicious.length}`,

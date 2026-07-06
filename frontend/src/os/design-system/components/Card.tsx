@@ -18,18 +18,19 @@ const paddingMap = {
   lg:   'p-6',
 }
 
+// All variants use OS tokens — light/dark handled by css variables automatically
 const variantMap = {
-  default:  'bg-[#151C2F] border border-[#2E2854] shadow-sm',
-  flat:     'bg-[#151C2F] border border-[#2E2854]',
-  elevated: 'bg-[#151C2F] border border-[#2E2854] shadow-os-md',
-  glass:    'os-glass-card shadow-os-md',
+  default:  'os-card',
+  flat:     'os-card shadow-none',
+  elevated: 'os-card',
+  glass:    'os-glassmorphic-card',
 }
 
 const healthMap: Record<Health, string> = {
-  'on-track':  'border-l-4 border-l-[#00c875]  bg-[#151C2F]',
-  'at-risk':   'border-l-4 border-l-[#fdab3d]  bg-[#151C2F]',
-  'behind':    'border-l-4 border-l-[#e2445c]  bg-[#151C2F]',
-  'completed': 'border-l-4 border-l-[#64748b]  bg-[#151C2F]',
+  'on-track':  'border-l-4 !border-l-[#00c875]',
+  'at-risk':   'border-l-4 !border-l-[#fdab3d]',
+  'behind':    'border-l-4 !border-l-[#e2445c]',
+  'completed': 'border-l-4 !border-l-[#64748b]',
 }
 
 function Card({ className, variant = 'default', padding = 'md', health, interactive, children, ...props }: CardProps) {
@@ -37,7 +38,6 @@ function Card({ className, variant = 'default', padding = 'md', health, interact
   return (
     <motion.div
       className={cn(
-        'rounded-xl',
         variantMap[variant],
         health && healthMap[health],
         paddingMap[padding],
@@ -62,7 +62,11 @@ function CardHeader({ className, children, ...props }: React.HTMLAttributes<HTML
 
 function CardTitle({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className={cn('text-base font-semibold text-white font-display', className)} {...props}>
+    <h3
+      className={cn('text-base font-bold font-display', className)}
+      style={{ color: 'var(--os-text-1)' }}
+      {...props}
+    >
       {children}
     </h3>
   )
@@ -78,7 +82,11 @@ function CardBody({ className, children, ...props }: React.HTMLAttributes<HTMLDi
 
 function CardFooter({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('mt-4 pt-4 border-t border-[#2E2854] flex items-center gap-3', className)} {...props}>
+    <div
+      className={cn('mt-4 pt-4 flex items-center gap-3', className)}
+      style={{ borderTop: '1px solid var(--os-border)' }}
+      {...props}
+    >
       {children}
     </div>
   )

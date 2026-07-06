@@ -701,9 +701,10 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
 }
 
 // ─── WAANDA Boot Greeting (JARVIS-style) ─────────────────────────────────────
-function WaandaGreeting({ kpis, insights, health, onDismiss }: {
+function WaandaGreeting({ kpis, insights, health, onDismiss, onSpeakDirect }: {
   kpis: any; insights: any[]; health: number
   onDismiss: (voiceText: string) => void
+  onSpeakDirect: (text: string) => void
 }) {
   const [phase, setPhase] = useState(0)
   const [exiting, setExiting] = useState(false)
@@ -760,8 +761,9 @@ function WaandaGreeting({ kpis, insights, health, onDismiss }: {
   const dismiss = useCallback(() => {
     if (exiting) return
     setExiting(true)
+    onSpeakDirect(voiceText)                 // synchronous — must stay in gesture call stack
     setTimeout(() => onDismiss(voiceText), 180)
-  }, [exiting, onDismiss, voiceText])
+  }, [exiting, onDismiss, onSpeakDirect, voiceText])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key !== 'Tab') dismiss() }
@@ -957,12 +959,35 @@ function useTTS() {
     ctx:     AudioContext | null
   }>({ muted: false, current: null, queue: [], playing: false, ctx: null })
 
-  // Unlock Web Audio API on first user gesture (Chrome autoplay policy)
+  // Pre-warm: fire on mount to capture the SPA navigation click gesture.
+  // Chrome requires speak() to originate from user activation; SPA nav clicks
+  // give ~5 s of transient activation on the current document. Calling speak()
+  // here (volume 0, max rate, single space) unlocks the API for the session so
+  // all subsequent setTimeout-chained calls work without a direct gesture.
+  useEffect(() => {
+    try {
+      const u = new SpeechSynthesisUtterance(' ')
+      u.volume = 0
+      u.rate   = 16
+      window.speechSynthesis.speak(u)
+    } catch {}
+    // Pre-load voices
+    window.speechSynthesis.getVoices()
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices()
+    return () => { window.speechSynthesis.onvoiceschanged = null }
+  }, [])
+
+  // Backup unlock on any click/keydown (covers hard-refresh / direct URL cases)
   useEffect(() => {
     const unlock = () => {
       try {
         if (!st.current.ctx) st.current.ctx = new AudioContext()
         st.current.ctx.resume()
+      } catch {}
+      try {
+        const u = new SpeechSynthesisUtterance(' ')
+        u.volume = 0; u.rate = 16
+        window.speechSynthesis.speak(u)
       } catch {}
     }
     document.addEventListener('click',   unlock, true)
@@ -1005,38 +1030,70 @@ function useTTS() {
     } catch { return 0 }
   }, [])
 
+  const silence = useCallback(() => {
+    const s = st.current
+    s.queue = []
+    s.playing = false
+    setSpeaking(false)
+    if (s.current instanceof HTMLAudioElement) {
+      s.current.pause()
+      s.current.currentTime = 0
+    }
+    window.speechSynthesis.cancel()
+  }, [])
+
   const playNext = useCallback(() => {
     const s = st.current
     if (s.muted || s.playing || s.queue.length === 0) return
     s.playing = true
     setSpeaking(true)
     const item = s.queue.shift()!
-    // Responses to user queries skip the chime (user is already listening)
     const delay = item.type !== 'response' ? chime(item.type) : 0
     setTimeout(() => {
       if (s.muted) { s.playing = false; setSpeaking(false); return }
-      const audio = new Audio(`/api/admin/kangqore-immp/tts?text=${encodeURIComponent(item.text.slice(0, 500))}`)
-      s.current = audio
       const done = () => { s.playing = false; s.current = null; setSpeaking(false); setTimeout(playNext, 200) }
-      audio.onended = done; audio.onerror = done
-      audio.play().catch(done)
+      try {
+        const audio = new Audio(`/api/admin/kangqore-immp/tts?text=${encodeURIComponent(item.text.slice(0, 500))}`)
+        audio.onended = done
+        audio.onerror = (e) => { console.warn('[WAANDA TTS Error]', e); done() }
+        s.current = audio as any
+        audio.play().catch(done)
+      } catch { done() }
     }, delay)
   }, [chime])
 
   const speak = useCallback((text: string, type = 'system') => {
     if (st.current.muted || !text.trim()) return
-    // Alerts jump to the front; everything else queues normally
     if (type === 'alert') st.current.queue.unshift({ text, type })
     else st.current.queue.push({ text, type })
     playNext()
   }, [playNext])
 
-  const silence = useCallback(() => {
+  // speakDirect: bypasses the queue and speaks immediately.
+  // Must be called synchronously from a user gesture (click/keydown) so Chrome
+  // permits speechSynthesis. Used by the greeting dismiss handler.
+  const speakDirect = useCallback((text: string) => {
     const s = st.current
-    s.queue = []; s.playing = false
-    if (s.current) { s.current.pause(); s.current.src = ''; s.current = null }
-    setSpeaking(false)
-  }, [])
+    if (s.muted || !text.trim()) return
+    if (s.current instanceof HTMLAudioElement) {
+      s.current.pause()
+      s.current.currentTime = 0
+    }
+    window.speechSynthesis.cancel()          // clear any pending unlock utterances
+    s.queue    = []
+    s.playing  = true
+    setSpeaking(true)
+    const done = () => { s.playing = false; s.current = null; setSpeaking(false); setTimeout(playNext, 200) }
+    
+    try {
+      const audio = new Audio(`/api/admin/kangqore-immp/tts?text=${encodeURIComponent(text.slice(0, 500))}`)
+      audio.onended = done
+      audio.onerror = (e) => { console.warn('[WAANDA TTS Direct Error]', e); done() }
+      s.current = audio as any
+      audio.play().catch(done)
+    } catch { done() }
+  }, [playNext])
+
 
   const toggleMute = useCallback(() => {
     st.current.muted = !st.current.muted
@@ -1044,7 +1101,7 @@ function useTTS() {
     if (st.current.muted) silence()
   }, [silence])
 
-  return { speak, silence, speaking, muted, toggleMute }
+  return { speak, speakDirect, silence, speaking, muted, toggleMute }
 }
 
 // Animated waveform bars shown while TTS is speaking
@@ -1221,6 +1278,9 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
     const text = (q ?? query).trim()
     if (!text) return
     silence()
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      try { window.speechSynthesis.speak(new SpeechSynthesisUtterance('')) } catch {}
+    }
 
     // ── Goal Cockpit intercept ────────────────────────────────────────────────
     if (/^(show\s+(my\s+)?goals?|goals?|my\s+goals?|goal\s+cockpit)$/i.test(text)) {
@@ -1869,6 +1929,9 @@ function WaandaChat({ onClose, recentSignals }: {
     const text = (q ?? query).trim()
     if (!text || thinking) return
     silence()
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      try { window.speechSynthesis.speak(new SpeechSynthesisUtterance('')) } catch {}
+    }
 
     const history = messages.map(m => ({ role: m.role, content: m.content }))
     const userMsg: ChatMessage = { role: 'user', content: text, ts: Date.now() }
@@ -4904,14 +4967,14 @@ export function AdminOverview() {
   const uptime   = useUptime()
 
   // HUD TTS for live event announcements (must come before any callback that calls speak)
-  const { speak } = useTTS()
+  const { speak, speakDirect } = useTTS()
 
   // ── WAANDA Boot Greeting ─────────────────────────────────────────────────
   const [greetingDone, setGreetingDone] = useState(false)
   const handleGreetingDismiss = useCallback((voiceText: string) => {
     setGreetingDone(true)
-    speak(voiceText, 'greeting')
-  }, [speak])
+    // Voice is already started synchronously by WaandaGreeting.dismiss() via onSpeakDirect
+  }, [])
 
   // ── Scenario Playground ──────────────────────────────────────────────────
   const [scenarioResult,  setScenarioResult]  = useState<ScenarioResult | null>(null)
@@ -4931,6 +4994,26 @@ export function AdminOverview() {
   // ── Live HUD Event feed ──────────────────────────────────────────────────
   const [hudEvents, setHudEvents] = useState<LiveHUDEvent[]>([])
   const spokenIds = useRef(new Set<string>())
+
+  // Seed HUD with recent events from DB on mount so the screen isn't blank
+  const { data: seedEvents } = useQuery({
+    queryKey: ['waanda-events-seed'],
+    queryFn: () => api.get('/admin/kangqore-immp/events?limit=20').then(r => r.data.events ?? []) as Promise<LiveHUDEvent[]>,
+    staleTime: Infinity,
+  })
+  useEffect(() => {
+    if (!seedEvents?.length) return
+    // Show the most recent DB events regardless of age so the HUD is never empty on load
+    const sorted = [...seedEvents].sort((a, b) => Number(b.ts) - Number(a.ts))
+    const toShow = sorted.slice(0, 10)
+    if (toShow.length) {
+      // Stamp current time so they survive the live-expiry cleanup interval
+      const now = Date.now()
+      setHudEvents(toShow.map((e, i) => ({ ...e, ts: now - i * 5_000, announced: true })))
+      toShow.forEach(e => spokenIds.current.add(e.id))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seedEvents])
   const addHUDEvent = useCallback((ev: Omit<LiveHUDEvent, 'id' | 'announced'>) => {
     const id = `${ev.type}-${Math.round(ev.ts / 1000)}-${ev.title.slice(0, 10)}`
     const newEv: LiveHUDEvent = { ...ev, id, announced: false }
@@ -4967,6 +5050,12 @@ export function AdminOverview() {
       }
       send()
     } catch {}
+  }, [])
+
+  // Trigger a fresh intelligence scan on mount so the HUD populates with live signals
+  useEffect(() => {
+    api.post('/admin/kangqore-immp/proactive/scan').catch(() => {})
+    api.post('/admin/kangqore-immp/scout/run').catch(() => {})
   }, [])
 
   // Tracks mount time so HUD event TTS waits for the greeting to finish
@@ -5247,12 +5336,12 @@ export function AdminOverview() {
     })
   }, [hudEvents, speak])
 
-  // ── Auto-expire events older than 90 seconds ─────────────────────────────
+  // ── Auto-expire events older than 24 hours ────────────────────────────────
   useEffect(() => {
     const t = setInterval(() => {
-      const cutoff = Date.now() - 90_000
+      const cutoff = Date.now() - 86_400_000
       setHudEvents(prev => prev.filter(e => e.ts > cutoff))
-    }, 10_000)
+    }, 30_000)
     return () => clearInterval(t)
   }, [])
 
@@ -5304,6 +5393,7 @@ export function AdminOverview() {
           insights={insights}
           health={health}
           onDismiss={handleGreetingDismiss}
+          onSpeakDirect={speakDirect}
         />
       )}
 

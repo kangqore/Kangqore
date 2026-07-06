@@ -79,7 +79,7 @@ export const CAP_TABLE: CapTable[] = [
   { id: 'ct1', investorId: 'i1', investorName: 'James Whitfield', firm: 'Whitfield Ventures', round: 'seed', amount: 750, ownership: 8.5, shareClass: 'Series A Preferred', date: '2025-09-01', proRataRights: true,  boardSeat: true  },
   { id: 'ct2', investorId: 'i2', investorName: 'Priya Sharma',    firm: 'Elevate Capital',    round: 'seed', amount: 250, ownership: 3.2, shareClass: 'Series A Preferred', date: '2025-09-01', proRataRights: true,  boardSeat: false },
   { id: 'ct3', investorId: 'i3', investorName: 'Marcus Chen',     firm: 'Angel Syndicate UK', round: 'seed', amount: 100, ownership: 1.4, shareClass: 'Series A Preferred', date: '2025-09-01', proRataRights: false, boardSeat: false },
-  { id: 'ct4', investorId: 'founders', investorName: 'Mahesh Kumar (Founder)', firm: 'Kangqore', round: 'pre-seed', amount: 0, ownership: 72.4, shareClass: 'Ordinary', date: '2024-01-01', proRataRights: false, boardSeat: true },
+  { id: 'ct4', investorId: 'founders', investorName: 'C.O.D.E. (Founder)', firm: 'Kangqore', round: 'pre-seed', amount: 0, ownership: 72.4, shareClass: 'Ordinary', date: '2024-01-01', proRataRights: false, boardSeat: true },
   { id: 'ct5', investorId: 'esop', investorName: 'ESOP Pool', firm: 'Kangqore', round: 'seed', amount: 0, ownership: 14.5, shareClass: 'Options Pool', date: '2025-09-01', proRataRights: false, boardSeat: false },
 ]
 

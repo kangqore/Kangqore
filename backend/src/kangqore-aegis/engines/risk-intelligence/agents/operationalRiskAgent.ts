@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess risk levels and threat intelligence. Write 2 sentences: current risk posture and urgency of ADMIN escalation.'
 
 const ENGINES = [
   'GOVERNANCE_OPS','SOVEREIGNTY','AUDIT_LEDGER','AUTONOMY_BOUNDARY',

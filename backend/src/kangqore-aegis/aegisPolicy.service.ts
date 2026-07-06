@@ -13,6 +13,7 @@
 // ---------------------------------------------------------------------------
 
 import logger from '../utils/logger'
+import { AegisEventEmitter } from './aegisEventEmitter'
 
 export type PolicyVerdict = 'ALLOW' | 'WARN' | 'DENY'
 
@@ -122,6 +123,10 @@ export class AegisPolicyEngine {
 
       if (verdict === 'DENY') {
         logger.warn(`[AEGIS:POLICY] DENY — ${policy.id}: ${policy.name} | action=${action} role=${ctx.role ?? 'none'}`)
+        AegisEventEmitter.firePolicyViolation({
+          userId:   ctx.userId,
+          metadata: { policy: policy.id, action, role: ctx.role, severity: policy.severity },
+        })
       } else if (verdict === 'WARN') {
         logger.info(`[AEGIS:POLICY] WARN — ${policy.id}: ${policy.name} | action=${action}`)
       }

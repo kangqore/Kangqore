@@ -110,12 +110,37 @@ const ADMIN_TYPE = {
   glow: 'rgba(239,68,68,0.18)',
 };
 
+const TEAM_DEPTS = [
+  { id: 'it',               label: 'IT',               color: '#2564ea' },
+  { id: 'hr',               label: 'HR',               color: '#8B5CF6' },
+  { id: 'finance',          label: 'Finance',          color: '#10B981' },
+  { id: 'security',         label: 'Security',         color: '#EF4444' },
+  { id: 'legal',            label: 'Legal',            color: '#F59E0B' },
+  { id: 'support',          label: 'Support',          color: '#06B6D4' },
+  { id: 'facilities',       label: 'Facilities',       color: '#F97316' },
+  { id: 'supply-chain',     label: 'Supply Chain',     color: '#6366F1' },
+  { id: 'marketing',        label: 'Marketing',        color: '#EC4899' },
+  { id: 'sales',            label: 'Sales',            color: '#0EA5E9' },
+  { id: 'customer-success', label: 'Customer Success', color: '#14B8A6' },
+  { id: 'product',          label: 'Product',          color: '#A855F7' },
+  { id: 'engineering',      label: 'Engineering',      color: '#84CC16' },
+  { id: 'delivery',         label: 'Delivery',         color: '#F43F5E' },
+  { id: 'risk-compliance',  label: 'Risk & Compliance',color: '#B91C1C' },
+  { id: 'procurement',      label: 'Procurement',      color: '#7C3AED' },
+  { id: 'data-analytics',   label: 'Data & Analytics', color: '#0284C7' },
+  { id: 'ai-automation',    label: 'AI & Automation',  color: '#D946EF' },
+  { id: 'innovation-rd',    label: 'Innovation / R&D', color: '#CA8A04' },
+  { id: 'operations',       label: 'Operations',       color: '#16A34A' },
+];
+
 export default function Login() {
   const navigate       = useNavigate();
   const [searchParams] = useSearchParams();
   const [showFullMenu,    setShowFullMenu]    = useState(false);
 
   const [selectedRole,    setSelectedRole]    = useState(null);
+  const [deptStep,        setDeptStep]        = useState(false);
+  const [selectedDept,    setSelectedDept]    = useState(null);
   const [formData,        setFormData]        = useState({ email: '', password: '', role: '' });
   const [showPassword,    setShowPassword]    = useState(false);
   const [error,           setError]           = useState('');
@@ -153,13 +178,38 @@ export default function Login() {
   }, [navigate]);
 
   const handleRoleSelect = (role) => {
+    if (role.id === 'team' || role.id === 'executive') {
+      setSelectedRole(role);
+      setDeptStep(true);
+      setError('');
+      return;
+    }
     setSelectedRole(role);
     setFormData({ ...formData, role: role.id });
     setError('');
   };
 
+  const handleDeptSelect = (dept) => {
+    setSelectedDept(dept);
+    setDeptStep(false);
+    setFormData({ ...formData, role: selectedRole.id });
+    setError('');
+  };
+
   const handleBackToRoles = () => {
+    if (deptStep) {
+      setDeptStep(false);
+      setSelectedRole(null);
+      return;
+    }
+    if (selectedDept) {
+      setSelectedDept(null);
+      setDeptStep(true);
+      return;
+    }
     setSelectedRole(null);
+    setDeptStep(false);
+    setSelectedDept(null);
     setFormData({ email: '', password: '', role: '' });
     setError('');
     setSignupData({ name: '', email: '', company: '', phone: '', password: '', confirmPassword: '' });
@@ -222,7 +272,7 @@ export default function Login() {
         'journalist': '/kangqore-view/journalist',
         'analyst':    '/kangqore-view/analyst',
         'admin':      '/kangqore-view/admin',
-        'team':       '/kangqore-view/team',
+        'team':       selectedDept ? `/kangqore-view/team/${selectedDept.id}` : '/kangqore-view/team',
         'executive':  '/kangqore-view/executive',
       };
       window.location.href = buildOSRedirect(roleRoutes[data.user.role.toLowerCase()] || '/kangqore-view/admin');
@@ -366,7 +416,9 @@ export default function Login() {
               </div>
               <div className="flex flex-col items-start justify-center">
                 <span className="text-white/40 text-[9px] font-black tracking-[0.2em] uppercase leading-none mb-1 group-hover:text-white/60 transition-colors">Return</span>
-                <span className="text-white text-[13px] font-bold tracking-wide leading-none">Back to roles</span>
+                <span className="text-white text-[13px] font-bold tracking-wide leading-none">
+                  {deptStep ? 'Back to roles' : selectedDept ? 'Back to departments' : 'Back to roles'}
+                </span>
               </div>
             </button>
             
@@ -470,9 +522,9 @@ export default function Login() {
               </div>
             </div>
 
-            {/* ── Right Column (Auth Form) ── */}
+            {/* ── Right Column (Dept Picker or Auth Form) ── */}
             <div className="flex items-center justify-center p-4 sm:p-8 lg:p-12 relative">
-              
+
               {/* Noise overlay to match */}
               <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
 
@@ -482,11 +534,61 @@ export default function Login() {
                 className="lg:hidden absolute top-6 left-6 inline-flex items-center gap-2 text-white/40 hover:text-white text-sm font-medium transition-colors duration-200 z-50"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Back
+                {deptStep ? 'Back to roles' : selectedDept ? 'Back to departments' : 'Back'}
               </button>
 
-              {/* The Auth Card */}
-              <div className="w-full max-w-md relative z-10">
+              {/* ══ DEPT PICKER (team / executive step 2) ══ */}
+              {deptStep && (
+                <div className="w-full max-w-md relative z-10">
+                  <div className="relative overflow-hidden p-6 sm:p-8 rounded-[1.5rem] border border-white/[0.08] border-t-white/[0.15] border-b-black/80 bg-[#141414] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),inset_0_-2px_6px_rgba(0,0,0,0.8),0_20px_40px_-10px_rgba(0,0,0,0.7)]">
+                    {/* Background texture */}
+                    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none rounded-[1.5rem]">
+                      <img src="/images/capabilities/agentic-governed-autonomy.png" alt="" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-[#141414]/70 z-[1]" />
+                      <div className="absolute inset-x-0 top-0 h-1/2 z-[2]" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.55) 45%,rgba(0,0,0,0) 100%)' }} />
+                    </div>
+                    <div className="absolute -top-12 -right-12 w-28 h-28 rounded-full blur-2xl pointer-events-none z-[3] opacity-40" style={{ backgroundColor: role.glow }} />
+                    <div className="absolute -bottom-12 -left-12 w-28 h-28 rounded-full blur-2xl pointer-events-none z-[3] opacity-40" style={{ backgroundColor: role.glow }} />
+
+                    <div className="relative z-10">
+                      {/* Header */}
+                      <div className="text-center mb-6">
+                        <img src="/assets/kangqore-icon-white.png" alt="Kangqore" className="w-[44px] h-[44px] object-contain mx-auto mb-3" />
+                        <div
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-3 text-xs font-bold"
+                          style={{ backgroundColor: `${role.hex}18`, border: `1px solid ${role.hex}35`, color: role.hex }}
+                        >
+                          <role.icon className="w-3 h-3" strokeWidth={2} />
+                          {role.name}
+                        </div>
+                        <h2 className="text-[20px] font-extrabold tracking-tight text-white mb-1">Select your department</h2>
+                        <p className="text-[12px] text-white/40">Choose a department to continue signing in</p>
+                      </div>
+
+                      {/* Dept grid */}
+                      <div className="grid grid-cols-4 gap-2">
+                        {TEAM_DEPTS.map(dept => (
+                          <button
+                            key={dept.id}
+                            onClick={() => handleDeptSelect(dept)}
+                            className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl border border-white/[0.06] bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.07] transition-all duration-200 group text-center"
+                          >
+                            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dept.color }} />
+                            <span className="text-[9.5px] font-semibold text-white/60 group-hover:text-white/90 transition-colors leading-tight">{dept.label}</span>
+                          </button>
+                        ))}
+                      </div>
+
+                      <p className="text-center text-[10px] text-white/20 mt-5">
+                        You'll enter your credentials after selecting a department
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ══ AUTH FORM ══ */}
+              {!deptStep && <div className="w-full max-w-md relative z-10">
                 <div className="relative overflow-hidden p-6 sm:p-8 rounded-[1.5rem] border border-white/[0.08] border-t-white/[0.15] border-b-black/80 bg-[#141414] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),inset_0_-2px_6px_rgba(0,0,0,0.8),0_20px_40px_-10px_rgba(0,0,0,0.7)]">
                   {/* Background Texture */}
                   <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none rounded-[1.5rem]">
@@ -692,6 +794,7 @@ export default function Login() {
                   </div>
                 </div>
               </div>
+              }
             </div>
           </div>
         )}

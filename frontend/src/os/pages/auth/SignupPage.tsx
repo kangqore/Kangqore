@@ -150,7 +150,7 @@ export function SignupPage() {
             <div className="grid grid-cols-2 gap-4">
               <Input
                 label="Full name"
-                placeholder="Mahesh Kumar"
+                placeholder="C.O.D.E."
                 error={errors.name?.message}
                 className="col-span-2 sm:col-span-1"
                 {...register('name')}

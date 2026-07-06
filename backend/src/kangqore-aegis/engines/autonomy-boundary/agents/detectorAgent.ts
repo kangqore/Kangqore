@@ -1,7 +1,10 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
 
 const AUTONOMOUS_RATIO_WARN = 0.75 // warn if > 75% of all activations are autonomous
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
 export async function runDetectorAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start   = Date.now()
@@ -16,11 +19,13 @@ export async function runDetectorAgent(ctx: AgentContext): Promise<AegisAgentRes
   const ratio   = total > 0 ? autonomous / total : 0
   const verdict = ratio > AUTONOMOUS_RATIO_WARN ? 'WARN' : total > 0 ? 'PASS' : 'INFO'
 
+  const llmSummary = await callLLM(SYSTEM, `KIMMP activations (24h): ${total} total, ${autonomous} autonomous (${Math.round(ratio * 100)}%), ${adminTriggered} ADMIN-triggered. Autonomy ratio threshold: ${Math.round(AUTONOMOUS_RATIO_WARN * 100)}%.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
+
   return {
     agentId:   'autonomy.detector',
     engine:    'AUTONOMY_BOUNDARY',
     verdict,
-    summary:   `${autonomous}/${total} KIMMP activations (24h) were autonomous (${Math.round(ratio * 100)}%).`,
+    summary:   llmSummary || `${autonomous}/${total} KIMMP activations (24h) were autonomous (${Math.round(ratio * 100)}%).`,
     findings: [
       `Total activations (24h): ${total}`,
       `Autonomous: ${autonomous} (${Math.round(ratio * 100)}%)`,

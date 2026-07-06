@@ -6,16 +6,17 @@ import { useState, useEffect, useRef } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Clock, CheckCircle2, XCircle, ChevronRight, Send, MessageSquare } from 'lucide-react'
 import { EditDrawer } from '@components/EditDrawer'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { api, isDemo } from '@lib/api'
 import { useClientChangeRequests, useCRMessages, useSendCRMessage, type CRMessage } from '../useClientData'
 import { useAuthStore } from '@store/auth'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
-const CARD  = '#0d1117'
-const RAISE = '#121d30'
-const EDGE  = '#1e2b40'
-const BLUE   = '#2564ea'
+const CARD  = 'var(--os-card)'
+const RAISE = 'var(--os-surface)'
+const EDGE  = 'var(--os-border)'
+const BLUE   = '#579bfc'
 const GREEN  = '#00c875'
 const AMBER  = '#fdab3d'
 const RED    = '#e2445c'
@@ -89,8 +90,8 @@ type CR = typeof MOCK_CRS[0]
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-const fmtCost = (n: number) => n < 0 ? `-₹${Math.abs(n).toLocaleString()}` : `+₹${n.toLocaleString()}`
+const fmtDate = (s: string | null | undefined) => s ? new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'
+const fmtCost = (n: number | null | undefined) => n == null ? '—' : n < 0 ? `-₹${Math.abs(n).toLocaleString()}` : `+₹${n.toLocaleString()}`
 
 const STATUS_COLOR: Record<string, string> = {
   PENDING_APPROVAL: AMBER,
@@ -105,17 +106,17 @@ const STATUS_LABEL: Record<string, string> = {
   REJECTED:         'Rejected',
 }
 const PRIORITY_COLOR: Record<string, string> = {
-  HIGH: RED, MEDIUM: AMBER, LOW: '#64748b',
+  HIGH: RED, MEDIUM: AMBER, LOW: 'var(--os-text-2)',
 }
 
 // ── Status badge ──────────────────────────────────────────────────────────────
 
 function StatusBadge({ status }: { status: string }) {
-  const color = STATUS_COLOR[status] ?? '#64748b'
+  const color = STATUS_COLOR[status] ?? 'var(--os-text-2)'
   return (
     <span style={{
       fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 999,
-      color, background: `${color}14`, border: `1px solid ${color}25`,
+      color: '#fff', background: color,
       display: 'inline-flex', alignItems: 'center', gap: 4,
     }}>
       {status === 'APPROVED'  && <CheckCircle2 style={{ width: 9, height: 9 }} />}
@@ -138,12 +139,12 @@ function StatusTimeline({ status }: { status: string }) {
       {TIMELINE_STEPS.map((step, i) => {
         const isActive  = !rejected && i <= currentIdx
         const isCurrent = !rejected && i === currentIdx
-        const color     = isActive ? (isCurrent ? STATUS_COLOR[step] : GREEN) : '#334155'
+        const color     = isActive ? (isCurrent ? STATUS_COLOR[step] : GREEN) : 'var(--os-text-2)'
         return (
           <div key={step} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div style={{
               padding: '4px 10px', borderRadius: 999, fontSize: 10, fontWeight: 700,
-              color: isActive ? color : '#334155',
+              color: isActive ? color : 'var(--os-text-2)',
               background: isActive ? `${color}14` : RAISE,
               border: `1px solid ${isActive ? `${color}30` : EDGE}`,
             }}>
@@ -191,7 +192,7 @@ function MessageThread({ crId }: { crId: string }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <MessageSquare style={{ width: 13, height: 13, color: BLUE }} />
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', margin: 0 }}>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', margin: 0 }}>
           Discussion
         </p>
         {messages.length > 0 && (
@@ -208,7 +209,7 @@ function MessageThread({ crId }: { crId: string }) {
         padding: messages.length ? '4px 0 8px' : 0,
       }}>
         {messages.length === 0 && (
-          <p style={{ fontSize: 12, color: '#334155', margin: '0 0 8px' }}>No messages yet. Start the conversation below.</p>
+          <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: '0 0 8px' }}>No messages yet. Start the conversation below.</p>
         )}
         {messages.map((m: CRMessage) => {
           const isMe = m.sender.id === user?.id
@@ -222,9 +223,9 @@ function MessageThread({ crId }: { crId: string }) {
                 background: isMe ? `${BLUE}18` : RAISE,
                 border: `1px solid ${isMe ? `${BLUE}30` : EDGE}`,
               }}>
-                <p style={{ fontSize: 13, color: '#e2e8f0', margin: 0, lineHeight: 1.5 }}>{m.content}</p>
+                <p style={{ fontSize: 13, color: 'var(--os-text-1)', margin: 0, lineHeight: 1.5 }}>{m.content}</p>
               </div>
-              <p style={{ fontSize: 10, color: '#334155', margin: '3px 4px 0' }}>
+              <p style={{ fontSize: 10, color: 'var(--os-text-2)', margin: '3px 4px 0' }}>
                 {isMe ? 'You' : m.sender.name} · {new Date(m.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
               </p>
             </div>
@@ -247,7 +248,7 @@ function MessageThread({ crId }: { crId: string }) {
           rows={2}
           style={{
             flex: 1, background: 'transparent', border: 'none', outline: 'none',
-            fontSize: 13, color: '#e2e8f0', resize: 'none', fontFamily: 'inherit',
+            fontSize: 13, color: 'var(--os-text-1)', resize: 'none', fontFamily: 'inherit',
             lineHeight: 1.5,
           }}
         />
@@ -262,7 +263,7 @@ function MessageThread({ crId }: { crId: string }) {
             transition: 'all 0.15s',
           }}
         >
-          <Send style={{ width: 14, height: 14, color: draft.trim() ? '#fff' : '#334155' }} />
+          <Send style={{ width: 14, height: 14, color: draft.trim() ? '#fff' : 'var(--os-text-2)' }} />
         </button>
       </div>
     </div>
@@ -272,8 +273,8 @@ function MessageThread({ crId }: { crId: string }) {
 // ── CR detail drawer ──────────────────────────────────────────────────────────
 
 function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
-  const sColor = STATUS_COLOR[cr.status] ?? '#64748b'
-  const pColor = PRIORITY_COLOR[cr.priority] ?? '#64748b'
+  const sColor = STATUS_COLOR[cr.status] ?? 'var(--os-text-2)'
+  const pColor = PRIORITY_COLOR[cr.priority] ?? 'var(--os-text-2)'
 
   return (
     <EditDrawer
@@ -285,7 +286,7 @@ function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
       footer={
         <button onClick={onClose} style={{
           padding: '8px 16px', borderRadius: 10, fontSize: 13, fontWeight: 600,
-          background: RAISE, border: `1px solid ${EDGE}`, color: '#94a3b8', cursor: 'pointer',
+          background: RAISE, border: `1px solid ${EDGE}`, color: 'var(--os-text-2)', cursor: 'pointer',
         }}>
           Close
         </button>
@@ -306,11 +307,11 @@ function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
           </span>
           <span style={{
             fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 999,
-            color: '#64748b', background: RAISE, border: `1px solid ${EDGE}`,
+            color: 'var(--os-text-2)', background: RAISE, border: `1px solid ${EDGE}`,
           }}>
             {cr.decisionType}
           </span>
-          <span style={{ fontSize: 11, color: '#334155' }}>Submitted {fmtDate(cr.createdAt)}</span>
+          <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>Submitted {fmtDate(cr.createdAt)}</span>
         </div>
 
         {/* Divider */}
@@ -318,14 +319,14 @@ function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
 
         {/* Description */}
         <div>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', margin: '0 0 8px' }}>Description</p>
-          <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.7, margin: 0 }}>{cr.description}</p>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', margin: '0 0 8px' }}>Description</p>
+          <p style={{ fontSize: 13, color: 'var(--os-text-2)', lineHeight: 1.7, margin: 0 }}>{cr.description}</p>
         </div>
 
         {/* Impact grid */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           <div style={{ padding: '14px 16px', borderRadius: 12, background: RAISE, border: `1px solid ${EDGE}` }}>
-            <p style={{ fontSize: 10, color: '#334155', margin: '0 0 6px' }}>Cost impact</p>
+            <p style={{ fontSize: 10, color: 'var(--os-text-2)', margin: '0 0 6px' }}>Cost impact</p>
             <p style={{
               fontSize: 15, fontWeight: 700, margin: 0,
               color: cr.costImpact < 0 ? GREEN : AMBER,
@@ -335,14 +336,14 @@ function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
             </p>
           </div>
           <div style={{ padding: '14px 16px', borderRadius: 12, background: RAISE, border: `1px solid ${EDGE}` }}>
-            <p style={{ fontSize: 10, color: '#334155', margin: '0 0 6px' }}>Time impact</p>
-            <p style={{ fontSize: 15, fontWeight: 700, color: '#e2e8f0', margin: 0 }}>{cr.timeImpact}</p>
+            <p style={{ fontSize: 10, color: 'var(--os-text-2)', margin: '0 0 6px' }}>Time impact</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>{cr.timeImpact}</p>
           </div>
         </div>
 
         {/* Requested by */}
-        <p style={{ fontSize: 12, color: '#334155', margin: 0 }}>
-          Requested by: <span style={{ color: '#94a3b8', fontWeight: 600 }}>{cr.requestedBy}</span>
+        <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0 }}>
+          Requested by: <span style={{ color: 'var(--os-text-2)', fontWeight: 600 }}>{cr.requestedBy}</span>
         </p>
 
         {/* Linked decisions */}
@@ -350,7 +351,7 @@ function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
           <>
             <div style={{ height: 1, background: EDGE }} />
             <div>
-              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', margin: '0 0 8px' }}>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', margin: '0 0 8px' }}>
                 Linked decisions
               </p>
               {cr.approvingDecisions.map(d => (
@@ -359,7 +360,7 @@ function CRDetail({ cr, onClose }: { cr: CR; onClose: () => void }) {
                   padding: '12px 14px', borderRadius: 12,
                   background: `${GREEN}0a`, border: `1px solid ${GREEN}20`,
                 }}>
-                  <span style={{ fontSize: 13, color: '#94a3b8' }}>{d.title}</span>
+                  <span style={{ fontSize: 13, color: 'var(--os-text-2)' }}>{d.title}</span>
                   <span style={{
                     fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 999,
                     color: GREEN, background: `${GREEN}14`, border: `1px solid ${GREEN}25`,
@@ -403,11 +404,11 @@ function SubmitCRDrawer({ onClose }: { onClose: () => void }) {
 
   const labelCss: React.CSSProperties = {
     display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
-    textTransform: 'uppercase', color: '#334155', marginBottom: 8,
+    textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8,
   }
   const inputCss = (k: string): React.CSSProperties => ({
     width: '100%', background: RAISE, border: `1px solid ${focused === k ? `${BLUE}60` : EDGE}`,
-    borderRadius: 10, padding: '9px 12px', fontSize: 13, color: '#e2e8f0',
+    borderRadius: 10, padding: '9px 12px', fontSize: 13, color: 'var(--os-text-1)',
     outline: 'none', transition: 'border-color 0.15s', fontFamily: 'inherit', boxSizing: 'border-box',
   })
 
@@ -421,7 +422,7 @@ function SubmitCRDrawer({ onClose }: { onClose: () => void }) {
         <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
           <button onClick={onClose} style={{
             padding: '8px 16px', borderRadius: 10, fontSize: 13, fontWeight: 600,
-            background: RAISE, border: `1px solid ${EDGE}`, color: '#94a3b8', cursor: 'pointer',
+            background: RAISE, border: `1px solid ${EDGE}`, color: 'var(--os-text-2)', cursor: 'pointer',
           }}>
             Cancel
           </button>
@@ -432,7 +433,7 @@ function SubmitCRDrawer({ onClose }: { onClose: () => void }) {
               padding: '8px 16px', borderRadius: 10, fontSize: 13, fontWeight: 600,
               background: form.title.trim() ? BLUE : RAISE,
               border: `1px solid ${form.title.trim() ? BLUE : EDGE}`,
-              color: form.title.trim() ? '#fff' : '#334155',
+              color: form.title.trim() ? '#fff' : 'var(--os-text-2)',
               cursor: form.title.trim() ? 'pointer' : 'not-allowed',
               boxShadow: form.title.trim() ? `0 4px 14px ${BLUE}40` : 'none',
               transition: `all 0.2s ${EASE}`,
@@ -492,22 +493,18 @@ function SubmitCRDrawer({ onClose }: { onClose: () => void }) {
 
 function KpiTile({ label, value, Icon, color }: { label: string; value: number; Icon: React.ElementType; color: string }) {
   return (
-    <div style={{
-      borderRadius: 16, padding: '20px 20px',
-      background: CARD, border: `1px solid ${EDGE}`,
-      boxShadow: `inset 0 1px 0 rgba(255,255,255,0.03)`,
-    }}>
+    <div style={{ borderRadius: 20, padding: '20px 20px', background: color }}>
       <div style={{
         width: 36, height: 36, borderRadius: 10, marginBottom: 14,
-        background: `${color}14`, border: `1px solid ${color}25`,
+        background: 'rgba(255,255,255,0.25)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        <Icon style={{ width: 16, height: 16, color }} />
+        <Icon style={{ width: 16, height: 16, color: '#fff' }} />
       </div>
-      <p style={{ fontSize: 28, fontWeight: 900, color: value > 0 ? color : '#334155', margin: '0 0 4px', fontVariantNumeric: 'tabular-nums' }}>
+      <p style={{ fontSize: 28, fontWeight: 900, color: '#fff', margin: '0 0 4px', fontVariantNumeric: 'tabular-nums' }}>
         {value}
       </p>
-      <p style={{ fontSize: 11, color: '#475569', margin: 0 }}>{label}</p>
+      <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', margin: 0 }}>{label}</p>
     </div>
   )
 }
@@ -541,12 +538,13 @@ export function ClientChangeRequests() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <KIMMPSignalBar module="Change Requests" />
 
       {/* Header */}
       <div style={{ ...anim(0), display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
         <div>
-          <h2 style={{ fontSize: 20, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>Change Requests</h2>
-          <p style={{ fontSize: 13, color: '#475569', margin: '6px 0 0' }}>{crs.length} total · {pending} in review</p>
+          <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)', margin: 0 }}>Change Requests</h2>
+          <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'var(--os-text-2)', margin: '6px 0 0' }}>{crs.length} total · {pending} in review</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -572,13 +570,13 @@ export function ClientChangeRequests() {
       <div style={{ ...anim(100), display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         {FILTERS.map(f => {
           const active = filter === f.key
-          const color  = active ? BLUE : '#334155'
           return (
             <button key={f.key} onClick={() => setFilter(f.key)} style={{
-              padding: '6px 14px', borderRadius: 10, border: `1px solid ${active ? BLUE : EDGE}`,
-              background: active ? `${BLUE}14` : RAISE,
-              color: active ? BLUE : '#64748b',
-              fontSize: 12, fontWeight: 600, cursor: 'pointer',
+              padding: '6px 14px', borderRadius: 999, border: 'none',
+              background: active ? BLUE : RAISE,
+              color: active ? '#fff' : 'var(--os-text-2)',
+              fontSize: 12, fontWeight: 700, cursor: 'pointer',
+              boxShadow: active ? `0 2px 8px ${BLUE}40` : 'none',
               transition: `all 0.15s ${EASE}`,
             }}>
               {f.label}
@@ -590,13 +588,13 @@ export function ClientChangeRequests() {
       {/* CR rows */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {visible.length === 0 && (
-          <div style={{ padding: '48px 0', textAlign: 'center', fontSize: 13, color: '#334155' }}>
+          <div style={{ padding: '48px 0', textAlign: 'center', fontSize: 13, color: 'var(--os-text-2)' }}>
             No change requests match this filter.
           </div>
         )}
         {visible.map((cr, i) => {
-          const sColor = STATUS_COLOR[cr.status] ?? '#64748b'
-          const pColor = PRIORITY_COLOR[cr.priority] ?? '#64748b'
+          const sColor = STATUS_COLOR[cr.status] ?? 'var(--os-text-2)'
+          const pColor = PRIORITY_COLOR[cr.priority] ?? 'var(--os-text-2)'
           return (
             <div
               key={cr.id}
@@ -610,7 +608,7 @@ export function ClientChangeRequests() {
                 transition: `box-shadow 0.15s, border-color 0.15s`,
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px rgba(0,0,0,0.3)`
+                (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px rgba(37,100,234,0.12), 0 1px 4px rgba(0,0,0,0.06)`
                 ;(e.currentTarget as HTMLElement).style.borderColor = `${sColor}60`
               }}
               onMouseLeave={e => {
@@ -621,46 +619,46 @@ export function ClientChangeRequests() {
               {/* Status icon */}
               <div style={{
                 width: 36, height: 36, borderRadius: 10, flexShrink: 0, marginTop: 1,
-                background: `${sColor}12`, border: `1px solid ${sColor}25`,
+                background: sColor,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                {(cr.status === 'PENDING_APPROVAL' || cr.status === 'UNDER_REVIEW') && <Clock       style={{ width: 15, height: 15, color: sColor }} />}
-                {cr.status === 'APPROVED'                                             && <CheckCircle2 style={{ width: 15, height: 15, color: sColor }} />}
-                {cr.status === 'REJECTED'                                             && <XCircle     style={{ width: 15, height: 15, color: sColor }} />}
+                {(cr.status === 'PENDING_APPROVAL' || cr.status === 'UNDER_REVIEW') && <Clock       style={{ width: 15, height: 15, color: '#fff' }} />}
+                {cr.status === 'APPROVED'                                             && <CheckCircle2 style={{ width: 15, height: 15, color: '#fff' }} />}
+                {cr.status === 'REJECTED'                                             && <XCircle     style={{ width: 15, height: 15, color: '#fff' }} />}
               </div>
 
               {/* Content */}
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#f1f5f9', margin: '0 0 4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--os-text-1)', margin: '0 0 4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {cr.title}
                 </p>
-                <p style={{ fontSize: 12, color: '#475569', margin: '0 0 10px', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: '0 0 10px', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {cr.description}
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                   <StatusBadge status={cr.status} />
                   <span style={{
                     fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 999,
-                    color: pColor, background: `${pColor}14`, border: `1px solid ${pColor}25`,
+                    color: '#fff', background: pColor,
                   }}>
                     {cr.priority}
                   </span>
                   {cr.project && (
-                    <span style={{ fontSize: 11, color: '#334155' }}>{cr.project.title}</span>
+                    <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>{cr.project.title}</span>
                   )}
-                  {cr.costImpact !== 0 && (
+                  {cr.costImpact != null && cr.costImpact !== 0 && (
                     <span style={{ fontSize: 11, color: cr.costImpact < 0 ? GREEN : AMBER, fontVariantNumeric: 'tabular-nums' }}>
                       {fmtCost(cr.costImpact)}
                     </span>
                   )}
-                  <span style={{ fontSize: 11, color: '#334155' }}>{cr.timeImpact}</span>
+                  <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>{cr.timeImpact}</span>
                 </div>
               </div>
 
               {/* Date + chevron */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, flexShrink: 0 }}>
-                <span style={{ fontSize: 10, color: '#334155', whiteSpace: 'nowrap' }}>{fmtDate(cr.createdAt)}</span>
-                <ChevronRight style={{ width: 14, height: 14, color: '#334155' }} />
+                <span style={{ fontSize: 10, color: 'var(--os-text-2)', whiteSpace: 'nowrap' }}>{fmtDate(cr.createdAt)}</span>
+                <ChevronRight style={{ width: 14, height: 14, color: 'var(--os-text-2)' }} />
               </div>
             </div>
           )

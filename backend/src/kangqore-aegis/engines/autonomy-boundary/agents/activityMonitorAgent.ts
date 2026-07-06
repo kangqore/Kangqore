@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
 export async function runActivityMonitorAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start   = Date.now()
@@ -19,12 +22,17 @@ export async function runActivityMonitorAgent(ctx: AgentContext): Promise<AegisA
 
   // Flag any system with disproportionate autonomous activity
   const highActivity = Object.entries(systemMap).filter(([_, cnt]) => cnt > 50)
+  const verdict = highActivity.length > 0 ? 'WARN' : total > 0 ? 'PASS' : 'INFO'
+
+  const llmSummary = await callLLM(SYSTEM,
+    `Autonomous activity monitor (24h): ${total} autonomous KIMMP actions across ${Object.keys(systemMap).length} systems. ${highActivity.length > 0 ? `High-activity systems: ${highActivity.map(([s, c]) => `${s}(${c})`).join(', ')}.` : 'No systems exceed the 50-action threshold.'} Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
 
   return {
     agentId:   'autonomy.activity-monitor',
     engine:    'AUTONOMY_BOUNDARY',
-    verdict:   highActivity.length > 0 ? 'WARN' : total > 0 ? 'PASS' : 'INFO',
-    summary:   `${total} autonomous KIMMP actions (24h) across ${Object.keys(systemMap).length} systems.`,
+    verdict,
+    summary:   llmSummary || `${total} autonomous KIMMP actions (24h) across ${Object.keys(systemMap).length} systems.`,
     findings: [
       `Total autonomous actions (24h): ${total}`,
       ...Object.entries(systemMap).map(([sys, cnt]) => `${sys}: ${cnt} autonomous actions`),

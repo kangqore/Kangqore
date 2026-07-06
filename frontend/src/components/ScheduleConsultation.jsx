@@ -483,7 +483,7 @@ export default function ScheduleConsultation() {
                         <input type="text" id="name" name="name" required value={formData.name}
                           onChange={handleChange}
                           className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue outline-none transition text-sm"
-                          placeholder="Mahesh Kumar" />
+                          placeholder="C.O.D.E." />
                       </div>
                     </div>
                     <div>

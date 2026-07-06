@@ -55,7 +55,19 @@ import './eqore/queue/shadowLead.worker';  // instantiates EqoreShadowWorker —
 import './eqore/queue/nurture.worker';     // instantiates EqoreNurtureWorker  — listens on eqore-nurture queue
 import { alisRouter } from './kangqore-alis';
 import { kangqoreImmpRoutes } from './kangqore-immp';
-import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor, AegisScheduler } from './kangqore-aegis';
+import { urgiRoutes } from './kangqore-immp/relationship-intelligence/api/urgi.routes';
+import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor, AegisScheduler, AegisEventEmitter } from './kangqore-aegis';
+import { waandaTrainingRouter } from './waanda-training';
+import { dataPrivacyRouter } from './routes/data-privacy';
+import { developerRouter } from './routes/developer';
+import { itilRouter } from './routes/itil';
+import orgsRouter from './routes/orgs';
+import integrationsRouter   from './routes/integrations';
+import semanticMappingRouter from './routes/semanticMapping';
+import packsRouter           from './routes/packs';
+import cdcRouter             from './routes/cdc';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './swagger';
 import { ScoutScheduler } from './kangqore-immp/scout/scoutScheduler';
 import { GoalScheduler } from './kangqore-immp/goals/goalScheduler';
 import { ProactiveScheduler } from './kangqore-immp/proactive/proactiveScheduler';
@@ -64,6 +76,7 @@ import { LoopScheduler } from './kangqore-immp/agents/loopScheduler';
 import { MetaBriefingScheduler } from './kangqore-immp/agents/metaBriefingScheduler';
 import { KIMMLearningScheduler } from './kangqore-immp/learning/kimmpLearningScheduler';
 import { authenticate, authorize } from './middleware/auth';
+import { CdcService } from './lib/cdc/cdcService';
 
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
@@ -147,7 +160,8 @@ import publicContentRoutes from './routes/public_content';
 app.use('/api/admin/media', mediaRoutes);
 app.use('/api/admin/content', contentRoutes);
 import adminIpRoutes from './routes/admin-ip';
-app.use('/api/admin/ip', adminIpRoutes);
+app.use('/api/kangqore/immp', kangqoreImmpRoutes);
+app.use('/api/kangqore/urgi', urgiRoutes);
 app.use('/api/content', publicContentRoutes); // Public access
 app.use('/api/uploads', uploadRoutes);
 app.use('/api/search', searchRoutes);
@@ -193,6 +207,10 @@ app.use('/api/admin/alis', authenticate, authorize(['ADMIN']), alisRouter);
 // BIDS™ — Business Diagnostic Intelligence System
 import bidsRoutes from './routes/bids';
 app.use('/api/admin/bids', bidsRoutes);
+import bidsClientRoutes from './routes/bids-client';
+app.use('/api/client/bids', bidsClientRoutes);
+import { briefingRouter } from './routes/admin-briefing';
+app.use('/api/admin/briefing', briefingRouter);
 // AEGIS — Autonomous Executive Governance & Intelligence Shield
 // Sits above KIMMP: sovereign audit dashboard for ADMIN only.
 app.use('/api/admin/aegis', aegisShield, aegisRouter);
@@ -200,11 +218,45 @@ app.use('/api/admin/aegis', aegisShield, aegisRouter);
 // KIMMP — Human Behavior Intelligence Layer (auth applied per-route inside the router).
 app.use('/api/admin/kangqore-immp', aegisAccessLogger, aegisEgressMonitor, kangqoreImmpRoutes);
 
+// WAANDA Training Data Pipeline — Gen 1 → Gen 2 data collection (ADMIN only).
+app.use('/api/admin/waanda-training', waandaTrainingRouter);
+
+// Data Portability + GDPR — authenticated user data export / audit log / deletion requests.
+app.use('/api/orgs', authenticate, orgsRouter);
+app.use('/api/admin/data-privacy', authenticate, dataPrivacyRouter);
+
+// Developer API keys.
+app.use('/api/admin/developer', authenticate, developerRouter);
+
+// ITIL — Incidents, Problems, CMDB (Sprint 7 — defeat ServiceNow).
+app.use('/api/admin/itil', authenticate, itilRouter);
+
+// OpenAPI / Swagger docs — public, no auth required.
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api/docs/spec', (_req, res) => res.json(swaggerSpec));
+
+import adminOntologyRoutes from './routes/admin-ontology';
+app.use('/api/admin/ontology', adminOntologyRoutes);
+app.use('/api/admin/integrations', integrationsRouter);
+app.use('/api/admin/semantic',     semanticMappingRouter);
+app.use('/api/admin/packs',        packsRouter);
+app.use('/api/admin/cdc',          cdcRouter);
+
 import adminSearchRoutes from './routes/admin-search';
 app.use('/api/admin/search', adminSearchRoutes);
 
+import { publicVisitorRouter, adminVisitorRouter } from './routes/visitor';
+app.use('/api/public/visitor', publicVisitorRouter);
+app.use('/api/admin/visitor', adminVisitorRouter);
+
+import hcipRouter from './routes/hcip';
+app.use('/api/hcip', hcipRouter);
+
 import servicesRoutes from './routes/services'; // Phase 3
-app.use('/api/services', servicesRoutes); 
+app.use('/api/services', servicesRoutes);
+
+import channelsRoutes from './routes/channels';
+app.use('/api/channels', channelsRoutes);
 
 
 
@@ -299,7 +351,9 @@ TwinScheduler.start();
 LoopScheduler.start();
 MetaBriefingScheduler.start();
 AegisScheduler.start();
+AegisEventEmitter.init().catch(e => console.error('[AEGIS] EventEmitter init failed:', e));
 KIMMLearningScheduler.start();
+CdcService.init().catch(e => console.error('[CDC] init failed:', e));
 
 server.listen(PORT, () => {
   console.log(`🚀 Core Backend + Frontend running on port ${PORT}`);

@@ -1,0 +1,12 @@
+{
+  "profile": "professional-services-v1",
+  "description": "Release governance rules for professional services deployments.",
+  "policies": [
+    { "rule": "No workflow changes to ACTIVE workflows without RGS pre-flight check." },
+    { "rule": "OIS must not decline more than 5 points within any 7-day window without a CHECKPOINT snapshot saved." },
+    { "rule": "CRITICAL risks created by WAANDA agents must be acknowledged within 24 hours." },
+    { "rule": "L3 approval queue must not accumulate more than 10 pending items — flag to admin if exceeded." },
+    { "rule": "Enterprise DNA must be recomputed at least once every 30 days." },
+    { "rule": "COIG baseline must be set before any COIG numbers are communicated externally." }
+  ]
+}

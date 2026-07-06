@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%" fx="50%" fy="30%">
+      <stop offset="0%" stop-color="#0b1b24" />
+      <stop offset="60%" stop-color="#050d12" />
+      <stop offset="100%" stop-color="#010406" />
+    </radialGradient>
+
+    <!-- Glass Gradients -->
+    <linearGradient id="glass-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+
+    <!-- Neon Gradients -->
+    <linearGradient id="teal-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#14b8a6" />
+    </linearGradient>
+    <linearGradient id="green-teal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d9488" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+
+    <!-- Glow Filters -->
+    <filter id="neon-glow-teal" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="neon-glow-green" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Card Shadow -->
+    <filter id="thick-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="25" stdDeviation="15" flood-color="#000000" flood-opacity="0.75" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-grad)" />
+
+  <!-- Tech Grid Grid -->
+  <g stroke="#ffffff" stroke-opacity="0.015" stroke-width="1">
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+    <line x1="100" y1="0" x2="100" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="300" y1="0" x2="300" y2="600" />
+    <line x1="400" y1="0" x2="400" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="600" y1="0" x2="600" y2="600" />
+    <line x1="700" y1="0" x2="700" y2="600" />
+  </g>
+
+  <!-- Ambient background glow -->
+  <circle cx="400" cy="320" r="260" fill="#00f0ff" opacity="0.07" filter="url(#neon-glow-teal)" />
+  <circle cx="500" cy="260" r="180" fill="#14b8a6" opacity="0.05" filter="url(#neon-glow-green)" />
+
+  <!-- Floating Data Orbit Rings (Behind the Stack) -->
+  <g fill="none" stroke-linecap="round" opacity="0.4">
+    <!-- Big Diagonal Orbit Ring -->
+    <ellipse cx="400" cy="330" rx="280" ry="120" stroke="url(#teal-glow)" stroke-width="2" transform="rotate(-15, 400, 330)" filter="url(#neon-glow-teal)" />
+    <!-- Smaller Inner Orbit Ring -->
+    <ellipse cx="400" cy="330" rx="220" ry="90" stroke="url(#green-teal)" stroke-width="1.5" transform="rotate(10, 400, 330)" />
+  </g>
+
+  <!-- Database Base Glass Plate -->
+  <g filter="url(#thick-shadow)" transform="translate(0, 80)">
+    <ellipse cx="400" cy="360" rx="240" ry="100" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1.5" />
+    <!-- Base Plate Thickness -->
+    <path d="M 160,360 L 160,375 A 10,10 0 0 0 170,385 L 630,385 A 10,10 0 0 0 640,375 L 640,360 Z" fill="url(#glass-top)" fill-opacity="0.5" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+  </g>
+
+  <!-- 3D Cylindrical Lakehouse Database Stack -->
+
+  <!-- DISK 1: BOTTOM DISK -->
+  <g filter="url(#thick-shadow)" transform="translate(0, 100)">
+    <!-- Core Glow Inside -->
+    <ellipse cx="400" cy="270" rx="90" ry="40" fill="#14b8a6" opacity="0.4" filter="url(#neon-glow-green)" />
+    <!-- Disk Cylinder Body -->
+    <path d="M 310,270 L 310,310 A 90,40 0 0 0 490,310 L 490,270 Z" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    <!-- Disk Top Face -->
+    <ellipse cx="400" cy="270" rx="90" ry="40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1.5" />
+    
+    <!-- LED Indicators on Disk Front Edge -->
+    <circle cx="360" cy="295" r="2.5" fill="#00f0ff" filter="url(#neon-glow-teal)" />
+    <circle cx="400" cy="300" r="2.5" fill="#00f0ff" filter="url(#neon-glow-teal)" />
+    <circle cx="440" cy="295" r="2.5" fill="#10b981" filter="url(#neon-glow-green)" />
+  </g>
+
+  <!-- DISK 2: MIDDLE DISK -->
+  <g filter="url(#thick-shadow)" transform="translate(0, 0)">
+    <!-- Core Glow Inside -->
+    <ellipse cx="400" cy="270" rx="90" ry="40" fill="#00f0ff" opacity="0.35" filter="url(#neon-glow-teal)" />
+    <!-- Disk Cylinder Body -->
+    <path d="M 310,270 L 310,310 A 90,40 0 0 0 490,310 L 490,270 Z" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    <!-- Disk Top Face -->
+    <ellipse cx="400" cy="270" rx="90" ry="40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1.8" />
+    
+    <!-- LED Indicators -->
+    <circle cx="360" cy="295" r="2.5" fill="#00f0ff" filter="url(#neon-glow-teal)" />
+    <circle cx="400" cy="300" r="2.5" fill="#10b981" filter="url(#neon-glow-green)" />
+    <circle cx="440" cy="295" r="2.5" fill="#00f0ff" filter="url(#neon-glow-teal)" />
+  </g>
+
+  <!-- DISK 3: TOP DISK -->
+  <g filter="url(#thick-shadow)" transform="translate(0, -100)">
+    <!-- Core Glow Inside -->
+    <ellipse cx="400" cy="270" rx="90" ry="40" fill="#00f0ff" opacity="0.5" filter="url(#neon-glow-teal)" />
+    <!-- Disk Cylinder Body -->
+    <path d="M 310,270 L 310,310 A 90,40 0 0 0 490,310 L 490,270 Z" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    <!-- Disk Top Face -->
+    <ellipse cx="400" cy="270" rx="90" ry="40" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.3" stroke-width="2" />
+    
+    <!-- Laser / Ring projection on top face -->
+    <ellipse cx="400" cy="270" rx="60" ry="25" fill="none" stroke="#00f0ff" stroke-width="2" stroke-dasharray="8, 4" filter="url(#neon-glow-teal)" />
+    <circle cx="400" cy="270" r="6" fill="#ffffff" filter="url(#neon-glow-teal)" />
+  </g>
+
+  <!-- Floating Data Particles (Frontend elements) -->
+  <g filter="url(#neon-glow-teal)">
+    <!-- Left floating node -->
+    <circle cx="250" cy="280" r="4" fill="#00f0ff" />
+    <line x1="250" y1="280" x2="310" y2="310" stroke="#00f0ff" stroke-width="1.5" stroke-dasharray="4, 4" opacity="0.6" />
+    <!-- Right floating node -->
+    <circle cx="560" cy="260" r="5" fill="#14b8a6" />
+    <line x1="560" y1="260" x2="490" y2="290" stroke="#14b8a6" stroke-width="1.5" stroke-dasharray="4, 4" opacity="0.6" />
+    
+    <circle cx="280" cy="420" r="3" fill="#00f0ff" opacity="0.7" />
+    <circle cx="510" cy="450" r="3.5" fill="#14b8a6" opacity="0.8" />
+  </g>
+</svg>

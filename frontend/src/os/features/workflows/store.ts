@@ -1,14 +1,15 @@
 import { create } from 'zustand'
-import type { Workflow, WorkflowRun } from './types'
+import type { Workflow, WorkflowRun, WorkflowStep } from './types'
 
 interface WorkflowsStore {
   workflows:  Workflow[]
   runs:       WorkflowRun[]
   selectedId: string
   isLoading:  boolean
-  setSelected:       (id: string)          => void
-  hydrateWorkflows:  (wf: Workflow[])      => void
-  hydrateRuns:       (runs: WorkflowRun[]) => void
+  setSelected:       (id: string)                          => void
+  hydrateWorkflows:  (wf: Workflow[])                      => void
+  hydrateRuns:       (runs: WorkflowRun[])                 => void
+  updateWorkflow:    (id: string, steps: WorkflowStep[])   => void
   totalRuns:    () => number
   successRate:  () => number
   activeCount:  () => number
@@ -23,6 +24,9 @@ export const useWorkflowsStore = create<WorkflowsStore>((set, get) => ({
   setSelected:      (id)    => set({ selectedId: id }),
   hydrateWorkflows: (wf)    => set({ workflows: wf, isLoading: false, selectedId: wf[0]?.id ?? '' }),
   hydrateRuns:      (runs)  => set({ runs }),
+  updateWorkflow:   (id, steps) => set(s => ({
+    workflows: s.workflows.map(w => w.id === id ? { ...w, steps } : w),
+  })),
 
   totalRuns:   () => get().workflows.reduce((s, w) => s + w.runsTotal, 0),
   successRate: () => {

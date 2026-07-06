@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
 export async function runWakeUpTrackerAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start  = Date.now()
@@ -27,11 +30,13 @@ export async function runWakeUpTrackerAgent(ctx: AgentContext): Promise<AegisAge
 
   const total = schedulerCount + eventCount + adminCount
 
+  const llmSummary = await callLLM(SYSTEM, `KIMMP wake-up activations (7d): ${total} total — ${schedulerCount} scheduler-triggered, ${eventCount} event-triggered, ${adminCount} ADMIN-direct.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
+
   return {
     agentId:   'autonomy.wake-up-tracker',
     engine:    'AUTONOMY_BOUNDARY',
     verdict:   total > 0 ? 'PASS' : 'INFO',
-    summary:   `${total} activations (7d): ${schedulerCount} scheduler wake-ups, ${eventCount} event-triggered, ${adminCount} ADMIN-direct.`,
+    summary:   llmSummary || `${total} activations (7d): ${schedulerCount} scheduler wake-ups, ${eventCount} event-triggered, ${adminCount} ADMIN-direct.`,
     findings: [
       `Total activations (7d): ${total}`,
       `Scheduler wake-ups (schedule.*): ${schedulerCount}`,

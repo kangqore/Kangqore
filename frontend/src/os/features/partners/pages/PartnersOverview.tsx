@@ -1,37 +1,54 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Star, Briefcase, DollarSign, AlertTriangle } from 'lucide-react'
-import { Card } from '@design-system/components/Card'
-import { StatCard } from '@design-system/components/StatCard'
+import { Search, Star, Briefcase, DollarSign, AlertTriangle, Users } from 'lucide-react'
 import { Badge } from '@design-system/components/Badge'
 import { Input } from '@design-system/components/Input'
 import { usePartnersStore } from '../store'
 import type { PartnerTier } from '../types'
 
-const TIER_STYLE: Record<PartnerTier, string> = {
-  platinum: 'bg-gradient-to-r from-os-blue to-os-cyan text-white',
-  gold:     'bg-amber-100 text-amber-700 border border-amber-200',
-  silver:   'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 border border-white/10 border-t-white/20',
-  associate:'bg-slate-900  text-slate-300 border border-white/10 border-t-white/20',
+function SkeletonCard() {
+  return (
+    <div className="os-card p-5 animate-pulse">
+      <div className="flex items-start gap-4">
+        <div className="w-12 h-12 rounded-xl bg-slate-700 flex-shrink-0" />
+        <div className="flex-1 space-y-2">
+          <div className="h-4 w-2/3 rounded bg-slate-700" />
+          <div className="h-3 w-1/3 rounded bg-slate-800" />
+          <div className="h-3 w-full rounded bg-slate-800 mt-2" />
+        </div>
+      </div>
+    </div>
+  )
 }
 
-const STATUS_VARIANT = {
-  active: 'success', onboarding: 'info', paused: 'warning', offboarded: 'neutral',
-} as const
+// Monday.com tier colors — hardcoded per design system spec
+const TIER_BADGE: Record<PartnerTier, { bg: string; text: string; label: string }> = {
+  platinum: { bg: '#579bfc', text: '#fff',     label: 'PLATINUM' },
+  gold:     { bg: '#fdab3d', text: '#fff',     label: 'GOLD'     },
+  silver:   { bg: '#9aa0b0', text: '#fff',     label: 'SILVER'   },
+  associate:{ bg: '#323338', text: '#9aa0b0',  label: 'ASSOCIATE'},
+}
+
+const STATUS_DOT: Record<string, string> = {
+  active:     '#00c875',
+  onboarding: '#579bfc',
+  paused:     '#fdab3d',
+  offboarded: '#9aa0b0',
+}
 
 function Stars({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5">
       {[1,2,3,4,5].map(i => (
-        <Star key={i} className={`w-3 h-3 ${i <= Math.round(rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-200'}`} />
+        <Star key={i} className={`w-3 h-3 ${i <= Math.round(rating) ? 'text-[#fdab3d] fill-[#fdab3d]' : 'text-[var(--os-text-2)]'}`} />
       ))}
-      <span className="text-xs text-slate-500 ml-1">{rating.toFixed(1)}</span>
+      <span className="text-xs text-[var(--os-text-2)] ml-1">{rating.toFixed(1)}</span>
     </div>
   )
 }
 
 export function PartnersOverview() {
-  const { partners, setSelected } = usePartnersStore()
+  const { partners, isLoading, setSelected } = usePartnersStore()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [tierFilter, setTier] = useState<PartnerTier | 'all'>('all')
@@ -42,77 +59,140 @@ export function PartnersOverview() {
      p.specialisms.some(s => s.toLowerCase().includes(search.toLowerCase())))
   )
 
-  const active         = partners.filter(p => p.status === 'active').length
-  const totalEarned    = partners.reduce((s, p) => s + p.totalEarned, 0)
-  const totalPending   = partners.reduce((s, p) => s + p.pendingPayment, 0)
-  const atRisk         = partners.filter(p => p.status === 'paused').length
+  const active       = partners.filter(p => p.status === 'active').length
+  const totalEarned  = partners.reduce((s, p) => s + p.totalEarned, 0)
+  const totalPending = partners.reduce((s, p) => s + p.pendingPayment, 0)
+  const atRisk       = partners.filter(p => p.status === 'paused').length
 
   function open(id: string) { setSelected(id); navigate('/kangqore-view/admin/partners/profile') }
 
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="h-6 w-40 rounded bg-slate-700 animate-pulse" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => <div key={i} className="os-card p-5 h-24 animate-pulse" />)}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {[...Array(6)].map((_, i) => <SkeletonCard key={i} />)}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
+      {/* Page header */}
       <div>
-        <h2 className="text-xl font-bold text-white">Partners</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{partners.length} partners · {active} active</p>
+        <p className="text-[10px] uppercase tracking-widest text-[var(--os-text-2)] font-semibold mb-1">Partner Network</p>
+        <h2 className="text-xl font-bold text-[var(--os-text-1)]">Partners</h2>
+        <p className="text-sm text-[var(--os-text-2)] mt-0.5">{partners.length} total · {active} active</p>
       </div>
 
+      {/* Stat header */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Active Partners"   value={active}                                 icon={<Briefcase     className="w-5 h-5"/>} iconColor="bg-os-blue/10 text-os-blue" />
-        <StatCard label="Total Paid Out"    value={`₹${(totalEarned/1000).toFixed(0)}k`}  icon={<DollarSign    className="w-5 h-5"/>} iconColor="bg-green-100 text-green-600"    />
-        <StatCard label="Pending Payment"   value={`₹${(totalPending/1000).toFixed(0)}k`} icon={<DollarSign    className="w-5 h-5"/>} iconColor="bg-amber-100 text-amber-600"    />
-        <StatCard label="Paused"            value={atRisk}                                 icon={<AlertTriangle className="w-5 h-5"/>} iconColor={atRisk > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'} />
-      </div>
-
-      <div className="flex items-center gap-3 flex-wrap">
-        <Input placeholder="Search partners or skills…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-64" value={search} onChange={e => setSearch(e.target.value)} />
-        {(['all','platinum','gold','silver','associate'] as const).map(t => (
-          <button key={t} onClick={() => setTier(t)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${tierFilter === t ? 'bg-os-blue text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-300 hover:border-os-blue/40'}`}>
-            {t === 'all' ? 'All Tiers' : t}
-          </button>
+        {[
+          { label: 'Total Partners',    value: partners.length,                                bg: 'linear-gradient(135deg,#2564ea 0%,#4ab6d4 100%)', glow: '#2564ea' },
+          { label: 'Active',            value: active,                                         bg: 'linear-gradient(135deg,#00c875 0%,#00a86b 100%)', glow: '#00c875' },
+          { label: 'Revenue Generated', value: `₹${(totalEarned/1000).toFixed(0)}k`,          bg: 'linear-gradient(135deg,#7c3aed 0%,#9d4edd 100%)', glow: '#7c3aed' },
+          { label: 'Pending Payment',   value: `₹${(totalPending/1000).toFixed(0)}k`,         bg: atRisk > 0 ? 'linear-gradient(135deg,#e2445c 0%,#c0392b 100%)' : 'linear-gradient(135deg,#64748b 0%,#475569 100%)', glow: atRisk > 0 ? '#e2445c' : '#64748b' },
+        ].map(s => (
+          <div key={s.label} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: s.bg, boxShadow: `0 4px 20px ${s.glow}40` }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.30) 0%, transparent 60%)' }} />
+            <p className="relative text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{s.label}</p>
+            <p className="relative text-3xl font-black tracking-tight" style={{ color: '#ffffff' }}>{s.value}</p>
+          </div>
         ))}
       </div>
 
+      {/* Filters */}
+      <div className="flex items-center gap-3 flex-wrap">
+        <Input placeholder="Search partners or skills…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-64" value={search} onChange={e => setSearch(e.target.value)} />
+        {(['all','platinum','gold','silver','associate'] as const).map(t => {
+          const tb = t === 'all' ? null : TIER_BADGE[t]
+          return (
+            <button
+              key={t}
+              onClick={() => setTier(t)}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all border"
+              style={
+                tierFilter === t
+                  ? { background: tb?.bg ?? '#579bfc', color: tb?.text ?? '#fff', borderColor: tb?.bg ?? '#579bfc' }
+                  : { background: 'transparent', color: 'var(--os-text-2)', borderColor: 'var(--os-border)' }
+              }
+            >
+              {t === 'all' ? 'All Tiers' : t}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Partner cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {visible.map(partner => (
-          <Card key={partner.id} className="hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer" onClick={() => open(partner.id)}>
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold text-sm">{partner.logo}</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-white truncate">{partner.name}</h3>
-                      <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full capitalize ${TIER_STYLE[partner.tier]}`}>{partner.tier}</span>
+        {visible.length === 0 && (
+          <div className="col-span-2 py-16 text-center">
+            <Briefcase className="w-10 h-10 text-[var(--os-text-2)] mx-auto mb-3" />
+            <p className="text-[var(--os-text-2)] font-medium">No partners found</p>
+            <p className="text-[var(--os-text-2)] text-sm mt-1">Try adjusting filters or add a new partner.</p>
+          </div>
+        )}
+        {visible.map(partner => {
+          const tb = TIER_BADGE[partner.tier]
+          const statusColor = STATUS_DOT[partner.status] ?? '#9aa0b0'
+          return (
+            <div
+              key={partner.id}
+              className="os-card p-5 hover:shadow-[var(--os-shadow-card)] transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+              onClick={() => open(partner.id)}
+            >
+              <div className="flex items-start gap-4">
+                {/* Avatar */}
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm text-white" style={{ background: '#579bfc' }}>
+                  {partner.logo}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="font-semibold text-[var(--os-text-1)] truncate">{partner.name}</h3>
+                        {/* Tier badge */}
+                        <span
+                          className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                          style={{ background: tb.bg, color: tb.text }}
+                        >{tb.label}</span>
+                      </div>
+                      <p className="text-xs text-[var(--os-text-2)] mt-0.5 capitalize">{partner.type} · {partner.country}</p>
                     </div>
-                    <p className="text-xs text-slate-500 mt-0.5 capitalize">{partner.type} · {partner.country}</p>
+                    {/* Status dot */}
+                    <div className="flex items-center gap-1.5 flex-shrink-0 text-xs" style={{ color: statusColor }}>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: statusColor }} />
+                      <span className="capitalize font-semibold">{partner.status}</span>
+                    </div>
                   </div>
-                  <Badge variant={STATUS_VARIANT[partner.status]} dot size="sm">{partner.status}</Badge>
-                </div>
 
-                <Stars rating={partner.rating} />
-                <p className="text-xs text-slate-500 mt-2 line-clamp-1">{partner.description}</p>
+                  <Stars rating={partner.rating} />
+                  <p className="text-xs text-[var(--os-text-2)] mt-2 line-clamp-1">{partner.description}</p>
 
-                <div className="flex items-center gap-1.5 mt-2 flex-wrap">
-                  {partner.specialisms.slice(0,4).map(s => (
-                    <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 font-medium">{s}</span>
-                  ))}
-                  {partner.specialisms.length > 4 && <span className="text-[11px] text-slate-500">+{partner.specialisms.length - 4}</span>}
-                </div>
+                  <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                    {partner.specialisms.slice(0,4).map(s => (
+                      <span key={s} className="text-[10px] px-2 py-0.5 rounded-full bg-[#579bfc]/10 text-[#579bfc] font-medium border border-[#579bfc]/20">{s}</span>
+                    ))}
+                    {partner.specialisms.length > 4 && <span className="text-[10px] text-[var(--os-text-2)]">+{partner.specialisms.length - 4}</span>}
+                  </div>
 
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/10 border-t-white/20 text-xs text-slate-500">
-                  <span><strong className="text-slate-200">{partner.activeTasks}</strong> active tasks</span>
-                  <span><strong className="text-slate-200">₹{(partner.totalEarned/1000).toFixed(0)}k</strong> earned</span>
-                  {partner.pendingPayment > 0 && (
-                    <span className="text-amber-600 font-semibold">₹{(partner.pendingPayment/1000).toFixed(0)}k pending</span>
-                  )}
-                  <span>₹{partner.hourlyRate}/hr</span>
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-[var(--os-border)] text-xs text-[var(--os-text-2)]">
+                    <span><strong className="text-[var(--os-text-1)]">{partner.activeTasks}</strong> active tasks</span>
+                    <span><strong className="text-[var(--os-text-1)]">₹{(partner.totalEarned/1000).toFixed(0)}k</strong> earned</span>
+                    {partner.pendingPayment > 0 && (
+                      <span className="font-semibold" style={{ color: '#fdab3d' }}>₹{(partner.pendingPayment/1000).toFixed(0)}k pending</span>
+                    )}
+                    <span>₹{partner.hourlyRate}/hr</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </Card>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import type { TeamMember, Allocation } from './types'
 
 export const TEAM: TeamMember[] = [
   {
-    id: 'm1', name: 'Mahesh Kumar',  role: 'CEO / Lead Architect',    department: 'Engineering',
+    id: 'm1', name: 'C.O.D.E.',  role: 'CEO / Lead Architect',    department: 'Engineering',
     email: 'mahesh@kangqore.com',   location: 'London, UK',
     skills: ['Strategy', 'Architecture', 'React', 'Node.js', 'AI/ML'],
     status: 'active',    utilization: 88, availability: 40, billableRate: 250,
@@ -60,9 +60,9 @@ export const TEAM: TeamMember[] = [
 ]
 
 export const ALLOCATIONS: Allocation[] = [
-  { id: 'a1',  memberId: 'm1', memberName: 'Mahesh Kumar',  projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#2564ea', hoursPerWeek: 8,  startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 20 },
-  { id: 'a2',  memberId: 'm1', memberName: 'Mahesh Kumar',  projectId: 'pj2', projectName: 'eQORE v2 Rebuild',         projectColor: '#2563eb', hoursPerWeek: 10, startDate: '2025-11-01', endDate: '2026-06-30', allocationPct: 25 },
-  { id: 'a3',  memberId: 'm1', memberName: 'Mahesh Kumar',  projectId: 'pj4', projectName: 'Kangqore OS Dashboard',    projectColor: '#2564ea', hoursPerWeek: 16, startDate: '2026-03-01', endDate: '2026-10-31', allocationPct: 40 },
+  { id: 'a1',  memberId: 'm1', memberName: 'C.O.D.E.',  projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#2564ea', hoursPerWeek: 8,  startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 20 },
+  { id: 'a2',  memberId: 'm1', memberName: 'C.O.D.E.',  projectId: 'pj2', projectName: 'eQORE v2 Rebuild',         projectColor: '#2563eb', hoursPerWeek: 10, startDate: '2025-11-01', endDate: '2026-06-30', allocationPct: 25 },
+  { id: 'a3',  memberId: 'm1', memberName: 'C.O.D.E.',  projectId: 'pj4', projectName: 'Kangqore OS Dashboard',    projectColor: '#2564ea', hoursPerWeek: 16, startDate: '2026-03-01', endDate: '2026-10-31', allocationPct: 40 },
   { id: 'a4',  memberId: 'm2', memberName: 'Anika Roy',     projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#2564ea', hoursPerWeek: 16, startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 40 },
   { id: 'a5',  memberId: 'm2', memberName: 'Anika Roy',     projectId: 'pj3', projectName: 'Nexus Partner Portal',     projectColor: '#059669', hoursPerWeek: 12, startDate: '2026-02-15', endDate: '2026-05-31', allocationPct: 30 },
   { id: 'a6',  memberId: 'm3', memberName: 'Dev Patel',     projectId: 'pj1', projectName: 'Alpha CRM Platform',      projectColor: '#2564ea', hoursPerWeek: 20, startDate: '2026-01-10', endDate: '2026-07-31', allocationPct: 50 },

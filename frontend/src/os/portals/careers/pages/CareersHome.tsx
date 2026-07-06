@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { MapPin, Clock, DollarSign, Wifi, ChevronRight } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
@@ -9,7 +10,7 @@ import { api } from '@lib/api'
 const DEPT_COLOR: Record<string, string> = {
   engineering: 'bg-blue-50 text-blue-700', product: 'bg-purple-50 text-purple-700',
   sales: 'bg-green-50 text-green-700', delivery: 'bg-orange-50 text-orange-700',
-  ops: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500', design: 'bg-pink-50 text-pink-700',
+  ops: 'bg-slate-50 text-slate-600', design: 'bg-pink-50 text-pink-700',
 }
 
 const PERKS = [
@@ -48,18 +49,19 @@ export function CareersHome() {
     : mockRoles
 
   return (
-    <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-10">
+    <div className="space-y-10">
+      <KIMMPSignalBar module="Careers" />
       {/* Hero */}
       <div className="bg-gradient-to-r from-[#0f1117] to-[#1a1d2e] rounded-2xl p-8 text-white">
         <div className="max-w-xl">
           <p className="text-blue-400 text-sm font-semibold mb-2 tracking-wide uppercase">We're hiring</p>
-          <h2 className="text-2xl font-bold tracking-tight leading-tight mb-3">
+          <h2 className="text-2xl font-black tracking-tight leading-tight mb-3">
             Build the OS that runs companies.<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-os-blue to-os-cyan">
               Join Kangqore.
             </span>
           </h2>
-          <p className="text-slate-500 text-sm leading-relaxed">
+          <p className="text-[var(--os-text-2)] text-sm leading-relaxed">
             We're a fast-growing product studio building Kangqore OS — an AI-powered platform for strategy, delivery, and intelligence.
             {openRoles.length} roles open now.
           </p>
@@ -68,7 +70,7 @@ export function CareersHome() {
 
       {/* Open roles */}
       <div>
-        <h3 className="text-base font-bold text-white mb-4">Open Positions ({openRoles.length})</h3>
+        <h3 className="text-base font-bold mb-4" style={{ color: 'var(--os-text-1)' }}>Open Positions ({openRoles.length})</h3>
         <div className="space-y-3">
           {openRoles.map(role => (
             <Card key={role.id} className="hover:border-blue-200 hover:bg-blue-50/20 transition-all cursor-pointer">
@@ -76,7 +78,7 @@ export function CareersHome() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <h4 className="font-semibold text-white">{role.title}</h4>
+                      <h4 className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{role.title}</h4>
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${DEPT_COLOR[role.department]}`}>
                         {role.department}
                       </span>
@@ -86,14 +88,14 @@ export function CareersHome() {
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-wrap gap-3 text-xs text-slate-500 mt-1">
+                    <div className="flex flex-wrap gap-3 text-xs text-[var(--os-text-2)] mt-1">
                       <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{role.location}</span>
                       {role.salaryMin > 0 && (
                         <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" />£{role.salaryMin}k–£{role.salaryMax}k</span>
                       )}
                       <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{role.type}</span>
                     </div>
-                    <p className="text-sm text-slate-500 mt-2 line-clamp-2">{role.description}</p>
+                    <p className="text-sm text-[var(--os-text-2)] mt-2 line-clamp-2">{role.description}</p>
                   </div>
                   <div className="flex-shrink-0 flex flex-col items-end gap-2">
                     <Badge variant="success" size="sm" dot>Open</Badge>
@@ -106,10 +108,10 @@ export function CareersHome() {
                 {/* Requirements preview */}
                 <div className="flex flex-wrap gap-1.5 mt-3">
                   {role.requirements.slice(0, 3).map((req, i) => (
-                    <span key={i} className="text-xs bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500 px-2 py-0.5 rounded-full">{req}</span>
+                    <span key={i} className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'var(--os-surface)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>{req}</span>
                   ))}
                   {role.requirements.length > 3 && (
-                    <span className="text-xs text-slate-500">+{role.requirements.length - 3} more</span>
+                    <span className="text-xs text-[var(--os-text-2)]">+{role.requirements.length - 3} more</span>
                   )}
                 </div>
               </CardBody>
@@ -120,13 +122,13 @@ export function CareersHome() {
 
       {/* Perks */}
       <div>
-        <h3 className="text-base font-bold text-white mb-4">Why Kangqore?</h3>
+        <h3 className="text-base font-bold mb-4" style={{ color: 'var(--os-text-1)' }}>Why Kangqore?</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {PERKS.map(p => (
-            <div key={p.label} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-4">
+            <div key={p.label} className="os-card p-4">
               <span className="text-2xl mb-2 block">{p.icon}</span>
-              <p className="text-sm font-semibold text-white">{p.label}</p>
-              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{p.desc}</p>
+              <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{p.label}</p>
+              <p className="text-xs text-[var(--os-text-2)] mt-0.5 leading-relaxed">{p.desc}</p>
             </div>
           ))}
         </div>

@@ -6,11 +6,15 @@ import { KimmpMemoryService } from '../memory/kimmpMemory.service'
 import { KimmpReportService } from '../reports/kimmpReport.service'
 import { AlisDemandResponder } from '../../kangqore-alis/services/alisDemandResponder.service'
 import { VisContentActioner } from '../../kangqore-vis/services/visContentActioner.service'
+import { KimmpToolDispatch } from './kimmpToolDispatch.service'
+import type { Platform } from '../../integrations/types'
+import { checkPolicy } from '../../services/policyEngine.service'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
 
 export type ActionType =
   // L0 — auto-execute, pure reads or safe KIMMP-internal writes
+  | 'EXTERNAL_API_CALL'
   | 'QUERY_LEADS'
   | 'QUERY_PROJECTS'
   | 'QUERY_CLIENTS'
@@ -55,6 +59,7 @@ export class KimmpActionsService {
   static parseAction(raw: any): { type: ActionType; description: string; params: Record<string,any>; level: number } | null {
     if (!raw?.type) return null
     const validTypes: ActionType[] = [
+      'EXTERNAL_API_CALL',
       'QUERY_LEADS','QUERY_PROJECTS','QUERY_CLIENTS','EMIT_SIGNAL',
       'CREATE_LEAD','SCHEDULE_TASK','SEND_NOTIFICATION','UPDATE_LEAD_STATUS',
       'ADD_MEMORY','LOG_DECISION','DISMISS_ALERT',
@@ -71,16 +76,29 @@ export class KimmpActionsService {
     }
   }
 
-  static async queue(parsed: { type: ActionType; description: string; params: Record<string,any>; level: number }): Promise<{
+  static async queue(parsed: { type: ActionType; description: string; params: Record<string,any>; level: number }, actorId?: string): Promise<{
     queued:        boolean
     pendingAction?: PendingAction
     result?:       ActionResult
+    policyDenied?: boolean
+    policyReason?: string
   }> {
-    if (parsed.level <= 2) {
+    // ── Policy check (before execution or queueing) ────────────────────────
+    const policy = await checkPolicy({ trigger: parsed.type, params: parsed.params, actorId }).catch(() => null)
+    if (policy?.effect === 'DENY') {
+      return {
+        queued: false, policyDenied: true, policyReason: policy.reason,
+        result: { success: false, summary: `Blocked by policy: ${policy.reason}` },
+      }
+    }
+    // REQUIRE_APPROVAL from policy always escalates regardless of agent level
+    const effectiveLevel = policy?.effect === 'REQUIRE_APPROVAL' ? 3 : parsed.level
+
+    if (effectiveLevel <= 2) {
       const result = await this.execute(parsed.type, parsed.params)
       return { queued: false, result }
     }
-    const approvalId = await KimmpAuthorityEngine.createApprovalRequest({
+    const approvalId = await KimmpAuthorityEngine.createApprovalRequest({  // effectiveLevel is L3
       tool:        parsed.type,
       action:      parsed.type,
       description: parsed.description,
@@ -106,9 +124,11 @@ export class KimmpActionsService {
     return this.execute(approved.action as ActionType, approved.input?.params ?? {})
   }
 
-  static async execute(type: ActionType, params: Record<string, any>): Promise<ActionResult> {
+  static async execute(type: ActionType, params: Record<string, any>, context?: { adminId?: string }): Promise<ActionResult> {
     try {
       switch (type) {
+        // ── L3 — External integrations (requires admin approval, then executes) ──
+        case 'EXTERNAL_API_CALL': return await this.externalApiCall(params, context?.adminId)
         // ── L0 ──────────────────────────────────────────────────────────────
         case 'QUERY_LEADS':        return await this.queryLeads(params)
         case 'QUERY_PROJECTS':     return await this.queryProjects(params)
@@ -382,6 +402,32 @@ export class KimmpActionsService {
       success: true,
       summary: `Email draft ready — "${subject}"`,
       data:    { to: p.to, subject, body },
+    }
+  }
+
+  // ── External API calls (via Integration Hub) ─────────────────────────────────
+
+  private static async externalApiCall(p: any, adminId?: string): Promise<ActionResult> {
+    const platform = p.platform as Platform
+    const action   = p.action as string
+    const params   = p.params ?? {}
+
+    if (!platform || !action) {
+      return { success: false, summary: 'EXTERNAL_API_CALL requires platform and action' }
+    }
+
+    // Resolve the userId: adminId (from approval), or fall back to the first admin user
+    let userId = adminId ?? p.userId
+    if (!userId) {
+      const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' }, select: { id: true } })
+      userId = admin?.id ?? ''
+    }
+
+    const result = await KimmpToolDispatch.dispatch({ platform, action, params, userId })
+    return {
+      success: result.ok,
+      summary: result.summary,
+      data:    result.data,
     }
   }
 

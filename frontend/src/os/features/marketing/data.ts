@@ -26,7 +26,7 @@ export const CAMPAIGNS: Campaign[] = [
     id: 'c4', name: 'HealthTech Europe Event', channel: 'event', status: 'completed',
     startDate: '2026-05-14', endDate: '2026-05-15', budget: 3500, spent: 3480,
     impressions: 1200, clicks: 0, leads: 4, mqls: 2, sqls: 1, revenue: 120000,
-    owner: 'Mahesh Kumar', description: 'Sponsorship and speaking slot at HealthTech Europe, Stockholm.',
+    owner: 'C.O.D.E.', description: 'Sponsorship and speaking slot at HealthTech Europe, Stockholm.',
     tags: ['event', 'healthcare', 'eu'],
   },
   {
@@ -48,9 +48,9 @@ export const CAMPAIGNS: Campaign[] = [
 export const CONTENT_PIECES: ContentPiece[] = [
   { id: 'cp1', title: 'How Kangqore helped GlobeMed cut onboarding time by 60%', type: 'case-study', status: 'published', publishDate: '2026-04-15', author: 'Anika Roy',     views: 2840, leads: 8,  tags: ['healthcare', 'case-study'] },
   { id: 'cp2', title: 'Building HIPAA-compliant patient portals: a technical guide',  type: 'whitepaper', status: 'published', publishDate: '2026-03-28', author: 'Dev Patel',    views: 1920, leads: 14, tags: ['healthcare', 'technical', 'compliance'] },
-  { id: 'cp3', title: 'The AI-driven CRM: why intent scoring changes everything',    type: 'blog',       status: 'published', publishDate: '2026-05-10', author: 'Mahesh Kumar', views: 3450, leads: 6,  tags: ['crm', 'ai', 'thought-leadership'] },
+  { id: 'cp3', title: 'The AI-driven CRM: why intent scoring changes everything',    type: 'blog',       status: 'published', publishDate: '2026-05-10', author: 'C.O.D.E.', views: 3450, leads: 6,  tags: ['crm', 'ai', 'thought-leadership'] },
   { id: 'cp4', title: 'Kangqore OS: from strategy to delivery in one platform',     type: 'video',      status: 'published', publishDate: '2026-04-28', author: 'Anika Roy',     views: 1240, leads: 3,  tags: ['product', 'demo'] },
-  { id: 'cp5', title: 'Investor reporting automation: 3 hours to 10 minutes',       type: 'blog',       status: 'published', publishDate: '2026-05-20', author: 'Mahesh Kumar', views: 2100, leads: 5,  tags: ['finance', 'automation'] },
+  { id: 'cp5', title: 'Investor reporting automation: 3 hours to 10 minutes',       type: 'blog',       status: 'published', publishDate: '2026-05-20', author: 'C.O.D.E.', views: 2100, leads: 5,  tags: ['finance', 'automation'] },
   { id: 'cp6', title: 'Fintech compliance dashboard — product launch webinar',       type: 'webinar',    status: 'scheduled', publishDate: '2026-06-18', author: 'Dev Patel',    views: 0,    leads: 0,  tags: ['fintech', 'webinar', 'upcoming'] },
   { id: 'cp7', title: 'Q3 Fintech Decision-Maker Research Report',                  type: 'whitepaper', status: 'draft',     author: 'Anika Roy',     views: 0, leads: 0, tags: ['fintech', 'research', 'q3'] },
 ]

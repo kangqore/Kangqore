@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { LayoutGrid, CheckSquare, DollarSign, Briefcase, Package, Calendar, FolderOpen, MessageSquare, Brain } from 'lucide-react'
+import { LayoutGrid, CheckSquare, DollarSign, Briefcase, Package, Calendar, FolderOpen, MessageSquare, Brain, Hash } from 'lucide-react'
+import RelayPage from '@features/relay/pages/RelayPage'
 import { PortalNavbar }        from '../layout/PortalNavbar'
 import { ModuleShell }         from '@components/ModuleShell'
 import { PartnerDashboard }    from './pages/PartnerDashboard'
@@ -14,15 +15,16 @@ import { PartnerWaanda }       from './pages/PartnerWaanda'
 import type { PortalNotif }    from '../layout/PortalNavbar'
 
 const TABS = [
-  { path: '',             label: 'Dashboard',    icon: LayoutGrid   },
-  { path: 'projects',     label: 'Projects',     icon: Briefcase    },
-  { path: 'tasks',        label: 'Tasks',        icon: CheckSquare  },
-  { path: 'deliverables', label: 'Deliverables', icon: Package      },
-  { path: 'meetings',     label: 'Meetings',     icon: Calendar     },
-  { path: 'documents',    label: 'Documents',    icon: FolderOpen   },
-  { path: 'earnings',     label: 'Earnings',     icon: DollarSign   },
-  { path: 'comms',        label: 'Messages',     icon: MessageSquare},
-  { path: 'waanda',       label: 'WAANDA',       icon: Brain        },
+  { path: '',             label: 'Dashboard',    icon: LayoutGrid    },
+  { path: 'projects',     label: 'Projects',     icon: Briefcase     },
+  { path: 'tasks',        label: 'Tasks',        icon: CheckSquare   },
+  { path: 'deliverables', label: 'Deliverables', icon: Package       },
+  { path: 'meetings',     label: 'Meetings',     icon: Calendar      },
+  { path: 'documents',    label: 'Documents',    icon: FolderOpen    },
+  { path: 'earnings',     label: 'Earnings',     icon: DollarSign    },
+  { path: 'comms',        label: 'Messages',     icon: MessageSquare },
+  { path: 'waanda',       label: 'WAANDA',       icon: Brain         },
+  { path: 'relay',        label: 'RELAY',        icon: Hash          },
 ]
 
 const PARTNER_NOTIFICATIONS: PortalNotif[] = [
@@ -62,7 +64,7 @@ const PARTNER_NOTIFICATIONS: PortalNotif[] = [
 
 export function PartnerPortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 pt-[7.5rem]">
+    <div className="os-main-content flex flex-col h-screen" style={{ background: 'var(--os-bg)', color: 'var(--os-text-1)' }}>
       <PortalNavbar
         portalName="Partner Portal"
         portalColor="bg-gradient-to-br from-[#059669] to-[#34d399]"
@@ -71,7 +73,7 @@ export function PartnerPortal() {
         basePath="/kangqore-view/partner"
         notifications={PARTNER_NOTIFICATIONS}
       />
-      <div className="flex-1 overflow-y-auto min-h-0">
+      <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
         <ModuleShell>
           <Routes>
             <Route index                 element={<PartnerDashboard />}    />
@@ -83,6 +85,7 @@ export function PartnerPortal() {
             <Route path="earnings"       element={<PartnerEarnings />}     />
             <Route path="comms"          element={<PartnerComms />}        />
             <Route path="waanda"         element={<PartnerWaanda />}       />
+            <Route path="relay/*"        element={<RelayPage />}           />
             <Route path="*"              element={<Navigate to="/kangqore-view/partner" replace />} />
           </Routes>
         </ModuleShell>

@@ -1,0 +1,32 @@
+{
+  "pack": "professional-services",
+  "version": "1.0.0",
+  "name": "Professional Services Pack",
+  "description": "Deployable operating model for professional services firms. Extracted from the live Kangqore Global deployment. Covers delivery, finance, and sales departments.",
+  "extractedFrom": "Kangqore Global — internal deployment, 2026",
+  "compatibleWith": "Kangqore OS Foundation v1.0+",
+  "includes": [
+    "ontology/entity-types.json",
+    "goals/enterprise-goals.json",
+    "kpis/ois-pillar-weights.json",
+    "policies/governance-rules.json",
+    "agents/agent-config.json",
+    "workflows/delivery-workflows.json",
+    "workflows/finance-workflows.json",
+    "workflows/sales-workflows.json",
+    "dashboards/mission-control-config.json",
+    "reports/qbr-template.json",
+    "recommendations/seed-recommendations.json",
+    "forecast-templates/horizon-config.json",
+    "executive-views/enterprise-pulse-templates.json",
+    "ois-profile.json",
+    "qef-profile.json",
+    "rgs-policy.json",
+    "enterprise-dna.json",
+    "com-playbook.md"
+  ],
+  "departments": ["DELIVERY", "FINANCE", "SALES"],
+  "workflowCount": 9,
+  "agentCount": 7,
+  "oisPillarCount": 8
+}

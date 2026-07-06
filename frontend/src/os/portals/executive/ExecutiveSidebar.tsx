@@ -45,29 +45,15 @@ export function ExecutiveSidebar() {
   return (
     <aside
       className={cn(
-        'flex-shrink-0 flex flex-col bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-white border-r border-white/10 border-t-white/20 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] h-full',
-        sidebarCollapsed ? 'w-16' : 'w-[230px]'
+        'flex-shrink-0 flex flex-col transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] h-full',
+        'bg-[#f6f7fb] dark:bg-[#111111] text-[#323338] dark:text-[var(--os-text-1)]',
+        'border-r border-[#e6e9ef] dark:border-white/10',
+        sidebarCollapsed ? 'w-16' : 'w-[176px]'
       )}
       style={{ zIndex: 40 }}
     >
       {/* Logo */}
-      <Link
-        to="/"
-        className={cn(
-          'flex items-center gap-3 flex-shrink-0 hover:bg-white/[0.04] transition-colors cursor-pointer',
-          sidebarCollapsed ? 'h-[60px] justify-center px-0' : 'h-[60px] px-5'
-        )}
-      >
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }}>
-          <img src="/assets/kangqore-icon-white.png" alt="Kangqore" className="w-5 h-5 object-contain" />
-        </div>
-        {!sidebarCollapsed && (
-          <div className="overflow-hidden">
-            <p className="text-white font-bold text-sm leading-none" style={{ fontFamily: 'var(--font-display)' }}>Kangqore</p>
-            <p className="text-[#4ab6d4] text-[10px] tracking-widest mt-0.5 font-bold uppercase">Executive</p>
-          </div>
-        )}
-      </Link>
+
 
       {/* Nav */}
       <motion.nav
@@ -79,12 +65,12 @@ export function ExecutiveSidebar() {
         {NAV_GROUPS.map(group => (
           <motion.div key={group.label} variants={staggerChild}>
             {!sidebarCollapsed && (
-              <p className="px-5 mb-1.5 text-[10px] font-semibold tracking-wider text-slate-500 uppercase flex items-center gap-1.5">
+              <p className="px-5 mb-1.5 text-[10px] font-semibold tracking-wider text-[var(--os-text-2)] uppercase flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: group.color }} />
                 {group.label}
               </p>
             )}
-            {sidebarCollapsed && <div className="mx-4 my-2 h-px bg-[#2E2854]" />}
+            {sidebarCollapsed && <div className="mx-4 my-2 h-px bg-[#e6e9ef] dark:bg-[#2E2854]" />}
             <ul className="space-y-0.5">
               {group.items.map(item => {
                 const Icon = item.icon
@@ -95,7 +81,7 @@ export function ExecutiveSidebar() {
                     className={({ isActive }) => cn(
                       'flex items-center gap-3 rounded-lg transition-all duration-150 group relative',
                       sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
-                      isActive ? 'text-white shadow-sm' : 'text-slate-500 hover:bg-white/[0.06] hover:text-slate-100'
+                      isActive ? 'text-white shadow-sm' : 'text-[#676879] dark:text-[var(--os-text-2)] hover:bg-[#e6e9ef] dark:hover:bg-white/[0.06] hover:text-[#323338] dark:hover:text-slate-100'
                     )}
                     style={({ isActive }) => isActive ? { background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' } : {}}
                   >
@@ -119,11 +105,11 @@ export function ExecutiveSidebar() {
       </motion.nav>
 
       {/* Collapse toggle */}
-      <div className="flex-shrink-0 border-t border-white/10 border-t-white/20 p-3">
+      <div className="flex-shrink-0 border-t border-[#e6e9ef] dark:border-white/10 p-3">
         <button
           onClick={toggleSidebar}
           className={cn(
-            'flex items-center gap-2.5 w-full rounded-lg h-9 text-slate-500 hover:text-slate-100 hover:bg-white/[0.06] transition-all duration-150',
+            'flex items-center gap-2.5 w-full rounded-lg h-9 text-[#676879] dark:text-[var(--os-text-2)] hover:text-[#323338] dark:hover:text-slate-100 hover:bg-[#e6e9ef] dark:hover:bg-white/[0.06] transition-all duration-150',
             sidebarCollapsed ? 'justify-center' : 'px-3'
           )}
         >

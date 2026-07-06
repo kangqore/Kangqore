@@ -29,18 +29,18 @@ const AGENT_COLOR: Record<string, string> = {
   SIGNAL_READ:          '#2564ea',
   LEAD_ANALYSIS:        '#2564ea',
   FINANCIAL_SNAPSHOT:   '#059669',
-  REPORT_GENERATE:      '#64748b',
+  REPORT_GENERATE:      'var(--os-text-2)',
   STRATEGIST:           '#d97706',
   ADVISOR:              '#d97706',
   FORECAST:             '#0ea5e9',
   RISK_ANALYSIS:        '#ef4444',
   OPPORTUNITY_SCAN:     '#10b981',
   COMPETITOR_INTEL:     '#f97316',
-  WORKFLOW_ORCHESTRATOR:'#64748b',
-  EXEC_SUMMARY:         '#64748b',
+  WORKFLOW_ORCHESTRATOR:'var(--os-text-2)',
+  EXEC_SUMMARY:         'var(--os-text-2)',
   DECISION_ENGINE:      '#d97706',
   MEMORY_RECALL:        '#8b5cf6',
-  TASK_MANAGER:         '#64748b',
+  TASK_MANAGER:         'var(--os-text-2)',
   MEETING_INTEL:        '#0ea5e9',
   ORGANIZATION_HEALTH:  '#059669',
   CLIENT_INTEL:         '#2564ea',
@@ -50,7 +50,7 @@ const AGENT_COLOR: Record<string, string> = {
   VULNERABILITY_MANAGER:'#ef4444',
   SECURITY_POSTURE:     '#f97316',
   RISK_MANAGER:         '#ef4444',
-  COMPLIANCE_GUARD:     '#64748b',
+  COMPLIANCE_GUARD:     'var(--os-text-2)',
   ATTACK_ANALYZER:      '#ef4444',
   ACCESS_GOVERNOR:      '#f97316',
   ASSET_GUARDIAN:       '#f97316',
@@ -66,7 +66,7 @@ const REC_COLOR: Record<string, string> = {
 
 function recColor(rec: string) {
   const key = (rec ?? '').toUpperCase().split(' ')[0]
-  return REC_COLOR[key] ?? '#64748b'
+  return REC_COLOR[key] ?? 'var(--os-text-2)'
 }
 
 // ─── Stat card ────────────────────────────────────────────────────────────────
@@ -74,9 +74,9 @@ function recColor(rec: string) {
 function Stat({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
   return (
     <div className="bg-white border border-slate-200 rounded-xl px-5 py-4">
-      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">{label}</p>
+      <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-2)] mb-1">{label}</p>
       <p className="text-2xl font-bold tracking-tight text-slate-900">{value}</p>
-      {sub && <p className="text-xs text-slate-400 mt-0.5">{sub}</p>}
+      {sub && <p className="text-xs text-[var(--os-text-2)] mt-0.5">{sub}</p>}
     </div>
   )
 }
@@ -84,7 +84,7 @@ function Stat({ label, value, sub }: { label: string; value: string | number; su
 // ─── Agent pill ───────────────────────────────────────────────────────────────
 
 function AgentPill({ agent, durationMs, success }: { agent: string; durationMs?: number; success?: boolean }) {
-  const color = AGENT_COLOR[agent] ?? '#64748b'
+  const color = AGENT_COLOR[agent] ?? 'var(--os-text-2)'
   return (
     <span
       className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono border flex-shrink-0"
@@ -101,12 +101,12 @@ function AgentPill({ agent, durationMs, success }: { agent: string; durationMs?:
 
 function AgentTrace({ result }: { result: any }) {
   const [open, setOpen] = useState(false)
-  const color = AGENT_COLOR[result.agentType] ?? '#64748b'
+  const color = AGENT_COLOR[result.agentType] ?? 'var(--os-text-2)'
 
   return (
     <div
       className="rounded-lg border overflow-hidden transition-all"
-      style={{ borderColor: open ? `${color}40` : '#e2e8f0' }}
+      style={{ borderColor: open ? `${color}40` : 'var(--os-text-1)' }}
     >
       <button
         onClick={() => setOpen(o => !o)}
@@ -121,12 +121,12 @@ function AgentTrace({ result }: { result: any }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-bold font-mono" style={{ color }}>{result.agentType}</span>
-            {result.role && <span className="text-[10px] text-slate-400 truncate">{result.role}</span>}
+            {result.role && <span className="text-[10px] text-[var(--os-text-2)] truncate">{result.role}</span>}
           </div>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0">
           {result.durationMs != null && (
-            <span className="text-[10px] text-slate-400 font-mono flex items-center gap-1">
+            <span className="text-[10px] text-[var(--os-text-2)] font-mono flex items-center gap-1">
               <Clock className="w-3 h-3" />{fmtMs(result.durationMs)}
             </span>
           )}
@@ -135,8 +135,8 @@ function AgentTrace({ result }: { result: any }) {
             : <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           }
           {open
-            ? <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-            : <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            ? <ChevronDown className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
+            : <ChevronRight className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
           }
         </div>
       </button>
@@ -145,13 +145,13 @@ function AgentTrace({ result }: { result: any }) {
         <div className="px-4 pb-4 pt-0 border-t border-slate-100">
           {result.output ? (
             <pre
-              className="text-xs text-slate-600 whitespace-pre-wrap leading-relaxed mt-3 p-3 rounded-lg font-mono"
+              className="text-xs text-[var(--os-text-2)] whitespace-pre-wrap leading-relaxed mt-3 p-3 rounded-lg font-mono"
               style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}
             >
               {result.output}
             </pre>
           ) : (
-            <p className="text-xs text-slate-400 mt-3 italic">No output recorded.</p>
+            <p className="text-xs text-[var(--os-text-2)] mt-3 italic">No output recorded.</p>
           )}
         </div>
       )}
@@ -180,7 +180,7 @@ function OrchestrationRow({ item }: { item: any }) {
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-slate-900 leading-snug mb-1.5">{item.question}</p>
           <div className="flex items-center flex-wrap gap-2">
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-mono">{item.intent}</span>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-[var(--os-text-2)] font-mono">{item.intent}</span>
             {item.recommendation && (
               <span
                 className="text-[10px] font-bold px-2 py-0.5 rounded-md"
@@ -189,22 +189,22 @@ function OrchestrationRow({ item }: { item: any }) {
                 {item.recommendation.slice(0, 40)}
               </span>
             )}
-            <span className="text-[10px] text-slate-400 flex items-center gap-1">
+            <span className="text-[10px] text-[var(--os-text-2)] flex items-center gap-1">
               <Clock className="w-3 h-3" />{fmtMs(item.durationMs)}
             </span>
-            <span className="text-[10px] text-slate-400 flex items-center gap-1">
+            <span className="text-[10px] text-[var(--os-text-2)] flex items-center gap-1">
               <Zap className="w-3 h-3" />{(item.agentsUsed ?? []).length} agents
             </span>
-            <span className="text-[10px] text-slate-400 flex items-center gap-1">
+            <span className="text-[10px] text-[var(--os-text-2)] flex items-center gap-1">
               <BarChart3 className="w-3 h-3" />{item.confidence}% conf
             </span>
-            <span className="text-[10px] text-slate-400 ml-auto">{timeAgo(item.createdAt)}</span>
+            <span className="text-[10px] text-[var(--os-text-2)] ml-auto">{timeAgo(item.createdAt)}</span>
           </div>
         </div>
         <div className="flex-shrink-0 mt-1">
           {open
-            ? <ChevronDown className="w-4 h-4 text-slate-400" />
-            : <ChevronRight className="w-4 h-4 text-slate-400" />
+            ? <ChevronDown className="w-4 h-4 text-[var(--os-text-2)]" />
+            : <ChevronRight className="w-4 h-4 text-[var(--os-text-2)]" />
           }
         </div>
       </button>
@@ -216,14 +216,14 @@ function OrchestrationRow({ item }: { item: any }) {
           {/* Summary */}
           {item.summary && (
             <div className="pt-4">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Summary</p>
-              <p className="text-sm text-slate-700 leading-relaxed">{item.summary}</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-2)] mb-2">Summary</p>
+              <p className="text-sm text-[var(--os-text-2)] leading-relaxed">{item.summary}</p>
             </div>
           )}
 
           {/* Agent pills */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Agents Used</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-2)] mb-2">Agents Used</p>
             <div className="flex flex-wrap gap-1.5">
               {(item.agentsUsed ?? []).map((a: string) => {
                 const res = agentResults.find((r: any) => r.agentType === a)
@@ -235,7 +235,7 @@ function OrchestrationRow({ item }: { item: any }) {
           {/* Per-agent trace */}
           {agentResults.length > 0 && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Agent Trace</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-2)] mb-2">Agent Trace</p>
               <div className="space-y-2">
                 {agentResults.map((r: any, i: number) => (
                   <AgentTrace key={i} result={r} />
@@ -247,14 +247,14 @@ function OrchestrationRow({ item }: { item: any }) {
           {/* Evidence */}
           {evidence.length > 0 && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Evidence</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-2)] mb-2">Evidence</p>
               <div className="space-y-1.5">
                 {evidence.map((e: any, i: number) => {
-                  const color = AGENT_COLOR[e.agent] ?? '#64748b'
+                  const color = AGENT_COLOR[e.agent] ?? 'var(--os-text-2)'
                   return (
                     <div key={i} className="flex gap-3 text-xs py-1.5 border-b border-slate-50 last:border-0">
                       <span className="font-bold font-mono flex-shrink-0" style={{ color }}>{e.agent}</span>
-                      <span className="text-slate-600">{e.finding}</span>
+                      <span className="text-[var(--os-text-2)]">{e.finding}</span>
                     </div>
                   )
                 })}
@@ -270,7 +270,7 @@ function OrchestrationRow({ item }: { item: any }) {
                   <p className="text-[10px] font-bold uppercase tracking-wider text-red-400 mb-2">Risk Factors</p>
                   <ul className="space-y-1">
                     {riskFactors.map((r: string, i: number) => (
-                      <li key={i} className="text-xs text-slate-600 flex gap-1.5">
+                      <li key={i} className="text-xs text-[var(--os-text-2)] flex gap-1.5">
                         <span className="text-red-400 flex-shrink-0">•</span>{r}
                       </li>
                     ))}
@@ -282,7 +282,7 @@ function OrchestrationRow({ item }: { item: any }) {
                   <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-500 mb-2">Next Steps</p>
                   <ol className="space-y-1">
                     {nextSteps.map((s: string, i: number) => (
-                      <li key={i} className="text-xs text-slate-600 flex gap-1.5">
+                      <li key={i} className="text-xs text-[var(--os-text-2)] flex gap-1.5">
                         <span className="text-emerald-500 font-bold flex-shrink-0">{i + 1}.</span>{s}
                       </li>
                     ))}
@@ -323,11 +323,11 @@ export function AgentLogsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-bold text-slate-900">Agent Logs</h2>
-          <p className="text-sm text-slate-500 mt-0.5">Every WAANDA orchestration — per-agent trace, evidence, and synthesis</p>
+          <p className="text-sm text-[var(--os-text-2)] mt-0.5">Every WAANDA orchestration — per-agent trace, evidence, and synthesis</p>
         </div>
         <button
           onClick={() => refetch()}
-          className="flex items-center gap-1.5 px-3 py-2 text-sm text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-2 text-sm text-[var(--os-text-2)] border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
           Refresh
@@ -356,10 +356,10 @@ export function AgentLogsPage() {
       ) : logs.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-4">
-            <Brain className="w-7 h-7 text-slate-300" />
+            <Brain className="w-7 h-7 text-[var(--os-text-1)]" />
           </div>
-          <p className="text-base font-semibold text-slate-500">No orchestrations yet</p>
-          <p className="text-sm text-slate-400 mt-1">Ask WAANDA a question to generate the first agent run.</p>
+          <p className="text-base font-semibold text-[var(--os-text-2)]">No orchestrations yet</p>
+          <p className="text-sm text-[var(--os-text-2)] mt-1">Ask WAANDA a question to generate the first agent run.</p>
         </div>
       ) : (
         <div className="space-y-3">

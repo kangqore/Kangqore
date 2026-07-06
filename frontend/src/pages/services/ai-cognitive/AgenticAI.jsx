@@ -37,7 +37,9 @@ import {
   UseCasesMagnificationList,
   AIAcceleratorRoadmap,
   AIMetricsSection,
-  AITransformationMagnet
+  AITransformationMagnet,
+  AIToolsSection,
+  AIFAQSection
 } from '../../../components/services/cognition/AICustomSections';
 
 const AgenticAI = () => {
@@ -55,7 +57,7 @@ const AgenticAI = () => {
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
     
     hideGenericMidPageCta: true,
-    hideGenericFaq: false,
+    hideGenericFaq: true,
 
     breadcrumb: [
       { label: 'Home', link: '/' },
@@ -271,7 +273,43 @@ const AgenticAI = () => {
           ]}
         />
         
+        <AIToolsSection items={[
+          {
+            icon: 'Network',
+            title: 'Orchestration & Frameworks',
+            desc: 'Proprietary blueprints aligned with industry-standard agent frameworks',
+          },
+          {
+            icon: 'Cpu',
+            title: 'Models',
+            desc: 'Leading LLMs with RAG, fine-tuning, and enterprise controls',
+          },
+          {
+            icon: 'Layers',
+            title: 'Integration',
+            desc: 'APIs, microservices, and enterprise connectors',
+          },
+          {
+            icon: 'Shield',
+            title: 'Monitoring',
+            desc: 'Real-time governance, audit, and optimization tools',
+          },
+        ]} />
+
         <AITransformationMagnet />
+
+        <AIFAQSection faqs={[
+          { q: 'What Agentic AI services does Kangqore offer?',            a: 'We don\'t build AI demos. We build AI operators. Kangqore delivers autonomous agent development, multi-agent orchestration, RAG-powered enterprise reasoning, and governed LLM deployments using LangGraph — all under our Cognition™ platform, which covers the full lifecycle from agent architecture design to production-scale optimization.' },
+          { q: 'How is Agentic AI different from traditional AI or Generative AI?', a: 'Generative AI answers. Agentic AI acts. Traditional AI classifies or predicts from a fixed prompt. Agentic AI sets goals, decomposes them into multi-step plans, selects and uses tools, executes tasks autonomously, and self-corrects when outcomes deviate — without waiting for a human to issue the next instruction.' },
+          { q: 'How does Kangqore help enterprises adopt Agentic AI safely?', a: 'Every agent we deploy has a governor, not just a goal. Our governance-first architecture embeds human-in-the-loop (HITL) controls, immutable audit trails, role-based access restrictions, and policy enforcement layers before a single autonomous action runs in production. Risk is validated at every phase — not discovered after go-live.' },
+          { q: 'What business use cases can Agentic AI enable?',           a: 'If a human currently coordinates across three or more systems to complete a task, an agent can own it. High-impact use cases include autonomous fraud investigation, supply chain renegotiation, clinical prior authorization, Level 2/3 support resolution, DevOps incident triage, and intelligent procurement — wherever complexity has made automation impossible until now.' },
+          { q: 'How fast can we deploy Agentic AI?',                      a: 'Eight weeks to a production agent — not a prototype, a live operator. A focused pilot targeting one high-value workflow typically deploys in 8–12 weeks using Kangqore\'s accelerated blueprints. Enterprise-grade multi-agent systems with full RAG integration and governance layers are production-ready within 16–24 weeks, depending on data readiness.' },
+          { q: 'Does Agentic AI deliver measurable ROI?',                  a: 'We define the ROI metric before we write a line of code. Engagements are baselined during Discovery so success is measurable from day one. Outcomes we\'ve targeted include 42% faster vendor onboarding, 78% fewer clicks to surface enterprise knowledge, 31% CSAT improvement in support operations, and 17% reduction in incident wait time.' },
+          { q: 'What industries do you serve with Agentic AI?',            a: 'Any industry where complexity has been the enemy of automation. Kangqore delivers agentic AI across banking and financial services, healthcare and life sciences, supply chain and logistics, enterprise software engineering, and customer operations — with Cognition™ blueprints built for the compliance and governance demands of each sector.' },
+          { q: 'Do you provide end-to-end Agentic AI services?',          a: 'From "what should the agent do?" to "the agent is running in production" — that\'s our scope. Kangqore covers strategy and use-case identification, agent architecture design, RAG and LLM integration, multi-agent orchestration, governed deployment, and continuous post-launch optimization. One partner, full lifecycle, no handoff gaps.' },
+          { q: 'What tech stack does Kangqore use for agentic AI?',       a: 'Orchestration runs on LangGraph for stateful multi-agent workflows, with LangChain for tool-calling and chain composition. Memory persistence uses a hybrid approach — short-term context in working memory, long-term state in vector stores (Pinecone, Weaviate, or pgvector depending on enterprise constraints). RAG pipelines are built on enterprise embedding models with retrieval re-ranking to minimize hallucination on domain-specific data. LLM selection (GPT-4o, Claude, Gemini, or fine-tuned open-source) is use-case and compliance driven. Observability and drift monitoring run through LangSmith or enterprise-compatible equivalents.' },
+          { q: 'What happens when an agent makes a wrong decision?',       a: 'We design for failure before writing a line of code. Agents operate within bounded permissions — they cannot act outside their assigned scope. When a step fails, checkpoint-based state restoration replays it from its last valid state, not from zero. Critical decisions trigger automatic human-in-the-loop escalation. Every action is logged to an immutable audit trail — explainable, auditable, and reversible.' },
+        ]} />
       </>
     ),
     capabilitiesTitle: 'Our Capabilities.',

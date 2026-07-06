@@ -1,0 +1,29 @@
+{
+  "description": "Three finance workflow DAGs for professional services.",
+  "workflows": [
+    {
+      "name":    "Invoice Approval",
+      "trigger": "SIGNAL",
+      "steps":   6,
+      "agents":  ["INVOICE_INTELLIGENCE"],
+      "approvalGates": ["L3"],
+      "description": "Validates invoice → pre-deadline deliverable check → L3 approval → status update → finance notify."
+    },
+    {
+      "name":    "Collections Escalation",
+      "trigger": "SIGNAL",
+      "steps":   5,
+      "agents":  ["COLLECTIONS_AGENT"],
+      "approvalGates": ["L2"],
+      "description": "14-day overdue trigger → assessment → draft collections message → L2 approval → send."
+    },
+    {
+      "name":    "Budget Variance Alert",
+      "trigger": "SCHEDULE",
+      "steps":   5,
+      "agents":  ["INVOICE_INTELLIGENCE", "DEAL_COACH"],
+      "approvalGates": [],
+      "description": "Weekly actuals vs plan scan. Routes by severity: log / internal alert / decision proposal."
+    }
+  ]
+}

@@ -1504,7 +1504,7 @@ export function AgentLogsModule() {
     <div className="space-y-5">
 
       {/* ── Tab switcher ── */}
-      <div className="flex items-center gap-1 border-b border-white/10 -mt-1 mb-2">
+      <div className="flex items-center gap-1 border-b border-[var(--os-border)] -mt-1 mb-2">
         {([
           { key: 'runs',   label: 'Orchestration Runs', icon: ScrollText, color: '#2564ea' },
           { key: 'events', label: 'WAANDA Event Log',   icon: Radio,      color: '#2564ea' },
@@ -1514,7 +1514,7 @@ export function AgentLogsModule() {
             className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all"
             style={{
               borderColor: activeTab === t.key ? t.color : 'transparent',
-              color: activeTab === t.key ? t.color : '#64748b',
+              color: activeTab === t.key ? t.color : 'var(--os-text-2)',
             }}>
             <t.icon style={{ width: 13, height: 13 }} />
             {t.label}
@@ -1533,11 +1533,11 @@ export function AgentLogsModule() {
             <ScrollText style={{ width: 16, height: 16, color: '#2564ea' }} />
           </div>
           <div>
-            <h1 className="text-base font-bold text-white leading-none mb-0.5">Agent Logs</h1>
-            <p className="text-[11px] text-slate-600">Every WAANDA orchestration run</p>
+            <h1 className="text-[22px] font-black tracking-tight leading-none mb-0.5" style={{ color: 'var(--os-text-1)' }}>Agent Logs</h1>
+            <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>Every WAANDA orchestration run</p>
           </div>
           {totalRuns > 0 && (
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(10,15,30,0.5)', border: '1px solid rgba(10,15,30,0.5)', color: '#475569' }}>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
               {totalRuns} total
             </span>
           )}
@@ -1548,9 +1548,9 @@ export function AgentLogsModule() {
               onClick={() => setShowAnalytics(v => !v)}
               className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-colors"
               style={{
-                border: `1px solid ${showAnalytics ? 'rgba(124,58,237,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                background: showAnalytics ? 'rgba(124,58,237,0.1)' : 'rgba(255,255,255,0.03)',
-                color: showAnalytics ? '#a78bfa' : '#64748b',
+                border: `1px solid ${showAnalytics ? 'rgba(124,58,237,0.4)' : 'var(--os-border)'}`,
+                background: showAnalytics ? 'rgba(124,58,237,0.1)' : 'var(--os-surface-0)',
+                color: showAnalytics ? '#a78bfa' : 'var(--os-text-2)',
               }}
             >
               <BarChart3 style={{ width: 13, height: 13 }} />Analytics
@@ -1559,14 +1559,14 @@ export function AgentLogsModule() {
           <button
             onClick={exportJSON} disabled={!filtered.length}
             className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-colors disabled:opacity-30"
-            style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)', color: '#64748b' }}
+            style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)', color: 'var(--os-text-2)' }}
           >
             <Download style={{ width: 13, height: 13 }} />Export
           </button>
           <button
             onClick={() => refetch()}
             className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-colors"
-            style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)', color: '#64748b' }}
+            style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)', color: 'var(--os-text-2)' }}
           >
             <RefreshCw className={isFetching ? 'animate-spin' : ''} style={{ width: 13, height: 13 }} />
           </button>
@@ -1575,18 +1575,19 @@ export function AgentLogsModule() {
 
       {/* ── Metric strip ── */}
       {totalRuns > 0 && (
-        <div className="grid grid-cols-5 divide-x rounded-xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)', divideColor: 'rgba(10,15,30,0.5)' }}>
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           {[
-            { label: 'Total Runs',    value: totalRuns,          sub: 'in history'     },
-            { label: 'Avg Confidence',value: `${avgConf}%`,      sub: 'synthesis score'},
-            { label: 'High Confidence',value:`${highConfPct}%`,  sub: '≥80% runs'      },
-            { label: 'Avg Duration',  value: fmtMs(avgDuration), sub: 'end-to-end'     },
-            { label: 'Agent Invocations', value: totalAgentRuns, sub: 'across all runs'},
-          ].map((item, i) => (
-            <div key={item.label} className="px-5 py-4 text-center" style={{ borderLeft: i > 0 ? '1px solid rgba(10,15,30,0.5)' : 'none' }}>
-              <p className="text-[9px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">{item.label}</p>
-              <p className="text-lg font-bold text-white tabular-nums">{item.value}</p>
-              <p className="text-[9px] text-slate-700 mt-0.5">{item.sub}</p>
+            { label: 'Total Runs',       value: totalRuns,          sub: 'in history',      bg: 'linear-gradient(135deg,#2564ea 0%,#4ab6d4 100%)', glow: '#2564ea' },
+            { label: 'Avg Confidence',   value: `${avgConf}%`,      sub: 'synthesis score', bg: 'linear-gradient(135deg,#7c3aed 0%,#9d4edd 100%)', glow: '#7c3aed' },
+            { label: 'High Confidence',  value: `${highConfPct}%`,  sub: '≥80% runs',       bg: 'linear-gradient(135deg,#00c875 0%,#00a86b 100%)', glow: '#00c875' },
+            { label: 'Avg Duration',     value: fmtMs(avgDuration), sub: 'end-to-end',      bg: 'linear-gradient(135deg,#fdab3d 0%,#f59e0b 100%)', glow: '#fdab3d' },
+            { label: 'Agent Invocations',value: totalAgentRuns,     sub: 'across all runs', bg: 'linear-gradient(135deg,#e2445c 0%,#c0392b 100%)', glow: '#e2445c' },
+          ].map(item => (
+            <div key={item.label} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: item.bg, boxShadow: `0 4px 20px ${item.glow}40` }}>
+              <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.28) 0%, transparent 60%)' }} />
+              <p className="relative text-[9px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{item.label}</p>
+              <p className="relative text-2xl font-black tabular-nums" style={{ color: '#ffffff' }}>{item.value}</p>
+              <p className="relative text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.72)' }}>{item.sub}</p>
             </div>
           ))}
         </div>
@@ -1602,26 +1603,26 @@ export function AgentLogsModule() {
       {/* ── Filter bar ── */}
       <div className="flex flex-wrap gap-2 items-center">
         <div className="relative flex-1 min-w-48">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" style={{ width: 13, height: 13 }} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--os-text-2)]" style={{ width: 13, height: 13 }} />
           <input
             value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Search questions…"
-            className="w-full pl-8 pr-3 py-2 text-sm bg-transparent text-white placeholder:text-slate-700 rounded-lg outline-none"
-            style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.025)' }}
+            className="w-full pl-8 pr-3 py-2 text-sm bg-transparent text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] rounded-lg outline-none"
+            style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}
           />
         </div>
-        <select value={intentFilter} onChange={e => setIntent(e.target.value)} className="px-3 py-2 text-xs font-medium rounded-lg outline-none text-slate-400" style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#0d1117' }}>
+        <select value={intentFilter} onChange={e => setIntent(e.target.value)} className="px-3 py-2 text-xs font-medium rounded-lg outline-none text-[var(--os-text-1)]" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}>
           {allIntents.map(i => <option key={i} value={i}>{i === 'ALL' ? 'All Intents' : i}</option>)}
         </select>
-        <select value={agentFilter} onChange={e => setAgent(e.target.value)} className="px-3 py-2 text-xs font-medium rounded-lg outline-none text-slate-400" style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#0d1117' }}>
+        <select value={agentFilter} onChange={e => setAgent(e.target.value)} className="px-3 py-2 text-xs font-medium rounded-lg outline-none text-[var(--os-text-1)]" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}>
           {allAgents.map(a => <option key={a} value={a}>{a === 'ALL' ? 'All Agents' : a}</option>)}
         </select>
         <div className="flex items-center gap-1.5">
-          <span className="text-[10px] text-slate-700">Conf ≥</span>
-          <input type="number" min={0} max={100} value={minConf} onChange={e => setMinConf(Number(e.target.value))} className="w-14 px-2 py-2 text-xs text-white rounded-lg outline-none text-center tabular-nums" style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#0d1117' }} />
-          <span className="text-[10px] text-slate-700">%</span>
+          <span className="text-[10px] text-[var(--os-text-2)]">Conf ≥</span>
+          <input type="number" min={0} max={100} value={minConf} onChange={e => setMinConf(Number(e.target.value))} className="w-14 px-2 py-2 text-xs text-[var(--os-text-1)] rounded-lg outline-none text-center tabular-nums" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }} />
+          <span className="text-[10px] text-[var(--os-text-2)]">%</span>
         </div>
-        <select value={sortBy} onChange={e => setSort(e.target.value as any)} className="px-3 py-2 text-xs font-medium rounded-lg outline-none text-slate-400" style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#0d1117' }}>
+        <select value={sortBy} onChange={e => setSort(e.target.value as any)} className="px-3 py-2 text-xs font-medium rounded-lg outline-none text-[var(--os-text-1)]" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}>
           <option value="date">Newest first</option>
           <option value="confidence">By confidence</option>
           <option value="duration">By duration</option>
@@ -1635,29 +1636,29 @@ export function AgentLogsModule() {
             Clear
           </button>
         )}
-        <span className="text-[11px] text-slate-700 ml-auto tabular-nums">{filtered.length} / {totalRuns}</span>
+        <span className="text-[11px] text-[var(--os-text-2)] ml-auto tabular-nums">{filtered.length} / {totalRuns}</span>
       </div>
 
       {/* ── Split pane ── */}
       {isLoading ? (
         <div className="space-y-2">
           {[1, 2, 3, 4].map(i => (
-            <div key={i} className="rounded-xl px-5 py-4 animate-pulse flex items-center gap-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
-              <div className="w-9 h-9 rounded-full flex-shrink-0" style={{ background: 'rgba(10,15,30,0.5)' }} />
+            <div key={i} className="rounded-xl px-5 py-4 animate-pulse flex items-center gap-4" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+              <div className="w-9 h-9 rounded-full flex-shrink-0 bg-[var(--os-border)]" />
               <div className="flex-1 space-y-2">
-                <div className="h-4 rounded w-3/4" style={{ background: 'rgba(10,15,30,0.5)' }} />
-                <div className="h-3 rounded w-1/2" style={{ background: 'rgba(13,17,23,0.4)' }} />
+                <div className="h-4 rounded w-3/4 bg-[var(--os-border)]" />
+                <div className="h-3 rounded w-1/2 bg-[var(--os-surface-0)]" />
               </div>
             </div>
           ))}
         </div>
       ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(13,17,23,0.4)' }}>
-            <Brain style={{ width: 28, height: 28, color: '#334155' }} />
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 bg-[var(--os-surface-0)]">
+            <Brain style={{ width: 28, height: 28 }} className="text-[var(--os-text-2)]" />
           </div>
-          <p className="text-sm font-semibold text-slate-500">{totalRuns === 0 ? 'No orchestrations yet' : 'No runs match filters'}</p>
-          <p className="text-xs text-slate-600 mt-1 max-w-64">{totalRuns === 0 ? 'Ask WAANDA a question to generate the first agent run.' : 'Try clearing or relaxing the active filters.'}</p>
+          <p className="text-sm font-semibold text-[var(--os-text-1)]">{totalRuns === 0 ? 'No orchestrations yet' : 'No runs match filters'}</p>
+          <p className="text-xs text-[var(--os-text-2)] mt-1 max-w-64">{totalRuns === 0 ? 'Ask WAANDA a question to generate the first agent run.' : 'Try clearing or relaxing the active filters.'}</p>
         </div>
       ) : (
         <div className="flex gap-4" style={{ height: 'calc(100vh - 420px)', minHeight: 520 }}>
@@ -1665,11 +1666,11 @@ export function AgentLogsModule() {
           {/* ── Left: Run list ── */}
           <div
             className="flex flex-col flex-shrink-0 rounded-xl overflow-hidden"
-            style={{ width: 340, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}
+            style={{ width: 340, background: 'var(--os-card)', border: '1px solid var(--os-border)' }}
           >
             {/* List header */}
-            <div className="flex items-center justify-between px-4 py-2.5 flex-shrink-0" style={{ borderBottom: '1px solid rgba(10,15,30,0.5)' }}>
-              <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">{filtered.length} runs</span>
+            <div className="flex items-center justify-between px-4 py-2.5 flex-shrink-0" style={{ borderBottom: '1px solid var(--os-border)' }}>
+              <span className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider">{filtered.length} runs</span>
               {hasFilters && (
                 <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: 'rgba(37,100,234,0.1)', color: '#60a5fa', border: '1px solid rgba(37,100,234,0.2)' }}>
                   filtered
@@ -1682,8 +1683,8 @@ export function AgentLogsModule() {
               {grouped.map(group => (
                 <div key={group.label}>
                   {/* Day header */}
-                  <div className="px-4 py-2 sticky top-0 z-10" style={{ background: 'rgba(10,15,20,0.9)', backdropFilter: 'blur(8px)' }}>
-                    <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-slate-700">{group.label}</span>
+                  <div className="px-4 py-2 sticky top-0 z-10" style={{ background: 'var(--os-card)', backdropFilter: 'blur(8px)' }}>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-[var(--os-text-2)]">{group.label}</span>
                   </div>
                   {group.items.map((item: any) => (
                     <RunListItem
@@ -1701,7 +1702,7 @@ export function AgentLogsModule() {
           {/* ── Right: Detail ── */}
           <div
             className="flex-1 flex flex-col rounded-xl overflow-hidden"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}
+            style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}
           >
             <AnimatePresence mode="wait">
               {selectedRun

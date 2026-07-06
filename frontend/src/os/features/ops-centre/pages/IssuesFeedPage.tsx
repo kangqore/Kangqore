@@ -1,5 +1,22 @@
 import { useState } from 'react'
-import { AlertTriangle, Clock, ChevronDown, ChevronUp, ArrowRight, Zap, Brain } from 'lucide-react'
+import { AlertTriangle, Clock, ChevronDown, ChevronUp, Zap, Brain, Database } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@lib/api'
+
+interface LiveProject { id: string; name: string; health: string; status: string; client?: string }
+
+function useLiveProjects() {
+  return useQuery<{ projects: LiveProject[] } | LiveProject[]>({
+    queryKey: ['projects'],
+    queryFn: () => api.get('/projects').then(r => r.data),
+    staleTime: 60_000,
+  })
+}
+
+function getProjects(data: { projects: LiveProject[] } | LiveProject[] | undefined): LiveProject[] {
+  if (!data) return []
+  return Array.isArray(data) ? data : (data.projects ?? [])
+}
 
 type Severity = 'P1' | 'P2' | 'P3' | 'P4'
 type IssueStatus = 'open' | 'investigating' | 'resolved'
@@ -22,18 +39,18 @@ interface Issue {
 
 const DOMAIN_COLOR: Record<Domain, string> = {
   Revenue:     '#00c875',
-  Delivery:    '#2564ea',
-  People:      '#7f53f9',
+  Delivery:    '#579bfc',
+  People:      '#7c3aed',
   Finance:     '#fdab3d',
   Compliance:  '#e2445c',
-  Operations:  '#64748b',
+  Operations:  'var(--os-text-2)',
 }
 
 const SEV_COLOR: Record<Severity, string> = {
   P1: '#e2445c',
   P2: '#fdab3d',
-  P3: '#2564ea',
-  P4: '#475569',
+  P3: '#579bfc',
+  P4: 'var(--os-text-2)',
 }
 
 const SEV_LABEL: Record<Severity, string> = {
@@ -134,7 +151,7 @@ const ISSUES: Issue[] = [
     kimmpAction: 'Enable 2-hour reminder automation. Flag chronic reschedulers for review.',
     raisedAt: '2026-06-17T08:00:00Z',
     slaBreachAt: '2026-06-24T08:00:00Z',
-    acknowledgedBy: 'Mahesh Kumar',
+    acknowledgedBy: 'C.O.D.E.',
   },
 ]
 
@@ -150,37 +167,31 @@ function slaRemaining(breachAt: string): { label: string; urgent: boolean } {
 
 function IssueRow({ issue }: { issue: Issue }) {
   const [expanded, setExpanded] = useState(false)
-  const sla = slaRemaining(issue.slaBreachAt)
+  const sla         = slaRemaining(issue.slaBreachAt)
   const domainColor = DOMAIN_COLOR[issue.domain]
-  const sevColor = SEV_COLOR[issue.severity]
+  const sevColor    = SEV_COLOR[issue.severity]
 
   return (
-    <div className="rounded-xl overflow-hidden transition-all"
-      style={{
-        background: '#0d1117',
-        border: `1px solid #2E2854`,
-        borderLeft: `3px solid ${sevColor}`,
-        boxShadow: issue.severity === 'P1' && issue.status !== 'resolved' ? `0 0 16px ${sevColor}14` : 'none',
-      }}>
+    <div className="os-card overflow-hidden" style={{ borderLeft: `4px solid ${sevColor}` }}>
       <div className="p-4">
         <div className="flex items-start gap-3">
           {/* Severity badge */}
           <div className="flex-shrink-0 w-10 h-10 rounded-lg flex flex-col items-center justify-center"
-            style={{ background: `${sevColor}18`, border: `1px solid ${sevColor}30` }}>
+            style={{ background: sevColor + '18', border: `1px solid ${sevColor}30` }}>
             <span className="text-[10px] font-black" style={{ color: sevColor }}>{issue.severity}</span>
-            <span className="text-[8px] text-slate-600 uppercase">{SEV_LABEL[issue.severity]}</span>
+            <span className="text-[8px] uppercase" style={{ color: 'var(--os-text-3)' }}>{SEV_LABEL[issue.severity]}</span>
           </div>
 
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-3">
-              <p className="text-sm font-semibold text-white leading-tight">{issue.title}</p>
+              <p className="text-sm font-semibold leading-tight" style={{ color: 'var(--os-text-1)' }}>{issue.title}</p>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {/* SLA clock */}
                 <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg flex-shrink-0"
                   style={{
-                    color: sla.urgent ? '#e2445c' : '#64748b',
-                    background: sla.urgent ? 'rgba(226,68,92,0.1)' : 'rgba(100,116,139,0.1)',
-                    border: `1px solid ${sla.urgent ? 'rgba(226,68,92,0.3)' : 'rgba(100,116,139,0.2)'}`,
+                    color: sla.urgent ? '#e2445c' : 'var(--os-text-3)',
+                    background: sla.urgent ? '#e2445c12' : 'var(--os-surface-0)',
+                    border: `1px solid ${sla.urgent ? '#e2445c30' : 'var(--os-border)'}`,
                   }}>
                   <Clock className="w-2.5 h-2.5" />
                   {sla.label}
@@ -188,9 +199,9 @@ function IssueRow({ issue }: { issue: Issue }) {
                 {/* Status */}
                 <span className="text-[10px] font-bold px-2 py-1 rounded-lg capitalize flex-shrink-0"
                   style={{
-                    color: issue.status === 'resolved' ? '#00c875' : issue.status === 'investigating' ? '#fdab3d' : '#64748b',
-                    background: issue.status === 'resolved' ? 'rgba(0,200,117,0.1)' : issue.status === 'investigating' ? 'rgba(253,171,61,0.1)' : 'rgba(100,116,139,0.1)',
-                    border: `1px solid ${issue.status === 'resolved' ? 'rgba(0,200,117,0.3)' : issue.status === 'investigating' ? 'rgba(253,171,61,0.3)' : 'rgba(100,116,139,0.2)'}`,
+                    color: issue.status === 'resolved' ? '#00c875' : issue.status === 'investigating' ? '#fdab3d' : 'var(--os-text-3)',
+                    background: issue.status === 'resolved' ? '#00c87512' : issue.status === 'investigating' ? '#fdab3d12' : 'var(--os-surface-0)',
+                    border: `1px solid ${issue.status === 'resolved' ? '#00c87530' : issue.status === 'investigating' ? '#fdab3d30' : 'var(--os-border)'}`,
                   }}>
                   {issue.status}
                 </span>
@@ -199,37 +210,38 @@ function IssueRow({ issue }: { issue: Issue }) {
 
             <div className="flex items-center gap-2 mt-1.5 flex-wrap">
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-md"
-                style={{ color: domainColor, background: `${domainColor}14`, border: `1px solid ${domainColor}25` }}>
+                style={{ color: domainColor, background: domainColor + '14', border: `1px solid ${domainColor}25` }}>
                 {issue.domain}
               </span>
-              <span className="text-[10px] text-slate-500">{issue.entity}</span>
-              <span className="text-[10px] text-slate-600">·</span>
-              <span className="text-[10px] text-slate-600">{issue.id}</span>
+              <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>{issue.entity}</span>
+              <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>·</span>
+              <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>{issue.id}</span>
               {issue.acknowledgedBy && (
-                <span className="text-[10px] font-semibold text-emerald-500">· Ack: {issue.acknowledgedBy}</span>
+                <span className="text-[10px] font-semibold" style={{ color: '#00c875' }}>· Ack: {issue.acknowledgedBy}</span>
               )}
             </div>
 
             {/* KIMMP action bar */}
             <div className="mt-2.5 flex items-start gap-2 px-3 py-2 rounded-lg"
-              style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.15)' }}>
-              <Brain className="w-3 h-3 text-purple-400 flex-shrink-0 mt-0.5" />
+              style={{ background: '#7c3aed08', border: '1px solid #7c3aed18' }}>
+              <Brain className="w-3 h-3 flex-shrink-0 mt-0.5" style={{ color: '#7c3aed' }} />
               <div className="flex-1 min-w-0">
-                <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">KIMMP · {issue.kimmpConfidence}% confidence</span>
-                <p className="text-[11px] text-slate-300 mt-0.5 leading-relaxed">{issue.kimmpAction}</p>
+                <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: '#7c3aed' }}>KIMMP · {issue.kimmpConfidence}% confidence</span>
+                <p className="text-[11px] mt-0.5 leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{issue.kimmpAction}</p>
               </div>
             </div>
           </div>
         </div>
 
         {expanded && (
-          <div className="mt-3 pt-3 pl-13" style={{ borderTop: '1px solid #1f2a4a' }}>
-            <p className="text-xs text-slate-400 leading-relaxed pl-[52px]">{issue.summary}</p>
+          <div className="mt-3 pt-3 border-t border-[var(--os-border)]">
+            <p className="text-xs leading-relaxed pl-[52px]" style={{ color: 'var(--os-text-2)' }}>{issue.summary}</p>
           </div>
         )}
 
         <button onClick={() => setExpanded(e => !e)}
-          className="mt-2 pl-[52px] flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-os-blue transition-colors">
+          className="mt-2 pl-[52px] flex items-center gap-1 text-xs font-medium transition-colors hover:text-[#579bfc]"
+          style={{ color: 'var(--os-text-3)' }}>
           {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
           {expanded ? 'Show less' : 'Full detail'}
         </button>
@@ -239,9 +251,18 @@ function IssueRow({ issue }: { issue: Issue }) {
 }
 
 export function IssuesFeedPage() {
-  const [sevFilter, setSevFilter] = useState<Severity | 'all'>('all')
+  const [sevFilter, setSevFilter]     = useState<Severity | 'all'>('all')
   const [domainFilter, setDomainFilter] = useState<Domain | 'all'>('all')
   const [statusFilter, setStatusFilter] = useState<IssueStatus | 'open-only'>('open-only')
+
+  const { data: projectData, isLoading: projectsLoading } = useLiveProjects()
+  const projects = getProjects(projectData)
+  const atRiskProjects = projects.filter(p =>
+    p.health === 'at-risk' || p.health === 'AT_RISK' ||
+    p.health === 'critical' || p.health === 'CRITICAL' ||
+    p.health === 'behind' || p.health === 'BEHIND'
+  )
+  const activeProjects = projects.filter(p => p.status === 'active' || p.status === 'ACTIVE')
 
   const filtered = ISSUES
     .filter(i => sevFilter === 'all' || i.severity === sevFilter)
@@ -253,50 +274,67 @@ export function IssuesFeedPage() {
 
   return (
     <div className="space-y-5">
+      {/* Live project health */}
+      <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
+        style={{ background: '#579bfc08', border: '1px solid #579bfc20' }}>
+        <Database className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#579bfc' }} />
+        <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>
+          {projectsLoading ? (
+            <span style={{ color: 'var(--os-text-3)' }}>Loading project signals…</span>
+          ) : projects.length > 0 ? (
+            <>
+              <span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{activeProjects.length}</span> active projects ·{' '}
+              {atRiskProjects.length > 0
+                ? <><span className="font-semibold" style={{ color: '#fdab3d' }}>{atRiskProjects.length}</span> at risk or behind</>
+                : <span className="font-semibold" style={{ color: '#00c875' }}>all projects on track</span>
+              }
+            </>
+          ) : (
+            <span style={{ color: 'var(--os-text-3)' }}>No project data available</span>
+          )}
+        </p>
+      </div>
 
       {/* Summary strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {([
-          { label: 'P1 Critical', count: p1, color: '#e2445c' },
-          { label: 'P2 High',     count: p2, color: '#fdab3d' },
-          { label: 'Investigating', count: ISSUES.filter(i => i.status === 'investigating').length, color: '#2564ea' },
-          { label: 'Total Open', count: ISSUES.filter(i => i.status !== 'resolved').length, color: '#7f53f9' },
-        ] as const).map(s => (
-          <div key={s.label} className="rounded-xl p-3.5 flex items-center gap-3"
-            style={{ background: '#0d1117', border: `1px solid ${s.color}20` }}>
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-              style={{ background: `${s.color}18`, border: `1px solid ${s.color}30` }}>
-              <AlertTriangle className="w-4 h-4" style={{ color: s.color }} />
-            </div>
-            <div>
-              <p className="text-xl font-bold text-white tabular-nums">{s.count}</p>
-              <p className="text-[10px] text-slate-500">{s.label}</p>
-            </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {[
+          { label: 'P1 Critical',   count: p1,                                                         bg: 'linear-gradient(135deg,#e2445c 0%,#c0392b 100%)', glow: '#e2445c' },
+          { label: 'P2 High',       count: p2,                                                         bg: 'linear-gradient(135deg,#fdab3d 0%,#f59e0b 100%)', glow: '#fdab3d' },
+          { label: 'Investigating', count: ISSUES.filter(i => i.status === 'investigating').length,    bg: 'linear-gradient(135deg,#2564ea 0%,#579bfc 100%)', glow: '#2564ea' },
+          { label: 'Total Open',    count: ISSUES.filter(i => i.status !== 'resolved').length,         bg: 'linear-gradient(135deg,#7c3aed 0%,#9d4edd 100%)', glow: '#7c3aed' },
+        ].map(s => (
+          <div key={s.label} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: s.bg, boxShadow: `0 4px 20px ${s.glow}40` }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.28) 0%, transparent 60%)' }} />
+            <p className="relative text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{s.label}</p>
+            <p className="relative text-3xl font-black tabular-nums" style={{ color: '#ffffff' }}>{s.count}</p>
           </div>
         ))}
       </div>
 
       {/* Filters */}
       <div className="flex gap-2 flex-wrap">
-        {/* Severity */}
-        {(['all', 'P1', 'P2', 'P3', 'P4'] as const).map(s => (
-          <button key={s} onClick={() => setSevFilter(s)}
-            className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
-            style={{
-              background: sevFilter === s ? (s === 'all' ? 'rgba(124,58,237,0.12)' : `${SEV_COLOR[s as Severity]}14`) : '#0d1117',
-              border: sevFilter === s ? `1px solid ${s === 'all' ? 'rgba(124,58,237,0.35)' : `${SEV_COLOR[s as Severity]}35`}` : '1px solid #2E2854',
-              color: sevFilter === s ? (s === 'all' ? '#a78bfa' : SEV_COLOR[s as Severity]) : '#64748b',
-            }}>
-            {s === 'all' ? 'All Severity' : s}
-          </button>
-        ))}
-        <div className="w-px bg-[#2E2854]" />
+        {(['all', 'P1', 'P2', 'P3', 'P4'] as const).map(s => {
+          const isActive = sevFilter === s
+          const color = s === 'all' ? '#7c3aed' : SEV_COLOR[s as Severity]
+          return (
+            <button key={s} onClick={() => setSevFilter(s)}
+              className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
+              style={{
+                background: isActive ? color + '14' : 'var(--os-surface-0)',
+                border: `1px solid ${isActive ? color + '35' : 'var(--os-border)'}`,
+                color: isActive ? color : 'var(--os-text-2)',
+              }}>
+              {s === 'all' ? 'All Severity' : s}
+            </button>
+          )
+        })}
+        <div className="w-px" style={{ background: 'var(--os-border)' }} />
         <button onClick={() => setStatusFilter(statusFilter === 'open-only' ? 'all' : 'open-only')}
           className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
           style={{
-            background: statusFilter === 'open-only' ? 'rgba(0,200,117,0.1)' : '#0d1117',
-            border: `1px solid ${statusFilter === 'open-only' ? 'rgba(0,200,117,0.3)' : '#2E2854'}`,
-            color: statusFilter === 'open-only' ? '#00c875' : '#64748b',
+            background: statusFilter === 'open-only' ? '#00c87512' : 'var(--os-surface-0)',
+            border: `1px solid ${statusFilter === 'open-only' ? '#00c87530' : 'var(--os-border)'}`,
+            color: statusFilter === 'open-only' ? '#00c875' : 'var(--os-text-2)',
           }}>
           {statusFilter === 'open-only' ? '● Open only' : 'All status'}
         </button>
@@ -305,10 +343,9 @@ export function IssuesFeedPage() {
       {/* Issues */}
       <div className="space-y-3">
         {filtered.length === 0 ? (
-          <div className="py-16 flex flex-col items-center gap-3 rounded-2xl"
-            style={{ background: '#0d1117', border: '1px solid #1f2a4a' }}>
-            <Zap className="w-8 h-8 text-slate-700" />
-            <p className="text-sm font-semibold text-slate-400">No issues match the current filter</p>
+          <div className="os-card py-16 flex flex-col items-center gap-3">
+            <Zap className="w-8 h-8" style={{ color: 'var(--os-text-3)' }} />
+            <p className="text-sm font-semibold" style={{ color: 'var(--os-text-2)' }}>No issues match the current filter</p>
           </div>
         ) : filtered.map(issue => <IssueRow key={issue.id} issue={issue} />)}
       </div>

@@ -106,6 +106,5 @@
   "/admin/analytics": "/kangqore-view/admin/analytics",
   "/admin/leads": "/kangqore-view/admin/leads",
   "/admin/consultations": "/kangqore-view/admin/consultations",
-  "/admin/contacts": "/kangqore-view/admin/clients",
-  "/eqore-ai": "/kangqore-view/admin/kangqore-immp"
+  "/admin/contacts": "/kangqore-view/admin/clients"
 }

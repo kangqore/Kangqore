@@ -1,22 +1,23 @@
 // ---------------------------------------------------------------------------
-// KIMMP Agent Registry — permanent assignment of all 35 agents to their systems.
+// KIMMP Agent Registry — permanent assignment of all 38 agents to their systems.
 //
 // Each agent belongs to exactly ONE primary system. Agents marked shared:true
 // are also callable by KIMMP Brain during cross-system orchestration (LOOPS).
 //
 // Systems:
-//   EQORE       — Conversations (6 agents)
-//   LEAD_INTEL  — Lead Scoring  (6 agents)
-//   ALIS        — Demand Ops    (6 agents)
-//   VIS         — Visibility    (5 agents)
-//   SENTINEL    — Security      (12 agents)
+//   EQORE        — Conversations (6 agents)
+//   LEAD_INTEL   — Lead Scoring  (6 agents)
+//   ALIS         — Demand Ops    (6 agents)
+//   VIS          — Visibility    (5 agents)
+//   SENTINEL     — Security      (13 agents, inc. INCIDENT_RESPONDER)
+//   DELIVERY_OPS — Projects & Delivery (3 agents) — Wave 1
 //
-// KIMMP (Brain) is the orchestrator — it commands all 35 via LOOPS cascade.
+// KIMMP (Brain) is the orchestrator — it commands all 39 via LOOPS cascade.
 // ---------------------------------------------------------------------------
 
 import { AgentType } from '../orchestrator/kimmpOrchestrator.service'
 
-export type SystemType = 'EQORE' | 'LEAD_INTEL' | 'ALIS' | 'VIS' | 'SENTINEL'
+export type SystemType = 'EQORE' | 'LEAD_INTEL' | 'ALIS' | 'VIS' | 'SENTINEL' | 'DELIVERY_OPS' | 'FINANCE_OPS'
 
 export type LayerType = 'INTELLIGENCE' | 'OPERATIONS' | 'SENTINEL'
 
@@ -296,9 +297,73 @@ export const AGENT_REGISTRY: Record<AgentType, AgentDefinition> = {
   },
   AGENT_GUARDIAN: {
     type: 'AGENT_GUARDIAN', system: 'SENTINEL', layer: 'SENTINEL', llm: 'opus',
-    role: 'Watches the other 34 agents for rogue behaviour, authority violations, and anomalies',
+    role: 'Watches the other 35 agents for rogue behaviour, authority violations, and anomalies',
     trigger: 'schedule.hourly',
     shared: false,
+    defaultParams: {},
+  },
+  INCIDENT_RESPONDER: {
+    type: 'INCIDENT_RESPONDER', system: 'SENTINEL', layer: 'SENTINEL', llm: 'opus',
+    role: 'ITIL incident responder — auto-classifies severity, suggests assignee, drafts resolution steps, and links similar past incidents',
+    trigger: 'event.incident.created',
+    shared: false,
+    defaultParams: {},
+  },
+
+  // ── DELIVERY_OPS — Projects & Delivery (Wave 1) ────────────────────────────
+
+  PROJECT_HEALTH: {
+    type: 'PROJECT_HEALTH', system: 'DELIVERY_OPS', layer: 'INTELLIGENCE', llm: 'haiku',
+    role: 'Assesses project health daily — computes ProjectOperationalState and feeds portfolio score into OIS Enterprise pillar',
+    trigger: 'schedule.daily | project.updated | deliverable.status_changed',
+    shared: true,   // KIMMP Brain borrows for Gate 8 Enterprise pillar computation
+    defaultParams: {},
+  },
+  DELIVERY_MONITOR: {
+    type: 'DELIVERY_MONITOR', system: 'DELIVERY_OPS', layer: 'INTELLIGENCE', llm: 'opus',
+    role: 'Portfolio-level delivery sentinel — identifies at-risk projects, recommends escalations, drafts executive delivery summary',
+    trigger: 'schedule.daily | project.health_below_threshold',
+    shared: true,
+    defaultParams: { healthThreshold: 60 },
+  },
+  PROJECT_TWIN_SIMULATOR: {
+    type: 'PROJECT_TWIN_SIMULATOR', system: 'DELIVERY_OPS', layer: 'INTELLIGENCE', llm: 'haiku',
+    role: 'Runs Project Digital Twin™ simulation — models current trajectory, resource scenarios, and risk-adjusted completion dates',
+    trigger: 'project.data_changed | on_demand',
+    shared: false,
+    defaultParams: {},
+  },
+
+  // ── Enterprise Coach™ (Phase 5) — cross-department intelligence ──────────────
+  ENTERPRISE_COACH: {
+    type: 'ENTERPRISE_COACH', system: 'ALIS', layer: 'INTELLIGENCE', llm: 'haiku',
+    role: 'Detects cross-department patterns across Delivery, Finance, Pipeline, and Intelligence — generates coaching insights that no single department can see',
+    trigger: 'schedule.daily | gate8.computed | on_demand',
+    shared: true,
+    defaultParams: {},
+  },
+
+  // ── FINANCE_OPS — Finance + Sales (Phase 4) ────────────────────────────────
+
+  INVOICE_INTELLIGENCE: {
+    type: 'INVOICE_INTELLIGENCE', system: 'FINANCE_OPS', layer: 'INTELLIGENCE', llm: 'opus',
+    role: 'Validates invoices against project budget, identifies overdue positions, summarises finance health for OIS Business pillar',
+    trigger: 'invoice.created | invoice.overdue | schedule.daily',
+    shared: true,
+    defaultParams: {},
+  },
+  COLLECTIONS_AGENT: {
+    type: 'COLLECTIONS_AGENT', system: 'FINANCE_OPS', layer: 'INTELLIGENCE', llm: 'opus',
+    role: 'Monitors overdue invoices, scores collection risk, drafts escalation communications for L2 approval',
+    trigger: 'schedule.daily | invoice.overdue_threshold',
+    shared: false,
+    defaultParams: { daysOverdue: 14 },
+  },
+  DEAL_COACH: {
+    type: 'DEAL_COACH', system: 'FINANCE_OPS', layer: 'INTELLIGENCE', llm: 'opus',
+    role: 'Coaches on active deals — identifies stalled proposals, drafts follow-up, recommends next action to advance pipeline',
+    trigger: 'lead.stage_changed | schedule.48h | proposal.stalled',
+    shared: true,
     defaultParams: {},
   },
 }
@@ -330,6 +395,7 @@ export const SYSTEM_AGENTS: Record<SystemType, AgentType[]> = {
     'FINANCIAL_SNAPSHOT',
     'ORGANIZATION_HEALTH',
     'STRATEGIST',
+    'ENTERPRISE_COACH',
   ],
   VIS: [
     'REPORT_GENERATE',
@@ -351,6 +417,17 @@ export const SYSTEM_AGENTS: Record<SystemType, AgentType[]> = {
     'RESILIENCE_MONITOR',
     'SHADOW_AI_DETECTOR',
     'AGENT_GUARDIAN',
+    'INCIDENT_RESPONDER',
+  ],
+  DELIVERY_OPS: [
+    'PROJECT_HEALTH',
+    'DELIVERY_MONITOR',
+    'PROJECT_TWIN_SIMULATOR',
+  ],
+  FINANCE_OPS: [
+    'INVOICE_INTELLIGENCE',
+    'COLLECTIONS_AGENT',
+    'DEAL_COACH',
   ],
 }
 
@@ -360,7 +437,7 @@ export const KIMMP_BRAIN_AGENTS: AgentType[] = Object.values(AGENT_REGISTRY)
   .map(a => a.type)
 
 // LOOPS — the cascade order: LEAD_INTEL output → triggers ALIS → triggers EQORE → KIMMP synthesises
-export const LOOP_CASCADE_ORDER: SystemType[] = ['LEAD_INTEL', 'ALIS', 'EQORE', 'VIS']
+export const LOOP_CASCADE_ORDER: SystemType[] = ['LEAD_INTEL', 'ALIS', 'EQORE', 'VIS', 'DELIVERY_OPS']
 
 // ─── Registry helpers ─────────────────────────────────────────────────────────
 
@@ -387,17 +464,21 @@ export function agentCount(): { total: number; bySystem: Record<SystemType, numb
 }
 
 export const SYSTEM_LABELS: Record<SystemType, string> = {
-  EQORE:      'EQORE — Conversations',
-  LEAD_INTEL: 'LEAD INTEL — Scoring',
-  ALIS:       'ALIS — Demand Ops',
-  VIS:        'VIS — Visibility',
-  SENTINEL:   'Sentinel Layer — Security',
+  EQORE:        'EQORE — Conversations',
+  LEAD_INTEL:   'LEAD INTEL — Scoring',
+  ALIS:         'ALIS — Demand Ops',
+  VIS:          'VIS — Visibility',
+  SENTINEL:     'Sentinel Layer — Security',
+  DELIVERY_OPS: 'DELIVERY OPS — Projects & Delivery',
+  FINANCE_OPS:  'FINANCE OPS — Finance + Sales',
 }
 
 export const SYSTEM_TRIGGERS: Record<SystemType, string> = {
-  EQORE:      'Activated when a conversation, meeting, or client interaction occurs',
-  LEAD_INTEL: 'Activated when a lead enters, moves, stalls, or is at risk',
-  ALIS:       'Activated when demand signals spike, campaigns run, or pipeline gaps appear',
-  VIS:        'Activated on schedule or when brand/content signals are detected',
-  SENTINEL:   'Always on — watches all systems simultaneously',
+  EQORE:        'Activated when a conversation, meeting, or client interaction occurs',
+  LEAD_INTEL:   'Activated when a lead enters, moves, stalls, or is at risk',
+  ALIS:         'Activated when demand signals spike, campaigns run, or pipeline gaps appear',
+  VIS:          'Activated on schedule or when brand/content signals are detected',
+  SENTINEL:     'Always on — watches all systems simultaneously',
+  DELIVERY_OPS: 'Activated daily and on project data changes — operates projects autonomously',
+  FINANCE_OPS:  'Activated on invoice events, daily overdue scan, and deal stage changes',
 }

@@ -9,7 +9,7 @@ interface ProjectsStore {
   selectedProjectId: string
   isLoading:         boolean
   error:             string | null
-  hydrate:                 (projects: Project[]) => void
+  hydrate:                 (projects: Project[], tasks?: Task[], sprints?: Sprint[], issues?: Issue[]) => void
   setSelectedProject:      (id: string) => void
   updateProjectStatus:     (id: string, status: ProjectStatus) => void
   updateProjectHealth:     (id: string, health: HealthStatus) => void
@@ -30,8 +30,11 @@ export const useProjectsStore = create<ProjectsStore>((set, get) => ({
   isLoading:         true,
   error:             null,
 
-  hydrate: (projects) => set(s => ({
+  hydrate: (projects, tasks, sprints, issues) => set(s => ({
     projects,
+    ...(tasks   !== undefined && { tasks }),
+    ...(sprints !== undefined && { sprints }),
+    ...(issues  !== undefined && { issues }),
     isLoading: false,
     error: null,
     selectedProjectId: s.selectedProjectId || projects[0]?.id || '',

@@ -266,13 +266,13 @@ router.patch('/:id', authenticate, authorize(['ADMIN']), async (req: AuthRequest
         // 2. Send In-App Notification (if user exists)
         const user = await prisma.user.findUnique({ where: { email: consultation.email } });
         if (user) {
-            let dashboardLink = '/dashboard';
+            let dashboardLink = '/kangqore-view';
             switch (user.role) {
-                case 'CLIENT': dashboardLink = '/dashboard/client/meetings'; break;
-                case 'PARTNER': dashboardLink = '/dashboard/partner/meetings'; break;
-                case 'INVESTOR': dashboardLink = '/dashboard/investor/meetings'; break;
-                case 'JOB_SEEKER': dashboardLink = '/dashboard/careers/interviews'; break;
-                case 'ADMIN': dashboardLink = '/dashboard/admin/consultations'; break;
+                case 'CLIENT':    dashboardLink = '/kangqore-view/client/meetings'; break;
+                case 'PARTNER':   dashboardLink = '/kangqore-view/partner/meetings'; break;
+                case 'INVESTOR':  dashboardLink = '/kangqore-view/investor/meetings'; break;
+                case 'JOB_SEEKER': dashboardLink = '/kangqore-view/careers/interviews'; break;
+                case 'ADMIN':     dashboardLink = '/kangqore-view/admin/consultations'; break;
             }
 
             let modeText = meetingMode ? ` (${meetingMode})` : '';

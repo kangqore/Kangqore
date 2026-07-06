@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%" fx="50%" fy="30%">
+      <stop offset="0%" stop-color="#0e1324" />
+      <stop offset="60%" stop-color="#07090e" />
+      <stop offset="100%" stop-color="#020305" />
+    </radialGradient>
+
+    <!-- Glass Gradients -->
+    <linearGradient id="glass-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+    <linearGradient id="glass-left" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.00" />
+    </linearGradient>
+    <linearGradient id="glass-right" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.00" />
+    </linearGradient>
+
+    <!-- Neon Glow Gradients -->
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#0066ff" />
+    </linearGradient>
+    <linearGradient id="blue-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2564ea" />
+      <stop offset="100%" stop-color="#4ab6d4" />
+    </linearGradient>
+
+    <!-- Glowing Filters -->
+    <filter id="neon-glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="neon-glow-blue" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Card Shadow -->
+    <filter id="thick-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="25" stdDeviation="20" flood-color="#000000" flood-opacity="0.65" />
+    </filter>
+    
+    <filter id="beveled-edge">
+      <feDropShadow dx="-1" dy="-1" stdDeviation="0" flood-color="#ffffff" flood-opacity="0.25" result="highlight"/>
+      <feDropShadow dx="2" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-grad)" />
+
+  <!-- High-Tech Tech Grid -->
+  <g stroke="#ffffff" stroke-opacity="0.02" stroke-width="1">
+    <!-- Horizontal lines -->
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+    <!-- Vertical lines -->
+    <line x1="100" y1="0" x2="100" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="300" y1="0" x2="300" y2="600" />
+    <line x1="400" y1="0" x2="400" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="600" y1="0" x2="600" y2="600" />
+    <line x1="700" y1="0" x2="700" y2="600" />
+  </g>
+
+  <!-- Diagonal Grid perspective details -->
+  <path d="M-100,500 L900,100 M-100,600 L900,200 M-100,400 L900,0" stroke="#ffffff" stroke-opacity="0.015" stroke-width="1.5" />
+
+  <!-- Ambient Light Source Behind -->
+  <circle cx="500" cy="300" r="250" fill="#2564ea" opacity="0.08" filter="url(#neon-glow-blue)" />
+  <circle cx="300" cy="380" r="180" fill="#00f0ff" opacity="0.05" filter="url(#neon-glow-cyan)" />
+
+  <!-- Connection / Glow Paths (Modernization Pipelines) -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M 330,360 L 520,230 L 620,290" stroke="url(#cyan-glow)" stroke-width="3" filter="url(#neon-glow-cyan)" opacity="0.8" />
+    <path d="M 280,410 L 480,285 L 580,380" stroke="url(#blue-glow)" stroke-width="2.5" filter="url(#neon-glow-blue)" opacity="0.6" />
+    <path d="M 330,360 L 330,480 L 580,380" stroke="url(#cyan-glow)" stroke-width="2" filter="url(#neon-glow-cyan)" opacity="0.5" />
+    <path d="M 520,230 L 680,200" stroke="url(#cyan-glow)" stroke-width="1.5" filter="url(#neon-glow-cyan)" opacity="0.7" />
+  </g>
+
+  <!-- Giant Monolith Cube (Legacy Base) -->
+  <g filter="url(#thick-shadow)" transform="translate(-30, 20)">
+    <!-- Back Glow -->
+    <polygon points="180,330 300,250 420,330 300,410" fill="#2564ea" opacity="0.2" filter="url(#neon-glow-blue)" />
+    
+    <!-- Left Face -->
+    <polygon points="180,330 300,410 300,530 180,450" fill="url(#glass-left)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5" />
+    <!-- Right Face -->
+    <polygon points="300,410 420,330 420,450 300,530" fill="url(#glass-right)" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1.5" />
+    <!-- Top Face (Beveled Glass Look) -->
+    <polygon points="180,330 300,250 420,330 300,410" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.8" filter="url(#beveled-edge)" />
+    
+    <!-- Code/Circuit Patterns on Monolith Face -->
+    <line x1="210" y1="365" x2="250" y2="392" stroke="#00f0ff" stroke-width="2" stroke-opacity="0.3" />
+    <line x1="250" y1="392" x2="250" y2="445" stroke="#00f0ff" stroke-width="2" stroke-opacity="0.3" />
+    <circle cx="210" cy="365" r="3" fill="#00f0ff" fill-opacity="0.6" />
+    <circle cx="250" cy="445" r="3" fill="#00f0ff" fill-opacity="0.6" />
+
+    <line x1="390" y1="365" x2="350" y2="392" stroke="#2564ea" stroke-width="2" stroke-opacity="0.3" />
+    <line x1="350" y1="392" x2="350" y2="445" stroke="#2564ea" stroke-width="2" stroke-opacity="0.3" />
+    <circle cx="390" cy="365" r="3" fill="#2564ea" fill-opacity="0.6" />
+  </g>
+
+  <!-- Floating Microservices (Thick 3D Glass Blocks) -->
+  
+  <!-- Cube 1 (Cyan Neon Core) -->
+  <g filter="url(#thick-shadow)" transform="translate(490, 190)">
+    <!-- Core Glow -->
+    <polygon points="0,30 30,10 60,30 30,50" fill="#00f0ff" opacity="0.6" filter="url(#neon-glow-cyan)" />
+    <!-- Left -->
+    <polygon points="0,30 30,50 30,80 0,60" fill="url(#glass-left)" stroke="#ffffff" stroke-opacity="0.1" />
+    <!-- Right -->
+    <polygon points="30,50 60,30 60,60 30,80" fill="url(#glass-right)" stroke="#ffffff" stroke-opacity="0.08" />
+    <!-- Top -->
+    <polygon points="0,30 30,10 60,30 30,50" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.2" filter="url(#beveled-edge)" />
+  </g>
+
+  <!-- Cube 2 (Blue Glow) -->
+  <g filter="url(#thick-shadow)" transform="translate(590, 260)">
+    <!-- Core Glow -->
+    <polygon points="0,20 20,7 40,20 20,33" fill="#2564ea" opacity="0.5" filter="url(#neon-glow-blue)" />
+    <!-- Left -->
+    <polygon points="0,20 20,33 20,53 0,40" fill="url(#glass-left)" stroke="#ffffff" stroke-opacity="0.1" />
+    <!-- Right -->
+    <polygon points="20,33 40,20 40,40 20,53" fill="url(#glass-right)" stroke="#ffffff" stroke-opacity="0.08" />
+    <!-- Top -->
+    <polygon points="0,20 20,7 40,20 20,33" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1" filter="url(#beveled-edge)" />
+  </g>
+
+  <!-- Cube 3 (Medium Cyan) -->
+  <g filter="url(#thick-shadow)" transform="translate(550, 360)">
+    <!-- Core Glow -->
+    <polygon points="0,25 25,9 50,25 25,41" fill="#00f0ff" opacity="0.5" filter="url(#neon-glow-cyan)" />
+    <!-- Left -->
+    <polygon points="0,25 25,41 25,66 0,50" fill="url(#glass-left)" stroke="#ffffff" stroke-opacity="0.1" />
+    <!-- Right -->
+    <polygon points="25,41 50,25 50,50 25,66" fill="url(#glass-right)" stroke="#ffffff" stroke-opacity="0.08" />
+    <!-- Top -->
+    <polygon points="0,25 25,9 50,25 25,41" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.2" filter="url(#beveled-edge)" />
+  </g>
+
+  <!-- Cube 4 (Small Cyan Top Right) -->
+  <g filter="url(#thick-shadow)" transform="translate(670, 180)">
+    <!-- Left -->
+    <polygon points="0,15 15,25 15,40 0,30" fill="url(#glass-left)" stroke="#ffffff" stroke-opacity="0.1" />
+    <!-- Right -->
+    <polygon points="15,25 30,15 30,30 15,40" fill="url(#glass-right)" stroke="#ffffff" stroke-opacity="0.08" />
+    <!-- Top -->
+    <polygon points="0,15 15,5 30,15 15,25" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" filter="url(#beveled-edge)" />
+  </g>
+
+  <!-- Foreground Dust/Particles for atmospheric depth -->
+  <circle cx="280" cy="220" r="1.5" fill="#00f0ff" opacity="0.6" filter="url(#neon-glow-cyan)" />
+  <circle cx="580" cy="150" r="2.5" fill="#ffffff" opacity="0.4" />
+  <circle cx="650" cy="380" r="2" fill="#00f0ff" opacity="0.7" filter="url(#neon-glow-cyan)" />
+  <circle cx="480" cy="450" r="1.5" fill="#2564ea" opacity="0.5" filter="url(#neon-glow-blue)" />
+  <circle cx="390" cy="510" r="2.5" fill="#ffffff" opacity="0.3" />
+</svg>

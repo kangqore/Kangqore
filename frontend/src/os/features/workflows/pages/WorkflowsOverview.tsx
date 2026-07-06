@@ -16,7 +16,7 @@ const TRIGGER_LABEL: Record<string, string> = {
 const CATEGORY_COLOR: Record<string, string> = {
   sales: 'bg-blue-50 text-blue-700', delivery: 'bg-green-50 text-green-700',
   hr: 'bg-purple-50 text-purple-700', finance: 'bg-orange-50 text-orange-700',
-  ops: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300', marketing: 'bg-pink-50 text-pink-700',
+  ops: 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]', marketing: 'bg-pink-50 text-pink-700',
 }
 
 const STEP_ICONS: Record<string, React.FC<{ className?: string }>> = {
@@ -25,7 +25,7 @@ const STEP_ICONS: Record<string, React.FC<{ className?: string }>> = {
   notification: ({ className }) => <div className={`w-2 h-2 rounded-full bg-green-500 ${className ?? ''}`} />,
   approval: ({ className }) => <div className={`w-2 h-2 rounded-full bg-purple-500 ${className ?? ''}`} />,
   integration: ({ className }) => <div className={`w-2 h-2 rounded-full bg-pink-500 ${className ?? ''}`} />,
-  delay: ({ className }) => <div className={`w-2 h-2 rounded-full bg-slate-400 ${className ?? ''}`} />,
+  delay: ({ className }) => <div className={`w-2 h-2 rounded-full bg-[var(--os-text-2)] ${className ?? ''}`} />,
 }
 
 function WorkflowCard({ wf }: { wf: Workflow }) {
@@ -36,12 +36,12 @@ function WorkflowCard({ wf }: { wf: Workflow }) {
       <CardBody className="p-5">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 flex items-center justify-center flex-shrink-0">
-              <GitBranch className="w-4 h-4 text-slate-500" />
+            <div className="w-9 h-9 rounded-xl bg-[var(--os-surface-0)] border border-[var(--os-border)] flex items-center justify-center flex-shrink-0">
+              <GitBranch className="w-4 h-4 text-[var(--os-text-2)]" />
             </div>
             <div>
-              <p className="font-semibold text-white leading-tight">{wf.name}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{wf.owner} · {TRIGGER_LABEL[wf.triggerType]}: <span className="font-medium text-slate-300">{wf.triggerConfig}</span></p>
+              <p className="font-semibold text-[var(--os-text-1)] leading-tight">{wf.name}</p>
+              <p className="text-xs text-[var(--os-text-2)] mt-0.5">{wf.owner} · {TRIGGER_LABEL[wf.triggerType]}: <span className="font-medium text-[var(--os-text-1)]">{wf.triggerConfig}</span></p>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -54,7 +54,7 @@ function WorkflowCard({ wf }: { wf: Workflow }) {
           </div>
         </div>
 
-        <p className="text-sm text-slate-500 mb-4 leading-relaxed">{wf.description}</p>
+        <p className="text-sm text-[var(--os-text-2)] mb-4 leading-relaxed">{wf.description}</p>
 
         {/* Steps visual */}
         <div className="flex items-center gap-1 mb-4">
@@ -62,16 +62,16 @@ function WorkflowCard({ wf }: { wf: Workflow }) {
             const Dot = STEP_ICONS[step.type] ?? STEP_ICONS.action
             return (
               <div key={step.id} className="flex items-center gap-1">
-                {i > 0 && <div className="w-4 h-px bg-slate-200" />}
+                {i > 0 && <div className="w-4 h-px bg-[var(--os-border)]" />}
                 <Dot />
               </div>
             )
           })}
-          <span className="text-xs text-slate-500 ml-2">{wf.steps.length} steps</span>
+          <span className="text-xs text-[var(--os-text-2)] ml-2">{wf.steps.length} steps</span>
         </div>
 
         {/* Stats */}
-        <div className="flex items-center justify-between text-xs text-slate-500 border-t border-white/10 border-t-white/20 pt-3">
+        <div className="flex items-center justify-between text-xs text-[var(--os-text-2)] border-t border-[var(--os-border)] pt-3">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />
@@ -120,7 +120,7 @@ export function WorkflowsOverview() {
           <CardTitle>Recent Run Log</CardTitle>
         </CardHeader>
         <CardBody className="p-0">
-          <div className="divide-y divide-[#2E2854]">
+          <div className="divide-y divide-[var(--os-border)]">
             {recentRuns.map(run => (
               <div key={run.id} className="flex items-center gap-4 px-5 py-3.5">
                 {run.status === 'completed'
@@ -128,15 +128,15 @@ export function WorkflowsOverview() {
                   : <XCircle      className="w-4 h-4 text-red-500  flex-shrink-0" />
                 }
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white">{run.workflowName}</p>
+                  <p className="text-sm font-medium text-[var(--os-text-1)]">{run.workflowName}</p>
                   {run.errorMessage
                     ? <p className="text-xs text-red-500 truncate">{run.errorMessage}</p>
-                    : <p className="text-xs text-slate-500">{run.triggeredBy} · {run.stepsCompleted}/{run.stepsTotal} steps</p>
+                    : <p className="text-xs text-[var(--os-text-2)]">{run.triggeredBy} · {run.stepsCompleted}/{run.stepsTotal} steps</p>
                   }
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <p className="text-xs text-slate-500">{run.startedAt.replace('T', ' ').slice(0, 16)}</p>
-                  {run.duration && <p className="text-xs text-slate-500">{run.duration}s</p>}
+                  <p className="text-xs text-[var(--os-text-2)]">{run.startedAt.replace('T', ' ').slice(0, 16)}</p>
+                  {run.duration && <p className="text-xs text-[var(--os-text-2)]">{run.duration}s</p>}
                 </div>
               </div>
             ))}

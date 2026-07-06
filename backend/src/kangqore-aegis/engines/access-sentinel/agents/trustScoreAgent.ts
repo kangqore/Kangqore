@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }        from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 export async function runTrustScoreAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start  = Date.now()
@@ -27,6 +30,10 @@ export async function runTrustScoreAgent(ctx: AgentContext): Promise<AegisAgentR
   score = Math.max(0, Math.min(100, score))
 
   const verdict = score < 40 ? 'CRITICAL' : score < 70 ? 'WARN' : 'PASS'
+
+  const llmSummary = await callLLM(SYSTEM,
+    `Trust score (7d): ${score}/100. ${activations} activations, ${denied} access denials, denial rate ${(denialRate * 100).toFixed(1)}%, ${autonomous} autonomous activations (autonomy ratio ${(autonomyRatio * 100).toFixed(1)}%). Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
 
   return {
     agentId:  'sentinel.trust-score',

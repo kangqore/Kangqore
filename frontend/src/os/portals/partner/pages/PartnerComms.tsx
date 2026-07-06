@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Mail, Send, Paperclip, ChevronRight, ArrowLeft, X } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Button } from '@design-system/components/Button'
 import { Textarea } from '@design-system/components/Textarea'
 import { api, isDemo } from '@lib/api'
@@ -8,9 +9,9 @@ import { usePartnerEmails } from '../usePartnerData'
 
 // ─── tokens ───────────────────────────────────────────────────────────────────
 
-const CARD  = 'rgba(13,17,23,0.8)'
-const EDGE  = '#2E2854'
-const INNER = '#111827'
+const CARD  = 'var(--os-card)'
+const EDGE  = 'var(--os-border)'
+const INNER = 'var(--os-card)'
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -32,9 +33,9 @@ const MOCK_EMAILS: Email[] = [
   {
     id: 'pe1',
     subject: 'Project Phoenix — Sprint 14 milestone review',
-    from: 'Mahesh Kumar',
+    from: 'C.O.D.E.',
     preview: 'We wanted to flag that the Sprint 14 review is scheduled for June 24…',
-    body: 'Hi,\n\nWe wanted to flag that the Sprint 14 milestone review is scheduled for June 24 at 3pm IST. Please confirm your availability and share the deliverable summary by June 23 EOD.\n\nBest,\nMahesh Kumar\nKangqore',
+    body: 'Hi,\n\nWe wanted to flag that the Sprint 14 milestone review is scheduled for June 24 at 3pm IST. Please confirm your availability and share the deliverable summary by June 23 EOD.\n\nBest,\nC.O.D.E.\nKangqore',
     direction: 'inbound',
     isRead: false,
     createdAt: '2026-06-21T09:30:00Z',
@@ -102,22 +103,22 @@ function EmailRow({ email, selected, onSelect }: { email: Email; selected: boole
         <div className="flex-shrink-0 mt-0.5">
           {!email.isRead
             ? <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5" />
-            : <Mail className="w-4 h-4 text-slate-700" />
+            : <Mail className="w-4 h-4 text-[var(--os-text-2)]" />
           }
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2 mb-0.5">
-            <p className={`text-[13px] truncate ${email.isRead ? 'text-slate-400 font-medium' : 'text-white font-semibold'}`}>
+            <p className={`text-[13px] truncate ${email.isRead ? 'text-[var(--os-text-2)] font-medium' : 'font-semibold'}`} style={!email.isRead ? { color: 'var(--os-text-1)' } : undefined}>
               {email.direction === 'outbound' ? 'To: Kangqore' : email.from}
             </p>
-            <span className="text-[10px] text-slate-600 flex-shrink-0">{fmtDate(email.createdAt)}</span>
+            <span className="text-[10px] text-[var(--os-text-2)] flex-shrink-0">{fmtDate(email.createdAt)}</span>
           </div>
-          <p className={`text-xs truncate mb-0.5 ${email.isRead ? 'text-slate-600' : 'text-slate-400 font-medium'}`}>
+          <p className={`text-xs truncate mb-0.5 ${email.isRead ? 'text-[var(--os-text-2)]' : 'text-[var(--os-text-2)] font-medium'}`}>
             {email.subject}
           </p>
-          <p className="text-[11px] text-slate-600 truncate">{email.preview}</p>
+          <p className="text-[11px] text-[var(--os-text-2)] truncate">{email.preview}</p>
         </div>
-        <ChevronRight className="w-3.5 h-3.5 text-slate-700 flex-shrink-0 mt-1" />
+        <ChevronRight className="w-3.5 h-3.5 text-[var(--os-text-2)] flex-shrink-0 mt-1" />
       </div>
     </button>
   )
@@ -147,12 +148,12 @@ function EmailThread({ email, onBack, onReply }: {
     <div className="flex flex-col h-full">
       {/* Thread header */}
       <div className="flex items-center gap-3 px-5 py-4 flex-shrink-0" style={{ borderBottom: `1px solid ${EDGE}` }}>
-        <button onClick={onBack} className="text-slate-500 hover:text-white transition-colors lg:hidden">
+        <button onClick={onBack} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors lg:hidden">
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-white truncate">{email.subject}</p>
-          <p className="text-[11px] text-slate-500 mt-0.5">
+          <p className="text-sm font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{email.subject}</p>
+          <p className="text-[11px] text-[var(--os-text-2)] mt-0.5">
             {email.direction === 'outbound' ? 'Sent by you' : `From ${email.from}`} · {fmtDate(email.createdAt)} at {fmtTime(email.createdAt)}
           </p>
         </div>
@@ -167,25 +168,25 @@ function EmailThread({ email, onBack, onReply }: {
             {email.direction === 'outbound' ? 'YO' : email.from.split(' ').map(n => n[0]).join('').slice(0, 2)}
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-slate-300">
+            <p className="text-xs font-semibold text-[var(--os-text-1)]">
               {email.direction === 'outbound' ? 'You' : email.from}
             </p>
-            <p className="text-[10px] text-slate-600">
+            <p className="text-[10px] text-[var(--os-text-2)]">
               {email.direction === 'outbound' ? 'To: admin@kangqore.com' : 'To: You'}
             </p>
           </div>
         </div>
 
         {/* Body text */}
-        <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap mb-5">{email.body}</div>
+        <div className="text-sm text-[var(--os-text-1)] leading-relaxed whitespace-pre-wrap mb-5">{email.body}</div>
 
         {/* Attachments */}
         {email.attachments && email.attachments.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-5">
             {email.attachments.map(att => (
-              <div key={att} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] text-slate-400"
+              <div key={att} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] text-[var(--os-text-2)]"
                 style={{ background: INNER, border: `1px solid ${EDGE}` }}>
-                <Paperclip className="w-3 h-3 text-slate-600" />
+                <Paperclip className="w-3 h-3 text-[var(--os-text-2)]" />
                 {att}
               </div>
             ))}
@@ -196,7 +197,7 @@ function EmailThread({ email, onBack, onReply }: {
         {!sent ? (
           <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${EDGE}` }}>
             <div className="px-4 py-2.5 flex items-center gap-2" style={{ background: INNER, borderBottom: `1px solid ${EDGE}` }}>
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Reply</span>
+              <span className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider">Reply</span>
             </div>
             <div className="p-3" style={{ background: CARD }}>
               <Textarea
@@ -254,10 +255,11 @@ export function PartnerComms() {
 
   return (
     <div className="space-y-4">
+      <KIMMPSignalBar module="Messages" />
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-white">Messages</h2>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Messages</h2>
+          <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>
             {unread > 0 ? `${unread} unread` : 'All messages read'} · {emails.length} total
           </p>
         </div>
@@ -268,7 +270,7 @@ export function PartnerComms() {
           {/* Email list */}
           <div className="lg:col-span-2 overflow-y-auto" style={{ borderRight: `1px solid ${EDGE}`, maxHeight: 580 }}>
             <div className="px-4 py-3 flex-shrink-0" style={{ borderBottom: `1px solid ${EDGE}`, background: INNER }}>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Inbox</p>
+              <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider">Inbox</p>
             </div>
             {emails.map(email => (
               <EmailRow
@@ -280,8 +282,8 @@ export function PartnerComms() {
             ))}
             {emails.length === 0 && (
               <div className="py-16 text-center">
-                <Mail className="w-8 h-8 text-slate-700 mx-auto mb-3" />
-                <p className="text-sm text-slate-500">No messages yet.</p>
+                <Mail className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-3" />
+                <p className="text-sm text-[var(--os-text-2)]">No messages yet.</p>
               </div>
             )}
           </div>
@@ -301,8 +303,8 @@ export function PartnerComms() {
             ) : (
               <div className="flex-1 flex items-center justify-center">
                 <div className="text-center">
-                  <Mail className="w-10 h-10 text-slate-700 mx-auto mb-3" />
-                  <p className="text-sm font-semibold text-slate-500">Select a message to read</p>
+                  <Mail className="w-10 h-10 text-[var(--os-text-2)] mx-auto mb-3" />
+                  <p className="text-sm font-semibold text-[var(--os-text-2)]">Select a message to read</p>
                 </div>
               </div>
             )}

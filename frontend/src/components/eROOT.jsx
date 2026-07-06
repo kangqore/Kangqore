@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, ArrowRight, Sparkles } from 'lucide-react';
+import { X, ArrowRight, Sparkles, Activity } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import useHumanContext from '../hooks/useHumanContext';
 
 const nthWeekday = (year, month, weekday, n) => {
   const first = new Date(year, month, 1).getDay();
@@ -143,20 +144,18 @@ const firstName = (name) => {
   return name.trim().split(/\s+/)[0];
 };
 
-const eROOT = () => {
+const EROOT = () => {
   const navigate  = useNavigate();
   const { user }  = useAuth();
   const [visible, setVisible]   = useState(false);
   const [closing, setClosing]   = useState(false);
   const ctx = useMemo(() => getSmartContext(), []);
-
-  // Don't show inside the OS — it's for the public-facing site only
-  if (typeof window !== 'undefined' && window.location.pathname.startsWith('/kangqore-view')) {
-    return null;
-  }
+  
+  // Hook into the Human Context Intelligence Layer
+  const { vibe, topIntent, probabilities } = useHumanContext();
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 90000);
+    const timer = setTimeout(() => setVisible(true), 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -205,6 +204,26 @@ const eROOT = () => {
     // Anonymous visitor — Atithi Devo Bhava spirit: every guest is honoured
     primaryLine = "Every person who walks through our door is an honoured guest. We'd love to hear your thoughts — what brings you here today?";
     secondaryLine = "And if you feel the pull to be part of something meaningful, we'd love to have you with us.";
+  }
+
+  // ── HUMAN CONTEXT OVERRIDES ──────────────────────────────────────────────────
+  if (vibe === 'confused') {
+    primaryLine = "You seem to be clicking around rapidly — comparing plans or features can be tricky. Can I help clarify?";
+    secondaryLine = "I can immediately pull up a direct comparison for you.";
+  } else if (vibe === 'rushed') {
+    primaryLine = "Looks like you're in a hurry. Want the 60-second TL;DR of what Kangqore does?";
+    secondaryLine = "No fluff, just the exact value proposition.";
+  } else if (vibe === 'idle') {
+    primaryLine = "Taking a pause? There is a lot to take in here. Let me know if you want me to summarize anything.";
+  } else if (topIntent.intent === 'developer' && topIntent.score > 15) {
+    primaryLine = "Diving into the architecture? I can pull up our API documentation or GitHub repos for you.";
+    secondaryLine = "Engineers build better when they have the exact specs.";
+  } else if (topIntent.intent === 'enterpriseBuyer' && topIntent.score > 15) {
+    primaryLine = "Looking for enterprise solutions? We can map out a custom architecture for your exact scale.";
+    secondaryLine = "Let me connect you directly with a Lead Architect.";
+  } else if (topIntent.intent === 'jobSeeker' && topIntent.score > 15) {
+    primaryLine = "Exploring a career at Kangqore? We are always looking for visionary builders.";
+    secondaryLine = "Check out our open roles or let me know what you specialize in.";
   }
 
   return (
@@ -286,10 +305,17 @@ const eROOT = () => {
             )}
             <div className="min-w-0">
               <span className="text-sm font-bold text-white leading-tight block">{heading}</span>
-              {knownUser && user.role && (
+              {knownUser && user.role ? (
                 <span className="text-[9px] uppercase tracking-widest text-[#4fa9d8]/80 font-semibold">
                   {user.role.replace(/_/g, ' ')}
                 </span>
+              ) : (
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <Activity className={`w-2.5 h-2.5 ${vibe === 'neutral' ? 'text-cyan-500/50' : vibe === 'rushed' ? 'text-amber-500' : vibe === 'confused' ? 'text-red-500' : 'text-cyan-400'}`} />
+                  <span className="text-[9px] uppercase tracking-widest text-cyan-400/80 font-semibold">
+                    eROOT Vibe: {vibe}
+                  </span>
+                </div>
               )}
             </div>
           </div>
@@ -344,4 +370,4 @@ const eROOT = () => {
   );
 };
 
-export default eROOT;
+export default EROOT;

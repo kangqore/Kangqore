@@ -244,13 +244,13 @@ const InvestorsPage = () => {
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl">
-            {/* Mahesh Kumar */}
+            {/* C.O.D.E. */}
             <div className="bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl p-8 border border-gray-200 hover:shadow-xl transition-all duration-300 group">
               <div className="w-16 h-16 bg-brand-gradient rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Users className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                Mahesh Kumar
+                C.O.D.E.
               </h3>
               <p className="text-brand-blue font-medium mb-4">
                 Founder & Chief Executive Officer
@@ -302,7 +302,7 @@ const InvestorsPage = () => {
               
               {/* Signatures */}
               <div className="mt-10 pt-8 border-t border-gray-200 space-y-3">
-                <p className="font-semibold text-gray-800 dark:text-gray-50">— Mahesh Kumar, Founder & CEO</p>
+                <p className="font-semibold text-gray-800 dark:text-gray-50">— C.O.D.E., Founder & CEO</p>
                 <p className="font-semibold text-gray-800 dark:text-gray-50">— Dinesh Kumar, Co-Founder & CFO</p>
               </div>
             </div>

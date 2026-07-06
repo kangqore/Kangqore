@@ -3,11 +3,12 @@ import {
   Brain, TrendingUp, TrendingDown, AlertCircle, CheckCircle2,
   Lightbulb, ChevronRight, BarChart2, Shield, Zap, RefreshCw,
 } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 
 // ─── tokens ───────────────────────────────────────────────────────────────────
 
-const CARD = 'rgba(15,23,42,0.5)'
-const EDGE = 'rgba(30,41,59,0.6)'
+const CARD = 'var(--os-card)'
+const EDGE = 'var(--os-border)'
 const EASE = 'cubic-bezier(0.16,1,0.3,1)'
 
 // ─── types ────────────────────────────────────────────────────────────────────
@@ -102,12 +103,12 @@ function OverallHealth({ insights }: { insights: Insight[] }) {
           <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: cfg.color }}>
             WAANDA · Investor Intelligence
           </span>
-          <p className="text-xs text-slate-400 mt-0.5">{label}</p>
+          <p className="text-xs text-[var(--os-text-2)] mt-0.5">{label}</p>
         </div>
         <div className="ml-auto flex items-center gap-3 flex-shrink-0">
-          {pass > 0 && <div className="text-center"><p className="text-lg font-black text-emerald-400 leading-none">{pass}</p><p className="text-[9px] text-slate-500 uppercase tracking-wider">Pass</p></div>}
-          {warn > 0 && <div className="text-center"><p className="text-lg font-black text-amber-400 leading-none">{warn}</p><p className="text-[9px] text-slate-500 uppercase tracking-wider">Warn</p></div>}
-          {fail > 0 && <div className="text-center"><p className="text-lg font-black text-red-400 leading-none">{fail}</p><p className="text-[9px] text-slate-500 uppercase tracking-wider">Fail</p></div>}
+          {pass > 0 && <div className="text-center"><p className="text-lg font-black text-emerald-400 leading-none">{pass}</p><p className="text-[9px] text-[var(--os-text-2)] uppercase tracking-wider">Pass</p></div>}
+          {warn > 0 && <div className="text-center"><p className="text-lg font-black text-amber-400 leading-none">{warn}</p><p className="text-[9px] text-[var(--os-text-2)] uppercase tracking-wider">Warn</p></div>}
+          {fail > 0 && <div className="text-center"><p className="text-lg font-black text-red-400 leading-none">{fail}</p><p className="text-[9px] text-[var(--os-text-2)] uppercase tracking-wider">Fail</p></div>}
         </div>
       </div>
       <div className="flex gap-1.5">
@@ -150,26 +151,26 @@ function InsightCard({ insight, expanded, onToggle }: { insight: Insight; expand
                 {status.label}
               </span>
             </div>
-            <p className="text-sm font-semibold text-white leading-snug">{insight.title}</p>
+            <p className="text-sm font-semibold leading-snug" style={{ color: 'var(--os-text-1)' }}>{insight.title}</p>
           </div>
-          <ChevronRight className="w-4 h-4 text-slate-600 flex-shrink-0 mt-1 transition-transform duration-200"
+          <ChevronRight className="w-4 h-4 text-[var(--os-text-2)] flex-shrink-0 mt-1 transition-transform duration-200"
             style={{ transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
         </div>
         <div className="flex items-center gap-4 mt-3 pl-12">
           <div className="flex items-center gap-1.5">
-            <div className="w-24 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <div className="w-24 h-1 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
               <div className="h-full rounded-full" style={{ width: `${insight.confidence}%`, background: status.color }} />
             </div>
             <span className="text-[10px] font-bold" style={{ color: status.color }}>{insight.confidence}% confidence</span>
           </div>
-          <div className="flex items-center gap-1 text-[10px] text-slate-500">
+          <div className="flex items-center gap-1 text-[10px] text-[var(--os-text-2)]">
             <TrendIcon className="w-3 h-3" />{insight.trendLabel}
           </div>
         </div>
       </button>
       {expanded && (
-        <div className="px-5 pb-5 pt-0" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-          <p className="text-sm text-slate-400 leading-relaxed pt-4">{insight.body}</p>
+        <div className="px-5 pb-5 pt-0" style={{ borderTop: '1px solid var(--os-surface-0)' }}>
+          <p className="text-sm text-[var(--os-text-2)] leading-relaxed pt-4">{insight.body}</p>
         </div>
       )}
     </div>
@@ -189,8 +190,8 @@ function RecommendationCard() {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[10px] font-black uppercase tracking-widest text-violet-500 mb-1">WAANDA Recommends</p>
-          <p className="text-sm font-semibold text-white mb-2">{RECOMMENDATION.title}</p>
-          <p className="text-sm text-slate-400 leading-relaxed">{RECOMMENDATION.body}</p>
+          <p className="text-sm font-semibold mb-2" style={{ color: 'var(--os-text-1)' }}>{RECOMMENDATION.title}</p>
+          <p className="text-sm text-[var(--os-text-2)] leading-relaxed">{RECOMMENDATION.body}</p>
         </div>
       </div>
     </div>
@@ -204,17 +205,18 @@ export function InvestorWaanda() {
   const toggle = (id: string) => setExpandedId(prev => prev === id ? null : id)
 
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-6">
+    <div className="space-y-6">
+      <KIMMPSignalBar module="WAANDA Investor Insights" />
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h2 className="text-xl font-bold text-white">WAANDA Investor Insights</h2>
+            <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>WAANDA Investor Insights</h2>
             <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-full"
               style={{ background: 'rgba(127,83,249,0.12)', color: '#a78bfa', border: '1px solid rgba(127,83,249,0.25)' }}>
               AI · Live
             </span>
           </div>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-[var(--os-text-2)]">
             WAANDA synthesises company signals and surfaces what matters most to your investment.
           </p>
         </div>
@@ -223,7 +225,7 @@ export function InvestorWaanda() {
       <OverallHealth insights={INSIGHTS} />
 
       <div className="space-y-3">
-        <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Signal breakdown</p>
+        <p className="text-xs font-bold text-[var(--os-text-2)] uppercase tracking-wider">Signal breakdown</p>
         {INSIGHTS.map(ins => (
           <InsightCard key={ins.id} insight={ins} expanded={expandedId === ins.id} onToggle={() => toggle(ins.id)} />
         ))}
@@ -231,7 +233,7 @@ export function InvestorWaanda() {
 
       <RecommendationCard />
 
-      <p className="text-[11px] text-slate-600 text-center">
+      <p className="text-[11px] text-[var(--os-text-2)] text-center">
         Insights are generated by WAANDA and updated continuously. Last refresh: just now.
       </p>
     </div>

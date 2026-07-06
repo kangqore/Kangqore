@@ -1,6 +1,8 @@
 import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
+import { createNotification } from '../services/notificationService';
+import { notifyClient } from '../services/clientEmail.service';
 
 const router = Router();
 
@@ -49,6 +51,21 @@ router.post('/', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRe
         fileUrl,
         notes
       }
+    });
+
+    await createNotification({
+      userId: clientId,
+      title: `Invoice ${invoiceNumber} ready`,
+      message: `A new invoice for ${currency || 'USD'} ${Number(amount).toLocaleString()} is ready for your review.`,
+      type: 'INFO',
+      link: '/kangqore-view/client/invoices',
+    });
+    await notifyClient(clientId, {
+      type: 'INVOICE_READY',
+      invoiceNumber,
+      amount: Number(amount),
+      currency: currency || 'USD',
+      dueDate: new Date(dueDate),
     });
 
     res.status(201).json(invoice);

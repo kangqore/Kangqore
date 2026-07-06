@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Phone, Mail, MessageSquare, Video, Star, ChevronLeft, ExternalLink, Check, Users } from 'lucide-react'
+import { VisitorJourneyPanel } from '../../../components/VisitorJourneyPanel'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
@@ -19,8 +20,8 @@ const HEALTH_VARIANT: Record<ClientHealth, 'success' | 'warning' | 'danger' | 'i
 const TIER_COLOR: Record<RelationshipTier, string> = {
   strategic: 'bg-[#0073ea] text-white shadow-sm font-bold',
   enterprise: 'bg-[#7f53f9] text-white shadow-sm font-bold',
-  standard: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300 font-bold',
-  starter: 'bg-slate-900 text-slate-300 font-bold',
+  standard: 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] font-bold',
+  starter: 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] font-bold',
 }
 const INTERACTION_ICON: Record<InteractionType, React.ElementType> = {
   call: Phone, email: Mail, meeting: Video, note: MessageSquare, milestone: Star,
@@ -97,15 +98,15 @@ function InviteToPortalDrawer({
             <p className="text-sm font-semibold text-white">Invites sent</p>
           </div>
           {results.map(r => (
-            <div key={r.email} className="rounded-xl p-3.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            <div key={r.email} className="rounded-xl p-3.5" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
               <div className="flex items-center justify-between gap-2 mb-1">
-                <span className="text-sm font-semibold text-slate-200 truncate">{r.email}</span>
+                <span className="text-sm font-semibold text-[var(--os-text-1)] truncate">{r.email}</span>
                 <Badge variant={r.status === 'created' ? 'success' : 'warning'} size="sm">
                   {r.status === 'created' ? 'Account created' : 'Already exists'}
                 </Badge>
               </div>
               {r.tempPassword && (
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-[var(--os-text-2)] mt-1">
                   Temp password: <span className="font-mono text-blue-400">{r.tempPassword}</span>
                 </p>
               )}
@@ -114,7 +115,7 @@ function InviteToPortalDrawer({
         </div>
       ) : (
         <div className="space-y-2">
-          <p className="text-xs text-slate-500 mb-3 flex items-center gap-1.5">
+          <p className="text-xs text-[var(--os-text-2)] mb-3 flex items-center gap-1.5">
             <Users className="w-3.5 h-3.5" />
             {contacts.length} contact{contacts.length !== 1 ? 's' : ''} on this account
           </p>
@@ -124,8 +125,8 @@ function InviteToPortalDrawer({
               onClick={() => toggle(ct.email)}
               className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all"
               style={{
-                background: selected.has(ct.email) ? 'rgba(37,100,234,0.08)' : 'rgba(255,255,255,0.02)',
-                border: `1px solid ${selected.has(ct.email) ? 'rgba(37,100,234,0.3)' : 'rgba(255,255,255,0.06)'}`,
+                background: selected.has(ct.email) ? 'rgba(37,100,234,0.08)' : 'var(--os-surface-0)',
+                border: `1px solid ${selected.has(ct.email) ? 'rgba(37,100,234,0.3)' : 'var(--os-surface-0)'}`,
               }}
             >
               <div className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 transition-all ${
@@ -136,10 +137,10 @@ function InviteToPortalDrawer({
               <Avatar name={ct.name} size="sm" />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="text-sm font-semibold text-slate-200 truncate">{ct.name}</p>
+                  <p className="text-sm font-semibold text-[var(--os-text-1)] truncate">{ct.name}</p>
                   {ct.isPrimary && <Badge variant="brand" size="sm">Primary</Badge>}
                 </div>
-                <p className="text-xs text-slate-500 truncate">{ct.email}</p>
+                <p className="text-xs text-[var(--os-text-2)] truncate">{ct.email}</p>
               </div>
             </button>
           ))}
@@ -178,7 +179,7 @@ export function ClientProfile() {
         <select
           value={selectedId}
           onChange={e => setSelected(e.target.value)}
-          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-slate-300 pl-3 pr-8 outline-none focus:border-os-blue focus:ring-2 focus:ring-os-blue/20"
+          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20"
         >
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
@@ -200,23 +201,23 @@ export function ClientProfile() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-wrap mb-1">
-              <h2 className="text-xl font-bold text-white">{client.name}</h2>
+              <h2 className="text-xl font-bold text-[var(--os-text-1)]">{client.name}</h2>
               <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${TIER_COLOR[client.tier]}`}>{client.tier}</span>
               <Badge variant={HEALTH_VARIANT[client.health]} dot size="sm">{client.health}</Badge>
               <Badge variant={client.status === 'active' ? 'success' : client.status === 'onboarding' ? 'info' : 'warning'} size="sm">{client.status}</Badge>
             </div>
-            <p className="text-sm text-slate-500 mb-3">{client.industry} · {client.country}</p>
-            <p className="text-sm text-slate-500 leading-relaxed max-w-2xl">{client.description}</p>
+            <p className="text-sm text-[var(--os-text-2)] mb-3">{client.industry} · {client.country}</p>
+            <p className="text-sm text-[var(--os-text-2)] leading-relaxed max-w-2xl">{client.description}</p>
           </div>
           <div className="flex flex-col items-end gap-2">
             <div className="text-right">
-              <p className="text-2xl font-bold tracking-tight text-white">{fmt(client.arr)}</p>
-              <p className="text-xs text-slate-500">Annual Recurring Revenue</p>
+              <p className="text-2xl font-bold tracking-tight text-[var(--os-text-1)]">{fmt(client.arr)}</p>
+              <p className="text-xs text-[var(--os-text-2)]">Annual Recurring Revenue</p>
             </div>
             <div className="flex items-center gap-1.5 text-sm">
               <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-              <span className="font-bold text-slate-300">{client.satisfactionScore}</span>
-              <span className="text-slate-500 text-xs">/ 100 satisfaction</span>
+              <span className="font-bold text-[var(--os-text-1)]">{client.satisfactionScore}</span>
+              <span className="text-[var(--os-text-2)] text-xs">/ 100 satisfaction</span>
             </div>
           </div>
         </div>
@@ -232,8 +233,8 @@ export function ClientProfile() {
             { label: 'Last activity',   value: new Date(client.lastActivity).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) },
           ].map(s => (
             <div key={s.label}>
-              <p className="text-[11px] text-slate-500 uppercase tracking-wider font-bold">{s.label}</p>
-              <p className="text-sm font-semibold text-slate-200 mt-0.5">{s.value}</p>
+              <p className="text-[11px] text-[var(--os-text-2)] uppercase tracking-wider font-bold">{s.label}</p>
+              <p className="text-sm font-semibold text-[var(--os-text-1)] mt-0.5">{s.value}</p>
             </div>
           ))}
         </div>
@@ -264,19 +265,19 @@ export function ClientProfile() {
                 <Avatar name={ct.name} size="md" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold text-slate-200 truncate">{ct.name}</p>
+                    <p className="text-sm font-semibold text-[var(--os-text-1)] truncate">{ct.name}</p>
                     {ct.isPrimary && <Badge variant="brand" size="sm">Primary</Badge>}
                   </div>
-                  <p className="text-xs text-slate-500">{ct.role}</p>
-                  <p className="text-xs text-slate-500 truncate">{ct.email}</p>
+                  <p className="text-xs text-[var(--os-text-2)]">{ct.role}</p>
+                  <p className="text-xs text-[var(--os-text-2)] truncate">{ct.email}</p>
                 </div>
                 <div className="flex gap-1.5">
-                   <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-os-blue/10 hover:text-os-blue flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                     <Mail className="w-3.5 h-3.5 text-slate-500" />
+                   <button className="w-7 h-7 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:bg-[#579bfc]/10 hover:text-[#579bfc] flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                     <Mail className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
                    </button>
                    {ct.phone && (
-                     <button className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-[#00c875]/10 hover:text-[#00c875] flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                       <Phone className="w-3.5 h-3.5 text-slate-500" />
+                     <button className="w-7 h-7 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:bg-[#00c875]/10 hover:text-[#00c875] flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                       <Phone className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
                      </button>
                    )}
                 </div>
@@ -298,7 +299,7 @@ export function ClientProfile() {
             {slas.map(sla => (
               <div key={sla.id}>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-medium text-slate-500">{sla.metric}</span>
+                  <span className="text-xs font-medium text-[var(--os-text-2)]">{sla.metric}</span>
                   <Badge variant={sla.status === 'met' ? 'success' : sla.status === 'at-risk' ? 'warning' : 'danger'} size="sm">
                     {sla.current}{sla.unit}
                   </Badge>
@@ -308,10 +309,10 @@ export function ClientProfile() {
                   size="sm"
                   color={sla.status === 'met' ? 'success' : sla.status === 'at-risk' ? 'warning' : 'danger'}
                 />
-                <p className="text-[10px] font-semibold text-slate-500 mt-1 tracking-wide">Target: {sla.target}{sla.unit}</p>
+                <p className="text-[10px] font-semibold text-[var(--os-text-2)] mt-1 tracking-wide">Target: {sla.target}{sla.unit}</p>
               </div>
             ))}
-            {slas.length === 0 && <p className="text-sm text-slate-500 py-4 text-center">No SLAs defined</p>}
+            {slas.length === 0 && <p className="text-sm text-[var(--os-text-2)] py-4 text-center">No SLAs defined</p>}
           </div>
         </Card>
 
@@ -319,7 +320,7 @@ export function ClientProfile() {
         <Card variant="glass">
           <CardHeader>
             <CardTitle>Delivery</CardTitle>
-            <span className="text-xs text-slate-500">{completedMs}/{milestones.length} done</span>
+            <span className="text-xs text-[var(--os-text-2)]">{completedMs}/{milestones.length} done</span>
           </CardHeader>
           <div className="space-y-3.5">
             {milestones.map(ms => (
@@ -330,8 +331,8 @@ export function ClientProfile() {
                   ms.status === 'delayed'     ? 'bg-red-500'   : 'bg-slate-300'
                 }`} />
                 <div className="flex-1 min-w-0">
-                  <p className={`text-xs font-semibold leading-tight ${ms.status === 'completed' ? 'text-slate-500 line-through' : 'text-slate-300'}`}>{ms.title}</p>
-                  <p className="text-[10px] font-semibold text-slate-500 mt-1">
+                  <p className={`text-xs font-semibold leading-tight ${ms.status === 'completed' ? 'text-[var(--os-text-2)] line-through' : 'text-[var(--os-text-1)]'}`}>{ms.title}</p>
+                  <p className="text-[10px] font-semibold text-[var(--os-text-2)] mt-1">
                     {ms.status === 'completed'
                       ? `Done ${new Date(ms.completedDate!).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`
                       : `Due ${new Date(ms.dueDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`
@@ -353,7 +354,7 @@ export function ClientProfile() {
             <CardTitle>Activity Timeline</CardTitle>
             <Badge variant="neutral" size="sm">{interactions.length} entries</Badge>
           </CardHeader>
-          <div className="divide-y divide-[#2E2854]/60">
+          <div className="divide-y divide-[var(--os-border)]">
             {interactions.slice(0, 5).map((interaction) => {
               const Icon = INTERACTION_ICON[interaction.type]
               return (
@@ -363,10 +364,10 @@ export function ClientProfile() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="text-xs font-semibold text-slate-200 truncate">{interaction.title}</p>
-                      <span className="text-[10px] text-slate-500 flex-shrink-0">{new Date(interaction.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                      <p className="text-xs font-semibold text-[var(--os-text-1)] truncate">{interaction.title}</p>
+                      <span className="text-[10px] text-[var(--os-text-2)] flex-shrink-0">{new Date(interaction.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
                     </div>
-                    <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">{interaction.summary}</p>
+                    <p className="text-[11px] text-[var(--os-text-2)] mt-0.5 line-clamp-1">{interaction.summary}</p>
                   </div>
                 </div>
               )
@@ -382,19 +383,25 @@ export function ClientProfile() {
               {governance.filter(g => g.status === 'open' || g.status === 'pending').length} open
             </Badge>
           </CardHeader>
-          <div className="divide-y divide-[#2E2854]/60">
+          <div className="divide-y divide-[var(--os-border)]">
             {governance.map(item => (
               <div key={item.id} className="py-3.5 first:pt-0 last:pb-0">
                 <div className="flex items-start justify-between gap-2 mb-1">
-                  <p className="text-xs font-semibold text-slate-200 flex-1 truncate">{item.title}</p>
-                  <span className="text-[10px] font-semibold text-slate-500 capitalize">{item.status}</span>
+                  <p className="text-xs font-semibold text-[var(--os-text-1)] flex-1 truncate">{item.title}</p>
+                  <span className="text-[10px] font-semibold text-[var(--os-text-2)] capitalize">{item.status}</span>
                 </div>
-                <p className="text-[11px] text-slate-505 line-clamp-1">{item.description}</p>
+                <p className="text-[11px] text-[var(--os-text-2)] line-clamp-1">{item.description}</p>
               </div>
             ))}
           </div>
         </Card>
       </div>
+
+      {/* Pre-registration visitor journey for primary contact */}
+      {(() => {
+        const primary = client.contacts.find((c: any) => c.isPrimary) ?? client.contacts[0]
+        return primary?.email ? <VisitorJourneyPanel email={primary.email} /> : null
+      })()}
 
       {inviteOpen && (
         <InviteToPortalDrawer

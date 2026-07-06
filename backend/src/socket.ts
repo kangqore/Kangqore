@@ -7,6 +7,9 @@ import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { prisma } from './lib/prisma';
+import { onConnect, onDisconnect, setPresence } from './services/presenceService';
+import { SwarmManager } from './kangqore-immp/orchestrator/swarmManager.service';
+import { SwarmActivityEngine } from './kangqore-immp/orchestrator/swarmActivity.engine';
 
 // Extend Socket type to include user data
 interface AuthenticatedSocket extends Socket {
@@ -80,6 +83,38 @@ export function initializeSocket(httpServer: HttpServer): Server {
       socket.join('admin');
     }
 
+    // ── RELAY: join all channel rooms visible to this user ──
+    // Combines explicit membership + role-scoped public channels so every user
+    // receives real-time events for channels they can see, even without a
+    // ChannelMember row (e.g. global #general for a new TEAM member).
+    const role = socket.userRole ?? 'TEAM';
+    Promise.all([
+      // Explicit member channels (private, DMs, etc.)
+      prisma.channelMember.findMany({ where: { userId }, select: { channelId: true } }),
+      // Role-scoped public channels
+      role === 'ADMIN'
+        ? prisma.channel.findMany({ where: { isArchived: false }, select: { id: true } })
+        : role === 'EXECUTIVE'
+          ? prisma.channel.findMany({ where: { isArchived: false, scope: { in: ['GLOBAL', 'EXECUTIVE'] }, type: { notIn: ['DM', 'GROUP_DM'] } }, select: { id: true } })
+          : role === 'TEAM'
+            ? prisma.user.findUnique({ where: { id: userId }, select: { deptId: true } }).then((u) =>
+                prisma.channel.findMany({
+                  where: { isArchived: false, OR: [{ scope: 'GLOBAL' }, ...(u?.deptId ? [{ scope: 'DEPT' as const, deptId: u.deptId }] : [])] },
+                  select: { id: true },
+                }),
+              )
+            : prisma.channel.findMany({ where: { isArchived: false, scope: 'GLOBAL', type: 'ANNOUNCEMENT' }, select: { id: true } }),
+    ])
+      .then(([memberships, visibleChannels]) => {
+        const ids = new Set<string>(memberships.map((m) => m.channelId));
+        visibleChannels.forEach((c) => ids.add(c.id));
+        ids.forEach((id) => socket.join(`channel:${id}`));
+      })
+      .catch(() => {});
+
+    // RELAY: mark user online
+    onConnect(userId);
+
     // Handle typing indicators
     socket.on('typing:start', (data: { receiverId?: string }) => {
       if (data.receiverId) {
@@ -125,10 +160,64 @@ export function initializeSocket(httpServer: HttpServer): Server {
       }
     });
 
+    // ── RELAY: typing indicators ──
+    socket.on('chat:typing:start', (data: { channelId: string }) => {
+      if (data?.channelId) {
+        socket.to(`channel:${data.channelId}`).emit('chat:typing:start', {
+          userId, userName: socket.userName, channelId: data.channelId,
+        });
+        // Auto-stop after 4 seconds
+        setTimeout(() => {
+          socket.to(`channel:${data.channelId}`).emit('chat:typing:stop', { userId, channelId: data.channelId });
+        }, 4000);
+      }
+    });
+
+    socket.on('chat:typing:stop', (data: { channelId: string }) => {
+      if (data?.channelId) {
+        socket.to(`channel:${data.channelId}`).emit('chat:typing:stop', { userId, channelId: data.channelId });
+      }
+    });
+
+    // ── RELAY: mark messages read ──
+    socket.on('chat:message:read', async (data: { channelId: string; lastReadMsgId: string }) => {
+      if (!data?.channelId) return;
+      try {
+        const msg = await prisma.chatMessage.findUnique({ where: { id: data.lastReadMsgId }, select: { createdAt: true } });
+        await prisma.channelMember.updateMany({
+          where: { channelId: data.channelId, userId },
+          data: { lastReadAt: msg?.createdAt ?? new Date(), lastReadMsgId: data.lastReadMsgId },
+        });
+      } catch { /* non-fatal */ }
+    });
+
+    // ── RELAY: presence update ──
+    socket.on('presence:set', async (data: { status: 'ONLINE' | 'AWAY' | 'DND' | 'OFFLINE'; customStatus?: string }) => {
+      if (!data?.status) return;
+      await setPresence(userId, data.status, data.customStatus);
+      // Broadcast to all connected users (they'll filter in-app)
+      io.emit('presence:update', { userId, status: data.status });
+    });
+
+    // ── PAGE PRESENCE ──
+    socket.on('page:enter', (data: { pageKey: string }) => {
+      if (!data?.pageKey) return;
+      socket.join(`page:${data.pageKey}`);
+      socket.to(`page:${data.pageKey}`).emit('page:viewer:joined', {
+        userId, userName: (socket as any).userName ?? 'Unknown', pageKey: data.pageKey,
+      });
+    });
+
+    socket.on('page:leave', (data: { pageKey: string }) => {
+      if (!data?.pageKey) return;
+      socket.leave(`page:${data.pageKey}`);
+      socket.to(`page:${data.pageKey}`).emit('page:viewer:left', { userId, pageKey: data.pageKey });
+    });
+
     // Handle disconnect
     socket.on('disconnect', () => {
       console.log(`🔌 User disconnected: ${userId}`);
-      
+
       const sockets = userSockets.get(userId);
       if (sockets) {
         sockets.delete(socket.id);
@@ -136,6 +225,11 @@ export function initializeSocket(httpServer: HttpServer): Server {
           userSockets.delete(userId);
         }
       }
+
+      // RELAY: 30-second grace before marking offline
+      onDisconnect(userId, (userSockets.get(userId)?.size ?? 0) > 0, (uid, status) => {
+        io.emit('presence:update', { userId: uid, status });
+      });
     });
 
     // Send initial connection success
@@ -143,7 +237,21 @@ export function initializeSocket(httpServer: HttpServer): Server {
       message: 'Real-time connection established',
       userId
     });
+
+    // Send live swarm topology to this authenticated socket
+    SwarmManager.sendTopologyToSocket(socket);
+
+    // Allow clients to re-request topology at any time
+    socket.on('request:swarm_topology', () => {
+      SwarmManager.sendTopologyToSocket(socket);
+    });
   });
+
+  // Attach SwarmManager to broadcast KIMMP agent updates
+  SwarmManager.attachSocket(io);
+
+  // Start the live activity engine — agents begin cycling through real tasks
+  SwarmActivityEngine.start();
 
   return io;
 }

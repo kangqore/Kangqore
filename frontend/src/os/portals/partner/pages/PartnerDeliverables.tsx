@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Package, CheckCircle2, Clock, AlertTriangle } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Badge } from '@design-system/components/Badge'
 import { StatCard } from '@design-system/components/StatCard'
 import { cn } from '@design-system/cn'
@@ -17,7 +18,7 @@ const MOCK_DELIVERABLES = [
 ]
 
 const STATUS_CONFIG: Record<string, { label: string; variant: 'neutral' | 'info' | 'warning' | 'success' | 'brand'; icon: React.ReactNode }> = {
-  PENDING:     { label: 'Pending',     variant: 'neutral', icon: <Clock        className="w-4 h-4 text-slate-500"   /> },
+  PENDING:     { label: 'Pending',     variant: 'neutral', icon: <Clock        className="w-4 h-4 text-[var(--os-text-2)]"   /> },
   IN_PROGRESS: { label: 'In Progress', variant: 'info',    icon: <Clock        className="w-4 h-4 text-blue-500"    /> },
   REVIEW:      { label: 'In Review',   variant: 'warning', icon: <AlertTriangle className="w-4 h-4 text-amber-500" /> },
   SUBMITTED:   { label: 'Submitted',   variant: 'brand',   icon: <Package      className="w-4 h-4 text-blue-600"   /> },
@@ -41,15 +42,16 @@ export function PartnerDeliverables() {
   const accepted   = deliverables.filter(d => d.status === 'ACCEPTED').length
 
   return (
-    <div className="space-y-5 max-w-3xl">
+    <div className="space-y-5">
+      <KIMMPSignalBar module="Deliverables" />
       <div>
-        <h2 className="text-xl font-bold text-white">Deliverables</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{deliverables.length} total · {inProgress} in progress</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Deliverables</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>{deliverables.length} total · {inProgress} in progress</p>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
         <StatCard label="In Progress" value={inProgress} icon={<Clock        className="w-5 h-5" />} iconColor="bg-blue-100 text-blue-600" />
-        <StatCard label="In Review"   value={inReview}   icon={<AlertTriangle className="w-5 h-5" />} iconColor={inReview > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500'} />
+        <StatCard label="In Review"   value={inReview}   icon={<AlertTriangle className="w-5 h-5" />} iconColor={inReview > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'} />
         <StatCard label="Accepted"    value={accepted}   icon={<CheckCircle2  className="w-5 h-5" />} iconColor="bg-green-100 text-green-600" />
       </div>
 
@@ -57,7 +59,7 @@ export function PartnerDeliverables() {
         {(['ALL','IN_PROGRESS','REVIEW','SUBMITTED','ACCEPTED'] as Filter[]).map(f => (
           <button key={f} onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-              filter === f ? 'bg-os-success text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-500 hover:border-green-300'
+              filter === f ? 'bg-[#00c875] text-white' : 'os-card text-[var(--os-text-2)] hover:border-[#00c875]'
             }`}>
             {f === 'ALL' ? 'All' : STATUS_CONFIG[f]?.label ?? f}
           </button>
@@ -73,7 +75,7 @@ export function PartnerDeliverables() {
                 {cfg.icon}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <p className={cn('text-sm font-medium text-slate-200', d.status === 'ACCEPTED' && 'text-slate-500 line-through')}>{d.title}</p>
+                    <p className={cn('text-sm font-medium text-[var(--os-text-1)]', d.status === 'ACCEPTED' && 'text-[var(--os-text-2)] line-through')}>{d.title}</p>
                     <div className="flex items-center gap-2 flex-shrink-0">
                       {d.qualityGateStatus === 'PASSED' && (
                         <Badge variant="success" size="sm">QA ✓</Badge>
@@ -81,7 +83,7 @@ export function PartnerDeliverables() {
                       <Badge variant={cfg.variant} size="sm">{cfg.label}</Badge>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-500">
+                  <div className="flex items-center gap-3 mt-1.5 text-xs text-[var(--os-text-2)]">
                     <span>{d.project.title}</span>
                     <span>Updated {fmtDate(d.updatedAt)}</span>
                   </div>
@@ -91,7 +93,7 @@ export function PartnerDeliverables() {
           )
         })}
         {visible.length === 0 && (
-          <div className="py-12 text-center text-sm text-slate-500">No deliverables match this filter.</div>
+          <div className="py-12 text-center text-sm text-[var(--os-text-2)]">No deliverables match this filter.</div>
         )}
       </div>
     </div>

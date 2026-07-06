@@ -1,8 +1,20 @@
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@lib/api'
+
+interface BidsStats { total: number; byStatus: Record<string, number> }
+
+function useBidsStats() {
+  return useQuery<{ stats: BidsStats }>({
+    queryKey: ['bids-engagements'],
+    queryFn: () => api.get('/admin/bids/engagements').then(r => r.data),
+    staleTime: 60_000,
+  })
+}
+
 const PILLAR_GROUPS = [
   {
     label: 'Business & Leadership',
-    color: 'bg-blue-500/10 border-blue-500/20 text-blue-300',
-    dot: 'bg-blue-400',
+    accent: '#579bfc',
     pillars: [
       { n: 1,  name: 'Business Strategy Intelligence™',  score: 'Strategy Maturity Score™',       desc: 'Evaluates strategic clarity, market positioning, competitive differentiation, and alignment between vision and execution.' },
       { n: 2,  name: 'Leadership Intelligence™',          score: 'Leadership Effectiveness Score™', desc: 'Assesses leadership capability, decision-making quality, organisational trust, and executive alignment.' },
@@ -11,8 +23,7 @@ const PILLAR_GROUPS = [
   },
   {
     label: 'Operations & People',
-    color: 'bg-indigo-500/10 border-indigo-500/20 text-indigo-300',
-    dot: 'bg-indigo-400',
+    accent: '#7c3aed',
     pillars: [
       { n: 4,  name: 'Operational Intelligence™',  score: 'Operational Efficiency Score™',   desc: 'Measures process maturity, throughput, waste reduction, operational bottlenecks, and execution velocity.' },
       { n: 5,  name: 'Workforce Intelligence™',    score: 'Workforce Readiness Score™',      desc: 'Diagnoses talent density, skills gaps, retention risk, engagement levels, and future-of-work readiness.' },
@@ -21,8 +32,7 @@ const PILLAR_GROUPS = [
   },
   {
     label: 'Revenue & Growth',
-    color: 'bg-cyan-500/10 border-cyan-500/20 text-cyan-300',
-    dot: 'bg-cyan-400',
+    accent: '#00c875',
     pillars: [
       { n: 7,  name: 'Sales Intelligence™',   score: 'Revenue Engine Score™',   desc: 'Evaluates pipeline health, conversion rates, sales process maturity, forecasting accuracy, and revenue predictability.' },
       { n: 8,  name: 'Growth Intelligence™',  score: 'Digital Growth Score™',   desc: 'Assesses digital channel performance, marketing attribution, acquisition efficiency, and growth lever identification.' },
@@ -30,8 +40,7 @@ const PILLAR_GROUPS = [
   },
   {
     label: 'Technology & Digital',
-    color: 'bg-violet-500/10 border-violet-500/20 text-violet-300',
-    dot: 'bg-violet-400',
+    accent: '#7c3aed',
     pillars: [
       { n: 9,  name: 'Technology Intelligence™',             score: 'Technology Maturity Score™',      desc: 'Reviews engineering practices, architecture soundness, technical debt exposure, and platform scalability.' },
       { n: 10, name: 'Cloud & Infrastructure Intelligence™', score: 'Infrastructure Readiness Score™',  desc: 'Diagnoses cloud adoption maturity, infrastructure reliability, DR posture, and cost optimisation.' },
@@ -42,8 +51,7 @@ const PILLAR_GROUPS = [
   },
   {
     label: 'Security & Resilience',
-    color: 'bg-rose-500/10 border-rose-500/20 text-rose-300',
-    dot: 'bg-rose-400',
+    accent: '#e2445c',
     pillars: [
       { n: 14, name: 'Cybersecurity Intelligence™',     score: 'Cyber Resilience Score™',       desc: 'Analyses threat landscape exposure, security posture maturity, incident response capability, and zero-trust adoption.' },
       { n: 15, name: 'Governance & Risk Intelligence™', score: 'Governance Maturity Score™',    desc: 'Reviews board-level governance structures, risk management frameworks, compliance posture, and audit readiness.' },
@@ -51,8 +59,7 @@ const PILLAR_GROUPS = [
   },
   {
     label: 'Transformation',
-    color: 'bg-amber-500/10 border-amber-500/20 text-amber-300',
-    dot: 'bg-amber-400',
+    accent: '#fdab3d',
     pillars: [
       { n: 16, name: 'Transformation Intelligence™', score: 'Transformation Readiness Score™', desc: 'Synthesises findings across all 15 pillars to produce a composite Transformation Readiness Score™ and a prioritised change agenda.' },
     ],
@@ -60,28 +67,43 @@ const PILLAR_GROUPS = [
 ]
 
 export function PillarsPage() {
+  const { data, isLoading } = useBidsStats()
+  const stats: BidsStats = data?.stats ?? { total: 0, byStatus: {} }
+
   return (
     <div className="space-y-8">
-      <div>
-        <h2 className="text-base font-semibold text-slate-100">The 16 Diagnostic Intelligence Pillars™</h2>
-        <p className="text-sm text-slate-400 mt-1">
-          Each pillar produces a proprietary scored metric — together they form the complete enterprise diagnostic picture.
-        </p>
+      {/* Page header */}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div>
+          <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>The 16 Diagnostic Intelligence Pillars™</h2>
+          <p className="text-sm mt-1" style={{ color: 'var(--os-text-2)' }}>
+            Each pillar produces a proprietary scored metric — together they form the complete enterprise diagnostic picture.
+          </p>
+        </div>
+        {!isLoading && stats.total > 0 && (
+          <div className="px-3 py-1.5 rounded-lg" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+            <span className="text-xs" style={{ color: 'var(--os-text-2)' }}>
+              All 16 pillars applied across{' '}
+              <span className="font-bold" style={{ color: 'var(--os-text-1)' }}>{stats.total}</span> engagement{stats.total !== 1 ? 's' : ''}
+            </span>
+          </div>
+        )}
+        {isLoading && <div className="h-7 w-44 rounded-lg animate-pulse" style={{ background: 'var(--os-surface-0)' }} />}
       </div>
 
       {PILLAR_GROUPS.map(group => (
         <div key={group.label}>
           <div className="flex items-center gap-2 mb-3">
-            <span className={`w-2 h-2 rounded-full ${group.dot}`} />
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-400">{group.label}</h3>
+            <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: group.accent }} />
+            <h3 className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>{group.label}</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {group.pillars.map(p => (
-              <div key={p.n} className={`rounded-xl border p-5 bg-white/[0.02] ${group.color.replace(/text-\S+/, '')}`}>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Pillar {p.n}</span>
-                <p className={`text-sm font-semibold mt-1 ${group.color.split(' ').find(c => c.startsWith('text-'))}`}>{p.name}</p>
-                <p className="text-[11px] text-slate-500 mt-0.5 font-medium">{p.score}</p>
-                <p className="text-[12px] text-slate-400 mt-3 leading-relaxed">{p.desc}</p>
+              <div key={p.n} className="os-card p-5" style={{ borderLeft: `3px solid ${group.accent}` }}>
+                <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--os-text-3)' }}>Pillar {p.n}</span>
+                <p className="text-sm font-semibold mt-1" style={{ color: group.accent }}>{p.name}</p>
+                <p className="text-[11px] font-medium mt-0.5" style={{ color: 'var(--os-text-3)' }}>{p.score}</p>
+                <p className="text-[12px] mt-3 leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{p.desc}</p>
               </div>
             ))}
           </div>

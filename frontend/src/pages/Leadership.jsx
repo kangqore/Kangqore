@@ -7,11 +7,11 @@ import SecondaryButton from '../components/ui/SecondaryButton';
 const Leadership = () => {
   const leaders = [
     {
-      name: 'Mahesh Kumar',
+      name: 'C.O.D.E.',
       role: 'Founder & Chief Executive Officer',
       image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=600&fit=crop',
       bio: [
-        'Mahesh Kumar founded Kangqore with a clear vision: to bridge the gap between advanced technology potential and real-world business impact. With a strong background in software engineering, digital systems, and enterprise architecture, he leads Kangqore\'s long-term strategy, innovation roadmap, and global growth initiatives.',
+        'C.O.D.E. founded Kangqore with a clear vision: to bridge the gap between advanced technology potential and real-world business impact. With a strong background in software engineering, digital systems, and enterprise architecture, he leads Kangqore\'s long-term strategy, innovation roadmap, and global growth initiatives.',
         'As CEO, Mahesh focuses on building scalable engineering systems, nurturing a high-performance culture, and positioning Kangqore as a trusted technology partner for enterprises navigating AI-led transformation.',
         'His leadership philosophy centers on engineering discipline, ethical innovation, and outcome-driven execution.'
       ]

@@ -17,25 +17,21 @@ interface StatCardProps {
   className?: string
 }
 
-const ICON_PRESETS: Record<string, string> = {
-  red:     'bg-[#ef4444] text-white shadow-[0_2px_8px_rgba(239,68,68,0.25)]',
-  danger:  'bg-[#ef4444] text-white shadow-[0_2px_8px_rgba(239,68,68,0.25)]',
-  green:   'bg-[#059669] text-white shadow-[0_2px_8px_rgba(5,150,105,0.25)]',
-  success: 'bg-[#059669] text-white shadow-[0_2px_8px_rgba(5,150,105,0.25)]',
-  blue:    'bg-[#2564ea] text-white shadow-[0_2px_8px_rgba(37,100,234,0.25)]',
-  info:    'bg-[#2564ea] text-white shadow-[0_2px_8px_rgba(37,100,234,0.25)]',
-  brand:   'bg-[#2564ea] text-white shadow-[0_2px_8px_rgba(37,100,234,0.25)]',
-  orange:  'bg-[#d97706] text-white shadow-[0_2px_8px_rgba(217,119,6,0.25)]',
-  warning: 'bg-[#d97706] text-white shadow-[0_2px_8px_rgba(217,119,6,0.25)]',
-  purple:  'bg-[#7c3aed] text-white shadow-[0_2px_8px_rgba(124,58,237,0.25)]',
-}
+const VIBRANT_COLORS = [
+  '#579bfc', // Blue
+  '#00c875', // Green
+  '#7c3aed', // Purple
+  '#fdab3d', // Orange
+  '#e2445c', // Red
+  '#0ea5e9', // Light Blue
+]
 
-function resolveIconClass(color: string): string {
-  const c = color.toLowerCase()
-  for (const [key, cls] of Object.entries(ICON_PRESETS)) {
-    if (c.includes(key)) return cls
+function getColorForLabel(label: string): string {
+  let hash = 0
+  for (let i = 0; i < label.length; i++) {
+    hash = label.charCodeAt(i) + ((hash << 5) - hash)
   }
-  return color
+  return VIBRANT_COLORS[Math.abs(hash) % VIBRANT_COLORS.length]
 }
 
 function StatCard({
@@ -61,32 +57,44 @@ function StatCard({
   if (loading) {
     return (
       <div className={cn(
-        'bg-[#151C2F] rounded-xl p-6 shadow-sm border border-[#2E2854] animate-pulse flex flex-col justify-between h-[140px]',
+        'bg-[var(--os-surface-0)] p-6 animate-pulse flex flex-col justify-between h-[140px]',
         className
-      )}>
+      )} style={{ borderRadius: 'var(--os-radius-xl)', border: '1px solid var(--os-border)' }}>
         <div className="flex justify-between items-start">
-          <div className="h-4 w-28 bg-[#20273a] rounded" />
-          <div className="h-12 w-12 bg-[#20273a] rounded-xl" />
+          <div className="h-4 w-28 bg-[var(--os-surface-2)] rounded" />
+          <div className="h-10 w-10 bg-[var(--os-surface-2)] rounded-2xl" />
         </div>
-        <div className="h-9 w-20 bg-[#20273a] rounded mt-3" />
-        <div className="h-4 w-32 bg-[#20273a] rounded mt-2" />
+        <div className="h-9 w-20 bg-[var(--os-surface-2)] rounded mt-3" />
+        <div className="h-4 w-32 bg-[var(--os-surface-2)] rounded mt-2" />
       </div>
     )
   }
 
+  const bgColor = getColorForLabel(label)
+
   return (
     <motion.div
       className={cn(
-        'bg-[#151C2F] rounded-xl p-6 shadow-sm border border-[#2E2854] group',
+        'cursor-pointer relative overflow-hidden flex flex-col p-6 transition-all duration-300 group',
         className
       )}
-      whileHover={{ y: -3, transition: spring.smooth }}
+      style={{
+        background: bgColor,
+        color: '#ffffff',
+        borderRadius: 'var(--os-radius-xl)',
+        boxShadow: `0 12px 32px ${bgColor}60`,
+        border: 'none'
+      }}
+      whileHover={{ y: -6, scale: 1.02, transition: spring.smooth }}
       whileTap={{ y: 0 }}
     >
-      <div className="flex justify-between items-start mb-3">
+      {/* Subtle inner background shine effect */}
+      <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: '50%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15))', pointerEvents: 'none' }} />
+
+      <div className="flex justify-between items-start mb-3 relative z-10">
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-bold text-slate-500 tracking-wider uppercase truncate">{label}</p>
-          <h3 className="text-3xl font-bold text-white mt-2 tracking-tight leading-none">
+          <p className="text-[10px] font-bold uppercase tracking-widest mb-1 truncate" style={{ color: 'rgba(255,255,255,0.9)' }}>{label}</p>
+          <h3 className="text-3xl font-black tracking-tight leading-none mt-2" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
             {prefix}
             {isNum ? <motion.span>{displayed}</motion.span> : value}
             {suffix}
@@ -94,7 +102,8 @@ function StatCard({
         </div>
         {icon && (
           <motion.div
-            className={cn('p-3 rounded-xl flex-shrink-0', resolveIconClass(iconColor))}
+            className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 text-white"
+            style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(10px)' }}
             whileHover={{ scale: 1.1, transition: spring.snappy }}
           >
             {icon}
@@ -103,24 +112,21 @@ function StatCard({
       </div>
 
       {change !== undefined && (
-        <div className="flex items-center gap-2 text-sm mt-1">
+        <div className="flex items-center gap-2 text-sm mt-1 relative z-10">
           {isNeutral ? (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#0F172A] text-slate-500 border border-[#2E2854] font-medium text-xs">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-medium text-[10px] tracking-wide shadow-sm" style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff' }}>
               <Minus className="w-3 h-3" /> 0%
             </span>
           ) : (
             <span className={cn(
-              'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-extrabold text-[10px] tracking-wide uppercase shadow-sm',
-              isPositive
-                ? 'bg-[#059669] text-white shadow-[0_2px_6px_rgba(5,150,105,0.2)]'
-                : 'bg-[#ef4444] text-white shadow-[0_2px_6px_rgba(239,68,68,0.2)]'
-            )}>
+              'inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-extrabold text-[10px] tracking-wide uppercase shadow-sm'
+            )} style={{ background: '#ffffff', color: bgColor }}>
               {isPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
               {isPositive ? '+' : ''}{change}%
             </span>
           )}
           {changeLabel && (
-            <span className="text-slate-500 text-xs">{changeLabel}</span>
+            <span className="text-[11px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>{changeLabel}</span>
           )}
         </div>
       )}

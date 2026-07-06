@@ -403,7 +403,7 @@ const ContactUs = () => {
                           value={formData.name}
                           onChange={handleChange}
                           className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-all outline-none"
-                          placeholder="Mahesh Kumar"
+                          placeholder="C.O.D.E."
                         />
                       </div>
                       <div className="space-y-2">

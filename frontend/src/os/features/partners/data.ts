@@ -95,10 +95,10 @@ export const PAYMENTS: PartnerPayment[] = [
 ]
 
 export const NOTES: PartnerNote[] = [
-  { id: 'n1', partnerId: 'pt1', content: 'Tom and team consistently deliver ahead of schedule. Sprint 1 done a day early. Recommend for all future React projects.', author: 'Mahesh Kumar', date: '2026-04-15', type: 'praise' },
+  { id: 'n1', partnerId: 'pt1', content: 'Tom and team consistently deliver ahead of schedule. Sprint 1 done a day early. Recommend for all future React projects.', author: 'C.O.D.E.', date: '2026-04-15', type: 'praise' },
   { id: 'n2', partnerId: 'pt1', content: 'Some communication lag last week — Tom was on holiday. Need backup contact for urgent items.', author: 'Dev Patel', date: '2026-05-08', type: 'issue' },
   { id: 'n3', partnerId: 'pt2', content: 'Ana delivered Phase 2 with minor mobile issues flagged. Good quality overall, just needs revision on 3 screens.', author: 'Anika Roy', date: '2026-05-08', type: 'performance' },
   { id: 'n4', partnerId: 'pt3', content: 'RAG pipeline benchmarks exceeded spec: P95 latency 780ms vs 800ms target. DataNexus AI is exceptional.', author: 'Ravi Nair', date: '2026-04-03', type: 'praise' },
   { id: 'n5', partnerId: 'pt3', content: 'Lead scoring recall issue on cold leads — agreed to retrain with expanded cold-start dataset by May 20.', author: 'Ravi Nair', date: '2026-05-07', type: 'performance' },
-  { id: 'n6', partnerId: 'pt4', content: 'Infrastructure solid and well-documented. Klaus proactively added WAF rules we hadn\'t asked for. Great initiative.', author: 'Mahesh Kumar', date: '2026-03-01', type: 'praise' },
+  { id: 'n6', partnerId: 'pt4', content: 'Infrastructure solid and well-documented. Klaus proactively added WAF rules we hadn\'t asked for. Great initiative.', author: 'C.O.D.E.', date: '2026-03-01', type: 'praise' },
 ]

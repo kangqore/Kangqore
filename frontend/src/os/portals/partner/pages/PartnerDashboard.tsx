@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
 import { Spinner } from '@design-system/components/Spinner'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { usePartnerStats, usePartnerProjects } from '../usePartnerData'
 import { isDemo } from '@lib/api'
 
@@ -68,33 +69,35 @@ export function PartnerDashboard() {
   const isLoading = (statsLoading || projectsLoading) && !isDemo()
 
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
+    <div className="space-y-8">
+      <KIMMPSignalBar module="Partner Dashboard" />
+
       {isLoading && (
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+        <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--os-text-2)' }}>
           <Spinner size="sm" /> Loading dashboard stats…
         </div>
       )}
 
       <div>
-        <h2 className="text-xl font-bold text-white">Partner Dashboard</h2>
-        <p className="text-sm text-slate-500 mt-1">Your active assignments, earnings, and collaboration activity.</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Partner Dashboard</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-1" style={{ color: 'var(--os-text-2)' }}>Your active assignments, earnings, and collaboration activity</p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Active Tasks',    value: activeTasks,  icon: CheckSquare, color: 'bg-blue-50 text-blue-600'   },
-          { label: 'Due This Week',   value: dueThisWeek,  icon: Clock,       color: 'bg-orange-50 text-orange-600'},
-          { label: 'Total Earnings',  value: `£${apiStats.total_earnings?.toLocaleString()}`, icon: DollarSign,  color: 'bg-green-50 text-green-600' },
-          { label: 'Partner Score',   value: `${apiStats.rating} / 5`, icon: Star,        color: 'bg-purple-50 text-purple-600'},
+          { label: 'Active Tasks',   value: activeTasks,  icon: CheckSquare, color: 'bg-blue-50 text-blue-600'    },
+          { label: 'Due This Week',  value: dueThisWeek,  icon: Clock,       color: 'bg-orange-50 text-orange-600' },
+          { label: 'Total Earnings', value: `£${apiStats.total_earnings?.toLocaleString()}`, icon: DollarSign, color: 'bg-green-50 text-green-600' },
+          { label: 'Partner Score',  value: `${apiStats.rating} / 5`, icon: Star, color: 'bg-purple-50 text-purple-600' },
         ].map(s => (
-          <div key={s.label} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-5 flex items-center gap-4">
+          <div key={s.label} className="os-card p-5 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-2xl font-bold tracking-tight text-white">{s.value}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+              <p className="text-2xl font-bold tracking-tight" style={{ color: 'var(--os-text-1)' }}>{s.value}</p>
+              <p className="text-xs text-[var(--os-text-2)] mt-0.5">{s.label}</p>
             </div>
           </div>
         ))}
@@ -103,9 +106,9 @@ export function PartnerDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Tasks */}
         <div className="lg:col-span-2 space-y-3">
-          <h3 className="text-base font-semibold text-white">Assigned Tasks</h3>
+          <h3 className="text-base font-semibold" style={{ color: 'var(--os-text-1)' }}>Assigned Tasks</h3>
           {tasks.length === 0 && (
-            <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-8 text-center text-slate-500 text-sm">
+            <div className="os-card p-8 text-center text-[var(--os-text-2)] text-sm">
               No pending tasks assigned to you.
             </div>
           )}
@@ -114,8 +117,8 @@ export function PartnerDashboard() {
               <CardBody className="p-5">
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-white truncate">{t.title}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{t.project}</p>
+                    <p className="text-sm font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{t.title}</p>
+                    <p className="text-xs text-[var(--os-text-2)] mt-0.5">{t.project}</p>
                   </div>
                   <div className="flex gap-1.5 flex-shrink-0">
                     <Badge variant={PRIORITY_BADGE[t.priority] || 'neutral'} size="sm">{t.priority}</Badge>
@@ -127,9 +130,9 @@ export function PartnerDashboard() {
                     <Progress value={t.progress} color="brand" size="sm" />
                   </div>
                 )}
-                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                <div className="flex items-center gap-1.5 text-xs text-[var(--os-text-2)]">
                   <Calendar className="w-3 h-3" />
-                  Due: <span className="font-medium text-slate-500">{t.due}</span>
+                  Due: <span className="font-medium text-[var(--os-text-2)]">{t.due}</span>
                 </div>
               </CardBody>
             </Card>
@@ -147,13 +150,13 @@ export function PartnerDashboard() {
                 { label: 'Pending Clear', amount: apiStats.pending_earnings },
               ].map(e => (
                 <div key={e.label} className="flex items-center justify-between text-sm">
-                  <span className="text-slate-500">{e.label}</span>
-                  <span className="font-semibold text-white">£{e.amount?.toLocaleString()}</span>
+                  <span className="text-[var(--os-text-2)]">{e.label}</span>
+                  <span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>£{e.amount?.toLocaleString()}</span>
                 </div>
               ))}
-              <div className="pt-2 border-t border-white/10 border-t-white/20">
+              <div className="pt-2" style={{ borderTop: '1px solid var(--os-border)' }}>
                 <div className="flex justify-between text-sm font-semibold">
-                  <span className="text-slate-500">Total YTD Portfolio</span>
+                  <span className="text-[var(--os-text-2)]">Total YTD Portfolio</span>
                   <span className="text-green-600">£{(apiStats.total_earnings + apiStats.pending_earnings)?.toLocaleString()}</span>
                 </div>
               </div>
@@ -164,7 +167,7 @@ export function PartnerDashboard() {
           <Card>
             <CardHeader><CardTitle>Recent Activity</CardTitle></CardHeader>
             <CardBody className="p-0">
-              <div className="divide-y divide-[#2E2854]">
+              <div className="divide-y divide-[var(--os-border)]">
                 {RECENT_ACTIVITY.map((a, i) => (
                   <div key={i} className="flex items-start gap-3 px-4 py-3">
                     <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${
@@ -172,8 +175,8 @@ export function PartnerDashboard() {
                       a.type === 'meeting' ? 'bg-purple-500' : 'bg-orange-500'
                     }`} />
                     <div>
-                      <p className="text-xs font-medium text-slate-200 leading-snug">{a.title}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{a.date}</p>
+                      <p className="text-xs font-medium text-[var(--os-text-1)] leading-snug">{a.title}</p>
+                      <p className="text-xs text-[var(--os-text-2)] mt-0.5">{a.date}</p>
                     </div>
                   </div>
                 ))}

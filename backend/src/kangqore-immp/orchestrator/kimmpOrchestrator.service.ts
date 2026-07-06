@@ -5,6 +5,7 @@ import { KimmpScoutService, SCOUT_SOURCES } from '../scout/kimmpScout.service'
 import { KimmpGoalEngine } from '../goals/kimmpGoal.service'
 import { KimmpReportService } from '../reports/kimmpReport.service'
 import { KimmpActionProposer } from '../actions/kimmpActionProposer'
+import { isStrategicDecision, runStrategicDecision } from '../services/kimmpStrategicDecision.service'
 import { KimmpDigitalTwin } from '../twin/kimmpTwin.service'
 import { haiku as _haiku, sonnet as _sonnet, opus as _opus, textOf as _textOf } from '../llm/kimmpLLMRouter'
 import logger from '../../utils/logger'
@@ -45,6 +46,14 @@ export type AgentType =
   | 'RESILIENCE_MONITOR'
   | 'SHADOW_AI_DETECTOR'
   | 'AGENT_GUARDIAN'
+  | 'INCIDENT_RESPONDER'
+  | 'PROJECT_HEALTH'
+  | 'DELIVERY_MONITOR'
+  | 'PROJECT_TWIN_SIMULATOR'
+  | 'INVOICE_INTELLIGENCE'
+  | 'COLLECTIONS_AGENT'
+  | 'DEAL_COACH'
+  | 'ENTERPRISE_COACH'
 
 export interface AgentTask {
   agentType:  AgentType
@@ -1220,6 +1229,242 @@ async function runAgentGuardian(_params: Record<string, any>): Promise<{ output:
   return { output: textOf(res), data: { total: (actions as any[]).length, pending, failed, denied } }
 }
 
+async function runIncidentResponder(params: Record<string, any>): Promise<{ output: string; data?: any }> {
+  if (noKey()) return { output: 'INCIDENT_RESPONDER requires ANTHROPIC_API_KEY.', data: {} }
+  const { incidentId, title, description, priority, category } = params
+
+  // Pull last 5 resolved incidents in same category for context
+  const similar = await (prisma as any).incident.findMany({
+    where:   { category, status: 'RESOLVED', resolution: { not: null } },
+    orderBy: { resolvedAt: 'desc' },
+    take:    5,
+    select:  { number: true, title: true, resolution: true, priority: true },
+  }).catch(() => [])
+
+  const similarText = (similar as any[]).map((i: any) => `  [${i.number}] ${i.title} → ${i.resolution}`).join('\n') || '  None found'
+
+  const systemPrompt = `You are KIMMP's INCIDENT_RESPONDER agent — Kangqore's ITIL incident triage AI.
+When a new incident is reported, you: (1) confirm the priority is correct, (2) suggest the most likely root cause, (3) recommend immediate containment steps, and (4) draft a professional initial response to the reporter.
+Write 3–4 sentences, ITIL-style. Be direct and actionable.`
+
+  const userPrompt = `New Incident: [${priority}] ${title}
+Category: ${category}
+Description: ${description}
+
+Similar resolved incidents:
+${similarText}
+
+Draft: (1) priority validation, (2) likely cause, (3) containment steps, (4) initial response to reporter.`
+
+  const res = await opus(systemPrompt, userPrompt, 400)
+  const draft = textOf(res)
+
+  // Persist the AI draft back to the incident record
+  if (incidentId) {
+    await (prisma as any).incident.update({ where: { id: incidentId }, data: { aiDraft: draft } }).catch(() => null)
+  }
+
+  return { output: draft, data: { incidentId, similarCount: (similar as any[]).length } }
+}
+
+// ─── Wave 1: Delivery Intelligence agents ─────────────────────────────────────
+
+async function runProjectHealth(params: Record<string, any>): Promise<{ output: string; data?: any }> {
+  const { sweepAllProjects, getPortfolioHealthScore } = await import('../../scripts/gate8/projectOps.service')
+  const projectId: string | undefined = params.projectId
+
+  if (projectId) {
+    const { assessProject } = await import('../../scripts/gate8/projectOps.service')
+    const state = await assessProject(projectId)
+    const output = [
+      `Project health: ${state.health}/100 (confidence ${state.confidence}%)`,
+      state.risks.length     ? `Risks: ${state.risks.map(r => r.label).join('; ')}` : '',
+      state.blockers.length  ? `Blockers: ${state.blockers.map(b => b.label).join('; ')}` : '',
+      state.activeRecommendations.length ? `Top action: ${state.activeRecommendations[0].action}` : '',
+    ].filter(Boolean).join('\n')
+    return { output, data: state }
+  }
+
+  // Portfolio sweep
+  const { assessed, avgHealth } = await sweepAllProjects()
+  const portfolioScore = await getPortfolioHealthScore()
+  return {
+    output: `Assessed ${assessed} active projects. Portfolio health: ${portfolioScore}/100 (avg ${avgHealth}).`,
+    data:   { assessed, avgHealth, portfolioScore },
+  }
+}
+
+async function runDeliveryMonitor(params: Record<string, any>): Promise<{ output: string; data?: any }> {
+  if (noKey()) return { output: 'DELIVERY_MONITOR requires ANTHROPIC_API_KEY.', data: {} }
+
+  const { sweepAllProjects } = await import('../../scripts/gate8/projectOps.service')
+  const { assessed, avgHealth } = await sweepAllProjects()
+
+  // Pull at-risk projects
+  const atRisk = await (prisma as any).projectOperationalState.findMany({
+    where:   { health: { lt: 60 } },
+    orderBy: { health: 'asc' },
+    take:    5,
+    include: { project: { select: { title: true, dueDate: true } } },
+  }).catch(() => [])
+
+  const atRiskText = (atRisk as any[]).map(
+    (s: any) => `  - ${s.project.title}: health ${Math.round(s.health)}/100` +
+      (s.project.dueDate ? `, due ${new Date(s.project.dueDate).toLocaleDateString()}` : '')
+  ).join('\n') || '  None'
+
+  const systemPrompt = `You are KIMMP's DELIVERY_MONITOR — a professional services delivery intelligence agent.
+Assess the portfolio and provide: (1) delivery health summary, (2) top 3 at-risk projects with specific concerns, (3) recommended escalations.
+Be concise, executive-level, 4–6 sentences.`
+
+  const userPrompt = `Portfolio: ${assessed} active projects assessed. Average health: ${avgHealth}/100.
+At-risk projects (health < 60):
+${atRiskText}
+
+Provide your delivery health assessment.`
+
+  const res = await opus(systemPrompt, userPrompt, 300)
+  return {
+    output: textOf(res),
+    data:   { assessed, avgHealth, atRiskCount: (atRisk as any[]).length },
+  }
+}
+
+async function runProjectTwinSimulator(params: Record<string, any>): Promise<{ output: string; data?: any }> {
+  const { projectId, extraResources } = params
+  if (!projectId) return { output: 'PROJECT_TWIN_SIMULATOR requires projectId param.', data: {} }
+
+  const { simulateTwin } = await import('../../scripts/gate8/projectOps.service')
+  const twin = await simulateTwin(projectId, extraResources ?? 0)
+
+  const lines = [
+    `Project Digital Twin™ — ${twin.confidence}% confidence`,
+    `Current timeline: ${twin.currentTimelineDays} days remaining`,
+    ...twin.scenarios.map(s =>
+      `  ${s.label}: ${s.days} days${s.delayDays > 0 ? ` (+${s.delayDays}d delay)` : ' (on track)'}`
+    ),
+  ]
+
+  return { output: lines.join('\n'), data: twin }
+}
+
+// ─── Phase 4: Finance + Sales agents ─────────────────────────────────────────
+
+async function runInvoiceIntelligence(params: Record<string, any>): Promise<{ output: string; data?: any }> {
+  if (noKey()) return { output: 'INVOICE_INTELLIGENCE requires ANTHROPIC_API_KEY.', data: {} }
+
+  const { invoiceId, mode } = params
+  const now = new Date()
+  const overdueThreshold = new Date(now.getTime() - 14 * 86400000)
+
+  const [overdueInvoices, recentInvoices] = await Promise.all([
+    prisma.invoice.findMany({
+      where:  { status: { notIn: ['PAID', 'CANCELLED'] }, dueDate: { lt: now } },
+      select: { id: true, invoiceNumber: true, amount: true, dueDate: true, status: true },
+      orderBy: { dueDate: 'asc' },
+      take: 10,
+    }).catch(() => []),
+    prisma.invoice.findMany({
+      where:  { createdAt: { gte: overdueThreshold } },
+      select: { id: true, invoiceNumber: true, amount: true, status: true, createdAt: true },
+      take: 5,
+    }).catch(() => []),
+  ])
+
+  const overdueCount = overdueInvoices.length
+  const overdueTotal = overdueInvoices.reduce((s: number, i: any) => s + Number(i.amount), 0)
+
+  if (mode === 'invoice_validate' && invoiceId) {
+    const inv = await prisma.invoice.findUnique({
+      where: { id: invoiceId },
+      include: { project: { select: { title: true, budget: true, spend: true } } },
+    }).catch(() => null)
+
+    if (!inv) return { output: 'Invoice not found.', data: {} }
+
+    const budgetRemaining = inv.project?.budget
+      ? Number(inv.project.budget) - Number(inv.project.spend ?? 0)
+      : null
+
+    const systemPrompt = `You are KIMMP's INVOICE_INTELLIGENCE agent. Validate this invoice against project budget and deliverable status. Be concise — 2-3 sentences.`
+    const userPrompt   = `Invoice ${(inv as any).invoiceNumber}: ₹${inv.amount}. Project: ${inv.project?.title ?? 'N/A'}. Budget remaining: ${budgetRemaining !== null ? `₹${budgetRemaining}` : 'unknown'}. Validate and recommend approval or flag.`
+    const res  = await opus(systemPrompt, userPrompt, 200)
+    return { output: textOf(res), data: { invoiceId, overdueCount, budgetRemaining } }
+  }
+
+  const systemPrompt = `You are KIMMP's INVOICE_INTELLIGENCE agent. Summarise the finance position. Be direct — 3 sentences.`
+  const userPrompt   = `${overdueCount} overdue invoices totalling ₹${overdueTotal.toLocaleString()}. ${recentInvoices.length} invoices raised in last 14 days. Summarise finance position and flag top concern.`
+  const res = await opus(systemPrompt, userPrompt, 200)
+  return { output: textOf(res), data: { overdueCount, overdueTotal, recentCount: recentInvoices.length } }
+}
+
+async function runCollectionsAgent(params: Record<string, any>): Promise<{ output: string; data?: any }> {
+  if (noKey()) return { output: 'COLLECTIONS_AGENT requires ANTHROPIC_API_KEY.', data: {} }
+
+  const { daysOverdue = 14 } = params
+  const threshold = new Date(Date.now() - daysOverdue * 86400000)
+
+  const overdue = await prisma.invoice.findMany({
+    where:   { status: { notIn: ['PAID', 'CANCELLED'] }, dueDate: { lt: threshold } },
+    include: { client: { select: { name: true, email: true } } },
+    orderBy: { dueDate: 'asc' },
+    take: 5,
+  }).catch(() => [])
+
+  if (overdue.length === 0) return { output: 'No invoices overdue beyond threshold. Collections position healthy.', data: { overdueCount: 0 } }
+
+  const list = overdue.map((i: any) => {
+    const days = Math.ceil((Date.now() - new Date(i.dueDate).getTime()) / 86400000)
+    return `  - ${i.client.name}: ₹${i.amount} (${days} days overdue, inv ${i.invoiceNumber})`
+  }).join('\n')
+
+  const systemPrompt = `You are KIMMP's COLLECTIONS_AGENT — a professional collections intelligence agent. Draft a concise escalation summary and suggest next actions. 3–4 sentences, professional tone.`
+  const userPrompt   = `Overdue invoices beyond ${daysOverdue} days:\n${list}\n\nDraft escalation summary and recommended next steps.`
+  const res = await opus(systemPrompt, userPrompt, 300)
+  return { output: textOf(res), data: { overdueCount: overdue.length, overdueList: overdue.map((i: any) => i.invoiceNumber) } }
+}
+
+async function runDealCoach(params: Record<string, any>): Promise<{ output: string; data?: any }> {
+  if (noKey()) return { output: 'DEAL_COACH requires ANTHROPIC_API_KEY.', data: {} }
+
+  const { leadId, mode } = params
+
+  const leads = leadId
+    ? await (prisma as any).lead.findMany({ where: { id: leadId }, take: 1 }).catch(() => [])
+    : await (prisma as any).lead.findMany({
+        where:   { status: { in: ['PROPOSAL_SENT', 'NEGOTIATION', 'QUALIFIED'] } },
+        orderBy: { updatedAt: 'asc' },
+        take: 5,
+      }).catch(() => [])
+
+  if (leads.length === 0) return { output: 'No active deals in pipeline to coach on.', data: {} }
+
+  const dealList = leads.map((l: any) =>
+    `  - ${l.companyName ?? l.name}: stage=${l.status}, score=${l.score ?? '?'}, last updated=${new Date(l.updatedAt).toLocaleDateString()}`
+  ).join('\n')
+
+  const systemPrompt = `You are KIMMP's DEAL_COACH — an AI sales coach with expertise in professional services deal strategy. Provide specific, actionable coaching. 3–4 sentences.`
+  const userPrompt = mode === 'proposal_followup'
+    ? `These proposals have gone quiet:\n${dealList}\n\nDraft follow-up talking points and suggest the best re-engagement angle for each.`
+    : `Active deals in pipeline:\n${dealList}\n\nCoach on the highest-priority next action to move pipeline forward.`
+
+  const res = await opus(systemPrompt, userPrompt, 300)
+  return { output: textOf(res), data: { dealsCoached: leads.length } }
+}
+
+async function runEnterpriseCoach(_params: Record<string, any>): Promise<{ output: string; data?: any }> {
+  const { computeCoachingInsights } = await import('../../scripts/gate8/enterpriseCoach.service')
+  const insights = await computeCoachingInsights()
+  const critical = insights.filter(i => i.priority === 'CRITICAL' || i.priority === 'HIGH')
+  const output = [
+    `Enterprise Coach™: ${insights.length} patterns detected across ${new Set(insights.map(i => i.category)).size} departments.`,
+    critical.length > 0
+      ? `Top priority: ${critical[0].pattern} — ${critical[0].recommendation}`
+      : 'No critical patterns. Platform operating within healthy parameters.',
+  ].join('\n')
+  return { output, data: { insightCount: insights.length, criticalCount: critical.length, insights } }
+}
+
 // ─── Execute a single agent ───────────────────────────────────────────────────
 async function executeAgent(task: AgentTask, scoutContext?: string): Promise<AgentResult> {
   const start = Date.now()
@@ -1261,7 +1506,15 @@ async function executeAgent(task: AgentTask, scoutContext?: string): Promise<Age
       case 'RESILIENCE_MONITOR':    result = await runResilienceMonitor(task.params); break
       case 'SHADOW_AI_DETECTOR':    result = await runShadowAiDetector(task.params); break
       case 'AGENT_GUARDIAN':        result = await runAgentGuardian(task.params); break
-      default:                      result = { output: `Unknown agent type: ${task.agentType}` }
+      case 'INCIDENT_RESPONDER':       result = await runIncidentResponder(task.params); break
+      case 'PROJECT_HEALTH':           result = await runProjectHealth(task.params); break
+      case 'DELIVERY_MONITOR':         result = await runDeliveryMonitor(task.params); break
+      case 'PROJECT_TWIN_SIMULATOR':   result = await runProjectTwinSimulator(task.params); break
+      case 'INVOICE_INTELLIGENCE':     result = await runInvoiceIntelligence(task.params); break
+      case 'COLLECTIONS_AGENT':        result = await runCollectionsAgent(task.params); break
+      case 'DEAL_COACH':               result = await runDealCoach(task.params); break
+      case 'ENTERPRISE_COACH':         result = await runEnterpriseCoach(task.params); break
+      default:                         result = { output: `Unknown agent type: ${task.agentType}` }
     }
     return { agentType: task.agentType, role: task.role, output: result.output, data: result.data, durationMs: Date.now() - start, success: true }
   } catch (err: any) {
@@ -1307,6 +1560,30 @@ export class KimmpOrchestrator {
     const start = Date.now()
     if (!question?.trim()) throw new Error('Question is required')
     logger.info(`[KIMMP:ORCHESTRATOR] "${question.slice(0, 80)}"`)
+
+    // Strategic questions → Decision Engine (structured options + evidence)
+    if (isStrategicDecision(question)) {
+      try {
+        const dec = await runStrategicDecision(question, userId ?? 'ORCHESTRATOR')
+        logger.info(`[KIMMP:ORCHESTRATOR] Routed to Decision Engine — id=${dec.id}`)
+        return {
+          id: dec.id, question, intent: 'STRATEGIC_DECISION',
+          summary: dec.situation,
+          recommendation: dec.recommendation,
+          evidence: dec.evidence.map(e => ({ agent: e.source, finding: e.snippet })),
+          riskFactors: [],
+          nextSteps: dec.options.map(o => `${o.label}: ${o.recommendation}`),
+          confidence: dec.confidence,
+          agentsUsed: dec.agentsMixed,
+          agentResults: [],
+          durationMs: Date.now() - start,
+          createdAt: new Date().toISOString(),
+          strategicDecision: dec,
+        } as any
+      } catch (err) {
+        logger.warn(`[KIMMP:ORCHESTRATOR] Decision Engine failed, falling through: ${err}`)
+      }
+    }
 
     let plan: { intent: string; agents: AgentTask[]; synthesisFocus: string }
     try {

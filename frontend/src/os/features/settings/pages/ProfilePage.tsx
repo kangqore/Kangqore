@@ -37,7 +37,7 @@ function memberSince(iso?: string) {
 }
 
 function passwordStrength(pw: string): { score: number; label: string; color: string } {
-  if (!pw) return { score: 0, label: '', color: '#1f2a4a' }
+  if (!pw) return { score: 0, label: '', color: 'var(--os-surface-0)' }
   let score = 0
   if (pw.length >= 8)  score++
   if (pw.length >= 12) score++
@@ -65,11 +65,11 @@ function Field({
 
   return (
     <div>
-      <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">{label}</label>
+      <label className="text-[11px] font-bold text-[var(--os-text-2)] uppercase tracking-wider block mb-1.5">{label}</label>
       <div className="relative">
         {Icon && (
           <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-            <Icon className="w-3.5 h-3.5 text-slate-600" />
+            <Icon className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
           </div>
         )}
         <input
@@ -80,13 +80,13 @@ function Field({
           readOnly={readOnly}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="w-full h-10 rounded-xl text-sm text-white outline-none transition-all"
+          className="w-full h-10 rounded-xl text-sm outline-none transition-all"
           style={{
-            background: readOnly ? '#0d1117' : '#151C2F',
-            border: `1px solid ${focused ? 'rgba(37,100,234,0.5)' : '#2E2854'}`,
+            background: readOnly ? 'var(--os-surface-0)' : 'var(--os-card)',
+            border: `1px solid ${focused ? 'rgba(37,100,234,0.5)' : 'var(--os-border)'}`,
             paddingLeft:  Icon ? '2.25rem' : '0.875rem',
             paddingRight: isPassword ? '2.5rem' : '0.875rem',
-            color: readOnly ? '#64748b' : '#ffffff',
+            color: readOnly ? 'var(--os-text-2)' : 'var(--os-text-1)',
             cursor: readOnly ? 'not-allowed' : 'text',
           }}
         />
@@ -94,7 +94,7 @@ function Field({
           <button
             type="button"
             onClick={() => setShow(s => !s)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors"
           >
             {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
@@ -129,7 +129,7 @@ function SaveBtn({ onClick, loading, disabled, label = 'Save changes', demoLabel
 
 function SectionCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl p-6 space-y-5" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
+    <div className="rounded-2xl p-6 space-y-5 bg-[var(--os-card)] border border-[var(--os-border)]">
       {children}
     </div>
   )
@@ -139,14 +139,14 @@ function SectionHeader({ icon: Icon, title, subtitle }: {
   icon: React.FC<{ className?: string }>; title: string; subtitle?: string
 }) {
   return (
-    <div className="flex items-start gap-3 pb-1" style={{ borderBottom: '1px solid #1f2a4a' }}>
+    <div className="flex items-start gap-3 pb-1 border-b border-[var(--os-border)]">
       <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
         style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.2)' }}>
         <Icon className="w-4 h-4 text-purple-400" />
       </div>
       <div>
-        <h3 className="text-sm font-bold text-white leading-tight">{title}</h3>
-        {subtitle && <p className="text-[11px] text-slate-500 mt-0.5">{subtitle}</p>}
+        <h3 className="text-sm font-bold text-[var(--os-text-1)] leading-tight">{title}</h3>
+        {subtitle && <p className="text-[11px] text-[var(--os-text-2)] mt-0.5">{subtitle}</p>}
       </div>
     </div>
   )
@@ -241,10 +241,9 @@ export function ProfilePage() {
       <div className="space-y-4">
 
         {/* Avatar card */}
-        <div className="rounded-2xl p-6 flex flex-col items-center text-center space-y-4"
-          style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
+        <div className="rounded-2xl p-6 flex flex-col items-center text-center space-y-4 bg-[var(--os-card)] border border-[var(--os-border)]">
           {profileLoading
-            ? <div className="w-20 h-20 rounded-2xl animate-pulse" style={{ background: '#151C2F' }} />
+            ? <div className="w-20 h-20 rounded-2xl animate-pulse bg-[var(--os-surface-0)]" />
             : (
               <div className="relative group cursor-pointer" title="Change profile photo">
                 <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold tracking-tight text-white"
@@ -261,24 +260,24 @@ export function ProfilePage() {
             )
           }
           <div>
-            <p className="text-base font-bold text-white">{live.name}</p>
-            <p className="text-xs text-slate-500 mt-0.5 break-all">{live.email}</p>
+            <p className="text-base font-bold text-[var(--os-text-1)]">{live.name}</p>
+            <p className="text-xs text-[var(--os-text-2)] mt-0.5 break-all">{live.email}</p>
           </div>
           <span className="text-[11px] font-bold px-3 py-1 rounded-full"
             style={{ color: '#7f53f9', background: 'rgba(127,83,249,0.12)', border: '1px solid rgba(127,83,249,0.25)' }}>
             {roleLabel}
           </span>
           {live.company && (
-            <div className="flex items-center gap-1.5 text-xs text-slate-400">
-              <Building2 className="w-3.5 h-3.5 text-slate-600" />
+            <div className="flex items-center gap-1.5 text-xs text-[var(--os-text-2)]">
+              <Building2 className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
               {live.company}
             </div>
           )}
         </div>
 
         {/* Account meta */}
-        <div className="rounded-2xl p-5 space-y-3.5" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
-          <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Account Info</p>
+        <div className="rounded-2xl p-5 space-y-3.5 bg-[var(--os-card)] border border-[var(--os-border)]">
+          <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-widest">Account Info</p>
 
           {[
             { icon: Calendar, label: 'Member since', value: memberSince(live.createdAt) },
@@ -286,34 +285,34 @@ export function ProfilePage() {
             { icon: User,     label: 'Account ID',    value: live.id?.slice(0, 8).toUpperCase() ?? '—' },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-slate-500">
-                <Icon className="w-3.5 h-3.5 text-slate-700" />
+              <div className="flex items-center gap-2 text-xs text-[var(--os-text-2)]">
+                <Icon className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
                 {label}
               </div>
-              <span className="text-xs font-medium text-slate-400">{value}</span>
+              <span className="text-xs font-medium text-[var(--os-text-1)]">{value}</span>
             </div>
           ))}
         </div>
 
         {/* Social links (read-only summary) */}
         {(live.linkedin || live.github || live.twitter) && (
-          <div className="rounded-2xl p-5 space-y-3" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
-            <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Connected Profiles</p>
+          <div className="rounded-2xl p-5 space-y-3 bg-[var(--os-card)] border border-[var(--os-border)]">
+            <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-widest">Connected Profiles</p>
             {live.linkedin && (
               <a href={live.linkedin} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs text-slate-400 hover:text-[#0a66c2] transition-colors">
+                className="flex items-center gap-2 text-xs text-[var(--os-text-2)] hover:text-[#0a66c2] transition-colors">
                 <Linkedin className="w-3.5 h-3.5" /> LinkedIn
               </a>
             )}
             {live.github && (
               <a href={live.github} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors">
+                className="flex items-center gap-2 text-xs text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors">
                 <Github className="w-3.5 h-3.5" /> GitHub
               </a>
             )}
             {live.twitter && (
               <a href={live.twitter} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs text-slate-400 hover:text-[#1da1f2] transition-colors">
+                className="flex items-center gap-2 text-xs text-[var(--os-text-2)] hover:text-[#1da1f2] transition-colors">
                 <Twitter className="w-3.5 h-3.5" /> Twitter / X
               </a>
             )}
@@ -383,7 +382,7 @@ export function ProfilePage() {
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map(i => (
                     <div key={i} className="flex-1 h-1 rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                      style={{ background: i <= strength.score ? strength.color : '#1f2a4a' }} />
+                      style={{ background: i <= strength.score ? strength.color : 'var(--os-border)' }} />
                   ))}
                 </div>
                 <p className="text-[11px] font-semibold" style={{ color: strength.color }}>{strength.label}</p>

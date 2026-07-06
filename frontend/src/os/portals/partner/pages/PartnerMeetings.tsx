@@ -1,5 +1,6 @@
 import { Video, Clock, User, ExternalLink } from 'lucide-react'
 import { Card } from '@design-system/components/Card'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
 import { usePartnerMeetings } from '../usePartnerData'
@@ -9,7 +10,7 @@ const MOCK_MEETINGS = [
     id: 'm1', title: 'Sprint 14 Review — Urban Mobility', type: 'VIDEO', platform: 'ZOOM',
     startTime: '2026-06-10T10:00:00Z', endTime: '2026-06-10T11:00:00Z',
     status: 'SCHEDULED', joinLink: 'https://zoom.us/j/99001122',
-    host: 'Mahesh Kumar',
+    host: 'C.O.D.E.',
   },
   {
     id: 'm2', title: 'GreenSpark Energy — Design Review', type: 'VIDEO', platform: 'GOOGLE_MEET',
@@ -21,7 +22,7 @@ const MOCK_MEETINGS = [
     id: 'm3', title: 'Sprint 13 Review — Urban Mobility', type: 'VIDEO', platform: 'ZOOM',
     startTime: '2026-05-27T10:00:00Z', endTime: '2026-05-27T11:00:00Z',
     status: 'COMPLETED', joinLink: null,
-    host: 'Mahesh Kumar',
+    host: 'C.O.D.E.',
   },
   {
     id: 'm4', title: 'Quantum Analytics — Final Handover', type: 'VIDEO', platform: 'ZOOM',
@@ -57,19 +58,19 @@ export function PartnerMeetings() {
             <div className="text-2xl font-bold tracking-tight text-os-success leading-none">
               {new Date(m.startTime).getDate()}
             </div>
-            <div className="text-xs text-slate-500 uppercase tracking-wide">
+            <div className="text-xs text-[var(--os-text-2)] uppercase tracking-wide">
               {new Date(m.startTime).toLocaleDateString('en-GB', { month: 'short' })}
             </div>
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2 mb-1">
-              <h3 className="text-sm font-semibold text-white">{m.title}</h3>
+              <h3 className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{m.title}</h3>
               {isPast
                 ? <Badge variant="neutral" size="sm">Completed</Badge>
                 : <Badge variant="success" dot size="sm">Upcoming</Badge>
               }
             </div>
-            <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap">
+            <div className="flex items-center gap-4 text-xs text-[var(--os-text-2)] flex-wrap">
               <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{fmtTime(m.startTime)} · {duration(m.startTime, m.endTime)}</span>
               <span className="flex items-center gap-1.5"><Video className="w-3 h-3" />{m.platform?.replace('_', ' ')}</span>
               <span className="flex items-center gap-1"><User className="w-3 h-3" />{m.host}</span>
@@ -86,23 +87,24 @@ export function PartnerMeetings() {
   }
 
   return (
-    <div className="space-y-8 max-w-2xl">
+    <div className="space-y-8">
+      <KIMMPSignalBar module="Meetings" />
       <div>
-        <h2 className="text-xl font-bold text-white">Meetings</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{meetings.length} total · {upcoming.length} upcoming</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Meetings</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>{meetings.length} total · {upcoming.length} upcoming</p>
       </div>
 
       <div>
-        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Upcoming</p>
+        <p className="text-xs font-bold text-[var(--os-text-2)] uppercase tracking-widest mb-3">Upcoming</p>
         {upcoming.length === 0
-          ? <p className="text-sm text-slate-500 text-center py-6 border border-dashed border-white/10 border-t-white/20 rounded-xl">No upcoming meetings.</p>
+          ? <p className="text-sm text-[var(--os-text-2)] text-center py-6 border border-dashed rounded-xl" style={{ borderColor: 'var(--os-border)' }}>No upcoming meetings.</p>
           : <div className="space-y-3">{upcoming.map(renderMeeting)}</div>
         }
       </div>
 
       {past.length > 0 && (
         <div>
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Past meetings</p>
+          <p className="text-xs font-bold text-[var(--os-text-2)] uppercase tracking-widest mb-3">Past meetings</p>
           <div className="space-y-3">{past.map(renderMeeting)}</div>
         </div>
       )}

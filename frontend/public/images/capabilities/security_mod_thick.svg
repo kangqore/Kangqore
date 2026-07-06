@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%" fx="50%" fy="30%">
+      <stop offset="0%" stop-color="#0b132a" />
+      <stop offset="60%" stop-color="#050812" />
+      <stop offset="100%" stop-color="#010205" />
+    </radialGradient>
+
+    <!-- Glass Gradients -->
+    <linearGradient id="glass-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+    <linearGradient id="glass-left" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.00" />
+    </linearGradient>
+
+    <!-- Neon Gradients -->
+    <linearGradient id="blue-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#2564ea" />
+    </linearGradient>
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+
+    <!-- Glow Filters -->
+    <filter id="neon-glow-blue" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="neon-glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Card Shadow -->
+    <filter id="thick-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="25" stdDeviation="15" flood-color="#000000" flood-opacity="0.8" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-grad)" />
+
+  <!-- Tech Grid Grid -->
+  <g stroke="#ffffff" stroke-opacity="0.015" stroke-width="1">
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+    <line x1="100" y1="0" x2="100" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="300" y1="0" x2="300" y2="600" />
+    <line x1="400" y1="0" x2="400" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="600" y1="0" x2="600" y2="600" />
+    <line x1="700" y1="0" x2="700" y2="600" />
+  </g>
+
+  <!-- Ambient background glow -->
+  <circle cx="400" cy="300" r="240" fill="#2564ea" opacity="0.07" filter="url(#neon-glow-blue)" />
+  <circle cx="400" cy="300" r="160" fill="#00f0ff" opacity="0.05" filter="url(#neon-glow-cyan)" />
+
+  <!-- Thick 3D Security Shield floating in center -->
+  <g filter="url(#thick-shadow)" transform="translate(0, -10)">
+    
+    <!-- Shield Shadow/Back Glow -->
+    <path d="M 400,150 C 470,150 520,180 520,250 C 520,350 400,430 400,430 C 400,430 280,350 280,250 C 280,180 330,150 400,150 Z" 
+          fill="url(#blue-glow)" opacity="0.25" filter="url(#neon-glow-blue)" />
+          
+    <!-- Shield Outer Glass Frame -->
+    <path d="M 400,150 C 470,150 520,180 520,250 C 520,350 400,430 400,430 C 400,430 280,350 280,250 C 280,180 330,150 400,150 Z" 
+          fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="3" />
+
+    <!-- Inner Glass Border Accent -->
+    <path d="M 400,170 C 455,170 495,195 495,250 C 495,330 400,400 400,400 C 400,400 305,330 305,250 C 305,195 345,170 400,170 Z" 
+          fill="url(#glass-left)" stroke="url(#cyan-glow)" stroke-opacity="0.25" stroke-width="1.5" />
+
+    <!-- Padlock Core Graphic (Floating above shield center) -->
+    <g transform="translate(370, 230)" filter="url(#neon-glow-cyan)">
+      <!-- Shackle -->
+      <path d="M 12,20 L 12,12 A 18,18 0 0 1 48,12 L 48,20" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" />
+      <path d="M 12,20 L 12,12 A 18,18 0 0 1 48,12 L 48,20" fill="none" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round" />
+      <!-- Lock Body -->
+      <rect x="0" y="18" width="60" height="42" rx="8" fill="url(#cyan-glow)" stroke="#ffffff" stroke-opacity="0.9" stroke-width="2" />
+      <!-- Keyhole -->
+      <circle cx="30" cy="34" r="5" fill="#050812" />
+      <polygon points="27,34 33,34 35,46 25,46" fill="#050812" />
+    </g>
+
+    <!-- Circuit tracks branching across the shield face -->
+    <g stroke="url(#cyan-glow)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6">
+      <!-- Left branches -->
+      <path d="M 370,264 L 330,264 L 315,280" />
+      <circle cx="315" cy="280" r="2.5" fill="#00f0ff" />
+      
+      <path d="M 370,248 L 340,228 L 340,200" />
+      <circle cx="340" cy="200" r="2.5" fill="#00f0ff" />
+
+      <!-- Right branches -->
+      <path d="M 430,264 L 470,264 L 485,280" />
+      <circle cx="485" cy="280" r="2.5" fill="#00f0ff" />
+
+      <path d="M 430,248 L 460,228 L 460,200" />
+      <circle cx="460" cy="200" r="2.5" fill="#00f0ff" />
+      
+      <!-- Bottom branches -->
+      <path d="M 400,290 L 400,340 Q 400,360 415,370" />
+      <circle cx="415" cy="370" r="2.5" fill="#00f0ff" />
+    </g>
+  </g>
+
+  <!-- Surrounding Data Defense Hexagon Matrix (Very faint) -->
+  <g stroke="#ffffff" stroke-opacity="0.04" stroke-width="1" fill="none">
+    <polygon points="120,200 160,180 200,200 200,240 160,260 120,240" />
+    <polygon points="600,200 640,180 680,200 680,240 640,260 600,240" />
+    <polygon points="140,340 180,320 220,340 220,380 180,400 140,380" />
+    <polygon points="580,340 620,320 660,340 660,380 620,400 580,380" />
+  </g>
+  
+  <!-- Particles -->
+  <circle cx="320" cy="130" r="2" fill="#00f0ff" opacity="0.6" filter="url(#neon-glow-cyan)" />
+  <circle cx="480" cy="130" r="2" fill="#00f0ff" opacity="0.6" filter="url(#neon-glow-cyan)" />
+  <circle cx="250" cy="310" r="3.5" fill="#ffffff" opacity="0.3" />
+  <circle cx="550" cy="310" r="3.5" fill="#ffffff" opacity="0.3" />
+</svg>

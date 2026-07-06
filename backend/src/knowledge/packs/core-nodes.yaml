@@ -1,0 +1,78 @@
+nodes:
+  # Semantic Events
+  - id: EVT_PAGE_PRICING
+    type: event
+    name: Pricing Page View
+    matchUrl: "/pricing"
+
+  - id: EVT_PAGE_SERVICES
+    type: event
+    name: Services Page View
+    matchUrl: "/services"
+
+  - id: EVT_CORP_EMAIL
+    type: event
+    name: Corporate Email Submitted
+    matchEventId: "CORPORATE_EMAIL_SUBMITTED"
+
+  - id: EVT_TECH_INTEREST
+    type: event
+    name: Technical Interest
+    matchEventId: "TECHNICAL_INTEREST"
+
+  - id: EVT_PRICING_SHOCK
+    type: event
+    name: Pricing Shock
+    matchEventId: "PRICING_SHOCK"
+
+  # Decision States
+  - id: STATE_DISCOVERY
+    type: state
+    name: Discovery
+    
+  - id: STATE_RESEARCH
+    type: state
+    name: Research
+    
+  - id: STATE_EVALUATION
+    type: state
+    name: Evaluation
+
+  - id: STATE_COMPARISON
+    type: state
+    name: Comparison
+
+  - id: STATE_VENDOR_SELECTION
+    type: state
+    name: Vendor Selection
+
+  # Personas
+  - id: PERSONA_DEVELOPER
+    type: persona
+    name: Developer
+
+  - id: PERSONA_ENT_BUYER
+    type: persona
+    name: Enterprise Buyer
+
+  # Objectives
+  - id: OBJ_ENT_CONVERSION
+    type: objective
+    name: Increase Enterprise Conversions
+
+  - id: OBJ_REDUCE_FRICTION
+    type: objective
+    name: Reduce Pricing Shock
+
+  # Recommendations
+  - id: REC_ARCH_REVIEW
+    type: recommendation
+    name: Architecture Review
+
+  - id: REC_SEC_WHITEPAPER
+    type: recommendation
+    name: Security Whitepaper
+
+  - id: REC_CASE_STUDY
+    type: recommendation
+    name: Enterprise Case Study

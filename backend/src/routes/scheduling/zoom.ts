@@ -49,14 +49,14 @@ router.get('/callback', async (req, res, next) => {
     const { code, state: userId, error } = req.query as Record<string, string>;
 
     if (error) {
-      return res.redirect(`${FRONTEND_URL}/dashboard/calendar?error=${encodeURIComponent(error)}`);
+      return res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=${encodeURIComponent(error)}`);
     }
     if (!code || !userId) {
-      return res.redirect(`${FRONTEND_URL}/dashboard/calendar?error=missing_params`);
+      return res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=missing_params`);
     }
 
     await ZoomService.handleCallback(code, userId);
-    res.redirect(`${FRONTEND_URL}/dashboard/calendar?connected=zoom`);
+    res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?connected=zoom`);
   } catch (error) {
     next(error);
   }

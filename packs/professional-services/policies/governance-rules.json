@@ -1,0 +1,45 @@
+{
+  "description": "Enterprise policy seeds for professional services. Load into EnterprisePolicy table at onboarding.",
+  "policies": [
+    {
+      "name":        "Block unauthorised external writes",
+      "description": "Any EXTERNAL_API_CALL must pass L3 approval — no silent writes to Slack, Jira, or Salesforce.",
+      "trigger":     "EXTERNAL_API_CALL",
+      "condition":   {},
+      "effect":      "REQUIRE_APPROVAL",
+      "priority":    100
+    },
+    {
+      "name":        "Notify on critical risk",
+      "description": "Any action that creates or escalates a risk to CRITICAL severity must trigger an internal notification.",
+      "trigger":     "CREATE_RISK",
+      "condition":   { "field": "severity", "operator": "eq", "value": "CRITICAL" },
+      "effect":      "NOTIFY",
+      "priority":    90
+    },
+    {
+      "name":        "Require approval for large invoices",
+      "description": "Invoices above ₹5 lakh require L3 approval before dispatch.",
+      "trigger":     "CREATE_INVOICE",
+      "condition":   { "field": "amount", "operator": "gte", "value": 500000 },
+      "effect":      "REQUIRE_APPROVAL",
+      "priority":    80
+    },
+    {
+      "name":        "Block record deletion",
+      "description": "WAANDA may never delete records — only archive.",
+      "trigger":     "DELETE_RECORD",
+      "condition":   {},
+      "effect":      "DENY",
+      "priority":    200
+    },
+    {
+      "name":        "Notify on low-quality lead auto-advance",
+      "description": "Alert account manager if a lead with score < 30 is being advanced to PROPOSAL stage.",
+      "trigger":     "UPDATE_LEAD_STATUS",
+      "condition":   { "field": "score", "operator": "lt", "value": 30 },
+      "effect":      "NOTIFY",
+      "priority":    70
+    }
+  ]
+}

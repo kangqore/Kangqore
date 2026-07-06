@@ -1,0 +1,12 @@
+{
+  "description": "Mission Control widget layout for professional services context.",
+  "panels": [
+    { "id": "pulse",     "title": "Enterprise Pulse",    "source": "/admin/enterprise/pulse",           "priority": 1 },
+    { "id": "coig",      "title": "COIG Triple Number",  "source": "/admin/enterprise/coig",            "priority": 2 },
+    { "id": "portfolio", "title": "Project Portfolio",   "source": "/admin/projects/ops/portfolio",     "priority": 3 },
+    { "id": "finance",   "title": "Finance Health",      "source": "/admin/invoices/summary",           "priority": 4 },
+    { "id": "pipeline",  "title": "Pipeline",            "source": "/admin/leads/summary",              "priority": 5 },
+    { "id": "coach",     "title": "Coach Insights",      "source": "/admin/enterprise/coach",           "priority": 6 },
+    { "id": "g8",        "title": "OIS Score",           "source": "/admin/gate8/composite",            "priority": 7 }
+  ]
+}

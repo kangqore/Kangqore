@@ -1,0 +1,14 @@
+{
+  "description": "Behavioral fingerprint of a healthy professional services firm operating on WAANDA. Used as the reference profile when computing EnterpriseDNA for new PS deployments.",
+  "referenceProfile": {
+    "approvalSpeed":       "MODERATE",
+    "riskTolerance":       "BALANCED",
+    "decisionStyle":       "DATA_DRIVEN",
+    "escalationThreshold": "NORMAL",
+    "meetingDensity":      "MODERATE",
+    "growthPhase":         "SCALING",
+    "dominantPillar":      "decision",
+    "weakestPillar":       "adoption"
+  },
+  "notes": "approvalSpeed starts MODERATE for most PS firms — L3 approvals average 4–8 hours. After 90 days on WAANDA, firms with healthy COIG typically shift to FAST (< 2h median). Risk tolerance BALANCED reflects that PS firms can't absorb large project delays but also can't be so conservative that they turn down good opportunities."
+}

@@ -32,6 +32,24 @@ function clearSession() {
   window.location.href = '/login'
 }
 
+// Thin fetch wrapper that reuses the same auth token as the axios instance
+export async function apiFetch<T = unknown>(path: string, init?: RequestInit): Promise<T> {
+  const token = localStorage.getItem('token')
+  const res = await fetch(`/api${path}`, {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(init?.headers ?? {}),
+    },
+  })
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+  return res.json() as Promise<T>
+}
+
+// Alias used in admin-only pages — identical to apiFetch
+export const adminApi = apiFetch
+
 // On 401: attempt token refresh once, then retry. Redirect to login on failure.
 // In demo mode: skip refresh (demo-token always 401s — never boot demo users).
 api.interceptors.response.use(

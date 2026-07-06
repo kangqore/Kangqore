@@ -97,7 +97,7 @@ const mappings: Mapping[] = [
 const STATUS_CONFIG = {
   active: { label: 'Active', color: '#10B981', icon: <CheckCircle className="w-3.5 h-3.5" /> },
   draft:  { label: 'Draft',  color: '#F59E0B', icon: <AlertCircle className="w-3.5 h-3.5" /> },
-  paused: { label: 'Paused', color: '#475569', icon: <Circle      className="w-3.5 h-3.5" /> },
+  paused: { label: 'Paused', color: 'var(--os-text-2)', icon: <Circle      className="w-3.5 h-3.5" /> },
 }
 
 const TOOL_COLOR: Record<string, string> = {
@@ -121,7 +121,7 @@ export function MappingsPage() {
         <Sliders className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
         <div className="space-y-1">
           <p className="text-sm font-semibold text-white">Signal Schema mappings</p>
-          <p className="text-xs text-slate-500 leading-relaxed">
+          <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
             Each mapping translates a raw tool event into a Kangqore entity field with a KIMMP weight score.
             Weight determines how strongly this signal influences KIMMP correlation.
             Confidence Decay defines how quickly the signal's relevance fades without follow-on signals.
@@ -131,9 +131,9 @@ export function MappingsPage() {
 
       {/* Summary */}
       <div className="flex items-center gap-6 text-sm">
-        <span className="text-slate-400"><span className="font-bold text-white">{activeCount}</span> active mappings</span>
-        <span className="text-slate-400"><span className="font-bold text-amber-400">{draftCount}</span> in draft</span>
-        <span className="text-slate-400"><span className="font-bold text-white">{mappings.length}</span> total defined</span>
+        <span className="text-[var(--os-text-2)]"><span className="font-bold text-white">{activeCount}</span> active mappings</span>
+        <span className="text-[var(--os-text-2)]"><span className="font-bold text-amber-400">{draftCount}</span> in draft</span>
+        <span className="text-[var(--os-text-2)]"><span className="font-bold text-white">{mappings.length}</span> total defined</span>
       </div>
 
       {/* Mappings table */}
@@ -141,7 +141,7 @@ export function MappingsPage() {
         {/* Header */}
         <div className="grid grid-cols-[1fr_1fr_1fr_80px_80px_100px] gap-4 px-4 py-2">
           {['Source Event', 'Kangqore Entity', 'Field Mapping', 'Weight', 'Status', ''].map(h => (
-            <span key={h} className="text-[9px] font-black uppercase tracking-widest text-slate-700">{h}</span>
+            <span key={h} className="text-[9px] font-black uppercase tracking-widest text-[var(--os-text-2)]">{h}</span>
           ))}
         </div>
 
@@ -150,29 +150,29 @@ export function MappingsPage() {
           const toolColor = TOOL_COLOR[m.sourceTool] || '#6B7280'
 
           return (
-            <div key={m.id} className={`grid grid-cols-[1fr_1fr_1fr_80px_80px_100px] gap-4 items-center px-4 py-4 rounded-2xl border bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 hover:border-white/20 transition-colors ${m.status === 'paused' ? 'border-white/5 opacity-60' : 'border-white/10'}`}>
+            <div key={m.id} className={`grid grid-cols-[1fr_1fr_1fr_80px_80px_100px] gap-4 items-center px-4 py-4 rounded-2xl border bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 hover:border-[var(--os-border)] transition-colors ${m.status === 'paused' ? 'border-white/5 opacity-60' : 'border-[var(--os-border)]'}`}>
               {/* Source Event */}
               <div className="min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: toolColor }} />
-                  <span className="text-[10px] font-bold text-slate-500">{m.sourceTool}</span>
+                  <span className="text-[10px] font-bold text-[var(--os-text-2)]">{m.sourceTool}</span>
                 </div>
                 <p className="text-xs font-semibold text-white font-mono leading-tight">{m.sourceEvent}</p>
               </div>
 
               {/* Arrow + Entity */}
               <div className="flex items-center gap-2 min-w-0">
-                <ArrowRight className="w-3.5 h-3.5 text-slate-700 flex-shrink-0" />
+                <ArrowRight className="w-3.5 h-3.5 text-[var(--os-text-2)] flex-shrink-0" />
                 <p className="text-sm font-semibold text-white truncate">{m.kangqoreEntity}</p>
               </div>
 
               {/* Field mapping */}
-              <p className="text-[10px] text-slate-500 font-mono leading-relaxed">{m.kangqoreField}</p>
+              <p className="text-[10px] text-[var(--os-text-2)] font-mono leading-relaxed">{m.kangqoreField}</p>
 
               {/* Weight */}
               <div>
                 <p className="text-sm font-bold text-white">{m.kimmpWeight}</p>
-                <p className="text-[9px] text-slate-700">{m.confidenceDecay}</p>
+                <p className="text-[9px] text-[var(--os-text-2)]">{m.confidenceDecay}</p>
               </div>
 
               {/* Status */}
@@ -183,7 +183,7 @@ export function MappingsPage() {
 
               {/* Actions */}
               <div className="flex justify-end">
-                <button className="text-[10px] font-bold text-slate-600 hover:text-slate-300 transition-colors px-2 py-1 rounded-lg hover:bg-slate-800">
+                <button className="text-[10px] font-bold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors px-2 py-1 rounded-lg hover:bg-slate-800">
                   Edit
                 </button>
               </div>

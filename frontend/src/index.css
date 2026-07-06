@@ -471,3 +471,430 @@ input[type='range']::-webkit-slider-thumb:hover {
 }
 
 html, body, #root { border-top: none !important; box-shadow: none !important; }
+
+/* ==========================================
+   APPLE AESTHETIC OVERRIDES (.apple-theme)
+   ========================================== */
+.apple-theme {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  letter-spacing: -0.015em;
+  background-color: #050810 !important;
+}
+
+/* Page headers */
+.apple-theme h1.text-2xl.font-bold.tracking-tight,
+.apple-theme h1.text-xl.font-bold,
+.apple-theme .text-3xl.font-black,
+.apple-theme .text-4xl.font-black {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.035em !important;
+  background: linear-gradient(135deg, #ffffff 40%, rgba(255, 255, 255, 0.6) 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Secondary descriptions */
+.apple-theme .text-slate-500,
+.apple-theme .text-slate-400 {
+  color: #86868b !important;
+  font-size: 0.95rem !important;
+  font-weight: 450 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Grid KPIs & Card panels */
+.apple-theme .bg-slate-900\/40,
+.apple-theme .bg-slate-900\/20,
+.apple-theme .bg-slate-800\/60,
+.apple-theme .bg-slate-800\/50,
+.apple-theme .bg-slate-900\/50,
+.apple-theme .bg-slate-900\/70,
+.apple-theme .bg-slate-950\/40,
+.apple-theme .bg-slate-900\/30,
+.apple-theme .bg-slate-950\/20,
+.apple-theme .ring-1.ring-white\/10 {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.4), 
+    inset 0 1px 1px rgba(255, 255, 255, 0.03) !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border-radius: 18px !important;
+}
+
+/* Glow indicators inside cards on hover */
+.apple-theme .bg-slate-900\/40:hover,
+.apple-theme .bg-slate-900\/20:hover,
+.apple-theme .bg-slate-800\/60:hover,
+.apple-theme .bg-slate-800\/50:hover,
+.apple-theme .bg-slate-900\/50:hover,
+.apple-theme .bg-slate-900\/70:hover,
+.apple-theme .ring-1.ring-white\/10:hover {
+  transform: scale(1.02) translateY(-3px) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.6), 
+    0 0 35px -8px var(--dept-accent) !important;
+}
+
+/* Active buttons and capsule filter pills */
+.apple-theme button {
+  border-radius: 9999px !important;
+  font-family: inherit;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Neutral button styles */
+.apple-theme button.bg-slate-800\/60,
+.apple-theme button.bg-slate-900\/60,
+.apple-theme button.bg-slate-800\/50 {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #86868b !important;
+}
+.apple-theme button.bg-slate-800\/60:hover,
+.apple-theme button.bg-slate-900\/60:hover,
+.apple-theme button.bg-slate-800\/50:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Active dynamic color button overrides */
+.apple-theme button.bg-blue-600,
+.apple-theme button.bg-slate-600,
+.apple-theme button.bg-orange-500 {
+  background: var(--dept-accent) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3), 
+    0 0 10px rgba(255, 255, 255, 0.05) !important;
+}
+.apple-theme button.bg-blue-600:hover,
+.apple-theme button.bg-slate-600:hover,
+.apple-theme button.bg-orange-500:hover {
+  transform: scale(1.03) translateY(-1.5px) !important;
+  box-shadow: 
+    0 12px 28px rgba(0, 0, 0, 0.4), 
+    0 0 25px var(--dept-accent) !important;
+  filter: brightness(1.15);
+}
+
+/* Task tabs and indicator lines */
+.apple-theme .border-b-2 {
+  border-bottom-width: 2px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.apple-theme .border-orange-500 {
+  border-bottom-color: var(--dept-accent) !important;
+  color: var(--dept-accent) !important;
+}
+.apple-theme .text-orange-400 {
+  color: var(--dept-accent) !important;
+}
+.apple-theme .bg-orange-500\/20 {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Inputs, Textareas and Dropdowns */
+.apple-theme input,
+.apple-theme textarea,
+.apple-theme select {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #f5f5f7 !important;
+  border-radius: 12px !important;
+  padding: 10px 16px !important;
+  font-size: 0.85rem !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.2) !important;
+}
+.apple-theme input:focus,
+.apple-theme textarea:focus,
+.apple-theme select:focus {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 
+    0 0 0 4px rgba(255, 255, 255, 0.04), 
+    0 0 20px rgba(255, 255, 255, 0.02) !important;
+  outline: none !important;
+}
+.apple-theme input::placeholder,
+.apple-theme textarea::placeholder {
+  color: #515154 !important;
+}
+
+/* Table containers & layout */
+.apple-theme .overflow-x-auto.rounded-2xl.border {
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.01) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+}
+.apple-theme thead tr {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+.apple-theme th {
+  color: #86868b !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.06em !important;
+  padding: 14px 16px !important;
+}
+.apple-theme tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.apple-theme tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+.apple-theme td {
+  padding: 12px 16px !important;
+}
+
+/* Badges & Status Indicators */
+.apple-theme span[style*="color"],
+.apple-theme span[class*="text-xs"][class*="font-semibold"][class*="rounded-full"] {
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  border-radius: 6px !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1), 
+    0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  font-size: 0.65rem !important;
+  padding: 3px 8px !important;
+}
+
+/* Header icon wrappers */
+.apple-theme div.rounded-xl.bg-blue-500\/20,
+.apple-theme div.rounded-xl.bg-orange-500\/20,
+.apple-theme div.rounded-xl.bg-green-500\/20,
+.apple-theme div.rounded-xl.bg-red-500\/20 {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2), 
+    0 0 15px -5px var(--dept-accent) !important;
+  transition: all 0.3s ease !important;
+}
+.apple-theme div.rounded-xl.bg-blue-500\/20:hover,
+.apple-theme div.rounded-xl.bg-orange-500\/20:hover,
+.apple-theme div.rounded-xl.bg-green-500\/20:hover,
+.apple-theme div.rounded-xl.bg-red-500\/20:hover {
+  transform: scale(1.05) rotate(3deg) !important;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3), 
+    0 0 20px var(--dept-accent) !important;
+}
+.apple-theme div.rounded-xl.bg-blue-500\/20 svg,
+.apple-theme div.rounded-xl.bg-orange-500\/20 svg,
+.apple-theme div.rounded-xl.bg-green-500\/20 svg,
+.apple-theme div.rounded-xl.bg-red-500\/20 svg {
+  color: #f5f5f7 !important;
+}
+
+/* Agent Workspace Details & Chat columns */
+.apple-theme .border-r.border-white\/10 {
+  border-right-color: rgba(255, 255, 255, 0.06) !important;
+}
+.apple-theme .divide-y.divide-white\/\[0\.06\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+.apple-theme .divide-white\/\[0\.06\] {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Scrollbar tweaks */
+.apple-theme ::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+.apple-theme ::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+.apple-theme ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 9999px !important;
+}
+.apple-theme ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Sprint Board Kanban Columns */
+.apple-theme div[style*="background: rgba(11, 17, 33, 0.5)"] {
+  background: rgba(255, 255, 255, 0.01) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 18px !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* ==========================================
+   GLOBAL FEEDBACK PROMPT TEXTURE FOR SIDEBARS
+   ========================================== */
+.sidebar-black-texture {
+  position: relative !important;
+  background-color: transparent !important;
+  border-right: 1px solid #3a3a3e !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    inset 0 -1px 0 rgba(0,0,0,0.70),
+    inset 1px 0 0 rgba(255,255,255,0.04),
+    0 1px 0 rgba(255,255,255,0.06),
+    0 4px 8px rgba(0,0,0,0.55),
+    0 12px 24px rgba(0,0,0,0.50),
+    0 32px 56px rgba(0,0,0,0.40) !important;
+  overflow: hidden;
+}
+
+.sidebar-black-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url('/images/capabilities/agentic-governed-autonomy.png');
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+}
+
+.sidebar-black-texture::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: rgba(0,0,0,0.3);
+  background-image: 
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+}
+
+.sidebar-black-texture > * {
+  position: relative;
+  z-index: 10;
+}
+
+/* VIBRANT LIGHT THEME OVERRIDES (.vibrant-theme) */
+.vibrant-theme {
+  background-color: #f5f6f8;
+  color: #323338;
+}
+
+.vibrant-theme .text-slate-200,
+.vibrant-theme .text-slate-300 {
+  color: #323338;
+}
+
+.vibrant-theme .text-slate-400,
+.vibrant-theme .text-slate-500 {
+  color: #676879;
+}
+
+.vibrant-theme .bg-\[\#0d1326\]\/50,
+.vibrant-theme .bg-\[\#0d1326\]\/60,
+.vibrant-theme .bg-\[\#0d1117\] {
+  background-color: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.vibrant-theme .border-white\/10,
+.vibrant-theme .border-white\/5 {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.vibrant-theme .shadow-\[inset_0_1px_1px_rgba\(255\,255\,255\,0\.1\)\] {
+  box-shadow: none;
+}
+
+.vibrant-theme .hover\:-translate-y-1:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.vibrant-theme input,
+.vibrant-theme textarea {
+  background-color: #ffffff;
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #323338;
+}
+
+.vibrant-theme input:focus,
+.vibrant-theme textarea:focus {
+  border-color: #579bfc;
+  box-shadow: 0 0 0 3px rgba(87, 155, 252, 0.2);
+}
+
+.vibrant-theme button.bg-white\/\[0\.03\] {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: #323338;
+}
+
+.vibrant-theme button.bg-white\/\[0\.03\]:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.vibrant-theme-sidebar {
+  background-color: #ffffff;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  color: #323338;
+}
+
+/* Vibrant Theme Specific Overrides */
+.vibrant-theme .sidebar-black-texture {
+  background: #ffffff !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  color: #323338 !important;
+}
+
+.vibrant-theme .sidebar-black-texture .text-slate-500 {
+  color: #676879 !important;
+}
+
+.vibrant-theme .sidebar-black-texture a.text-white {
+  color: #0073ea !important;
+  background: #cce5ff !important;
+  box-shadow: none !important;
+}
+
+.vibrant-theme .sidebar-black-texture a.text-slate-500:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #323338 !important;
+}
+
+.vibrant-theme .sidebar-black-texture .bg-white\/\[0\.08\] {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Topbar overrides */
+.vibrant-theme header {
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+.vibrant-theme header .text-white {
+  color: #323338 !important;
+}
+.vibrant-theme header .text-slate-400 {
+  color: #676879 !important;
+}
+.vibrant-theme header .bg-white\/\[0\.03\] {
+  background: rgba(0,0,0,0.04) !important;
+}

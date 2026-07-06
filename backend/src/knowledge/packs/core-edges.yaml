@@ -1,0 +1,76 @@
+edges:
+  # Event -> State inferences
+  - id: EDGE_001
+    source: EVT_PAGE_PRICING
+    target: STATE_COMPARISON
+    relationship: INDICATES
+    weight: 15
+
+  - id: EDGE_002
+    source: EVT_PAGE_SERVICES
+    target: STATE_RESEARCH
+    relationship: INDICATES
+    weight: 10
+
+  - id: EDGE_003
+    source: EVT_CORP_EMAIL
+    target: STATE_VENDOR_SELECTION
+    relationship: INDICATES
+    weight: 90
+
+  - id: EDGE_004
+    source: EVT_TECH_INTEREST
+    target: STATE_EVALUATION
+    relationship: INDICATES
+    weight: 20
+
+  # Event -> Persona inferences
+  - id: EDGE_005
+    source: EVT_PAGE_PRICING
+    target: PERSONA_ENT_BUYER
+    relationship: INDICATES
+    weight: 10
+
+  - id: EDGE_006
+    source: EVT_CORP_EMAIL
+    target: PERSONA_ENT_BUYER
+    relationship: INDICATES
+    weight: 99
+
+  - id: EDGE_007
+    source: EVT_TECH_INTEREST
+    target: PERSONA_DEVELOPER
+    relationship: INDICATES
+    weight: 20
+
+  # State -> Objective associations
+  - id: EDGE_008
+    source: STATE_VENDOR_SELECTION
+    target: OBJ_ENT_CONVERSION
+    relationship: SUPPORTS
+    weight: 1.5
+
+  - id: EDGE_009
+    source: EVT_PRICING_SHOCK
+    target: OBJ_REDUCE_FRICTION
+    relationship: ALERTS
+    weight: 2.0
+
+  # Objective -> Playbook/Recommendation mapping
+  - id: EDGE_010
+    source: OBJ_ENT_CONVERSION
+    target: REC_ARCH_REVIEW
+    relationship: RECOMMENDS
+    weight: 1.0
+
+  - id: EDGE_011
+    source: OBJ_ENT_CONVERSION
+    target: REC_SEC_WHITEPAPER
+    relationship: RECOMMENDS
+    weight: 0.9
+
+  - id: EDGE_012
+    source: OBJ_ENT_CONVERSION
+    target: REC_CASE_STUDY
+    relationship: RECOMMENDS
+    weight: 0.8

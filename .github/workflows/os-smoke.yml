@@ -7,7 +7,7 @@ on:
   pull_request:
     paths:
       - 'frontend/**'
-      - '.github/workflows/kangqore-view-e2e.yml'
+      - '.github/workflows/os-smoke.yml'
 
 jobs:
   smoke:

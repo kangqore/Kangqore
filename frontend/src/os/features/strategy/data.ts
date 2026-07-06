@@ -4,7 +4,7 @@ export const PILLARS: Pillar[] = [
   {
     id: 'p1', name: 'Market Expansion', color: '#2564ea',
     description: 'Scale into new verticals and geographies through targeted client acquisition and partner networks.',
-    owner: 'Mahesh Kumar', health: 'on-track', programCount: 4, okrCount: 6, budget: 850000, spent: 420000,
+    owner: 'C.O.D.E.', health: 'on-track', programCount: 4, okrCount: 6, budget: 850000, spent: 420000,
   },
   {
     id: 'p2', name: 'Product Excellence', color: '#2563eb',
@@ -29,12 +29,12 @@ export const PILLARS: Pillar[] = [
 ]
 
 export const PROGRAMS: Program[] = [
-  { id: 'pr1',  pillarId: 'p1', pillarName: 'Market Expansion',     pillarColor: '#2564ea', name: 'Southeast Asia Entry',       description: 'Launch Kangqore services in SG, MY, ID markets.',           status: 'active',    health: 'on-track', owner: 'Mahesh Kumar',  budget: 220000, spent: 95000,  progress: 43, startDate: '2026-01-15', endDate: '2026-09-30', teamSize: 6  },
+  { id: 'pr1',  pillarId: 'p1', pillarName: 'Market Expansion',     pillarColor: '#2564ea', name: 'Southeast Asia Entry',       description: 'Launch Kangqore services in SG, MY, ID markets.',           status: 'active',    health: 'on-track', owner: 'C.O.D.E.',  budget: 220000, spent: 95000,  progress: 43, startDate: '2026-01-15', endDate: '2026-09-30', teamSize: 6  },
   { id: 'pr2',  pillarId: 'p1', pillarName: 'Market Expansion',     pillarColor: '#2564ea', name: 'Enterprise Sales Program',   description: 'Build dedicated enterprise sales motion and playbook.',     status: 'active',    health: 'on-track', owner: 'Anika Roy',     budget: 180000, spent: 110000, progress: 61, startDate: '2026-02-01', endDate: '2026-07-31', teamSize: 4  },
   { id: 'pr3',  pillarId: 'p1', pillarName: 'Market Expansion',     pillarColor: '#2564ea', name: 'Partner Network Expansion',  description: 'Onboard 20 certified delivery partners globally.',           status: 'active',    health: 'at-risk',  owner: 'Dev Patel',     budget: 260000, spent: 140000, progress: 38, startDate: '2026-01-01', endDate: '2026-12-31', teamSize: 3  },
   { id: 'pr4',  pillarId: 'p1', pillarName: 'Market Expansion',     pillarColor: '#2564ea', name: 'Brand & Demand Gen',         description: 'Increase inbound pipeline through content and SEO.',        status: 'planned',   health: 'on-track', owner: 'Priya Sharma',  budget: 190000, spent: 75000,  progress: 25, startDate: '2026-04-01', endDate: '2026-12-31', teamSize: 5  },
   { id: 'pr5',  pillarId: 'p2', pillarName: 'Product Excellence',   pillarColor: '#2563eb', name: 'eQORE v2 Platform',          description: 'Rebuild eQORE with lead scoring, RAG, and real-time sync.', status: 'active',    health: 'at-risk',  owner: 'Ravi Nair',     budget: 310000, spent: 240000, progress: 72, startDate: '2025-11-01', endDate: '2026-06-30', teamSize: 8  },
-  { id: 'pr6',  pillarId: 'p2', pillarName: 'Product Excellence',   pillarColor: '#2563eb', name: 'Client Portal Rebuild',      description: 'Redesign all 5 portals as unified Company OS.',            status: 'active',    health: 'on-track', owner: 'Mahesh Kumar',  budget: 180000, spent: 95000,  progress: 55, startDate: '2026-03-01', endDate: '2026-10-31', teamSize: 5  },
+  { id: 'pr6',  pillarId: 'p2', pillarName: 'Product Excellence',   pillarColor: '#2563eb', name: 'Client Portal Rebuild',      description: 'Redesign all 5 portals as unified Company OS.',            status: 'active',    health: 'on-track', owner: 'C.O.D.E.',  budget: 180000, spent: 95000,  progress: 55, startDate: '2026-03-01', endDate: '2026-10-31', teamSize: 5  },
   { id: 'pr7',  pillarId: 'p2', pillarName: 'Product Excellence',   pillarColor: '#2563eb', name: 'QA & Delivery Standards',    description: 'Define and enforce quality gates across all services.',     status: 'planned',   health: 'on-track', owner: 'Anika Roy',     budget: 130000, spent: 55000,  progress: 18, startDate: '2026-05-01', endDate: '2026-12-31', teamSize: 3  },
   { id: 'pr8',  pillarId: 'p3', pillarName: 'Operational Efficiency',pillarColor: '#059669', name: 'KIMMP Full Rollout',         description: 'Deploy KIMMP signal engine across all business units.',     status: 'active',    health: 'on-track', owner: 'Ravi Nair',     budget: 160000, spent: 72000,  progress: 48, startDate: '2026-02-15', endDate: '2026-09-30', teamSize: 4  },
   { id: 'pr9',  pillarId: 'p3', pillarName: 'Operational Efficiency',pillarColor: '#059669', name: 'Workflow Automation Suite',  description: 'Automate repetitive ops tasks with trigger-based rules.',   status: 'planned',   health: 'on-track', owner: 'Dev Patel',     budget: 140000, spent: 60000,  progress: 20, startDate: '2026-06-01', endDate: '2026-12-31', teamSize: 3  },
@@ -42,7 +42,7 @@ export const PROGRAMS: Program[] = [
   { id: 'pr11', pillarId: 'p4', pillarName: 'Talent & Culture',     pillarColor: '#d97706', name: 'Hiring Plan 2026',           description: 'Recruit 18 key roles across engineering, sales, ops.',     status: 'active',    health: 'behind',   owner: 'Priya Sharma',  budget: 160000, spent: 140000, progress: 28, startDate: '2026-01-01', endDate: '2026-12-31', teamSize: 2  },
   { id: 'pr12', pillarId: 'p4', pillarName: 'Talent & Culture',     pillarColor: '#d97706', name: 'L&D and Career Tracks',      description: 'Build learning paths and promotion criteria for all roles.',status: 'planned',   health: 'at-risk',  owner: 'Anika Roy',     budget: 120000, spent: 70000,  progress: 15, startDate: '2026-05-01', endDate: '2026-12-31', teamSize: 2  },
   { id: 'pr13', pillarId: 'p5', pillarName: 'Innovation & IP',      pillarColor: '#dc2626', name: 'KIMMP Phase 3–5',            description: 'Advance KIMMP to predictive intelligence and governance.',  status: 'completed', health: 'completed',owner: 'Ravi Nair',     budget: 200000, spent: 198000, progress: 100,startDate: '2025-09-01', endDate: '2026-03-31', teamSize: 5  },
-  { id: 'pr14', pillarId: 'p5', pillarName: 'Innovation & IP',      pillarColor: '#dc2626', name: 'IP Portfolio & Patents',     description: 'File patents for KIMMP signal engine and eQORE RAG.',     status: 'active',    health: 'on-track', owner: 'Mahesh Kumar',  budget: 300000, spent: 97000,  progress: 30, startDate: '2026-04-01', endDate: '2026-12-31', teamSize: 2  },
+  { id: 'pr14', pillarId: 'p5', pillarName: 'Innovation & IP',      pillarColor: '#dc2626', name: 'IP Portfolio & Patents',     description: 'File patents for KIMMP signal engine and eQORE RAG.',     status: 'active',    health: 'on-track', owner: 'C.O.D.E.',  budget: 300000, spent: 97000,  progress: 30, startDate: '2026-04-01', endDate: '2026-12-31', teamSize: 2  },
 ]
 
 export const OBJECTIVES: Objective[] = [
@@ -50,7 +50,7 @@ export const OBJECTIVES: Objective[] = [
     id: 'o1', pillarId: 'p1', pillarName: 'Market Expansion', pillarColor: '#2564ea',
     quarter: 'Q2 2026', title: 'Establish presence in 3 new international markets',
     description: 'Open offices or signed partners in SG, MY, and one GCC country.',
-    owner: 'Mahesh Kumar', status: 'on-track', progress: 52,
+    owner: 'C.O.D.E.', status: 'on-track', progress: 52,
     keyResults: [
       { id: 'kr1', objectiveId: 'o1', title: 'Signed partner agreements', current: 6, target: 12, unit: 'partners', progress: 50, status: 'on-track' },
       { id: 'kr2', objectiveId: 'o1', title: 'Revenue from new markets', current: 185000, target: 400000, unit: '$', progress: 46, status: 'at-risk' },

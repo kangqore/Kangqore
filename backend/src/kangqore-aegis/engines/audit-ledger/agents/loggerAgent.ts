@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
 
 const EVENT_TYPES = ['ACTIVATION', 'AUTONOMOUS', 'ACCESS_DENIED', 'KNOWLEDGE_ASSET', 'EGRESS', 'POLICY_VIOLATION'] as const
 
@@ -21,6 +24,8 @@ export async function runLoggerAgent(ctx: AgentContext): Promise<AegisAgentResul
   const total7d   = counts.reduce((s, c) => s + c, 0)
 
   const verdict = uncovered.length > 2 ? 'WARN' : uncovered.length > 0 ? 'WARN' : 'PASS'
+
+  const llmSummary = await callLLM(SYSTEM, `AEGIS Audit Logger (7d): ${total7d} total events, ${total24h} in 24h. Event type coverage: ${coverage.map(c => `${c.type}=${c.count}`).join(', ')}. Uncovered types (zero entries): ${uncovered.length > 0 ? uncovered.map(c => c.type).join(', ') : 'none'}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'audit.logger',

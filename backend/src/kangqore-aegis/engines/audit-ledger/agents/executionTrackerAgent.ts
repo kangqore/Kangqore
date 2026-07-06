@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
 
 const SLOW_MS = 30_000   // warn if any activation takes > 30s
 const FAST_MS = 100      // suspicious if < 100ms (possible mock/short-circuit)
@@ -23,6 +26,8 @@ export async function runExecutionTrackerAgent(ctx: AgentContext): Promise<Aegis
   const maxMs        = durations.length > 0 ? Math.max(...durations) : 0
 
   const verdict = slow > 0 ? 'WARN' : 'PASS'
+
+  const llmSummary = await callLLM(SYSTEM, `AEGIS Execution Tracker (24h): ${total} KIMMP activations. Avg duration: ${avgMs}ms, max: ${maxMs}ms. Slow (>${SLOW_MS / 1000}s): ${slow}. Suspiciously fast (<${FAST_MS}ms): ${fast}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'audit.execution-tracker',

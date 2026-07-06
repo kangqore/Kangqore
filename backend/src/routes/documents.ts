@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { requireAuth, requireRole } from '../middleware/rbac';
 import { upload } from '../middleware/upload';
+import { createNotification } from '../services/notificationService';
+import { notifyClient } from '../services/clientEmail.service';
 
 const requireAdmin = requireRole(['ADMIN']);
 
@@ -39,6 +41,15 @@ router.post('/upload', requireAuth, upload.single('file'), async (req: any, res)
       }
     });
 
+    await createNotification({
+      userId: clientId,
+      title: 'New document available',
+      message: `"${doc.title}" has been uploaded to your portal.`,
+      type: 'INFO',
+      link: '/kangqore-view/client/documents',
+    });
+    await notifyClient(clientId, { type: 'DOCUMENT_UPLOADED', documentTitle: doc.title });
+
     res.status(201).json({ document: doc });
   } catch (error: any) {
     console.error('Error uploading document:', error);
@@ -67,6 +78,15 @@ router.post('/', requireAuth, requireAdmin, async (req, res) => {
         uploadedBy: req.user?.userId || 'ADMIN'
       }
     });
+
+    await createNotification({
+      userId: clientId,
+      title: 'New document available',
+      message: `"${title}" has been added to your portal.`,
+      type: 'INFO',
+      link: '/kangqore-view/client/documents',
+    });
+    await notifyClient(clientId, { type: 'DOCUMENT_UPLOADED', documentTitle: title });
 
     res.status(201).json({ document: doc });
   } catch (error) {

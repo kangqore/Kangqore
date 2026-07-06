@@ -46,4 +46,23 @@ export class LoopScheduler {
     this.started = false
     logger.info('[KIMMP:LOOPS] Scheduler stopped')
   }
+
+  // Called by AEGIS L3 action PAUSE_KIMMP_LOOP (requires ADMIN approval before invocation)
+  static pause(): void {
+    if (this.timer) { clearInterval(this.timer); this.timer = null }
+    logger.warn('[KIMMP:LOOPS] Scheduler PAUSED by AEGIS governance action')
+  }
+
+  static resume(): void {
+    if (this.timer) return // already running
+    this.timer = setInterval(async () => {
+      logger.info(`[KIMMP:LOOPS] Scheduled cascade starting (resumed after AEGIS pause)`)
+      await KimmpSystemDispatcher.triggerLoop({
+        trigger: 'schedule.daily',
+        input:   'Scheduled intelligence sweep — synthesise all system signals.',
+        userId:  'SCHEDULER',
+      }).catch(err => logger.warn(`[KIMMP:LOOPS] Resumed cascade failed: ${err.message}`))
+    }, CADENCE_HOURS * 60 * 60_000)
+    logger.info('[KIMMP:LOOPS] Scheduler RESUMED by AEGIS governance action')
+  }
 }

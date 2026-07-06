@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Provide executive governance summaries — direct, no fluff, 2 sentences.'
 
 const ESCALATION_HOURS = 6
 
@@ -25,6 +28,8 @@ export async function runEscalationAgent(ctx: AgentContext): Promise<AegisAgentR
   }
 
   const verdict = escalations.length > 3 ? 'CRITICAL' : escalations.length > 0 ? 'WARN' : 'PASS'
+
+  const llmSummary = await callLLM(SYSTEM, `AEGIS Escalation: ${escalations.length} unresolved WARN findings older than ${ESCALATION_HOURS}h. ${escalations.length > 0 ? `Affected agents: ${escalations.map(e => e.agentId).join(', ')}.` : 'All recent WARN findings resolved.'}\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'govops.escalation',

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery }   from '@tanstack/react-query'
-import { LayoutGrid, GitBranch, Sparkles } from 'lucide-react'
+import { LayoutGrid, GitBranch, Sparkles, Layers } from 'lucide-react'
 import { cn }         from '@design-system/cn'
 import { api, isDemo } from '@lib/api'
 import { useWorkflowsStore } from './store'
@@ -9,12 +9,14 @@ import type { Workflow, WorkflowRun } from './types'
 import { WorkflowsOverview }       from './pages/WorkflowsOverview'
 import { WorkflowBuilder }         from './pages/WorkflowBuilder'
 import { KIMMLWorkflowGenerator }  from './pages/KIMMLWorkflowGenerator'
+import { WorkflowCanvas }          from './pages/WorkflowCanvas'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
-  { path: '',          label: 'Overview',      icon: LayoutGrid },
-  { path: 'builder',   label: 'Builder',       icon: GitBranch  },
-  { path: 'kimmp',     label: 'KIMMP Build',   icon: Sparkles   },
+  { path: '',        label: 'Overview',    icon: LayoutGrid },
+  { path: 'builder', label: 'Builder',     icon: GitBranch  },
+  { path: 'canvas',  label: 'Canvas',      icon: Layers     },
+  { path: 'kimmp',   label: 'KIMMP Build', icon: Sparkles   },
 ]
 
 // Map DB row → frontend Workflow type.
@@ -86,7 +88,7 @@ export function WorkflowsModule() {
 
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-white/10 border-t-white/20 mb-6 -mt-2">
+      <div className="flex items-center gap-0.5 border-b border-[var(--os-border)] mb-6 -mt-2">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -95,8 +97,8 @@ export function WorkflowsModule() {
             className={({ isActive }) => cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
-                ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
+                ? 'border-[#579bfc] text-[#579bfc]'
+                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -111,6 +113,7 @@ export function WorkflowsModule() {
         <Routes>
           <Route index          element={<WorkflowsOverview />}       />
           <Route path="builder" element={<WorkflowBuilder />}         />
+          <Route path="canvas"  element={<WorkflowCanvas />}           />
           <Route path="kimmp"   element={<KIMMLWorkflowGenerator />}  />
           <Route path="*"       element={<Navigate to="/kangqore-view/admin/workflows" replace />} />
         </Routes>

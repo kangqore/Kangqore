@@ -1,41 +1,59 @@
-import { motion } from 'framer-motion'
-
 export function AmbientBackground() {
+  // In light mode: render a very subtle surface wash (no blobs).
+  // In dark mode: render soft gradient blobs for depth.
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      <div className="absolute inset-0 bg-[#0B1121]" />
-      
-      {/* Ambient Orbs */}
-      <motion.div
-        animate={{
-          x: ['0%', '10%', '-5%', '0%'],
-          y: ['0%', '5%', '-10%', '0%'],
-          scale: [1, 1.1, 0.9, 1],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-        className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#2564ea] opacity-[0.06] blur-[100px]"
+    <>
+      {/* Base fill — always present */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{ background: 'var(--os-bg)' }}
       />
-      <motion.div
-        animate={{
-          x: ['0%', '-10%', '15%', '0%'],
-          y: ['0%', '-15%', '10%', '0%'],
-          scale: [1, 1.2, 0.8, 1],
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-        className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#4ab6d4] opacity-[0.06] blur-[120px]"
-      />
-      <motion.div
-        animate={{
-          x: ['0%', '20%', '-20%', '0%'],
-          y: ['0%', '10%', '-10%', '0%'],
-          scale: [1, 0.9, 1.1, 1],
-        }}
-        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-        className="absolute top-[20%] right-[20%] w-[40vw] h-[40vw] rounded-full bg-[#7c3aed] opacity-[0.04] blur-[100px]"
-      />
-      
-      {/* Subtle Mesh Grid */}
-      <div className="absolute inset-0 bg-[url('/assets/grid-pattern.svg')] opacity-[0.02]" />
-    </div>
+
+      {/* Dark-mode-only gradient blobs — hidden in light via CSS class targeting */}
+      <div className="dark:block hidden fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Top-left blob */}
+        <div
+          style={{
+            position: 'absolute',
+            top: -120,
+            left: -120,
+            width: 480,
+            height: 480,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(87,155,252,0.08) 0%, transparent 70%)',
+            filter: 'blur(60px)',
+          }}
+        />
+        {/* Bottom-right blob */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: -80,
+            right: -80,
+            width: 360,
+            height: 360,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%)',
+            filter: 'blur(60px)',
+          }}
+        />
+      </div>
+
+      {/* Light-mode-only: barely-there corner wash */}
+      <div className="dark:hidden block fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: 320,
+            height: 320,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(87,155,252,0.03) 0%, transparent 70%)',
+            filter: 'blur(40px)',
+          }}
+        />
+      </div>
+    </>
   )
 }

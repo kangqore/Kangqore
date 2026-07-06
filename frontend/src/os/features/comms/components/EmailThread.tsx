@@ -69,7 +69,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="space-y-3 w-full max-w-md px-8 animate-pulse">
-          {[1,2,3].map(i => <div key={i} className={`h-14 rounded-2xl bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 ${i % 2 === 0 ? 'ml-auto w-4/5' : 'w-4/5'}`} />)}
+          {[1,2,3].map(i => <div key={i} className={`h-14 rounded-2xl bg-[var(--os-surface-0)] ${i % 2 === 0 ? 'ml-auto w-4/5' : 'w-4/5'}`} />)}
         </div>
       </div>
     )
@@ -78,13 +78,13 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
   return (
     <div className="flex flex-col h-full">
       {/* Contact header */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-white/10 border-t-white/20 flex-shrink-0">
+      <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--os-border)] flex-shrink-0">
         <Avatar name={contact.name} size="sm" />
         <div>
-          <p className="text-sm font-semibold text-white">{contact.name}</p>
-          <p className="text-xs text-slate-500">{contact.email ?? contact.company ?? contact.role}</p>
+          <p className="text-sm font-semibold text-[var(--os-text-1)]">{contact.name}</p>
+          <p className="text-xs text-[var(--os-text-2)]">{contact.email ?? contact.company ?? contact.role}</p>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 text-xs text-slate-500">
+        <div className="ml-auto flex items-center gap-1.5 text-xs text-[var(--os-text-2)]">
           <Mail className="w-3.5 h-3.5" />
           {emails.length} message{emails.length !== 1 ? 's' : ''}
         </div>
@@ -93,7 +93,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
       {/* Thread */}
       <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
         {emails.length === 0 && (
-          <div className="flex-1 flex items-center justify-center text-xs text-slate-500 py-16 text-center">
+          <div className="flex-1 flex items-center justify-center text-xs text-[var(--os-text-2)] py-16 text-center">
             No messages yet.
           </div>
         )}
@@ -106,10 +106,10 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
               <div>
                 <div className={cn(
                   'rounded-2xl px-4 py-3',
-                  isOutbound ? 'bg-os-blue text-white rounded-tr-sm' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-200 rounded-tl-sm',
+                  isOutbound ? 'bg-[#579bfc] text-white rounded-tr-sm' : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] rounded-tl-sm',
                 )}>
                   {email.subject && (
-                    <p className={cn('text-[10px] font-semibold mb-1.5', isOutbound ? 'text-blue-200' : 'text-slate-500')}>
+                    <p className={cn('text-[10px] font-semibold mb-1.5', isOutbound ? 'text-blue-200' : 'text-[var(--os-text-2)]')}>
                       {email.subject}
                     </p>
                   )}
@@ -119,19 +119,19 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
                       {emailAttachments.map((a, i) => (
                         <a key={i} href={a.url} target="_blank" rel="noopener noreferrer"
                           className={cn('flex items-center gap-1 text-[11px] px-2 py-1 rounded-lg',
-                            isOutbound ? 'bg-blue-700/50 text-blue-100 hover:bg-blue-700' : 'bg-slate-800 text-slate-300 hover:bg-slate-700')}>
+                            isOutbound ? 'bg-blue-700/50 text-blue-100 hover:bg-blue-700' : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] hover:bg-[var(--os-card)]')}>
                           <FileText className="w-3 h-3" />{a.name}
                         </a>
                       ))}
                     </div>
                   )}
                   {email.hasAttachment && (!emailAttachments || emailAttachments.length === 0) && (
-                    <div className={cn('flex items-center gap-1.5 mt-2 text-[11px]', isOutbound ? 'text-blue-200' : 'text-slate-500')}>
+                    <div className={cn('flex items-center gap-1.5 mt-2 text-[11px]', isOutbound ? 'text-blue-200' : 'text-[var(--os-text-2)]')}>
                       <Paperclip className="w-3 h-3" /> Attachment
                     </div>
                   )}
                 </div>
-                <p className={cn('text-[10px] text-slate-500 mt-1', isOutbound ? 'text-right' : '')}>
+                <p className={cn('text-[10px] text-[var(--os-text-2)] mt-1', isOutbound ? 'text-right' : '')}>
                   {fmtTime(email.createdAt)}
                 </p>
               </div>
@@ -142,15 +142,15 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
       </div>
 
       {/* Compose reply */}
-      <div className="border-t border-white/10 border-t-white/20 px-4 py-3 flex-shrink-0">
+      <div className="border-t border-[var(--os-border)] px-4 py-3 flex-shrink-0">
         {/* Attachment chips */}
         {attachments.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-2">
             {attachments.map((a, i) => (
-              <span key={i} className="flex items-center gap-1.5 text-[11px] bg-slate-800 text-slate-300 px-2 py-1 rounded-lg">
-                <FileText className="w-3 h-3 text-slate-500" />
+              <span key={i} className="flex items-center gap-1.5 text-[11px] bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] px-2 py-1 rounded-lg">
+                <FileText className="w-3 h-3 text-[var(--os-text-2)]" />
                 {a.name}
-                <button onClick={() => removeAttachment(i)} className="text-slate-500 hover:text-slate-200 ml-0.5">
+                <button onClick={() => removeAttachment(i)} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)] ml-0.5">
                   <X className="w-3 h-3" />
                 </button>
               </span>
@@ -166,7 +166,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800 transition-colors disabled:opacity-50"
+            className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors disabled:opacity-50"
             title="Attach file"
           >
             {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Paperclip className="w-4 h-4" />}
@@ -178,8 +178,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
             onKeyDown={onKeyDown}
             rows={2}
             placeholder={`Reply to ${contact.name}… (⌘↵ to send)`}
-            className="flex-1 resize-none border border-white/10 border-t-white/20 rounded-xl px-3 py-2.5 text-sm text-slate-300 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 leading-relaxed"
-            style={{ background: 'rgba(255,255,255,0.03)' }}
+            className="flex-1 resize-none border border-[var(--os-border)] rounded-xl px-3 py-2.5 text-sm text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 leading-relaxed"
           />
           <Button
             variant="primary"
@@ -191,7 +190,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
             Send
           </Button>
         </div>
-        <p className="text-[10px] text-slate-500 mt-1.5">⌘↵ to send</p>
+        <p className="text-[10px] text-[var(--os-text-2)] mt-1.5">⌘↵ to send</p>
       </div>
     </div>
   )

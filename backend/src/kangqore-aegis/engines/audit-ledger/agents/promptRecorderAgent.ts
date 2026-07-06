@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
 
 export async function runPromptRecorderAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start   = Date.now()
@@ -13,6 +16,8 @@ export async function runPromptRecorderAgent(ctx: AgentContext): Promise<AegisAg
   ])
 
   const coverage = total > 0 ? Math.round((withAgents / total) * 100) : 100
+
+  const llmSummary = await callLLM(SYSTEM, `AEGIS Prompt Recorder (24h): ${total} KIMMP activations. With agent roster recorded: ${withAgents} (${coverage}%). Autonomous activations: ${autonomous}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'audit.prompt-recorder',

@@ -27,7 +27,7 @@ export function AegisAssetsPage() {
         <BookOpen className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-sm font-semibold text-emerald-300 mb-0.5">Intelligence Registry</p>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
             Every document KIMMP ingested into its knowledge base — catalogued as ADMIN-owned intelligence assets.
             These form the grounded context KIMMP reasons from.
           </p>
@@ -38,46 +38,46 @@ export function AegisAssetsPage() {
         <select
           value={system}
           onChange={e => { setSystem(e.target.value); setPage(0) }}
-          className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-slate-300 focus:outline-none focus:ring-1 focus:ring-os-blue"
+          className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg px-3 py-1.5 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-1 focus:ring-os-blue"
         >
           <option value="">All systems</option>
           {['KIMMP','EQORE','LEAD_INTEL','ALIS','VIS','SENTINEL'].map(s => (
             <option key={s} value={s}>{s}</option>
           ))}
         </select>
-        <span className="text-xs text-slate-500 ml-auto">{total} assets</span>
+        <span className="text-xs text-[var(--os-text-2)] ml-auto">{total} assets</span>
       </div>
 
       {isLoading ? (
         <div className="space-y-2">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-12 bg-white/5 rounded-lg animate-pulse" />
+            <div key={i} className="h-12 bg-[var(--os-surface-0)] rounded-lg animate-pulse" />
           ))}
         </div>
       ) : rows.length === 0 ? (
-        <div className="text-center py-16 text-slate-500 text-sm">No knowledge assets registered yet.</div>
+        <div className="text-center py-16 text-[var(--os-text-2)] text-sm">No knowledge assets registered yet.</div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left border-b border-white/10">
-                <th className="pb-2 text-xs text-slate-500 font-medium pr-4 w-44">Registered</th>
-                <th className="pb-2 text-xs text-slate-500 font-medium pr-4">System</th>
-                <th className="pb-2 text-xs text-slate-500 font-medium pr-4">Type</th>
-                <th className="pb-2 text-xs text-slate-500 font-medium">Source</th>
+              <tr className="text-left border-b border-[var(--os-border)]">
+                <th className="pb-2 text-xs text-[var(--os-text-2)] font-medium pr-4 w-44">Registered</th>
+                <th className="pb-2 text-xs text-[var(--os-text-2)] font-medium pr-4">System</th>
+                <th className="pb-2 text-xs text-[var(--os-text-2)] font-medium pr-4">Type</th>
+                <th className="pb-2 text-xs text-[var(--os-text-2)] font-medium">Source</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[var(--os-border)]">
               {rows.map((row: any) => (
-                <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-2 pr-4 text-xs font-mono text-slate-500 whitespace-nowrap">
+                <tr key={row.id} className="hover:bg-[var(--os-surface-0)] transition-colors">
+                  <td className="py-2 pr-4 text-xs font-mono text-[var(--os-text-2)] whitespace-nowrap">
                     {new Date(row.createdAt).toLocaleString()}
                   </td>
                   <td className="py-2 pr-4">
                     <span className="text-xs font-mono text-emerald-400">{row.system ?? '—'}</span>
                   </td>
-                  <td className="py-2 pr-4 text-xs text-slate-400">{row.assetType ?? '—'}</td>
-                  <td className="py-2 text-xs text-slate-500 max-w-[240px] truncate">{row.assetSource ?? '—'}</td>
+                  <td className="py-2 pr-4 text-xs text-[var(--os-text-2)]">{row.assetType ?? '—'}</td>
+                  <td className="py-2 text-xs text-[var(--os-text-2)] max-w-[240px] truncate">{row.assetSource ?? '—'}</td>
                 </tr>
               ))}
             </tbody>
@@ -90,15 +90,15 @@ export function AegisAssetsPage() {
           <button
             onClick={() => setPage(p => Math.max(0, p - 1))}
             disabled={page === 0}
-            className="text-xs text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+            className="text-xs text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-30 transition-colors"
           >
             ← Prev
           </button>
-          <span className="text-xs text-slate-500">Page {page + 1} of {Math.ceil(total / PAGE_SIZE)}</span>
+          <span className="text-xs text-[var(--os-text-2)]">Page {page + 1} of {Math.ceil(total / PAGE_SIZE)}</span>
           <button
             onClick={() => setPage(p => p + 1)}
             disabled={(page + 1) * PAGE_SIZE >= total}
-            className="text-xs text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+            className="text-xs text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-30 transition-colors"
           >
             Next →
           </button>

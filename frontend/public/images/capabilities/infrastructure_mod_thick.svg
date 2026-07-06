@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%" fx="50%" fy="30%">
+      <stop offset="0%" stop-color="#110b24" />
+      <stop offset="60%" stop-color="#070510" />
+      <stop offset="100%" stop-color="#020105" />
+    </radialGradient>
+
+    <!-- Glass Gradients -->
+    <linearGradient id="glass-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+
+    <!-- Neon Gradients -->
+    <linearGradient id="purple-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#6d28d9" />
+    </linearGradient>
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+
+    <!-- Glow Filters -->
+    <filter id="neon-glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="neon-glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Card Shadow -->
+    <filter id="thick-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="15" flood-color="#000000" flood-opacity="0.75" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-grad)" />
+
+  <!-- Tech Grid Grid -->
+  <g stroke="#ffffff" stroke-opacity="0.015" stroke-width="1">
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+    <line x1="100" y1="0" x2="100" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="300" y1="0" x2="300" y2="600" />
+    <line x1="400" y1="0" x2="400" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="600" y1="0" x2="600" y2="600" />
+    <line x1="700" y1="0" x2="700" y2="600" />
+  </g>
+
+  <!-- Ambient background glow -->
+  <circle cx="350" cy="300" r="240" fill="#7c3aed" opacity="0.06" filter="url(#neon-glow-purple)" />
+  <circle cx="480" cy="260" r="180" fill="#00f0ff" opacity="0.05" filter="url(#neon-glow-cyan)" />
+
+  <!-- Server Compute Rack Units (Isometric stack on left/center) -->
+
+  <!-- SERVER SLAB 1 (Bottom) -->
+  <g filter="url(#thick-shadow)" transform="translate(-10, 120)">
+    <!-- Base Plate Top Face -->
+    <polygon points="350,220 550,120 550,270 350,370" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    
+    <!-- Outer glass edge projection -->
+    <polygon points="350,220 550,120 550,140 350,240" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5" />
+    <polygon points="350,240 550,140 550,290 350,390" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1.5" />
+    
+    <!-- Indicator lights on front face (thick look) -->
+    <circle cx="380" cy="275" r="3" fill="#10b981" />
+    <circle cx="400" cy="285" r="3" fill="#10b981" />
+    <circle cx="420" cy="295" r="3" fill="#00f0ff" filter="url(#neon-glow-cyan)" />
+  </g>
+
+  <!-- SERVER SLAB 2 (Middle) -->
+  <g filter="url(#thick-shadow)" transform="translate(40, 60)">
+    <!-- Base Plate Top Face -->
+    <polygon points="350,220 550,120 550,270 350,370" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+    
+    <!-- Outer edge -->
+    <polygon points="350,220 550,120 550,140 350,240" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5" />
+    <polygon points="350,240 550,140 550,290 350,390" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5" />
+    
+    <!-- CPU/Processor lines on server face -->
+    <path d="M 440,240 L 490,215 L 490,265" fill="none" stroke="#7c3aed" stroke-opacity="0.4" stroke-width="1.5" />
+    <circle cx="440" cy="240" r="2.5" fill="#7c3aed" fill-opacity="0.6" />
+    <circle cx="490" cy="265" r="2.5" fill="#7c3aed" fill-opacity="0.6" />
+
+    <!-- Indicator lights -->
+    <circle cx="380" cy="275" r="3" fill="#10b981" />
+    <circle cx="400" cy="285" r="3" fill="#00f0ff" filter="url(#neon-glow-cyan)" />
+    <circle cx="420" cy="295" r="3" fill="#00f0ff" filter="url(#neon-glow-cyan)" />
+  </g>
+
+  <!-- SERVER SLAB 3 (Top) -->
+  <g filter="url(#thick-shadow)" transform="translate(90, 0)">
+    <!-- Base Plate Top Face -->
+    <polygon points="350,220 550,120 550,270 350,370" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5" />
+    
+    <!-- Outer edge -->
+    <polygon points="350,220 550,120 550,140 350,240" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1.8" />
+    <polygon points="350,240 550,140 550,290 350,390" fill="url(#glass-top)" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1.8" />
+    
+    <!-- Processor Core Glowing Grid (On top plate) -->
+    <polygon points="410,210 470,180 470,230 410,260" fill="url(#cyan-glow)" fill-opacity="0.3" stroke="#00f0ff" stroke-width="1.8" filter="url(#neon-glow-cyan)" />
+    
+    <!-- Indicator lights -->
+    <circle cx="380" cy="275" r="3" fill="#00f0ff" filter="url(#neon-glow-cyan)" />
+    <circle cx="400" cy="285" r="3" fill="#00f0ff" filter="url(#neon-glow-cyan)" />
+    <circle cx="420" cy="295" r="3" fill="#7c3aed" filter="url(#neon-glow-purple)" />
+  </g>
+
+  <!-- Observability metrics / Telemetry curves floating on the right side -->
+  <g fill="none" stroke-linecap="round">
+    <!-- Peak curve representation (IaC, Uptime monitoring) -->
+    <path d="M 280,330 C 350,200 450,450 550,220 C 600,150 630,240 680,180" stroke="url(#cyan-glow)" stroke-width="3.5" filter="url(#neon-glow-cyan)" opacity="0.8" />
+    
+    <!-- Glowing control lines -->
+    <path d="M 280,330 L 680,180" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4, 4" stroke-opacity="0.3" />
+  </g>
+  
+  <!-- Metric grid nodes -->
+  <circle cx="550" cy="220" r="6" fill="#ffffff" filter="url(#neon-glow-cyan)" />
+  <circle cx="680" cy="180" r="5" fill="#7c3aed" filter="url(#neon-glow-purple)" />
+  
+  <!-- Small floating details -->
+  <circle cx="210" cy="380" r="2.5" fill="#ffffff" opacity="0.4" />
+  <circle cx="340" cy="150" r="2" fill="#00f0ff" opacity="0.6" filter="url(#neon-glow-cyan)" />
+</svg>

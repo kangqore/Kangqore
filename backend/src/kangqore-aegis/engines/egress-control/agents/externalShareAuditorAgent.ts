@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess data egress and export patterns — flag any unauthorised or anomalous data movement. Write 2 sentences, direct ADMIN status.'
 
 // Only these actors may initiate egress of intelligence
 const AUTHORIZED_EGRESS_ACTORS = new Set(['ADMIN', 'KIMMP', 'SCHEDULER', 'SYSTEM'])

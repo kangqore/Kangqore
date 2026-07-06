@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { Briefcase, ClipboardList, Calendar, MessageSquare, FolderOpen, User } from 'lucide-react'
+import { Briefcase, ClipboardList, Calendar, MessageSquare, FolderOpen, User, Hash } from 'lucide-react'
+import RelayPage from '@features/relay/pages/RelayPage'
 import { PortalNavbar }        from '../layout/PortalNavbar'
 import { ModuleShell }         from '@components/ModuleShell'
 import { CareersHome }         from './pages/CareersHome'
@@ -16,20 +17,19 @@ const TABS = [
   { path: 'messages',       label: 'Messages',      icon: MessageSquare },
   { path: 'documents',      label: 'Documents',     icon: FolderOpen    },
   { path: 'portfolio',      label: 'Portfolio',     icon: User          },
+  { path: 'relay',          label: 'RELAY',         icon: Hash          },
 ]
-
-import { AmbientBackground } from '../../components/shell/AmbientBackground'
 
 export function CareersPortal() {
   return (
-    <div className="flex flex-col h-screen bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 pt-[7.5rem]">
+    <div className="os-main-content flex flex-col h-screen" style={{ background: 'var(--os-bg)', color: 'var(--os-text-1)' }}>
       <PortalNavbar
         portalName="Careers"
         portalColor="bg-gradient-to-br from-[#d97706] to-[#fbbf24]"
         tabs={TABS}
         basePath="/kangqore-view/careers"
       />
-      <div className="flex-1 overflow-y-auto min-h-0">
+      <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
         <ModuleShell>
           <Routes>
             <Route index                   element={<CareersHome />}       />
@@ -38,6 +38,7 @@ export function CareersPortal() {
             <Route path="messages"         element={<CareersMessages />}   />
             <Route path="documents"        element={<CareersDocuments />}  />
             <Route path="portfolio"        element={<CareersPortfolio />}  />
+            <Route path="relay/*"          element={<RelayPage />}         />
             <Route path="*"                element={<Navigate to="/kangqore-view/careers" replace />} />
           </Routes>
         </ModuleShell>

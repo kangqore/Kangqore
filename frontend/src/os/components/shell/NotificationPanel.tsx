@@ -6,6 +6,7 @@ import {
   Zap, Shield, Brain, BellOff,
 } from 'lucide-react'
 import { useUIStore } from '@store/ui'
+import { useKIMMPStore } from '@store/kimmp'
 import { api, isDemo } from '@lib/api'
 import { getSocket } from '@lib/socket'
 import dayjs from 'dayjs'
@@ -73,7 +74,7 @@ const TYPE_CONFIG = {
   danger:  { icon: AlertTriangle, color: '#ef4444', bar: 'bg-red-500'    },
   warning: { icon: AlertTriangle, color: '#f59e0b', bar: 'bg-amber-500'  },
   success: { icon: CheckCircle2,  color: '#10b981', bar: 'bg-emerald-500' },
-  info:    { icon: Info,          color: '#64748b', bar: 'bg-slate-500'   },
+  info:    { icon: Info,          color: 'var(--os-text-2)', bar: 'bg-[var(--os-text-2)]'   },
 }
 
 const SOURCE_ICON: Record<string, React.ElementType> = {
@@ -169,7 +170,64 @@ export function NotificationPanel() {
     const socket = getSocket()
     const handle = () => queryClient.invalidateQueries({ queryKey: ['notifications'] })
     socket.on('notification:new', handle)
-    return () => { socket.off('notification:new', handle) }
+
+    // Hot visitor alerts — prepend as ephemeral local notifications
+    const onHotAlert = (data: { message: string; visitorId: string }) => {
+      queryClient.setQueryData<any[]>(['notifications'], (prev = []) => [{
+        id:        `hot-${Date.now()}`,
+        title:     '🔴 Hot Visitor',
+        message:   data.message,
+        type:      'ALERT',
+        isRead:    false,
+        read:      false,
+        createdAt: new Date().toISOString(),
+        link:      `/kangqore-view/admin/visitors`,
+      }, ...prev.slice(0, 49)])
+    }
+    socket.on('visitor:hot:alert', onHotAlert)
+
+    // eQORE → KIMMP signals — push into KIMMP store as live insights
+    const onEqoreSignal = (data: {
+      type: 'LEAD_CAPTURE' | 'BOOKING_INTENT' | 'DEEP_ENGAGEMENT'
+      conversationId: string
+      visitorUuid: string | null
+      intent: string
+      messageCount: number
+      timestamp: string
+    }) => {
+      const { addLiveSignal } = useKIMMPStore.getState()
+      const titles: Record<string, string> = {
+        LEAD_CAPTURE:    'eQORE captured a new lead',
+        BOOKING_INTENT:  'eQORE visitor requesting consultation',
+        DEEP_ENGAGEMENT: 'eQORE deep engagement detected',
+      }
+      const impacts: Record<string, string> = {
+        LEAD_CAPTURE:    'Warm inbound',
+        BOOKING_INTENT:  'Booking intent',
+        DEEP_ENGAGEMENT: `${data.messageCount} turns`,
+      }
+      addLiveSignal({
+        id:         `eqore-${data.conversationId}`,
+        type:       'reactive',
+        category:   data.type === 'LEAD_CAPTURE' ? 'revenue' : data.type === 'BOOKING_INTENT' ? 'ops' : 'opportunity',
+        priority:   data.type === 'DEEP_ENGAGEMENT' ? 'medium' : 'high',
+        module:     'Leads',
+        title:      titles[data.type] ?? 'eQORE signal',
+        summary:    `Intent: ${data.intent || '—'} · ${data.messageCount} message${data.messageCount !== 1 ? 's' : ''}`,
+        detail:     `Conversation ${data.conversationId}${data.visitorUuid ? ` · Visitor ${data.visitorUuid.slice(0, 8)}` : ''}`,
+        action:     'Open transcript or visitor profile to review and respond.',
+        confidence: 88,
+        impact:     impacts[data.type] ?? '—',
+        createdAt:  data.timestamp,
+      })
+    }
+    socket.on('kimmp:signal:eqore', onEqoreSignal)
+
+    return () => {
+      socket.off('notification:new', handle)
+      socket.off('visitor:hot:alert', onHotAlert)
+      socket.off('kimmp:signal:eqore', onEqoreSignal)
+    }
   }, [queryClient])
 
   const notifications: NotificationItem[] = apiData && !isDemo()

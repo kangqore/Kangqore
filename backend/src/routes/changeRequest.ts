@@ -1,6 +1,7 @@
 import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
-import { notifyGovernanceRole } from '../services/notificationService';
+import { notifyGovernanceRole, createNotification } from '../services/notificationService';
+import { notifyClient } from '../services/clientEmail.service';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
 import accountabilityService from '../services/AccountabilityService';
 import { createAuditLog, AUDIT_ACTIONS, extractRequestMetadata } from '../services/audit.service';
@@ -66,7 +67,7 @@ router.post('/', authenticate, async (req: AuthenticatedRequest, res: Response, 
     if (costImpact && Number(costImpact) > 0) {
         // Notify the 'SPONSOR' (or equivalent budget holder)
         const targetClient = req.user!.role === 'CLIENT' ? userId : req.body.clientId;
-        await notifyGovernanceRole(targetClient, { type: 'AUTHORITY', levelOrRole: 'SPONSOR' }, `Cost Impacting Change Request: ${title}`, `/dashboard/client/change-requests`);
+        await notifyGovernanceRole(targetClient, { type: 'AUTHORITY', levelOrRole: 'SPONSOR' }, `Cost Impacting Change Request: ${title}`, `/kangqore-view/client/change-requests`);
     }
 
     // Gap 2: Auto-Create Obligation
@@ -211,7 +212,83 @@ router.patch('/:id/status', authenticate, authorize(['ADMIN', 'CLIENT']), async 
       }
     }
 
+    // Notify client when admin approves or rejects their change request
+    if (updatedCR && req.user!.role === 'ADMIN' && (status === 'APPROVED' || status === 'REJECTED')) {
+      await createNotification({
+        userId: updatedCR.clientId,
+        title: status === 'APPROVED' ? 'Change request approved' : 'Change request declined',
+        message: status === 'APPROVED'
+          ? `Your change request "${updatedCR.title}" has been approved.`
+          : `Your change request "${updatedCR.title}" was not approved. Please contact your account manager.`,
+        type: status === 'APPROVED' ? 'SUCCESS' : 'WARNING',
+        link: '/kangqore-view/client/change-requests',
+      });
+      await notifyClient(updatedCR.clientId, {
+        type: 'CHANGE_REQUEST_UPDATE',
+        crTitle: updatedCR.title,
+        crStatus: status as 'APPROVED' | 'REJECTED',
+      });
+    }
+
     res.json({ success: true, status });
+  } catch (error) { next(error); }
+});
+
+// ── Two-way messaging ─────────────────────────────────────────────────────────
+
+// GET /api/change-requests/:id/messages
+router.get('/:id/messages', authenticate, authorize(['CLIENT', 'ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const userId  = req.user!.id;
+    const role    = req.user!.role;
+
+    // Verify access: client can only see their own CR messages
+    const cr = await prisma.changeRequest.findUnique({ where: { id }, select: { clientId: true } });
+    if (!cr) return res.status(404).json({ error: 'Change request not found' });
+    if (role === 'CLIENT' && cr.clientId !== userId) return res.status(403).json({ error: 'Access denied' });
+
+    const messages = await prisma.changeRequestMessage.findMany({
+      where: { changeRequestId: id },
+      include: { sender: { select: { id: true, name: true, role: true, avatarUrl: true } } },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    res.json({ messages });
+  } catch (error) { next(error); }
+});
+
+// POST /api/change-requests/:id/messages
+router.post('/:id/messages', authenticate, authorize(['CLIENT', 'ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id }      = req.params;
+    const { content } = req.body;
+    const userId      = req.user!.id;
+    const role        = req.user!.role;
+
+    if (!content?.trim()) return res.status(400).json({ error: 'Content required' });
+
+    const cr = await prisma.changeRequest.findUnique({ where: { id }, select: { clientId: true, title: true } });
+    if (!cr) return res.status(404).json({ error: 'Change request not found' });
+    if (role === 'CLIENT' && cr.clientId !== userId) return res.status(403).json({ error: 'Access denied' });
+
+    const message = await prisma.changeRequestMessage.create({
+      data: { changeRequestId: id, senderId: userId, content: content.trim() },
+      include: { sender: { select: { id: true, name: true, role: true, avatarUrl: true } } },
+    });
+
+    // Notify the other party
+    if (role === 'ADMIN') {
+      await createNotification({
+        userId: cr.clientId,
+        title: 'New message on your change request',
+        message: `Reply on "${cr.title}"`,
+        type: 'INFO',
+        link: '/kangqore-view/client/change-requests',
+      });
+    }
+
+    res.status(201).json({ message });
   } catch (error) { next(error); }
 });
 

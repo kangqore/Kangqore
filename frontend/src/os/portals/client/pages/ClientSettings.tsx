@@ -15,10 +15,10 @@ import { api, isDemo } from '@lib/api'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
-const CARD  = '#0d1117'
-const RAISE = '#121d30'
-const EDGE  = '#1e2b40'
-const BLUE  = '#2564ea'
+const CARD  = 'var(--os-card)'
+const RAISE = 'var(--os-surface)'
+const EDGE  = 'var(--os-border)'
+const BLUE  = '#579bfc'
 const GREEN = '#00c875'
 const RED   = '#e2445c'
 const AMBER = '#fdab3d'
@@ -81,7 +81,7 @@ function Section({ title, description, children }: { title: string; description?
     <div style={{ borderRadius: 20, background: CARD, border: `1px solid ${EDGE}`, overflow: 'hidden', boxShadow: `inset 0 1px 0 rgba(255,255,255,0.03)` }}>
       <div style={{ padding: '18px 24px', borderBottom: `1px solid ${EDGE}`, background: RAISE }}>
         <p style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>{title}</p>
-        {description && <p style={{ fontSize: 12, color: '#475569', margin: '4px 0 0' }}>{description}</p>}
+        {description && <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: '4px 0 0' }}>{description}</p>}
       </div>
       <div style={{ padding: 24 }}>{children}</div>
     </div>
@@ -97,7 +97,7 @@ function Field({ label, value, onChange, type = 'text', placeholder, disabled = 
   const [focused, setFocused] = useState(false)
   return (
     <div>
-      <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', marginBottom: 8 }}>{label}</label>
+      <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8 }}>{label}</label>
       <input
         type={type} value={value} onChange={e => onChange?.(e.target.value)} placeholder={placeholder}
         disabled={disabled} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
@@ -105,11 +105,11 @@ function Field({ label, value, onChange, type = 'text', placeholder, disabled = 
           width: '100%', background: disabled ? `${RAISE}80` : RAISE,
           border: `1px solid ${focused ? `${BLUE}60` : EDGE}`,
           borderRadius: 10, padding: '10px 14px', fontSize: 13,
-          color: disabled ? '#475569' : '#e2e8f0', outline: 'none',
+          color: disabled ? 'var(--os-text-2)' : '#e2e8f0', outline: 'none',
           fontFamily: 'inherit', boxSizing: 'border-box', cursor: disabled ? 'not-allowed' : 'text',
         }}
       />
-      {hint && <p style={{ fontSize: 11, color: '#334155', margin: '5px 0 0' }}>{hint}</p>}
+      {hint && <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '5px 0 0' }}>{hint}</p>}
     </div>
   )
 }
@@ -156,7 +156,7 @@ function NotifRow({ label, description, on, onChange }: { label: string; descrip
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '14px 0', borderBottom: `1px solid ${EDGE}` }}>
       <div style={{ flex: 1 }}>
         <p style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>{label}</p>
-        <p style={{ fontSize: 11, color: '#475569', margin: '3px 0 0' }}>{description}</p>
+        <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '3px 0 0' }}>{description}</p>
       </div>
       <Toggle on={on} onChange={onChange} />
     </div>
@@ -254,8 +254,8 @@ function ProfileTab() {
           </div>
           <div>
             <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: '0 0 4px' }}>{user?.name}</p>
-            <p style={{ fontSize: 11, color: '#475569', margin: '0 0 12px' }}>{user?.email}</p>
-            <button style={{ padding: '7px 14px', borderRadius: 9, fontSize: 12, fontWeight: 600, background: RAISE, border: `1px solid ${EDGE}`, color: '#94a3b8', cursor: 'pointer' }}>
+            <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '0 0 12px' }}>{user?.email}</p>
+            <button style={{ padding: '7px 14px', borderRadius: 9, fontSize: 12, fontWeight: 600, background: RAISE, border: `1px solid ${EDGE}`, color: 'var(--os-text-2)', cursor: 'pointer' }}>
               Upload photo
             </button>
           </div>
@@ -273,7 +273,7 @@ function ProfileTab() {
           <Field label="Job title"  value={form.title}   onChange={set('title')}   placeholder="e.g. CTO" />
         </div>
         <div style={{ marginBottom: 20 }}>
-          <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', marginBottom: 8 }}>Bio</label>
+          <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8 }}>Bio</label>
           <textarea
             value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
             rows={3} placeholder="A brief introduction (optional)…"
@@ -394,7 +394,7 @@ function SecurityTab() {
           outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
         }}
       />
-      <button onClick={toggle} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#334155' }}>
+      <button onClick={toggle} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--os-text-2)' }}>
         {showState ? <EyeOff style={{ width: 14, height: 14 }} /> : <Eye style={{ width: 14, height: 14 }} />}
       </button>
     </div>
@@ -407,12 +407,12 @@ function SecurityTab() {
           {banner && <Banner type={banner.type} message={banner.message} />}
 
           <div>
-            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', marginBottom: 8 }}>Current password</label>
+            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8 }}>Current password</label>
             {pwInput('current', showCurrent, () => setShowCurrent(v => !v))}
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', marginBottom: 8 }}>New password</label>
+            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8 }}>New password</label>
             {pwInput('next', showNext, () => setShowNext(v => !v))}
             {pw.next && (
               <div style={{ display: 'flex', gap: 4, marginTop: 8 }}>
@@ -424,7 +424,7 @@ function SecurityTab() {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', marginBottom: 8 }}>Confirm new password</label>
+            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8 }}>Confirm new password</label>
             <input
               type="password" value={pw.confirm} onChange={e => set('confirm')(e.target.value)}
               placeholder="Re-enter new password"
@@ -441,7 +441,7 @@ function SecurityTab() {
                 padding: '10px 20px', borderRadius: 10, border: 'none',
                 background: canSubmit ? BLUE : RAISE,
                 border: `1px solid ${canSubmit ? 'transparent' : EDGE}`,
-                color: canSubmit ? '#fff' : '#334155',
+                color: canSubmit ? '#fff' : 'var(--os-text-2)',
                 fontSize: 13, fontWeight: 600,
                 cursor: canSubmit && !isPending ? 'pointer' : 'not-allowed',
                 boxShadow: canSubmit ? `0 4px 14px ${BLUE}40` : 'none',
@@ -457,11 +457,11 @@ function SecurityTab() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, flexShrink: 0, background: twoFa ? `${GREEN}14` : RAISE, border: `1px solid ${twoFa ? `${GREEN}25` : EDGE}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Smartphone style={{ width: 16, height: 16, color: twoFa ? GREEN : '#475569' }} />
+              <Smartphone style={{ width: 16, height: 16, color: twoFa ? GREEN : 'var(--os-text-2)' }} />
             </div>
             <div>
               <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0 }}>Authenticator App</p>
-              <p style={{ fontSize: 11, color: '#475569', margin: '3px 0 0' }}>
+              <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '3px 0 0' }}>
                 {twoFa ? '2FA is enabled.' : 'Use Google Authenticator or Authy.'}
               </p>
             </div>
@@ -474,13 +474,13 @@ function SecurityTab() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {SESSIONS.map((s, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '12px 14px', borderRadius: 12, background: RAISE, border: `1px solid ${s.current ? `${GREEN}25` : EDGE}` }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', flexShrink: 0, background: s.current ? GREEN : '#334155', boxShadow: s.current ? `0 0 8px ${GREEN}60` : 'none' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', flexShrink: 0, background: s.current ? GREEN : 'var(--os-text-2)', boxShadow: s.current ? `0 0 8px ${GREEN}60` : 'none' }} />
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: 12, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>
                   {s.device}
                   {s.current && <span style={{ marginLeft: 8, fontSize: 9, fontWeight: 700, color: GREEN, background: `${GREEN}14`, border: `1px solid ${GREEN}25`, padding: '2px 6px', borderRadius: 999, textTransform: 'uppercase' }}>Current</span>}
                 </p>
-                <p style={{ fontSize: 11, color: '#475569', margin: '2px 0 0' }}>{s.location} · {s.last}</p>
+                <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '2px 0 0' }}>{s.location} · {s.last}</p>
               </div>
               {!s.current && (
                 <button style={{ fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 8, background: `${RED}0a`, border: `1px solid ${RED}20`, color: RED, cursor: 'pointer' }}>
@@ -523,7 +523,7 @@ function PreferencesTab() {
             ['Currency display', 'currency',   [['INR','₹ Indian Rupee (INR)'],['USD','$ US Dollar (USD)'],['GBP','£ British Pound (GBP)'],['AED','AED Dirham (AED)']]],
           ] as [string, keyof typeof PREF_DEFAULT, [string, string][]][]).map(([label, key, opts]) => (
             <div key={key}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#334155', marginBottom: 8 }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8 }}>
                 {key === 'timezone' && <Clock style={{ width: 10, height: 10 }} />}
                 {key === 'language' && <Globe style={{ width: 10, height: 10 }} />}
                 {label}
@@ -560,7 +560,7 @@ export function ClientSettings() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div style={anim(0)}>
         <h2 style={{ fontSize: 20, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>Settings</h2>
-        <p style={{ fontSize: 13, color: '#475569', margin: '6px 0 0' }}>Manage your profile, notifications, and account preferences.</p>
+        <p style={{ fontSize: 13, color: 'var(--os-text-2)', margin: '6px 0 0' }}>Manage your profile, notifications, and account preferences.</p>
       </div>
 
       {/* Tab bar */}
@@ -570,7 +570,7 @@ export function ClientSettings() {
           return (
             <button key={t.id} onClick={() => setTab(t.id as typeof tab)} style={{
               display: 'flex', alignItems: 'center', gap: 7, padding: '8px 16px', borderRadius: 10, border: 'none',
-              background: active ? RAISE : 'transparent', color: active ? '#f1f5f9' : '#475569',
+              background: active ? RAISE : 'transparent', color: active ? '#f1f5f9' : 'var(--os-text-2)',
               fontSize: 13, fontWeight: active ? 600 : 500, cursor: 'pointer',
               boxShadow: active ? `inset 0 1px 0 rgba(10,15,30,0.5), 0 1px 3px rgba(0,0,0,0.3)` : 'none',
               borderBottom: `2px solid ${active ? BLUE : 'transparent'}`,

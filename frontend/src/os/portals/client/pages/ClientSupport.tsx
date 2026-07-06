@@ -11,6 +11,7 @@ import { Input } from '@design-system/components/Input'
 import { Textarea } from '@design-system/components/Textarea'
 import { StatCard } from '@design-system/components/StatCard'
 import { EditDrawer } from '@components/EditDrawer'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { api, isDemo } from '@lib/api'
 import { useClientTickets } from '../useClientData'
 
@@ -241,12 +242,12 @@ function TicketDetail({
                 {files.map((f, i) => (
                   <span
                     key={i}
-                    className="flex items-center gap-1.5 text-[11px] px-2 py-1 rounded-lg text-slate-300"
-                    style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    className="flex items-center gap-1.5 text-[11px] px-2 py-1 rounded-lg text-slate-700"
+                    style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}
                   >
-                    <Paperclip className="w-3 h-3 text-slate-500" />
+                    <Paperclip className="w-3 h-3 text-slate-600" />
                     <span className="truncate max-w-[120px]">{f.name}</span>
-                    <button onClick={() => removeFile(i)} className="text-slate-600 hover:text-red-400 transition-colors ml-0.5">
+                    <button onClick={() => removeFile(i)} className="text-[color:var(--os-text-2)] hover:text-red-400 transition-colors ml-0.5">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -265,8 +266,8 @@ function TicketDetail({
               <input ref={fileRef} type="file" multiple className="hidden" onChange={handleFiles} />
               <button
                 onClick={() => fileRef.current?.click()}
-                className="w-9 h-9 flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-200 transition-colors flex-shrink-0"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                className="w-9 h-9 flex items-center justify-center rounded-xl text-slate-600 hover:text-slate-200 transition-colors flex-shrink-0"
+                style={{ background: 'var(--os-surface)', border: '1px solid var(--os-border)' }}
                 title="Attach files"
               >
                 <Paperclip className="w-4 h-4" />
@@ -282,7 +283,7 @@ function TicketDetail({
             </div>
           </div>
         ) : (
-          <p className="text-xs text-slate-500">This ticket is resolved. Raise a new ticket if the issue recurs.</p>
+          <p className="text-xs text-slate-600">This ticket is resolved. Raise a new ticket if the issue recurs.</p>
         )
       }
     >
@@ -295,14 +296,14 @@ function TicketDetail({
           <Badge variant={PRIORITY_VARIANT[effectivePriority]} size="sm">
             {escalated ? 'CRITICAL ↑' : effectivePriority}
           </Badge>
-          <span className="text-xs text-slate-500">Opened {fmtDate(ticket.createdAt)}</span>
+          <span className="text-xs text-slate-600">Opened {fmtDate(ticket.createdAt)}</span>
           {remaining != null && isActive && (
             <SLABadge createdAt={ticket.createdAt} priority={effectivePriority} status={ticket.status} />
           )}
         </div>
 
         {/* Agent + SLA info row */}
-        <div className="flex items-center gap-4 flex-wrap py-3 px-3.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex items-center gap-4 flex-wrap py-3 px-3.5 rounded-xl" style={{ background: 'var(--os-surface)', border: '1px solid var(--os-border)' }}>
           {/* Assigned agent */}
           <div className="flex items-center gap-2">
             {(() => {
@@ -316,28 +317,28 @@ function TicketDetail({
                     {agent.initials}
                   </div>
                   <div>
-                    <p className="text-[9px] font-bold text-slate-600 uppercase tracking-wider">Assigned to</p>
-                    <p className="text-xs font-semibold text-slate-300">{agent.name}</p>
+                    <p className="text-[9px] font-bold text-[color:var(--os-text-2)] uppercase tracking-wider">Assigned to</p>
+                    <p className="text-xs font-semibold text-slate-700">{agent.name}</p>
                   </div>
                 </>
               ) : (
                 <>
-                  <UserCircle className="w-5 h-5 text-slate-600" />
+                  <UserCircle className="w-5 h-5 text-[color:var(--os-text-2)]" />
                   <div>
-                    <p className="text-[9px] font-bold text-slate-600 uppercase tracking-wider">Assigned to</p>
-                    <p className="text-xs text-slate-500">Unassigned</p>
+                    <p className="text-[9px] font-bold text-[color:var(--os-text-2)] uppercase tracking-wider">Assigned to</p>
+                    <p className="text-xs text-slate-600">Unassigned</p>
                   </div>
                 </>
               )
             })()}
           </div>
 
-          <div className="w-px h-6 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.06)' }} />
+          <div className="w-px h-6 flex-shrink-0" style={{ background: 'var(--os-surface-0)' }} />
 
           {/* SLA commitment */}
           <div>
-            <p className="text-[9px] font-bold text-slate-600 uppercase tracking-wider">Response SLA</p>
-            <p className="text-xs font-semibold text-slate-300">
+            <p className="text-[9px] font-bold text-[color:var(--os-text-2)] uppercase tracking-wider">Response SLA</p>
+            <p className="text-xs font-semibold text-slate-700">
               {effectivePriority === 'CRITICAL' ? '< 1 hour' :
                effectivePriority === 'HIGH'     ? '< 4 hours' :
                effectivePriority === 'MEDIUM'   ? '< 1 business day' :
@@ -348,7 +349,7 @@ function TicketDetail({
           {/* Escalate */}
           {canEscalate && (
             <>
-              <div className="w-px h-6 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.06)' }} />
+              <div className="w-px h-6 flex-shrink-0" style={{ background: 'var(--os-surface-0)' }} />
               <button
                 onClick={() => escalateTicket()}
                 disabled={isEscalating}
@@ -361,7 +362,7 @@ function TicketDetail({
           )}
           {escalated && (
             <>
-              <div className="w-px h-6 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.06)' }} />
+              <div className="w-px h-6 flex-shrink-0" style={{ background: 'var(--os-surface-0)' }} />
               <span className="flex items-center gap-1.5 text-xs font-semibold text-red-400">
                 <AlertOctagon className="w-3.5 h-3.5" />
                 Escalated — your account manager has been notified
@@ -376,11 +377,10 @@ function TicketDetail({
             const isClient = msg.sender.role === 'CLIENT'
             return (
               <div key={msg.id} className={`flex ${isClient ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-3 ${
-                  isClient
-                    ? 'bg-os-blue text-white rounded-br-sm'
-                    : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-200 rounded-bl-sm'
-                }`}>
+                <div
+                  className={`max-w-[85%] rounded-2xl px-4 py-3 ${isClient ? 'bg-os-blue text-white rounded-br-sm' : 'rounded-bl-sm'}`}
+                  style={!isClient ? { background: 'var(--os-surface)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' } : {}}
+                >
                   {!isClient && (
                     <p className="text-[10px] font-semibold mb-1 opacity-70">{msg.sender.name}</p>
                   )}
@@ -392,8 +392,8 @@ function TicketDetail({
                           key={att}
                           className="flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg"
                           style={{
-                            background: isClient ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.06)',
-                            color: isClient ? 'rgba(255,255,255,0.9)' : '#94a3b8',
+                            background: isClient ? 'rgba(255,255,255,0.15)' : 'var(--os-surface-0)',
+                            color: isClient ? 'rgba(255,255,255,0.9)' : 'var(--os-text-2)',
                           }}
                         >
                           <Paperclip className="w-2.5 h-2.5" />{att}
@@ -401,7 +401,7 @@ function TicketDetail({
                       ))}
                     </div>
                   )}
-                  <p className={`text-[10px] mt-1.5 ${isClient ? 'text-blue-200' : 'text-slate-500'}`}>
+                  <p className={`text-[10px] mt-1.5 ${isClient ? 'text-blue-200' : 'text-slate-600'}`}>
                     {fmtTime(msg.createdAt)}
                   </p>
                 </div>
@@ -409,7 +409,7 @@ function TicketDetail({
             )
           })}
           {ticket.messages.length === 0 && (
-            <p className="text-sm text-slate-500 text-center py-6">No messages yet.</p>
+            <p className="text-sm text-slate-600 text-center py-6">No messages yet.</p>
           )}
         </div>
       </div>
@@ -449,14 +449,14 @@ function RaiseTicketDrawer({ onClose }: { onClose: () => void }) {
     >
       <div className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1.5">Subject *</label>
+          <label className="block text-xs font-semibold text-slate-600 mb-1.5">Subject *</label>
           <Input value={form.subject} onChange={e => set('subject', e.target.value)} placeholder="Brief description of the issue" />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-semibold text-slate-500 mb-1.5">Category</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Category</label>
             <select value={form.category} onChange={e => set('category', e.target.value)}
-              className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400" style={{ border: '1px solid var(--os-border)', background: 'var(--os-card)' }}>
               <option value="BUG">Bug / Issue</option>
               <option value="FEATURE_REQUEST">Feature Request</option>
               <option value="CORRECTION">Correction</option>
@@ -465,9 +465,9 @@ function RaiseTicketDrawer({ onClose }: { onClose: () => void }) {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-500 mb-1.5">Priority</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Priority</label>
             <select value={form.priority} onChange={e => set('priority', e.target.value)}
-              className="w-full border border-white/10 border-t-white/20 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400" style={{ border: '1px solid var(--os-border)', background: 'var(--os-card)' }}>
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
@@ -476,7 +476,7 @@ function RaiseTicketDrawer({ onClose }: { onClose: () => void }) {
           </div>
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1.5">Description *</label>
+          <label className="block text-xs font-semibold text-slate-600 mb-1.5">Description *</label>
           <Textarea value={form.content} onChange={e => set('content', e.target.value)} rows={5} placeholder="Describe the issue in detail…" />
         </div>
       </div>
@@ -507,10 +507,11 @@ export function ClientSupport() {
 
   return (
     <div className="space-y-5">
+      <KIMMPSignalBar module="Support" />
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-white">Support</h2>
-          <p className="text-sm text-slate-500 mt-0.5">{tickets.length} tickets</p>
+          <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Support</h2>
+          <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>{tickets.length} tickets</p>
         </div>
         <Button variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />} onClick={() => setShowRaise(true)}>
           Raise ticket
@@ -519,7 +520,7 @@ export function ClientSupport() {
 
       {/* KPIs */}
       <div className="grid grid-cols-3 gap-3">
-        <StatCard label="Open"        value={open}       icon={<AlertCircle  className="w-5 h-5" />} iconColor={open > 0 ? 'bg-amber-500/10 text-amber-400' : 'bg-white/5 text-slate-500'} />
+        <StatCard label="Open"        value={open}       icon={<AlertCircle  className="w-5 h-5" />} iconColor={open > 0 ? 'bg-amber-500/10 text-amber-400' : 'bg-white/5 text-slate-600'} />
         <StatCard label="In Progress" value={inProgress} icon={<Clock        className="w-5 h-5" />} iconColor="bg-blue-500/10 text-blue-400" />
         <StatCard label="Resolved"    value={resolved}   icon={<CheckCircle2 className="w-5 h-5" />} iconColor="bg-emerald-500/10 text-emerald-400" />
       </div>
@@ -528,9 +529,11 @@ export function ClientSupport() {
       <div className="flex items-center gap-2">
         {['ALL', 'OPEN', 'IN_PROGRESS', 'RESOLVED'].map(s => (
           <button key={s} onClick={() => setFilter(s)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              statusFilter === s ? 'bg-os-blue text-white' : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-500 hover:border-blue-300'
-            }`}
+            className="px-3 py-1.5 rounded-full text-xs font-bold transition-all"
+            style={statusFilter === s
+              ? { background: '#579bfc', color: '#fff', boxShadow: '0 2px 8px rgba(87,155,252,0.35)' }
+              : { background: 'var(--os-surface)', color: 'var(--os-text-2)', border: '1px solid var(--os-border)' }
+            }
           >
             {s === 'ALL' ? 'All' : s.replace('_', ' ')}
           </button>
@@ -546,10 +549,10 @@ export function ClientSupport() {
             onClick={() => setOpenId(t.id)}
           >
             <div className="flex items-start gap-4">
-              <MessageSquare className="w-4 h-4 text-slate-300 flex-shrink-0 mt-0.5" />
+              <MessageSquare className="w-4 h-4 text-slate-700 flex-shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="text-sm font-semibold text-white truncate">{t.subject}</p>
+                  <p className="text-sm font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{t.subject}</p>
                   {/* Agent avatar */}
                   {(() => {
                     const agent = agentMeta(t)
@@ -564,14 +567,14 @@ export function ClientSupport() {
                     ) : null
                   })()}
                 </div>
-                <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{t.content}</p>
+                <p className="text-xs text-slate-600 mt-0.5 line-clamp-1">{t.content}</p>
                 <div className="flex items-center gap-2.5 mt-2 flex-wrap">
                   <Badge variant={STATUS_VARIANT[t.status]} dot size="sm">{t.status.replace('_', ' ')}</Badge>
                   <Badge variant={PRIORITY_VARIANT[t.priority]} size="sm">{t.priority}</Badge>
-                  <span className="text-[11px] text-slate-500">{t.category.replace('_', ' ')}</span>
-                  <span className="text-[11px] text-slate-500">{fmtDate(t.updatedAt)}</span>
+                  <span className="text-[11px] text-slate-600">{t.category.replace('_', ' ')}</span>
+                  <span className="text-[11px] text-slate-600">{fmtDate(t.updatedAt)}</span>
                   {t._count.messages > 0 && (
-                    <span className="text-[11px] text-slate-500 flex items-center gap-1">
+                    <span className="text-[11px] text-slate-600 flex items-center gap-1">
                       <MessageSquare className="w-3 h-3" />{t._count.messages}
                     </span>
                   )}
@@ -582,7 +585,7 @@ export function ClientSupport() {
           </Card>
         ))}
         {visible.length === 0 && (
-          <div className="py-12 text-center text-sm text-slate-500">No tickets match this filter.</div>
+          <div className="py-12 text-center text-sm text-slate-600">No tickets match this filter.</div>
         )}
       </div>
 

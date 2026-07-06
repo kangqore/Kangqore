@@ -9,9 +9,9 @@ import { api, isDemo } from '@lib/api'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
-const CARD  = '#0d1117'
-const RAISE = '#121d30'
-const EDGE  = '#1e2b40'
+const CARD  = 'var(--os-card)'
+const RAISE = 'var(--os-surface-0)'
+const EDGE  = 'var(--os-border)'
 const BLUE  = '#2564ea'
 const GREEN = '#00c875'
 const RED   = '#e2445c'
@@ -91,13 +91,13 @@ function ProviderCard({
 }) {
   const isConnected = !!connected
   const isError     = connected?.status === 'ERROR'
-  const statusColor = isError ? RED : isConnected ? GREEN : '#334155'
+  const statusColor = isError ? RED : isConnected ? GREEN : 'var(--os-text-2)'
 
   return (
     <div style={{
       borderRadius: 20, overflow: 'hidden',
       background: CARD, border: `1px solid ${isConnected ? `${statusColor}30` : EDGE}`,
-      boxShadow: isConnected ? `0 0 32px ${statusColor}08, inset 0 1px 0 rgba(13,17,23,0.4)` : `inset 0 1px 0 rgba(255,255,255,0.02)`,
+      boxShadow: isConnected ? `0 0 32px ${statusColor}08, inset 0 1px 0 var(--os-card)` : `inset 0 1px 0 var(--os-surface-0)`,
       transition: `all 0.3s ${EASE}`,
       position: 'relative', overflow: 'visible',
     }}>
@@ -127,7 +127,7 @@ function ProviderCard({
         {/* Name + status */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>{provider.name}</p>
+            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>{provider.name}</p>
             {isConnected && (
               <span style={{
                 display: 'inline-flex', alignItems: 'center', gap: 5,
@@ -145,16 +145,16 @@ function ProviderCard({
           {connected
             ? (
               <div>
-                <p style={{ fontSize: 12, color: '#475569', margin: 0 }}>{connected.accountEmail}</p>
+                <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0 }}>{connected.accountEmail}</p>
                 {connected.lastSyncedAt && (
-                  <p style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#334155', margin: '4px 0 0' }}>
+                  <p style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: 'var(--os-text-2)', margin: '4px 0 0' }}>
                     <RefreshCw style={{ width: 10, height: 10 }} />
                     Last synced {fmtDate(connected.lastSyncedAt)}
                   </p>
                 )}
               </div>
             )
-            : <p style={{ fontSize: 12, color: '#475569', margin: 0, lineHeight: 1.5 }}>{provider.description}</p>
+            : <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0, lineHeight: 1.5 }}>{provider.description}</p>
           }
         </div>
       </div>
@@ -172,7 +172,7 @@ function ProviderCard({
                 }}>
                   <div style={{ width: 4, height: 4, borderRadius: '50%', background: provider.color }} />
                 </div>
-                <span style={{ fontSize: 11, color: '#475569' }}>{f}</span>
+                <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>{f}</span>
               </div>
             ))}
           </div>
@@ -255,8 +255,8 @@ export function CalendarSettingsPage() {
 
       {/* Header */}
       <div style={anim(0)}>
-        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>Calendar Integrations</h2>
-        <p style={{ fontSize: 13, color: '#475569', margin: '6px 0 0' }}>
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>Calendar Integrations</h2>
+        <p style={{ fontSize: 13, color: 'var(--os-text-2)', margin: '6px 0 0' }}>
           Connect your calendars to automatically block busy slots and sync scheduled events.
         </p>
       </div>
@@ -277,10 +277,10 @@ export function CalendarSettingsPage() {
             <CheckCircle2 style={{ width: 16, height: 16, color: GREEN }} />
           </div>
           <div>
-            <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0 }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--os-text-1)', margin: 0 }}>
               {active} of {connected} calendar{connected !== 1 ? 's' : ''} syncing
             </p>
-            <p style={{ fontSize: 11, color: '#475569', margin: '3px 0 0' }}>
+            <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '3px 0 0' }}>
               Busy slots are being blocked automatically across your connected accounts.
             </p>
           </div>
@@ -291,7 +291,7 @@ export function CalendarSettingsPage() {
       {isLoading && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', ...anim(60) }}>
           <Spinner />
-          <span style={{ fontSize: 13, color: '#475569' }}>Loading integrations…</span>
+          <span style={{ fontSize: 13, color: 'var(--os-text-2)' }}>Loading integrations…</span>
         </div>
       )}
 
@@ -316,7 +316,7 @@ export function CalendarSettingsPage() {
       {/* Active integrations table */}
       {integrations.length > 0 && (
         <div style={anim(200)}>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#334155', margin: '0 0 12px' }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--os-text-2)', margin: '0 0 12px' }}>
             Active Integrations
           </p>
           <div style={{
@@ -341,17 +341,17 @@ export function CalendarSettingsPage() {
                     background: provCfg ? `${provCfg.color}14` : RAISE,
                     border: `1px solid ${provCfg ? `${provCfg.color}25` : EDGE}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 13, fontWeight: 900, color: provCfg?.color ?? '#64748b',
+                    fontSize: 13, fontWeight: 900, color: provCfg?.color ?? 'var(--os-text-2)',
                   }}>
                     {provCfg?.logoLetter ?? '?'}
                   </div>
 
                   {/* Info */}
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0 }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--os-text-1)', margin: 0 }}>
                       {int.provider === 'GOOGLE' ? 'Google Calendar' : 'Microsoft Calendar'}
                     </p>
-                    <p style={{ fontSize: 11, color: '#475569', margin: '2px 0 0' }}>{int.accountEmail}</p>
+                    <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '2px 0 0' }}>{int.accountEmail}</p>
                   </div>
 
                   {/* Status */}
@@ -388,8 +388,8 @@ export function CalendarSettingsPage() {
           }}>
             <Calendar style={{ width: 24, height: 24, color: BLUE }} />
           </div>
-          <p style={{ fontSize: 15, fontWeight: 700, color: '#f1f5f9', margin: '0 0 6px' }}>No calendars connected</p>
-          <p style={{ fontSize: 12, color: '#475569', margin: 0, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 6px' }}>No calendars connected</p>
+          <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0, lineHeight: 1.6 }}>
             Connect Google or Microsoft to start syncing meetings and blocking busy slots.
           </p>
         </div>

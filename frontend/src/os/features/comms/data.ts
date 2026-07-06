@@ -74,12 +74,12 @@ export const MOCK_INVESTOR_EMAILS: EmailConversation[] = [
     unreadCount: 1,
     lastMessage: {
       id: 'ie1', subject: 'Q2 investor update — scheduling', from: 'm.webb@nexusvc.co.uk',
-      to: 'admin@kangqore.com', body: 'Hi Mahesh, would the week of 16 June work for a 30-min Q2 update call?',
+      to: 'admin@kangqore.com', body: 'Hi C.O.D.E., would the week of 16 June work for a 30-min Q2 update call?',
       preview: 'Would the week of 16 June work for a 30-min Q2 update call?',
       direction: 'inbound', isRead: false, hasAttachment: false, createdAt: '2026-06-01T11:00:00Z',
     },
     emails: [
-      { id: 'ie1', subject: 'Q2 investor update — scheduling', from: 'm.webb@nexusvc.co.uk', to: 'admin@kangqore.com', body: 'Hi Mahesh, would the week of 16 June work for a 30-min Q2 update call? Happy to do Thu or Fri afternoon.', preview: 'Would the week of 16 June work for a 30-min Q2 update call?', direction: 'inbound', isRead: false, hasAttachment: false, createdAt: '2026-06-01T11:00:00Z' },
+      { id: 'ie1', subject: 'Q2 investor update — scheduling', from: 'm.webb@nexusvc.co.uk', to: 'admin@kangqore.com', body: 'Hi C.O.D.E., would the week of 16 June work for a 30-min Q2 update call? Happy to do Thu or Fri afternoon.', preview: 'Would the week of 16 June work for a 30-min Q2 update call?', direction: 'inbound', isRead: false, hasAttachment: false, createdAt: '2026-06-01T11:00:00Z' },
     ],
   },
 ]

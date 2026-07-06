@@ -1,6 +1,11 @@
 export type WorkflowStatus    = 'active' | 'paused' | 'draft' | 'archived'
 export type TriggerType       = 'manual' | 'schedule' | 'event' | 'webhook' | 'form'
-export type StepType          = 'action' | 'condition' | 'delay' | 'notification' | 'approval' | 'integration'
+// WVIS canonical 7 execution types
+export type WvisStepType = 'notify' | 'wait' | 'agent' | 'event' | 'create' | 'integrate' | 'condition'
+// Phase 2 / 2.5 — 11 intelligence thinking nodes
+export type IntelStepType = 'goal' | 'context' | 'analyze' | 'insight' | 'hypothesis' | 'simulate' | 'decision' | 'policy' | 'execute' | 'learn' | 'kpi'
+// Legacy aliases — kept for DB backward compat with existing workflows
+export type StepType = WvisStepType | IntelStepType | 'action' | 'delay' | 'notification' | 'approval' | 'integration'
 export type RunStatus         = 'running' | 'completed' | 'failed' | 'skipped'
 export type WorkflowCategory  = 'sales' | 'delivery' | 'hr' | 'finance' | 'ops' | 'marketing'
 

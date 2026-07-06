@@ -30,7 +30,7 @@ export function ConnectModule() {
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-lg font-bold text-white">Kangqore Connect</h1>
-          <p className="text-xs text-slate-500 mt-0.5">Signal ingestion layer — every tool becomes a KIMMP data source</p>
+          <p className="text-xs text-[var(--os-text-2)] mt-0.5">Signal ingestion layer — every tool becomes a KIMMP data source</p>
         </div>
 
         {/* Live stat pills */}
@@ -38,14 +38,14 @@ export function ConnectModule() {
           {LIVE_STATS.map(({ label, value, color }) => (
             <div key={label} className="flex flex-col items-end">
               <span className="text-sm font-bold tabular-nums" style={{ color }}>{value}</span>
-              <span className="text-[9px] text-slate-600">{label}</span>
+              <span className="text-[9px] text-[var(--os-text-2)]">{label}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Tab bar */}
-      <div className="flex items-center gap-1 border-b border-white/10 mb-6 -mt-1">
+      <div className="flex items-center gap-1 border-b border-[var(--os-border)] mb-6 -mt-1">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -55,7 +55,7 @@ export function ConnectModule() {
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
                 ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10'
+                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[var(--os-border)]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />

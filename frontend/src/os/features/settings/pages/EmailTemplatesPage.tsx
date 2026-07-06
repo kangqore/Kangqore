@@ -52,13 +52,13 @@ export function EmailTemplatesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-bold text-white">Email Templates</h2>
-        <p className="text-sm text-slate-500 mt-1">
+        <h2 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Email Templates</h2>
+        <p className="text-sm text-[var(--os-text-2)] mt-1">
           Manage automated email templates sent to clients, partners, and investors.
         </p>
       </div>
 
-      {isLoading && <div className="flex items-center gap-2 text-sm text-slate-500"><Spinner size="sm" /> Loading…</div>}
+      {isLoading && <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)]"><Spinner size="sm" /> Loading…</div>}
 
       <div className="space-y-6">
         {Object.entries(byCategory).map(([category, items]) => (
@@ -70,15 +70,15 @@ export function EmailTemplatesPage() {
               </CardTitle>
             </CardHeader>
             <CardBody className="p-0">
-              <div className="divide-y divide-[#2E2854]">
+              <div className="divide-y divide-[var(--os-border)]">
                 {items.map(t => (
-                  <div key={t.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-900 transition-colors">
+                  <div key={t.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[var(--os-surface-0)] transition-colors">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white">{t.name}</p>
-                      <p className="text-xs text-slate-500 truncate font-mono mt-0.5">{t.subject}</p>
+                      <p className="text-sm font-medium text-[var(--os-text-1)]">{t.name}</p>
+                      <p className="text-xs text-[var(--os-text-2)] truncate font-mono mt-0.5">{t.subject}</p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLOR[t.category] ?? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-300'}`}>
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLOR[t.category] ?? 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
                         {t.category}
                       </span>
                       <Badge variant={t.isActive ? 'success' : 'neutral'} size="sm" dot>

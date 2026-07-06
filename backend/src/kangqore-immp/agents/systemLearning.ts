@@ -22,6 +22,7 @@ import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
 import { SystemType } from './agentRegistry'
 import { AgentType } from '../orchestrator/kimmpOrchestrator.service'
+import { WaandaTrainingPipeline } from '../../waanda-training'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -139,6 +140,13 @@ export class SystemLearning {
           data:  { feedback: params.feedback },
         }),
       ])
+
+      // Propagate feedback to training pipeline as quality label — fire and forget
+      WaandaTrainingPipeline.applyFeedback({
+        dispatchId: params.dispatchId,
+        feedback:   params.feedback,
+        correction: params.correction,
+      }).catch(() => {})
 
       logger.info(`[KIMMP:LEARN] Feedback recorded: ${params.dispatchId} → ${params.feedback}`)
       return { ok: true, memoryId: record.id }

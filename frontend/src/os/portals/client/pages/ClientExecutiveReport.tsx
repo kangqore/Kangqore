@@ -4,14 +4,15 @@ import {
   FileText, Calendar, Sparkles, Shield, Activity,
   ArrowRight, Clock,
 } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { useClientProjects, useClientInvoices, useClientRisks, type ClientProject } from '../useClientData'
 
 // ── Design tokens (match ClientDashboard) ─────────────────────────────────────
 
-const CARD  = 'rgba(15, 23, 42, 0.5)'
-const RAISE = 'rgba(30, 41, 59, 0.5)'
-const EDGE  = 'rgba(30, 41, 59, 0.6)'
-const BLUE   = '#2564ea'
+const CARD  = 'var(--os-card)'
+const RAISE = 'var(--os-surface)'
+const EDGE  = 'var(--os-border)'
+const BLUE   = '#579bfc'
 const PURPLE = '#7f53f9'
 const GREEN  = '#00c875'
 const AMBER  = '#fdab3d'
@@ -59,7 +60,7 @@ const HEALTH_COLOR: Record<string, string> = {
 }
 
 const SEV_COLOR: Record<string, string> = {
-  CRITICAL: RED, HIGH: AMBER, MEDIUM: '#0073ea', LOW: '#64748b',
+  CRITICAL: RED, HIGH: AMBER, MEDIUM: '#0073ea', LOW: 'var(--os-text-2)',
 }
 
 const fmt     = (n: number) => `₹${n.toLocaleString()}`
@@ -79,10 +80,10 @@ function StatCard({ value, label, color, delay = 0 }: {
       borderTop: `2px solid ${color}50`,
       display: 'flex', flexDirection: 'column', gap: 6,
     }}>
-      <p style={{ fontSize: 28, fontWeight: 900, color: '#f1f5f9', margin: 0, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
+      <p style={{ fontSize: 28, fontWeight: 900, color: 'var(--os-text-1)', margin: 0, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
         {value}
       </p>
-      <p style={{ fontSize: 11, color: '#64748b', margin: 0 }}>{label}</p>
+      <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: 0 }}>{label}</p>
     </div>
   )
 }
@@ -96,7 +97,7 @@ function Section({ title, icon: Icon, iconColor, children, delay = 0 }: {
     <div style={anim(delay)}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <Icon style={{ width: 14, height: 14, color: iconColor }} />
-        <p style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-2)', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0 }}>
           {title}
         </p>
       </div>
@@ -157,6 +158,7 @@ export function ClientExecutiveReport() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+      <KIMMPSignalBar module="Executive Report" />
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <div style={{
@@ -164,13 +166,13 @@ export function ClientExecutiveReport() {
         display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16,
       }}>
         <div>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#334155', margin: '0 0 6px' }}>
+          <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'var(--os-text-2)', margin: '0 0 6px' }}>
             Confidential · Client Report
           </p>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: '#f1f5f9', margin: 0, lineHeight: 1.2 }}>
+          <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)', margin: 0 }}>
             Executive Engagement Report
           </h2>
-          <p style={{ fontSize: 13, color: '#64748b', margin: '6px 0 0' }}>
+          <p style={{ fontSize: 13, color: 'var(--os-text-2)', margin: '6px 0 0' }}>
             Kangqore × GlobeMed Group · {period} · Generated {today}
           </p>
         </div>
@@ -180,11 +182,11 @@ export function ClientExecutiveReport() {
             display: 'flex', alignItems: 'center', gap: 8,
             padding: '8px 16px', borderRadius: 10, flexShrink: 0,
             background: RAISE, border: `1px solid ${EDGE}`,
-            color: '#94a3b8', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+            color: 'var(--os-text-2)', fontSize: 12, fontWeight: 600, cursor: 'pointer',
             transition: `all 0.2s ${EASE}`,
           }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#f1f5f9' }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#94a3b8' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--os-text-1)' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--os-text-2)' }}
         >
           <Printer style={{ width: 13, height: 13, flexShrink: 0 }} />
           Export PDF
@@ -228,7 +230,7 @@ export function ClientExecutiveReport() {
       <Section title="Project Portfolio" icon={Activity} iconColor={BLUE} delay={320}>
         {projects.length === 0 ? (
           <div style={{ borderRadius: 14, padding: 24, background: CARD, border: `1px solid ${EDGE}`, textAlign: 'center' }}>
-            <p style={{ fontSize: 13, color: '#475569', margin: 0 }}>No active projects. Contact your account manager to get started.</p>
+            <p style={{ fontSize: 13, color: 'var(--os-text-2)', margin: 0 }}>No active projects. Contact your account manager to get started.</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -247,7 +249,7 @@ export function ClientExecutiveReport() {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
                     <div style={{ minWidth: 0 }}>
-                      <p style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>{p.name}</p>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>{p.name}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
                         <span style={{
                           fontSize: 10, fontWeight: 700,
@@ -257,17 +259,17 @@ export function ClientExecutiveReport() {
                           {p.health === 'on-track' ? 'On Track' : p.health === 'at-risk' ? 'At Risk' : 'Behind'}
                         </span>
                         {p.budget > 0 && (
-                          <span style={{ fontSize: 11, color: '#475569' }}>
+                          <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>
                             Budget: {fmt(p.spent)} / {fmt(p.budget)} ({budgetPct}% utilised)
                           </span>
                         )}
                       </div>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <p style={{ fontSize: 22, fontWeight: 900, color: '#f1f5f9', margin: 0, fontVariantNumeric: 'tabular-nums' }}>
+                      <p style={{ fontSize: 22, fontWeight: 900, color: 'var(--os-text-1)', margin: 0, fontVariantNumeric: 'tabular-nums' }}>
                         {p.progress}%
                       </p>
-                      <p style={{ fontSize: 10, color: '#475569', margin: '2px 0 0' }}>complete</p>
+                      <p style={{ fontSize: 10, color: 'var(--os-text-2)', margin: '2px 0 0' }}>complete</p>
                     </div>
                   </div>
 
@@ -275,9 +277,9 @@ export function ClientExecutiveReport() {
 
                   {milestoneLabel && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10 }}>
-                      <Calendar style={{ width: 10, height: 10, color: '#475569' }} />
-                      <span style={{ fontSize: 11, color: '#64748b' }}>
-                        Next: <span style={{ color: '#94a3b8', fontWeight: 600 }}>{milestoneLabel}</span>
+                      <Calendar style={{ width: 10, height: 10, color: 'var(--os-text-2)' }} />
+                      <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>
+                        Next: <span style={{ color: 'var(--os-text-2)', fontWeight: 600 }}>{milestoneLabel}</span>
                         {milestoneDate && ` · ${milestoneDate}`}
                       </span>
                     </div>
@@ -310,10 +312,10 @@ export function ClientExecutiveReport() {
                 <Icon style={{ width: 14, height: 14, color }} />
               </div>
               <div>
-                <p style={{ fontSize: 20, fontWeight: 900, color: '#f1f5f9', margin: 0, fontVariantNumeric: 'tabular-nums' }}>
+                <p style={{ fontSize: 20, fontWeight: 900, color: 'var(--os-text-1)', margin: 0, fontVariantNumeric: 'tabular-nums' }}>
                   {value}
                 </p>
-                <p style={{ fontSize: 11, color: '#64748b', margin: '4px 0 0' }}>{label}</p>
+                <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '4px 0 0' }}>{label}</p>
               </div>
             </div>
           ))}
@@ -336,7 +338,7 @@ export function ClientExecutiveReport() {
                     <span style={{ fontSize: 11, fontWeight: 700, color: s.met ? GREEN : AMBER, fontVariantNumeric: 'tabular-nums' }}>
                       {s.current}
                     </span>
-                    <span style={{ fontSize: 10, color: '#334155' }}>/ {s.target}</span>
+                    <span style={{ fontSize: 10, color: 'var(--os-text-2)' }}>/ {s.target}</span>
                     {s.met
                       ? <CheckCircle2 style={{ width: 12, height: 12, color: GREEN }} />
                       : <AlertTriangle style={{ width: 12, height: 12, color: AMBER }} />
@@ -379,7 +381,7 @@ export function ClientExecutiveReport() {
                   <p style={{ fontSize: 12, fontWeight: 500, color: '#e2e8f0', margin: 0, flex: 1 }}>{r.title}</p>
                   {r.owner && (
                     <div style={{ flexShrink: 0, textAlign: 'right' }}>
-                      <p style={{ fontSize: 11, color: '#64748b', margin: 0 }}>{r.owner}</p>
+                      <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: 0 }}>{r.owner}</p>
                     </div>
                   )}
                 </div>
@@ -407,7 +409,7 @@ export function ClientExecutiveReport() {
                   background: c, boxShadow: `0 0 6px ${c}60`,
                 }} />
                 <p style={{ fontSize: 12, color: '#cbd5e1', margin: 0, flex: 1 }}>{a.label}</p>
-                <span style={{ fontSize: 11, color: '#475569', flexShrink: 0 }}>{a.date}</span>
+                <span style={{ fontSize: 11, color: 'var(--os-text-2)', flexShrink: 0 }}>{a.date}</span>
               </div>
             )
           })}
@@ -421,10 +423,10 @@ export function ClientExecutiveReport() {
         background: 'rgba(127, 83, 249, 0.04)', border: '1px solid rgba(127,83,249,0.1)',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
-        <p style={{ fontSize: 11, color: '#475569', margin: 0 }}>
+        <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: 0 }}>
           Report generated by WAANDA · Kangqore Intelligence Engine · {today}
         </p>
-        <p style={{ fontSize: 11, color: '#334155', margin: 0 }}>Confidential</p>
+        <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: 0 }}>Confidential</p>
       </div>
 
     </div>

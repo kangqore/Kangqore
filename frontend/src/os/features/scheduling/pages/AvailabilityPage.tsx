@@ -97,62 +97,68 @@ export function AvailabilityPage() {
   const setTime = (day: number, field: 'start' | 'end', val: string) =>
     setSchedule(s => ({ ...s, [day]: { ...s[day], [field]: val } }))
 
-  if (isLoading) return <div className="flex items-center gap-2 text-sm text-slate-500"><Spinner size="sm" /> Loading…</div>
+  if (isLoading) return <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)]"><Spinner size="sm" /> Loading…</div>
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6 max-w-3xl">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-white">Availability</h2>
-          <p className="text-sm text-slate-500 mt-1">Set the hours you're available for bookings each week.</p>
+          <h2 className="text-2xl font-bold tracking-tight text-[var(--os-text-1)]">Availability</h2>
+          <p className="text-sm text-[var(--os-text-2)] mt-1">Configure your weekly booking hours and timezone.</p>
         </div>
-        <Button size="sm" leftIcon={<Save className="w-3.5 h-3.5" />} onClick={() => save()} loading={saving}>
-          Save
+        <Button size="sm" leftIcon={<Save className="w-4 h-4" />} onClick={() => save()} loading={saving} className="shadow-sm">
+          Save Changes
         </Button>
       </div>
 
-      {/* Timezone */}
-      <Card>
-        <CardBody className="p-5">
-          <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">Timezone</label>
-          <select
-            value={timezone}
-            onChange={e => setTimezone(e.target.value)}
-            className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400 w-full max-w-xs"
-          >
-            {TIMEZONES.map(tz => <option key={tz} value={tz}>{tz}</option>)}
-          </select>
-        </CardBody>
-      </Card>
+      <Card className="overflow-hidden border border-[var(--os-border)] shadow-sm">
+        {/* Timezone Section */}
+        <div className="p-6 border-b border-[var(--os-border)] bg-[var(--os-surface-0)]/50">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-sm font-semibold text-[var(--os-text-1)]">Timezone</h3>
+              <p className="text-xs text-[var(--os-text-2)] mt-0.5">All booking times will be converted to this timezone.</p>
+            </div>
+            <select
+              value={timezone}
+              onChange={e => setTimezone(e.target.value)}
+              className="h-10 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 w-full sm:w-64 shadow-sm transition-all cursor-pointer"
+            >
+              {TIMEZONES.map(tz => <option key={tz} value={tz}>{tz}</option>)}
+            </select>
+          </div>
+        </div>
 
-      {/* Weekly schedule */}
-      <Card>
-        <div className="divide-y divide-[#2E2854]">
+        {/* Weekly schedule */}
+        <div className="divide-y divide-[var(--os-border)] bg-[var(--os-surface-0)]">
           {DAYS.map(day => {
             const slot = schedule[day]
             return (
-              <div key={day} className="flex items-center gap-4 px-5 py-3.5">
+              <div key={day} className={`flex items-center gap-6 px-6 py-4 transition-colors ${slot.enabled ? '' : 'bg-[var(--os-surface-0)]/30 opacity-70'}`}>
+                {/* Sleek Toggle */}
                 <button
                   onClick={() => toggle(day)}
-                  className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${slot.enabled ? 'bg-os-blue' : 'bg-slate-700'}`}
+                  className={`relative w-11 h-6 rounded-full transition-all duration-300 ease-in-out flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${slot.enabled ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'}`}
                 >
-                  <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${slot.enabled ? 'translate-x-4' : 'translate-x-0.5'}`} />
+                  <span className={`absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-300 ease-in-out ${slot.enabled ? 'translate-x-5' : 'translate-x-0'}`} />
                 </button>
 
-                <span className={`text-sm w-8 font-medium ${slot.enabled ? 'text-white' : 'text-slate-600'}`}>
+                <span className={`text-sm w-10 font-semibold ${slot.enabled ? 'text-[var(--os-text-1)]' : 'text-[var(--os-text-2)]'}`}>
                   {DAY_LABELS[day]}
                 </span>
 
                 {slot.enabled ? (
-                  <div className="flex items-center gap-2 flex-1">
+                  <div className="flex items-center gap-3 flex-1">
                     <input type="time" value={slot.start} onChange={e => setTime(day, 'start', e.target.value)}
-                      className="h-8 rounded-lg border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-2 focus:outline-none focus:border-blue-400" />
-                    <span className="text-slate-500 text-sm">–</span>
+                      className="h-9 w-[120px] rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all" />
+                    <span className="text-[var(--os-text-2)] text-sm font-medium">–</span>
                     <input type="time" value={slot.end} onChange={e => setTime(day, 'end', e.target.value)}
-                      className="h-8 rounded-lg border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-2 focus:outline-none focus:border-blue-400" />
+                      className="h-9 w-[120px] rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all" />
                   </div>
                 ) : (
-                  <span className="text-xs text-slate-600 flex-1">Unavailable</span>
+                  <div className="flex-1 text-sm text-[var(--os-text-2)] font-medium italic">
+                    Unavailable
+                  </div>
                 )}
               </div>
             )

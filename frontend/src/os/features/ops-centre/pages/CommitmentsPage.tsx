@@ -1,4 +1,27 @@
-import { Brain, Clock, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { Brain, Clock, TrendingUp, TrendingDown, Minus, Database } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@lib/api'
+
+interface ProjectSummary {
+  id: string
+  name: string
+  health: string
+  status: string
+  progress: number
+}
+
+function useLiveProjects() {
+  return useQuery<{ projects: ProjectSummary[] } | ProjectSummary[]>({
+    queryKey: ['projects'],
+    queryFn: () => api.get('/projects').then(r => r.data),
+    staleTime: 60_000,
+  })
+}
+
+function getProjects(data: { projects: ProjectSummary[] } | ProjectSummary[] | undefined): ProjectSummary[] {
+  if (!data) return []
+  return Array.isArray(data) ? data : (data.projects ?? [])
+}
 
 type RagStatus = 'green' | 'amber' | 'red'
 type CommitmentType = 'SLA' | 'Milestone' | 'KPI' | 'Contract'
@@ -153,30 +176,24 @@ const RAG_COLOR: Record<RagStatus, string> = {
   red:   '#e2445c',
 }
 
-const RAG_BG: Record<RagStatus, string> = {
-  green: 'rgba(0,200,117,0.08)',
-  amber: 'rgba(253,171,61,0.08)',
-  red:   'rgba(226,68,92,0.08)',
-}
-
 const TYPE_COLOR: Record<CommitmentType, string> = {
-  SLA:       '#7f53f9',
-  Milestone: '#2564ea',
+  SLA:       '#7c3aed',
+  Milestone: '#579bfc',
   KPI:       '#00c875',
   Contract:  '#fdab3d',
 }
 
 function TrendIcon({ trend }: { trend: Commitment['trend'] }) {
-  if (trend === 'up')   return <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-  if (trend === 'down') return <TrendingDown className="w-3.5 h-3.5 text-red-400" />
-  return <Minus className="w-3.5 h-3.5 text-slate-600" />
+  if (trend === 'up')   return <TrendingUp className="w-3.5 h-3.5" style={{ color: '#00c875' }} />
+  if (trend === 'down') return <TrendingDown className="w-3.5 h-3.5" style={{ color: '#e2445c' }} />
+  return <Minus className="w-3.5 h-3.5" style={{ color: 'var(--os-text-3)' }} />
 }
 
 function BreachBar({ pct }: { pct: number }) {
   const color = pct >= 80 ? '#e2445c' : pct >= 50 ? '#fdab3d' : '#00c875'
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-1.5 rounded-full" style={{ background: '#1f2a4a' }}>
+      <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
         <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
       </div>
       <span className="text-[10px] font-bold tabular-nums w-9 text-right" style={{ color }}>{pct}%</span>
@@ -189,49 +206,74 @@ export function CommitmentsPage() {
   const atRisk    = COMMITMENTS.filter(c => c.ragStatus === 'amber').length
   const onTrack   = COMMITMENTS.filter(c => c.ragStatus === 'green').length
 
+  const { data: projectData, isLoading: projectsLoading } = useLiveProjects()
+  const projects = getProjects(projectData)
+  const activeProjects   = projects.filter(p => p.status === 'active' || p.status === 'ACTIVE')
+  const atRiskProjects   = projects.filter(p => p.health === 'at-risk' || p.health === 'AT_RISK')
+  const criticalProjects = projects.filter(p => p.health === 'critical' || p.health === 'CRITICAL')
+
   return (
     <div className="space-y-5">
+      {/* Live project health */}
+      <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
+        style={{ background: '#579bfc08', border: '1px solid #579bfc20' }}>
+        <Database className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#579bfc' }} />
+        <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>
+          {projectsLoading ? (
+            <span style={{ color: 'var(--os-text-3)' }}>Loading project data…</span>
+          ) : projects.length > 0 ? (
+            <>
+              <span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{activeProjects.length}</span> active projects ·{' '}
+              {atRiskProjects.length > 0 && <><span className="font-semibold" style={{ color: '#fdab3d' }}>{atRiskProjects.length}</span> at risk · </>}
+              {criticalProjects.length > 0 && <><span className="font-semibold" style={{ color: '#e2445c' }}>{criticalProjects.length}</span> critical · </>}
+              <span style={{ color: 'var(--os-text-3)' }}>{projects.length} total</span>
+            </>
+          ) : (
+            <span style={{ color: 'var(--os-text-3)' }}>No project data available</span>
+          )}
+        </p>
+      </div>
+
       {/* Summary */}
       <div className="grid grid-cols-3 gap-3">
-        {([
+        {[
           { label: 'Breached / At Limit', count: breached, color: '#e2445c' },
           { label: 'At Risk',             count: atRisk,   color: '#fdab3d' },
           { label: 'On Track',            count: onTrack,  color: '#00c875' },
-        ] as const).map(s => (
-          <div key={s.label} className="rounded-xl p-3.5"
-            style={{ background: '#0d1117', border: `1px solid ${s.color}20` }}>
-            <span className="text-2xl font-bold text-white tabular-nums">{s.count}</span>
-            <p className="text-[10px] mt-0.5" style={{ color: s.color }}>{s.label}</p>
+        ].map(s => (
+          <div key={s.label} className="os-card p-3.5">
+            <span className="text-2xl font-black tabular-nums" style={{ color: s.color }}>{s.count}</span>
+            <p className="text-[10px] mt-0.5 font-semibold" style={{ color: s.color }}>{s.label}</p>
           </div>
         ))}
       </div>
 
-      {/* Table */}
-      <div className="rounded-xl overflow-hidden" style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
-        <div className="px-4 py-3 border-b border-[#1f2a4a]">
-          <p className="text-xs font-bold text-slate-300">All Commitments</p>
+      {/* Commitments table */}
+      <div className="os-card overflow-hidden">
+        <div className="px-4 py-3 border-b border-[var(--os-border)]">
+          <p className="text-xs font-bold" style={{ color: 'var(--os-text-1)' }}>All Commitments</p>
         </div>
-        <div className="divide-y divide-[#1a2035]">
+        <div className="divide-y divide-[var(--os-border)]">
           {COMMITMENTS.map(c => (
-            <div key={c.id} className="px-4 py-3.5 hover:bg-white/[0.02] transition-colors">
+            <div key={c.id} className="px-4 py-3.5 hover:bg-[var(--os-surface-0)] transition-colors">
               <div className="flex items-start gap-3">
                 {/* RAG dot */}
                 <div className="flex-shrink-0 mt-1.5 w-2.5 h-2.5 rounded-full"
-                  style={{ background: RAG_COLOR[c.ragStatus], boxShadow: `0 0 6px ${RAG_COLOR[c.ragStatus]}50` }} />
+                  style={{ background: RAG_COLOR[c.ragStatus] }} />
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="text-[13px] font-semibold text-white leading-tight truncate">{c.title}</p>
+                      <p className="text-[13px] font-semibold leading-tight truncate" style={{ color: 'var(--os-text-1)' }}>{c.title}</p>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
                         <span className="text-[10px] font-bold px-1.5 py-0.5 rounded"
-                          style={{ color: TYPE_COLOR[c.type], background: `${TYPE_COLOR[c.type]}14`, border: `1px solid ${TYPE_COLOR[c.type]}25` }}>
+                          style={{ color: TYPE_COLOR[c.type], background: TYPE_COLOR[c.type] + '14', border: `1px solid ${TYPE_COLOR[c.type]}25` }}>
                           {c.type}
                         </span>
-                        <span className="text-[10px] text-slate-500">{c.entity}</span>
-                        <span className="text-[10px] text-slate-600">Due {c.dueDate}</span>
+                        <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>{c.entity}</span>
+                        <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>Due {c.dueDate}</span>
                         {c.daysToBreach === 0 && (
-                          <span className="text-[10px] font-bold text-red-400 flex items-center gap-0.5">
+                          <span className="text-[10px] font-bold flex items-center gap-0.5" style={{ color: '#e2445c' }}>
                             <Clock className="w-2.5 h-2.5" /> Breached
                           </span>
                         )}
@@ -250,22 +292,22 @@ export function CommitmentsPage() {
 
                   {/* Current vs target */}
                   <div className="mt-2 flex items-center gap-3 text-[10px]">
-                    <span className="text-slate-500">Current: <span className="text-slate-300 font-semibold">{c.currentValue}</span></span>
-                    <span className="text-slate-600">→</span>
-                    <span className="text-slate-500">Target: <span className="text-slate-300 font-semibold">{c.targetValue}</span></span>
+                    <span style={{ color: 'var(--os-text-3)' }}>Current: <span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{c.currentValue}</span></span>
+                    <span style={{ color: 'var(--os-text-3)' }}>→</span>
+                    <span style={{ color: 'var(--os-text-3)' }}>Target: <span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{c.targetValue}</span></span>
                   </div>
 
                   {/* Breach probability bar */}
                   <div className="mt-2">
-                    <p className="text-[9px] text-slate-600 mb-1 uppercase tracking-wider">Breach probability</p>
+                    <p className="text-[9px] uppercase tracking-wider mb-1" style={{ color: 'var(--os-text-3)' }}>Breach probability</p>
                     <BreachBar pct={c.breachProbability} />
                   </div>
 
                   {/* KIMMP note */}
                   <div className="mt-2 flex items-start gap-1.5 px-2.5 py-2 rounded-lg"
-                    style={{ background: 'rgba(124,58,237,0.05)', border: '1px solid rgba(124,58,237,0.12)' }}>
-                    <Brain className="w-3 h-3 text-purple-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-[11px] text-slate-400 leading-relaxed">{c.kimmpNote}</p>
+                    style={{ background: '#7c3aed08', border: '1px solid #7c3aed18' }}>
+                    <Brain className="w-3 h-3 flex-shrink-0 mt-0.5" style={{ color: '#7c3aed' }} />
+                    <p className="text-[11px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{c.kimmpNote}</p>
                   </div>
                 </div>
               </div>

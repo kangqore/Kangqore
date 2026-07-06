@@ -57,12 +57,12 @@ export function AnalyticsPage() {
     <div className="space-y-6">
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-1 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-xl p-1">
+        <div className="flex items-center gap-1 bg-[var(--os-surface-0)] rounded-xl p-1">
           {RANGES.map(r => (
             <button
               key={r.days}
               onClick={() => setDays(r.days)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${days === r.days ? 'bg-os-blue text-white' : 'text-slate-400 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${days === r.days ? 'bg-os-blue text-white' : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'}`}
             >
               {r.label}
             </button>
@@ -71,14 +71,14 @@ export function AnalyticsPage() {
         <select
           value={eventTypeId}
           onChange={e => setEventTypeId(e.target.value)}
-          className="h-9 rounded-xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-sm text-white px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
         >
           <option value="">All event types</option>
           {eventTypes.map(et => <option key={et.id} value={et.id}>{et.name}</option>)}
         </select>
       </div>
 
-      {isLoading && <div className="flex items-center gap-2 text-sm text-slate-500"><Spinner size="sm" /> Loading…</div>}
+      {isLoading && <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)]"><Spinner size="sm" /> Loading…</div>}
 
       {data && (
         <>
@@ -92,7 +92,7 @@ export function AnalyticsPage() {
           {data.timeSeries?.length > 0 && (
             <Card>
               <CardBody className="p-5">
-                <p className="text-sm font-semibold text-white mb-4">Bookings per day</p>
+                <p className="text-sm font-semibold text-[var(--os-text-1)] mb-4">Bookings per day</p>
                 <div className="flex items-end gap-1 h-28">
                   {data.timeSeries.map(d => (
                     <div key={d.date} className="flex-1 flex flex-col items-center gap-1 group relative">
@@ -100,13 +100,13 @@ export function AnalyticsPage() {
                         className="w-full rounded-t bg-os-blue/70 group-hover:bg-os-blue transition-all"
                         style={{ height: `${Math.max(4, (d.bookings / maxCount) * 100)}%` }}
                       />
-                      <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-0.5 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] text-xs px-2 py-0.5 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                         {d.bookings}
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className="flex justify-between text-xs text-slate-600 mt-1">
+                <div className="flex justify-between text-xs text-[var(--os-text-2)] mt-1">
                   <span>{data.timeSeries[0]?.date ? new Date(data.timeSeries[0].date).toLocaleDateString([], { month: 'short', day: 'numeric' }) : ''}</span>
                   <span>{data.timeSeries.at(-1)?.date ? new Date(data.timeSeries.at(-1)!.date).toLocaleDateString([], { month: 'short', day: 'numeric' }) : ''}</span>
                 </div>
@@ -117,17 +117,17 @@ export function AnalyticsPage() {
           {data.eventTypeBreakdown?.length > 0 && (
             <Card>
               <CardBody className="p-5">
-                <p className="text-sm font-semibold text-white mb-4">Top event types</p>
+                <p className="text-sm font-semibold text-[var(--os-text-1)] mb-4">Top event types</p>
                 <div className="space-y-3">
                   {data.eventTypeBreakdown.map(et => {
                     const pct = total > 0 ? Math.round((et.value / total) * 100) : 0
                     return (
                       <div key={et.name}>
                         <div className="flex justify-between text-xs mb-1">
-                          <span className="text-slate-300">{et.name}</span>
-                          <span className="text-slate-500">{et.value} ({pct}%)</span>
+                          <span className="text-[var(--os-text-1)]">{et.name}</span>
+                          <span className="text-[var(--os-text-2)]">{et.value} ({pct}%)</span>
                         </div>
-                        <div className="h-1.5 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-full overflow-hidden">
+                        <div className="h-1.5 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-full overflow-hidden">
                           <div className="h-full bg-os-blue rounded-full" style={{ width: `${pct}%` }} />
                         </div>
                       </div>
@@ -142,8 +142,8 @@ export function AnalyticsPage() {
 
       {!isLoading && !data && (
         <Card><CardBody className="text-center py-12">
-          <BarChart2 className="w-8 h-8 text-slate-500 mx-auto mb-3" />
-          <p className="text-sm text-slate-400">No data for this period</p>
+          <BarChart2 className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-3" />
+          <p className="text-sm text-[var(--os-text-2)]">No data for this period</p>
         </CardBody></Card>
       )}
     </div>

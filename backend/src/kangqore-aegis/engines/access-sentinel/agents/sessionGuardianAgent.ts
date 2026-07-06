@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }        from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 // More than this many denials from a single actor in 1h = anomalous
 const BURST_THRESHOLD = 5
@@ -23,6 +26,10 @@ export async function runSessionGuardianAgent(ctx: AgentContext): Promise<AegisA
   const burst = Object.entries(actorCount).filter(([, c]) => c >= BURST_THRESHOLD)
 
   const verdict = burst.length > 0 ? 'WARN' : denied.length > 0 ? 'PASS' : 'INFO'
+
+  const llmSummary = await callLLM(SYSTEM,
+    `Session guardian (1h): ${denied.length} total access denials, ${burst.length} actor(s) with burst ≥${BURST_THRESHOLD} denials. Burst actors: ${burst.map(([a, c]) => `${a}:${c}`).join(', ') || 'none'}. Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
 
   return {
     agentId:  'sentinel.session-guardian',

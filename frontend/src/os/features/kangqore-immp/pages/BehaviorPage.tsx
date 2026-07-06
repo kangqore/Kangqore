@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
   UserCheck, RefreshCw, ChevronDown, ChevronUp,
-  Eye, Globe, TrendingUp, AlertCircle, MessageSquare,
+  Eye, Globe, TrendingUp, AlertCircle, MessageSquare, Clock,
 } from 'lucide-react'
 import { Badge } from '@design-system/components/Badge'
 import { Spinner } from '@design-system/components/Spinner'
@@ -37,16 +37,24 @@ interface MarketSignal {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const SENTIMENT_COLORS: Record<string, string> = {
-  POSITIVE:  'text-green-600 bg-green-50 border-green-200',
-  NEUTRAL:   'text-slate-300 bg-slate-900 border-white/10 border-t-white/20',
-  NEGATIVE:  'text-red-600 bg-red-50 border-red-200',
-  MIXED:     'text-amber-600 bg-amber-50 border-amber-200',
+  POSITIVE:  'text-green-700 bg-green-50 border-green-200',
+  NEUTRAL:   'text-[var(--os-text-2)] bg-[var(--os-surface-0)] border-[var(--os-border)]',
+  NEGATIVE:  'text-red-700 bg-red-50 border-red-200',
+  MIXED:     'text-amber-700 bg-amber-50 border-amber-200',
 }
 
 const URGENCY_BADGE: Record<string, 'danger' | 'warning' | 'info' | 'neutral'> = {
   HIGH:   'danger',
   MEDIUM: 'warning',
   LOW:    'neutral',
+}
+
+const SEVERITY_COLOR: Record<string, string> = {
+  HIGH:     '#e2445c',
+  CRITICAL: '#e2445c',
+  MEDIUM:   '#fdab3d',
+  LOW:      '#579bfc',
+  INFO:     '#579bfc',
 }
 
 function formatRelative(iso: string) {
@@ -67,32 +75,32 @@ function ObservationCard({ obs }: { obs: ShadowObservation }) {
   const urgencyBadge = URGENCY_BADGE[obs.urgency?.toUpperCase()] ?? 'neutral'
 
   return (
-    <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl shadow-sm p-4 space-y-3">
-      <div className="flex items-start gap-3">
-        <div className="w-7 h-7 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0">
-          <Eye className="w-3.5 h-3.5 text-violet-600" />
+    <div className="p-6 space-y-4 transition-transform hover:-translate-y-1" style={{ background: 'var(--os-card)', borderRadius: 'var(--os-radius-xl)', boxShadow: '0 32px 64px rgba(0,0,0,0.04)' }}>
+      <div className="flex items-start gap-4">
+        <div className="w-10 h-10 rounded-2xl bg-violet-50 flex items-center justify-center flex-shrink-0">
+          <Eye className="w-5 h-5 text-violet-600" />
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex-1 min-w-0 mt-0.5">
+          <div className="flex items-center gap-3 flex-wrap">
             {obs.leadName && (
-              <p className="text-sm font-semibold text-white">{obs.leadName}</p>
+              <p className="text-base font-bold text-[var(--os-text-1)]">{obs.leadName}</p>
             )}
-            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md border ${sentColor}`}>
+            <span className={`text-[11px] font-bold px-2 py-1 rounded-md border ${sentColor}`}>
               {obs.sentiment}
             </span>
             <Badge variant={urgencyBadge} size="sm">Urgency: {obs.urgency}</Badge>
-            <span className="text-[10px] text-slate-500 ml-auto">{formatRelative(obs.createdAt)}</span>
+            <span className="text-[11px] font-bold text-[var(--os-text-2)] ml-auto flex items-center gap-1.5"><Clock className="w-3.5 h-3.5"/>{formatRelative(obs.createdAt)}</span>
           </div>
-          <p className="text-[11px] text-slate-500 mt-0.5">Intent: {obs.intent}</p>
+          <p className="text-xs font-bold text-[var(--os-text-2)] mt-1.5">Intent: <span className="text-[var(--os-text-1)]">{obs.intent}</span></p>
         </div>
       </div>
 
-      <p className="text-xs text-slate-300 leading-relaxed ml-10">{obs.summary}</p>
+      <p className="text-sm font-medium text-[var(--os-text-1)] leading-relaxed ml-14">{obs.summary}</p>
 
       {obs.traits?.length > 0 && (
-        <div className="ml-10 flex flex-wrap gap-1.5">
+        <div className="ml-14 flex flex-wrap gap-2">
           {obs.traits.map((t, i) => (
-            <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-violet-50 border border-violet-200 text-violet-700">
+            <span key={i} className="text-[11px] font-bold px-3 py-1 rounded-full bg-violet-50 border border-violet-100 text-violet-700">
               {t}
             </span>
           ))}
@@ -100,18 +108,18 @@ function ObservationCard({ obs }: { obs: ShadowObservation }) {
       )}
 
       {obs.recommendation && expanded && (
-        <div className="ml-10 flex items-start gap-2 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2.5">
-          <TrendingUp className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" />
-          <p className="text-xs font-medium text-blue-800">{obs.recommendation}</p>
+        <div className="ml-14 flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-2xl p-4 mt-2 shadow-[0_8px_16px_rgba(59,130,246,0.08)]">
+          <TrendingUp className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+          <p className="text-sm font-bold text-blue-900 leading-relaxed">{obs.recommendation}</p>
         </div>
       )}
 
       {obs.recommendation && (
         <button
           onClick={() => setExpanded(e => !e)}
-          className="ml-10 flex items-center gap-1 text-xs text-blue-600 font-medium hover:text-blue-800 transition-colors"
+          className="ml-14 flex items-center gap-1.5 text-xs text-blue-600 font-bold hover:text-blue-800 transition-colors mt-2"
         >
-          {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+          {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           {expanded ? 'Hide recommendation' : 'Show recommendation'}
         </button>
       )}
@@ -122,18 +130,20 @@ function ObservationCard({ obs }: { obs: ShadowObservation }) {
 // ─── Market signal row ────────────────────────────────────────────────────────
 
 function MarketSignalRow({ signal }: { signal: MarketSignal }) {
+  const signalColor = SEVERITY_COLOR[signal.severity?.toUpperCase()] ?? '#579bfc'
   return (
-    <div className="flex items-start gap-3 py-3 px-4 border-b border-white/10 border-t-white/20 last:border-0 hover:bg-slate-900/60 transition-colors">
-      <Globe className="w-3.5 h-3.5 text-blue-400 flex-shrink-0 mt-0.5" />
+    <div className="flex items-start gap-4 py-4 border-b border-[var(--os-border)] last:border-0 hover:bg-[var(--os-surface-0)] transition-colors px-6">
+      <div className="w-1.5 self-stretch rounded-full flex-shrink-0 mt-1 shadow-sm" style={{ background: signalColor }} />
+      <Globe className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: signalColor }} />
       <div className="flex-1 min-w-0">
-        <p className="text-xs text-slate-300 leading-snug">{signal.signalValue}</p>
-        <div className="flex items-center gap-2 mt-1">
-          <span className="text-[10px] text-slate-500">{signal.signalType.replace(/_/g, ' ')}</span>
-          <span className="text-[10px] text-slate-300">·</span>
-          <span className="text-[10px] text-slate-500">{signal.confidence}% confidence</span>
+        <p className="text-sm font-bold text-[var(--os-text-1)] leading-snug">{signal.signalValue}</p>
+        <div className="flex items-center gap-3 mt-1.5">
+          <span className="text-[11px] font-bold text-[var(--os-text-2)] uppercase tracking-wider">{signal.signalType.replace(/_/g, ' ')}</span>
+          <span className="w-1 h-1 rounded-full bg-[var(--os-border)]" />
+          <span className="text-[11px] font-bold text-[var(--os-text-2)]">{signal.confidence}% confidence</span>
         </div>
       </div>
-      <span className="text-[10px] text-slate-500 flex-shrink-0">{formatRelative(signal.createdAt)}</span>
+      <span className="text-[11px] font-bold text-[var(--os-text-2)] flex-shrink-0 flex items-center gap-1.5"><Clock className="w-3.5 h-3.5"/>{formatRelative(signal.createdAt)}</span>
     </div>
   )
 }
@@ -170,29 +180,29 @@ export function BehaviorPage() {
   }
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8">
 
       {/* Header */}
-      <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
-          <UserCheck className="w-6 h-6 text-white" />
+      <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+          <UserCheck className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
-          <h2 className="text-xl font-bold text-white">Behavior Intelligence</h2>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <h2 className="text-base font-bold text-[var(--os-text-1)]">Behavior Intelligence</h2>
+          <p className="text-xs text-[var(--os-text-2)] mt-0.5">
             Stakeholder behavioral analysis from live conversations, plus market-level behavior signals.
           </p>
         </div>
         <button
           onClick={refresh}
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 transition-colors"
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
         </button>
       </div>
 
       {/* Tab switcher */}
-      <div className="flex gap-1 border border-white/10 border-t-white/20 rounded-xl p-1 bg-slate-900 w-fit">
+      <div className="border-b border-[var(--os-border)] mb-6 flex gap-4">
         {([
           { key: 'shadow', label: `Shadow Observations (${observations.length})`, icon: Eye },
           { key: 'market', label: `Market Behavior (${marketSignals.length})`,    icon: Globe },
@@ -200,13 +210,13 @@ export function BehaviorPage() {
           <button
             key={t.key}
             onClick={() => setTab(t.key as Tab)}
-            className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
+            className={`flex items-center gap-2 px-2 py-3 text-sm font-bold border-b-2 -mb-px transition-all ${
               tab === t.key
-                ? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-white shadow-sm border border-white/10 border-t-white/20'
-                : 'text-slate-500 hover:text-slate-300'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[var(--os-border)]'
             }`}
           >
-            <t.icon className="w-3.5 h-3.5" />
+            <t.icon className="w-4 h-4" />
             {t.label}
           </button>
         ))}
@@ -214,18 +224,22 @@ export function BehaviorPage() {
 
       {/* What is this */}
       {tab === 'shadow' && (
-        <div className="flex items-start gap-3 bg-violet-50 border border-violet-100 rounded-xl p-4">
-          <MessageSquare className="w-4 h-4 text-violet-500 mt-0.5 flex-shrink-0" />
-          <p className="text-xs text-violet-700 leading-relaxed">
+        <div className="flex items-start gap-4 bg-violet-50/50 rounded-3xl p-6 mb-6">
+          <div className="w-10 h-10 rounded-2xl bg-violet-100 flex items-center justify-center flex-shrink-0 shadow-sm">
+            <MessageSquare className="w-5 h-5 text-violet-600" />
+          </div>
+          <p className="text-sm font-medium text-violet-900 leading-relaxed pt-1">
             KIMMP Shadow Mode passively observes eQORE conversations and builds behavioral profiles — sentiment, intent, urgency, and personality traits — without interrupting the conversation flow.
           </p>
         </div>
       )}
 
       {tab === 'market' && (
-        <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-4">
-          <Globe className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-          <p className="text-xs text-blue-700 leading-relaxed">
+        <div className="flex items-start gap-4 bg-blue-50/50 rounded-3xl p-6 mb-6">
+          <div className="w-10 h-10 rounded-2xl bg-blue-100 flex items-center justify-center flex-shrink-0 shadow-sm">
+            <Globe className="w-5 h-5 text-blue-600" />
+          </div>
+          <p className="text-sm font-medium text-blue-900 leading-relaxed pt-1">
             Market behavior signals are aggregated from ALIS (the client interaction layer) and reveal macro-level patterns in how the market is responding to Kangqore's services.
           </p>
         </div>
@@ -236,30 +250,40 @@ export function BehaviorPage() {
         <div className="flex justify-center py-12"><Spinner /></div>
       ) : tab === 'shadow' ? (
         observations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-2xl text-center">
-            <div className="w-12 h-12 rounded-2xl bg-violet-50 flex items-center justify-center mb-4">
-              <Eye className="w-6 h-6 text-violet-300" />
+          <div className="flex flex-col items-center justify-center py-24 bg-[var(--os-card)] shadow-[0_32px_64px_rgba(0,0,0,0.04)] text-center" style={{ borderRadius: 'var(--os-radius-xl)' }}>
+            <div className="w-16 h-16 rounded-3xl bg-violet-50 flex items-center justify-center mb-6">
+              <Eye className="w-8 h-8 text-violet-400" />
             </div>
-            <p className="text-sm font-semibold text-slate-300">No observations yet</p>
-            <p className="text-xs text-slate-500 mt-1 max-w-xs">Shadow Mode records behavioral insights as eQORE conversations happen.</p>
+            <p className="text-lg font-bold text-[var(--os-text-1)]">No observations yet</p>
+            <p className="text-sm font-semibold text-[var(--os-text-2)] mt-2 max-w-xs">Shadow Mode records behavioral insights as eQORE conversations happen.</p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {observations.map(obs => <ObservationCard key={obs.id} obs={obs} />)}
+          <div>
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-4">
+              Observations
+            </h3>
+            <div className="space-y-6">
+              {observations.map(obs => <ObservationCard key={obs.id} obs={obs} />)}
+            </div>
           </div>
         )
       ) : (
         marketSignals.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-2xl text-center">
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-4">
-              <Globe className="w-6 h-6 text-blue-300" />
+          <div className="flex flex-col items-center justify-center py-24 bg-[var(--os-card)] shadow-[0_32px_64px_rgba(0,0,0,0.04)] text-center" style={{ borderRadius: 'var(--os-radius-xl)' }}>
+            <div className="w-16 h-16 rounded-3xl bg-blue-50 flex items-center justify-center mb-6">
+              <Globe className="w-8 h-8 text-blue-400" />
             </div>
-            <p className="text-sm font-semibold text-slate-300">No market signals yet</p>
-            <p className="text-xs text-slate-500 mt-1 max-w-xs">Market behavior signals will appear here as ALIS interaction data flows in.</p>
+            <p className="text-lg font-bold text-[var(--os-text-1)]">No market signals yet</p>
+            <p className="text-sm font-semibold text-[var(--os-text-2)] mt-2 max-w-xs">Market behavior signals will appear here as ALIS interaction data flows in.</p>
           </div>
         ) : (
-          <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl overflow-hidden shadow-sm">
-            {marketSignals.map(s => <MarketSignalRow key={s.id} signal={s} />)}
+          <div>
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-4">
+              Market Signals
+            </h3>
+            <div className="overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.04)] bg-[var(--os-card)]" style={{ borderRadius: 'var(--os-radius-xl)' }}>
+              {marketSignals.map(s => <MarketSignalRow key={s.id} signal={s} />)}
+            </div>
           </div>
         )
       )}

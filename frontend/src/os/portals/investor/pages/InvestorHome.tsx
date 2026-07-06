@@ -1,5 +1,6 @@
 import { TrendingUp, DollarSign, PieChart, ArrowUpRight } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Badge } from '@design-system/components/Badge'
 import { Progress } from '@design-system/components/Progress'
 import { Spinner } from '@design-system/components/Spinner'
@@ -87,16 +88,17 @@ export function InvestorHome() {
   const isLoading = (statsLoading || updatesLoading) && !isDemo()
 
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
+    <div className="space-y-8">
+      <KIMMPSignalBar module="Investor Dashboard" />
       {isLoading && (
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+        <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)]">
           <Spinner size="sm" /> Loading investor data…
         </div>
       )}
 
       <div>
-        <h2 className="text-xl font-bold text-white">Welcome back, {user?.name ?? myInvestor.name}</h2>
-        <p className="text-sm text-slate-500 mt-1">Kangqore company overview — as of {latestUpdate.period}.</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Welcome back, {user?.name ?? myInvestor.name}</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>Kangqore company overview — as of {latestUpdate.period}</p>
       </div>
 
       {/* KPI stats */}
@@ -108,9 +110,9 @@ export function InvestorHome() {
           { label: 'Runway', value: `${m.runway} mo`,                   sub: `£${m.cashOnHand}k cash`, bg: 'bg-orange-50', text: 'text-orange-700' },
         ].map(s => (
           <div key={s.label} className={`rounded-xl border border-white/60 p-6 ${s.bg}`}>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">{s.label}</p>
+            <p className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-2">{s.label}</p>
             <p className={`text-3xl font-bold tracking-tight ${s.text}`}>{s.value}</p>
-            <p className="text-xs text-slate-500 mt-1.5">{s.sub}</p>
+            <p className="text-xs text-[var(--os-text-2)] mt-1.5">{s.sub}</p>
           </div>
         ))}
       </div>
@@ -128,12 +130,12 @@ export function InvestorHome() {
             <div className="flex items-end gap-3 h-36">
               {MONTHLY_MRR.map((m, i) => (
                 <div key={m.month} className="flex-1 flex flex-col items-center gap-1.5">
-                  <span className="text-xs font-semibold text-slate-300">£{(m.mrr / 1000).toFixed(0)}k</span>
+                  <span className="text-xs font-semibold text-[var(--os-text-1)]">£{(m.mrr / 1000).toFixed(0)}k</span>
                   <div
                     className={`w-full rounded-t-lg ${i === MONTHLY_MRR.length - 1 ? 'bg-blue-500' : 'bg-blue-200'}`}
                     style={{ height: `${(m.mrr / maxMRR) * 110}px` }}
                   />
-                  <span className="text-xs text-slate-500">{m.month}</span>
+                  <span className="text-xs text-[var(--os-text-2)]">{m.month}</span>
                 </div>
               ))}
             </div>
@@ -156,9 +158,9 @@ export function InvestorHome() {
                 { label: 'Round',     value: 'Seed' },
                 { label: 'Share class', value: 'Series A Preferred' },
               ].map(item => (
-                <div key={item.label} className="flex justify-between text-sm border-b border-white/10 border-t-white/20 pb-2 last:border-0 last:pb-0">
-                  <span className="text-slate-500">{item.label}</span>
-                  <span className="font-semibold text-white">{item.value}</span>
+                <div key={item.label} className="flex justify-between text-sm pb-2 [&:not(:last-child)]:border-b" style={{ borderColor: 'var(--os-border)' }}>
+                  <span className="text-[var(--os-text-2)]">{item.label}</span>
+                  <span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>{item.value}</span>
                 </div>
               ))}
             </div>
@@ -181,7 +183,7 @@ export function InvestorHome() {
           <CardBody>
             <ul className="space-y-2">
               {latestUpdate.highlights.map((h, i) => (
-                <li key={i} className="flex gap-2 text-sm text-slate-300">
+                <li key={i} className="flex gap-2 text-sm text-[var(--os-text-1)]">
                   <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>{h}
                 </li>
               ))}
@@ -202,19 +204,19 @@ export function InvestorHome() {
             <CardBody className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-1.5">
-                  <span className="text-slate-500">Target</span>
+                  <span className="text-[var(--os-text-2)]">Target</span>
                   <span className="font-semibold">£{(activeRound.targetAmount / 1000).toFixed(1)}M</span>
                 </div>
                 <Progress value={Math.round((activeRound.raisedAmount / activeRound.targetAmount) * 100)} color="brand" size="md" />
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="bg-slate-900 rounded-xl p-3">
-                  <p className="text-xs text-slate-500">Post-Money Val.</p>
-                  <p className="font-bold text-white">£{(activeRound.valuation / 1000).toFixed(1)}M</p>
+                <div className="rounded-xl p-3" style={{ background: 'var(--os-surface)', border: '1px solid var(--os-border)' }}>
+                  <p className="text-xs text-[var(--os-text-2)]">Post-Money Val.</p>
+                  <p className="font-bold" style={{ color: 'var(--os-text-1)' }}>£{(activeRound.valuation / 1000).toFixed(1)}M</p>
                 </div>
-                <div className="bg-slate-900 rounded-xl p-3">
-                  <p className="text-xs text-slate-500">Lead Investor</p>
-                  <p className="font-bold text-white">TechForward</p>
+                <div className="rounded-xl p-3" style={{ background: 'var(--os-surface)', border: '1px solid var(--os-border)' }}>
+                  <p className="text-xs text-[var(--os-text-2)]">Lead Investor</p>
+                  <p className="font-bold" style={{ color: 'var(--os-text-1)' }}>TechForward</p>
                 </div>
               </div>
               <a href="#" className="flex items-center gap-1.5 text-sm text-blue-600 font-medium hover:text-blue-800">

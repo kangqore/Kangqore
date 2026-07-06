@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Badge } from '@design-system/components/Badge'
 import { Avatar } from '@design-system/components/Avatar'
 import { useProjectsStore } from '../store'
+import type { Project } from '../types'
 
 const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const VIEW_START = new Date('2026-01-01')
@@ -21,7 +22,7 @@ function toPercent(days: number) {
 const TODAY_OFFSET = toPercent(dayOffset(new Date().toISOString().split('T')[0]))
 
 export function GanttPage() {
-  const { projects } = useProjectsStore()
+  const { projects, isLoading } = useProjectsStore()
 
   const months = useMemo(() => {
     const result: { label: string; left: number; width: number }[] = []
@@ -37,46 +38,83 @@ export function GanttPage() {
     return result
   }, [])
 
+  const HEALTH_BAR_COLOR = (project: Project) => {
+    if (project.status === 'completed') return '#00c875'
+    const isLate = new Date(project.endDate) < new Date() && project.status !== 'completed'
+    if (isLate || project.health === 'behind') return '#e2445c'
+    if (project.health === 'at-risk') return '#fdab3d'
+    return '#00c875'
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4 animate-pulse">
+        <div className="h-8 w-40 rounded-lg" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="rounded-xl overflow-hidden" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
+          <div className="h-10" style={{ borderBottom: '1px solid var(--os-border)' }} />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-14 flex items-center px-4" style={{ borderBottom: '1px solid var(--os-border)' }}>
+              <div className="w-40 h-4 rounded mr-4 flex-shrink-0" style={{ background: 'var(--os-surface-0)' }} />
+              <div className="flex-1 h-6 rounded-lg" style={{ marginLeft: `${i * 8}%`, width: `${30 + i * 5}%`, background: 'var(--os-surface-0)' }} />
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-white">Gantt Chart</h2>
-        <p className="text-sm text-slate-500 mt-0.5">Project timelines — 2026</p>
+        <h2 className="text-xl font-bold" style={{ color: 'var(--os-text-1)' }}>Gantt Chart</h2>
+        <p className="text-sm mt-0.5" style={{ color: 'var(--os-text-2)' }}>Project timelines — 2026</p>
       </div>
 
-      <div className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 rounded-2xl border border-white/10 border-t-white/20 overflow-hidden shadow-sm">
+      <div className="rounded-xl overflow-hidden" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', boxShadow: 'var(--os-shadow-card)' }}>
         {/* Month header */}
-        <div className="flex border-b border-white/10 border-t-white/20">
-          <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-white/10 border-t-white/20 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <div className="flex" style={{ borderBottom: '1px solid var(--os-border)' }}>
+          <div className="w-64 flex-shrink-0 px-4 py-3 text-[10px] font-semibold uppercase tracking-widest" style={{ borderRight: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
             Project
           </div>
           <div className="flex-1 relative h-10 overflow-hidden">
             {months.map(m => (
               <div
                 key={m.label}
-                className="absolute top-0 h-full flex items-center border-r border-white/10 border-t-white/20 last:border-0"
-                style={{ left: `${m.left}%`, width: `${m.width}%` }}
+                className="absolute top-0 h-full flex items-center last:border-0"
+                style={{ left: `${m.left}%`, width: `${m.width}%`, borderRight: '1px solid var(--os-border)' }}
               >
-                <span className="text-xs text-slate-500 font-medium px-2">{m.label}</span>
+                <span className="text-xs font-medium px-2" style={{ color: 'var(--os-text-2)' }}>{m.label}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Today line overlay */}
+        {/* Rows */}
         <div className="relative">
+          {projects.length === 0 && (
+            <div className="flex items-center justify-center py-20">
+              <p className="text-sm" style={{ color: 'var(--os-text-2)' }}>No projects to display on the timeline.</p>
+            </div>
+          )}
           {projects.map((project, i) => {
-            const offset = toPercent(dayOffset(project.startDate))
-            const width  = toPercent(dayWidth(project.startDate, project.endDate))
-            const isLate = new Date(project.endDate) < new Date() && project.status !== 'completed'
+            const offset   = toPercent(dayOffset(project.startDate))
+            const width    = toPercent(dayWidth(project.startDate, project.endDate))
+            const barColor = HEALTH_BAR_COLOR(project)
 
             return (
-              <div key={project.id} className={`flex items-center ${i % 2 === 0 ? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10' : 'bg-slate-900/50'} border-b border-white/10 border-t-white/20 last:border-0`}>
+              <div
+                key={project.id}
+                className="flex items-center last:border-0"
+                style={{
+                  background: i % 2 === 0 ? 'var(--os-card)' : 'var(--os-surface-0)',
+                  borderBottom: '1px solid var(--os-border)',
+                }}
+              >
                 {/* Project info */}
-                <div className="w-64 flex-shrink-0 px-4 py-3 border-r border-white/10 border-t-white/20">
+                <div className="w-64 flex-shrink-0 px-4 py-3" style={{ borderRight: '1px solid var(--os-border)' }}>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: project.pillarColor }} />
-                    <span className="text-xs font-medium text-slate-200 truncate">{project.name}</span>
+                    <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: barColor }} />
+                    <span className="text-xs font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{project.name}</span>
                   </div>
                   <div className="flex items-center gap-2 mt-1 ml-4">
                     <Avatar name={project.owner} size="xs" />
@@ -95,36 +133,34 @@ export function GanttPage() {
                   {months.map(m => (
                     <div
                       key={m.label}
-                      className="absolute top-0 bottom-0 border-r border-white/10 border-t-white/20"
-                      style={{ left: `${m.left + m.width}%` }}
+                      className="absolute top-0 bottom-0"
+                      style={{ left: `${m.left + m.width}%`, borderRight: '1px solid var(--os-border)' }}
                     />
                   ))}
 
-                  {/* Today line */}
+                  {/* Today line: dashed red */}
                   <div
-                    className="absolute top-0 bottom-0 w-px bg-red-400 z-10"
-                    style={{ left: `${TODAY_OFFSET}%` }}
+                    className="absolute top-0 bottom-0 z-10"
+                    style={{ left: `${TODAY_OFFSET}%`, width: 1, borderLeft: '2px dashed #e2445c' }}
                   />
 
                   {/* Project bar */}
                   <div
-                    className="absolute top-3 h-8 rounded-xl flex items-center px-2 z-5 overflow-hidden"
+                    className="absolute top-3 h-8 rounded-lg flex items-center px-2 overflow-hidden"
                     style={{
                       left: `${offset}%`,
                       width: `${Math.max(width, 2)}%`,
-                      background: project.status === 'completed'
-                        ? '#22c55e'
-                        : isLate ? '#ef4444' : project.pillarColor,
+                      background: barColor,
                       opacity: project.status === 'on-hold' ? 0.5 : 1,
                     }}
                   >
-                    {/* Progress fill */}
+                    {/* Progress fill overlay */}
                     <div
-                      className="absolute left-0 top-0 bottom-0 rounded-xl opacity-40 bg-black"
+                      className="absolute top-0 bottom-0 rounded-lg bg-black/30"
                       style={{ width: `${100 - project.progress}%`, right: 0, left: 'auto' }}
                     />
                     {width > 8 && (
-                      <span className="text-white text-[10px] font-semibold truncate z-10 relative">
+                      <span className="text-white text-[10px] font-bold truncate relative z-10">
                         {project.progress}%
                       </span>
                     )}
@@ -139,17 +175,17 @@ export function GanttPage() {
             className="absolute top-0 flex flex-col items-center pointer-events-none"
             style={{ left: `calc(${TODAY_OFFSET}% + 256px + 2px)` }}
           >
-            <div className="bg-red-400 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">TODAY</div>
+            <div className="text-white text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: '#e2445c' }}>TODAY</div>
           </div>
         </div>
 
         {/* Legend */}
-        <div className="px-4 py-3 border-t border-white/10 border-t-white/20 flex items-center gap-6 text-xs text-slate-500">
-          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-600" />Active</span>
-          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-green-500" />Completed</span>
-          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-500" />Planned</span>
-          <span className="flex items-center gap-1.5"><span className="w-px h-3 bg-red-400" />Today</span>
-          <span className="flex items-center gap-1.5 ml-auto text-slate-500">Darker shade = remaining work</span>
+        <div className="px-4 py-3 flex items-center gap-6 text-xs" style={{ borderTop: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block" style={{ background: '#00c875' }} />On Track</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block" style={{ background: '#fdab3d' }} />At Risk</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block" style={{ background: '#e2445c' }} />Behind</span>
+          <span className="flex items-center gap-1.5"><span className="inline-block w-0 h-3" style={{ borderLeft: '2px dashed #e2445c' }} />Today</span>
+          <span className="ml-auto">Darker = remaining work</span>
         </div>
       </div>
     </div>

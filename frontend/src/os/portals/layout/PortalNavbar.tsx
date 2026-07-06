@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LogOut, User, Bell, X } from 'lucide-react'
+import { LogOut, User, Bell, X, Sun, Moon, ChevronDown, Brain } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { Avatar } from '@design-system/components/Avatar'
 import {
@@ -46,6 +46,13 @@ const ROLE_LABEL: Record<string, string> = {
   JOB_SEEKER: 'Applicant', JOURNALIST: 'Journalist', ANALYST: 'Analyst',
 }
 
+const PANEL_STYLE = {
+  background: 'var(--os-card)',
+  backdropFilter: 'blur(24px)',
+  border: '1px solid var(--os-border)',
+  boxShadow: '0 20px 48px rgba(0,0,0,0.1)',
+} as const
+
 // ─── notifications panel ──────────────────────────────────────────────────────
 
 function NotificationsPanel({
@@ -65,22 +72,18 @@ function NotificationsPanel({
 
   return (
     <>
-      {/* Backdrop */}
       <div
         className="fixed inset-0 z-40"
         style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(2px)' }}
         onClick={onClose}
       />
-
-      {/* Panel */}
       <div
         className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-sm flex flex-col"
-        style={{ background: '#0a0e1a', borderLeft: '1px solid #2E2854', boxShadow: '-24px 0 80px rgba(0,0,0,0.5)' }}
+        style={{ background: 'var(--os-card)', borderLeft: '1px solid var(--os-border)', boxShadow: '-24px 0 80px rgba(0,0,0,0.5)' }}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid #2E2854' }}>
+        <div className="flex items-center justify-between px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid var(--os-border)' }}>
           <div>
-            <h3 className="text-sm font-bold text-white">Notifications</h3>
+            <h3 className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>Notifications</h3>
             {unread > 0 && (
               <p className="text-[11px] mt-0.5" style={{ color: accent }}>{unread} unread</p>
             )}
@@ -89,31 +92,30 @@ function NotificationsPanel({
             {unread > 0 && (
               <button
                 onClick={markAll}
-                className="text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-colors text-slate-400 hover:text-white"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                className="text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-colors text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"
+                style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}
               >
                 Mark all read
               </button>
             )}
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-xl text-slate-500 hover:text-white transition-colors"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
+              className="w-8 h-8 flex items-center justify-center rounded-xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors"
+              style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-surface-0)' }}
             >
               <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* List */}
         <div className="flex-1 overflow-y-auto">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-3">
-              <Bell className="w-8 h-8 text-slate-700" />
-              <p className="text-sm text-slate-500">No notifications</p>
+              <Bell className="w-8 h-8 text-[var(--os-text-2)]" />
+              <p className="text-sm text-[var(--os-text-2)]">No notifications</p>
             </div>
           ) : (
-            <div className="divide-y" style={{ borderColor: '#1a2035' }}>
+            <div className="divide-y" style={{ borderColor: 'var(--os-surface-0)' }}>
               {items.map(n => {
                 const meta = NOTIF_META[n.type]
                 return (
@@ -123,7 +125,6 @@ function NotificationsPanel({
                     className="w-full text-left px-5 py-4 transition-colors hover:bg-white/[0.02]"
                   >
                     <div className="flex items-start gap-3">
-                      {/* Unread dot */}
                       <div className="flex-shrink-0 mt-1.5">
                         {!n.read
                           ? <div className="w-2 h-2 rounded-full" style={{ background: accent }} />
@@ -138,12 +139,12 @@ function NotificationsPanel({
                           >
                             {meta.label}
                           </span>
-                          <span className="text-[10px] text-slate-600">{n.time}</span>
+                          <span className="text-[10px] text-[var(--os-text-2)]">{n.time}</span>
                         </div>
-                        <p className={`text-[13px] font-semibold leading-snug mb-0.5 ${n.read ? 'text-slate-400' : 'text-white'}`}>
+                        <p className="text-[13px] font-semibold leading-snug mb-0.5" style={{ color: n.read ? 'var(--os-text-2)' : 'var(--os-text-1)' }}>
                           {n.title}
                         </p>
-                        <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">{n.body}</p>
+                        <p className="text-[11px] text-[var(--os-text-2)] leading-relaxed line-clamp-2">{n.body}</p>
                       </div>
                     </div>
                   </button>
@@ -164,134 +165,150 @@ export function PortalNavbar({ portalName, tabs, basePath, accent = '#2564ea', n
   const navigate = useNavigate()
   const roleLabel = ROLE_LABEL[user?.role ?? ''] ?? (user?.role ?? 'User')
   const [notifOpen, setNotifOpen] = useState(false)
-  const [readIds, setReadIds] = useState<Set<string>>(new Set(notifications.filter(n => n.read).map(n => n.id)))
-  const unread = notifications.filter(n => !readIds.has(n.id)).length
+  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'))
+  const unread = notifications.filter(n => !n.read).length
+
+  const toggleTheme = useCallback(() => {
+    const nowDark = document.documentElement.classList.toggle('dark')
+    localStorage.setItem('kq-theme', nowDark ? 'dark' : 'light')
+    setIsDark(nowDark)
+  }, [])
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 flex-shrink-0"
-        style={{ background: '#0a0e1a', borderBottom: '1px solid #1f2a4a' }}>
-
-        {/* Main bar */}
-        <div className="flex items-center gap-4 px-6 lg:px-10 h-14">
-
-          {/* Wordmark */}
-          <button
-            onClick={() => navigate(basePath)}
-            className="flex items-center gap-3 mr-2 group flex-shrink-0"
+      <header
+        className="flex-shrink-0 h-[60px] flex items-center w-full sticky top-0 z-40"
+        style={{ background: 'var(--os-topbar-bg, var(--os-card))', borderBottom: '1px solid var(--os-topbar-border, var(--os-border))' }}
+      >
+        {/* ── Left: logo + portal name ── */}
+        <button
+          onClick={() => navigate(basePath)}
+          className="flex items-center gap-2.5 flex-shrink-0 select-none group px-6 h-full"
+        >
+          <div
+            className="relative w-8 h-8 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105 bg-gradient-to-tr from-[#2564ea] to-[#0ea5e9]"
           >
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold text-sm transition-transform group-hover:scale-105"
-              style={{ background: `linear-gradient(135deg, ${accent}, ${accent}99)`, boxShadow: `0 0 14px ${accent}40` }}>
-              K
-            </div>
-            <div>
-              <p className="text-sm font-bold text-white leading-none">Kangqore</p>
-              <p className="text-[10px] leading-none mt-0.5" style={{ color: `${accent}bb` }}>{portalName}</p>
-            </div>
-          </button>
-
-          <div className="w-px h-5 bg-[#2E2854] mx-2 flex-shrink-0" />
-
-          {/* User name */}
-          <div className="hidden sm:block">
-            <p className="text-sm font-semibold text-slate-200">{user?.name}</p>
-            <p className="text-[10px] text-slate-600">{user?.email}</p>
+            <img src="/favicon.jpg" alt="Kangqore" className="w-full h-full object-cover"
+              onError={e => { e.currentTarget.style.display = 'none' }} />
+            <Brain className="w-4 h-4 text-white absolute" style={{ zIndex: -1 }} />
           </div>
+          <div className="flex flex-col">
+            <span className="text-[14px] font-black tracking-tight leading-none" style={{ color: 'var(--os-text-1)' }}>
+              Kangqore
+            </span>
+            <span className="text-[10px] font-semibold text-[#2564ea] tracking-wider uppercase leading-none mt-0.5">
+              {portalName}
+            </span>
+          </div>
+        </button>
 
-          <div className="flex-1" />
-
-          {/* Role chip */}
-          <span className="hidden sm:inline text-[11px] font-bold px-2.5 py-1 rounded-full flex-shrink-0"
-            style={{ color: accent, background: `${accent}14`, border: `1px solid ${accent}30` }}>
-            {roleLabel}
-          </span>
-
-          {/* Bell */}
-          {notifications.length > 0 && (
-            <button
-              onClick={() => setNotifOpen(o => !o)}
-              className="relative w-9 h-9 flex items-center justify-center rounded-xl transition-colors flex-shrink-0"
-              style={{ background: notifOpen ? `${accent}14` : 'rgba(255,255,255,0.04)', border: `1px solid ${notifOpen ? accent + '30' : '#2E2854'}` }}
-            >
-              <Bell className="w-4 h-4" style={{ color: notifOpen ? accent : '#64748b' }} />
-              {unread > 0 && (
-                <span
-                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full text-[9px] font-black text-white flex items-center justify-center"
-                  style={{ background: accent }}
-                >
-                  {unread}
-                </span>
-              )}
-            </button>
-          )}
-
-          {/* Avatar + dropdown */}
-          <DropdownRoot>
-            <DropdownTrigger asChild>
-              <button className="flex items-center gap-2 rounded-xl px-2 py-1.5 transition-colors flex-shrink-0"
-                style={{ border: '1px solid transparent' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#151C2F'; (e.currentTarget as HTMLElement).style.borderColor = '#2E2854' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.borderColor = 'transparent' }}
-              >
-                <Avatar name={user?.name ?? 'U'} size="sm" />
-              </button>
-            </DropdownTrigger>
-            <DropdownPortal>
-              <DropdownContent align="end" sideOffset={8}
-                className="z-50 min-w-[200px] rounded-xl shadow-2xl p-1"
-                style={{ background: '#0d1117', border: '1px solid #2E2854' }}>
-                <div className="px-3 py-2.5 mb-1" style={{ borderBottom: '1px solid #2E2854' }}>
-                  <p className="text-sm font-semibold text-white">{user?.name}</p>
-                  <p className="text-xs text-slate-500 truncate mt-0.5">{user?.email}</p>
-                </div>
-                <DropdownItem
-                  onClick={() => navigate(`${basePath}/profile`)}
-                  className="flex items-center gap-2.5 px-2.5 py-2 text-sm text-slate-300 rounded-lg cursor-pointer outline-none"
-                  style={{ transition: 'background 0.15s' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#151C2F' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
-                >
-                  <User className="w-4 h-4 text-slate-500" /> Profile
-                </DropdownItem>
-                <DropdownSeparator style={{ height: 1, background: '#2E2854', margin: '4px 0' }} />
-                <DropdownItem
-                  onClick={logout}
-                  className="flex items-center gap-2.5 px-2.5 py-2 text-sm rounded-lg cursor-pointer outline-none"
-                  style={{ color: '#e2445c', transition: 'background 0.15s' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(226,68,92,0.08)' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
-                >
-                  <LogOut className="w-4 h-4" /> Sign out
-                </DropdownItem>
-              </DropdownContent>
-            </DropdownPortal>
-          </DropdownRoot>
-        </div>
-
-        {/* Tab strip */}
-        <div className="flex items-center gap-0.5 px-6 lg:px-10 overflow-x-auto scrollbar-none"
-          style={{ borderTop: '1px solid #1a2340' }}>
+        {/* ── Center: tab navigation ── */}
+        <nav className="flex items-center h-full flex-1 gap-0.5 px-3 overflow-x-auto scrollbar-none">
           {tabs.map(tab => (
             <NavLink
               key={tab.path}
               to={tab.path === '' ? basePath : `${basePath}/${tab.path}`}
               end={tab.path === ''}
               className={({ isActive }) => cn(
-                'flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
+                'flex items-center gap-1.5 h-8 px-3 rounded-lg text-[13px] font-medium transition-all whitespace-nowrap flex-shrink-0',
                 isActive
-                  ? 'border-b-2 text-white'
-                  : 'border-transparent text-slate-500 hover:text-slate-300'
+                  ? ''
+                  : 'hover:bg-black/[0.05] dark:hover:bg-white/5'
               )}
-              style={({ isActive }) => isActive ? { borderBottomColor: accent, color: '#ffffff' } : {}}
+              style={({ isActive }) => isActive
+                ? { background: `${accent}18`, color: accent, boxShadow: `inset 0 0 0 1px ${accent}28` }
+                : { color: 'var(--os-text-2)' }
+              }
             >
-              <tab.icon className="w-3.5 h-3.5" />
+              <tab.icon className="w-3.5 h-3.5 flex-shrink-0" />
               {tab.label}
             </NavLink>
           ))}
+        </nav>
+
+        {/* ── Right: utility cluster + separator + user profile ── */}
+        <div className="flex items-center gap-4 px-4 flex-shrink-0">
+          {/* Icon cluster */}
+          <div className="flex items-center gap-1">
+            <button
+              onClick={toggleTheme}
+              className="w-8 h-8 flex items-center justify-center rounded-full text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+              title={isDark ? 'Light mode' : 'Dark mode'}
+            >
+              {isDark ? <Sun className="w-[15px] h-[15px]" /> : <Moon className="w-[16px] h-[16px]" />}
+            </button>
+            <button
+              onClick={() => setNotifOpen(o => !o)}
+              className="relative w-8 h-8 flex items-center justify-center rounded-full text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+            >
+              <Bell className="w-[17px] h-[17px]" />
+              {unread > 0 && (
+                <span
+                  className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full bg-red-500 text-white text-[8px] font-black flex items-center justify-center leading-none"
+                  style={{ padding: '0 3px' }}
+                >
+                  {unread > 9 ? '9+' : unread}
+                </span>
+              )}
+            </button>
+          </div>
+
+          <div className="w-px h-5 bg-[var(--os-border)] flex-shrink-0" />
+
+          <DropdownRoot>
+            <DropdownTrigger asChild>
+              <button className="flex items-center gap-2 h-9 px-1.5 rounded-xl hover:bg-[var(--os-surface-0)] transition-colors flex-shrink-0">
+                <Avatar name={user?.name ?? 'U'} size="sm" className="w-[28px] h-[28px] flex-shrink-0" />
+                <div className="text-left hidden md:block min-w-0">
+                  <p className="text-[12px] font-bold leading-none mb-0.5 truncate" style={{ color: 'var(--os-text-1)' }}>{user?.name ?? 'User'}</p>
+                  <p className="text-[9px] text-slate-500 leading-none">{roleLabel}</p>
+                </div>
+                <ChevronDown className="w-3.5 h-3.5 text-[var(--os-text-3)] flex-shrink-0" />
+              </button>
+            </DropdownTrigger>
+            <DropdownPortal>
+              <DropdownContent
+                align="end"
+                sideOffset={8}
+                className="z-50 min-w-[210px] rounded-xl p-1.5 animate-in fade-in-0 zoom-in-95 duration-150"
+                style={PANEL_STYLE}
+              >
+                <div className="flex items-center gap-2.5 px-2.5 py-2.5 mb-1" style={{ borderBottom: '1px solid var(--os-border)' }}>
+                  <Avatar name={user?.name ?? 'U'} size="sm" className="w-8 h-8 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[13px] font-semibold leading-none mb-1 truncate" style={{ color: 'var(--os-text-1)' }}>{user?.name}</p>
+                    <p className="text-[11px] text-slate-500 truncate leading-none">{user?.email}</p>
+                  </div>
+                </div>
+                <div className="px-2.5 pt-2 pb-1.5 mb-1" style={{ borderBottom: '1px solid var(--os-border)' }}>
+                  <span
+                    className="inline-block text-[9px] font-bold uppercase tracking-[0.1em] px-2 py-1 rounded-md"
+                    style={{ background: `${accent}14`, color: accent, border: `1px solid ${accent}28` }}
+                  >
+                    {roleLabel}
+                  </span>
+                </div>
+                <DropdownItem
+                  onClick={() => navigate(`${basePath}/profile`)}
+                  className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-[var(--os-text-2)] rounded-lg cursor-pointer outline-none hover:bg-slate-100 dark:hover:bg-white/5 hover:text-[var(--os-text-1)] transition-colors"
+                >
+                  <User className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+                  Profile
+                </DropdownItem>
+                <DropdownSeparator className="my-1 h-px mx-1" style={{ background: 'var(--os-border)' }} />
+                <DropdownItem
+                  onClick={logout}
+                  className="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-red-500 rounded-lg cursor-default outline-none hover:bg-red-500/10 transition-colors"
+                >
+                  <LogOut className="w-3.5 h-3.5 flex-shrink-0" />
+                  Sign out
+                </DropdownItem>
+              </DropdownContent>
+            </DropdownPortal>
+          </DropdownRoot>
         </div>
       </header>
 
-      {/* Notifications panel */}
       {notifOpen && (
         <NotificationsPanel
           notifications={notifications}

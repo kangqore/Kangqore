@@ -1,0 +1,15 @@
+{
+  "description": "OIS pillar weights tuned for professional services. Delivery and enterprise goals are upweighted vs the default foundation config.",
+  "profile": "professional-services-v1",
+  "totalWeight": 1.0,
+  "pillars": [
+    { "pillar": "decision",    "weight": 0.20, "rationale": "PS firms live or die on fast, accurate decisions — bid/no-bid, escalation, pricing." },
+    { "pillar": "enterprise",  "weight": 0.18, "rationale": "Enterprise goal attainment (revenue, SLA) is the primary client-facing measure." },
+    { "pillar": "workflow",    "weight": 0.15, "rationale": "Process consistency (milestone reviews, invoice approvals) is the delivery engine." },
+    { "pillar": "goal",        "weight": 0.14, "rationale": "Goal completion rate drives team accountability and client satisfaction." },
+    { "pillar": "ai",          "weight": 0.10, "rationale": "AI intelligence usage accelerates analysis and reduces manual overhead." },
+    { "pillar": "business",    "weight": 0.10, "rationale": "Pipeline health and win rates are the leading indicators of future revenue." },
+    { "pillar": "trust",       "weight": 0.08, "rationale": "Governance and audit compliance are table stakes for enterprise clients." },
+    { "pillar": "adoption",    "weight": 0.05, "rationale": "Starts conservative; earns weight as usage data accumulates." }
+  ]
+}

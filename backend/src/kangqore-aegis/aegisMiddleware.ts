@@ -8,6 +8,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { verifyAccessToken } from '../services/token.service'
 import { AegisLedger } from './aegisLedger.service'
+import { AegisEventEmitter } from './aegisEventEmitter'
 
 export function aegisShield(req: Request, res: Response, next: NextFunction): void {
   const authHeader = req.headers.authorization
@@ -34,6 +35,7 @@ export function aegisShield(req: Request, res: Response, next: NextFunction): vo
       method:   req.method,
       ip:       req.ip,
     }).catch(() => {})
+    AegisEventEmitter.fireAccessDenied({ metadata: { endpoint: req.path, reason: 'invalid-token' } })
 
     res.status(401).json({
       error: 'AEGIS: Invalid or expired token.',
@@ -50,6 +52,10 @@ export function aegisShield(req: Request, res: Response, next: NextFunction): vo
       userRole: (payload as any).role,
       ip:       req.ip,
     }).catch(() => {})
+    AegisEventEmitter.fireAccessDenied({
+      userId:   (payload as any).userId,
+      metadata: { endpoint: req.path, role: (payload as any).role, reason: 'non-admin' },
+    })
 
     res.status(403).json({
       error:   'AEGIS: ADMIN sovereignty enforced. Only ADMIN may access KIMMP.',

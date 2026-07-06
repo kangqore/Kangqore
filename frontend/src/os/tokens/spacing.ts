@@ -15,7 +15,7 @@ export const space = {
 } as const
 
 export const layout = {
-  sidebarWidth:          '230px',
+  sidebarWidth:          '176px',
   sidebarCollapsedWidth: '64px',
   topbarHeight:          '60px',
   contentMaxWidth:       '1400px',

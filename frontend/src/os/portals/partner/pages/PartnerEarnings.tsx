@@ -1,5 +1,6 @@
 import { DollarSign, CheckCircle2, Clock, Download, TrendingUp } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Badge } from '@design-system/components/Badge'
 import { Button } from '@design-system/components/Button'
 import { Progress } from '@design-system/components/Progress'
@@ -43,10 +44,11 @@ export function PartnerEarnings() {
   const totalPending = payments.filter(p => p.status === 'pending').reduce((s, p) => s + p.amount, 0)
 
   return (
-    <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-8 space-y-8">
+    <div className="space-y-8">
+      <KIMMPSignalBar module="Earnings" />
       <div>
-        <h2 className="text-xl font-bold text-white">Earnings & Payments</h2>
-        <p className="text-sm text-slate-500 mt-1">Your payment history and upcoming earnings from Kangqore projects.</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Earnings & Payments</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>Payment history and upcoming earnings from Kangqore projects</p>
       </div>
 
       {/* Summary */}
@@ -57,7 +59,7 @@ export function PartnerEarnings() {
           { label: 'MoM Growth',        value: '+14%',                             color: 'bg-purple-50',text: 'text-purple-700'},
         ].map(s => (
           <div key={s.label} className={`rounded-xl p-5 ${s.color}`}>
-            <p className="text-xs font-medium text-slate-500 mb-1">{s.label}</p>
+            <p className="text-xs font-medium text-[var(--os-text-2)] mb-1">{s.label}</p>
             <p className={`text-2xl font-bold tracking-tight ${s.text}`}>{s.value}</p>
           </div>
         ))}
@@ -76,12 +78,12 @@ export function PartnerEarnings() {
             <div className="flex items-end gap-2 h-36">
               {MONTHLY.map((m, i) => (
                 <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
-                  <span className="text-[10px] font-semibold text-slate-500">£{(m.amount / 1000).toFixed(1)}k</span>
+                  <span className="text-[10px] font-semibold text-[var(--os-text-2)]">£{(m.amount / 1000).toFixed(1)}k</span>
                   <div
                     className={`w-full rounded-t-lg ${i === MONTHLY.length - 1 ? 'bg-blue-300' : 'bg-green-400'}`}
                     style={{ height: `${(m.amount / maxEarning) * 110}px` }}
                   />
-                  <span className="text-[9px] text-slate-500 text-center leading-tight">{m.month}</span>
+                  <span className="text-[9px] text-[var(--os-text-2)] text-center leading-tight">{m.month}</span>
                 </div>
               ))}
             </div>
@@ -99,8 +101,8 @@ export function PartnerEarnings() {
             ].map(p => (
               <div key={p.project}>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-slate-300 font-medium">{p.project}</span>
-                  <span className="font-semibold text-white">£{p.amount.toLocaleString()}</span>
+                  <span className="text-[var(--os-text-1)] font-medium">{p.project}</span>
+                  <span className="font-semibold" style={{ color: 'var(--os-text-1)' }}>£{p.amount.toLocaleString()}</span>
                 </div>
                 <Progress value={p.pct} color="success" size="sm" />
               </div>
@@ -120,20 +122,20 @@ export function PartnerEarnings() {
         <CardBody className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10 border-t-white/20 bg-slate-900/50">
+              <tr style={{ background: 'var(--os-surface)', borderBottom: '1px solid var(--os-border)' }}>
                 {['Ref', 'Period', 'Projects', 'Date', 'Amount', 'Status', ''].map(h => (
-                  <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide whitespace-nowrap">{h}</th>
+                  <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#2E2854]">
+            <tbody className="divide-y divide-[var(--os-border)]">
               {payments.map(p => (
-                <tr key={p.id} className="hover:bg-slate-900 transition-colors">
-                  <td className="px-5 py-3.5 font-mono text-xs text-slate-500">{p.id}</td>
-                  <td className="px-5 py-3.5 font-medium text-white">{p.period}</td>
-                  <td className="px-5 py-3.5 text-slate-500 text-xs max-w-[180px]"><span className="line-clamp-1">{p.project}</span></td>
-                  <td className="px-5 py-3.5 text-slate-500 whitespace-nowrap">{p.date}</td>
-                  <td className="px-5 py-3.5 font-bold text-white whitespace-nowrap">£{p.amount.toLocaleString()}</td>
+                <tr key={p.id} className="hover:bg-[var(--os-surface)] transition-colors">
+                  <td className="px-5 py-3.5 font-mono text-xs text-[var(--os-text-2)]">{p.id}</td>
+                  <td className="px-5 py-3.5 font-medium" style={{ color: 'var(--os-text-1)' }}>{p.period}</td>
+                  <td className="px-5 py-3.5 text-[var(--os-text-2)] text-xs max-w-[180px]"><span className="line-clamp-1">{p.project}</span></td>
+                  <td className="px-5 py-3.5 text-[var(--os-text-2)] whitespace-nowrap">{p.date}</td>
+                  <td className="px-5 py-3.5 font-bold whitespace-nowrap" style={{ color: 'var(--os-text-1)' }}>£{p.amount.toLocaleString()}</td>
                   <td className="px-5 py-3.5">
                     {p.status === 'paid'
                       ? <div className="flex items-center gap-1.5 text-green-600"><CheckCircle2 className="w-3.5 h-3.5" /><Badge variant="success" size="sm">Paid</Badge></div>

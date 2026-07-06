@@ -41,14 +41,14 @@ const AuthCallback = () => {
             
             // Role to dashboard path mapping
             const roleRoutes = {
-              'CLIENT': '/dashboard/client',
-              'PARTNER': '/dashboard/partner',
-              'INVESTOR': '/dashboard/investor',
-              'JOB_SEEKER': '/dashboard/careers',
-              'ADMIN': '/dashboard/admin'
+              'CLIENT':     '/kangqore-view/client',
+              'PARTNER':    '/kangqore-view/partner',
+              'INVESTOR':   '/kangqore-view/investor',
+              'JOB_SEEKER': '/kangqore-view/careers',
+              'ADMIN':      '/kangqore-view/admin',
             };
-            
-            const targetPath = roleRoutes[userRole] || '/dashboard/client';
+
+            const targetPath = roleRoutes[userRole] || '/kangqore-view/client';
             window.location.href = targetPath;
           } else {
             console.error('Failed to fetch user profile');

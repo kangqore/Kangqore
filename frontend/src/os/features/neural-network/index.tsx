@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   ReactFlow, 
   Controls, 
@@ -12,8 +13,9 @@ import {
   Handle,
   Position,
   useReactFlow,
-  getSmoothStepPath,
-  BaseEdge
+  getBezierPath,
+  BaseEdge,
+  EdgeLabelRenderer
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { 
@@ -24,8 +26,27 @@ import {
   Skull, CaretLeft, SpeakerHigh, SpeakerSlash,
   Thermometer, Command, Microphone, CodeBlock,
   Megaphone, Briefcase, GitBranch, Layout, VideoCamera,
-  HardDrives, LockKey, Strategy, ChatCircleText
+  HardDrives, LockKey, Strategy, ChatCircleText, TreeStructure
 } from '@phosphor-icons/react';
+import { api } from '@lib/api';
+import dagre from '@dagrejs/dagre';
+import { getSocket, connectSocket } from '@lib/socket';
+
+const getLayoutedElements = (nodes: any[], edges: any[], direction = 'LR') => {
+  const dagreGraph = new dagre.graphlib.Graph();
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
+  const nodeWidth = 320;
+  const nodeHeight = 150;
+  dagreGraph.setGraph({ rankdir: direction, ranksep: 200, nodesep: 100 });
+  nodes.forEach((node) => { dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight }); });
+  edges.forEach((edge) => { dagreGraph.setEdge(edge.source, edge.target); });
+  dagre.layout(dagreGraph);
+  nodes.forEach((node) => {
+    const nodeWithPosition = dagreGraph.node(node.id);
+    node.position = { x: nodeWithPosition.x - nodeWidth / 2, y: nodeWithPosition.y - nodeHeight / 2 };
+  });
+  return { nodes, edges };
+};
 
 // --- CUSTOM AUDIO SYNTHESIZER ---
 const useSciFiAudio = () => {
@@ -35,7 +56,7 @@ const useSciFiAudio = () => {
 
   const initAudio = useCallback(() => {
     if (!ctxRef.current) {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       ctxRef.current = new AudioContext();
     }
     if (ctxRef.current.state === 'suspended') {
@@ -115,17 +136,32 @@ const NetworkContext = React.createContext({
 });
 
 // --- CUSTOM EDGE (DATA PACKETS) ---
-const DataPacketEdge = ({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, style, markerEnd, animated }) => {
-  const [edgePath] = getSmoothStepPath({ sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition });
+const DataPacketEdge = (props: any) => { const { id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, style, markerStart, markerEnd, animated, label, data } = props;
+  const index = data?.edgeNumber || 0;
+  // Deterministic scatter to prevent overlapping highways
+  const scatterX = (index % 5) * 12 - 24;
+  const scatterY = (index % 7) * 12 - 36;
+  
+  const [edgePath, labelX, labelY] = getBezierPath({ 
+    sourceX: sourceX + scatterX, 
+    sourceY: sourceY + scatterY, 
+    sourcePosition, 
+    targetX: targetX - scatterX, 
+    targetY: targetY - scatterY, 
+    targetPosition,
+    curvature: 0.25 + (index % 3) * 0.1 // Varying curvature for spacious arcs
+  });
   const { chaosState, isMatrixMode, isThermalMode } = React.useContext(NetworkContext);
   
   const isHighTraffic = chaosState === 'HIGH_TRAFFIC';
   const duration = isHighTraffic ? '0.5s' : '1.5s';
   const packetColor = isMatrixMode ? '#22c55e' : (isThermalMode ? (isHighTraffic ? '#ffffff' : '#f97316') : (style?.stroke || '#38bdf8'));
 
+  const edgeLabel = data?.edgeNumber ? (label ? `#${data.edgeNumber} ${label}` : `#${data.edgeNumber}`) : label;
+
   return (
     <>
-      <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
+      <BaseEdge path={edgePath} markerStart={markerStart} markerEnd={markerEnd} style={style} />
       {animated && !isThermalMode && (
         <circle r="3" fill={packetColor} style={{ filter: `drop-shadow(0 0 5px ${packetColor})` }}>
           <animateMotion dur={duration} repeatCount="indefinite" path={edgePath} />
@@ -135,6 +171,21 @@ const DataPacketEdge = ({ id, sourceX, sourceY, targetX, targetY, sourcePosition
          <circle r="2" fill="#ffffff" style={{ filter: 'drop-shadow(0 0 5px #fff)' }}>
           <animateMotion dur={duration} begin="0.25s" repeatCount="indefinite" path={edgePath} />
         </circle>
+      )}
+      {edgeLabel && (
+        <EdgeLabelRenderer>
+          <div
+            style={{
+              position: 'absolute',
+              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+              pointerEvents: 'none',
+              zIndex: 1000,
+            }}
+            className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-widest ${isMatrixMode ? 'bg-green-900/50 text-green-400 border border-green-500/50' : 'bg-[#020617]/80 text-cyan-400 border border-cyan-500/50'} backdrop-blur-xl shadow-[0_4px_15px_rgba(0,0,0,0.8)] whitespace-nowrap`}
+          >
+            {edgeLabel}
+          </div>
+        </EdgeLabelRenderer>
       )}
     </>
   );
@@ -173,7 +224,7 @@ const KangqoreNode = ({ id, data, selected }) => {
   }
 
   if (isThermalMode) {
-    const heatColor = isHighTraffic ? (isDb && chaosState === 'DB_OUTAGE' ? 'rgba(0,0,255,0.8)' : 'rgba(255,255,255,1)') : 'rgba(255,100,0,0.8)';
+    const heatColor = isDb && chaosState === 'DB_OUTAGE' ? 'rgba(0,0,255,0.8)' : isHighTraffic ? 'rgba(255,255,255,1)' : 'rgba(255,100,0,0.8)';
     const outerHeat = isHighTraffic ? 'rgba(255,50,0,0.6)' : 'rgba(20,20,150,0.5)';
     return (
       <div className="relative w-28 h-28 rounded-full flex items-center justify-center transition-all duration-1000"
@@ -235,15 +286,48 @@ const KangqoreNode = ({ id, data, selected }) => {
       </div>
 
       <div className="flex items-center gap-5 mt-1">
+        {/* Agent Progress Ring */}
         <div className="relative w-12 h-12 flex items-center justify-center flex-shrink-0">
-          <div className={`absolute inset-0 rounded-lg border border-solid ${isHighTraffic ? 'animate-[spin_2s_linear_infinite]' : ''} opacity-30`} style={{ borderColor: color, transform: 'rotate(45deg)' }} />
-          <Icon className={`w-6 h-6 relative z-10 drop-shadow-[0_0_8px_${color}] ${chaosState === 'DB_OUTAGE' && isDb ? 'text-red-500 animate-bounce' : ''}`} style={{ color: chaosState === 'DB_OUTAGE' && isDb ? undefined : color }} weight={selected ? "fill" : "duotone"} />
+          {data.taskProgress !== undefined && data.taskProgress > 0 ? (
+            // SVG Progress Ring — shown when WORKING
+            <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 48 48">
+              {/* Track */}
+              <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3" />
+              {/* Progress */}
+              <circle
+                cx="24" cy="24" r="20"
+                fill="none"
+                stroke={color}
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 20}`}
+                strokeDashoffset={`${2 * Math.PI * 20 * (1 - (data.taskProgress ?? 0) / 100)}`}
+                style={{ transition: 'stroke-dashoffset 0.25s ease', filter: `drop-shadow(0 0 4px ${color})` }}
+              />
+            </svg>
+          ) : (
+            <div className={`absolute inset-0 rounded-lg border border-solid ${isHighTraffic ? 'animate-[spin_2s_linear_infinite]' : ''} opacity-30`} style={{ borderColor: color, transform: 'rotate(45deg)' }} />
+          )}
+          <Icon className={`w-6 h-6 relative z-10 ${chaosState === 'DB_OUTAGE' && isDb ? 'text-red-500 animate-bounce' : data.isWorking ? 'animate-pulse' : ''}`} style={{ color: chaosState === 'DB_OUTAGE' && isDb ? undefined : color }} weight={selected || data.isWorking ? "fill" : "duotone"} />
           <div className="absolute inset-0 rounded-full blur-xl" style={{ backgroundColor: color, opacity: selected ? 0.3 : 0.15 }} />
+          {/* Completed tasks badge */}
+          {(data.completedTasks ?? 0) > 0 && !data.isWorking && (
+            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-mono font-bold text-black z-20" style={{ backgroundColor: color }}>
+              {data.completedTasks}
+            </div>
+          )}
         </div>
         
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center overflow-hidden">
           <h3 className="text-[14px] font-black tracking-[0.1em] text-white uppercase leading-none drop-shadow-md">{data.label}</h3>
           {data.sub && <p className="text-[8px] mt-1.5 font-mono tracking-[0.2em] uppercase opacity-80" style={{ color }}>{chaosState === 'DB_OUTAGE' && isDb ? 'ERR_SYS_FAIL' : data.sub}</p>}
+          {/* Live task ticker */}
+          {data.isWorking && data.desc && (
+            <div className="mt-2 relative overflow-hidden" style={{ maxWidth: '170px' }}>
+              <p className="text-[9px] font-mono text-emerald-400 truncate animate-pulse" title={data.desc}>{data.desc}</p>
+              <div className="absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-[#020617] to-transparent" />
+            </div>
+          )}
         </div>
       </div>
       
@@ -350,7 +434,7 @@ const AegisShieldNode = () => {
 // --- INITIAL DATA ---
 const initialNodesMacro = [
   // --- LAYER GROUPS ---
-  { id: 'g-presentation', type: 'layerGroup', position: { x: 420, y: -250 }, width: 1400, height: 420, data: { label: 'Presentation Layer (Frontend)', color: '#3b82f6', borderColor: '#60a5fa' } },
+  { id: 'g-presentation', type: 'layerGroup', position: { x: 420, y: -250 }, width: 1700, height: 420, data: { label: 'Presentation Layer (Frontend)', color: '#3b82f6', borderColor: '#60a5fa' } },
   { id: 'g-eqore-suite', type: 'layerGroup', position: { x: 1850, y: -250 }, width: 1400, height: 420, data: { label: 'Kangqore AI Product Suite', color: '#facc15', borderColor: '#fde047' } },
   { id: 'g-product', type: 'layerGroup', position: { x: 420, y: 250 }, width: 800, height: 350, data: { label: 'Product Engine (Node.js/Prisma)', color: '#10b981', borderColor: '#34d399' } },
   { id: 'g-intelligence', type: 'layerGroup', position: { x: 420, y: 700 }, width: 1200, height: 500, data: { label: 'Intelligence Engine (Python/AI)', color: '#8b5cf6', borderColor: '#a78bfa' } },
@@ -359,23 +443,16 @@ const initialNodesMacro = [
   // --- PRESENTATION LAYER ---
   { id: 'kv-os', type: 'kangqore', parentId: 'g-presentation', position: { x: 500, y: 20 }, width: 320, height: 100, data: { label: 'Kangqore View (OS)', sub: 'React Shell Router', icon: Globe, color: '#f59e0b', desc: 'The dynamic shell routing users to specific portals.' } },
 
-  // Admin Portal Cluster
+  // --- 9 FRONTEND PORTALS ---
   { id: 'p-admin', type: 'kangqore', parentId: 'g-presentation', position: { x: 40, y: 150 }, width: 280, height: 100, data: { label: 'Admin Portal', sub: 'OS Control', icon: ShieldCheckered, color: '#60a5fa' } },
-  { id: 'pg-overview', type: 'kangqore', parentId: 'g-presentation', position: { x: 40, y: 280 }, width: 220, height: 80, data: { label: 'Overview Dashboard', sub: '/admin', icon: ChartBar, color: '#93c5fd' } },
-  { id: 'pg-neural', type: 'kangqore', parentId: 'g-presentation', position: { x: 280, y: 280 }, width: 220, height: 80, data: { label: 'Neural Network', sub: '/admin/neural', icon: Network, color: '#93c5fd' } },
-
-  // Team Portal Cluster
   { id: 'p-team', type: 'kangqore', parentId: 'g-presentation', position: { x: 360, y: 150 }, width: 280, height: 100, data: { label: 'Team Portal', sub: 'Internal Staff', icon: Users, color: '#60a5fa' } },
-  { id: 'pg-depts', type: 'kangqore', parentId: 'g-presentation', position: { x: 520, y: 280 }, width: 220, height: 80, data: { label: 'Departments', sub: '/team/departments', icon: Briefcase, color: '#93c5fd' } },
-  { id: 'pg-workflows', type: 'kangqore', parentId: 'g-presentation', position: { x: 760, y: 280 }, width: 220, height: 80, data: { label: 'Workflows', sub: '/team/workflows', icon: GitBranch, color: '#93c5fd' } },
-
-  // Client Portal Cluster
   { id: 'p-client', type: 'kangqore', parentId: 'g-presentation', position: { x: 680, y: 150 }, width: 280, height: 100, data: { label: 'Client Portal', sub: 'External', icon: Target, color: '#60a5fa' } },
-  { id: 'pg-cdash', type: 'kangqore', parentId: 'g-presentation', position: { x: 1000, y: 280 }, width: 220, height: 80, data: { label: 'Client Dashboard', sub: '/client', icon: Layout, color: '#93c5fd' } },
-
-  // Other Portals (Condensed)
   { id: 'p-partner', type: 'kangqore', parentId: 'g-presentation', position: { x: 1000, y: 150 }, width: 280, height: 100, data: { label: 'Partner Portal', sub: 'B2B', icon: Handshake, color: '#60a5fa' } },
-  { id: 'p-investor', type: 'kangqore', parentId: 'g-presentation', position: { x: 1000, y: 40 }, width: 280, height: 100, data: { label: 'Investor Portal', sub: 'Finance', icon: ChartLineUp, color: '#60a5fa' } },
+  { id: 'p-investor', type: 'kangqore', parentId: 'g-presentation', position: { x: 1320, y: 150 }, width: 280, height: 100, data: { label: 'Investor Portal', sub: 'Finance', icon: ChartLineUp, color: '#60a5fa' } },
+  { id: 'p-executive', type: 'kangqore', parentId: 'g-presentation', position: { x: 40, y: 280 }, width: 280, height: 100, data: { label: 'Executive Portal', sub: 'C-Level', icon: Strategy, color: '#60a5fa' } },
+  { id: 'p-analyst', type: 'kangqore', parentId: 'g-presentation', position: { x: 360, y: 280 }, width: 280, height: 100, data: { label: 'Analyst Portal', sub: 'Data Intelligence', icon: ChartBar, color: '#60a5fa' } },
+  { id: 'p-journalist', type: 'kangqore', parentId: 'g-presentation', position: { x: 680, y: 280 }, width: 280, height: 100, data: { label: 'Journalist Portal', sub: 'Media/Press', icon: Megaphone, color: '#60a5fa' } },
+  { id: 'p-careers', type: 'kangqore', parentId: 'g-presentation', position: { x: 1000, y: 280 }, width: 280, height: 100, data: { label: 'Careers Portal', sub: 'Job Seekers', icon: Briefcase, color: '#60a5fa' } },
   
   // Public Site Cluster
   { id: 'p-public', type: 'kangqore', parentId: 'g-presentation', position: { x: 40, y: 20 }, width: 280, height: 100, data: { label: 'Public Website', sub: 'kangqore.com', icon: Globe, color: '#3b82f6' } },
@@ -414,94 +491,95 @@ const initialNodesMacro = [
 ];
 
 const initialEdgesMacro = [
-  // Presentation -> OS Shell
-  { id: 'e-pub-kv', source: 'p-public', target: 'kv-os', type: 'dataPacket', animated: true, style: { stroke: '#3b82f6' } },
-  { id: 'e-pa-kv', source: 'p-admin', target: 'kv-os', type: 'dataPacket', animated: true, style: { stroke: '#60a5fa' } },
-  { id: 'e-pt-kv', source: 'p-team', target: 'kv-os', type: 'dataPacket', animated: true, style: { stroke: '#60a5fa' } },
-  { id: 'e-pc-kv', source: 'p-client', target: 'kv-os', type: 'dataPacket', animated: true, style: { stroke: '#60a5fa' } },
-  { id: 'e-pi-kv', source: 'p-investor', target: 'kv-os', type: 'dataPacket', animated: true, style: { stroke: '#60a5fa' } },
-  { id: 'e-pp-kv', source: 'p-partner', target: 'kv-os', type: 'dataPacket', animated: true, style: { stroke: '#60a5fa' } },
+  // Portals -> OS Shell (Distinct Portal Colors)
+  { id: 'e-pub-kv', source: 'p-public', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Public Traffic', style: { stroke: '#0ea5e9' } }, // Sky
+  { id: 'e-pa-kv', source: 'p-admin', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Admin Access', style: { stroke: '#8b5cf6' } }, // Violet
+  { id: 'e-pt-kv', source: 'p-team', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Internal Comms', style: { stroke: '#22c55e' } }, // Green
+  { id: 'e-pc-kv', source: 'p-client', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Client Requests', style: { stroke: '#3b82f6' } }, // Blue
+  { id: 'e-pp-kv', source: 'p-partner', target: 'kv-os', type: 'dataPacket', animated: true, label: 'B2B Sync', style: { stroke: '#10b981' } }, // Emerald
+  { id: 'e-pi-kv', source: 'p-investor', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Financial Data', style: { stroke: '#eab308' } }, // Yellow
+  { id: 'e-pex-kv', source: 'p-executive', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Strategic Ops', style: { stroke: '#f43f5e' } }, // Rose
+  { id: 'e-pan-kv', source: 'p-analyst', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Data Mining', style: { stroke: '#06b6d4' } }, // Cyan
+  { id: 'e-pjr-kv', source: 'p-journalist', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Press Kit', style: { stroke: '#ec4899' } }, // Pink
+  { id: 'e-pca-kv', source: 'p-careers', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Applicants', style: { stroke: '#8b5cf6' } }, // Violet
 
-  // OS Shell -> eQORE Suite
-  { id: 'e-kv-eq', source: 'kv-os', target: 'p-eqore', type: 'dataPacket', animated: true, style: { stroke: '#facc15', strokeWidth: 2 } },
-  { id: 'e-eq-vis', source: 'p-eqore', target: 'p-vis', type: 'dataPacket', animated: true, style: { stroke: '#facc15' } },
-  { id: 'e-eq-alis', source: 'p-eqore', target: 'p-alis', type: 'dataPacket', animated: true, style: { stroke: '#facc15' } },
-  { id: 'e-eq-lead', source: 'p-eqore', target: 'p-lead-int', type: 'dataPacket', animated: true, style: { stroke: '#facc15' } },
-  { id: 'e-eq-feedback', source: 'p-eqore', target: 'p-feedback', type: 'dataPacket', animated: true, style: { stroke: '#facc15' } },
+
+  // OS Shell -> eQORE Suite (Distinct Module Colors)
+  { id: 'e-kv-eq', source: 'kv-os', target: 'p-eqore', type: 'dataPacket', animated: true, label: 'Core Command', style: { stroke: '#f59e0b', strokeWidth: 2 } }, // Amber
+  { id: 'e-eq-vis', source: 'p-eqore', target: 'p-vis', type: 'dataPacket', animated: true, style: { stroke: '#a855f7' }, label: 'Visual Sync', markerStart: { type: MarkerType.ArrowClosed, color: '#a855f7' } }, // Purple
+  { id: 'e-eq-alis', source: 'p-eqore', target: 'p-alis', type: 'dataPacket', animated: true, style: { stroke: '#facc15' }, label: 'Logic Sync', markerStart: { type: MarkerType.ArrowClosed, color: '#facc15' } }, // Yellow
+  { id: 'e-eq-lead', source: 'p-eqore', target: 'p-lead-int', type: 'dataPacket', animated: true, style: { stroke: '#f97316' }, label: 'Data Sync', markerStart: { type: MarkerType.ArrowClosed, color: '#f97316' } }, // Orange
+  { id: 'e-eq-feedback', source: 'p-eqore', target: 'p-feedback', type: 'dataPacket', animated: true, style: { stroke: '#ec4899' }, label: 'Context Sync', markerStart: { type: MarkerType.ArrowClosed, color: '#ec4899' } }, // Pink
+  { id: 'e-alis-feedback', source: 'p-alis', target: 'p-feedback', type: 'dataPacket', animated: true, style: { stroke: '#84cc16', strokeDasharray: '2 4' }, label: 'Logic Inject' }, // Lime
   
   // eQORE Suite -> Deep Intelligence (WAANDA & KIMMP)
-  { id: 'e-eq-py', source: 'p-eqore', target: 'ai-python', type: 'dataPacket', animated: true, style: { stroke: '#facc15', strokeWidth: 2, strokeDasharray: '4 4' } },
-  { id: 'e-eq-waanda', source: 'p-eqore', target: 'ai-waanda', type: 'dataPacket', animated: true, label: 'Persona Sync', style: { stroke: '#facc15', strokeWidth: 2 } },
+  { id: 'e-eq-py', source: 'p-eqore', target: 'ai-python', type: 'dataPacket', animated: true, style: { stroke: '#d946ef', strokeWidth: 2, strokeDasharray: '4 4' } }, // Fuchsia
+  { id: 'e-eq-waanda', source: 'p-eqore', target: 'ai-waanda', type: 'dataPacket', animated: true, label: 'Persona Sync', style: { stroke: '#06b6d4', strokeWidth: 2 } }, // Cyan
   
-  { id: 'e-alis-py', source: 'p-alis', target: 'ai-python', type: 'dataPacket', animated: true, style: { stroke: '#facc15', strokeDasharray: '4 4' } },
-  { id: 'e-alis-waanda', source: 'p-alis', target: 'ai-waanda', type: 'dataPacket', animated: true, label: 'Logic Sync', style: { stroke: '#facc15' } },
+  { id: 'e-alis-py', source: 'p-alis', target: 'ai-python', type: 'dataPacket', animated: true, style: { stroke: '#be185d', strokeDasharray: '4 4' } }, // Dark Pink
+  { id: 'e-alis-waanda', source: 'p-alis', target: 'ai-waanda', type: 'dataPacket', animated: true, label: 'Logic Sync', style: { stroke: '#0ea5e9' } }, // Sky Blue
   
-  { id: 'e-vis-bids', source: 'p-vis', target: 'ai-bids', type: 'dataPacket', animated: true, style: { stroke: '#facc15', strokeDasharray: '4 4' } },
-  { id: 'e-vis-kimmp', source: 'p-vis', target: 'ai-kimmp', type: 'dataPacket', animated: true, label: 'Agent Vision', style: { stroke: '#facc15' } },
+  { id: 'e-vis-bids', source: 'p-vis', target: 'ai-bids', type: 'dataPacket', animated: true, style: { stroke: '#14b8a6', strokeDasharray: '4 4' } }, // Teal
+  { id: 'e-vis-kimmp', source: 'p-vis', target: 'ai-kimmp', type: 'dataPacket', animated: true, label: 'Agent Vision', style: { stroke: '#6366f1' } }, // Indigo
   
-  { id: 'e-lead-kimmp', source: 'p-lead-int', target: 'ai-kimmp', type: 'dataPacket', animated: true, label: 'Agent Deploy', style: { stroke: '#facc15' } },
+  { id: 'e-lead-kimmp', source: 'p-lead-int', target: 'ai-kimmp', type: 'dataPacket', animated: true, label: 'Agent Deploy', style: { stroke: '#8b5cf6' } }, // Violet
 
-  // Pages -> Portals
-  { id: 'e-pg-over-pa', source: 'pg-overview', target: 'p-admin', type: 'dataPacket', animated: true, style: { stroke: '#93c5fd' } },
-  { id: 'e-pg-neu-pa', source: 'pg-neural', target: 'p-admin', type: 'dataPacket', animated: true, style: { stroke: '#93c5fd' } },
-  { id: 'e-pg-dep-pt', source: 'pg-depts', target: 'p-team', type: 'dataPacket', animated: true, style: { stroke: '#93c5fd' } },
-  { id: 'e-pg-work-pt', source: 'pg-workflows', target: 'p-team', type: 'dataPacket', animated: true, style: { stroke: '#93c5fd' } },
-  { id: 'e-pg-cd-pc', source: 'pg-cdash', target: 'p-client', type: 'dataPacket', animated: true, style: { stroke: '#93c5fd' } },
-
-  // OS Shell -> Router
-  { id: 'e-kv-router', source: 'kv-os', target: 'f-router', type: 'dataPacket', animated: true, label: 'HTTP / WSS', style: { stroke: '#34d399', strokeWidth: 2 } },
-  
-  // Router -> Backend / Auth
-  { id: 'e-router-auth', source: 'f-router', target: 'sys-auth', type: 'dataPacket', animated: true, label: 'Verify', style: { stroke: '#34d399' } },
-  { id: 'e-router-core', source: 'f-router', target: 'core-api', type: 'dataPacket', animated: true, style: { stroke: '#10b981' } },
+  // OS Shell -> Router -> Backend
+  { id: 'e-kv-router', source: 'kv-os', target: 'f-router', type: 'dataPacket', animated: true, label: 'HTTP / WSS', style: { stroke: '#34d399', strokeWidth: 2 } }, // Emerald Light
+  { id: 'e-router-auth', source: 'f-router', target: 'sys-auth', type: 'dataPacket', animated: true, label: 'Verify', style: { stroke: '#14b8a6' } }, // Teal
+  { id: 'e-router-core', source: 'f-router', target: 'core-api', type: 'dataPacket', animated: true, label: 'API Req', style: { stroke: '#10b981' } }, // Emerald
   
   // Core Backend -> DBs
-  { id: 'e-core-db', source: 'core-api', target: 'core-db', type: 'dataPacket', animated: true, label: 'Prisma ORM', style: { stroke: '#f59e0b' } },
-  { id: 'e-core-vdb', source: 'core-api', target: 'sys-vector', type: 'dataPacket', animated: true, label: 'Vectors', style: { stroke: '#f43f5e' } },
+  { id: 'e-core-db', source: 'core-api', target: 'core-db', type: 'dataPacket', animated: true, label: 'Prisma ORM', style: { stroke: '#f59e0b' } }, // Amber
+  { id: 'e-core-vdb', source: 'core-api', target: 'sys-vector', type: 'dataPacket', animated: true, label: 'Vectors', style: { stroke: '#f43f5e' } }, // Rose
 
   // Core Backend -> Python AI
-  { id: 'e-core-py', source: 'core-api', target: 'ai-python', type: 'dataPacket', animated: true, label: 'gRPC', style: { stroke: '#d946ef', strokeWidth: 2 } },
-  { id: 'e-py-core', source: 'ai-python', target: 'core-api', type: 'dataPacket', animated: true, style: { stroke: '#d946ef' } },
+  { id: 'e-core-py', source: 'core-api', target: 'ai-python', type: 'dataPacket', animated: true, label: 'gRPC Call', style: { stroke: '#8b5cf6', strokeWidth: 2 } }, // Violet
+  { id: 'e-py-core', source: 'ai-python', target: 'core-api', type: 'dataPacket', animated: true, label: 'Response', style: { stroke: '#d946ef' } }, // Fuchsia
 
   // Python -> Systems
-  { id: 'e-py-mod', source: 'ai-python', target: 'ai-models', type: 'dataPacket', animated: true, label: 'Prompt', style: { stroke: '#d946ef' } },
-  { id: 'e-mod-py', source: 'ai-models', target: 'ai-python', type: 'dataPacket', animated: true, style: { stroke: '#d946ef' } },
+  { id: 'e-py-mod', source: 'ai-python', target: 'ai-models', type: 'dataPacket', animated: true, label: 'Prompt', style: { stroke: '#ec4899' } }, // Pink
+  { id: 'e-mod-py', source: 'ai-models', target: 'ai-python', type: 'dataPacket', animated: true, label: 'Inference', style: { stroke: '#be185d' } }, // Dark Pink
   
   // KIMMP & Agents
-  { id: 'e-py-kimmp', source: 'ai-python', target: 'ai-kimmp', type: 'dataPacket', animated: true, label: 'Tasking', style: { stroke: '#6366f1' } },
-  { id: 'e-kimmp-mc', source: 'ai-kimmp', target: 'ag-mc', type: 'dataPacket', animated: true, style: { stroke: '#818cf8' } },
-  { id: 'e-mc-402', source: 'ag-mc', target: 'ag-402', type: 'dataPacket', animated: true, style: { stroke: '#c084fc' } },
-  { id: 'e-mc-719', source: 'ag-mc', target: 'ag-719', type: 'dataPacket', animated: true, style: { stroke: '#c084fc' } },
-  { id: 'e-vdb-719', source: 'sys-vector', target: 'ag-719', type: 'dataPacket', animated: true, label: 'Embeddings', style: { stroke: '#f43f5e', strokeDasharray: '4 4' } },
+  { id: 'e-py-kimmp', source: 'ai-python', target: 'ai-kimmp', type: 'dataPacket', animated: true, label: 'Tasking', style: { stroke: '#6366f1' } }, // Indigo
+  { id: 'e-kimmp-mc', source: 'ai-kimmp', target: 'ag-mc', type: 'dataPacket', animated: true, label: 'Orchestrate', style: { stroke: '#818cf8' } }, // Light Indigo
+  { id: 'e-mc-402', source: 'ag-mc', target: 'ag-402', type: 'dataPacket', animated: true, label: 'Command', style: { stroke: '#c084fc' } }, // Light Purple
+  { id: 'e-mc-719', source: 'ag-mc', target: 'ag-719', type: 'dataPacket', animated: true, label: 'Command', style: { stroke: '#a855f7' } }, // Purple
+  { id: 'e-vdb-719', source: 'sys-vector', target: 'ag-719', type: 'dataPacket', animated: true, label: 'Embeddings', style: { stroke: '#f43f5e', strokeDasharray: '4 4' } }, // Rose
 
   // WAANDA & Ontology
-  { id: 'e-py-waanda', source: 'ai-python', target: 'ai-waanda', type: 'dataPacket', animated: true, style: { stroke: '#06b6d4' } },
-  { id: 'e-waanda-ont', source: 'ai-waanda', target: 'ai-ontology', type: 'dataPacket', animated: true, label: 'Queries', style: { stroke: '#ec4899' } },
-  { id: 'e-ont-vdb', source: 'ai-ontology', target: 'sys-vector', type: 'dataPacket', animated: true, style: { stroke: '#f43f5e', strokeDasharray: '2 6' } },
-  { id: 'e-waanda-kimmp', source: 'ai-waanda', target: 'ai-kimmp', type: 'dataPacket', animated: true, label: 'Delegate', style: { stroke: '#06b6d4', strokeWidth: 2 } },
-  { id: 'e-kimmp-waanda', source: 'ai-kimmp', target: 'ai-waanda', type: 'dataPacket', animated: true, label: 'Status', style: { stroke: '#6366f1', strokeDasharray: '3 3' } },
+  { id: 'e-py-waanda', source: 'ai-python', target: 'ai-waanda', type: 'dataPacket', animated: true, label: 'Thought', style: { stroke: '#06b6d4' } }, // Cyan
+  { id: 'e-waanda-ont', source: 'ai-waanda', target: 'ai-ontology', type: 'dataPacket', animated: true, label: 'Queries', style: { stroke: '#ec4899' } }, // Pink
+  { id: 'e-ont-vdb', source: 'ai-ontology', target: 'sys-vector', type: 'dataPacket', animated: true, label: 'Search', style: { stroke: '#f43f5e', strokeDasharray: '2 6' } }, // Rose
+  { id: 'e-waanda-kimmp', source: 'ai-waanda', target: 'ai-kimmp', type: 'dataPacket', animated: true, label: 'Delegate', style: { stroke: '#0284c7', strokeWidth: 2 } }, // Light Blue
+  { id: 'e-kimmp-waanda', source: 'ai-kimmp', target: 'ai-waanda', type: 'dataPacket', animated: true, label: 'Status', style: { stroke: '#4f46e5', strokeDasharray: '3 3' } }, // Indigo
 
   // BIDS & Diagnostics
-  { id: 'e-py-bids', source: 'ai-python', target: 'ai-bids', type: 'dataPacket', animated: true, style: { stroke: '#14b8a6' } },
-  { id: 'e-bids-991', source: 'ai-bids', target: 'ag-991', type: 'dataPacket', animated: true, label: 'Scans', style: { stroke: '#5eead4' } },
+  { id: 'e-py-bids', source: 'ai-python', target: 'ai-bids', type: 'dataPacket', animated: true, label: 'Scan Req', style: { stroke: '#14b8a6' } }, // Teal
+  { id: 'e-bids-991', source: 'ai-bids', target: 'ag-991', type: 'dataPacket', animated: true, label: 'Diagnostics', style: { stroke: '#0d9488' } }, // Dark Teal
 
   // AEGIS Security
-  { id: 'e-aegis-core', source: 'ai-aegis', target: 'core-api', type: 'dataPacket', animated: true, label: 'Monitor', style: { stroke: '#ef4444', strokeDasharray: '5 5' } },
-  { id: 'e-aegis-py', source: 'ai-aegis', target: 'ai-python', type: 'dataPacket', animated: true, label: 'Monitor', style: { stroke: '#ef4444', strokeDasharray: '5 5' } },
+  { id: 'e-aegis-core', source: 'ai-aegis', target: 'core-api', type: 'dataPacket', animated: true, label: 'Monitor', style: { stroke: '#ef4444', strokeDasharray: '5 5' } }, // Red
+  { id: 'e-aegis-py', source: 'ai-aegis', target: 'ai-python', type: 'dataPacket', animated: true, label: 'Audit', style: { stroke: '#dc2626', strokeDasharray: '5 5' } }, // Dark Red
 
   // WAANDA Omniscience (Global Surveillance)
-  { id: 'e-waanda-os', source: 'ai-waanda', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Omni-View', style: { stroke: '#06b6d4', strokeDasharray: '5 5' } },
-  { id: 'e-waanda-router', source: 'ai-waanda', target: 'f-router', type: 'dataPacket', animated: true, label: 'Traffic Inspect', style: { stroke: '#06b6d4', strokeDasharray: '5 5' } },
-  { id: 'e-waanda-db', source: 'ai-waanda', target: 'core-db', type: 'dataPacket', animated: true, label: 'Direct Access', style: { stroke: '#06b6d4', strokeDasharray: '5 5' } },
-  { id: 'e-waanda-auth', source: 'ai-waanda', target: 'sys-auth', type: 'dataPacket', animated: true, label: 'Security Override', style: { stroke: '#06b6d4', strokeDasharray: '5 5' } },
-  { id: 'e-waanda-admin', source: 'ai-waanda', target: 'p-admin', type: 'dataPacket', animated: true, label: 'Direct Feed', style: { stroke: '#06b6d4', strokeDasharray: '5 5' } },
+  { id: 'e-waanda-os', source: 'ai-waanda', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Omni-View', style: { stroke: '#06b6d4', strokeDasharray: '5 5' } }, // Cyan
+  { id: 'e-waanda-router', source: 'ai-waanda', target: 'f-router', type: 'dataPacket', animated: true, label: 'Traffic Inspect', style: { stroke: '#0891b2', strokeDasharray: '5 5' } }, // Dark Cyan
+  { id: 'e-waanda-db', source: 'ai-waanda', target: 'core-db', type: 'dataPacket', animated: true, label: 'Direct Access', style: { stroke: '#f59e0b', strokeDasharray: '5 5' }, markerStart: { type: MarkerType.ArrowClosed, color: '#f59e0b' } }, // Amber
+  { id: 'e-waanda-auth', source: 'ai-waanda', target: 'sys-auth', type: 'dataPacket', animated: true, label: 'Security Override', style: { stroke: '#ef4444', strokeDasharray: '5 5' } }, // Red
+  { id: 'e-waanda-admin', source: 'ai-waanda', target: 'p-admin', type: 'dataPacket', animated: true, label: 'Direct Feed', style: { stroke: '#8b5cf6', strokeDasharray: '5 5' } }, // Violet
 
   // KIMMP Omniscience (Global Control)
-  { id: 'e-kimmp-os', source: 'ai-kimmp', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Global Inject', style: { stroke: '#6366f1', strokeWidth: 2 } },
-  { id: 'e-kimmp-db', source: 'ai-kimmp', target: 'core-db', type: 'dataPacket', animated: true, label: 'State Sync', style: { stroke: '#6366f1', strokeDasharray: '2 8' } },
-  { id: 'e-kimmp-vdb', source: 'ai-kimmp', target: 'sys-vector', type: 'dataPacket', animated: true, label: 'Vector Sync', style: { stroke: '#6366f1', strokeDasharray: '2 8' } },
-  { id: 'e-kimmp-admin', source: 'ai-kimmp', target: 'p-admin', type: 'dataPacket', animated: true, label: 'Metrics', style: { stroke: '#6366f1' } }
-];
+  { id: 'e-kimmp-os', source: 'ai-kimmp', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Global Inject', style: { stroke: '#4f46e5', strokeWidth: 2 } }, // Indigo
+  { id: 'e-kimmp-db', source: 'ai-kimmp', target: 'core-db', type: 'dataPacket', animated: true, label: 'State Sync', style: { stroke: '#f59e0b', strokeDasharray: '2 8' }, markerStart: { type: MarkerType.ArrowClosed, color: '#f59e0b' } }, // Amber
+  { id: 'e-kimmp-vdb', source: 'ai-kimmp', target: 'sys-vector', type: 'dataPacket', animated: true, label: 'Vector Sync', style: { stroke: '#f43f5e', strokeDasharray: '2 8' }, markerStart: { type: MarkerType.ArrowClosed, color: '#f43f5e' } }, // Rose
+  { id: 'e-kimmp-admin', source: 'ai-kimmp', target: 'p-admin', type: 'dataPacket', animated: true, label: 'Metrics', style: { stroke: '#8b5cf6' } } // Violet
+].map((e, i) => ({ 
+  ...e, 
+  markerEnd: (e as any).markerEnd || { type: MarkerType.ArrowClosed, color: e.style?.stroke || '#fff' },
+  data: { ...(e as any).data, edgeNumber: i + 1 } 
+}));
 
 const initialKimmpNodes = [
   { id: 'g-kimmp-net', type: 'layerGroup', position: { x: 0, y: 0 }, width: 800, height: 600, data: { label: 'KIMMP Network (Internal)', color: '#6366f1', borderColor: '#818cf8' } },
@@ -519,22 +597,58 @@ const initialKimmpEdges = [
   { id: 'e-ag-a2', source: 'ag', target: 'ag-2', type: 'dataPacket', animated: true, style: { stroke: '#c084fc' } },
   { id: 'e-ag-a3', source: 'ag', target: 'ag-3', type: 'dataPacket', animated: true, style: { stroke: '#c084fc' } },
   { id: 'e-mc-a1', source: 'mc', target: 'ag-1', type: 'dataPacket', animated: true, style: { stroke: '#818cf8', strokeDasharray: '5 5' } },
-];
+].map((e, i) => ({ 
+  ...e, 
+  markerEnd: (e as any).markerEnd || { type: MarkerType.ArrowClosed, color: e.style?.stroke || '#fff' },
+  data: { ...(e as any).data, edgeNumber: i + 1 } 
+}));
 
 function InnerNetwork() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Extract the sub-page from the URL (e.g., /matrix, /thermal)
+  const pathParts = location.pathname.split('/');
+  const currentSubPage = pathParts[pathParts.length - 1];
+  
+  let activeTab = 'STANDARD';
+  if (currentSubPage === 'matrix') activeTab = 'MATRIX';
+  else if (currentSubPage === 'thermal') activeTab = 'THERMAL';
+  
+  const handleTabClick = (tab: string, path: string) => {
+    // If clicking the currently active tab, go back to the standard neural network view
+    if (activeTab === tab) {
+      const basePath = location.pathname.replace(/\/(matrix|thermal)$/, '');
+      navigate(basePath);
+    } else {
+      // If navigating to a new tab, ensure we build off the base path
+      const basePath = location.pathname.replace(/\/(matrix|thermal)$/, '');
+      navigate(`${basePath}/${path}`);
+    }
+  };
+
   const [chaosState, setChaosState] = useState('NORMAL'); 
   const [showMetrics, setShowMetrics] = useState(false);
-  const [isThermalMode, setIsThermalMode] = useState(false);
-  const [isMatrixMode, setIsMatrixMode] = useState(false);
   
+  const isMatrixMode = activeTab === 'MATRIX';
+  const isThermalMode = activeTab === 'THERMAL';
+
   const [focusGraph, setFocusGraph] = useState(null); 
   const [logs, setLogs] = useState([]);
   
+  const [showNeuralCore, setShowNeuralCore] = useState(true);
+  const [showSystemLogs, setShowSystemLogs] = useState(true);
+  
   const [nodes, setNodes] = useState(initialNodesMacro);
+  // Assign a unique number to every initial macro edge so they can be easily tracked visually
   const [edges, setEdges] = useState(initialEdgesMacro);
   
   const [dynamicKimmpNodes, setDynamicKimmpNodes] = useState([]);
   const [dynamicKimmpEdges, setDynamicKimmpEdges] = useState([]);
+  const [agentProgress, setAgentProgress] = useState<Record<string, number>>({}); // agentId → 0-100
+
+  const [semanticNodes, setSemanticNodes] = useState([]);
+  const [semanticEdges, setSemanticEdges] = useState([]);
 
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [time, setTime] = useState(new Date());
@@ -555,9 +669,56 @@ function InnerNetwork() {
   const [tiltX, setTiltX] = useState(0);
   const [tiltY, setTiltY] = useState(0);
 
-  const { fitView, setCenter } = useReactFlow();
+  const { fitView, setCenter, setViewport, getViewport, zoomIn, zoomOut } = useReactFlow();
   const { initAudio, playBlip, playErrorBlip, toggleAmbient, toggleAlarm, isReady } = useSciFiAudio();
 
+  // --- KEYBOARD NAVIGATION (PAN & SMOOTH ZOOM) ---
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ignore if typing in an input field (like the search box)
+      if (document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') return;
+
+      const panStep = 150;
+      const zoomDuration = 400;
+      const panDuration = 300;
+
+      switch (e.key) {
+        case 'ArrowUp':
+          e.preventDefault();
+          const vUp = getViewport();
+          setViewport({ ...vUp, y: vUp.y + panStep }, { duration: panDuration });
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          const vDown = getViewport();
+          setViewport({ ...vDown, y: vDown.y - panStep }, { duration: panDuration });
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          const vLeft = getViewport();
+          setViewport({ ...vLeft, x: vLeft.x + panStep }, { duration: panDuration });
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          const vRight = getViewport();
+          setViewport({ ...vRight, x: vRight.x - panStep }, { duration: panDuration });
+          break;
+        case '=':
+        case '+':
+          e.preventDefault();
+          zoomIn({ duration: zoomDuration });
+          break;
+        case '-':
+        case '_':
+          e.preventDefault();
+          zoomOut({ duration: zoomDuration });
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setViewport, getViewport, zoomIn, zoomOut]);
   const nodeTypes = useMemo(() => ({ kangqore: KangqoreNode, layerGroup: LayerGroupNode, shield: AegisShieldNode }), []);
   const edgeTypes = useMemo(() => ({ dataPacket: DataPacketEdge }), []);
 
@@ -585,12 +746,179 @@ function InnerNetwork() {
   };
 
   useEffect(() => {
+    // Get the authenticated singleton socket used across the entire OS
+    // connectSocket() is idempotent — safe to call even if already connected
+    connectSocket();
+    const socket = getSocket();
+
+    const mapAgentToNode = (agent, index) => {
+      const isWorking = agent.status === 'WORKING';
+      const progress = agent.taskProgress ?? 0;
+      return {
+        id: agent.id,
+        type: 'kangqore',
+        parentId: 'g-kimmp-net',
+        position: { x: 700 + (index % 2 === 0 ? 0 : 350), y: 100 + (Math.floor(index / 2) * 150) },
+        data: {
+          label: agent.name,
+          sub: agent.role,
+          icon: Robot,
+          color: agent.status === 'ERROR' ? '#ef4444' : isWorking ? '#22c55e' : '#c084fc',
+          desc: agent.currentTask
+            ? `▶ ${agent.currentTask}`
+            : agent.completedTasks
+            ? `✓ ${agent.completedTasks} tasks completed`
+            : 'Status: IDLE',
+          isWorking,
+          taskProgress: progress,
+          completedTasks: agent.completedTasks ?? 0,
+        }
+      };
+    };
+
+    const onConnected = () => logMessage('>> KIMMP: Live swarm telemetry connected.');
+
+    const onTopology = (agents) => {
+      logMessage(`>> SWARM: Synced ${agents.length} active agent(s).`);
+      const nodes = agents.map((agent, i) => mapAgentToNode(agent, i));
+      const edges = agents.map(agent => ({
+        id: `e-mc-${agent.id}`,
+        source: 'mc',
+        target: agent.id,
+        type: 'dataPacket',
+        animated: agent.status === 'WORKING',
+        style: {
+          stroke: agent.status === 'ERROR' ? '#ef4444' : agent.status === 'WORKING' ? '#22c55e' : '#c084fc',
+          strokeDasharray: agent.status === 'IDLE' ? '5 5' : 'none'
+        }
+      }));
+      setDynamicKimmpNodes(nodes);
+      setDynamicKimmpEdges(edges);
+    };
+
+    const onAgentSpawned = (agent) => {
+      logMessage(`>> KIMMP: New agent [${agent.name}] spawned online.`);
+      setDynamicKimmpNodes(prev => {
+        if (prev.find(n => n.id === agent.id)) return prev;
+        return [...prev, mapAgentToNode(agent, prev.length)];
+      });
+      setDynamicKimmpEdges(prev => {
+        if (prev.find(e => e.target === agent.id)) return prev;
+        return [...prev, { id: `e-mc-${agent.id}`, source: 'mc', target: agent.id, type: 'dataPacket', animated: false, style: { stroke: '#c084fc', strokeDasharray: '5 5' } }];
+      });
+    };
+
+    const onAgentUpdated = (agent) => {
+      setDynamicKimmpNodes(prev => {
+        const idx = prev.findIndex(n => n.id === agent.id);
+        if (idx === -1) return prev;
+        const newNodes = [...prev];
+        newNodes[idx] = mapAgentToNode(agent, idx);
+        return newNodes;
+      });
+      setDynamicKimmpEdges(prev => {
+        const idx = prev.findIndex(e => e.target === agent.id);
+        if (idx === -1) return prev;
+        const newEdges = [...prev];
+        newEdges[idx] = {
+          ...newEdges[idx],
+          animated: agent.status === 'WORKING',
+          style: {
+            stroke: agent.status === 'ERROR' ? '#ef4444' : agent.status === 'WORKING' ? '#22c55e' : '#c084fc',
+            strokeDasharray: agent.status === 'IDLE' ? '5 5' : 'none'
+          }
+        };
+        return newEdges;
+      });
+    };
+
+    const onSwarmLog = (msg) => logMessage(msg);
+
+    const onAgentProgress = ({ id, progress }: { id: string; progress: number }) => {
+      // Update lightweight progress state (avoids full node re-render on every tick)
+      setAgentProgress(prev => ({ ...prev, [id]: progress }));
+    };
+
+    socket.on('connected', onConnected);
+    socket.on('SWARM_TOPOLOGY', onTopology);
+    socket.on('AGENT_SPAWNED', onAgentSpawned);
+    socket.on('AGENT_UPDATED', onAgentUpdated);
+    socket.on('AGENT_PROGRESS', onAgentProgress);
+    socket.on('SWARM_LOG', onSwarmLog);
+
+    // If already connected, request topology immediately
+    if (socket.connected) {
+      socket.emit('request:swarm_topology');
+    }
+
+    return () => {
+      socket.off('connected', onConnected);
+      socket.off('SWARM_TOPOLOGY', onTopology);
+      socket.off('AGENT_SPAWNED', onAgentSpawned);
+      socket.off('AGENT_UPDATED', onAgentUpdated);
+      socket.off('AGENT_PROGRESS', onAgentProgress);
+      socket.off('SWARM_LOG', onSwarmLog);
+      // Do NOT disconnect — the socket is a shared singleton
+    };
+  }, [logMessage]);
+
+  useEffect(() => {
+    if (focusGraph === 'semantic-graph') {
+      api.get('/admin/hcip/graph').then(res => {
+        const data = res.data;
+        if (data.nodes && data.edges) {
+          const mapTypeToColor = (type: string) => {
+            if (type === 'risk') return '#ef4444';
+            if (type === 'state') return '#8b5cf6';
+            if (type === 'objective') return '#f59e0b';
+            if (type === 'persona') return '#ec4899';
+            if (type === 'action') return '#00c875';
+            return '#06b6d4'; // default
+          };
+          
+          let sNodes = data.nodes.map((n: any) => ({
+            id: n.id,
+            type: 'kangqore',
+            position: { x: 0, y: 0 },
+            data: { 
+              label: n.name || n.id.replace(/_/g, ' '),
+              sub: n.type.toUpperCase(),
+              icon: Graph,
+              color: mapTypeToColor(n.type)
+            }
+          }));
+          
+          let sEdges = data.edges.map((e: any, i: number) => ({
+            id: `se-${i}`,
+            source: e.source,
+            target: e.target,
+            type: 'dataPacket',
+            animated: true,
+            style: { stroke: '#0ea5e9' }
+          }));
+
+          const layouted = getLayoutedElements(sNodes, sEdges, 'LR');
+          setSemanticNodes(layouted.nodes);
+          setSemanticEdges(layouted.edges);
+          logMessage('>> KNOWLEDGE ENGINE: Graph topology synchronized.');
+        }
+      }).catch(err => {
+        logMessage('!! API ERROR FETCHING SEMANTIC GRAPH');
+        playErrorBlip();
+      });
+    }
+  }, [focusGraph, playErrorBlip, logMessage]);
+
+  useEffect(() => {
     let newNodes = initialNodesMacro;
     let newEdges = initialEdgesMacro;
 
     if (focusGraph === 'ai-kimmp') {
       newNodes = [...initialKimmpNodes, ...dynamicKimmpNodes];
       newEdges = [...initialKimmpEdges, ...dynamicKimmpEdges];
+    } else if (focusGraph === 'semantic-graph') {
+      newNodes = semanticNodes;
+      newEdges = semanticEdges;
     } else {
       newNodes = newNodes.map(n => {
         let hidden = false;
@@ -604,19 +932,35 @@ function InnerNetwork() {
       newEdges = newEdges.map(e => {
          const s = newNodes.find(n => n.id === e.source);
          const t = newNodes.find(n => n.id === e.target);
-         const hidden = (s && s.hidden) || (t && t.hidden);
-         return { ...e, hidden };
+         const hidden = (s && (s as any).hidden) || (t && (t as any).hidden);
+         return { ...e, hidden } as any;
       });
     }
 
     const finalNodes = newNodes.map(n => {
        if (n.id === 'ai-kimmp') return { ...n, data: { ...n.data, onDoubleClick: () => { playBlip(); setFocusGraph('ai-kimmp'); } } };
+       if (n.id === 'ai-ontology') return { ...n, data: { ...n.data, onDoubleClick: () => { playBlip(); setFocusGraph('semantic-graph'); } } };
        return n;
     });
 
-    setNodes(finalNodes);
-    setEdges(newEdges);
-  }, [focusGraph, dynamicKimmpNodes, dynamicKimmpEdges, playBlip, activeFilters]);
+    const finalEdges = newEdges.map((e, i) => ({
+      ...e,
+      data: { ...e.data, edgeNumber: i + 1 }
+    }));
+
+    setNodes(finalNodes as any);
+    setEdges(finalEdges as any);
+  }, [focusGraph, dynamicKimmpNodes, dynamicKimmpEdges, semanticNodes, semanticEdges, playBlip, activeFilters]);
+
+  // Sync live task progress into KIMMP node data without a full graph rebuild
+  useEffect(() => {
+    if (focusGraph !== 'ai-kimmp') return;
+    setNodes((prev: any[]) => prev.map(n => {
+      const progress = agentProgress[n.id];
+      if (progress === undefined) return n;
+      return { ...n, data: { ...n.data, taskProgress: progress } };
+    }) as any);
+  }, [agentProgress, focusGraph]);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -699,7 +1043,7 @@ function InnerNetwork() {
   };
 
   const toggleVoiceCommands = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       logMessage('!! JARVIS: Speech Recognition API not supported in this browser.');
       playErrorBlip();
@@ -762,7 +1106,7 @@ function InnerNetwork() {
     return nodes.map(n => ({
       ...n,
       style: {
-        ...n.style,
+        ...(n as any).style,
         opacity: neighborIds.has(n.id) || n.type === 'layerGroup' || n.type === 'shield' ? 1 : (isThermalMode || isMatrixMode ? 0.3 : 0.1),
         transition: 'opacity 0.5s ease'
       }
@@ -869,119 +1213,145 @@ function InnerNetwork() {
 
         {/* HUD LAYOUT OVERHAUL: TOP LEFT UNIFIED CONSOLE */}
         <div className="absolute top-8 left-8 z-40 pointer-events-auto flex flex-col gap-2 w-72">
-          <div className={`bg-[#020617]/70 backdrop-blur-2xl p-5 shadow-2xl cyber-panel border-l-4 ${isMatrixMode ? 'border-green-600 shadow-[0_0_30px_rgba(34,197,94,0.15)]' : 'border-cyan-500 shadow-[0_0_30px_rgba(6,182,212,0.15)]'}`}>
-            <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/10">
-              {chaosState === 'DB_OUTAGE' ? <Warning className="text-red-500 animate-pulse w-5 h-5" /> : <Lightning className={`${isMatrixMode ? 'text-green-500' : 'text-cyan-400'} animate-[spin_4s_linear_infinite] w-5 h-5`} />}
-              <div className="flex-1">
-                <h1 className={`text-base font-black tracking-widest uppercase ${chaosState === 'DB_OUTAGE' ? 'text-red-500' : (isMatrixMode ? 'text-green-500' : 'text-white')}`}>Neural Core</h1>
-                <p className={`text-[7px] font-mono tracking-[0.3em] font-bold ${chaosState === 'DB_OUTAGE' ? 'text-red-500' : (isMatrixMode ? 'text-green-600' : 'text-cyan-400')}`}>SYS.VER 9.5 // {chaosState}</p>
+          {showNeuralCore ? (
+            <div className={`bg-[#020617]/70 backdrop-blur-2xl p-5 shadow-2xl cyber-panel border-l-4 ${isMatrixMode ? 'border-green-600 shadow-[0_0_30px_rgba(34,197,94,0.15)]' : 'border-cyan-500 shadow-[0_0_30px_rgba(6,182,212,0.15)]'}`}>
+              <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/10">
+                {chaosState === 'DB_OUTAGE' ? <Warning className="text-red-500 animate-pulse w-5 h-5" /> : <Lightning className={`${isMatrixMode ? 'text-green-500' : 'text-cyan-400'} animate-[spin_4s_linear_infinite] w-5 h-5`} />}
+                <div className="flex-1">
+                  <h1 className={`text-base font-black tracking-widest uppercase ${chaosState === 'DB_OUTAGE' ? 'text-red-500' : (isMatrixMode ? 'text-green-500' : 'text-white')}`}>Neural Core</h1>
+                  <p className={`text-[7px] font-mono tracking-[0.3em] font-bold ${chaosState === 'DB_OUTAGE' ? 'text-red-500' : (isMatrixMode ? 'text-green-600' : 'text-cyan-400')}`}>SYS.VER 9.5 // {chaosState}</p>
+                </div>
+                
+                <div className="flex gap-1.5 items-center">
+                  {!isReady ? (
+                    <button onClick={handleAudioInit} className={`p-1.5 rounded border transition-all animate-pulse ${isMatrixMode ? 'bg-green-500/10 text-green-500 border-green-500 hover:bg-green-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/50 hover:bg-emerald-500/20'}`} title="Initialize Audio">
+                      <SpeakerHigh className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <button onClick={() => toggleAmbient(false)} className={`p-1.5 rounded border transition-all ${isMatrixMode ? 'bg-black text-green-700 border-green-800 hover:text-green-500' : 'bg-[#030712]/80 text-slate-400 border-slate-700 hover:bg-slate-800'}`} title="Mute Audio">
+                      <SpeakerSlash className="w-4 h-4" />
+                    </button>
+                  )}
+                  <button onClick={() => setShowNeuralCore(false)} className={`p-1.5 rounded border transition-all ${isMatrixMode ? 'bg-black text-green-700 border-green-800 hover:text-green-500' : 'bg-[#030712]/80 text-slate-400 border-slate-700 hover:bg-slate-800'}`} title="Minimize">
+                    <span className="font-mono text-[10px] font-bold leading-none px-0.5">X</span>
+                  </button>
+                </div>
               </div>
               
-              {!isReady ? (
-                <button onClick={handleAudioInit} className={`p-1.5 rounded border transition-all animate-pulse ${isMatrixMode ? 'bg-green-500/10 text-green-500 border-green-500 hover:bg-green-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/50 hover:bg-emerald-500/20'}`} title="Initialize Audio">
-                  <SpeakerHigh className="w-4 h-4" />
+              <div className="flex flex-col gap-1 font-mono text-[8px] tracking-widest text-slate-400 uppercase mb-3">
+                <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>LATENCY:</span> <span className={chaosState === 'HIGH_TRAFFIC' ? 'text-red-400' : (isMatrixMode ? 'text-green-400' : 'text-emerald-400')}>{(Math.random() * (chaosState === 'HIGH_TRAFFIC' ? 50 : 4) + 2).toFixed(1)}ms</span></div>
+                <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>ACTIVE NODES:</span> <span className={isMatrixMode ? 'text-green-400' : 'text-cyan-400'}>{nodes.length}</span></div>
+                <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>SYNCED EDGES:</span> <span className={isMatrixMode ? 'text-green-400' : 'text-cyan-400'}>{edges.length}</span></div>
+                <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>SYS TIME:</span> <span className={isMatrixMode ? 'text-green-300' : 'text-white'}>{time.toLocaleTimeString()}</span></div>
+              </div>
+
+              <div className={`flex items-center gap-2 bg-black/50 border px-3 py-2 rounded-lg ${isMatrixMode ? 'border-green-600/50' : 'border-cyan-500/30'}`}>
+                  <Target className={`w-3.5 h-3.5 ${isMatrixMode ? 'text-green-500' : 'text-cyan-400'}`} />
+                  <input 
+                    type="text" 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={executeSearch}
+                    placeholder="CMD + K TO TARGET" 
+                    className={`bg-transparent border-none outline-none text-[8px] font-mono tracking-widest w-full uppercase ${isMatrixMode ? 'text-green-400 placeholder-green-700' : 'text-cyan-100 placeholder-cyan-500/50'}`}
+                  />
+              </div>
+              
+              {(selectedNodeId || targetLockedNodeId) && (
+                <button onClick={() => { setSelectedNodeId(null); setTargetLockedNodeId(null); fitView({ duration: 1000 }); }} className="w-full mt-2 text-[8px] font-mono font-bold px-2 py-1.5 bg-red-500/10 text-red-400 border border-red-500/50 hover:bg-red-500/20 rounded-md transition-all uppercase tracking-widest flex justify-between items-center group">
+                  <span>Disengage Lock</span>
+                  <Warning className="w-3.5 h-3.5 group-hover:animate-ping" />
                 </button>
-              ) : (
-                <button onClick={() => toggleAmbient(false)} className={`p-1.5 rounded border transition-all ${isMatrixMode ? 'bg-black text-green-700 border-green-800 hover:text-green-500' : 'bg-[#030712]/80 text-slate-400 border-slate-700 hover:bg-slate-800'}`} title="Mute Audio">
-                  <SpeakerSlash className="w-4 h-4" />
+              )}
+              
+              {focusGraph && (
+                <button onClick={() => { setFocusGraph(null); playBlip(); }} className={`w-full mt-2 text-[8px] font-mono font-bold px-2 py-1.5 rounded-md border transition-all uppercase tracking-widest flex justify-between items-center group ${isMatrixMode ? 'bg-green-900/20 text-green-400 border-green-600 hover:bg-green-900/40' : 'bg-purple-500/10 text-purple-400 border-purple-500/50 hover:bg-purple-500/20'}`}>
+                  <span>Return Macro View</span>
+                  <CaretLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
                 </button>
               )}
             </div>
-            
-            <div className="flex flex-col gap-1 font-mono text-[8px] tracking-widest text-slate-400 uppercase mb-3">
-              <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>LATENCY:</span> <span className={chaosState === 'HIGH_TRAFFIC' ? 'text-red-400' : (isMatrixMode ? 'text-green-400' : 'text-emerald-400')}>{(Math.random() * (chaosState === 'HIGH_TRAFFIC' ? 50 : 4) + 2).toFixed(1)}ms</span></div>
-              <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>ACTIVE NODES:</span> <span className={isMatrixMode ? 'text-green-400' : 'text-cyan-400'}>{nodes.length}</span></div>
-              <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>SYNCED EDGES:</span> <span className={isMatrixMode ? 'text-green-400' : 'text-cyan-400'}>{edges.length}</span></div>
-              <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>SYS TIME:</span> <span className={isMatrixMode ? 'text-green-300' : 'text-white'}>{time.toLocaleTimeString()}</span></div>
-            </div>
-
-            <div className={`flex items-center gap-2 bg-black/50 border px-3 py-2 rounded-lg ${isMatrixMode ? 'border-green-600/50' : 'border-cyan-500/30'}`}>
-                <Target className={`w-3.5 h-3.5 ${isMatrixMode ? 'text-green-500' : 'text-cyan-400'}`} />
-                <input 
-                  type="text" 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={executeSearch}
-                  placeholder="CMD + K TO TARGET" 
-                  className={`bg-transparent border-none outline-none text-[8px] font-mono tracking-widest w-full uppercase ${isMatrixMode ? 'text-green-400 placeholder-green-700' : 'text-cyan-100 placeholder-cyan-500/50'}`}
-                />
-            </div>
-            
-            {(selectedNodeId || targetLockedNodeId) && (
-              <button onClick={() => { setSelectedNodeId(null); setTargetLockedNodeId(null); fitView({ duration: 1000 }); }} className="w-full mt-2 text-[8px] font-mono font-bold px-2 py-1.5 bg-red-500/10 text-red-400 border border-red-500/50 hover:bg-red-500/20 rounded-md transition-all uppercase tracking-widest flex justify-between items-center group">
-                <span>Disengage Lock</span>
-                <Warning className="w-3.5 h-3.5 group-hover:animate-ping" />
-              </button>
-            )}
-            
-            {focusGraph && (
-              <button onClick={() => { setFocusGraph(null); playBlip(); }} className={`w-full mt-2 text-[8px] font-mono font-bold px-2 py-1.5 rounded-md border transition-all uppercase tracking-widest flex justify-between items-center group ${isMatrixMode ? 'bg-green-900/20 text-green-400 border-green-600 hover:bg-green-900/40' : 'bg-purple-500/10 text-purple-400 border-purple-500/50 hover:bg-purple-500/20'}`}>
-                <span>Return Macro View</span>
-                <CaretLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
-              </button>
-            )}
-          </div>
+          ) : (
+            <button onClick={() => setShowNeuralCore(true)} className={`bg-[#020617]/70 backdrop-blur-2xl px-4 py-2 border flex items-center gap-2 ${isMatrixMode ? 'border-green-600 text-green-500' : 'border-cyan-500 text-cyan-400'} hover:bg-white/5 transition-colors self-start`}>
+              <Lightning className="w-4 h-4 animate-[spin_4s_linear_infinite]" />
+              <span className="font-mono text-[9px] font-bold tracking-widest uppercase">SYS.CORE [RESTORE]</span>
+            </button>
+          )}
         </div>
 
 
 
         {/* HUD LAYOUT OVERHAUL: TOP RIGHT ANCHORED LOGS */}
-        <div className={`absolute top-8 right-8 z-40 w-72 bg-[#020617]/70 backdrop-blur-2xl p-4 shadow-2xl pointer-events-none cyber-panel-reverse border-r-4 ${isMatrixMode ? 'border-green-600' : 'border-cyan-500'}`}>
-           <div className={`flex items-center justify-between border-b pb-2 mb-2 ${isMatrixMode ? 'border-green-800' : 'border-white/10'}`}>
-             <span className={`text-[7px] font-mono tracking-[0.2em] uppercase font-bold ${isMatrixMode ? 'text-green-600' : 'text-slate-400'}`}>System Logs</span>
-             <Pulse className={`w-3 h-3 animate-pulse ${isMatrixMode ? 'text-green-500' : 'text-emerald-400'}`} />
-           </div>
-           <div className="flex flex-col gap-1 font-mono text-[7px] h-24 overflow-hidden justify-end">
-             {logs.map((log, i) => (
-               <div key={i} className={`${log.startsWith('!!') ? 'text-red-400 font-bold' : log.startsWith('>>') ? 'text-amber-400' : (isMatrixMode ? 'text-green-400' : 'text-cyan-300')} animate-[slideInRight_0.2s_ease-out]`}>
-                 {log}
-               </div>
-             ))}
-           </div>
+        <div className="absolute top-8 right-8 z-40 w-72 pointer-events-auto flex flex-col items-end gap-2">
+          {showSystemLogs ? (
+            <div className={`w-full bg-[#020617]/70 backdrop-blur-2xl p-4 shadow-2xl cyber-panel-reverse border-r-4 ${isMatrixMode ? 'border-green-600' : 'border-cyan-500'}`}>
+              <div className={`flex items-center justify-between border-b pb-2 mb-2 ${isMatrixMode ? 'border-green-800' : 'border-white/10'}`}>
+                <span className={`text-[7px] font-mono tracking-[0.2em] uppercase font-bold ${isMatrixMode ? 'text-green-600' : 'text-slate-400'}`}>System Logs</span>
+                <div className="flex items-center gap-3">
+                  <Pulse className={`w-3 h-3 animate-pulse ${isMatrixMode ? 'text-green-500' : 'text-emerald-400'}`} />
+                  <button onClick={() => setShowSystemLogs(false)} className={`p-1 rounded transition-all ${isMatrixMode ? 'text-green-700 hover:text-green-500' : 'text-slate-500 hover:text-slate-300'}`} title="Minimize">
+                    <span className="font-mono text-[9px] font-bold leading-none px-0.5">X</span>
+                  </button>
+                </div>
+              </div>
+              <div className="flex flex-col gap-1 font-mono text-[7px] h-24 overflow-hidden justify-end pointer-events-none">
+                {logs.map((log, i) => (
+                  <div key={i} className={`${log.startsWith('!!') ? 'text-red-400 font-bold' : log.startsWith('>>') ? 'text-amber-400' : (isMatrixMode ? 'text-green-400' : 'text-cyan-300')} animate-[slideInRight_0.2s_ease-out]`}>
+                    {log}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <button onClick={() => setShowSystemLogs(true)} className={`bg-[#020617]/70 backdrop-blur-2xl px-4 py-2 border flex items-center gap-2 ${isMatrixMode ? 'border-green-600 text-green-500' : 'border-cyan-500 text-cyan-400'} hover:bg-white/5 transition-colors self-end`}>
+              <span className="font-mono text-[9px] font-bold tracking-widest uppercase">SYS.LOGS [RESTORE]</span>
+              <Pulse className="w-4 h-4 animate-pulse" />
+            </button>
+          )}
         </div>
 
         {/* HUD LAYOUT OVERHAUL: BOTTOM RIGHT STACKED CHAOS & MINIMAP */}
-        <div className="absolute bottom-8 right-8 z-40 flex flex-col gap-4 pointer-events-auto items-end w-80">
+        <div className="absolute bottom-8 right-8 z-40 flex flex-col gap-4 pointer-events-auto items-end w-32">
           
           <div className="flex gap-2 w-full">
             <button 
-              onClick={() => { playBlip(); setIsMatrixMode(!isMatrixMode); setIsThermalMode(false); }}
-              className={`flex-1 text-[9px] font-mono font-bold px-2 py-3 rounded-xl uppercase tracking-widest flex justify-center items-center gap-2 transition-all ${isMatrixMode ? 'bg-green-500/20 text-green-400 border border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-[#030712] border border-slate-700 text-slate-400 hover:bg-slate-800'}`}
+              onClick={() => { playBlip(); handleTabClick('MATRIX', 'matrix'); }}
+              className={`flex-1 text-[7px] font-mono font-bold px-1 py-1.5 rounded-lg uppercase tracking-widest flex justify-center items-center gap-1.5 transition-all ${isMatrixMode ? 'bg-green-500/20 text-green-400 border border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-[#030712] border border-slate-700 text-slate-400 hover:bg-slate-800'}`}
             >
-              <CodeBlock className="w-3.5 h-3.5" />
+              <CodeBlock className="w-3 h-3" />
               <span>Matrix</span>
             </button>
 
             <button 
-              onClick={() => { playBlip(); setIsThermalMode(!isThermalMode); setIsMatrixMode(false); }}
-              className={`flex-1 text-[9px] font-mono font-bold px-2 py-3 rounded-xl uppercase tracking-widest flex justify-center items-center gap-2 transition-all ${isThermalMode ? 'bg-orange-500/20 text-orange-400 border border-orange-500/50 shadow-[0_0_15px_rgba(255,100,0,0.3)]' : 'bg-[#030712] border border-slate-700 text-slate-400 hover:bg-slate-800'}`}
+              onClick={() => { playBlip(); handleTabClick('THERMAL', 'thermal'); }}
+              className={`flex-1 text-[7px] font-mono font-bold px-1 py-1.5 rounded-lg uppercase tracking-widest flex justify-center items-center gap-1.5 transition-all ${isThermalMode ? 'bg-orange-500/20 text-orange-400 border border-orange-500/50 shadow-[0_0_15px_rgba(255,100,0,0.3)]' : 'bg-[#030712] border border-slate-700 text-slate-400 hover:bg-slate-800'}`}
             >
-              <Thermometer className="w-3.5 h-3.5" />
+              <Thermometer className="w-3 h-3" />
               <span>Thermal</span>
             </button>
           </div>
 
-          <div className="bg-[#020617]/80 p-5 backdrop-blur-2xl shadow-2xl w-full cyber-panel border-r-4 border-slate-700">
-            <h3 className="text-[11px] font-mono font-bold text-slate-300 uppercase tracking-[0.2em] border-b border-white/10 pb-3 mb-4 flex items-center gap-2">
-               <Warning className="w-4 h-4 text-amber-500" />
+          <div className="bg-[#020617]/80 p-3 backdrop-blur-2xl shadow-2xl w-full cyber-panel border-r-4 border-slate-700">
+            <h3 className="text-[9px] font-mono font-bold text-slate-300 uppercase tracking-[0.2em] border-b border-white/10 pb-2 mb-2 flex items-center gap-1.5">
+               <Warning className="w-3 h-3 text-amber-500" />
                Chaos Engineering
             </h3>
             
             <div className="flex flex-col gap-2">
               <button 
                 onClick={() => { playBlip(); setChaosState(chaosState === 'NORMAL' ? 'DB_OUTAGE' : 'NORMAL'); }}
-                className={`text-[10px] font-mono font-bold px-4 py-3 rounded-lg uppercase tracking-widest flex justify-between items-center transition-all ${chaosState === 'DB_OUTAGE' ? 'bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.5)]' : 'bg-slate-800/50 text-slate-300 hover:bg-slate-800 border border-slate-700'}`}
+                className={`text-[8px] font-mono font-bold px-2 py-1.5 rounded uppercase tracking-widest flex justify-between items-center transition-all ${chaosState === 'DB_OUTAGE' ? 'bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.5)]' : 'bg-slate-800/50 text-slate-300 hover:bg-slate-800 border border-slate-700'}`}
               >
                 <span>DB Outage</span>
-                <Database className="w-4 h-4" />
+                <Database className="w-3 h-3" />
               </button>
               
               <button 
                 onClick={() => { playBlip(); setChaosState(chaosState === 'NORMAL' ? 'HIGH_TRAFFIC' : 'NORMAL'); }}
-                className={`text-[10px] font-mono font-bold px-4 py-3 rounded-lg uppercase tracking-widest flex justify-between items-center transition-all ${chaosState === 'HIGH_TRAFFIC' ? 'bg-amber-500 text-white shadow-[0_0_20px_rgba(245,158,11,0.5)]' : 'bg-slate-800/50 text-slate-300 hover:bg-slate-800 border border-slate-700'}`}
+                className={`text-[8px] font-mono font-bold px-2 py-1.5 rounded uppercase tracking-widest flex justify-between items-center transition-all ${chaosState === 'HIGH_TRAFFIC' ? 'bg-amber-500 text-white shadow-[0_0_20px_rgba(245,158,11,0.5)]' : 'bg-slate-800/50 text-slate-300 hover:bg-slate-800 border border-slate-700'}`}
               >
                 <span>High Traffic</span>
-                <Pulse className="w-4 h-4" />
+                <Pulse className="w-3 h-3" />
               </button>
             </div>
           </div>
@@ -995,7 +1365,7 @@ function InnerNetwork() {
             <button
               key={key}
               onClick={() => setActiveFilters(prev => ({ ...prev, [key]: !isActive }))}
-              className={`text-[9px] font-mono font-bold px-6 py-2 uppercase tracking-widest transition-all cyber-panel ${isActive ? 'bg-cyan-500/20 text-cyan-400 border-b border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.3)]' : 'bg-black/40 text-slate-500 hover:text-slate-300 hover:bg-white/5'}`}
+              className={`text-[7px] font-mono font-bold px-2 py-0.5 uppercase tracking-widest transition-all cyber-panel ${isActive ? 'bg-cyan-500/20 text-cyan-400 border-b border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.3)]' : 'bg-black/40 text-slate-500 hover:text-slate-300 hover:bg-white/5'}`}
             >
               {key}
             </button>

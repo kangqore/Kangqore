@@ -1,0 +1,29 @@
+{
+  "description": "Enterprise Pulse sentence templates used by computePulse() in enterpriseService.ts. Deterministic — filled from Gate 8 data, not free LLM text.",
+  "templates": [
+    {
+      "condition": "ois >= 80 && biggestGain > 5",
+      "sentence": "Enterprise is performing strongly. {biggestPillar} has improved {biggestGain} points this week. {topRec}"
+    },
+    {
+      "condition": "ois >= 60 && ois < 80",
+      "sentence": "Enterprise is healthy. {biggestMoverDescription}. {bottleneck} remains the largest bottleneck. {topRec}"
+    },
+    {
+      "condition": "ois >= 40 && ois < 60",
+      "sentence": "Enterprise needs attention. OIS is at {ois}/100. {bottleneck} is the priority this week. {topRec}"
+    },
+    {
+      "condition": "ois < 40",
+      "sentence": "Enterprise health is below threshold. Immediate focus required on {bottleneck}. {topRec}"
+    }
+  ],
+  "variables": {
+    "ois":                  "Current OIS composite score",
+    "biggestPillar":        "Name of the pillar with the largest positive week-on-week move",
+    "biggestGain":          "Points gained by the biggest mover",
+    "biggestMoverDescription": "One sentence describing the biggest mover",
+    "bottleneck":           "Name of the lowest-scoring pillar",
+    "topRec":               "Top Gate 8.2 recommendation, formatted as a single sentence"
+  }
+}

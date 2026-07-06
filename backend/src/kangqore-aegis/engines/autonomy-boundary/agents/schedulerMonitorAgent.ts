@@ -1,7 +1,10 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
 
 const VALID_ACTORS = new Set(['SCHEDULER', 'ADMIN', 'KIMMP'])
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
 export async function runSchedulerMonitorAgent(ctx: AgentContext): Promise<AegisAgentResult> {
   const start   = Date.now()
@@ -24,13 +27,15 @@ export async function runSchedulerMonitorAgent(ctx: AgentContext): Promise<Aegis
     : total > 0 && schedulerTriggered.length === 0 ? 'WARN'
     : 'PASS'
 
+  const llmSummary = await callLLM(SYSTEM, `Autonomous events (24h): ${total} total, ${schedulerTriggered.length} scheduler-triggered, ${eventTriggered.length} event-triggered, ${unauthorized.length} from unauthorized actors.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
+
   return {
     agentId:   'autonomy.scheduler-monitor',
     engine:    'AUTONOMY_BOUNDARY',
     verdict,
-    summary:   unauthorized.length > 0
+    summary:   llmSummary || (unauthorized.length > 0
       ? `CRITICAL: ${unauthorized.length} autonomous actions from unauthorized actors. Boundary breach.`
-      : `All ${total} autonomous actions (24h) originated from approved actors. ${schedulerTriggered.length} scheduler-triggered.`,
+      : `All ${total} autonomous actions (24h) originated from approved actors. ${schedulerTriggered.length} scheduler-triggered.`),
     findings: [
       `Autonomous events (24h): ${total}`,
       `Scheduler-triggered: ${schedulerTriggered.length}`,

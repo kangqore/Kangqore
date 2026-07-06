@@ -17,6 +17,7 @@ export interface SessionData {
 export interface CreateSessionData {
   userId: string;
   role: string;
+  currentOrgId?: string;
   ipAddress?: string;
   userAgent?: string;
 }
@@ -26,10 +27,10 @@ export interface CreateSessionData {
  * Returns access token, refresh token, and session ID
  */
 export const createSession = async (data: CreateSessionData): Promise<{ tokens: TokenPair; sessionId: string }> => {
-  const { userId, role, ipAddress, userAgent } = data;
+  const { userId, role, currentOrgId, ipAddress, userAgent } = data;
 
   // Generate token pair
-  const tokens = generateTokenPair(userId, role);
+  const tokens = generateTokenPair(userId, role, currentOrgId);
 
   // Calculate expiry (7 days from now)
   const expiresAt = new Date();

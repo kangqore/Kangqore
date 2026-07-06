@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Download, Image, FileText, Film, Palette, CheckCircle } from 'lucide-react'
+import { Download, Image, FileText, Palette, CheckCircle, AlertTriangle } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 
 type AssetCategory = 'All' | 'Logos' | 'Photography' | 'Documents' | 'Guidelines'
 
@@ -26,7 +27,7 @@ const ASSETS = [
 const PALETTE = [
   { name: 'Kangqore Blue',  hex: '#2564ea', cls: 'bg-os-blue'    },
   { name: 'Signal Cyan',    hex: '#4ab6d4', cls: 'bg-os-cyan'    },
-  { name: 'Deep Navy',      hex: '#151C2F', cls: 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10'      },
+  { name: 'Deep Navy',      hex: 'var(--os-surface)', cls: ''      },
   { name: 'Pure White',     hex: '#ffffff', cls: 'bg-white'      },
 ]
 
@@ -34,24 +35,27 @@ const FILTERS: AssetCategory[] = ['All', 'Logos', 'Photography', 'Documents', 'G
 
 export function JournalistAssets() {
   const [filter, setFilter] = useState<AssetCategory>('All')
-  const [downloaded, setDownloaded] = useState<Set<string>>(new Set())
+  const [requested, setRequested] = useState<Set<string>>(new Set())
 
   const visible = filter === 'All' ? ASSETS : ASSETS.filter(a => a.cat === filter)
 
-  function handleDownload(id: string) {
-    setDownloaded(prev => new Set([...prev, id]))
-  }
-
   return (
-    <div className="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
+    <div className="space-y-8">
+      <KIMMPSignalBar module="Press Assets" />
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">Press Assets</h1>
-        <p className="text-slate-500 mt-1 text-sm">Brand assets for verified press and media use. Please review the editorial guidelines before publishing.</p>
+        <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Press Assets</h1>
+        <p className="text-[var(--os-text-2)] mt-1 text-sm">
+          Sample asset listing — contact press@kangqore.com for actual files.
+        </p>
       </div>
 
-      {/* Usage note */}
-      <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300">
-        All assets are licensed for editorial press use only. Modifications to logos or brand marks are not permitted without written approval from <a href="mailto:press@kangqore.com" className="underline">press@kangqore.com</a>.
+      {/* Disclaimer */}
+      <div className="flex items-start gap-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30">
+        <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+        <p className="text-xs text-amber-300 leading-relaxed">
+          <span className="font-bold">SAMPLE LISTING — Files are not hosted here.</span> The assets shown are illustrative of what is available. To receive actual files, click the download icon to email the press team directly, or contact{' '}
+          <a href="mailto:press@kangqore.com" className="underline">press@kangqore.com</a>. All assets are for editorial use only; modifications to logos require written approval.
+        </p>
       </div>
 
       {/* Filters */}
@@ -63,7 +67,7 @@ export function JournalistAssets() {
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
               filter === f
                 ? 'bg-pink-600 text-white'
-                : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 text-slate-400 hover:text-white'
+                : 'os-card text-[var(--os-text-2)]'
             }`}
           >
             {f}
@@ -74,45 +78,47 @@ export function JournalistAssets() {
       {/* Assets grid */}
       <div className="grid sm:grid-cols-2 gap-3">
         {visible.map(({ id, icon: Icon, title, desc, format, size }) => (
-          <div key={id} className="flex items-center gap-3 p-4 rounded-2xl border border-white/10 border-t-white/20 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 hover:bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 transition-colors group">
+          <div key={id} className="os-card flex items-center gap-3 p-4 hover:shadow-md transition-all group">
             <div className="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center flex-shrink-0">
               <Icon className="w-5 h-5 text-pink-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-white text-sm truncate">{title}</p>
-              <p className="text-slate-500 text-xs truncate">{desc}</p>
+              <p className="font-semibold text-sm truncate" style={{ color: 'var(--os-text-1)' }}>{title}</p>
+              <p className="text-[var(--os-text-2)] text-xs truncate">{desc}</p>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 text-slate-400">{format}</span>
-                <span className="text-[10px] text-slate-500">{size}</span>
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded text-[var(--os-text-2)]" style={{ background: 'var(--os-surface)', border: '1px solid var(--os-border)' }}>{format}</span>
+                <span className="text-[10px] text-[var(--os-text-2)]">{size}</span>
               </div>
             </div>
-            <button
-              onClick={() => handleDownload(id)}
+            <a
+              href={`mailto:press@kangqore.com?subject=Asset+Request:+${encodeURIComponent(title)}`}
+              onClick={() => setRequested(prev => new Set([...prev, id]))}
+              title="Request this asset via email"
               className={`flex-shrink-0 p-2 rounded-lg transition-colors ${
-                downloaded.has(id)
-                  ? 'bg-os-success/10 text-os-success'
-                  : 'bg-slate-900/60 backdrop-blur-3xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.4)] ring-1 ring-white/5 text-slate-400 hover:text-white hover:bg-pink-600'
+                requested.has(id)
+                  ? 'bg-[#00c875]/10 text-[#00c875]'
+                  : 'text-[var(--os-text-2)] hover:text-white hover:bg-pink-600'
               }`}
             >
-              {downloaded.has(id)
+              {requested.has(id)
                 ? <CheckCircle className="w-4 h-4" />
                 : <Download className="w-4 h-4" />
               }
-            </button>
+            </a>
           </div>
         ))}
       </div>
 
       {/* Brand palette */}
       <section>
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Brand Palette</h2>
+        <h2 className="text-sm font-semibold text-[var(--os-text-2)] uppercase tracking-wider mb-4">Brand Palette</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {PALETTE.map(({ name, hex, cls }) => (
-            <div key={name} className="rounded-xl border border-white/10 border-t-white/20 overflow-hidden">
+            <div key={name} className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--os-border)' }}>
               <div className={`h-14 w-full ${cls}`} />
-              <div className="p-2.5 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10">
-                <p className="text-xs font-semibold text-slate-200">{name}</p>
-                <p className="text-[10px] text-slate-500 font-mono mt-0.5">{hex}</p>
+              <div className="p-2.5" style={{ background: 'var(--os-surface)', borderTop: '1px solid var(--os-border)' }}>
+                <p className="text-xs font-semibold text-[var(--os-text-1)]">{name}</p>
+                <p className="text-[10px] text-[var(--os-text-2)] font-mono mt-0.5">{hex}</p>
               </div>
             </div>
           ))}

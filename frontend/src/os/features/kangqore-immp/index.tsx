@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import {
   Brain, TrendingUp, BookOpen, Satellite, Bell, Activity,
-  Search, Target, FileText, UserCheck, CheckSquare, Newspaper,
+  Search, Target, FileText, UserCheck, CheckSquare, Newspaper, Cpu, Scale, Zap, GitBranch, LayoutDashboard, Shield, Gauge, Rocket, Radio, LineChart, Building2, Award, Lightbulb, FlaskConical, Globe2, FileJson,
 } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { getSocket } from '@lib/socket'
@@ -20,13 +20,30 @@ import { GoalsPage }    from './pages/GoalsPage'
 import { ReportsPage }  from './pages/ReportsPage'
 import { BehaviorPage } from './pages/BehaviorPage'
 import { ActionsPage }   from './pages/ActionsPage'
+import { TrainingPage }        from './pages/TrainingPage'
+import { DecisionsPage }      from './pages/DecisionsPage'
+import { OperationsPage }     from './pages/OperationsPage'
+import { WorkflowsPage }      from './pages/WorkflowsPage'
+import { MissionControlPage } from './pages/MissionControlPage'
+import { AIGovernancePage }   from './pages/AIGovernancePage'
+import { QEFPage }             from './pages/QEFPage'
+import { G7Page }              from './pages/G7Page'
+import { G8Page }                    from './pages/G8Page'
+import { FlightRecorderPage }        from './pages/FlightRecorderPage'
+import { EnterpriseDefinitionPage }  from './pages/EnterpriseDefinitionPage'
+import { CustomerZeroPage }          from './pages/CustomerZeroPage'
+import { EnterpriseCoachPage }       from './pages/EnterpriseCoachPage'
+import { DecisionEnginePage }        from './pages/DecisionEnginePage'
+import { DeploymentsPage }           from './pages/DeploymentsPage'
+import { BlueprintPage }             from './pages/BlueprintPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
 
 const TABS = [
-  { path: 'briefing',  end: false, label: 'Briefing',     icon: Newspaper   },
-  { path: '',          end: true,  label: 'Intelligence', icon: Brain       },
+  { path: 'mission-control', end: false, label: 'Mission Control', icon: LayoutDashboard },
+  { path: 'briefing',        end: false, label: 'Briefing',        icon: Newspaper       },
+  { path: '',                end: true,  label: 'Intelligence',    icon: Brain           },
   { path: 'forecast',  end: false, label: 'Forecast',     icon: TrendingUp  },
   { path: 'memory',    end: false, label: 'Memory',       icon: BookOpen    },
   { path: 'goals',     end: false, label: 'Goals',        icon: Target      },
@@ -37,6 +54,21 @@ const TABS = [
   { path: 'reports',   end: false, label: 'Reports',      icon: FileText    },
   { path: 'behavior',  end: false, label: 'Behavior',     icon: UserCheck   },
   { path: 'actions',    end: false, label: 'Actions',     icon: CheckSquare },
+  { path: 'training',    end: false, label: 'Gen 2',       icon: Cpu        },
+  { path: 'decisions',   end: false, label: 'Decisions',   icon: Scale      },
+  { path: 'operations',  end: false, label: 'Operations',  icon: Zap        },
+  { path: 'workflows',   end: false, label: 'Workflows',   icon: GitBranch  },
+  { path: 'ai-governance',       end: false, label: 'AI Health',  icon: Shield },
+  { path: 'quality-engineering', end: false, label: 'QEF',            icon: Gauge  },
+  { path: 'release-governance',  end: false, label: 'G7 Release',     icon: Rocket   },
+  { path: 'operational-intel',   end: false, label: 'Gate 8 — OIS',   icon: LineChart  },
+  { path: 'flight-recorder',     end: false, label: 'Flight Recorder', icon: Radio      },
+  { path: 'enterprise',          end: false, label: 'Enterprise',      icon: Building2  },
+  { path: 'customer-zero',       end: false, label: 'Customer Zero',   icon: Award         },
+  { path: 'coach',               end: false, label: 'Coach',           icon: Lightbulb     },
+  { path: 'decision-engine',     end: false, label: 'Decision Engine', icon: FlaskConical  },
+  { path: 'deployments',         end: false, label: 'Deployments',     icon: Globe2         },
+  { path: 'blueprint',           end: false, label: 'Blueprint',        icon: FileJson       },
 ]
 
 function useKIMMPSocket() {
@@ -114,7 +146,7 @@ export function KIMMMModule() {
   return (
     <div>
       {/* Scrollable tab bar */}
-      <div className="flex items-center gap-0.5 border-b border-white/10 border-t-white/20 mb-6 -mt-2 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-0.5 border-b border-[var(--os-border)] mb-6 -mt-2 overflow-x-auto scrollbar-none">
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
@@ -124,7 +156,7 @@ export function KIMMMModule() {
               'flex items-center gap-1.5 px-3.5 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
               isActive
                 ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-white/10 border-t-white/20'
+                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
             )}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -149,7 +181,23 @@ export function KIMMMModule() {
           <Route path="reports"       element={<ReportsPage />}  />
           <Route path="behavior"      element={<BehaviorPage />} />
           <Route path="actions"       element={<ActionsPage />}    />
-          <Route path="*"             element={<Navigate to={BASE} replace />} />
+          <Route path="training"      element={<TrainingPage />}   />
+          <Route path="mission-control" element={<MissionControlPage />} />
+          <Route path="decisions"       element={<DecisionsPage />}    />
+          <Route path="operations"      element={<OperationsPage />}   />
+          <Route path="workflows"        element={<WorkflowsPage />}    />
+          <Route path="ai-governance"       element={<AIGovernancePage />} />
+          <Route path="quality-engineering" element={<QEFPage />}            />
+          <Route path="release-governance"  element={<G7Page />}             />
+          <Route path="operational-intel"   element={<G8Page />}                   />
+          <Route path="flight-recorder"     element={<FlightRecorderPage />}       />
+          <Route path="enterprise"          element={<EnterpriseDefinitionPage />} />
+          <Route path="customer-zero"       element={<CustomerZeroPage />}          />
+          <Route path="coach"               element={<EnterpriseCoachPage />}       />
+          <Route path="decision-engine"     element={<DecisionEnginePage />}        />
+          <Route path="deployments"         element={<DeploymentsPage />}           />
+          <Route path="blueprint"           element={<BlueprintPage />}             />
+          <Route path="*"                   element={<Navigate to={BASE} replace />} />
         </Routes>
         </motion.div>
       </AnimatePresence>

@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }        from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 const BRUTE_FORCE_THRESHOLD = 10  // denials per 10-minute window = brute force
 const WINDOW_MS             = 10 * 60_000
@@ -31,6 +34,10 @@ export async function runThreatDetectionAgent(ctx: AgentContext): Promise<AegisA
   const uniqueActors = new Set(denied.map(d => d.actor)).size
 
   const verdict = isBruteForce ? 'CRITICAL' : total > 5 ? 'WARN' : total > 0 ? 'PASS' : 'INFO'
+
+  const llmSummary = await callLLM(SYSTEM,
+    `Threat detection (1h): ${total} access denials, ${uniqueActors} unique actors, max burst in 10-min window: ${maxBurst} (threshold: ${BRUTE_FORCE_THRESHOLD}), brute-force detected: ${isBruteForce}. Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
 
   return {
     agentId:  'sentinel.threat-detection',

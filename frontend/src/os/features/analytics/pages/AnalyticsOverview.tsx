@@ -106,7 +106,7 @@ export function AnalyticsOverview() {
   return (
     <div className="space-y-8">
       {isLoading && (
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+        <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)]">
           <Spinner size="sm" /> Loading latest platform analytics…
         </div>
       )}
@@ -132,14 +132,14 @@ export function AnalyticsOverview() {
             <div className="flex items-end gap-3 h-40">
               {userGrowth.map((m, i) => (
                 <div key={m.name} className="flex-1 flex flex-col items-center gap-1.5">
-                  <span className="text-xs font-semibold text-slate-300">
+                  <span className="text-xs font-semibold text-[var(--os-text-1)]">
                     {m.value}
                   </span>
                   <div
                     className={`w-full rounded-t-lg transition-all ${i === userGrowth.length - 1 ? 'bg-blue-500' : 'bg-blue-200'}`}
                     style={{ height: `${(m.value / maxVal) * 120}px` }}
                   />
-                  <span className="text-xs text-slate-500">{m.name}</span>
+                  <span className="text-xs text-[var(--os-text-2)]">{m.name}</span>
                 </div>
               ))}
             </div>
@@ -157,8 +157,8 @@ export function AnalyticsOverview() {
               return (
                 <div key={s.stage}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-slate-300 font-medium">{s.stage}</span>
-                    <span className="text-slate-500">{s.count} users ({pct.toFixed(0)}%)</span>
+                    <span className="text-[var(--os-text-1)] font-medium">{s.stage}</span>
+                    <span className="text-[var(--os-text-2)]">{s.count} users ({pct.toFixed(0)}%)</span>
                   </div>
                   <Progress
                     value={pct}
@@ -168,9 +168,9 @@ export function AnalyticsOverview() {
                 </div>
               )
             })}
-            <div className="pt-2 border-t border-white/10 border-t-white/20">
+            <div className="pt-2 border-t border-[var(--os-border)]">
               <div className="flex justify-between text-sm font-semibold">
-                <span className="text-white">Total Workspace Users</span>
+                <span className="text-[var(--os-text-1)]">Total Workspace Users</span>
                 <span className="text-blue-600">{stats.total_users}</span>
               </div>
             </div>
@@ -181,9 +181,9 @@ export function AnalyticsOverview() {
       {/* Full KPI table */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {KEY_METRICS.map(m => (
-          <div key={m.label} className="bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-white/10 border-t-white/20 rounded-xl p-4">
-            <p className="text-xs text-slate-500 mb-1">{m.label}</p>
-            <p className="text-xl font-bold text-white">{m.value}</p>
+          <div key={m.label} className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-4">
+            <p className="text-xs text-[var(--os-text-2)] mb-1">{m.label}</p>
+            <p className="text-xl font-bold text-[var(--os-text-1)]">{m.value}</p>
             <p className={`text-xs font-medium mt-1 ${m.up ? 'text-green-600' : 'text-red-500'}`}>
               {m.change}
             </p>
@@ -197,10 +197,10 @@ export function AnalyticsOverview() {
           <CardTitle>Module Health Index</CardTitle>
         </CardHeader>
         <CardBody className="p-0">
-          <div className="divide-y divide-[#2E2854]">
+          <div className="divide-y divide-[var(--os-border)]">
             {MODULE_HEALTH.map(m => (
               <div key={m.module} className="flex items-center gap-4 px-5 py-3.5">
-                <span className="text-sm font-medium text-white w-28">{m.module}</span>
+                <span className="text-sm font-medium text-[var(--os-text-1)] w-28">{m.module}</span>
                 <div className="flex-1">
                   <Progress
                     value={m.score}

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { FileText, Download, Eye, Lock, FolderOpen } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { api } from '@lib/api'
@@ -73,32 +74,33 @@ export function InvestorDocuments() {
   const totalDocs = dataRoom.reduce((s: number, f: typeof DATA_ROOM[0]) => s + f.docs.length, 0)
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6">
+      <KIMMPSignalBar module="Data Room" />
       <div>
-        <h2 className="text-xl font-bold text-white">Data Room</h2>
-        <p className="text-sm text-slate-500 mt-0.5">{totalDocs} documents · confidential investor access</p>
+        <h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Data Room</h2>
+        <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: 'var(--os-text-2)' }}>{totalDocs} documents · confidential investor access</p>
       </div>
 
       {dataRoom.map((folder: typeof DATA_ROOM[0]) => (
         <div key={folder.folder}>
           <div className="flex items-center gap-2 mb-3">
-            <FolderOpen className="w-4 h-4 text-slate-500" />
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{folder.folder}</p>
-            <span className="text-xs text-slate-500">({folder.docs.length})</span>
+            <FolderOpen className="w-4 h-4 text-[var(--os-text-2)]" />
+            <p className="text-xs font-bold text-[var(--os-text-2)] uppercase tracking-widest">{folder.folder}</p>
+            <span className="text-xs text-[var(--os-text-2)]">({folder.docs.length})</span>
           </div>
           <Card padding="none">
-            <ul className="divide-y divide-[#2E2854]">
+            <ul className="divide-y divide-[var(--os-border)]">
               {folder.docs.map((doc: Doc) => (
-                <li key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-900 transition-colors group">
+                <li key={doc.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[var(--os-surface)] transition-colors group">
                   <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0">
                     <FileText className="w-4 h-4 text-violet-500" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <p className="text-sm font-medium text-slate-200 truncate">{doc.title}</p>
-                      {doc.restricted && <Lock className="w-3 h-3 text-slate-500 flex-shrink-0" />}
+                      <p className="text-sm font-medium text-[var(--os-text-1)] truncate">{doc.title}</p>
+                      {doc.restricted && <Lock className="w-3 h-3 text-[var(--os-text-2)] flex-shrink-0" />}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-slate-500">
+                    <div className="flex items-center gap-3 text-xs text-[var(--os-text-2)]">
                       <Badge variant={TYPE_V[doc.type] ?? 'neutral'} size="sm">{doc.type}</Badge>
                       <span>{doc.format}</span>
                       <span>{doc.size}</span>
@@ -106,10 +108,10 @@ export function InvestorDocuments() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500 hover:text-slate-500">
+                    <button className="p-1.5 rounded-lg hover:bg-[var(--os-surface)] text-[var(--os-text-2)]">
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button className="p-1.5 rounded-lg hover:bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-500 hover:text-slate-500">
+                    <button className="p-1.5 rounded-lg hover:bg-[var(--os-surface)] text-[var(--os-text-2)]">
                       <Download className="w-4 h-4" />
                     </button>
                   </div>

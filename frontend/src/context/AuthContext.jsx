@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { getVisitorUuid } from '../hooks/useVisitorIdentity';
 
 const AuthContext = createContext(null);
 
@@ -104,6 +105,10 @@ export const AuthProvider = ({ children }) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
       setUser(user);
+      const vUuid = getVisitorUuid()
+      if (vUuid && user?.id) {
+        axios.post(`${API}/public/visitor/stitch`, { visitorUuid: vUuid, userId: user.id }).catch(() => {})
+      }
       return { success: true };
     } catch (error) {
        // If backend is unreachable or DB is down
@@ -139,10 +144,14 @@ export const AuthProvider = ({ children }) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
       setUser(user);
+      const vUuid = getVisitorUuid()
+      if (vUuid && user?.id) {
+        axios.post(`${API}/public/visitor/stitch`, { visitorUuid: vUuid, userId: user.id }).catch(() => {})
+      }
       return { success: true };
     } catch (error) {
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: error.response?.data?.error?.message || error.response?.data?.message || 'Signup failed' 
       };
     }

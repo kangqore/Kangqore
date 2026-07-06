@@ -506,3 +506,127 @@ export const AITransformationMagnet = () => {
     </section>
   );
 };
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 8. AI TOOLS & TECHNOLOGY SECTION
+// ═══════════════════════════════════════════════════════════════════════════════
+export const AIToolsSection = ({ title = 'Agentic AI Tools & Technology', items = [] }) => {
+  const iconMap = { Network, Brain, Layers, Shield, Eye, Database, Cpu, Search };
+  return (
+    <section className="py-24 bg-black border-t border-white/[0.04] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
+          {/* Left Column: Title and vertical list of 4 tools */}
+          <div className="w-full lg:w-1/2 flex flex-col">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-12 leading-tight font-display">
+              {title.includes(' & Technology') ? (
+                <>
+                  {title.replace(' & Technology', '')} &{' '}
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">Technology.</span>
+                </>
+              ) : (
+                title
+              )}
+            </h2>
+            <div className="space-y-8">
+              {items.map((item, i) => {
+                const Icon = iconMap[item.icon] || Network;
+                return (
+                  <div key={i} className="flex items-start gap-5 group">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400/40 group-hover:bg-cyan-400/20 transition-all duration-300 shadow-[0_0_15px_rgba(74,182,212,0.1)]">
+                      <Icon className="w-5.5 h-5.5" style={{ width: '20px', height: '20px' }} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-white/90 leading-snug tracking-tight">
+                        {item.title}
+                      </h3>
+                      <p className="text-slate-400 text-sm leading-relaxed mt-1.5 font-light">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right Column: Isometric Illustration */}
+          <div className="w-full lg:w-1/2 flex items-center justify-center">
+            <div className="relative max-w-lg w-full">
+              {/* Soft decorative background glow behind the illustration */}
+              <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none z-0" />
+              <img 
+                src="/images/capabilities/agentic-ai-tools-dark-illustration.png" 
+                alt="Agentic AI Tools & Technology Illustration" 
+                className="w-full h-auto object-contain relative z-10 animate-float"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 9. AI FAQ SECTION — dark, "BEFORE YOU SIGN" treatment
+// ═══════════════════════════════════════════════════════════════════════════════
+export const AIFAQSection = ({ faqs = [] }) => {
+  const [openFaq, setOpenFaq] = useState(0);
+
+  return (
+    <section className="py-32 relative overflow-hidden bg-black">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
+          <div>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">BEFORE YOU SIGN</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.2] tracking-tight text-white">
+              The hard questions,<br />
+              <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">answered (FAQ).</span>
+            </h2>
+          </div>
+          <div className="lg:pb-3 flex flex-col items-start gap-6">
+            <p className="text-lg sm:text-xl font-bold text-white leading-snug">
+              Talk through your specific workflow in 30 minutes.
+            </p>
+            <Link to="/contact" className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.12)]">
+              Schedule a Demo
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+            </Link>
+          </div>
+        </div>
+        <div className="space-y-0">
+          {faqs.map((faq, i) => {
+            const isOpen    = openFaq === i;
+            const question  = faq.q || faq.question;
+            const answer    = faq.a || faq.answer;
+            return (
+              <div key={i} className="border-t border-white/[0.06]">
+                <button
+                  onClick={() => setOpenFaq(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between gap-6 py-7 text-left group"
+                >
+                  <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white'}`}>
+                    {question}
+                  </span>
+                  <span className={`flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center transition-all duration-300 ${isOpen ? 'border-white/30 bg-white/10 rotate-45' : 'border-white/10 group-hover:border-white/30'}`}>
+                    <Plus className="w-3.5 h-3.5 text-white/60" />
+                  </span>
+                </button>
+                {isOpen && (
+                  <div className="pb-8">
+                    <p className="text-white/70 text-base font-medium leading-relaxed">{answer}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          <div className="border-t border-white/[0.06]" />
+        </div>
+      </div>
+    </section>
+  );
+};

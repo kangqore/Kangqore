@@ -1,0 +1,42 @@
+{
+  "template": "professional-services-qbr-v1",
+  "description": "Quarterly Business Review report structure. Populated from Gate 8 data.",
+  "sections": [
+    {
+      "id": "executive_summary",
+      "title": "Executive Summary",
+      "fields": ["coig.current", "coig.expected", "coig.potential", "emi.level", "ois.current"]
+    },
+    {
+      "id": "enterprise_goals",
+      "title": "Enterprise Goal Progress",
+      "fields": ["goals[*].label", "goals[*].target", "goals[*].current", "goals[*].progress"]
+    },
+    {
+      "id": "delivery",
+      "title": "Delivery Performance",
+      "fields": ["projects.active", "projects.onTime", "projects.atRisk", "milestones.dueThisQuarter", "milestones.delivered", "sla.adherence"]
+    },
+    {
+      "id": "finance",
+      "title": "Finance Health",
+      "fields": ["invoices.issued", "invoices.collected", "invoices.overdue", "invoices.avgPaymentDays", "collections.actioned"]
+    },
+    {
+      "id": "pipeline",
+      "title": "Pipeline Intelligence",
+      "fields": ["leads.total", "leads.qualified", "leads.winRate", "proposals.sent", "proposals.converted", "pipeline.estimatedValue"]
+    },
+    {
+      "id": "waanda_impact",
+      "title": "WAANDA Impact",
+      "fields": ["adoption.workflowsRun", "adoption.decisionsAccepted", "adoption.manualOverrides", "adoption.hoursSaved", "coach.insightsActed"]
+    },
+    {
+      "id": "next_quarter",
+      "title": "Next Quarter Priorities",
+      "source": "gate8.recommendations",
+      "maxItems": 5
+    }
+  ]
+}

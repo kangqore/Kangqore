@@ -1,0 +1,46 @@
+{
+  "description": "Pre-validated recommendation seeds for new PS deployments. These bootstrap Gate 8.2 before enough operational data has accumulated to generate organic recommendations.",
+  "recommendations": [
+    {
+      "pillar":      "workflow",
+      "title":       "Run the Milestone Review workflow for all active projects",
+      "description": "7-day pre-milestone health checks prevent last-minute escalations. Run on all active projects this week.",
+      "oisImpact":   3.5,
+      "effort":      "LOW",
+      "timeframe":   "THIS_WEEK"
+    },
+    {
+      "pillar":      "enterprise",
+      "title":       "Set COIG baseline now",
+      "description": "Without a baseline snapshot, no COIG number can be computed. Save one immediately to start measuring improvement.",
+      "oisImpact":   0,
+      "effort":      "LOW",
+      "timeframe":   "TODAY",
+      "blocking":    true
+    },
+    {
+      "pillar":      "business",
+      "title":       "Run Lead Qualification on all unscored leads",
+      "description": "Leads without a DEAL_COACH qualification score have no actionable priority signal. Run qualification flow on all PROSPECT-status leads.",
+      "oisImpact":   2.0,
+      "effort":      "LOW",
+      "timeframe":   "THIS_WEEK"
+    },
+    {
+      "pillar":      "decision",
+      "title":       "Clear L3 approval backlog",
+      "description": "Pending L3 approvals that are > 48h old are suppressing the Decision Intelligence pillar. Review and act.",
+      "oisImpact":   4.0,
+      "effort":      "MEDIUM",
+      "timeframe":   "TODAY"
+    },
+    {
+      "pillar":      "adoption",
+      "title":       "Activate all 9 workflow templates",
+      "description": "Only activated workflows contribute to Adoption Intelligence. Trigger each template at least once to establish a baseline.",
+      "oisImpact":   1.5,
+      "effort":      "LOW",
+      "timeframe":   "THIS_WEEK"
+    }
+  ]
+}

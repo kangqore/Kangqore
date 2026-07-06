@@ -1,5 +1,8 @@
 import { prisma }          from '../../../../lib/prisma'
+import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+
+const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
 const RUNAWAY_THRESHOLD = 20 // > 20 autonomous events in any 1h window is suspicious
 
@@ -30,13 +33,17 @@ export async function runRunawayDetectorAgent(ctx: AgentContext): Promise<AegisA
   const runaway  = maxInWindow > RUNAWAY_THRESHOLD
   const verdict  = runaway ? 'CRITICAL' : maxInWindow > RUNAWAY_THRESHOLD * 0.7 ? 'WARN' : 'PASS'
 
+  const llmSummary = await callLLM(SYSTEM,
+    `Runaway loop detector (6h): ${total6h} autonomous events. Peak in any 1h window: ${maxInWindow} (threshold: ${RUNAWAY_THRESHOLD}). Runaway condition: ${runaway ? 'YES' : 'NO'}. Verdict: ${verdict}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`,
+    300)
+
   return {
     agentId:   'autonomy.runaway-detector',
     engine:    'AUTONOMY_BOUNDARY',
     verdict,
-    summary:   runaway
+    summary:   llmSummary || (runaway
       ? `RUNAWAY DETECTED: ${maxInWindow} autonomous events in a single 1h window (threshold: ${RUNAWAY_THRESHOLD}).`
-      : `No runaway loops detected. Peak: ${maxInWindow} autonomous events/hour over last 6h.`,
+      : `No runaway loops detected. Peak: ${maxInWindow} autonomous events/hour over last 6h.`),
     findings: [
       `Autonomous events (6h): ${total6h}`,
       `Peak events in any 1h window: ${maxInWindow}`,

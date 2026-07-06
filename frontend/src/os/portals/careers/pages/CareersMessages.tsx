@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Send, MessageSquare } from 'lucide-react'
+import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Avatar } from '@design-system/components/Avatar'
 import { Button } from '@design-system/components/Button'
 import { api, isDemo } from '@lib/api'
@@ -70,15 +71,17 @@ export function CareersMessages() {
   }
 
   return (
-    <div className="flex flex-col max-w-2xl" style={{ height: 'calc(100vh - 200px)', minHeight: 460 }}>
+    <div className="space-y-4">
+    <KIMMPSignalBar module="Messages" />
+    <div className="flex flex-col" style={{ height: 'calc(100vh - 260px)', minHeight: 460 }}>
       {/* Header */}
-      <div className="flex items-center gap-3 pb-4 border-b border-white/10 border-t-white/20 flex-shrink-0">
+      <div className="flex items-center gap-3 pb-4 flex-shrink-0" style={{ borderBottom: '1px solid var(--os-border)' }}>
         <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center">
           <MessageSquare className="w-4 h-4 text-amber-600" />
         </div>
         <div>
-          <p className="text-sm font-semibold text-white">Kangqore Talent Team</p>
-          <p className="text-xs text-slate-500">hr@kangqore.com · Anika Roy, Talent Lead</p>
+          <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>Kangqore Talent Team</p>
+          <p className="text-xs text-[var(--os-text-2)]">hr@kangqore.com · Anika Roy, Talent Lead</p>
         </div>
       </div>
 
@@ -87,7 +90,7 @@ export function CareersMessages() {
         {isLoading && (
           <div className="space-y-3 animate-pulse">
             {[1,2,3].map(i => (
-              <div key={i} className={`h-16 rounded-2xl bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 ${i % 2 === 0 ? 'ml-auto w-4/5' : 'w-4/5'}`} />
+              <div key={i} className={`h-16 rounded-2xl ${i % 2 === 0 ? 'ml-auto w-4/5' : 'w-4/5'}`} style={{ background: 'var(--os-surface)', border: '1px solid var(--os-border)' }} />
             ))}
           </div>
         )}
@@ -102,18 +105,15 @@ export function CareersMessages() {
               />
               <div>
                 {email.subject && (
-                  <p className={`text-[10px] font-semibold mb-1 ${isOutbound ? 'text-slate-500' : 'text-blue-300'}`}>
+                  <p className={`text-[10px] font-semibold mb-1 ${isOutbound ? 'text-[var(--os-text-2)]' : 'text-blue-300'}`}>
                     {email.subject}
                   </p>
                 )}
-                <div className={`rounded-2xl px-4 py-3 ${
-                  isOutbound
-                    ? 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 text-slate-200 rounded-tl-sm'
-                    : 'bg-os-warning text-white rounded-tr-sm'
-                }`}>
+                <div className={`rounded-2xl px-4 py-3 ${isOutbound ? 'rounded-tl-sm text-[var(--os-text-1)]' : 'bg-os-warning text-white rounded-tr-sm'}`}
+                  style={isOutbound ? { background: 'var(--os-surface)', border: '1px solid var(--os-border)' } : undefined}>
                   <p className="text-sm leading-relaxed">{email.body}</p>
                 </div>
-                <p className={`text-[10px] text-slate-500 mt-1 ${isOutbound ? '' : 'text-right'}`}>
+                <p className={`text-[10px] text-[var(--os-text-2)] mt-1 ${isOutbound ? '' : 'text-right'}`}>
                   {isOutbound ? 'Kangqore' : 'You'} · {fmtTime(email.createdAt)}
                 </p>
               </div>
@@ -124,7 +124,7 @@ export function CareersMessages() {
       </div>
 
       {/* Compose */}
-      <div className="border-t border-white/10 border-t-white/20 pt-3 flex-shrink-0">
+      <div className="pt-3 flex-shrink-0" style={{ borderTop: '1px solid var(--os-border)' }}>
         <div className="flex items-end gap-2">
           <textarea
             value={draft}
@@ -132,7 +132,8 @@ export function CareersMessages() {
             onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) send() }}
             rows={2}
             placeholder="Message the talent team… (⌘↵ to send)"
-            className="flex-1 resize-none border border-white/10 border-t-white/20 rounded-xl px-3 py-2.5 text-sm text-slate-300 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400"
+            className="flex-1 resize-none rounded-xl px-3 py-2.5 text-sm text-[var(--os-text-1)] placeholder-[var(--os-text-2)] focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400"
+            style={{ border: '1px solid var(--os-border)', background: 'var(--os-card)' }}
           />
           <Button
             variant="primary"
@@ -144,8 +145,9 @@ export function CareersMessages() {
             Send
           </Button>
         </div>
-        <p className="text-[10px] text-slate-500 mt-1">⌘↵ to send · replies go to hr@kangqore.com</p>
+        <p className="text-[10px] text-[var(--os-text-2)] mt-1">⌘↵ to send · replies go to hr@kangqore.com</p>
       </div>
+    </div>
     </div>
   )
 }

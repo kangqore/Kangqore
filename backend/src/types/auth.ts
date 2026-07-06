@@ -11,6 +11,7 @@ export interface User {
 export interface LoginRequest {
   email: string;
   password: string;
+  visitorUuid?: string;
 }
 
 export interface RegisterRequest {
@@ -20,6 +21,7 @@ export interface RegisterRequest {
   company?: string;
   phone?: string;
   role?: 'ADMIN' | 'CLIENT' | 'PARTNER' | 'INVESTOR' | 'JOB_SEEKER';
+  visitorUuid?: string;
 }
 
 export interface AuthResponse {

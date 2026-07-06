@@ -35,6 +35,7 @@ export default defineConfig(({ mode }) => {
         '@features':      path.resolve(__dirname, 'src/os/features'),
         '@components':    path.resolve(__dirname, 'src/os/components'),
         '@store':         path.resolve(__dirname, 'src/os/store'),
+        '@hooks':         path.resolve(__dirname, 'src/os/hooks'),
         '@lib':           path.resolve(__dirname, 'src/os/lib'),
         '@design-system': path.resolve(__dirname, 'src/os/design-system'),
         '@pages':         path.resolve(__dirname, 'src/os/pages'),
