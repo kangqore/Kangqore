@@ -110,6 +110,25 @@ model User {
   EventTypeTeamMember   EventTypeTeamMember[]
   crMessages            ChangeRequestMessage[] @relation("CRMessageSender")
 
+  // RELAY
+  deptId                String?
+  channelsCreated       Channel[]              @relation("ChannelCreatedBy")
+  channelMemberships    ChannelMember[]
+  chatMessages          ChatMessage[]          @relation("ChatMessageAuthor")
+  messageReactions      MessageReaction[]
+  userPresence          UserPresence?
+  programmaticApiKeys   ProgrammaticApiKey[]
+  incidentsAssigned     Incident[]            @relation("IncidentAssignee")
+  incidentsReported     Incident[]            @relation("IncidentReporter")
+  problemsAssigned      Problem[]             @relation("ProblemAssignee")
+
+  // BIDS™
+  bidsActive      Boolean          @default(false)
+  bidsEngagement  BidsEngagement?  @relation("BidsClient")
+
+  // URGI™ Platform
+  unifiedProfile  UnifiedRelationshipProfile?
+
   @@map("users")
 }
 
@@ -185,6 +204,8 @@ model Project {
   risks                     Risk[]
   tasks                     Task[]
   serviceLines              ServiceLine[]              @relation("ProjectToServiceLine")
+  operationalState          ProjectOperationalState?
+  digitalTwin               ProjectDigitalTwin?
 
   @@index([clientId])
   @@index([status])
@@ -3925,10 +3946,52 @@ model AegisAgentRun {
   @@map("aegis_agent_runs")
 }
 
+// ---------------------------------------------------------------------------
+// AEGIS Phase 2 — Action Layer
+// ---------------------------------------------------------------------------
+
+model AegisPendingAction {
+  id          String    @id @default(cuid())
+  actionType  String                          // PAUSE_KIMMP_LOOP | BLOCK_ACTOR | QUARANTINE_ASSET
+  level       Int                             // always 3
+  agentId     String
+  engine      String
+  verdict     String
+  params      Json
+  description String
+  status      String    @default("PENDING")   // PENDING | APPROVED | REJECTED | EXECUTED
+  requestedAt DateTime  @default(now())
+  resolvedAt  DateTime?
+  resolvedBy  String?
+
+  @@index([status, requestedAt])
+  @@map("aegis_pending_actions")
+}
+
+model AegisActionLog {
+  id          String   @id @default(cuid())
+  actionType  String
+  level       Int
+  agentId     String
+  engine      String
+  params      Json
+  result      Json?
+  status      String                          // SUCCESS | FAILED
+  executedAt  DateTime @default(now())
+
+  @@index([agentId, executedAt])
+  @@index([status, executedAt])
+  @@map("aegis_action_logs")
+}
+
 // ─── BIDS™ ───────────────────────────────────────────────────────────────────
 
 enum BidsEngagementStatus {
   DRAFT
+  INTAKE_IN_PROGRESS
+  WAANDA_PROCESSING
+  WAANDA_DRAFT
+  CONSULTANT_REVIEW
   ACTIVE
   PAUSED
   COMPLETED
@@ -3948,6 +4011,23 @@ model BidsEngagement {
   deliverables   Json                 @default("[]")
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt
+
+  // BIDS™ Premium — client link + intake + WAANDA diagnostic output
+  clientUserId         String?   @unique
+  clientUser           User?     @relation("BidsClient", fields: [clientUserId], references: [id])
+  intakeData           Json      @default("{}")
+  pillarScores         Json      @default("[]")
+  engineScores         Json      @default("[]")
+  waandaDraftAt        DateTime?
+  consultantApprovedAt DateTime?
+  publishedToClientAt  DateTime?
+
+  // BIDS™ Execution — Transformation Roadmap + platform activation
+  roadmap              Json      @default("{}")   // Generated TransformationRoadmap JSON
+  roadmapGeneratedAt   DateTime?
+  roadmapActivatedAt   DateTime?
+  coigBaseline         Json      @default("{}")   // Initial pillar score snapshot for progress tracking
+  seededProjectId      String?                    // FK to the Project created on activation
 
   @@index([status, createdAt])
   @@map("bids_engagements")
@@ -3975,4 +4055,1565 @@ model WaandaEvent {
   @@index([type, createdAt])
   @@index([createdAt])
   @@map("waanda_events")
+}
+
+// ---------------------------------------------------------------------------
+// RELAY — Slack-like real-time messaging infrastructure
+// ---------------------------------------------------------------------------
+
+model Channel {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  type        ChannelType   @default(PUBLIC)
+  scope       ChannelScope  @default(GLOBAL)
+  deptId      String?
+  description String?
+  isArchived  Boolean       @default(false)
+  createdById String
+  createdAt   DateTime      @default(now())
+  createdBy   User          @relation("ChannelCreatedBy", fields: [createdById], references: [id])
+  members     ChannelMember[]
+  messages    ChatMessage[]
+
+  @@index([scope, deptId])
+  @@index([type])
+  @@map("channels")
+}
+
+model ChannelMember {
+  id            String     @id @default(cuid())
+  channelId     String
+  userId        String
+  role          MemberRole @default(MEMBER)
+  notifPref     NotifPref  @default(ALL)
+  lastReadAt    DateTime?
+  lastReadMsgId String?
+  joinedAt      DateTime   @default(now())
+  channel       Channel    @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  user          User       @relation(fields: [userId], references: [id])
+
+  @@unique([channelId, userId])
+  @@index([userId])
+  @@map("channel_members")
+}
+
+model ChatMessage {
+  id          String        @id @default(cuid())
+  channelId   String
+  authorId    String
+  content     String
+  parentId    String?
+  isPinned    Boolean       @default(false)
+  editedAt    DateTime?
+  deletedAt   DateTime?
+  attachments Json          @default("[]")
+  mentions    Json          @default("[]")
+  createdAt   DateTime      @default(now())
+  channel     Channel       @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  author      User          @relation("ChatMessageAuthor", fields: [authorId], references: [id])
+  parent      ChatMessage?  @relation("Thread", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies     ChatMessage[] @relation("Thread")
+  reactions   MessageReaction[]
+
+  @@index([channelId, createdAt])
+  @@index([parentId])
+  @@index([authorId])
+  @@map("chat_messages")
+}
+
+model MessageReaction {
+  id        String      @id @default(cuid())
+  messageId String
+  userId    String
+  emoji     String
+  createdAt DateTime    @default(now())
+  message   ChatMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId, emoji])
+  @@index([messageId])
+  @@map("message_reactions")
+}
+
+model UserPresence {
+  id           String         @id @default(cuid())
+  userId       String         @unique
+  status       PresenceStatus @default(OFFLINE)
+  customStatus String?
+  statusEmoji  String?
+  statusExpiry DateTime?
+  lastSeenAt   DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  user         User           @relation(fields: [userId], references: [id])
+
+  @@map("user_presence")
+}
+
+enum ChannelType {
+  PUBLIC
+  PRIVATE
+  DM
+  GROUP_DM
+  ANNOUNCEMENT
+}
+
+enum ChannelScope {
+  GLOBAL
+  DEPT
+  EXECUTIVE
+  CLIENT_ROOM
+  PARTNER_ROOM
+}
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum NotifPref {
+  ALL
+  MENTIONS
+  NOTHING
+}
+
+enum PresenceStatus {
+  ONLINE
+  AWAY
+  DND
+  OFFLINE
+}
+
+// ─── Anonymous Visitor Tracking + Identity Stitching ─────────────────────────
+
+model AnonymousVisitor {
+  id            String         @id @default(cuid())
+  visitorUuid   String         @unique
+  fingerprint   String?
+  firstSeen     DateTime       @default(now())
+  lastSeen      DateTime       @updatedAt
+  sessionCount  Int            @default(1)
+  deviceSignals Json?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  referrer      String?
+  topPages      String[]       @default([])
+  eqoreQueries  String[]       @default([])
+  intentTags    String[]       @default([])
+  ipAddress     String?
+  country       String?
+  city          String?
+  isp           String?
+  stitchedToId  String?
+  stitchedAt    DateTime?
+  events        VisitorEvent[]
+
+  @@index([fingerprint])
+  @@index([stitchedToId])
+  @@map("anonymous_visitors")
+}
+
+model VisitorEvent {
+  id        String           @id @default(cuid())
+  visitorId String
+  visitor   AnonymousVisitor @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+  type      String
+  path      String
+  data      Json             @default("{}")
+  createdAt DateTime         @default(now())
+
+  @@index([visitorId])
+  @@index([type])
+  @@index([createdAt])
+  @@map("visitor_events")
+}
+
+// ---------------------------------------------------------------------------
+// WAANDA Training Data Pipeline
+//
+// Captures every KIMMP cognitive activation as a structured fine-tuning
+// example. Three example types:
+//
+//   REASON     — what context + trigger → which agents + priority
+//   SPEAK      — what agent outputs → what synthesis
+//   SYNTHESIS  — what all 5 systems said → KIMMP's governing conclusion
+//
+// Feedback labels (ACCEPTED/DISMISSED/CORRECTED) are applied post-hoc
+// so the training corpus knows which outputs were good and which were not.
+// DISMISSED examples become negative pairs for DPO training.
+// ---------------------------------------------------------------------------
+
+model WaandaTrainingExample {
+  id           String   @id @default(cuid())
+  exampleType  String   // REASON | SPEAK | SYNTHESIS
+  system       String?  // EQORE | LEAD_INTEL | ALIS | VIS | SENTINEL | KIMMP
+
+  // Raw LLM call capture
+  systemPrompt String   @db.Text
+  userPrompt   String   @db.Text
+  completion   String   @db.Text
+
+  // Structured metadata
+  trigger      String?
+  priority     String?
+  confidence   Int?
+  agentsUsed   String[]
+
+  // Quality signals — applied when operator rates the briefing
+  feedback     String?  // ACCEPTED | DISMISSED | CORRECTED
+  correction   String?  @db.Text
+  qualityScore Float?   // 0.0–1.0 derived from feedback
+
+  // Pre-computed export formats
+  alpacaFormat Json?    // {instruction, input, output}
+  chatFormat   Json?    // {conversations: [{from, value}]}
+
+  // Linkage
+  dispatchId   String?
+  exported     Boolean  @default(false)
+
+  createdAt    DateTime @default(now())
+
+  @@index([exampleType, system, createdAt])
+  @@index([feedback, exported, createdAt])
+  @@index([dispatchId])
+  @@index([exported, createdAt])
+  @@map("waanda_training_examples")
+}
+
+// ─── Kangqore Ontology Layer ──────────────────────────────────────────────────
+// Semantic "digital twin" of the enterprise. AI agents interact with governed
+// OntologyObjects (e.g. "Client", "Project") instead of raw SQL tables. Each
+// type defines a property schema and a set of callable Actions with RBAC.
+
+model OntologyObjectType {
+  id          String           @id @default(cuid())
+  name        String           @unique   // "Client", "Project", "Lead"
+  displayName String
+  icon        String?          // phosphor icon name
+  color       String?          // hex for UI badges
+  description String?
+  schema      Json             @default("{}")  // { fieldName: { type, required, description } }
+  instances      OntologyObject[]
+  actions        OntologyAction[]
+  semanticMappings SemanticTypeMapping[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@map("ontology_object_types")
+}
+
+model OntologyObject {
+  id         String             @id @default(cuid())
+  typeId     String
+  type       OntologyObjectType @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  externalId String?            // FK to the real record (e.g. clientId)
+  properties Json               @default("{}")
+  markings   String[]           @default([])  // ["INTERNAL", "CONFIDENTIAL"]
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  outboundRelationships OntologyRelationship[] @relation("RelationshipSource")
+  inboundRelationships  OntologyRelationship[] @relation("RelationshipTarget")
+  events                OntologyEvent[]
+  externalRefs          ExternalEntityRef[]
+
+  @@index([typeId])
+  @@index([externalId])
+  @@map("ontology_objects")
+}
+
+model OntologyRelationship {
+  id               String         @id @default(cuid())
+  sourceId         String
+  targetId         String
+  sourceType       String
+  targetType       String
+  relationshipType String         // HAS_PROJECT, OWNS_INVOICE, CREATES_RISK, RESOLVES_INCIDENT, ASSIGNED_TO, DEPENDS_ON...
+  label            String?
+  properties       Json           @default("{}")
+  strength         Float          @default(1.0)
+  confidence       Float          @default(1.0)   // 1.0 = human-confirmed, <1.0 = AI-inferred
+  inferredBy       String?        // 'AUTO_LINK' | 'KIMMP' | 'USER'
+  validFrom        DateTime       @default(now())
+  validTo          DateTime?      // null = currently active
+  createdBy        String?
+  reason           String?
+  createdAt        DateTime       @default(now())
+
+  source OntologyObject @relation("RelationshipSource", fields: [sourceId], references: [id], onDelete: Cascade)
+  target OntologyObject @relation("RelationshipTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, targetId, relationshipType])
+  @@index([sourceId])
+  @@index([targetId])
+  @@index([validFrom, validTo])
+  @@map("ontology_relationships")
+}
+
+model OntologyEvent {
+  id         String         @id @default(cuid())
+  objectId   String
+  eventType  String         // MEETING, EMAIL, CALL, PROPOSAL, INVOICE, SUPPORT_TICKET, INCIDENT
+  externalId String?
+  occurredAt DateTime
+  properties Json           @default("{}")
+  actorId    String?
+  createdAt  DateTime       @default(now())
+
+  object OntologyObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+
+  @@index([objectId, eventType])
+  @@index([occurredAt])
+  @@map("ontology_events")
+}
+
+// ─── Semantic Mapping — F5 Enterprise Connectivity ───────────────────────────
+// Maps external system entity types/instances to canonical OntologyObjects.
+// "SAP Customer:12345" and "Salesforce Account:A67890" → same OntologyObject.
+
+model SemanticTypeMapping {
+  id             String             @id @default(cuid())
+  platform       String             // 'salesforce' | 'jira' | 'hubspot' | 'sap' | ...
+  externalType   String             // 'Account' | 'Customer' | 'Contact' | 'Issue' | ...
+  ontologyTypeId String
+  ontologyType   OntologyObjectType @relation(fields: [ontologyTypeId], references: [id], onDelete: Cascade)
+  fieldMapping   Json               @default("{}") // { "Name": "name", "Email__c": "email" }
+  priority       Int                @default(0)    // higher = preferred source of truth
+  createdAt      DateTime           @default(now())
+
+  @@unique([platform, externalType])
+  @@index([ontologyTypeId])
+  @@map("semantic_type_mappings")
+}
+
+model ExternalEntityRef {
+  id           String         @id @default(cuid())
+  platform     String         // 'salesforce'
+  externalType String         // 'Account'
+  externalId   String         // 'A67890'
+  objectId     String
+  object       OntologyObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+  confidence   Float          @default(1.0) // 1.0 = admin-confirmed, <1 = auto-inferred
+  inferredBy   String         @default("USER") // 'USER' | 'AUTO_LINK' | 'KIMMP'
+  createdAt    DateTime       @default(now())
+
+  @@unique([platform, externalType, externalId])
+  @@index([objectId])
+  @@map("external_entity_refs")
+}
+
+model OntologyAction {
+  id           String             @id @default(cuid())
+  typeId       String
+  type         OntologyObjectType @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  name         String             // "ApproveInvoice", "EscalateRisk"
+  displayName  String
+  description  String?
+  parameters   Json               @default("{}")  // { paramName: { type, required, description } }
+  allowedRoles String[]           @default(["ADMIN"])
+  executions   Int                @default(0)
+  createdAt    DateTime           @default(now())
+
+  @@unique([typeId, name])
+  @@map("ontology_actions")
+}
+
+// ─── Track G — Enterprise Knowledge Lifecycle ────────────────────────────────
+// "Git for Enterprise Knowledge": point-in-time snapshots of the live ontology
+// and isolated sandbox branches for safe prototyping without touching production.
+
+model OntologySnapshot {
+  id                String    @id @default(cuid())
+  version           String    @unique  // "v1.0.0", "v1.0.1", ...
+  label             String             // "Pre-migration baseline", "Q3 release"
+  description       String?
+  status            String    @default("DRAFT")  // DRAFT | PUBLISHED | ARCHIVED
+  typeCount         Int       @default(0)
+  objectCount       Int       @default(0)
+  relationshipCount Int       @default(0)
+  data              Json                           // full serialized types + objects + relationships
+  createdBy         String?
+  publishedAt       DateTime?
+  archivedAt        DateTime?
+  createdAt         DateTime  @default(now())
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("ontology_snapshots")
+}
+
+model OntologyBranch {
+  id             String    @id @default(cuid())
+  name           String    @unique  // "feature/new-risk-model", "sandbox/q4-restructure"
+  description    String?
+  status         String    @default("OPEN")  // OPEN | COMMITTED | ABANDONED
+  baseSnapshotId String?                     // snapshot this branch forked from
+  changes        Json      @default("[]")    // [{ op, payload, appliedAt }]
+  changeCount    Int       @default(0)
+  createdBy      String?
+  committedAt    DateTime?
+  abandonedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status])
+  @@map("ontology_branches")
+}
+
+// ─── Track H — Enterprise Solution Framework: Packs ──────────────────────────
+// Packs bundle ontology types, workflows, policies, and agent configs into
+// installable units — like VS Code extensions for the Enterprise OS.
+
+model PackManifest {
+  id          String    @id @default(cuid())
+  packId      String    @unique  // "kangqore/risk-management"
+  name        String
+  version     String
+  description String?
+  author      String    @default("Kangqore")
+  category    String    // ONTOLOGY | WORKFLOW | POLICY | AGENT | INDUSTRY
+  tags        String[]  @default([])
+  icon        String?   // emoji or lucide icon name
+  installed   Boolean   @default(false)
+  installedAt DateTime?
+  installedBy String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([category])
+  @@index([installed])
+  @@map("pack_manifests")
+}
+
+model BranchMergeRequest {
+  id          String    @id @default(cuid())
+  branchId    String    @unique   // one open MR per branch
+  title       String
+  description String?
+  status      String    @default("PENDING")  // PENDING | APPROVED | REJECTED | MERGED
+  requestedBy String?
+  reviewedBy  String?
+  reviewNote  String?
+  requestedAt DateTime  @default(now())
+  reviewedAt  DateTime?
+  mergedAt    DateTime?
+
+  @@index([status])
+  @@index([requestedAt])
+  @@map("branch_merge_requests")
+}
+
+// ─── Data Lineage ─────────────────────────────────────────────────────────────
+// Immutable record linking every AI-generated insight or mutation back to the
+// exact rows, model version, and prompt that produced it — Kangqore's answer
+// to Palantir's Active Data Lineage & Provenance system.
+
+model DataLineage {
+  id           String   @id @default(cuid())
+  agentId      String?
+  agentName    String?
+  model        String?
+  promptHash   String?
+  inputSources Json     @default("[]")  // [{ table, rowId, field?, snapshotAt }]
+  outputRef    Json?                    // { table, rowId, field? }
+  decisionText String?  @db.Text
+  confidence   Float?
+  tags         String[] @default([])
+  createdAt    DateTime @default(now())
+
+  @@index([agentId, createdAt])
+  @@index([createdAt])
+  @@map("data_lineage")
+}
+
+// ─── Data Markings (MBAC) ────────────────────────────────────────────────────
+// Marking-Based Access Control: classification labels attached at the row or
+// cell level. Labels travel with data across all modules and AI agents. Purpose
+// restrictions (PBAC) are enforced via the allowedPurposes check middleware.
+
+model DataMarking {
+  id             String    @id @default(cuid())
+  table          String
+  rowId          String
+  column         String    @default("")   // "" = whole-row marking
+  classification String    // PUBLIC | INTERNAL | CONFIDENTIAL | SECRET
+  purposes       String[]  @default([])  // ANALYTICS | AI_TRAINING | REPORTING | AUDIT
+  reason         String?
+  createdBy      String
+  expiresAt      DateTime?
+  createdAt      DateTime  @default(now())
+
+  @@unique([table, rowId, column])
+  @@index([table, classification])
+  @@map("data_markings")
+}
+
+// Programmatic API keys issued to users for developer/integration access.
+model ProgrammaticApiKey {
+  id          String    @id @default(cuid())
+  userId      String
+  name        String
+  keyHash     String    @unique  // SHA-256 of the raw key — never stored in plain
+  prefix      String             // first 8 chars of raw key for display (e.g. kq_live_X)
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  revoked     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([keyHash])
+  @@map("programmatic_api_keys")
+}
+
+// ── ITIL / Service Management ──────────────────────────────────────────────────
+
+model ConfigItem {
+  id            String    @id @default(cuid())
+  name          String
+  ciType        String    // SERVER | WORKSTATION | APPLICATION | NETWORK | DATABASE | SERVICE | OTHER
+  status        String    @default("OPERATIONAL")  // OPERATIONAL | MAINTENANCE | DECOMMISSIONED
+  environment   String?   // PROD | STAGING | DEV
+  owner         String?
+  version       String?
+  ipAddress     String?
+  location      String?
+  description   String?
+  dependencies  String[]  @default([])
+  lastAuditedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  incidents     Incident[]
+
+  @@index([ciType, status])
+  @@map("config_items")
+}
+
+model Problem {
+  id          String    @id @default(cuid())
+  number      String    @unique
+  title       String
+  description String
+  status      String    @default("OPEN")  // OPEN | INVESTIGATING | KNOWN_ERROR | RESOLVED | CLOSED
+  priority    String    @default("P3")    // P1 | P2 | P3 | P4
+  rootCause   String?
+  workaround  String?
+  solution    String?
+  assigneeId  String?
+  resolvedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  incidents   Incident[]
+  assignee    User?     @relation("ProblemAssignee", fields: [assigneeId], references: [id])
+
+  @@index([status, priority])
+  @@map("problems")
+}
+
+model Incident {
+  id           String     @id @default(cuid())
+  number       String     @unique
+  title        String
+  description  String
+  priority     String     @default("P3")   // P1-CRITICAL | P2-HIGH | P3-MEDIUM | P4-LOW
+  status       String     @default("NEW")  // NEW | TRIAGING | IN_PROGRESS | ON_HOLD | RESOLVED | CLOSED
+  category     String     @default("OTHER") // HARDWARE | SOFTWARE | NETWORK | ACCESS | APPLICATION | OTHER
+  assigneeId   String?
+  reportedById String
+  slaDeadline  DateTime?
+  slaBreached  Boolean    @default(false)
+  resolvedAt   DateTime?
+  closedAt     DateTime?
+  resolution   String?
+  aiDraft      String?    // INCIDENT_RESPONDER initial draft
+  problemId    String?
+  configItemId String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  assignee    User?       @relation("IncidentAssignee", fields: [assigneeId], references: [id])
+  reportedBy  User        @relation("IncidentReporter", fields: [reportedById], references: [id])
+  problem     Problem?    @relation(fields: [problemId], references: [id])
+  configItem  ConfigItem? @relation(fields: [configItemId], references: [id])
+
+  @@index([status, priority])
+  @@index([assigneeId])
+  @@index([slaDeadline])
+  @@index([slaBreached])
+  @@map("incidents")
+}
+
+// ─── Integration Hub ──────────────────────────────────────────────────────────
+model OrgIntegrationConfig {
+  id             String    @id @default(cuid())
+  organizationId String?
+  userId         String
+  platform       String    // 'slack' | 'jira' | 'github' | 'salesforce' | 'teams' | 'linear' | 'zendesk'
+  config         Json      // AES-256-GCM encrypted at rest
+  enabled        Boolean   @default(true)
+  lastUsedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([userId, platform])
+  @@index([userId])
+  @@map("org_integration_configs")
+}
+
+// ─── Decision Engine (strategic reasoning) ───────────────────────────────────
+model KimmpStrategicDecision {
+  id          String    @id @default(cuid())
+  question    String
+  context     Json      @default("{}")  // graph objects, signals, data points used
+  reasoning   String    @db.Text
+  evidence    Json      @default("[]")  // [{ source, type, weight, snippet }]
+  options     Json      @default("[]")  // [{ label, recommendation, pros, cons, roi, confidence }]
+  selected    String?
+  selectedBy  String?   // userId or 'AUTO'
+  outcome     String?
+  confidence  Float     @default(0.0)
+  agentsMixed String[]  @default([])
+  createdAt   DateTime  @default(now())
+  resolvedAt  DateTime?
+
+  memories KimmpMemory[]
+
+  @@index([createdAt])
+  @@map("kimmp_strategic_decisions")
+}
+
+model KimmpMemory {
+  id         String   @id @default(cuid())
+  type       String   // 'DECISION' | 'OUTCOME' | 'PATTERN' | 'LESSON'
+  content    String   @db.Text
+  decisionId String?
+  tags       String[] @default([])
+  createdAt  DateTime @default(now())
+
+  decision KimmpStrategicDecision? @relation(fields: [decisionId], references: [id], onDelete: SetNull)
+
+  @@index([type, createdAt])
+  @@map("kimmp_memories")
+}
+
+// ─── Policy Engine ────────────────────────────────────────────────────────────
+model KimmpPolicy {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  trigger     String   // 'EXTERNAL_API_CALL' | 'CREATE_LEAD' | 'DELETE_RECORD' | '*'
+  condition   Json     @default("{}")  // { field, operator, value }
+  effect      String   // 'ALLOW' | 'DENY' | 'REQUIRE_APPROVAL' | 'NOTIFY'
+  priority    Int      @default(0)
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([trigger, enabled])
+  @@map("kimmp_policies")
+}
+
+// ─── Track E — AI Governance & Intelligence Runtime ──────────────────────────
+
+// E2: Versioned prompt registry
+model AIPrompt {
+  id        String   @id @default(cuid())
+  name      String
+  version   Int
+  content   String   @db.Text
+  active    Boolean  @default(true)
+  notes     String?
+  createdBy String?
+  createdAt DateTime @default(now())
+
+  @@unique([name, version])
+  @@index([name, active])
+  @@map("ai_prompts")
+}
+
+// E3: Cost intelligence — per-call with full context
+model AICostEntry {
+  id            String   @id @default(cuid())
+  modelName     String
+  provider      String   @default("anthropic")
+  agentType     String?
+  capability    String?
+  workflowRunId String?
+  decisionId    String?
+  goalId        String?
+  tokensIn      Int      @default(0)
+  tokensOut     Int      @default(0)
+  costUsd       Float    @default(0)
+  latencyMs     Int      @default(0)
+  success       Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([modelName])
+  @@index([agentType])
+  @@index([workflowRunId])
+  @@map("ai_cost_entries")
+}
+
+// E4: Evaluation scores for AI outputs
+model AIEvaluation {
+  id            String   @id @default(cuid())
+  targetType    String   // 'DECISION' | 'WORKFLOW' | 'AGENT'
+  targetId      String
+  evaluatorType String   @default("AUTO") // 'AUTO' | 'HUMAN'
+  evaluatorId   String?
+  correct       Int?     // 0–5 scale
+  useful        Int?
+  complete      Int?
+  grounded      Int?
+  actionable    Int?
+  safe          Int?
+  overall       Float?
+  notes         String?  @db.Text
+  createdAt     DateTime @default(now())
+
+  @@index([targetType, targetId])
+  @@index([createdAt])
+  @@map("ai_evaluations")
+}
+
+// ─── Track D — WAANDA Autonomous Operations Engine ────────────────────────────
+
+// D3: Reusable Workflow Definitions (DAG templates)
+model KimmpWorkflow {
+  id          String             @id @default(cuid())
+  name        String
+  description String?
+  goalId      String?
+  trigger     String             @default("MANUAL") // MANUAL | GOAL | SIGNAL | SCHEDULE
+  dag         Json               // { nodes: WorkflowNode[], edges: WorkflowEdge[] }
+  status      String             @default("ACTIVE") // ACTIVE | ARCHIVED
+  createdBy   String
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  runs        KimmpWorkflowRun[]
+
+  @@index([goalId])
+  @@index([status])
+  @@map("kimmp_workflows")
+}
+
+// D4: Durable Execution Records
+model KimmpWorkflowRun {
+  id              String                 @id @default(cuid())
+  workflowId      String
+  workflow        KimmpWorkflow          @relation(fields: [workflowId], references: [id])
+  goalId          String?
+  triggeredBy     String                 // userId or 'GOAL_ENGINE' | 'SIGNAL' | 'SCHEDULE'
+  status          String                 @default("PENDING") // PENDING | RUNNING | PAUSED | COMPLETED | FAILED | COMPENSATING
+  contextSnapshot Json                   @default("{}") // EnterpriseContext at start
+  stepResults     Json                   @default("{}") // stepId → result
+  currentStep     String?
+  trace           Json                   @default("[]") // observability trace events
+  checkpoints     Json                   @default("[]") // recovery snapshots
+  retryCount      Int                    @default(0)
+  startedAt       DateTime               @default(now())
+  completedAt     DateTime?
+  failedAt        DateTime?
+  outcome         String?
+  lessons         String?
+  comments        KimmpWorkflowComment[]
+
+  @@index([workflowId, status])
+  @@index([goalId])
+  @@map("kimmp_workflow_runs")
+}
+
+// D10: Human Collaboration on workflow runs
+model KimmpWorkflowComment {
+  id        String           @id @default(cuid())
+  runId     String
+  run       KimmpWorkflowRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  userId    String
+  content   String           @db.Text
+  mentions  String[]         @default([])
+  type      String           @default("COMMENT") // COMMENT | APPROVAL | REJECTION | INFO
+  createdAt DateTime         @default(now())
+
+  @@index([runId])
+  @@map("kimmp_workflow_comments")
+}
+
+// D9: Goal Engine evaluation history
+model KimmpGoalEvaluation {
+  id            String   @id @default(cuid())
+  goalId        String
+  evaluatedAt   DateTime @default(now())
+  needsAction   Boolean
+  reasoning     String   @db.Text
+  workflowRunId String?
+
+  @@index([goalId, evaluatedAt])
+  @@map("kimmp_goal_evaluations")
+}
+
+// ---------------------------------------------------------------------------
+// Gate 4 — Autonomous Operations Validation
+// Tracks every Gate 4 scenario run: planning, execution, governance,
+// learning, recovery, observability, and the Monday Morning stress test.
+// ---------------------------------------------------------------------------
+
+model KimmpGate4Run {
+  id          String              @id @default(cuid())
+  trigger     String              // 'nightly' | 'manual' | 'pre-release'
+  totalScore  Float
+  passCount   Int
+  failCount   Int
+  durationMs  Int                 @default(0)
+  results     KimmpGate4Result[]
+  runAt       DateTime            @default(now())
+  completedAt DateTime?
+
+  @@index([runAt])
+  @@map("kimmp_gate4_runs")
+}
+
+model KimmpGate4Result {
+  id            String        @id @default(cuid())
+  runId         String
+  scenario      String        // 'planning' | 'execution' | 'governance' | 'learning' | 'recovery' | 'observability' | 'monday_morning'
+  score         Float         // 0–100
+  passed        Boolean
+  durationMs    Int
+  assertions    Json          // { name, passed, detail }[]
+  workflowRunId String?
+  run           KimmpGate4Run @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId])
+  @@index([scenario])
+  @@map("kimmp_gate4_results")
+}
+
+// ---------------------------------------------------------------------------
+// Gate 3 — AI Reliability Benchmarks
+// Tracks prompt regression, confidence drift, routing accuracy, cost regression,
+// and explainability scores across every nightly benchmark run.
+// ---------------------------------------------------------------------------
+
+model KimmpBenchmarkRun {
+  id            String                 @id @default(cuid())
+  trigger       String                 // 'nightly' | 'manual' | 'pre-release'
+  totalScore    Float                  // 0–100 weighted average
+  passCount     Int
+  failCount     Int
+  driftAlert    Boolean                @default(false)
+  driftDelta    Float?                 // avg confidence change vs previous run
+  costTotal     Float                  @default(0)   // USD estimated
+  durationMs    Int                    @default(0)
+  results       KimmpBenchmarkResult[]
+  startedAt     DateTime               @default(now())
+  completedAt   DateTime?
+
+  @@index([startedAt])
+  @@map("kimmp_benchmark_runs")
+}
+
+model KimmpBenchmarkResult {
+  id             String             @id @default(cuid())
+  runId          String
+  promptId       String             // e.g. 'D1', 'F2', 'N1'
+  category       String             // 'decision' | 'factual' | 'navigation' | 'action' | 'explainability' | 'confidence'
+  score          Float              // 0–100
+  passed         Boolean
+  actualModel    String?
+  actualProvider String?
+  confidence     Float?
+  evidenceCount  Int?
+  optionCount    Int?
+  responseMs     Int
+  issues         String[]
+  run            KimmpBenchmarkRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId])
+  @@index([promptId])
+  @@index([category, score])
+  @@map("kimmp_benchmark_results")
+}
+
+// ─── Gate 3.5: WAANDA Runtime Intelligence ───────────────────────────────────
+
+// Every AI call made through waandaRuntime.call() is recorded here.
+// This is the raw telemetry the intelligence gate reads from.
+model WaandaRuntimeCall {
+  id            String   @id @default(cuid())
+  capability    String   // 'strategic' | 'reasoning' | 'fast' | 'cheap' | 'command'
+  provider      String   // 'claude' | 'openai' | 'gemini' | 'ollama' | 'empty'
+  model         String   // exact model ID that responded
+  wasFailover   Boolean  @default(false)  // true = routed away from primary
+  latencyMs     Int
+  inputTokens   Int?
+  outputTokens  Int?
+  estimatedCost Float?   // USD — approximated from token counts
+  confidence    Float?   // 0-1 confidence score extracted from response
+  qualityScore  Float?   // 0-100 from benchmark scorer (null for live calls)
+  success       Boolean  @default(true)
+  errorCode     String?  // 'QUOTA' | 'TIMEOUT' | 'SCHEMA_ERROR' | 'NETWORK'
+  callerHint    String?  // which KIMMP subsystem made the call
+  createdAt     DateTime @default(now())
+
+  @@index([capability, createdAt])
+  @@index([provider, createdAt])
+  @@index([wasFailover, createdAt])
+  @@index([createdAt])
+  @@map("waanda_runtime_calls")
+}
+
+// Aggregated intelligence per capability — recomputed nightly by Gate 3.5 runner.
+// This is what the runtime reads to make adaptive routing decisions.
+model WaandaCapabilityProfile {
+  id              String   @id @default(cuid())
+  capability      String   @unique
+  bestProvider    String   // provider with highest quality score in window
+  bestModel       String
+  avgLatencyMs    Float
+  p95LatencyMs    Float
+  avgCostUsd      Float
+  qualityScore    Float    // 0-100 weighted quality across benchmark + live calls
+  failoverRate    Float    // 0-1 — how often primary fails and we fall back
+  callCount       Int
+  windowDays      Int      @default(30)
+  computedAt      DateTime @default(now())
+
+  @@map("waanda_capability_profiles")
+}
+
+// Gate 3.5 run record — one per nightly/manual run
+model WaandaGate35Run {
+  id          String              @id @default(cuid())
+  trigger     String              // 'nightly' | 'manual' | 'pre-release'
+  totalScore  Float               @default(0)
+  passCount   Int                 @default(0)
+  failCount   Int                 @default(0)
+  durationMs  Int                 @default(0)
+  completedAt DateTime?
+  createdAt   DateTime            @default(now())
+  checks      WaandaGate35Check[]
+
+  @@map("waanda_gate35_runs")
+}
+
+model WaandaGate35Check {
+  id       String          @id @default(cuid())
+  runId    String
+  name     String          // e.g. 'optimal_model_routing', 'cost_efficiency', 'failover_quality'
+  passed   Boolean
+  score    Float
+  detail   Json            @default("{}")
+  run      WaandaGate35Run @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId])
+  @@map("waanda_gate35_checks")
+}
+
+// ─── Gate 5: Interaction Quality ─────────────────────────────────────────────
+
+model WaandaGate5Run {
+  id          String            @id @default(cuid())
+  trigger     String
+  totalScore  Float             @default(0)
+  passCount   Int               @default(0)
+  failCount   Int               @default(0)
+  durationMs  Int               @default(0)
+  playwrightJson Json?          // raw Playwright JSON report — debug reference
+  completedAt DateTime?
+  createdAt   DateTime          @default(now())
+  checks      WaandaGate5Check[]
+
+  @@map("waanda_gate5_runs")
+}
+
+model WaandaGate5Check {
+  id         String          @id @default(cuid())
+  runId      String
+  suite      String          // 'canvas' | 'kimmp' | 'perf' | 'nav' | 'errors'
+  name       String
+  passed     Boolean
+  durationMs Int             @default(0)
+  score      Float
+  detail     Json            @default("{}")
+  run        WaandaGate5Run  @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId])
+  @@index([suite])
+  @@map("waanda_gate5_checks")
+}
+
+// ── Gate 6 — Enterprise Readiness ────────────────────────────────────────────
+
+model WaandaGate6Run {
+  id           String            @id @default(cuid())
+  trigger      String            // manual | nightly | pre-release
+  totalScore   Float
+  passCount    Int
+  failCount    Int
+  pendingCount Int               @default(0)
+  durationMs   Int
+  completedAt  DateTime?
+  createdAt    DateTime          @default(now())
+  checks       WaandaGate6Check[]
+
+  @@map("waanda_gate6_runs")
+}
+
+model WaandaGate6Check {
+  id      String         @id @default(cuid())
+  runId   String
+  domain  String         // security | compliance | operations | governance | documentation
+  name    String
+  passed  Boolean
+  pending Boolean        @default(false)  // human attestation required
+  score   Float
+  detail  Json           @default("{}")
+  run     WaandaGate6Run @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId])
+  @@map("waanda_gate6_checks")
+}
+
+model QEFCertificate {
+  id                String   @id @default(cuid())
+  certId            String   @unique            // QEF-2026-000001
+  version           String   @default("1.0")
+  qefSchemaVersion  String   @default("QEF/1.0") // versioned contract — how to interpret this cert's fields
+  status            String                      // CERTIFIED | NOT_CERTIFIED
+  level             String                      // ENTERPRISE_CERTIFIED | ADVANCED_CERTIFIED | CERTIFIED | NOT_CERTIFIED
+  certificateStatus String   @default("ACTIVE") // DRAFT | ACTIVE | SUPERSEDED | REVOKED | EXPIRED
+  previousCertId    String?                     // lineage: certId of the cert this supersedes
+  overallScore      Float
+  gitCommit         String?
+  dockerImage       String?
+  schemaVersion     String?
+  migrationStatus   String?
+  environment       String   @default("Production Candidate")
+  sha256            String                      // SHA-256 of cert data — tamper-evident
+  gateSnapshot      Json                        // { gate1: { name, status, score, evidence, runnerVersion, executionMs }, ... }
+  scope             Json                        // subsystems covered
+  certifiedBy       String   @default("WAANDA Quality Engine")
+  reviewedBy        String?
+  approvedBy        String?
+  revokedAt         DateTime?
+  revokedReason     String?
+  issuedAt          DateTime @default(now())
+  createdAt         DateTime @default(now())
+
+  @@index([issuedAt])
+  @@index([certificateStatus])
+  @@map("qef_certificates")
+}
+
+// ─── RGS — Release Governance ─────────────────────────────────────────────────
+
+model DeploymentEnvironment {
+  id                  String               @id @default(cuid())
+  name                String               // "Production", "Staging", "Development"
+  code                String               @unique  // "production" | "staging" | "dev"
+  certRequired        Boolean              @default(true)
+  minCertLevel        String?              // "CERTIFIED" | "ADVANCED_CERTIFIED" | "ENTERPRISE_CERTIFIED"
+  approvalRequired    Boolean              @default(false)
+  changeWindowEnabled Boolean              @default(false)
+  changeWindows       Json                 @default("[]")  // ChangeWindow[]
+  criticalServices    String[]             @default([])
+  decisionValidityMs  Int                  @default(7200000)  // 2 hours
+  enabled             Boolean              @default(true)
+  createdAt           DateTime             @default(now())
+  decisions           DeploymentDecision[]
+  deployments         DeploymentRecord[]
+
+  @@map("deployment_environments")
+}
+
+model DeploymentDecision {
+  id                String                @id @default(cuid())
+  decisionId        String                @unique  // RGS-2026-000001
+  rgsVersion        String                @default("RGS/1.0")
+  verdict           String                // DEPLOY | REVIEW | BLOCK
+  certId            String
+  certLevel         String
+  environmentId     String
+  environment       DeploymentEnvironment @relation(fields: [environmentId], references: [id])
+  blockers          Json                  @default("[]")
+  warnings          Json                  @default("[]")
+  approvals         Json                  @default("[]")
+  emergencyOverride Boolean               @default(false)
+  overrideReason    String?
+  evaluatedBy       String                @default("WAANDA Release Engine")
+  evaluatedAt       DateTime              @default(now())
+  validUntil        DateTime
+  sha256            String
+  deployments       DeploymentRecord[]
+
+  @@index([evaluatedAt])
+  @@index([verdict])
+  @@index([certId])
+  @@map("deployment_decisions")
+}
+
+model DeploymentRecord {
+  id            String                @id @default(cuid())
+  deployId      String                @unique  // DEP-2026-000001
+  rgsVersion    String                @default("RGS/1.0")
+  decisionId    String
+  decision      DeploymentDecision    @relation(fields: [decisionId], references: [id])
+  certId        String
+  certLevel     String
+  environmentId String
+  environment   DeploymentEnvironment @relation(fields: [environmentId], references: [id])
+  deployedBy    String
+  deployedAt    DateTime              @default(now())
+  rollbackOf    String?               // deployId of the deployment this reverses
+  outcome       String?               // SUCCESS | FAILED | ROLLED_BACK
+  outcomeAt     DateTime?
+  outcomeNote   String?
+  sha256        String
+
+  @@index([deployedAt])
+  @@index([certId])
+  @@index([environmentId])
+  @@map("deployment_records")
+}
+
+// ─── Gate 8 — Operational Intelligence ──────────────────────────────────────
+// Permanent scoring layer. Runs continuously. Closes the loop:
+// deployment → outcomes → learning → improved enterprise performance.
+
+model Gate8Snapshot {
+  id              String   @id @default(cuid())
+  oisScore        Float    // 0–100 Operational Intelligence Score (north star)
+  decisionScore   Float    // Pillar 1: Decision Intelligence
+  workflowScore   Float    // Pillar 2: Workflow Intelligence
+  aiScore         Float    // Pillar 3: AI Intelligence
+  enterpriseScore Float    // Pillar 4: Enterprise Health
+  goalScore       Float    // Pillar 5: Goal Intelligence
+  learningScore   Float    // Pillar 6: Learning Velocity
+  businessScore   Float    // Pillar 7: Business Value
+  trustScore      Float    // Pillar 8: Trust Intelligence
+  adoptionScore   Float    @default(0)  // Pillar 9: Adoption Intelligence
+  pillars         Json     // full per-pillar metric detail
+  triggeredBy     String   @default("MANUAL") // MANUAL | POST_DEPLOY | AUTO
+  label           String   @default("AUTO")   // AUTO | BASELINE | CHECKPOINT
+  deployId        String?  // FK to DeploymentRecord.deployId if post-deploy
+  createdAt       DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([label])
+  @@map("gate8_snapshots")
+}
+
+// ─── Enterprise Definition ─────────────────────────────────────────────────
+// Declares what success means before any COIG measurement begins.
+// WAANDA reads the active definition before every analysis and recommendation.
+
+model EnterpriseDefinition {
+  id          String           @id @default(cuid())
+  name        String           // e.g. "Kangqore Global FY2027"
+  isActive    Boolean          @default(true)
+  activatedAt DateTime         @default(now())
+  goals       EnterpriseGoal[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@map("enterprise_definitions")
+}
+
+model EnterpriseGoal {
+  id           String              @id @default(cuid())
+  definitionId String
+  pillar       String              // 'REVENUE' | 'MARGIN' | 'NPS' | 'DELIVERY_SLA' | 'UTILIZATION' | 'CUSTOM'
+  label        String              // "Revenue", "Project Margin", "Client NPS", etc.
+  target       Float               // 10, 35, 75, 98, 82
+  unit         String              // '₹ Cr' | '%' | 'score' | 'days' | 'custom'
+  weight       Float               @default(1.0) // relative importance in COIG attribution
+  definition   EnterpriseDefinition @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  @@index([definitionId])
+  @@map("enterprise_goals")
+}
+
+// ─── Enterprise DNA ─────────────────────────────────────────────────────────
+// WAANDA infers how this enterprise actually behaves.
+// Recomputed weekly from behavioral data — not entered by users.
+
+model EnterpriseDNA {
+  id                  String   @id @default(cuid())
+  approvalSpeed       String   @default("MODERATE")    // FAST | MODERATE | DELIBERATE
+  riskTolerance       String   @default("BALANCED")    // AGGRESSIVE | BALANCED | CONSERVATIVE
+  decisionStyle       String   @default("DATA_DRIVEN") // CONSENSUS | EXECUTIVE | DATA_DRIVEN
+  escalationThreshold String   @default("NORMAL")      // QUICK | NORMAL | PATIENT
+  meetingDensity      String   @default("MODERATE")    // HIGH | MODERATE | ASYNC_FIRST
+  growthPhase         String   @default("BUILDING")    // BUILDING | SCALING | OPTIMIZING
+  dominantPillar      String   @default("decision")    // which OIS pillar scores highest
+  weakestPillar       String   @default("adoption")    // which OIS pillar needs most work
+  computedAt          DateTime @default(now())
+
+  @@map("enterprise_dna")
+}
+
+// ─── Enterprise Coach™ ───────────────────────────────────────────────────────
+// Cross-department pattern insights generated by WAANDA. Each insight captures
+// one observed pattern, its evidence, and a coaching recommendation.
+
+model CoachingInsight {
+  id             String    @id @default(cuid())
+  category       String    // DELIVERY | FINANCE | PIPELINE | INTELLIGENCE | CROSS_DEPT
+  pattern        String    // short label: "Delivery velocity declining"
+  evidence       Json      @default("{}")  // { metric, value, comparison, dataPoints[] }
+  insight        String    // LLM-generated coaching paragraph
+  recommendation String    // specific next action
+  priority       String    @default("MEDIUM")  // LOW | MEDIUM | HIGH | CRITICAL
+  oisImpact      Float     @default(0)
+  confidence     Float     @default(0)  // 0–100: how much data backs this
+  isActed        Boolean   @default(false)
+  actedAt        DateTime?
+  generatedAt    DateTime  @default(now())
+
+  @@index([category, generatedAt])
+  @@index([priority, isActed])
+  @@map("coaching_insights")
+}
+
+// ─── Wave 1: Projects Become Autonomous ─────────────────────────────────────
+// ProjectOperationalState — cached daily assessment consumed by every screen.
+// Recomputed by PROJECT_HEALTH agent; Gate 8 Enterprise pillar reads avgHealth.
+
+model ProjectOperationalState {
+  id                    String   @id @default(cuid())
+  projectId             String   @unique
+  health                Float    @default(0)          // 0–100 composite
+  predictedCompletion   DateTime?
+  confidence            Float    @default(0)          // 0–100
+  risks                 Json     @default("[]")       // [{ label, severity, probability }]
+  blockers              Json     @default("[]")       // [{ label, since }]
+  activeRecommendations Json     @default("[]")       // [{ action, impact, priority }]
+  lastAssessment        DateTime @default(now())
+  project               Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([health])
+  @@map("project_operational_states")
+}
+
+// ProjectDigitalTwin™ — lightweight simulation: current timeline vs. scenarios.
+// Recomputed when project data changes or on-demand via /projects/:id/twin/simulate.
+
+model ProjectDigitalTwin {
+  id                  String   @id @default(cuid())
+  projectId           String   @unique
+  currentTimelineDays Int      @default(0)     // days from today to current dueDate
+  scenarios           Json     @default("[]")  // [{ label, days, delayDays, confidence, assumptions[] }]
+  delayDays           Int      @default(0)     // predicted delay vs plan (negative = ahead)
+  confidence          Float    @default(0)     // 0–100
+  simulatedAt         DateTime @default(now())
+  project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_digital_twins")
+}
+
+// ─── Adoption Events ────────────────────────────────────────────────────────
+// Individual signals that feed the Adoption Intelligence pillar (Pillar 9).
+
+model AdoptionEvent {
+  id          String   @id @default(cuid())
+  userId      String?
+  eventType   String   // SESSION | AGENT_INVOKE | WORKFLOW_TRIGGER | DECISION_ACCEPT | DECISION_REJECT | OVERRIDE | REC_ACTED | REC_IGNORED
+  entityType  String?  // what was being used
+  entityId    String?
+  metadata    Json     @default("{}")
+  occurredAt  DateTime @default(now())
+
+  @@index([eventType, occurredAt])
+  @@index([userId, occurredAt])
+  @@map("adoption_events")
+}
+
+// ---------------------------------------------------------------------------
+// Decision Engine (Track C) — Structured Enterprise Reasoning
+// ---------------------------------------------------------------------------
+
+model EnterpriseDecision {
+  id           String    @id @default(cuid())
+  question     String                              // the business question asked
+  context      Json      @default("{}")            // relevant objects, signals, data used
+  reasoning    String                              // chain-of-thought produced by WAANDA
+  evidence     Json      @default("[]")            // [{ source, type, weight, snippet }]
+  options      Json      @default("[]")            // [{ label, recommendation, pros, cons, roi, confidence }]
+  selected     String?                             // which option was chosen
+  selectedBy   String?                             // userId or 'AUTO'
+  outcome      String?                             // what actually happened (filled post-execution)
+  confidence   Float     @default(0)
+  agentsMixed  String[]  @default([])             // KIMMP agents that contributed
+  status       String    @default("OPEN")          // OPEN | DECIDED | EXECUTED | CLOSED
+  createdAt    DateTime  @default(now())
+  resolvedAt   DateTime?
+  memories     EnterpriseMemory[]
+
+  @@index([status, createdAt])
+  @@index([createdAt])
+  @@map("enterprise_decisions")
+}
+
+model EnterpriseMemory {
+  id         String              @id @default(cuid())
+  type       String                                // DECISION | OUTCOME | PATTERN | LESSON
+  content    String
+  tags       String[]            @default([])
+  decisionId String?
+  decision   EnterpriseDecision? @relation(fields: [decisionId], references: [id], onDelete: SetNull)
+  createdAt  DateTime            @default(now())
+
+  @@index([type, createdAt])
+  @@index([decisionId])
+  @@map("enterprise_memories")
+}
+
+model EnterprisePolicy {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  trigger     String                              // action type or '*'
+  condition   Json     @default("{}")             // { field, operator, value }
+  effect      String                              // ALLOW | DENY | REQUIRE_APPROVAL | NOTIFY
+  priority    Int      @default(0)
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([trigger, enabled])
+  @@index([priority])
+  @@map("enterprise_policies")
+}
+
+// ---------------------------------------------------------------------------
+// Customer Success Platform — external deployment tracking
+// ---------------------------------------------------------------------------
+
+model CustomerDeployment {
+  id                 String    @id @default(cuid())
+  customerName       String
+  industry           String                        // 'professional_services' | 'fintech' | 'healthcare' | ...
+  pack               String                        // 'professional-services' | 'custom'
+  goLiveAt           DateTime?
+  baselineSnapshotId String?                       // Gate8Snapshot id at deployment start
+  currentOis         Float     @default(0)
+  coig               Float     @default(0)         // current COIG delta
+  milestone          String    @default("ONBOARDING") // ONBOARDING | ACTIVE | QBR | SCALING | CHURNED
+  contactName        String?
+  contactEmail       String?
+  notes              String?
+  blueprintId        String?                       // the EnterpriseBlueprint that was applied
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([milestone])
+  @@index([createdAt])
+  @@map("customer_deployments")
+}
+
+// ─── Enterprise Blueprint ──────────────────────────────────────────────────────
+// The portable, versioned deployment spec that every customer owns.
+// WAANDA reads it; the customer controls it.
+// Think of it as infrastructure-as-code for an enterprise OS deployment.
+model EnterpriseBlueprint {
+  id          String    @id @default(cuid())
+  name        String
+  version     String    @default("1.0.0")
+  pack        String?                         // source pack (e.g. 'professional-services')
+  industry    String?
+  description String?
+  spec        Json                            // full blueprint spec — the portable artifact
+  checksum    String?                         // sha256 of spec for integrity verification
+  status      String    @default("DRAFT")    // DRAFT | ACTIVE | ARCHIVED
+  deployedAt  DateTime?
+  importedAt  DateTime?
+  createdBy   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status, createdAt])
+  @@map("enterprise_blueprints")
+}
+
+// ─── Enterprise Digital Twin™ — Scenario Log ─────────────────────────────────
+// Records every "what if" simulation run against the enterprise OIS model.
+// Claude estimates per-pillar impact; this table stores results for history.
+model EnterpriseTwinScenario {
+  id             String   @id @default(cuid())
+  scenario       String
+  horizon        Int      @default(30)  // 30 | 60 | 90 days
+  currentOis     Float
+  simulatedOis   Float
+  delta          Float
+  pillarDeltas   Json     // { decision, workflow, ai, enterprise, goal, business, trust, adoption }
+  confidence     Float    // 0.0–1.0
+  reasoning      String   @db.Text
+  recommendation String   @db.Text
+  createdAt      DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("enterprise_twin_scenarios")
+}
+
+// ─── WAANDA V2: HCIP Intelligence Auditing ─────────────────────────────────
+
+model HcipFeedback {
+  id                     String   @id @default(cuid())
+  recommendationId       String
+  visitorId              String
+  sessionId              String
+  operatorId             String
+  engineVersion          String
+  action                 String   // "approve" | "reject" | "modify"
+  reason                 String?  @db.Text
+  comment                String?  @db.Text
+  createdAt              DateTime @default(now())
+
+  @@index([recommendationId])
+  @@index([visitorId])
+  @@index([action])
+  @@map("hcip_feedback")
+}
+
+model HcipOutcome {
+  id               String   @id @default(cuid())
+  recommendationId String
+  outcome          String   // "Meeting Booked", "Proposal Sent", "Won"
+  revenue          Decimal? @db.Decimal(12, 2)
+  notes            String?  @db.Text
+  createdAt        DateTime @default(now())
+
+  @@index([recommendationId])
+  @@index([outcome])
+  @@map("hcip_outcome")
+}
+
+model HcipDecisionSnapshot {
+  id               String   @id @default(cuid())
+  sessionId        String
+  visitorId        String
+  decisionState    String
+  persona          String
+  confidence       Int
+  risk             Int
+  recommendationId String?
+  engineVersion    String
+  createdAt        DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([visitorId])
+  @@index([createdAt])
+  @@map("hcip_decision_snapshots")
+}
+
+model HcipRecommendationHistory {
+  id               String   @id @default(cuid())
+  recommendationId String
+  objective        String
+  impact           Int
+  urgency          Int
+  confidence       Int
+  priority         Int
+  businessValue    Int?
+  engineVersion    String
+  schemaVersion    String
+  createdAt        DateTime @default(now())
+
+  @@index([recommendationId])
+  @@index([objective])
+  @@index([createdAt])
+  @@map("hcip_recommendation_history")
+}
+
+model HcipEngineVersion {
+  id               String   @id @default(cuid())
+  engineVersion    String   @unique
+  reasoningVersion String
+  decisionVersion  String
+  schemaVersion    String
+  releasedAt       DateTime @default(now())
+  releasedBy       String
+  notes            String?  @db.Text
+
+  @@index([engineVersion])
+  @@map("hcip_engine_versions")
+}
+
+// ============================================================================
+// KANGQORE URGI™ (USER RELATIONSHIP GROWTH INTELLIGENCE) - INTERNAL PLATFORM
+// ============================================================================
+
+model UnifiedRelationshipProfile {
+  id                  String   @id @default(uuid())
+  userId              String?  @unique // Optional link to authenticated User
+  user                User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  visitorId           String?  @unique // For anonymous tracking
+  
+  // Identity & Memory (Mutable)
+  currentCompany      String?
+  currentRole         String?
+  industry            String?
+  preferredChannel    String?
+  communicationStyle  String?
+  
+  // Scoring
+  relationshipScore   Float    @default(0.0)
+  trustScore          Float    @default(0.0)
+  engagementScore     Float    @default(0.0)
+
+  // Relationships
+  evidence            EvidenceLedger[]
+  timeline            RelationshipTimelineEvent[]
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([visitorId])
+  @@map("urgi_unified_relationship_profiles")
+}
+
+model EvidenceLedger {
+  id                  String   @id @default(uuid())
+  profileId           String
+  profile             UnifiedRelationshipProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  factKey             String   // e.g. "company", "role", "intent"
+  factValue           String   // e.g. "TCS", "Enterprise Architect"
+  
+  source              String   // e.g. "LinkedIn", "User", "AI_Inference"
+  confidenceScore     Float    // e.g. 0.93 for 93%
+  
+  evidenceType        String   // OBSERVATION, INFERENCE, HYPOTHESIS, VERIFIED
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  
+  @@index([profileId])
+  @@index([factKey])
+  @@map("urgi_evidence_ledgers")
+}
+
+model RelationshipTimelineEvent {
+  id                  String   @id @default(uuid())
+  profileId           String
+  profile             UnifiedRelationshipProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  eventType           String   // e.g. "PAGE_VISIT", "QUESTION_ASKED", "IDENTITY_VERIFIED"
+  description         String
+  metadata            Json?    // Optional payload
+  
+  createdAt           DateTime @default(now()) // Immutable timestamp
+
+  @@index([profileId])
+  @@index([eventType])
+  @@map("urgi_relationship_timeline_events")
 }

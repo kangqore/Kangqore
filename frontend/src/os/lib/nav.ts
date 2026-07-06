@@ -8,11 +8,13 @@ import {
   CalendarCheckIcon,
   CalendarDotsIcon,
   ChatTextIcon,
+  ChatCircleDotsIcon,
   HandshakeIcon,
   TrendUpIcon,
   StrategyIcon,
   SquaresFourIcon,
   PulseIcon,
+  HeartbeatIcon,
   ScalesIcon,
   UsersIcon,
   CurrencyDollarIcon,
@@ -26,6 +28,9 @@ import {
   ShieldCheckeredIcon,
   CrosshairIcon,
   SirenIcon,
+  FootprintsIcon,
+  GraphIcon,
+  ShareNetworkIcon,
 } from '@phosphor-icons/react'
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
 
@@ -54,17 +59,22 @@ export const navGroups: NavGroup[] = [
   {
     label: 'INTELLIGENCE',
     items: [
-      { id: 'overview',      label: 'WAANDA',        icon: CompassIcon,       path: `${BASE}/WAANDA`         },
-      { id: 'kangqore-immp', label: 'KIMMP',          icon: BrainIcon,         path: `${BASE}/kangqore-immp`  },
-      { id: 'systems',       label: 'Systems',        icon: HardDrivesIcon,    path: `${BASE}/systems`        },
-      { id: 'aegis',         label: 'AEGIS',          icon: ShieldCheckeredIcon, path: `${BASE}/aegis`        },
-      { id: 'agent-logs',    label: 'Agent Logs',     icon: ScrollIcon,        path: `${BASE}/agent-logs`     },
-      { id: 'analytics',     label: 'Analytics',      icon: ChartBarIcon,      path: `${BASE}/analytics`      },
+      { id: 'overview',      label: 'WAANDA',        icon: CompassIcon,         path: `${BASE}/WAANDA`         },
+      { id: 'kangqore-immp', label: 'KIMMP',          icon: BrainIcon,           path: `${BASE}/kangqore-immp`  },
+      { id: 'urgi-studio',   label: 'Relationship Studio', icon: HeartbeatIcon,       path: `${BASE}/urgi-studio`    },
+      { id: 'systems',       label: 'Systems',        icon: HardDrivesIcon,      path: `${BASE}/systems`        },
+      { id: 'aegis',         label: 'AEGIS',          icon: ShieldCheckeredIcon, path: `${BASE}/aegis`          },
+      { id: 'ontology',      label: 'Ontology',       icon: GraphIcon,           path: `${BASE}/ontology`       },
+      { id: 'neural-network',label: 'Neural Network', icon: ShareNetworkIcon,    path: `${BASE}/neural-network` },
+      { id: 'agent-logs',    label: 'Agent Logs',     icon: ScrollIcon,          path: `${BASE}/agent-logs`     },
+      { id: 'analytics',     label: 'Analytics',      icon: ChartBarIcon,        path: `${BASE}/analytics`      },
+      { id: 'relay',         label: 'RELAY',          icon: ChatCircleDotsIcon,  path: `${BASE}/relay`          },
     ],
   },
   {
     label: 'CRM',
     items: [
+      { id: 'visitors',      label: 'Visitors',       icon: FootprintsIcon,    path: `${BASE}/visitors`      },
       { id: 'leads',         label: 'Leads',          icon: LightningIcon,     path: `${BASE}/leads`         },
       { id: 'clients',       label: 'Clients',        icon: BriefcaseIcon,     path: `${BASE}/clients`       },
       { id: 'consultations', label: 'Consultations',  icon: CalendarCheckIcon, path: `${BASE}/consultations` },
@@ -77,8 +87,8 @@ export const navGroups: NavGroup[] = [
   {
     label: 'CORE',
     items: [
-      { id: 'bids',        label: 'BIDS™',       icon: CrosshairIcon,  path: `${BASE}/bids`           },
-      { id: 'ops-centre',  label: 'Ops Centre',  icon: SirenIcon,      path: `${BASE}/ops-centre`     },
+      { id: 'bids',        label: 'BIDS™',       icon: CrosshairIcon,     path: `${BASE}/bids`           },
+      { id: 'ops-centre',  label: 'Ops Centre',  icon: SirenIcon,         path: `${BASE}/ops-centre`     },
       { id: 'strategy',    label: 'Strategy',    icon: StrategyIcon,      path: `${BASE}/strategy`       },
       { id: 'projects',    label: 'Projects',    icon: SquaresFourIcon,   path: `${BASE}/projects`       },
       { id: 'delivery',    label: 'Delivery',    icon: PulseIcon,         path: `${BASE}/delivery`       },
@@ -99,7 +109,7 @@ export const navGroups: NavGroup[] = [
   {
     label: 'SYSTEM',
     items: [
-      { id: 'settings',    label: 'Settings',    icon: GearIcon,            path: `${BASE}/settings`      },
+      { id: 'settings',    label: 'Settings',    icon: GearIcon,          path: `${BASE}/settings`       },
     ],
   },
 ]
