@@ -8,6 +8,7 @@ import { AgentDispatcherService } from '../routing/agentDispatcher.service';
 import { KimmpEqoreShadowObserver } from '../../kangqore-immp/eqore-bridge/eqoreShadowObserver.service';
 import { KimmpEqoreInfluence } from '../../kangqore-immp/eqore-bridge/eqoreInfluence.service';
 import { SignalLedger } from '../../kangqore-immp/signals/signalLedger.service';
+import { WaandaUnderstand } from '../../kangqore-immp/relationship-intelligence';
 import logger from '../../utils/logger';
 
 /** High-value intents that warrant a HIGH severity INTENT signal. */
@@ -106,6 +107,15 @@ export class EqoreConversationController {
         sessionId,
         messages: messages.map(m => ({ role: m.role, content: m.content })),
       });
+
+      // ─── eROOT — WAANDA Perception Stage ───
+      // Fire-and-forget: builds the Relationship Strategy Object from real Prisma data
+      // (intent, goals, emotion, trust score) and emits it to the URGI event bus.
+      // Never blocks the response path.
+      WaandaUnderstand.processInteraction(sessionId, {
+        leadId:         lead.id,
+        conversationId: conversation.id,
+      }).catch(() => {});
 
       // 1. Pre-safety: Prompt Injection Check
       const injectionKeywords = ['ignore previous instructions', 'reveal your system prompt', 'show internal score', 'bypass rules', 'developer mode', 'act as unrestricted'];

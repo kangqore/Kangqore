@@ -1,4 +1,5 @@
 import type { Express } from 'express';
+import { WAANDA } from '../../waanda/WaandaBootstrap';
 import { KangqoreVisRegistry } from './KangqoreVisRegistry';
 import { KANGQORE_VIS_VERSION } from './types';
 import { KangqoreVisFlags, logFlagSummary } from './flags';
@@ -83,7 +84,21 @@ export function kangqoreVisBootstrap({ app }: KangqoreVisBootstrapOptions): void
 
   KangqoreVisCronManager.initialize();
 
+  const adapterCount = KangqoreVisRegistry.listAdapters().length;
+  const cronJobs     = KangqoreVisCronManager.list();
+
   console.log(
-    `   -> ${MODULE_IDS.length} modules registered, ${KangqoreVisRegistry.listAdapters().length} adapters wired (all unconnected by default).`
+    `   -> ${MODULE_IDS.length} modules registered, ${adapterCount} adapters wired (all unconnected by default).`
   );
+
+  // Report to WAANDA so the OS has visibility into VIS lifecycle and cron state.
+  WAANDA.reportSubsystem('vis', {
+    status:  'OPERATIONAL',
+    details: {
+      version:           KANGQORE_VIS_VERSION,
+      modulesRegistered: MODULE_IDS.length,
+      adaptersWired:     adapterCount,
+      cronJobs:          cronJobs.map(j => ({ id: j.id, cron: j.cron, enabled: j.enabled })),
+    },
+  });
 }

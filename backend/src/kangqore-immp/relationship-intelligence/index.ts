@@ -6,9 +6,8 @@ import './orchestration/eqore.executor';
 import './governance/governance.engine';
 import './memory/waanda.memoryGovernor';
 
-export const URGIPlatform = {
-  processInteraction: (visitorId: string, contextData: any) => {
-    return erootPipeline.processVisitorInteraction(visitorId, contextData);
-  },
-  eventBus: urgiEventBus
+export const WaandaUnderstand = {
+  processInteraction: (visitorId: string, contextData: { leadId?: string; sessionId?: string; conversationId?: string }) =>
+    erootPipeline.processVisitorInteraction(visitorId, contextData),
+  eventBus: urgiEventBus,
 };

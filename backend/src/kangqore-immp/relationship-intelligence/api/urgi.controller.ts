@@ -1,102 +1,132 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'express'
+import { prisma } from '../../../lib/prisma'
 
-// Mock data generation for Live Sessions
-const generateLiveSessions = () => {
-  return [
-    {
-      id: '8491',
-      status: 'ACTIVE',
-      trustScore: Math.floor(Math.random() * 20) + 70,
-      maturityLevel: 50,
-      lastAction: 'Viewed Pricing',
-    },
-    {
-      id: '8492',
-      status: 'ACTIVE',
-      trustScore: Math.floor(Math.random() * 20) + 60,
-      maturityLevel: 60,
-      lastAction: 'Downloaded Whitepaper',
-    },
-    {
-      id: '8493',
-      status: 'ACTIVE',
-      trustScore: Math.floor(Math.random() * 20) + 50,
-      maturityLevel: 70,
-      lastAction: 'Chatbot Interaction',
+// URGI — WAANDA's Understanding Stage
+// Real data only. No mocks.
+
+export const getLiveSessions = async (_req: Request, res: Response) => {
+  try {
+    const conversations = await prisma.eqoreConversation.findMany({
+      where:   { status: 'ACTIVE' },
+      include: {
+        lead: {
+          select: {
+            name:          true,
+            companyName:   true,
+            leadScore:     true,
+            primaryIntent: true,
+            buyingStage:   true,
+          },
+        },
+      },
+      orderBy: { updatedAt: 'desc' },
+      take:    20,
+    })
+
+    const data = conversations.map(conv => ({
+      id:          conv.id,
+      status:      conv.status,
+      trustScore:  conv.lead?.leadScore ?? 0,
+      lastAction:  conv.currentIntent ?? 'No intent recorded',
+      company:     conv.lead?.companyName ?? null,
+      name:        conv.lead?.name ?? null,
+      buyingStage: conv.lead?.buyingStage ?? null,
+    }))
+
+    res.status(200).json({ success: true, data })
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Failed to fetch live sessions' })
+  }
+}
+
+export const getEvidenceLedger = async (_req: Request, res: Response) => {
+  try {
+    const rows = await prisma.evidenceLedger.findMany({
+      include: { profile: { select: { visitorId: true } } },
+      orderBy: { createdAt: 'desc' },
+      take:    50,
+    })
+
+    // evidenceType → status mapping
+    const typeMap: Record<string, string> = {
+      VERIFIED:    'VERIFIED',
+      INFERENCE:   'HYPOTHESIS',
+      OBSERVATION: 'SHADOW',
+      HYPOTHESIS:  'HYPOTHESIS',
     }
-  ];
-};
 
-export const getLiveSessions = async (req: Request, res: Response) => {
-  try {
-    const sessions = generateLiveSessions();
-    res.status(200).json({ success: true, data: sessions });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Failed to fetch live sessions' });
-  }
-};
+    const data = rows.map(r => ({
+      id:         r.id,
+      timestamp:  r.createdAt.toISOString(),
+      visitor:    r.profile.visitorId ?? 'unknown',
+      factKey:    r.factKey,
+      factValue:  r.factValue,
+      confidence: Math.round(r.confidenceScore * 100),
+      status:     typeMap[r.evidenceType] ?? r.evidenceType,
+    }))
 
-export const getEvidenceLedger = async (req: Request, res: Response) => {
-  try {
-    const ledger = [
-      { id: 1, timestamp: new Date(Date.now() - 3600000).toISOString(), visitor: 'Visitor_8491', factKey: 'Role: CTO', confidence: 95, status: 'VERIFIED' },
-      { id: 2, timestamp: new Date(Date.now() - 1800000).toISOString(), visitor: 'Visitor_8492', factKey: 'Budget: $50k', confidence: 40, status: 'HYPOTHESIS' },
-      { id: 3, timestamp: new Date(Date.now() - 900000).toISOString(), visitor: 'Visitor_8491', factKey: 'Company: Acme', confidence: 99, status: 'VERIFIED' },
-      { id: 4, timestamp: new Date().toISOString(), visitor: 'Visitor_8494', factKey: 'Intent: Purchase', confidence: 60, status: 'SHADOW' },
-    ];
-    res.status(200).json({ success: true, data: ledger });
+    res.status(200).json({ success: true, data })
   } catch (error) {
-    res.status(500).json({ success: false, error: 'Failed to fetch evidence ledger' });
+    res.status(500).json({ success: false, error: 'Failed to fetch evidence ledger' })
   }
-};
-
-export const initializeReplayQueue = async (req: Request, res: Response) => {
-  try {
-    const { startTime, endTime } = req.body;
-    // In a real scenario, this would trigger an event bus message to start the replay engine
-    console.log(`Initializing Replay Queue from ${startTime} to ${endTime}`);
-    
-    res.status(200).json({ 
-      success: true, 
-      message: 'Replay Queue Initialized. Simulation running in SHADOW mode.',
-      jobId: `REPLAY-${Date.now()}`
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Failed to initialize replay queue' });
-  }
-};
-
-export const updateGovernancePolicies = async (req: Request, res: Response) => {
-  try {
-    const { action } = req.body;
-    console.log(`Governance policy update requested: ${action}`);
-    
-    res.status(200).json({ 
-      success: true, 
-      message: 'Governance policies updated successfully.'
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Failed to update governance policies' });
-  }
-};
+}
 
 export const getDigitalTwin = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    
-    // Return a mock digital twin response
+    const { id } = req.params
+
+    const profile = await prisma.unifiedRelationshipProfile.findFirst({
+      where: { OR: [{ visitorId: id }, { userId: id }] },
+      include: {
+        evidence: {
+          orderBy: { confidenceScore: 'desc' },
+          take:    10,
+        },
+        timeline: {
+          orderBy: { createdAt: 'desc' },
+          take:    5,
+        },
+      },
+    })
+
+    if (!profile) {
+      return res.status(404).json({ success: false, error: 'No profile found' })
+    }
+
+    const identity = profile.currentRole && profile.currentCompany
+      ? `${profile.currentRole} at ${profile.currentCompany}`
+      : profile.currentCompany ?? profile.currentRole ?? 'Partially Identified'
+
     res.status(200).json({
       success: true,
       data: {
-        id,
-        identity: 'Unknown Visitor (Partially Identified)',
-        trustScore: 78,
-        maturity: '65%',
-        recentFacts: ['Interested in Enterprise Plan', 'Visited from LinkedIn'],
-        behavioralTraits: ['Analytical', 'Decision Maker']
-      }
-    });
+        id:              profile.id,
+        visitorId:       profile.visitorId,
+        identity,
+        trustScore:      profile.trustScore,
+        engagementScore: profile.engagementScore,
+        recentFacts:     profile.evidence.map(e => `${e.factKey}: ${e.factValue}`),
+        timeline:        profile.timeline.map(t => t.description),
+      },
+    })
   } catch (error) {
-    res.status(500).json({ success: false, error: 'Failed to fetch digital twin' });
+    res.status(500).json({ success: false, error: 'Failed to fetch digital twin' })
   }
-};
+}
+
+// Future sprint — leave as stubs
+export const initializeReplayQueue = async (req: Request, res: Response) => {
+  const { startTime, endTime } = req.body
+  console.log(`[URGI] Replay Queue requested: ${startTime} to ${endTime}`)
+  res.status(200).json({
+    success: true,
+    message: 'Replay Queue Initialized. Simulation running in SHADOW mode.',
+    jobId:   `REPLAY-${Date.now()}`,
+  })
+}
+
+export const updateGovernancePolicies = async (req: Request, res: Response) => {
+  const { action } = req.body
+  console.log(`[URGI] Governance policy update requested: ${action}`)
+  res.status(200).json({ success: true, message: 'Governance policies updated successfully.' })
+}
