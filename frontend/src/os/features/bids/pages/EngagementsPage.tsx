@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { Plus, ArrowUpRight, Building2, Calendar, X, Loader2 } from 'lucide-react'
+import { Plus, ArrowUpRight, Building2, Calendar, X, Loader2, Unlock } from 'lucide-react'
 import { api } from '@lib/api'
 import { cn } from '@design-system/cn'
 
@@ -124,6 +124,14 @@ function NewEngagementModal({ onClose }: { onClose: () => void }) {
 
 const STATUS_REVIEW = ['WAANDA_DRAFT', 'CONSULTANT_REVIEW']
 
+function useActivateClient(engagementId: string) {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: () => api.post(`/admin/bids/engagements/${engagementId}/activate-client`).then(r => r.data),
+    onSuccess:  () => qc.invalidateQueries({ queryKey: ['bids-engagements'] }),
+  })
+}
+
 export function EngagementsPage() {
   const [showNew, setShowNew] = useState(false)
   const navigate = useNavigate()
@@ -197,6 +205,7 @@ export function EngagementsPage() {
           {engagements.map((e: any, idx: number) => {
             const m = STATUS_MAP[e.status] ?? { label: e.status, color: 'var(--os-text-2)' }
             const isReviewable = STATUS_REVIEW.includes(e.status) || e.status === 'ACTIVE' || e.status === 'COMPLETED'
+            const isSelfServe  = e.status === 'DRAFT' && (e.intakeData as any)?.source === 'self-serve' && !e.clientUserId
             return (
               <div
                 key={e.id}
@@ -214,6 +223,7 @@ export function EngagementsPage() {
                   <p className="text-sm font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{e.clientName}</p>
                   <p className="text-xs mt-0.5" style={{ color: 'var(--os-text-3)' }}>
                     {e.industry} Edition{e.leadConsultant ? ` · ${e.leadConsultant}` : ''}
+                    {isSelfServe ? ' · Self-serve request' : ''}
                   </p>
                 </div>
                 <div className="flex items-center gap-4 flex-shrink-0">
@@ -224,6 +234,7 @@ export function EngagementsPage() {
                     </div>
                   )}
                   <DeliverableProgress deliverables={e.deliverables} />
+                  {isSelfServe && <ActivateButton engagementId={e.id} onClick={(ev) => ev.stopPropagation()} />}
                   <span className="px-2.5 py-1 rounded-full text-[11px] font-bold"
                     style={{ background: m.color + '18', color: m.color, border: `1px solid ${m.color}30` }}>
                     {m.label}
@@ -242,6 +253,34 @@ export function EngagementsPage() {
         </div>
       )}
     </div>
+  )
+}
+
+function ActivateButton({ engagementId, onClick }: { engagementId: string; onClick: (e: React.MouseEvent) => void }) {
+  const activate = useActivateClient(engagementId)
+  const handle = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!window.confirm('Activate client portal? This will create the client account and send them a login email.')) return
+    activate.mutate()
+    onClick(e)
+  }
+  if (activate.isSuccess) {
+    return (
+      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold" style={{ background: '#00c87518', color: '#00c875' }}>
+        Activated ✓
+      </span>
+    )
+  }
+  return (
+    <button
+      onClick={handle}
+      disabled={activate.isPending}
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors hover:opacity-80"
+      style={{ background: '#2564ea18', color: '#2564ea', border: '1px solid #2564ea30' }}
+    >
+      {activate.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Unlock className="w-3 h-3" />}
+      {activate.isPending ? 'Activating…' : 'Activate Portal'}
+    </button>
   )
 }
 

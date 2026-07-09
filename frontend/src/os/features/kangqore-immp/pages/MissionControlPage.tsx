@@ -1,11 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '@lib/api'
 import { adminApi } from '@lib/api'
+import { useNavigate } from 'react-router-dom'
 import {
   Target, GitBranch, AlertTriangle, Clock, Plug, Brain,
   Zap, TrendingUp, CheckCircle2, XCircle, PauseCircle,
   RefreshCw, ChevronRight, ThumbsUp, Loader2, Activity,
-  Sparkles, FolderKanban, Gauge, Timer, AlertOctagon,
+  Sparkles, FolderKanban, Gauge, Timer, AlertOctagon, Network,
 } from 'lucide-react'
 import { cn } from '@design-system/cn'
 
@@ -94,7 +95,8 @@ function HealthArc({ score, color, label }: { score: number; color: string; labe
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export function MissionControlPage() {
-  const qc = useQueryClient()
+  const qc       = useQueryClient()
+  const navigate = useNavigate()
 
   const { data, isLoading, dataUpdatedAt } = useQuery<MissionData>({
     queryKey:       ['waoe-mission-control'],
@@ -163,16 +165,25 @@ export function MissionControlPage() {
           </div>
           <p className="text-[11px] text-[var(--os-text-2)] mt-0.5">Last updated {lastUpdated}</p>
         </div>
-        <button
-          onClick={() => runCycle.mutate()}
-          disabled={runCycle.isPending}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-[11px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[#579bfc]"
-        >
-          {runCycle.isPending
-            ? <Loader2 className="w-3 h-3 animate-spin" />
-            : <RefreshCw className="w-3 h-3" />}
-          Evaluate Goals
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate(`/kangqore-view/admin/workflows/canvas?seed=ois&score=${score.score}`)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#7f53f925] bg-[#7f53f910] text-[11px] text-[#7f53f9] hover:bg-[#7f53f920] transition-colors"
+          >
+            <Network className="w-3 h-3" />
+            Graph View
+          </button>
+          <button
+            onClick={() => runCycle.mutate()}
+            disabled={runCycle.isPending}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-[11px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[#579bfc]"
+          >
+            {runCycle.isPending
+              ? <Loader2 className="w-3 h-3 animate-spin" />
+              : <RefreshCw className="w-3 h-3" />}
+            Evaluate Goals
+          </button>
+        </div>
       </div>
 
       {/* ── Health score + vitals ── */}

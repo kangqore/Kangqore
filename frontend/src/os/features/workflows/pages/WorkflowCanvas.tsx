@@ -33,10 +33,11 @@ import { api } from '@lib/api'
 import { connectSocket, getSocket } from '@lib/socket'
 import type { LiveSignal } from '@lib/useSignalStream'
 import { useWorkflowsStore } from '../store'
+import { useSearchParams } from 'react-router-dom'
 import type { WorkflowStep, StepType, WvisStepType, IntelStepType, Workflow } from '../types'
 import { validateWorkflow, scoreWorkflow, type ValidationIssue, type ValidationResult, type ValidationScore } from '../workflowValidation'
 
-type CanvasMode = 'workflow' | 'intelligence'
+type CanvasMode = 'workflow' | 'intelligence' | 'all'
 
 // ── Live Intelligence — signal-to-node-type affinity ──────────────────────────
 // Maps KIMMP signal types to the intelligence nodes that should pulse when active.
@@ -73,7 +74,7 @@ function useLiveIntelligence(enabled: boolean, canvasMode: CanvasMode) {
     api.get('/admin/kangqore-immp/signals/kpi').then(r => setKpiData(r.data)).catch(() => {})
 
   useEffect(() => {
-    if (!enabled || canvasMode !== 'intelligence') {
+    if (!enabled || (canvasMode !== 'intelligence' && canvasMode !== 'all')) {
       setSignals([]); setLiveActive(false); setKpiData(null)
       return
     }
@@ -178,11 +179,34 @@ const NODE_CFG: Record<string, { label: string; color: string; Icon: React.Eleme
   integration:  { label: 'Integrate',  color: RED,    Icon: LinkIcon,   emoji: '🔌' },
 }
 
-// Universal palette registry — single source of truth for which nodes appear in each mode.
-// Adding a new canvas mode = adding one new key here.
+// NODE_REGISTRY — single source of truth for node type → category mapping.
+// All new node types are added here; PALETTE derives from this automatically.
+const NODE_REGISTRY: Array<{ type: string; category: 'intelligence' | 'operational' }> = [
+  { type: 'goal',       category: 'intelligence' },
+  { type: 'context',    category: 'intelligence' },
+  { type: 'analyze',    category: 'intelligence' },
+  { type: 'insight',    category: 'intelligence' },
+  { type: 'hypothesis', category: 'intelligence' },
+  { type: 'simulate',   category: 'intelligence' },
+  { type: 'decision',   category: 'intelligence' },
+  { type: 'policy',     category: 'intelligence' },
+  { type: 'execute',    category: 'intelligence' },
+  { type: 'learn',      category: 'intelligence' },
+  { type: 'kpi',        category: 'intelligence' },
+  { type: 'notify',     category: 'operational'  },
+  { type: 'wait',       category: 'operational'  },
+  { type: 'agent',      category: 'operational'  },
+  { type: 'event',      category: 'operational'  },
+  { type: 'create',     category: 'operational'  },
+  { type: 'integrate',  category: 'operational'  },
+  { type: 'condition',  category: 'operational'  },
+]
+
+// Palette derives from NODE_REGISTRY — adding a node type = add one entry above.
 const PALETTE: Record<CanvasMode, string[]> = {
-  workflow:     ['notify', 'wait', 'agent', 'event', 'create', 'integrate', 'condition'],
-  intelligence: ['goal', 'context', 'analyze', 'insight', 'hypothesis', 'simulate', 'decision', 'policy', 'execute', 'learn', 'kpi'],
+  workflow:     NODE_REGISTRY.filter(n => n.category === 'operational').map(n => n.type),
+  intelligence: NODE_REGISTRY.filter(n => n.category === 'intelligence').map(n => n.type),
+  all:          NODE_REGISTRY.map(n => n.type),
 }
 
 // All intelligence-canvas node types that open the AI Explain drawer on click
@@ -1787,6 +1811,8 @@ export function WorkflowCanvas() {
   const [showCompile,  setShowCompile]  = useState(false)
   const [compiledHash, setCompiledHash] = useState('')
 
+  const [searchParams, setSearchParams] = useSearchParams()
+
   const { liveNodeTypes, liveSignalCount, liveActive, nodeConfidence, kpiData } = useLiveIntelligence(liveMode, canvasMode)
 
   // A.3 — Live run status
@@ -1808,6 +1834,37 @@ export function WorkflowCanvas() {
 
   useEffect(() => { nodesRef.current = nodes }, [nodes])
   useEffect(() => { edgesRef.current = edges }, [edges])
+
+  // OIS seed — ?seed=ois&score=72 → auto-create KPI node in intelligence mode
+  useEffect(() => {
+    if (searchParams.get('seed') !== 'ois') return
+    const oisScore = Number(searchParams.get('score') ?? 50)
+    const kpiId    = `seed-kpi-${Date.now()}`
+    const goalId   = `seed-goal-${Date.now()}`
+    const seedNodes: Node[] = [
+      {
+        id: kpiId, type: 'wfNode', position: { x: 300, y: 60 },
+        data: { step: { id: kpiId, type: 'kpi', name: `OIS Score — ${oisScore}/100`,
+          description: `Current Operational Intelligence Score. Target: ${Math.min(oisScore + 15, 100)}/100`, order: 0 } as WorkflowStep },
+      },
+      {
+        id: goalId, type: 'wfNode', position: { x: 300, y: 220 },
+        data: { step: { id: goalId, type: 'goal', name: 'Improve Enterprise Intelligence',
+          description: 'Drive OIS improvement across all pillars via WAANDA recommendations.', order: 1 } as WorkflowStep },
+      },
+    ]
+    const seedEdge: Edge = {
+      id: `${kpiId}->${goalId}`,
+      source: kpiId, target: goalId, sourceHandle: 'out',
+      markerEnd: { type: MarkerType.ArrowClosed, color: `${GOLD}80` },
+      style: { stroke: `${GOLD}60`, strokeWidth: 2 },
+    }
+    setCanvasMode('intelligence')
+    setNodes(seedNodes)
+    setEdges([seedEdge])
+    // Clear the seed param so refresh doesn't re-seed
+    setSearchParams(prev => { const n = new URLSearchParams(prev); n.delete('seed'); n.delete('score'); return n }, { replace: true })
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushHistory = useCallback(() => {
     historyRef.current = [...historyRef.current.slice(-29), {
@@ -1949,7 +2006,7 @@ export function WorkflowCanvas() {
   const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
     setCtxMenu(null)
     const step = node.data?.step as WorkflowStep | undefined
-    if (canvasMode === 'intelligence' && step?.type && INTEL_EXPLAIN.has(step.type)) {
+    if ((canvasMode === 'intelligence' || canvasMode === 'all') && step?.type && INTEL_EXPLAIN.has(step.type)) {
       setIntelStep(step)
       return
     }
@@ -2085,7 +2142,7 @@ export function WorkflowCanvas() {
   // Goals↔KPI linkage: BFS backwards from live KPI nodes → update connected goal status
   const goalStatus = useMemo<Map<string, 'on-track' | 'at-risk'>>(() => {
     const status = new Map<string, 'on-track' | 'at-risk'>()
-    if (!liveMode || canvasMode !== 'intelligence' || !kpiData || !liveNodeTypes.has('kpi')) return status
+    if (!liveMode || (canvasMode !== 'intelligence' && canvasMode !== 'all') || !kpiData || !liveNodeTypes.has('kpi')) return status
     const liveKpiIds = nodes
       .filter(n => (n.data?.step as WorkflowStep)?.type === 'kpi')
       .map(n => n.id)
@@ -2109,7 +2166,7 @@ export function WorkflowCanvas() {
   }, [nodes, edges, liveNodeTypes, canvasMode, liveMode, kpiData])
 
   const displayEdges = useMemo(() => {
-    const isLive = liveMode && canvasMode === 'intelligence' && liveNodeTypes.size > 0
+    const isLive = liveMode && (canvasMode === 'intelligence' || canvasMode === 'all') && liveNodeTypes.size > 0
     if (!isLive) return edges
     return edges.map(e => {
       const srcNode = nodes.find(n => n.id === e.source)
@@ -2123,7 +2180,7 @@ export function WorkflowCanvas() {
     hoveredId:      hoveredNodeId,
     nodeIssues:     validation.nodeMap,
     liveNodeTypes,
-    liveMode:       liveMode && canvasMode === 'intelligence',
+    liveMode:       liveMode && (canvasMode === 'intelligence' || canvasMode === 'all'),
     nodeConfidence,
     kpiData,
     goalStatus,
@@ -2169,11 +2226,12 @@ export function WorkflowCanvas() {
         {/* Right: canvas area */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
 
-          {/* ── Canvas mode toggle ─────────────────────────────────────────── */}
+          {/* ── WAANDA Graph™ canvas mode toggle ───────────────────────────── */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             {([
-              { mode: 'workflow'     as CanvasMode, emoji: '⚡', label: 'Workflow',     color: BLUE   },
+              { mode: 'workflow'     as CanvasMode, emoji: '⚡', label: 'Operational',  color: BLUE   },
               { mode: 'intelligence' as CanvasMode, emoji: '🧠', label: 'Intelligence', color: PURPLE },
+              { mode: 'all'          as CanvasMode, emoji: '∞',  label: 'All Nodes',    color: TEAL   },
             ]).map(({ mode, emoji, label, color }) => {
               const active = canvasMode === mode
               return (
@@ -2193,8 +2251,8 @@ export function WorkflowCanvas() {
             })}
             <div style={{ flex: 1 }} />
 
-            {/* Live Intelligence toggle — Intelligence mode only */}
-            {canvasMode === 'intelligence' && (
+            {/* Live Intelligence toggle — Intelligence and All modes */}
+            {(canvasMode === 'intelligence' || canvasMode === 'all') && (
               <button onClick={() => setLiveMode(m => !m)} style={{
                 display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 10,
                 border: `1px solid ${liveMode ? GREEN : EDGE_C}`,
@@ -2390,7 +2448,7 @@ export function WorkflowCanvas() {
                 boxShadow: `inset 0 1px 0 rgba(255,255,255,0.02)`,
               }}>
                 <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: SLATE, margin: '0 0 10px 2px' }}>
-                  {canvasMode === 'intelligence' ? 'Thinking Nodes' : 'Add Steps'}
+                  {canvasMode === 'intelligence' ? 'Thinking Nodes' : canvasMode === 'all' ? 'All Node Types' : 'Add Steps'}
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   {PALETTE[canvasMode].map(t => (
@@ -2398,7 +2456,7 @@ export function WorkflowCanvas() {
                   ))}
                 </div>
                 <div style={{ height: 1, background: EDGE_C, margin: '12px 0' }} />
-                {canvasMode === 'intelligence' ? (
+                {canvasMode === 'intelligence' || canvasMode === 'all' ? (
                   <p style={{ fontSize: 9, color: SLATE, lineHeight: 1.5, margin: 0 }}>
                     Click any node → WAANDA analysis · Double-click to rename
                   </p>
