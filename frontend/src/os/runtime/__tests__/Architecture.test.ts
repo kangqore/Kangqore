@@ -12,7 +12,7 @@ import fs     from 'node:fs'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const ROOT = path.resolve(import.meta.dirname, '../../../../')
+const ROOT = path.resolve(import.meta.dirname, '../../../../../')
 
 function readDir(dir: string): string[] {
   if (!fs.existsSync(dir)) return []
