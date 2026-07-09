@@ -56,7 +56,8 @@ import './eqore/queue/nurture.worker';     // instantiates EqoreNurtureWorker  �
 import { alisRouter } from './kangqore-alis';
 import { kangqoreImmpRoutes } from './kangqore-immp';
 import { urgiRoutes } from './kangqore-immp/relationship-intelligence/api/urgi.routes';
-import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor, AegisScheduler, AegisEventEmitter } from './kangqore-aegis';
+import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor } from './kangqore-aegis';
+import { waandaRouter } from './waanda/waandaRoutes';
 import { waandaTrainingRouter } from './waanda-training';
 import { dataPrivacyRouter } from './routes/data-privacy';
 import { developerRouter } from './routes/developer';
@@ -68,15 +69,8 @@ import packsRouter           from './routes/packs';
 import cdcRouter             from './routes/cdc';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
-import { ScoutScheduler } from './kangqore-immp/scout/scoutScheduler';
-import { GoalScheduler } from './kangqore-immp/goals/goalScheduler';
-import { ProactiveScheduler } from './kangqore-immp/proactive/proactiveScheduler';
-import { TwinScheduler } from './kangqore-immp/twin/twinScheduler';
-import { LoopScheduler } from './kangqore-immp/agents/loopScheduler';
-import { MetaBriefingScheduler } from './kangqore-immp/agents/metaBriefingScheduler';
-import { KIMMLearningScheduler } from './kangqore-immp/learning/kimmpLearningScheduler';
+import { WAANDA } from './waanda/WaandaBootstrap';
 import { authenticate, authorize } from './middleware/auth';
-import { CdcService } from './lib/cdc/cdcService';
 
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
@@ -160,8 +154,12 @@ import publicContentRoutes from './routes/public_content';
 app.use('/api/admin/media', mediaRoutes);
 app.use('/api/admin/content', contentRoutes);
 import adminIpRoutes from './routes/admin-ip';
+import koreRoutes from './os/kore/api/kore.routes'; // NEW KEOS Layer
+
 app.use('/api/kangqore/immp', kangqoreImmpRoutes);
-app.use('/api/kangqore/urgi', urgiRoutes);
+app.use('/api/kangqore/urgi', authenticate, urgiRoutes);
+app.use('/api/kangqore/kore', koreRoutes); // Mount KEOS KORE APIs
+
 app.use('/api/content', publicContentRoutes); // Public access
 app.use('/api/uploads', uploadRoutes);
 app.use('/api/search', searchRoutes);
@@ -211,6 +209,9 @@ import bidsClientRoutes from './routes/bids-client';
 app.use('/api/client/bids', bidsClientRoutes);
 import { briefingRouter } from './routes/admin-briefing';
 app.use('/api/admin/briefing', briefingRouter);
+// WAANDA — Enterprise Cognitive OS boot manifest + domain registry + mission execution
+app.use('/api/admin/waanda', authenticate, authorize(['ADMIN']), waandaRouter);
+
 // AEGIS — Autonomous Executive Governance & Intelligence Shield
 // Sits above KIMMP: sovereign audit dashboard for ADMIN only.
 app.use('/api/admin/aegis', aegisShield, aegisRouter);
@@ -337,23 +338,8 @@ app.use(errorHandler);
 const server = createServer(app);
 
 // Initialize Socket.io for real-time features
-import { CronManager } from './jobs/CronManager'; // Import CronManager
-
 const io = initializeSocket(server);
 app.set('io', io); // Make io accessible in routes via req.app.get('io')
-
-// Initialize Scheduled Jobs
-CronManager.initialize();
-ScoutScheduler.start();
-GoalScheduler.start();
-ProactiveScheduler.start();
-TwinScheduler.start();
-LoopScheduler.start();
-MetaBriefingScheduler.start();
-AegisScheduler.start();
-AegisEventEmitter.init().catch(e => console.error('[AEGIS] EventEmitter init failed:', e));
-KIMMLearningScheduler.start();
-CdcService.init().catch(e => console.error('[CDC] init failed:', e));
 
 server.listen(PORT, () => {
   console.log(`🚀 Core Backend + Frontend running on port ${PORT}`);
@@ -361,17 +347,8 @@ server.listen(PORT, () => {
   console.log(`🌐 Frontend: http://localhost:${PORT}`);
   console.log(`🔌 Socket.io: Real-time enabled`);
 
-  // Concierge: index KB into KnowledgeChunk table (no-op if VOYAGE_API_KEY missing)
-  import('./services/concierge.retrieval').then(({ indexKnowledgeBase, startKbWatcher }) => {
-    indexKnowledgeBase()
-      .catch((err) => console.error('concierge.index.boot.error', err))
-      .finally(() => startKbWatcher());
-  });
-
-  // KIMMP: warm up per-system RAG indexes from DB (no-op if VOYAGE_API_KEY missing)
-  import('./kangqore-immp/agents/systemRAG').then(({ SystemRAG }) => {
-    SystemRAG.warmUp().catch(() => {});
-  });
+  // WAANDA Boot Sequence — single constitutional entry point for all subsystems
+  WAANDA.boot().catch((e: unknown) => console.error('[WAANDA] Boot failed:', e));
 });
 
 // Graceful shutdown

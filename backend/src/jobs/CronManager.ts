@@ -21,6 +21,7 @@ export class CronManager {
     this.scheduleMeetingReminders();
     this.scheduleWorkflowExecutor();
     this.scheduleInvoiceNotifications();
+    this.scheduleProjectOpsHealthSweep();
   }
 
   /**
@@ -264,5 +265,21 @@ export class CronManager {
       }
     });
     console.log('   -> Invoice Notifications scheduled (08:00 Daily)');
+  }
+
+  /**
+   * Daily 07:00 — sweep all active projects for health scores (Gate 8 Mission 1 feed)
+   */
+  private static scheduleProjectOpsHealthSweep() {
+    cron.schedule('0 7 * * *', async () => {
+      try {
+        const { sweepAllProjects } = await import('../scripts/gate8/projectOps.service')
+        const result = await sweepAllProjects()
+        logger.info(`[CronManager] Project health sweep: ${result.assessed} projects, avg health ${result.avgHealth}`)
+      } catch (err) {
+        console.error('❌ Error in Project Ops Health Sweep:', err)
+      }
+    })
+    console.log('   -> Project Ops Health Sweep scheduled (07:00 Daily)')
   }
 }
