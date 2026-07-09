@@ -12,7 +12,8 @@
 
 import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
-import { sonnet, textOf } from '../llm/kimmpLLMRouter'
+import { sonnetWithTools, textOf } from '../llm/kimmpLLMRouter'
+import { KimmpRag } from '../rag/kimmpRag.service'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -49,6 +50,8 @@ export interface ServicePrescription {
   targetScore:        number
   recommendedService: string
   rationale:          string
+  displaces:          string[]  // tools/processes this service replaces
+  competitorContext:  string    // why Kangqore View is better than the incumbent for this pillar
 }
 
 export interface TransformationRoadmap {
@@ -138,7 +141,9 @@ OUTPUT FORMAT: Respond ONLY with valid JSON matching this exact structure (no ma
       "currentScore": 28,
       "targetScore": 65,
       "recommendedService": "AI Readiness & Deployment Programme",
-      "rationale": "String — 1 sentence explaining why this service addresses the gap"
+      "rationale": "String — 1 sentence explaining why this service addresses the gap",
+      "displaces": ["Salesforce Einstein", "Monday AI", "manual Excel analysis"],
+      "competitorContext": "String — 1 sentence on why Kangqore View delivers superior results for this pillar vs the displaced tools"
     }
     // one prescription per pillar scoring below 65 (max 8 prescriptions)
   ]
@@ -152,7 +157,18 @@ ROADMAP RULES:
 - Each phase should have 2–4 goals and 2–3 projects
 - Goals must be specific to THIS client's weakest pillars
 - Projects must be actionable and deliverable within the phase horizon
-- Service prescriptions: only for pillars scoring below 65; max 8 prescriptions; use EXACT service names from the catalogue`
+- Service prescriptions: only for pillars scoring below 65; max 8 prescriptions; use EXACT service names from the catalogue
+- For each prescription, populate "displaces" with 1–3 specific tools/processes this Kangqore service replaces. Use these reference mappings:
+  • Pillar 1 (Strategy): displaces ["generic strategy consultants", "manual planning spreadsheets"]
+  • Pillars 4,5 (Operations, Project Management): displaces ["ClickUp", "Asana", "Monday.com", "manual Excel tracking"]
+  • Pillar 7 (Financial Intelligence): displaces ["QuickBooks standalone", "manual financial reports"]
+  • Pillar 11 (Data Intelligence): displaces ["Power BI standalone", "Palantir Foundry (for governance aspects)", "manual data reporting"]
+  • Pillar 12 (AI Intelligence): displaces ["Salesforce Einstein", "SAP Joule", "Monday AI", "ChatGPT ad-hoc usage"]
+  • Pillar 13 (Digital Experience): displaces ["legacy CMS platforms", "fragmented marketing tools"]
+  • Pillar 14 (Cybersecurity): displaces ["manual security audits", "standalone SIEM tools", "spreadsheet risk registers"]
+  • Pillar 15 (Governance & Risk): displaces ["ServiceNow GRC", "manual compliance spreadsheets", "standalone audit tools"]
+  • Pillar 16 (Enterprise Architecture): displaces ["SAP standalone modules", "legacy ERP configuration", "manual integration layers"]
+- For "competitorContext", write 1 sentence explaining why Kangqore View's diagnostic-first + WAANDA approach delivers better ROI than the displaced tool for this specific pillar. Be specific about the client's score.`
 
   const user = `CLIENT: ${input.clientName}
 INDUSTRY: ${input.industry}
@@ -172,7 +188,16 @@ ${weakest.flatMap(p => p.recommendations.slice(0, 2).map(r => `• ${p.pillarNam
 
 Generate the Transformation Roadmap now. Return ONLY the JSON object.`
 
-  const res  = await sonnet(system, user, 3000, { agentType: 'BIDS_ROADMAP', agentSystem: 'BIDS' })
+  // Ground roadmap generation with KB context for this industry
+  const { contextBlock } = await KimmpRag.query(
+    `${input.industry} digital transformation roadmap best practices`, 3
+  ).catch(() => ({ contextBlock: '', chunkCount: 0 }))
+
+  const systemWithRag = contextBlock
+    ? `${system}\n\n## Kangqore Knowledge Base\n${contextBlock}`
+    : system
+
+  const res  = await sonnetWithTools(systemWithRag, user, 3000, 'intelligence', { agentType: 'BIDS_ROADMAP', agentSystem: 'BIDS' })
   const raw  = textOf(res).trim()
   const json = raw.replace(/^```(?:json)?\n?/i, '').replace(/\n?```$/i, '').trim()
 
@@ -285,6 +310,8 @@ function buildFallbackRoadmap(input: BidsRoadmapInput, overallScore: number): Tr
         targetScore:        Math.min(p.score + 30, 80),
         recommendedService: SERVICE_CATALOGUE[p.pillarId % SERVICE_CATALOGUE.length],
         rationale:          p.recommendations[0] ?? `Targeted intervention required to improve ${p.pillarName} maturity.`,
+        displaces:          [],
+        competitorContext:  '',
       })),
   }
 }

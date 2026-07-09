@@ -5,6 +5,7 @@ import { SignalLedger } from '../signals/signalLedger.service'
 import { WebSearchService, SearchResult } from './webSearch.service'
 import { prisma } from '../../lib/prisma'
 import { KimmpSystemDispatcher } from '../agents/systemDispatcher'
+import { KimmpRag } from '../rag/kimmpRag.service'
 
 // ─── Signal deduplication ─────────────────────────────────────────────────────
 // Prevents the same insight flooding the ledger when Scout runs every 10-15 min.
@@ -52,13 +53,34 @@ export const SCOUT_SOURCES: ScoutSource[] = [
   {
     name: 'Competitor Monitor',
     queries: [
-      'India B2B consulting technology platform competitors 2026',
-      'digital transformation enterprise platform India new funding 2026',
-      'business intelligence SaaS India startup latest news',
+      // Work management tier
+      'ClickUp enterprise India expansion AI agents 2026',
+      'Asana monday.com India enterprise sales push 2026',
+      // Enterprise platforms
+      'ServiceNow India commercial expansion partner 2026',
+      'Salesforce Agentforce India enterprise deployment 2026',
+      // ERP / Data intelligence
+      'SAP India RISE S4HANA mid-market push 2026',
+      'Palantir AIP India commercial expansion deal 2026',
+      // Broader competitive signals
+      'enterprise AI platform India mid-market deal funding 2026',
+      'India B2B SaaS AI governance platform launch 2026',
+      'enterprise intelligence platform India startup 2026',
     ],
     signalType: 'COMPETITOR_MOVE',
     signalCategory: 'COMPETITOR',
     cadenceMinutes: cadence('COMPETITORS', 10),
+  },
+  {
+    name: 'Enterprise AI Tier Monitor',
+    queries: [
+      'Palantir AIP vs alternatives enterprise 2026',
+      'ServiceNow Salesforce AI platform comparison India enterprise',
+      'enterprise AI ROI measurement platform 2026',
+    ],
+    signalType: 'COMPETITOR_MOVE',
+    signalCategory: 'COMPETITOR',
+    cadenceMinutes: cadence('AI_TIER', 20),
   },
   {
     name: 'Government Tenders',
@@ -123,12 +145,17 @@ async function extractSignals(
   query: string,
   results: SearchResult[],
   source: ScoutSource,
+  kbContext?: string,
 ): Promise<Array<{ value: string; severity: string; confidence: number; url?: string }>> {
   if (!results.length || !process.env.ANTHROPIC_API_KEY) return []
 
   const context = results
     .map((r, i) => `[${i + 1}] ${r.title}\n${r.snippet}\n${r.url}`)
     .join('\n\n')
+
+  const kbBlock = kbContext
+    ? `\n\n## Kangqore Knowledge Base Context\n${kbContext}\nUse this institutional knowledge to calibrate signal relevance and severity.`
+    : ''
 
   try {
     const response = await anthropic.messages.create({
@@ -141,7 +168,7 @@ Extract ONLY signals that are genuinely relevant to Kangqore's business operatio
 Return a JSON array of 0–3 signals:
 [{"value": "Concise actionable insight — 1-2 sentences. Name specifics.", "severity": "LOW|MODERATE|HIGH|CRITICAL", "confidence": 40-95, "url": "most relevant URL or null"}]
 
-If nothing is genuinely relevant to a B2B tech firm in India, return [].`,
+If nothing is genuinely relevant to a B2B tech firm in India, return [].${kbBlock}`,
       messages: [{
         role: 'user',
         content: `Query: "${query}"\nSignal type: ${source.signalType}\n\nSearch results:\n${context}`,
@@ -172,7 +199,9 @@ export class KimmpScoutService {
         const results = await WebSearchService.search(query, 5)
         totalQueries++
 
-        const signals = await extractSignals(query, results, source)
+        // Ground signal extraction with KB context for richer synthesis
+        const { contextBlock } = await KimmpRag.query(query, 3).catch(() => ({ contextBlock: '', chunkCount: 0 }))
+        const signals = await extractSignals(query, results, source, contextBlock || undefined)
 
         for (const sig of signals) {
           const value = String(sig.value ?? '').slice(0, 500)

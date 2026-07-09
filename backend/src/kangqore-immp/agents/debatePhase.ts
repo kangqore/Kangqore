@@ -18,6 +18,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { SystemBriefing } from './systemDispatcher'
 import { SignalLedger } from '../signals/signalLedger.service'
+import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
@@ -94,7 +95,6 @@ export async function runDebatePhase(
       anthropic.messages.create({
         model:       'claude-opus-4-8',  // governing model for arbitration
         max_tokens:  500,
-        temperature: 0.2,
         system:      'You are KIMMP (Kangqore Intelligent Machine Mind Protocol), the governing AI for Kangqore. You have just received adversarial analysis of CRITICAL intelligence. Weigh both the bull and bear cases, identify which is better supported by the evidence, and produce a calibrated verdict. Respond with JSON only: { "arbitration": "...", "finalVerdict": "BULLISH|BEARISH|NEUTRAL", "confidenceShift": <-20 to +20 integer> }',
         messages:    [{
           role:    'user',
@@ -137,6 +137,25 @@ export async function runDebatePhase(
         confidence:     0.85,
         metadata:       { confidenceShift, systemsDebated: criticalBriefings.map(b => b.system) },
       }).catch(() => {})
+    }
+
+    // Persist debate trace for Gen 2 training data (non-blocking — never fails the debate)
+    if (bullCase && bearCase && arbitration) {
+      const primaryDispatchId = criticalBriefings[0]?.id
+      if (primaryDispatchId) {
+        ;(prisma as any).kimmpDebateTrace.create({
+          data: {
+            dispatchId:  primaryDispatchId,
+            system:      criticalBriefings.map(b => b.system).join(','),
+            trigger:     criticalBriefings[0]?.trigger ?? null,
+            bullCase,
+            bearCase,
+            arbitration,
+            verdict:     finalVerdict,
+            confShift:   confidenceShift,
+          },
+        }).catch(() => {})
+      }
     }
 
     return { bullCase, bearCase, arbitration, finalVerdict, confidenceShift, debateRan: true }

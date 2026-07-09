@@ -14,6 +14,7 @@
 // ---------------------------------------------------------------------------
 
 import type Anthropic from '@anthropic-ai/sdk'
+import { ObjectRegistry } from '../../os/kore/language/ObjectRegistry'
 
 // ─── Result envelope ──────────────────────────────────────────────────────────
 
@@ -315,9 +316,88 @@ function growth_index(input: { revenue_growth: number; headcount_growth: number;
   }
 }
 
+// Enterprise Ontology & Knowledge ────────────────────────────────────────────────────────
+
+import { KeosKernel } from '../../os/kernel/KeosKernel';
+import { EnterpriseProvenanceService } from '../../os/kernel/EnterpriseProvenanceService';
+import { EnterpriseKnowledgeService } from '../../os/knowledge/EnterpriseKnowledgeService';
+
+async function query_enterprise_knowledge(input: { queryType: 'ontology' | 'history' | 'lessons' | 'concept', param?: string }): Promise<ToolResult> {
+  try {
+    let result;
+    switch(input.queryType) {
+      case 'ontology':
+        result = await EnterpriseKnowledgeService.queryOntology(input.param);
+        break;
+      case 'history':
+        result = await EnterpriseKnowledgeService.queryOperationalHistory(input.param);
+        break;
+      case 'lessons':
+        result = await EnterpriseKnowledgeService.queryStrategicLessons(input.param || '');
+        break;
+      case 'concept':
+        result = await EnterpriseKnowledgeService.queryEnterpriseKnowledge(input.param || '');
+        break;
+      default:
+        throw new Error("Invalid query type");
+    }
+    return {
+      result,
+      label: `Enterprise Knowledge: ${input.queryType}`,
+      detail: input.param || 'all'
+    };
+  } catch (error: any) {
+    return {
+      result: { error: error.message },
+      label: 'Knowledge Query Failed',
+      detail: error.message
+    };
+  }
+}
+
+async function execute_keos_mission(input: { goal: string, description?: string, requiredCapability?: string }): Promise<ToolResult> {
+  try {
+    const mission = await KeosKernel.executeMission({
+      goal: input.goal,
+      description: input.description,
+      requester: 'WAANDA', // Executed by the AI
+      requiredCapability: input.requiredCapability
+    });
+    
+    return {
+      result: mission,
+      label: `Mission Completed: ${mission.id}`,
+      detail: `Goal: ${mission.goal} | Outcome: ${mission.currentState}`
+    };
+  } catch (error: any) {
+    return {
+      result: { error: error.message },
+      label: 'Mission Failed',
+      detail: error.message
+    };
+  }
+}
+
+async function explain_keos_decision(input: { missionId: string }): Promise<ToolResult> {
+  try {
+    const trace = await EnterpriseProvenanceService.getMissionTrace(input.missionId);
+    return {
+      result: trace,
+      label: `Provenance Trace: ${input.missionId}`,
+      detail: `Decisions: ${trace.decisions.length}`
+    };
+  } catch (error: any) {
+    return {
+      result: { error: error.message },
+      label: 'Provenance Failed',
+      detail: error.message
+    };
+  }
+}
+
 // ─── Registry ─────────────────────────────────────────────────────────────────
 
-const TOOL_IMPLS: Record<string, (input: any) => ToolResult> = {
+const TOOL_IMPLS: Record<string, (input: any) => ToolResult | Promise<ToolResult>> = {
   arr_projection,
   payback_days,
   ltv_cac_ratio,
@@ -338,6 +418,9 @@ const TOOL_IMPLS: Record<string, (input: any) => ToolResult> = {
   bids_engine_scores,
   engagement_health_index,
   growth_index,
+  execute_keos_mission,
+  explain_keos_decision,
+  query_enterprise_knowledge,
 }
 
 // Anthropic tool definitions (schema declarations for the tool_use API)
@@ -442,6 +525,36 @@ const TOOL_DEFINITIONS: Anthropic.Tool[] = [
     description: 'Compute a composite growth index from revenue, headcount, and customer count growth rates.',
     input_schema: { type: 'object', properties: { revenue_growth: { type: 'number', description: 'Revenue growth % YoY' }, headcount_growth: { type: 'number', description: 'Headcount growth % YoY' }, customer_count_growth: { type: 'number', description: 'Customer count growth % YoY' } }, required: ['revenue_growth', 'headcount_growth', 'customer_count_growth'] },
   },
+  {
+    name: 'execute_keos_mission',
+    description: 'Execute a goal-oriented enterprise mission through the KEOS Kernel. The Kernel handles planning, capability resolution, execution, and memory storage.',
+    input_schema: { 
+      type: 'object', 
+      properties: { 
+        goal: { type: 'string', description: 'The objective of the mission' },
+        description: { type: 'string', description: 'Additional context for the mission' },
+        requiredCapability: { type: 'string', description: 'Optional capability to force a specific provider' }
+      }, 
+      required: ['goal'] 
+    },
+  },
+  {
+    name: 'explain_keos_decision',
+    description: 'Retrieve the Enterprise Provenance trace for a specific mission to understand why a decision was made.',
+    input_schema: { type: 'object', properties: { missionId: { type: 'string' } }, required: ['missionId'] },
+  },
+  {
+    name: 'query_enterprise_knowledge',
+    description: 'Universal interface to query the enterprise reality, including structural ontology, operational history (what happened), and cognitive lessons (what it means).',
+    input_schema: { 
+      type: 'object', 
+      properties: { 
+        queryType: { type: 'string', enum: ['ontology', 'history', 'lessons', 'concept'], description: 'The type of knowledge to query.' },
+        param: { type: 'string', description: 'The specific object name, mission ID, context, or concept to look up.' }
+      }, 
+      required: ['queryType'] 
+    },
+  }
 ]
 
 // ─── LogicToolRegistry ────────────────────────────────────────────────────────
@@ -469,6 +582,9 @@ const DOMAIN_MAP: Record<string, ToolDomain> = {
   bids_engine_scores:        'intelligence',
   engagement_health_index:   'intelligence',
   growth_index:              'intelligence',
+  execute_keos_mission:        'intelligence',
+  explain_keos_decision:       'intelligence',
+  query_enterprise_knowledge:  'intelligence',
 }
 
 export class LogicToolRegistry {
@@ -481,6 +597,9 @@ export class LogicToolRegistry {
     const fn = TOOL_IMPLS[name]
     if (!fn) throw new Error(`Unknown logic tool: "${name}"`)
     const result = fn(input)
+    if (result instanceof Promise) {
+      throw new Error(`Tool "${name}" is asynchronous. Use auditedExecutor instead.`);
+    }
     // Fire-and-forget AEGIS audit log (never blocks the response path)
     LogicToolRegistry._audit(name, input, result).catch(() => {})
     return result
@@ -491,7 +610,7 @@ export class LogicToolRegistry {
   static async auditedExecutor(name: string, input: any): Promise<ToolResult> {
     const fn = TOOL_IMPLS[name]
     if (!fn) throw new Error(`Unknown logic tool: "${name}"`)
-    const result = fn(input)
+    const result = await fn(input)
     await LogicToolRegistry._audit(name, input, result)
     return result
   }

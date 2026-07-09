@@ -41,6 +41,8 @@ import { crossIndexBriefings } from './crossSystemFlow'
 import { runDebatePhase } from './debatePhase'
 import { AegisLedger } from '../../kangqore-aegis/aegisLedger.service'
 import { WaandaTrainingPipeline, LocalReasonService } from '../../waanda-training'
+import { sonnetWithTools, textOf } from '../llm/kimmpLLMRouter'
+import { SemanticMapper, ExternalRef } from '../../services/semanticMapper.service'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
 
@@ -121,6 +123,18 @@ function parseJson<T>(raw: string, fallback: T): T {
   }
 }
 
+// OAG: extract platform entity refs from a query string so SemanticMapper can resolve them
+function extractEntityRefs(query: string): ExternalRef[] {
+  const refs: ExternalRef[] = []
+  const sfMatch = query.match(/\bSF-[A-Z0-9]+\b/gi)
+  if (sfMatch) sfMatch.forEach(id => refs.push({ platform: 'salesforce', externalType: 'Account', externalId: id }))
+  const jiraMatch = query.match(/\b[A-Z]{2,6}-\d+\b/g)
+  if (jiraMatch) jiraMatch.forEach(id => refs.push({ platform: 'jira', externalType: 'Issue', externalId: id }))
+  const hsMatch = query.match(/\bHS-[A-Z0-9]+\b/gi)
+  if (hsMatch) hsMatch.forEach(id => refs.push({ platform: 'hubspot', externalType: 'Contact', externalId: id }))
+  return refs
+}
+
 // ─── Phase 1: REASON — system selects its agents ─────────────────────────────
 
 async function reasonPhase(
@@ -146,8 +160,21 @@ async function reasonPhase(
   const ragBlock = ragChunks.status === 'fulfilled' && ragChunks.value.length > 0
     ? SystemRAG.formatRAGBlock(system, ragChunks.value) : undefined
 
+  // OAG: resolve entity refs from the query and append to the RAG block
+  let enrichedRagBlock = ragBlock
+  const entityRefs = extractEntityRefs(ragQuery)
+  if (entityRefs.length > 0) {
+    const resolved = await SemanticMapper.resolveMany(entityRefs).catch(() => new Map<string, any>())
+    if (resolved.size > 0) {
+      const entityLines = Array.from(resolved.entries())
+        .map(([k, e]) => `• ${k} → ${e.objectType}: ${e.displayName} (conf: ${Math.round(e.confidence * 100)}%)`)
+        .join('\n')
+      enrichedRagBlock = (enrichedRagBlock ?? '') + `\n\n## Resolved Entities (OAG)\n${entityLines}`
+    }
+  }
+
   const reasonSystemPrompt = 'You are an intelligent system making agent selection decisions. Return only valid JSON.'
-  const prompt = buildReasonPrompt(persona, ctx, agentList, learningBlock, ragBlock)
+  const prompt = buildReasonPrompt(persona, ctx, agentList, learningBlock, enrichedRagBlock)
 
   // Gen 2: try local fine-tuned model first; fall back to Claude if unavailable
   const localResult = await LocalReasonService.reason(reasonSystemPrompt, prompt)
@@ -227,9 +254,10 @@ async function speakPhase(
 
   if (!process.env.ANTHROPIC_API_KEY) return fallback
 
-  const prompt  = buildSpeakPrompt(persona, ctx, agentResults)
-  const raw     = await llmCall(persona.model, persona.systemPrompt, prompt, 900)
-  const parsed  = parseJson(raw, fallback)
+  const prompt    = buildSpeakPrompt(persona, ctx, agentResults)
+  const rawRes    = await sonnetWithTools(persona.systemPrompt, prompt, 900, 'all', { agentType: 'KIMMP_SPEAK', agentSystem: 'KIMMP' })
+  const raw       = textOf(rawRes)
+  const parsed    = parseJson(raw, fallback)
 
   return {
     summary:         String(parsed.summary         ?? fallback.summary),
@@ -424,7 +452,25 @@ export class KimmpSystemDispatcher {
       `=== ${r.persona} [${r.model}] ===\nPriority: ${r.priority}\nSummary: ${r.summary}\nFindings: ${r.keyFindings.join('; ')}\nRecommendations: ${r.recommendations.join('; ')}\nAlerts: ${r.alerts.join('; ') || 'none'}\nLoop signal passed: ${r.loopSignal ?? 'none'}`
     ).join('\n\n')
 
-    const synthesisUserPrompt = `A full LOOPS cascade has completed. All 4 systems have spoken.\n\n${allContext}\n\nAs KIMMP, provide your governing synthesis: HEADLINE, CROSS-SYSTEM PATTERN, TOP 3 ACTIONS for the operator. Be specific. Plain text.`
+    // Sprint 6B — KIMMP → AEGIS: read current AEGIS governance state so the
+    // synthesis is aware of active threats before it governs.
+    let aegisStateBlock = ''
+    try {
+      const aegisCriticals = await (await import('../../lib/prisma')).prisma.$queryRaw<any[]>`
+        SELECT agent_id, summary, raised_at
+        FROM aegis_agent_runs
+        WHERE verdict = 'CRITICAL'
+        AND raised_at > NOW() - INTERVAL '2 hours'
+        ORDER BY raised_at DESC
+        LIMIT 5
+      `.catch(() => [])
+      if (aegisCriticals.length > 0) {
+        aegisStateBlock = `\n\n━━ AEGIS GOVERNANCE STATE (last 2h) ━━\n` +
+          aegisCriticals.map((r: any) => `• ${r.agent_id}: ${(r.summary ?? '').slice(0, 100)}`).join('\n')
+      }
+    } catch { /* never block synthesis */ }
+
+    const synthesisUserPrompt = `A full LOOPS cascade has completed. All 4 systems have spoken.\n\n${allContext}${aegisStateBlock}\n\nAs KIMMP, provide your governing synthesis: HEADLINE, CROSS-SYSTEM PATTERN, TOP 3 ACTIONS for the operator. Be specific. Plain text.`
     let kimmSynthesis = allContext
     if (process.env.ANTHROPIC_API_KEY) {
       try {

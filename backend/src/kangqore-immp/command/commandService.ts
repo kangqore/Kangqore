@@ -14,6 +14,7 @@ import { KimmpActionsService, PendingAction } from '../actions/kimmpActions.serv
 import { KimmpPlannerService, PlanStep } from '../planner/kimmpPlanner.service';
 import { isStrategicDecision, runStrategicDecision, StrategicDecisionResult } from '../services/kimmpStrategicDecision.service';
 import { routedCall } from '../llm/kimmpLLMRouter';
+import { LogicToolRegistry } from '../tools/logicToolRegistry';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -296,6 +297,9 @@ export class KIMMMCommandService {
       const routerResult = await routedCall(model, systemPrompt, userPromptText, 1500, {
         agentType: 'COMMAND',
         tags: ['command', req.moduleContext ?? 'global'],
+      }, {
+        tools: LogicToolRegistry.getTools('all'),
+        toolExecutor: (name: string, input: any) => LogicToolRegistry.auditedExecutor(name, input),
       });
       raw = routerResult.content[0]?.type === 'text' ? routerResult.content[0].text : '';
       usedModel = routerResult.model;

@@ -189,6 +189,62 @@ export async function collectFromMemory(): Promise<number> {
   return added
 }
 
+// ─── Stage 1d — Mine Debate Traces (adversarial reasoning — highest quality signal) ──
+
+export async function collectFromDebates(): Promise<number> {
+  const traces = await (prisma as any).kimmpDebateTrace.findMany({
+    where: { approved: false },
+    orderBy: { createdAt: 'desc' },
+    take: 100,
+  }).catch(() => [])
+
+  let added = 0
+  for (const trace of traces) {
+    if (!trace.bullCase || !trace.bearCase || !trace.arbitration) continue
+
+    const systems = trace.system || 'KIMMP'
+    const userMessage = `[System: ${systems}] [Trigger: ${trace.trigger ?? 'unknown'}]\n\nAnalyse the following intelligence and present both optimistic and cautious interpretations.\n\nBull case: ${trace.bullCase}\n\nBear case: ${trace.bearCase}`
+    const idealResponse = `Arbitration [${trace.verdict}]: ${trace.arbitration}`
+
+    // BEARISH debates carry higher signal — they caught downside the system missed
+    const quality = trace.verdict === 'BEARISH' ? 0.85 : 0.75
+    const ok = await upsertExample({
+      source: 'debate', sourceId: trace.id,
+      systemPrompt: KIMMP_SYSTEM_PROMPT,
+      userMessage,
+      idealResponse,
+      quality,
+      approved: false,
+      agentSystem: systems,
+      agentType: 'debate_reasoning',
+      tags: ['debate', 'reasoning', systems, trace.verdict],
+    })
+    if (ok) added++
+  }
+
+  logger.info(`[KIMMP Learning] Mined ${added} examples from debate traces`)
+  return added
+}
+
+// ─── Corpus Export — JSONL for fine-tuning ────────────────────────────────────
+
+export async function exportCorpusJSONL(): Promise<string> {
+  const examples = await (prisma as any).kimmpLearningExample.findMany({
+    where:   { approved: true },
+    orderBy: { quality: 'desc' },
+  }).catch(() => [])
+
+  const lines = (examples as any[]).map(ex => JSON.stringify({
+    messages: [
+      { role: 'system',    content: ex.systemPrompt  ?? '' },
+      { role: 'user',      content: ex.userMessage   ?? '' },
+      { role: 'assistant', content: ex.idealResponse ?? '' },
+    ],
+  }))
+
+  return lines.join('\n')
+}
+
 // ─── Stage 2 — Self-Generation (KIMMP Writes Its Own Training Data) ───────────
 //
 // KIMMP observes successful patterns from its corpus and generates novel
@@ -386,12 +442,13 @@ export async function runLearningCycle(trigger: 'scheduled' | 'manual' | 'boot' 
   let mined = 0, synthetic = 0
 
   try {
-    const [d, dp, m] = await Promise.all([
+    const [d, dp, m, db] = await Promise.all([
       collectFromDecisions(),
       collectFromDispatches(),
       collectFromMemory(),
+      collectFromDebates(),
     ])
-    mined = d + dp + m
+    mined = d + dp + m + db
   } catch (err) {
     logger.error('[KIMMP Learning] Collection phase error:', err)
   }
