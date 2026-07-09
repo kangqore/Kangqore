@@ -19,6 +19,18 @@ export const AuthProvider = ({ children }) => {
     const userData = localStorage.getItem('user');
     
     if (token) {
+      if (token === 'demo-token') {
+        if (userData) {
+          try {
+            setUser(JSON.parse(userData));
+          } catch (e) {
+            console.error('Failed to parse user data:', e);
+          }
+        }
+        setLoading(false);
+        return;
+      }
+
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
       // If we have local data, show it first for responsiveness

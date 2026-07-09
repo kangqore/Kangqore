@@ -1,4 +1,4 @@
-import { api } from '../../lib/api';
+import { adminApi } from '../../lib/api';
 
 export interface LiveSession {
   id: string;
@@ -27,26 +27,30 @@ export interface DigitalTwin {
 }
 
 export const fetchLiveSessions = async (): Promise<LiveSession[]> => {
-  const response = await api.get('/kangqore/urgi/sessions/live');
-  return response.data.data;
+  const response = await adminApi<{ success: boolean, data: LiveSession[] }>('/kangqore/urgi/sessions/live');
+  return response.data;
 };
 
 export const fetchEvidenceLedger = async (): Promise<EvidenceRow[]> => {
-  const response = await api.get('/kangqore/urgi/evidence');
-  return response.data.data;
+  const response = await adminApi<{ success: boolean, data: EvidenceRow[] }>('/kangqore/urgi/evidence');
+  return response.data;
 };
 
 export const fetchDigitalTwin = async (id: string): Promise<DigitalTwin> => {
-  const response = await api.get(`/kangqore/urgi/twin/${id}`);
-  return response.data.data;
+  const response = await adminApi<{ success: boolean, data: DigitalTwin }>(`/kangqore/urgi/twin/${id}`);
+  return response.data;
 };
 
 export const triggerReplayQueue = async (startTime: string, endTime: string): Promise<any> => {
-  const response = await api.post('/kangqore/urgi/replay/initialize', { startTime, endTime });
-  return response.data;
+  return await adminApi('/kangqore/urgi/replay/initialize', {
+    method: 'POST',
+    body: JSON.stringify({ startTime, endTime }),
+  });
 };
 
 export const updateGovernance = async (action: string): Promise<any> => {
-  const response = await api.post('/kangqore/urgi/governance/update', { action });
-  return response.data;
+  return await adminApi('/kangqore/urgi/governance/update', {
+    method: 'POST',
+    body: JSON.stringify({ action }),
+  });
 };

@@ -124,8 +124,8 @@ export default function RelationshipStudio() {
             <HeartbeatIcon weight="duotone" className="w-8 h-8 text-pink-500" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Kangqore URGI (User Relationship Growth Intelligence)</h1>
-            <p className="text-sm font-semibold text-blue-600/80 uppercase tracking-widest mt-0.5">AI Platform for Intelligent Relationship Growth</p>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">URGI — Relationship Intelligence</h1>
+            <p className="text-sm font-semibold text-blue-600/80 uppercase tracking-widest mt-0.5">WAANDA · Understand Stage</p>
           </div>
         </div>
         <div className="flex items-center gap-6">
@@ -157,8 +157,8 @@ export default function RelationshipStudio() {
                 className={cn(
                   "flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 text-left group relative overflow-hidden",
                   isActive 
-                    ? "bg-gradient-to-r from-blue-50 to-pink-50/50 border border-blue-100 text-blue-700 shadow-sm" 
-                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-700 border border-transparent"
+                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 border border-blue-100 text-white shadow-md font-bold" 
+                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-700 border border-transparent font-medium"
                 )}
               >
                 {isActive && (
@@ -166,9 +166,9 @@ export default function RelationshipStudio() {
                 )}
                 <tab.icon weight={isActive ? 'duotone' : 'regular'} className={cn(
                   "w-5 h-5 transition-transform duration-300",
-                  isActive ? "text-blue-600 scale-110" : "group-hover:scale-110"
+                  isActive ? "text-white scale-110" : "group-hover:scale-110"
                 )} />
-                <span className={cn("font-semibold text-sm tracking-wide", isActive ? "text-blue-700" : "")}>
+                <span className={cn("tracking-wide", isActive ? "text-white" : "")}>
                   {tab.label}
                 </span>
               </button>
@@ -297,12 +297,12 @@ export default function RelationshipStudio() {
                          <p className="text-slate-500 font-mono text-sm">Visitor ID: {twinData.id}</p>
                        </div>
                        <div className="flex gap-4 text-center">
-                          <div className="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl border border-emerald-100">
-                             <div className="text-xs font-bold uppercase tracking-wider mb-1">Trust</div>
+                          <div className="bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-md border border-emerald-500">
+                             <div className="text-xs font-bold uppercase tracking-wider mb-1 text-emerald-100">Trust</div>
                              <div className="text-xl font-bold">{twinData.trustScore}</div>
                           </div>
-                          <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-xl border border-blue-100">
-                             <div className="text-xs font-bold uppercase tracking-wider mb-1">Maturity</div>
+                          <div className="bg-blue-600 text-white px-4 py-2 rounded-xl shadow-md border border-blue-500">
+                             <div className="text-xs font-bold uppercase tracking-wider mb-1 text-blue-100">Maturity</div>
                              <div className="text-xl font-bold">{twinData.maturity}</div>
                           </div>
                        </div>
@@ -313,8 +313,8 @@ export default function RelationshipStudio() {
                          <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2"><DatabaseIcon className="w-5 h-5 text-indigo-500" /> Relationship Facts</h4>
                          <ul className="space-y-3">
                            {twinData.recentFacts.map((fact, idx) => (
-                             <li key={idx} className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-lg border border-slate-200 text-sm font-medium text-slate-700">
-                               <CheckCircleIcon className="w-4 h-4 text-green-500" />
+                             <li key={idx} className="flex items-center gap-3 bg-slate-800 px-4 py-3 rounded-lg border border-slate-700 text-sm font-medium text-white shadow-sm">
+                               <CheckCircleIcon className="w-4 h-4 text-green-400" />
                                {fact}
                              </li>
                            ))}
@@ -324,7 +324,7 @@ export default function RelationshipStudio() {
                          <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2"><BrainIcon className="w-5 h-5 text-pink-500" /> Behavioral Traits</h4>
                          <div className="flex flex-wrap gap-2">
                            {twinData.behavioralTraits.map((trait, idx) => (
-                             <span key={idx} className="px-3 py-1.5 bg-pink-50 text-pink-700 text-sm font-bold rounded-lg border border-pink-100">
+                             <span key={idx} className="px-3 py-1.5 bg-pink-600 text-white text-sm font-bold rounded-lg shadow-sm border border-pink-500">
                                {trait}
                              </span>
                            ))}
@@ -399,8 +399,8 @@ export default function RelationshipStudio() {
                   <div className="absolute right-0 top-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl -mr-20 -mt-20 group-hover:bg-indigo-100 transition-all duration-700"></div>
                   
                   <div className="flex items-start gap-6 mb-8 relative z-10">
-                    <div className="p-4 bg-indigo-50 rounded-2xl border border-indigo-100">
-                      <ClockCounterClockwiseIcon className="w-10 h-10 text-indigo-600" />
+                    <div className="p-4 bg-indigo-600 rounded-2xl border border-indigo-500 shadow-sm">
+                      <ClockCounterClockwiseIcon className="w-10 h-10 text-white" />
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-slate-900 mb-2">Start a Simulation</h3>
@@ -464,9 +464,9 @@ export default function RelationshipStudio() {
                     
                     <ul className="space-y-3 relative z-10">
                       {['Social Security Number', 'Health Conditions', 'Political Affiliations', 'Credit Card Information'].map(item => (
-                        <li key={item} className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-lg border border-slate-200">
-                           <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></div>
-                           <span className="text-slate-700 font-semibold text-sm">{item}</span>
+                        <li key={item} className="flex items-center gap-3 bg-slate-800 px-4 py-3 rounded-lg border border-slate-700 shadow-sm">
+                           <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></div>
+                           <span className="text-white font-semibold text-sm">{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -481,12 +481,12 @@ export default function RelationshipStudio() {
                        <h3 className="text-xl font-bold text-slate-900">Consent Engine</h3>
                     </div>
                     
-                    <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 mb-6 relative z-10 shadow-sm">
+                    <div className="bg-emerald-600 border border-emerald-500 rounded-xl p-5 mb-6 relative z-10 shadow-md">
                       <div className="flex items-start gap-4">
-                        <div className="mt-1 w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse"></div>
+                        <div className="mt-1 w-3 h-3 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)] animate-pulse"></div>
                         <div>
-                           <h4 className="font-bold text-emerald-800 mb-1">Implicit Opt-In Active</h4>
-                           <p className="text-sm text-emerald-700/80 leading-relaxed font-medium">All incoming traffic is currently implicitly opted-in for internal URGI scoring. Explicit cookie consent is not required for anonymous profile building.</p>
+                           <h4 className="font-bold text-white mb-1">Implicit Opt-In Active</h4>
+                           <p className="text-sm text-emerald-100 leading-relaxed font-medium">All incoming traffic is currently implicitly opted-in for internal URGI scoring. Explicit cookie consent is not required for anonymous profile building.</p>
                         </div>
                       </div>
                     </div>

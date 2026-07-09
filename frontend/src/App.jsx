@@ -26,6 +26,7 @@ import BookingReschedulePage from './pages/BookingReschedulePage';
 import AcceptInvitePage from './pages/AcceptInvitePage';
 import BookingConfirmationPage from './pages/BookingConfirmationPage';
 import BookingPage from './pages/BookingPage';
+const BidsRequestPage = React.lazy(() => import('./pages/BidsRequestPage'));
 import './App.css';
 
 const BIDSTataSteel = React.lazy(() => import('./pages/BIDSTataSteel'));
@@ -106,6 +107,7 @@ import { kangqoreVisAdminRoutes } from './kangqore-vis';
 
 // OS (dashboard) — lazy loaded per module
 import { ProtectedRoute as OSProtectedRoute } from './os/components/auth/ProtectedRoute';
+const OSBootstrap        = React.lazy(() => import('./os/OSBootstrap').then(m => ({ default: m.OSBootstrap })));
 const OSLayout           = React.lazy(() => import('./os/components/shell/OSLayout').then(m => ({ default: m.OSLayout })));
 const UnauthorizedPage   = React.lazy(() => import('./os/pages/UnauthorizedPage').then(m => ({ default: m.UnauthorizedPage })));
 const StrategyModule     = React.lazy(() => import('./os/features/strategy').then(m => ({ default: m.StrategyModule })));
@@ -127,7 +129,7 @@ const MarketingModule    = React.lazy(() => import('./os/features/marketing').th
 const CareersModule      = React.lazy(() => import('./os/features/careers').then(m => ({ default: m.CareersModule })));
 const AnalyticsModule    = React.lazy(() => import('./os/features/analytics').then(m => ({ default: m.AnalyticsModule })));
 const KIMMMModule        = React.lazy(() => import('./os/features/kangqore-immp').then(m => ({ default: m.KIMMMModule })));
-const AdminOverview      = React.lazy(() => import('./os/features/overview').then(m => ({ default: m.AdminOverview })));
+const WaandaModule       = React.lazy(() => import('./os/features/waanda').then(m => ({ default: m.WaandaModule })));
 const DashboardHome      = React.lazy(() => import('./os/features/overview').then(m => ({ default: m.DashboardHome })));
 const AgentLogsModule    = React.lazy(() => import('./os/features/agent-logs').then(m => ({ default: m.AgentLogsModule })));
 const SystemsModule      = React.lazy(() => import('./os/features/systems').then(m => ({ default: m.SystemsModule })));
@@ -137,6 +139,7 @@ const AegisModule        = React.lazy(() => import('./os/features/aegis').then(m
 const OntologyModule     = React.lazy(() => import('./os/features/ontology').then(m => ({ default: m.OntologyModule })));
 const NeuralNetworkModule = React.lazy(() => import('./os/features/neural-network').then(m => ({ default: m.NeuralNetworkModule })));
 const UrgiStudioModule    = React.lazy(() => import('./os/features/urgi-studio/RelationshipStudio'));
+const OntologyStudioModule = React.lazy(() => import('./os/features/ontology-studio'));
 const BidsModule         = React.lazy(() => import('./os/features/bids').then(m => ({ default: m.BidsModule })));
 const OpsCentreModule    = React.lazy(() => import('./os/features/ops-centre').then(m => ({ default: m.OpsCentreModule })));
 const ClientPortal       = React.lazy(() => import('./os/portals/client').then(m => ({ default: m.ClientPortal })));
@@ -249,7 +252,8 @@ function AppContent() {
           >
             <Route index                   element={<Navigate to="home" replace />} />
             <Route path="home"             element={<DashboardHome />}       />
-            <Route path="WAANDA"           element={<AdminOverview />}       />
+            <Route path="keos/*"           element={<OSBootstrap />}         />
+            <Route path="WAANDA/*"         element={<WaandaModule />}        />
             <Route path="strategy/*"       element={<StrategyModule />}      />
             <Route path="projects/*"       element={<ProjectsModule />}      />
             <Route path="resources/*"      element={<ResourcesModule />}     />
@@ -276,6 +280,7 @@ function AppContent() {
             <Route path="ops-centre/*"     element={<OpsCentreModule />}        />
             <Route path="aegis/*"          element={<AegisModule />}            />
             <Route path="ontology/*"       element={<OntologyModule />}         />
+            <Route path="ontology-studio/*" element={<OntologyStudioModule />}  />
             <Route path="neural-network/*" element={<NeuralNetworkModule />}    />
             <Route path="kangqore-urgi/*"    element={<UrgiStudioModule />}       />
             <Route path="settings/*"       element={<SettingsModule />}      />
@@ -347,6 +352,9 @@ function AppContent() {
               </OSProtectedRoute>
             }
           />
+
+          {/* BIDS™ self-serve request funnel — public, no header/footer */}
+          <Route path="/bids-request" element={<BidsRequestPage />} />
 
           {/* Standalone document pages — no Header/Footer (optimised for print/PDF) */}
           <Route path="/bids/tata-steel" element={<BIDSTataSteel />} />

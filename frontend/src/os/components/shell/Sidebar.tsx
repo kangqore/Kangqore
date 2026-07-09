@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { SidebarSimpleIcon } from '@phosphor-icons/react'
 import { ChevronDown } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
@@ -54,9 +54,45 @@ export function Sidebar() {
   const { sidebarCollapsed, toggleSidebar } = useUIStore()
   const criticalCount = useKIMMPStore(s => s.criticalCount())
   const counts = useSidebarCounts()
+  const { pathname } = useLocation()
 
   const navRef = useRef<HTMLElement>(null as unknown as HTMLElement)
   const [hasMore, setHasMore] = useState(false)
+
+  // Track which expandable items are open; auto-open when on a child route
+  const [expanded, setExpanded] = useState<Set<string>>(() => {
+    const set = new Set<string>()
+    for (const group of navGroups) {
+      for (const item of group.items) {
+        if (item.children?.some(c => pathname.startsWith(c.path))) set.add(item.id)
+      }
+    }
+    return set
+  })
+
+  useEffect(() => {
+    setExpanded(prev => {
+      let changed = false
+      const next = new Set(prev)
+      for (const group of navGroups) {
+        for (const item of group.items) {
+          if (item.children?.some(c => pathname.startsWith(c.path)) && !next.has(item.id)) {
+            next.add(item.id)
+            changed = true
+          }
+        }
+      }
+      return changed ? next : prev
+    })
+  }, [pathname])
+
+  function toggleExpand(id: string) {
+    setExpanded(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }
 
   const checkScroll = useCallback(() => {
     const nav = navRef.current
@@ -147,40 +183,157 @@ export function Sidebar() {
             <ul className="space-y-0.5">
               {group.items.map(item => {
                 const Icon = item.icon
+                const hasChildren = (item.children?.length ?? 0) > 0
+                const isOpen = expanded.has(item.id)
+                const isChildActive = hasChildren && item.children!.some(c => pathname.startsWith(c.path))
+
                 const link = (
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) => cn(
+                  <div className="relative">
+                    {/* Parent row */}
+                    <div className={cn(
                       'flex items-center gap-3 rounded-lg transition-all duration-150 group relative',
                       sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
-                      isActive
-                        ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
+                      isChildActive
+                        ? 'text-[#2564ea]'
                         : 'text-[var(--os-text-2)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04] hover:text-[var(--os-text-1)]'
-                    )}
-                  >
-                    <Icon weight="fill" className={cn("w-[18px] h-[18px] flex-shrink-0 transition-transform duration-100", sidebarCollapsed ? "" : "opacity-70 group-hover:opacity-100 group-hover:scale-110")} />
-                    {!sidebarCollapsed && (
-                      <>
-                        <span className="text-[13px] font-medium truncate flex-1">{item.label}</span>
-                        {(ITEM_BADGE[item.id] ?? 0) > 0 && (
-                          <span className="flex-shrink-0 min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center px-1">
-                            {ITEM_BADGE[item.id] > 99 ? '99+' : ITEM_BADGE[item.id]}
-                          </span>
+                    )}>
+                      {/* Icon — always navigates to the item path */}
+                      <NavLink
+                        to={item.path}
+                        end={!hasChildren}
+                        className={({ isActive }) => cn(
+                          'flex items-center gap-3 flex-1 min-w-0',
+                          !hasChildren && isActive ? 'text-white' : '',
                         )}
-                      </>
+                        style={({ isActive }) =>
+                          !hasChildren && isActive
+                            ? { background: 'none' }
+                            : {}
+                        }
+                        onClick={() => {
+                          if (hasChildren) toggleExpand(item.id)
+                        }}
+                      >
+                        {({ isActive }) => (
+                          <>
+                            <span className={cn(
+                              'flex items-center justify-center flex-shrink-0 rounded-lg transition-all duration-100',
+                              sidebarCollapsed ? 'w-10 h-10' : 'w-[18px] h-[18px]',
+                              !hasChildren && isActive
+                                ? 'text-white [&_*]:text-white'
+                                : ''
+                            )}
+                              style={!hasChildren && isActive && !sidebarCollapsed
+                                ? { background: 'linear-gradient(90deg,#2564ea,#4ab6d4)', borderRadius: 8, width: '100%', padding: '0 12px', height: 32, marginLeft: -12, marginRight: -12, paddingLeft: 12 }
+                                : sidebarCollapsed && !hasChildren && isActive
+                                  ? { background: 'linear-gradient(90deg,#2564ea,#4ab6d4)', borderRadius: 8 }
+                                  : {}
+                              }
+                            >
+                              <Icon weight="fill" className={cn("w-[18px] h-[18px] flex-shrink-0 transition-transform duration-100", sidebarCollapsed ? "" : "opacity-70 group-hover:opacity-100 group-hover:scale-110")} />
+                              {!sidebarCollapsed && (
+                                <span className="text-[13px] font-medium truncate flex-1 ml-3">{item.label}</span>
+                              )}
+                            </span>
+                          </>
+                        )}
+                      </NavLink>
+
+                      {/* Badge (non-children items) */}
+                      {!hasChildren && !sidebarCollapsed && (ITEM_BADGE[item.id] ?? 0) > 0 && (
+                        <span className="flex-shrink-0 min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center px-1">
+                          {ITEM_BADGE[item.id] > 99 ? '99+' : ITEM_BADGE[item.id]}
+                        </span>
+                      )}
+                      {!hasChildren && sidebarCollapsed && (ITEM_BADGE[item.id] ?? 0) > 0 && (
+                        <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
+                          {ITEM_BADGE[item.id] > 9 ? '9+' : ITEM_BADGE[item.id]}
+                        </span>
+                      )}
+
+                      {/* Expand toggle for items with children */}
+                      {hasChildren && !sidebarCollapsed && (
+                        <button
+                          onClick={e => { e.preventDefault(); e.stopPropagation(); toggleExpand(item.id) }}
+                          className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors text-[11px] font-bold"
+                        >
+                          {isOpen ? '−' : '+'}
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Child items */}
+                    {hasChildren && isOpen && !sidebarCollapsed && (
+                      <ul className="mt-0.5 space-y-0.5">
+                        {item.children!.map(child => (
+                          <li key={child.id}>
+                            <NavLink
+                              to={child.path}
+                              className={({ isActive }) => cn(
+                                'flex items-center gap-2 h-7 rounded-lg text-[12px] font-medium transition-all duration-150 mx-3',
+                                'pl-8 pr-3',
+                                isActive
+                                  ? 'text-[#2564ea] bg-blue-500/10'
+                                  : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04]'
+                              )}
+                            >
+                              {({ isActive }) => (
+                                <>
+                                  <span className={cn(
+                                    'w-1 h-1 rounded-full flex-shrink-0',
+                                    isActive ? 'bg-[#2564ea]' : 'bg-current opacity-40'
+                                  )} />
+                                  {child.label}
+                                </>
+                              )}
+                            </NavLink>
+                          </li>
+                        ))}
+                      </ul>
                     )}
-                    {sidebarCollapsed && (ITEM_BADGE[item.id] ?? 0) > 0 && (
-                      <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
-                        {ITEM_BADGE[item.id] > 9 ? '9+' : ITEM_BADGE[item.id]}
-                      </span>
-                    )}
-                  </NavLink>
+                  </div>
                 )
 
                 return (
                   <li key={item.id}>
-                    {sidebarCollapsed ? (
-                      <Tooltip content={item.label} side="right">{link}</Tooltip>
+                    {sidebarCollapsed && !hasChildren ? (
+                      <Tooltip content={item.label} side="right">
+                        <NavLink
+                          to={item.path}
+                          end
+                          className={({ isActive }) => cn(
+                            'flex items-center justify-center h-10 w-10 mx-auto rounded-lg transition-all duration-150 relative',
+                            isActive
+                              ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
+                              : 'text-[var(--os-text-2)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04] hover:text-[var(--os-text-1)]'
+                          )}
+                        >
+                          {({ isActive: _a }) => (
+                            <>
+                              <Icon weight="fill" className="w-[18px] h-[18px] flex-shrink-0" />
+                              {(ITEM_BADGE[item.id] ?? 0) > 0 && (
+                                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
+                                  {ITEM_BADGE[item.id] > 9 ? '9+' : ITEM_BADGE[item.id]}
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </NavLink>
+                      </Tooltip>
+                    ) : sidebarCollapsed && hasChildren ? (
+                      <Tooltip content={item.label} side="right">
+                        <NavLink
+                          to={item.path}
+                          className={({ isActive }) => cn(
+                            'flex items-center justify-center h-10 w-10 mx-auto rounded-lg transition-all duration-150',
+                            isActive || isChildActive
+                              ? 'text-[#2564ea]'
+                              : 'text-[var(--os-text-2)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04] hover:text-[var(--os-text-1)]'
+                          )}
+                        >
+                          <Icon weight="fill" className="w-[18px] h-[18px] flex-shrink-0" />
+                        </NavLink>
+                      </Tooltip>
                     ) : link}
                   </li>
                 )

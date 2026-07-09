@@ -10,8 +10,8 @@ import { Toaster }           from '@design-system/components/Toast'
 import { CommandPalette }    from './CommandPalette'
 import { AmbientBackground } from './AmbientBackground'
 
-// Routes that render in full immersive WAANDA-GUI mode (no nav/sidebar/topbar)
-const WAANDA_GUI_ROUTES = ['/kangqore-view/admin/WAANDA']
+// Only the WAANDA root (Arc HUD) is immersive — sub-routes use the normal shell
+const WAANDA_ROOT = '/kangqore-view/admin/WAANDA'
 
 // Light-mode token overrides for the admin — applied as inline style so they
 // cascade to all descendants via CSS custom property inheritance, overriding
@@ -52,7 +52,7 @@ const WAANDA_TOKENS: React.CSSProperties = {
 
 export function OSLayout() {
   const { pathname } = useLocation()
-  const isWaandaGUI = WAANDA_GUI_ROUTES.some(r => pathname === r)
+  const isWaandaGUI = pathname === WAANDA_ROOT || pathname === `${WAANDA_ROOT}/`
   const isRelay = pathname.includes('/relay')
   const isNeuralNetwork = pathname.includes('/neural-network')
 

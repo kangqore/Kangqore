@@ -14,7 +14,6 @@ import {
   StrategyIcon,
   SquaresFourIcon,
   PulseIcon,
-  HeartbeatIcon,
   ScalesIcon,
   UsersIcon,
   CurrencyDollarIcon,
@@ -34,11 +33,18 @@ import {
 } from '@phosphor-icons/react'
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
 
+export interface NavSubItem {
+  id: string
+  label: string
+  path: string
+}
+
 export interface NavItem {
   id: string
   label: string
   icon: PhosphorIcon
   path: string
+  children?: NavSubItem[]
 }
 
 export interface NavGroup {
@@ -59,9 +65,19 @@ export const navGroups: NavGroup[] = [
   {
     label: 'INTELLIGENCE',
     items: [
-      { id: 'overview',      label: 'WAANDA',        icon: CompassIcon,         path: `${BASE}/WAANDA`         },
+      { id: 'keos',          label: 'Generation III Runtime', icon: BrainIcon,           path: `${BASE}/keos`           },
+      {
+        id: 'overview', label: 'WAANDA', icon: CompassIcon, path: `${BASE}/WAANDA`,
+        children: [
+          { id: 'waanda-observe',    label: 'Observe',    path: `${BASE}/WAANDA/observe`    },
+          { id: 'waanda-understand', label: 'Understand', path: `${BASE}/WAANDA/understand` },
+          { id: 'waanda-decide',     label: 'Decide',     path: `${BASE}/WAANDA/decide`     },
+          { id: 'waanda-act',        label: 'Act',        path: `${BASE}/WAANDA/act`        },
+          { id: 'waanda-learn',      label: 'Learn',      path: `${BASE}/WAANDA/learn`      },
+          { id: 'waanda-urgi',       label: 'URGI Studio', path: `${BASE}/kangqore-urgi`    },
+        ],
+      },
       { id: 'kangqore-immp', label: 'KIMMP',          icon: BrainIcon,           path: `${BASE}/kangqore-immp`  },
-      { id: 'urgi-studio',   label: 'Kangqore URGI', icon: HeartbeatIcon,       path: `${BASE}/kangqore-urgi`    },
       { id: 'systems',       label: 'Systems',        icon: HardDrivesIcon,      path: `${BASE}/systems`        },
       { id: 'aegis',         label: 'AEGIS',          icon: ShieldCheckeredIcon, path: `${BASE}/aegis`          },
       { id: 'ontology',      label: 'Ontology',       icon: GraphIcon,           path: `${BASE}/ontology`       },
