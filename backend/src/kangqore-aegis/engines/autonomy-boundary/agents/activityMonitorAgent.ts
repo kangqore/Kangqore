@@ -1,6 +1,7 @@
 import { prisma }          from '../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { LogicToolRegistry } from '../../../../kangqore-immp/tools/logicToolRegistry'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
@@ -20,8 +21,14 @@ export async function runActivityMonitorAgent(ctx: AgentContext): Promise<AegisA
   )
   const total = Object.values(systemMap).reduce((s, c) => s + c, 0)
 
-  // Flag any system with disproportionate autonomous activity
-  const highActivity = Object.entries(systemMap).filter(([_, cnt]) => cnt > 50)
+  // Flag systems whose autonomous activity exceeds 50% of the 100-action baseline
+  const highActivity = Object.entries(systemMap).filter(([_sys, cnt]) => {
+    const util = LogicToolRegistry.execute('capacity_utilization', {
+      allocated_hours: cnt,
+      available_hours: 100,
+    })
+    return Number(util.result) > 50
+  })
   const verdict = highActivity.length > 0 ? 'WARN' : total > 0 ? 'PASS' : 'INFO'
 
   const llmSummary = await callLLM(SYSTEM,

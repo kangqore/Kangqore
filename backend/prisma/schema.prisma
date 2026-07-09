@@ -123,8 +123,10 @@ model User {
   problemsAssigned      Problem[]             @relation("ProblemAssignee")
 
   // BIDS™
-  bidsActive      Boolean          @default(false)
-  bidsEngagement  BidsEngagement?  @relation("BidsClient")
+  bidsActive             Boolean            @default(false)
+  bidsEngagement         BidsEngagement?    @relation("BidsClient")
+  clientMilestones       ClientMilestone[]  @relation("ClientMilestoneOwner")
+  projectMilestones      ProjectMilestone[] @relation("ProjectMilestoneOwner")
 
   // URGI™ Platform
   unifiedProfile  UnifiedRelationshipProfile?
@@ -206,6 +208,7 @@ model Project {
   serviceLines              ServiceLine[]              @relation("ProjectToServiceLine")
   operationalState          ProjectOperationalState?
   digitalTwin               ProjectDigitalTwin?
+  milestones                ProjectMilestone[]
 
   @@index([clientId])
   @@index([status])
@@ -1129,11 +1132,32 @@ model ClientMilestone {
   dueDate        DateTime
   completedDate  DateTime?
   status         String    // completed|in-progress|upcoming|delayed
-  owner          String
+  owner          String    // display name (kept for backwards compat)
+  ownerId        String?   // FK to User
+  user           User?     @relation("ClientMilestoneOwner", fields: [ownerId], references: [id], onDelete: SetNull)
   client         ClientCRM @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   @@index([clientId])
+  @@index([ownerId])
   @@map("client_milestones")
+}
+
+model ProjectMilestone {
+  id            String    @id @default(cuid())
+  projectId     String
+  title         String
+  description   String    @db.Text
+  dueDate       DateTime
+  completedDate DateTime?
+  status        String    @default("upcoming")  // completed|in-progress|upcoming|delayed
+  ownerId       String?
+  createdAt     DateTime  @default(now())
+  owner         User?     @relation("ProjectMilestoneOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([ownerId])
+  @@map("project_milestones")
 }
 
 model ClientGovernanceItem {
@@ -3771,12 +3795,33 @@ model KimmpSystemDispatch {
   agentResults     Json?    // full AgentResult[]
   feedback         String?  // ACCEPTED | DISMISSED | CORRECTED — set when operator rates
   createdAt        DateTime @default(now())
+  debateTrace      KimmpDebateTrace?
 
   @@index([system, createdAt])
   @@index([priority, createdAt])
   @@index([feedback, createdAt])
   @@index([createdAt])
   @@map("kimmp_system_dispatch")
+}
+
+model KimmpDebateTrace {
+  id          String              @id @default(cuid())
+  dispatchId  String              @unique
+  system      String
+  trigger     String?
+  bullCase    String              @db.Text
+  bearCase    String              @db.Text
+  arbitration String              @db.Text
+  verdict     String              // BULLISH | BEARISH | NEUTRAL
+  confShift   Int
+  quality     Float               @default(0.0)
+  approved    Boolean             @default(false)
+  dispatch    KimmpSystemDispatch @relation(fields: [dispatchId], references: [id])
+  createdAt   DateTime            @default(now())
+
+  @@index([system, createdAt])
+  @@index([approved])
+  @@map("kimmp_debate_traces")
 }
 
 // KIMMP System Memory — learning records for agent selection reinforcement.
@@ -5466,6 +5511,36 @@ model EnterpriseTwinScenario {
 
 // ─── WAANDA V2: HCIP Intelligence Auditing ─────────────────────────────────
 
+model HcipSession {
+  id             String   @id @default(cuid())
+  sessionId      String   @unique
+  visitorStage   String   @default("UNKNOWN") // UNKNOWN|KNOWN|VERIFIED|CUSTOMER|ADVOCATE
+  persona        String?
+  decisionStage  String?  // AWARENESS|EVALUATION|VENDOR_SELECTION|PURCHASE
+  intentSignals  Json     @default("[]")
+  goalsCaptured  Json     @default("[]")
+  pageSequence   String[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([sessionId])
+  @@map("hcip_sessions")
+}
+
+model HcipEvent {
+  id        String   @id @default(cuid())
+  sessionId String
+  eventType String
+  page      String?
+  duration  Int?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([eventType])
+  @@map("hcip_events")
+}
+
 model HcipFeedback {
   id                     String   @id @default(cuid())
   recommendationId       String
@@ -5616,4 +5691,238 @@ model RelationshipTimelineEvent {
   @@index([profileId])
   @@index([eventType])
   @@map("urgi_relationship_timeline_events")
+}
+
+// ============================================================================
+// KEOS (Kangqore Enterprise Operating System) - KORE ONTOLOGY KERNEL
+// ============================================================================
+
+model KoreObject {
+  id          String   @id @default(uuid())
+  name        String   @unique // e.g., "Invoice", "Meeting"
+  description String?
+  isSystem    Boolean  @default(false)
+  properties  KoreProperty[]
+  actions     KoreAction[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("kore_objects")
+}
+
+model KoreProperty {
+  id          String     @id @default(uuid())
+  objectId    String
+  object      KoreObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+  
+  name        String     // e.g., "amount"
+  type        String     // e.g., "STRING", "NUMBER", "DATE", "BOOLEAN"
+  isRequired  Boolean    @default(false)
+  isUnique    Boolean    @default(false)
+  description String?
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([objectId, name])
+  @@map("kore_properties")
+}
+
+model KoreAction {
+  id          String     @id @default(uuid())
+  objectId    String
+  object      KoreObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+  
+  name        String     // e.g., "approve", "cancel"
+  description String?
+  permissions String[]   // Roles or capabilities required
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([objectId, name])
+  @@map("kore_actions")
+}
+
+// ─── KEOS Phase 2.5: Missions, Memory & Capabilities ────────────
+
+model KoreMission {
+  id                  String   @id @default(uuid())
+  goal                String
+  description         String?
+  requester           String?
+  priority            Int      @default(3)
+  missionType         String?
+  requiredCapabilities Json?
+  assignedExecutor    String?
+  missionContext      Json?
+  executionPlan       Json?
+  currentState        String   @default("Created")
+  decisionRecordId    String?
+  events              Json?
+  parentMissionId     String?
+  childMissionIds     Json?
+  result              Json?
+  confidence          Float?
+  startedAt           DateTime?
+  completedAt         DateTime?
+  version             Int      @default(1)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model KoreDecisionRecord {
+  id               String   @id @default(uuid())
+  missionId        String
+  actor            String
+  capability       String?
+  context          Json?
+  evidence         Json?
+  reasoning        String?
+  policy           String?
+  ontologyVersion  String?
+  memoryReferences Json?
+  actionsExecuted  Json?
+  eventsGenerated  Json?
+  confidence       Float?
+  durationMs       Int?
+  outcome          String?
+  timestamp        DateTime @default(now())
+}
+
+model KoreCapability {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  version     String   @default("1.0.0")
+  isSystem    Boolean  @default(false)
+  isEnabled   Boolean  @default(true)
+  providers   KoreCapabilityProvider[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model KoreCapabilityProvider {
+  id             String   @id @default(uuid())
+  capabilityId   String
+  capability     KoreCapability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  providerType   String
+  providerName   String
+  version        String   @default("1.0.0")
+  endpoint       String?
+  runtime        String?
+  availability   String   @default("HIGH")
+  owner          String?
+  priority       Int      @default(1)
+  healthStatus   String   @default("healthy") // healthy, degraded, offline
+  configuration  Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// ─── KIMMP Phase 2.5: Cognitive Memory ────────────
+
+model KimmpCognitiveKnowledge {
+  id          String   @id @default(uuid())
+  concept     String
+  description String
+  confidence  Float    @default(1.0)
+  source      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model KimmpCognitiveLesson {
+  id          String   @id @default(uuid())
+  context     String
+  insight     String
+  impact      String?
+  missionId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model KimmpCognitivePrediction {
+  id          String   @id @default(uuid())
+  scenario    String
+  forecast    String
+  probability Float
+  timeframe   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model KimmpCognitiveReasoningTrace {
+  id          String   @id @default(uuid())
+  goal        String
+  steps       Json
+  conclusion  String
+  missionId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── AEGIS Phase 3.1: Governance & Trust ────────────
+
+model AegisPolicy {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  effect      String   @default("ALLOW") // ALLOW, DENY, REQUIRE_APPROVAL
+  conditions  Json     // e.g. { "maxBudget": 50000, "capability": "financial_transfer" }
+  priority    Int      @default(100)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AegisLedgerEntry {
+  id               String   @id @default(uuid())
+  missionId        String
+  actor            String   // e.g. WAANDA
+  action           String   
+  capabilityId     String?
+  policyEvaluated  Json?    // policies applied and result (ALLOW/DENY/BLOCK)
+  riskScore        Float?   
+  status           String   // e.g. BLOCKED, APPROVED, EXECUTED
+  executionDetails Json?
+  createdAt        DateTime @default(now())
+}
+
+// ─── KORE PERCEPTION & EVIDENCE ENGINE ────────────
+
+model KoreEvidence {
+  id                 String   @id @default(uuid())
+
+  source             String
+  sourceType         String?      // HUMAN, AI_AGENT, SYSTEM, SENSOR, API
+
+  eventType          String
+
+  actorId            String?
+  actorType          String?      // USER, AGENT, SYSTEM
+
+  objectId           String?
+  objectType         String?
+
+  observation        Json         // The raw observation from Perception
+
+  extractedEntities  Json?
+  extractedRelations Json?
+
+  confidenceLevel    String       // Uses canonical Confidence Registry
+  confidenceScore    Float        // Raw score (e.g., 0.94)
+
+  provenance         String
+  provenanceHash     String?
+
+  verificationState  String       // OBSERVATION, HYPOTHESIS, VERIFIED
+  verificationMethod String?
+
+  supportingEvidence Json?
+  contradictingEvidence Json?
+
+  ontologyVersion    String?
+
+  createdAt          DateTime @default(now())
 }

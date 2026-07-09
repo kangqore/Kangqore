@@ -1,6 +1,7 @@
 import { prisma }          from '../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { LogicToolRegistry } from '../../../../kangqore-immp/tools/logicToolRegistry'
 
 const SYSTEM = 'You are AEGIS. Forecast the governance risk level for the next 24 hours based on 7-day trends.'
 
@@ -24,6 +25,14 @@ export async function runThreatForecastAgent(ctx: AgentContext): Promise<AegisAg
   const recent3    = days.slice(-3).reduce((s, d) => s + d.critical + d.violations, 0)
   const earlier3   = days.slice(0, 3).reduce((s, d) => s + d.critical + d.violations, 0)
   const escalating = recent3 > earlier3 && earlier3 >= 0
+
+  // Emit trend risk score to aegisAuditLog via LogicToolRegistry
+  LogicToolRegistry.execute('weighted_score', {
+    items: [
+      { score: Math.min(100, recent3 * 10),  weight: 60 },
+      { score: Math.min(100, earlier3 * 10), weight: 40 },
+    ],
+  })
 
   const narrative = await callLLM(
     SYSTEM,

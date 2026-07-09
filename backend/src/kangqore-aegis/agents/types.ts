@@ -29,10 +29,11 @@ export interface AegisAgentResult {
 }
 
 export interface AgentContext {
-  trigger:    AgentTrigger | string
-  metadata?:  Record<string, unknown>
-  userId?:    string
-  fromEvent?: boolean  // true when triggered by event.CRITICAL_ACTIVATION — prevents cascade re-emit
+  trigger:     AgentTrigger | string
+  metadata?:   Record<string, unknown>
+  userId?:     string
+  fromEvent?:  boolean   // true when triggered by event.CRITICAL_ACTIVATION — prevents cascade re-emit
+  isRecheck?:  boolean   // true when this is a Sprint 3 60s re-evaluation run — prevents stacking
 }
 
 export interface AegisAgentDef {

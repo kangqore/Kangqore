@@ -1,6 +1,7 @@
 import { prisma }          from '../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { LogicToolRegistry } from '../../../../kangqore-immp/tools/logicToolRegistry'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
 
@@ -17,8 +18,12 @@ export async function runCostTrackingAgent(ctx: AgentContext): Promise<AegisAgen
     (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true,  createdAt: { gte: last24h } } }).catch(() => 0),
   ])
 
-  const autonomousRate7d = total7d > 0 ? Math.round((autonomous7d / total7d) * 100) : 0
-  // Warn if autonomous rate is very high (unexpected cost from excessive autonomous runs)
+  // Use capacity_utilization for audited autonomous rate computation
+  const utilizationResult = LogicToolRegistry.execute('capacity_utilization', {
+    allocated_hours: autonomous7d,
+    available_hours: Math.max(1, total7d),
+  })
+  const autonomousRate7d = Number(utilizationResult.result)
   const verdict = autonomousRate7d > 80 ? 'WARN' : 'PASS'
 
   const llmSummary = await callLLM(SYSTEM, `AEGIS Cost Tracking (7d): ${total7d} KIMMP activations — ${autonomous7d} autonomous (${autonomousRate7d}%), ${admin7d} ADMIN-triggered. Last 24h: ${total24h} activations (${autonomous24h} autonomous).\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)

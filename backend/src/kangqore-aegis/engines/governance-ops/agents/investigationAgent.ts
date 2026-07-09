@@ -38,7 +38,7 @@ export async function runInvestigationAgent(ctx: AgentContext): Promise<AegisAge
     400,
   )
 
-  return {
+  const result: AegisAgentResult = {
     agentId:   'govops.investigation',
     engine:    'GOVERNANCE_OPS',
     verdict:   'CRITICAL',
@@ -57,4 +57,19 @@ export async function runInvestigationAgent(ctx: AgentContext): Promise<AegisAge
     durationMs: Date.now() - start,
     raisedAt:  new Date().toISOString(),
   }
+
+  // Sprint 6A — AEGIS → KIMMP: if investigation confirms multiple active threats,
+  // summon KIMMP SENTINEL so the cognitive OS re-evaluates from the security lens.
+  if ((activeWarnings as any[]).length >= 2 && narrative) {
+    import('../../../../kangqore-immp/agents/systemDispatcher').then(({ KimmpSystemDispatcher }) => {
+      KimmpSystemDispatcher.run('SENTINEL', {
+        trigger: 'aegis.investigation.summons',
+        input:   `AEGIS investigation completed. Threat summary: ${narrative.slice(0, 400)}`,
+        userId:  ctx.userId ?? 'AEGIS',
+        params:  { agentId: 'govops.investigation', activeWarnings: (activeWarnings as any[]).length },
+      }).catch(() => {})
+    }).catch(() => {})
+  }
+
+  return result
 }

@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------------------
 // AEGIS Scheduler — fires schedule.1h / schedule.6h / schedule.24h cadences.
 //
-// Called once from backend/src/index.ts at server boot, after all routes are
-// wired (mirrors the KIMMP LoopScheduler pattern).
+// Called from WaandaBootstrap Phase 2 (_bootAegis) — not from index.ts directly.
 // ---------------------------------------------------------------------------
 
 import { AegisEngineDispatcher } from './aegisEngineDispatcher'

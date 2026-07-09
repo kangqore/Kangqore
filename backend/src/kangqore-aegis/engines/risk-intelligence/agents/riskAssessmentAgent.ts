@@ -1,6 +1,7 @@
 import { prisma }          from '../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { LogicToolRegistry } from '../../../../kangqore-immp/tools/logicToolRegistry'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess risk levels and threat intelligence. Write 2 sentences: current risk posture and urgency of ADMIN escalation.'
 
@@ -32,6 +33,17 @@ export async function runRiskAssessmentAgent(ctx: AgentContext): Promise<AegisAg
   const riskScore = Math.min(100,
     criticalWeight + warnWeight + violationWeight + denialWeight + autonomyWeight
   )
+
+  // Emit risk components to aegisAuditLog via LogicToolRegistry for full provenance
+  LogicToolRegistry.execute('weighted_score', {
+    items: [
+      { score: criticalWeight,  weight: 30 },
+      { score: warnWeight,      weight: 10 },
+      { score: violationWeight, weight: 25 },
+      { score: denialWeight,    weight: 20 },
+      { score: autonomyWeight,  weight: 15 },
+    ],
+  })
 
   const verdict = riskScore >= 60 ? 'CRITICAL' : riskScore >= 30 ? 'WARN' : 'PASS'
 

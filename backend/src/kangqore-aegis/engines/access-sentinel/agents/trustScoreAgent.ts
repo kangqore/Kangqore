@@ -1,6 +1,7 @@
 import { prisma }          from '../../../../lib/prisma'
 import { callLLM }        from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { LogicToolRegistry } from '../../../../kangqore-immp/tools/logicToolRegistry'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
@@ -14,20 +15,22 @@ export async function runTrustScoreAgent(ctx: AgentContext): Promise<AegisAgentR
     (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: last7d } } }).catch(() => 0),
   ])
 
-  // Trust score formula:
-  //   Base: 100
-  //   -2 per denied event (capped at -40)
-  //   +10 if denial rate < 1%
-  //   -0.5 per autonomous activation above 50% ratio (if applicable)
   const totalAttempts = activations + denied
   const denialRate    = totalAttempts > 0 ? denied / totalAttempts : 0
   const autonomyRatio = activations  > 0 ? autonomous / activations : 0
 
-  let score = 100
-  score -= Math.min(denied * 2, 40)
-  if (denialRate < 0.01 && totalAttempts > 0) score += 10
-  if (autonomyRatio > 0.5) score -= Math.round((autonomyRatio - 0.5) * 40)
-  score = Math.max(0, Math.min(100, score))
+  // Compute trust score via LogicToolRegistry for audited, hallucination-free scoring
+  const denialPenalty  = Math.min(denied * 2, 40)
+  const denialBonus    = denialRate < 0.01 && totalAttempts > 0 ? 10 : 0
+  const autonomyPenalty = autonomyRatio > 0.5 ? Math.round((autonomyRatio - 0.5) * 40) : 0
+
+  const scoreResult = LogicToolRegistry.execute('weighted_score', {
+    items: [
+      { score: Math.max(0, 100 - denialPenalty + denialBonus), weight: 60 },
+      { score: Math.max(0, 100 - autonomyPenalty),             weight: 40 },
+    ],
+  })
+  const score = Math.max(0, Math.min(100, Math.round(Number(scoreResult.result))))
 
   const verdict = score < 40 ? 'CRITICAL' : score < 70 ? 'WARN' : 'PASS'
 

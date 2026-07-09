@@ -147,6 +147,54 @@ async function execFlagActor(action: AegisAction, result: AegisAgentResult): Pro
   }).catch(() => {})
 }
 
+async function execEmitToWaanda(action: AegisAction, result: AegisAgentResult): Promise<void> {
+  const { KeosEventBus } = await import('../os/kernel/KeosEventBus')
+  KeosEventBus.publish('aegis.governance', {
+    agentId:  result.agentId,
+    engine:   result.engine,
+    verdict:  result.verdict,
+    summary:  result.summary,
+    findings: result.findings,
+    raisedAt: result.raisedAt,
+    ...action.params,
+  })
+}
+
+async function execTriggerKimmpSystem(action: AegisAction, result: AegisAgentResult): Promise<void> {
+  const system = (action.params.system as string) ?? 'SENTINEL'
+  const { KimmpSystemDispatcher } = await import('../kangqore-immp/agents/systemDispatcher')
+  await KimmpSystemDispatcher.run(system as any, {
+    trigger: 'aegis.summons',
+    userId:  'AEGIS',
+    params:  { agentId: result.agentId, verdict: result.verdict, summary: result.summary },
+  }).catch(() => {})
+}
+
+async function execPatchLeadRiskScore(action: AegisAction, _result: AegisAgentResult): Promise<void> {
+  const leadId = action.params.leadId as string
+  const delta  = (action.params.delta as number) ?? 0
+  if (!leadId) return
+  await prisma.eqoreLead.update({
+    where: { id: leadId },
+    data:  { leadScore: { increment: Math.max(-100, Math.min(100, delta)) } },
+  }).catch(() => {})
+}
+
+async function execRevokeSession(action: AegisAction, result: AegisAgentResult): Promise<void> {
+  const userId = (action.params.userId as string) ?? (result.metadata?.userId as string)
+  if (!userId) return
+  const { deleteAllUserSessions } = await import('../services/session.service')
+  await deleteAllUserSessions(userId).catch(() => {})
+  await AegisLedger.logPolicyViolation({
+    policy:   'AEGIS_SESSION_REVOKE',
+    system:   result.engine,
+    actor:    userId,
+    detail:   `Sessions revoked by ${result.agentId} (${result.verdict})`,
+    severity: 'HIGH',
+    metadata: { agentId: result.agentId },
+  }).catch(() => {})
+}
+
 // L3: write to pending table, notify admin via socket — await human approval
 async function execQueueL3(action: AegisAction, result: AegisAgentResult): Promise<void> {
   const pending = await (prisma as any).aegisPendingAction.create({
@@ -201,14 +249,18 @@ export const AegisActionExecutor = {
         }
 
         switch (action.type) {
-          case 'EMIT_SOCKET':          await execEmitSocket(action, result);         break
-          case 'EMIT_SIGNAL':          await execEmitSignal(action, result);         break
-          case 'LOG_AUDIT_ENTRY':      /* ledger writes happen elsewhere */          break
-          case 'CREATE_NOTIFICATION':  await execCreateNotification(action, result); break
-          case 'RUN_INVESTIGATION':    await execRunInvestigation(action, result);   break
-          case 'TRIGGER_CASCADE':      /* handled by eventEmitter after runOne */    break
-          case 'SEND_ALERT_EMAIL':     await execSendAlertEmail(action, result);     break
-          case 'FLAG_ACTOR':           await execFlagActor(action, result);          break
+          case 'EMIT_SOCKET':           await execEmitSocket(action, result);           break
+          case 'EMIT_SIGNAL':           await execEmitSignal(action, result);           break
+          case 'LOG_AUDIT_ENTRY':       /* ledger writes happen elsewhere */            break
+          case 'EMIT_TO_WAANDA':        await execEmitToWaanda(action, result);         break
+          case 'CREATE_NOTIFICATION':   await execCreateNotification(action, result);   break
+          case 'RUN_INVESTIGATION':     await execRunInvestigation(action, result);     break
+          case 'TRIGGER_CASCADE':       /* handled by eventEmitter after runOne */      break
+          case 'TRIGGER_KIMMP_SYSTEM':  await execTriggerKimmpSystem(action, result);  break
+          case 'PATCH_LEAD_RISK_SCORE': await execPatchLeadRiskScore(action, result);  break
+          case 'SEND_ALERT_EMAIL':      await execSendAlertEmail(action, result);       break
+          case 'FLAG_ACTOR':            await execFlagActor(action, result);            break
+          case 'REVOKE_SESSION':        await execRevokeSession(action, result);        break
         }
 
         await logAction(action, result, 'SUCCESS')
