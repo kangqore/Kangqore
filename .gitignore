@@ -89,15 +89,6 @@ frontend/node_modules/.cache/default-development/7.pack
 frontend/node_modules/.cache/default-development/10.pack
 frontend/node_modules/.cache/default-development/11.pack
 frontend/node_modules/.cache/default-development/13.pack
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
 # Environment files
 *.env
 *.env.*
@@ -105,3 +96,14 @@ frontend/node_modules/.cache/default-development/13.pack
 # Production secrets — never commit
 .env.production
 .env.local
+
+# Runtime logs (generated, never committed)
+backend/logs/
+
+# Exploration / architecture test scripts (not production code)
+backend/src/test-*.ts
+backend/src/scripts/test-*.ts
+backend/src/os/kore/test-kore.ts
+
+# Root-level temp scripts
+get_ontology.js
