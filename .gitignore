@@ -107,3 +107,6 @@ backend/src/os/kore/test-kore.ts
 
 # Root-level temp scripts
 get_ontology.js
+
+# Claude Code agent worktrees (internal session state, never commit)
+.claude/worktrees/
