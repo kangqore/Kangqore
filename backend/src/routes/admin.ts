@@ -21,7 +21,7 @@ import { emailService } from '../services/email.service';
 import { getRouterStats, getCircuitBreakerStatus } from '../kangqore-immp/llm/kimmpLLMRouter';
 import { getRuntimeHealth, setProviderMaintenance } from '../kangqore-immp/runtime/waandaRuntime';
 import { getRedisHealth } from '../lib/redis';
-import { runBenchmarks } from '../scripts/benchmarks/runBenchmarks';
+import { runBenchmarks, runBenchmarkComparison } from '../scripts/benchmarks/runBenchmarks';
 import { runGate4 }  from '../scripts/gate4/gate4Runner';
 import { runGate5 }  from '../scripts/gate5/gate5Runner';
 import { runGate35 } from '../scripts/gate35/gate35Runner';
@@ -36,7 +36,7 @@ import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin }
 import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../scripts/gate8/enterpriseCoach.service';
 import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../scripts/gate8/decisionEngine.service';
 import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint } from '../scripts/gate8/blueprintService';
-import { simulateEnterpriseTwin, listTwinScenarios } from '../scripts/gate8/enterpriseTwin.service';
+import { simulateEnterpriseTwin, listTwinScenarios, compareScenarios } from '../scripts/gate8/enterpriseTwin.service';
 import { computeCapabilityProfiles, getCapabilityProfiles, getRuntimeCallStats } from '../kangqore-immp/runtime/waandaRuntimeIntelligence.service';
 
 const clientSignalsService = new ClientSignalsService();
@@ -2134,8 +2134,22 @@ router.post('/kangqore-immp/benchmarks/run', authenticate, authorize(['ADMIN']),
     const authHeader = req.headers.authorization ?? ''
     const token = authHeader.replace(/^Bearer\s+/i, '')
     const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`
-    const summary = await runBenchmarks({ url: backendUrl, token, trigger: 'manual', verbose: false })
+    const { modelOverride, provider } = req.body ?? {}
+    const summary = await runBenchmarks({ url: backendUrl, token, trigger: 'manual', verbose: false, modelOverride, provider })
     res.json(summary)
+  } catch (err) { next(err) }
+})
+
+// POST /admin/kangqore-immp/benchmarks/compare — Gen 2 model-vs-model evaluation
+router.post('/kangqore-immp/benchmarks/compare', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { modelA, modelB } = req.body ?? {}
+    if (!modelA || !modelB) return res.status(400).json({ error: 'modelA and modelB are required' })
+    const authHeader = req.headers.authorization ?? ''
+    const token = authHeader.replace(/^Bearer\s+/i, '')
+    const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`
+    const result = await runBenchmarkComparison({ url: backendUrl, token, trigger: 'manual', verbose: false }, modelA, modelB)
+    res.json(result)
   } catch (err) { next(err) }
 })
 
@@ -3150,6 +3164,15 @@ router.get('/gate8/twin/scenarios', authenticate, authorize(['ADMIN']), async (r
   try {
     const limit = Math.min(Number(req.query.limit ?? 10), 50)
     res.json(await listTwinScenarios(limit))
+  } catch (err) { next(err) }
+})
+
+// GET /admin/gate8/twin/scenarios/compare — accuracy: predicted OIS delta vs actual OIS trajectory
+router.get('/gate8/twin/scenarios/compare', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const minAgeDays = Math.max(1, Number(req.query.minAgeDays ?? 30))
+    const limit      = Math.min(Number(req.query.limit ?? 20), 50)
+    res.json(await compareScenarios(minAgeDays, limit))
   } catch (err) { next(err) }
 })
 

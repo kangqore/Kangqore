@@ -2,6 +2,7 @@ import { Router, Response, NextFunction } from 'express'
 import { prisma } from '../lib/prisma'
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth'
 import { BidsRoadmapAgent } from '../kangqore-immp/agents/bidsRoadmapAgent'
+import { emailService } from '../services/email.service'
 
 const router = Router()
 
@@ -313,10 +314,13 @@ router.post('/engagements/:id/activate', authenticate, authorize(['ADMIN']), asy
     // ── 3. Create BusinessObjectives from service prescriptions ───────────────
     if (roadmap?.servicePrescriptions && Array.isArray(roadmap.servicePrescriptions)) {
       for (const sp of roadmap.servicePrescriptions) {
+        const displacesText = Array.isArray(sp.displaces) && sp.displaces.length > 0
+          ? ` Displaces: ${sp.displaces.join(', ')}.`
+          : ''
         await prisma.businessObjective.create({
           data: {
             projectId:   project.id,
-            description: `${sp.pillarName}: ${sp.recommendedService} — Improve from ${sp.currentScore} → ${sp.targetScore}/100`,
+            description: `${sp.pillarName}: ${sp.recommendedService} — Improve from ${sp.currentScore} → ${sp.targetScore}/100.${displacesText}${sp.competitorContext ? ` ${sp.competitorContext}` : ''}`,
             type:        'TRANSFORMATION',
             kpiMetric:   `BIDS™ Pillar ${sp.pillarId} score`,
             status:      'ON_TRACK',
@@ -349,6 +353,79 @@ router.post('/engagements/:id/activate', authenticate, authorize(['ADMIN']), asy
         : 0,
       objectivesCreated: roadmap?.servicePrescriptions?.length ?? 0,
     })
+  } catch (err) {
+    next(err)
+  }
+})
+
+// POST /api/admin/bids/engagements/:id/activate-client — create/find Client user, set bidsActive, send login email
+router.post('/engagements/:id/activate-client', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const engagement = await prisma.bidsEngagement.findUnique({ where: { id: req.params.id } })
+    if (!engagement) return res.status(404).json({ error: 'Not found' })
+    if (engagement.clientUserId) return res.status(409).json({ error: 'Client portal already activated for this engagement.' })
+
+    const intakeData = engagement.intakeData as any
+    const email = intakeData?.email
+    if (!email) return res.status(409).json({ error: 'No email in intake data. Cannot create client account.' })
+
+    const firstName = intakeData?.firstName || ''
+    const lastName  = intakeData?.lastName  || ''
+    const fullName  = `${firstName} ${lastName}`.trim() || intakeData?.company || 'Client'
+
+    // Find existing user or create new CLIENT user (no password — they set it via Forgot Password)
+    let clientUser = await prisma.user.findUnique({ where: { email } })
+    if (!clientUser) {
+      clientUser = await prisma.user.create({
+        data: {
+          email,
+          name:      fullName,
+          company:   intakeData?.company  || '',
+          phone:     intakeData?.phone    || null,
+          role:      'CLIENT' as any,
+          bidsActive: true as any,
+        },
+      })
+    } else {
+      await prisma.user.update({ where: { id: clientUser.id }, data: { bidsActive: true } as any })
+    }
+
+    // Link user to engagement and move to intake stage
+    const updated = await prisma.bidsEngagement.update({
+      where: { id: engagement.id },
+      data: {
+        clientUserId: clientUser.id,
+        status:       'INTAKE_IN_PROGRESS' as any,
+        startedAt:    new Date(),
+      },
+    })
+
+    const frontendUrl = process.env.FRONTEND_URL || 'https://kangqore.com'
+    emailService.sendEmail({
+      to: email,
+      subject: 'Your Kangqore BIDS™ Assessment Portal is Ready',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px;">
+          <h2 style="color: #2564ea;">Your Diagnostic Assessment Portal is Ready</h2>
+          <p>Dear ${firstName || fullName},</p>
+          <p>Your BIDS™ Diagnostic Assessment portal for <strong>${engagement.clientName}</strong> has been activated.
+             You can now begin your 16-pillar assessment.</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${frontendUrl}/login"
+               style="display: inline-block; padding: 14px 28px; background: linear-gradient(90deg, #2564ea, #4ab6d4); color: white; border-radius: 10px; text-decoration: none; font-weight: bold;">
+              Access Your Assessment Portal →
+            </a>
+          </div>
+          <p style="font-size: 13px; color: #6b7280;">
+            Sign in with: <strong>${email}</strong><br/>
+            First time? Use "Forgot Password" on the login page to set your password.
+          </p>
+          <p>Best regards,<br/><strong>The Kangqore Team</strong></p>
+        </div>
+      `,
+    }).catch(() => {})
+
+    res.json({ ok: true, engagement: updated, clientUserId: clientUser.id })
   } catch (err) {
     next(err)
   }

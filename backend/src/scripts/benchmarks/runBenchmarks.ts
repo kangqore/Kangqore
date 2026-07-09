@@ -18,10 +18,33 @@ import { scoreResponse, computeDrift } from './scorer'
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface BenchmarkOptions {
-  url:      string
-  token:    string
-  trigger:  'nightly' | 'manual' | 'pre-release'
-  verbose?: boolean
+  url:            string
+  token:          string
+  trigger:        'nightly' | 'manual' | 'pre-release'
+  verbose?:       boolean
+  modelOverride?: string    // e.g. 'claude-opus-4-8' | 'waanda-gen2-v0.1'
+  provider?:      string    // 'anthropic' | 'waanda-native' | 'openai'
+  compareWith?:   string    // run a second pass with this model and diff
+}
+
+export interface CategoryScore {
+  category:  string
+  avgScore:  number
+  passCount: number
+  failCount: number
+}
+
+export interface BenchmarkCompareResult {
+  modelA:          string
+  modelB:          string
+  runIdA:          string
+  runIdB:          string
+  scoreA:          number
+  scoreB:          number
+  delta:           number
+  winner:          'A' | 'B' | 'TIE'
+  categoryResults: Array<{ category: string; scoreA: number; scoreB: number; winner: 'A' | 'B' | 'TIE' }>
+  regressions:     Array<{ promptId: string; scoreA: number; scoreB: number; drop: number }>
 }
 
 export interface BenchmarkSummary {
@@ -44,13 +67,23 @@ export interface BenchmarkSummary {
 
 // ─── API caller ───────────────────────────────────────────────────────────────
 
-async function callCommand(url: string, token: string, prompt: string): Promise<{ body: any; durationMs: number }> {
+async function callCommand(
+  url: string,
+  token: string,
+  prompt: string,
+  opts?: { modelOverride?: string; provider?: string },
+): Promise<{ body: any; durationMs: number }> {
   const start = Date.now()
   try {
     const res = await fetch(`${url}/api/admin/kangqore-immp/command`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body:    JSON.stringify({ query: prompt, userId: 'benchmark-runner' }),
+      body:    JSON.stringify({
+        query:         prompt,
+        userId:        'benchmark-runner',
+        modelOverride: opts?.modelOverride ?? undefined,
+        provider:      opts?.provider      ?? undefined,
+      }),
       signal:  AbortSignal.timeout(30_000),
     })
     const body = await res.json().catch(() => ({})) as any
@@ -66,7 +99,7 @@ async function callCommand(url: string, token: string, prompt: string): Promise<
 // ─── Runner ───────────────────────────────────────────────────────────────────
 
 export async function runBenchmarks(opts: BenchmarkOptions): Promise<BenchmarkSummary> {
-  const { url, token, trigger, verbose = false } = opts
+  const { url, token, trigger, verbose = false, modelOverride, provider } = opts
   const runStart = Date.now()
 
   const log = (...args: any[]) => { if (verbose) console.log('[Benchmark]', ...args) }
@@ -100,7 +133,7 @@ export async function runBenchmarks(opts: BenchmarkOptions): Promise<BenchmarkSu
 
   for (const gp of GOLDEN_PROMPTS) {
     log(`  → [${gp.id}] ${gp.description}`)
-    const { body, durationMs } = await callCommand(url, token, gp.prompt)
+    const { body, durationMs } = await callCommand(url, token, gp.prompt, { modelOverride, provider })
     const result = scoreResponse(gp, body, durationMs)
 
     log(`     score=${result.score} passed=${result.passed} model=${result.actualModel ?? '?'}`)
@@ -180,6 +213,60 @@ export async function runBenchmarks(opts: BenchmarkOptions): Promise<BenchmarkSu
   }
 
   return summary
+}
+
+// ─── Model comparison mode — Gen 2 evaluation harness ────────────────────────
+
+export async function runBenchmarkComparison(
+  opts: Omit<BenchmarkOptions, 'modelOverride' | 'compareWith'>,
+  modelA: string,
+  modelB: string,
+): Promise<BenchmarkCompareResult> {
+  const [summaryA, summaryB] = await Promise.all([
+    runBenchmarks({ ...opts, modelOverride: modelA }),
+    runBenchmarks({ ...opts, modelOverride: modelB }),
+  ])
+
+  const delta  = summaryB.totalScore - summaryA.totalScore
+  const winner = delta > 1 ? 'B' : delta < -1 ? 'A' : 'TIE'
+
+  // Per-category comparison
+  const categories = [...new Set(GOLDEN_PROMPTS.map(p => p.category))]
+  const categoryResults = categories.map(cat => {
+    const catPromptsA = summaryA.results.filter(r => r.category === cat)
+    const catPromptsB = summaryB.results.filter(r => r.category === cat)
+    const avgA = catPromptsA.reduce((s, r) => s + r.score, 0) / (catPromptsA.length || 1)
+    const avgB = catPromptsB.reduce((s, r) => s + r.score, 0) / (catPromptsB.length || 1)
+    const diff = avgB - avgA
+    return {
+      category: cat,
+      scoreA: Math.round(avgA),
+      scoreB: Math.round(avgB),
+      winner: (diff > 1 ? 'B' : diff < -1 ? 'A' : 'TIE') as 'A' | 'B' | 'TIE',
+    }
+  })
+
+  // Regressions: prompts where B drops > 10pts vs A
+  const regressions = summaryA.results
+    .map(rA => {
+      const rB = summaryB.results.find(r => r.promptId === rA.promptId)
+      if (!rB) return null
+      const drop = rA.score - rB.score
+      return drop >= 10 ? { promptId: rA.promptId, scoreA: rA.score, scoreB: rB.score, drop } : null
+    })
+    .filter(Boolean) as BenchmarkCompareResult['regressions']
+
+  return {
+    modelA, modelB,
+    runIdA:  summaryA.runId,
+    runIdB:  summaryB.runId,
+    scoreA:  Math.round(summaryA.totalScore),
+    scoreB:  Math.round(summaryB.totalScore),
+    delta:   Math.round(delta),
+    winner,
+    categoryResults,
+    regressions,
+  }
 }
 
 // ─── CLI entry point ──────────────────────────────────────────────────────────

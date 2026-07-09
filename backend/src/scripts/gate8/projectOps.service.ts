@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { LogicToolRegistry } from '../../kangqore-immp/tools/logicToolRegistry'
 
 const prisma = new PrismaClient()
 
@@ -126,6 +127,13 @@ async function computeProjectHealth(projectId: string): Promise<{
 
   const health = Math.min(100, Math.round(progressScore + scheduleScore + taskScore + riskScore + issueScore))
 
+  // Emit to aegisAuditLog via LogicToolRegistry for provenance
+  LogicToolRegistry.execute('project_health_score', {
+    on_time_pct:    (scheduleScore / 25) * 100,
+    budget_pct:     project.adminConfidenceScore ?? 80,
+    completion_pct: progress,
+  })
+
   // ── Confidence ────────────────────────────────────────────────────────────
   const evidenceScore = project.progressEvidence ? 20 : 0
   const adminConf     = project.adminConfidenceScore ?? 0
@@ -140,6 +148,23 @@ async function computeProjectHealth(projectId: string): Promise<{
 
   if (delayRisk && !structuredRisks.find(r => r.label.includes('Schedule'))) {
     structuredRisks.unshift({ label: 'Schedule slippage detected', severity: 'HIGH', probability: 75 })
+  }
+
+  // deadline_risk_score: compute and surface as a risk entry when HIGH/CRITICAL
+  if (project.dueDate) {
+    const drResult = LogicToolRegistry.execute('deadline_risk_score', {
+      deadline:     project.dueDate.toISOString(),
+      today:        now.toISOString(),
+      progress_pct: progress,
+    })
+    const drLabel = String(drResult.label ?? '')
+    if (drLabel.includes('CRITICAL') && !structuredRisks.find(r => r.label.includes('deadline'))) {
+      structuredRisks.unshift({
+        label:       `Deadline at critical risk (${Math.round(Number(drResult.result))}/100)`,
+        severity:    'CRITICAL',
+        probability: Math.min(100, Math.round(Number(drResult.result))),
+      })
+    }
   }
 
   // ── Blockers ─────────────────────────────────────────────────────────────

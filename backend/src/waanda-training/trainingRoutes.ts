@@ -17,6 +17,7 @@ import { WaandaTrainingPipeline }    from './trainingPipeline.service'
 import { WaandaTrainingExporter }    from './trainingExporter.service'
 import { LocalReasonService }        from './localReason.service'
 import { prisma }                    from '../lib/prisma'
+import { exportCorpusJSONL }         from '../kangqore-immp/learning/kimmpLearning.service'
 
 export const waandaTrainingRouter = Router()
 
@@ -152,4 +153,31 @@ waandaTrainingRouter.get('/local-model/status', async (_req: Request, res: Respo
 waandaTrainingRouter.delete('/examples/:id', async (req: Request, res: Response) => {
   await (prisma as any).waandaTrainingExample.delete({ where: { id: req.params.id } }).catch(() => {})
   res.json({ ok: true })
+})
+
+// ── KIMMP Gen 2 corpus export — approved KimmpLearningExamples as JSONL ───────
+
+waandaTrainingRouter.get('/kimmp-corpus/export', async (_req: Request, res: Response) => {
+  try {
+    const jsonl = await exportCorpusJSONL()
+    const count = jsonl ? jsonl.split('\n').filter(Boolean).length : 0
+    res.setHeader('Content-Type', 'application/x-ndjson')
+    res.setHeader('Content-Disposition', `attachment; filename="kimmp-corpus-${Date.now()}.jsonl"`)
+    res.send(jsonl)
+  } catch (err: any) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+waandaTrainingRouter.get('/kimmp-corpus/stats', async (_req: Request, res: Response) => {
+  try {
+    const [total, approved, byType] = await Promise.all([
+      (prisma as any).kimmpLearningExample.count().catch(() => 0),
+      (prisma as any).kimmpLearningExample.count({ where: { approved: true } }).catch(() => 0),
+      (prisma as any).kimmpLearningExample.groupBy({ by: ['source'], _count: { _all: true } }).catch(() => []),
+    ])
+    res.json({ total, approved, bySource: Object.fromEntries((byType as any[]).map((r: any) => [r.source, r._count._all])) })
+  } catch (err: any) {
+    res.status(500).json({ error: err.message })
+  }
 })

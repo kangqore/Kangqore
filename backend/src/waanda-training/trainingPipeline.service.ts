@@ -185,6 +185,30 @@ export class WaandaTrainingPipeline {
     }
   }
 
+  // ── Capture an AEGIS governance decision ────────────────────────────────────
+  // Called from aegisActionProposer.ts after the LLM chooses governance actions.
+  // Teaches Gen 2 WAANDA: "given this security finding, here is the right action."
+
+  static captureGovernanceDecision(params: {
+    agentId:      string
+    engine:       string
+    verdict:      string
+    systemPrompt: string
+    userPrompt:   string   // the serialized AegisAgentResult
+    completion:   string   // the raw JSON action array from LLM
+  }): void {
+    WaandaTrainingPipeline.write({
+      exampleType:  'REASON',
+      system:       `AEGIS:${params.engine}`,
+      trigger:      params.verdict,
+      systemPrompt: params.systemPrompt,
+      userPrompt:   params.userPrompt,
+      completion:   params.completion,
+      agentsUsed:   [params.agentId],
+      priority:     params.verdict === 'CRITICAL' ? 'CRITICAL' : 'HIGH',
+    }).catch(() => {})
+  }
+
   // ── Dataset statistics ────────────────────────────────────────────────────────
 
   static async stats(): Promise<{

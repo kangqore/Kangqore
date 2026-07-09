@@ -362,4 +362,66 @@ router.post('/:id/pulse/client', authenticate, authorize(['CLIENT']), async (req
     } catch (error) { next(error); }
 });
 
+// ── Project Milestones ────────────────────────────────────────────────────────
+
+// GET /api/projects/:id/milestones
+router.get('/:id/milestones', authenticate, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const milestones = await (prisma as any).projectMilestone.findMany({
+      where:   { projectId: req.params.id },
+      include: { owner: { select: { id: true, name: true, avatarUrl: true } } },
+      orderBy: { dueDate: 'asc' },
+    })
+    res.json({ milestones })
+  } catch (err) { next(err) }
+})
+
+// POST /api/projects/:id/milestones
+router.post('/:id/milestones', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { title, description, dueDate, status, ownerId } = req.body
+    if (!title || !dueDate) throw createError('title and dueDate are required', 400)
+    const milestone = await (prisma as any).projectMilestone.create({
+      data: {
+        projectId:   req.params.id,
+        title,
+        description: description ?? '',
+        dueDate:     new Date(dueDate),
+        status:      status ?? 'upcoming',
+        ownerId:     ownerId ?? null,
+      },
+      include: { owner: { select: { id: true, name: true, avatarUrl: true } } },
+    })
+    res.status(201).json({ milestone })
+  } catch (err) { next(err) }
+})
+
+// PATCH /api/projects/:id/milestones/:milestoneId
+router.patch('/:id/milestones/:milestoneId', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const data: any = {}
+    const { title, description, dueDate, completedDate, status, ownerId } = req.body
+    if (title         !== undefined) data.title         = title
+    if (description   !== undefined) data.description   = description
+    if (dueDate       !== undefined) data.dueDate       = new Date(dueDate)
+    if (completedDate !== undefined) data.completedDate = completedDate ? new Date(completedDate) : null
+    if (status        !== undefined) data.status        = status
+    if (ownerId       !== undefined) data.ownerId       = ownerId ?? null
+    const milestone = await (prisma as any).projectMilestone.update({
+      where:   { id: req.params.milestoneId },
+      data,
+      include: { owner: { select: { id: true, name: true, avatarUrl: true } } },
+    })
+    res.json({ milestone })
+  } catch (err) { next(err) }
+})
+
+// DELETE /api/projects/:id/milestones/:milestoneId
+router.delete('/:id/milestones/:milestoneId', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    await (prisma as any).projectMilestone.delete({ where: { id: req.params.milestoneId } })
+    res.json({ ok: true })
+  } catch (err) { next(err) }
+})
+
 export default router;

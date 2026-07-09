@@ -17,11 +17,45 @@ router.post('/events', (req, res) => {
     return res.status(400).json({ error: 'Expected an array of events' });
   }
 
-  // Process all events through ReasoningEngine
-  // The last event's sessionId will dictate the response context
+  // Process all events through ReasoningEngine (in-memory)
   let lastHco = null;
   for (const event of events) {
     lastHco = reasoningEngine.processEvent(event);
+  }
+
+  // Persist session snapshot + events to DB (non-blocking — never fails the response)
+  if (lastHco) {
+    const sessionId = lastHco.sessionId as string
+    ;(async () => {
+      try {
+        // Upsert HcipSession with latest in-memory state
+        const pageSeq = (lastHco.journeyTimeline ?? []).map((t: SemanticEvent) => t.page ?? '').filter(Boolean)
+        const snapshot = {
+          persona:       lastHco.persona       ?? null,
+          decisionStage: lastHco.decisionState ?? null,
+          intentSignals: (lastHco.riskSignals  ?? []) as any,
+          goalsCaptured: (lastHco.reasons      ?? []) as any,
+          pageSequence:  pageSeq,
+        }
+        await (prisma as any).hcipSession.upsert({
+          where:  { sessionId },
+          create: { sessionId, visitorStage: 'UNKNOWN', ...snapshot },
+          update: snapshot,
+        })
+
+        // Write each event to HcipEvent table
+        for (const event of events) {
+          await (prisma as any).hcipEvent.create({
+            data: {
+              sessionId: event.sessionId ?? sessionId,
+              eventType: event.eventType ?? 'UNKNOWN',
+              page:      event.page      ?? null,
+              metadata:  event.metadata  ?? null,
+            },
+          }).catch(() => {})
+        }
+      } catch { /* ignore DB errors — in-memory engine is authoritative */ }
+    })()
   }
 
   res.json({ success: true });
@@ -195,13 +229,13 @@ router.post('/explain', (req, res) => {
     events: hco.journeyTimeline.map(e => e.eventType),
     decisionState: hco.decisionState,
     objective: recommendation.objective,
-    recommendation: recommendation.recommendedAction,
+    recommendation: recommendation.suggestedAction,
     confidence: hco.confidence.overall
   };
 
   // Rejected alternatives (demo data matching user request)
   const alternatives = [];
-  if (recommendation.recommendedAction === 'Architecture Review') {
+  if (recommendation.suggestedAction === 'Architecture Review') {
     alternatives.push({
       action: 'Offer Demo',
       confidence: 74,
