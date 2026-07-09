@@ -33,16 +33,17 @@ export class CompositionEngine {
             throw new Error(`Workspace ${manifest.id} has unresolved dependencies.`);
         }
 
-        // 2. Filter capabilities based on AEGIS policies
-        const allowedCapabilities = manifest.capabilities.filter(capability => 
-            this.policyAdapter.evaluate(capability.permissions)
-        );
+        // 2. Filter capabilities based on AEGIS policies (capabilities are string IDs in the manifest)
+        const capabilityIds = manifest.workspace.capabilities
+        const allowedCapabilities: WorkspaceCapability[] = capabilityIds
+            .filter(id => this.policyAdapter.evaluate([id]))
+            .map(id => ({ id, provider: '', version: '', platformCapability: id, permissions: [id], inputs: [], outputs: [] }))
 
         // 3. Build the virtual workspace tree
         const tree: WorkspaceTree = {
             rootNode: {
                 lens: request.lensId,
-                modules: manifest.modules // In a real implementation, this would be a deep tree structure
+                modules: manifest.workspace.modules ?? []
             },
             resolvedCapabilities: allowedCapabilities
         };

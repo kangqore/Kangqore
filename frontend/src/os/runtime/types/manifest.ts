@@ -93,5 +93,16 @@ export interface WorkspaceManifest {
         capabilities: string[];
         subscriptions: string[];
         memory: string[];
+        modules?: WorkspaceModule[];
     };
+}
+
+export interface WorkspaceLifecycle {
+    initialize(): Promise<void>
+    restore(state: unknown): Promise<void>
+    compose(): Promise<void>
+    render(): void
+    suspend(): void
+    resume(): void
+    dispose(): void
 }
