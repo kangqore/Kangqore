@@ -7,35 +7,49 @@ export interface StateTransitionRequest {
   metadata?: any;
 }
 
+// Canonical state machines per KORE object type.
+// Any transition not listed here is rejected. Unknown object types are open-world (allowed).
+const ALLOWED_TRANSITIONS: Record<string, Record<string, string[]>> = {
+  Invoice:      { draft: ['sent'], sent: ['paid', 'overdue', 'voided'], paid: [], overdue: ['paid', 'voided'], voided: [] },
+  Task:         { todo: ['in_progress'], in_progress: ['completed', 'blocked', 'todo'], blocked: ['in_progress', 'todo'], completed: [] },
+  Project:      { planning: ['active'], active: ['paused', 'completed', 'cancelled'], paused: ['active', 'cancelled'], completed: [], cancelled: [] },
+  Lead:         { new: ['contacted', 'qualified', 'disqualified'], contacted: ['qualified', 'disqualified'], qualified: ['converted', 'disqualified'], converted: [], disqualified: [] },
+  Deliverable:  { pending: ['in_progress'], in_progress: ['review', 'blocked'], review: ['approved', 'in_progress'], approved: [], blocked: ['in_progress'] },
+  Consultation: { pending: ['confirmed', 'cancelled'], confirmed: ['completed', 'cancelled', 'no_show'], completed: [], cancelled: [], no_show: [] },
+  Contract:     { draft: ['review'], review: ['signed', 'rejected', 'draft'], signed: ['active'], active: ['expired', 'terminated'], expired: [], terminated: [] },
+}
+
 export class StateEngine {
-  /**
-   * Validates if a state transition is legal according to the object's ontology definition.
-   * In Phase 1, this acts as a stub logic controller.
-   */
   static async requestTransition(request: StateTransitionRequest): Promise<boolean> {
-    console.log(`[StateEngine] Evaluating transition for ${request.objectType} ${request.objectId} from ${request.currentState} to ${request.targetState}`);
-    
-    // Stub implementation: Assume valid unless target is "ForbiddenState"
-    if (request.targetState === "ForbiddenState") {
-      throw new Error(`State transition from ${request.currentState} to ${request.targetState} is invalid for ${request.objectType}.`);
+    const machine = ALLOWED_TRANSITIONS[request.objectType];
+
+    if (!machine) {
+      // Unknown object type — open-world assumption, allow but log
+      console.log(`[StateEngine] Unknown objectType '${request.objectType}' — allowing transition ${request.currentState} → ${request.targetState}`);
+      return true;
     }
 
+    const allowedTargets = machine[request.currentState];
+    if (allowedTargets === undefined) {
+      throw new Error(`[StateEngine] Unknown state '${request.currentState}' for ${request.objectType}`);
+    }
+    if (allowedTargets.length === 0) {
+      throw new Error(`[StateEngine] ${request.objectType} in state '${request.currentState}' is terminal — no transitions allowed`);
+    }
+    if (!allowedTargets.includes(request.targetState)) {
+      throw new Error(
+        `[StateEngine] Invalid transition for ${request.objectType}: '${request.currentState}' → '${request.targetState}'. ` +
+        `Allowed: [${allowedTargets.join(', ')}]`
+      );
+    }
+
+    console.log(`[StateEngine] Validated: ${request.objectType} ${request.objectId} ${request.currentState} → ${request.targetState}`);
     return true;
   }
 
-  /**
-   * Commits the state change and emits a lifecycle event to the EventRegistry
-   */
   static async commitTransition(request: StateTransitionRequest) {
-    const isValid = await this.requestTransition(request);
-    
-    if (isValid) {
-      console.log(`[StateEngine] Committed transition: ${request.objectType} is now ${request.targetState}`);
-      // In a full implementation, we'd persist to the database and emit an event.
-      // e.g. EventRegistry.emit('STATE_CHANGED', request)
-      return { success: true, newState: request.targetState };
-    }
-    
-    return { success: false, reason: "Invalid Transition" };
+    await this.requestTransition(request);
+    console.log(`[StateEngine] Committed: ${request.objectType} is now '${request.targetState}'`);
+    return { success: true, newState: request.targetState };
   }
 }

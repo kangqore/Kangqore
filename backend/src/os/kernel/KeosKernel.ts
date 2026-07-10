@@ -39,7 +39,6 @@ export class KeosKernel {
       await MissionRepository.updateMission(mission.id, { currentState: 'Executing' });
       
       const results = [];
-      let finalOutcome = 'Success';
 
       for (const step of plan) {
         // Resolve capability
@@ -54,7 +53,6 @@ export class KeosKernel {
           stepResult = await this.executeProvider(provider.providerName, step.name, context);
         } catch (e: any) {
           stepError = e;
-          finalOutcome = 'Failed';
         }
 
         const durationMs = Date.now() - startTime;
@@ -100,19 +98,32 @@ export class KeosKernel {
   }
 
   private static async executeProvider(providerName: string, actionGoal: string, context: any) {
-    // This is the Runtime Gateway bridging Kernel to actual execution subsystems.
     switch (providerName) {
-      case 'KoreRuntime':
-        // Import ActionRuntime and execute
-        // For Phase 2.5 mock/stub, we just return a success payload
-        return { executed: true, provider: 'KoreRuntime', actionGoal };
-      
-      case 'WAANDA':
-        // In real execution, this would invoke the KIMMP/WAANDA router
-        return { executed: true, provider: 'WAANDA', response: `WAANDA processed: ${actionGoal}` };
-      
+      case 'KoreRuntime': {
+        const { ActionRuntime } = await import('../kore/runtime/ActionRuntime');
+        return await ActionRuntime.execute({
+          objectName: context?.domainId ?? 'Enterprise',
+          actionName: actionGoal,
+          actorId:    context?.requester ?? 'KEOS',
+          payload:    context ?? {},
+        });
+      }
+
+      case 'WAANDA': {
+        const { MissionDispatcher } = await import('../../immp/core/MissionDispatcher');
+        const result = await MissionDispatcher.dispatch({
+          goal:               actionGoal,
+          requester:          context?.requester ?? 'KEOS',
+          description:        `KEOS delegated: ${actionGoal}`,
+          context:            context,
+          requiredCapability: actionGoal,
+        }, 'SYNC');
+        return { executed: true, provider: 'WAANDA', missionId: result.id, result };
+      }
+
       default:
-        // Generic fallback or dynamic integration
+        // Generic provider — log and return structured result
+        console.log(`[KeosKernel] Unknown provider '${providerName}' for goal '${actionGoal}'`);
         return { executed: true, provider: providerName, actionGoal };
     }
   }

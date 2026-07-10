@@ -119,15 +119,51 @@ export const getDigitalTwin = async (req: Request, res: Response) => {
   }
 }
 
-// Future sprint — leave as stubs
 export const initializeReplayQueue = async (req: Request, res: Response) => {
   const { startTime, endTime } = req.body
-  console.log(`[URGI] Replay Queue requested: ${startTime} to ${endTime}`)
-  res.status(200).json({
-    success: true,
-    message: 'Replay Queue Initialized. Simulation running in SHADOW mode.',
-    jobId:   `REPLAY-${Date.now()}`,
-  })
+  if (!startTime || !endTime) {
+    return res.status(400).json({ success: false, error: 'startTime and endTime are required' })
+  }
+
+  try {
+    const start = new Date(startTime)
+    const end   = new Date(endTime)
+
+    const records = await prisma.evidenceLedger.findMany({
+      where: { createdAt: { gte: start, lte: end } },
+      include: { profile: { select: { visitorId: true } } },
+      orderBy: { createdAt: 'asc' },
+    })
+
+    const { urgiEventBus } = await import('../events/eventBus')
+    let emitted = 0
+
+    for (const record of records) {
+      const visitorId = record.profile?.visitorId ?? record.profileId
+      urgiEventBus.emit('URGI:IDENTITY_VERIFIED', {
+        visitorId,
+        verifiedFacts: [{
+          factKey:    record.factKey,
+          factValue:  record.factValue,
+          confidence: record.confidenceScore,
+          source:     record.source,
+        }],
+        shadowMode: true,
+      })
+      emitted++
+    }
+
+    console.log(`[URGI] Replay Queue: re-emitted ${emitted} events (${start.toISOString()} → ${end.toISOString()})`)
+    res.status(200).json({
+      success:    true,
+      message:    `Replay Queue completed. ${emitted} events re-emitted in SHADOW mode.`,
+      jobId:      `REPLAY-${Date.now()}`,
+      eventCount: emitted,
+      range:      { startTime, endTime },
+    })
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: `Replay Queue failed: ${error.message}` })
+  }
 }
 
 export const updateGovernancePolicies = async (req: Request, res: Response) => {

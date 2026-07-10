@@ -36,20 +36,35 @@ export class ClientSignalsService {
    * simplified for MVP: Average gap between received and sent messages if close in time.
    */
   async calculateResponseDelay(clientId: string): Promise<number> {
-    // This is a heuristic approximation for MVP
-    // We look at the last 10 received messages and see how long until the next sent message
     const received = await prisma.message.findMany({
-        where: { receiverId: clientId },
-        orderBy: { createdAt: 'desc' },
-        take: 10
+      where: { receiverId: clientId },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+      select: { createdAt: true },
     });
 
     if (received.length === 0) return 0;
-    
-    // For a real threaded analysis, we'd need conversation threads. 
-    // For now, we'll return a placeholder heuristic or 0 if not enough data
-    // Future improvement: link messages by threadId
-    return 2.5; // Placeholder average for MVP demonstration
+
+    let totalGapMs = 0;
+    let pairCount = 0;
+
+    for (const msg of received) {
+      const reply = await prisma.message.findFirst({
+        where: {
+          senderId: clientId,
+          createdAt: { gt: msg.createdAt },
+        },
+        orderBy: { createdAt: 'asc' },
+        select: { createdAt: true },
+      });
+      if (reply) {
+        totalGapMs += reply.createdAt.getTime() - msg.createdAt.getTime();
+        pairCount++;
+      }
+    }
+
+    if (pairCount === 0) return 0;
+    return (totalGapMs / pairCount) / (1000 * 60 * 60);
   }
 
   /**

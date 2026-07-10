@@ -184,12 +184,20 @@ router.get('/client/updates', authenticate, authorize(['CLIENT']), async (req: A
   } catch (error) { next(error); }
 });
 
-// Client Dashboard: Tickets (Mock for now)
+// Client Dashboard: Tickets
 router.get('/client/tickets', authenticate, authorize(['CLIENT']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const tickets: { id: number; subject: string; status: string }[] = [
-      // Mock data until Ticket model exists
-    ];
+    const userId = req.user!.id;
+    const tickets = await prisma.ticket.findMany({
+      where:   { clientId: userId },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true, subject: true, category: true,
+        priority: true, status: true,
+        createdAt: true, updatedAt: true, assignedTo: true,
+        _count: { select: { messages: true } },
+      },
+    });
     res.json({ tickets });
   } catch (error) { next(error); }
 });
@@ -197,12 +205,27 @@ router.get('/client/tickets', authenticate, authorize(['CLIENT']), async (req: A
 // Partner Dashboard: Stats
 router.get('/partner/stats', authenticate, authorize(['PARTNER']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    // Mock stats
+    const userId = req.user!.id;
+    const [tasks, completedCount, overdueCount] = await Promise.all([
+      prisma.task.findMany({
+        where:  { partnerId: userId },
+        select: { projectId: true, status: true, dueDate: true },
+      }),
+      prisma.task.count({ where: { partnerId: userId, status: 'completed' } }),
+      prisma.task.count({
+        where: {
+          partnerId: userId,
+          dueDate:   { lt: new Date() },
+          status:    { notIn: ['completed', 'approved'] },
+        },
+      }),
+    ]);
+    const assignedPrograms = new Set(tasks.map(t => t.projectId).filter(Boolean)).size;
     res.json({
-      assigned_programs: 3,
-      tasks_completed: 12,
-      pending_deadlines: 2,
-      certifications: 1
+      assigned_programs: assignedPrograms,
+      tasks_completed:   completedCount,
+      pending_deadlines: overdueCount,
+      certifications:    0,
     });
   } catch (error) { next(error); }
 });
@@ -210,13 +233,29 @@ router.get('/partner/stats', authenticate, authorize(['PARTNER']), async (req: A
 // Partner Dashboard: Programs
 router.get('/partner/programs', authenticate, authorize(['PARTNER']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    // Mock programs
+    const userId = req.user!.id;
+    const tasks = await prisma.task.findMany({
+      where:    { partnerId: userId },
+      distinct: ['projectId'],
+      select:   { projectId: true, status: true },
+    });
+    const projects = await prisma.project.findMany({
+      where:  { id: { in: tasks.map(t => t.projectId) } },
+      select: { id: true, title: true, status: true, clientId: true },
+    });
+    const clientIds = [...new Set(projects.map(p => p.clientId))];
+    const clients   = await prisma.user.findMany({
+      where:  { id: { in: clientIds } },
+      select: { id: true, name: true, company: true },
+    });
+    const clientMap = Object.fromEntries(clients.map(c => [c.id, c]));
     res.json({
-      programs: [
-        { id: 1, name: 'Cloud Migration Initiative', client_name: 'Acme Corp', status: 'active' },
-        { id: 2, name: 'Security Audit', client_name: 'Globex', status: 'pending' },
-        { id: 3, name: 'AI Integration', client_name: 'Soylent Corp', status: 'completed' }
-      ]
+      programs: projects.map(p => ({
+        id:          p.id,
+        name:        p.title,
+        status:      p.status,
+        client_name: clientMap[p.clientId]?.company ?? clientMap[p.clientId]?.name ?? 'Unknown',
+      })),
     });
   } catch (error) { next(error); }
 });
@@ -224,13 +263,14 @@ router.get('/partner/programs', authenticate, authorize(['PARTNER']), async (req
 // Partner Dashboard: Tasks
 router.get('/partner/tasks', authenticate, authorize(['PARTNER']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    // Mock tasks
-    res.json({
-      tasks: [
-        { id: 1, title: 'Submit Initial Findings', status: 'pending', deadline: new Date(Date.now() + 86400000) },
-        { id: 2, title: 'Review Codebase', status: 'in_progress', deadline: new Date(Date.now() + 172800000) }
-      ]
+    const userId = req.user!.id;
+    const tasks = await prisma.task.findMany({
+      where:   { partnerId: userId, status: { not: 'completed' } },
+      orderBy: { dueDate: 'asc' },
+      take:    20,
+      select:  { id: true, title: true, status: true, dueDate: true },
     });
+    res.json({ tasks });
   } catch (error) { next(error); }
 });
 

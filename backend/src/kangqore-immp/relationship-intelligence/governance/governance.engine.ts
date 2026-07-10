@@ -1,54 +1,58 @@
 import { urgiEventBus } from '../events/eventBus';
 import { ConfirmedIdentityProfile } from '../models/urgi.types';
+import { prisma } from '../../../lib/prisma';
 
-/**
- * URGI - Governance Engine
- * Acts as middleware before data reaches the Memory Governor.
- * Enforces Consent, Retention, and Policy Rules.
- */
+// PII fields that must never be stored regardless of consent
+const BANNED_FIELDS = [
+  'socialSecurityNumber', 'nationalIdNumber', 'passportNumber',
+  'politicalAffiliation', 'healthCondition', 'medicalHistory',
+  'biometricData', 'geneticData', 'religiousBelief', 'sexualOrientation',
+]
+
 export class GovernanceEngine {
-  
   constructor() {
-    urgiEventBus.on(
-      'URGI:IDENTITY_VERIFIED', 
-      this.enforcePolicies.bind(this)
-    );
+    urgiEventBus.on('URGI:IDENTITY_VERIFIED', this.enforcePolicies.bind(this));
   }
 
-  private enforcePolicies(cip: ConfirmedIdentityProfile) {
-    // 1. Consent Check (Stub)
-    const userHasConsent = this.checkUserConsent(cip.visitorId);
-    
-    if (!userHasConsent) {
-      console.warn(`[Governance] Data rejected for visitor ${cip.visitorId}: No Consent.`);
+  private async enforcePolicies(cip: ConfirmedIdentityProfile) {
+    // 1. Consent check — reject if visitor has an explicit opt-out evidence record
+    const hasConsent = await this.checkUserConsent(cip.visitorId);
+    if (!hasConsent) {
+      console.warn(`[Governance] Rejected ${cip.visitorId}: explicit opt-out on record`);
       return;
     }
 
-    // 2. Allowed Fields Policy (Stub)
-    // E.g., HIPAA compliance, or regional PII restrictions
+    // 2. PII field policy — strip banned fields regardless of consent
     const allowedFacts = cip.verifiedFacts.filter(fact => this.isFieldAllowed(fact.factKey));
-
     if (allowedFacts.length === 0) {
-      console.warn(`[Governance] All verified facts rejected by policy for ${cip.visitorId}.`);
+      console.warn(`[Governance] All facts rejected by field policy for ${cip.visitorId}`);
       return;
     }
 
-    // 3. Emit Approved Data
-    const approvedCip: ConfirmedIdentityProfile = {
-      ...cip,
-      verifiedFacts: allowedFacts
-    };
-
-    urgiEventBus.emitGovernanceCheckPassed(approvedCip);
+    // 3. Emit approved data with banned fields removed
+    urgiEventBus.emitGovernanceCheckPassed({ ...cip, verifiedFacts: allowedFacts });
   }
 
-  private checkUserConsent(visitorId: string): boolean {
-    // In reality, this queries the user's explicit opt-in preferences.
-    return true; 
+  private async checkUserConsent(visitorId: string): Promise<boolean> {
+    try {
+      const profile = await prisma.unifiedRelationshipProfile.findFirst({
+        where: { visitorId },
+        select: { id: true },
+      });
+      if (!profile) return true; // No profile = no opt-out on record
+
+      const optOut = await prisma.evidenceLedger.findFirst({
+        where: { profileId: profile.id, factKey: 'privacy_opt_out', factValue: 'true' },
+        select: { id: true },
+      });
+      return !optOut;
+    } catch {
+      // If the query fails, default to allowing (fail-open for B2B analytics)
+      return true;
+    }
   }
 
   private isFieldAllowed(factKey: string): boolean {
-    const BANNED_FIELDS = ['socialSecurityNumber', 'politicalAffiliation', 'healthCondition'];
     return !BANNED_FIELDS.includes(factKey);
   }
 }

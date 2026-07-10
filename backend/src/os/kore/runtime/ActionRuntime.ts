@@ -1,4 +1,5 @@
 import { ActionRegistry } from '../language/ActionRegistry';
+import { prisma } from '../../../lib/prisma';
 
 export interface ActionRequest {
   objectName: string;
@@ -8,46 +9,47 @@ export interface ActionRequest {
 }
 
 export class ActionRuntime {
-  /**
-   * Executes a requested action from the ontology if permissions and state allow it.
-   */
   static async execute(request: ActionRequest) {
-    // 1. Fetch the Action Definition from the Language Layer
+    // 1. Fetch action definition from language layer (DB-backed)
     const actionDef = await ActionRegistry.getActionDefinition(request.objectName, request.actionName);
 
-    // 2. Policy/Permission Check
-    // (In Phase 1, we just do a rudimentary check or assume allowed)
-    console.log(`[ActionRuntime] Policy Check: Verifying actor ${request.actorId} against permissions: [${actionDef.permissions.join(', ')}]`);
-    const isAllowed = this.checkPermissions(request.actorId, actionDef.permissions);
-    
-    if (!isAllowed) {
-      throw new Error(`Permission Denied: Actor ${request.actorId} cannot execute ${request.actionName} on ${request.objectName}`);
+    // 2. Resolve actor's role from DB and check against action permissions
+    const allowed = await this.checkPermissions(request.actorId, actionDef.permissions as string[]);
+    if (!allowed) {
+      throw new Error(`Permission denied: actor '${request.actorId}' cannot execute '${request.actionName}' on '${request.objectName}'`);
     }
 
-    // 3. Execution (Memory Mutation)
-    console.log(`[ActionRuntime] Executing ${request.actionName} on ${request.objectName} with payload`, request.payload);
-    
-    // In full implementation, dynamic logic is executed here
-    
-    // 4. Emit Completion Event
-    // EventRegistry.emit(...)
+    console.log(`[ActionRuntime] Executing ${request.actionName} on ${request.objectName} for actor ${request.actorId}`);
 
     return {
       success: true,
-      message: `Action ${request.actionName} successfully executed.`,
-      result: request.payload
+      message: `Action ${request.actionName} executed on ${request.objectName}`,
+      result:  request.payload,
     };
   }
 
-  private static checkPermissions(actorId: string, requiredPermissions: string[]): boolean {
-    if (requiredPermissions.length === 0) return true;
-    
-    // Stub implementation: For now, we assume all actors are authorized 
-    // unless 'ROOT_ONLY' is specified and the actor isn't ROOT.
-    if (requiredPermissions.includes('ROOT_ONLY') && actorId !== 'ROOT') {
-      return false;
-    }
+  private static async checkPermissions(actorId: string, requiredPermissions: string[]): Promise<boolean> {
+    if (!requiredPermissions || requiredPermissions.length === 0) return true;
 
-    return true;
+    // System actors bypass permission check
+    if (actorId === 'ROOT' || actorId === 'SYSTEM' || actorId === 'KEOS') return true;
+
+    // ROOT_ONLY actions reject all non-root actors immediately
+    if (requiredPermissions.includes('ROOT_ONLY')) return false;
+
+    // Wildcard permission — anyone authenticated can execute
+    if (requiredPermissions.includes('*')) return true;
+
+    // Resolve actor role from DB
+    const user = await prisma.user.findUnique({
+      where:  { id: actorId },
+      select: { role: true },
+    });
+    if (!user) return false;
+
+    const actorRole = user.role.toUpperCase();
+
+    // Check if the actor's role appears in the action's permission list
+    return requiredPermissions.some(p => p.toUpperCase() === actorRole);
   }
 }

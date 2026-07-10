@@ -19,7 +19,20 @@ import { SyncRuntime } from './runtime/workspace/SyncRuntime';
 import { CompositionEngine } from './runtime/workspace/CompositionEngine';
 import { LifecycleEngine } from './runtime/workspace/LifecycleEngine';
 import { DependencyGraph } from './runtime/workspace/DependencyGraph';
+import { useAuthStore, UserRole } from './store/auth';
 import './os.css';
+
+const ROLE_POLICIES: Record<UserRole, string[]> = {
+  ADMIN:      ['role.admin', 'role.executive', 'role.sales', 'cap.ai.plan', 'cap.ai.forecast', 'cap.ai.simulate'],
+  EXECUTIVE:  ['role.executive', 'role.sales', 'cap.ai.plan', 'cap.ai.forecast'],
+  TEAM:       ['role.team', 'cap.ai.plan'],
+  ANALYST:    ['role.analyst', 'cap.ai.forecast'],
+  CLIENT:     ['role.client'],
+  PARTNER:    ['role.partner'],
+  INVESTOR:   ['role.investor'],
+  JOB_SEEKER: ['role.job_seeker'],
+  JOURNALIST: ['role.journalist'],
+};
 
 /**
  * The root entrypoint for the Kangqore Enterprise OS.
@@ -38,12 +51,9 @@ export const OSBootstrap: React.FC = () => {
         const policyAdapter = new PolicyAdapter();
         const health = RuntimeHealth.getInstance();
 
-        // Seed policies from session context.
-        // TODO: replace with real session-derived role list from auth middleware.
-        policyAdapter.loadPolicies([
-            'role.admin', 'role.executive', 'role.sales',
-            'cap.ai.plan', 'cap.ai.forecast',
-        ]);
+        const user = useAuthStore.getState().user;
+        const policies = user ? (ROLE_POLICIES[user.role] ?? ['role.viewer']) : ['role.viewer'];
+        policyAdapter.loadPolicies(policies);
         
         container.register('ExperienceAPI', ExperienceAPI.getInstance());
         container.register('CapabilityBroker', new CapabilityBroker());
