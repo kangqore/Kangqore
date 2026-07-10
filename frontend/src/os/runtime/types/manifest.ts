@@ -62,7 +62,17 @@ export interface WorkspaceSection {
 
 export type WorkspaceMode = 'FOCUS' | 'MEETING' | 'TRAVEL' | 'OFFLINE' | 'INCIDENT' | 'APPROVAL' | 'LEARNING' | 'DEFAULT' | 'FORECASTING';
 
-export type ProjectionScope = 'PERSONAL' | 'EXECUTIVE' | 'REVENUE'
+export type ProjectionScope =
+  | 'PERSONAL' | 'EXECUTIVE' | 'REVENUE'
+  | 'OPERATIONS' | 'INTELLIGENCE' | 'PLATFORM'
+  | 'COLLABORATION' | 'GOVERNANCE' | 'ECOSYSTEM'
+
+// Constitution 3 — Enterprise Workspace Architecture Laws
+// Named constants make the laws traceable in code, greppable, and statically verifiable.
+export const C3_LAW_1 = 'A Workspace never owns business capability; it only composes platform capabilities'
+export const C3_LAW_2 = 'Enterprise Objects are the universal navigation primitive'
+export const C3_LAW_3 = 'WAANDA is the operating interface'
+export const C3_LAW_4 = 'Every action must ultimately become a Mission'
 
 export interface WorkspaceManifest {
     id: string;

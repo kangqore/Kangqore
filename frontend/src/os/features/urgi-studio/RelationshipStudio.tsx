@@ -312,7 +312,7 @@ export default function RelationshipStudio() {
                        <div>
                          <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2"><DatabaseIcon className="w-5 h-5 text-indigo-500" /> Relationship Facts</h4>
                          <ul className="space-y-3">
-                           {twinData.recentFacts.map((fact, idx) => (
+                           {(twinData.recentFacts ?? []).map((fact, idx) => (
                              <li key={idx} className="flex items-center gap-3 bg-slate-800 px-4 py-3 rounded-lg border border-slate-700 text-sm font-medium text-white shadow-sm">
                                <CheckCircleIcon className="w-4 h-4 text-green-400" />
                                {fact}
@@ -323,7 +323,9 @@ export default function RelationshipStudio() {
                        <div>
                          <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2"><BrainIcon className="w-5 h-5 text-pink-500" /> Behavioral Traits</h4>
                          <div className="flex flex-wrap gap-2">
-                           {twinData.behavioralTraits.map((trait, idx) => (
+                           {(twinData.behavioralTraits ?? []).length === 0 ? (
+                             <span className="text-sm text-slate-400 italic">No inferred traits yet</span>
+                           ) : (twinData.behavioralTraits ?? []).map((trait, idx) => (
                              <span key={idx} className="px-3 py-1.5 bg-pink-600 text-white text-sm font-bold rounded-lg shadow-sm border border-pink-500">
                                {trait}
                              </span>

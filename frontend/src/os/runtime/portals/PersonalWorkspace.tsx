@@ -12,7 +12,7 @@ export const PersonalWorkspaceManifest: WorkspaceManifest = {
     metadata: {
         id: 'wksp.personal',
         title: 'Personal Workspace',
-        description: 'My Enterprise Universe',
+        description: 'My Enterprise Universe — the homepage after login for the individual employee.',
         version: '2.0.0',
         category: 'PERSONAL',
         icon: 'planet'
@@ -24,62 +24,71 @@ export const PersonalWorkspaceManifest: WorkspaceManifest = {
         scheduler: 'predictive',
         cognitiveStateType: 'PERSONAL',
         modes: {
-            DEFAULT:     ['focus', 'intelligence', 'communication'],
-            FOCUS:       ['focus', 'memory'],
-            MEETING:     ['planning', 'communication', 'knowledge'],
-            TRAVEL:      ['focus', 'communication'],
-            OFFLINE:     ['memory', 'focus'],
-            INCIDENT:    ['communication', 'intelligence'],
-            APPROVAL:    ['focus'],
-            LEARNING:    ['intelligence', 'knowledge'],
-            FORECASTING: ['intelligence'],
+            DEFAULT:     ['myday', 'notifications', 'ai'],
+            FOCUS:       ['myday', 'ai'],
+            MEETING:     ['calendar', 'myday'],
+            TRAVEL:      ['myday', 'notifications'],
+            OFFLINE:     ['myday', 'knowledge'],
+            INCIDENT:    ['myday', 'notifications', 'approvals'],
+            APPROVAL:    ['approvals', 'myday'],
+            LEARNING:    ['knowledge', 'ai'],
+            FORECASTING: ['ai'],
         },
         sections: {
-            focus: {
-                id: 'focus',
+            myday: {
+                id: 'myday',
                 priority: 100,
                 collapsible: false,
                 adaptive: true,
                 widgets: [
-                    { id: 'wid.personal.myday', title: 'My Day', component: 'MyDayWidget', permissions: [] },
-                    { id: 'wid.personal.workqueue', title: 'Work Queue', component: 'WorkQueueWidget', permissions: [] }
+                    { id: 'wid.personal.myday',     title: 'My Day',      component: 'MyDayWidget',      permissions: [], priority: 'CRITICAL', refreshPolicy: 'LIVE' },
+                    { id: 'wid.personal.missions',  title: 'My Missions', component: 'MyMissionsWidget', permissions: [], priority: 'HIGH',     refreshPolicy: 'LIVE' },
+                    { id: 'wid.personal.tasks',     title: 'My Tasks',    component: 'MyTasksWidget',    permissions: [], priority: 'HIGH',     refreshPolicy: 'PERIODIC' }
                 ]
             },
-            intelligence: {
-                id: 'intelligence',
+            calendar: {
+                id: 'calendar',
                 priority: 90,
                 collapsible: true,
                 adaptive: true,
                 widgets: [
-                    { id: 'wid.intelligence.insights', title: 'Insights', component: 'InsightsWidget', permissions: [] },
-                    { id: 'wid.intelligence.recommendation', title: 'Recommendations', component: 'RecommendationWidget', permissions: [] }
+                    { id: 'wid.personal.calendar', title: 'My Calendar', component: 'MyCalendarWidget', permissions: [], priority: 'HIGH', refreshPolicy: 'PERIODIC' }
                 ]
             },
-            knowledge: {
-                id: 'knowledge',
+            approvals: {
+                id: 'approvals',
                 priority: 80,
                 collapsible: true,
                 adaptive: true,
                 widgets: [
-                    { id: 'wid.knowledge.base', title: 'Knowledge Base', component: 'KnowledgeWidget', permissions: [] }
+                    { id: 'wid.personal.approvals', title: 'My Approvals', component: 'MyApprovalsWidget', permissions: [], priority: 'HIGH', refreshPolicy: 'LIVE' }
                 ]
             },
-            waanda: {
-                id: 'waanda',
-                priority: 95, // High priority
-                collapsible: false,
-                adaptive: true,
-                widgets: [
-                    { id: 'wid.waanda.assistant', title: 'WAANDA', component: 'WaandaWidget', permissions: [] }
-                ]
-            },
-            communication: {
-                id: 'communication',
+            knowledge: {
+                id: 'knowledge',
                 priority: 70,
                 collapsible: true,
                 adaptive: true,
                 widgets: [
-                    { id: 'wid.communication.notifications', title: 'Notifications', component: 'NotificationWidget', permissions: [] }
+                    { id: 'wid.personal.knowledge', title: 'My Knowledge', component: 'MyKnowledgeWidget', permissions: [], priority: 'NORMAL' }
+                ]
+            },
+            notifications: {
+                id: 'notifications',
+                priority: 60,
+                collapsible: true,
+                adaptive: true,
+                widgets: [
+                    { id: 'wid.personal.notifications', title: 'My Notifications', component: 'MyNotificationsWidget', permissions: [], priority: 'HIGH', refreshPolicy: 'LIVE' }
+                ]
+            },
+            ai: {
+                id: 'ai',
+                priority: 95,
+                collapsible: false,
+                adaptive: true,
+                widgets: [
+                    { id: 'wid.personal.ai', title: 'My AI', component: 'WaandaWidget', permissions: [], priority: 'HIGH', requiredCapabilities: ['ecf.waanda'] }
                 ]
             },
             navigation: {
@@ -88,26 +97,13 @@ export const PersonalWorkspaceManifest: WorkspaceManifest = {
                 collapsible: false,
                 adaptive: false,
                 widgets: [
-                    { id: 'wid.navigation.context', title: 'Context', component: 'ContextWidget', permissions: [] }
-                ]
-            },
-            memory: {
-                id: 'memory',
-                priority: 60,
-                collapsible: true,
-                adaptive: true,
-                widgets: [
-                    { id: 'wid.memory.recent', title: 'Recent Activity', component: 'MemoryWidget', permissions: [] }
+                    { id: 'wid.personal.context', title: 'Context', component: 'ContextWidget', permissions: [], priority: 'CRITICAL' }
                 ]
             }
         },
         policies: [],
-        capabilities: [
-            'epf.tasks',
-            'edf.search',
-            'ecf.waanda'
-        ],
-        subscriptions: [],
-        memory: []
+        capabilities: ['epf.tasks', 'edf.search', 'ecf.waanda'],
+        subscriptions: ['event.task.assigned', 'event.approval.requested', 'event.notification.received'],
+        memory: ['lastDayView', 'pendingTaskCount']
     }
 };

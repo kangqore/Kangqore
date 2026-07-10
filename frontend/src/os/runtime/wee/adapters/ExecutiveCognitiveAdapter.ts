@@ -7,7 +7,7 @@ import { CognitiveStateAdapter, ExperienceContract, ProjectionPolicy, WaandaCogn
 export const ExecutiveCognitiveAdapter: CognitiveStateAdapter = {
   projectionScope: 'EXECUTIVE',
 
-  async adapt(state: WaandaCognitiveState, _contract: ExperienceContract, policy: ProjectionPolicy) {
+  async adapt(state: Readonly<WaandaCognitiveState>, _contract: ExperienceContract, policy: ProjectionPolicy) {
     const briefing = state.systemBriefings[0] ?? null
     const showDetail = policy.levelOfDetail !== 'SUMMARY'
 

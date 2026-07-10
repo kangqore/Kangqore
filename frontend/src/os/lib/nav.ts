@@ -65,7 +65,7 @@ export const navGroups: NavGroup[] = [
   {
     label: 'INTELLIGENCE',
     items: [
-      { id: 'keos',          label: 'Generation III Runtime', icon: BrainIcon,           path: `${BASE}/keos`           },
+      { id: 'keos',          label: 'Kangqore KEOS', icon: BrainIcon,           path: `${BASE}/keos`           },
       {
         id: 'overview', label: 'WAANDA', icon: CompassIcon, path: `${BASE}/WAANDA`,
         children: [

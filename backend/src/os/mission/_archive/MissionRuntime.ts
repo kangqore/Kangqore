@@ -1,4 +1,6 @@
-import { ExecutionGraph, RuntimeSession } from './types';
+// ARCHIVED — Gen I simulation. MissionDispatcher is the live replacement.
+// All execution here is mocked (nodes always SUCCEED). Do not import from live code.
+import { ExecutionGraph, RuntimeSession } from '../types';
 import { RuntimeScheduler } from './RuntimeScheduler';
 
 class RuntimeSessionManager {

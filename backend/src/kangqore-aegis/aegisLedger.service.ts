@@ -8,6 +8,7 @@
 import { prisma }        from '../lib/prisma'
 import logger             from '../utils/logger'
 import { emitToAdmins }  from '../socket'
+import { getCorrelationId } from './AegisContext'
 
 export type AegisEventType =
   | 'ACTIVATION'
@@ -75,7 +76,14 @@ export class AegisLedger {
     metadata?: Record<string, unknown>
   }): Promise<string | null> {
     try {
-      const row = await (prisma as any).aegisAuditLog.create({ data })
+      // Automatically include the current request correlationId when writing from
+      // an HTTP-originated async chain (HTTP → MissionDispatcher → KORE all share it).
+      const correlationId = getCorrelationId()
+      const rowData = correlationId
+        ? { ...data, metadata: { ...(data.metadata ?? {}), correlationId } }
+        : data
+
+      const row = await (prisma as any).aegisAuditLog.create({ data: rowData })
       // Broadcast every governance event to admin sockets for live feed
       emitToAdmins('aegis:event', {
         ...row,

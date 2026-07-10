@@ -35,6 +35,8 @@ import ticketsRoutes from '../routes/tickets';
 import uploadsRoutes from '../routes/uploads';
 import oauthRoutes from '../routes/oauth';
 import channelsRoutes from '../routes/channels';
+import edfRoutes from '../os/edf/edfRoutes';
+import epfRoutes from '../os/epf/epfRoutes';
 
 const router = Router();
 
@@ -81,6 +83,10 @@ v1Router.use('/search', searchRoutes);
 v1Router.use('/recommendations', recommendationsRoutes);
 v1Router.use('/analytics', analyticsRoutes);
 v1Router.use('/uploads', uploadsRoutes);
+
+// Enterprise Platform routes — EDF and EPF state surfaces for WEE Law 3 compliance
+v1Router.use('/os/edf', edfRoutes);
+v1Router.use('/os/epf', epfRoutes);
 
 // Mount v1 router
 router.use('/v1', v1Router);

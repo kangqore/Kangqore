@@ -1,31 +1,41 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api, isDemo } from '@lib/api'
 import { getSocket } from '@lib/socket'
+import { useKIMMPStore } from '@store/kimmp'
 
-const surface = 'rgba(255,255,255,0.04)'
-const border  = '1px solid rgba(255,255,255,0.08)'
+const surface = '#ffffff'
+const border  = '1px solid rgba(37,100,234,0.10)'
 
 export function ActPage() {
   const qc = useQueryClient()
   const [running, setRunning]     = useState(false)
   const [runStatus, setRunStatus] = useState<'idle' | 'ok' | 'err'>('idle')
 
-  // Pending AEGIS decisions that need human approval
+  const acknowledgeSignal = useKIMMPStore(s => s.acknowledgeSignal)
+  const insights          = useKIMMPStore(s => s.insights)
+  const acknowledgedIds   = useKIMMPStore(s => s.acknowledgedIds)
+
+  const criticalInsights = useMemo(() =>
+    insights
+      .filter(i => i.type !== 'predictive' && !acknowledgedIds.includes(i.id))
+      .filter(i => i.priority === 'critical')
+      .slice(0, 3),
+    [insights, acknowledgedIds]
+  )
+
   const pending = useQuery({
     queryKey:  ['waanda-pending-actions'],
     queryFn:   () => api.get('/admin/aegis/actions/pending').then(r => r.data),
     staleTime: 10_000,
   })
 
-  // Execution log
   const actionLog = useQuery({
     queryKey:  ['waanda-action-log'],
     queryFn:   () => api.get('/admin/aegis/actions/log').then(r => r.data),
     staleTime: 30_000,
   })
 
-  // Live socket refresh for new pending actions
   useEffect(() => {
     if (isDemo()) return
     const socket = getSocket()
@@ -37,19 +47,16 @@ export function ActPage() {
     return () => { socket.off('aegis:action:pending', refresh) }
   }, [])
 
-  // Approve L3 action
   const approve = useMutation({
     mutationFn: (id: string) => api.post(`/admin/aegis/actions/${id}/approve`),
     onSuccess:  () => { qc.invalidateQueries({ queryKey: ['waanda-pending-actions'] }) },
   })
 
-  // Reject L3 action
   const reject = useMutation({
     mutationFn: (id: string) => api.post(`/admin/aegis/actions/${id}/reject`),
     onSuccess:  () => { qc.invalidateQueries({ queryKey: ['waanda-pending-actions'] }) },
   })
 
-  // Trigger cognitive cycle
   async function triggerCycle() {
     if (running) return
     setRunning(true)
@@ -73,7 +80,7 @@ export function ActPage() {
 
       {/* ── Cognitive cycle trigger */}
       <div style={{ background: surface, border, borderRadius: 12, padding: 24 }}>
-        <div className="text-[10px] font-mono tracking-[0.2em] text-white/35 uppercase mb-3">
+        <div className="text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase mb-3">
           Cognitive Cycle
         </div>
         <div className="flex items-center gap-4">
@@ -82,10 +89,10 @@ export function ActPage() {
             disabled={running}
             className="px-6 py-2.5 rounded-lg text-sm font-semibold transition-all"
             style={{
-              background:   running ? 'rgba(37,100,234,0.3)' : '#2564ea',
-              color:        '#fff',
-              cursor:       running ? 'not-allowed' : 'pointer',
-              opacity:      running ? 0.7 : 1,
+              background: running ? 'rgba(37,100,234,0.3)' : '#2564ea',
+              color:      '#fff',
+              cursor:     running ? 'not-allowed' : 'pointer',
+              opacity:    running ? 0.7 : 1,
             }}
           >
             {running ? 'Running…' : 'Run WAANDA'}
@@ -101,26 +108,60 @@ export function ActPage() {
             </span>
           )}
           {!running && runStatus === 'idle' && (
-            <span className="text-sm text-white/30">
+            <span className="text-sm text-slate-400">
               Triggers the full reasoning pipeline: LEAD_INTEL → ALIS → EQORE → VIS
             </span>
           )}
         </div>
       </div>
 
+      {/* ── Critical KIMMP insights requiring immediate action */}
+      {criticalInsights.length > 0 && (
+        <div style={{ background: 'rgba(244,63,94,0.04)', border: '1px solid rgba(244,63,94,0.18)', borderRadius: 12, padding: 20 }}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-[10px] font-mono tracking-[0.2em] uppercase" style={{ color: '#f43f5e' }}>
+              Critical · KIMMP
+            </div>
+            <span className="text-[11px] text-slate-400">{criticalInsights.length} unacknowledged</span>
+          </div>
+          <div className="space-y-3">
+            {criticalInsights.map(insight => (
+              <div
+                key={insight.id}
+                className="p-3 rounded-xl flex items-start justify-between gap-4"
+                style={{ background: 'rgba(244,63,94,0.06)' }}
+              >
+                <div className="min-w-0 flex-1">
+                  <div className="text-sm font-semibold text-slate-800 mb-1">{insight.title}</div>
+                  <div className="text-[12px] text-slate-500">{insight.action}</div>
+                  <div className="text-[11px] text-slate-400 mt-1">{insight.module} · {insight.confidence}% confidence</div>
+                </div>
+                <button
+                  onClick={() => acknowledgeSignal(insight.id)}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium flex-shrink-0 transition-colors"
+                  style={{ background: 'rgba(16,185,129,0.15)', color: '#10b981' }}
+                >
+                  Mark Acted
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ── Pending decisions awaiting human approval */}
       <div style={{ background: surface, border, borderRadius: 12, padding: 20 }}>
         <div className="flex items-center justify-between mb-4">
-          <div className="text-[10px] font-mono tracking-[0.2em] text-white/35 uppercase">
+          <div className="text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase">
             WAANDA Proposes
           </div>
-          <span className="text-sm text-white/40">{pendingList.length} awaiting approval</span>
+          <span className="text-sm text-slate-500">{pendingList.length} awaiting approval</span>
         </div>
 
         {pending.isLoading ? (
-          <div className="text-sm text-white/40">Loading…</div>
+          <div className="text-sm text-slate-500">Loading…</div>
         ) : pendingList.length === 0 ? (
-          <div className="text-sm text-white/30">No pending decisions. WAANDA is monitoring.</div>
+          <div className="text-sm text-slate-400">No pending decisions. WAANDA is monitoring.</div>
         ) : (
           <div className="space-y-3">
             {pendingList.map((action: any, i: number) => (
@@ -130,11 +171,11 @@ export function ActPage() {
                 style={{ background: 'rgba(244,63,94,0.05)', border: '1px solid rgba(244,63,94,0.15)' }}
               >
                 <div className="min-w-0 flex-1">
-                  <div className="text-sm font-medium text-white/75 mb-1">
+                  <div className="text-sm font-medium text-slate-700 mb-1">
                     WAANDA proposes: <span style={{ color: '#f59e0b' }}>{action.actionType}</span>
                   </div>
-                  <div className="text-xs text-white/40">{action.description}</div>
-                  <div className="text-[11px] text-white/25 mt-1">
+                  <div className="text-xs text-slate-500">{action.description}</div>
+                  <div className="text-[11px] text-slate-400 mt-1">
                     Triggered by <span className="font-mono">{action.agentId}</span> · {action.engine}
                   </div>
                 </div>
@@ -164,28 +205,28 @@ export function ActPage() {
 
       {/* ── Execution log */}
       <div style={{ background: surface, border, borderRadius: 12, padding: 20 }}>
-        <div className="text-[10px] font-mono tracking-[0.2em] text-white/35 uppercase mb-4">
+        <div className="text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase mb-4">
           What WAANDA Did
         </div>
         {actionLog.isLoading ? (
-          <div className="text-sm text-white/40">Loading log…</div>
+          <div className="text-sm text-slate-500">Loading log…</div>
         ) : logList.length === 0 ? (
-          <div className="text-sm text-white/30">No executed actions yet.</div>
+          <div className="text-sm text-slate-400">No executed actions yet.</div>
         ) : (
           <div className="space-y-1.5" style={{ maxHeight: 280, overflowY: 'auto' }}>
             {logList.slice(0, 10).map((entry: any, i: number) => (
               <div
                 key={entry.id ?? i}
                 className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm"
-                style={{ background: 'rgba(255,255,255,0.02)' }}
+                style={{ background: 'rgba(37,100,234,0.02)' }}
               >
                 <span
                   className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                   style={{ background: entry.status === 'SUCCESS' ? '#10b981' : '#f43f5e' }}
                 />
-                <span className="font-mono text-[11px] text-white/45 flex-shrink-0">{entry.actionType}</span>
-                <span className="text-white/50 flex-1 truncate">{entry.agentId}</span>
-                <span className="text-[11px] text-white/25 flex-shrink-0">
+                <span className="font-mono text-[11px] text-slate-500 flex-shrink-0">{entry.actionType}</span>
+                <span className="text-slate-600 flex-1 truncate">{entry.agentId}</span>
+                <span className="text-[11px] text-slate-400 flex-shrink-0">
                   L{entry.level}
                 </span>
               </div>

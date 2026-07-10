@@ -97,16 +97,21 @@ export const getDigitalTwin = async (req: Request, res: Response) => {
       ? `${profile.currentRole} at ${profile.currentCompany}`
       : profile.currentCompany ?? profile.currentRole ?? 'Partially Identified'
 
+    const maturityLevels = ['Stranger', 'Acquaintance', 'Familiar', 'Trusted', 'Partner']
+    const maturityIndex  = Math.min(Math.floor(profile.engagementScore / 20), 4)
+
     res.status(200).json({
       success: true,
       data: {
         id:              profile.id,
-        visitorId:       profile.visitorId,
         identity,
         trustScore:      profile.trustScore,
-        engagementScore: profile.engagementScore,
+        maturity:        maturityLevels[maturityIndex],
         recentFacts:     profile.evidence.map(e => `${e.factKey}: ${e.factValue}`),
-        timeline:        profile.timeline.map(t => t.description),
+        behavioralTraits: profile.evidence
+          .filter(e => e.evidenceType === 'INFERENCE')
+          .slice(0, 6)
+          .map(e => e.factKey),
       },
     })
   } catch (error) {

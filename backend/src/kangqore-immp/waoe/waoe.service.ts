@@ -4,6 +4,7 @@
 
 import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
+import { MissionDispatcher } from '../../immp/core/MissionDispatcher'
 import { KimmpContextAssembler } from '../context/kimmpContextAssembler.service'
 import { KimmpGoalPlanner } from '../planner/kimmpGoalPlanner.service'
 import { KimmpWorkflowCompiler } from '../workflow/kimmpWorkflowCompiler.service'
@@ -66,8 +67,21 @@ export class WAOE {
     // D3: Compile to DAG
     const compiled = await KimmpWorkflowCompiler.compile(plan, ctx, req.userId)
 
-    // D4: Execute
-    const result = await KimmpExecutionEngine.run(compiled, ctx)
+    // D4: Execute — routed through the KIMMP Runtime governance pipeline.
+    // MissionDispatcher applies Auth → Capability → AEGIS → Approval → Ledger → EventBus.
+    // WAOE supplies its own executor (KimmpExecutionEngine) so DAG semantics are preserved.
+    const runtimeResult = await MissionDispatcher.dispatch(
+      {
+        goal:        req.goal,
+        description: `WAOE autonomous execution — ${Object.keys(plan ?? {}).length} planned steps`,
+        requester:   req.userId,
+      },
+      async () => {
+        const r = await KimmpExecutionEngine.run(compiled, ctx)
+        return { id: compiled.workflowId ?? ('waoe-' + Date.now()), ...r }
+      },
+    )
+    const result = runtimeResult
 
     const durationMs = Date.now() - start
     logger.info(`[WAOE] Done: ${result.ok ? 'OK' : 'FAILED'} — ${durationMs}ms`)

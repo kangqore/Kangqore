@@ -49,12 +49,20 @@ class WaandaCognitiveMirrorService {
 
   // Transport implementation — swap this method to replace polling.
   async sync(): Promise<void> {
-    const [status, history, sessions, decisions] = await Promise.all([
+    const [status, history, sessions, decisions, edf, epf] = await Promise.all([
       fetchJson<any>('/api/admin/waanda/status'),
       fetchJson<any>('/api/admin/kangqore-immp/systems/history'),
       fetchJson<any>('/api/kangqore/urgi/sessions/live'),
       fetchJson<any>('/api/admin/aegis/actions/pending'),
+      // Enterprise Platform — EDF and EPF (satisfies WEE Constitution Law 3)
+      fetchJson<any>('/api/os/edf/domains'),
+      fetchJson<any>('/api/os/epf/predictions'),
     ])
+
+    // EDF domains take precedence over domains from WAANDA status when available
+    const domains = (edf?.domains?.length ?? 0) > 0
+      ? edf.domains
+      : (status?.domains ?? [])
 
     this.state = {
       phase: status?.currentPhase ?? 'OBSERVE',
@@ -66,7 +74,8 @@ class WaandaCognitiveMirrorService {
       phases:             status?.phases   ?? [],
       activeCapabilities: status?.capabilities ?? [],
       subsystems:         status?.subsystems   ?? {},
-      domains:            status?.domains      ?? [],
+      domains,
+      enterprisePredictions: epf?.predictions ?? [],
       kimmSynthesis:      history?.data?.[0]?.kimmSynthesis ?? null,
       systemBriefings:    history?.data        ?? [],
       pendingDecisions:   decisions?.data      ?? [],

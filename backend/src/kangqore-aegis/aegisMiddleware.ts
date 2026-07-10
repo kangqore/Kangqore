@@ -9,65 +9,80 @@ import { Request, Response, NextFunction } from 'express'
 import { verifyAccessToken } from '../services/token.service'
 import { AegisLedger } from './aegisLedger.service'
 import { AegisEventEmitter } from './aegisEventEmitter'
+import { aegisStorage, generateCorrelationId, AegisRequestContext } from './AegisContext'
 
 export function aegisShield(req: Request, res: Response, next: NextFunction): void {
-  const authHeader = req.headers.authorization
-  if (!authHeader?.startsWith('Bearer ')) {
-    AegisLedger.logAccessDenied({
-      endpoint: req.path,
-      method:   req.method,
-      ip:       req.ip,
-    }).catch(() => {})
+  const correlationId = generateCorrelationId()
+  const ctx: AegisRequestContext = { correlationId, requesterId: 'anonymous', httpSurface: 'aegis' }
+  ;(req as any).aegisCorrelationId = correlationId
+  res.setHeader('X-Aegis-Correlation', correlationId)
 
-    res.status(401).json({
-      error: 'AEGIS: No bearer token. KIMMP endpoints require ADMIN authentication.',
-      shield: 'AEGIS',
-    })
-    return
-  }
+  // Wrap the entire middleware body in the storage context so every AegisLedger
+  // and AegisShield write in this async chain receives the same correlationId.
+  aegisStorage.run(ctx, () => {
+    const authHeader = req.headers.authorization
+    if (!authHeader?.startsWith('Bearer ')) {
+      AegisLedger.logAccessDenied({
+        endpoint: req.path,
+        method:   req.method,
+        ip:       req.ip,
+      }).catch(() => {})
 
-  const token   = authHeader.substring(7)
-  const payload = verifyAccessToken(token)
+      res.status(401).json({
+        error:         'AEGIS: No bearer token. KIMMP endpoints require ADMIN authentication.',
+        shield:        'AEGIS',
+        correlationId,
+      })
+      return
+    }
 
-  if (!payload) {
-    AegisLedger.logAccessDenied({
-      endpoint: req.path,
-      method:   req.method,
-      ip:       req.ip,
-    }).catch(() => {})
-    AegisEventEmitter.fireAccessDenied({ metadata: { endpoint: req.path, reason: 'invalid-token' } })
+    const token   = authHeader.substring(7)
+    const payload = verifyAccessToken(token)
 
-    res.status(401).json({
-      error: 'AEGIS: Invalid or expired token.',
-      shield: 'AEGIS',
-    })
-    return
-  }
+    if (!payload) {
+      AegisLedger.logAccessDenied({
+        endpoint: req.path,
+        method:   req.method,
+        ip:       req.ip,
+      }).catch(() => {})
+      AegisEventEmitter.fireAccessDenied({ metadata: { endpoint: req.path, reason: 'invalid-token' } })
 
-  if ((payload as any).role !== 'ADMIN') {
-    AegisLedger.logAccessDenied({
-      endpoint: req.path,
-      method:   req.method,
-      userId:   (payload as any).userId,
-      userRole: (payload as any).role,
-      ip:       req.ip,
-    }).catch(() => {})
-    AegisEventEmitter.fireAccessDenied({
-      userId:   (payload as any).userId,
-      metadata: { endpoint: req.path, role: (payload as any).role, reason: 'non-admin' },
-    })
+      res.status(401).json({
+        error:         'AEGIS: Invalid or expired token.',
+        shield:        'AEGIS',
+        correlationId,
+      })
+      return
+    }
 
-    res.status(403).json({
-      error:   'AEGIS: ADMIN sovereignty enforced. Only ADMIN may access KIMMP.',
-      shield:  'AEGIS',
-      role:    (payload as any).role,
-    })
-    return
-  }
+    if ((payload as any).role !== 'ADMIN') {
+      ctx.requesterId = (payload as any).userId ?? 'anonymous'
+      AegisLedger.logAccessDenied({
+        endpoint: req.path,
+        method:   req.method,
+        userId:   (payload as any).userId,
+        userRole: (payload as any).role,
+        ip:       req.ip,
+      }).catch(() => {})
+      AegisEventEmitter.fireAccessDenied({
+        userId:   (payload as any).userId,
+        metadata: { endpoint: req.path, role: (payload as any).role, reason: 'non-admin' },
+      })
 
-  // Attach user for downstream handlers
-  ;(req as any).user = payload
-  next()
+      res.status(403).json({
+        error:         'AEGIS: ADMIN sovereignty enforced. Only ADMIN may access KIMMP.',
+        shield:        'AEGIS',
+        role:          (payload as any).role,
+        correlationId,
+      })
+      return
+    }
+
+    // Propagate requester identity into context for downstream ledger writes
+    ctx.requesterId = (payload as any).userId ?? 'anonymous'
+    ;(req as any).user = payload
+    next()
+  })
 }
 
 // ---------------------------------------------------------------------------
@@ -78,30 +93,41 @@ export function aegisShield(req: Request, res: Response, next: NextFunction): vo
 // This gives AEGIS full visibility into KIMMP auth failures without changing
 // KIMMP's own error format or auth flow.
 // ---------------------------------------------------------------------------
-export function aegisAccessLogger(req: Request, _res: Response, next: NextFunction): void {
-  const authHeader = req.headers.authorization
-  if (!authHeader?.startsWith('Bearer ')) {
-    AegisLedger.logAccessDenied({
-      endpoint: req.path,
-      method:   req.method,
-      ip:       req.ip,
-    }).catch(() => {})
+export function aegisAccessLogger(req: Request, res: Response, next: NextFunction): void {
+  const correlationId = generateCorrelationId()
+  const ctx: AegisRequestContext = { correlationId, requesterId: 'anonymous', httpSurface: 'kimmp' }
+  ;(req as any).aegisCorrelationId = correlationId
+  res.setHeader('X-Aegis-Correlation', correlationId)
+
+  // Wrap so that aegisEgressMonitor, the route handler, MissionDispatcher, and
+  // KoreRuntimeManager all run in the same AsyncLocalStorage context.
+  aegisStorage.run(ctx, () => {
+    const authHeader = req.headers.authorization
+    if (!authHeader?.startsWith('Bearer ')) {
+      AegisLedger.logAccessDenied({
+        endpoint: req.path,
+        method:   req.method,
+        ip:       req.ip,
+      }).catch(() => {})
+      next()
+      return
+    }
+
+    const token   = authHeader.substring(7)
+    const payload = verifyAccessToken(token)
+
+    if (!payload || (payload as any).role !== 'ADMIN') {
+      AegisLedger.logAccessDenied({
+        endpoint: req.path,
+        method:   req.method,
+        userId:   (payload as any)?.userId,
+        userRole: (payload as any)?.role,
+        ip:       req.ip,
+      }).catch(() => {})
+    } else {
+      ctx.requesterId = (payload as any).userId ?? 'anonymous'
+    }
+
     next()
-    return
-  }
-
-  const token   = authHeader.substring(7)
-  const payload = verifyAccessToken(token)
-
-  if (!payload || (payload as any).role !== 'ADMIN') {
-    AegisLedger.logAccessDenied({
-      endpoint: req.path,
-      method:   req.method,
-      userId:   (payload as any)?.userId,
-      userRole: (payload as any)?.role,
-      ip:       req.ip,
-    }).catch(() => {})
-  }
-
-  next()
+  })
 }

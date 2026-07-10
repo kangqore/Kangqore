@@ -65,14 +65,82 @@ await cert('WaandaExperienceEngine exports project() and registerAdapter()', asy
   assert(typeof WaandaExperienceEngine.registerAdapter === 'function', 'registerAdapter() missing')
 })
 
+// ── Constitutional Laws 1 & 2 — Sovereignty and Non-Enrichment ───────────────
+console.log('\nConstitutional Law 1 · WAANDA Sole Authority')
+
+await cert('CONSTITUTIONAL_LAW_1 is declared and exported from wee/types', async () => {
+  const { CONSTITUTIONAL_LAW_1 } = await import('../wee/types.js')
+  assert(typeof CONSTITUTIONAL_LAW_1 === 'string' && CONSTITUTIONAL_LAW_1.length > 0,
+    'CONSTITUTIONAL_LAW_1 is missing or empty — Law 1 is memory-only, not in code')
+  assert(CONSTITUTIONAL_LAW_1.toLowerCase().includes('sole authority') || CONSTITUTIONAL_LAW_1.toLowerCase().includes('waanda'),
+    'CONSTITUTIONAL_LAW_1 content does not reference WAANDA authority')
+})
+
+await cert('WaandaExperienceEngine.project() does not mutate WaandaCognitiveState', async () => {
+  const { WaandaExperienceEngine, EMPTY_WAANDA_STATE, DEFAULT_PROJECTION_POLICY } = await import('../wee/index.js')
+  const sentinelState = { ...EMPTY_WAANDA_STATE, phase: 'OBSERVE' as const }
+  await WaandaExperienceEngine.project(
+    { id: 'cert.law1', projectionScope: 'PERSONAL', persona: 'OPERATOR', requiredCapabilities: [], context: {} },
+    DEFAULT_PROJECTION_POLICY,
+    sentinelState,
+  )
+  assert(sentinelState.phase === 'OBSERVE',
+    `Law 1 violation: WaandaExperienceEngine.project() mutated state.phase (expected 'OBSERVE', got '${sentinelState.phase}')`)
+})
+
+console.log('\nConstitutional Law 2 · Non-Enrichment')
+
+await cert('CONSTITUTIONAL_LAW_2 is declared and exported from wee/types', async () => {
+  const { CONSTITUTIONAL_LAW_2 } = await import('../wee/types.js')
+  assert(typeof CONSTITUTIONAL_LAW_2 === 'string' && CONSTITUTIONAL_LAW_2.length > 0,
+    'CONSTITUTIONAL_LAW_2 is missing or empty — Law 2 is memory-only, not in code')
+  assert(CONSTITUTIONAL_LAW_2.toLowerCase().includes('infer') || CONSTITUTIONAL_LAW_2.toLowerCase().includes('enrich'),
+    'CONSTITUTIONAL_LAW_2 content does not reference enrichment prohibition')
+})
+
+await cert('No WEE adapter imports business intelligence services', () => {
+  const adapterDir = path.join(ROOT, 'frontend/src/os/runtime/wee/adapters')
+  const files = readDir(adapterDir)
+  const forbidden = ['MissionDispatcher', 'AegisShield', 'KIMMP', 'IMMP', 'kangqore-immp', 'KeosKernel']
+  const violations: string[] = []
+  for (const f of files) {
+    const src = readFile(f)
+    for (const service of forbidden) {
+      if (src.includes(service)) {
+        violations.push(`${path.relative(ROOT, f)} references '${service}'`)
+      }
+    }
+  }
+  assert(violations.length === 0,
+    `Law 2 violation — adapters importing intelligence services:\n  ${violations.join('\n  ')}`)
+})
+
+await cert('No WEE adapter calls fetch() or external async I/O', () => {
+  const adapterDir = path.join(ROOT, 'frontend/src/os/runtime/wee/adapters')
+  const files = readDir(adapterDir)
+  const violations: string[] = []
+  for (const f of files) {
+    const src = readFile(f)
+    if (src.match(/\bfetch\s*\(/) || src.match(/\baxios\s*\(/) || src.includes('XMLHttpRequest')) {
+      violations.push(path.relative(ROOT, f))
+    }
+  }
+  assert(violations.length === 0,
+    `Law 2 violation — adapters performing direct I/O (must only read Readonly<WaandaCognitiveState>):\n  ${violations.join('\n  ')}`)
+})
+
 // ── Law II — WEE adapters registered after bootWEE ───────────────────────────
 console.log('\nLaw II · Adapter Registration')
 
-await cert('bootWEE() registers all three scope adapters', async () => {
+await cert('bootWEE() registers all nine scope adapters', async () => {
   const { bootWEE, WaandaExperienceEngine, EMPTY_WAANDA_STATE, DEFAULT_PROJECTION_POLICY } = await import('../wee/index.js')
   bootWEE()
 
-  const scopes: Array<'PERSONAL' | 'EXECUTIVE' | 'REVENUE'> = ['PERSONAL', 'EXECUTIVE', 'REVENUE']
+  const scopes = [
+    'PERSONAL', 'EXECUTIVE', 'REVENUE',
+    'OPERATIONS', 'INTELLIGENCE', 'PLATFORM',
+    'COLLABORATION', 'GOVERNANCE', 'ECOSYSTEM',
+  ] as const
   for (const scope of scopes) {
     const model = await WaandaExperienceEngine.project(
       { id: `cert.${scope}`, projectionScope: scope, persona: 'OPERATOR', requiredCapabilities: [], context: {} },
@@ -130,13 +198,109 @@ await cert('RevenueWorkspaceManifest declares cognitiveStateType = REVENUE', asy
     `Expected REVENUE, got ${RevenueWorkspaceManifest.workspace.cognitiveStateType}`)
 })
 
-await cert('All three manifests include FORECASTING mode', async () => {
-  const { PersonalWorkspaceManifest }  = await import('../portals/PersonalWorkspace.js')
-  const { ExecutiveWorkspaceManifest } = await import('../portals/ExecutiveWorkspace.js')
-  const { RevenueWorkspaceManifest }   = await import('../portals/RevenueWorkspace.js')
-  assert('FORECASTING' in PersonalWorkspaceManifest.workspace.modes,  'Personal missing FORECASTING mode')
-  assert('FORECASTING' in ExecutiveWorkspaceManifest.workspace.modes, 'Executive missing FORECASTING mode')
-  assert('FORECASTING' in RevenueWorkspaceManifest.workspace.modes,   'Revenue missing FORECASTING mode')
+await cert('OperationsWorkspaceManifest declares cognitiveStateType = OPERATIONS', async () => {
+  const { OperationsWorkspaceManifest } = await import('../portals/OperationsWorkspace.js')
+  assert(OperationsWorkspaceManifest.workspace.cognitiveStateType === 'OPERATIONS',
+    `Expected OPERATIONS, got ${OperationsWorkspaceManifest.workspace.cognitiveStateType}`)
+})
+
+await cert('EnterpriseIntelligenceWorkspaceManifest declares cognitiveStateType = INTELLIGENCE', async () => {
+  const { EnterpriseIntelligenceWorkspaceManifest } = await import('../portals/EnterpriseIntelligenceWorkspace.js')
+  assert(EnterpriseIntelligenceWorkspaceManifest.workspace.cognitiveStateType === 'INTELLIGENCE',
+    `Expected INTELLIGENCE, got ${EnterpriseIntelligenceWorkspaceManifest.workspace.cognitiveStateType}`)
+})
+
+await cert('PlatformWorkspaceManifest declares cognitiveStateType = PLATFORM', async () => {
+  const { PlatformWorkspaceManifest } = await import('../portals/PlatformWorkspace.js')
+  assert(PlatformWorkspaceManifest.workspace.cognitiveStateType === 'PLATFORM',
+    `Expected PLATFORM, got ${PlatformWorkspaceManifest.workspace.cognitiveStateType}`)
+})
+
+await cert('CollaborationWorkspaceManifest declares cognitiveStateType = COLLABORATION', async () => {
+  const { CollaborationWorkspaceManifest } = await import('../portals/CollaborationWorkspace.js')
+  assert(CollaborationWorkspaceManifest.workspace.cognitiveStateType === 'COLLABORATION',
+    `Expected COLLABORATION, got ${CollaborationWorkspaceManifest.workspace.cognitiveStateType}`)
+})
+
+await cert('GovernanceWorkspaceManifest declares cognitiveStateType = GOVERNANCE', async () => {
+  const { GovernanceWorkspaceManifest } = await import('../portals/GovernanceWorkspace.js')
+  assert(GovernanceWorkspaceManifest.workspace.cognitiveStateType === 'GOVERNANCE',
+    `Expected GOVERNANCE, got ${GovernanceWorkspaceManifest.workspace.cognitiveStateType}`)
+})
+
+await cert('EcosystemWorkspaceManifest declares cognitiveStateType = ECOSYSTEM', async () => {
+  const { EcosystemWorkspaceManifest } = await import('../portals/EcosystemWorkspace.js')
+  assert(EcosystemWorkspaceManifest.workspace.cognitiveStateType === 'ECOSYSTEM',
+    `Expected ECOSYSTEM, got ${EcosystemWorkspaceManifest.workspace.cognitiveStateType}`)
+})
+
+await cert('All nine manifests include FORECASTING mode', async () => {
+  const { PersonalWorkspaceManifest }                   = await import('../portals/PersonalWorkspace.js')
+  const { ExecutiveWorkspaceManifest }                  = await import('../portals/ExecutiveWorkspace.js')
+  const { RevenueWorkspaceManifest }                    = await import('../portals/RevenueWorkspace.js')
+  const { OperationsWorkspaceManifest }                 = await import('../portals/OperationsWorkspace.js')
+  const { EnterpriseIntelligenceWorkspaceManifest }     = await import('../portals/EnterpriseIntelligenceWorkspace.js')
+  const { PlatformWorkspaceManifest }                   = await import('../portals/PlatformWorkspace.js')
+  const { CollaborationWorkspaceManifest }              = await import('../portals/CollaborationWorkspace.js')
+  const { GovernanceWorkspaceManifest }                 = await import('../portals/GovernanceWorkspace.js')
+  const { EcosystemWorkspaceManifest }                  = await import('../portals/EcosystemWorkspace.js')
+  assert('FORECASTING' in PersonalWorkspaceManifest.workspace.modes,                   'Personal missing FORECASTING mode')
+  assert('FORECASTING' in ExecutiveWorkspaceManifest.workspace.modes,                  'Executive missing FORECASTING mode')
+  assert('FORECASTING' in RevenueWorkspaceManifest.workspace.modes,                    'Revenue missing FORECASTING mode')
+  assert('FORECASTING' in OperationsWorkspaceManifest.workspace.modes,                 'Operations missing FORECASTING mode')
+  assert('FORECASTING' in EnterpriseIntelligenceWorkspaceManifest.workspace.modes,     'EnterpriseIntelligence missing FORECASTING mode')
+  assert('FORECASTING' in PlatformWorkspaceManifest.workspace.modes,                   'Platform missing FORECASTING mode')
+  assert('FORECASTING' in CollaborationWorkspaceManifest.workspace.modes,              'Collaboration missing FORECASTING mode')
+  assert('FORECASTING' in GovernanceWorkspaceManifest.workspace.modes,                 'Governance missing FORECASTING mode')
+  assert('FORECASTING' in EcosystemWorkspaceManifest.workspace.modes,                  'Ecosystem missing FORECASTING mode')
+})
+
+// Enterprise Platform consumption — WEE Law 3 functional compliance
+await cert('WaandaCognitiveState.enterprisePredictions is declared in EMPTY_WAANDA_STATE', async () => {
+  const { EMPTY_WAANDA_STATE } = await import('../wee/types.js')
+  assert(Array.isArray(EMPTY_WAANDA_STATE.enterprisePredictions),
+    'enterprisePredictions missing from EMPTY_WAANDA_STATE — WEE Law 3 violation')
+})
+
+await cert('WaandaCognitiveMirror fetches both EDF and EPF endpoints', () => {
+  const src = readFile(path.join(ROOT, 'frontend/src/os/runtime/wee/WaandaCognitiveMirror.ts'))
+  assert(src.includes('/api/os/edf/domains'),   'WaandaCognitiveMirror missing EDF domains fetch — WEE Law 3 violation')
+  assert(src.includes('/api/os/epf/predictions'), 'WaandaCognitiveMirror missing EPF predictions fetch — WEE Law 3 violation')
+})
+
+// ── Constitution 3 — Enterprise Workspace Architecture Laws ──────────────────
+console.log('\nConstitution 3 · Enterprise Workspace Architecture')
+
+await cert('C3_LAW_1 is declared and exported from types/manifest', async () => {
+  const { C3_LAW_1 } = await import('../types/manifest.js')
+  assert(typeof C3_LAW_1 === 'string' && C3_LAW_1.length > 0,
+    'C3_LAW_1 is missing or empty')
+  assert(C3_LAW_1.toLowerCase().includes('capability'),
+    'C3_LAW_1 content does not reference capability composition')
+})
+
+await cert('C3_LAW_2 is declared and exported from types/manifest', async () => {
+  const { C3_LAW_2 } = await import('../types/manifest.js')
+  assert(typeof C3_LAW_2 === 'string' && C3_LAW_2.length > 0,
+    'C3_LAW_2 is missing or empty')
+  assert(C3_LAW_2.toLowerCase().includes('enterprise objects') || C3_LAW_2.toLowerCase().includes('universal'),
+    'C3_LAW_2 content does not reference Enterprise Objects')
+})
+
+await cert('C3_LAW_3 is declared and exported from types/manifest', async () => {
+  const { C3_LAW_3 } = await import('../types/manifest.js')
+  assert(typeof C3_LAW_3 === 'string' && C3_LAW_3.length > 0,
+    'C3_LAW_3 is missing or empty')
+  assert(C3_LAW_3.toLowerCase().includes('waanda'),
+    'C3_LAW_3 content does not reference WAANDA as operating interface')
+})
+
+await cert('C3_LAW_4 is declared and exported from types/manifest', async () => {
+  const { C3_LAW_4 } = await import('../types/manifest.js')
+  assert(typeof C3_LAW_4 === 'string' && C3_LAW_4.length > 0,
+    'C3_LAW_4 is missing or empty')
+  assert(C3_LAW_4.toLowerCase().includes('mission'),
+    'C3_LAW_4 content does not reference Mission')
 })
 
 // ── Law IV — Article XII: no UI component bypasses WEE ───────────────────────

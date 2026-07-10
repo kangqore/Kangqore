@@ -16,6 +16,7 @@
 
 import { prisma } from '../../lib/prisma';
 import logger from '../../utils/logger';
+import { MissionDispatcher } from '../../immp/core/MissionDispatcher';
 import { KimmpAuditLog } from '../governance/auditLog.service';
 import { KimmpTracer } from '../governance/kimmpTracer.service';
 import { runSalesAlert } from './executors/salesAlertExecutor';
@@ -83,30 +84,39 @@ export class WorkflowExecutor {
         `target=${decision.targetModule} actor=${actorId}`
     );
 
-    // 3. Dispatch to the correct executor.
+    // 3. Route through the KIMMP Runtime governance pipeline before executing.
+    // MissionDispatcher applies AEGIS policy evaluation and writes to the audit ledger.
+    // The typed executor runs inside the Runtime's Step 6 as a custom executor.
     let execResult: { action: string; detail?: Record<string, unknown> };
-    switch (decision.decisionType) {
-      case 'SALES_ALERT':
-        execResult = await runSalesAlert(execInput);
-        break;
-      case 'HUMAN_HANDOFF':
-        execResult = await runHumanHandoff(execInput);
-        break;
-      case 'CONTENT_OPPORTUNITY':
-        execResult = await runContentOpportunity(execInput);
-        break;
-      case 'MARKET_ALERT':
-        execResult = await runMarketAlert(execInput);
-        break;
-      case 'RESPONSE_POLICY':
-        execResult = await runResponsePolicy(execInput);
-        break;
-      default:
-        execResult = {
-          action: 'UNHANDLED_DECISION_TYPE',
-          detail: { note: `No executor registered for type "${decision.decisionType}".` },
-        };
-    }
+    const runtimeResult = await MissionDispatcher.dispatch(
+      {
+        goal:        decision.recommendedAction ?? decision.decisionType,
+        description: `KIMMP WorkflowExecutor: ${decision.decisionType} → ${decision.targetModule}`,
+        requester:   actorId,
+      },
+      async () => {
+        let innerResult: { action: string; detail?: Record<string, unknown> };
+        switch (decision.decisionType) {
+          case 'SALES_ALERT':
+            innerResult = await runSalesAlert(execInput); break;
+          case 'HUMAN_HANDOFF':
+            innerResult = await runHumanHandoff(execInput); break;
+          case 'CONTENT_OPPORTUNITY':
+            innerResult = await runContentOpportunity(execInput); break;
+          case 'MARKET_ALERT':
+            innerResult = await runMarketAlert(execInput); break;
+          case 'RESPONSE_POLICY':
+            innerResult = await runResponsePolicy(execInput); break;
+          default:
+            innerResult = {
+              action: 'UNHANDLED_DECISION_TYPE',
+              detail: { note: `No executor registered for type "${decision.decisionType}".` },
+            };
+        }
+        return { id: 'wf-' + decisionId, result: innerResult.action, ...innerResult };
+      },
+    );
+    execResult = { action: runtimeResult.action ?? runtimeResult.result, detail: runtimeResult.detail };
 
     // 4. Mark the decision EXECUTED with governance columns.
     try {

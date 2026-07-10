@@ -1,4 +1,5 @@
-import { ExecutionGraphNode, ExecutionToken } from './types';
+// ARCHIVED — Gen I simulation. MissionDispatcher is the live replacement.
+import { ExecutionGraphNode, ExecutionToken } from '../types';
 import { CapabilityRuntime } from './CapabilityRuntime';
 
 export class RuntimeScheduler {

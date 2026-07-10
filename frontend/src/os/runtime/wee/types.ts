@@ -2,7 +2,23 @@
 // WAANDA Experience Engine: projection contracts, policies, and state mirror.
 // Constitutional Law: WEE never reasons, never creates enterprise intelligence.
 
-export type ProjectionScope = 'PERSONAL' | 'EXECUTIVE' | 'REVENUE'
+// ── WEE Constitution v1.2 — Approved 2026-07-09 ─────────────────────────────
+// Named constants make the laws traceable in code, greppable, and statically
+// verifiable by the Constitutional Certification Suite.
+export const CONSTITUTIONAL_LAW_1 =
+  'WAANDA is the sole authority permitted to create, modify, or own Enterprise Cognitive State; WEE may only transform that state into experience projections and must never derive new business intelligence or make executive decisions'
+
+export const CONSTITUTIONAL_LAW_2 =
+  'No layer below WAANDA may infer, enrich, reinterpret, or synthesize Enterprise Cognitive State; all lower layers are projections of WAANDA authoritative cognition constrained by Experience Contracts and Projection Policies'
+
+export const CONSTITUTIONAL_LAW_3 =
+  'No workspace, widget, or UI component may consume enterprise data directly; every user-visible state must be composed and projected by WEE from WAANDA live cognitive state'
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type ProjectionScope =
+  | 'PERSONAL' | 'EXECUTIVE' | 'REVENUE'
+  | 'OPERATIONS' | 'INTELLIGENCE' | 'PLATFORM'
+  | 'COLLABORATION' | 'GOVERNANCE' | 'ECOSYSTEM'
 
 export type CognitivePhase = 'OBSERVE' | 'UNDERSTAND' | 'DECIDE' | 'ACT' | 'LEARN'
 
@@ -14,7 +30,27 @@ export interface WaandaCognitiveState {
   phases: Array<{ name: string; status: 'PASS' | 'WARN' | 'ERROR'; duration?: number }>
   activeCapabilities: string[]
   subsystems: Record<string, string>
-  domains: Array<{ id: string; name: string; ready: boolean; capabilities?: number; goals?: number }>
+  domains: Array<{
+    id: string
+    name: string
+    version?: string
+    purpose?: string
+    ready: boolean
+    capabilities?: number
+    goals?: number
+    objects?: number
+    kpis?: Array<{ id: string; name: string; target: number; current: number }>
+  }>
+  enterprisePredictions: Array<{
+    id: string
+    target: string
+    horizon: string
+    confidence: number
+    state: string
+    outcome: { forecastedValue: number | string | boolean; unit?: string; isAnomaly?: boolean }
+    driftDetected: boolean
+    loggedAt: string
+  }>
   kimmSynthesis: string | null
   systemBriefings: Array<{
     id: string
@@ -75,11 +111,12 @@ export interface ExperienceModel {
 }
 
 // Adapters adapt WaandaCognitiveState into a projected payload.
-// Constitutional rule: adapters never fetch independently from any external source.
+// Law 1 + 2 type constraint: state is Readonly — adapters may read, never mutate or enrich.
+// Adapters never fetch independently from any external source.
 export interface CognitiveStateAdapter {
   projectionScope: ProjectionScope
   adapt(
-    waandaState: WaandaCognitiveState,
+    waandaState: Readonly<WaandaCognitiveState>,
     contract: ExperienceContract,
     policy: ProjectionPolicy
   ): Promise<Record<string, unknown>>
@@ -101,6 +138,7 @@ export const EMPTY_WAANDA_STATE: WaandaCognitiveState = {
   activeCapabilities: [],
   subsystems: {},
   domains: [],
+  enterprisePredictions: [],
   kimmSynthesis: null,
   systemBriefings: [],
   pendingDecisions: [],

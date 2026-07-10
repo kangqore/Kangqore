@@ -37,6 +37,13 @@ export const OSBootstrap: React.FC = () => {
         const dependencyGraph = new DependencyGraph();
         const policyAdapter = new PolicyAdapter();
         const health = RuntimeHealth.getInstance();
+
+        // Seed policies from session context.
+        // TODO: replace with real session-derived role list from auth middleware.
+        policyAdapter.loadPolicies([
+            'role.admin', 'role.executive', 'role.sales',
+            'cap.ai.plan', 'cap.ai.forecast',
+        ]);
         
         container.register('ExperienceAPI', ExperienceAPI.getInstance());
         container.register('CapabilityBroker', new CapabilityBroker());

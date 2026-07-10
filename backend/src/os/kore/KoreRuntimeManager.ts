@@ -1,12 +1,14 @@
 import { KeosEventBus } from '../kernel/KeosEventBus';
-import { 
-  EnterpriseDigitalTwin, 
-  TwinIdentity, 
-  TwinType, 
-  TwinMutationProposal, 
+import {
+  EnterpriseDigitalTwin,
+  TwinIdentity,
+  TwinType,
+  TwinMutationProposal,
   TwinTransaction,
   KoreQuery
 } from './types';
+import { AegisShield } from '../../kangqore-aegis/AegisShield';
+import { MissionRequest } from '../kernel/KeosKernel';
 
 class IdentityEngine {
   static generateId(type: TwinType): TwinIdentity {
@@ -16,27 +18,6 @@ class IdentityEngine {
       createdAt: new Date(),
       namespace: 'keos.enterprise'
     };
-  }
-}
-
-class AegisGate {
-  static validate(proposal: TwinMutationProposal): boolean {
-    // Hard guard: trust cannot be zeroed unconditionally
-    if (proposal.changes?.trustScore === 0) {
-      // Fire a real policy violation event — lazy import avoids circular dep
-      import('../../kangqore-aegis').then(({ AegisEventEmitter }) => {
-        AegisEventEmitter.firePolicyViolation({
-          metadata: {
-            policy:   'KORE_TRUST_ZERO_GUARD',
-            twinId:   proposal.twinId,
-            changes:  proposal.changes,
-            reason:   proposal.reason,
-          },
-        }).catch(() => {})
-      }).catch(() => {})
-      return false
-    }
-    return true
   }
 }
 
@@ -108,11 +89,37 @@ class TransactionEngine {
   static async execute(transaction: TwinTransaction): Promise<boolean> {
     console.log(`[KORE Runtime] Executing Transaction ${transaction.transactionId}`);
     
-    // 1. AEGIS Validation Phase
+    // 1. AEGIS Validation Phase — real policy evaluation per proposal
     for (const proposal of transaction.proposals) {
-      if (!AegisGate.validate(proposal)) {
-        console.error(`[Transaction] Rolled back: AEGIS rejected proposal on ${proposal.twinId}`);
+      const missionId = `KORE_TX_${transaction.transactionId}_${proposal.twinId}`;
+      const mission: MissionRequest = {
+        id:          missionId,
+        goal:        `KORE_TWIN_MUTATION:${proposal.twinId}`,
+        description: `${proposal.reason} (proposed by ${proposal.proposedBy}, confidence ${proposal.confidence})`,
+        requester:   proposal.proposedBy,
+      };
+
+      const aegisResult = await AegisShield.evaluatePolicy(mission);
+
+      if (aegisResult.action === 'DENY') {
+        console.error(`[KORE Transaction] Rolled back: AEGIS denied ${proposal.twinId} — ${aegisResult.reason}`);
         transaction.status = 'ROLLED_BACK';
+        void AegisShield.writeToLedger(missionId, proposal.proposedBy, 'KORE_MUTATION_DENIED', 'BLOCKED', {
+          riskScore:        aegisResult.riskScore,
+          policyEvaluated:  aegisResult.policiesEvaluated,
+          executionDetails: { twinId: proposal.twinId, reason: aegisResult.reason },
+        });
+        return false;
+      }
+
+      if (aegisResult.action === 'REQUIRE_APPROVAL') {
+        console.warn(`[KORE Transaction] Held for approval: ${proposal.twinId} — ${aegisResult.reason}`);
+        transaction.status = 'PENDING';
+        void AegisShield.writeToLedger(missionId, proposal.proposedBy, 'KORE_MUTATION_PENDING_APPROVAL', 'PENDING', {
+          riskScore:        aegisResult.riskScore,
+          policyEvaluated:  aegisResult.policiesEvaluated,
+          executionDetails: { twinId: proposal.twinId, reason: aegisResult.reason },
+        });
         return false;
       }
     }
@@ -124,7 +131,15 @@ class TransactionEngine {
 
       const newTwin = CommitEngine.apply(currentTwin, proposal);
       TwinRegistry.register(newTwin);
-      
+
+      void AegisShield.writeToLedger(
+        `KORE_TX_${transaction.transactionId}_${proposal.twinId}`,
+        proposal.proposedBy,
+        'KORE_MUTATION_COMMITTED',
+        'SUCCESS',
+        { executionDetails: { twinId: proposal.twinId, version: newTwin.version } },
+      );
+
       KeosEventBus.publish('TWIN_VERSION_CREATED', {
         twinId: newTwin.identity.twinId,
         version: newTwin.version

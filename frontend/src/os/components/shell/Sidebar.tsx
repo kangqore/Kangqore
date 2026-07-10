@@ -171,7 +171,7 @@ export function Sidebar() {
         {navGroups.map(group => (
           <div key={group.label}>
             {!sidebarCollapsed && (
-              <p className="px-5 mb-1.5 text-[10px] font-semibold tracking-wider text-[var(--os-text-2)] uppercase flex items-center gap-1.5 opacity-80">
+              <p className="px-5 mb-1.5 text-[11px] font-semibold tracking-wider text-[var(--os-text-2)] uppercase flex items-center gap-1.5">
                 <span
                   className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                   style={{ background: GROUP_DOT[group.label] ?? 'var(--os-text-2)' }}
@@ -217,8 +217,10 @@ export function Sidebar() {
                         {({ isActive }) => (
                           <>
                             <span className={cn(
-                              'flex items-center justify-center flex-shrink-0 rounded-lg transition-all duration-100',
-                              sidebarCollapsed ? 'w-10 h-10' : 'w-[18px] h-[18px]',
+                              'flex items-center flex-shrink-0 rounded-lg transition-all duration-100',
+                              sidebarCollapsed
+                                ? 'justify-center w-10 h-10'
+                                : 'flex-1 min-w-0',
                               !hasChildren && isActive
                                 ? 'text-white [&_*]:text-white'
                                 : ''

@@ -1,4 +1,5 @@
-import { CapabilityDefinition, ExecutionToken } from './types';
+// ARCHIVED — Gen I simulation. MissionDispatcher is the live replacement.
+import { CapabilityDefinition, ExecutionToken } from '../types';
 
 export class ExecutorResolver {
   static resolveExecutor(capability: CapabilityDefinition): string {

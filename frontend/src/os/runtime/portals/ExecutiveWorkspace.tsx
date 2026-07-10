@@ -12,7 +12,7 @@ export const ExecutiveWorkspaceManifest: WorkspaceManifest = {
     metadata: {
         id: 'wksp.executive',
         title: 'Executive Workspace',
-        description: 'Flagship portal into the Executive Cognition Framework.',
+        description: 'Flagship portal into the Executive Cognition Framework — Enterprise Health, Goals, Decisions, Optimization, Strategy, and Missions.',
         version: '2.0.0',
         category: 'EXECUTIVE',
         icon: 'briefcase'
@@ -24,55 +24,70 @@ export const ExecutiveWorkspaceManifest: WorkspaceManifest = {
         scheduler: 'predictive',
         cognitiveStateType: 'EXECUTIVE',
         modes: {
-            DEFAULT:     ['strategy', 'intelligence', 'governance'],
-            FOCUS:       ['strategy'],
-            MEETING:     ['strategy', 'governance', 'stakeholders'],
-            TRAVEL:      ['strategy', 'intelligence'],
+            DEFAULT:     ['health', 'decisions', 'strategy'],
+            FOCUS:       ['strategy', 'decisions'],
+            MEETING:     ['health', 'strategy', 'missions'],
+            TRAVEL:      ['health', 'decisions'],
             OFFLINE:     ['strategy'],
-            INCIDENT:    ['intelligence', 'governance'],
-            APPROVAL:    ['governance'],
-            LEARNING:    ['intelligence'],
-            FORECASTING: ['intelligence', 'strategy'],
+            INCIDENT:    ['health', 'decisions', 'optimization'],
+            APPROVAL:    ['decisions'],
+            LEARNING:    ['strategy', 'missions'],
+            FORECASTING: ['optimization', 'health'],
         },
         sections: {
-            strategy: {
-                id: 'strategy',
+            health: {
+                id: 'health',
                 priority: 100,
                 collapsible: false,
                 adaptive: true,
                 widgets: [
-                    { id: 'wid.executive.health', title: 'Enterprise Health', component: 'AnalyticsWidget', permissions: ['role.executive'], priority: 'CRITICAL', refreshPolicy: 'LIVE' },
-                    { id: 'wid.executive.missions', title: 'Active Strategy', component: 'MissionWidget', permissions: ['role.executive'], priority: 'HIGH' },
-                    { id: 'wid.executive.decisions', title: 'Decision Queue', component: 'DecisionWidget', permissions: ['role.executive'], priority: 'HIGH' }
+                    { id: 'wid.executive.health', title: 'Enterprise Health', component: 'EnterpriseHealthWidget', permissions: ['role.executive'], priority: 'CRITICAL', refreshPolicy: 'LIVE' }
                 ]
             },
-            intelligence: {
-                id: 'intelligence',
+            decisions: {
+                id: 'decisions',
+                priority: 95,
+                collapsible: false,
+                adaptive: true,
+                widgets: [
+                    { id: 'wid.executive.decisions', title: 'Decision Center', component: 'DecisionCenterWidget', permissions: ['role.executive'], priority: 'CRITICAL', refreshPolicy: 'LIVE' }
+                ]
+            },
+            strategy: {
+                id: 'strategy',
                 priority: 90,
                 collapsible: true,
                 adaptive: true,
                 widgets: [
-                    { id: 'wid.executive.risks', title: 'Critical Risks', component: 'RiskWidget', permissions: ['role.executive'], priority: 'HIGH' },
-                    { id: 'wid.executive.evidence', title: 'Evidence Feed', component: 'EvidenceWidget', permissions: ['role.executive'], priority: 'NORMAL' },
-                    { id: 'wid.executive.timeline', title: 'Activity Timeline', component: 'TimelineWidget', permissions: ['role.executive'], priority: 'NORMAL' }
+                    { id: 'wid.executive.goals',    title: 'Goals',           component: 'GoalsWidget',         permissions: ['role.executive'], priority: 'HIGH', refreshPolicy: 'PERIODIC' },
+                    { id: 'wid.executive.strategy', title: 'Strategy Center', component: 'StrategyCenterWidget', permissions: ['role.executive'], priority: 'HIGH' }
                 ]
             },
-            governance: {
-                id: 'governance',
+            missions: {
+                id: 'missions',
                 priority: 80,
                 collapsible: true,
                 adaptive: true,
                 widgets: [
-                    { id: 'wid.executive.waanda', title: 'Executive WAANDA', component: 'WaandaWidget', permissions: ['role.executive'], priority: 'CRITICAL', requiredCapabilities: ['cap.ai.plan'] }
+                    { id: 'wid.executive.missions', title: 'Mission Center', component: 'MissionCenterWidget', permissions: ['role.executive'], priority: 'HIGH', refreshPolicy: 'LIVE' }
                 ]
             },
-            stakeholders: {
-                id: 'stakeholders',
+            optimization: {
+                id: 'optimization',
                 priority: 70,
                 collapsible: true,
                 adaptive: true,
                 widgets: [
-                    { id: 'wid.executive.people', title: 'Key Stakeholders', component: 'PeopleWidget', permissions: ['role.executive'], priority: 'NORMAL' }
+                    { id: 'wid.executive.optimization', title: 'Optimization Center', component: 'OptimizationCenterWidget', permissions: ['role.executive'], priority: 'NORMAL', refreshPolicy: 'PERIODIC' }
+                ]
+            },
+            ai: {
+                id: 'ai',
+                priority: 85,
+                collapsible: false,
+                adaptive: true,
+                widgets: [
+                    { id: 'wid.executive.ai', title: 'Executive WAANDA', component: 'WaandaWidget', permissions: ['role.executive'], priority: 'CRITICAL', requiredCapabilities: ['cap.ai.plan'] }
                 ]
             },
             navigation: {
@@ -86,9 +101,8 @@ export const ExecutiveWorkspaceManifest: WorkspaceManifest = {
             }
         },
         policies: [],
-        capabilities: [],
-        subscriptions: [],
-        memory: []
+        capabilities: ['ecf.health', 'ecf.decisions', 'ecf.goals', 'ecf.optimization', 'ecf.strategy', 'ecf.missions'],
+        subscriptions: ['event.decision.created', 'event.goal.updated', 'event.mission.completed'],
+        memory: ['lastHealthSnapshot', 'activeDecisionFilter']
     }
 };
-

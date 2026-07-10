@@ -1,10 +1,11 @@
-import { 
-  StrategicPlan, 
-  MissionIR, 
-  ExecutionPlan, 
-  ExecutionGraph, 
-  ExecutionGraphNode 
-} from './types';
+// ARCHIVED — Gen I simulation. MissionDispatcher is the live replacement.
+import {
+  StrategicPlan,
+  MissionIR,
+  ExecutionPlan,
+  ExecutionGraph,
+  ExecutionGraphNode
+} from '../types';
 
 export class MissionParser {
   static parse(strategy: StrategicPlan): MissionIR {

@@ -7,7 +7,7 @@ import { CognitiveStateAdapter, ExperienceContract, ProjectionPolicy, WaandaCogn
 export const RevenueCognitiveAdapter: CognitiveStateAdapter = {
   projectionScope: 'REVENUE',
 
-  async adapt(state: WaandaCognitiveState, _contract: ExperienceContract, _policy: ProjectionPolicy) {
+  async adapt(state: Readonly<WaandaCognitiveState>, _contract: ExperienceContract, _policy: ProjectionPolicy) {
     const { liveSessions, evidenceLedger } = state.relationshipIntelligence
     const avgTrust =
       liveSessions.length > 0

@@ -44,7 +44,12 @@ function fmt(n: number) {
 // ─── Skeletons ────────────────────────────────────────────────────────────────
 
 function SkeletonLight({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] ${className}`} />
+  return (
+    <div
+      className={`animate-pulse rounded-xl ${className}`}
+      style={{ background: 'linear-gradient(90deg, rgba(37,100,234,0.07) 0%, rgba(37,100,234,0.13) 50%, rgba(37,100,234,0.07) 100%)', backgroundSize: '400px 100%' }}
+    />
+  )
 }
 
 // ─── Color Constants ──────────────────────────────────────────────────────────
@@ -208,35 +213,54 @@ function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loadi
 
             {/* Value */}
             {loading ? (
-              <div className="animate-pulse rounded-lg bg-white/30 h-8 w-20 mb-2" />
+              <div className="animate-pulse rounded-xl mb-2" style={{ background: 'rgba(255,255,255,0.3)', height: 40, width: 88 }} />
             ) : val != null ? (
               <AnimatePresence mode="wait">
                 <motion.p
                   key={val}
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-3xl font-black tracking-tight leading-none mb-1.5"
-                  style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+                  className="font-black tracking-tight leading-none mb-1.5"
+                  style={{
+                    color: '#ffffff',
+                    fontSize: val.length > 7 ? 22 : 28,
+                    textShadow: '0 2px 8px rgba(0,0,0,0.18)',
+                  }}
                 >
                   {val}
                 </motion.p>
               </AnimatePresence>
             ) : (
-              <p className="text-3xl font-black tracking-tight leading-none mb-1.5" style={{ color: 'rgba(255,255,255,0.5)' }}>—</p>
+              <p className="font-black tracking-tight leading-none mb-1.5"
+                 style={{ fontSize: 28, color: 'rgba(255,255,255,0.9)', letterSpacing: '-0.02em' }}>
+                —
+              </p>
             )}
 
-            <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: 'rgba(255,255,255,0.9)' }}>
+            <p className="font-bold uppercase tracking-widest mb-0.5"
+               style={{ fontSize: 11, color: 'rgba(255,255,255,0.95)', letterSpacing: '0.08em' }}>
               {def.key}
             </p>
-            <p className="text-[9px] leading-none font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>{def.sub}</p>
+            <p className="font-semibold leading-snug"
+               style={{ fontSize: 10, color: 'rgba(255,255,255,0.82)' }}>
+              {def.sub}
+            </p>
 
             {/* Delta badge */}
             {isPositive && (
               <span
-                className="mt-3 self-start text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm"
-                style={{ background: '#ffffff', color: def.color }}
+                className="mt-3 self-start font-extrabold px-2.5 py-1 rounded-full shadow-sm"
+                style={{ fontSize: 10, background: 'rgba(255,255,255,0.95)', color: def.color }}
               >
                 ↑ Live
+              </span>
+            )}
+            {!loading && val === null && (
+              <span
+                className="mt-3 self-start font-semibold px-2.5 py-1 rounded-full"
+                style={{ fontSize: 10, background: 'rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.9)' }}
+              >
+                No data
               </span>
             )}
           </motion.div>
@@ -291,10 +315,10 @@ function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
     <div className="flex flex-col gap-3">
       {/* Header */}
       <div className="flex items-center justify-between px-1">
-        <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
+        <p className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
           Work Queue
         </p>
-        <span className="text-[10px] font-bold" style={{ color: 'var(--os-text-3)' }}>
+        <span className="text-[11px] font-bold" style={{ color: 'var(--os-text-3)' }}>
           {allLeads.length} leads
         </span>
       </div>
@@ -320,9 +344,14 @@ function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
 
       {/* Lead cards — solid colored backgrounds */}
       {displayLeads.length === 0 ? (
-        <div className="os-card p-6 text-center rounded-2xl">
-          <Zap className="w-5 h-5 block mx-auto mb-2" style={{ color: 'var(--os-text-3)' }} />
-          <p className="text-xs" style={{ color: 'var(--os-text-2)' }}>No leads here</p>
+        <div className="rounded-2xl p-6 text-center flex flex-col items-center justify-center gap-2"
+             style={{ background: 'rgba(37,100,234,0.04)', border: '1px dashed rgba(37,100,234,0.20)', minHeight: 120 }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center"
+               style={{ background: 'rgba(37,100,234,0.10)' }}>
+            <Zap className="w-5 h-5" style={{ color: '#2564ea' }} />
+          </div>
+          <p className="text-[12px] font-semibold" style={{ color: 'var(--os-text-2)' }}>No leads in this view</p>
+          <p className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>Add a lead to get started</p>
         </div>
       ) : (
         <div className="flex flex-col gap-2">
@@ -348,18 +377,18 @@ function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="text-[12px] font-bold truncate leading-snug">{name}</p>
-                    {company && <p className="text-[10px] opacity-75 truncate mt-0.5">{company}</p>}
+                    {company && <p className="truncate mt-0.5" style={{ fontSize: 10, color: 'rgba(255,255,255,0.85)' }}>{company}</p>}
                   </div>
                   {score > 0 && (
-                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full flex-shrink-0"
-                          style={{ background: 'rgba(255,255,255,0.25)', color: '#fff' }}>
+                    <span className="font-extrabold px-2 py-0.5 rounded-full flex-shrink-0"
+                          style={{ fontSize: 10, background: 'rgba(255,255,255,0.25)', color: '#fff' }}>
                       {score}
                     </span>
                   )}
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-bold uppercase tracking-wide opacity-80">{stage}</span>
-                  <span className="text-[9px] opacity-60">{l.createdAt ? timeAgo(l.createdAt) : ''}</span>
+                  <span className="font-bold uppercase tracking-wide" style={{ fontSize: 10, color: 'rgba(255,255,255,0.92)' }}>{stage}</span>
+                  <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.75)' }}>{l.createdAt ? timeAgo(l.createdAt) : ''}</span>
                 </div>
               </motion.div>
             )
@@ -430,19 +459,24 @@ function PipelineKanban({ navigate, leads }: { navigate: (p: string) => void; le
       </div>
 
       {sortedLeads.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '20px 0' }}>
-          <Zap style={{ width: 24, height: 24, color: 'var(--os-text-3)', margin: '0 auto 8px', display: 'block' }} />
-          <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0 }}>No leads yet — add your first to get started</p>
+        <div style={{ textAlign: 'center', padding: '28px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+          <div style={{ width: 48, height: 48, borderRadius: 16, background: 'rgba(37,100,234,0.08)', border: '1px solid rgba(37,100,234,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Zap style={{ width: 22, height: 22, color: '#2564ea' }} />
+          </div>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 3px' }}>No leads yet</p>
+            <p style={{ fontSize: 11, color: 'var(--os-text-3)', margin: 0 }}>Your pipeline will appear here once you add leads</p>
+          </div>
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse" style={{ minWidth: 500 }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--os-border)' }}>
-                <th className="pb-3 text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-3)]">Name & Company</th>
-                <th className="pb-3 text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-3)]">Stage</th>
-                <th className="pb-3 text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-3)] text-center">Score</th>
-                <th className="pb-3 text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-3)] text-right">Value</th>
+                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-[var(--os-text-3)]">Name & Company</th>
+                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-[var(--os-text-3)]">Stage</th>
+                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-[var(--os-text-3)] text-center">Score</th>
+                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-[var(--os-text-3)] text-right">Value</th>
               </tr>
             </thead>
             <tbody>
@@ -468,7 +502,7 @@ function PipelineKanban({ navigate, leads }: { navigate: (p: string) => void; le
                     </td>
                     <td className="py-3 pr-3">
                       <span 
-                        className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wide text-white animate-fade-in"
+                        className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide text-white animate-fade-in"
                         style={{ backgroundColor: cfg.bg }}
                       >
                         {stage}
@@ -553,22 +587,24 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
         </div>
       ) : goals.length === 0 ? (
         <motion.div
-          className="text-center py-5"
+          className="text-center py-4 flex flex-col items-center gap-3"
           variants={fadeScale} initial="hidden" animate="visible"
         >
           <motion.div
-            className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-2.5"
-            style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}
+            className="w-12 h-12 rounded-2xl flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg,rgba(124,58,237,0.12),rgba(124,58,237,0.06))', border: '1px solid rgba(124,58,237,0.22)' }}
             variants={float} animate="float"
           >
-            <Target className="w-5 h-5" style={{ color: 'var(--os-text-3)' }} />
+            <Target className="w-6 h-6" style={{ color: '#7c3aed' }} />
           </motion.div>
-          <p className="text-[13px] font-bold mb-1" style={{ color: 'var(--os-text-1)' }}>Nothing in focus yet</p>
-          <p className="text-[11px] mb-3" style={{ color: 'var(--os-text-2)' }}>Set a goal to track what matters.</p>
+          <div>
+            <p className="text-[13px] font-bold mb-1" style={{ color: 'var(--os-text-1)' }}>Nothing in focus yet</p>
+            <p className="text-[11px] mb-3 leading-snug" style={{ color: 'var(--os-text-3)' }}>Set a goal and WAANDA will track progress<br/>and surface insights automatically.</p>
+          </div>
           <button
             onClick={() => navigate('/kangqore-view/admin/kangqore-immp/goals')}
-            className="text-[11px] font-bold px-4 py-1.5 rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
-            style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}
+            className="text-[11px] font-bold px-4 py-2 rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+            style={{ background: 'rgba(124,58,237,0.10)', border: '1px solid rgba(124,58,237,0.25)', color: '#7c3aed' }}
           >
             Create a goal →
           </button>
@@ -591,7 +627,7 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
                        style={{ color: isDone ? 'var(--os-text-3)' : 'var(--os-text-1)', textDecoration: isDone ? 'line-through' : 'none' }}>
                       {g.title}
                     </p>
-                    <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase flex-shrink-0"
+                    <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded uppercase flex-shrink-0"
                           style={{ color: barColor, background: `${barColor}15` }}>
                       {g.status?.replace(/_/g, ' ')}
                     </span>
@@ -614,10 +650,10 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
         <>
           <div className="h-px my-4" style={{ background: 'var(--os-border)' }} />
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-widest mb-2.5 flex items-center gap-1.5" style={{ color: 'var(--os-text-2)' }}>
+            <p className="text-[11px] font-semibold uppercase tracking-widest mb-2.5 flex items-center gap-1.5" style={{ color: 'var(--os-text-2)' }}>
               <Clock className="w-3.5 h-3.5" style={{ color: '#fdab3d' }} />
               Pending Approvals
-              <span className="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: '#fdab3d14', color: '#fdab3d' }}>
+              <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: '#fdab3d14', color: '#fdab3d' }}>
                 {approvals.length}
               </span>
             </p>
@@ -630,7 +666,7 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
                     <p className="text-[11px] font-semibold leading-normal truncate" style={{ color: 'var(--os-text-1)' }}>
                       {a.description ?? a.actionType}
                     </p>
-                    <p className="text-[9px] mt-0.5" style={{ color: 'var(--os-text-3)' }}>{timeAgo(a.requestedAt ?? a.createdAt)}</p>
+                    <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-3)' }}>{timeAgo(a.requestedAt ?? a.createdAt)}</p>
                   </div>
                   <button
                     onClick={() => navigate('/kangqore-view/admin/kangqore-immp/actions')}
@@ -687,13 +723,19 @@ function BidsPanel({ navigate }: { navigate: (p: string) => void }) {
           {[1,2].map(i => <SkeletonLight key={i} className="h-12 w-full" />)}
         </div>
       ) : total === 0 ? (
-        <div style={{ textAlign: 'center', padding: '16px 0' }}>
-          <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0 }}>No engagements yet</p>
+        <div style={{ textAlign: 'center', padding: '20px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+          <div style={{ width: 44, height: 44, borderRadius: 14, background: 'rgba(253,171,61,0.10)', border: '1px solid rgba(253,171,61,0.24)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Crosshair style={{ width: 20, height: 20, color: '#fdab3d' }} />
+          </div>
+          <div>
+            <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 3px' }}>No engagements yet</p>
+            <p style={{ fontSize: 11, color: 'var(--os-text-3)', margin: '0 0 10px' }}>Start your first BIDS™ assessment to track delivery</p>
+          </div>
           <button
             onClick={() => navigate('/kangqore-view/admin/bids/engagements')}
-            style={{ marginTop: 10, fontSize: 11, fontWeight: 600, padding: '6px 14px', borderRadius: 8, background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)', cursor: 'pointer' }}
+            style={{ fontSize: 11, fontWeight: 700, padding: '7px 16px', borderRadius: 9, background: 'rgba(253,171,61,0.12)', border: '1px solid rgba(253,171,61,0.30)', color: '#e09020', cursor: 'pointer' }}
           >
-            Start Assessment
+            Start Assessment →
           </button>
         </div>
       ) : (
@@ -702,7 +744,7 @@ function BidsPanel({ navigate }: { navigate: (p: string) => void }) {
             {[{ label: 'Active', val: active, color: '#00c875' }, { label: 'Total', val: total, color: 'var(--os-text-2)' }].map(s => (
               <div key={s.label} style={{ flex: 1, borderRadius: 10, padding: '10px 14px', background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
                 <p style={{ fontSize: 20, fontWeight: 800, color: s.color, margin: 0 }}>{s.val}</p>
-                <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-3)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</p>
+                <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-3)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</p>
               </div>
             ))}
           </div>
@@ -716,14 +758,14 @@ function BidsPanel({ navigate }: { navigate: (p: string) => void }) {
                 <li key={e.id} style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', borderRadius: 10, padding: '10px 12px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
                     <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--os-text-1)', margin: 0 }} className="truncate">{e.clientName}</p>
-                    <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 4, color: col, background: `${col}15`, flexShrink: 0, marginLeft: 8 }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 4, color: col, background: `${col}15`, flexShrink: 0, marginLeft: 8 }}>
                       {e.status}
                     </span>
                   </div>
                   <div style={{ height: 4, borderRadius: 2, background: 'var(--os-border)' }}>
                     <div style={{ height: '100%', borderRadius: 2, background: '#fdab3d', width: `${pct}%` }} />
                   </div>
-                  <p style={{ fontSize: 9, color: 'var(--os-text-3)', margin: '4px 0 0' }}>{done}/{tot} deliverables</p>
+                  <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: '4px 0 0' }}>{done}/{tot} deliverables</p>
                 </li>
               )
             })}
@@ -770,7 +812,7 @@ function WaandaScoreRing({ score }: { score: number }) {
         <span className="text-[36px] font-black tracking-tight leading-none" style={{ color: 'var(--os-text-1)' }}>
           {score > 0 ? score : '—'}
         </span>
-        <span className="text-[8px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
+        <span className="font-semibold uppercase tracking-widest" style={{ fontSize: 10, color: 'var(--os-text-2)' }}>
           WAANDA SCORE
         </span>
       </div>
@@ -856,7 +898,7 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
               return (
                 <div key={d.key} className="flex items-center gap-3">
                   <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: d.color }} />
-                  <span className="text-[10px] font-bold w-14 flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>{d.label}</span>
+                  <span className="text-[11px] font-bold w-14 flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>{d.label}</span>
                   <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--os-border)' }}>
                     {allZero ? (
                       <div className="h-full rounded-full w-full animate-pulse" style={{ background: 'var(--os-surface-0)' }} />
@@ -865,7 +907,7 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
                            style={{ background: d.color, width: `${Math.min(val, 100)}%`, boxShadow: `0 0 4px ${d.color}30` }} />
                     )}
                   </div>
-                  <span className="text-[10px] font-bold w-5 text-right flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>
+                  <span className="text-[11px] font-bold w-5 text-right flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>
                     {allZero ? '·' : val}
                   </span>
                 </div>
@@ -882,7 +924,7 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
       {/* Proactive Alerts */}
       {alerts.length > 0 && (
         <div className="os-card p-4 rounded-2xl">
-          <p className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--os-text-2)' }}>
+          <p className="text-[11px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--os-text-2)' }}>
             Proactive Alerts
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -899,7 +941,7 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
                   <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: '0 0 2px', lineHeight: 1.4 }} className="line-clamp-2">
                     {a.message}
                   </p>
-                  <p style={{ fontSize: 9, color: 'var(--os-text-3)', margin: 0 }}>
+                  <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0 }}>
                     {a.severity} · {timeAgo(a.createdAt)}
                   </p>
                 </div>
@@ -912,7 +954,7 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
       {/* Signal stream */}
       {signals.length > 0 && (
         <div className="os-card p-4 rounded-2xl">
-          <p className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--os-text-2)' }}>
+          <p className="text-[11px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--os-text-2)' }}>
             Signal Stream
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
@@ -921,7 +963,7 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#579bfc', flexShrink: 0, marginTop: 4 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: 0 }} className="truncate">{s.title}</p>
-                  <p style={{ fontSize: 9, color: 'var(--os-text-3)', margin: 0 }}>{s.category} · {timeAgo(s.createdAt)}</p>
+                  <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0 }}>{s.category} · {timeAgo(s.createdAt)}</p>
                 </div>
               </div>
             ))}
@@ -930,10 +972,23 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
       )}
 
       {!twinData && alerts.length === 0 && signals.length === 0 && (
-        <div className="os-card p-6 text-center rounded-2xl">
-          <Brain style={{ width: 24, height: 24, color: 'var(--os-text-3)', margin: '0 auto 8px', display: 'block' }} className="animate-pulse" />
-          <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--os-text-2)', margin: '0 0 4px' }}>WAANDA is waking up</p>
-          <p style={{ fontSize: 11, color: 'var(--os-text-3)', margin: 0 }}>Intelligence arrives with your first signals</p>
+        <div className="os-card p-5 rounded-2xl flex flex-col items-center text-center gap-3">
+          <div style={{ width: 52, height: 52, borderRadius: 18, background: 'linear-gradient(135deg,rgba(0,200,117,0.12),rgba(37,100,234,0.10))', border: '1px solid rgba(0,200,117,0.20)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Brain style={{ width: 24, height: 24, color: '#00c875' }} className="animate-pulse" />
+          </div>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 3px' }}>WAANDA is calibrating</p>
+            <p style={{ fontSize: 11, color: 'var(--os-text-3)', margin: '0 0 10px', lineHeight: 1.5 }}>
+              Intelligence arrives as your data grows. Accuracy improves within 24h.
+            </p>
+            <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
+              {['Signals', 'Decisions', 'Twin'].map(label => (
+                <span key={label} style={{ fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6, background: 'rgba(37,100,234,0.08)', color: 'var(--os-text-3)', border: '1px solid rgba(37,100,234,0.14)' }}>
+                  {label}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -1014,14 +1069,14 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
                 background: `${e.color}08`, border: `1px solid ${e.color}18`,
               }}>
                 <p style={{ fontSize: 20, fontWeight: 800, color: e.color, margin: 0 }}>{e.count}</p>
-                <p style={{ fontSize: 9, fontWeight: 700, color: `${e.color}90`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{e.label}</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: `${e.color}90`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{e.label}</p>
               </div>
             ))}
           </div>
 
           {/* 10-square engine heatmap */}
           <div style={{ flexShrink: 0 }}>
-            <p style={{ fontSize: 10, fontWeight: 600, color: 'var(--os-text-3)', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-3)', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
               Engines ({checkedEngines}/{totalEngines})
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 5 }}>
@@ -1060,7 +1115,7 @@ const MODULES = [
 function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
   return (
     <div className="os-card p-5 rounded-2xl">
-      <p className="text-[10px] font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--os-text-2)' }}>
+      <p className="text-[11px] font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--os-text-2)' }}>
         Quick Access
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
@@ -1082,7 +1137,7 @@ function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
               <div style={{ width: 32, height: 32, borderRadius: 9, background: `${m.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Icon style={{ width: 15, height: 15, color: m.color }} />
               </div>
-              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-1)', textAlign: 'center', lineHeight: 1.2 }}>{m.label}</span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)', textAlign: 'center', lineHeight: 1.2 }}>{m.label}</span>
             </motion.button>
           )
         })}
@@ -1136,10 +1191,14 @@ function ActivityFeed() {
           {[1,2,3].map(i => <SkeletonLight key={i} className="h-10 w-full" />)}
         </div>
       ) : signals.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '24px 0' }}>
-          <CheckCircle2 style={{ width: 28, height: 28, color: 'var(--os-text-3)', margin: '0 auto 8px', display: 'block' }} />
-          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--os-text-2)', margin: '0 0 4px' }}>No signals yet</p>
-          <p style={{ fontSize: 11, color: 'var(--os-text-3)', margin: 0 }}>WAANDA will surface intelligence here as it learns.</p>
+        <div style={{ textAlign: 'center', padding: '28px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+          <div style={{ width: 48, height: 48, borderRadius: 16, background: 'rgba(0,200,117,0.09)', border: '1px solid rgba(0,200,117,0.20)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <CheckCircle2 style={{ width: 22, height: 22, color: '#00c875' }} />
+          </div>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 3px' }}>All clear — no signals</p>
+            <p style={{ fontSize: 11, color: 'var(--os-text-3)', margin: 0 }}>WAANDA will surface intelligence here as your platform generates data.</p>
+          </div>
         </div>
       ) : (
         <div style={{ position: 'relative' }}>
@@ -1187,7 +1246,7 @@ function PipelineTrendChart() {
     <div className="os-card p-5 rounded-2xl h-[300px] flex flex-col justify-between">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
+          <p className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
             Pipeline & Revenue Growth
           </p>
           <p className="text-lg font-black mt-0.5" style={{ color: 'var(--os-text-1)' }}>
@@ -1209,8 +1268,8 @@ function PipelineTrendChart() {
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--os-border)" />
-            <XAxis dataKey="month" stroke="var(--os-text-3)" fontSize={9} tickLine={false} axisLine={false} />
-            <YAxis stroke="var(--os-text-3)" fontSize={9} tickLine={false} axisLine={false} tickFormatter={v => `₹${v/1000}k`} />
+            <XAxis dataKey="month" stroke="var(--os-text-3)" fontSize={11} tickLine={false} axisLine={false} dy={4} />
+            <YAxis stroke="var(--os-text-3)" fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => `₹${v/1000}k`} />
             <RechartsTooltip 
               contentStyle={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-md)' }}
               labelStyle={{ fontSize: 11, fontWeight: 750, color: 'var(--os-text-1)' }}
@@ -1230,7 +1289,7 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
     const stage = (l.status ?? l.stage ?? 'NEW').toUpperCase()
     acc[stage] = (acc[stage] ?? 0) + 1
     return acc
-  }, {})
+  }, {} as Record<string, number>)
 
   const chartData = Object.entries(stageCounts).map(([name, value]) => ({
     name: name.charAt(0) + name.slice(1).toLowerCase(),
@@ -1247,7 +1306,7 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
   return (
     <div className="os-card p-5 rounded-2xl h-[300px] flex flex-col justify-between">
       <div>
-        <p className="text-[10px] font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--os-text-2)' }}>
+        <p className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--os-text-2)' }}>
           Lead Pipeline Distribution
         </p>
       </div>
@@ -1281,7 +1340,7 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
           <p className="text-xl font-black leading-none m-0" style={{ color: 'var(--os-text-1)' }}>
             {leads.length}
           </p>
-          <p className="text-[9px] uppercase tracking-wider text-[var(--os-text-3)] font-bold m-0 mt-0.5">
+          <p className="uppercase tracking-wider font-bold m-0 mt-0.5" style={{ fontSize: 10, color: 'var(--os-text-3)' }}>
             Total Leads
           </p>
         </div>
@@ -1292,7 +1351,7 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
         {displayData.map((d) => (
           <div key={d.name} className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: d.color }} />
-            <span className="text-[9px] font-bold text-[var(--os-text-2)]">{d.name} ({d.value})</span>
+            <span className="font-bold" style={{ fontSize: 10, color: 'var(--os-text-2)' }}>{d.name} ({d.value as number})</span>
           </div>
         ))}
       </div>

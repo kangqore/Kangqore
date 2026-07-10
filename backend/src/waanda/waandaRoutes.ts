@@ -7,7 +7,7 @@ import { Router, Request, Response } from 'express'
 import { WAANDA }          from './WaandaBootstrap'
 import { DomainRegistry }  from '../os/edf/core/DomainRegistry'
 import { CapabilityRegistry } from '../os/kernel/CapabilityRegistry'
-import { KeosKernel }      from '../os/kernel/KeosKernel'
+import { MissionDispatcher } from '../immp/core/MissionDispatcher'
 import {
   COGNITIVE_STAGE_MAP,
   STAGE_QUESTIONS,
@@ -108,13 +108,13 @@ waandaRouter.post('/mission', async (req: Request, res: Response) => {
   if (!goal) return res.status(400).json({ error: '`goal` is required' })
 
   try {
-    const result = await KeosKernel.executeMission({
+    const result = await MissionDispatcher.dispatch({
       goal,
       description,
       requester:          (req as any).user?.id ?? 'ADMIN',
       requiredCapability,
     })
-    res.json({ system: 'WAANDA', layer: 'KEOS Kernel', mission: result })
+    res.json({ system: 'WAANDA', layer: 'KIMMP Runtime → KEOS Kernel', mission: result })
   } catch (err: any) {
     res.status(500).json({ error: err?.message ?? 'Mission failed' })
   }

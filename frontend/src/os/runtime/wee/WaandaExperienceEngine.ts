@@ -28,9 +28,13 @@ class WaandaExperienceEngineClass {
     const waandaState = stateOverride ?? WaandaCognitiveMirror.getState()
     const adapter = this.adapters.get(contract.projectionScope)
 
+    // Law 1 runtime guard: adapters receive a frozen copy — mutation throws at runtime.
+    // Law 2 runtime guard: frozen shallow copy prevents adapters enriching the canonical state.
+    const frozenState = Object.freeze({ ...waandaState }) as Readonly<WaandaCognitiveState>
+
     let payload: Record<string, unknown> = {}
     if (adapter) {
-      payload = await adapter.adapt(waandaState, contract, policy)
+      payload = await adapter.adapt(frozenState, contract, policy)
     }
 
     for (const field of policy.redactedFields) {

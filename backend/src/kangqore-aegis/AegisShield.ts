@@ -1,5 +1,6 @@
 import { prisma } from '../lib/prisma';
 import { MissionRequest } from '../os/kernel/KeosKernel';
+import { getCorrelationId } from './AegisContext';
 
 export interface AegisEvaluationResult {
   action: 'ALLOW' | 'DENY' | 'REQUIRE_APPROVAL';
@@ -83,9 +84,9 @@ export class AegisShield {
    * Immutable ledger log for audit purposes.
    */
   static async writeToLedger(
-    missionId: string, 
-    actor: string, 
-    action: string, 
+    missionId: string,
+    actor: string,
+    action: string,
     status: string,
     details?: {
       capabilityId?: string;
@@ -94,7 +95,14 @@ export class AegisShield {
       executionDetails?: any;
     }
   ) {
-    return prisma.aegisLedgerEntry.create({
+    // Merge the HTTP-layer correlationId into executionDetails so all three surfaces
+    // (HTTP middleware, MissionDispatcher, KoreRuntimeManager) are linked in the ledger.
+    const correlationId = getCorrelationId();
+    const executionDetails = correlationId
+      ? { ...(details?.executionDetails ?? {}), correlationId }
+      : details?.executionDetails;
+
+    return (prisma as any).aegisLedgerEntry.create({
       data: {
         missionId,
         actor,
@@ -103,7 +111,7 @@ export class AegisShield {
         capabilityId: details?.capabilityId,
         policyEvaluated: details?.policyEvaluated,
         riskScore: details?.riskScore,
-        executionDetails: details?.executionDetails
+        executionDetails,
       }
     });
   }

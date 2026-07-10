@@ -7,7 +7,7 @@ import { CognitiveStateAdapter, ExperienceContract, ProjectionPolicy, WaandaCogn
 export const PersonalCognitiveAdapter: CognitiveStateAdapter = {
   projectionScope: 'PERSONAL',
 
-  async adapt(state: WaandaCognitiveState, _contract: ExperienceContract, _policy: ProjectionPolicy) {
+  async adapt(state: Readonly<WaandaCognitiveState>, _contract: ExperienceContract, _policy: ProjectionPolicy) {
     const totalSubsystems = Object.keys(state.subsystems).length
     const operational = Object.values(state.subsystems).filter(s => s === 'OPERATIONAL').length
 
@@ -22,7 +22,7 @@ export const PersonalCognitiveAdapter: CognitiveStateAdapter = {
         healthPercent: totalSubsystems > 0 ? Math.round((operational / totalSubsystems) * 100) : 0,
       },
       latestSynthesis: state.kimmSynthesis,
-      activeMissions: state.activeCapabilities.length,
+      activeMissions: [],
       lastSynced: state.lastSynced,
       confidence: state.confidence,
     }

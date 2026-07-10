@@ -1,4 +1,4 @@
-import { URGIPlatform } from './index';
+import { WaandaUnderstand } from './index';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -9,10 +9,7 @@ async function testUrgiFlow() {
 
   // This will trigger the entire pipeline (eROOT -> WAANDA -> eQORE -> WAANDA Memory)
   // Because it's an event-driven system, we'll wait a brief moment for the events to propagate
-  await URGIPlatform.processInteraction(visitorId, { 
-    page: '/pricing', 
-    intent: 'Enterprise Architect looking for automation' 
-  });
+  await WaandaUnderstand.processInteraction(visitorId, {});
 
   console.log('Event emitted. Waiting 2 seconds for event propagation...');
   await new Promise(resolve => setTimeout(resolve, 2000));

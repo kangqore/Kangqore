@@ -3,6 +3,19 @@
 
 export type ExecutionPriority = 'CRITICAL' | 'VISIBLE' | 'BACKGROUND' | 'IDLE';
 
+// WidgetPriority (from manifest) uses a different vocabulary than ExecutionPriority.
+// This map normalises manifest priorities into scheduler queue slots so that
+// widgets declaring HIGH/NORMAL/LOW don't crash with "undefined.push()".
+const PRIORITY_MAP: Record<string, ExecutionPriority> = {
+    CRITICAL:   'CRITICAL',
+    HIGH:       'VISIBLE',
+    NORMAL:     'VISIBLE',
+    VISIBLE:    'VISIBLE',
+    LOW:        'BACKGROUND',
+    BACKGROUND: 'BACKGROUND',
+    IDLE:       'IDLE',
+};
+
 interface ScheduledTask {
     id: string;
     priority: ExecutionPriority;
@@ -10,7 +23,7 @@ interface ScheduledTask {
 }
 
 /**
- * Manages execution priorities, lazy loading, predictive prefetch, 
+ * Manages execution priorities, lazy loading, predictive prefetch,
  * and concurrency limits across the Generation III Runtime.
  */
 export class RuntimeScheduler {
@@ -22,9 +35,10 @@ export class RuntimeScheduler {
     };
     private isProcessing: boolean = false;
 
-    public schedule(priority: ExecutionPriority, execute: () => Promise<void>): string {
+    public schedule(priority: string, execute: () => Promise<void>): string {
+        const resolved: ExecutionPriority = PRIORITY_MAP[priority] ?? 'VISIBLE';
         const id = crypto.randomUUID();
-        this.queues[priority].push({ id, priority, execute });
+        this.queues[resolved].push({ id, priority: resolved, execute });
         this.processQueues();
         return id;
     }

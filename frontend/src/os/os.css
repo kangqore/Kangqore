@@ -185,6 +185,20 @@
   animation: shimmer 1.4s ease-in-out infinite;
 }
 
+/* ─── OS Card — the base visual container used across the entire dashboard ── */
+/* This class MUST be defined here (not just as a CSS variable).                */
+/* Every panel in DashboardHome uses className="os-card p-5 rounded-2xl".       */
+.os-card {
+  background:  var(--os-card, #151C2F);
+  border:      1px solid var(--os-border, #2E2854);
+  box-shadow:  var(--os-shadow-card, var(--os-shadow-sm));
+  transition:  box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.os-card:hover {
+  border-color: var(--os-border-strong, #3d3870);
+}
+
 .os-glass-card {
   background: rgba(21, 28, 47, 0.72);
   backdrop-filter: blur(20px) saturate(180%);

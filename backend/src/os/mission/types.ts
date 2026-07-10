@@ -1,3 +1,9 @@
+// os/mission/types.ts — Mission type contracts.
+// LIVE: CapabilityDefinition is imported by os/edf/contracts/EnterpriseDomain.ts.
+// ARCHIVED: The simulation classes (MissionRuntime, MissionCompiler, RuntimeScheduler,
+//   CapabilityRuntime) have been moved to _archive/. MissionDispatcher is the live
+//   execution path. The remaining types below are retained for EDF compatibility.
+
 export type MissionState = 'CREATED' | 'PLANNED' | 'COMPILED' | 'READY' | 'RUNNING' | 'WAITING' | 'RETRYING' | 'PAUSED' | 'COMPLETED' | 'FAILED' | 'ROLLED_BACK' | 'ARCHIVED';
 export type NodeLifecycle = 'CREATED' | 'READY' | 'WAITING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED' | 'RETRYING' | 'SKIPPED' | 'CANCELLED' | 'ROLLED_BACK';
 export type NodeType = 'ACTION' | 'DECISION' | 'APPROVAL' | 'PARALLEL' | 'LOOP' | 'WAIT' | 'EVENT' | 'SUBMISSION' | 'CALL_AGENT' | 'CALL_CAPABILITY';
