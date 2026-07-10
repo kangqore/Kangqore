@@ -1,7 +1,8 @@
 import React from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import '../../os.css'
-import { Sidebar }           from './Sidebar'
+import { Rail }              from './Rail'
+import { WorkspaceSidebar } from './WorkspaceSidebar'
 import { Topbar }            from './Topbar'
 import { NotificationPanel } from './NotificationPanel'
 import { ModuleShell }       from '@components/ModuleShell'
@@ -65,7 +66,8 @@ export function OSLayout() {
       {!isWaandaGUI && <AmbientBackground />}
       {!isWaandaGUI && <Topbar />}
       <div className="flex flex-1 min-h-0 relative z-10 w-full overflow-hidden">
-        {!isWaandaGUI && <Sidebar />}
+        {!isWaandaGUI && !isNeuralNetwork && <Rail />}
+        {!isWaandaGUI && !isNeuralNetwork && <WorkspaceSidebar />}
 
         <div className={`flex flex-col flex-1 min-w-0 overflow-hidden m-0 z-10 os-main-content${isWaandaGUI ? ' !bg-black' : (isNeuralNetwork ? ' !bg-black !m-0 md:!my-0 md:!mr-0 md:!rounded-none' : ' md:my-2 md:mr-2 md:rounded-2xl')}`}>
           {isWaandaGUI ? (
