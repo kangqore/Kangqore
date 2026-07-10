@@ -128,7 +128,7 @@ export function InvestorsOverview() {
       )}
 
       {/* List view — round detail + investor list + touchpoints */}
-      {viewMode === 'list' && (
+      {viewMode === 'list' && (<>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Active fundraising round */}
         {activeRound && (
@@ -241,7 +241,7 @@ export function InvestorsOverview() {
             ))}
         </div>
       </div>
-      )}
+      </>)}
     </div>
   )
 }
