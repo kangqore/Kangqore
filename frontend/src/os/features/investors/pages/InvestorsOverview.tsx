@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components
 import { Avatar } from '@design-system/components/Avatar'
 import { Progress } from '@design-system/components/Progress'
 import { useInvestorsStore } from '../store'
+import { useUIStore } from '@store/ui'
 
 function SkeletonRow() {
   return (
@@ -28,6 +29,7 @@ const TYPE_LABEL: Record<string, string> = {
 
 export function InvestorsOverview() {
   const { investors, rounds, isLoading } = useInvestorsStore()
+  const viewMode = useUIStore(s => s.viewMode)
 
   if (isLoading) {
     return (
@@ -85,6 +87,48 @@ export function InvestorsOverview() {
         ))}
       </div>
 
+      {/* Board view — investor cards */}
+      {viewMode === 'board' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {investors.map(inv => {
+            const sc = STATUS_COLOR[inv.status] ?? '#9aa0b0'
+            return (
+              <div key={inv.id} className="os-card p-4 hover:shadow-[var(--os-shadow-card)] hover:-translate-y-0.5 transition-all duration-200">
+                <div className="flex items-start gap-3 mb-3">
+                  <Avatar name={inv.name} size="md" />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <p className="font-semibold text-[var(--os-text-1)] truncate">{inv.name}</p>
+                      {inv.leadInvestor && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: '#579bfc20', color: '#579bfc' }}>Lead</span>
+                      )}
+                    </div>
+                    <p className="text-xs text-[var(--os-text-2)] truncate">{inv.firm}</p>
+                    <p className="text-xs text-[var(--os-text-2)] capitalize">{TYPE_LABEL[inv.type]}</p>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap" style={{ background: `${sc}20`, color: sc }}>
+                    {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between pt-3 border-t border-[var(--os-border)] text-xs text-[var(--os-text-2)]">
+                  <span>
+                    {inv.committed > 0
+                      ? <strong className="text-[var(--os-text-1)]">₹{inv.committed}k committed</strong>
+                      : `₹${inv.checkSize.min}k–${inv.checkSize.max}k range`}
+                  </span>
+                  <span>Last: {inv.lastContact}</span>
+                </div>
+                {inv.nextFollowUp && (
+                  <p className="text-[11px] mt-1.5 font-medium" style={{ color: '#579bfc' }}>Follow up: {inv.nextFollowUp}</p>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* List view — round detail + investor list + touchpoints */}
+      {viewMode === 'list' && (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Active fundraising round */}
         {activeRound && (
@@ -197,6 +241,7 @@ export function InvestorsOverview() {
             ))}
         </div>
       </div>
+      )}
     </div>
   )
 }

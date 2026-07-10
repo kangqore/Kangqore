@@ -26,6 +26,7 @@ import { allNavItems } from '@lib/nav'
 import { api, isDemo } from '@lib/api'
 import { useCommandPalette } from './CommandPalette'
 import { QuickCreateModal, type CreateMode } from '../QuickCreateModal'
+import { ViewToggle } from '../ViewToggle'
 
 const ROLE_LABEL: Record<string, string> = {
   ADMIN: 'Admin', CLIENT: 'Client', PARTNER: 'Partner',
@@ -395,6 +396,9 @@ export function Topbar({ config }: { config?: any }) {
 
       {/* RIGHT AREA: Utility cluster, Profile, New (+) action */}
       <div className="flex items-center gap-4">
+        {/* View toggle */}
+        <ViewToggle />
+
         {/* Utility Group */}
         <div className="flex items-center gap-1">
           <PagePresenceBubbles viewers={pageViewers} />

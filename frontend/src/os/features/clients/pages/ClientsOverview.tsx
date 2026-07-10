@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, AlertTriangle, Users, DollarSign, Star, CheckSquare, Trash2 } from 'lucide-react'
+import { Search, AlertTriangle, Users, DollarSign, Star, CheckSquare, Trash2, ArrowUpRight } from 'lucide-react'
+import { useUIStore } from '@store/ui'
 import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card } from '@design-system/components/Card'
@@ -50,6 +51,7 @@ const fmt = (n: number) => `₹${(n / 1000).toFixed(0)}k`
 export function ClientsOverview() {
   const { clients, setSelected, updateClient, bulkUpdateClients, bulkDeleteClients } = useClientsStore()
   const navigate = useNavigate()
+  const viewMode = useUIStore(s => s.viewMode)
 
   function patchClient(id: string, patch: Partial<Parameters<typeof updateClient>[1]>) {
     updateClient(id, patch)
@@ -194,7 +196,93 @@ export function ClientsOverview() {
         )}
       </div>
 
-      {/* Client cards */}
+      {/* List view — compact table */}
+      {viewMode === 'list' && (
+        <div className="os-card overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--os-border)] bg-[var(--os-surface-0)]">
+                  {selecting && (
+                    <th className="px-4 py-3 w-8">
+                      <input type="checkbox" className="accent-[#579bfc]"
+                        checked={visible.length > 0 && visible.every(c => selectedIds.has(c.id))}
+                        onChange={toggleAll} />
+                    </th>
+                  )}
+                  {['Client', 'Tier', 'Health', 'Status', 'ARR', 'NPS', 'Contacts', ''].map(h => (
+                    <th key={h} className="text-left px-4 py-3 text-[10px] uppercase tracking-widest font-semibold text-[var(--os-text-2)]">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--os-border)]">
+                {visible.map(client => {
+                  const healthColor = HEALTH_COLOR[client.health] ?? 'var(--os-text-2)'
+                  return (
+                    <tr
+                      key={client.id}
+                      onClick={() => openClient(client.id)}
+                      className={`hover:bg-[var(--os-surface-0)] transition-colors cursor-pointer ${selecting && selectedIds.has(client.id) ? 'bg-[#579bfc]/5' : ''}`}
+                    >
+                      {selecting && (
+                        <td className="px-4 py-3" onClick={e => { e.stopPropagation(); toggleSelect(client.id) }}>
+                          <input type="checkbox" checked={selectedIds.has(client.id)} onChange={() => toggleSelect(client.id)} className="accent-[#579bfc]" />
+                        </td>
+                      )}
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-white font-bold text-xs"
+                            style={{ background: TIER_BG[client.tier] }}>
+                            {client.logo}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-[var(--os-text-1)] truncate">{client.name}</p>
+                            <p className="text-xs text-[var(--os-text-2)] truncate">{client.industry} · {client.country}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full capitalize text-white" style={{ background: TIER_BG[client.tier] }}>{client.tier}</span>
+                      </td>
+                      <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
+                        <InlineSelect value={client.health} options={HEALTH_OPTIONS} onChange={v => patchClient(client.id, { health: v as ClientHealth })} dot />
+                      </td>
+                      <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
+                        <InlineSelect value={client.status} options={STATUS_OPTIONS} onChange={v => patchClient(client.id, { status: v as ClientStatus })} />
+                      </td>
+                      <td className="px-4 py-3 font-bold text-[var(--os-text-1)] whitespace-nowrap">{fmt(client.arr)}</td>
+                      <td className="px-4 py-3">
+                        <span className="font-semibold text-sm" style={{ color: client.satisfactionScore >= 75 ? '#00c875' : client.satisfactionScore >= 55 ? '#fdab3d' : '#e2445c' }}>
+                          {client.satisfactionScore}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex -space-x-1.5">
+                          {client.contacts.slice(0, 3).map(ct => (
+                            <div key={ct.id} className="ring-2 ring-[var(--os-surface-1)] rounded-full">
+                              <Avatar name={ct.name} size="xs" />
+                            </div>
+                          ))}
+                          {client.contacts.length > 3 && <span className="text-xs text-[var(--os-text-2)] ml-2">+{client.contacts.length - 3}</span>}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <ArrowUpRight className="w-3.5 h-3.5 text-[var(--os-text-2)] opacity-0 group-hover:opacity-100" />
+                      </td>
+                    </tr>
+                  )
+                })}
+                {visible.length === 0 && (
+                  <tr><td colSpan={9} className="px-4 py-16 text-center text-[var(--os-text-2)] text-sm">No clients match your filters.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Board view — client cards */}
+      {viewMode === 'board' && (
       <StaggerList className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {visible.map(client => {
           const healthColor = HEALTH_COLOR[client.health] ?? 'var(--os-text-2)'
@@ -293,6 +381,7 @@ export function ClientsOverview() {
           )
         })}
       </StaggerList>
+      )}
 
       <BulkActionBar
         count={selectedIds.size}

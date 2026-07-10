@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Star, Briefcase, DollarSign, AlertTriangle, Users } from 'lucide-react'
+import { Search, Star, Briefcase } from 'lucide-react'
 import { Badge } from '@design-system/components/Badge'
 import { Input } from '@design-system/components/Input'
 import { usePartnersStore } from '../store'
+import { useUIStore } from '@store/ui'
 import type { PartnerTier } from '../types'
 
 function SkeletonCard() {
@@ -50,6 +51,7 @@ function Stars({ rating }: { rating: number }) {
 export function PartnersOverview() {
   const { partners, isLoading, setSelected } = usePartnersStore()
   const navigate = useNavigate()
+  const viewMode = useUIStore(s => s.viewMode)
   const [search, setSearch] = useState('')
   const [tierFilter, setTier] = useState<PartnerTier | 'all'>('all')
 
@@ -127,7 +129,67 @@ export function PartnersOverview() {
         })}
       </div>
 
-      {/* Partner cards */}
+      {/* List view — compact table */}
+      {viewMode === 'list' && (
+        <div className="os-card overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--os-border)] bg-[var(--os-surface-0)]">
+                  {['Partner', 'Tier', 'Status', 'Rating', 'Tasks', 'Earned', 'Pending', 'Rate'].map(h => (
+                    <th key={h} className="text-left px-4 py-3 text-[10px] uppercase tracking-widest font-semibold text-[var(--os-text-2)]">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--os-border)]">
+                {visible.length === 0 && (
+                  <tr><td colSpan={8} className="px-4 py-16 text-center text-[var(--os-text-2)] text-sm">No partners found.</td></tr>
+                )}
+                {visible.map(partner => {
+                  const tb = TIER_BADGE[partner.tier]
+                  const statusColor = STATUS_DOT[partner.status] ?? '#9aa0b0'
+                  return (
+                    <tr key={partner.id} onClick={() => open(partner.id)} className="hover:bg-[var(--os-surface-0)] transition-colors cursor-pointer">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-xs text-white" style={{ background: '#579bfc' }}>
+                            {partner.logo}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-[var(--os-text-1)] truncate">{partner.name}</p>
+                            <p className="text-xs text-[var(--os-text-2)] capitalize">{partner.type} · {partner.country}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: tb.bg, color: tb.text }}>{tb.label}</span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1.5 text-xs font-semibold capitalize" style={{ color: statusColor }}>
+                          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: statusColor }} />
+                          {partner.status}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3"><Stars rating={partner.rating} /></td>
+                      <td className="px-4 py-3 font-semibold text-[var(--os-text-1)]">{partner.activeTasks}</td>
+                      <td className="px-4 py-3 font-semibold text-[var(--os-text-1)] whitespace-nowrap">₹{(partner.totalEarned / 1000).toFixed(0)}k</td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        {partner.pendingPayment > 0
+                          ? <span className="font-semibold" style={{ color: '#fdab3d' }}>₹{(partner.pendingPayment / 1000).toFixed(0)}k</span>
+                          : <span className="text-[var(--os-text-2)]">—</span>}
+                      </td>
+                      <td className="px-4 py-3 text-[var(--os-text-2)] whitespace-nowrap">₹{partner.hourlyRate}/hr</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Board view — partner cards */}
+      {viewMode === 'board' && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {visible.length === 0 && (
           <div className="col-span-2 py-16 text-center">
@@ -194,6 +256,7 @@ export function PartnersOverview() {
           )
         })}
       </div>
+      )}
     </div>
   )
 }

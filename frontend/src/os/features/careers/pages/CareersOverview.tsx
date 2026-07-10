@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { GraduationCap, Users, Clock, CheckCircle2, Plus } from 'lucide-react'
+import { GraduationCap, Users, Clock, CheckCircle2, Plus, MapPin } from 'lucide-react'
+import { useUIStore } from '@store/ui'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { StatCard } from '@design-system/components/StatCard'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
@@ -36,6 +37,7 @@ const EMPTY_FORM = { title: '', department: 'engineering', type: 'full-time', lo
 export function CareersOverview() {
   const { roles, candidates, setSelectedRole } = useCareersStore()
   const queryClient = useQueryClient()
+  const viewMode = useUIStore(s => s.viewMode)
   const [showNew, setShowNew] = useState(false)
   const [form, setForm] = useState(EMPTY_FORM)
   const set = (k: keyof typeof EMPTY_FORM, v: string) => setForm(f => ({ ...f, [k]: v }))
@@ -110,6 +112,55 @@ export function CareersOverview() {
         <Button variant="primary" size="sm" leftIcon={<Plus className="w-3.5 h-3.5" />} onClick={() => setShowNew(true)}>Post a role</Button>
       </div>
 
+      {/* List view — roles table */}
+      {viewMode === 'list' && (
+        <div className="os-card overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--os-border)] bg-[var(--os-surface-0)]">
+                  {['Role', 'Department', 'Type', 'Location', 'Applications', 'Pipeline', 'Status'].map(h => (
+                    <th key={h} className="text-left px-4 py-3 text-[10px] uppercase tracking-widest font-semibold text-[var(--os-text-2)]">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--os-border)]">
+                {roles.map(role => (
+                  <tr key={role.id} onClick={() => setSelectedRole(role.id)} className="hover:bg-[var(--os-surface-0)] transition-colors cursor-pointer">
+                    <td className="px-4 py-3">
+                      <p className="font-semibold text-[var(--os-text-1)]">{role.title}</p>
+                      <p className="text-xs text-[var(--os-text-2)] mt-0.5">HM: {role.hiringManager}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${DEPT_COLOR[role.department]}`}>{role.department}</span>
+                    </td>
+                    <td className="px-4 py-3 text-xs text-[var(--os-text-2)] capitalize">{role.type}</td>
+                    <td className="px-4 py-3 text-xs text-[var(--os-text-2)]">
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-3 h-3 flex-shrink-0" />
+                        {role.location}{role.remote ? ' · Remote' : ''}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 font-semibold text-[var(--os-text-1)]">{role.applications}</td>
+                    <td className="px-4 py-3 font-semibold text-[var(--os-text-1)]">{pipelineByRole[role.id] ?? role.inPipeline}</td>
+                    <td className="px-4 py-3">
+                      <Badge variant={STATUS_BADGE[role.status]} size="sm" dot>
+                        {role.status.charAt(0).toUpperCase() + role.status.slice(1)}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+                {roles.length === 0 && (
+                  <tr><td colSpan={7} className="px-4 py-16 text-center text-[var(--os-text-2)] text-sm">No roles posted yet.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Board view — role cards + candidates */}
+      {viewMode === 'board' && (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Role cards */}
         <div className="lg:col-span-2 space-y-4">
@@ -191,6 +242,7 @@ export function CareersOverview() {
           </CardBody>
         </Card>
       </div>
+      )}
     </div>
   )
 }

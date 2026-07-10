@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate, Link } from 'react-router-dom'
 import { Globe, ChatCircle, ArrowUpRight, Users, Eye, Target, CaretLeft, CaretRight, Funnel, MagnifyingGlass } from '@phosphor-icons/react'
 import { api } from '@lib/api'
+import { useUIStore } from '@store/ui'
 import { VisitorFunnel } from './VisitorFunnel'
 
 const EVENT_COUNT_COLOR = (n: number) => n > 20 ? 'text-green-400' : n > 5 ? 'text-blue-400' : 'text-[var(--os-text-2)]'
@@ -28,6 +29,7 @@ function HeatDot({ sessions }: { sessions: number }) {
 
 export function VisitorsOverview() {
   const navigate = useNavigate()
+  const viewMode = useUIStore(s => s.viewMode)
   const [page, setPage]     = useState(1)
   const [filter, setFilter] = useState<'all' | 'hot' | 'stitched' | 'fresh'>('all')
   const [search, setSearch] = useState('')
@@ -145,7 +147,61 @@ export function VisitorsOverview() {
         )}
       </div>
 
-      {/* Table */}
+      {/* Board view — card grid */}
+      {viewMode === 'board' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {isLoading && Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="os-card p-4 animate-pulse space-y-3">
+              <div className="h-4 w-2/3 rounded bg-[var(--os-surface-0)]" />
+              <div className="h-3 w-1/2 rounded bg-[var(--os-surface-0)]" />
+              <div className="h-3 w-full rounded bg-[var(--os-surface-0)]" />
+            </div>
+          ))}
+          {!isLoading && filtered.length === 0 && (
+            <p className="col-span-3 text-center py-12 text-[var(--os-text-2)] text-sm">No visitors match this filter.</p>
+          )}
+          {!isLoading && filtered.map((v: any) => (
+            <div
+              key={v.id}
+              onClick={() => navigate(`/kangqore-view/admin/visitors/${v.id}`)}
+              className="os-card p-4 hover:shadow-[var(--os-shadow-card)] hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <HeatDot sessions={v.sessionCount} />
+                  <span className="font-bold text-[var(--os-text-1)] text-sm">{v.sessionCount} sessions</span>
+                </div>
+                {v.stitchedToId
+                  ? <span className="text-[10px] bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full font-semibold">Identified</span>
+                  : <span className="text-[10px] bg-slate-500/10 text-[var(--os-text-2)] px-2 py-0.5 rounded-full">Anonymous</span>
+                }
+              </div>
+              {v.country && (
+                <p className="text-xs text-[var(--os-text-2)] mb-2">
+                  {countryFlag(v.country)} {v.city ? `${v.city}, ` : ''}{v.country}
+                </p>
+              )}
+              {v.topPages?.[0] && (
+                <p className="text-xs text-[var(--os-text-1)] truncate mb-2 font-medium">{v.topPages[0]}</p>
+              )}
+              {(v.eqoreQueries?.length ?? 0) > 0 && (
+                <p className="text-[11px] text-purple-400 truncate mb-2">"{v.eqoreQueries[0]}"</p>
+              )}
+              <div className="flex items-center justify-between mt-3 pt-3 border-t border-[var(--os-border)]">
+                <div className="flex flex-wrap gap-1">
+                  {(v.intentTags ?? []).slice(0, 2).map((t: string) => (
+                    <span key={t} className="text-[9px] bg-purple-500/10 text-purple-400 px-1.5 py-0.5 rounded-full">{t}</span>
+                  ))}
+                </div>
+                <span className="text-[11px] text-[var(--os-text-2)]">{timeAgo(v.lastSeen)}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* List view — table */}
+      {viewMode === 'list' && (
       <div className="os-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
@@ -253,6 +309,7 @@ export function VisitorsOverview() {
           </div>
         )}
       </div>
+      )}
     </div>
   )
 }

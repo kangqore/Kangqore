@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useUIStore } from '@store/ui'
 import { StaggerTableBody, StaggerRow } from '@components/animations/Stagger'
 import { EmptyState } from '@design-system/components/EmptyState'
 import {
@@ -266,6 +267,7 @@ function ConsultationDrawer({
 export function ConsultationsQueue() {
   const { consultations, stats, updateConsultation } = useConsultationsStore()
   const queryClient = useQueryClient()
+  const viewMode = useUIStore(s => s.viewMode)
 
   const [statusFilter, setStatusFilter] = useState<ConsultationStatus | 'ALL'>('ALL')
   const [search,       setSearch]       = useState('')
@@ -366,7 +368,52 @@ export function ConsultationsQueue() {
         <span className="ml-auto text-sm text-[var(--os-text-2)]">{visible.length} requests</span>
       </div>
 
-      {/* Table */}
+      {/* Board view — card grid */}
+      {viewMode === 'board' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {visible.length === 0 && (
+            <p className="col-span-3 text-center py-12 text-[var(--os-text-2)] text-sm">No consultations match your filters.</p>
+          )}
+          {visible.map(c => {
+            const overdue = isOverdue(c)
+            const opt = STATUS_OPTIONS.find(o => o.value === c.status)
+            return (
+              <div
+                key={c.id}
+                onClick={() => setOpenId(c.id)}
+                className={`os-card p-4 cursor-pointer hover:shadow-[var(--os-shadow-card)] hover:-translate-y-0.5 transition-all duration-200 ${overdue ? 'border-amber-500/30' : ''}`}
+              >
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#579bfc] to-[#0ea5e9] flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-[11px] font-bold">{c.name.charAt(0)}</span>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-[var(--os-text-1)] truncate text-sm">{c.name}</p>
+                      <p className="text-[11px] text-[var(--os-text-2)] truncate">{c.email}</p>
+                    </div>
+                  </div>
+                  <div onClick={e => e.stopPropagation()}>
+                    <InlineSelect value={c.status} options={STATUS_OPTIONS} onChange={status => onPatch(c.id, { status })} dot />
+                  </div>
+                </div>
+                {c.company && <p className="text-xs text-[var(--os-text-2)] mb-1 truncate">{c.company}</p>}
+                {(c.service || c.topic) && (
+                  <p className="text-xs font-medium text-[var(--os-text-1)] truncate mb-3">{c.service ?? c.topic}</p>
+                )}
+                <div className="flex items-center justify-between mt-2 pt-3 border-t border-[var(--os-border)] text-[11px] text-[var(--os-text-2)]">
+                  <span>Received {timeAgo(c.createdAt)}</span>
+                  {c.preferredDate && <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{fmtDate(c.preferredDate)}</span>}
+                  {overdue && <AlertCircle className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* List view — table */}
+      {viewMode === 'list' && (
       <Card padding="none">
         <table className="w-full text-sm">
           <thead>
@@ -433,6 +480,7 @@ export function ConsultationsQueue() {
           />
         )}
       </Card>
+      )}
 
       {/* Detail drawer */}
       {openConsultation && (

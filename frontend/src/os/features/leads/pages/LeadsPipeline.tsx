@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
+import { useUIStore } from '@store/ui'
 import {
   DndContext, DragOverlay, closestCorners,
   PointerSensor, useSensor, useSensors,
@@ -9,7 +10,7 @@ import {
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { TrendingUp, Search, LayoutList, Kanban, Trash2 } from 'lucide-react'
+import { TrendingUp, Search, Trash2 } from 'lucide-react'
 import { Badge } from '@design-system/components/Badge'
 import { StatCard } from '@design-system/components/StatCard'
 import { Input } from '@design-system/components/Input'
@@ -294,8 +295,9 @@ export function LeadsPipeline() {
   const navigate = useNavigate()
   const [activeId, setActiveId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
-  const [viewMode, setViewMode] = useState<'kanban' | 'table'>('kanban')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const globalViewMode = useUIStore(s => s.viewMode)
+  const viewMode = globalViewMode === 'list' ? 'table' : 'kanban'
 
   const { data: rawLeads } = useQuery({
     queryKey: ['leads-pipeline'],
@@ -402,25 +404,7 @@ export function LeadsPipeline() {
           <h2 className="text-xl font-bold text-white">Lead Pipeline</h2>
           <p className="text-sm text-[var(--os-text-2)] mt-0.5">{leads.length} leads · drag to move stages</p>
         </div>
-        <div className="flex items-center gap-2">
-          <Input placeholder="Search leads…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-52" value={search} onChange={e => setSearch(e.target.value)} />
-          <div className="flex items-center gap-1 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-[var(--os-border)] border-t-white/20 rounded-lg p-1">
-            <button
-              onClick={() => setViewMode('kanban')}
-              className={cn('p-1.5 rounded-md transition-colors', viewMode === 'kanban' ? 'bg-os-blue text-white' : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]')}
-              title="Kanban view"
-            >
-              <Kanban className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => setViewMode('table')}
-              className={cn('p-1.5 rounded-md transition-colors', viewMode === 'table' ? 'bg-os-blue text-white' : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]')}
-              title="Table view"
-            >
-              <LayoutList className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
+        <Input placeholder="Search leads…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-52" value={search} onChange={e => setSearch(e.target.value)} />
       </div>
 
       {/* KPIs */}
