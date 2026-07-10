@@ -139,7 +139,6 @@ const AegisModule        = React.lazy(() => import('./os/features/aegis').then(m
 const OntologyModule     = React.lazy(() => import('./os/features/ontology').then(m => ({ default: m.OntologyModule })));
 const NeuralNetworkModule = React.lazy(() => import('./os/features/neural-network').then(m => ({ default: m.NeuralNetworkModule })));
 const UrgiStudioModule    = React.lazy(() => import('./os/features/urgi-studio/RelationshipStudio'));
-const OntologyStudioModule = React.lazy(() => import('./os/features/ontology-studio'));
 const BidsModule         = React.lazy(() => import('./os/features/bids').then(m => ({ default: m.BidsModule })));
 const OpsCentreModule    = React.lazy(() => import('./os/features/ops-centre').then(m => ({ default: m.OpsCentreModule })));
 const ClientPortal       = React.lazy(() => import('./os/portals/client').then(m => ({ default: m.ClientPortal })));
@@ -280,7 +279,6 @@ function AppContent() {
             <Route path="ops-centre/*"     element={<OpsCentreModule />}        />
             <Route path="aegis/*"          element={<AegisModule />}            />
             <Route path="ontology/*"       element={<OntologyModule />}         />
-            <Route path="ontology-studio/*" element={<OntologyStudioModule />}  />
             <Route path="neural-network/*" element={<NeuralNetworkModule />}    />
             <Route path="kangqore-urgi/*"    element={<UrgiStudioModule />}       />
             <Route path="settings/*"       element={<SettingsModule />}      />

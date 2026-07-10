@@ -1,18 +1,20 @@
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { Network, Boxes, GitBranch, Shield, GitMerge } from 'lucide-react'
+import { Network, Boxes, GitBranch, Shield, GitMerge, Cpu } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { OntologyExplorer }       from './pages/OntologyExplorer'
 import { OntologyObjects }        from './pages/OntologyObjects'
 import { LineageViewer }          from './pages/LineageViewer'
 import { MarkingsManager }        from './pages/MarkingsManager'
 import { OntologyVersioningPage } from './pages/OntologyVersioningPage'
+import { KoreTypesPage }          from './pages/KoreTypesPage'
 
 const TABS = [
-  { path: 'explorer',   label: 'Explorer',   icon: Network    },
-  { path: 'objects',    label: 'Objects',    icon: Boxes      },
-  { path: 'lineage',    label: 'Lineage',    icon: GitBranch  },
-  { path: 'markings',   label: 'Markings',   icon: Shield     },
-  { path: 'versioning', label: 'Versioning', icon: GitMerge   },
+  { path: 'explorer',   label: 'Explorer',    icon: Network    },
+  { path: 'objects',    label: 'Objects',     icon: Boxes      },
+  { path: 'lineage',    label: 'Lineage',     icon: GitBranch  },
+  { path: 'markings',   label: 'Markings',    icon: Shield     },
+  { path: 'versioning', label: 'Versioning',  icon: GitMerge   },
+  { path: 'kore-types', label: 'KORE Types',  icon: Cpu        },
 ]
 
 export function OntologyModule() {
@@ -48,6 +50,7 @@ export function OntologyModule() {
         <Route path="lineage"      element={<LineageViewer />}                 />
         <Route path="markings"     element={<MarkingsManager />}               />
         <Route path="versioning"   element={<OntologyVersioningPage />}        />
+        <Route path="kore-types"   element={<KoreTypesPage />}                 />
         <Route path="*"            element={<Navigate to="explorer" replace />} />
       </Routes>
     </div>
