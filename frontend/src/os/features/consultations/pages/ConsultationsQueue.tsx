@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useUIStore } from '@store/ui'
+import { usePageViews } from '@hooks/usePageViews'
 import { StaggerTableBody, StaggerRow } from '@components/animations/Stagger'
 import { EmptyState } from '@design-system/components/EmptyState'
 import {
@@ -267,6 +268,7 @@ function ConsultationDrawer({
 export function ConsultationsQueue() {
   const { consultations, stats, updateConsultation } = useConsultationsStore()
   const queryClient = useQueryClient()
+  usePageViews(['list', 'board'])
   const viewMode = useUIStore(s => s.viewMode)
 
   const [statusFilter, setStatusFilter] = useState<ConsultationStatus | 'ALL'>('ALL')

@@ -262,11 +262,13 @@ export function useConcierge(options = {}) {
         });
 
         if (!res.ok || !res.body) {
-          throw new Error(
+          const apiError = new Error(
             res.status === 429
               ? 'You have sent too many messages. Please wait a moment.'
               : `Concierge unavailable (${res.status})`
           );
+          apiError.status = res.status;
+          throw apiError;
         }
 
         const reader = res.body.getReader();
@@ -361,14 +363,16 @@ export function useConcierge(options = {}) {
                 )
               );
             } else if (event === 'error') {
-              throw new Error(data.message || 'Concierge error');
+              // Don't throw — let the stream continue so the backend's handoff
+              // delta/done events render the actual fallback message to the user.
             }
           }
         }
       } catch (err) {
         if (err.name === 'AbortError') return;
         const msg = err.message || 'Concierge unavailable';
-        setError(msg);
+        // 400 = backend config/validation issue; fallback message below handles it — no banner
+        if (err.status !== 400) setError(msg);
         setMessages((prev) =>
           prev.map((m) =>
             m.id === assistantId

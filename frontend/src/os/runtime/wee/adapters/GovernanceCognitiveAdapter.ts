@@ -12,7 +12,14 @@ export const GovernanceCognitiveAdapter: CognitiveStateAdapter = {
       id: d.id,
       name: d.name,
       ready: d.ready,
-      breachedKpis: (d.kpis ?? []).filter(k => k.current > k.target),
+      breachedKpis: (d.kpis ?? []).filter(k => k.current < k.target),
+    }))
+
+    const domainIntelligence = state.domains.map(d => ({
+      id: d.id,
+      name: d.name,
+      ready: d.ready,
+      kpis: d.kpis ?? [],
     }))
 
     return {
@@ -21,7 +28,9 @@ export const GovernanceCognitiveAdapter: CognitiveStateAdapter = {
       openDecisionCount: state.pendingDecisions.length,
       complianceBriefings: state.systemBriefings.slice(0, 3),
       domainRiskExposure,
+      domainIntelligence,
       totalBreachedKpis: domainRiskExposure.reduce((sum, d) => sum + d.breachedKpis.length, 0),
+      evidenceLedger: state.relationshipIntelligence.evidenceLedger,
       platformConfidence: state.confidence,
     }
   },

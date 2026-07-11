@@ -2,7 +2,7 @@ import React from 'react';
 import { withWidgetContext, WidgetProps } from '../runtime/rendering/BaseWidget';
 const Core: React.FC<WidgetProps> = ({ viewModel, onAction }) => {
     const all: any[] = Array.isArray(viewModel.pendingExecutionApprovals) ? viewModel.pendingExecutionApprovals : [];
-    const items = all.filter((a:any)=>(a.actionType??'').toLowerCase().includes('procur')||true).slice(0,4);
+    const items = all.filter((a:any)=>(a.actionType??'').toLowerCase().includes('procur')).slice(0,4);
     return (
         <div>
             <h3>Procurement</h3>

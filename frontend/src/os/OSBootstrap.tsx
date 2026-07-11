@@ -19,13 +19,24 @@ import { SyncRuntime } from './runtime/workspace/SyncRuntime';
 import { CompositionEngine } from './runtime/workspace/CompositionEngine';
 import { LifecycleEngine } from './runtime/workspace/LifecycleEngine';
 import { DependencyGraph } from './runtime/workspace/DependencyGraph';
+import { WaandaAIProvider } from './runtime/workspace/WaandaAIProvider';
 import { useAuthStore, UserRole } from './store/auth';
 import './os.css';
 
 const ROLE_POLICIES: Record<UserRole, string[]> = {
-  ADMIN:      ['role.admin', 'role.executive', 'role.sales', 'cap.ai.plan', 'cap.ai.forecast', 'cap.ai.simulate'],
+  ADMIN: [
+    'role.admin', 'role.executive', 'role.sales',
+    'role.ops', 'role.analyst', 'role.platform',
+    'role.member', 'role.governance', 'role.ecosystem',
+    'cap.ai.plan', 'cap.ai.forecast', 'cap.ai.simulate',
+    'cap.ai.analyze',        // Intelligence workspace WAANDA
+    'cap.ops.execute',       // Operations workspace WAANDA
+    'cap.collab.facilitate', // Collaboration workspace WAANDA
+    'cap.platform.admin',    // Platform workspace WAANDA
+    'cap.ecosystem.manage',  // Ecosystem workspace WAANDA
+  ],
   EXECUTIVE:  ['role.executive', 'role.sales', 'cap.ai.plan', 'cap.ai.forecast'],
-  TEAM:       ['role.team', 'cap.ai.plan'],
+  TEAM:       ['role.team', 'role.member', 'cap.ai.plan'],
   ANALYST:    ['role.analyst', 'cap.ai.forecast'],
   CLIENT:     ['role.client'],
   PARTNER:    ['role.partner'],
@@ -56,7 +67,19 @@ export const OSBootstrap: React.FC = () => {
         policyAdapter.loadPolicies(policies);
         
         container.register('ExperienceAPI', ExperienceAPI.getInstance());
-        container.register('CapabilityBroker', new CapabilityBroker());
+
+        // Register CapabilityBroker and wire all WAANDA AI providers at boot time.
+        // One provider per capability ID — all route to POST /api/admin/waanda/query.
+        const capabilityBroker = new CapabilityBroker();
+        const AI_CAPABILITIES = [
+          'cap.ai.plan', 'cap.ai.forecast', 'cap.ai.simulate',
+          'cap.ai.analyze', 'ecf.waanda', 'epf.tasks', 'edf.search',
+        ];
+        for (const capId of AI_CAPABILITIES) {
+          capabilityBroker.registerProvider(capId, new WaandaAIProvider(capId));
+        }
+        container.register('CapabilityBroker', capabilityBroker);
+
         container.register('PolicyAdapter', policyAdapter);
         container.register('RuntimeHealth', health);
         

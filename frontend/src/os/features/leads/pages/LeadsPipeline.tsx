@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { useUIStore } from '@store/ui'
+import { usePageViews } from '@hooks/usePageViews'
 import {
   DndContext, DragOverlay, closestCorners,
   PointerSensor, useSensor, useSensors,
@@ -296,7 +297,9 @@ export function LeadsPipeline() {
   const [activeId, setActiveId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  usePageViews(['list', 'board', 'kanban'])
   const globalViewMode = useUIStore(s => s.viewMode)
+  // list → table, board → card grid (kanban pipe), kanban → kanban columns
   const viewMode = globalViewMode === 'list' ? 'table' : 'kanban'
 
   const { data: rawLeads } = useQuery({

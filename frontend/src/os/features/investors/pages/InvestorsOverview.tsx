@@ -4,6 +4,7 @@ import { Avatar } from '@design-system/components/Avatar'
 import { Progress } from '@design-system/components/Progress'
 import { useInvestorsStore } from '../store'
 import { useUIStore } from '@store/ui'
+import { usePageViews } from '@hooks/usePageViews'
 
 function SkeletonRow() {
   return (
@@ -29,6 +30,7 @@ const TYPE_LABEL: Record<string, string> = {
 
 export function InvestorsOverview() {
   const { investors, rounds, isLoading } = useInvestorsStore()
+  usePageViews(['list', 'board'])
   const viewMode = useUIStore(s => s.viewMode)
 
   if (isLoading) {

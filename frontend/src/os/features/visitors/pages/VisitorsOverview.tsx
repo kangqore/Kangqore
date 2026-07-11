@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { Globe, ChatCircle, ArrowUpRight, Users, Eye, Target, CaretLeft, CaretRight, Funnel, MagnifyingGlass } from '@phosphor-icons/react'
 import { api } from '@lib/api'
 import { useUIStore } from '@store/ui'
+import { usePageViews } from '@hooks/usePageViews'
 import { VisitorFunnel } from './VisitorFunnel'
 
 const EVENT_COUNT_COLOR = (n: number) => n > 20 ? 'text-green-400' : n > 5 ? 'text-blue-400' : 'text-[var(--os-text-2)]'
@@ -29,6 +30,7 @@ function HeatDot({ sessions }: { sessions: number }) {
 
 export function VisitorsOverview() {
   const navigate = useNavigate()
+  usePageViews(['list', 'board'])
   const viewMode = useUIStore(s => s.viewMode)
   const [page, setPage]     = useState(1)
   const [filter, setFilter] = useState<'all' | 'hot' | 'stitched' | 'fresh'>('all')

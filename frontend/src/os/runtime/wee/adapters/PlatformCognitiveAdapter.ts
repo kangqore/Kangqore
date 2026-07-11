@@ -11,6 +11,14 @@ export const PlatformCognitiveAdapter: CognitiveStateAdapter = {
     const nominalPhases = state.phases.filter(p => p.status === 'PASS').length
     const domainCapabilities = state.domains.reduce((sum, d) => sum + (d.capabilities ?? 0), 0)
 
+    const domainRiskExposure = state.domains.map(d => ({
+      id: d.id,
+      name: d.name,
+      ready: d.ready,
+      breachedKpis: (d.kpis ?? []).filter(k => k.current < k.target),
+    }))
+    const totalBreachedKpis = domainRiskExposure.reduce((sum, d) => sum + d.breachedKpis.length, 0)
+
     return {
       waandaPhase: state.phase,
       bootStatus: state.bootStatus,
@@ -25,7 +33,10 @@ export const PlatformCognitiveAdapter: CognitiveStateAdapter = {
           : 0,
       },
       registeredDomains: state.domains.length,
+      domains: state.domains,
       domainCapabilities,
+      domainRiskExposure,
+      totalBreachedKpis,
       confidence: state.confidence,
     }
   },

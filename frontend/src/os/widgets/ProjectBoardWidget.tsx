@@ -1,7 +1,7 @@
 import React from 'react';
 import { withWidgetContext, WidgetProps } from '../runtime/rendering/BaseWidget';
 const Core: React.FC<WidgetProps> = ({ viewModel }) => {
-    const domains: any[] = Array.isArray(viewModel.ecosystemDomains) ? viewModel.ecosystemDomains : [];
+    const domains: any[] = Array.isArray(viewModel.operationalDomains) ? viewModel.operationalDomains : [];
     return (
         <div>
             <h3>Project Board</h3>

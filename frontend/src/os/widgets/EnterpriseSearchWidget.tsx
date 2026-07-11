@@ -2,7 +2,7 @@ import React from 'react';
 import { withWidgetContext, WidgetProps } from '../runtime/rendering/BaseWidget';
 const Core: React.FC<WidgetProps> = ({ viewModel }) => {
     const evidence: any[] = Array.isArray(viewModel.evidenceLedger) ? viewModel.evidenceLedger : [];
-    const domains: any[] = Array.isArray(viewModel.ecosystemDomains) ? viewModel.ecosystemDomains : [];
+    const domains: any[] = Array.isArray(viewModel.domainIntelligence) ? viewModel.domainIntelligence : [];
     return (
         <div>
             <h3>Enterprise Search</h3>

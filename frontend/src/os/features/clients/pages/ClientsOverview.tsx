@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, AlertTriangle, Users, DollarSign, Star, CheckSquare, Trash2, ArrowUpRight } from 'lucide-react'
 import { useUIStore } from '@store/ui'
+import { usePageViews } from '@hooks/usePageViews'
 import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { Card } from '@design-system/components/Card'
@@ -51,6 +52,7 @@ const fmt = (n: number) => `₹${(n / 1000).toFixed(0)}k`
 export function ClientsOverview() {
   const { clients, setSelected, updateClient, bulkUpdateClients, bulkDeleteClients } = useClientsStore()
   const navigate = useNavigate()
+  usePageViews(['list', 'board'])
   const viewMode = useUIStore(s => s.viewMode)
 
   function patchClient(id: string, patch: Partial<Parameters<typeof updateClient>[1]>) {

@@ -26,6 +26,7 @@ export const EcosystemCognitiveAdapter: CognitiveStateAdapter = {
         ready: d.ready,
         capabilities: d.capabilities ?? 0,
       })),
+      activeCapabilities: state.activeCapabilities,
       kimmSynthesis: state.kimmSynthesis,
       confidence: state.confidence,
     }

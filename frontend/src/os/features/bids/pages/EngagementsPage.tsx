@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { Plus, ArrowUpRight, Building2, Calendar, X, Loader2, Unlock } from 'lucide-react'
 import { api } from '@lib/api'
 import { cn } from '@design-system/cn'
+import { useUIStore } from '@store/ui'
+import { usePageViews } from '@hooks/usePageViews'
 
 const INDUSTRIES = [
   'Manufacturing', 'Education', 'Healthcare', 'Financial Services',
@@ -133,6 +135,8 @@ function useActivateClient(engagementId: string) {
 }
 
 export function EngagementsPage() {
+  usePageViews(['list', 'board'])
+  const viewMode = useUIStore(s => s.viewMode)
   const [showNew, setShowNew] = useState(false)
   const navigate = useNavigate()
   const { data, isLoading } = useEngagements()
@@ -199,6 +203,49 @@ export function EngagementsPage() {
             <Plus className="w-4 h-4" />
             Create First Engagement
           </button>
+        </div>
+      ) : viewMode === 'board' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {engagements.map((e: any) => {
+            const m = STATUS_MAP[e.status] ?? { label: e.status, color: 'var(--os-text-2)' }
+            const isSelfServe = e.status === 'DRAFT' && (e.intakeData as any)?.source === 'self-serve' && !e.clientUserId
+            return (
+              <div
+                key={e.id}
+                onClick={() => navigate(`/kangqore-view/admin/bids/engagements/${e.id}`)}
+                className="os-card flex flex-col gap-3 p-4 cursor-pointer hover:shadow-md transition-shadow group"
+              >
+                <div className="h-1.5 rounded-full -mx-4 -mt-4 mb-1" style={{ background: m.color }} />
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: '#579bfc18', border: '1px solid #579bfc30' }}>
+                    <Building2 className="w-4 h-4" style={{ color: '#579bfc' }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{e.clientName}</p>
+                    <p className="text-xs mt-0.5 truncate" style={{ color: 'var(--os-text-3)' }}>{e.industry} Edition</p>
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold flex-shrink-0"
+                    style={{ background: m.color + '18', color: m.color, border: `1px solid ${m.color}30` }}>
+                    {m.label}
+                  </span>
+                </div>
+                <DeliverableProgress deliverables={e.deliverables} />
+                <div className="flex items-center justify-between pt-1">
+                  {e.startedAt ? (
+                    <div className="flex items-center gap-1 text-[11px]" style={{ color: 'var(--os-text-3)' }}>
+                      <Calendar className="w-3 h-3" />
+                      {new Date(e.startedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                    </div>
+                  ) : <span />}
+                  {isSelfServe
+                    ? <ActivateButton engagementId={e.id} onClick={(ev) => ev.stopPropagation()} />
+                    : <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: 'var(--os-text-3)' }} />
+                  }
+                </div>
+              </div>
+            )
+          })}
         </div>
       ) : (
         <div className="os-card overflow-hidden">

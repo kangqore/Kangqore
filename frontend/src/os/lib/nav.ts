@@ -87,7 +87,13 @@ export const RAIL_ITEMS: RailEntry[] = [
     icon: HouseIcon,
     defaultPath: `${BASE}/home`,
     matchPrefixes: [`${BASE}/home`],
-    sidebarItems: [],
+    sidebarItems: [
+      { id: 'waanda-observe',    label: 'Observe',    path: `${BASE}/WAANDA/observe`    },
+      { id: 'waanda-understand', label: 'Understand', path: `${BASE}/WAANDA/understand` },
+      { id: 'waanda-decide',     label: 'Decide',     path: `${BASE}/WAANDA/decide`     },
+      { id: 'waanda-act',        label: 'Act',        path: `${BASE}/WAANDA/act`        },
+      { id: 'waanda-learn',      label: 'Learn',      path: `${BASE}/WAANDA/learn`      },
+    ],
   },
   {
     id: 'waanda',
@@ -139,7 +145,15 @@ export const RAIL_ITEMS: RailEntry[] = [
     defaultPath: `${BASE}/keos`,
     matchPrefixes: [`${BASE}/keos`],
     sidebarItems: [
-      { id: 'keos-main', label: 'Kangqore KEOS', path: `${BASE}/keos` },
+      { id: 'keos-personal',       label: 'Personal',       path: `${BASE}/keos?workspace=personal`       },
+      { id: 'keos-executive',      label: 'Executive',      path: `${BASE}/keos?workspace=executive`      },
+      { id: 'keos-revenue',        label: 'Revenue',        path: `${BASE}/keos?workspace=revenue`        },
+      { id: 'keos-operations',     label: 'Operations',     path: `${BASE}/keos?workspace=operations`     },
+      { id: 'keos-intelligence',   label: 'Intelligence',   path: `${BASE}/keos?workspace=intelligence`   },
+      { id: 'keos-platform',       label: 'Platform',       path: `${BASE}/keos?workspace=platform`       },
+      { id: 'keos-collaboration',  label: 'Collaboration',  path: `${BASE}/keos?workspace=collaboration`  },
+      { id: 'keos-governance',     label: 'Governance',     path: `${BASE}/keos?workspace=governance`     },
+      { id: 'keos-ecosystem',      label: 'Ecosystem',      path: `${BASE}/keos?workspace=ecosystem`      },
     ],
   },
   {

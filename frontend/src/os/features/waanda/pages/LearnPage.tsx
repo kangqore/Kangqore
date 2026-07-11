@@ -136,16 +136,16 @@ export function LearnPage() {
                   </div>
                   {((sys.topAgents ?? []).length > 0 || (sys.weakAgents ?? []).length > 0) && (
                     <div className="flex flex-wrap gap-1.5 mt-2">
-                      {(sys.topAgents as string[] ?? []).map((a: string, j: number) => (
+                      {(sys.topAgents ?? []).map((a: any, j: number) => (
                         <span key={j} className="text-[10px] px-2 py-0.5 rounded-full"
                           style={{ background: 'rgba(16,185,129,0.12)', color: '#10b981' }}>
-                          {a}
+                          {a?.agentType ?? a}
                         </span>
                       ))}
-                      {(sys.weakAgents as string[] ?? []).map((a: string, j: number) => (
+                      {(sys.weakAgents ?? []).map((a: any, j: number) => (
                         <span key={j} className="text-[10px] px-2 py-0.5 rounded-full"
                           style={{ background: 'rgba(245,158,11,0.12)', color: '#f59e0b' }}>
-                          {a}
+                          {a?.agentType ?? a}
                         </span>
                       ))}
                     </div>

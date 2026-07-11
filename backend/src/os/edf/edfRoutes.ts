@@ -33,4 +33,31 @@ router.get('/domains', (_req, res) => {
   }
 });
 
+// GET /api/os/edf/goals — all enterprise goals across all registered domains
+// Polled by WaandaCognitiveMirror to populate GoalsWidget in Executive workspace.
+router.get('/goals', (_req, res) => {
+  try {
+    const domains = DomainRegistry.getAll();
+    const goals: any[] = [];
+    for (const d of domains) {
+      for (const g of d.goals) {
+        goals.push({
+          goalId:          g.goalId,
+          domainId:        d.metadata.id,
+          domainName:      d.metadata.name,
+          owner:           g.owner,
+          priority:        g.priority,
+          kpi:             g.kpi,
+          successCriteria: g.successCriteria,
+          progress:        g.progress,
+          status:          g.status,
+        });
+      }
+    }
+    res.json({ goals, total: goals.length, registeredAt: new Date().toISOString() });
+  } catch {
+    res.status(500).json({ error: 'EDF goals unavailable' });
+  }
+});
+
 export default router;

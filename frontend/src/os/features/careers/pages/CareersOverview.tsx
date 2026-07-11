@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { GraduationCap, Users, Clock, CheckCircle2, Plus, MapPin } from 'lucide-react'
 import { useUIStore } from '@store/ui'
+import { usePageViews } from '@hooks/usePageViews'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { StatCard } from '@design-system/components/StatCard'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
@@ -37,6 +38,7 @@ const EMPTY_FORM = { title: '', department: 'engineering', type: 'full-time', lo
 export function CareersOverview() {
   const { roles, candidates, setSelectedRole } = useCareersStore()
   const queryClient = useQueryClient()
+  usePageViews(['list', 'board'])
   const viewMode = useUIStore(s => s.viewMode)
   const [showNew, setShowNew] = useState(false)
   const [form, setForm] = useState(EMPTY_FORM)

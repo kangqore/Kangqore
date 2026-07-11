@@ -78,8 +78,39 @@ export interface WaandaCognitiveState {
       visitor: string
     }>
   }
+  enterpriseGoals: Array<{
+    goalId: string
+    domainId: string
+    domainName: string
+    owner: string
+    priority: string
+    kpi: string
+    successCriteria: string[]
+    progress: number
+    status: string
+  }>
   lastSynced: Date | null
   confidence: number
+  personalSummary?: {
+    tasks: Array<{
+      id: string
+      title: string
+      status: string
+      dueDate: string | null
+      overdue: boolean
+      dueToday: boolean
+    }>
+    calendarEvents: Array<{
+      id: string
+      title: string
+      type: string
+      time: string
+      startsAt: string
+      endsAt: string
+      status: string
+      joinLink: string | null
+    }>
+  }
 }
 
 // Defines what projection a workspace requires.
@@ -143,6 +174,7 @@ export const EMPTY_WAANDA_STATE: WaandaCognitiveState = {
   systemBriefings: [],
   pendingDecisions: [],
   relationshipIntelligence: { liveSessions: [], evidenceLedger: [] },
+  enterpriseGoals: [],
   lastSynced: null,
   confidence: 0,
 }

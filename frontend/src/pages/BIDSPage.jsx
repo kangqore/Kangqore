@@ -236,7 +236,7 @@ export default function BIDSPage() {
 
               <div className="flex flex-col sm:flex-row items-center gap-5">
                 <Link
-                  to="/contact"
+                  to="/bids-request"
                   className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_40px_rgba(37,100,234,0.2)] hover:shadow-[0_0_60px_rgba(37,100,234,0.4)] hover:bg-white/20"
                 >
                   <span className="relative z-10 font-bold text-sm tracking-wide">Request a Diagnostic Assessment</span>
@@ -1985,7 +1985,7 @@ export default function BIDSPage() {
               Most transformation programmes fail because the enterprise was <span className="bg-brand-gradient bg-clip-text text-transparent">never fully diagnosed.</span>
             </h2>
             <Link
-              to="/contact"
+              to="/bids-request"
               className="group inline-flex items-center gap-3 text-xl md:text-2xl font-bold text-white hover:text-cyan-400 transition-colors duration-300 self-start lg:self-auto pt-4 lg:pt-6"
             >
               Request a Diagnostic Assessment

@@ -9,6 +9,10 @@ export const IntelligenceCognitiveAdapter: CognitiveStateAdapter = {
 
   async adapt(state: Readonly<WaandaCognitiveState>, _contract: ExperienceContract, _policy: ProjectionPolicy) {
     const activeDrifts = state.enterprisePredictions.filter(p => p.driftDetected)
+    const { liveSessions, evidenceLedger } = state.relationshipIntelligence
+    const avgExternalTrust = liveSessions.length > 0
+      ? liveSessions.reduce((s, e) => s + e.trustScore, 0) / liveSessions.length
+      : 0
 
     return {
       waandaPhase: state.phase,
@@ -23,6 +27,15 @@ export const IntelligenceCognitiveAdapter: CognitiveStateAdapter = {
         ready: d.ready,
         kpis: d.kpis ?? [],
       })),
+      domainRiskExposure: state.domains.map(d => ({
+        id:          d.id,
+        name:        d.name,
+        ready:       d.ready,
+        breachedKpis: (d.kpis ?? []).filter(k => k.current < k.target),
+      })),
+      evidenceLedger,
+      externalSessions: liveSessions,
+      avgExternalTrust: Math.round(avgExternalTrust * 100) / 100,
       confidence: state.confidence,
     }
   },

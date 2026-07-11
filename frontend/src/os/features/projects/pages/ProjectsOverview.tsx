@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { Briefcase, Pencil, Trash2 } from 'lucide-react'
+import { Briefcase, Pencil, Trash2, CalendarDays, Users } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { InlineSelect } from '@components/InlineSelect'
 import { EditDrawer } from '@components/EditDrawer'
@@ -10,6 +10,7 @@ import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
 import { api, isDemo } from '@lib/api'
 import { useProjectsStore } from '../store'
+import { useUIStore } from '@store/ui'
 import type { Project, ProjectStatus, HealthStatus } from '../types'
 
 const STATUS_OPTIONS: { value: ProjectStatus; label: string; variant: 'success' | 'info' | 'warning' | 'brand' }[] = [
@@ -117,6 +118,7 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
 
 export function ProjectsOverview() {
   const { projects, tasks, isLoading, updateProjectStatus, updateProjectHealth, deleteProject } = useProjectsStore()
+  const viewMode  = useUIStore(s => s.viewMode)
   const [editingId, setEditingId] = useState<string | null>(null)
   const editingProject = projects.find(p => p.id === editingId)
 
@@ -211,83 +213,114 @@ export function ProjectsOverview() {
         </ResponsiveContainer>
       </Card>
 
-      <div className="space-y-3">
-        {projects.length === 0 && (
-          <div className="py-16 text-center" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12 }}>
-            <Briefcase className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--os-text-2)' }} />
-            <p className="font-medium" style={{ color: 'var(--os-text-1)' }}>No projects yet</p>
-            <p className="text-sm mt-1" style={{ color: 'var(--os-text-2)' }}>Projects you create will appear here.</p>
-          </div>
-        )}
-        {projects.map(p => (
-          <div key={p.id} className="group transition-all duration-200 hover:shadow-md" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-card)' }}>
-            <div className="flex items-start gap-4 p-5">
-              {/* health accent bar */}
-              <div className="w-1 self-stretch rounded-full flex-shrink-0" style={{ background: HEALTH_COLOR[p.health] }} />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h3 className="font-semibold text-sm" style={{ color: 'var(--os-text-1)' }}>{p.name}</h3>
-                  {/* health badge */}
-                  <span className="rounded-full text-[11px] font-bold px-2.5 py-0.5 text-white" style={{ background: HEALTH_COLOR[p.health] }}>
+      {projects.length === 0 && (
+        <div className="py-16 text-center" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12 }}>
+          <Briefcase className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--os-text-2)' }} />
+          <p className="font-medium" style={{ color: 'var(--os-text-1)' }}>No projects yet</p>
+          <p className="text-sm mt-1" style={{ color: 'var(--os-text-2)' }}>Projects you create will appear here.</p>
+        </div>
+      )}
+
+      {/* ── Board view — card grid ───────────────────────────────────────── */}
+      {viewMode === 'board' && projects.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {projects.map(p => (
+            <div key={p.id} className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-lg"
+              style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', boxShadow: 'var(--os-shadow-card)' }}>
+              {/* colour header strip */}
+              <div className="h-1.5 w-full" style={{ background: HEALTH_COLOR[p.health] }} />
+              <div className="flex flex-col gap-3 p-4 flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="font-bold text-sm leading-snug" style={{ color: 'var(--os-text-1)' }}>{p.name}</h3>
+                  <span className="rounded-full text-[10px] font-bold px-2 py-0.5 text-white shrink-0" style={{ background: HEALTH_COLOR[p.health] }}>
                     {HEALTH_LABEL[p.health]}
                   </span>
-                  <InlineSelect
-                    value={p.status}
-                    options={STATUS_OPTIONS}
-                    onChange={status => patchStatus(p.id, status)}
-                    size="sm"
-                  />
-                  <InlineSelect
-                    value={p.health}
-                    options={HEALTH_OPTIONS}
-                    onChange={health => patchHealth(p.id, health)}
-                    size="sm"
-                    dot
-                  />
                 </div>
-                <p className="text-xs mb-3 line-clamp-1" style={{ color: 'var(--os-text-2)' }}>{p.description}</p>
-                <div className="flex items-center gap-6 text-xs mb-3" style={{ color: 'var(--os-text-2)' }}>
-                  <span>Client: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{p.client}</span></span>
-                  <span>Due: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{new Date(p.endDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span></span>
-                  <span>Budget: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>₹{(p.spent / 1000).toFixed(0)}k / ₹{(p.budget / 1000).toFixed(0)}k</span></span>
-                  <span>{p.taskCount} tasks · {p.openIssues} issues</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{ width: `${p.progress}%`, background: HEALTH_COLOR[p.health] }}
-                    />
+                <p className="text-[11px] line-clamp-2" style={{ color: 'var(--os-text-2)' }}>{p.description}</p>
+                <div className="flex flex-col gap-1.5 text-[11px]" style={{ color: 'var(--os-text-2)' }}>
+                  <div className="flex items-center gap-1.5">
+                    <Users className="w-3 h-3 shrink-0" />
+                    <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{p.client}</span>
                   </div>
-                  <span className="text-xs font-bold w-8" style={{ color: HEALTH_COLOR[p.health] }}>{p.progress}%</span>
+                  <div className="flex items-center gap-1.5">
+                    <CalendarDays className="w-3 h-3 shrink-0" />
+                    <span>{new Date(p.endDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                <div className="flex items-center gap-1.5">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={e => { e.stopPropagation(); setEditingId(p.id) }}
-                  >
-                    <Pencil className="w-3.5 h-3.5" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-400"
-                    onClick={e => { e.stopPropagation(); handleDelete(p.id) }}
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </Button>
-                  <Avatar name={p.owner} size="sm" />
+                {/* progress */}
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-[10px]" style={{ color: 'var(--os-text-2)' }}>Progress</span>
+                    <span className="text-[11px] font-bold" style={{ color: HEALTH_COLOR[p.health] }}>{p.progress}%</span>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
+                    <div className="h-full rounded-full" style={{ width: `${p.progress}%`, background: HEALTH_COLOR[p.health] }} />
+                  </div>
                 </div>
-                <AvatarGroup users={p.team.map(n => ({ name: n }))} max={3} size="xs" />
+                <div className="flex items-center justify-between mt-auto pt-2 border-t" style={{ borderColor: 'var(--os-border)' }}>
+                  <AvatarGroup users={p.team.map(n => ({ name: n }))} max={4} size="xs" />
+                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button variant="ghost" size="icon" onClick={e => { e.stopPropagation(); setEditingId(p.id) }}>
+                      <Pencil className="w-3 h-3" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-400" onClick={e => { e.stopPropagation(); handleDelete(p.id) }}>
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {/* ── List view — horizontal rows (default) ────────────────────────── */}
+      {viewMode !== 'board' && projects.length > 0 && (
+        <div className="space-y-3">
+          {projects.map(p => (
+            <div key={p.id} className="group transition-all duration-200 hover:shadow-md" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-card)' }}>
+              <div className="flex items-start gap-4 p-5">
+                <div className="w-1 self-stretch rounded-full flex-shrink-0" style={{ background: HEALTH_COLOR[p.health] }} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <h3 className="font-semibold text-sm" style={{ color: 'var(--os-text-1)' }}>{p.name}</h3>
+                    <span className="rounded-full text-[11px] font-bold px-2.5 py-0.5 text-white" style={{ background: HEALTH_COLOR[p.health] }}>
+                      {HEALTH_LABEL[p.health]}
+                    </span>
+                    <InlineSelect value={p.status} options={STATUS_OPTIONS} onChange={status => patchStatus(p.id, status)} size="sm" />
+                    <InlineSelect value={p.health} options={HEALTH_OPTIONS} onChange={health => patchHealth(p.id, health)} size="sm" dot />
+                  </div>
+                  <p className="text-xs mb-3 line-clamp-1" style={{ color: 'var(--os-text-2)' }}>{p.description}</p>
+                  <div className="flex items-center gap-6 text-xs mb-3" style={{ color: 'var(--os-text-2)' }}>
+                    <span>Client: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{p.client}</span></span>
+                    <span>Due: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{new Date(p.endDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span></span>
+                    <span>Budget: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>₹{(p.spent / 1000).toFixed(0)}k / ₹{(p.budget / 1000).toFixed(0)}k</span></span>
+                    <span>{p.taskCount} tasks · {p.openIssues} issues</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
+                      <div className="h-full rounded-full transition-all duration-500" style={{ width: `${p.progress}%`, background: HEALTH_COLOR[p.health] }} />
+                    </div>
+                    <span className="text-xs font-bold w-8" style={{ color: HEALTH_COLOR[p.health] }}>{p.progress}%</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-1.5">
+                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => { e.stopPropagation(); setEditingId(p.id) }}>
+                      <Pencil className="w-3.5 h-3.5" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-400" onClick={e => { e.stopPropagation(); handleDelete(p.id) }}>
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </Button>
+                    <Avatar name={p.owner} size="sm" />
+                  </div>
+                  <AvatarGroup users={p.team.map(n => ({ name: n }))} max={3} size="xs" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {editingProject && (
         <ProjectEditDrawer project={editingProject} onClose={() => setEditingId(null)} />

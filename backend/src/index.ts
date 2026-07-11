@@ -277,6 +277,20 @@ app.use('/api/marketing', marketingRoutes);
 import osWorkflowsRoutes from './routes/os-workflows';
 app.use('/api/os-workflows', osWorkflowsRoutes);
 
+// Enterprise Platform Fabrics — EDF (domain), EPF (prediction), ESF (simulation), EAF (agent)
+// Satisfy WEE Constitutional Law 3 and power ExperienceAPI in the Gen III Runtime.
+// CognitiveMirror polls /api/os/edf/domains + /api/os/epf/predictions every 30s.
+import edfRouter from './os/edf/edfRoutes';
+import epfRouter from './os/epf/epfRoutes';
+import esfRouter from './os/esf/esfRoutes';
+import eafRouter from './os/eaf/eafRoutes';
+app.use('/api/os/edf', authenticate, edfRouter);
+app.use('/api/os/epf', authenticate, epfRouter);
+app.use('/api/os/esf', authenticate, esfRouter);
+app.use('/api/os/eaf', authenticate, authorize(['ADMIN']), eafRouter);
+import personalRouter from './os/personal/personalRoutes';
+app.use('/api/os/personal', personalRouter);
+
 import adminClientsCrmRoutes   from './routes/admin-clients-crm';
 import adminPartnersCrmRoutes  from './routes/admin-partners-crm';
 import adminCrmSubentities     from './routes/admin-crm-subentities';

@@ -68,7 +68,7 @@ function enrichVisitorAsync(
 const router = Router();
 
 const chatSchema = Joi.object({
-  message: Joi.string().min(2).max(2000).required(),
+  message: Joi.string().min(2).max(12000).required(),
   conversationId: Joi.string().optional().allow(null, ''),
   visitorUuid: Joi.string().uuid().optional().allow(null, ''),
 });

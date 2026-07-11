@@ -22,8 +22,8 @@ export interface WorkspaceTree {
  */
 export class CompositionEngine {
     constructor(
-        private dependencyGraph: DependencyGraph,
-        private policyAdapter: PolicyAdapter
+        private readonly dependencyGraph: DependencyGraph,
+        private readonly policyAdapter: PolicyAdapter
     ) {}
 
     public async compose(manifest: WorkspaceManifest, request: CompositionRequest): Promise<WorkspaceTree> {
@@ -43,7 +43,7 @@ export class CompositionEngine {
         const tree: WorkspaceTree = {
             rootNode: {
                 lens: request.lensId,
-                modules: manifest.workspace.modules ?? []
+                modules: Object.values((manifest.workspace as any).sections ?? {}),
             },
             resolvedCapabilities: allowedCapabilities
         };

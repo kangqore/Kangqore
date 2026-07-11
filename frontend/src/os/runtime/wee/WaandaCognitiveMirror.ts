@@ -49,7 +49,7 @@ class WaandaCognitiveMirrorService {
 
   // Transport implementation — swap this method to replace polling.
   async sync(): Promise<void> {
-    const [status, history, sessions, decisions, edf, epf] = await Promise.all([
+    const [status, history, sessions, decisions, edf, epf, personal, edfGoals] = await Promise.all([
       fetchJson<any>('/api/admin/waanda/status'),
       fetchJson<any>('/api/admin/kangqore-immp/systems/history'),
       fetchJson<any>('/api/kangqore/urgi/sessions/live'),
@@ -57,6 +57,10 @@ class WaandaCognitiveMirrorService {
       // Enterprise Platform — EDF and EPF (satisfies WEE Constitution Law 3)
       fetchJson<any>('/api/os/edf/domains'),
       fetchJson<any>('/api/os/epf/predictions'),
+      // Personal Workspace — tasks and calendar for the logged-in user
+      fetchJson<any>('/api/os/personal/summary'),
+      // Enterprise Goals — EDF domain goals for Executive workspace
+      fetchJson<any>('/api/os/edf/goals'),
     ])
 
     // EDF domains take precedence over domains from WAANDA status when available
@@ -64,27 +68,37 @@ class WaandaCognitiveMirrorService {
       ? edf.domains
       : (status?.domains ?? [])
 
+    // Normalize boot phases: backend uses {phase, status:'ok'|'error', ms}
+    // WaandaCognitiveState expects {name, status:'PASS'|'WARN'|'ERROR', duration}
+    const normalizedPhases = (status?.phases ?? []).map((p: any) => ({
+      name:     p.phase ?? p.name ?? 'unknown',
+      status:   p.status === 'ok' ? 'PASS' : p.status === 'warn' ? 'WARN' : 'ERROR',
+      duration: p.ms ?? p.duration,
+    }))
+
     this.state = {
-      phase: status?.currentPhase ?? 'OBSERVE',
+      phase: 'OBSERVE',
       bootStatus:
-        status?.status === 'OPERATIONAL' ? 'OPERATIONAL'
-        : status?.status ? 'DEGRADED'
+        status?.booted ? 'OPERATIONAL'
+        : status?.bootedAt ? 'DEGRADED'
         : 'OFFLINE',
       bootedAt:           status?.bootedAt ?? null,
-      phases:             status?.phases   ?? [],
+      phases:             normalizedPhases,
       activeCapabilities: status?.capabilities ?? [],
       subsystems:         status?.subsystems   ?? {},
       domains,
       enterprisePredictions: epf?.predictions ?? [],
-      kimmSynthesis:      history?.data?.[0]?.kimmSynthesis ?? null,
-      systemBriefings:    history?.data        ?? [],
-      pendingDecisions:   decisions?.data      ?? [],
+      kimmSynthesis:      history?.history?.[0]?.kimmSynthesis ?? null,
+      systemBriefings:    history?.history     ?? [],
+      pendingDecisions:   decisions?.rows      ?? [],
       relationshipIntelligence: {
         liveSessions:  sessions?.data ?? [],
         evidenceLedger: [],
       },
+      enterpriseGoals: edfGoals?.goals ?? [],
       lastSynced: new Date(),
-      confidence: status?.status === 'OPERATIONAL' ? 0.9 : 0.4,
+      confidence: status?.booted ? 0.9 : 0.4,
+      personalSummary: personal ?? undefined,
     }
 
     this.listeners.forEach(l => l(this.state))

@@ -2,17 +2,7 @@
 // Full KEOS shell: workspace rail + mode selector + WEE projection pipeline.
 
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  UserIcon,
-  BriefcaseIcon,
-  TrendUpIcon,
-  GearIcon,
-  BrainIcon,
-  HardDrivesIcon,
-  UsersIcon,
-  ScalesIcon,
-  ShareNetworkIcon,
-} from '@phosphor-icons/react';
+import { useSearchParams } from 'react-router-dom';
 import { useWaanda } from './WaandaKernel';
 import { OrchestrationEngine } from './OrchestrationEngine';
 import { WorkspaceTransitionManager } from './WorkspaceTransitionManager';
@@ -51,24 +41,6 @@ const registry = {
 
 type WorkspaceId = keyof typeof registry;
 
-interface WorkspaceMeta {
-  id: WorkspaceId;
-  label: string;
-  Icon: React.ComponentType<{ size?: number; weight?: 'regular' | 'fill'; className?: string }>;
-  color: string;
-}
-
-const WORKSPACE_META: WorkspaceMeta[] = [
-  { id: 'wksp.personal',      label: 'Personal',      Icon: UserIcon,         color: '#2564ea' },
-  { id: 'wksp.executive',     label: 'Executive',     Icon: BriefcaseIcon,    color: '#7c3aed' },
-  { id: 'wksp.revenue',       label: 'Revenue',       Icon: TrendUpIcon,      color: '#059669' },
-  { id: 'wksp.operations',    label: 'Operations',    Icon: GearIcon,         color: '#ea8b25' },
-  { id: 'wksp.intelligence',  label: 'Intelligence',  Icon: BrainIcon,        color: '#4ab6d4' },
-  { id: 'wksp.platform',      label: 'Platform',      Icon: HardDrivesIcon,   color: '#64748b' },
-  { id: 'wksp.collaboration', label: 'Collaboration', Icon: UsersIcon,        color: '#0d9488' },
-  { id: 'wksp.governance',    label: 'Governance',    Icon: ScalesIcon,       color: '#d97706' },
-  { id: 'wksp.ecosystem',     label: 'Ecosystem',     Icon: ShareNetworkIcon, color: '#db2777' },
-];
 
 export const WorkspaceOrchestrator: React.FC = () => {
   const waanda = useWaanda();
@@ -76,7 +48,11 @@ export const WorkspaceOrchestrator: React.FC = () => {
   const [transitionMgr] = useState(() => new WorkspaceTransitionManager());
   const booted = useRef(false);
 
-  const [activeWorkspaceId, setActiveWorkspaceId] = useState<WorkspaceId>('wksp.personal');
+  const [searchParams] = useSearchParams();
+  const [activeWorkspaceId, setActiveWorkspaceId] = useState<WorkspaceId>(() => {
+    const ws = `wksp.${searchParams.get('workspace')}` as WorkspaceId;
+    return ws in registry ? ws : 'wksp.personal';
+  });
   const [isTransitioning, setIsTransitioning]     = useState(false);
   const [experienceModel, setExperienceModel]      = useState<ExperienceModel | null>(null);
   const [currentMode, setCurrentMode]              = useState<WorkspaceMode>('DEFAULT');
@@ -85,6 +61,7 @@ export const WorkspaceOrchestrator: React.FC = () => {
     if (booted.current) return;
     booted.current = true;
     bootWEE();
+    return () => WaandaCognitiveMirror.stop();
   }, []);
 
   const project = (id: WorkspaceId) => {
@@ -94,11 +71,16 @@ export const WorkspaceOrchestrator: React.FC = () => {
       projectionScope: manifest.workspace.cognitiveStateType,
       persona: 'OPERATOR' as const,
       requiredCapabilities: manifest.workspace.capabilities,
-      context: {},
+      context: { workspaceId: id, workspaceTitle: manifest.metadata.title },
     };
     void WaandaExperienceEngine.project(contract, DEFAULT_PROJECTION_POLICY)
       .then(model => setExperienceModel(model));
   };
+
+  useEffect(() => {
+    const ws = `wksp.${searchParams.get('workspace')}` as WorkspaceId;
+    if (ws in registry && ws !== activeWorkspaceId) void performTransition(ws);
+  }, [searchParams]);
 
   useEffect(() => { project(activeWorkspaceId); }, [activeWorkspaceId]);
 
@@ -133,30 +115,6 @@ export const WorkspaceOrchestrator: React.FC = () => {
 
   return (
     <div className="keos-shell">
-
-      {/* ── Left Workspace Rail ── */}
-      <nav className="keos-rail">
-        <div className="keos-rail-eyebrow">Workspaces</div>
-        {WORKSPACE_META.map(ws => {
-          const isActive = activeWorkspaceId === ws.id;
-          return (
-            <button
-              key={ws.id}
-              className={`keos-ws-btn${isActive ? ' active' : ''}`}
-              style={{ '--keos-ws-color': ws.color } as React.CSSProperties}
-              onClick={() => void performTransition(ws.id)}
-              title={ws.label}
-            >
-              <ws.Icon
-                size={15}
-                weight={isActive ? 'fill' : 'regular'}
-                className="keos-ws-icon"
-              />
-              <span className="keos-ws-label">{ws.label}</span>
-            </button>
-          );
-        })}
-      </nav>
 
       {/* ── Main Content ── */}
       <div className="keos-main">

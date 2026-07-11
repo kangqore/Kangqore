@@ -5,6 +5,7 @@ import { Badge } from '@design-system/components/Badge'
 import { Input } from '@design-system/components/Input'
 import { usePartnersStore } from '../store'
 import { useUIStore } from '@store/ui'
+import { usePageViews } from '@hooks/usePageViews'
 import type { PartnerTier } from '../types'
 
 function SkeletonCard() {
@@ -51,6 +52,7 @@ function Stars({ rating }: { rating: number }) {
 export function PartnersOverview() {
   const { partners, isLoading, setSelected } = usePartnersStore()
   const navigate = useNavigate()
+  usePageViews(['list', 'board'])
   const viewMode = useUIStore(s => s.viewMode)
   const [search, setSearch] = useState('')
   const [tierFilter, setTier] = useState<PartnerTier | 'all'>('all')

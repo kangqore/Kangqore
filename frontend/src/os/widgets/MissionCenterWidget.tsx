@@ -3,9 +3,6 @@ import { withWidgetContext, WidgetProps } from '../runtime/rendering/BaseWidget'
 
 const MissionCenterWidgetCore: React.FC<WidgetProps> = ({ viewModel, onAction }) => {
     const missions: any[] = viewModel.activeMissions ?? [];
-    const count: number = viewModel.activeMissions ?? typeof viewModel.activeMissions === 'number'
-        ? viewModel.activeMissions
-        : missions.length;
     return (
         <div className="mission-center-widget">
             <h3>Mission Center</h3>

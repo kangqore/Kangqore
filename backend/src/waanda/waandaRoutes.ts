@@ -101,6 +101,27 @@ waandaRouter.get('/pipeline', (_req: Request, res: Response) => {
   })
 })
 
+// ── Workspace Capability Query ────────────────────────────────────────────
+// Called by CapabilityBroker providers when a widget executes a capability.
+// Handles: cap.ai.plan / cap.ai.forecast / cap.ai.simulate / cap.ai.analyze / ecf.waanda
+
+waandaRouter.post('/query', async (req: Request, res: Response) => {
+  const { prompt, capability, workspaceId } = req.body
+  if (!prompt) return res.status(400).json({ error: '`prompt` is required' })
+
+  try {
+    const result = await MissionDispatcher.dispatch({
+      goal:               prompt,
+      description:        `Workspace capability [${capability ?? 'cap.ai.plan'}] from [${workspaceId ?? 'unknown'}]`,
+      requester:          (req as any).user?.id ?? 'ADMIN',
+      requiredCapability: capability ?? 'cap.ai.plan',
+    })
+    res.json({ ok: true, response: result, capability: capability ?? 'cap.ai.plan', workspaceId })
+  } catch (err: any) {
+    res.status(500).json({ error: err?.message ?? 'Workspace query failed' })
+  }
+})
+
 // ── Execute Mission (KEOS Kernel) ─────────────────────────────────────────
 
 waandaRouter.post('/mission', async (req: Request, res: Response) => {
