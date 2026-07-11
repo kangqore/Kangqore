@@ -256,7 +256,7 @@ export async function runBenchmarkComparison(
     })
     .filter(Boolean) as BenchmarkCompareResult['regressions']
 
-  return {
+  const result: BenchmarkCompareResult = {
     modelA, modelB,
     runIdA:  summaryA.runId,
     runIdB:  summaryB.runId,
@@ -267,6 +267,25 @@ export async function runBenchmarkComparison(
     categoryResults,
     regressions,
   }
+
+  // Persist so model-vs-model history is queryable over time
+  await (prisma as any).benchmarkCompareRun.create({
+    data: {
+      modelA,
+      modelB,
+      runIdA:          summaryA.runId,
+      runIdB:          summaryB.runId,
+      scoreA:          result.scoreA,
+      scoreB:          result.scoreB,
+      delta:           result.delta,
+      winner,
+      categoryResults: categoryResults as any,
+      regressions:     regressions    as any,
+      trigger:         opts.trigger,
+    },
+  }).catch(() => {})   // non-blocking — comparison result already returned
+
+  return result
 }
 
 // ─── CLI entry point ──────────────────────────────────────────────────────────

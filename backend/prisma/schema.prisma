@@ -4325,6 +4325,8 @@ model WaandaTrainingExample {
   dispatchId     String?
   conversationId String?  // explicit link to Conversation (CONCIERGE source)
   simulationId   String?  // explicit link to EnterpriseTwinScenario
+  missionId      String?  // which KIMMP dispatch (mission) triggered this capture
+  workspaceId    String?  // which KEOS workspace the operator was in
   exported       Boolean  @default(false)
 
   // Learning Lineage
@@ -4997,6 +4999,30 @@ model KimmpBenchmarkResult {
   @@index([promptId])
   @@index([category, score])
   @@map("kimmp_benchmark_results")
+}
+
+// ─── Benchmark Compare Run — Gen 2 evaluation persistence ────────────────────
+// Each call to runBenchmarkComparison() writes one record here so model-vs-model
+// comparison history is queryable over time (e.g. Gen 1 vs Gen 2 on SALES corpus).
+
+model BenchmarkCompareRun {
+  id              String   @id @default(cuid())
+  modelA          String
+  modelB          String
+  runIdA          String   // references KimmpBenchmarkRun for model A
+  runIdB          String   // references KimmpBenchmarkRun for model B
+  scoreA          Int
+  scoreB          Int
+  delta           Int      // scoreB - scoreA
+  winner          String   // 'A' | 'B' | 'TIE'
+  categoryResults Json     // BenchmarkCompareCategoryResult[]
+  regressions     Json     // { promptId, scoreA, scoreB, drop }[]
+  trigger         String   @default("manual")   // 'manual' | 'pre-release' | 'scheduled'
+  createdAt       DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([modelA, modelB, createdAt])
+  @@map("benchmark_compare_runs")
 }
 
 // ─── Gate 3.5: WAANDA Runtime Intelligence ───────────────────────────────────

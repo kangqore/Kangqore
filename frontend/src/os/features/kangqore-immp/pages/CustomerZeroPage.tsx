@@ -547,19 +547,51 @@ export function CustomerZeroPage() {
             />
           </div>
 
-          {/* Zero-state prompt */}
-          {activity.missionsLast24h === 0 && (
-            <div style={{
-              marginTop: 12, padding: '10px 14px',
-              background: `${GOLD}0F`, border: `1px solid ${GOLD}33`, borderRadius: 8,
-              display: 'flex', alignItems: 'center', gap: 8,
-            }}>
-              <BarChart2 size={13} style={{ color: GOLD, flexShrink: 0 }} />
-              <span style={{ fontSize: 11, color: TEXT2 }}>
-                No missions in the last 24 hours. Open Mission Control and run a KIMMP briefing to start the clock.
-              </span>
-            </div>
-          )}
+          {/* Context-sensitive zero-state prompt */}
+          {(() => {
+            const m  = activity.missionsLast24h
+            const d  = activity.decisionsLast7d
+            const e  = activity.evidenceCaptured
+            const s  = activity.simulationRuns
+            const w  = activity.waandaSessions
+            const mDown = activity.missionsTrend?.direction === 'down'
+            const dDown = activity.decisionsTrend?.direction === 'down'
+
+            let prompt: string | null = null
+            let color = GOLD
+
+            if (m === 0 && d === 0 && e === 0 && s === 0 && w === 0) {
+              prompt = 'Platform not yet operationally active. Create a project, then open Mission Control and run a KIMMP briefing to start the adoption clock.'
+              color  = GOLD
+            } else if (m === 0 && d > 0) {
+              prompt = 'Decisions exist but no missions in the last 24 hours. Return to Mission Control and trigger a fresh KIMMP briefing to keep the signal alive.'
+              color  = GOLD
+            } else if (m > 0 && d === 0) {
+              prompt = `${m} mission${m > 1 ? 's' : ''} running, but no executive decisions made this week. Open a KIMMP briefing, review the recommendations, and log a decision to close the loop.`
+              color  = '#f97316'
+            } else if (m > 0 && d > 0 && e === 0) {
+              prompt = 'Missions and decisions are active, but no evidence has been captured. Ask KIMMP to document its reasoning — every captured datapoint strengthens the training corpus.'
+              color  = BLUE
+            } else if (mDown && dDown) {
+              prompt = 'Both mission frequency and executive decisions are declining. Schedule a daily KIMMP briefing to prevent adoption stall before COIG momentum is lost.'
+              color  = '#ef4444'
+            } else if (mDown && !dDown) {
+              prompt = 'Mission frequency is declining. Run a KIMMP briefing today to keep the 24-hour activity window non-zero.'
+              color  = GOLD
+            }
+
+            if (!prompt) return null
+            return (
+              <div style={{
+                marginTop: 12, padding: '10px 14px',
+                background: `${color}0F`, border: `1px solid ${color}33`, borderRadius: 8,
+                display: 'flex', alignItems: 'center', gap: 8,
+              }}>
+                <BarChart2 size={13} style={{ color, flexShrink: 0 }} />
+                <span style={{ fontSize: 11, color: TEXT2 }}>{prompt}</span>
+              </div>
+            )
+          })()}
         </div>
       )}
 

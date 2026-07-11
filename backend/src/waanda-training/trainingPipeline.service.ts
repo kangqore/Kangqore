@@ -58,6 +58,8 @@ export class WaandaTrainingPipeline {
     dispatchId?:    string
     conversationId?: string
     simulationId?:  string
+    missionId?:     string
+    workspaceId?:   string
     modelVersion?:  string
   }): Promise<string | null> {
     try {
@@ -85,6 +87,8 @@ export class WaandaTrainingPipeline {
           dispatchId:     data.dispatchId     ?? null,
           conversationId: data.conversationId ?? null,
           simulationId:   data.simulationId   ?? null,
+          missionId:      data.missionId      ?? null,
+          workspaceId:    data.workspaceId    ?? null,
           modelVersion:   data.modelVersion   ?? null,
           curriculum,
           alpacaFormat,
@@ -110,6 +114,8 @@ export class WaandaTrainingPipeline {
     selectedAgents: string[]
     priority:      string
     dispatchId?:   string
+    missionId?:    string
+    workspaceId?:  string
   }): void {
     WaandaTrainingPipeline.write({
       exampleType:  'REASON',
@@ -121,6 +127,8 @@ export class WaandaTrainingPipeline {
       agentsUsed:   params.selectedAgents,
       priority:     params.priority,
       dispatchId:   params.dispatchId,
+      missionId:    params.missionId,
+      workspaceId:  params.workspaceId,
     }).catch(() => {})
   }
 
@@ -138,6 +146,8 @@ export class WaandaTrainingPipeline {
     dispatchId?:     string
     conversationId?: string
     simulationId?:   string
+    missionId?:      string
+    workspaceId?:    string
     modelVersion?:   string
   }): void {
     WaandaTrainingPipeline.write({
@@ -152,6 +162,8 @@ export class WaandaTrainingPipeline {
       dispatchId:     params.dispatchId,
       conversationId: params.conversationId,
       simulationId:   params.simulationId,
+      missionId:      params.missionId,
+      workspaceId:    params.workspaceId,
       modelVersion:   params.modelVersion,
     }).catch(() => {})
   }
