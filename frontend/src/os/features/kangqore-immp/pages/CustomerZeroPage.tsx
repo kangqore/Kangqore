@@ -7,8 +7,6 @@ import {
   Lightbulb, Timer, ArrowUp, ArrowDown, Minus,
 } from 'lucide-react'
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 interface GoalProgress {
   label:  string
   target: number
@@ -41,8 +39,6 @@ interface CustomerZeroReport {
   verifiedBy:         string
   generatedAt:        string
 }
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 interface Trend { delta: number; direction: 'up' | 'down' | 'flat' }
 
@@ -85,7 +81,6 @@ interface OperatingPulse {
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
-const BG      = 'var(--os-bg)'
 const SURFACE = 'var(--os-card)'
 const BORDER  = 'var(--os-border)'
 const TEXT1   = 'var(--os-text-1)'
@@ -250,7 +245,7 @@ function COIGBar({ current, expected, potential }: { current: number; expected: 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
             <span style={{ fontSize: 10, color: TEXT2 }}>{row.label}</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: row.color }}>+{row.value.toFixed(1)}</span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: row.color }}>{row.value >= 0 ? '+' : ''}{row.value.toFixed(1)}</span>
               <span style={{ fontSize: 9, color: TEXT2 }}>{row.note}</span>
             </div>
           </div>
@@ -668,7 +663,7 @@ export function CustomerZeroPage() {
           <span style={{ fontSize: 10, color: TEXT2 }}>Verified by: </span>
           <span style={{ fontSize: 10, color: TEXT1, fontWeight: 600 }}>{data.verifiedBy}</span>
         </div>
-        <div style={{ display: 'flex', align: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Clock size={12} style={{ color: TEXT2 }} />
           <span style={{ fontSize: 10, color: TEXT2 }}>
             Generated {new Date(data.generatedAt).toLocaleString('en-GB', {

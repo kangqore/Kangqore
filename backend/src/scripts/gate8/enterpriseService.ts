@@ -574,7 +574,7 @@ export async function computeCustomerZeroReport() {
     periodStart:        baseline?.createdAt ?? null,
     periodEnd:          new Date().toISOString(),
     maturityBefore:     baseline ? 'L2' : null,  // will be accurate once we have baseline EMI stored
-    maturityAfter:      emi.levelLabel,
+    maturityAfter:      emi.level,
     oisBefore:          baseline?.oisScore ?? null,
     oisAfter:           gate8.oisScore,
     coig:               coig.current,
