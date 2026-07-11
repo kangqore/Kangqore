@@ -5133,6 +5133,14 @@ export function AdminOverview() {
     refetchInterval: 60_000,
   })
 
+  // Phase 6 Command Center aggregate — all 7 intelligence streams
+  const { data: cc } = useQuery({
+    queryKey: ['kimmp-command-center'],
+    queryFn:  () => api.get('/admin/kangqore-immp/command-center').then(r => r.data),
+    refetchInterval: 30_000,
+    staleTime: 20_000,
+  })
+
   // Live system health — polls every 15 s
   const { data: healthData } = useQuery({
     queryKey: ['health-deep'],
@@ -5664,14 +5672,30 @@ export function AdminOverview() {
 
           {/* ═ RIGHT ═ */}
 <div style={{ display:'flex', flexDirection:'column', gap:20, overflow:'hidden', paddingBottom: 20, transform: 'scale(0.9)', transformOrigin: 'top center' }}>
-  {/* ── COMMAND CENTER ── */}
+  {/* ── COMMAND CENTER — Phase 6 Intelligence ── */}
   <SectionLabel text="COMMAND CENTER" color={CA} />
   <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
-    <MinimalistRingWidget label="APPROVALS" value={liveApprovals.length} sub="PENDING" color={CA} />
-    <MinimalistRingWidget label="DECISIONS" value={insights.length} sub="IN QUEUE" color={C} />
-    <MinimalistRingWidget label="CASH FCST" value={revCr != null ? `₹${(revCr*1.08).toFixed(1)}Cr` : '—'} sub="30D VIEW" color={CA} />
-    <MinimalistRingWidget label="CONTRACTS" value="0" sub="ACTIVE" color={C} />
+    <MinimalistRingWidget label="CRITICAL" value={cc?.signals?.criticalCount ?? '—'} sub="SIGNALS" color={CR} />
+    <MinimalistRingWidget label="PROPOSED" value={cc?.decisions?.proposedCount ?? '—'} sub="DECISIONS" color={CA} />
+    <MinimalistRingWidget label="OIS SCORE" value={cc?.ois?.score ?? '—'} sub="ENTERPRISE" color={C} />
+    <MinimalistRingWidget label="TRAINING" value={cc?.training?.exportReady ?? '—'} sub="EXAMPLES" color={CG} />
   </div>
+  {/* P6 stat strip */}
+  {cc && (
+    <div style={{ display:'flex', flexDirection:'column', gap:3, padding:'6px 4px', borderTop:`1px solid ${CA}20`, marginTop:4 }}>
+      {[
+        { l: 'HIGH SIG',  v: cc.signals?.highCount ?? 0 },
+        { l: 'NEW SIG',   v: cc.signals?.newCount ?? 0 },
+        { l: 'AT RISK',   v: cc.predictions?.highRiskCount ?? 0 },
+        { l: 'LLM COST',  v: cc.cost?.totalEstimatedUsd != null ? `$${Number(cc.cost.totalEstimatedUsd).toFixed(2)}` : '—' },
+      ].map(r => (
+        <div key={r.l} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
+          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>{r.l}</span>
+          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{r.v}</span>
+        </div>
+      ))}
+    </div>
+  )}
   {/* ── MODULE NEXUS ── */}
   <SectionLabel text="MODULE NEXUS" color='#00ffcc' />
   <div style={{ padding: '8px' }}>
