@@ -21,6 +21,7 @@ import { retrieve, ensureIndexLoaded } from '../services/concierge.retrieval';
 import { EqoreSchedulingAgentService } from '../eqore/services/schedulingAgent.service';
 import { EqoreTokenService } from '../eqore/session/token.service';
 import { getIO } from '../socket';
+import { SignalLedger } from '../kangqore-immp/signals/signalLedger.service';
 
 const INTENT_TAG_MAP: Record<string, string> = {
   pricing: 'PRICING_INQUIRY',
@@ -51,9 +52,14 @@ function enrichVisitorAsync(
       const isBooking = intent === 'scheduling';
       const isLeadCapture = !!capturedLead;
       if (messageCount >= 3 || isBooking || isLeadCapture) {
+        const signalType = isLeadCapture ? 'LEAD_CAPTURE' : isBooking ? 'BOOKING_INTENT' : 'DEEP_ENGAGEMENT';
+        const signalCategory = isLeadCapture || isBooking ? 'INTENT' : 'BEHAVIOR';
+        const severity = isLeadCapture ? 'CRITICAL' : isBooking ? 'HIGH' : 'MODERATE';
+        const confidence = isLeadCapture ? 1.0 : isBooking ? 0.9 : Math.min(0.9, messageCount / 10);
+
         try {
           getIO().to('admin').emit('kimmp:signal:eqore', {
-            type: isLeadCapture ? 'LEAD_CAPTURE' : isBooking ? 'BOOKING_INTENT' : 'DEEP_ENGAGEMENT',
+            type: signalType,
             conversationId: convId,
             visitorUuid: visitorUuid || null,
             intent: mappedTag || intent,
@@ -61,6 +67,22 @@ function enrichVisitorAsync(
             timestamp: new Date().toISOString(),
           });
         } catch {}
+
+        // Persist to Signal Ledger so the Decision Engine can act on eQORE signals.
+        SignalLedger.record({
+          sourceModule:    'eqore',
+          signalType,
+          signalCategory,
+          signalValue:     mappedTag || intent,
+          confidence,
+          severity,
+          conversationId:  convId,
+          metadata: {
+            visitorUuid:  visitorUuid || null,
+            intent:       mappedTag || intent,
+            messageCount,
+          },
+        }).catch(() => {});
       }
     } catch (e: any) {
       logger.warn(`concierge.enrichment.warn: ${e.message}`);
