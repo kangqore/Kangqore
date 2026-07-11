@@ -21,6 +21,7 @@
 import Anthropic     from '@anthropic-ai/sdk'
 import { prisma }   from '../../lib/prisma'
 import logger       from '../../utils/logger'
+import { classifyCurriculum } from '../../waanda-training/curriculumClassifier'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
 
@@ -62,6 +63,7 @@ async function upsertExample(data: {
   agentType?: string
   sourceId?: string
   tags: string[]
+  modelVersion?: string
 }): Promise<boolean> {
   try {
     // Dedup on (source + sourceId) — don't re-mine the same record twice
@@ -72,7 +74,15 @@ async function upsertExample(data: {
       })
       if (exists) return false
     }
-    await (prisma as any).kimmpLearningExample.create({ data })
+    const curriculum = classifyCurriculum({
+      system:  data.agentSystem,
+      trigger: data.agentType,
+      source:  data.source,
+      tags:    data.tags,
+    })
+    await (prisma as any).kimmpLearningExample.create({
+      data: { ...data, curriculum, modelVersion: data.modelVersion ?? null },
+    })
     return true
   } catch (err) {
     logger.warn('[KIMMP Learning] upsertExample failed:', err)
@@ -226,6 +236,59 @@ export async function collectFromDebates(): Promise<number> {
   return added
 }
 
+// ─── Stage 1e — Mine Enterprise Twin Simulations ────────────────────────────────
+// Scenarios are human-authored strategic hypotheticals with LLM-computed outcomes.
+// "What if we hire 2 engineers?" → projected OIS delta + pillar breakdown.
+// These teach WAANDA how to reason about enterprise change impact.
+
+export async function collectFromSimulations(): Promise<number> {
+  const scenarios = await (prisma as any).enterpriseTwinScenario.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 200,
+    select: {
+      id: true, scenario: true, horizon: true, currentOis: true,
+      simulatedOis: true, delta: true, pillarDeltas: true,
+      confidence: true, reasoning: true, recommendation: true,
+    },
+  }).catch(() => [])
+
+  let added = 0
+  for (const s of scenarios) {
+    if (!s.reasoning || !s.recommendation) continue
+    const userMessage = `Enterprise Twin simulation — ${s.horizon}-day horizon.\n\nScenario: "${s.scenario}"\n\nCurrent OIS: ${s.currentOis}. Analyse the impact of this change and project the outcome.`
+    const pillarSummary = s.pillarDeltas && typeof s.pillarDeltas === 'object'
+      ? Object.entries(s.pillarDeltas as Record<string, number>)
+          .filter(([, v]) => Math.abs(v) >= 1)
+          .map(([k, v]) => `${k}: ${v > 0 ? '+' : ''}${v}`)
+          .join(', ')
+      : ''
+    const idealResponse = [
+      `Simulated OIS: ${s.simulatedOis} (${s.delta > 0 ? '+' : ''}${s.delta} from baseline).`,
+      pillarSummary ? `Pillar impact: ${pillarSummary}.` : '',
+      `Reasoning: ${s.reasoning}`,
+      `Recommendation: ${s.recommendation}`,
+    ].filter(Boolean).join('\n')
+
+    // Higher confidence simulation → higher quality signal
+    const quality = Math.min(0.5 + (s.confidence ?? 0.5) * 0.4, 0.9)
+    const ok = await upsertExample({
+      source: 'simulation', sourceId: s.id,
+      systemPrompt: KIMMP_SYSTEM_PROMPT,
+      userMessage,
+      idealResponse,
+      quality,
+      approved: false,
+      agentSystem: 'ENTERPRISE_TWIN',
+      agentType: 'scenario_simulation',
+      tags: ['simulation', 'enterprise_twin', 'ois_projection'],
+    })
+    if (ok) added++
+  }
+
+  logger.info(`[KIMMP Learning] Mined ${added} examples from enterprise twin simulations`)
+  return added
+}
+
 // ─── Corpus Export — JSONL for fine-tuning ────────────────────────────────────
 
 export async function exportCorpusJSONL(): Promise<string> {
@@ -343,9 +406,10 @@ Respond with ONLY a JSON object: {"score": 7, "valid": true}`
       idealResponse: ex.idealResponse,
       quality: Math.round((score / 10) * 10) / 10,
       approved: false,
-      agentSystem: ex.agentSystem ?? 'KIMMP',
-      agentType: 'synthetic',
-      tags: ['synthetic', ...(Array.isArray(ex.tags) ? ex.tags : [])],
+      agentSystem:  ex.agentSystem ?? 'KIMMP',
+      agentType:    'synthetic',
+      tags:         ['synthetic', ...(Array.isArray(ex.tags) ? ex.tags : [])],
+      modelVersion: 'claude-haiku-4-5-20251001',
     })
     if (ok) added++
   }
@@ -442,13 +506,14 @@ export async function runLearningCycle(trigger: 'scheduled' | 'manual' | 'boot' 
   let mined = 0, synthetic = 0
 
   try {
-    const [d, dp, m, db] = await Promise.all([
+    const [d, dp, m, db, sim] = await Promise.all([
       collectFromDecisions(),
       collectFromDispatches(),
       collectFromMemory(),
       collectFromDebates(),
+      collectFromSimulations(),
     ])
-    mined = d + dp + m + db
+    mined = d + dp + m + db + sim
   } catch (err) {
     logger.error('[KIMMP Learning] Collection phase error:', err)
   }

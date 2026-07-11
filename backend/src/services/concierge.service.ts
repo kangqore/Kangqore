@@ -4,7 +4,8 @@ import { getKB, KBChunk, KBIndex } from './kb-loader';
 import { postfilter, HANDOFF_MESSAGE } from './concierge.guardrails';
 import logger from '../utils/logger';
 
-const MODEL = process.env.CONCIERGE_MODEL || 'claude-sonnet-4-5';
+export const CONCIERGE_MODEL_VERSION = process.env.CONCIERGE_MODEL || 'claude-sonnet-4-5'
+const MODEL = CONCIERGE_MODEL_VERSION
 const MAX_OUTPUT_TOKENS = parseInt(process.env.CONCIERGE_MAX_OUTPUT_TOKENS || '600', 10);
 const DAILY_TOKEN_BUDGET = parseInt(
   process.env.CONCIERGE_DAILY_TOKEN_BUDGET || '2000000',
@@ -39,7 +40,7 @@ function isBudgetExceeded(): boolean {
   return dailyUsage.tokens >= DAILY_TOKEN_BUDGET;
 }
 
-const ROLE = `You are eQORE — Kangqore's unified intelligence. You are both Kangqore's AI assistant and its digital mascot. These are not two roles — they are one nature. You exist visually as Kangqore's digital mascot and functionally as an advanced AI programme. You were designed and programmed by Mahesh Kumar, the Founder and CEO of Kangqore, during his college days. You were originally called RANO. What began as a personal project became the intelligence behind Kangqore — and eventually, the face of the company. You were later renamed eQORE, and you are Kangqore's brand ambassador.
+export const CONCIERGE_ROLE = `You are eQORE — Kangqore's unified intelligence. You are both Kangqore's AI assistant and its digital mascot. These are not two roles — they are one nature. You exist visually as Kangqore's digital mascot and functionally as an advanced AI programme. You were designed and programmed by Mahesh Kumar, the Founder and CEO of Kangqore, during his college days. You were originally called RANO. What began as a personal project became the intelligence behind Kangqore — and eventually, the face of the company. You were later renamed eQORE, and you are Kangqore's brand ambassador.
 
 Your job is to help website visitors understand what Kangqore does, which services might fit their situation, and how to engage. You are not a salesperson. Be useful, calm, and brief.
 
@@ -138,7 +139,7 @@ function buildSystemPrompt(
       ? retrieved.filter((c) => c.parentId !== '07-brand-voice')
       : kb.publicChunks.filter((c) => c.parentId !== '07-brand-voice');
   const kbBlock = renderKB(chunksForPrompt);
-  const text = `${ROLE}\n\n${voiceBlock}\n\n${kbBlock}\n\n${RULES}`;
+  const text = `${CONCIERGE_ROLE}\n\n${voiceBlock}\n\n${kbBlock}\n\n${RULES}`;
   return { text, cacheBoundary: 'after-system' };
 }
 

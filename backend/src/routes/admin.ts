@@ -31,7 +31,7 @@ import { evaluateRelease, recordDeployment, recordOutcome, recordRollback, emerg
 import { AegisLedger } from '../kangqore-aegis/aegisLedger.service';
 import { getFlightEvents } from '../scripts/flightRecorder/flightRecorderService';
 import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../scripts/gate8/gate8Service';
-import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, logAdoptionEvent } from '../scripts/gate8/enterpriseService';
+import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent } from '../scripts/gate8/enterpriseService';
 import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin } from '../scripts/gate8/projectOps.service';
 import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../scripts/gate8/enterpriseCoach.service';
 import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../scripts/gate8/decisionEngine.service';
@@ -2867,6 +2867,21 @@ router.get('/enterprise/customer-zero', authenticate, authorize(['ADMIN']), asyn
   } catch (err) { next(err) }
 })
 
+router.get('/enterprise/customer-zero/activity', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const activity = await computePlatformActivity()
+    res.json(activity)
+  } catch (err) { next(err) }
+})
+
+router.get('/enterprise/customer-zero/pulse', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const activity = await computePlatformActivity()
+    const sentence = await generateOperatingPulse(activity)
+    res.json({ sentence, generatedAt: new Date().toISOString() })
+  } catch (err) { next(err) }
+})
+
 // ─── Adoption Event Logging ────────────────────────────────────────────────────
 router.post('/adoption/event', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
@@ -2884,6 +2899,7 @@ router.post('/adoption/event', authenticate, authorize(['ADMIN']), async (req: A
 router.post('/gate8/baseline', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const snap = await createGate8Snapshot('MANUAL', undefined, 'BASELINE')
+    invalidatePulseCache()
     res.status(201).json(snap)
   } catch (err) { next(err) }
 })
@@ -2949,6 +2965,7 @@ router.post('/enterprise/decisions/:id/resolve', authenticate, authorize(['ADMIN
     if (!selected) { res.status(400).json({ error: 'selected option label required' }); return }
     const userId = (req as any).user?.id ?? 'ADMIN'
     await logAdoptionEvent('DECISION_ACCEPT', userId, 'enterprise_decision', req.params.id, { selected })
+    invalidatePulseCache()
     res.json(await resolveDecision(req.params.id, selected, userId))
   } catch (err) { next(err) }
 })

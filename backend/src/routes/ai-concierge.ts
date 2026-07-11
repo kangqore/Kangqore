@@ -11,7 +11,10 @@ import {
 import {
   streamConcierge,
   ConciergeMessage,
+  CONCIERGE_ROLE,
+  CONCIERGE_MODEL_VERSION,
 } from '../services/concierge.service';
+import { WaandaTrainingPipeline } from '../waanda-training/trainingPipeline.service';
 import { prefilter, HANDOFF_MESSAGE } from '../services/concierge.guardrails';
 import { classifyIntent } from '../services/concierge.intent';
 import { retrieve, ensureIndexLoaded } from '../services/concierge.retrieval';
@@ -360,6 +363,20 @@ router.post(
             });
             sseEvent(res, 'conversation', { conversationId: convId });
             enrichVisitorAsync(convId, visitorUuid, intent, userMessageCount, capturedLead);
+            // Capture every real concierge turn as a training example.
+            // dispatchId = convId so the /feedback endpoint can apply quality labels.
+            const trainingPriority = (intent === 'comparison' || intent === 'pricing' || intent === 'services') ? 'HIGH' : 'NORMAL';
+            WaandaTrainingPipeline.captureSpeak({
+              system:          'CONCIERGE',
+              trigger:         intent,
+              systemPrompt:    CONCIERGE_ROLE,
+              userPrompt:      message,
+              completion:      final.text,
+              priority:        trainingPriority,
+              dispatchId:      convId,
+              conversationId:  convId,
+              modelVersion:    CONCIERGE_MODEL_VERSION,
+            });
           } catch (err: any) {
             logger.error(`concierge.persist.error: ${err.message}`);
           } finally {
@@ -420,6 +437,13 @@ router.post(
       logger.info(
         `concierge.feedback rating=${value.rating} conversationId=${value.conversationId} idx=${value.messageIndex}`
       );
+      // Apply human quality label to the training example for this conversation turn.
+      // dispatchId was set to convId at capture time, so this directly labels it.
+      WaandaTrainingPipeline.applyFeedback({
+        dispatchId: value.conversationId,
+        feedback:   value.rating === 'up' ? 'ACCEPTED' : 'DISMISSED',
+        correction: value.reason || undefined,
+      }).catch(() => {});
       res.status(201).json({ ok: true, id: created.id });
     } catch (e) {
       next(e);

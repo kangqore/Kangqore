@@ -3,6 +3,8 @@ import { adminApi } from '@lib/api'
 import {
   Award, TrendingUp, Zap, Target, CheckCircle2,
   Clock, BarChart3, FileText, Download, Layers,
+  Activity, Cpu, Brain, BarChart2, Wand2, FlaskConical,
+  Lightbulb, Timer, ArrowUp, ArrowDown, Minus,
 } from 'lucide-react'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -38,6 +40,47 @@ interface CustomerZeroReport {
   topRecommendations: TopRec[]
   verifiedBy:         string
   generatedAt:        string
+}
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface Trend { delta: number; direction: 'up' | 'down' | 'flat' }
+
+interface PlatformActivity {
+  // Adoption funnel (velocity-first)
+  missionsLast24h:    number
+  missionsTrend:      Trend
+  decisionsLast7d:    number
+  decisionsTrend:     Trend
+  estimatedTimeSaved: number
+  evidenceCaptured:   number
+  evidenceTrend:      Trend
+  simulationRuns:     number
+  simulationsTrend:   Trend
+  waandaSessions:     number
+  // Supporting totals
+  projectsCreated:    number
+  tasksCompleted:     number
+  missionsExecuted:   number
+  executiveDecisions: number
+  commandsExecuted:   number
+  optimizationRuns:   number
+  automationSuccess:  number
+}
+
+interface PulseDriver {
+  metric:  string
+  value:   string | number
+  signal:  'positive' | 'negative' | 'neutral'
+}
+
+interface OperatingPulse {
+  summary:           string
+  health:            'healthy' | 'warning' | 'critical'
+  confidence:        number
+  generatedAt:       string
+  drivers:           PulseDriver[]
+  recommendedAction: string | null
 }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -82,6 +125,66 @@ function MetricCard({ label, value, sub, color }: { label: string; value: string
         {value}
       </span>
       {sub && <span style={{ fontSize: 10, color: TEXT2 }}>{sub}</span>}
+    </div>
+  )
+}
+
+function ActivityCard({
+  icon: Icon, label, value, unit, color, window: win, rank, trend,
+}: {
+  icon: any; label: string; value: number; unit?: string; color: string
+  window?: string; rank?: number
+  trend?: { delta: number; direction: 'up' | 'down' | 'flat' }
+}) {
+  const dead = value === 0
+  const borderColor = dead ? BORDER : `${color}44`
+
+  const TrendIcon = trend?.direction === 'up' ? ArrowUp : trend?.direction === 'down' ? ArrowDown : Minus
+  const trendColor = trend?.direction === 'up' ? GREEN : trend?.direction === 'down' ? '#ef4444' : TEXT2
+  const trendLabel = trend && trend.delta !== 0
+    ? `${trend.delta > 0 ? '+' : ''}${trend.delta}`
+    : '—'
+
+  return (
+    <div style={{
+      background: SURFACE, border: `1px solid ${borderColor}`, borderRadius: 10,
+      padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8,
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {rank && (
+        <span style={{
+          position: 'absolute', top: 10, right: 12,
+          fontSize: 9, fontWeight: 700, color: TEXT2, opacity: 0.4,
+        }}>
+          #{rank}
+        </span>
+      )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <Icon size={13} style={{ color: dead ? TEXT2 : color }} />
+        {win && (
+          <span style={{
+            fontSize: 9, color: TEXT2, background: dead ? BORDER : `${color}18`,
+            padding: '1px 6px', borderRadius: 6, fontWeight: 600,
+          }}>
+            {win}
+          </span>
+        )}
+      </div>
+      <div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+          <span style={{ fontSize: 24, fontWeight: 800, color: dead ? TEXT2 : color, lineHeight: 1, opacity: dead ? 0.4 : 1 }}>
+            {value.toLocaleString()}
+            {unit && <span style={{ fontSize: 13, fontWeight: 600, marginLeft: 2 }}>{unit}</span>}
+          </span>
+          {trend && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <TrendIcon size={10} style={{ color: trendColor }} />
+              <span style={{ fontSize: 10, fontWeight: 700, color: trendColor }}>{trendLabel}</span>
+            </span>
+          )}
+        </div>
+        <div style={{ fontSize: 10, color: TEXT2, marginTop: 4, fontWeight: 500, lineHeight: 1.3 }}>{label}</div>
+      </div>
     </div>
   )
 }
@@ -173,6 +276,20 @@ export function CustomerZeroPage() {
     staleTime: 60_000,
   })
 
+  const { data: activity } = useQuery<PlatformActivity>({
+    queryKey: ['customer-zero-activity'],
+    queryFn:  () => adminApi('/admin/enterprise/customer-zero/activity'),
+    staleTime: 30_000,
+    refetchInterval: 60_000,
+  })
+
+  const { data: pulse } = useQuery<OperatingPulse>({
+    queryKey: ['customer-zero-pulse'],
+    queryFn:  () => adminApi('/admin/enterprise/customer-zero/pulse'),
+    staleTime: 55 * 60 * 1000,
+    refetchInterval: 60 * 60 * 1000,
+  })
+
   if (isLoading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 300, gap: 10, color: TEXT2 }}>
@@ -259,6 +376,74 @@ export function CustomerZeroPage() {
         </div>
       </div>
 
+      {/* ── Enterprise Operating Pulse ── */}
+      {pulse?.summary && (() => {
+        const HEALTH_COLOR = pulse.health === 'healthy' ? GREEN : pulse.health === 'warning' ? GOLD : '#ef4444'
+        const HEALTH_BG    = pulse.health === 'healthy' ? `${GREEN}10` : pulse.health === 'warning' ? `${GOLD}10` : '#ef444410'
+        return (
+          <div style={{
+            background: HEALTH_BG, border: `1px solid ${HEALTH_COLOR}2a`, borderRadius: 10,
+            padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10,
+          }}>
+            {/* Header row */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+              <Brain size={14} style={{ color: PURPLE, flexShrink: 0, marginTop: 1 }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                  <span style={{
+                    fontSize: 9, fontWeight: 700, color: PURPLE, textTransform: 'uppercase', letterSpacing: '0.1em',
+                  }}>
+                    WAANDA Enterprise Pulse
+                  </span>
+                  <span style={{
+                    fontSize: 9, fontWeight: 700, color: HEALTH_COLOR,
+                    background: `${HEALTH_COLOR}18`, border: `1px solid ${HEALTH_COLOR}44`,
+                    padding: '1px 7px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.06em',
+                  }}>
+                    {pulse.health}
+                  </span>
+                  <span style={{ fontSize: 9, color: TEXT2 }}>
+                    {Math.round(pulse.confidence * 100)}% confidence
+                  </span>
+                </div>
+                <p style={{ fontSize: 12, color: TEXT1, lineHeight: 1.6, margin: 0 }}>{pulse.summary}</p>
+              </div>
+              <span style={{ fontSize: 9, color: TEXT2, flexShrink: 0, whiteSpace: 'nowrap' }}>
+                {new Date(pulse.generatedAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+              </span>
+            </div>
+
+            {/* Evidence drivers */}
+            {pulse.drivers.length > 0 && (
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', paddingLeft: 26 }}>
+                {pulse.drivers.map((d, i) => {
+                  const dc = d.signal === 'positive' ? GREEN : d.signal === 'negative' ? '#ef4444' : TEXT2
+                  return (
+                    <span key={i} style={{
+                      fontSize: 9, color: dc, background: `${dc}12`,
+                      border: `1px solid ${dc}33`, borderRadius: 5,
+                      padding: '1px 7px', fontWeight: 600,
+                    }}>
+                      {d.metric}: {d.value}
+                    </span>
+                  )
+                })}
+              </div>
+            )}
+
+            {/* Recommended action */}
+            {pulse.recommendedAction && (
+              <div style={{
+                paddingLeft: 26, display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                <Zap size={10} style={{ color: GOLD, flexShrink: 0 }} />
+                <span style={{ fontSize: 11, color: TEXT2 }}>{pulse.recommendedAction}</span>
+              </div>
+            )}
+          </div>
+        )
+      })()}
+
       {/* ── OIS Arc + COIG Triple ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
 
@@ -311,6 +496,72 @@ export function CustomerZeroPage() {
           />
         </div>
       </div>
+
+      {/* ── Adoption Funnel ── */}
+      {activity && (
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+            <Activity size={15} style={{ color: GREEN }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: TEXT2, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Adoption Signal
+            </span>
+            <span style={{
+              fontSize: 9, background: `${GREEN}18`, color: GREEN, padding: '2px 8px',
+              borderRadius: 10, fontWeight: 700, border: `1px solid ${GREEN}33`,
+            }}>
+              LIVE
+            </span>
+          </div>
+          <p style={{ fontSize: 11, color: TEXT2, marginBottom: 16, marginTop: 2 }}>
+            These six numbers tell you whether the OS is alive. COIG follows when they are consistently non-zero.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 10 }}>
+            <ActivityCard
+              rank={1} icon={Cpu}          color={BLUE}
+              label="Daily Active Missions"      value={activity.missionsLast24h}    window="last 24h"
+              trend={activity.missionsTrend}
+            />
+            <ActivityCard
+              rank={2} icon={Brain}        color={PURPLE}
+              label="Weekly Executive Decisions" value={activity.decisionsLast7d}    window="last 7d"
+              trend={activity.decisionsTrend}
+            />
+            <ActivityCard
+              rank={3} icon={Timer}        color={GREEN}
+              label="Hours Captured"             value={activity.estimatedTimeSaved}  unit="h"
+            />
+            <ActivityCard
+              rank={4} icon={Lightbulb}    color={GOLD}
+              label="Evidence Generated"         value={activity.evidenceCaptured}
+              trend={activity.evidenceTrend}
+            />
+            <ActivityCard
+              rank={5} icon={FlaskConical}  color={BLUE}
+              label="Simulation Runs"            value={activity.simulationRuns}
+              trend={activity.simulationsTrend}
+            />
+            <ActivityCard
+              rank={6} icon={Wand2}        color={PURPLE}
+              label="WAANDA Usage"               value={activity.waandaSessions}
+            />
+          </div>
+
+          {/* Zero-state prompt */}
+          {activity.missionsLast24h === 0 && (
+            <div style={{
+              marginTop: 12, padding: '10px 14px',
+              background: `${GOLD}0F`, border: `1px solid ${GOLD}33`, borderRadius: 8,
+              display: 'flex', alignItems: 'center', gap: 8,
+            }}>
+              <BarChart2 size={13} style={{ color: GOLD, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, color: TEXT2 }}>
+                No missions in the last 24 hours. Open Mission Control and run a KIMMP briefing to start the clock.
+              </span>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ── Goal progress + Top recs side by side ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>

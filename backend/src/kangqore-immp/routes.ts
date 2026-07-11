@@ -46,6 +46,7 @@ import { KimmpDigitalTwin } from './twin/kimmpTwin.service';
 import { KimmpSystemDispatcher } from './agents/systemDispatcher';
 import { SystemType, SYSTEM_AGENTS } from './agents/agentRegistry';
 import { SystemLearning } from './agents/systemLearning';
+import { invalidatePulseCache } from '../scripts/gate8/enterpriseService';
 import { SystemRAG, RAGSystem, RAG_SYSTEMS, SYSTEM_DOC_TYPES } from './agents/systemRAG';
 import { prisma } from '../lib/prisma';
 
@@ -953,6 +954,7 @@ kangqoreImmpRoutes.post('/systems/dispatch/:id/feedback', requireAuth, requireRo
     correction: correction ?? undefined,
   })
   if (!result.ok) return res.status(404).json({ error: 'Dispatch record not found — cannot record feedback' })
+  if (feedback === 'ACCEPTED') invalidatePulseCache()
   res.json({ ok: true, memoryId: result.memoryId })
 })
 

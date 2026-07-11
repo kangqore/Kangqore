@@ -594,3 +594,270 @@ export async function computeCustomerZeroReport() {
     generatedAt:        new Date().toISOString(),
   }
 }
+
+// ─── Customer Zero Platform Activity ─────────────────────────────────────────
+// Operational telemetry: raw counts from all active platform tables.
+// This is the health monitor — how much real work has run through the OS.
+
+export async function computePlatformActivity() {
+  const now        = new Date()
+  const h24ago     = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+  const h48ago     = new Date(now.getTime() - 48 * 60 * 60 * 1000)
+  const d7ago      = new Date(now.getTime() -  7 * 24 * 60 * 60 * 1000)
+  const d14ago     = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
+
+  const [
+    missionsLast24h,
+    missionsPrior24h,
+    decisionsLast7d,
+    decisionsPrior7d,
+    evidenceLast7d,
+    evidencePrior7d,
+    simulationsLast7d,
+    simulationsPrior7d,
+    // Totals
+    missionsExecuted,
+    executiveDecisions,
+    simulationRuns,
+    waandaSessions,
+    evidenceCaptured,
+    tasksCompleted,
+    totalDispatches,
+    acceptedDispatches,
+    projectsCreated,
+    commandsExecuted,
+    optimizationRuns,
+  ] = await Promise.all([
+    (prisma as any).kimmpSystemDispatch.count({ where: { createdAt: { gte: h24ago } } }).catch(() => 0),
+    (prisma as any).kimmpSystemDispatch.count({ where: { createdAt: { gte: h48ago, lt: h24ago } } }).catch(() => 0),
+    (prisma as any).kimmpDecision.count({ where: { status: { in: ['APPROVED', 'EXECUTED'] }, approvedAt: { gte: d7ago } } }).catch(() => 0),
+    (prisma as any).kimmpDecision.count({ where: { status: { in: ['APPROVED', 'EXECUTED'] }, approvedAt: { gte: d14ago, lt: d7ago } } }).catch(() => 0),
+    (prisma as any).kimmpSignal.count({ where: { createdAt: { gte: d7ago } } }).catch(() => 0),
+    (prisma as any).kimmpSignal.count({ where: { createdAt: { gte: d14ago, lt: d7ago } } }).catch(() => 0),
+    (prisma as any).enterpriseTwinScenario.count({ where: { createdAt: { gte: d7ago } } }).catch(() => 0),
+    (prisma as any).enterpriseTwinScenario.count({ where: { createdAt: { gte: d14ago, lt: d7ago } } }).catch(() => 0),
+    (prisma as any).kimmpSystemDispatch.count().catch(() => 0),
+    (prisma as any).kimmpDecision.count({ where: { status: { in: ['APPROVED', 'EXECUTED'] } } }).catch(() => 0),
+    (prisma as any).enterpriseTwinScenario.count().catch(() => 0),
+    (prisma as any).adoptionEvent.count({ where: { eventType: 'SESSION' } }).catch(() => 0),
+    (prisma as any).kimmpSignal.count().catch(() => 0),
+    (prisma as any).task.count({ where: { status: { in: ['done', 'completed', 'DONE', 'COMPLETED'] } } }).catch(() => 0),
+    (prisma as any).kimmpSystemDispatch.count().catch(() => 0),
+    (prisma as any).kimmpSystemDispatch.count({ where: { status: 'ACCEPTED' } }).catch(() => 0),
+    (prisma as any).project.count().catch(() => 0),
+    (prisma as any).adoptionEvent.count({ where: { eventType: 'AGENT_INVOKE' } }).catch(() => 0),
+    (prisma as any).adoptionEvent.count({ where: { eventType: 'WORKFLOW_TRIGGER' } }).catch(() => 0),
+  ])
+
+  const estimatedTimeSaved = Math.round(
+    tasksCompleted * 1.5 + executiveDecisions * 0.5 + missionsExecuted * 0.25
+  )
+
+  const automationSuccess = totalDispatches > 0
+    ? Math.round((acceptedDispatches / totalDispatches) * 100)
+    : 0
+
+  function trend(current: number, prior: number): { delta: number; direction: 'up' | 'down' | 'flat' } {
+    const delta = current - prior
+    return { delta, direction: delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat' }
+  }
+
+  return {
+    // Adoption funnel (velocity-first)
+    missionsLast24h,
+    missionsTrend:    trend(missionsLast24h, missionsPrior24h),
+    decisionsLast7d,
+    decisionsTrend:   trend(decisionsLast7d, decisionsPrior7d),
+    evidenceCaptured,
+    evidenceTrend:    trend(evidenceLast7d, evidencePrior7d),
+    simulationRuns,
+    simulationsTrend: trend(simulationsLast7d, simulationsPrior7d),
+    estimatedTimeSaved,
+    waandaSessions,
+    // Supporting totals
+    projectsCreated,
+    tasksCompleted,
+    missionsExecuted,
+    executiveDecisions,
+    commandsExecuted,
+    optimizationRuns,
+    automationSuccess,
+  }
+}
+
+// ─── Enterprise Operating Pulse ───────────────────────────────────────────────
+// Structured briefing that synthesises adoption metrics into:
+//   summary             — one honest sentence
+//   health              — deterministic classification (healthy / warning / critical)
+//   confidence          — LLM self-reported certainty
+//   drivers             — deterministic evidence list (why WAANDA reached this conclusion)
+//   recommendedAction   — single next action if health is not healthy
+//
+// The evidence layer is deterministic so "why did WAANDA say that?" is always answerable.
+// The sentence and recommendation use Claude Haiku for natural language synthesis.
+// Cache invalidates on high-impact events (see invalidatePulseCache).
+
+export interface PulseDriver {
+  metric:  string
+  value:   string | number
+  signal:  'positive' | 'negative' | 'neutral'
+}
+
+export interface EnterprisePulse {
+  summary:           string
+  health:            'healthy' | 'warning' | 'critical'
+  confidence:        number
+  generatedAt:       string
+  drivers:           PulseDriver[]
+  recommendedAction: string | null
+}
+
+type ActivitySnapshot = Awaited<ReturnType<typeof computePlatformActivity>>
+
+// Build the evidence list deterministically — no LLM, always explainable
+function buildDrivers(a: ActivitySnapshot): PulseDriver[] {
+  const drivers: PulseDriver[] = []
+
+  // Mission activity
+  if (a.missionsLast24h === 0) {
+    drivers.push({ metric: 'Daily Active Missions', value: 0, signal: 'negative' })
+  } else {
+    drivers.push({
+      metric: 'Daily Active Missions', value: a.missionsLast24h,
+      signal: a.missionsTrend.direction === 'up' ? 'positive' : a.missionsTrend.direction === 'down' ? 'negative' : 'neutral',
+    })
+  }
+
+  // Decision velocity
+  if (a.decisionsLast7d === 0) {
+    drivers.push({ metric: 'Executive Decisions (7d)', value: 0, signal: 'negative' })
+  } else {
+    drivers.push({
+      metric: 'Executive Decisions (7d)', value: a.decisionsLast7d,
+      signal: a.decisionsTrend.direction === 'up' ? 'positive' : a.decisionsTrend.direction === 'down' ? 'negative' : 'neutral',
+    })
+  }
+
+  // Evidence growth
+  if (a.evidenceTrend.delta !== 0) {
+    drivers.push({
+      metric: 'Evidence Generated (7d delta)', value: `${a.evidenceTrend.delta > 0 ? '+' : ''}${a.evidenceTrend.delta}`,
+      signal: a.evidenceTrend.direction === 'up' ? 'positive' : a.evidenceTrend.direction === 'down' ? 'negative' : 'neutral',
+    })
+  }
+
+  // Simulation activity
+  if (a.simulationRuns > 0) {
+    drivers.push({
+      metric: 'Simulation Runs', value: a.simulationRuns,
+      signal: a.simulationsTrend.direction === 'up' ? 'positive' : 'neutral',
+    })
+  }
+
+  // Hours saved
+  if (a.estimatedTimeSaved > 0) {
+    drivers.push({ metric: 'Estimated Hours Saved', value: `${a.estimatedTimeSaved}h`, signal: 'positive' })
+  }
+
+  return drivers
+}
+
+// Deterministic health classification — LLM cannot override this
+function classifyHealth(a: ActivitySnapshot): 'healthy' | 'warning' | 'critical' {
+  const missionsDead   = a.missionsLast24h === 0
+  const decisionsDead  = a.decisionsLast7d === 0
+  const missionsFalling = a.missionsTrend.direction === 'down'
+  const decisionsFalling = a.decisionsTrend.direction === 'down'
+
+  if (missionsDead && decisionsDead) return 'critical'
+  if (missionsDead || decisionsDead || (missionsFalling && decisionsFalling)) return 'warning'
+  return 'healthy'
+}
+
+let _pulseCache: { pulse: EnterprisePulse; generatedAt: number } | null = null
+
+// Call this when a high-impact event happens — forces the next request to regenerate
+export function invalidatePulseCache(): void {
+  _pulseCache = null
+}
+
+export async function generateOperatingPulse(activity: ActivitySnapshot): Promise<EnterprisePulse> {
+  const now = Date.now()
+  if (_pulseCache && now - _pulseCache.generatedAt < 60 * 60 * 1000) {
+    return _pulseCache.pulse
+  }
+
+  const drivers   = buildDrivers(activity)
+  const health    = classifyHealth(activity)
+  const apiKey    = process.env.ANTHROPIC_API_KEY
+
+  // Deterministic fallback when no API key — still structured and useful
+  if (!apiKey) {
+    const pulse: EnterprisePulse = {
+      summary:           health === 'critical' ? 'No mission or decision activity detected in the current period.'
+                       : health === 'warning'  ? 'Operational activity is below expected levels for this period.'
+                       : 'Operational activity is within normal range.',
+      health,
+      confidence:        1.0,
+      generatedAt:       new Date().toISOString(),
+      drivers,
+      recommendedAction: health === 'critical' ? 'Open Mission Control and run a KIMMP briefing to start the operational clock.'
+                       : health === 'warning'  ? 'Review mission queue and ensure executive decisions are being routed through the OS.'
+                       : null,
+    }
+    _pulseCache = { pulse, generatedAt: now }
+    return pulse
+  }
+
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic({ apiKey })
+
+  const driverText = drivers.map(d => `  ${d.metric}: ${d.value} [${d.signal}]`).join('\n')
+  const prompt = `Enterprise health classification: ${health.toUpperCase()}
+
+Evidence:
+${driverText}
+
+Return ONLY a valid JSON object — no markdown, no preamble:
+{
+  "summary": "<one honest sentence, max 40 words, present tense, no preamble>",
+  "confidence": <0.0-1.0 how certain you are based on the evidence>,
+  "recommendedAction": "<single most important action, or null if health is healthy>"
+}`
+
+  try {
+    const response = await client.messages.create({
+      model:      'claude-haiku-4-5-20251001',
+      max_tokens: 180,
+      system:     'You are WAANDA — the Kangqore operating brain. Synthesise enterprise operational evidence into a structured JSON briefing. Be direct. If activity is absent, say so. If healthy, confirm it. Never invent data not in the evidence.',
+      messages:   [{ role: 'user', content: prompt }],
+    })
+    const raw  = (response.content[0] as any)?.text?.trim() ?? ''
+    const json = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0] ?? '{}')
+
+    const pulse: EnterprisePulse = {
+      summary:           json.summary           ?? 'Operating state could not be assessed.',
+      health,                                     // deterministic — LLM cannot override
+      confidence:        Math.min(Math.max(Number(json.confidence ?? 0.8), 0), 1),
+      generatedAt:       new Date().toISOString(),
+      drivers,
+      recommendedAction: json.recommendedAction  ?? null,
+    }
+    _pulseCache = { pulse, generatedAt: now }
+    return pulse
+  } catch {
+    // JSON parse failed — return structured deterministic fallback
+    const pulse: EnterprisePulse = {
+      summary:           health === 'critical' ? 'No mission or decision activity detected.'
+                       : health === 'warning'  ? 'Operational activity is below expected levels.'
+                       : 'Operational activity is within normal range.',
+      health,
+      confidence:        0.75,
+      generatedAt:       new Date().toISOString(),
+      drivers,
+      recommendedAction: health !== 'healthy' ? 'Review Mission Control and ensure KIMMP is receiving triggers.' : null,
+    }
+    _pulseCache = { pulse, generatedAt: now }
+    return pulse
+  }
+}

@@ -3894,7 +3894,7 @@ model KimmpSystemKnowledge {
 
 model KimmpLearningExample {
   id            String   @id @default(cuid())
-  source        String   // "decision" | "dispatch" | "memory" | "synthetic"
+  source        String   // "decision" | "dispatch" | "memory" | "synthetic" | "debate" | "simulation"
   systemPrompt  String   @db.Text
   userMessage   String   @db.Text
   idealResponse String   @db.Text
@@ -3904,11 +3904,17 @@ model KimmpLearningExample {
   agentType     String?
   sourceId      String?  // FK to originating record
   tags          String[]
+
+  // Learning Lineage
+  curriculum    String?  // SALES | REVENUE | OPERATIONS | GOVERNANCE | SECURITY | FINANCE | EXECUTIVE | PLATFORM
+  modelVersion  String?  // model used for synthetic/validation pass
+
   createdAt     DateTime @default(now())
 
   @@index([source, createdAt])
   @@index([approved, quality])
   @@index([agentSystem, createdAt])
+  @@index([curriculum, createdAt])
   @@map("kimmp_learning_examples")
 }
 
@@ -4316,8 +4322,14 @@ model WaandaTrainingExample {
   chatFormat   Json?    // {conversations: [{from, value}]}
 
   // Linkage
-  dispatchId   String?
-  exported     Boolean  @default(false)
+  dispatchId     String?
+  conversationId String?  // explicit link to Conversation (CONCIERGE source)
+  simulationId   String?  // explicit link to EnterpriseTwinScenario
+  exported       Boolean  @default(false)
+
+  // Learning Lineage
+  modelVersion   String?  // e.g. "claude-sonnet-4-6" — model that produced this completion
+  curriculum     String?  // SALES | REVENUE | OPERATIONS | GOVERNANCE | SECURITY | FINANCE | EXECUTIVE | CONCIERGE | PLATFORM
 
   createdAt    DateTime @default(now())
 
@@ -4325,6 +4337,7 @@ model WaandaTrainingExample {
   @@index([feedback, exported, createdAt])
   @@index([dispatchId])
   @@index([exported, createdAt])
+  @@index([curriculum, createdAt])
   @@map("waanda_training_examples")
 }
 

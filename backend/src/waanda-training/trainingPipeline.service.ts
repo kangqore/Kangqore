@@ -19,6 +19,7 @@
 
 import { prisma } from '../lib/prisma'
 import logger    from '../utils/logger'
+import { classifyCurriculum } from './curriculumClassifier'
 
 export type ExampleType = 'REASON' | 'SPEAK' | 'SYNTHESIS'
 
@@ -45,33 +46,47 @@ function toChat(systemPrompt: string, userPrompt: string, completion: string) {
 export class WaandaTrainingPipeline {
 
   private static async write(data: {
-    exampleType:  ExampleType
-    system?:      string
-    systemPrompt: string
-    userPrompt:   string
-    completion:   string
-    trigger?:     string
-    priority?:    string
-    confidence?:  number
-    agentsUsed?:  string[]
-    dispatchId?:  string
+    exampleType:    ExampleType
+    system?:        string
+    systemPrompt:   string
+    userPrompt:     string
+    completion:     string
+    trigger?:       string
+    priority?:      string
+    confidence?:    number
+    agentsUsed?:    string[]
+    dispatchId?:    string
+    conversationId?: string
+    simulationId?:  string
+    modelVersion?:  string
   }): Promise<string | null> {
     try {
       const alpacaFormat = toAlpaca(data.systemPrompt, data.userPrompt, data.completion)
       const chatFormat   = toChat  (data.systemPrompt, data.userPrompt, data.completion)
 
+      const curriculum = classifyCurriculum({
+        system:      data.system,
+        trigger:     data.trigger,
+        exampleType: data.exampleType,
+        intent:      data.trigger,
+      })
+
       const row = await (prisma as any).waandaTrainingExample.create({
         data: {
-          exampleType:  data.exampleType,
-          system:       data.system       ?? null,
-          systemPrompt: data.systemPrompt.slice(0, 8000),
-          userPrompt:   data.userPrompt.slice(0, 8000),
-          completion:   data.completion.slice(0, 8000),
-          trigger:      data.trigger      ?? null,
-          priority:     data.priority     ?? null,
-          confidence:   data.confidence   ?? null,
-          agentsUsed:   data.agentsUsed   ?? [],
-          dispatchId:   data.dispatchId   ?? null,
+          exampleType:    data.exampleType,
+          system:         data.system         ?? null,
+          systemPrompt:   data.systemPrompt.slice(0, 8000),
+          userPrompt:     data.userPrompt.slice(0, 8000),
+          completion:     data.completion.slice(0, 8000),
+          trigger:        data.trigger        ?? null,
+          priority:       data.priority       ?? null,
+          confidence:     data.confidence     ?? null,
+          agentsUsed:     data.agentsUsed     ?? [],
+          dispatchId:     data.dispatchId     ?? null,
+          conversationId: data.conversationId ?? null,
+          simulationId:   data.simulationId   ?? null,
+          modelVersion:   data.modelVersion   ?? null,
+          curriculum,
           alpacaFormat,
           chatFormat,
         },
@@ -113,25 +128,31 @@ export class WaandaTrainingPipeline {
   // Call after speakPhase() returns — captures how the system synthesises.
 
   static captureSpeak(params: {
-    system:       string
-    trigger?:     string
-    systemPrompt: string
-    userPrompt:   string
-    completion:   string   // raw JSON: {summary, keyFindings, recommendations, alerts, loopSignal, confidence}
-    priority:     string
-    confidence?:  number
-    dispatchId?:  string
+    system:          string
+    trigger?:        string
+    systemPrompt:    string
+    userPrompt:      string
+    completion:      string
+    priority:        string
+    confidence?:     number
+    dispatchId?:     string
+    conversationId?: string
+    simulationId?:   string
+    modelVersion?:   string
   }): void {
     WaandaTrainingPipeline.write({
-      exampleType:  'SPEAK',
-      system:       params.system,
-      trigger:      params.trigger,
-      systemPrompt: params.systemPrompt,
-      userPrompt:   params.userPrompt,
-      completion:   params.completion,
-      priority:     params.priority,
-      confidence:   params.confidence,
-      dispatchId:   params.dispatchId,
+      exampleType:    'SPEAK',
+      system:         params.system,
+      trigger:        params.trigger,
+      systemPrompt:   params.systemPrompt,
+      userPrompt:     params.userPrompt,
+      completion:     params.completion,
+      priority:       params.priority,
+      confidence:     params.confidence,
+      dispatchId:     params.dispatchId,
+      conversationId: params.conversationId,
+      simulationId:   params.simulationId,
+      modelVersion:   params.modelVersion,
     }).catch(() => {})
   }
 
