@@ -622,7 +622,6 @@ export async function computePlatformActivity() {
     waandaSessions,
     evidenceCaptured,
     tasksCompleted,
-    totalDispatches,
     acceptedDispatches,
     projectsCreated,
     commandsExecuted,
@@ -639,10 +638,11 @@ export async function computePlatformActivity() {
     (prisma as any).kimmpSystemDispatch.count().catch(() => 0),
     (prisma as any).kimmpDecision.count({ where: { status: { in: ['APPROVED', 'EXECUTED'] } } }).catch(() => 0),
     (prisma as any).enterpriseTwinScenario.count().catch(() => 0),
-    (prisma as any).adoptionEvent.count({ where: { eventType: 'SESSION' } }).catch(() => 0),
+    // WAANDA usage: WaandaRuntimeCall counts every AI activation through the runtime.
+    // adoptionEvent(SESSION) is never auto-logged, so we use runtimeCalls as the proxy.
+    (prisma as any).waandaRuntimeCall.count({ where: { createdAt: { gte: d7ago } } }).catch(() => 0),
     (prisma as any).kimmpSignal.count().catch(() => 0),
     (prisma as any).task.count({ where: { status: { in: ['done', 'completed', 'DONE', 'COMPLETED'] } } }).catch(() => 0),
-    (prisma as any).kimmpSystemDispatch.count().catch(() => 0),
     (prisma as any).kimmpSystemDispatch.count({ where: { status: 'ACCEPTED' } }).catch(() => 0),
     (prisma as any).project.count().catch(() => 0),
     (prisma as any).adoptionEvent.count({ where: { eventType: 'AGENT_INVOKE' } }).catch(() => 0),
@@ -653,8 +653,8 @@ export async function computePlatformActivity() {
     tasksCompleted * 1.5 + executiveDecisions * 0.5 + missionsExecuted * 0.25
   )
 
-  const automationSuccess = totalDispatches > 0
-    ? Math.round((acceptedDispatches / totalDispatches) * 100)
+  const automationSuccess = missionsExecuted > 0
+    ? Math.round((acceptedDispatches / missionsExecuted) * 100)
     : 0
 
   function trend(current: number, prior: number): { delta: number; direction: 'up' | 'down' | 'flat' } {

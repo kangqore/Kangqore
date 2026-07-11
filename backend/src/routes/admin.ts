@@ -2877,8 +2877,8 @@ router.get('/enterprise/customer-zero/activity', authenticate, authorize(['ADMIN
 router.get('/enterprise/customer-zero/pulse', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const activity = await computePlatformActivity()
-    const sentence = await generateOperatingPulse(activity)
-    res.json({ sentence, generatedAt: new Date().toISOString() })
+    const pulse = await generateOperatingPulse(activity)
+    res.json(pulse)
   } catch (err) { next(err) }
 })
 
