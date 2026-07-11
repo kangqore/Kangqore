@@ -62,6 +62,23 @@ export class PredictionStore {
     }
   }
 
+  /** Global list of top at-risk leads — highest deliveryRisk, lowest conversion first. */
+  static async listTopAtRisk(limit = 5): Promise<unknown[]> {
+    try {
+      return await (prisma as any).kimmpPrediction.findMany({
+        orderBy: [
+          { deliveryRisk: 'desc' },
+          { conversionProbability: 'asc' },
+        ],
+        take: Math.min(Math.max(1, limit), 20),
+        select: {
+          id: true, leadId: true, conversionProbability: true,
+          acvEstimate: true, deliveryRisk: true, modelVersion: true, createdAt: true,
+        },
+      });
+    } catch { return []; }
+  }
+
   /**
    * Record actual outcomes retroactively — closes the training loop.
    * Called when a lead converts (CONVERTED status) or a delivery issue is flagged.

@@ -117,6 +117,7 @@ export const RAIL_ITEMS: RailEntry[] = [
     defaultPath: `${BASE}/kangqore-immp`,
     matchPrefixes: [`${BASE}/kangqore-immp`],
     sidebarItems: [
+      { id: 'kimmp-cc',         label: 'Command Center',  path: `${BASE}/kangqore-immp/command-center`    },
       { id: 'kimmp-index',      label: 'Intelligence',    path: `${BASE}/kangqore-immp`,                   badge: 'kangqore-immp' },
       { id: 'kimmp-mc',         label: 'Mission Control', path: `${BASE}/kangqore-immp/mission-control`   },
       { id: 'kimmp-briefing',   label: 'Briefing',        path: `${BASE}/kangqore-immp/briefing`          },

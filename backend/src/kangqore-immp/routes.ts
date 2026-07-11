@@ -49,6 +49,7 @@ import { SystemLearning } from './agents/systemLearning';
 import { invalidatePulseCache } from '../scripts/gate8/enterpriseService';
 import { SystemRAG, RAGSystem, RAG_SYSTEMS, SYSTEM_DOC_TYPES } from './agents/systemRAG';
 import { prisma } from '../lib/prisma';
+import { CommandCenterService } from './command-center/commandCenter.service';
 
 const kangqoreImmpRoutes = Router();
 
@@ -152,6 +153,15 @@ kangqoreImmpRoutes.get(
   requireRole(['ADMIN']),
   BehaviorAnalysisController.marketSignals
 );
+
+// Phase 6 — Command Center aggregate (all 7 intelligence streams in one call).
+kangqoreImmpRoutes.get('/command-center', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    res.json(await CommandCenterService.aggregate());
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 // Signal Ledger (Phase 1) — the cross-system signal hub.
 kangqoreImmpRoutes.post('/signals', requireAuth, requireRole(['ADMIN']), SignalLedgerController.ingest);

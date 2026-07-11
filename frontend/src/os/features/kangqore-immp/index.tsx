@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import {
   Brain, TrendingUp, BookOpen, Satellite, Bell, Activity,
-  Search, Target, FileText, UserCheck, CheckSquare, Newspaper, Cpu, Scale, Zap, GitBranch, LayoutDashboard, Shield, Gauge, Rocket, Radio, LineChart, Building2, Award, Lightbulb, FlaskConical, Globe2, FileJson,
+  Search, Target, FileText, UserCheck, CheckSquare, Newspaper, Cpu, Scale, Zap, GitBranch, LayoutDashboard, Shield, Gauge, Rocket, Radio, LineChart, Building2, Award, Lightbulb, FlaskConical, Globe2, FileJson, Command,
 } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { getSocket } from '@lib/socket'
@@ -36,11 +36,13 @@ import { EnterpriseCoachPage }       from './pages/EnterpriseCoachPage'
 import { DecisionEnginePage }        from './pages/DecisionEnginePage'
 import { DeploymentsPage }           from './pages/DeploymentsPage'
 import { BlueprintPage }             from './pages/BlueprintPage'
+import { CommandCenterPage }          from './pages/CommandCenterPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
 
 const TABS = [
+  { path: 'command-center',  end: false, label: 'Command Center', icon: Command },
   { path: 'mission-control', end: false, label: 'Mission Control', icon: LayoutDashboard },
   { path: 'briefing',        end: false, label: 'Briefing',        icon: Newspaper       },
   { path: '',                end: true,  label: 'Intelligence',    icon: Brain           },
@@ -169,8 +171,9 @@ export function KIMMMModule() {
         <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
 
         <Routes>
-          <Route path="briefing"      element={<BriefingPage />} />
-          <Route index                element={<KIMMMPage />}    />
+          <Route path="command-center"  element={<CommandCenterPage />} />
+          <Route path="briefing"        element={<BriefingPage />} />
+          <Route index                  element={<KIMMMPage />}    />
           <Route path="forecast"      element={<ForecastPage />} />
           <Route path="memory"        element={<MemoryPage />}   />
           <Route path="goals"         element={<GoalsPage />}    />
