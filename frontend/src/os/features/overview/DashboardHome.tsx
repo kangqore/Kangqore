@@ -1182,7 +1182,7 @@ function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
       <p className="text-[11px] font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--os-text-2)' }}>
         Quick Access
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, placeItems: 'center' }}>
         {MODULES.map(m => {
           const Icon = m.icon
           return (
@@ -1201,7 +1201,7 @@ function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
               style={{
                 background: 'var(--os-surface-0)',
                 border: '1px solid var(--os-border)',
-                width: '100%', 
+                width: '60%', 
                 aspectRatio: '1 / 1',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.02)',
               }}
