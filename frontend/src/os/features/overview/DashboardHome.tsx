@@ -1217,7 +1217,7 @@ function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
                 strokeWidth={2}
                 fill="none" 
               />
-              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)', textAlign: 'center', position: 'relative', zIndex: 1, letterSpacing: '-0.02em' }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-1)', textAlign: 'center', position: 'relative', zIndex: 1, letterSpacing: '-0.02em' }}>
                 {m.label}
               </span>
             </motion.button>
