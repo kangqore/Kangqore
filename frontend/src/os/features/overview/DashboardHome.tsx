@@ -82,8 +82,10 @@ const VERDICT_CFG: Record<string, { color: string; label: string }> = {
 const card: React.CSSProperties = {
   background: 'var(--os-card)',
   border: '1px solid var(--os-border)',
-  borderRadius: 12,
+  borderRadius: 'var(--os-radius-xl)',
   boxShadow: 'var(--os-shadow-card)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
 }
 
 // ─── Page Header ──────────────────────────────────────────────────────────────
@@ -180,9 +182,6 @@ function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loadi
   return (
     <motion.div
       className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-7"
-      variants={staggerContainer(0.04)}
-      initial="hidden"
-      animate="visible"
     >
       {KPI_DEFS.map(def => {
         const Icon = def.icon
@@ -192,77 +191,77 @@ function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loadi
         return (
           <motion.div
             key={def.key}
-            variants={staggerChild}
-            whileHover={{ y: -6, scale: 1.02, transition: spring.smooth }}
+            whileHover={{ y: -4, scale: 1.01, transition: spring.smooth }}
             className="cursor-pointer relative overflow-hidden flex flex-col p-5 transition-all duration-300"
             style={{ 
-              background: def.color, 
-              color: '#ffffff',
-              borderRadius: 'var(--os-radius-xl)', /* Using our massive global corner variable */
-              boxShadow: `0 12px 32px ${def.color}60`, /* Massive glowing soft shadow */
-              border: 'none'
+              background: 'rgba(255, 255, 255, 0.8)', 
+              color: 'var(--os-text-1)',
+              borderRadius: 'var(--os-radius-xl)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
+              border: '1px solid rgba(255,255,255,0.9)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
             }}
           >
-            {/* Subtle inner background shine effect */}
-            <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: '50%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15))', pointerEvents: 'none' }} />
-
-            {/* Icon */}
-            <div className="w-9 h-9 rounded-2xl flex items-center justify-center mb-3" style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(10px)' }}>
-              <Icon style={{ width: 18, height: 18, color: '#ffffff' }} />
+            {/* Top row: Icon + Delta */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-10 h-10 rounded-[14px] flex items-center justify-center" style={{ background: `${def.color}15`, border: `1px solid ${def.color}30` }}>
+                <Icon style={{ width: 20, height: 20, color: def.color }} />
+              </div>
+              
+              {/* Delta badge */}
+              {isPositive ? (
+                <span
+                  className="font-extrabold px-2.5 py-1 rounded-full shadow-sm"
+                  style={{ fontSize: 10, background: '#fef3c7', color: '#b45309' }} /* Yellow warning style from ref */
+                >
+                  +11% week
+                </span>
+              ) : (!loading && val === null) ? (
+                <span
+                  className="font-semibold px-2.5 py-1 rounded-full"
+                  style={{ fontSize: 10, background: '#f3f4f6', color: '#6b7280' }}
+                >
+                  No data
+                </span>
+              ) : null}
             </div>
 
             {/* Value */}
             {loading ? (
-              <div className="animate-pulse rounded-xl mb-2" style={{ background: 'rgba(255,255,255,0.3)', height: 40, width: 88 }} />
+              <div className="animate-pulse rounded-xl mb-1" style={{ background: 'rgba(0,0,0,0.05)', height: 36, width: '70%' }} />
             ) : val != null ? (
               <AnimatePresence mode="wait">
                 <motion.p
                   key={val}
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="font-black tracking-tight leading-none mb-1.5"
+                  className="font-black tracking-tight leading-none mb-1"
                   style={{
-                    color: '#ffffff',
+                    color: 'var(--os-text-1)',
                     fontSize: val.length > 7 ? 22 : 28,
-                    textShadow: '0 2px 8px rgba(0,0,0,0.18)',
                   }}
                 >
                   {val}
                 </motion.p>
               </AnimatePresence>
             ) : (
-              <p className="font-black tracking-tight leading-none mb-1.5"
-                 style={{ fontSize: 28, color: 'rgba(255,255,255,0.9)', letterSpacing: '-0.02em' }}>
+              <p className="font-black tracking-tight leading-none mb-1"
+                 style={{ fontSize: 28, color: 'var(--os-text-3)', letterSpacing: '-0.02em' }}>
                 —
               </p>
             )}
 
-            <p className="font-bold uppercase tracking-widest mb-0.5"
-               style={{ fontSize: 11, color: 'rgba(255,255,255,0.95)', letterSpacing: '0.08em' }}>
-              {def.key}
-            </p>
-            <p className="font-semibold leading-snug"
-               style={{ fontSize: 10, color: 'rgba(255,255,255,0.82)' }}>
-              {def.sub}
-            </p>
-
-            {/* Delta badge */}
-            {isPositive && (
-              <span
-                className="mt-3 self-start font-extrabold px-2.5 py-1 rounded-full shadow-sm"
-                style={{ fontSize: 10, background: 'rgba(255,255,255,0.95)', color: def.color }}
-              >
-                ↑ Live
-              </span>
-            )}
-            {!loading && val === null && (
-              <span
-                className="mt-3 self-start font-semibold px-2.5 py-1 rounded-full"
-                style={{ fontSize: 10, background: 'rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.9)' }}
-              >
-                No data
-              </span>
-            )}
+            <div className="flex items-center gap-1.5 mt-1">
+              <p className="font-bold tracking-tight m-0"
+                 style={{ fontSize: 13, color: 'var(--os-text-1)' }}>
+                {def.key}
+              </p>
+              <p className="font-medium m-0"
+                 style={{ fontSize: 12, color: 'var(--os-text-3)' }}>
+                · {def.sub}
+              </p>
+            </div>
           </motion.div>
         )
       })}
@@ -358,8 +357,8 @@ function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
           {displayLeads.map((l: any) => {
             const stage = (l.status ?? l.stage ?? 'NEW').toUpperCase()
             const score = l.score ?? l.leadScore ?? 0
-            const name  = l.name ?? l.companyName ?? l.email ?? 'Lead'
-            const company = l.company ?? l.companyName ?? ''
+            const name  = l.name || l.companyName || l.email || 'Lead'
+            const company = l.companyName || l.company || ''
             const color = STAGE_CARD_COLOR[stage] ?? '#579bfc'
             return (
               <motion.div
@@ -473,10 +472,10 @@ function PipelineKanban({ navigate, leads }: { navigate: (p: string) => void; le
           <table className="w-full text-left border-collapse" style={{ minWidth: 500 }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--os-border)' }}>
-                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-[var(--os-text-3)]">Name & Company</th>
-                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-[var(--os-text-3)]">Stage</th>
-                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-[var(--os-text-3)] text-center">Score</th>
-                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-[var(--os-text-3)] text-right">Value</th>
+                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider" style={{ color: 'var(--os-text-3)' }}>Name & Company</th>
+                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider" style={{ color: 'var(--os-text-3)' }}>Stage</th>
+                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-center" style={{ color: 'var(--os-text-3)' }}>Score</th>
+                <th className="pb-3 text-[11px] font-bold uppercase tracking-wider text-right" style={{ color: 'var(--os-text-3)' }}>Value</th>
               </tr>
             </thead>
             <tbody>
@@ -497,12 +496,12 @@ function PipelineKanban({ navigate, leads }: { navigate: (p: string) => void; le
                     style={{ borderBottom: '1px solid var(--os-border)' }}
                   >
                     <td className="py-3 pr-3">
-                      <p className="text-[12px] font-bold text-[var(--os-text-1)] margin-0 truncate max-w-[180px]">{name}</p>
-                      <p className="text-[10px] text-[var(--os-text-3)] margin-0 mt-0.5 truncate max-w-[180px]">{company}</p>
+                      <p className="text-[12px] font-bold m-0 truncate max-w-[180px]" style={{ color: 'var(--os-text-1)' }}>{name}</p>
+                      <p className="text-[10px] m-0 mt-0.5 truncate max-w-[180px]" style={{ color: 'var(--os-text-3)' }}>{company}</p>
                     </td>
                     <td className="py-3 pr-3">
                       <span 
-                        className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide text-white animate-fade-in"
+                        className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide text-white"
                         style={{ backgroundColor: cfg.bg }}
                       >
                         {stage}
@@ -520,10 +519,10 @@ function PipelineKanban({ navigate, leads }: { navigate: (p: string) => void; le
                           {score}
                         </span>
                       ) : (
-                        <span className="text-[11px] text-[var(--os-text-3)]">—</span>
+                        <span className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>—</span>
                       )}
                     </td>
-                    <td className="py-3 text-right text-[12px] font-bold text-[var(--os-text-1)]">
+                    <td className="py-3 text-right text-[12px] font-bold" style={{ color: 'var(--os-text-1)' }}>
                       {formattedVal}
                     </td>
                   </tr>
@@ -588,7 +587,6 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
       ) : goals.length === 0 ? (
         <motion.div
           className="text-center py-4 flex flex-col items-center gap-3"
-          variants={fadeScale} initial="hidden" animate="visible"
         >
           <motion.div
             className="w-12 h-12 rounded-2xl flex items-center justify-center"
@@ -612,7 +610,7 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
       ) : (
         <div className="flex flex-col gap-1">
           {goals.map((g: any) => {
-            const pct      = Math.min(Math.round((g.currentValue / Math.max(g.targetValue, 1)) * 100), 100)
+            const pct      = Math.min(Math.round(((g.currentValue || 0) / Math.max(g.targetValue || 1, 1)) * 100), 100)
             const isDone   = pct >= 100
             const barColor = pct >= 70 ? '#00c875' : pct >= 40 ? '#fdab3d' : '#e2445c'
 
@@ -1389,7 +1387,9 @@ export function DashboardHome() {
   const allLeads = leadsRaw?.leads ?? (Array.isArray(leadsRaw) ? leadsRaw : [])
 
   return (
-    <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 w-full overflow-hidden">
+    <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 w-full min-h-screen relative overflow-hidden admin-bento-theme">
+      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#e0ebff] via-[#f0f8ff] to-[#f5ffd8]" />
+
       {/* 1. Header */}
       <PageHeader twinData={twinData} navigate={navigate} />
 

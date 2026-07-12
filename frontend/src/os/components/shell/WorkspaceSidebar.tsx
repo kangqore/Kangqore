@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { cn } from '@design-system/cn'
@@ -86,35 +87,75 @@ export function WorkspaceSidebar() {
           </div>
         )}
 
-        <nav className="flex-1 overflow-y-auto overflow-x-hidden pb-4 px-2 space-y-0.5">
-          {sidebarItems.map(item => {
-            const count  = item.badge ? (badges[item.badge] ?? 0) : 0
-            const active = isItemActive(item, pathname, searchParams)
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden pb-4 px-2 space-y-1">
+          {(() => {
+            const grouped: Record<string, RailSidebarItem[]> = {}
+            const uncategorized: RailSidebarItem[] = []
+            
+            sidebarItems.forEach(item => {
+              if (item.category) {
+                if (!grouped[item.category]) grouped[item.category] = []
+                grouped[item.category].push(item)
+              } else {
+                uncategorized.push(item)
+              }
+            })
+
+            const renderItem = (item: RailSidebarItem) => {
+              const count  = item.badge ? (badges[item.badge] ?? 0) : 0
+              const active = isItemActive(item, pathname, searchParams)
+              return (
+                <Link
+                  key={item.id}
+                  to={item.path}
+                  className={cn(
+                    'flex items-center gap-2 h-8 rounded-lg px-3 text-[13px] font-medium transition-all duration-300 group relative overflow-hidden',
+                    active
+                      ? 'text-white shadow-[0_4px_12px_rgba(255,107,107,0.3)]'
+                      : 'text-[var(--os-text-2)] hover:bg-slate-100 hover:text-slate-900'
+                  )}
+                >
+                  {/* Vibrant Gradient Background for active state */}
+                  {active && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] via-[#FF8E53] to-[#FFA939] opacity-100 z-0" />
+                  )}
+                  {/* Hover effect background */}
+                  {!active && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B]/10 to-[#FFA939]/10 opacity-0 group-hover:opacity-100 transition-opacity z-0" />
+                  )}
+                  
+                  <span className="flex-1 truncate relative z-10">{item.label}</span>
+                  
+                  {count > 0 && (
+                    <span
+                      className={cn(
+                        'relative z-10 flex-shrink-0 min-w-[18px] h-[18px] rounded-full text-[10px] font-bold flex items-center justify-center px-1 shadow-sm transition-transform group-hover:scale-110',
+                        active ? 'bg-white/30 text-white backdrop-blur-sm' : 'bg-gradient-to-br from-[#FF6B6B] to-[#FF8E53] text-white'
+                      )}
+                    >
+                      {count > 99 ? '99+' : count}
+                    </span>
+                  )}
+                </Link>
+              )
+            }
+
             return (
-              <Link
-                key={item.id}
-                to={item.path}
-                className={cn(
-                  'flex items-center gap-2 h-8 rounded-lg px-3 text-[13px] font-medium transition-all duration-150',
-                  active
-                    ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
-                    : 'text-[var(--os-text-2)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04] hover:text-[var(--os-text-1)]'
-                )}
-              >
-                <span className="flex-1 truncate">{item.label}</span>
-                {count > 0 && (
-                  <span
-                    className={cn(
-                      'flex-shrink-0 min-w-[18px] h-[18px] rounded-full text-[10px] font-bold flex items-center justify-center px-1',
-                      active ? 'bg-white/25 text-white' : 'bg-red-500 text-white'
-                    )}
-                  >
-                    {count > 99 ? '99+' : count}
-                  </span>
-                )}
-              </Link>
+              <>
+                {uncategorized.map(renderItem)}
+                {Object.entries(grouped).map(([category, items]) => (
+                  <Fragment key={category}>
+                    <div className="mt-4 mb-1.5 px-3">
+                      <p className="text-[10px] font-extrabold tracking-[0.2em] uppercase bg-clip-text text-transparent bg-gradient-to-r from-slate-400 to-slate-500">
+                        {category}
+                      </p>
+                    </div>
+                    {items.map(renderItem)}
+                  </Fragment>
+                ))}
+              </>
             )
-          })}
+          })()}
         </nav>
       </div>
     </aside>

@@ -161,7 +161,13 @@ export function validateBlueprint(spec: unknown): { valid: boolean; errors: stri
 // ─── Generate ──────────────────────────────────────────────────────────────────
 // Reads live DB state and assembles a versioned Blueprint artifact.
 
-export async function generateBlueprint(name: string, orgName: string): Promise<{ id: string; spec: BlueprintSpec }> {
+export async function generateBlueprint(
+  name: string,
+  orgName: string,
+  pack: string = 'professional-services',
+  industry: string = 'professional-services',
+  orgSize: string = 'SME',
+): Promise<{ id: string; spec: BlueprintSpec }> {
   const [def, types, policies, workflows] = await Promise.all([
     prisma.enterpriseDefinition.findFirst({ where: { isActive: true }, include: { goals: true } }),
     prisma.ontologyObjectType.findMany({ orderBy: { name: 'asc' } }),
@@ -209,13 +215,13 @@ export async function generateBlueprint(name: string, orgName: string): Promise<
     $blueprint:   'kangqore-view/v1',
     version:      '1.0.0',
     generatedAt:  new Date().toISOString(),
-    pack:         'professional-services',
+    pack,
 
     organization: {
       name:     orgName,
-      industry: 'professional-services',
-      size:     'SME',
-      pack:     'professional-services',
+      industry,
+      size:     orgSize,
+      pack,
     },
 
     departments: [
@@ -294,7 +300,7 @@ export async function generateBlueprint(name: string, orgName: string): Promise<
   const checksum     = crypto.createHash('sha256').update(specJson).digest('hex')
 
   const blueprint = await prisma.enterpriseBlueprint.create({
-    data: { name, version: spec.version, pack: spec.pack, industry: spec.organization.industry, spec: spec as any, checksum, status: 'DRAFT' },
+    data: { name, version: spec.version, pack, industry, spec: spec as any, checksum, status: 'DRAFT' },
   })
 
   return { id: blueprint.id, spec }

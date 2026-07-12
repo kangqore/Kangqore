@@ -19,12 +19,15 @@ export interface SignalLike {
   leadId?: string | null;
 }
 
+export type ExecutiveTier = 'STRATEGIC' | 'CRITICAL' | 'OPERATIONAL' | 'INFORMATIONAL';
+
 export interface DecisionProposal {
   decisionType: string;
   recommendedAction: string;
   targetModule: string;
   reasoning: string;
   priority: number;
+  tier: ExecutiveTier;
 }
 
 /** Fibonacci-tiered priority by signal severity (signal weight is not linear). */
@@ -42,6 +45,30 @@ function priorityForSeverity(severity: string): number {
 }
 
 /**
+ * Maps a Fibonacci priority score to an executive tier.
+ * STRATEGIC is assigned separately via intent-alignment (see applyIntentAlignment).
+ */
+export function tierForPriority(priority: number): ExecutiveTier {
+  if (priority >= 21) return 'CRITICAL';
+  if (priority >= 8)  return 'OPERATIONAL';
+  return 'INFORMATIONAL';
+}
+
+/**
+ * Upgrades a proposal's tier to STRATEGIC when intent alignment confirms
+ * this decision advances an active CEO intent. Call async after decide().
+ */
+export function applyIntentAlignment(
+  proposal: DecisionProposal,
+  alignmentScore: number,
+): DecisionProposal {
+  if (alignmentScore >= 0.4) {
+    return { ...proposal, tier: 'STRATEGIC' };
+  }
+  return proposal;
+}
+
+/**
  * Apply the decision policy to one signal. Returns a proposal, or null when no
  * rule matches (the signal is still marked processed — "no action needed").
  *
@@ -52,9 +79,9 @@ export function decide(signal: SignalLike): DecisionProposal | null {
   const priority = priorityForSeverity(signal.severity);
 
   if (signal.signalCategory === 'BEHAVIOR') {
-    // signalValue carries the recommended response mode from the behavior layer.
     switch (signal.signalValue) {
-      case 'CALM_ASSURANCE_FIRST':
+      case 'CALM_ASSURANCE_FIRST': {
+        const p = priority;
         return {
           decisionType: signal.severity === 'HIGH' ? 'HUMAN_HANDOFF' : 'RESPONSE_POLICY',
           recommendedAction:
@@ -63,8 +90,10 @@ export function decide(signal: SignalLike): DecisionProposal | null {
               : 'Handle this conversation assurance-first — lead with stability before solutioning.',
           targetModule: signal.severity === 'HIGH' ? 'human' : 'eqore',
           reasoning: `Behavior signal ${signal.signalValue} (severity ${signal.severity}).`,
-          priority,
+          priority: p,
+          tier: tierForPriority(p),
         };
+      }
       case 'SHOW_PROOF':
         return {
           decisionType: 'CONTENT_OPPORTUNITY',
@@ -73,6 +102,7 @@ export function decide(signal: SignalLike): DecisionProposal | null {
           targetModule: 'vis',
           reasoning: 'Behavior signal SHOW_PROOF — skepticism is the conversion blocker.',
           priority,
+          tier: tierForPriority(priority),
         };
       case 'SIMPLIFY':
         return {
@@ -82,59 +112,65 @@ export function decide(signal: SignalLike): DecisionProposal | null {
           targetModule: 'vis',
           reasoning: 'Behavior signal SIMPLIFY — confusion detected.',
           priority,
+          tier: tierForPriority(priority),
         };
       case 'DISCOVERY':
-      case 'EXECUTIVE':
+      case 'EXECUTIVE': {
+        const p = Math.max(priority, 13);
         return {
           decisionType: 'SALES_ALERT',
           recommendedAction:
             'Visitor looks decision-ready — alert sales and consider creating/raising the opportunity.',
           targetModule: 'lead-intelligence',
           reasoning: `Behavior signal ${signal.signalValue} — high decision-readiness.`,
-          priority: Math.max(priority, 13),
+          priority: p,
+          tier: tierForPriority(p),
         };
+      }
       default:
-        return null; // STANDARD or unmapped — no action needed.
+        return null;
     }
   }
 
-  // INTENT signals — emitted by eQORE per message and by Lead Intelligence on score changes.
   if (signal.signalCategory === 'INTENT') {
     const value = signal.signalValue;
 
-    // Lead has reached a high-value sales status.
     if (value === 'GOLDEN' || value === 'HOT') {
+      const p = Math.max(priority, 21);
       return {
         decisionType: 'SALES_ALERT',
         recommendedAction: `Lead ${signal.leadId ?? 'unknown'} reached ${value} status — alert sales immediately and consider creating or raising the opportunity.`,
         targetModule: 'lead-intelligence',
         reasoning: `Lead Intelligence signal: status=${value} (severity ${signal.severity}).`,
-        priority: Math.max(priority, 21),
+        priority: p,
+        tier: tierForPriority(p),
       };
     }
 
-    // High-value eQORE intents worth a sales alert.
     if (value === 'PRICING_OR_PROPOSAL' || value === 'SCHEDULING') {
+      const p = Math.max(priority, 13);
       return {
         decisionType: 'SALES_ALERT',
         recommendedAction: 'Visitor is requesting pricing or scheduling — flag for follow-up and ensure an opportunity is logged.',
         targetModule: 'lead-intelligence',
         reasoning: `eQORE intent signal: ${value} (severity ${signal.severity}).`,
-        priority: Math.max(priority, 13),
+        priority: p,
+        tier: tierForPriority(p),
       };
     }
 
     if (value === 'HUMAN_HANDOFF') {
+      const p = Math.max(priority, 21);
       return {
         decisionType: 'HUMAN_HANDOFF',
         recommendedAction: 'Visitor explicitly requested a human — escalate for immediate personal follow-up.',
         targetModule: 'human',
         reasoning: `eQORE intent: HUMAN_HANDOFF (severity ${signal.severity}).`,
-        priority: Math.max(priority, 21),
+        priority: p,
+        tier: tierForPriority(p),
       };
     }
 
-    // ESCALATED status — worth a nudge.
     if (value === 'ESCALATED') {
       return {
         decisionType: 'SALES_ALERT',
@@ -142,13 +178,13 @@ export function decide(signal: SignalLike): DecisionProposal | null {
         targetModule: 'lead-intelligence',
         reasoning: `Lead Intelligence signal: status=ESCALATED.`,
         priority,
+        tier: tierForPriority(priority),
       };
     }
 
-    return null; // Other intent values — no action needed.
+    return null;
   }
 
-  // CONTENT signals — emitted by VIS from page opportunity detection.
   if (signal.signalCategory === 'CONTENT') {
     return {
       decisionType: 'CONTENT_OPPORTUNITY',
@@ -156,6 +192,7 @@ export function decide(signal: SignalLike): DecisionProposal | null {
       targetModule: 'vis',
       reasoning: `VIS content gap signal: ${signal.signalType}="${signal.signalValue}" (priority ${signal.severity}).`,
       priority,
+      tier: tierForPriority(priority),
     };
   }
 
@@ -166,16 +203,19 @@ export function decide(signal: SignalLike): DecisionProposal | null {
       targetModule: 'alis',
       reasoning: `ALIS market signal ${signal.signalType}: ${signal.signalValue} (severity ${signal.severity}).`,
       priority,
+      tier: tierForPriority(priority),
     };
   }
 
   if (signal.signalCategory === 'RISK') {
+    const p = Math.max(priority, 21);
     return {
       decisionType: 'HUMAN_HANDOFF',
       recommendedAction: 'Risk signal — escalate for human review.',
       targetModule: 'human',
       reasoning: `Risk signal ${signal.signalType} (severity ${signal.severity}).`,
-      priority: Math.max(priority, 21),
+      priority: p,
+      tier: tierForPriority(p),
     };
   }
 

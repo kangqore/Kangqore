@@ -5099,6 +5099,34 @@ export function AdminOverview() {
     } catch {}
   }, [])
 
+  // Morning brief notification (Phase 6.6)
+  const [morningBriefNotif, setMorningBriefNotif] = useState<{ id: string; preview: string; date: string } | null>(null)
+  const [governanceNotif, setGovernanceNotif]     = useState<{ mode: string; reason: string | null } | null>(null)
+  useEffect(() => {
+    try {
+      const { getSocket } = require('../../../lib/socket') as typeof import('../../../lib/socket')
+      const socket = getSocket()
+      const onBrief = (data: any) => {
+        const today = new Date().toDateString()
+        const seenKey = `kimmp-brief-notif-${today}`
+        if (localStorage.getItem(seenKey)) return
+        setMorningBriefNotif({ id: data.id, preview: data.preview ?? '', date: data.date ?? new Date().toISOString() })
+      }
+      const onGovernance = (data: any) => {
+        const seenKey = `kimmp-governance-${data.mode}-${new Date().toDateString()}`
+        if (localStorage.getItem(seenKey)) return
+        localStorage.setItem(seenKey, '1')
+        setGovernanceNotif({ mode: data.mode, reason: data.reason ?? null })
+      }
+      socket.on('kimmp:morning-brief',     onBrief)
+      socket.on('kimmp:governance-upgrade', onGovernance)
+      return () => {
+        socket.off('kimmp:morning-brief',     onBrief)
+        socket.off('kimmp:governance-upgrade', onGovernance)
+      }
+    } catch {}
+  }, [])
+
   // Boot sequence — phases 0→4 gate each HUD layer fading in
   const [bootPhase, setBootPhase] = useState(0)
   useEffect(() => {
@@ -5172,6 +5200,13 @@ export function AdminOverview() {
     staleTime: 1000 * 60 * 10,
   })
   const agents = useTicker(aegisStats?.total ?? 80, 0.02)
+
+  // WAANDA Authority health — subsystem dots in right column
+  const { data: authorityHealth } = useQuery({
+    queryKey: ['waanda-authority-health-hud'],
+    queryFn: () => api.get('/admin/waanda/authority/health').then(r => r.data).catch(() => null),
+    refetchInterval: 30_000,
+  })
 
   // System utilization — real OS metrics from health-deep
   const sysStats = healthData?.system ?? { cpu: 0, ram: 0, network: 0 }
@@ -5405,6 +5440,72 @@ export function AdminOverview() {
         />
       )}
 
+
+      {/* KIMMP Morning Brief notification strip (Phase 6.6) */}
+      {morningBriefNotif && (
+        <div style={{
+          position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 200, display: 'flex', alignItems: 'center', gap: 12,
+          background: 'rgba(0, 12, 34, 0.95)', border: '1px solid rgba(100, 180, 255, 0.3)',
+          borderRadius: 8, padding: '8px 14px', backdropFilter: 'blur(12px)',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+        }}>
+          <span style={{ fontSize: 10, color: '#6aaac8', fontFamily: 'monospace', letterSpacing: '0.1em' }}>
+            KIMMP BRIEF READY
+          </span>
+          <span style={{ fontSize: 9, color: '#94b8cc', maxWidth: 240, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {morningBriefNotif.preview}
+          </span>
+          <a
+            href="/kangqore-view/admin/kangqore-immp/command-center"
+            style={{ fontSize: 9, color: '#b89eff', fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap' }}
+          >
+            View Today →
+          </a>
+          <button
+            onClick={() => {
+              const key = `kimmp-brief-notif-${new Date().toDateString()}`
+              localStorage.setItem(key, '1')
+              setMorningBriefNotif(null)
+            }}
+            style={{ fontSize: 10, color: '#557799', background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* WAANDA Governance upgrade notification (Phase 6.9) */}
+      {governanceNotif && (
+        <div style={{
+          position: 'absolute', top: morningBriefNotif ? 60 : 12, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 200, display: 'flex', alignItems: 'center', gap: 12,
+          background: 'rgba(0, 12, 24, 0.97)', border: '1px solid rgba(0, 200, 117, 0.4)',
+          borderRadius: 8, padding: '8px 14px', backdropFilter: 'blur(12px)',
+          boxShadow: '0 4px 24px rgba(0,200,117,0.15)',
+        }}>
+          <span style={{ fontSize: 10, color: '#00c875', fontFamily: 'monospace', letterSpacing: '0.1em' }}>
+            WAANDA → {governanceNotif.mode}
+          </span>
+          {governanceNotif.reason && (
+            <span style={{ fontSize: 9, color: '#94b8cc', maxWidth: 260, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {governanceNotif.reason}
+            </span>
+          )}
+          <a
+            href="/kangqore-view/admin/kangqore-immp/command-center"
+            style={{ fontSize: 9, color: '#b89eff', fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap' }}
+          >
+            Review Candidates →
+          </a>
+          <button
+            onClick={() => setGovernanceNotif(null)}
+            style={{ fontSize: 10, color: '#557799', background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Grid overlay */}
       <div style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0,
@@ -5672,30 +5773,65 @@ export function AdminOverview() {
 
           {/* ═ RIGHT ═ */}
 <div style={{ display:'flex', flexDirection:'column', gap:20, overflow:'hidden', paddingBottom: 20, transform: 'scale(0.9)', transformOrigin: 'top center' }}>
-  {/* ── COMMAND CENTER — Phase 6 Intelligence ── */}
+  {/* ── COMMAND CENTER — Phase 6.1 Business Domains ── */}
   <SectionLabel text="COMMAND CENTER" color={CA} />
-  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
-    <MinimalistRingWidget label="CRITICAL" value={cc?.signals?.criticalCount ?? '—'} sub="SIGNALS" color={CR} />
-    <MinimalistRingWidget label="PROPOSED" value={cc?.decisions?.proposedCount ?? '—'} sub="DECISIONS" color={CA} />
-    <MinimalistRingWidget label="OIS SCORE" value={cc?.ois?.score ?? '—'} sub="ENTERPRISE" color={C} />
-    <MinimalistRingWidget label="TRAINING" value={cc?.training?.exportReady ?? '—'} sub="EXAMPLES" color={CG} />
-  </div>
-  {/* P6 stat strip */}
-  {cc && (
-    <div style={{ display:'flex', flexDirection:'column', gap:3, padding:'6px 4px', borderTop:`1px solid ${CA}20`, marginTop:4 }}>
-      {[
-        { l: 'HIGH SIG',  v: cc.signals?.highCount ?? 0 },
-        { l: 'NEW SIG',   v: cc.signals?.newCount ?? 0 },
-        { l: 'AT RISK',   v: cc.predictions?.highRiskCount ?? 0 },
-        { l: 'LLM COST',  v: cc.cost?.totalEstimatedUsd != null ? `$${Number(cc.cost.totalEstimatedUsd).toFixed(2)}` : '—' },
-      ].map(r => (
-        <div key={r.l} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
-          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>{r.l}</span>
-          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{r.v}</span>
+  {cc?.business?.length > 0 ? (
+    <>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
+        {(cc.business as any[]).slice(0, 4).map((domain: any) => {
+          const domainColor = domain.status === 'CRITICAL' ? CR : domain.status === 'ATTENTION' ? CA : domain.status === 'HEALTHY' ? CG : '#888';
+          return (
+            <MinimalistRingWidget
+              key={domain.id}
+              label={domain.label.toUpperCase()}
+              value={domain.count > 0 ? domain.count : '✓'}
+              sub={domain.status}
+              color={domainColor}
+            />
+          );
+        })}
+      </div>
+      <div style={{ display:'flex', flexDirection:'column', gap:3, padding:'6px 4px', borderTop:`1px solid ${CA}20`, marginTop:4 }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
+          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>OIS</span>
+          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{cc.ois?.score ?? '—'}</span>
         </div>
-      ))}
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
+          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>DECISIONS</span>
+          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{cc.decisions?.proposedCount ?? 0}</span>
+        </div>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
+          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>SIGNALS</span>
+          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{cc.signals?.criticalCount ?? 0} critical</span>
+        </div>
+      </div>
+    </>
+  ) : (
+    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
+      <MinimalistRingWidget label="CRITICAL" value={cc?.signals?.criticalCount ?? '—'} sub="SIGNALS" color={CR} />
+      <MinimalistRingWidget label="PROPOSED" value={cc?.decisions?.proposedCount ?? '—'} sub="DECISIONS" color={CA} />
+      <MinimalistRingWidget label="OIS SCORE" value={cc?.ois?.score ?? '—'} sub="ENTERPRISE" color={C} />
+      <MinimalistRingWidget label="TRAINING" value={cc?.training?.exportReady ?? '—'} sub="EXAMPLES" color={CG} />
     </div>
   )}
+  {/* ── WAANDA AUTHORITY — subsystem health dots ── */}
+  <SectionLabel text="WAANDA AUTHORITY" color='#818cf8' />
+  <div style={{ display:'flex', flexDirection:'column', gap:4, padding:'4px 8px', cursor:'pointer' }}
+       onClick={() => navigate('/kangqore-view/admin/kangqore-immp/authority')}>
+    {(['KIMMP','AEGIS','KEOS','KORE','EQORE','ALIS','VIS'] as const).map(name => {
+      const status = authorityHealth?.health?.[name]?.status ?? 'UNKNOWN'
+      const dotColor = status === 'OPTIMAL' ? '#22c55e' : status === 'DEGRADED' ? '#f59e0b' : status === 'PAUSED' ? '#6366f1' : '#6b7280'
+      return (
+        <div key={name} style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+          <span style={{ fontSize:7.5, color:'#a5b4fc', fontFamily:'monospace', letterSpacing:'0.08em' }}>{name}</span>
+          <div style={{ display:'flex', alignItems:'center', gap:4 }}>
+            <span style={{ fontSize:6.5, color:dotColor, fontFamily:'monospace' }}>{status}</span>
+            <div style={{ width:6, height:6, borderRadius:'50%', background:dotColor, boxShadow:`0 0 4px ${dotColor}` }} />
+          </div>
+        </div>
+      )
+    })}
+  </div>
   {/* ── MODULE NEXUS ── */}
   <SectionLabel text="MODULE NEXUS" color='#00ffcc' />
   <div style={{ padding: '8px' }}>

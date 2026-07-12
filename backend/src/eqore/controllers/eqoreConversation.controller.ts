@@ -10,6 +10,7 @@ import { KimmpEqoreInfluence } from '../../kangqore-immp/eqore-bridge/eqoreInflu
 import { SignalLedger } from '../../kangqore-immp/signals/signalLedger.service';
 import { WaandaUnderstand } from '../../kangqore-immp/relationship-intelligence';
 import logger from '../../utils/logger';
+import { isEqoreMaintenanceMode } from '../../waanda/adapters/EqoreAdapter';
 
 /** High-value intents that warrant a HIGH severity INTENT signal. */
 const HIGH_INTENT_INTENTS = new Set([
@@ -27,6 +28,11 @@ export class EqoreConversationController {
         return res.status(400).json({ error: 'Message is required' });
       }
 
+      // WAANDA PAUSE directive puts eQORE in maintenance mode — reject new conversations
+      if (isEqoreMaintenanceMode()) {
+        return res.status(503).json({ error: 'eQORE is in maintenance mode. Please try again shortly.' });
+      }
+
       // Handle session token
       let sessionId = providedSessionId;
       if (!sessionId || !EqoreTokenService.isValidToken(sessionId)) {
@@ -41,7 +47,7 @@ export class EqoreConversationController {
 
       if (!conversation) {
         conversation = await prisma.eqoreConversation.create({
-          data: { 
+          data: {
             sessionId,
             sourcePage,
             referrer,
@@ -51,6 +57,9 @@ export class EqoreConversationController {
           include: { messages: true, lead: true }
         });
       }
+
+      // Notify WAANDA that eQORE is active (keeps lastActive timestamp real)
+      import('../../waanda/adapters/EqoreAdapter').then(({ notifyEqoreConversation }) => notifyEqoreConversation()).catch(() => {})
 
       // Add user message
       const userMessage = await prisma.eqoreMessage.create({

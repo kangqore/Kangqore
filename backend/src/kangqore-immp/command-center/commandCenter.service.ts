@@ -12,9 +12,11 @@ import { DecisionEngine }           from '../decision/decisionEngine.service';
 import { PredictionStore }          from '../prediction/predictionStore.service';
 import { WaandaTrainingPipeline }   from '../../waanda-training/trainingPipeline.service';
 import { KimmpCostTracker }         from '../governance/costTracker.service';
-import { computeGate8 }             from '../../scripts/gate8/gate8Service';
+import { computeGate8 }             from '../../waanda/intelligence/gate8.service';
+import { BusinessDomainsService, BusinessDomain } from './businessDomains.service';
 
 export interface CommandCenterSnapshot {
+  business: BusinessDomain[]
   signals: {
     criticalCount:    number
     highCount:        number
@@ -40,8 +42,10 @@ export interface CommandCenterSnapshot {
 
 export class CommandCenterService {
   static async aggregate(): Promise<CommandCenterSnapshot> {
-    const [signalKpi, recentSignals, allProposedDecisions, atRiskLeads, training, cost, gate8] =
+    const [business, signalKpi, recentSignals, allProposedDecisions, atRiskLeads, training, cost, gate8] =
       await Promise.all([
+        BusinessDomainsService.aggregate().catch(() => [] as BusinessDomain[]),
+
         (prisma as any).kimmpSignal
           .groupBy({ by: ['severity', 'status'], _count: { _all: true } })
           .catch(() => [] as any[]),
@@ -89,6 +93,7 @@ export class CommandCenterService {
       : 0;
 
     return {
+      business,
       signals: {
         criticalCount,
         highCount,

@@ -7,7 +7,12 @@ const CADENCE_HOURS = Math.max(1, Number(process.env.KIMMP_LOOP_CADENCE_HOURS ??
 
 export class LoopScheduler {
   private static timer: ReturnType<typeof setInterval> | null = null
-  private static started = false
+  private static started  = false
+  private static _paused  = false
+  private static _lastRun: Date | null = null
+
+  static lastRun(): Date | null { return this._lastRun }
+  static isPaused(): boolean    { return this._paused }
 
   static start(): void {
     if (this.started) return
@@ -25,6 +30,7 @@ export class LoopScheduler {
         input:   'Scheduled intelligence sweep — synthesise all system signals.',
         userId:  'SCHEDULER',
       }).catch(err => logger.warn(`[KIMMP:LOOPS] Boot cascade failed: ${err.message}`))
+      LoopScheduler._lastRun = new Date()
 
       // Then run on cadence
       LoopScheduler.timer = setInterval(async () => {
@@ -34,6 +40,15 @@ export class LoopScheduler {
           input:   'Scheduled intelligence sweep — synthesise all system signals.',
           userId:  'SCHEDULER',
         }).catch(err => logger.warn(`[KIMMP:LOOPS] Scheduled cascade failed: ${err.message}`))
+        LoopScheduler._lastRun = new Date()
+
+        // After each loop cycle — collect health reports from all subsystems
+        import('../../waanda/WaandaAuthority').then(({ WaandaAuthority }) => {
+          WaandaAuthority.broadcastDirective('REPORT', {
+            trigger: 'post-loop-cycle',
+            timestamp: new Date().toISOString(),
+          }).catch(() => {})
+        }).catch(() => {})
       }, CADENCE_HOURS * 60 * 60_000)
 
     }, 3 * 60_000)
@@ -47,22 +62,29 @@ export class LoopScheduler {
     logger.info('[KIMMP:LOOPS] Scheduler stopped')
   }
 
-  // Called by AEGIS L3 action PAUSE_KIMMP_LOOP (requires ADMIN approval before invocation)
+  static isStarted(): boolean {
+    return this.started
+  }
+
+  // Paused by WAANDA authority directive (AEGIS escalates to WAANDA, WAANDA decides)
   static pause(): void {
     if (this.timer) { clearInterval(this.timer); this.timer = null }
-    logger.warn('[KIMMP:LOOPS] Scheduler PAUSED by AEGIS governance action')
+    this._paused = true
+    logger.warn('[KIMMP:LOOPS] Scheduler PAUSED by WAANDA authority directive')
   }
 
   static resume(): void {
     if (this.timer) return // already running
+    this._paused = false
     this.timer = setInterval(async () => {
-      logger.info(`[KIMMP:LOOPS] Scheduled cascade starting (resumed after AEGIS pause)`)
+      logger.info(`[KIMMP:LOOPS] Scheduled cascade starting (resumed by WAANDA directive)`)
       await KimmpSystemDispatcher.triggerLoop({
         trigger: 'schedule.daily',
         input:   'Scheduled intelligence sweep — synthesise all system signals.',
         userId:  'SCHEDULER',
       }).catch(err => logger.warn(`[KIMMP:LOOPS] Resumed cascade failed: ${err.message}`))
+      LoopScheduler._lastRun = new Date()
     }, CADENCE_HOURS * 60 * 60_000)
-    logger.info('[KIMMP:LOOPS] Scheduler RESUMED by AEGIS governance action')
+    logger.info('[KIMMP:LOOPS] Scheduler RESUMED by WAANDA authority directive')
   }
 }

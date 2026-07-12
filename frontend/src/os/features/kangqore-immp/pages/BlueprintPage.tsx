@@ -27,7 +27,7 @@ interface BlueprintSpec {
   version:     string
   generatedAt: string
   pack:        string
-  organization: { name: string; industry: string; size: string }
+  organization: { name: string; industry: string; size: string; pack: string }
   departments:  { id: string; name: string }[]
   goals:        { pillar: string; label: string; target: number; unit: string }[]
   ontology:     { entityTypes: { name: string }[]; relationshipTypes: string[] }
@@ -266,13 +266,16 @@ function BlueprintDetail({ blueprintId }: { blueprintId: string }) {
 export function BlueprintPage() {
   const qc = useQueryClient()
 
-  const [selectedId,     setSelectedId]     = useState<string | null>(null)
-  const [showImport,     setShowImport]      = useState(false)
-  const [importText,     setImportText]      = useState('')
-  const [importName,     setImportName]      = useState('')
-  const [generateName,   setGenerateName]    = useState('Enterprise Blueprint')
-  const [generateOrg,    setGenerateOrg]     = useState('Kangqore')
-  const [validationResult, setValidationResult] = useState<{ valid: boolean; errors: string[] } | null>(null)
+  const [selectedId,        setSelectedId]       = useState<string | null>(null)
+  const [showImport,        setShowImport]        = useState(false)
+  const [importText,        setImportText]        = useState('')
+  const [importName,        setImportName]        = useState('')
+  const [generateName,      setGenerateName]      = useState('Enterprise Blueprint')
+  const [generateOrg,       setGenerateOrg]       = useState('Kangqore')
+  const [generatePack,      setGeneratePack]      = useState('professional-services')
+  const [generateIndustry,  setGenerateIndustry]  = useState('professional-services')
+  const [generateSize,      setGenerateSize]      = useState('SME')
+  const [validationResult,  setValidationResult]  = useState<{ valid: boolean; errors: string[] } | null>(null)
 
   const { data: blueprints = [], isLoading } = useQuery<BlueprintMeta[]>({
     queryKey: ['enterprise-blueprints'],
@@ -283,7 +286,7 @@ export function BlueprintPage() {
   const generateMut = useMutation({
     mutationFn: () => adminApi('/admin/enterprise/blueprints/generate', {
       method: 'POST',
-      body: JSON.stringify({ name: generateName, orgName: generateOrg }),
+      body: JSON.stringify({ name: generateName, orgName: generateOrg, pack: generatePack, industry: generateIndustry, orgSize: generateSize }),
     }),
     onSuccess: (data: { id: string }) => {
       qc.invalidateQueries({ queryKey: ['enterprise-blueprints'] })
@@ -339,17 +342,17 @@ export function BlueprintPage() {
             Generate from live state
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-            {[
-              ['Blueprint name', generateName, setGenerateName],
-              ['Organization name', generateOrg, setGenerateOrg],
-            ].map(([label, value, setter]) => (
-              <div key={label as string}>
+            {([
+              ['Blueprint name',    generateName,     setGenerateName],
+              ['Organization name', generateOrg,      setGenerateOrg],
+            ] as [string, string, (v: string) => void][]).map(([label, value, setter]) => (
+              <div key={label}>
                 <label style={{ fontSize: 9, color: TEXT2, fontWeight: 700, letterSpacing: 0.5, display: 'block', marginBottom: 3 }}>
-                  {(label as string).toUpperCase()}
+                  {label.toUpperCase()}
                 </label>
                 <input
-                  value={value as string}
-                  onChange={e => (setter as (v: string) => void)(e.target.value)}
+                  value={value}
+                  onChange={e => setter(e.target.value)}
                   style={{
                     width: '100%', background: SURFACE, border: `1px solid ${BORDER}`,
                     borderRadius: 5, padding: '6px 9px', fontSize: 11, color: TEXT1, outline: 'none', boxSizing: 'border-box',
@@ -357,7 +360,58 @@ export function BlueprintPage() {
                 />
               </div>
             ))}
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7 }}>
+              <div>
+                <label style={{ fontSize: 9, color: TEXT2, fontWeight: 700, letterSpacing: 0.5, display: 'block', marginBottom: 3 }}>
+                  INDUSTRY PACK
+                </label>
+                <select
+                  value={generatePack}
+                  onChange={e => { setGeneratePack(e.target.value); setGenerateIndustry(e.target.value) }}
+                  style={{
+                    width: '100%', background: SURFACE, border: `1px solid ${BORDER}`,
+                    borderRadius: 5, padding: '6px 9px', fontSize: 11, color: TEXT1, outline: 'none', boxSizing: 'border-box',
+                  }}
+                >
+                  <option value="professional-services">Professional Services</option>
+                  <option value="legal">Legal</option>
+                  <option value="healthcare">Healthcare</option>
+                  <option value="construction">Construction</option>
+                  <option value="technology">Technology</option>
+                  <option value="financial-services">Financial Services</option>
+                  <option value="consulting">Consulting</option>
+                  <option value="manufacturing">Manufacturing</option>
+                  <option value="education">Education</option>
+                </select>
+              </div>
+
+              <div>
+                <label style={{ fontSize: 9, color: TEXT2, fontWeight: 700, letterSpacing: 0.5, display: 'block', marginBottom: 3 }}>
+                  ORG SIZE
+                </label>
+                <select
+                  value={generateSize}
+                  onChange={e => setGenerateSize(e.target.value)}
+                  style={{
+                    width: '100%', background: SURFACE, border: `1px solid ${BORDER}`,
+                    borderRadius: 5, padding: '6px 9px', fontSize: 11, color: TEXT1, outline: 'none', boxSizing: 'border-box',
+                  }}
+                >
+                  <option value="STARTUP">Startup</option>
+                  <option value="SME">SME</option>
+                  <option value="ENTERPRISE">Enterprise</option>
+                </select>
+              </div>
+            </div>
           </div>
+
+          {generateMut.isError && (
+            <div style={{ marginTop: 8, fontSize: 10, color: RED }}>
+              {(generateMut.error as Error).message}
+            </div>
+          )}
+
           <button
             onClick={() => generateMut.mutate()}
             disabled={generateMut.isPending}

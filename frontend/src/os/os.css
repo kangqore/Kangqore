@@ -242,3 +242,37 @@
 ::-webkit-scrollbar-track  { background: transparent; }
 ::-webkit-scrollbar-thumb  { background: var(--color-surface-300); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-surface-400); }
+
+/* Admin Bento Theme Overrides */
+.admin-bento-theme {
+  --os-card: rgba(255, 255, 255, 0.7);
+  --os-border: rgba(255, 255, 255, 0.8);
+  --os-shadow-card: 0 12px 40px rgba(0, 0, 0, 0.04);
+  --os-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.02);
+  --os-text-1: #111827;
+  --os-text-2: #4b5563;
+  --os-text-3: #9ca3af;
+  --os-radius-xl: 32px;
+  --page-bg: transparent !important;
+}
+
+.admin-bento-theme .os-card {
+  background: var(--os-card);
+  border: 1px solid var(--os-border);
+  box-shadow: var(--os-shadow-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--os-radius-xl);
+}
+
+/* Semantic utility classes to avoid HMR bugs with arbitrary Tailwind values */
+.text-os-1 { color: var(--os-text-1) !important; }
+.text-os-2 { color: var(--os-text-2) !important; }
+.text-os-3 { color: var(--os-text-3) !important; }
+.text-os-4 { color: var(--os-text-4) !important; }
+.bg-os-card { background: var(--os-card) !important; }
+.bg-os-surface-2 { background: var(--os-surface-2) !important; }
+.bg-os-surface-3 { background: var(--os-surface-3) !important; }
+.border-os { border-color: var(--os-border) !important; }
+.border-os-subtle { border-color: var(--os-border-subtle) !important; }
+

@@ -4,6 +4,7 @@ import {
   Brain, TrendingUp, TrendingDown, AlertCircle, CheckCircle2,
   Lightbulb, ChevronRight, Zap, BarChart2, Users, RefreshCw,
   Sliders, Clock, Activity, Terminal, ShieldAlert, Maximize2, Minimize2,
+  MessageCircle, X, Send,
 } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 
@@ -571,6 +572,126 @@ export function ClientWaanda() {
 
   // Modal State for Ring Widget Details
   const [activeModal, setActiveModal] = useState<'delivery' | 'sla' | 'budget' | 'velocity' | 'risk' | null>(null)
+
+  // ── WAANDA Chat ───────────────────────────────────────────────────────────────
+  const [chatOpen, setChatOpen] = useState(false)
+  const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string; streaming?: boolean }>>([])
+  const [chatInput, setChatInput] = useState('')
+  const [chatStreaming, setChatStreaming] = useState(false)
+  const [chatConvId, setChatConvId] = useState<string | null>(() => localStorage.getItem('waanda-client-conv') ?? null)
+  const chatBottomRef = useRef<HTMLDivElement>(null)
+  const chatInputRef = useRef<HTMLTextAreaElement>(null)
+
+  // Restore last conversation on open
+  useEffect(() => {
+    if (!chatOpen || chatMessages.length > 0) return
+    const stored = localStorage.getItem('waanda-client-conv')
+    if (!stored) return
+    const token = localStorage.getItem('token')
+    fetch(`/api/client/waanda/history?conversationId=${encodeURIComponent(stored)}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => {
+        if (!data || !Array.isArray(data.messages) || data.messages.length === 0) return
+        const restored = data.messages
+          .filter((m: any) => (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+          .map((m: any) => ({ role: m.role, content: m.content }))
+        if (restored.length > 0) setChatMessages(restored)
+      })
+      .catch(() => {})
+  }, [chatOpen])
+
+  useEffect(() => {
+    chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [chatMessages])
+
+  const sendChatMessage = useCallback(async () => {
+    const text = chatInput.trim()
+    if (!text || chatStreaming) return
+    setChatInput('')
+    setChatMessages((prev) => [...prev, { role: 'user', content: text }])
+    setChatStreaming(true)
+
+    const token = localStorage.getItem('token')
+    let buffer = ''
+    let assistantIdx = -1
+
+    try {
+      const res = await fetch('/api/client/waanda/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ message: text, conversationId: chatConvId }),
+      })
+
+      if (!res.ok || !res.body) throw new Error('stream failed')
+
+      setChatMessages((prev) => {
+        assistantIdx = prev.length
+        return [...prev, { role: 'assistant', content: '', streaming: true }]
+      })
+
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const blocks = buffer.split('\n\n')
+        buffer = blocks.pop() ?? ''
+        for (const block of blocks) {
+          if (!block.trim()) continue
+          let event = 'message'
+          const dataLines: string[] = []
+          for (const line of block.split('\n')) {
+            if (line.startsWith('event:')) event = line.slice(6).trim()
+            else if (line.startsWith('data:')) dataLines.push(line.slice(5).trim())
+          }
+          if (dataLines.length === 0) continue
+          try {
+            const payload = JSON.parse(dataLines.join(''))
+            if (event === 'delta' && payload.text) {
+              setChatMessages((prev) => {
+                const next = [...prev]
+                if (assistantIdx >= 0 && next[assistantIdx]) {
+                  next[assistantIdx] = { ...next[assistantIdx], content: next[assistantIdx].content + payload.text }
+                }
+                return next
+              })
+            } else if (event === 'done') {
+              if (payload.conversationId) {
+                setChatConvId(payload.conversationId)
+                localStorage.setItem('waanda-client-conv', payload.conversationId)
+              }
+              setChatMessages((prev) => {
+                const next = [...prev]
+                if (assistantIdx >= 0 && next[assistantIdx]) {
+                  next[assistantIdx] = { ...next[assistantIdx], streaming: false }
+                }
+                return next
+              })
+            } else if (event === 'error') {
+              setChatMessages((prev) => {
+                const next = [...prev]
+                if (assistantIdx >= 0 && next[assistantIdx]) {
+                  next[assistantIdx] = { role: 'assistant', content: payload.message ?? 'WAANDA is temporarily unavailable.', streaming: false }
+                }
+                return next
+              })
+            }
+          } catch { /* non-JSON chunk */ }
+        }
+      }
+    } catch {
+      setChatMessages((prev) => [...prev, { role: 'assistant', content: 'WAANDA is temporarily unavailable. Please try again.' }])
+    } finally {
+      setChatStreaming(false)
+    }
+  }, [chatInput, chatStreaming, chatConvId])
 
   // UAT Checklist items state
   const [checklist, setChecklist] = useState([
@@ -1378,6 +1499,137 @@ export function ClientWaanda() {
             <div style={{ padding: '10px 16px', borderTop: `1px solid ${C}12`, display: 'flex', justifyContent: 'flex-end' }}>
               <button onClick={() => setActiveModal(null)} style={{ background: `${C}10`, border: `1px solid ${C}40`, borderRadius: 5, padding: '6px 14px', cursor: 'pointer', color: C, fontSize: 9, fontWeight: 800, letterSpacing: '0.15em' }}>CLOSE TELEMETRY</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── WAANDA Chat Panel ─────────────────────────────────────────────────── */}
+
+      {/* Floating trigger button */}
+      <button
+        onClick={() => setChatOpen(o => !o)}
+        title="Ask WAANDA"
+        style={{
+          position: 'fixed', bottom: 28, right: 28, zIndex: 9000,
+          width: 52, height: 52, borderRadius: '50%',
+          background: chatOpen ? `${C}22` : C,
+          border: `1.5px solid ${C}`,
+          color: chatOpen ? C : '#0a0f1a',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', boxShadow: `0 0 18px ${C}55`,
+          transition: 'all 0.2s ease',
+        }}
+      >
+        {chatOpen ? <X size={20} /> : <MessageCircle size={20} />}
+      </button>
+
+      {/* Chat slide-up panel */}
+      {chatOpen && (
+        <div style={{
+          position: 'fixed', bottom: 92, right: 28, zIndex: 8999,
+          width: 360, maxWidth: 'calc(100vw - 40px)',
+          height: 460,
+          background: '#0d1424',
+          border: `1px solid ${C}30`,
+          borderRadius: 14,
+          boxShadow: `0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px ${C}15`,
+          display: 'flex', flexDirection: 'column',
+          overflow: 'hidden',
+          fontFamily: "'JetBrains Mono', monospace",
+        }}>
+          {/* Header */}
+          <div style={{
+            padding: '12px 16px',
+            borderBottom: `1px solid ${C}20`,
+            display: 'flex', alignItems: 'center', gap: 10,
+            background: `${C}08`,
+          }}>
+            <div style={{
+              width: 28, height: 28, borderRadius: '50%',
+              background: `${C}18`, border: `1px solid ${C}50`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Brain size={14} color={C} />
+            </div>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#e8f0ff', letterSpacing: '0.05em' }}>WAANDA</div>
+              <div style={{ fontSize: 9, color: `${C}90`, letterSpacing: '0.1em' }}>YOUR INTELLIGENCE PARTNER</div>
+            </div>
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: CG, boxShadow: `0 0 6px ${CG}` }} />
+              <span style={{ fontSize: 8, color: CG, letterSpacing: '0.08em' }}>LIVE</span>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {chatMessages.length === 0 && (
+              <div style={{ color: `${C}60`, fontSize: 11, textAlign: 'center', marginTop: 40, lineHeight: 1.6 }}>
+                <Brain size={28} color={`${C}40`} style={{ margin: '0 auto 10px' }} />
+                Ask WAANDA about your projects,<br />milestones, or deliverables.
+              </div>
+            )}
+            {chatMessages.map((msg, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
+                <div style={{
+                  maxWidth: '82%',
+                  padding: '8px 12px',
+                  borderRadius: msg.role === 'user' ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
+                  background: msg.role === 'user' ? C : `${C}12`,
+                  border: msg.role === 'assistant' ? `1px solid ${C}25` : 'none',
+                  color: msg.role === 'user' ? '#0a0f1a' : '#c8d8f0',
+                  fontSize: 11,
+                  lineHeight: 1.55,
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-word',
+                }}>
+                  {msg.content}
+                  {msg.streaming && (
+                    <span style={{ display: 'inline-block', width: 6, height: 12, background: C, marginLeft: 3, borderRadius: 1, animation: 'blink2 0.9s ease-in-out infinite', verticalAlign: 'middle' }} />
+                  )}
+                </div>
+              </div>
+            ))}
+            <div ref={chatBottomRef} />
+          </div>
+
+          {/* Input */}
+          <div style={{
+            padding: '10px 12px',
+            borderTop: `1px solid ${C}20`,
+            display: 'flex', alignItems: 'flex-end', gap: 8,
+            background: `${C}05`,
+          }}>
+            <textarea
+              ref={chatInputRef}
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage() }
+              }}
+              placeholder="Ask WAANDA…"
+              rows={1}
+              style={{
+                flex: 1, resize: 'none', background: `${C}0a`,
+                border: `1px solid ${C}30`, borderRadius: 8,
+                padding: '7px 10px', color: '#d8e8ff', fontSize: 11,
+                fontFamily: 'inherit', outline: 'none', lineHeight: 1.4,
+                maxHeight: 72, overflowY: 'auto',
+              }}
+            />
+            <button
+              onClick={sendChatMessage}
+              disabled={chatStreaming || !chatInput.trim()}
+              style={{
+                width: 34, height: 34, borderRadius: 8, flexShrink: 0,
+                background: chatStreaming || !chatInput.trim() ? `${C}20` : C,
+                border: 'none', cursor: chatStreaming || !chatInput.trim() ? 'default' : 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'background 0.15s',
+              }}
+            >
+              <Send size={14} color={chatStreaming || !chatInput.trim() ? `${C}60` : '#0a0f1a'} />
+            </button>
           </div>
         </div>
       )}

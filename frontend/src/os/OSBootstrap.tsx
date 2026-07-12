@@ -74,6 +74,12 @@ export const OSBootstrap: React.FC = () => {
         const AI_CAPABILITIES = [
           'cap.ai.plan', 'cap.ai.forecast', 'cap.ai.simulate',
           'cap.ai.analyze', 'ecf.waanda', 'epf.tasks', 'edf.search',
+          // Workspace-specific capabilities — all route to WAANDA query
+          'cap.ops.execute', 'cap.ops.read', 'cap.projects.manage',
+          'cap.assets.read', 'cap.supply.read', 'epf.capacity',
+          'cap.revenue.read', 'cap.pipeline.manage', 'cap.deals.approve',
+          'cap.forecast.read', 'cap.pricing.manage',
+          'cap.collab.facilitate', 'cap.platform.admin', 'cap.ecosystem.manage',
         ];
         for (const capId of AI_CAPABILITIES) {
           capabilityBroker.registerProvider(capId, new WaandaAIProvider(capId));

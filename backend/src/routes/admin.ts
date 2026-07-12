@@ -30,13 +30,13 @@ import { issueCertificate, approveCertificate, latestCertificate, listCertificat
 import { evaluateRelease, recordDeployment, recordOutcome, recordRollback, emergencyOverride, preflightCheck, listDecisions, listDeployments, listEnvironments } from '../scripts/rgs/rgsService';
 import { AegisLedger } from '../kangqore-aegis/aegisLedger.service';
 import { getFlightEvents } from '../scripts/flightRecorder/flightRecorderService';
-import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../scripts/gate8/gate8Service';
-import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent } from '../scripts/gate8/enterpriseService';
-import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin } from '../scripts/gate8/projectOps.service';
-import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../scripts/gate8/enterpriseCoach.service';
-import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../scripts/gate8/decisionEngine.service';
-import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint } from '../scripts/gate8/blueprintService';
-import { simulateEnterpriseTwin, listTwinScenarios, compareScenarios } from '../scripts/gate8/enterpriseTwin.service';
+import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../waanda/intelligence/gate8.service';
+import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent } from '../waanda/intelligence/enterpriseService';
+import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin } from '../waanda/intelligence/projectOps.service';
+import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../waanda/intelligence/enterpriseCoach.service';
+import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../waanda/intelligence/decisionEngine.service';
+import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint } from '../waanda/intelligence/blueprintService';
+import { simulateEnterpriseTwin, listTwinScenarios, compareScenarios } from '../waanda/intelligence/enterpriseTwin.service';
 import { computeCapabilityProfiles, getCapabilityProfiles, getRuntimeCallStats } from '../kangqore-immp/runtime/waandaRuntimeIntelligence.service';
 
 const clientSignalsService = new ClientSignalsService();
@@ -3063,8 +3063,8 @@ router.get('/enterprise/blueprints/:id', authenticate, authorize(['ADMIN']), asy
 // POST /admin/enterprise/blueprints/generate   — assemble Blueprint from live DB state
 router.post('/enterprise/blueprints/generate', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const { name = 'Enterprise Blueprint', orgName = 'Kangqore' } = req.body
-    const result = await generateBlueprint(name, orgName)
+    const { name = 'Enterprise Blueprint', orgName = 'Kangqore', pack = 'professional-services', industry = 'professional-services', orgSize = 'SME' } = req.body
+    const result = await generateBlueprint(name, orgName, pack, industry, orgSize)
     res.json(result)
   } catch (err) { next(err) }
 })

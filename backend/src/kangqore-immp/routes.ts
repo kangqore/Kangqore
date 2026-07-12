@@ -46,7 +46,7 @@ import { KimmpDigitalTwin } from './twin/kimmpTwin.service';
 import { KimmpSystemDispatcher } from './agents/systemDispatcher';
 import { SystemType, SYSTEM_AGENTS } from './agents/agentRegistry';
 import { SystemLearning } from './agents/systemLearning';
-import { invalidatePulseCache } from '../scripts/gate8/enterpriseService';
+import { invalidatePulseCache } from '../waanda/intelligence/enterpriseService';
 import { SystemRAG, RAGSystem, RAG_SYSTEMS, SYSTEM_DOC_TYPES } from './agents/systemRAG';
 import { prisma } from '../lib/prisma';
 import { CommandCenterService } from './command-center/commandCenter.service';
@@ -1335,11 +1335,19 @@ kangqoreImmpRoutes.post('/decisions/:id/select', requireAuth, requireRole(['ADMI
 
 kangqoreImmpRoutes.post('/decisions/:id/outcome', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
-    const { outcome } = req.body
-    if (!outcome) return res.status(400).json({ error: 'outcome required' })
-    await recordDecisionOutcome(req.params.id, outcome)
-    res.json({ ok: true })
-  } catch (e: any) { res.status(500).json({ error: e.message }) }
+    const { outcome, domain = 'operations', tier = 'OPERATIONAL', roiValue } = req.body ?? {};
+    if (!outcome) return res.status(400).json({ error: 'outcome required' });
+    const userId = (req as any).user?.id;
+    // Route through full Phase 6.4 cognition pipeline
+    const { CognitionOrchestrator } = await import('./cognition/cognitionOrchestrator');
+    const result = await CognitionOrchestrator.process({
+      type: 'decision_outcome', sourceId: req.params.id,
+      outcome, userId, domain, tier, roiValue,
+    });
+    // Also call legacy outcome recording for backward compat
+    await recordDecisionOutcome(req.params.id, outcome).catch(() => null);
+    res.json({ ok: true, lesson: result.lesson?.lesson, promoted: result.promoted, etiImpact: result.etiImpact });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
 })
 
 kangqoreImmpRoutes.post('/decisions/detect', requireAuth, requireRole(['ADMIN']), (req, res) => {
@@ -1380,17 +1388,6 @@ kangqoreImmpRoutes.delete('/policies/:id', requireAuth, requireRole(['ADMIN']), 
 kangqoreImmpRoutes.post('/policies/check', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const result = await checkPolicy(req.body)
-    res.json(result)
-  } catch (e: any) { res.status(500).json({ error: e.message }) }
-})
-
-// ─── Simulation ───────────────────────────────────────────────────────────────
-
-kangqoreImmpRoutes.post('/simulate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
-  try {
-    const { type, params } = req.body
-    if (!type) return res.status(400).json({ error: 'type required' })
-    const result = await runSimulation(type, params ?? {})
     res.json(result)
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
@@ -1644,6 +1641,597 @@ kangqoreImmpRoutes.post('/swarm/spawn', requireAuth, requireRole(['ADMIN']), (re
 // Returns agents with live taskProgress and completedTasks attached
 kangqoreImmpRoutes.get('/swarm/enriched', requireAuth, requireRole(['ADMIN']), (_req, res) => {
   res.json({ agents: SwarmActivityEngine.getEnrichedTopology() });
+});
+
+// ─── Phase 6.2 — Decision Brief + Outcome Recording ────────────────────────
+import { DecisionBriefService } from './command-center/decisionBrief.service';
+
+kangqoreImmpRoutes.get('/decisions/:id/brief', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const brief = await DecisionBriefService.brief(req.params.id);
+    if (!brief) return (res as any).status(404).json({ error: 'Decision not found' });
+    res.json(brief);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ─── Phase 6.12 — Enterprise Objectives ─────────────────────────────────────
+import { IntentAlignmentService } from './command-center/intentAlignment.service';
+
+kangqoreImmpRoutes.get('/objectives', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const objectives = await (prisma as any).kimmpEnterpriseObjective.findMany({
+      orderBy: { rank: 'asc' },
+      include: { intents: { where: { status: 'ACTIVE' }, orderBy: { rank: 'asc' } } },
+    });
+    res.json({ objectives });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+kangqoreImmpRoutes.post('/objectives', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { title, description, category, vision, measuredBy, targetDate, rank } = req.body ?? {};
+    if (!title || !category || rank === undefined) {
+      return (res as any).status(400).json({ error: 'title, category, rank required' });
+    }
+    const obj = await (prisma as any).kimmpEnterpriseObjective.create({
+      data: {
+        title, description, category, vision, measuredBy,
+        targetDate: targetDate ? new Date(targetDate) : undefined,
+        rank: Number(rank),
+      },
+    });
+    res.status(201).json(obj);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+kangqoreImmpRoutes.patch('/objectives/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status, rank, measuredBy, title, description, vision, targetDate } = req.body ?? {};
+    const obj = await (prisma as any).kimmpEnterpriseObjective.update({
+      where: { id: req.params.id },
+      data: {
+        ...(status      !== undefined && { status }),
+        ...(rank        !== undefined && { rank: Number(rank) }),
+        ...(measuredBy  !== undefined && { measuredBy }),
+        ...(title       !== undefined && { title }),
+        ...(description !== undefined && { description }),
+        ...(vision      !== undefined && { vision }),
+        ...(targetDate  !== undefined && { targetDate: new Date(targetDate) }),
+      },
+    });
+    if (status === 'ACHIEVED') {
+      await (prisma as any).kimmpMemory.create({
+        data: {
+          type:    'LESSON',
+          content: `Objective achieved: ${obj.title} on ${new Date().toISOString().slice(0, 10)}.`,
+          tags:    ['objective', 'achievement'],
+        },
+      }).catch(() => null);
+    }
+    res.json(obj);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+kangqoreImmpRoutes.delete('/objectives/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    await (prisma as any).kimmpEnterpriseObjective.delete({ where: { id: req.params.id } });
+    res.json({ ok: true });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ─── Phase 6.15 — Executive Intents ─────────────────────────────────────────
+
+kangqoreImmpRoutes.get('/intents', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const intents = await (prisma as any).kimmpExecutiveIntent.findMany({
+      orderBy: { rank: 'asc' },
+      include: { objective: true },
+    });
+    res.json({ intents });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+kangqoreImmpRoutes.post('/intents', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { label, category, timeframe, rank, oisTarget, objectiveId } = req.body ?? {};
+    if (!label || !category || !timeframe || rank === undefined) {
+      return (res as any).status(400).json({ error: 'label, category, timeframe, rank required' });
+    }
+    const intent = await (prisma as any).kimmpExecutiveIntent.create({
+      data: {
+        label, category, timeframe,
+        rank:        Number(rank),
+        oisTarget:   oisTarget != null ? Number(oisTarget) : undefined,
+        objectiveId: objectiveId ?? undefined,
+      },
+    });
+    IntentAlignmentService.invalidateCache();
+    res.status(201).json(intent);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+kangqoreImmpRoutes.patch('/intents/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status, rank, label, category, timeframe, oisTarget, objectiveId } = req.body ?? {};
+    const intent = await (prisma as any).kimmpExecutiveIntent.update({
+      where: { id: req.params.id },
+      data: {
+        ...(status      !== undefined && { status }),
+        ...(rank        !== undefined && { rank: Number(rank) }),
+        ...(label       !== undefined && { label }),
+        ...(category    !== undefined && { category }),
+        ...(timeframe   !== undefined && { timeframe }),
+        ...(oisTarget   !== undefined && { oisTarget: Number(oisTarget) }),
+        ...(objectiveId !== undefined && { objectiveId }),
+      },
+    });
+    IntentAlignmentService.invalidateCache();
+    res.json(intent);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+kangqoreImmpRoutes.delete('/intents/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    await (prisma as any).kimmpExecutiveIntent.delete({ where: { id: req.params.id } });
+    IntentAlignmentService.invalidateCache();
+    res.json({ ok: true });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ─── Phase 6.3 — Daily Operating Plan + Executive Timeline ──────────────────
+import { DailyPlanService } from './command-center/dailyPlan.service';
+
+// GET today's plan (generate if not exists)
+kangqoreImmpRoutes.get('/command-center/plan', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const plan = await DailyPlanService.getOrGenerate(new Date());
+    res.json(plan);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST mark an action as complete
+kangqoreImmpRoutes.post('/command-center/plan/action/:actionId/complete', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const planData = await DailyPlanService.getOrGenerate(new Date());
+    const ok = await DailyPlanService.completeAction(planData.id, req.params.actionId);
+    res.json({ ok });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// DELETE dismiss today's plan (next GET regenerates fresh)
+kangqoreImmpRoutes.delete('/command-center/plan', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    await DailyPlanService.dismiss(new Date());
+    res.json({ ok: true, message: 'Plan dismissed — next GET will regenerate' });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET executive timeline
+kangqoreImmpRoutes.get('/command-center/timeline', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const window = (req.query.window as string) || 'week';
+    const lens   = (req.query.lens   as string) || 'enterprise';
+    if (!['yesterday', 'week', 'quarter'].includes(window)) {
+      return (res as any).status(400).json({ error: 'window must be yesterday|week|quarter' });
+    }
+    if (!['decisions', 'missions', 'objectives', 'enterprise'].includes(lens)) {
+      return (res as any).status(400).json({ error: 'lens must be decisions|missions|objectives|enterprise' });
+    }
+    const data = await DailyPlanService.timeline(
+      window as any,
+      lens as any,
+    );
+    res.json(data);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.4 — Enterprise Cognition Layer Routes
+// ═══════════════════════════════════════════════════════════════════════════════
+import { CognitionOrchestrator } from './cognition/cognitionOrchestrator';
+import { MemoryEngine }          from './cognition/memoryEngine';
+import { TrustEngine }           from './cognition/trustEngine';
+import { KnowledgeEngine }       from './cognition/knowledgeEngine';
+import { EvolutionEngine }       from './cognition/evolutionEngine';
+
+// POST /cognition/process — manual trigger (for testing / feedback submission)
+kangqoreImmpRoutes.post('/cognition/process', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const result = await CognitionOrchestrator.process(req.body);
+    res.json(result);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/eti — current ETI with all dimensions
+kangqoreImmpRoutes.get('/cognition/eti', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [eti, coverage] = await Promise.all([TrustEngine.getETI(), TrustEngine.getKnowledgeCoverage()]);
+    res.json({ eti, coverage });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/eti/trend?window=week|month|quarter
+kangqoreImmpRoutes.get('/cognition/eti/trend', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const window = (req.query.window as string) || 'week';
+    const trend  = await TrustEngine.getTrend(window as any);
+    res.json({ trend });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/memory?domain=&tier=&tags=a,b&limit=
+kangqoreImmpRoutes.get('/cognition/memory', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { domain, tier, tags, limit } = req.query as any;
+    const results = await MemoryEngine.recall({
+      domain, tier,
+      tags:  tags  ? (tags as string).split(',') : undefined,
+      limit: limit ? Number(limit) : 20,
+    });
+    res.json({ lessons: results });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/memory/search?q=
+kangqoreImmpRoutes.get('/cognition/memory/search', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const q = (req.query.q as string) || '';
+    const results = await MemoryEngine.search(q);
+    res.json({ results });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/memory/timeline?window=today|yesterday|week|month&lens=Strategic|Operational|Learning|Evolution
+kangqoreImmpRoutes.get('/cognition/memory/timeline', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const window = (req.query.window as any) || 'week';
+    const lens   = (req.query.lens   as any) || 'Learning';
+    const items  = await MemoryEngine.getTimeline(window, lens);
+    res.json({ items, window, lens });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/knowledge/:domain — full knowledge tree for a domain
+kangqoreImmpRoutes.get('/cognition/knowledge/:domain', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const tree = await KnowledgeEngine.tree(req.params.domain);
+    res.json(tree);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/policy?domain=&window=week|month|quarter
+kangqoreImmpRoutes.get('/cognition/policy', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { domain, window } = req.query as any;
+    const [active, changelog] = await Promise.all([
+      domain ? EvolutionEngine.queryByDomain(domain) : (prisma as any).policyEvolution.findMany({ where: { status: 'ACTIVE' }, orderBy: { createdAt: 'desc' }, take: 30 }),
+      EvolutionEngine.changelog(window || 'month'),
+    ]);
+    res.json({ active, changelog });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/policy/:id/supersede
+kangqoreImmpRoutes.post('/cognition/policy/:id/supersede', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { statement, rationale } = req.body ?? {};
+    if (!statement) return (res as any).status(400).json({ error: 'statement required' });
+    const next = await EvolutionEngine.supersede(req.params.id, statement, rationale ?? '');
+    res.json(next);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.5 — Executive Memory Graph Routes
+// ═══════════════════════════════════════════════════════════════════════════════
+import { EnterpriseGraphService } from './cognition/enterpriseGraph.service';
+
+// GET /cognition/graph/:entityType/:entityId
+kangqoreImmpRoutes.get('/cognition/graph/:entityType/:entityId', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { entityType, entityId } = req.params;
+    const valid = ['lead', 'client', 'signal', 'decision', 'project', 'goal', 'lesson', 'principle'];
+    if (!valid.includes(entityType)) return (res as any).status(400).json({ error: `entityType must be one of: ${valid.join(', ')}` });
+    const graph = await EnterpriseGraphService.traverse(entityId, entityType as any);
+    res.json(graph);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.6 — Digital CEO (Morning Briefing) Routes
+// ═══════════════════════════════════════════════════════════════════════════════
+import { MorningBriefingService } from './cognition/morningBriefing.service';
+
+// POST /cognition/brief/generate — manual trigger
+kangqoreImmpRoutes.post('/cognition/brief/generate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const briefType = (req.body?.briefType as string) || 'MORNING';
+    const result    = await MorningBriefingService.generate(briefType as any);
+    res.json(result);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/brief/latest?briefType=MORNING|MIDDAY|EVENING
+kangqoreImmpRoutes.get('/cognition/brief/latest', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const briefType = (req.query.briefType as string) || 'MORNING';
+    const brief = await (prisma as any).morningBriefing.findFirst({
+      where:   { briefType },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json(brief ?? null);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/brief/history?limit=
+kangqoreImmpRoutes.get('/cognition/brief/history', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const limit  = Number(req.query.limit) || 10;
+    const briefs = await (prisma as any).morningBriefing.findMany({ orderBy: { createdAt: 'desc' }, take: limit });
+    res.json({ briefs });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.7 — Executive Simulator Routes
+// ═══════════════════════════════════════════════════════════════════════════════
+import { ExecutiveSimulatorService } from './cognition/executiveSimulator.service';
+
+// POST /cognition/simulate
+kangqoreImmpRoutes.post('/cognition/simulate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { prompt, context } = req.body ?? {};
+    if (!prompt) return (res as any).status(400).json({ error: 'prompt required' });
+    const userId = (req as any).user?.id;
+    const result = await ExecutiveSimulatorService.simulate(prompt, context, userId);
+    res.json(result);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/simulate/history?limit=
+kangqoreImmpRoutes.get('/cognition/simulate/history', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 10;
+    const sims  = await (prisma as any).executiveSimulation.findMany({ orderBy: { createdAt: 'desc' }, take: limit });
+    res.json({ simulations: sims });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.8 — Autopilot Routes
+// ═══════════════════════════════════════════════════════════════════════════════
+import { AutopilotService } from './cognition/autopilot.service';
+
+// GET /cognition/autopilot/missions
+kangqoreImmpRoutes.get('/cognition/autopilot/missions', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const missions = await AutopilotService.listMissions();
+    res.json({ missions });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/autopilot/missions
+kangqoreImmpRoutes.post('/cognition/autopilot/missions', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const mission = await AutopilotService.createMission(req.body);
+    res.json(mission);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// PATCH /cognition/autopilot/missions/:id — pause/resume/abort
+kangqoreImmpRoutes.patch('/cognition/autopilot/missions/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const mission = await AutopilotService.updateMission(req.params.id, req.body);
+    res.json(mission);
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/autopilot/tick — manual tick for supervised mode
+kangqoreImmpRoutes.post('/cognition/autopilot/tick', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const results = await AutopilotService.tick();
+    res.json({ results });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/autopilot/log?missionId=&limit=
+kangqoreImmpRoutes.get('/cognition/autopilot/log', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { missionId, limit } = req.query as any;
+    const logs = await AutopilotService.getLog(missionId, Number(limit) || 20);
+    res.json({ logs });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.9 — Executive Reflection & Enterprise Evolution
+// ═══════════════════════════════════════════════════════════════════════════════
+import { RetrospectiveEngine }       from './cognition/retrospectiveEngine';
+import { ExecutiveReviewService }    from './cognition/executiveReview.service';
+import { CoigEvolutionService }      from './cognition/coigEvolution.service';
+import { NarrativeGeneratorService } from './cognition/narrativeGenerator.service';
+import { OIIService }                from './cognition/oii.service';
+
+// GET /cognition/oii — Organizational Intelligence Index (computes + persists snapshot)
+kangqoreImmpRoutes.get('/cognition/oii', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try { res.json(await OIIService.compute()); }
+  catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/oii/history?limit= — OII trend over time
+kangqoreImmpRoutes.get('/cognition/oii/history', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try { res.json({ history: await OIIService.history(Number(req.query.limit) || 30) }); }
+  catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/coig/trend
+kangqoreImmpRoutes.get('/cognition/coig/trend', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try { res.json(await CoigEvolutionService.trend()); }
+  catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/scorecard?window=week|month|quarter
+kangqoreImmpRoutes.get('/cognition/scorecard', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const w = (req.query.window as 'week' | 'month' | 'quarter') ?? 'week';
+    res.json(await CoigEvolutionService.computeScorecard(w));
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/reviews?limit=
+kangqoreImmpRoutes.get('/cognition/reviews', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 10;
+    res.json({ reviews: await ExecutiveReviewService.list(limit) });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/reviews/generate — manual trigger
+kangqoreImmpRoutes.post('/cognition/reviews/generate', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try { res.json(await ExecutiveReviewService.generate()); }
+  catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/retrospectives?limit=
+kangqoreImmpRoutes.get('/cognition/retrospectives', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 10;
+    res.json({ retrospectives: await RetrospectiveEngine.list(limit) });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/retrospectives/weekly — manual trigger for current week
+kangqoreImmpRoutes.post('/cognition/retrospectives/weekly', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+    weekStart.setHours(0, 0, 0, 0);
+    res.json(await RetrospectiveEngine.createForWeek(weekStart));
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/letters?type=&limit=
+kangqoreImmpRoutes.get('/cognition/letters', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { type, limit } = req.query as { type?: string; limit?: string };
+    res.json({ letters: await NarrativeGeneratorService.list(type as any, Number(limit) || 10) });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/letters/generate
+kangqoreImmpRoutes.post('/cognition/letters/generate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { type, period } = req.body as { type: 'QUARTERLY' | 'ANNUAL' | 'BOARD' | 'INVESTOR'; period: string };
+    if (!type || !period) return res.status(400).json({ error: 'type and period are required' });
+    res.json(await NarrativeGeneratorService.generate(type, period));
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/playbooks/hygiene — retirement + merge candidates
+kangqoreImmpRoutes.get('/cognition/playbooks/hygiene', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [retirementCandidates, mergeCandidates] = await Promise.all([
+      EvolutionEngine.playbookRetirementCandidates(),
+      EvolutionEngine.playbookMergeCandidates(),
+    ]);
+    res.json({ retirementCandidates, mergeCandidates });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/playbooks/:id/retire
+kangqoreImmpRoutes.post('/cognition/playbooks/:id/retire', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { reason } = req.body as { reason?: string };
+    res.json(await EvolutionEngine.retirePlaybook(req.params.id, reason ?? 'Retired by CEO'));
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /cognition/governance — WAANDA's current promotion mode + readiness
+kangqoreImmpRoutes.get('/cognition/governance', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [status, readiness] = await Promise.all([
+      EvolutionEngine.getGovernanceMode(),
+      EvolutionEngine.assessGovernanceReadiness(),
+    ]);
+    res.json({ ...status, readiness: readiness.readiness });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/governance — CEO override: force GOVERNED or BOOTSTRAP
+kangqoreImmpRoutes.post('/cognition/governance', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { mode, reason } = req.body as { mode: 'BOOTSTRAP' | 'GOVERNED'; reason?: string };
+    if (mode !== 'BOOTSTRAP' && mode !== 'GOVERNED') return res.status(400).json({ error: 'mode must be BOOTSTRAP or GOVERNED' });
+    await EvolutionEngine.setGovernanceMode(mode, 'CEO', reason);
+    res.json({ ok: true, mode });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// GOVERNED Mode — Candidate review routes
+// ═══════════════════════════════════════════════════════════════════════════════
+// GET /cognition/candidates — all CANDIDATE-status knowledge artifacts
+kangqoreImmpRoutes.get('/cognition/candidates', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [principles, playbooks] = await Promise.all([
+      (prisma as any).enterprisePrinciple.findMany({ where: { promotionStatus: 'CANDIDATE' }, orderBy: { createdAt: 'asc' } }),
+      (prisma as any).enterprisePlaybook.findMany({ where: { promotionStatus: 'CANDIDATE' }, orderBy: { createdAt: 'asc' } }),
+    ]);
+    res.json({
+      candidates: [
+        ...principles.map((p: any) => ({ ...p, kind: 'PRINCIPLE' })),
+        ...playbooks.map((p: any) => ({ ...p, kind: 'PLAYBOOK' })),
+      ],
+    });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/candidates/:kind/:id/promote
+kangqoreImmpRoutes.post('/cognition/candidates/:kind/:id/promote', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { kind, id } = req.params;
+    const { reviewNote } = req.body as { reviewNote?: string };
+    const now = new Date();
+    let updated: any;
+    if (kind === 'PRINCIPLE') {
+      updated = await (prisma as any).enterprisePrinciple.update({
+        where: { id },
+        data:  { promotionStatus: 'APPROVED', status: 'ACTIVE', reviewedAt: now, reviewNote: reviewNote ?? 'Approved', promotedAt: now },
+      });
+    } else if (kind === 'PLAYBOOK') {
+      updated = await (prisma as any).enterprisePlaybook.update({
+        where: { id },
+        data:  { promotionStatus: 'APPROVED', status: 'ACTIVE', reviewedAt: now, reviewNote: reviewNote ?? 'Approved', promotedAt: now },
+      });
+    } else {
+      return res.status(400).json({ error: 'kind must be PRINCIPLE or PLAYBOOK' });
+    }
+    res.json({ ok: true, updated });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /cognition/candidates/:kind/:id/reject
+kangqoreImmpRoutes.post('/cognition/candidates/:kind/:id/reject', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { kind, id } = req.params;
+    const { reviewNote } = req.body as { reviewNote?: string };
+    const now = new Date();
+    let updated: any;
+    if (kind === 'PRINCIPLE') {
+      updated = await (prisma as any).enterprisePrinciple.update({
+        where: { id },
+        data:  { promotionStatus: 'REJECTED', status: 'DEPRECATED', reviewedAt: now, reviewNote: reviewNote ?? 'Rejected' },
+      });
+    } else if (kind === 'PLAYBOOK') {
+      updated = await (prisma as any).enterprisePlaybook.update({
+        where: { id },
+        data:  { promotionStatus: 'REJECTED', status: 'DEPRECATED', reviewedAt: now, reviewNote: reviewNote ?? 'Rejected' },
+      });
+    } else {
+      return res.status(400).json({ error: 'kind must be PRINCIPLE or PLAYBOOK' });
+    }
+    res.json({ ok: true, updated });
+  } catch (e: any) { res.status(500).json({ error: e.message }); }
 });
 
 export { kangqoreImmpRoutes };

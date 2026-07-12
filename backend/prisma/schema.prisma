@@ -3165,8 +3165,17 @@ model KimmpDecision {
   executedBy        String? // admin userId who marked executed (Phase 3 workflow)
   executedAt        DateTime?
   notes             String? // human notes on the approval/dismissal decision
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  // Phase 6.4 — outcome tracking + recommendation lifecycle state machine
+  outcome               String?
+  outcomeAt             DateTime?
+  outcomeBy             String?
+  recommendationState   String   @default("GENERATED")
+  // GENERATED → REVIEWED → ACCEPTED → EXECUTED → OBSERVED → VALIDATED → LEARNED
+  reviewedAt            DateTime?
+  validatedAt           DateTime?
+  learnedAt             DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   @@index([status])
   @@index([targetModule])
@@ -5964,4 +5973,498 @@ model KoreEvidence {
   ontologyVersion    String?
 
   createdAt          DateTime @default(now())
+}
+
+// ─── Phase 6.12 — Enterprise Objectives ──────────────────────────────────────
+model KimmpEnterpriseObjective {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  category    String   // 'growth' | 'product' | 'financial' | 'operational' | 'market'
+  vision      String?
+  measuredBy  String?
+  targetDate  DateTime?
+  rank        Int
+  status      String   @default("ACTIVE") // ACTIVE | ACHIEVED | ABANDONED | PAUSED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  intents     KimmpExecutiveIntent[]
+
+  @@index([status])
+  @@map("kimmp_enterprise_objectives")
+}
+
+// ─── Phase 6.15 — Executive Intent Engine ─────────────────────────────────────
+model KimmpExecutiveIntent {
+  id          String   @id @default(cuid())
+  label       String
+  category    String   // 'growth' | 'efficiency' | 'risk' | 'market' | 'people'
+  timeframe   String   // 'Q3-2026' | '12-months' | 'ongoing'
+  rank        Int
+  oisTarget   Float?
+  status      String   @default("ACTIVE") // ACTIVE | PAUSED | ACHIEVED | ABANDONED
+  objectiveId String?
+  objective   KimmpEnterpriseObjective? @relation(fields: [objectiveId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@map("kimmp_executive_intents")
+}
+
+// ─── Phase 6.3 — Daily Operating Plan ─────────────────────────────────────────
+model DailyOperatingPlan {
+  id          String   @id @default(cuid())
+  date        DateTime @unique
+  mission     String
+  actions     Json
+  blockers    Json
+  quickWins   Json
+  oisAtGen    Float?
+  generatedAt DateTime @default(now())
+  dismissed   Boolean  @default(false)
+
+  @@index([date])
+  @@map("daily_operating_plans")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.4 — Enterprise Cognition Layer
+// Constitutional Invariant 6: append-only, forward-only, event-sourced.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Immutable audit log of every inter-engine event (replay substrate)
+model CognitionEvent {
+  id           String   @id @default(cuid())
+  type         String
+  // evidence_created | observation_created | lesson_created | insight_created
+  // pattern_created | principle_candidate | principle_created
+  // playbook_candidate | playbook_created | policy_created
+  artifactId   String
+  artifactType String
+  domain       String
+  payload      Json     // full artifact snapshot at emission time — enables replay
+  emittedAt    DateTime @default(now())
+
+  @@index([type, domain])
+  @@index([emittedAt])
+  @@map("cognition_events")
+}
+
+// Level 0 — Immutable facts. No LLM. No interpretation. Ever.
+model EnterpriseEvidence {
+  id           String   @id @default(cuid())
+  source       String   // 'decision' | 'mission' | 'simulation' | 'feedback' | 'signal'
+  sourceId     String?
+  decisionId   String?
+  missionId    String?
+  objectiveId  String?
+  domain       String
+  tier         String   // STRATEGIC | CRITICAL | OPERATIONAL
+  rawData      Json     // verbatim captured data, immutable
+  createdAt    DateTime @default(now())
+
+  observations EnterpriseObservation[]
+
+  @@index([domain, source])
+  @@index([createdAt])
+  @@map("enterprise_evidence")
+}
+
+// Level 1 — Interpretation of one evidence artifact
+model EnterpriseObservation {
+  id               String   @id @default(cuid())
+  evidenceId       String
+  domain           String
+  tier             String
+  whatHappened     String
+  whyItHappened    String
+  confidence       Float
+  evidenceCount    Int      @default(1)
+  lastValidated    DateTime?
+  validationWindow Int?
+  tags             String[]
+  createdAt        DateTime @default(now())
+
+  evidence         EnterpriseEvidence @relation(fields: [evidenceId], references: [id])
+  lessons          EnterpriseLesson[]
+
+  @@index([domain])
+  @@map("enterprise_observations")
+}
+
+// Level 2 — What one situation taught us
+model EnterpriseLesson {
+  id               String    @id @default(cuid())
+  observationId    String?
+  domain           String
+  tier             String
+  lesson           String
+  policyChange     String?
+  confidence       Float
+  evidenceCount    Int       @default(1)
+  lastValidated    DateTime?
+  validationWindow Int?
+  tags             String[]
+  promotedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  observation      EnterpriseObservation? @relation(fields: [observationId], references: [id])
+  insights         EnterpriseLessonInsight[]
+  evolutions       PolicyEvolution[]
+
+  @@index([domain])
+  @@map("enterprise_lessons")
+}
+
+// Level 3 — What multiple lessons collectively suggest
+model EnterpriseInsight {
+  id               String    @id @default(cuid())
+  domain           String
+  insight          String
+  confidence       Float
+  evidenceCount    Int       @default(1)
+  lastValidated    DateTime?
+  validationWindow Int?
+  tags             String[]
+  promotedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  lessons          EnterpriseLessonInsight[]
+  patterns         EnterpriseInsightPattern[]
+
+  @@index([domain])
+  @@map("enterprise_insights")
+}
+
+model EnterpriseLessonInsight {
+  lessonId  String
+  insightId String
+  lesson    EnterpriseLesson  @relation(fields: [lessonId],  references: [id])
+  insight   EnterpriseInsight @relation(fields: [insightId], references: [id])
+  @@id([lessonId, insightId])
+  @@map("enterprise_lesson_insights")
+}
+
+// Level 4 — Measurable repetition across insights
+model EnterprisePattern {
+  id               String    @id @default(cuid())
+  domain           String
+  description      String
+  frequency        Int       @default(1)
+  confidence       Float
+  evidenceCount    Int       @default(1)
+  lastValidated    DateTime?
+  validationWindow Int?
+  tags             String[]
+  promotedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  insights         EnterpriseInsightPattern[]
+  principles       EnterprisePrinciplePattern[]
+
+  @@index([domain])
+  @@map("enterprise_patterns")
+}
+
+model EnterpriseInsightPattern {
+  insightId String
+  patternId String
+  insight   EnterpriseInsight @relation(fields: [insightId], references: [id])
+  pattern   EnterprisePattern @relation(fields: [patternId], references: [id])
+  @@id([insightId, patternId])
+  @@map("enterprise_insight_patterns")
+}
+
+// Level 5 — Enterprise rule. Versioned. Promotable.
+model EnterprisePrinciple {
+  id               String    @id @default(cuid())
+  domain           String
+  statement        String
+  rationale        String
+  confidence       Float
+  evidenceCount    Int       @default(1)
+  lastValidated    DateTime?
+  validationWindow Int?
+  version          Int       @default(1)
+  status           String    @default("ACTIVE") // ACTIVE | SUPERSEDED | DEPRECATED
+  promotionStatus  String    @default("APPROVED") // CANDIDATE | APPROVED | REJECTED | SUPERSEDED
+  promotionMode    String    @default("BOOTSTRAP") // BOOTSTRAP | GOVERNED
+  supersedes       String?
+  supersededBy     String?
+  reviewedBy       String?
+  reviewedAt       DateTime?
+  reviewNote       String?
+  promotedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  patterns         EnterprisePrinciplePattern[]
+  playbooks        EnterprisePlaybookPrinciple[]
+  evolutions       PolicyEvolution[]
+
+  @@index([domain, status])
+  @@map("enterprise_principles")
+}
+
+model EnterprisePrinciplePattern {
+  principleId String
+  patternId   String
+  principle   EnterprisePrinciple @relation(fields: [principleId], references: [id])
+  pattern     EnterprisePattern   @relation(fields: [patternId],   references: [id])
+  @@id([principleId, patternId])
+  @@map("enterprise_principle_patterns")
+}
+
+// Level 6 — Operationalized principles. Versioned.
+model EnterprisePlaybook {
+  id               String    @id @default(cuid())
+  domain           String
+  title            String
+  steps            Json
+  confidence       Float
+  evidenceCount    Int       @default(1)
+  lastValidated    DateTime?
+  validationWindow Int?
+  version          Int       @default(1)
+  status           String    @default("ACTIVE")
+  promotionStatus  String    @default("APPROVED")
+  promotionMode    String    @default("BOOTSTRAP")
+  supersedes       String?
+  supersededBy     String?
+  reviewedBy       String?
+  reviewedAt       DateTime?
+  reviewNote       String?
+  promotedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  principles       EnterprisePlaybookPrinciple[]
+
+  @@index([domain, status])
+  @@map("enterprise_playbooks")
+}
+
+model EnterprisePlaybookPrinciple {
+  playbookId  String
+  principleId String
+  playbook    EnterprisePlaybook  @relation(fields: [playbookId],  references: [id])
+  principle   EnterprisePrinciple @relation(fields: [principleId], references: [id])
+  @@id([playbookId, principleId])
+  @@map("enterprise_playbook_principles")
+}
+
+// Level 7 — Adaptation and governance (derived from lessons or principles)
+model PolicyEvolution {
+  id             String    @id @default(cuid())
+  lessonId       String?
+  principleId    String?
+  domain         String
+  statement      String
+  rationale      String
+  evidence       String
+  confidence     Float
+  evidenceCount  Int       @default(1)
+  lastValidated  DateTime?
+  version        Int       @default(1)
+  status         String    @default("ACTIVE") // ACTIVE | SUPERSEDED | DEPRECATED
+  supersedes     String?
+  supersededBy   String?
+  createdAt      DateTime  @default(now())
+
+  lesson         EnterpriseLesson?    @relation(fields: [lessonId],    references: [id])
+  principle      EnterprisePrinciple? @relation(fields: [principleId], references: [id])
+
+  @@index([domain, status])
+  @@map("policy_evolutions")
+}
+
+// ETI Snapshots — written by Trust Engine after every outcome
+model ETISnapshot {
+  id                       String   @id @default(cuid())
+  overallScore             Float
+  predictionAccuracy       Float
+  decisionAccuracy         Float
+  outcomeSuccess           Float
+  recommendationAcceptance Float
+  calibrationDrift         Float
+  coverage                 Float
+  stability                Float
+  reliability              Float
+  snapshotAt               DateTime @default(now())
+
+  @@index([snapshotAt])
+  @@map("eti_snapshots")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.6 — Digital CEO (Morning Briefing)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model MorningBriefing {
+  id             String   @id @default(cuid())
+  briefType      String   @default("MORNING") // MORNING | MIDDAY | EVENING
+  date           DateTime
+  oisScore       Float?
+  para1Health    String   // Enterprise Health
+  para2Focus     String   // Today's Focus
+  para3Trust     String   // Trust Index
+  para4Learning  String   // Yesterday's Learning
+  para5Policy    String   // Policy Evolution
+  para6Actions   String   // Recommended Decisions
+  sentAt         DateTime?
+  emailSent      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([date, briefType])
+  @@map("morning_briefings")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.7 — Executive Simulator
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model ExecutiveSimulation {
+  id             String   @id @default(cuid())
+  prompt         String   // "Hire 10 engineers"
+  context        Json?    // snapshot of relevant enterprise state at simulation time
+  dimensions     Json     // { revenue, delivery, cash, headcount, risk, ... }
+  confidence     Float
+  policiesUsed   String[] // which PolicyEvolution ids informed this simulation
+  playbooksUsed  String[] // which EnterprisePlaybook ids informed this simulation
+  createdBy      String?
+  createdAt      DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("executive_simulations")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.8 — Autonomous Enterprise (Autopilot)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model AutopilotMission {
+  id              String   @id @default(cuid())
+  intentId        String?  // driving KimmpExecutiveIntent
+  objectiveId     String?  // driving KimmpEnterpriseObjective
+  title           String
+  status          String   @default("ACTIVE") // ACTIVE | PAUSED | COMPLETED | ABORTED
+  mode            String   @default("SUPERVISED") // SUPERVISED | AUTONOMOUS
+  // SUPERVISED = WAANDA proposes, CEO approves. AUTONOMOUS = WAANDA acts.
+  actions         Json     // AutopilotAction[]
+  lastTickAt      DateTime?
+  completedAt     DateTime?
+  createdAt       DateTime @default(now())
+
+  @@index([status, mode])
+  @@map("autopilot_missions")
+}
+
+model AutopilotLog {
+  id         String   @id @default(cuid())
+  missionId  String?
+  action     String   // what WAANDA did or proposed
+  rationale  String
+  outcome    String?
+  approved   Boolean?
+  createdAt  DateTime @default(now())
+
+  @@index([missionId, createdAt])
+  @@map("autopilot_logs")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Phase 6.9 — Executive Reflection & Enterprise Evolution
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model EnterpriseRetrospective {
+  id          String   @id @default(cuid())
+  scope       String   // MISSION | GOAL | WEEKLY | MONTHLY
+  scopeId     String?
+  dateFrom    DateTime
+  dateTo      DateTime
+  planned     Json     // { missions: number, decisions: number, objectives: string[] }
+  executed    Json     // { missionsCompleted, decisionsApproved, outcomesRecorded }
+  delta       Json     // { oisStart, oisEnd, coigDelta }
+  reflection  String   @db.Text
+  lessonsRaised     String[]
+  patternsConfirmed String[]
+  createdAt   DateTime @default(now())
+
+  @@index([scope, dateFrom])
+  @@map("enterprise_retrospectives")
+}
+
+model ExecutiveReview {
+  id            String   @id @default(cuid())
+  reviewType    String   // WEEKLY | MONTHLY | QUARTERLY
+  weekOf        DateTime
+  oisStart      Float?
+  oisEnd        Float?
+  etiStart      Float?
+  etiEnd        Float?
+  coigDelta     Float?
+  decisionCount Int      @default(0)
+  outcomeCount  Int      @default(0)
+  lessonCount   Int      @default(0)
+  patternCount  Int      @default(0)
+  content       String   @db.Text
+  createdAt     DateTime @default(now())
+
+  @@index([reviewType, weekOf])
+  @@map("executive_reviews")
+}
+
+model EnterpriseLetter {
+  id        String   @id @default(cuid())
+  type      String   // QUARTERLY | ANNUAL | BOARD | INVESTOR
+  period    String   // e.g. "Q3-2026" | "2026" | "2026-07"
+  content   String   @db.Text
+  metrics   Json     // ExecutiveScorecard snapshot at generation time
+  createdAt DateTime @default(now())
+
+  @@index([type, period])
+  @@map("enterprise_letters")
+}
+
+// WAANDA self-governance flag store.
+// knowledgeEngine.ts reads COGNITION_PROMOTION_MODE to decide BOOTSTRAP vs GOVERNED.
+// evolutionEngine.ts writes it autonomously when readiness thresholds are crossed.
+model KimmpFlag {
+  id        String   @id @default(cuid())
+  key       String   @unique   // e.g. 'COGNITION_PROMOTION_MODE'
+  value     String             // e.g. 'GOVERNED' | 'BOOTSTRAP'
+  setBy     String   @default("WAANDA")  // 'WAANDA' | 'CEO' | 'SYSTEM'
+  reason    String?            // WAANDA's rationale when self-set
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("kimmp_flags")
+}
+
+model OIISnapshot {
+  id         String   @id @default(cuid())
+  score      Float
+  grade      String
+  dimensions Json     // OIIDimension[]
+  computedAt DateTime @default(now())
+
+  @@index([computedAt])
+  @@map("oii_snapshots")
+}
+
+model WaandaDirectiveLog {
+  id          String    @id @default(cuid())
+  directiveId String    @unique
+  to          String                        // SubsystemName
+  type        String                        // DirectiveType
+  payload     Json
+  reason      String?
+  accepted    Boolean?
+  result      Json?
+  issuedAt    DateTime  @default(now())
+  resolvedAt  DateTime?
+
+  @@index([to])
+  @@index([issuedAt])
+  @@map("waanda_directive_logs")
 }

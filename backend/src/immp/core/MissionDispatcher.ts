@@ -116,6 +116,9 @@ export class MissionDispatcher {
       result: executionResult,
     });
 
+    // Notify WAANDA that KEOS ran a mission (keeps lastActive timestamp real)
+    import('../../waanda/adapters/KeosAdapter').then(({ notifyKeosMissionRun }) => notifyKeosMissionRun()).catch(() => {})
+
     return executionResult;
   }
 }
