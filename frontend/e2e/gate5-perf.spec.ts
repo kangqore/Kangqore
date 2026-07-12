@@ -10,7 +10,7 @@
 
 import { test, expect, type Page } from '@playwright/test'
 
-const BASE = 'http://localhost:3001'
+const BASE = 'http://localhost:3000'
 
 const PERF_THRESHOLD_MS  = 5000   // body must be populated within 5s
 const DCLD_THRESHOLD_MS  = 4000   // DOMContentLoaded within 4s

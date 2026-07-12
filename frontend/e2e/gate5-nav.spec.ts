@@ -5,7 +5,7 @@
 
 import { test, expect, type Page } from '@playwright/test'
 
-const BASE = 'http://localhost:3001'
+const BASE = 'http://localhost:3000'
 
 async function withAuth(page: Page, route = '/kangqore-view/admin/dashboard') {
   await page.goto(`${BASE}/`)

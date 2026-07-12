@@ -15,7 +15,7 @@
 
 import { test, expect, type Page } from '@playwright/test'
 
-const BASE     = 'http://localhost:3001'
+const BASE     = 'http://localhost:3000'
 const API_BASE = 'http://localhost:5050'
 
 // Env vars injected by gate5Runner when it seeds a workflow
