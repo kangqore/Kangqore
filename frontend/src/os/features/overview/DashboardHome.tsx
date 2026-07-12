@@ -106,12 +106,12 @@ function PageHeader({
       {/* Avatar + greeting */}
       <div className="flex items-center gap-4">
         <div className="relative flex-shrink-0">
-          <img
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80"
-            alt="C.O.D.E."
-            className="w-12 h-12 rounded-full object-cover"
-            style={{ border: '2px solid var(--os-border)', boxShadow: '0 2px 8px rgba(0,0,0,0.10)' }}
-          />
+          <div
+            className="w-12 h-12 rounded-full flex items-center justify-center font-black text-white"
+            style={{ background: 'linear-gradient(135deg, #60A5FA 0%, #1D4ED8 100%)', fontSize: 16, border: '2px solid rgba(255,255,255,0.5)', boxShadow: '0 2px 8px rgba(29,78,216,0.30)' }}
+          >
+            C.E
+          </div>
           <span className="absolute bottom-0 right-0 w-3 h-3 bg-[#00c875] rounded-full border-2 border-white dark:border-black" />
         </div>
         <div>
@@ -121,15 +121,20 @@ function PageHeader({
           <h1 className="text-[22px] font-black tracking-tight leading-none mb-1" style={{ color: 'var(--os-text-1)' }}>
             {getGreeting()}, C.O.D.E.
           </h1>
-          {healthLabel && (
-            <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold text-white border-none shadow-sm"
-              style={{ background: 'linear-gradient(135deg, #60A5FA 0%, #1D4ED8 100%)' }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-white" />
-              WAANDA {healthLabel} · {score}/100
+          <div className="flex items-center gap-2">
+            {healthLabel && (
+              <span
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold text-white border-none shadow-sm"
+                style={{ background: 'linear-gradient(135deg, #60A5FA 0%, #1D4ED8 100%)' }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-white" />
+                WAANDA {healthLabel} · {score}/100
+              </span>
+            )}
+            <span className="text-[10px] font-medium" style={{ color: 'var(--os-text-3)' }}>
+              · Synced {new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
             </span>
-          )}
+          </div>
         </div>
       </div>
 
@@ -942,7 +947,7 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
             {alerts.map((a: any) => {
               const color = '#10B981' // Evergreen Mint
               return (
-                <div key={a.id} style={{
+                <div key={a.id} onClick={() => navigate('/kangqore-view/admin/leads')} className="cursor-pointer hover:opacity-90 transition-opacity" style={{
                   padding: '9px 12px', borderRadius: 9,
                   borderLeft: `3px solid ${color}`,
                   background: 'linear-gradient(135deg, #ecfdf5 0%, #D1FAE5 100%)',
@@ -973,20 +978,26 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
             Signal Stream
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {signals.map((s: any) => (
-              <div key={s.id} style={{
-                display: 'flex', alignItems: 'flex-start', gap: 8,
-                padding: '8px 10px', borderRadius: 8,
-                background: 'rgba(87, 155, 252, 0.06)',
-                border: '1px solid rgba(87, 155, 252, 0.12)',
-              }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#579bfc', flexShrink: 0, marginTop: 5 }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: 0, fontWeight: 600 }} className="truncate">{s.title}</p>
-                  <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0 }}>{s.category} · {timeAgo(s.createdAt)}</p>
+            {signals.map((s: any) => {
+              const catColor = s.category?.toLowerCase().includes('risk') ? '#e2445c'
+                : s.category?.toLowerCase().includes('revenue') ? '#00c875'
+                : s.category?.toLowerCase().includes('pipeline') ? '#7c3aed'
+                : '#579bfc'
+              return (
+                <div key={s.id} style={{
+                  display: 'flex', alignItems: 'flex-start', gap: 8,
+                  padding: '8px 10px', borderRadius: 8,
+                  background: `${catColor}08`,
+                  border: `1px solid ${catColor}15`,
+                }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: catColor, flexShrink: 0, marginTop: 5 }} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: 0, fontWeight: 600 }} className="truncate">{s.title}</p>
+                    <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0 }}>{s.category} · {timeAgo(s.createdAt)}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       )}
@@ -1175,7 +1186,7 @@ const PRIORITY_DOT: Record<string, string> = {
   critical: '#e2445c', high: '#fdab3d', medium: '#579bfc', low: '#c5c7d0',
 }
 
-function ActivityFeed() {
+function ActivityFeed({ navigate }: { navigate: (p: string) => void }) {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['dashboard-signals'],
     queryFn:  () => api.get('/admin/kangqore-immp/signals', { params: { limit: 8 } }).then(r => r.data),
@@ -1275,6 +1286,15 @@ function ActivityFeed() {
             )
           })}
         </div>
+      )}
+      {!isLoading && grouped.length > 0 && (
+        <button
+          onClick={() => navigate('/kangqore-view/admin/aegis')}
+          style={{ width: '100%', marginTop: 16, padding: '10px 0', borderRadius: 10, background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)', fontSize: 11, fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}
+          className="hover:bg-slate-50 dark:hover:bg-slate-800"
+        >
+          View All Activity
+        </button>
       )}
     </div>
   )
@@ -1526,7 +1546,7 @@ export function DashboardHome() {
       </div>
 
       {/* 5. Activity Feed */}
-      <ActivityFeed />
+      <ActivityFeed navigate={navigate} />
     </div>
   )
 }
