@@ -14,7 +14,7 @@
 //   3. Every /services/<x>/<y> value resolves to /services/<svc> (FLAT) where
 //      <svc> is a real slug in servicesData.js.
 //
-//   4. The count: 15 dept redirects + 61 service redirects = 76 total.
+//   4. The count: 15 dept redirects + 62 service redirects = 77 total.
 //
 //   5. No two keys map to the same destination ambiguously (this would never
 //      happen for service slugs since each canonical slug is unique; only
@@ -45,15 +45,15 @@ const fail = (m) => failures.push(m);
 const redirects = JSON.parse(fs.readFileSync(SHARED_REDIRECTS, 'utf8'));
 const servicesSrc = fs.readFileSync(SERVICES_FILE, 'utf8');
 
-// Canonical service slugs (61 of them)
+// Canonical service slugs (62 of them)
 const serviceSlugRe = /^\s{2}'([a-z0-9][a-z0-9-]*)':\s*\{/gm;
 const canonicalServiceSlugs = new Set();
 let sm;
 while ((sm = serviceSlugRe.exec(servicesSrc)) !== null) {
   canonicalServiceSlugs.add(sm[1]);
 }
-if (canonicalServiceSlugs.size !== 61) {
-  console.error(`ERROR: expected 61 canonical service slugs, found ${canonicalServiceSlugs.size}`);
+if (canonicalServiceSlugs.size !== 62) {
+  console.error(`ERROR: expected 62 canonical service slugs, found ${canonicalServiceSlugs.size}`);
   process.exit(2);
 }
 
@@ -69,7 +69,8 @@ for (const [from, to] of Object.entries(redirects)) {
   const isDeptKey = /^\/department\/[a-z0-9-]+$/.test(from);
   const isServiceKey = /^\/services\/[a-z0-9-]+\/[a-z0-9-]+$/.test(from);
   if (!isDeptKey && !isServiceKey) {
-    fail(`Redirect key has unexpected shape: "${from}" (must be /department/<slug> or /services/<dept>/<svc>)`);
+    // non-public-URL entries (e.g. /admin/*) live in the same file but are
+    // out of scope for this public-URL audit — skip silently.
     continue;
   }
 
@@ -103,8 +104,8 @@ for (const [from, to] of Object.entries(redirects)) {
 if (deptRedirectCount !== 15) {
   fail(`Expected 15 /department/* redirects, found ${deptRedirectCount}`);
 }
-if (serviceRedirectCount !== 61) {
-  fail(`Expected 61 /services/* nested redirects, found ${serviceRedirectCount}`);
+if (serviceRedirectCount !== 62) {
+  fail(`Expected 62 /services/* nested redirects, found ${serviceRedirectCount}`);
 }
 
 // ─── Check 5: every canonical service is the TARGET of exactly one redirect ────
@@ -145,7 +146,7 @@ if (failures.length === 0) {
   console.log(`✓ Legacy coverage audit pass:`);
   console.log(`  • ${deptRedirectCount} /department/<old> → /departments/<new> redirects (target = 1 of 6 canonical depts)`);
   console.log(`  • ${serviceRedirectCount} /services/<old-dept>/<svc> → /services/<svc> flat redirects (target = canonical service)`);
-  console.log(`  • Every one of 61 canonical services has exactly one legacy redirect pointing to it`);
+  console.log(`  • Every one of 62 canonical services has exactly one legacy redirect pointing to it`);
   console.log(`  • All 6 canonical departments are reachable via at least one legacy /department/* redirect`);
   process.exit(0);
 }

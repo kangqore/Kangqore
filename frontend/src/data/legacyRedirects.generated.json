@@ -52,6 +52,7 @@
   "/services/cloud-engineering/google-cloud-services": "/services/google-cloud-services",
   "/services/cloud-engineering/managed-cloud-services": "/services/managed-cloud-services",
   "/services/cloud-engineering/microsoft-services": "/services/microsoft-services",
+  "/services/cognition/agentic-ai-led-application-modernization": "/services/agentic-ai-led-application-modernization",
   "/services/consulting-advisory/discover-frame-workshops": "/services/discover-frame-workshops",
   "/services/consulting-advisory/strategy-consulting": "/services/strategy-consulting",
   "/services/consulting-advisory/technology-consulting": "/services/technology-consulting",
