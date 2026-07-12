@@ -1097,18 +1097,18 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
           {/* Verdict badge */}
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6,
-            padding: '16px 20px', borderRadius: 12, background: 'var(--os-surface-1)',
-            border: '1px solid var(--os-border)', flexShrink: 0, minWidth: 140,
-            boxShadow: `inset 0 0 20px ${vs.color}10`
+            padding: '16px 20px', borderRadius: 16, 
+            background: `linear-gradient(135deg, ${vs.color}15 0%, ${vs.color}05 100%)`,
+            border: `1px solid ${vs.color}20`, flexShrink: 0, minWidth: 150,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: vs.color, display: 'inline-block', boxShadow: `0 0 10px ${vs.color}` }} className="animate-pulse" />
-              <span style={{ fontSize: 18, fontWeight: 900, color: 'var(--os-text-1)', letterSpacing: '0.02em', textShadow: `0 0 12px ${vs.color}40` }}>{vs.label}</span>
+              <span style={{ width: 10, height: 10, borderRadius: '50%', background: vs.color, display: 'inline-block', boxShadow: `0 0 12px ${vs.color}` }} className="animate-pulse" />
+              <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--os-text-1)', letterSpacing: '-0.02em' }}>{vs.label}</span>
             </div>
             {healthScore != null && (
-              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-2)', letterSpacing: '0.05em' }}>HEALTH {healthScore}%</span>
+              <span style={{ fontSize: 11, fontWeight: 800, color: vs.color, letterSpacing: '0.05em' }}>HEALTH {healthScore}%</span>
             )}
-            <p style={{ fontSize: 10, color: 'var(--os-text-2)', margin: 0, textAlign: 'center', marginTop: 4 }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-2)', margin: 0, textAlign: 'center', marginTop: 4 }}>
               {critical24h > 0 ? `${critical24h} critical 24h` : warn24h > 0 ? `${warn24h} warnings 24h` : 'No threats 24h'}
             </p>
           </div>
@@ -1116,17 +1116,21 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
           {/* 3 stat blocks */}
           <div style={{ display: 'flex', gap: 12, flex: 1, minWidth: 200 }}>
             {[
-              { label: 'Pass',     count: passEngines, color: '#00c875' },
-              { label: 'Warn',     count: warnEngines, color: '#fdab3d' },
-              { label: 'Critical', count: critEngines, color: '#e2445c' },
+              { label: 'Pass',     count: passEngines, color: '#059669' },
+              { label: 'Warn',     count: warnEngines, color: '#d97706' },
+              { label: 'Critical', count: critEngines, color: '#e11d48' },
             ].map(e => (
               <div key={e.label} style={{
-                flex: 1, textAlign: 'center', padding: '12px 0', borderRadius: 12,
-                background: 'var(--os-surface-1)', border: '1px solid var(--os-border)',
-                borderTop: `2px solid ${e.color}`
+                flex: 1, textAlign: 'center', padding: '16px 12px', borderRadius: 16,
+                background: 'var(--os-surface-0)', 
+                border: '1px solid var(--os-border)',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+                position: 'relative', overflow: 'hidden'
               }}>
-                <p style={{ fontSize: 26, fontWeight: 300, color: 'var(--os-text-1)', margin: '0 0 2px', lineHeight: 1 }}>{e.count}</p>
-                <p style={{ fontSize: 10, fontWeight: 700, color: `${e.color}`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{e.label}</p>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: e.color, opacity: 0.8 }} />
+                <p style={{ fontSize: 28, fontWeight: 700, color: 'var(--os-text-1)', margin: '4px 0 0', lineHeight: 1 }}>{e.count}</p>
+                <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-2)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{e.label}</p>
               </div>
             ))}
           </div>
@@ -1140,13 +1144,14 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
               {Array.from({ length: totalEngines }).map((_, i) => {
                 const eng     = engines[i]
                 const eVerdict = eng?.latest?.verdict ?? null
-                const color   = eVerdict === 'PASS' ? '#00c875' : eVerdict === 'WARN' ? '#fdab3d' : eVerdict === 'CRITICAL' ? '#e2445c' : 'var(--os-border)'
+                const color   = eVerdict === 'PASS' ? '#059669' : eVerdict === 'WARN' ? '#d97706' : eVerdict === 'CRITICAL' ? '#e11d48' : 'var(--os-border)'
                 return (
                   <div key={i} title={eng?.name ?? `Engine ${i+1}`} style={{
-                    width: 24, height: 8, borderRadius: 4,
-                    background: eVerdict ? `${color}40` : 'var(--os-surface-2)',
-                    border: `1px solid ${eVerdict ? color : 'var(--os-border)'}`,
-                    boxShadow: eVerdict ? `0 0 8px ${color}20` : 'none',
+                    width: 24, height: 10, borderRadius: 10,
+                    background: eVerdict ? color : 'var(--os-surface-2)',
+                    opacity: eVerdict ? 0.9 : 0.5,
+                    border: 'none',
+                    boxShadow: eVerdict ? `0 2px 4px ${color}40` : 'none',
                     transition: 'all 0.3s ease',
                   }} />
                 )
