@@ -1134,10 +1134,15 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
           </div>
 
           {/* 10-dot engine heatmap -> Server rack pills */}
-          <div style={{ flexShrink: 0, paddingRight: 10 }}>
-            <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-2)', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Engines ({checkedEngines}/{totalEngines})
-            </p>
+          <div style={{ flexShrink: 0, paddingRight: 10, display: 'flex', alignItems: 'center', gap: 20 }}>
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ fontSize: 28, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 4px', lineHeight: 1 }}>
+                {Math.round((checkedEngines / (totalEngines || 1)) * 100)}%
+              </p>
+              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-2)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Online
+              </p>
+            </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8 }}>
               {Array.from({ length: totalEngines }).map((_, i) => {
                 const eng     = engines[i]
