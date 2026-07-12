@@ -4,7 +4,9 @@ import { test, expect, type Page } from '@playwright/test'
 async function injectDemoAuth(page: Page) {
   await page.goto('/')
   await page.evaluate(() => {
+    const demoUser = JSON.stringify({ id: 'demo-admin', name: 'C.O.D.E.', email: 'admin@kangqore.com', role: 'ADMIN' })
     localStorage.setItem('token', 'demo-token')
+    localStorage.setItem('user', demoUser)
     localStorage.setItem('role', 'ADMIN')
   })
 }

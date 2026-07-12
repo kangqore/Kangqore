@@ -10,7 +10,9 @@ const BASE = 'http://localhost:3000'
 async function withAuth(page: Page, route = '/kangqore-view/admin/dashboard') {
   await page.goto(`${BASE}/`)
   await page.evaluate(() => {
+    const demoUser = JSON.stringify({ id: 'demo-admin', name: 'C.O.D.E.', email: 'admin@kangqore.com', role: 'ADMIN' })
     localStorage.setItem('token', 'demo-token')
+    localStorage.setItem('user', demoUser)
     localStorage.setItem('role', 'ADMIN')
   })
   await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded' })
