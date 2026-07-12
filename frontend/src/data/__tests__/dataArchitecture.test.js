@@ -1,5 +1,5 @@
 // ─── Data Architecture Invariants Test ─────────────────────────────────────────
-// Guards the 6-Departments × 61-Services canonical architecture.
+// Guards the 6-Departments × 62-Services canonical architecture.
 //
 // These tests must pass in CI. If they fail, the data files have drifted —
 // fix the data, not the test.
@@ -19,11 +19,11 @@ import {
   servicesByDepartment,
 } from '../servicesData';
 
-const EXPECTED_TOTAL_SERVICES = 61;
+const EXPECTED_TOTAL_SERVICES = 62;
 const EXPECTED_DEPARTMENTS = 6;
 
 const EXPECTED_COUNTS = {
-  cognition: 11,
+  cognition: 12,
   foundry: 17,
   reimagine: 12,
   shield: 5,
@@ -31,7 +31,7 @@ const EXPECTED_COUNTS = {
   growth: 8,
 };
 
-describe('Data architecture — 6 Departments × 61 Services', () => {
+describe('Data architecture — 6 Departments × 62 Services', () => {
 
   test('departmentsList has exactly 6 departments', () => {
     expect(departmentsList).toHaveLength(EXPECTED_DEPARTMENTS);
@@ -44,7 +44,7 @@ describe('Data architecture — 6 Departments × 61 Services', () => {
     });
   });
 
-  test('servicesList has exactly 61 services', () => {
+  test('servicesList has exactly 62 services', () => {
     expect(servicesList).toHaveLength(EXPECTED_TOTAL_SERVICES);
   });
 
