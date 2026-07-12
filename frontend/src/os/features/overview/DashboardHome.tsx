@@ -633,9 +633,9 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 h-[4px] rounded-full overflow-hidden" style={{ background: 'var(--os-border)' }}>
+                    <div className="flex-1 h-[6px] rounded-full overflow-hidden" style={{ background: 'var(--os-border)' }}>
                       <div className="h-full rounded-full transition-all duration-700"
-                           style={{ background: barColor, width: `${pct}%` }} />
+                           style={{ background: barColor, width: `${pct}%`, boxShadow: `0 0 6px ${barColor}40` }} />
                     </div>
                     <span className="text-[10px] font-bold w-7 text-right flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>{pct}%</span>
                   </div>
@@ -762,8 +762,8 @@ function BidsPanel({ navigate }: { navigate: (p: string) => void }) {
                       {e.status}
                     </span>
                   </div>
-                  <div style={{ height: 4, borderRadius: 2, background: 'var(--os-border)' }}>
-                    <div style={{ height: '100%', borderRadius: 2, background: '#fdab3d', width: `${pct}%` }} />
+                  <div style={{ height: 6, borderRadius: 3, background: 'var(--os-border)' }}>
+                    <div style={{ height: '100%', borderRadius: 3, background: col, width: `${pct}%`, boxShadow: `0 0 6px ${col}40` }} />
                   </div>
                   <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: '4px 0 0' }}>{done}/{tot} deliverables</p>
                 </li>
@@ -940,21 +940,25 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {alerts.map((a: any) => {
-              const color = SEV_COLOR[a.severity] ?? '#c5c7d0'
+              const color = '#10B981' // Evergreen Mint
               return (
                 <div key={a.id} style={{
                   padding: '9px 12px', borderRadius: 9,
                   borderLeft: `3px solid ${color}`,
-                  background: `${color}08`,
-                  border: `1px solid ${color}20`,
+                  background: 'linear-gradient(135deg, #ecfdf5 0%, #D1FAE5 100%)',
+                  border: `1px solid ${color}30`,
                   borderLeftWidth: 3,
+                  display: 'flex', alignItems: 'flex-start', gap: 8,
                 }}>
-                  <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: '0 0 2px', lineHeight: 1.4 }} className="line-clamp-2">
-                    {a.message}
-                  </p>
-                  <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0 }}>
-                    {a.severity} · {timeAgo(a.createdAt)}
-                  </p>
+                  <AlertTriangle style={{ width: 14, height: 14, color: '#10B981', flexShrink: 0, marginTop: 1 }} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: '0 0 2px', lineHeight: 1.4 }} className="line-clamp-2">
+                      {a.message}
+                    </p>
+                    <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0 }}>
+                      {a.severity} · {timeAgo(a.createdAt)}
+                    </p>
+                  </div>
                 </div>
               )
             })}
@@ -968,12 +972,17 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
           <p className="text-[11px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--os-text-2)' }}>
             Signal Stream
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {signals.map((s: any) => (
-              <div key={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#579bfc', flexShrink: 0, marginTop: 4 }} />
+              <div key={s.id} style={{
+                display: 'flex', alignItems: 'flex-start', gap: 8,
+                padding: '8px 10px', borderRadius: 8,
+                background: 'rgba(87, 155, 252, 0.06)',
+                border: '1px solid rgba(87, 155, 252, 0.12)',
+              }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#579bfc', flexShrink: 0, marginTop: 5 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: 0 }} className="truncate">{s.title}</p>
+                  <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: 0, fontWeight: 600 }} className="truncate">{s.title}</p>
                   <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0 }}>{s.category} · {timeAgo(s.createdAt)}</p>
                 </div>
               </div>
@@ -1030,15 +1039,15 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
   const totalEngines    = engines.length || 10
 
   return (
-    <div className="os-card p-5 rounded-2xl">
+    <div className="p-5 rounded-2xl" style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.20)' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-        <h3 style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, display: 'flex', alignItems: 'center', gap: 7 }}>
+        <h3 style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9', margin: 0, display: 'flex', alignItems: 'center', gap: 7 }}>
           <Shield style={{ width: 14, height: 14, color: vs.color }} />
           AEGIS Shield
         </h3>
         <button
           onClick={() => navigate('/kangqore-view/admin/aegis')}
-          style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-2)', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3 }}
+          style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3 }}
         >
           Open <ArrowRight style={{ width: 11, height: 11 }} />
         </button>
@@ -1046,24 +1055,24 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
 
       {isLoading ? (
         <div style={{ display: 'flex', gap: 20 }}>
-          {[1,2,3].map(i => <SkeletonLight key={i} className="h-16 flex-1" />)}
+          {[1,2,3].map(i => <div key={i} className="animate-pulse h-16 flex-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)' }} />)}
         </div>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
           {/* Verdict badge with animated pulse dot */}
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-            padding: '14px 20px', borderRadius: 12, background: `${vs.color}10`,
-            border: `1px solid ${vs.color}25`, flexShrink: 0, minWidth: 120,
+            padding: '14px 20px', borderRadius: 12, background: `${vs.color}20`,
+            border: `1px solid ${vs.color}40`, flexShrink: 0, minWidth: 120,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <span style={{ width: 9, height: 9, borderRadius: '50%', background: vs.color, display: 'inline-block' }} className="animate-pulse" />
               <span style={{ fontSize: 16, fontWeight: 800, color: vs.color }}>{vs.label}</span>
             </div>
             {healthScore != null && (
-              <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-2)' }}>{healthScore}/100</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#cbd5e1' }}>{healthScore}/100</span>
             )}
-            <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0, textAlign: 'center' }}>
+            <p style={{ fontSize: 10, color: '#94a3b8', margin: 0, textAlign: 'center' }}>
               {critical24h > 0 ? `${critical24h} critical 24h` : warn24h > 0 ? `${warn24h} warnings 24h` : 'No threats 24h'}
             </p>
           </div>
@@ -1077,28 +1086,30 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
             ].map(e => (
               <div key={e.label} style={{
                 flex: 1, textAlign: 'center', padding: '10px 0', borderRadius: 10,
-                background: `${e.color}08`, border: `1px solid ${e.color}18`,
+                background: `${e.color}15`, border: `1px solid ${e.color}30`,
               }}>
                 <p style={{ fontSize: 20, fontWeight: 800, color: e.color, margin: 0 }}>{e.count}</p>
-                <p style={{ fontSize: 10, fontWeight: 700, color: `${e.color}90`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{e.label}</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: `${e.color}`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.8 }}>{e.label}</p>
               </div>
             ))}
           </div>
 
-          {/* 10-square engine heatmap */}
+          {/* 10-dot engine heatmap */}
           <div style={{ flexShrink: 0 }}>
-            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-3)', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
               Engines ({checkedEngines}/{totalEngines})
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 5 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 6 }}>
               {Array.from({ length: totalEngines }).map((_, i) => {
                 const eng     = engines[i]
                 const eVerdict = eng?.latest?.verdict ?? null
-                const color   = eVerdict === 'PASS' ? '#00c875' : eVerdict === 'WARN' ? '#fdab3d' : eVerdict === 'CRITICAL' ? '#e2445c' : 'var(--os-border)'
+                const color   = eVerdict === 'PASS' ? '#00c875' : eVerdict === 'WARN' ? '#fdab3d' : eVerdict === 'CRITICAL' ? '#e2445c' : '#334155'
                 return (
                   <div key={i} title={eng?.name ?? `Engine ${i+1}`} style={{
-                    width: 20, height: 20, borderRadius: 5,
-                    background: color, opacity: eVerdict ? 1 : 0.4,
+                    width: 18, height: 18, borderRadius: '50%',
+                    background: color, opacity: eVerdict ? 1 : 0.5,
+                    boxShadow: eVerdict ? `0 0 8px ${color}50` : 'none',
+                    transition: 'all 0.3s ease',
                   }} />
                 )
               })}
@@ -1136,17 +1147,18 @@ function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
             <motion.button
               key={m.label}
               onClick={() => navigate(m.path)}
-              whileHover={{ y: -3, transition: spring.smooth }}
+              whileHover={{ y: -4, scale: 1.04, transition: spring.smooth }}
               whileTap={{ scale: 0.96 }}
-              className="flex flex-col items-center gap-2 rounded-2xl cursor-pointer transition-all"
+              className="flex flex-col items-center gap-2 rounded-2xl cursor-pointer transition-all border-none"
               style={{
-                padding: '14px 8px', border: '1px solid var(--os-border)',
-                background: 'var(--os-surface-0)',
+                padding: '14px 8px',
+                background: `linear-gradient(145deg, ${m.color}20, ${m.color}08)`,
+                border: `1px solid ${m.color}25`,
                 width: 80, height: 80,
               }}
             >
-              <div style={{ width: 32, height: 32, borderRadius: 9, background: `${m.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Icon style={{ width: 15, height: 15, color: m.color }} />
+              <div style={{ width: 32, height: 32, borderRadius: 10, background: `${m.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 4px 12px ${m.color}40` }}>
+                <Icon style={{ width: 15, height: 15, color: '#fff' }} />
               </div>
               <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)', textAlign: 'center', lineHeight: 1.2 }}>{m.label}</span>
             </motion.button>
@@ -1182,12 +1194,32 @@ function ActivityFeed() {
     }
   })
 
+  // Group duplicate signals by summary
+  const grouped = signals.reduce((acc: any[], s: any) => {
+    const existing = acc.find(g => g.summary === s.summary && g.module === s.module)
+    if (existing) {
+      existing.count += 1
+      // Keep the most recent timestamp
+      if (new Date(s.createdAt) > new Date(existing.createdAt)) {
+        existing.createdAt = s.createdAt
+      }
+    } else {
+      acc.push({ ...s, count: 1 })
+    }
+    return acc
+  }, [])
+
   return (
     <div className="os-card p-5 rounded-2xl">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
         <h3 style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, display: 'flex', alignItems: 'center', gap: 7 }}>
           <Activity style={{ width: 14, height: 14, color: '#579bfc' }} />
           Recent Activity
+          {grouped.length > 0 && (
+            <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 8, background: '#579bfc15', color: '#579bfc' }}>
+              {signals.length}
+            </span>
+          )}
         </h3>
         <button
           onClick={() => refetch()}
@@ -1201,7 +1233,7 @@ function ActivityFeed() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {[1,2,3].map(i => <SkeletonLight key={i} className="h-10 w-full" />)}
         </div>
-      ) : signals.length === 0 ? (
+      ) : grouped.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '28px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 48, height: 48, borderRadius: 16, background: 'rgba(0,200,117,0.09)', border: '1px solid rgba(0,200,117,0.20)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <CheckCircle2 style={{ width: 22, height: 22, color: '#00c875' }} />
@@ -1212,31 +1244,36 @@ function ActivityFeed() {
           </div>
         </div>
       ) : (
-        <div style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', left: 5, top: 4, bottom: 4, width: 1, background: 'var(--os-border)' }} />
-          <ul style={{ listStyle: 'none', margin: 0, padding: '0 0 0 22px', display: 'flex', flexDirection: 'column', gap: 18 }}>
-            {signals.map((s: any) => (
-              <li key={s.id} style={{ position: 'relative' }}>
-                <span style={{
-                  position: 'absolute', left: -22, top: 4, width: 10, height: 10, borderRadius: '50%',
-                  background: PRIORITY_DOT[s.priority] ?? '#c5c7d0',
-                  border: '2px solid var(--os-card)',
-                }} />
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    {s.summary && <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: '0 0 4px', lineHeight: 1.4 }} className="line-clamp-1">{s.summary}</p>}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      {s.module && (
-                        <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 4, background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>{s.module}</span>
-                      )}
-                      {s.category && <span style={{ fontSize: 10, color: 'var(--os-text-3)' }}>{s.category}</span>}
-                    </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {grouped.map((s: any, idx: number) => {
+            const dotColor = PRIORITY_DOT[s.priority] ?? '#c5c7d0'
+            return (
+              <div key={s.id ?? idx} style={{
+                padding: '10px 14px', borderRadius: 10,
+                background: `${dotColor}08`,
+                border: `1px solid ${dotColor}18`,
+                borderLeft: `3px solid ${dotColor}`,
+                display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
+              }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: dotColor, flexShrink: 0 }} />
+                    {s.summary && <p style={{ fontSize: 12, color: 'var(--os-text-1)', margin: 0, lineHeight: 1.4, fontWeight: 600 }} className="line-clamp-1">{s.summary}</p>}
                   </div>
-                  <span style={{ fontSize: 10, color: 'var(--os-text-3)', flexShrink: 0 }}>{timeAgo(s.createdAt)}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, paddingLeft: 13 }}>
+                    {s.module && (
+                      <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 4, background: `${dotColor}12`, border: `1px solid ${dotColor}20`, color: 'var(--os-text-2)' }}>{s.module}</span>
+                    )}
+                    {s.category && <span style={{ fontSize: 10, color: 'var(--os-text-3)' }}>{s.category}</span>}
+                    {s.count > 1 && (
+                      <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 4, background: dotColor, color: '#fff' }}>×{s.count}</span>
+                    )}
+                  </div>
                 </div>
-              </li>
-            ))}
-          </ul>
+                <span style={{ fontSize: 10, color: 'var(--os-text-3)', flexShrink: 0, marginTop: 2 }}>{timeAgo(s.createdAt)}</span>
+              </div>
+            )
+          })}
         </div>
       )}
     </div>
