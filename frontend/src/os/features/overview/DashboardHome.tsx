@@ -1201,7 +1201,7 @@ function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
               style={{
                 background: 'var(--os-surface-0)',
                 border: '1px solid var(--os-border)',
-                width: '75%', 
+                width: '65%', 
                 aspectRatio: '1 / 1',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.02)',
               }}
