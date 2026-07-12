@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Zap, Briefcase, TrendingUp, Target, LayoutDashboard, Activity,
   Users, DollarSign, Brain, AlertTriangle, CheckCircle2, Clock,
-  ArrowRight, RefreshCw, BarChart3, Shield, Crosshair, Calendar,
+  ArrowRight, RefreshCw, BarChart3, Shield, Crosshair, Calendar, Sparkles
 } from 'lucide-react'
 import { api } from '@lib/api'
 import {
@@ -123,10 +123,10 @@ function PageHeader({
           </h1>
           {healthLabel && (
             <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold"
-              style={{ color: healthColor, background: `${healthColor}18`, border: `1px solid ${healthColor}28` }}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold text-white border-none shadow-sm"
+              style={{ background: 'linear-gradient(135deg, #60A5FA 0%, #1D4ED8 100%)' }}
             >
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: healthColor }} />
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-white" />
               WAANDA {healthLabel} · {score}/100
             </span>
           )}
@@ -137,22 +137,22 @@ function PageHeader({
       <div className="flex flex-wrap items-center gap-2.5">
         <button
           onClick={() => navigate('/kangqore-view/admin/leads')}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold text-white transition-all hover:-translate-y-1"
-          style={{ background: 'linear-gradient(135deg, #579bfc 0%, #2564ea 100%)', boxShadow: '0 8px 24px rgba(37,100,234,0.35)' }}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold text-white transition-all hover:-translate-y-1 border-none"
+          style={{ background: 'linear-gradient(135deg, #FBBF24 0%, #D97706 100%)', boxShadow: '0 8px 24px rgba(217,119,6,0.35)' }}
         >
           <Zap className="w-3.5 h-3.5" /> New Lead
         </button>
         <button
           onClick={() => navigate('/kangqore-view/admin/projects')}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-all hover:-translate-y-1"
-          style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)', boxShadow: 'var(--os-shadow-md)' }}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold text-white transition-all hover:-translate-y-1 border-none"
+          style={{ background: 'linear-gradient(135deg, #34D399 0%, #059669 100%)', boxShadow: '0 8px 24px rgba(5,150,105,0.35)' }}
         >
-          <Briefcase className="w-3.5 h-3.5" style={{ color: 'var(--os-text-2)' }} /> New Project
+          <Briefcase className="w-3.5 h-3.5" /> New Project
         </button>
         <button
           onClick={() => navigate('/kangqore-view/admin/WAANDA')}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-all hover:-translate-y-1"
-          style={{ background: '#00c87514', border: '1px solid #00c87528', color: '#00c875', boxShadow: '0 8px 24px rgba(0,200,117,0.15)' }}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold text-white transition-all hover:-translate-y-1 border-none"
+          style={{ background: 'linear-gradient(135deg, #60A5FA 0%, #1D4ED8 100%)', boxShadow: '0 8px 24px rgba(29,78,216,0.35)' }}
         >
           <Brain className="w-3.5 h-3.5" /> WAANDA
         </button>
@@ -164,17 +164,17 @@ function PageHeader({
 // ─── KPI Bar ──────────────────────────────────────────────────────────────────
 
 const KPI_DEFS = [
-  { key: 'MRR',      icon: TrendingUp,  color: '#579bfc', sub: 'Month to date',
+  { key: 'MRR',      icon: Sparkles,  color: '#3B82F6', bgGradient: 'linear-gradient(135deg, #DBEAFE 0%, #3B82F6 100%)', textColor: '#1e3a8a', subTextColor: '#1e3a8ab3', sub: 'Month to date',
     getValue: (k: any, _a: any) => k == null ? null : k.revenueMTD       > 0 ? `₹${fmt(k.revenueMTD)} Cr`              : '₹0' },
-  { key: 'ARR',      icon: BarChart3,   color: '#7c3aed', sub: 'Annualised',
+  { key: 'ARR',      icon: BarChart3,   color: '#d97706', bgGradient: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)', sub: 'Annualised',
     getValue: (k: any, _a: any) => k == null ? null : k.arr              > 0 ? `₹${fmt(k.arr)} Cr`                      : '₹0' },
-  { key: 'Revenue',  icon: DollarSign,  color: '#00c875', sub: 'Last month',
+  { key: 'Revenue',  icon: DollarSign,  color: '#0d9488', bgGradient: 'linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%)', sub: 'Last month',
     getValue: (k: any, _a: any) => k == null ? null : k.revenueLastMonth > 0 ? `₹${fmt(k.revenueLastMonth)} Cr`         : '₹0' },
-  { key: 'Pipeline', icon: Zap,         color: '#fdab3d', sub: 'Active deals',
+  { key: 'Pipeline', icon: Zap,         color: '#e11d48', bgGradient: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)', sub: 'Active deals',
     getValue: (k: any, _a: any) => k == null ? null : k.pipelineValue    > 0 ? `₹${(k.pipelineValue/1e7).toFixed(1)} Cr` : '₹0' },
-  { key: 'Clients',  icon: Briefcase,   color: '#0ea5e9', sub: 'Active',
+  { key: 'Clients',  icon: Briefcase,   color: '#c026d3', bgGradient: 'linear-gradient(135deg, #fdf4ff 0%, #fce7f3 100%)', sub: 'Active',
     getValue: (_k: any, a: any) => a == null ? null : a.clients          > 0 ? String(a.clients)                         : '0'  },
-  { key: 'Team',     icon: Users,       color: '#6366f1', sub: 'Members',
+  { key: 'Team',     icon: Users,       color: '#4f46e5', bgGradient: 'linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%)', sub: 'Members',
     getValue: (k: any, a: any) => { if (k == null && a == null) return null; const v = a?.total_users ?? k?.totalTeam ?? 0; return v > 0 ? String(v) : '0' } },
 ]
 
@@ -194,20 +194,22 @@ function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loadi
             whileHover={{ y: -4, scale: 1.01, transition: spring.smooth }}
             className="cursor-pointer relative overflow-hidden flex flex-col p-5 transition-all duration-300"
             style={{ 
-              background: 'rgba(255, 255, 255, 0.8)', 
-              color: 'var(--os-text-1)',
+              background: def.bgGradient, 
+              color: def.textColor || 'var(--os-text-1)',
               borderRadius: 'var(--os-radius-xl)',
               boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
-              border: '1px solid rgba(255,255,255,0.9)',
+              border: '1px solid rgba(255,255,255,0.6)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
             }}
           >
             {/* Top row: Icon + Delta */}
             <div className="flex items-center justify-between mb-4">
-              <div className="w-10 h-10 rounded-[14px] flex items-center justify-center" style={{ background: `${def.color}15`, border: `1px solid ${def.color}30` }}>
-                <Icon style={{ width: 20, height: 20, color: def.color }} />
-              </div>
+              <Icon 
+                style={{ width: 24, height: 24, color: def.textColor || def.color }} 
+                stroke={def.textColor || def.color}
+                fill="none"
+              />
               
               {/* Delta badge */}
               {isPositive ? (
@@ -238,7 +240,7 @@ function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loadi
                   animate={{ opacity: 1, y: 0 }}
                   className="font-black tracking-tight leading-none mb-1"
                   style={{
-                    color: 'var(--os-text-1)',
+                    color: def.textColor || 'var(--os-text-1)',
                     fontSize: val.length > 7 ? 22 : 28,
                   }}
                 >
@@ -247,18 +249,18 @@ function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loadi
               </AnimatePresence>
             ) : (
               <p className="font-black tracking-tight leading-none mb-1"
-                 style={{ fontSize: 28, color: 'var(--os-text-3)', letterSpacing: '-0.02em' }}>
+                 style={{ fontSize: 28, color: def.subTextColor || 'var(--os-text-3)', letterSpacing: '-0.02em' }}>
                 —
               </p>
             )}
 
             <div className="flex items-center gap-1.5 mt-1">
               <p className="font-bold tracking-tight m-0"
-                 style={{ fontSize: 13, color: 'var(--os-text-1)' }}>
+                 style={{ fontSize: 13, color: def.textColor || 'var(--os-text-1)' }}>
                 {def.key}
               </p>
               <p className="font-medium m-0"
-                 style={{ fontSize: 12, color: 'var(--os-text-3)' }}>
+                 style={{ fontSize: 12, color: def.subTextColor || 'var(--os-text-3)' }}>
                 · {def.sub}
               </p>
             </div>
@@ -793,16 +795,27 @@ function WaandaScoreRing({ score }: { score: number }) {
             <stop offset="80%"   stopColor="#579bfc" />
             <stop offset="100%"  stopColor="#7c3aed" />
           </linearGradient>
+          <filter id="innerBevel" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
+            <feOffset dx="-2" dy="-2" result="offsetBlur" />
+            <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowDiff" />
+            <feFlood floodColor="black" floodOpacity="0.3" />
+            <feComposite in2="shadowDiff" operator="in" />
+            <feComposite in2="SourceGraphic" operator="over" />
+          </filter>
         </defs>
         {/* Track */}
         <circle cx="80" cy="80" r={R} fill="none" stroke="var(--os-border)" strokeWidth="10" />
         {/* Arc */}
         {score > 0 && (
-          <circle
+          <motion.circle
             cx="80" cy="80" r={R} fill="none"
             stroke="url(#waandaGradient)" strokeWidth="10"
-            strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
-            style={{ filter: 'drop-shadow(0 0 6px rgba(87,155,252,0.35))', transition: 'stroke-dasharray 1s ease' }}
+            strokeDasharray={`${circ} ${circ}`} strokeLinecap="round"
+            initial={{ strokeDashoffset: circ }}
+            animate={{ strokeDashoffset: circ - dash }}
+            transition={{ duration: 1.5, type: 'spring', bounce: 0.15 }}
+            style={{ filter: 'url(#innerBevel)' }}
           />
         )}
       </svg>
@@ -810,7 +823,7 @@ function WaandaScoreRing({ score }: { score: number }) {
         <span className="text-[36px] font-black tracking-tight leading-none" style={{ color: 'var(--os-text-1)' }}>
           {score > 0 ? score : '—'}
         </span>
-        <span className="font-semibold uppercase tracking-widest" style={{ fontSize: 10, color: 'var(--os-text-2)' }}>
+        <span className="font-semibold uppercase tracking-widest" style={{ fontSize: 8, color: 'var(--os-text-2)' }}>
           WAANDA SCORE
         </span>
       </div>
@@ -1241,7 +1254,12 @@ function PipelineTrendChart() {
   ]
 
   return (
-    <div className="os-card p-5 rounded-2xl h-[300px] flex flex-col justify-between">
+    <motion.div 
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.6, type: 'spring', bounce: 0.3 }}
+      className="os-card p-5 rounded-2xl h-[300px] flex flex-col justify-between"
+    >
       <div className="flex items-center justify-between mb-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
@@ -1261,8 +1279,9 @@ function PipelineTrendChart() {
           <AreaChart data={trendData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#2564ea" stopOpacity={0.25}/>
-                <stop offset="95%" stopColor="#2564ea" stopOpacity={0.01}/>
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.4}/>
+                <stop offset="40%" stopColor="#2563eb" stopOpacity={0.15}/>
+                <stop offset="100%" stopColor="#1d4ed8" stopOpacity={0.01}/>
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--os-border)" />
@@ -1274,11 +1293,19 @@ function PipelineTrendChart() {
               itemStyle={{ fontSize: 11, color: 'var(--os-text-2)' }}
               formatter={(v: any) => [`₹${Number(v).toLocaleString('en-IN')}`, 'Projected Revenue']}
             />
-            <Area type="monotone" dataKey="revenue" stroke="#2564ea" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRevenue)" />
+            <Area 
+              type="monotone" 
+              dataKey="revenue" 
+              stroke="#2563eb" 
+              strokeWidth={3} 
+              fillOpacity={1} 
+              fill="url(#colorRevenue)" 
+              activeDot={{ r: 5, stroke: '#ffffff', strokeWidth: 2, fill: '#2563eb', style: { filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.25))' } }}
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -1302,7 +1329,12 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
   ]
 
   return (
-    <div className="os-card p-5 rounded-2xl h-[300px] flex flex-col justify-between">
+    <motion.div 
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.6, type: 'spring', bounce: 0.3, delay: 0.1 }}
+      className="os-card p-5 rounded-2xl h-[300px] flex flex-col justify-between"
+    >
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--os-text-2)' }}>
           Lead Pipeline Distribution
@@ -1312,6 +1344,26 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
       <div className="flex-1 w-full min-h-0 relative flex items-center justify-center">
         <ResponsiveContainer width="100%" height="90%">
           <PieChart>
+            <defs>
+              <filter id="pieBevel" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
+                <feOffset dx="-1" dy="-1" result="offsetBlur" />
+                <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowDiff" />
+                <feFlood floodColor="white" floodOpacity="0.4" />
+                <feComposite in2="shadowDiff" operator="in" result="highlight" />
+                
+                <feOffset dx="1" dy="1" in="blur" result="shadowOffsetBlur" />
+                <feComposite in2="SourceAlpha" in="shadowOffsetBlur" operator="arithmetic" k2="-1" k3="1" result="shadowDiff2" />
+                <feFlood floodColor="black" floodOpacity="0.3" />
+                <feComposite in2="shadowDiff2" operator="in" result="shadow" />
+                
+                <feMerge>
+                  <feMergeNode in="SourceGraphic" />
+                  <feMergeNode in="highlight" />
+                  <feMergeNode in="shadow" />
+                </feMerge>
+              </filter>
+            </defs>
             <Pie
               data={displayData}
               cx="50%"
@@ -1320,9 +1372,14 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
               outerRadius={75}
               paddingAngle={4}
               dataKey="value"
+              stroke="none"
             >
               {displayData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={entry.color} 
+                  style={{ filter: 'url(#pieBevel)', cursor: 'pointer', transition: 'all 0.3s ease' }} 
+                />
               ))}
             </Pie>
             <RechartsTooltip
@@ -1338,7 +1395,7 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
           <p className="text-xl font-black leading-none m-0" style={{ color: 'var(--os-text-1)' }}>
             {leads.length}
           </p>
-          <p className="uppercase tracking-wider font-bold m-0 mt-0.5" style={{ fontSize: 10, color: 'var(--os-text-3)' }}>
+          <p className="uppercase tracking-wider font-bold m-0 mt-0.5" style={{ fontSize: 8, color: 'var(--os-text-3)' }}>
             Total Leads
           </p>
         </div>
@@ -1348,12 +1405,12 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
       <div className="flex flex-wrap gap-x-3 gap-y-1 justify-center mt-2">
         {displayData.map((d) => (
           <div key={d.name} className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: d.color }} />
+            <span className="w-2.5 h-2.5 rounded-sm" style={{ background: d.color, filter: 'url(#pieBevel)' }} />
             <span className="font-bold" style={{ fontSize: 10, color: 'var(--os-text-2)' }}>{d.name} ({d.value as number})</span>
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   )
 }
 
