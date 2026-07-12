@@ -1072,76 +1072,85 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
   const totalEngines    = engines.length || 10
 
   return (
-    <div className="p-5 rounded-2xl" style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.20)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-        <h3 style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9', margin: 0, display: 'flex', alignItems: 'center', gap: 7 }}>
-          <Shield style={{ width: 14, height: 14, color: vs.color }} />
+    <div className="p-5 rounded-2xl relative overflow-hidden" style={{ 
+      background: 'radial-gradient(circle at 10% 20%, #1e293b 0%, #020617 80%)',
+      border: '1px solid rgba(255,255,255,0.1)', 
+      boxShadow: '0 12px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)',
+    }}>
+      <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 opacity-5 blur-[100px] pointer-events-none" />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, position: 'relative', zIndex: 1 }}>
+        <h3 style={{ fontSize: 14, fontWeight: 700, color: '#f8fafc', margin: 0, display: 'flex', alignItems: 'center', gap: 7, letterSpacing: '-0.02em' }}>
+          <Shield style={{ width: 16, height: 16, color: vs.color }} fill="none" strokeWidth={2.5} />
           AEGIS Shield
         </h3>
         <button
           onClick={() => navigate('/kangqore-view/admin/aegis')}
-          style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3 }}
+          style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, padding: '4px 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, transition: 'all 0.2s' }}
+          className="hover:text-white hover:bg-white/10"
         >
           Open <ArrowRight style={{ width: 11, height: 11 }} />
         </button>
       </div>
 
       {isLoading ? (
-        <div style={{ display: 'flex', gap: 20 }}>
-          {[1,2,3].map(i => <div key={i} className="animate-pulse h-16 flex-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)' }} />)}
+        <div style={{ display: 'flex', gap: 20, position: 'relative', zIndex: 1 }}>
+          {[1,2,3].map(i => <div key={i} className="animate-pulse h-20 flex-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }} />)}
         </div>
       ) : (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-          {/* Verdict badge with animated pulse dot */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', position: 'relative', zIndex: 1 }}>
+          {/* Verdict badge */}
           <div style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-            padding: '14px 20px', borderRadius: 12, background: `${vs.color}20`,
-            border: `1px solid ${vs.color}40`, flexShrink: 0, minWidth: 120,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6,
+            padding: '16px 20px', borderRadius: 12, background: 'rgba(255,255,255,0.02)',
+            border: `1px solid rgba(255,255,255,0.05)`, flexShrink: 0, minWidth: 140,
+            boxShadow: `inset 0 0 20px ${vs.color}15`
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ width: 9, height: 9, borderRadius: '50%', background: vs.color, display: 'inline-block' }} className="animate-pulse" />
-              <span style={{ fontSize: 16, fontWeight: 800, color: vs.color }}>{vs.label}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: vs.color, display: 'inline-block', boxShadow: `0 0 10px ${vs.color}` }} className="animate-pulse" />
+              <span style={{ fontSize: 18, fontWeight: 900, color: '#fff', letterSpacing: '0.02em', textShadow: `0 0 12px ${vs.color}60` }}>{vs.label}</span>
             </div>
             {healthScore != null && (
-              <span style={{ fontSize: 12, fontWeight: 700, color: '#cbd5e1' }}>{healthScore}/100</span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#cbd5e1', letterSpacing: '0.05em' }}>HEALTH {healthScore}%</span>
             )}
-            <p style={{ fontSize: 10, color: '#94a3b8', margin: 0, textAlign: 'center' }}>
+            <p style={{ fontSize: 10, color: '#64748b', margin: 0, textAlign: 'center', marginTop: 4 }}>
               {critical24h > 0 ? `${critical24h} critical 24h` : warn24h > 0 ? `${warn24h} warnings 24h` : 'No threats 24h'}
             </p>
           </div>
 
           {/* 3 stat blocks */}
-          <div style={{ display: 'flex', gap: 10, flex: 1, minWidth: 180 }}>
+          <div style={{ display: 'flex', gap: 12, flex: 1, minWidth: 200 }}>
             {[
               { label: 'Pass',     count: passEngines, color: '#00c875' },
               { label: 'Warn',     count: warnEngines, color: '#fdab3d' },
               { label: 'Critical', count: critEngines, color: '#e2445c' },
             ].map(e => (
               <div key={e.label} style={{
-                flex: 1, textAlign: 'center', padding: '10px 0', borderRadius: 10,
-                background: `${e.color}15`, border: `1px solid ${e.color}30`,
+                flex: 1, textAlign: 'center', padding: '12px 0', borderRadius: 12,
+                background: 'rgba(255,255,255,0.02)', border: `1px solid rgba(255,255,255,0.05)`,
+                borderTop: `2px solid ${e.color}80`
               }}>
-                <p style={{ fontSize: 20, fontWeight: 800, color: e.color, margin: 0 }}>{e.count}</p>
-                <p style={{ fontSize: 10, fontWeight: 700, color: `${e.color}`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.8 }}>{e.label}</p>
+                <p style={{ fontSize: 26, fontWeight: 300, color: '#fff', margin: '0 0 2px', lineHeight: 1 }}>{e.count}</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: `${e.color}cc`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{e.label}</p>
               </div>
             ))}
           </div>
 
-          {/* 10-dot engine heatmap */}
-          <div style={{ flexShrink: 0 }}>
-            <p style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+          {/* 10-dot engine heatmap -> Server rack pills */}
+          <div style={{ flexShrink: 0, paddingRight: 10 }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: '#64748b', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Engines ({checkedEngines}/{totalEngines})
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 6 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8 }}>
               {Array.from({ length: totalEngines }).map((_, i) => {
                 const eng     = engines[i]
                 const eVerdict = eng?.latest?.verdict ?? null
                 const color   = eVerdict === 'PASS' ? '#00c875' : eVerdict === 'WARN' ? '#fdab3d' : eVerdict === 'CRITICAL' ? '#e2445c' : '#334155'
                 return (
                   <div key={i} title={eng?.name ?? `Engine ${i+1}`} style={{
-                    width: 18, height: 18, borderRadius: '50%',
-                    background: color, opacity: eVerdict ? 1 : 0.5,
-                    boxShadow: eVerdict ? `0 0 8px ${color}50` : 'none',
+                    width: 24, height: 8, borderRadius: 4,
+                    background: eVerdict ? `${color}40` : '#1e293b',
+                    border: `1px solid ${eVerdict ? color : '#334155'}`,
+                    boxShadow: eVerdict ? `0 0 8px ${color}40` : 'none',
                     transition: 'all 0.3s ease',
                   }} />
                 )
@@ -1157,14 +1166,14 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
 // ─── Module Grid (Quick Access) ───────────────────────────────────────────────
 
 const MODULES = [
-  { label: 'Leads',     icon: Zap,             color: '#579bfc', path: '/kangqore-view/admin/leads'       },
-  { label: 'Projects',  icon: LayoutDashboard, color: '#00c875', path: '/kangqore-view/admin/projects'    },
-  { label: 'BIDS™',    icon: Crosshair,        color: '#fdab3d', path: '/kangqore-view/admin/bids'        },
-  { label: 'AEGIS',    icon: Shield,           color: '#e2445c', path: '/kangqore-view/admin/aegis'       },
-  { label: 'Finance',  icon: DollarSign,       color: '#7c3aed', path: '/kangqore-view/admin/finance'     },
-  { label: 'Clients',  icon: Briefcase,        color: '#0ea5e9', path: '/kangqore-view/admin/clients'     },
-  { label: 'Schedule', icon: Calendar,         color: '#f97316', path: '/kangqore-view/admin/scheduling'  },
-  { label: 'Comms',    icon: Activity,         color: '#10b981', path: '/kangqore-view/admin/comms'       },
+  { label: 'Leads',     icon: Zap,             color: '#d97706', gradient: 'linear-gradient(135deg, #fef3c7 0%, #d97706 100%)',  path: '/kangqore-view/admin/leads'       },
+  { label: 'Projects',  icon: LayoutDashboard, color: '#059669', gradient: 'linear-gradient(135deg, #d1fae5 0%, #059669 100%)',  path: '/kangqore-view/admin/projects'    },
+  { label: 'BIDS™',    icon: Crosshair,        color: '#2563eb', gradient: 'linear-gradient(135deg, #dbeafe 0%, #2563eb 100%)',  path: '/kangqore-view/admin/bids'        },
+  { label: 'AEGIS',    icon: Shield,           color: '#e11d48', gradient: 'linear-gradient(135deg, #ffe4e6 0%, #e11d48 100%)',  path: '/kangqore-view/admin/aegis'       },
+  { label: 'Finance',  icon: DollarSign,       color: '#7c3aed', gradient: 'linear-gradient(135deg, #ede9fe 0%, #7c3aed 100%)',  path: '/kangqore-view/admin/finance'     },
+  { label: 'Clients',  icon: Briefcase,        color: '#0284c7', gradient: 'linear-gradient(135deg, #e0f2fe 0%, #0284c7 100%)',  path: '/kangqore-view/admin/clients'     },
+  { label: 'Schedule', icon: Calendar,         color: '#ea580c', gradient: 'linear-gradient(135deg, #ffedd5 0%, #ea580c 100%)',  path: '/kangqore-view/admin/scheduling'  },
+  { label: 'Comms',    icon: Activity,         color: '#0d9488', gradient: 'linear-gradient(135deg, #ccfbf1 0%, #0d9488 100%)',  path: '/kangqore-view/admin/comms'       },
 ]
 
 function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
@@ -1173,27 +1182,43 @@ function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
       <p className="text-[11px] font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--os-text-2)' }}>
         Quick Access
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
         {MODULES.map(m => {
           const Icon = m.icon
           return (
             <motion.button
               key={m.label}
               onClick={() => navigate(m.path)}
-              whileHover={{ y: -4, scale: 1.04, transition: spring.smooth }}
+              whileHover={{ 
+                y: -4, 
+                scale: 1.04, 
+                boxShadow: `0 14px 28px ${m.color}25`,
+                borderColor: m.color,
+                transition: spring.smooth 
+              }}
               whileTap={{ scale: 0.96 }}
-              className="flex flex-col items-center gap-2 rounded-2xl cursor-pointer transition-all border-none"
+              className="flex flex-col items-center justify-center gap-2.5 rounded-2xl cursor-pointer transition-colors relative overflow-hidden"
               style={{
-                padding: '14px 8px',
-                background: `linear-gradient(145deg, ${m.color}20, ${m.color}08)`,
-                border: `1px solid ${m.color}25`,
-                width: 80, height: 80,
+                background: 'var(--os-surface-0)',
+                border: '1px solid var(--os-border)',
+                width: '100%', 
+                aspectRatio: '1 / 1',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.02)',
               }}
             >
-              <div style={{ width: 32, height: 32, borderRadius: 10, background: `${m.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 4px 12px ${m.color}40` }}>
-                <Icon style={{ width: 15, height: 15, color: '#fff' }} />
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)', textAlign: 'center', lineHeight: 1.2 }}>{m.label}</span>
+              <div 
+                className="absolute inset-0 opacity-10 pointer-events-none" 
+                style={{ background: m.gradient }} 
+              />
+              <Icon 
+                style={{ width: 22, height: 22, color: m.color, position: 'relative', zIndex: 1 }} 
+                stroke={m.color}
+                strokeWidth={2}
+                fill="none" 
+              />
+              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)', textAlign: 'center', position: 'relative', zIndex: 1, letterSpacing: '-0.02em' }}>
+                {m.label}
+              </span>
             </motion.button>
           )
         })}
@@ -1277,34 +1302,47 @@ function ActivityFeed({ navigate }: { navigate: (p: string) => void }) {
           </div>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 12 }}>
           {grouped.map((s: any, idx: number) => {
             const dotColor = PRIORITY_DOT[s.priority] ?? '#c5c7d0'
             return (
-              <div key={s.id ?? idx} style={{
-                padding: '10px 14px', borderRadius: 10,
-                background: `${dotColor}08`,
-                border: `1px solid ${dotColor}18`,
-                borderLeft: `3px solid ${dotColor}`,
-                display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
-              }}>
+              <motion.div 
+                key={s.id ?? idx} 
+                whileHover={{ y: -2, scale: 1.01, boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}
+                style={{
+                  padding: '12px 16px', borderRadius: 12,
+                  background: 'var(--os-surface-0)',
+                  border: '1px solid var(--os-border)',
+                  borderLeft: `4px solid ${dotColor}`,
+                  display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+                  transition: 'all 0.2s ease',
+                  cursor: 'default'
+                }}
+              >
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: dotColor, flexShrink: 0 }} />
-                    {s.summary && <p style={{ fontSize: 12, color: 'var(--os-text-1)', margin: 0, lineHeight: 1.4, fontWeight: 600 }} className="line-clamp-1">{s.summary}</p>}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: dotColor, flexShrink: 0, boxShadow: `0 0 6px ${dotColor}80` }} />
+                    {s.summary && <p style={{ fontSize: 13, color: 'var(--os-text-1)', margin: 0, lineHeight: 1.4, fontWeight: 700, letterSpacing: '-0.01em' }} className="line-clamp-2">{s.summary}</p>}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, paddingLeft: 13 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingLeft: 16 }}>
                     {s.module && (
-                      <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 4, background: `${dotColor}12`, border: `1px solid ${dotColor}20`, color: 'var(--os-text-2)' }}>{s.module}</span>
+                      <span style={{ fontSize: 10, fontWeight: 750, padding: '2px 8px', borderRadius: 6, background: `${dotColor}10`, border: `1px solid ${dotColor}25`, color: dotColor, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{s.module}</span>
                     )}
-                    {s.category && <span style={{ fontSize: 10, color: 'var(--os-text-3)' }}>{s.category}</span>}
-                    {s.count > 1 && (
-                      <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 4, background: dotColor, color: '#fff' }}>×{s.count}</span>
-                    )}
+                    {s.category && <span style={{ fontSize: 10, color: 'var(--os-text-3)', fontWeight: 600 }}>{s.category}</span>}
                   </div>
                 </div>
-                <span style={{ fontSize: 10, color: 'var(--os-text-3)', flexShrink: 0, marginTop: 2 }}>{timeAgo(s.createdAt)}</span>
-              </div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6, flexShrink: 0 }}>
+                  <span style={{ fontSize: 10, color: 'var(--os-text-3)', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                    {timeAgo(s.createdAt)}
+                  </span>
+                  {s.count > 1 && (
+                    <span style={{ fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 12, background: 'var(--os-surface-1)', color: 'var(--os-text-1)', border: `1px solid ${dotColor}40`, boxShadow: `0 2px 6px ${dotColor}20` }}>
+                      x{s.count}
+                    </span>
+                  )}
+                </div>
+              </motion.div>
             )
           })}
         </div>
