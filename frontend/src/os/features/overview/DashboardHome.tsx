@@ -1072,21 +1072,17 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
   const totalEngines    = engines.length || 10
 
   return (
-    <div className="p-5 rounded-2xl relative overflow-hidden" style={{ 
-      background: 'radial-gradient(circle at 10% 20%, #1e293b 0%, #020617 80%)',
-      border: '1px solid rgba(255,255,255,0.1)', 
-      boxShadow: '0 12px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)',
-    }}>
+    <div className="os-card p-5 rounded-2xl relative overflow-hidden">
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 opacity-5 blur-[100px] pointer-events-none" />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, position: 'relative', zIndex: 1 }}>
-        <h3 style={{ fontSize: 14, fontWeight: 700, color: '#f8fafc', margin: 0, display: 'flex', alignItems: 'center', gap: 7, letterSpacing: '-0.02em' }}>
+        <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, display: 'flex', alignItems: 'center', gap: 7, letterSpacing: '-0.02em' }}>
           <Shield style={{ width: 16, height: 16, color: vs.color }} fill="none" strokeWidth={2.5} />
           AEGIS Shield
         </h3>
         <button
           onClick={() => navigate('/kangqore-view/admin/aegis')}
-          style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, padding: '4px 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, transition: 'all 0.2s' }}
-          className="hover:text-white hover:bg-white/10"
+          style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-2)', background: 'var(--os-surface-1)', border: '1px solid var(--os-border)', borderRadius: 20, padding: '4px 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, transition: 'all 0.2s' }}
+          className="hover:bg-black/5"
         >
           Open <ArrowRight style={{ width: 11, height: 11 }} />
         </button>
@@ -1094,25 +1090,25 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
 
       {isLoading ? (
         <div style={{ display: 'flex', gap: 20, position: 'relative', zIndex: 1 }}>
-          {[1,2,3].map(i => <div key={i} className="animate-pulse h-20 flex-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }} />)}
+          {[1,2,3].map(i => <div key={i} className="animate-pulse h-20 flex-1 rounded-xl" style={{ background: 'var(--os-surface-2)' }} />)}
         </div>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', position: 'relative', zIndex: 1 }}>
           {/* Verdict badge */}
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6,
-            padding: '16px 20px', borderRadius: 12, background: 'rgba(255,255,255,0.02)',
-            border: `1px solid rgba(255,255,255,0.05)`, flexShrink: 0, minWidth: 140,
-            boxShadow: `inset 0 0 20px ${vs.color}15`
+            padding: '16px 20px', borderRadius: 12, background: 'var(--os-surface-1)',
+            border: '1px solid var(--os-border)', flexShrink: 0, minWidth: 140,
+            boxShadow: `inset 0 0 20px ${vs.color}10`
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: vs.color, display: 'inline-block', boxShadow: `0 0 10px ${vs.color}` }} className="animate-pulse" />
-              <span style={{ fontSize: 18, fontWeight: 900, color: '#fff', letterSpacing: '0.02em', textShadow: `0 0 12px ${vs.color}60` }}>{vs.label}</span>
+              <span style={{ fontSize: 18, fontWeight: 900, color: 'var(--os-text-1)', letterSpacing: '0.02em', textShadow: `0 0 12px ${vs.color}40` }}>{vs.label}</span>
             </div>
             {healthScore != null && (
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#cbd5e1', letterSpacing: '0.05em' }}>HEALTH {healthScore}%</span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-2)', letterSpacing: '0.05em' }}>HEALTH {healthScore}%</span>
             )}
-            <p style={{ fontSize: 10, color: '#64748b', margin: 0, textAlign: 'center', marginTop: 4 }}>
+            <p style={{ fontSize: 10, color: 'var(--os-text-2)', margin: 0, textAlign: 'center', marginTop: 4 }}>
               {critical24h > 0 ? `${critical24h} critical 24h` : warn24h > 0 ? `${warn24h} warnings 24h` : 'No threats 24h'}
             </p>
           </div>
@@ -1126,31 +1122,31 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
             ].map(e => (
               <div key={e.label} style={{
                 flex: 1, textAlign: 'center', padding: '12px 0', borderRadius: 12,
-                background: 'rgba(255,255,255,0.02)', border: `1px solid rgba(255,255,255,0.05)`,
-                borderTop: `2px solid ${e.color}80`
+                background: 'var(--os-surface-1)', border: '1px solid var(--os-border)',
+                borderTop: `2px solid ${e.color}`
               }}>
-                <p style={{ fontSize: 26, fontWeight: 300, color: '#fff', margin: '0 0 2px', lineHeight: 1 }}>{e.count}</p>
-                <p style={{ fontSize: 10, fontWeight: 700, color: `${e.color}cc`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{e.label}</p>
+                <p style={{ fontSize: 26, fontWeight: 300, color: 'var(--os-text-1)', margin: '0 0 2px', lineHeight: 1 }}>{e.count}</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: `${e.color}`, margin: 0, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{e.label}</p>
               </div>
             ))}
           </div>
 
           {/* 10-dot engine heatmap -> Server rack pills */}
           <div style={{ flexShrink: 0, paddingRight: 10 }}>
-            <p style={{ fontSize: 10, fontWeight: 700, color: '#64748b', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-2)', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Engines ({checkedEngines}/{totalEngines})
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8 }}>
               {Array.from({ length: totalEngines }).map((_, i) => {
                 const eng     = engines[i]
                 const eVerdict = eng?.latest?.verdict ?? null
-                const color   = eVerdict === 'PASS' ? '#00c875' : eVerdict === 'WARN' ? '#fdab3d' : eVerdict === 'CRITICAL' ? '#e2445c' : '#334155'
+                const color   = eVerdict === 'PASS' ? '#00c875' : eVerdict === 'WARN' ? '#fdab3d' : eVerdict === 'CRITICAL' ? '#e2445c' : 'var(--os-border)'
                 return (
                   <div key={i} title={eng?.name ?? `Engine ${i+1}`} style={{
                     width: 24, height: 8, borderRadius: 4,
-                    background: eVerdict ? `${color}40` : '#1e293b',
-                    border: `1px solid ${eVerdict ? color : '#334155'}`,
-                    boxShadow: eVerdict ? `0 0 8px ${color}40` : 'none',
+                    background: eVerdict ? `${color}40` : 'var(--os-surface-2)',
+                    border: `1px solid ${eVerdict ? color : 'var(--os-border)'}`,
+                    boxShadow: eVerdict ? `0 0 8px ${color}20` : 'none',
                     transition: 'all 0.3s ease',
                   }} />
                 )
