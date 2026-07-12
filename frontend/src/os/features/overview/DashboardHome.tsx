@@ -1072,7 +1072,7 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
   const totalEngines    = engines.length || 10
 
   return (
-    <div className="os-card p-5 rounded-2xl relative overflow-hidden">
+    <div className="os-card p-5 rounded-2xl relative overflow-hidden h-full flex flex-col justify-between">
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 opacity-5 blur-[100px] pointer-events-none" />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, position: 'relative', zIndex: 1 }}>
         <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, display: 'flex', alignItems: 'center', gap: 7, letterSpacing: '-0.02em' }}>
@@ -1182,7 +1182,7 @@ const MODULES = [
 
 function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
   return (
-    <div className="os-card p-5 rounded-2xl">
+    <div className="os-card p-5 rounded-2xl h-full flex flex-col justify-center">
       <p className="text-[11px] font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--os-text-2)' }}>
         Quick Access
       </p>
