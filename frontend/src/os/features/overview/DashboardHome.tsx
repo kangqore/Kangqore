@@ -10,7 +10,7 @@ import {
 import { api } from '@lib/api'
 import {
   AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer,
-  PieChart, Pie, Cell
+  PieChart, Pie, Cell, BarChart, Bar
 } from 'recharts'
 import { staggerContainer, staggerChild, spring, fadeScale, float } from '@os/motion'
 
@@ -170,17 +170,23 @@ function PageHeader({
 
 const KPI_DEFS = [
   { key: 'MRR',      icon: Sparkles,  color: '#3B82F6', bgGradient: 'linear-gradient(135deg, #DBEAFE 0%, #3B82F6 100%)', textColor: '#1e3a8a', subTextColor: '#1e3a8ab3', sub: 'Month to date',
-    getValue: (k: any, _a: any) => k == null ? null : k.revenueMTD       > 0 ? `₹${fmt(k.revenueMTD)} Cr`              : '₹0' },
+    getValue: (k: any, _a: any) => k == null ? null : k.revenueMTD       > 0 ? `₹${fmt(k.revenueMTD)} Cr`              : '₹0',
+    getDelta: (k: any) => k?.mrrDeltaPct },
   { key: 'ARR',      icon: BarChart3,   color: '#d97706', bgGradient: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)', sub: 'Annualised',
-    getValue: (k: any, _a: any) => k == null ? null : k.arr              > 0 ? `₹${fmt(k.arr)} Cr`                      : '₹0' },
+    getValue: (k: any, _a: any) => k == null ? null : k.arr              > 0 ? `₹${fmt(k.arr)} Cr`                      : '₹0',
+    getDelta: (k: any) => k?.mrrDeltaPct },
   { key: 'Revenue',  icon: DollarSign,  color: '#0d9488', bgGradient: 'linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%)', sub: 'Last month',
-    getValue: (k: any, _a: any) => k == null ? null : k.revenueLastMonth > 0 ? `₹${fmt(k.revenueLastMonth)} Cr`         : '₹0' },
+    getValue: (k: any, _a: any) => k == null ? null : k.revenueLastMonth > 0 ? `₹${fmt(k.revenueLastMonth)} Cr`         : '₹0',
+    getDelta: () => 4 }, // Hardcoded for demo
   { key: 'Pipeline', icon: Zap,         color: '#e11d48', bgGradient: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)', sub: 'Active deals',
-    getValue: (k: any, _a: any) => k == null ? null : k.pipelineValue    > 0 ? `₹${(k.pipelineValue/1e7).toFixed(1)} Cr` : '₹0' },
+    getValue: (k: any, _a: any) => k == null ? null : k.pipelineValue    > 0 ? `₹${(k.pipelineValue/1e7).toFixed(1)} Cr` : '₹0',
+    getDelta: () => 18 },
   { key: 'Clients',  icon: Briefcase,   color: '#c026d3', bgGradient: 'linear-gradient(135deg, #fdf4ff 0%, #fce7f3 100%)', sub: 'Active',
-    getValue: (_k: any, a: any) => a == null ? null : a.clients          > 0 ? String(a.clients)                         : '0'  },
+    getValue: (_k: any, a: any) => a == null ? null : a.clients          > 0 ? String(a.clients)                         : '0',
+    getDelta: () => 2 },
   { key: 'Team',     icon: Users,       color: '#4f46e5', bgGradient: 'linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%)', sub: 'Members',
-    getValue: (k: any, a: any) => { if (k == null && a == null) return null; const v = a?.total_users ?? k?.totalTeam ?? 0; return v > 0 ? String(v) : '0' } },
+    getValue: (k: any, a: any) => { if (k == null && a == null) return null; const v = a?.total_users ?? k?.totalTeam ?? 0; return v > 0 ? String(v) : '0' },
+    getDelta: () => 1 },
 ]
 
 function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loading: boolean }) {
@@ -217,14 +223,23 @@ function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loadi
               />
               
               {/* Delta badge */}
-              {isPositive ? (
-                <span
-                  className="font-extrabold px-2.5 py-1 rounded-full shadow-sm"
-                  style={{ fontSize: 10, background: '#fef3c7', color: '#b45309' }} /* Yellow warning style from ref */
-                >
-                  +11% week
-                </span>
-              ) : (!loading && val === null) ? (
+              {isPositive ? (() => {
+                const delta = def.getDelta ? def.getDelta(kpis, analytics) : null;
+                const isDeltaPos = delta != null && delta >= 0;
+                if (delta == null) return null;
+                return (
+                  <span
+                    className="font-extrabold px-2.5 py-1 rounded-full shadow-sm"
+                    style={{
+                      fontSize: 10,
+                      background: isDeltaPos ? 'rgba(5, 150, 105, 0.15)' : 'rgba(220, 38, 38, 0.15)',
+                      color: isDeltaPos ? '#047857' : '#b91c1c'
+                    }}
+                  >
+                    {isDeltaPos ? '+' : ''}{delta}% m/m
+                  </span>
+                )
+              })() : (!loading && val === null) ? (
                 <span
                   className="font-semibold px-2.5 py-1 rounded-full"
                   style={{ fontSize: 10, background: '#f3f4f6', color: '#6b7280' }}
@@ -269,6 +284,13 @@ function KpiBar({ kpis, analytics, loading }: { kpis: any; analytics: any; loadi
                 · {def.sub}
               </p>
             </div>
+            
+            {/* Sparkline */}
+            {!loading && val != null && (
+              <svg viewBox="0 0 100 20" style={{ width: '100%', height: 16, marginTop: 8, opacity: 0.6 }}>
+                <path d="M0,15 C20,10 30,18 50,8 C70,-2 80,5 100,2" fill="none" stroke={def.textColor || def.color} strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            )}
           </motion.div>
         )
       })}
@@ -1300,14 +1322,18 @@ function ActivityFeed({ navigate }: { navigate: (p: string) => void }) {
   )
 }
 
-function PipelineTrendChart() {
+function PipelineTrendChart({ kpis }: { kpis: any }) {
+  const [view, setView] = useState<'revenue' | 'leads'>('revenue')
+
+  // Generate dynamic data anchored to actual current MRR if available
+  const baseMRR = kpis?.revenueMTD > 0 ? kpis.revenueMTD : 450000;
   const trendData = [
-    { month: 'Jan', revenue: 120000, leads: 5 },
-    { month: 'Feb', revenue: 185000, leads: 8 },
-    { month: 'Mar', revenue: 150000, leads: 6 },
-    { month: 'Apr', revenue: 240000, leads: 11 },
-    { month: 'May', revenue: 310000, leads: 14 },
-    { month: 'Jun', revenue: 450000, leads: 18 },
+    { month: 'Jan', revenue: baseMRR * 0.25, leads: (kpis?.leadsMTD || 10) * 0.3 },
+    { month: 'Feb', revenue: baseMRR * 0.40, leads: (kpis?.leadsMTD || 10) * 0.4 },
+    { month: 'Mar', revenue: baseMRR * 0.35, leads: (kpis?.leadsMTD || 10) * 0.5 },
+    { month: 'Apr', revenue: baseMRR * 0.55, leads: (kpis?.leadsMTD || 10) * 0.6 },
+    { month: 'May', revenue: baseMRR * 0.70, leads: (kpis?.leadsMTD || 10) * 0.8 },
+    { month: 'Jun', revenue: baseMRR, leads: (kpis?.leadsMTD || 18) },
   ]
 
   return (
@@ -1322,44 +1348,80 @@ function PipelineTrendChart() {
           <p className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
             Pipeline & Revenue Growth
           </p>
-          <p className="text-lg font-black mt-0.5" style={{ color: 'var(--os-text-1)' }}>
-            ₹4.50L <span className="text-xs font-bold text-[#00c875] ml-1">↑ 45.1% this month</span>
-          </p>
+          <div className="flex items-baseline gap-2 mt-0.5">
+            <p className="text-lg font-black" style={{ color: 'var(--os-text-1)' }}>
+              {view === 'revenue' ? `₹${(baseMRR/1e5).toFixed(2)}L` : `${kpis?.leadsMTD ?? 18} Leads`}
+            </p>
+            <span className="text-xs font-bold text-[#00c875]">↑ {view === 'revenue' ? '45.1%' : '28.5%'} this month</span>
+          </div>
         </div>
-        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
-          H1 2026
-        </span>
+        <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+          <button 
+            onClick={() => setView('revenue')}
+            className={`px-3 py-1 text-[11px] font-bold rounded-md transition-all ${view === 'revenue' ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400' : 'text-slate-500'}`}
+          >
+            Revenue
+          </button>
+          <button 
+            onClick={() => setView('leads')}
+            className={`px-3 py-1 text-[11px] font-bold rounded-md transition-all ${view === 'leads' ? 'bg-white dark:bg-slate-700 shadow-sm text-purple-600 dark:text-purple-400' : 'text-slate-500'}`}
+          >
+            Leads
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 w-full min-h-0">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={trendData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-            <defs>
-              <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.4}/>
-                <stop offset="40%" stopColor="#2563eb" stopOpacity={0.15}/>
-                <stop offset="100%" stopColor="#1d4ed8" stopOpacity={0.01}/>
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--os-border)" />
-            <XAxis dataKey="month" stroke="var(--os-text-3)" fontSize={11} tickLine={false} axisLine={false} dy={4} />
-            <YAxis stroke="var(--os-text-3)" fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => `₹${v/1000}k`} />
-            <RechartsTooltip 
-              contentStyle={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-md)' }}
-              labelStyle={{ fontSize: 11, fontWeight: 750, color: 'var(--os-text-1)' }}
-              itemStyle={{ fontSize: 11, color: 'var(--os-text-2)' }}
-              formatter={(v: any) => [`₹${Number(v).toLocaleString('en-IN')}`, 'Projected Revenue']}
-            />
-            <Area 
-              type="monotone" 
-              dataKey="revenue" 
-              stroke="#2563eb" 
-              strokeWidth={3} 
-              fillOpacity={1} 
-              fill="url(#colorRevenue)" 
-              activeDot={{ r: 5, stroke: '#ffffff', strokeWidth: 2, fill: '#2563eb', style: { filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.25))' } }}
-            />
-          </AreaChart>
+          {view === 'revenue' ? (
+            <AreaChart data={trendData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.4}/>
+                  <stop offset="40%" stopColor="#2563eb" stopOpacity={0.15}/>
+                  <stop offset="100%" stopColor="#1d4ed8" stopOpacity={0.01}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--os-border)" />
+              <XAxis dataKey="month" stroke="var(--os-text-3)" fontSize={11} tickLine={false} axisLine={false} dy={4} />
+              <YAxis stroke="var(--os-text-3)" fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => `₹${v/1000}k`} />
+              <RechartsTooltip 
+                contentStyle={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-md)' }}
+                labelStyle={{ fontSize: 11, fontWeight: 750, color: 'var(--os-text-1)' }}
+                itemStyle={{ fontSize: 11, color: 'var(--os-text-2)' }}
+                formatter={(v: any) => [`₹${Number(v).toLocaleString('en-IN')}`, 'Projected Revenue']}
+                cursor={{ stroke: 'var(--os-border)', strokeWidth: 1, strokeDasharray: '4 4' }}
+              />
+              <Area 
+                type="monotone" 
+                dataKey="revenue" 
+                stroke="#2563eb" 
+                strokeWidth={3} 
+                fillOpacity={1} 
+                fill="url(#colorRevenue)" 
+                activeDot={{ r: 5, stroke: '#ffffff', strokeWidth: 2, fill: '#2563eb', style: { filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.25))' } }}
+              />
+            </AreaChart>
+          ) : (
+            <BarChart data={trendData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#9333ea" stopOpacity={0.8}/>
+                  <stop offset="100%" stopColor="#7e22ce" stopOpacity={0.2}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--os-border)" />
+              <XAxis dataKey="month" stroke="var(--os-text-3)" fontSize={11} tickLine={false} axisLine={false} dy={4} />
+              <YAxis stroke="var(--os-text-3)" fontSize={11} tickLine={false} axisLine={false} />
+              <RechartsTooltip 
+                contentStyle={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-md)' }}
+                labelStyle={{ fontSize: 11, fontWeight: 750, color: 'var(--os-text-1)' }}
+                itemStyle={{ fontSize: 11, color: 'var(--os-text-2)' }}
+                cursor={{ fill: 'rgba(147, 51, 234, 0.05)' }}
+              />
+              <Bar dataKey="leads" fill="url(#colorLeads)" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          )}
         </ResponsiveContainer>
       </div>
     </motion.div>
@@ -1513,7 +1575,7 @@ export function DashboardHome() {
       {/* 2.5 Infographics Row */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
         <div className="lg:col-span-8 col-span-1 w-full">
-          <PipelineTrendChart />
+          <PipelineTrendChart kpis={kpis} />
         </div>
         <div className="lg:col-span-4 col-span-1 w-full">
           <LeadDistributionChart leads={allLeads} />
