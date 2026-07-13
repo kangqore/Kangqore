@@ -138,9 +138,12 @@ function PageHeader({
           <p className="text-[10px] font-semibold uppercase tracking-widest mb-0.5" style={{ color: 'var(--os-text-2)' }}>
             {formatDate()}
           </p>
-          <h1 className="text-[22px] font-black tracking-tight leading-none mb-1" style={{ color: 'var(--os-text-1)' }}>
+          <h1 className="text-[22px] font-black tracking-tight leading-none mb-0.5" style={{ color: 'var(--os-text-1)' }}>
             {getGreeting()}, C.O.D.E.
           </h1>
+          <div className="text-[11px] font-semibold tracking-wide mb-2 opacity-70" style={{ color: 'var(--os-text-1)' }}>
+            Code of Observation, Decision & Execution.
+          </div>
           <div className="flex items-center gap-2">
             {healthLabel && (
               <span
