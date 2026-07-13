@@ -5001,6 +5001,13 @@ export function AdminOverview() {
     queryFn: () => api.get('/admin/kangqore-immp/events?limit=20').then(r => r.data.events ?? []) as Promise<LiveHUDEvent[]>,
     staleTime: Infinity,
   })
+
+  // Fetch total log count for the HUD header
+  const { data: totalLogs = 60 } = useQuery({
+    queryKey: ['waanda-total-logs'],
+    queryFn: () => api.get('/admin/kangqore-immp/events?limit=500').then(r => r.data.total ?? r.data.events?.length ?? 60).catch(() => 60),
+    refetchInterval: 15_000,
+  })
   useEffect(() => {
     if (!seedEvents?.length) return
     // Show the most recent DB events regardless of age so the HUD is never empty on load
@@ -5565,7 +5572,7 @@ export function AdminOverview() {
             }}>
               <span style={{ fontSize: 9, color: `${C}50`, letterSpacing: '0.12em' }}>◈</span>
               <span style={{ fontSize: 8, color: `${C}50`, letterSpacing: '0.15em', fontFamily: 'monospace' }}>LOG</span>
-              <span style={{ fontSize: 12, fontWeight: 800, color: C, textShadow: `0 0 8px ${C}` }}>60</span>
+              <span style={{ fontSize: 12, fontWeight: 800, color: C, textShadow: `0 0 8px ${C}` }}>{totalLogs}</span>
             </button>
           </div>
 
