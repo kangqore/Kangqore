@@ -7,7 +7,33 @@
   font-family: var(--os-font-ui);
   color: var(--os-text-1);
   overflow: hidden;
+  transition: background 0.5s ease;
 }
+
+/* Base Glassmorphism for Shell */
+.keos-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4;
+  z-index: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Themes */
+.theme-personal { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
+.theme-executive { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); }
+.theme-revenue { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); }
+.theme-operations { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); }
+.theme-intelligence { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); }
+.theme-platform { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); }
+.theme-ecosystem { background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); }
+.theme-collaboration { background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%); }
+.theme-governance { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); }
+
 
 /* ─── Workspace Rail (left column) ────────────────────────────────────────── */
 .keos-rail {
@@ -98,23 +124,29 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  position: relative;
+  z-index: 1;
   min-width: 0;
   overflow: hidden;
 }
 
 /* ─── Page Header ──────────────────────────────────────────────────────────── */
 .keos-header {
+  height: 64px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 0 20px;
-  height: 52px;
-  flex-shrink: 0;
-  background: var(--os-glass);
-  backdrop-filter: var(--os-glass-blur);
-  -webkit-backdrop-filter: var(--os-glass-blur);
-  border-bottom: 1px solid var(--os-border);
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10;
 }
 
 .keos-header-left {
@@ -280,18 +312,22 @@
 
 /* ─── Widget Card ──────────────────────────────────────────────────────────── */
 .keos-widget-card {
-  background: var(--os-surface-1);
-  border: 1px solid var(--os-border);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: var(--os-radius-md);
   overflow: hidden;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms ease, box-shadow 150ms ease;
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 }
 
 .keos-widget-card:hover {
-  border-color: var(--os-border-strong);
-  box-shadow: var(--os-shadow-sm);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
 .keos-widget-card-header {

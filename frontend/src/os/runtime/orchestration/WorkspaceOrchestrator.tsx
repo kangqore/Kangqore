@@ -114,7 +114,7 @@ export const WorkspaceOrchestrator: React.FC = () => {
   const availableModes  = Object.keys(activeManifest.workspace.modes) as WorkspaceMode[];
 
   return (
-    <div className="keos-shell">
+    <div className={`keos-shell ${activeWorkspaceId.replace('wksp.', 'theme-')}`}>
 
       {/* ── Main Content ── */}
       <div className="keos-main">
