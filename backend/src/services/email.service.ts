@@ -43,7 +43,7 @@ interface ReminderData {
 }
 
 class EmailService {
-  private readonly isConfigured = false;
+  private isConfigured = false;
 
   constructor() {
     if (process.env.SENDGRID_API_KEY) {
