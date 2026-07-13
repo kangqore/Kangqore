@@ -4380,7 +4380,34 @@ function MRow({ label, value, color = C }: { label: string; value: string | numb
 
 type ModalType = 'finance' | 'clients' | 'signals' | 'approvals' | 'decisions' | 'insights' | 'goals' | 'research' | 'twin'
 
+function ToggleRow({ label, isOn, onToggle }: { label: string; isOn: boolean; onToggle: () => void }) {
+  return (
+    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'6px 0', borderBottom:`1px solid ${C}10` }}>
+      <span style={{ fontSize:9, color:`${C}50`, fontFamily:'monospace', letterSpacing:'0.12em' }}>{label}</span>
+      <div 
+        onClick={onToggle}
+        style={{
+          width: 32, height: 16, borderRadius: 8,
+          background: isOn ? C : `${C}20`,
+          position: 'relative', cursor: 'pointer',
+          transition: 'background 0.2s',
+          boxShadow: isOn ? `0 0 8px ${C}40` : 'none'
+        }}
+      >
+        <div style={{
+          position: 'absolute', top: 2, left: isOn ? 18 : 2,
+          width: 12, height: 12, borderRadius: 6,
+          background: isOn ? '#000' : `${C}80`, transition: 'left 0.2s'
+        }} />
+      </div>
+    </div>
+  )
+}
+
 function WaandaSettingsModal({ onClose }: { onClose: () => void }) {
+  const [wakeWord, setWakeWord] = useState(true)
+  const [autoApprove, setAutoApprove] = useState(false)
+
   return (
     <div style={{
       position:'absolute', inset:0, zIndex:1000,
@@ -4394,13 +4421,13 @@ function WaandaSettingsModal({ onClose }: { onClose: () => void }) {
         {/* Header */}
         <div style={{ padding:'12px 16px', borderBottom:`1px solid ${C}20`, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
           <div style={{ color:C, fontFamily:'monospace', fontWeight:600, fontSize:12, letterSpacing:'0.1em' }}>WAANDA CONFIGURATION</div>
-          <button onClick={onClose} style={{ color:`${C}50`, background:'none', border:'none', cursor:'pointer' }}>✕</button>
+          <button onClick={onClose} style={{ color:`${C}50`, background:'none', border:'none', cursor:'pointer', fontSize: 16 }}>✕</button>
         </div>
         {/* Body */}
         <div style={{ padding:'16px', display:'flex', flexDirection:'column', gap:12 }}>
-          <MRow label="WAKE WORD SENSITIVITY" value="HIGH" color={C} />
+          <ToggleRow label="PASSIVE WAKE WORD" isOn={wakeWord} onToggle={() => setWakeWord(!wakeWord)} />
+          <ToggleRow label="AUTONOMOUS APPROVALS" isOn={autoApprove} onToggle={() => setAutoApprove(!autoApprove)} />
           <MRow label="VOICE ENGINE" value="ELEVENLABS - RACHEL" color={C} />
-          <MRow label="AUTONOMOUS APPROVALS" value="REQUIRE CONFIRM" color={CA} />
           <MRow label="PREDICTIVE HORIZON" value="90 DAYS" color={C} />
           <MRow label="LANGUAGE PIPELINE" value="ENGLISH (US)" color={CG} />
           
