@@ -61,6 +61,26 @@ const STAGE_CARD_COLOR: Record<string, string> = {
   PROPOSAL: '#7c3aed', NEGOTIATION: '#323338', WON: '#00c875', LOST: '#e2445c',
 }
 
+const STAGE_CARD_GRADIENT: Record<string, string> = {
+  NEW: 'linear-gradient(135deg, #93BFFF 0%, #3B82F6 100%)',          // 04 True Blue
+  CONTACTED: 'linear-gradient(135deg, #60A5FA 0%, #1D4ED8 100%)',    // 05 Sapphire Blue
+  QUALIFIED: 'linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%)',    // 06 Cobalt Blue
+  PROPOSAL: 'linear-gradient(135deg, #6366F1 0%, #4338CA 100%)',     // 07 Indigo Blue
+  NEGOTIATION: 'linear-gradient(135deg, #1E293B 0%, #0B1020 100%)',  // 09 Midnight Blue
+  WON: 'linear-gradient(135deg, #C7E0FF 0%, #60A5FA 100%)',          // 03 Azure Blue
+  LOST: 'linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%)',         // 08 Navy Blue
+}
+
+const STAGE_CARD_SHADOW: Record<string, string> = {
+  NEW: '#3B82F6',
+  CONTACTED: '#1D4ED8',
+  QUALIFIED: '#1E40AF',
+  PROPOSAL: '#4338CA',
+  NEGOTIATION: '#0B1020',
+  WON: '#60A5FA',
+  LOST: '#0F172A',
+}
+
 const PIPELINE_CFG: Record<string, { bg: string }> = {
   NEW:         { bg: '#579bfc' },
   CONTACTED:   { bg: '#00c875' },
@@ -389,6 +409,8 @@ function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
             const name  = l.name || l.companyName || l.email || 'Lead'
             const company = l.companyName || l.company || ''
             const color = STAGE_CARD_COLOR[stage] ?? '#579bfc'
+            const gradient = STAGE_CARD_GRADIENT[stage] ?? 'linear-gradient(135deg, #93BFFF 0%, #3B82F6 100%)'
+            const shadowColor = STAGE_CARD_SHADOW[stage] ?? '#3B82F6'
             return (
               <motion.div
                 key={l.id}
@@ -396,9 +418,9 @@ function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
                 onClick={() => navigate('/kangqore-view/admin/leads')}
                 className="p-5 cursor-pointer transition-all"
                 style={{
-                  background: color, color: '#fff',
+                  background: gradient, color: '#fff',
                   borderRadius: 'var(--os-radius-xl)',
-                  height: 120, boxShadow: `0 12px 32px ${color}50`,
+                  height: 120, boxShadow: `0 12px 32px ${shadowColor}50`,
                   display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
                 }}
               >
