@@ -192,19 +192,22 @@ function Gauge({ value, max = 100, label, sub = '', color = C, size = 140 }: {
 }
 
 // ─── Panel ────────────────────────────────────────────────────────────────────
-function Panel({ title, subtitle, color = C, children, onClick }: {
-  title: string; subtitle?: string; color?: string; children: ReactNode; onClick?: () => void
+function Panel({ title, subtitle, color = C, collapsible = false, children, onClick }: {
+  title: string; subtitle?: string; color?: string; collapsible?: boolean; children: ReactNode; onClick?: () => void
 }) {
+  const [collapsed, setCollapsed] = useState(false)
   return (
     <div onClick={onClick} className={onClick ? 'cursor-pointer relative p-[1px] mb-3' : 'relative p-[1px] mb-3'}
       style={{
         background: `linear-gradient(135deg, ${color}60 0%, ${color}20 100%)`,
         clipPath: 'polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)',
+        transition: 'all 0.3s ease',
       }}
     >
       <div className="relative p-3 w-full h-full" style={{
         background: `linear-gradient(135deg, rgba(0,8,20,0.98) 0%, rgba(0,18,40,0.95) 100%)`,
         clipPath: 'polygon(11px 0, 100% 0, 100% calc(100% - 11px), calc(100% - 11px) 100%, 0 100%, 0 11px)',
+        transition: 'all 0.3s ease',
       }}>
         {/* corner accents */}
         <div style={{ position:'absolute', top:0, left:11, width:30, height:2, background:color, boxShadow:`0 0 8px ${color}` }} />
@@ -220,19 +223,34 @@ function Panel({ title, subtitle, color = C, children, onClick }: {
 
         {/* Title */}
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom: collapsed ? 0 : 12, transition:'margin 0.3s ease' }}>
             <div style={{ fontFamily:'monospace', fontSize:9, fontWeight:800, color:color, letterSpacing:'0.2em' }}>
               [{title.toUpperCase()}]
             </div>
             {subtitle && (
-              <div style={{ fontSize:7, color:`${color}55`, letterSpacing:'0.12em', whiteSpace:'nowrap' }}>
+              <div style={{ fontSize:7, color:`${color}55`, letterSpacing:'0.12em', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                 {subtitle}
               </div>
             )}
             <div style={{ flex:1, height:1, background:`linear-gradient(90deg, ${color}40, transparent)` }} />
-            <div style={{ width: 4, height: 4, borderRadius: '50%', background: color }} />
+            {collapsible ? (
+              <button onClick={(e) => { e.stopPropagation(); setCollapsed(!collapsed); }}
+                style={{ background: 'none', border: 'none', color: color, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: 10, fontFamily: 'monospace' }}>{collapsed ? '▼' : '▲'}</span>
+              </button>
+            ) : (
+              <div style={{ width: 4, height: 4, borderRadius: '50%', background: color }} />
+            )}
           </div>
-          {children}
+          <div style={{ 
+            maxHeight: collapsed ? 0 : 1000, 
+            opacity: collapsed ? 0 : 1, 
+            overflow: 'hidden', 
+            transition: 'max-height 0.3s ease-in-out, opacity 0.3s ease-in-out',
+            pointerEvents: collapsed ? 'none' : 'auto'
+          }}>
+            {children}
+          </div>
         </div>
       </div>
     </div>
@@ -481,8 +499,10 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
              style={{
                cursor: 'crosshair',
                opacity: !booted ? 0 : isFaded ? 0.15 : 1,
-               transition: `opacity 0.5s ${bootDelay}, filter 0.3s`,
-               animation: isCriticalArc ? 'critFlash 0.4s ease-in-out 12' : isActive ? 'arcPulseFast 0.8s ease-in-out infinite' : 'arcPulse 3s ease-in-out infinite',
+               transformOrigin: `${cx}px ${cy}px`,
+               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+               transition: `opacity 0.5s ${bootDelay}, filter 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`,
+               animation: isHovered ? 'none' : isCriticalArc ? 'critFlash 0.4s ease-in-out 12' : isActive ? 'arcPulseFast 0.8s ease-in-out infinite' : 'arcPulse 3s ease-in-out infinite',
                animationDelay: booted ? bootDelay : '0s',
              }}>
             {/* wide band background — the interactive arc wedge */}
@@ -634,7 +654,8 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
       <circle cx={cx} cy={cy} r={42} fill="url(#glassLens)" pointerEvents="none" />
 
       {/* ── Dynamic Center Info Overlay ── */}
-      <g style={{ opacity: hovered ? 0 : 1, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
+      {/* ── Dynamic Center Info Overlay ── */}
+      <g style={{ opacity: 1, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
         <image href="/assets/kangqore-icon-white.png" x={cx-14} y={cy-14} width={28} height={28}
           opacity={0.9} style={{ filter:`drop-shadow(0 0 12px ${C})` }} />
         <text x={cx} y={cy+56} textAnchor="middle" fill="#ffffff" fontSize={8} fontFamily="monospace" fontWeight="900" letterSpacing="0.1em" style={{ filter:`drop-shadow(0 0 8px #03a9f4)` }}>
@@ -649,19 +670,25 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
         {hovered && (() => {
           const m = visibleModules.find(x => (x.label + x.deg) === hovered)
           if (!m) return null
+          
+          const rTooltip = 175;
+          const tp = polar(cx, cy, rTooltip, m.deg);
+          
           return (
             <g>
-              <circle cx={cx} cy={cy} r={34} fill={`${m.color}15`} stroke={m.color} strokeWidth={1} style={{ filter:`drop-shadow(0 0 10px ${m.color})` }} />
-              <text x={cx} y={cy - 6} textAnchor="middle" fill="#4ab6d4" fontSize={14} fontWeight="900" fontFamily="monospace" letterSpacing="0.1em" style={{ filter: `drop-shadow(0 0 8px ${m.color})` }}>{m.pct}%</text>
-              <text x={cx} y={cy + 8} textAnchor="middle" fill={m.color} fontSize={6} fontFamily="monospace" letterSpacing="0.2em">{m.desc}</text>
-              <text x={cx} y={cy + 20} textAnchor="middle" fill="#4ab6d4" fontSize={8} fontWeight="800" fontFamily="monospace" letterSpacing="0.2em">{m.label + (m.line2 ? ' ' + m.line2 : '')}</text>
-
-              <line x1={cx - 18} y1={cy+2} x2={cx + 18} y2={cy+2} stroke={m.color} strokeWidth={0.5} opacity={0.5} />
-
-              {/* Connecting targeting line from center to the hovered arc */}
-              <line x1={polar(cx, cy, 34, m.deg).x} y1={polar(cx, cy, 34, m.deg).y}
-                    x2={polar(cx, cy, 110, m.deg).x} y2={polar(cx, cy, 110, m.deg).y}
+              {/* Connecting targeting line from the outer edge of the arc to the tooltip */}
+              <line x1={polar(cx, cy, 134, m.deg).x} y1={polar(cx, cy, 134, m.deg).y}
+                    x2={tp.x} y2={tp.y}
                     stroke={m.color} strokeWidth={1} strokeDasharray="2 4" style={{ filter:`drop-shadow(0 0 4px ${m.color})` }} />
+              
+              {/* Tooltip Background/Frame */}
+              <rect x={tp.x - 45} y={tp.y - 22} width={90} height={44} rx={4} fill={`${m.color}15`} stroke={m.color} strokeWidth={1} style={{ filter:`drop-shadow(0 0 10px ${m.color})` }} />
+              
+              {/* Tooltip Text */}
+              <text x={tp.x} y={tp.y - 8} textAnchor="middle" fill="#4ab6d4" fontSize={14} fontWeight="900" fontFamily="monospace" letterSpacing="0.1em" style={{ filter: `drop-shadow(0 0 8px ${m.color})` }}>{m.pct}%</text>
+              <line x1={tp.x - 30} y1={tp.y} x2={tp.x + 30} y2={tp.y} stroke={m.color} strokeWidth={0.5} opacity={0.5} />
+              <text x={tp.x} y={tp.y + 8} textAnchor="middle" fill={m.color} fontSize={6} fontFamily="monospace" letterSpacing="0.2em">{m.desc}</text>
+              <text x={tp.x} y={tp.y + 16} textAnchor="middle" fill="#4ab6d4" fontSize={7} fontWeight="800" fontFamily="monospace" letterSpacing="0.2em">{m.label + (m.line2 ? ' ' + m.line2 : '')}</text>
             </g>
           )
         })()}
@@ -5767,7 +5794,7 @@ export function AdminOverview() {
 
               {/* WAANDA Command Bar */}
               <div style={{ width: '85%' }}>
-                <Panel title="WAANDA" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C}>
+                <Panel title="WAANDA" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C} collapsible>
                   <HUDCommandBar
                     insights={insights} color={C} recentSignals={recentSignals} criticalAlert={criticalAlert}
                     onScenario={handleScenario} onGoalCockpit={handleGoalCockpit}
