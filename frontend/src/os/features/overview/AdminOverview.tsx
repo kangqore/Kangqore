@@ -997,6 +997,53 @@ function useVoiceInput(onResult: (t: string) => void) {
   return { listening, supported, interim, start, stop }
 }
 
+function useWakeWord(active: boolean, onWake: (phrase: string) => void) {
+  useEffect(() => {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    if (!SR || !active) return
+    let r: any = null
+    let isActive = true
+    
+    const startListener = () => {
+      if (!isActive) return
+      try {
+        r = new SR()
+        r.continuous = true
+        r.interimResults = true
+        r.lang = 'en-US'
+        
+        const WAKE_WORDS = [
+          "hey waanda", "wake up daddy's home", "wake up waanda", 
+          "wake up waanda baby", "wake up waanda babe", "good morning waanda", 
+          "wake up point break"
+        ]
+        
+        r.onresult = (e: any) => {
+          for (let i = e.resultIndex; i < e.results.length; i++) {
+            const transcript = e.results[i][0].transcript.toLowerCase()
+            if (WAKE_WORDS.some(w => transcript.includes(w))) {
+              onWake(transcript)
+              isActive = false
+              r.stop()
+              break
+            }
+          }
+        }
+        r.onend = () => { if (isActive) setTimeout(startListener, 500) }
+        r.onerror = (e: any) => { if (e.error === 'not-allowed' || e.error === 'audio-capture') isActive = false }
+        r.start()
+      } catch (err) {}
+    }
+    
+    startListener()
+    
+    return () => {
+      isActive = false
+      if (r) { r.onend = null; r.stop() }
+    }
+  }, [active, onWake])
+}
+
 function useTTS() {
   const [speaking, setSpeaking] = useState(false)
   const [muted,    setMuted]    = useState(false)
@@ -1411,6 +1458,16 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
       setTimeout(() => { if (voiceModeRef.current) start() }, 600)
     }
   }, [speaking, thinking, start])
+
+  // Wake Word Listener
+  useWakeWord(!listening && !voiceMode, useCallback((phrase) => {
+    // Open the panel by simulating ArrowDown just in case it's collapsed
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+    setVM(true)
+    silence()
+    // Small delay to ensure passive listener has fully released the mic
+    setTimeout(() => { start() }, 300)
+  }, [start, silence]))
 
   const handleMicClick = useCallback(() => {
     if (listening) {
