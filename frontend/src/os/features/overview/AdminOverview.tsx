@@ -196,6 +196,20 @@ function Panel({ title, subtitle, color = C, collapsible = false, children, onCl
   title: string; subtitle?: string; color?: string; collapsible?: boolean; children: ReactNode; onClick?: () => void
 }) {
   const [collapsed, setCollapsed] = useState(false)
+
+  useEffect(() => {
+    if (!collapsible) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowUp') {
+        setCollapsed(true)
+      } else if (e.key === 'ArrowDown') {
+        setCollapsed(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [collapsible])
+
   return (
     <div onClick={onClick} className={onClick ? 'cursor-pointer relative p-[1px] mb-3' : 'relative p-[1px] mb-3'}
       style={{
