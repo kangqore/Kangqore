@@ -1001,10 +1001,10 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
                 }}>
                   <AlertTriangle style={{ width: 14, height: 14, color: textColor, flexShrink: 0, marginTop: 1 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: '0 0 2px', lineHeight: 1.4 }} className="line-clamp-2">
+                    <p style={{ fontSize: 11, color: '#064E3B', margin: '0 0 2px', lineHeight: 1.4, fontWeight: 600 }} className="line-clamp-2">
                       {a.message}
                     </p>
-                    <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: 0 }}>
+                    <p style={{ fontSize: 10, color: '#047857', margin: 0, fontWeight: 500 }}>
                       {a.severity} · {timeAgo(a.createdAt)}
                     </p>
                   </div>
@@ -1332,16 +1332,24 @@ function ActivityFeed({ navigate }: { navigate: (p: string) => void }) {
           {grouped.map((s: any, idx: number) => {
             let textColor = '#6366F1'
             let bgColor = '#E0E7FF'
+            let textDark = '#312E81'
+            let textMuted = '#4338CA'
             
             if (s.priority === 'critical') {
               textColor = '#F43F5E'
               bgColor = '#FFE4E6'
+              textDark = '#881337'
+              textMuted = '#BE123C'
             } else if (s.priority === 'high') {
               textColor = '#F59E08'
               bgColor = '#FEF3C7'
+              textDark = '#78350F'
+              textMuted = '#B45309'
             } else if (s.priority === 'medium') {
               textColor = '#3B82F6'
               bgColor = '#DBEAFE'
+              textDark = '#1E3A8A'
+              textMuted = '#1D4ED8'
             }
 
             return (
@@ -1361,17 +1369,17 @@ function ActivityFeed({ navigate }: { navigate: (p: string) => void }) {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                     <span style={{ width: 8, height: 8, borderRadius: '50%', background: textColor, flexShrink: 0, boxShadow: `0 0 6px ${textColor}80` }} />
-                    {s.summary && <p style={{ fontSize: 13, color: 'var(--os-text-1)', margin: 0, lineHeight: 1.4, fontWeight: 700, letterSpacing: '-0.01em' }} className="line-clamp-2">{s.summary}</p>}
+                    {s.summary && <p style={{ fontSize: 13, color: textDark, margin: 0, lineHeight: 1.4, fontWeight: 700, letterSpacing: '-0.01em' }} className="line-clamp-2">{s.summary}</p>}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingLeft: 16 }}>
                     {s.module && (
-                      <span style={{ fontSize: 10, fontWeight: 750, padding: '2px 8px', borderRadius: 6, background: `${textColor}15`, border: `1px solid ${textColor}30`, color: textColor, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{s.module}</span>
+                      <span style={{ fontSize: 10, fontWeight: 750, padding: '2px 8px', borderRadius: 6, background: `${textColor}15`, border: `1px solid ${textColor}30`, color: textDark, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{s.module}</span>
                     )}
-                    {s.category && <span style={{ fontSize: 10, color: 'var(--os-text-3)', fontWeight: 600 }}>{s.category}</span>}
+                    {s.category && <span style={{ fontSize: 10, color: textMuted, fontWeight: 600 }}>{s.category}</span>}
                   </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6, flexShrink: 0 }}>
-                  <span style={{ fontSize: 10, color: 'var(--os-text-3)', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                  <span style={{ fontSize: 10, color: textMuted, fontWeight: 600, whiteSpace: 'nowrap' }}>
                     {timeAgo(s.createdAt)}
                   </span>
                   {s.count > 1 && (
