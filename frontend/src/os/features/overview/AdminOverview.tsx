@@ -4380,6 +4380,42 @@ function MRow({ label, value, color = C }: { label: string; value: string | numb
 
 type ModalType = 'finance' | 'clients' | 'signals' | 'approvals' | 'decisions' | 'insights' | 'goals' | 'research' | 'twin'
 
+function WaandaSettingsModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div style={{
+      position:'absolute', inset:0, zIndex:1000,
+      background:'rgba(0,4,12,0.85)', backdropFilter:'blur(4px)',
+      display:'flex', alignItems:'center', justifyContent:'center'
+    }} onClick={onClose}>
+      <div style={{
+        width: 380, background:'#000b18', border:`1px solid ${C}30`, borderRadius:8,
+        boxShadow:`0 0 30px ${C}1a`, overflow:'hidden'
+      }} onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div style={{ padding:'12px 16px', borderBottom:`1px solid ${C}20`, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <div style={{ color:C, fontFamily:'monospace', fontWeight:600, fontSize:12, letterSpacing:'0.1em' }}>WAANDA CONFIGURATION</div>
+          <button onClick={onClose} style={{ color:`${C}50`, background:'none', border:'none', cursor:'pointer' }}>✕</button>
+        </div>
+        {/* Body */}
+        <div style={{ padding:'16px', display:'flex', flexDirection:'column', gap:12 }}>
+          <MRow label="WAKE WORD SENSITIVITY" value="HIGH" color={C} />
+          <MRow label="VOICE ENGINE" value="ELEVENLABS - RACHEL" color={C} />
+          <MRow label="AUTONOMOUS APPROVALS" value="REQUIRE CONFIRM" color={CA} />
+          <MRow label="PREDICTIVE HORIZON" value="90 DAYS" color={C} />
+          <MRow label="LANGUAGE PIPELINE" value="ENGLISH (US)" color={CG} />
+          
+          <div style={{ marginTop: 12, padding: 10, background: `${CA}10`, border: `1px solid ${CA}30`, borderRadius: 4, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+            <div style={{ color: CA, marginTop: 2 }}>⚠️</div>
+            <div style={{ fontSize: 9.5, color: `${C}80`, fontFamily: 'monospace', lineHeight: 1.4 }}>
+              Configurations are currently locked to active tenant deployment policies. To override module access, authenticate via the master root terminal.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function WidgetModal({ type, data, onClose }: {
   type: ModalType
   data: {
@@ -5071,6 +5107,7 @@ export function AdminOverview() {
   const clock     = useClock()
   const [modal, setModal] = useState<ModalType | null>(null)
   const [showLog, setShowLog] = useState(false)
+  const [showWaandaSettings, setShowWaandaSettings] = useState(false)
   const uptime   = useUptime()
 
   // HUD TTS for live event announcements (must come before any callback that calls speak)
@@ -6001,10 +6038,11 @@ export function AdminOverview() {
         />
       )}
       {showLog && <HUDLogDrawer onClose={() => setShowLog(false)} />}
+      {showWaandaSettings && <WaandaSettingsModal onClose={() => setShowWaandaSettings(false)} />}
       
       {/* Settings Button */}
       <button 
-        onClick={() => navigate('/kangqore-view/admin/settings')}
+        onClick={() => setShowWaandaSettings(true)}
         style={{
           position: 'absolute',
           bottom: 24,
