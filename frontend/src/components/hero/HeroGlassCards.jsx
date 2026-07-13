@@ -37,7 +37,7 @@ const EqoreIntelligenceFeed = ({ allServices }) => {
   };
 
   return (
-    <div className="absolute inset-0 bg-[#0a192f]/80 backdrop-blur-xl p-4 flex flex-col font-mono text-[10px] border border-white/10">
+    <div className="absolute inset-0 bg-white/[0.03] backdrop-blur-xl p-4 flex flex-col font-mono text-[10px] border border-white/10">
       {/* Header */}
       <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
         <div className="flex items-center gap-2">
@@ -126,7 +126,7 @@ const HeroGlassCards = () => {
       {/* ───────────── UPPER CARD: eQORE Neural Intelligence Feed ───────────── */}
       <div className="relative aspect-[5/4] drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500 ease-out group">
         <div 
-          className="absolute inset-0 bg-[#0a1228] transition-all duration-500 overflow-hidden"
+          className="absolute inset-0 transition-all duration-500 overflow-hidden"
           style={{ clipPath: 'url(#blob-cutout)' }}
         >
           <EqoreIntelligenceFeed allServices={ALL_SERVICES} />
@@ -136,7 +136,7 @@ const HeroGlassCards = () => {
         <button
           type="button"
           onClick={() => window.location.href = '/insights'}
-          className="absolute bottom-2.5 right-2.5 w-11 h-11 rounded-full bg-[#0a192f] text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-black active:scale-95 transition-all duration-300 shadow-2xl ring-2 ring-white/10 z-10"
+          className="absolute bottom-2.5 right-2.5 w-11 h-11 rounded-full bg-white/10 text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 active:scale-95 transition-all duration-300 shadow-2xl backdrop-blur-md border border-white/20 z-10"
           aria-label="View system insights"
         >
           <ArrowRight className="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-500" strokeWidth={2.5} />
@@ -146,7 +146,7 @@ const HeroGlassCards = () => {
       {/* ───────────── LOWER CARD: Glassmorphism + Service Loop ───────────── */}
       <div className="relative aspect-[5/4] drop-shadow-[0_20px_40px_rgba(37,100,234,0.2)] hover:-translate-y-2 transition-all duration-500 ease-out group">
         <div
-          className="absolute inset-0 bg-gradient-to-br from-[#2564ea]/40 to-[#4ab6d4]/40 backdrop-blur-2xl border border-white/30 transition-all duration-500 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]"
+          className="absolute inset-0 bg-gradient-to-br from-[#2564ea]/12 to-[#4ab6d4]/12 backdrop-blur-2xl border border-white/20 transition-all duration-500 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"
           style={{ clipPath: 'url(#blob-cutout)' }}
         >
           {/* Atmospheric glow accents */}
@@ -190,7 +190,7 @@ const HeroGlassCards = () => {
         <button
           type="button"
           onClick={() => window.location.href = `/department/${currentDept.slug}`}
-          className="absolute bottom-2.5 right-2.5 w-11 h-11 rounded-full bg-[#0a192f] text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-black active:scale-95 transition-all duration-300 shadow-2xl ring-2 ring-white/10 z-10"
+          className="absolute bottom-2.5 right-2.5 w-11 h-11 rounded-full bg-white/10 text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 active:scale-95 transition-all duration-300 shadow-2xl backdrop-blur-md border border-white/20 z-10"
           aria-label="See more"
         >
           <ArrowRight className="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-500" strokeWidth={2.5} />
