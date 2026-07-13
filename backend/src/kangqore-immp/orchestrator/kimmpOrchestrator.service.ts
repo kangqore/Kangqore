@@ -1270,11 +1270,11 @@ Draft: (1) priority validation, (2) likely cause, (3) containment steps, (4) ini
 // ─── Wave 1: Delivery Intelligence agents ─────────────────────────────────────
 
 async function runProjectHealth(params: Record<string, any>): Promise<{ output: string; data?: any }> {
-  const { sweepAllProjects, getPortfolioHealthScore } = await import('../../scripts/gate8/projectOps.service')
+  const { sweepAllProjects, getPortfolioHealthScore } = await import('../../waanda/intelligence/projectOps.service')
   const projectId: string | undefined = params.projectId
 
   if (projectId) {
-    const { assessProject } = await import('../../scripts/gate8/projectOps.service')
+    const { assessProject } = await import('../../waanda/intelligence/projectOps.service')
     const state = await assessProject(projectId)
     const output = [
       `Project health: ${state.health}/100 (confidence ${state.confidence}%)`,
@@ -1297,7 +1297,7 @@ async function runProjectHealth(params: Record<string, any>): Promise<{ output: 
 async function runDeliveryMonitor(params: Record<string, any>): Promise<{ output: string; data?: any }> {
   if (noKey()) return { output: 'DELIVERY_MONITOR requires ANTHROPIC_API_KEY.', data: {} }
 
-  const { sweepAllProjects } = await import('../../scripts/gate8/projectOps.service')
+  const { sweepAllProjects } = await import('../../waanda/intelligence/projectOps.service')
   const { assessed, avgHealth } = await sweepAllProjects()
 
   // Pull at-risk projects
@@ -1334,7 +1334,7 @@ async function runProjectTwinSimulator(params: Record<string, any>): Promise<{ o
   const { projectId, extraResources } = params
   if (!projectId) return { output: 'PROJECT_TWIN_SIMULATOR requires projectId param.', data: {} }
 
-  const { simulateTwin } = await import('../../scripts/gate8/projectOps.service')
+  const { simulateTwin } = await import('../../waanda/intelligence/projectOps.service')
   const twin = await simulateTwin(projectId, extraResources ?? 0)
 
   const lines = [
@@ -1453,7 +1453,7 @@ async function runDealCoach(params: Record<string, any>): Promise<{ output: stri
 }
 
 async function runEnterpriseCoach(_params: Record<string, any>): Promise<{ output: string; data?: any }> {
-  const { computeCoachingInsights } = await import('../../scripts/gate8/enterpriseCoach.service')
+  const { computeCoachingInsights } = await import('../../waanda/intelligence/enterpriseCoach.service')
   const insights = await computeCoachingInsights()
   const critical = insights.filter(i => i.priority === 'CRITICAL' || i.priority === 'HIGH')
   const output = [

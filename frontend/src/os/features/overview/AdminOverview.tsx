@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo, Component } from 're
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowRight, Maximize2, Minimize2, Mic, MicOff, Paperclip, Send, Volume2, VolumeX } from 'lucide-react'
+import { ArrowRight, Maximize2, Minimize2, Mic, MicOff, Paperclip, Send, Volume2, VolumeX, Settings } from 'lucide-react'
 import { api } from '@lib/api'
 import { useKIMMPStore } from '@store/kimmp'
 import { useSignalStream, type LiveSignal } from '@lib/useSignalStream'
@@ -72,10 +72,17 @@ function timeAgo(iso: string) {
 function getModuleDeg(sourceModule: string): number | null {
   const m = sourceModule.toLowerCase()
   if (m.includes('eqore') || m.includes('intent') || m.includes('opport')) return 0
-  if (m.includes('lead')  || m.includes('revenue') || m.includes('conver')) return 36
-  if (m.includes('alis')  || m.includes('market')  || m.includes('demand')) return 72
-  if (m.includes('vis')   || m.includes('content') || m.includes('gap'))    return 108
-  if (m.includes('kimmp') || m.includes('intel'))                            return 144
+  if (m.includes('lead')  || m.includes('revenue') || m.includes('conver')) return 30
+  if (m.includes('alis')  || m.includes('market')  || m.includes('demand')) return 60
+  if (m.includes('vis')   || m.includes('content') || m.includes('gap'))    return 90
+  if (m.includes('aegis') || m.includes('security')|| m.includes('threat')) return 120
+  if (m.includes('keos')  || m.includes('os')      || m.includes('system')) return 150
+  if (m.includes('kore')  || m.includes('cloud')   || m.includes('infra'))  return 180
+  if (m.includes('kimmp') || m.includes('agent'))                           return 210
+  if (m.includes('urgi')  || m.includes('graph'))                           return 240
+  if (m.includes('bids')  || m.includes('business'))                        return 270
+  if (m.includes('neural')|| m.includes('ops')     || m.includes('topology')) return 300
+  if (m.includes('ontology')|| m.includes('semantic')|| m.includes('map'))  return 330
   return null
 }
 
@@ -185,19 +192,36 @@ function Gauge({ value, max = 100, label, sub = '', color = C, size = 140 }: {
 }
 
 // ─── Panel ────────────────────────────────────────────────────────────────────
-function Panel({ title, subtitle, color = C, children, onClick }: {
-  title: string; subtitle?: string; color?: string; children: ReactNode; onClick?: () => void
+function Panel({ title, subtitle, color = C, collapsible = false, children, onClick }: {
+  title: string; subtitle?: string; color?: string; collapsible?: boolean; children: ReactNode; onClick?: () => void
 }) {
+  const [collapsed, setCollapsed] = useState(false)
+
+  useEffect(() => {
+    if (!collapsible) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowUp') {
+        setCollapsed(true)
+      } else if (e.key === 'ArrowDown') {
+        setCollapsed(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [collapsible])
+
   return (
     <div onClick={onClick} className={onClick ? 'cursor-pointer relative p-[1px] mb-3' : 'relative p-[1px] mb-3'}
       style={{
         background: `linear-gradient(135deg, ${color}60 0%, ${color}20 100%)`,
         clipPath: 'polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)',
+        transition: 'all 0.3s ease',
       }}
     >
       <div className="relative p-3 w-full h-full" style={{
         background: `linear-gradient(135deg, rgba(0,8,20,0.98) 0%, rgba(0,18,40,0.95) 100%)`,
         clipPath: 'polygon(11px 0, 100% 0, 100% calc(100% - 11px), calc(100% - 11px) 100%, 0 100%, 0 11px)',
+        transition: 'all 0.3s ease',
       }}>
         {/* corner accents */}
         <div style={{ position:'absolute', top:0, left:11, width:30, height:2, background:color, boxShadow:`0 0 8px ${color}` }} />
@@ -213,19 +237,34 @@ function Panel({ title, subtitle, color = C, children, onClick }: {
 
         {/* Title */}
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom: collapsed ? 0 : 12, transition:'margin 0.3s ease' }}>
             <div style={{ fontFamily:'monospace', fontSize:9, fontWeight:800, color:color, letterSpacing:'0.2em' }}>
               [{title.toUpperCase()}]
             </div>
             {subtitle && (
-              <div style={{ fontSize:7, color:`${color}55`, letterSpacing:'0.12em', whiteSpace:'nowrap' }}>
+              <div style={{ fontSize:7, color:`${color}55`, letterSpacing:'0.12em', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                 {subtitle}
               </div>
             )}
             <div style={{ flex:1, height:1, background:`linear-gradient(90deg, ${color}40, transparent)` }} />
-            <div style={{ width: 4, height: 4, borderRadius: '50%', background: color }} />
+            {collapsible ? (
+              <button onClick={(e) => { e.stopPropagation(); setCollapsed(!collapsed); }}
+                style={{ background: 'none', border: 'none', color: color, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: 10, fontFamily: 'monospace' }}>{collapsed ? '▼' : '▲'}</span>
+              </button>
+            ) : (
+              <div style={{ width: 4, height: 4, borderRadius: '50%', background: color }} />
+            )}
           </div>
-          {children}
+          <div style={{ 
+            maxHeight: collapsed ? 0 : 1000, 
+            opacity: collapsed ? 0 : 1, 
+            overflow: 'hidden', 
+            transition: 'max-height 0.3s ease-in-out, opacity 0.3s ease-in-out',
+            pointerEvents: collapsed ? 'none' : 'auto'
+          }}>
+            {children}
+          </div>
         </div>
       </div>
     </div>
@@ -315,18 +354,20 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
     return Math.min(95, Math.round(avg))
   }
 
-  // 10 modules × 36° each — arc span 26° (±13°), 10° gap between segments
+  // 12 modules × 30° each — arc span 22° (±11°), 8° gap between segments
   const modules = [
     { label:'eQORE',    line2:'',             deg:0,   pct: srcPct(['eqore','intent','opportunity'], 72), color:CG, desc:'INTENT_DETECTED', roles:['ADMIN'] },
-    { label:'LEAD',     line2:'INTELLIGENCE', deg:36,  pct: srcPct(['lead','revenue','conversion'],  65), color:C,  desc:'LEAD_SCORE_JUMP', roles:['ADMIN'] },
-    { label:'KANGQORE', line2:'ALIS',         deg:72,  pct: srcPct(['alis','market','demand'],        58), color:C,  desc:'DEMAND_SPIKE',    roles:['ADMIN'] },
-    { label:'KANGQORE', line2:'VIS',          deg:108, pct: srcPct(['vis','content','gap'],           44), color:CG, desc:'CONTENT_GAP',     roles:['ADMIN'] },
-    { label:'KANGQORE', line2:'VIEW',         deg:144, pct: confidence,                                    color:C,  desc:'INTELLIGENCE',    roles:['ADMIN'] },
-    { label:'REVENUE',  line2:'',             deg:180, pct: kpis?.mrrDeltaPct != null ? Math.min(99, Math.max(1, 50 + kpis.mrrDeltaPct)) : 82, color:CG, desc:'PERFORMANCE', roles:['ADMIN'] },
-    { label:'FINANCE',  line2:'',             deg:216, pct: kpis?.totalBudget > 0 ? Math.min(99, Math.max(1, Math.round((1 - (kpis.totalSpend || 0) / kpis.totalBudget) * 60 + 40))) : 67, color:CA, desc:'METRICS', roles:['ADMIN', 'CLIENT'] },
-    { label:'CLIENTS',  line2:'',             deg:252, pct: Math.min(99, Math.round(((analytics.clients || 0) / 50) * 100)), color:C, desc:'PORTFOLIO', roles:['ADMIN'] },
-    { label:'OPS',      line2:'',             deg:288, pct: 88,                                            color:CA, desc:'EFFICIENCY',      roles:['ADMIN'] },
-    { label:'PROJECTS', line2:'',             deg:324, pct: kpis?.onTimeProjectPct ?? 61,                  color:C,  desc:'PIPELINE',        roles:['ADMIN', 'CLIENT'] },
+    { label:'LEAD',     line2:'INTELLIGENCE', deg:30,  pct: srcPct(['lead','revenue','conversion'],  65), color:C,  desc:'LEAD_SCORE_JUMP', roles:['ADMIN'] },
+    { label:'KANGQORE', line2:'ALIS',         deg:60,  pct: srcPct(['alis','market','demand'],        58), color:C,  desc:'DEMAND_SPIKE',    roles:['ADMIN'] },
+    { label:'KANGQORE', line2:'VIS',          deg:90,  pct: srcPct(['vis','content','gap'],           44), color:CG, desc:'CONTENT_GAP',     roles:['ADMIN'] },
+    { label:'KANGQORE', line2:'AEGIS',        deg:120, pct: srcPct(['aegis','security','threat'],     89), color:C,  desc:'SECURITY_MESH',   roles:['ADMIN'] },
+    { label:'KEOS',     line2:'',             deg:150, pct: srcPct(['keos','os','system'],            94), color:CG, desc:'CORE_SYS_HEALTH', roles:['ADMIN'] },
+    { label:'KORE',     line2:'',             deg:180, pct: srcPct(['kore','cloud','infra'],          98), color:C,  desc:'INFRASTRUCTURE',  roles:['ADMIN'] },
+    { label:'KIMMP',    line2:'',             deg:210, pct: srcPct(['kimmp','agent','mesh'],          82), color:CA, desc:'MULTI_AGENT',     roles:['ADMIN'] },
+    { label:'URGI',     line2:'',             deg:240, pct: srcPct(['urgi','graph','semantic'],       76), color:C,  desc:'GRAPH_INTEL',     roles:['ADMIN'] },
+    { label:'BIDS',     line2:'',             deg:270, pct: srcPct(['bids','business','analytics'],   88), color:CG, desc:'BI_SYSTEM',       roles:['ADMIN', 'CLIENT'] },
+    { label:'NEURAL',   line2:'CENTRE',       deg:300, pct: srcPct(['neural','ops','topology'],       95), color:CA, desc:'AI_TOPOLOGY',     roles:['ADMIN'] },
+    { label:'ONTOLOGY', line2:'',             deg:330, pct: srcPct(['ontology','mapping','memory'],   91), color:C,  desc:'SEMANTIC_MAP',    roles:['ADMIN'] },
   ]
   const visibleModules = userRole === 'ADMIN' ? modules : modules.filter(m => m.roles.includes(userRole))
 
@@ -410,7 +451,7 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
         </radialGradient>
         {/* Invisible arc paths — used as rails for curved textPath labels */}
         {visibleModules.flatMap(({ deg, line2 }) => {
-          const s = deg - 13, e = deg + 13
+          const s = deg - 11, e = deg + 11
           const rev = deg >= 120 && deg <= 240
           const fn = rev ? arcPathCCW : arcPath
           const r1 = line2 ? 126 : 129
@@ -453,8 +494,8 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
         const isHovered = hovered === label + deg
         const isFaded = hovered !== null && hovered !== label + deg
 
-        const arcStart = deg - 13, arcEnd = deg + 13
-        const valEnd   = deg - 13 + (pct/100) * 26
+        const arcStart = deg - 11, arcEnd = deg + 11
+        const valEnd   = deg - 11 + (pct/100) * 22
 
         // Boot — each arc fades in staggered
         const booted = bootPhase >= 2
@@ -472,8 +513,10 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
              style={{
                cursor: 'crosshair',
                opacity: !booted ? 0 : isFaded ? 0.15 : 1,
-               transition: `opacity 0.5s ${bootDelay}, filter 0.3s`,
-               animation: isCriticalArc ? 'critFlash 0.4s ease-in-out 12' : isActive ? 'arcPulseFast 0.8s ease-in-out infinite' : 'arcPulse 3s ease-in-out infinite',
+               transformOrigin: `${cx}px ${cy}px`,
+               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+               transition: `opacity 0.5s ${bootDelay}, filter 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`,
+               animation: isHovered ? 'none' : isCriticalArc ? 'critFlash 0.4s ease-in-out 12' : isActive ? 'arcPulseFast 0.8s ease-in-out infinite' : 'arcPulse 3s ease-in-out infinite',
                animationDelay: booted ? bootDelay : '0s',
              }}>
             {/* wide band background — the interactive arc wedge */}
@@ -505,8 +548,8 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
             {/* Scenario delta badge — appears outside the arc ring when scenario mode is active */}
             {scenarioDelta && (() => {
               const DELTA_MAP: Record<number, keyof ScenarioDelta> = {
-                180: 'revenueHealth', 36: 'pipelineVelocity', 288: 'executionCapacity',
-                324: 'riskExposure',  72: 'marketPosition',
+                270: 'revenueHealth', 30: 'pipelineVelocity', 210: 'executionCapacity',
+                120: 'riskExposure',  60: 'marketPosition',
               }
               const deltaKey = DELTA_MAP[deg]
               if (!deltaKey) return null
@@ -516,7 +559,7 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
               const bp = polar(cx, cy, 138, deg)
               return (
                 <g>
-                  <rect x={bp.x - 13} y={bp.y - 8} width={26} height={16} rx={3}
+                  <rect x={bp.x - 11} y={bp.y - 8} width={22} height={16} rx={3}
                     fill={`${bc}20`} stroke={bc} strokeWidth={0.8} />
                   <text x={bp.x} y={bp.y + 4.5} textAnchor="middle" fill={bc}
                     fontSize={7} fontFamily="monospace" fontWeight="900"
@@ -625,7 +668,8 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
       <circle cx={cx} cy={cy} r={42} fill="url(#glassLens)" pointerEvents="none" />
 
       {/* ── Dynamic Center Info Overlay ── */}
-      <g style={{ opacity: hovered ? 0 : 1, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
+      {/* ── Dynamic Center Info Overlay ── */}
+      <g style={{ opacity: 1, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
         <image href="/assets/kangqore-icon-white.png" x={cx-14} y={cy-14} width={28} height={28}
           opacity={0.9} style={{ filter:`drop-shadow(0 0 12px ${C})` }} />
         <text x={cx} y={cy+56} textAnchor="middle" fill="#ffffff" fontSize={8} fontFamily="monospace" fontWeight="900" letterSpacing="0.1em" style={{ filter:`drop-shadow(0 0 8px #03a9f4)` }}>
@@ -640,19 +684,25 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
         {hovered && (() => {
           const m = visibleModules.find(x => (x.label + x.deg) === hovered)
           if (!m) return null
+          
+          const rTooltip = 175;
+          const tp = polar(cx, cy, rTooltip, m.deg);
+          
           return (
             <g>
-              <circle cx={cx} cy={cy} r={34} fill={`${m.color}15`} stroke={m.color} strokeWidth={1} style={{ filter:`drop-shadow(0 0 10px ${m.color})` }} />
-              <text x={cx} y={cy - 6} textAnchor="middle" fill="#4ab6d4" fontSize={14} fontWeight="900" fontFamily="monospace" letterSpacing="0.1em" style={{ filter: `drop-shadow(0 0 8px ${m.color})` }}>{m.pct}%</text>
-              <text x={cx} y={cy + 8} textAnchor="middle" fill={m.color} fontSize={6} fontFamily="monospace" letterSpacing="0.2em">{m.desc}</text>
-              <text x={cx} y={cy + 20} textAnchor="middle" fill="#4ab6d4" fontSize={8} fontWeight="800" fontFamily="monospace" letterSpacing="0.2em">{m.label + (m.line2 ? ' ' + m.line2 : '')}</text>
-
-              <line x1={cx - 18} y1={cy+2} x2={cx + 18} y2={cy+2} stroke={m.color} strokeWidth={0.5} opacity={0.5} />
-
-              {/* Connecting targeting line from center to the hovered arc */}
-              <line x1={polar(cx, cy, 34, m.deg).x} y1={polar(cx, cy, 34, m.deg).y}
-                    x2={polar(cx, cy, 110, m.deg).x} y2={polar(cx, cy, 110, m.deg).y}
+              {/* Connecting targeting line from the outer edge of the arc to the tooltip */}
+              <line x1={polar(cx, cy, 134, m.deg).x} y1={polar(cx, cy, 134, m.deg).y}
+                    x2={tp.x} y2={tp.y}
                     stroke={m.color} strokeWidth={1} strokeDasharray="2 4" style={{ filter:`drop-shadow(0 0 4px ${m.color})` }} />
+              
+              {/* Tooltip Background/Frame */}
+              <rect x={tp.x - 45} y={tp.y - 22} width={90} height={44} rx={4} fill={`${m.color}15`} stroke={m.color} strokeWidth={1} style={{ filter:`drop-shadow(0 0 10px ${m.color})` }} />
+              
+              {/* Tooltip Text */}
+              <text x={tp.x} y={tp.y - 8} textAnchor="middle" fill="#4ab6d4" fontSize={14} fontWeight="900" fontFamily="monospace" letterSpacing="0.1em" style={{ filter: `drop-shadow(0 0 8px ${m.color})` }}>{m.pct}%</text>
+              <line x1={tp.x - 30} y1={tp.y} x2={tp.x + 30} y2={tp.y} stroke={m.color} strokeWidth={0.5} opacity={0.5} />
+              <text x={tp.x} y={tp.y + 8} textAnchor="middle" fill={m.color} fontSize={6} fontFamily="monospace" letterSpacing="0.2em">{m.desc}</text>
+              <text x={tp.x} y={tp.y + 16} textAnchor="middle" fill="#4ab6d4" fontSize={7} fontWeight="800" fontFamily="monospace" letterSpacing="0.2em">{m.label + (m.line2 ? ' ' + m.line2 : '')}</text>
             </g>
           )
         })()}
@@ -726,7 +776,7 @@ function WaandaGreeting({ kpis, insights, health, onDismiss, onSpeakDirect }: {
     `Good ${tod}, sir. WAANDA online.`,
     crit > 0
       ? `I've flagged ${crit} critical signal${crit > 1 ? 's' : ''} requiring immediate attention.`
-      : 'All ten modules are operational and running within normal parameters.',
+      : 'All twelve modules are operational and running within normal parameters.',
     twin != null ? `Business twin score is at ${twin} out of one hundred.` : '',
     rev != null  ? `Revenue health holding at ${rev}.` : '',
     'Standing by for your orders, sir.',
@@ -745,7 +795,7 @@ function WaandaGreeting({ kpis, insights, health, onDismiss, onSpeakDirect }: {
     [1500, { type: 'divider',  text: '' }],
     [1900, { type: 'greeting', text: `Good ${tod}, sir.` }],
     [2300, { type: 'body',     text: statusLine }],
-    [2700, { type: 'body',     text: `10 modules online  ·  AEGIS active  ·  All systems nominal` }],
+    [2700, { type: 'body',     text: `12 modules online  ·  AEGIS active  ·  All systems nominal` }],
     [3100, { type: 'ready',    text: 'WAANDA online. Standing by for orders.' }],
     [3700, { type: 'prompt',   text: '[ CLICK ANYWHERE OR PRESS ANY KEY TO PROCEED ]' }],
   ]
@@ -945,6 +995,53 @@ function useVoiceInput(onResult: (t: string) => void) {
   }, [onResult])
   const stop = useCallback(() => { ref.current?.stop(); setListening(false) }, [])
   return { listening, supported, interim, start, stop }
+}
+
+function useWakeWord(active: boolean, onWake: (phrase: string) => void) {
+  useEffect(() => {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    if (!SR || !active) return
+    let r: any = null
+    let isActive = true
+    
+    const startListener = () => {
+      if (!isActive) return
+      try {
+        r = new SR()
+        r.continuous = true
+        r.interimResults = true
+        r.lang = 'en-US'
+        
+        const WAKE_WORDS = [
+          "hey waanda", "wake up daddy's home", "wake up waanda", 
+          "wake up waanda baby", "wake up waanda babe", "good morning waanda", 
+          "wake up point break"
+        ]
+        
+        r.onresult = (e: any) => {
+          for (let i = e.resultIndex; i < e.results.length; i++) {
+            const transcript = e.results[i][0].transcript.toLowerCase()
+            if (WAKE_WORDS.some(w => transcript.includes(w))) {
+              onWake(transcript)
+              isActive = false
+              r.stop()
+              break
+            }
+          }
+        }
+        r.onend = () => { if (isActive) setTimeout(startListener, 500) }
+        r.onerror = (e: any) => { if (e.error === 'not-allowed' || e.error === 'audio-capture') isActive = false }
+        r.start()
+      } catch (err) {}
+    }
+    
+    startListener()
+    
+    return () => {
+      isActive = false
+      if (r) { r.onend = null; r.stop() }
+    }
+  }, [active, onWake])
 }
 
 function useTTS() {
@@ -1361,6 +1458,16 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
       setTimeout(() => { if (voiceModeRef.current) start() }, 600)
     }
   }, [speaking, thinking, start])
+
+  // Wake Word Listener
+  useWakeWord(!listening && !voiceMode, useCallback((phrase) => {
+    // Open the panel by simulating ArrowDown just in case it's collapsed
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+    setVM(true)
+    silence()
+    // Small delay to ensure passive listener has fully released the mic
+    setTimeout(() => { start() }, 300)
+  }, [start, silence]))
 
   const handleMicClick = useCallback(() => {
     if (listening) {
@@ -4273,6 +4380,69 @@ function MRow({ label, value, color = C }: { label: string; value: string | numb
 
 type ModalType = 'finance' | 'clients' | 'signals' | 'approvals' | 'decisions' | 'insights' | 'goals' | 'research' | 'twin'
 
+function ToggleRow({ label, isOn, onToggle }: { label: string; isOn: boolean; onToggle: () => void }) {
+  return (
+    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'6px 0', borderBottom:`1px solid ${C}10` }}>
+      <span style={{ fontSize:9, color:`${C}50`, fontFamily:'monospace', letterSpacing:'0.12em' }}>{label}</span>
+      <div 
+        onClick={onToggle}
+        style={{
+          width: 32, height: 16, borderRadius: 8,
+          background: isOn ? C : `${C}20`,
+          position: 'relative', cursor: 'pointer',
+          transition: 'background 0.2s',
+          boxShadow: isOn ? `0 0 8px ${C}40` : 'none'
+        }}
+      >
+        <div style={{
+          position: 'absolute', top: 2, left: isOn ? 18 : 2,
+          width: 12, height: 12, borderRadius: 6,
+          background: isOn ? '#000' : `${C}80`, transition: 'left 0.2s'
+        }} />
+      </div>
+    </div>
+  )
+}
+
+function WaandaSettingsModal({ onClose }: { onClose: () => void }) {
+  const [wakeWord, setWakeWord] = useState(true)
+  const [autoApprove, setAutoApprove] = useState(false)
+
+  return (
+    <div style={{
+      position:'absolute', inset:0, zIndex:1000,
+      background:'rgba(0,4,12,0.85)', backdropFilter:'blur(4px)',
+      display:'flex', alignItems:'center', justifyContent:'center'
+    }} onClick={onClose}>
+      <div style={{
+        width: 380, background:'#000b18', border:`1px solid ${C}30`, borderRadius:8,
+        boxShadow:`0 0 30px ${C}1a`, overflow:'hidden'
+      }} onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div style={{ padding:'12px 16px', borderBottom:`1px solid ${C}20`, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <div style={{ color:C, fontFamily:'monospace', fontWeight:600, fontSize:12, letterSpacing:'0.1em' }}>WAANDA CONFIGURATION</div>
+          <button onClick={onClose} style={{ color:`${C}50`, background:'none', border:'none', cursor:'pointer', fontSize: 16 }}>✕</button>
+        </div>
+        {/* Body */}
+        <div style={{ padding:'16px', display:'flex', flexDirection:'column', gap:12 }}>
+          <ToggleRow label="PASSIVE WAKE WORD" isOn={wakeWord} onToggle={() => setWakeWord(!wakeWord)} />
+          <ToggleRow label="AUTONOMOUS APPROVALS" isOn={autoApprove} onToggle={() => setAutoApprove(!autoApprove)} />
+          <MRow label="VOICE ENGINE" value="ELEVENLABS - RACHEL" color={C} />
+          <MRow label="PREDICTIVE HORIZON" value="90 DAYS" color={C} />
+          <MRow label="LANGUAGE PIPELINE" value="ENGLISH (US)" color={CG} />
+          
+          <div style={{ marginTop: 12, padding: 10, background: `${CA}10`, border: `1px solid ${CA}30`, borderRadius: 4, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+            <div style={{ color: CA, marginTop: 2 }}>⚠️</div>
+            <div style={{ fontSize: 9.5, color: `${C}80`, fontFamily: 'monospace', lineHeight: 1.4 }}>
+              Configurations are currently locked to active tenant deployment policies. To override module access, authenticate via the master root terminal.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function WidgetModal({ type, data, onClose }: {
   type: ModalType
   data: {
@@ -4964,6 +5134,7 @@ export function AdminOverview() {
   const clock     = useClock()
   const [modal, setModal] = useState<ModalType | null>(null)
   const [showLog, setShowLog] = useState(false)
+  const [showWaandaSettings, setShowWaandaSettings] = useState(false)
   const uptime   = useUptime()
 
   // HUD TTS for live event announcements (must come before any callback that calls speak)
@@ -5000,6 +5171,13 @@ export function AdminOverview() {
     queryKey: ['waanda-events-seed'],
     queryFn: () => api.get('/admin/kangqore-immp/events?limit=20').then(r => r.data.events ?? []) as Promise<LiveHUDEvent[]>,
     staleTime: Infinity,
+  })
+
+  // Fetch total log count for the HUD header
+  const { data: totalLogs = 60 } = useQuery({
+    queryKey: ['waanda-total-logs'],
+    queryFn: () => api.get('/admin/kangqore-immp/events?limit=500').then(r => r.data.total ?? r.data.events?.length ?? 60).catch(() => 60),
+    refetchInterval: 15_000,
   })
   useEffect(() => {
     if (!seedEvents?.length) return
@@ -5099,6 +5277,34 @@ export function AdminOverview() {
     } catch {}
   }, [])
 
+  // Morning brief notification (Phase 6.6)
+  const [morningBriefNotif, setMorningBriefNotif] = useState<{ id: string; preview: string; date: string } | null>(null)
+  const [governanceNotif, setGovernanceNotif]     = useState<{ mode: string; reason: string | null } | null>(null)
+  useEffect(() => {
+    try {
+      const { getSocket } = require('../../../lib/socket') as typeof import('../../../lib/socket')
+      const socket = getSocket()
+      const onBrief = (data: any) => {
+        const today = new Date().toDateString()
+        const seenKey = `kimmp-brief-notif-${today}`
+        if (localStorage.getItem(seenKey)) return
+        setMorningBriefNotif({ id: data.id, preview: data.preview ?? '', date: data.date ?? new Date().toISOString() })
+      }
+      const onGovernance = (data: any) => {
+        const seenKey = `kimmp-governance-${data.mode}-${new Date().toDateString()}`
+        if (localStorage.getItem(seenKey)) return
+        localStorage.setItem(seenKey, '1')
+        setGovernanceNotif({ mode: data.mode, reason: data.reason ?? null })
+      }
+      socket.on('kimmp:morning-brief',     onBrief)
+      socket.on('kimmp:governance-upgrade', onGovernance)
+      return () => {
+        socket.off('kimmp:morning-brief',     onBrief)
+        socket.off('kimmp:governance-upgrade', onGovernance)
+      }
+    } catch {}
+  }, [])
+
   // Boot sequence — phases 0→4 gate each HUD layer fading in
   const [bootPhase, setBootPhase] = useState(0)
   useEffect(() => {
@@ -5172,6 +5378,13 @@ export function AdminOverview() {
     staleTime: 1000 * 60 * 10,
   })
   const agents = useTicker(aegisStats?.total ?? 80, 0.02)
+
+  // WAANDA Authority health — subsystem dots in right column
+  const { data: authorityHealth } = useQuery({
+    queryKey: ['waanda-authority-health-hud'],
+    queryFn: () => api.get('/admin/waanda/authority/health').then(r => r.data).catch(() => null),
+    refetchInterval: 30_000,
+  })
 
   // System utilization — real OS metrics from health-deep
   const sysStats = healthData?.system ?? { cpu: 0, ram: 0, network: 0 }
@@ -5406,6 +5619,72 @@ export function AdminOverview() {
       )}
 
 
+      {/* KIMMP Morning Brief notification strip (Phase 6.6) */}
+      {morningBriefNotif && (
+        <div style={{
+          position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 200, display: 'flex', alignItems: 'center', gap: 12,
+          background: 'rgba(0, 12, 34, 0.95)', border: '1px solid rgba(100, 180, 255, 0.3)',
+          borderRadius: 8, padding: '8px 14px', backdropFilter: 'blur(12px)',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+        }}>
+          <span style={{ fontSize: 10, color: '#6aaac8', fontFamily: 'monospace', letterSpacing: '0.1em' }}>
+            KIMMP BRIEF READY
+          </span>
+          <span style={{ fontSize: 9, color: '#94b8cc', maxWidth: 240, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {morningBriefNotif.preview}
+          </span>
+          <a
+            href="/kangqore-view/admin/kangqore-immp/command-center"
+            style={{ fontSize: 9, color: '#b89eff', fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap' }}
+          >
+            View Today →
+          </a>
+          <button
+            onClick={() => {
+              const key = `kimmp-brief-notif-${new Date().toDateString()}`
+              localStorage.setItem(key, '1')
+              setMorningBriefNotif(null)
+            }}
+            style={{ fontSize: 10, color: '#557799', background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* WAANDA Governance upgrade notification (Phase 6.9) */}
+      {governanceNotif && (
+        <div style={{
+          position: 'absolute', top: morningBriefNotif ? 60 : 12, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 200, display: 'flex', alignItems: 'center', gap: 12,
+          background: 'rgba(0, 12, 24, 0.97)', border: '1px solid rgba(0, 200, 117, 0.4)',
+          borderRadius: 8, padding: '8px 14px', backdropFilter: 'blur(12px)',
+          boxShadow: '0 4px 24px rgba(0,200,117,0.15)',
+        }}>
+          <span style={{ fontSize: 10, color: '#00c875', fontFamily: 'monospace', letterSpacing: '0.1em' }}>
+            WAANDA → {governanceNotif.mode}
+          </span>
+          {governanceNotif.reason && (
+            <span style={{ fontSize: 9, color: '#94b8cc', maxWidth: 260, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {governanceNotif.reason}
+            </span>
+          )}
+          <a
+            href="/kangqore-view/admin/kangqore-immp/command-center"
+            style={{ fontSize: 9, color: '#b89eff', fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap' }}
+          >
+            Review Candidates →
+          </a>
+          <button
+            onClick={() => setGovernanceNotif(null)}
+            style={{ fontSize: 10, color: '#557799', background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Grid overlay */}
       <div style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0,
         backgroundImage:`
@@ -5464,7 +5743,7 @@ export function AdminOverview() {
             }}>
               <span style={{ fontSize: 9, color: `${C}50`, letterSpacing: '0.12em' }}>◈</span>
               <span style={{ fontSize: 8, color: `${C}50`, letterSpacing: '0.15em', fontFamily: 'monospace' }}>LOG</span>
-              <span style={{ fontSize: 12, fontWeight: 800, color: C, textShadow: `0 0 8px ${C}` }}>60</span>
+              <span style={{ fontSize: 12, fontWeight: 800, color: C, textShadow: `0 0 8px ${C}` }}>{totalLogs}</span>
             </button>
           </div>
 
@@ -5650,7 +5929,7 @@ export function AdminOverview() {
 
               {/* WAANDA Command Bar */}
               <div style={{ width: '85%' }}>
-                <Panel title="WAANDA" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C}>
+                <Panel title="WAANDA" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C} collapsible>
                   <HUDCommandBar
                     insights={insights} color={C} recentSignals={recentSignals} criticalAlert={criticalAlert}
                     onScenario={handleScenario} onGoalCockpit={handleGoalCockpit}
@@ -5672,30 +5951,65 @@ export function AdminOverview() {
 
           {/* ═ RIGHT ═ */}
 <div style={{ display:'flex', flexDirection:'column', gap:20, overflow:'hidden', paddingBottom: 20, transform: 'scale(0.9)', transformOrigin: 'top center' }}>
-  {/* ── COMMAND CENTER — Phase 6 Intelligence ── */}
+  {/* ── COMMAND CENTER — Phase 6.1 Business Domains ── */}
   <SectionLabel text="COMMAND CENTER" color={CA} />
-  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
-    <MinimalistRingWidget label="CRITICAL" value={cc?.signals?.criticalCount ?? '—'} sub="SIGNALS" color={CR} />
-    <MinimalistRingWidget label="PROPOSED" value={cc?.decisions?.proposedCount ?? '—'} sub="DECISIONS" color={CA} />
-    <MinimalistRingWidget label="OIS SCORE" value={cc?.ois?.score ?? '—'} sub="ENTERPRISE" color={C} />
-    <MinimalistRingWidget label="TRAINING" value={cc?.training?.exportReady ?? '—'} sub="EXAMPLES" color={CG} />
-  </div>
-  {/* P6 stat strip */}
-  {cc && (
-    <div style={{ display:'flex', flexDirection:'column', gap:3, padding:'6px 4px', borderTop:`1px solid ${CA}20`, marginTop:4 }}>
-      {[
-        { l: 'HIGH SIG',  v: cc.signals?.highCount ?? 0 },
-        { l: 'NEW SIG',   v: cc.signals?.newCount ?? 0 },
-        { l: 'AT RISK',   v: cc.predictions?.highRiskCount ?? 0 },
-        { l: 'LLM COST',  v: cc.cost?.totalEstimatedUsd != null ? `$${Number(cc.cost.totalEstimatedUsd).toFixed(2)}` : '—' },
-      ].map(r => (
-        <div key={r.l} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
-          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>{r.l}</span>
-          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{r.v}</span>
+  {cc?.business?.length > 0 ? (
+    <>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
+        {(cc.business as any[]).slice(0, 4).map((domain: any) => {
+          const domainColor = domain.status === 'CRITICAL' ? CR : domain.status === 'ATTENTION' ? CA : domain.status === 'HEALTHY' ? CG : '#888';
+          return (
+            <MinimalistRingWidget
+              key={domain.id}
+              label={domain.label.toUpperCase()}
+              value={domain.count > 0 ? domain.count : '✓'}
+              sub={domain.status}
+              color={domainColor}
+            />
+          );
+        })}
+      </div>
+      <div style={{ display:'flex', flexDirection:'column', gap:3, padding:'6px 4px', borderTop:`1px solid ${CA}20`, marginTop:4 }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
+          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>OIS</span>
+          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{cc.ois?.score ?? '—'}</span>
         </div>
-      ))}
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
+          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>DECISIONS</span>
+          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{cc.decisions?.proposedCount ?? 0}</span>
+        </div>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
+          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>SIGNALS</span>
+          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{cc.signals?.criticalCount ?? 0} critical</span>
+        </div>
+      </div>
+    </>
+  ) : (
+    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
+      <MinimalistRingWidget label="CRITICAL" value={cc?.signals?.criticalCount ?? '—'} sub="SIGNALS" color={CR} />
+      <MinimalistRingWidget label="PROPOSED" value={cc?.decisions?.proposedCount ?? '—'} sub="DECISIONS" color={CA} />
+      <MinimalistRingWidget label="OIS SCORE" value={cc?.ois?.score ?? '—'} sub="ENTERPRISE" color={C} />
+      <MinimalistRingWidget label="TRAINING" value={cc?.training?.exportReady ?? '—'} sub="EXAMPLES" color={CG} />
     </div>
   )}
+  {/* ── WAANDA AUTHORITY — subsystem health dots ── */}
+  <SectionLabel text="WAANDA AUTHORITY" color='#818cf8' />
+  <div style={{ display:'flex', flexDirection:'column', gap:4, padding:'4px 8px', cursor:'pointer' }}
+       onClick={() => navigate('/kangqore-view/admin/kangqore-immp/authority')}>
+    {(['KIMMP','AEGIS','KEOS','KORE','EQORE','ALIS','VIS'] as const).map(name => {
+      const status = authorityHealth?.health?.[name]?.status ?? 'UNKNOWN'
+      const dotColor = status === 'OPTIMAL' ? '#22c55e' : status === 'DEGRADED' ? '#f59e0b' : status === 'PAUSED' ? '#6366f1' : '#6b7280'
+      return (
+        <div key={name} style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+          <span style={{ fontSize:7.5, color:'#a5b4fc', fontFamily:'monospace', letterSpacing:'0.08em' }}>{name}</span>
+          <div style={{ display:'flex', alignItems:'center', gap:4 }}>
+            <span style={{ fontSize:6.5, color:dotColor, fontFamily:'monospace' }}>{status}</span>
+            <div style={{ width:6, height:6, borderRadius:'50%', background:dotColor, boxShadow:`0 0 4px ${dotColor}` }} />
+          </div>
+        </div>
+      )
+    })}
+  </div>
   {/* ── MODULE NEXUS ── */}
   <SectionLabel text="MODULE NEXUS" color='#00ffcc' />
   <div style={{ padding: '8px' }}>
@@ -5751,6 +6065,43 @@ export function AdminOverview() {
         />
       )}
       {showLog && <HUDLogDrawer onClose={() => setShowLog(false)} />}
+      {showWaandaSettings && <WaandaSettingsModal onClose={() => setShowWaandaSettings(false)} />}
+      
+      {/* Settings Button */}
+      <button 
+        onClick={() => setShowWaandaSettings(true)}
+        style={{
+          position: 'absolute',
+          bottom: 24,
+          left: 24,
+          width: 32,
+          height: 32,
+          borderRadius: '50%',
+          background: `radial-gradient(circle at 50% 50%, ${C}1a 0%, transparent 100%)`,
+          border: `1px solid ${C}30`,
+          color: `${C}90`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 100,
+          boxShadow: `0 0 12px ${C}10`,
+          transition: 'all 0.2s ease',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = '#fff'
+          e.currentTarget.style.border = `1px solid ${C}80`
+          e.currentTarget.style.boxShadow = `0 0 16px ${C}40`
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = `${C}90`
+          e.currentTarget.style.border = `1px solid ${C}30`
+          e.currentTarget.style.boxShadow = `0 0 12px ${C}10`
+        }}
+        title="System Settings"
+      >
+        <Settings size={15} />
+      </button>
     </div>
   )
 }

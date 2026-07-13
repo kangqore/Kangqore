@@ -4,110 +4,93 @@
 
 import { CognitiveStateAdapter, ExperienceContract, ProjectionPolicy, WaandaCognitiveState } from '../types'
 
+function fmt(n: number): string {
+  if (n >= 1_000_000) return `₹${(n / 1_000_000).toFixed(1)}M`
+  if (n >= 1_000)     return `₹${(n / 1_000).toFixed(0)}K`
+  return `₹${n.toFixed(0)}`
+}
+
 export const RevenueCognitiveAdapter: CognitiveStateAdapter = {
   projectionScope: 'REVENUE',
 
   async adapt(state: Readonly<WaandaCognitiveState>, _contract: ExperienceContract, _policy: ProjectionPolicy) {
-    const { liveSessions, evidenceLedger } = state.relationshipIntelligence
-    const avgTrust =
-      liveSessions.length > 0
-        ? liveSessions.reduce((sum, s) => sum + s.trustScore, 0) / liveSessions.length
-        : 0
+    const { liveSessions } = state.relationshipIntelligence
+    const kpis = state.financialKpis
+    const leads = state.recentLeads ?? []
 
-    const salesDomain = state.domains.find(
-      d => d.id === 'sales' || d.name?.toLowerCase().includes('sales')
-    ) ?? null
+    // Lead queue — from real contacts, scored by recency + status
+    const STATUS_SCORE: Record<string, number> = { NEW: 90, IN_PROGRESS: 60, REPLIED: 30 }
+    const prioritizedLeads = leads.map(l => ({
+      id:             l.id,
+      companyName:    l.company ?? l.name ?? 'Unknown',
+      contactName:    l.name ?? '',
+      email:          l.email,
+      score:          STATUS_SCORE[l.status] ?? 40,
+      scoreCategory:  l.status === 'NEW' ? 'HIGH' : l.status === 'IN_PROGRESS' ? 'MEDIUM' : 'LOW',
+      source:         l.inquiryType ?? 'INBOUND',
+      status:         l.status,
+      createdAt:      l.createdAt,
+      estimatedValue: kpis ? fmt(kpis.pipelineValue / Math.max(1, leads.length)) : '—',
+    }))
 
-    // Revenue KPI metrics — built from enterprise goals with revenue-related KPIs
-    const revenueGoals = state.enterpriseGoals.filter(g =>
-      (g.kpi ?? '').toLowerCase().includes('revenue') ||
-      (g.kpi ?? '').toLowerCase().includes('arr') ||
-      (g.kpi ?? '').toLowerCase().includes('mrr')
-    )
-    const revenueMetrics = revenueGoals.map(g => {
-      let trendDirection = 'DOWN'
-      if (g.progress >= 80) trendDirection = 'UP'
-      else if (g.progress >= 50) trendDirection = 'FLAT'
-      let trendIndicator = '↓'
-      if (g.progress >= 80) trendIndicator = '↑'
-      else if (g.progress >= 50) trendIndicator = '→'
-      return {
-        id:             g.goalId,
-        label:          g.kpi,
-        formattedValue: `${g.progress}%`,
-        trendDirection,
-        trendIndicator,
-        trendValue:     `${g.progress}%`,
-        drilldownAvailable: false,
-      }
-    })
+    const newLeadsCount        = leads.filter(l => l.status === 'NEW').length
+    const inProgressLeadsCount = leads.filter(l => l.status === 'IN_PROGRESS').length
 
-    // Revenue attainment from the best-matching goal
-    const topRevenueGoal = revenueGoals[0]
+    // Pipeline — derived from financial KPIs
+    const pipelineStages = [
+      { id: 'leads',     name: 'Leads',     value: kpis?.pipelineValue ?? 0,   dealCount: newLeadsCount,            fillPercent: 100, health: 'HEALTHY' },
+      { id: 'active',    name: 'Active',    value: kpis?.totalBudget   ?? 0,   dealCount: kpis?.activeProjects ?? 0, fillPercent: 70,  health: 'HEALTHY' },
+      { id: 'contracts', name: 'Contracts', value: kpis?.arr           ?? 0,   dealCount: kpis?.activeContracts ?? 0, fillPercent: 45, health: kpis?.overdueInvoices ? 'AT_RISK' : 'HEALTHY' },
+    ]
+
+    // Revenue attainment
+    const mrrDelta = kpis?.mrrDeltaPct ?? 0
     const revenueTarget = {
-      label:       topRevenueGoal?.kpi ?? 'Annual Revenue Target',
-      value:       `${topRevenueGoal?.progress ?? 0}%`,
-      attainment:  topRevenueGoal?.progress ?? 0,
+      label:      'Revenue MTD',
+      value:      kpis ? fmt(kpis.revenueMTD) : '—',
+      lastMonth:  kpis ? fmt(kpis.revenueLastMonth) : '—',
+      arr:        kpis ? fmt(kpis.arr) : '—',
+      attainment: mrrDelta,
+      mrrDelta,
     }
 
-    // Pipeline stages — built from operational domains as revenue funnel proxies
-    const pipelineStages = state.domains.slice(0, 5).map((d, i) => ({
-      id:          d.id,
-      name:        d.name,
-      dealCount:   liveSessions.filter(s => s.company?.toLowerCase().includes(d.name.toLowerCase().slice(0, 4))).length,
-      fillPercent: d.ready ? 80 - (i * 10) : 20,
-      health:      d.ready ? 'HEALTHY' : 'AT_RISK',
-    }))
-    const pipelineDealCount = liveSessions.length
-    const pipelineTotalValue = `${liveSessions.length} active`
-
-    // Domain risk exposure for Revenue workspace
-    const domainRiskExposure = state.domains.map(d => ({
-      id:          d.id,
-      name:        d.name,
-      ready:       d.ready,
-      breachedKpis: (d.kpis ?? []).filter(k => k.current < k.target),
-    }))
+    // Account health from URGI sessions (trust-scored visitors)
+    const avgTrust = liveSessions.length > 0
+      ? liveSessions.reduce((s, x) => s + x.trustScore, 0) / liveSessions.length
+      : 0
+    const atRiskSessions = liveSessions.filter(s => s.trustScore < 0.5).length
 
     return {
-      waandaPhase: state.phase,
+      waandaPhase:        state.phase,
+      confidence:         state.confidence,
+      kimmSynthesis:      state.kimmSynthesis,
+      systemBriefings:    state.systemBriefings,
+      predictions:        state.enterprisePredictions,
+
+      // Accounts
       liveSessions,
-      activeRelationships: liveSessions.length,
-      avgTrustScore: Math.round(avgTrust * 10) / 10,
-      evidenceLedger,
-      evidenceCount: evidenceLedger.length,
-      salesDomain,
-      revenueMetrics,
-      revenueTarget,
+      totalAccounts:      liveSessions.length,
+      avgTrustScore:      Math.round(avgTrust * 100) / 100,
+      atRiskSessions,
+
+      // Pipeline
       pipelineStages,
-      pipelineDealCount,
-      pipelineTotalValue,
-      predictions: state.enterprisePredictions,
-      systemBriefings: state.systemBriefings,
-      pendingDecisions: state.pendingDecisions,
-      domainRiskExposure,
-      totalAccounts: liveSessions.length,
-      prioritizedLeads: liveSessions.map(s => {
-        let scoreCategory = 'LOW'
-        if (s.trustScore >= 0.8) scoreCategory = 'HIGH'
-        else if (s.trustScore >= 0.5) scoreCategory = 'MEDIUM'
-        return {
-          id:             s.id,
-          companyName:    s.company ?? 'Unknown',
-          contactName:    s.name ?? '',
-          score:          Math.round(s.trustScore * 100),
-          scoreCategory,
-          source:         'EXTERNAL',
-          estimatedValue: '—',
-          ageLabel:       'Active',
-        }
-      }),
-      operationalDomains: state.domains.map(d => ({
-        id: d.id, name: d.name, ready: d.ready,
-        capabilities: d.capabilities ?? 0, kpis: d.kpis ?? [],
-      })),
-      kimmSynthesis: state.kimmSynthesis,
-      confidence: state.confidence,
+      pipelineDealCount:  (kpis?.activeContracts ?? 0) + newLeadsCount,
+      pipelineTotalValue: kpis ? fmt(kpis.pipelineValue) : '—',
+
+      // Leads
+      prioritizedLeads,
+      newLeadsCount,
+      inProgressLeadsCount,
+      totalLeadsCount:    leads.length,
+
+      // Financials
+      revenueTarget,
+      financialKpis:      kpis,
+      pendingInvoices:    kpis?.pendingInvoices  ?? 0,
+      overdueInvoices:    kpis?.overdueInvoices  ?? 0,
+      activeContracts:    kpis?.activeContracts  ?? 0,
+      onTimeProjectPct:   kpis?.onTimeProjectPct ?? 0,
     }
   },
 }

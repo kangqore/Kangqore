@@ -280,9 +280,17 @@ export const AegisActionExecutor = {
     try {
       switch (pending.actionType) {
         case 'PAUSE_KIMMP_LOOP': {
-          const { LoopScheduler } = await import('../kangqore-immp/agents/loopScheduler')
-          LoopScheduler.pause()
-          outcome = { paused: true }
+          // WAANDA is the supreme authority — AEGIS escalates, WAANDA decides and issues the directive
+          const { WaandaAuthority } = await import('../waanda/WaandaAuthority')
+          await WaandaAuthority.receiveEscalation({
+            from:    'AEGIS',
+            threat:  (pending.params as any).reason ?? 'AEGIS L3 governance action triggered',
+            tier:    'CRITICAL',
+            source:  (pending.params as any).source ?? pending.agentId ?? 'AEGIS',
+            action:  'PAUSE_KIMMP_LOOP',
+            context: { pendingId, agentId: pending.agentId, engine: pending.engine, params: pending.params },
+          })
+          outcome = { escalatedToWaanda: true }
           break
         }
         case 'BLOCK_ACTOR': {

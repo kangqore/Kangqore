@@ -13,6 +13,22 @@ export const OperationsCognitiveAdapter: CognitiveStateAdapter = {
       p => p.target === 'CAPACITY' || p.target === 'INVENTORY'
     )
 
+    const projects = state.projects ?? []
+    const atRiskCount  = projects.filter(p => p.status === 'At Risk').length
+    const watchCount   = projects.filter(p => p.status === 'Watch').length
+    const onTrackCount = projects.filter(p => p.status === 'On Track').length
+
+    // Unique leads with their project count (resource allocation view)
+    const leadMap = new Map<string, { lead: string; count: number; atRisk: number }>()
+    for (const p of projects) {
+      const l = p.lead ?? 'Unassigned'
+      const entry = leadMap.get(l) ?? { lead: l, count: 0, atRisk: 0 }
+      entry.count++
+      if (p.status === 'At Risk') entry.atRisk++
+      leadMap.set(l, entry)
+    }
+    const leads = Array.from(leadMap.values()).sort((a, b) => b.count - a.count)
+
     return {
       waandaPhase: state.phase,
       pendingExecutionApprovals,
@@ -27,6 +43,13 @@ export const OperationsCognitiveAdapter: CognitiveStateAdapter = {
       capacityForecasts,
       kimmSynthesis: state.kimmSynthesis,
       confidence: state.confidence,
+      // Projects (live from PMO)
+      projects,
+      projectCount: projects.length,
+      atRiskCount,
+      watchCount,
+      onTrackCount,
+      leads,
     }
   },
 }

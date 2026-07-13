@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
+import { Activity, Users, ShieldAlert, Cpu, Eye } from 'lucide-react'
 import { api, isDemo } from '@lib/api'
 import { getSocket } from '@lib/socket'
 import { useKIMMPStore } from '@store/kimmp'
@@ -12,8 +13,7 @@ const S = {
   row:    'flex items-center justify-between',
 }
 
-const surface  = '#ffffff'
-const border   = '1px solid rgba(37,100,234,0.10)'
+const surfaceClass = "bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/60 rounded-2xl p-6 transition-all duration-300"
 
 function severityColor(s: string) {
   if (!s) return '#6b7280'
@@ -99,15 +99,19 @@ export function ObservePage() {
     <div className="space-y-8">
 
       {/* ── Governance pulse */}
-      <div style={{ background: surface, border, borderRadius: 12, padding: '16px 20px' }}>
+      <div className={`${surfaceClass} animate-fade-in-up`} style={{ animationDelay: '0ms' }}>
         <div className="flex items-center justify-between">
           <div>
-            <div className={S.label} style={{ marginBottom: 4 }}>Governance Pulse · AEGIS</div>
-            <div className="flex items-center gap-3">
+            <div className={`${S.label} flex items-center gap-2 mb-2`}>
+              <ShieldAlert className="w-4 h-4 text-blue-500" />
+              Governance Pulse · AEGIS
+            </div>
+            <div className="flex items-center gap-3 mt-1">
               <span
-                className="text-sm font-semibold px-3 py-1 rounded-full"
-                style={{ background: `${verdictColor(verdictLabel)}20`, color: verdictColor(verdictLabel) }}
+                className="text-sm font-bold px-4 py-1.5 rounded-full shadow-sm flex items-center gap-2"
+                style={{ background: `linear-gradient(135deg, ${verdictColor(verdictLabel)}15 0%, ${verdictColor(verdictLabel)}05 100%)`, color: verdictColor(verdictLabel), border: `1px solid ${verdictColor(verdictLabel)}30` }}
               >
+                <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: verdictColor(verdictLabel), boxShadow: `0 0 8px ${verdictColor(verdictLabel)}` }} />
                 {verdictLabel === 'ALL_PASS'       ? 'CLEAR'      :
                  verdictLabel === 'WARN_ISSUES'    ? 'MONITORING' :
                  verdictLabel === 'CRITICAL_ISSUES' ? 'ATTENTION'  :
@@ -115,14 +119,15 @@ export function ObservePage() {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-6 text-right">
-            <div>
-              <div className="text-2xl font-light" style={{ color: '#f43f5e' }}>{critical24h}</div>
-              <div className={S.muted} style={{ fontSize: 11 }}>critical 24h</div>
+          <div className="flex items-center gap-8 text-right">
+            <div className="flex flex-col items-center">
+              <div className="text-4xl font-light tracking-tight" style={{ color: '#f43f5e', textShadow: '0 2px 10px rgba(244,63,94,0.2)' }}>{critical24h}</div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">critical 24h</div>
             </div>
-            <div>
-              <div className="text-2xl font-light" style={{ color: '#f59e0b' }}>{warn24h}</div>
-              <div className={S.muted} style={{ fontSize: 11 }}>warnings 24h</div>
+            <div className="w-px h-12 bg-slate-100"></div>
+            <div className="flex flex-col items-center">
+              <div className="text-4xl font-light tracking-tight" style={{ color: '#f59e0b', textShadow: '0 2px 10px rgba(245,158,11,0.2)' }}>{warn24h}</div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">warnings 24h</div>
             </div>
           </div>
         </div>
@@ -130,29 +135,29 @@ export function ObservePage() {
 
       {/* ── KIMMP intelligence feed */}
       {activeInsights.length > 0 && (
-        <div style={{ background: surface, border, borderRadius: 12, padding: 20 }}>
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase">KIMMP Intelligence</div>
-            <span className="text-[11px] text-slate-400">{activeInsights.length} active</span>
+        <div className={`${surfaceClass} animate-fade-in-up`} style={{ animationDelay: '100ms' }}>
+          <div className="flex items-center justify-between mb-5">
+            <div className={`${S.label} flex items-center gap-2`}><Cpu className="w-4 h-4 text-blue-500" /> KIMMP Intelligence</div>
+            <span className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-blue-50 text-blue-600">{activeInsights.length} active</span>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {activeInsights.map(insight => (
               <div
                 key={insight.id}
-                className="flex items-start gap-3 px-3 py-2.5 rounded-lg"
-                style={{ background: `${PRIORITY_COLOR[insight.priority]}08`, border: `1px solid ${PRIORITY_COLOR[insight.priority]}20` }}
+                className="flex items-start gap-4 px-4 py-3 rounded-xl transition-all duration-300 hover:scale-[1.01] hover:shadow-md cursor-default group"
+                style={{ background: `linear-gradient(135deg, ${PRIORITY_COLOR[insight.priority]}05 0%, transparent 100%)`, border: `1px solid ${PRIORITY_COLOR[insight.priority]}20` }}
               >
                 <span
-                  className="text-[10px] font-semibold px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5"
-                  style={{ background: `${PRIORITY_COLOR[insight.priority]}20`, color: PRIORITY_COLOR[insight.priority] }}
+                  className="text-[10px] font-bold px-2 py-1 rounded-md flex-shrink-0 mt-0.5 shadow-sm"
+                  style={{ background: `linear-gradient(135deg, ${PRIORITY_COLOR[insight.priority]}20 0%, ${PRIORITY_COLOR[insight.priority]}10 100%)`, color: PRIORITY_COLOR[insight.priority] }}
                 >
                   {insight.priority.toUpperCase()}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className="text-sm font-medium text-slate-700 leading-snug">{insight.title}</div>
-                  <div className="text-[12px] text-slate-500 mt-0.5 line-clamp-1">{insight.summary}</div>
+                  <div className="text-sm font-semibold text-slate-800 leading-snug group-hover:text-blue-700 transition-colors">{insight.title}</div>
+                  <div className="text-[13px] text-slate-500 mt-1 line-clamp-1">{insight.summary}</div>
                 </div>
-                <span className="text-[10px] text-slate-400 flex-shrink-0 mt-0.5">{insight.module}</span>
+                <span className="text-[10px] font-medium text-slate-400 flex-shrink-0 mt-0.5 bg-slate-50 px-2 py-1 rounded-md border border-slate-100">{insight.module}</span>
               </div>
             ))}
           </div>
@@ -160,38 +165,37 @@ export function ObservePage() {
       )}
 
       {/* ── Two-column: signals + sessions */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
 
         {/* Signal feed */}
-        <div style={{ background: surface, border, borderRadius: 12, padding: 20 }}>
-          <div className="flex items-center justify-between mb-4">
-            <div className={S.label}>Enterprise Signals</div>
-            <span className={S.muted} style={{ fontSize: 11 }}>last 20</span>
+        <div className={`${surfaceClass} animate-fade-in-up`} style={{ animationDelay: '200ms' }}>
+          <div className="flex items-center justify-between mb-5">
+            <div className={`${S.label} flex items-center gap-2`}><Activity className="w-4 h-4 text-blue-500" /> Enterprise Signals</div>
+            <span className="text-[11px] font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-full">last 20</span>
           </div>
 
           {signals.isLoading ? (
-            <div className={S.muted}>Loading signals…</div>
+            <div className="flex items-center justify-center h-40 text-sm text-slate-400">Loading signals…</div>
           ) : signalList.length === 0 ? (
-            <div className={S.muted}>No signals yet. WAANDA is watching.</div>
+            <div className="flex items-center justify-center h-40 text-sm text-slate-400">No signals yet. WAANDA is watching.</div>
           ) : (
-            <div className="space-y-2" style={{ maxHeight: 340, overflowY: 'auto' }}>
+            <div className="space-y-1 pr-2" style={{ maxHeight: 380, overflowY: 'auto' }}>
               {signalList.map((sig: any, i: number) => (
                 <div
                   key={sig.id ?? i}
-                  className="flex items-start gap-3 py-2"
-                  style={{ borderBottom: i < signalList.length - 1 ? '1px solid rgba(37,100,234,0.08)' : 'none' }}
+                  className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-default"
                 >
                   <span
-                    className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5"
-                    style={{ background: severityColor(sig.severity) }}
+                    className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5 shadow-sm"
+                    style={{ background: severityColor(sig.severity), boxShadow: `0 0 6px ${severityColor(sig.severity)}80` }}
                   />
                   <div className="min-w-0 flex-1">
-                    <div className="text-sm text-slate-700 truncate">{sig.signalValue ?? sig.title ?? 'Signal'}</div>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-[11px]" style={{ color: severityColor(sig.severity) }}>
+                    <div className="text-sm font-medium text-slate-700 truncate">{sig.signalValue ?? sig.title ?? 'Signal'}</div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[10px] font-bold px-1.5 rounded-sm" style={{ color: severityColor(sig.severity), background: `${severityColor(sig.severity)}15` }}>
                         {sig.severity ?? 'LOW'}
                       </span>
-                      <span className="text-[11px] text-slate-400">{sig.sourceModule ?? sig.module ?? ''}</span>
+                      <span className="text-[11px] font-medium text-slate-400">{sig.sourceModule ?? sig.module ?? ''}</span>
                     </div>
                   </div>
                 </div>
@@ -201,38 +205,37 @@ export function ObservePage() {
         </div>
 
         {/* Live visitor perceptions */}
-        <div style={{ background: surface, border, borderRadius: 12, padding: 20 }}>
-          <div className="flex items-center justify-between mb-4">
-            <div className={S.label}>Active Perceptions</div>
-            <span className={S.muted} style={{ fontSize: 11 }}>{sessionList.length} visitors</span>
+        <div className={`${surfaceClass} animate-fade-in-up`} style={{ animationDelay: '300ms' }}>
+          <div className="flex items-center justify-between mb-5">
+            <div className={`${S.label} flex items-center gap-2`}><Eye className="w-4 h-4 text-blue-500" /> Active Perceptions</div>
+            <span className="text-[11px] font-medium text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">{sessionList.length} visitors</span>
           </div>
 
           {sessions.isLoading ? (
-            <div className={S.muted}>Loading perceptions…</div>
+            <div className="flex items-center justify-center h-40 text-sm text-slate-400">Loading perceptions…</div>
           ) : sessionList.length === 0 ? (
-            <div className={S.muted}>No active visitors right now. WAANDA is ready to perceive.</div>
+            <div className="flex items-center justify-center h-40 text-sm text-slate-400">No active visitors right now. WAANDA is ready to perceive.</div>
           ) : (
-            <div className="space-y-2" style={{ maxHeight: 340, overflowY: 'auto' }}>
+            <div className="space-y-1 pr-2" style={{ maxHeight: 380, overflowY: 'auto' }}>
               {sessionList.map((s: any, i: number) => (
                 <div
                   key={s.id ?? i}
-                  className="flex items-center gap-3 py-2"
-                  style={{ borderBottom: i < sessionList.length - 1 ? '1px solid rgba(37,100,234,0.08)' : 'none' }}
+                  className="flex items-center gap-4 p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-default"
                 >
                   <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-semibold"
-                    style={{ background: `rgba(37,100,234,0.10)`, color: '#2564ea' }}
+                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold shadow-sm"
+                    style={{ background: `linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)`, color: '#2564ea', border: '1px solid #bfdbfe' }}
                   >
                     {s.trustScore ?? 0}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="text-sm text-slate-700 truncate">
+                    <div className="text-sm font-semibold text-slate-800 truncate">
                       {s.name ? s.name : 'Anonymous visitor'}
-                      {s.company && <span className="text-slate-500"> · {s.company}</span>}
+                      {s.company && <span className="text-slate-500 font-normal"> · {s.company}</span>}
                     </div>
-                    <div className="text-[11px] text-slate-400 truncate">{s.lastAction ?? 'No intent recorded'}</div>
+                    <div className="text-[12px] text-slate-500 truncate mt-0.5">{s.lastAction ?? 'No intent recorded'}</div>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: 'rgba(16,185,129,0.12)', color: '#10b981' }}>
+                  <span className="text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)', color: '#059669', border: '1px solid #a7f3d0' }}>
                     ACTIVE
                   </span>
                 </div>

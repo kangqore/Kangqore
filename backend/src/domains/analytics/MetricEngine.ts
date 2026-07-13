@@ -1,7 +1,7 @@
 import { AnalyticsRegistry } from './AnalyticsRegistry';
 
 export class MetricEngine {
-  private registry = AnalyticsRegistry.getInstance();
+  private readonly registry = AnalyticsRegistry.getInstance();
 
   /**
    * Processes raw events (simulated for now) and computes derived metrics.

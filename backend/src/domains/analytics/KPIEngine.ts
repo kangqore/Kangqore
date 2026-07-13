@@ -2,7 +2,7 @@ import { AnalyticsRegistry } from './AnalyticsRegistry';
 import { KPI, KpiStatus } from './contracts/types';
 
 export class KPIEngine {
-  private registry = AnalyticsRegistry.getInstance();
+  private readonly registry = AnalyticsRegistry.getInstance();
 
   /**
    * Evaluates all known metrics against registered KPI targets.

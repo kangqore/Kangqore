@@ -4,10 +4,8 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import dotenv from 'dotenv';
-import { PrismaClient } from '@prisma/client';
-import { createServer } from 'http';
-import path from 'path';
+import { createServer } from 'node:http';
+import path from 'node:path';
 import passport from 'passport';
 
 import authRoutes from './routes/auth';
@@ -46,6 +44,7 @@ import invoiceRoutes from './routes/invoices'; // NEW
 import documentRoutes from './routes/documents'; // NEW
 import deliverablesRoutes from './routes/deliverables'; // NEW
 import clientProfileRoutes from './routes/clientProfile'; // NEW (MNC Pillar 1)
+import clientWaandaRoutes from './routes/client-waanda';
 import accountabilityRoutes from './routes/accountability'; // NEW (MNC Shared Layer)
 import feedbackRoutes from './routes/feedback'; // NEW
 import schedulingRoutes from './routes/scheduling';
@@ -77,7 +76,7 @@ import { rateLimiter } from './middleware/rateLimiter';
 import { legacyRedirectsMiddleware } from './middleware/legacyRedirects';
 import { dashboardRedirectMiddleware } from './middleware/dashboardRedirect';
 import { customDomainRouter } from './middleware/customDomainRouter';
-import { initializeSocket, getIO } from './socket';
+import { initializeSocket } from './socket';
 
 
 // Server restart trigger 12345678901234567890
@@ -153,7 +152,7 @@ import publicContentRoutes from './routes/public_content';
 // ...
 app.use('/api/admin/media', mediaRoutes);
 app.use('/api/admin/content', contentRoutes);
-import adminIpRoutes from './routes/admin-ip';
+// admin-ip routes (reserved for future use)
 import koreRoutes from './os/kore/api/kore.routes'; // NEW KEOS Layer
 
 app.use('/api/kangqore/immp', kangqoreImmpRoutes);
@@ -202,11 +201,19 @@ app.use('/api/admin/job-seeker-emails', careerEmailRouter);
 app.use('/api/eqore', eqorePublicRoutes);
 app.use('/api/admin/eqore', eqoreLeadIntelligenceRoutes);
 app.use('/api/admin/alis', authenticate, authorize(['ADMIN']), alisRouter);
+// Register ALIS + eQORE under WAANDA authority after mounts
+import('./waanda/adapters/AlisAdapter').then(({ AlisAdapter }) => {
+  import('./waanda/WaandaAuthority').then(({ WaandaAuthority }) => WaandaAuthority.register(AlisAdapter))
+}).catch(() => {})
+import('./waanda/adapters/EqoreAdapter').then(({ EqoreAdapter }) => {
+  import('./waanda/WaandaAuthority').then(({ WaandaAuthority }) => WaandaAuthority.register(EqoreAdapter))
+}).catch(() => {})
 // BIDS™ — Business Diagnostic Intelligence System
 import bidsRoutes from './routes/bids';
 app.use('/api/admin/bids', bidsRoutes);
 import bidsClientRoutes from './routes/bids-client';
 app.use('/api/client/bids', bidsClientRoutes);
+app.use('/api/client/waanda', clientWaandaRoutes);
 import { briefingRouter } from './routes/admin-briefing';
 app.use('/api/admin/briefing', briefingRouter);
 // WAANDA — Enterprise Cognitive OS boot manifest + domain registry + mission execution
@@ -303,6 +310,10 @@ app.use('/api/admin/crm',          adminCrmSubentities);
 // dynamic /sitemap.xml, /robots.txt, /llms.txt take precedence.
 import { kangqoreVisBootstrap } from './kangqore-vis';
 kangqoreVisBootstrap({ app });
+// Register VIS under WAANDA authority after bootstrap
+import('./waanda/adapters/VisAdapter').then(({ VisAdapter }) => {
+  import('./waanda/WaandaAuthority').then(({ WaandaAuthority }) => WaandaAuthority.register(VisAdapter))
+}).catch(() => {})
 
 // Serve Uploaded Files with CORS headers for cross-origin access
 const uploadDir = process.env.UPLOAD_DIR || 'uploads';
@@ -363,6 +374,32 @@ server.listen(PORT, () => {
 
   // WAANDA Boot Sequence — single constitutional entry point for all subsystems
   WAANDA.boot().catch((e: unknown) => console.error('[WAANDA] Boot failed:', e));
+
+  // Phase 6.6 — Digital CEO briefing cadence + Phase 6.8 autopilot tick
+  void (async () => {
+    try {
+      const cron = await import('node-cron');
+      const { MorningBriefingService }   = await import('./kangqore-immp/cognition/morningBriefing.service');
+      const { AutopilotService }         = await import('./kangqore-immp/cognition/autopilot.service');
+      const { RetrospectiveEngine }      = await import('./kangqore-immp/cognition/retrospectiveEngine');
+      const { ExecutiveReviewService }   = await import('./kangqore-immp/cognition/executiveReview.service');
+
+      cron.default.schedule('0 8 * * *',    async () => { await MorningBriefingService.generate('MORNING').catch(e => console.error('[Brief] Morning:', e)); });
+      cron.default.schedule('0 13 * * *',   async () => { await MorningBriefingService.generate('MIDDAY').catch(e => console.error('[Brief] Midday:', e)); });
+      cron.default.schedule('0 18 * * *',   async () => { await MorningBriefingService.generate('EVENING').catch(e => console.error('[Brief] Evening:', e)); });
+      cron.default.schedule('*/30 * * * *', async () => { await AutopilotService.tick().catch(e => console.error('[Autopilot] Tick:', e)); });
+      // Phase 6.9 — Sunday 20:00 retrospective, Monday 07:30 executive review
+      cron.default.schedule('0 20 * * 0',   async () => {
+        const w = new Date(); w.setDate(w.getDate() - w.getDay()); w.setHours(0,0,0,0);
+        await RetrospectiveEngine.createForWeek(w).catch(e => console.error('[6.9] Retro:', e));
+      });
+      cron.default.schedule('30 7 * * 1',   async () => { await ExecutiveReviewService.generate().catch(e => console.error('[6.9] Review:', e)); });
+
+      console.log('[KIMMP] Phase 6.6 briefing + 6.8 autopilot + 6.9 reflection crons scheduled');
+    } catch (e) {
+      console.warn('[KIMMP] node-cron unavailable — cron disabled:', (e as Error).message);
+    }
+  })();
 });
 
 // Graceful shutdown

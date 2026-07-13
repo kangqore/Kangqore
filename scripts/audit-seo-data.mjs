@@ -78,7 +78,7 @@ if (!serviceSeoBlock) {
 
 // For each slug, find the entry in the block and extract title/description.
 function findEntry(block, slug) {
-  const keyRe = new RegExp(`['"]?${slug.replace(/-/g, '\\-')}['"]?\\s*:\\s*\\{`, 'm');
+  const keyRe = new RegExp(`(?<![a-z0-9-])${slug.replace(/-/g, '\\-')}['"]?\\s*:\\s*\\{`, 'm');
   const m = keyRe.exec(block);
   if (!m) return null;
   const start = m.index + m[0].length - 1; // index of '{'
@@ -140,8 +140,8 @@ let m;
 while ((m = serviceSlugRe.exec(servicesSrc)) !== null) {
   serviceSlugs.push(m[1]);
 }
-if (serviceSlugs.length !== 61) {
-  console.error(`ERROR: expected 61 service slugs, found ${serviceSlugs.length}`);
+if (serviceSlugs.length !== 62) {
+  console.error(`ERROR: expected 62 service slugs, found ${serviceSlugs.length}`);
   process.exit(2);
 }
 

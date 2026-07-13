@@ -2,7 +2,7 @@ import { PredictionLedgerEntry } from './contracts/types';
 
 export class PredictionLedger {
   private static instance: PredictionLedger;
-  private entries: PredictionLedgerEntry[] = [];
+  private readonly entries: PredictionLedgerEntry[] = [];
 
   private constructor() {}
 

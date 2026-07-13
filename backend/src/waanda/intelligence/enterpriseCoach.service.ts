@@ -445,7 +445,7 @@ export async function computeCoachingInsights(): Promise<CoachingInsightResult[]
 
   // Clear stale insights older than 24h
   await prisma.coachingInsight.deleteMany({
-    where: { generatedAt: { lt: new Date(Date.now() - 24 * 3600_000) }, isActed: false },
+    where: { generatedAt: { lt: new Date(Date.now() - 24 * 3_600_000) }, isActed: false },
   }).catch(() => {})
 
   const results: CoachingInsightResult[] = []
@@ -490,7 +490,7 @@ export async function computeCoachingInsights(): Promise<CoachingInsightResult[]
 
 export async function getLatestCoachingInsights(): Promise<CoachingInsightResult[]> {
   const records = await prisma.coachingInsight.findMany({
-    where:   { generatedAt: { gte: new Date(Date.now() - 24 * 3600_000) } },
+    where:   { generatedAt: { gte: new Date(Date.now() - 24 * 3_600_000) } },
     orderBy: [{ priority: 'asc' }, { oisImpact: 'desc' }],
   }).catch(() => [])
 

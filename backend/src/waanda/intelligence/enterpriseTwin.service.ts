@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import Anthropic from '@anthropic-ai/sdk'
-import { computeGate8 } from './gate8Service'
+import { computeGate8 } from './gate8.service'
 
 const prisma  = new PrismaClient()
 const claude  = new Anthropic()

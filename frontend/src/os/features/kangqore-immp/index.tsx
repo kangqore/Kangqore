@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import {
   Brain, TrendingUp, BookOpen, Satellite, Bell, Activity,
-  Search, Target, FileText, UserCheck, CheckSquare, Newspaper, Cpu, Scale, Zap, GitBranch, LayoutDashboard, Shield, Gauge, Rocket, Radio, LineChart, Building2, Award, Lightbulb, FlaskConical, Globe2, FileJson, Command,
+  Search, Target, FileText, UserCheck, CheckSquare, Newspaper, Cpu, Scale, Zap, GitBranch, LayoutDashboard, Shield, Gauge, Rocket, Radio, LineChart, Building2, Award, Lightbulb, FlaskConical, Globe2, FileJson, Command, BookMarked, Crown,
 } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { getSocket } from '@lib/socket'
@@ -37,41 +37,14 @@ import { DecisionEnginePage }        from './pages/DecisionEnginePage'
 import { DeploymentsPage }           from './pages/DeploymentsPage'
 import { BlueprintPage }             from './pages/BlueprintPage'
 import { CommandCenterPage }          from './pages/CommandCenterPage'
+import { MemoryTimelinePage }         from './pages/MemoryTimelinePage'
+import ReflectionPage                 from './pages/ReflectionPage'
+import { AuthorityPage }              from './pages/AuthorityPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
 
-const TABS = [
-  { path: 'command-center',  end: false, label: 'Command Center', icon: Command },
-  { path: 'mission-control', end: false, label: 'Mission Control', icon: LayoutDashboard },
-  { path: 'briefing',        end: false, label: 'Briefing',        icon: Newspaper       },
-  { path: '',                end: true,  label: 'Intelligence',    icon: Brain           },
-  { path: 'forecast',  end: false, label: 'Forecast',     icon: TrendingUp  },
-  { path: 'memory',    end: false, label: 'Memory',       icon: BookOpen    },
-  { path: 'goals',     end: false, label: 'Goals',        icon: Target      },
-  { path: 'alerts',    end: false, label: 'Alerts',       icon: Bell        },
-  { path: 'signals',   end: false, label: 'Signals',      icon: Activity    },
-  { path: 'scout',     end: false, label: 'Scout',        icon: Satellite   },
-  { path: 'research',  end: false, label: 'Research',     icon: Search      },
-  { path: 'reports',   end: false, label: 'Reports',      icon: FileText    },
-  { path: 'behavior',  end: false, label: 'Behavior',     icon: UserCheck   },
-  { path: 'actions',    end: false, label: 'Actions',     icon: CheckSquare },
-  { path: 'training',    end: false, label: 'Gen 2',       icon: Cpu        },
-  { path: 'decisions',   end: false, label: 'Decisions',   icon: Scale      },
-  { path: 'operations',  end: false, label: 'Operations',  icon: Zap        },
-  { path: 'workflows',   end: false, label: 'Workflows',   icon: GitBranch  },
-  { path: 'ai-governance',       end: false, label: 'AI Health',  icon: Shield },
-  { path: 'quality-engineering', end: false, label: 'QEF',            icon: Gauge  },
-  { path: 'release-governance',  end: false, label: 'G7 Release',     icon: Rocket   },
-  { path: 'operational-intel',   end: false, label: 'Gate 8 — OIS',   icon: LineChart  },
-  { path: 'flight-recorder',     end: false, label: 'Flight Recorder', icon: Radio      },
-  { path: 'enterprise',          end: false, label: 'Enterprise',      icon: Building2  },
-  { path: 'customer-zero',       end: false, label: 'Customer Zero',   icon: Award         },
-  { path: 'coach',               end: false, label: 'Coach',           icon: Lightbulb     },
-  { path: 'decision-engine',     end: false, label: 'Decision Engine', icon: FlaskConical  },
-  { path: 'deployments',         end: false, label: 'Deployments',     icon: Globe2         },
-  { path: 'blueprint',           end: false, label: 'Blueprint',        icon: FileJson       },
-]
+// Navigation is now handled by the global WorkspaceSidebar
 
 function useKIMMPSocket() {
   const { addLiveSignal, insights } = useKIMMPStore()
@@ -147,25 +120,7 @@ export function KIMMMModule() {
 
   return (
     <div>
-      {/* Scrollable tab bar */}
-      <div className="flex items-center gap-0.5 border-b border-[var(--os-border)] mb-6 -mt-2 overflow-x-auto scrollbar-none">
-        {TABS.map(tab => (
-          <NavLink
-            key={tab.path}
-            to={tab.path === '' ? BASE : `${BASE}/${tab.path}`}
-            end={tab.end}
-            className={({ isActive }) => cn(
-              'flex items-center gap-1.5 px-3.5 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all whitespace-nowrap flex-shrink-0',
-              isActive
-                ? 'border-os-blue text-os-blue'
-                : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
-            )}
-          >
-            <tab.icon className="w-3.5 h-3.5" />
-            {tab.label}
-          </NavLink>
-        ))}
-      </div>
+      {/* Local navigation removed, handled globally by WorkspaceSidebar */}
 
       <AnimatePresence mode="wait" initial={false}>
         <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
@@ -175,7 +130,8 @@ export function KIMMMModule() {
           <Route path="briefing"        element={<BriefingPage />} />
           <Route index                  element={<KIMMMPage />}    />
           <Route path="forecast"      element={<ForecastPage />} />
-          <Route path="memory"        element={<MemoryPage />}   />
+          <Route path="memory"          element={<MemoryPage />}          />
+          <Route path="memory-timeline" element={<MemoryTimelinePage />} />
           <Route path="goals"         element={<GoalsPage />}    />
           <Route path="alerts"        element={<AlertsPage />}   />
           <Route path="signals"       element={<SignalsPage />}  />
@@ -200,6 +156,8 @@ export function KIMMMModule() {
           <Route path="decision-engine"     element={<DecisionEnginePage />}        />
           <Route path="deployments"         element={<DeploymentsPage />}           />
           <Route path="blueprint"           element={<BlueprintPage />}             />
+          <Route path="reflection"          element={<ReflectionPage />}            />
+          <Route path="authority"           element={<AuthorityPage />}             />
           <Route path="*"                   element={<Navigate to={BASE} replace />} />
         </Routes>
         </motion.div>

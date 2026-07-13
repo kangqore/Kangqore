@@ -72,12 +72,9 @@ jobs:
     - name: Run legacy-redirect smoke test (local harness)
       run: npm run test:redirects:local
 
-    # Frontend Jest data architecture invariants (PR #14 regression guard)
+    # Data architecture invariants (regression guard for 6-dept × N-services canonical structure)
     - name: Run data architecture invariants
-      working-directory: ./frontend
-      run: npx craco test --testPathPattern=dataArchitecture --watchAll=false
-      env:
-        CI: true
+      run: node scripts/audit-data-architecture.mjs
 
   deploy:
     name: Deploy to production

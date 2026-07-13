@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
+import { Link } from 'react-router-dom'
 import { adminApi } from '@lib/api'
 import {
   Award, TrendingUp, Zap, Target, CheckCircle2,
   Clock, BarChart3, FileText, Download, Layers,
   Activity, Cpu, Brain, BarChart2, Wand2, FlaskConical,
   Lightbulb, Timer, ArrowUp, ArrowDown, Minus,
+  FileJson,
 } from 'lucide-react'
 
 interface GoalProgress {
@@ -38,6 +40,14 @@ interface CustomerZeroReport {
   topRecommendations: TopRec[]
   verifiedBy:         string
   generatedAt:        string
+}
+
+interface BlueprintMeta {
+  id:      string
+  name:    string
+  version: string
+  pack:    string | null
+  status:  string
 }
 
 interface Trend { delta: number; direction: 'up' | 'down' | 'flat' }
@@ -285,6 +295,15 @@ export function CustomerZeroPage() {
     refetchInterval: 60 * 60 * 1000,
   })
 
+  const { data: blueprints = [] } = useQuery<BlueprintMeta[]>({
+    queryKey: ['enterprise-blueprints'],
+    queryFn:  () => adminApi('/admin/enterprise/blueprints'),
+    staleTime: 60_000,
+  })
+  const activeBlueprint  = blueprints.find(b => b.status === 'ACTIVE')
+  const draftBlueprint   = !activeBlueprint ? blueprints.find(b => b.status === 'DRAFT') : undefined
+  const blueprintDisplay = activeBlueprint ?? draftBlueprint ?? null
+
   if (isLoading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 300, gap: 10, color: TEXT2 }}>
@@ -370,6 +389,76 @@ export function CustomerZeroPage() {
           </span>
         </div>
       </div>
+
+      {/* ── Blueprint status banner ── */}
+      {blueprintDisplay ? (() => {
+        const isActive  = blueprintDisplay.status === 'ACTIVE'
+        const color     = isActive ? GREEN : GOLD
+        const INDIGO    = '#6366f1'
+        return (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 10,
+            padding: '10px 16px', borderRadius: 10,
+            background: `${INDIGO}0C`, border: `1px solid ${INDIGO}2a`,
+          }}>
+            <FileJson size={14} style={{ color: INDIGO, flexShrink: 0 }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: INDIGO }}>Blueprint™</span>
+            <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>
+              {blueprintDisplay.name}
+            </span>
+            <span style={{ fontSize: 10, color: 'var(--os-text-2)' }}>
+              v{blueprintDisplay.version}
+            </span>
+            {blueprintDisplay.pack && (
+              <span style={{
+                fontSize: 9, background: `${INDIGO}15`, color: INDIGO,
+                padding: '1px 7px', borderRadius: 6, fontWeight: 600,
+              }}>
+                {blueprintDisplay.pack}
+              </span>
+            )}
+            <span style={{
+              fontSize: 9, fontWeight: 700, padding: '1px 7px', borderRadius: 6,
+              background: `${color}18`, color, border: `1px solid ${color}44`,
+            }}>
+              {blueprintDisplay.status}
+            </span>
+            <Link
+              to="/kangqore-view/admin/kangqore-immp/blueprint"
+              style={{
+                marginLeft: 'auto', fontSize: 10, fontWeight: 600, color: INDIGO,
+                textDecoration: 'none', padding: '4px 10px', borderRadius: 6,
+                background: `${INDIGO}12`, border: `1px solid ${INDIGO}33`,
+              }}
+            >
+              {isActive ? 'View Blueprint →' : 'Activate →'}
+            </Link>
+          </div>
+        )
+      })() : (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10,
+          padding: '10px 16px', borderRadius: 10,
+          background: `${GOLD}0C`, border: `1px solid ${GOLD}2a`,
+        }}>
+          <FileJson size={14} style={{ color: GOLD, flexShrink: 0 }} />
+          <div style={{ flex: 1 }}>
+            <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>
+              No deployment blueprint found — generate one to formalise this Customer Zero engagement.
+            </span>
+          </div>
+          <Link
+            to="/kangqore-view/admin/kangqore-immp/blueprint"
+            style={{
+              fontSize: 10, fontWeight: 600, color: GOLD,
+              textDecoration: 'none', padding: '4px 10px', borderRadius: 6,
+              background: `${GOLD}12`, border: `1px solid ${GOLD}33`, flexShrink: 0,
+            }}
+          >
+            Generate Blueprint →
+          </Link>
+        </div>
+      )}
 
       {/* ── Enterprise Operating Pulse ── */}
       {pulse?.summary && (() => {

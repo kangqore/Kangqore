@@ -2,7 +2,7 @@ import { SimulationLedgerEntry } from './contracts/types';
 
 export class SimulationLedger {
   private static instance: SimulationLedger;
-  private entries: SimulationLedgerEntry[] = [];
+  private readonly entries: SimulationLedgerEntry[] = [];
 
   private constructor() {}
 

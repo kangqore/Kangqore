@@ -13,6 +13,7 @@
     "start:api": "node dist/index.js",
     "start:eqore-worker": "node dist/eqore/queue/eqore.worker.js",
     "test": "jest",
+    "test:constitution": "jest --testPathPattern='__constitution__' --forceExit",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",

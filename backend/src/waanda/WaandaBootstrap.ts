@@ -6,15 +6,16 @@
 // Everything cognitive is owned and initialized here.
 //
 // ─── Boot Sequence ───────────────────────────────────────────────────────────
+//   0.  Authority Layer      — WaandaAuthority init (supreme authority registry)
 //   1.  Memory Layer         — PostgresMemoryProvider warm-up
-//   2.  AEGIS Governance     — 80 agents + event cascade
-//   3.  KORE Runtime         — twin runtime + language registries
-//   4.  KEOS Runtime         — mission kernel + capability registry warm-up
+//   2.  AEGIS Governance     — 80 agents + event cascade → AegisAdapter registered
+//   3.  KORE Runtime         — twin runtime + language registries → KoreAdapter registered
+//   4.  KEOS Runtime         — mission kernel + capability registry warm-up → KeosAdapter registered
 //   5.  Enterprise Domains   — self-registration via domains/index.ts
 //   6.  Capabilities         — domain capability counts + AnalyticsRegistry
 //   7.  Twin Networks        — self-registration via domains/twin/index.ts
 //   8.  Prediction Models    — self-registration via domains/prediction/index.ts
-//   9.  Cognitive Library    — 7 scheduler agents (117 cognitive components)
+//   9.  Cognitive Library    — 7 scheduler agents (117 cognitive components) → KimmpAdapter registered
 //  10.  Mission Runtime      — KIMMP LoopScheduler declared as mission engine
 //  11.  Infrastructure       — CronManager, CDC, KB index, SystemRAG
 //
@@ -22,10 +23,14 @@
 //   WaandaBootstrap does NOT import individual domains, twins, or models.
 //   Each group exposes an index.ts that self-registers on import.
 //   WAANDA calls `await import('../domains')` — not `import { SalesDomain }`.
+//
+// Subsystems registered via index.ts mount (after boot):
+//   VIS, ALIS, eQORE — adapter registered when their routers are mounted
 // ---------------------------------------------------------------------------
 
 import { DomainRegistry }   from '../os/edf/core/DomainRegistry'
 import { CapabilityRegistry } from '../os/kernel/CapabilityRegistry'
+import { WaandaAuthority }  from './WaandaAuthority'
 
 // AEGIS — governance shield
 import { AegisScheduler, AegisEventEmitter } from '../kangqore-aegis'
@@ -80,6 +85,9 @@ export const WAANDA = {
     console.log('[WAANDA] BOOT SEQUENCE — Kangqore Enterprise Cognitive OS')
     console.log('[WAANDA] ══════════════════════════════════════════════')
 
+    // Authority layer — must be first
+    await this._run('Phase 0  · Authority Layer',    () => this._bootAuthority())
+
     // Infrastructure layer
     await this._run('Phase 1  · Memory Layer',       () => this._bootMemory())
     await this._run('Phase 2  · AEGIS Governance',   () => this._bootAegis())
@@ -119,6 +127,8 @@ export const WAANDA = {
 
   status(): Record<string, unknown> {
     const domains = DomainRegistry.getAll()
+    const authorityHealth = WaandaAuthority.healthCheck()
+    const authorityRegistered = WaandaAuthority.getRegisteredSystems()
     return {
       system:    'WAANDA',
       fullName:  'WAANDA — Enterprise Cognitive Operating System',
@@ -134,6 +144,12 @@ export const WAANDA = {
         twins:        d.twins.length,
         goals:        d.goals.length,
       })),
+      authority: {
+        initialized:  WaandaAuthority._initialized,
+        registered:   authorityRegistered.length,
+        subsystems:   authorityRegistered,
+        health:       authorityHealth,
+      },
       subsystems: Object.fromEntries(
         Object.entries(this._subsystems).map(([k, v]) => [k, v.status])
       ),
@@ -158,6 +174,10 @@ export const WAANDA = {
     }
   },
 
+  async _bootAuthority(): Promise<void> {
+    WaandaAuthority.initialize()
+  },
+
   async _bootMemory(): Promise<void> {
     // Eagerly warm the provider so it's ready before missions start.
     const { CognitiveMemoryManager } = await import('../immp/core/CognitiveMemoryManager')
@@ -171,6 +191,9 @@ export const WAANDA = {
       status:  'OPERATIONAL',
       details: { agents: 80, engines: 10, schedulerStarted: true },
     })
+    // Register AEGIS under WAANDA authority
+    const { AegisAdapter } = await import('./adapters/AegisAdapter')
+    WaandaAuthority.register(AegisAdapter)
   },
 
   async _bootKore(): Promise<void> {
@@ -182,6 +205,8 @@ export const WAANDA = {
       status:  'OPERATIONAL',
       details: { eventBusPublished: true },
     })
+    const { KoreAdapter } = await import('./adapters/KoreAdapter')
+    WaandaAuthority.register(KoreAdapter)
   },
 
   async _bootKeos(): Promise<void> {
@@ -191,6 +216,8 @@ export const WAANDA = {
       status:  'OPERATIONAL',
       details: { capabilitiesWarmedUp: caps.length },
     })
+    const { KeosAdapter } = await import('./adapters/KeosAdapter')
+    WaandaAuthority.register(KeosAdapter)
   },
 
   async _bootDomains(): Promise<void> {
@@ -235,6 +262,8 @@ export const WAANDA = {
       status:  'OPERATIONAL',
       details: { schedulers: ['scout', 'goal', 'proactive', 'twin', 'learning'] },
     })
+    const { KimmpAdapter } = await import('./adapters/KimmpAdapter')
+    WaandaAuthority.register(KimmpAdapter)
   },
 
   async _bootMissionRuntime(): Promise<void> {

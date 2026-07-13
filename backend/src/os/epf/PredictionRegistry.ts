@@ -2,7 +2,7 @@ import { PredictionTarget } from './contracts/types';
 
 export class PredictionRegistry {
   private static instance: PredictionRegistry;
-  private targets: Set<PredictionTarget> = new Set();
+  private readonly targets: Set<PredictionTarget> = new Set();
 
   private constructor() {}
 

@@ -89,6 +89,53 @@ export interface WaandaCognitiveState {
     progress: number
     status: string
   }>
+  projects: Array<{
+    id: string
+    name: string
+    clientName: string
+    status: string
+    progress: number
+    budget: number
+    spend: number
+    lead: string
+    nextGate: string
+  }>
+  gate8: {
+    oisScore:        number
+    decisionScore:   number
+    workflowScore:   number
+    aiScore:         number
+    enterpriseScore: number
+    goalScore:       number
+    learningScore:   number
+    businessScore:   number
+    trustScore:      number
+    adoptionScore:   number
+  } | null
+  financialKpis: {
+    revenueMTD: number
+    revenueLastMonth: number
+    arr: number
+    activeContracts: number
+    activeProjects: number
+    totalBudget: number
+    totalSpend: number
+    pendingInvoices: number
+    overdueInvoices: number
+    draftInvoices: number
+    onTimeProjectPct: number
+    pipelineValue: number
+    mrrDeltaPct: number
+  } | null
+  recentLeads: Array<{
+    id: string
+    name: string
+    email: string
+    company: string | null
+    status: string
+    inquiryType: string | null
+    createdAt: string
+  }>
   lastSynced: Date | null
   confidence: number
   personalSummary?: {
@@ -175,6 +222,10 @@ export const EMPTY_WAANDA_STATE: WaandaCognitiveState = {
   pendingDecisions: [],
   relationshipIntelligence: { liveSessions: [], evidenceLedger: [] },
   enterpriseGoals: [],
+  projects: [],
+  gate8: null,
+  financialKpis: null,
+  recentLeads: [],
   lastSynced: null,
   confidence: 0,
 }

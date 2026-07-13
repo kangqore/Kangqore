@@ -1,7 +1,7 @@
 import { SimulationBranch, EnterpriseTwinSnapshot } from './contracts/types';
 
 export class EnterpriseTimeEngine {
-  private branches: Map<string, SimulationBranch> = new Map();
+  private readonly branches: Map<string, SimulationBranch> = new Map();
 
   public createBranch(
     branchId: string, 

@@ -20,6 +20,7 @@
     "audit:seo-data": "node scripts/audit-seo-data.mjs",
     "audit:legacy-coverage": "node scripts/audit-legacy-coverage.mjs",
     "audit:page-seo": "node scripts/audit-page-seo.mjs",
-    "audit:all": "npm run audit:seo-data && npm run audit:legacy-coverage && npm run audit:page-seo"
+    "audit:data-architecture": "node scripts/audit-data-architecture.mjs",
+    "audit:all": "npm run audit:seo-data && npm run audit:legacy-coverage && npm run audit:page-seo && npm run audit:data-architecture"
   }
 }

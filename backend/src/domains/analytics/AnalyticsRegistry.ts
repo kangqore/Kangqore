@@ -3,9 +3,9 @@ import { Metric, KPI, Insight, AnalyticsReport } from './contracts/types';
 export class AnalyticsRegistry {
   private static instance: AnalyticsRegistry;
 
-  private metrics: Map<string, Metric> = new Map();
-  private kpis: Map<string, KPI> = new Map();
-  private insights: Map<string, Insight> = new Map();
+  private readonly metrics: Map<string, Metric> = new Map();
+  private readonly kpis: Map<string, KPI> = new Map();
+  private readonly insights: Map<string, Insight> = new Map();
 
   private constructor() {}
 

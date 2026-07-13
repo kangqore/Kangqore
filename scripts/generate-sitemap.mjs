@@ -63,9 +63,9 @@ function extractServiceSlugs() {
   while ((m = re.exec(src)) !== null) {
     slugs.push(m[1]);
   }
-  if (slugs.length !== 61) {
+  if (slugs.length !== 62) {
     throw new Error(
-      `Expected 61 service slugs in servicesData.js, found ${slugs.length}.`
+      `Expected 62 service slugs in servicesData.js, found ${slugs.length}.`
     );
   }
   return slugs;
@@ -147,7 +147,7 @@ function buildSitemap({ deptSlugs, serviceSlugs }) {
     });
   }
 
-  // Service pages (61, flat URLs)
+  // Service pages (62, flat URLs)
   for (const slug of serviceSlugs) {
     urls.push({
       loc: `${BASE_URL}/services/${slug}`,

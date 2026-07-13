@@ -1,5 +1,6 @@
 import cron, { ScheduledTask } from 'node-cron';
 import { KangqoreVisFlags } from '../core/flags';
+import { getVisPriorityModule } from '../../waanda/adapters/VisAdapter';
 import { SitemapService } from '../technical-seo/SitemapService';
 import { SchemaContentAuditor } from '../structured-data/SchemaContentAuditor';
 import { WebVitalsCollector } from '../performance/WebVitalsCollector';
@@ -87,6 +88,7 @@ export class KangqoreVisCronManager {
           async () => {
             try {
               await job.task();
+              import('../../waanda/adapters/VisAdapter').then(({ notifyVisCronRun }) => notifyVisCronRun()).catch(() => {})
             } catch (err) {
               console.error(`kangqore-vis.cron.${job.id}.error`, err);
             }
@@ -130,10 +132,19 @@ export class KangqoreVisCronManager {
   }
 
   static async runNow(id: string): Promise<{ ok: boolean; error?: string }> {
+    const priorityModule = getVisPriorityModule()
+    // If WAANDA issued a FOCUS directive, run that job before the requested one
+    if (priorityModule && priorityModule !== id) {
+      const priorityJob = JOBS.find((j) => j.id === priorityModule)
+      if (priorityJob) {
+        await priorityJob.task().catch(() => {})
+      }
+    }
     const job = JOBS.find((j) => j.id === id);
     if (!job) return { ok: false, error: 'unknown job' };
     try {
       await job.task();
+      import('../../waanda/adapters/VisAdapter').then(({ notifyVisCronRun }) => notifyVisCronRun()).catch(() => {})
       return { ok: true };
     } catch (err) {
       return { ok: false, error: (err as Error).message };

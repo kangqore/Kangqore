@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { computeGate8, computeForecast, computeRecommendations, getGate8History } from './gate8Service'
+import { computeGate8, computeForecast, computeRecommendations, getGate8History } from './gate8.service'
 
 const prisma = new PrismaClient()
 
