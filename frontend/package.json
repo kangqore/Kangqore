@@ -82,6 +82,9 @@
     "zustand": "^5.0.14"
   },
   "scripts": {
+    "prestart": "node scripts/download-video.js",
+    "predev": "node scripts/download-video.js",
+    "prebuild": "node scripts/download-video.js",
     "start": "vite --config vite.config.mjs",
     "dev": "vite --config vite.config.mjs",
     "build": "vite build --config vite.config.mjs",

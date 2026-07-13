@@ -63,7 +63,7 @@ const heroSlides = [
     secondaryCta: "Schedule Your 30-min Discovery Call",
     link: "/services",
     secondaryLink: "/contact",
-    video: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4",
+    video: "/videos/hero-bg.mp4",
   },
   {
     id: 2,
@@ -72,7 +72,7 @@ const heroSlides = [
     title: "Innovate ",
     titleTypewriter: "Your Next Move.",
     description: "",
-    video: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4",
+    video: "/videos/hero-bg.mp4",
   },
 ];
 

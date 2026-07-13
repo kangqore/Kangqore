@@ -95,7 +95,7 @@ const Footer = () => {
         {/* LEFT CARD — Video Background */}
         <div style={{ position: 'relative', minHeight: 420, borderRadius: 28, padding: 32, overflow: 'hidden', boxShadow: '0 12px 40px rgba(37,100,234,0.25)', background: '#1e4fc0', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <video autoPlay muted loop playsInline preload="auto" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, pointerEvents: 'none' }}>
-            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085844_21a8f4b3-dea5-4ede-be16-d53f6973bb14.mp4" type="video/mp4" />
+            <source src="/videos/hero-bg.mp4" type="video/mp4" />
           </video>
 
           {/* Logo */}
