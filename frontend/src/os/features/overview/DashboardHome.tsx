@@ -637,39 +637,62 @@ function MyFocusPanel({ navigate }: { navigate: (p: string) => void }) {
           </button>
         </motion.div>
       ) : (
-        <div className="flex flex-col gap-1">
-          {goals.map((g: any) => {
-            const pct      = Math.min(Math.round(((g.currentValue || 0) / Math.max(g.targetValue || 1, 1)) * 100), 100)
-            const isDone   = pct >= 100
-            const barColor = pct >= 70 ? '#00c875' : pct >= 40 ? '#fdab3d' : '#e2445c'
-
-            return (
-              <div key={g.id} className="asana-task-row flex items-center gap-3">
-                <div className={`asana-circular-checkbox flex-shrink-0 ${isDone ? 'checked' : ''}`}>
-                  {isDone && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
+        <div className="flex gap-5 items-stretch">
+          {/* Left Side: Summary Graphic */}
+          <div className="w-5/12 flex flex-col justify-between p-5 rounded-2xl relative overflow-hidden" 
+               style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.03) 0%, rgba(124,58,237,0.08) 100%)', border: '1px solid rgba(124,58,237,0.15)' }}>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500 opacity-20 blur-[50px] pointer-events-none" />
+            <div className="relative z-10 flex flex-col h-full justify-between">
+              <div>
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center mb-3" style={{ background: '#7c3aed15' }}>
+                  <Target className="w-4 h-4" style={{ color: '#7c3aed' }} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-4 mb-1">
-                    <p className="text-[12px] font-bold truncate leading-snug"
-                       style={{ color: isDone ? 'var(--os-text-3)' : 'var(--os-text-1)', textDecoration: isDone ? 'line-through' : 'none' }}>
-                      {g.title}
-                    </p>
-                    <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded uppercase flex-shrink-0"
-                          style={{ color: barColor, background: `${barColor}15` }}>
-                      {g.status?.replace(/_/g, ' ')}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-[6px] rounded-full overflow-hidden" style={{ background: 'var(--os-border)' }}>
-                      <div className="h-full rounded-full transition-all duration-700"
-                           style={{ background: barColor, width: `${pct}%`, boxShadow: `0 0 6px ${barColor}40` }} />
-                    </div>
-                    <span className="text-[10px] font-bold w-7 text-right flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>{pct}%</span>
-                  </div>
-                </div>
+                <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-2)', lineHeight: 1.5, margin: 0 }}>
+                  You are tracking <strong style={{ color: '#7c3aed' }}>{goals.length}</strong> active objectives this cycle. Keep up the momentum!
+                </p>
               </div>
-            )
-          })}
+              <div className="mt-4">
+                <p style={{ fontSize: 36, fontWeight: 800, color: '#7c3aed', margin: 0, lineHeight: 1 }}>{goals.length}</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: '#9333ea', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '4px 0 0' }}>Active Goals</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side: Goals List */}
+          <div className="w-7/12 flex flex-col gap-2 justify-center py-2">
+            {goals.map((g: any) => {
+              const pct      = Math.min(Math.round(((g.currentValue || 0) / Math.max(g.targetValue || 1, 1)) * 100), 100)
+              const isDone   = pct >= 100
+              const barColor = pct >= 70 ? '#00c875' : pct >= 40 ? '#fdab3d' : '#e2445c'
+
+              return (
+                <div key={g.id} className="asana-task-row flex items-center gap-3">
+                  <div className={`asana-circular-checkbox flex-shrink-0 ${isDone ? 'checked' : ''}`}>
+                    {isDone && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-4 mb-1">
+                      <p className="text-[12px] font-bold truncate leading-snug"
+                         style={{ color: isDone ? 'var(--os-text-3)' : 'var(--os-text-1)', textDecoration: isDone ? 'line-through' : 'none' }}>
+                        {g.title || 'Untitled Goal'}
+                      </p>
+                      <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded uppercase flex-shrink-0"
+                            style={{ color: barColor, background: `${barColor}15` }}>
+                        {g.status?.replace(/_/g, ' ') || 'ACTIVE'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-[6px] rounded-full overflow-hidden" style={{ background: 'var(--os-border)' }}>
+                        <div className="h-full rounded-full transition-all duration-700"
+                             style={{ background: barColor, width: `${pct}%`, boxShadow: `0 0 6px ${barColor}40` }} />
+                      </div>
+                      <span className="text-[10px] font-bold w-7 text-right flex-shrink-0" style={{ color: 'var(--os-text-2)' }}>{pct}%</span>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
 
