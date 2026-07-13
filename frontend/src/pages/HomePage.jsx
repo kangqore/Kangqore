@@ -409,13 +409,13 @@ const HeroCarousel = () => {
                     {slide.cta && (
                       <Link
                         to={slide.link}
-                        className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]"
+                        className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/[0.07] backdrop-blur-md border border-white/14 text-white shadow-xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]"
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
                         <span className="relative z-10 text-white font-bold tracking-wide text-[13px]">
                           {slide.cta}
                         </span>
-                        <div className="relative z-10 w-7 h-7 rounded-full bg-white/15 flex items-center justify-center transition-all duration-500 group-hover:bg-white shadow-md">
+                        <div className="relative z-10 w-7 h-7 rounded-full bg-white/10 flex items-center justify-center transition-all duration-500 group-hover:bg-white shadow-md">
                           <ArrowRight className="w-4 h-4 text-white group-hover:text-gray-900 transition-all duration-500 group-hover:translate-x-0.5" />
                         </div>
                         <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-cyan-400/50 blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
