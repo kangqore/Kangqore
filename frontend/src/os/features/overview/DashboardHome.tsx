@@ -990,17 +990,16 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {alerts.map((a: any) => {
-              const color = '#10B981' // Evergreen Mint
+              const textColor = '#10B981' // Evergreen Mint text
+              const bgColor = '#D1FAE5'   // Evergreen Mint bg
               return (
                 <div key={a.id} onClick={() => navigate('/kangqore-view/admin/leads')} className="cursor-pointer hover:opacity-90 transition-opacity" style={{
                   padding: '9px 12px', borderRadius: 9,
-                  borderLeft: `3px solid ${color}`,
-                  background: 'linear-gradient(135deg, #ecfdf5 0%, #D1FAE5 100%)',
-                  border: `1px solid ${color}30`,
-                  borderLeftWidth: 3,
+                  background: `linear-gradient(135deg, rgba(255,255,255,0.6) 0%, ${bgColor} 100%)`,
+                  border: `1px solid ${bgColor}`,
                   display: 'flex', alignItems: 'flex-start', gap: 8,
                 }}>
-                  <AlertTriangle style={{ width: 14, height: 14, color: '#10B981', flexShrink: 0, marginTop: 1 }} />
+                  <AlertTriangle style={{ width: 14, height: 14, color: textColor, flexShrink: 0, marginTop: 1 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontSize: 11, color: 'var(--os-text-1)', margin: '0 0 2px', lineHeight: 1.4 }} className="line-clamp-2">
                       {a.message}
@@ -1331,16 +1330,28 @@ function ActivityFeed({ navigate }: { navigate: (p: string) => void }) {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 12 }}>
           {grouped.map((s: any, idx: number) => {
-            const dotColor = PRIORITY_DOT[s.priority] ?? '#c5c7d0'
+            let textColor = '#6366F1'
+            let bgColor = '#E0E7FF'
+            
+            if (s.priority === 'critical') {
+              textColor = '#F43F5E'
+              bgColor = '#FFE4E6'
+            } else if (s.priority === 'high') {
+              textColor = '#F59E08'
+              bgColor = '#FEF3C7'
+            } else if (s.priority === 'medium') {
+              textColor = '#3B82F6'
+              bgColor = '#DBEAFE'
+            }
+
             return (
               <motion.div 
                 key={s.id ?? idx} 
                 whileHover={{ y: -2, scale: 1.01, boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}
                 style={{
                   padding: '12px 16px', borderRadius: 12,
-                  background: 'var(--os-surface-0)',
-                  border: '1px solid var(--os-border)',
-                  borderLeft: `4px solid ${dotColor}`,
+                  background: `linear-gradient(145deg, rgba(255,255,255,0.5) 0%, ${bgColor} 100%)`,
+                  border: `1px solid ${bgColor}`,
                   display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
                   boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
                   transition: 'all 0.2s ease',
@@ -1349,12 +1360,12 @@ function ActivityFeed({ navigate }: { navigate: (p: string) => void }) {
               >
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: dotColor, flexShrink: 0, boxShadow: `0 0 6px ${dotColor}80` }} />
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: textColor, flexShrink: 0, boxShadow: `0 0 6px ${textColor}80` }} />
                     {s.summary && <p style={{ fontSize: 13, color: 'var(--os-text-1)', margin: 0, lineHeight: 1.4, fontWeight: 700, letterSpacing: '-0.01em' }} className="line-clamp-2">{s.summary}</p>}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingLeft: 16 }}>
                     {s.module && (
-                      <span style={{ fontSize: 10, fontWeight: 750, padding: '2px 8px', borderRadius: 6, background: `${dotColor}10`, border: `1px solid ${dotColor}25`, color: dotColor, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{s.module}</span>
+                      <span style={{ fontSize: 10, fontWeight: 750, padding: '2px 8px', borderRadius: 6, background: `${textColor}15`, border: `1px solid ${textColor}30`, color: textColor, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{s.module}</span>
                     )}
                     {s.category && <span style={{ fontSize: 10, color: 'var(--os-text-3)', fontWeight: 600 }}>{s.category}</span>}
                   </div>
@@ -1364,7 +1375,7 @@ function ActivityFeed({ navigate }: { navigate: (p: string) => void }) {
                     {timeAgo(s.createdAt)}
                   </span>
                   {s.count > 1 && (
-                    <span style={{ fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 12, background: 'var(--os-surface-1)', color: 'var(--os-text-1)', border: `1px solid ${dotColor}40`, boxShadow: `0 2px 6px ${dotColor}20` }}>
+                    <span style={{ fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 12, background: 'rgba(255,255,255,0.7)', color: textColor, border: `1px solid ${textColor}40`, boxShadow: `0 2px 6px ${textColor}20` }}>
                       x{s.count}
                     </span>
                   )}
