@@ -166,56 +166,6 @@ function PageHeader({
   )
 }
 
-// ─── Engine Health Matrix ─────────────────────────────────────────────────────
-
-const ENGINE_STATUSES = [
-  'green', 'red', 'white', 'green', 'orange',
-  'green', 'white', 'red', 'red', 'red'
-]
-
-function EngineHealthMatrix() {
-  const activeCount = ENGINE_STATUSES.filter(s => s === 'green').length;
-  const totalCount = ENGINE_STATUSES.length;
-  const pct = Math.round((activeCount / totalCount) * 100);
-
-  return (
-    <div className="os-card p-5 rounded-2xl flex flex-col gap-4">
-      <div className="flex justify-between items-center">
-        <p className="text-[11px] font-semibold uppercase tracking-widest m-0" style={{ color: 'var(--os-text-2)' }}>
-          Engine Health
-        </p>
-        <span className="text-[10px] font-bold" style={{ color: 'var(--os-text-3)' }}>{pct}% ACTIVE</span>
-      </div>
-      
-      <p className="text-[10px] font-semibold tracking-wider m-0" style={{ color: 'var(--os-text-1)' }}>
-        ENGINES ({activeCount}/{totalCount})
-      </p>
-
-      <div className="grid grid-cols-5 gap-2 mt-1">
-        {ENGINE_STATUSES.map((status, i) => {
-          let bg = 'var(--os-surface-0)'
-          if (status === 'green') bg = '#10B981'
-          if (status === 'red') bg = '#EF4444'
-          if (status === 'orange') bg = '#F59E08'
-
-          return (
-            <div 
-              key={i}
-              className="rounded-[4px]"
-              style={{ 
-                height: 20, 
-                background: bg,
-                boxShadow: status !== 'white' ? `0 2px 6px ${bg}40` : 'none',
-                border: status === 'white' ? '1px solid var(--os-border)' : 'none'
-              }}
-            />
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
 // ─── KPI Bar ──────────────────────────────────────────────────────────────────
 
 const KPI_DEFS = [
@@ -503,6 +453,47 @@ function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
         </div>
         <span className="w-2 h-2 rounded-full flex-shrink-0"
               style={{ background: kimmpHealth ? (kimmpOk ? '#00c875' : '#e2445c') : 'var(--os-text-3)' }} />
+      </div>
+
+      {/* Next Best Actions */}
+      <div className="os-card p-4 mt-2 flex flex-col gap-3 rounded-2xl" style={{
+        background: 'linear-gradient(135deg, rgba(139,92,246,0.03) 0%, rgba(139,92,246,0.08) 100%)',
+        border: '1px solid rgba(139,92,246,0.15)'
+      }}>
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-4 h-4" style={{ color: '#8b5cf6' }} />
+          <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: '#8b5cf6' }}>Next Best Actions</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          {[
+            { text: "Follow up with Dev Patel", time: "High Probability", icon: <Users className="w-3.5 h-3.5" style={{ color: '#059669' }} />, bg: '#10b981', dot: '#10b981' },
+            { text: "Send proposal to Tata Steel", time: "Action Required", icon: <Briefcase className="w-3.5 h-3.5" style={{ color: '#e11d48' }} />, bg: '#f43f5e', dot: '#f43f5e' },
+            { text: "Prepare Q3 Board Deck", time: "Due Tomorrow", icon: <TrendingUp className="w-3.5 h-3.5" style={{ color: '#d97706' }} />, bg: '#f59e0b', dot: '#f59e0b' }
+          ].map((action, i) => (
+            <motion.div 
+              key={i} 
+              whileHover={{ x: 4, scale: 1.01 }}
+              className="flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all"
+              style={{
+                background: 'var(--os-surface-0)',
+                border: '1px solid var(--os-border)',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+              }}
+            >
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${action.bg}15` }}>
+                {action.icon}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[11px] font-bold truncate" style={{ color: 'var(--os-text-1)' }}>{action.text}</p>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: action.dot }} />
+                  <p className="text-[10px] font-semibold" style={{ color: 'var(--os-text-3)' }}>{action.time}</p>
+                </div>
+              </div>
+              <ArrowRight className="w-3.5 h-3.5 flex-shrink-0 opacity-40" style={{ color: 'var(--os-text-1)' }} />
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -1116,6 +1107,33 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
           </div>
         </div>
       )}
+
+      {/* Quick Actions Pad */}
+      <div className="os-card p-4 rounded-2xl flex flex-col gap-3">
+        <p className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-2)' }}>
+          Quick Actions
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { label: 'New Lead', icon: <Users className="w-4 h-4" />, color: '#2564eb' },
+            { label: 'Log Call', icon: <Clock className="w-4 h-4" />, color: '#10b981' },
+            { label: 'Create Goal', icon: <Target className="w-4 h-4" />, color: '#8b5cf6' },
+            { label: 'Generate', icon: <Briefcase className="w-4 h-4" />, color: '#f59e0b' }
+          ].map((action, i) => (
+            <motion.div 
+              key={i}
+              whileHover={{ y: -2 }}
+              className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl cursor-pointer transition-all"
+              style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}
+            >
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${action.color}15`, color: action.color }}>
+                {action.icon}
+              </div>
+              <span className="text-[10px] font-bold text-center" style={{ color: 'var(--os-text-1)' }}>{action.label}</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
@@ -1254,11 +1272,11 @@ const MODULES = [
 
 function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
   return (
-    <div className="os-card p-5 rounded-2xl flex flex-col justify-center">
+    <div className="os-card p-5 rounded-2xl h-full flex flex-col justify-center">
       <p className="text-[11px] font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--os-text-2)' }}>
         Quick Access
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, placeItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, placeItems: 'center' }}>
         {MODULES.map(m => {
           const Icon = m.icon
           return (
@@ -1277,7 +1295,7 @@ function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
               style={{
                 background: 'var(--os-surface-0)',
                 border: '1px solid var(--os-border)',
-                width: '100%', 
+                width: '60%', 
                 aspectRatio: '1 / 1',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.02)',
               }}
@@ -1718,10 +1736,8 @@ export function DashboardHome() {
 
       {/* 3. Three-column main body */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5 items-start">
-        <div className="lg:col-span-3 col-span-1 flex flex-col gap-5 w-full">
+        <div className="lg:col-span-3 col-span-1 w-full">
           <WorkQueuePanel navigate={navigate} />
-          <ModuleGrid navigate={navigate} />
-          <EngineHealthMatrix />
         </div>
         <div className="lg:col-span-6 col-span-1 min-w-0 flex flex-col gap-4 w-full">
           <PipelineKanban navigate={navigate} leads={allLeads} />
@@ -1733,10 +1749,13 @@ export function DashboardHome() {
         </div>
       </div>
 
-      {/* 4. Bottom row: AEGIS full-width */}
+      {/* 4. Bottom row: AEGIS full-width + Module Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
-        <div className="lg:col-span-12 col-span-1 w-full">
+        <div className="lg:col-span-7 col-span-1 w-full">
           <AegisWideCard navigate={navigate} />
+        </div>
+        <div className="lg:col-span-5 col-span-1 w-full">
+          <ModuleGrid navigate={navigate} />
         </div>
       </div>
 
