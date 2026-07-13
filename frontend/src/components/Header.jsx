@@ -355,8 +355,8 @@ const Header = ({ onMenuClick }) => {
         >
           <div className={`backdrop-blur-[12px] rounded-full border shadow-[0_8px_32px_rgba(0,0,0,0.08)] flex items-center justify-between h-16 lg:h-20 px-6 lg:px-8 transition-colors duration-500 ${
             isLightBackground 
-              ? 'bg-black/[0.03] dark:bg-black/[0.05] border-black/[0.04] shadow-[inset_0_1px_1px_rgba(0,0,0,0.01)]' 
-              : 'bg-white/[0.08] dark:bg-white/[0.05] border-white/[0.06] shadow-[inset_0_1px_1px_rgba(255,255,255,0.04)]'
+              ? 'bg-black/[0.02] dark:bg-black/[0.035] border-black/[0.03] shadow-[inset_0_1px_1px_rgba(0,0,0,0.01)]' 
+              : 'bg-white/[0.05] dark:bg-white/[0.035] border-white/[0.04] shadow-[inset_0_1px_1px_rgba(255,255,255,0.03)]'
           }`}>
             {/* Logo Island Section */}
             <div className="flex items-center">
