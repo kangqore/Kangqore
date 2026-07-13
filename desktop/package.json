@@ -68,7 +68,7 @@
     "http-proxy-middleware": "^3.0.3"
   },
   "devDependencies": {
-    "electron": "^36.4.0",
-    "electron-builder": "^25.1.8"
+    "electron": "^39.8.5",
+    "electron-builder": "^26.15.3"
   }
 }
