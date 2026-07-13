@@ -237,7 +237,7 @@ const HeroCarousel = () => {
   useEffect(() => {
     if (!isAutoPlaying) return;
     
-    const duration = activeSlide === 0 ? 15000 : 10000;
+    const duration = activeSlide === 0 ? 62000 : 20000;
     const timer = setTimeout(() => {
       setActiveSlide(prev => (prev + 1) % slideCount);
     }, duration);
