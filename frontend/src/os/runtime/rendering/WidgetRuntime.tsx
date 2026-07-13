@@ -22,6 +22,87 @@ interface ResolvedWidget {
   deps: any;
 }
 
+const SECTION_NAMES: Record<string, string> = {
+  myday: 'My Day Plan',
+  notifications: 'Live Notifications',
+  ai: 'WAANDA Cognitive Assistant',
+  calendar: 'Schedule & Events',
+  knowledge: 'Enterprise Knowledge Hub',
+  approvals: 'Awaiting Approvals',
+  // Executive
+  health: 'Enterprise Health Matrix',
+  goals: 'Corporate Objectives',
+  decisions: 'Decision Log',
+  optimization: 'Efficiency Center',
+  strategy: 'Strategic Focus',
+  missions: 'Active Autonomous Missions',
+  // Revenue
+  accounts: 'Key Accounts',
+  pipeline: 'Sales Pipeline',
+  forecast: 'Revenue Forecast',
+  pricing: 'Pricing Policy',
+  quotations: 'Active Quotations',
+  customerhealth: 'Customer Success KPI',
+  revenueintel: 'Revenue Intelligence Feed',
+  revenueopt: 'Revenue Optimization Engine',
+  // Operations
+  projects: 'Project Board',
+  resources: 'Resource Allocation',
+  opsCenter: 'Operations Console',
+  assets: 'Physical & Digital Assets',
+  procurement: 'Procurement Pipeline',
+  supplyChain: 'Supply Chain Operations',
+  automation: 'Autopilot Automation Logs',
+  execution: 'Task Execution Metrics',
+  // Intelligence
+  analytics: 'Visual Analytics Panel',
+  predictions: 'Forecast Models',
+  simulations: 'What-If Simulation Sandbox',
+  optimizationLab: 'Continuous Optimization Lab',
+  insights: 'AI Synthesized Insights',
+  knowledgeGraph: 'Enterprise Semantic Graph',
+  search: 'Unified Enterprise Search',
+  reports: 'Generated Reports Registry',
+  // Platform
+  domains: 'Business Domain Definitions',
+  objects: 'Reality Object Mapping',
+  policies: 'Aegis Active Policies',
+  kore: 'KORE Subsystem Monitor',
+  models: 'Registered AI Models',
+  connectors: 'Integration Connectors',
+  events: 'Event Bus Analytics',
+  runtime: 'Runtime Health Console',
+  observability: 'Telemetry Observability',
+  security: 'Security Information (SIEM)',
+  extensions: 'OS Extensions Store',
+  // Collaboration
+  chat: 'Workspace Chat Rooms',
+  voice: 'Voice Channels',
+  meetings: 'Virtual Meeting Rooms',
+  missionRooms: 'Contextual Mission Hubs',
+  decisionThreads: 'Decision Thread Context',
+  sharedSimulations: 'Collaborative Simulation Rooms',
+  sharedApprovals: 'Multi-signature Approvals',
+  // Governance
+  policyCenter: 'Active Governance Policies',
+  aegisGovernance: 'Aegis Sentinel Logs',
+  riskDashboard: 'Risk Management Console',
+  complianceCenter: 'Regulatory Compliance Log',
+  auditExplorer: 'Tamper-proof Ledger Auditor',
+  decisionLedger: 'Decision Audit History',
+  predictionLedger: 'Prediction Accuracy Ledger',
+  simulationLedger: 'Simulation Outcome Ledger',
+  optimizationLedger: 'Efficiency Saving Logs',
+  accessIdentity: 'Identity & Access Control',
+  dataLineage: 'Data Lineage Explorer',
+  // Ecosystem
+  customerPortals: 'External Customer Portals',
+  vendorPortals: 'Vendor & Supplier Portals',
+  partnerHubs: 'Strategic Partner Hubs',
+  investorPortals: 'Investor Relations Portal',
+  publicApis: 'Developer API Console',
+};
+
 export const WidgetRuntime: React.FC<WidgetRuntimeProps> = ({
   manifest, context, mode, scheduler, resolver,
 }) => {
@@ -76,7 +157,9 @@ export const WidgetRuntime: React.FC<WidgetRuntimeProps> = ({
           <div key={sectionId} className="keos-section">
             {!isNav && (
               <div className="keos-section-header">
-                <span className="keos-section-label">{sectionId}</span>
+                <span className="keos-section-label">
+                  {SECTION_NAMES[sectionId] || sectionId.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()).toUpperCase()}
+                </span>
                 <div className="keos-section-rule" />
               </div>
             )}

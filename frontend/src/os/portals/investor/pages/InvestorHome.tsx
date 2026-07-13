@@ -69,20 +69,28 @@ export function InvestorHome() {
   const { isLoading: statsLoading } = useInvestorStats()
   const { data: updatesData, isLoading: updatesLoading } = useInvestorUpdates()
 
-  const myInvestor = investors.find(i => i.status === 'committed') ?? investors[0]
+  const myInvestor = investors.find(i => i.status === 'committed') ?? investors[0] ?? { name: 'Investor' }
   const activeRound = rounds.find(r => r.status === 'open')
 
   const updatesList: RichUpdate[] = updatesData?.length
     ? updatesData.map((u: any, i: number) => mapInvestorUpdate(u, i))
     : mockUpdates.map((u: any, i: number) => mapInvestorUpdate(u, i))
 
-  const latestUpdate = updatesList[0]
+  const latestUpdate = updatesList[0] ?? {
+    metrics: { mrr: 0, mrrGrowth: 0, arr: 0, customers: 0, nrr: 0, runway: 0, headcount: 0, cashOnHand: 0 },
+    period: 'June 2026',
+    highlights: [],
+    challenges: [],
+    askItems: []
+  }
   const m = latestUpdate.metrics
 
-  const MONTHLY_MRR = updatesList.slice(0, 5).reverse().map(u => ({
-    month: u.period.split(' ')[0].slice(0, 3),
-    mrr: u.metrics.mrr
-  }))
+  const MONTHLY_MRR = updatesList.length > 0
+    ? updatesList.slice(0, 5).reverse().map(u => ({
+        month: u.period.split(' ')[0].slice(0, 3),
+        mrr: u.metrics.mrr
+      }))
+    : [{ month: 'Jun', mrr: 0 }]
   const maxMRR = Math.max(...MONTHLY_MRR.map(m => m.mrr), 1)
 
   const isLoading = (statsLoading || updatesLoading) && !isDemo()

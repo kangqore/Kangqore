@@ -15,7 +15,20 @@ import {
   DEFAULT_PROJECTION_POLICY,
 } from '../wee';
 import { WorkspaceMode } from '../types/manifest';
+import { User, Briefcase, TrendingUp, Wrench, Brain, Terminal, Globe, Users, ShieldCheck } from 'lucide-react';
 import './keos.css';
+
+const WORKSPACE_ICONS = {
+  'wksp.personal':      User,
+  'wksp.executive':     Briefcase,
+  'wksp.revenue':       TrendingUp,
+  'wksp.operations':    Wrench,
+  'wksp.intelligence':  Brain,
+  'wksp.platform':      Terminal,
+  'wksp.ecosystem':     Globe,
+  'wksp.collaboration': Users,
+  'wksp.governance':    ShieldCheck,
+} as const;
 
 import { PersonalWorkspaceManifest }               from '../portals/PersonalWorkspace';
 import { ExecutiveWorkspaceManifest }              from '../portals/ExecutiveWorkspace';
@@ -113,8 +126,11 @@ export const WorkspaceOrchestrator: React.FC = () => {
   const activeManifest  = registry[activeWorkspaceId];
   const availableModes  = Object.keys(activeManifest.workspace.modes) as WorkspaceMode[];
 
+  const WsIcon = WORKSPACE_ICONS[activeWorkspaceId] || Brain;
+
   return (
-    <div className={`keos-shell ${activeWorkspaceId.replace('wksp.', 'theme-')}`}>
+    <div className="keos-shell admin-bento-theme">
+      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#e0ebff] via-[#f0f8ff] to-[#f5ffd8]" />
 
       {/* ── Main Content ── */}
       <div className="keos-main">
@@ -124,7 +140,10 @@ export const WorkspaceOrchestrator: React.FC = () => {
           <div className="keos-header-left">
             <span className="keos-breadcrumb">KEOS</span>
             <span className="keos-breadcrumb-sep">›</span>
-            <h1 className="keos-ws-title">{activeManifest.metadata.title}</h1>
+            <div className="flex items-center gap-2">
+              <WsIcon className="w-5 h-5 text-blue-600/80" />
+              <h1 className="keos-ws-title">{activeManifest.metadata.title}</h1>
+            </div>
             {isTransitioning && <span className="keos-transition-dot" />}
           </div>
           <div className="keos-mode-strip">
