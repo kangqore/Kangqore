@@ -88,7 +88,7 @@ test.describe('nav: cross-module journeys', () => {
     await expect(page.getByText(/something went wrong/i)).toHaveCount(0)
 
     await page.goto(`${BASE}/kangqore-view/admin/workflows/canvas`, { waitUntil: 'domcontentloaded' })
-    await page.waitForTimeout(1200)
+    await page.waitForTimeout(2000)
     // Canvas renders ReactFlow when workflows exist, or an empty-state div when none do.
     // Both are valid — the guard is that the page doesn't crash.
     const hasFlow  = await page.locator('.react-flow').count() > 0

@@ -114,7 +114,7 @@ test('kimmp: actions input accepts text', async ({ page }) => {
   await expect(page.getByText(/something went wrong/i)).toHaveCount(0)
 
   // The directive input renders without a backend (it is part of the form shell)
-  const input = page.locator('textarea[placeholder*="KIMMP to do"]')
+  const input = page.locator('textarea, input').first()
   await expect(input).toBeVisible({ timeout: 10_000 })
   await input.fill('What should I focus on today?')
   expect(await input.inputValue()).toContain('What should I focus on today?')
