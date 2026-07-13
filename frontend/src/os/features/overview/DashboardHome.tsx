@@ -1181,17 +1181,18 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6,
             padding: '16px 20px', borderRadius: 16, 
-            background: `linear-gradient(135deg, ${vs.color}15 0%, ${vs.color}05 100%)`,
-            border: `1px solid ${vs.color}20`, flexShrink: 0, minWidth: 150,
+            background: 'linear-gradient(135deg, #C7E0FF 0%, #60A5FA 100%)',
+            border: '1px solid rgba(96,165,250,0.5)', flexShrink: 0, minWidth: 150,
+            boxShadow: '0 4px 16px rgba(96,165,250,0.3)',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ width: 10, height: 10, borderRadius: '50%', background: vs.color, display: 'inline-block', boxShadow: `0 0 12px ${vs.color}` }} className="animate-pulse" />
-              <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--os-text-1)', letterSpacing: '-0.02em' }}>{vs.label}</span>
+              <span style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em' }}>{vs.label}</span>
             </div>
             {healthScore != null && (
-              <span style={{ fontSize: 11, fontWeight: 800, color: vs.color, letterSpacing: '0.05em' }}>HEALTH {healthScore}%</span>
+              <span style={{ fontSize: 11, fontWeight: 800, color: '#1e3a8a', letterSpacing: '0.05em' }}>HEALTH {healthScore}%</span>
             )}
-            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-2)', margin: 0, textAlign: 'center', marginTop: 4 }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: '#1e293b', margin: 0, textAlign: 'center', marginTop: 4 }}>
               {critical24h > 0 ? `${critical24h} critical 24h` : warn24h > 0 ? `${warn24h} warnings 24h` : 'No threats 24h'}
             </p>
           </div>
