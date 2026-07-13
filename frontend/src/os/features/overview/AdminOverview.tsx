@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo, Component } from 're
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowRight, Maximize2, Minimize2, Mic, MicOff, Paperclip, Send, Volume2, VolumeX } from 'lucide-react'
+import { ArrowRight, Maximize2, Minimize2, Mic, MicOff, Paperclip, Send, Volume2, VolumeX, Settings } from 'lucide-react'
 import { api } from '@lib/api'
 import { useKIMMPStore } from '@store/kimmp'
 import { useSignalStream, type LiveSignal } from '@lib/useSignalStream'
@@ -6001,6 +6001,42 @@ export function AdminOverview() {
         />
       )}
       {showLog && <HUDLogDrawer onClose={() => setShowLog(false)} />}
+      
+      {/* Settings Button */}
+      <button 
+        onClick={() => navigate('/kangqore-view/admin/settings')}
+        style={{
+          position: 'absolute',
+          bottom: 24,
+          left: 24,
+          width: 32,
+          height: 32,
+          borderRadius: '50%',
+          background: `radial-gradient(circle at 50% 50%, ${C}1a 0%, transparent 100%)`,
+          border: `1px solid ${C}30`,
+          color: `${C}90`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 100,
+          boxShadow: `0 0 12px ${C}10`,
+          transition: 'all 0.2s ease',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = '#fff'
+          e.currentTarget.style.border = `1px solid ${C}80`
+          e.currentTarget.style.boxShadow = `0 0 16px ${C}40`
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = `${C}90`
+          e.currentTarget.style.border = `1px solid ${C}30`
+          e.currentTarget.style.boxShadow = `0 0 12px ${C}10`
+        }}
+        title="System Settings"
+      >
+        <Settings size={15} />
+      </button>
     </div>
   )
 }
