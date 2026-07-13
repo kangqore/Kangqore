@@ -382,7 +382,7 @@ function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
             onClick={() => setTab(t.id)}
             className="flex-1 rounded-lg text-[11px] font-bold py-1.5 transition-all text-center"
             style={tab === t.id
-              ? { background: 'var(--os-card)', color: 'var(--os-text-1)', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }
+              ? { background: 'linear-gradient(135deg, #C7E0FF 0%, #60A5FA 100%)', color: '#0f172a', boxShadow: '0 2px 8px rgba(96,165,250,0.4)' }
               : { color: 'var(--os-text-2)' }}
           >
             {t.label}
