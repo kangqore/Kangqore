@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Zap, Briefcase, TrendingUp, Target, LayoutDashboard, Activity,
   Users, DollarSign, Brain, AlertTriangle, CheckCircle2, Clock,
-  ArrowRight, RefreshCw, BarChart3, Shield, Crosshair, Calendar, Sparkles
+  ArrowRight, RefreshCw, BarChart3, Shield, Crosshair, Calendar, Sparkles, Crown
 } from 'lucide-react'
 import { api } from '@lib/api'
 import {
@@ -121,11 +121,11 @@ function PageHeader({
 
   return (
     <div
-      className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7 px-1"
+      className="flex flex-col sm:flex-row justify-between gap-4 mb-7 px-1"
     >
       {/* Avatar + greeting */}
-      <div className="flex items-center gap-4">
-        <div className="relative flex-shrink-0">
+      <div className="flex items-start gap-4">
+        <div className="relative flex-shrink-0 mt-1">
           <div
             className="w-12 h-12 rounded-full flex items-center justify-center font-black text-white"
             style={{ background: 'linear-gradient(135deg, #60A5FA 0%, #1D4ED8 100%)', fontSize: 16, border: '2px solid rgba(255,255,255,0.5)', boxShadow: '0 2px 8px rgba(29,78,216,0.30)' }}
@@ -138,8 +138,9 @@ function PageHeader({
           <p className="text-[10px] font-semibold uppercase tracking-widest mb-0.5" style={{ color: 'var(--os-text-2)' }}>
             {formatDate()}
           </p>
-          <h1 className="text-[22px] font-black tracking-tight leading-none mb-0.5" style={{ color: 'var(--os-text-1)' }}>
+          <h1 className="text-[22px] font-black tracking-tight leading-none mb-0.5 flex items-center gap-2" style={{ color: 'var(--os-text-1)' }}>
             {getGreeting()}, C.O.D.E.
+            <Crown size={20} strokeWidth={2.5} style={{ color: '#fbbf24', filter: 'drop-shadow(0 2px 4px rgba(251,191,36,0.4))' }} />
           </h1>
           <div className="text-[11px] font-semibold tracking-wide mb-2 opacity-70" style={{ color: 'var(--os-text-1)' }}>
             Code of Observation, Decision & Execution.
