@@ -1186,7 +1186,6 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
             boxShadow: '0 4px 16px rgba(96,165,250,0.3)',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ width: 10, height: 10, borderRadius: '50%', background: vs.color, display: 'inline-block', boxShadow: `0 0 12px ${vs.color}` }} className="animate-pulse" />
               <span style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em' }}>{vs.label}</span>
             </div>
             {healthScore != null && (
