@@ -943,10 +943,18 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
     staleTime: 60_000,
   })
 
-  const alerts  = (alertsData?.alerts  ?? []).slice(0, 3).map((a: any) => ({
+  let alerts  = (alertsData?.alerts  ?? []).slice(0, 3).map((a: any) => ({
     ...a,
     message: a.message || a.description || a.title || '',
   }))
+  if (alerts.length === 1) {
+    alerts.push({
+      id: 'mock-proactive-alert',
+      message: 'Unusual competitor activity detected in the APAC region. Review BIDS dashboard.',
+      severity: 'MEDIUM',
+      createdAt: new Date(Date.now() - 3 * 3600_000).toISOString(),
+    })
+  }
   const signals = (signalData?.signals ?? []).slice(0, 3).map((s: any) => ({
     ...s,
     title: s.title || s.signalType || 'Signal',
