@@ -125,7 +125,7 @@ function PageHeader({
     >
       {/* Avatar + greeting */}
       <div className="flex items-start gap-4">
-        <div className="relative flex-shrink-0 mt-1">
+        <div className="relative flex-shrink-0 mt-3.5">
           <div
             className="w-12 h-12 rounded-full flex items-center justify-center font-black text-white"
             style={{ background: 'linear-gradient(135deg, #60A5FA 0%, #1D4ED8 100%)', fontSize: 16, border: '2px solid rgba(255,255,255,0.5)', boxShadow: '0 2px 8px rgba(29,78,216,0.30)' }}
