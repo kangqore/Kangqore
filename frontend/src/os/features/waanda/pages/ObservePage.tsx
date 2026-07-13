@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useRef } from 'react'
-import { Activity, Users, ShieldAlert, Cpu, Eye } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { Activity, Users, ShieldAlert, Cpu, Eye, ChevronDown, ChevronUp } from 'lucide-react'
 import { api, isDemo } from '@lib/api'
 import { getSocket } from '@lib/socket'
 import { useKIMMPStore } from '@store/kimmp'
@@ -38,6 +38,52 @@ const PRIORITY_COLOR: Record<string, string> = {
   high:     '#f59e0b',
   medium:   '#2564ea',
   low:      '#6b7280',
+}
+
+function SignalRow({ sig }: { sig: any }) {
+  const [expanded, setExpanded] = useState(false)
+  
+  return (
+    <div className={`border ${expanded ? 'border-slate-200 bg-slate-50/50' : 'border-transparent'} rounded-xl transition-all`}>
+      <div
+        onClick={() => setExpanded(!expanded)}
+        className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer select-none"
+      >
+        <span
+          className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5 shadow-sm"
+          style={{ background: severityColor(sig.severity), boxShadow: `0 0 6px ${severityColor(sig.severity)}80` }}
+        />
+        <div className="min-w-0 flex-1">
+          <div className="text-sm font-medium text-slate-700 truncate">{sig.signalValue ?? sig.title ?? 'Signal'}</div>
+          <div className="flex items-center gap-2 mt-1">
+            <span className="text-[10px] font-bold px-1.5 rounded-sm" style={{ color: severityColor(sig.severity), background: `${severityColor(sig.severity)}15` }}>
+              {sig.severity ?? 'LOW'}
+            </span>
+            <span className="text-[11px] font-medium text-slate-400">{sig.sourceModule ?? sig.module ?? ''}</span>
+          </div>
+        </div>
+        <button className="text-slate-400 hover:text-slate-600 mt-1">
+          {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        </button>
+      </div>
+      
+      {expanded && (
+        <div className="px-3 pb-3 pt-1 pl-8">
+          <div className="p-3 bg-white border border-slate-100 rounded-lg text-xs shadow-sm">
+            <div className="font-semibold text-slate-700 mb-1">{sig.heading ?? sig.title ?? 'Signal Breakdown'}</div>
+            <div className="text-slate-500 mb-2 leading-relaxed whitespace-pre-wrap">
+              {sig.detail ?? sig.description ?? sig.problem ?? 'No additional contextual details provided.'}
+            </div>
+            {(sig.code || sig.problemNo || sig.errorCode) && (
+              <div className="font-mono text-[10px] text-slate-400 bg-slate-50 px-2 py-1 rounded inline-block border border-slate-100">
+                REF: {sig.code ?? sig.problemNo ?? sig.errorCode}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export function ObservePage() {
@@ -181,24 +227,7 @@ export function ObservePage() {
           ) : (
             <div className="space-y-1 pr-2" style={{ maxHeight: 380, overflowY: 'auto' }}>
               {signalList.map((sig: any, i: number) => (
-                <div
-                  key={sig.id ?? i}
-                  className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-default"
-                >
-                  <span
-                    className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5 shadow-sm"
-                    style={{ background: severityColor(sig.severity), boxShadow: `0 0 6px ${severityColor(sig.severity)}80` }}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-medium text-slate-700 truncate">{sig.signalValue ?? sig.title ?? 'Signal'}</div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-[10px] font-bold px-1.5 rounded-sm" style={{ color: severityColor(sig.severity), background: `${severityColor(sig.severity)}15` }}>
-                        {sig.severity ?? 'LOW'}
-                      </span>
-                      <span className="text-[11px] font-medium text-slate-400">{sig.sourceModule ?? sig.module ?? ''}</span>
-                    </div>
-                  </div>
-                </div>
+                <SignalRow key={sig.id ?? i} sig={sig} />
               ))}
             </div>
           )}
