@@ -72,10 +72,17 @@ function timeAgo(iso: string) {
 function getModuleDeg(sourceModule: string): number | null {
   const m = sourceModule.toLowerCase()
   if (m.includes('eqore') || m.includes('intent') || m.includes('opport')) return 0
-  if (m.includes('lead')  || m.includes('revenue') || m.includes('conver')) return 36
-  if (m.includes('alis')  || m.includes('market')  || m.includes('demand')) return 72
-  if (m.includes('vis')   || m.includes('content') || m.includes('gap'))    return 108
-  if (m.includes('kimmp') || m.includes('intel'))                            return 144
+  if (m.includes('lead')  || m.includes('revenue') || m.includes('conver')) return 30
+  if (m.includes('alis')  || m.includes('market')  || m.includes('demand')) return 60
+  if (m.includes('vis')   || m.includes('content') || m.includes('gap'))    return 90
+  if (m.includes('aegis') || m.includes('security')|| m.includes('threat')) return 120
+  if (m.includes('keos')  || m.includes('os')      || m.includes('system')) return 150
+  if (m.includes('kore')  || m.includes('cloud')   || m.includes('infra'))  return 180
+  if (m.includes('kimmp') || m.includes('agent'))                           return 210
+  if (m.includes('urgi')  || m.includes('graph'))                           return 240
+  if (m.includes('bids')  || m.includes('business'))                        return 270
+  if (m.includes('neural')|| m.includes('ops')     || m.includes('topology')) return 300
+  if (m.includes('ontology')|| m.includes('semantic')|| m.includes('map'))  return 330
   return null
 }
 
@@ -315,18 +322,20 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
     return Math.min(95, Math.round(avg))
   }
 
-  // 10 modules × 36° each — arc span 26° (±13°), 10° gap between segments
+  // 12 modules × 30° each — arc span 22° (±11°), 8° gap between segments
   const modules = [
     { label:'eQORE',    line2:'',             deg:0,   pct: srcPct(['eqore','intent','opportunity'], 72), color:CG, desc:'INTENT_DETECTED', roles:['ADMIN'] },
-    { label:'LEAD',     line2:'INTELLIGENCE', deg:36,  pct: srcPct(['lead','revenue','conversion'],  65), color:C,  desc:'LEAD_SCORE_JUMP', roles:['ADMIN'] },
-    { label:'KANGQORE', line2:'ALIS',         deg:72,  pct: srcPct(['alis','market','demand'],        58), color:C,  desc:'DEMAND_SPIKE',    roles:['ADMIN'] },
-    { label:'KANGQORE', line2:'VIS',          deg:108, pct: srcPct(['vis','content','gap'],           44), color:CG, desc:'CONTENT_GAP',     roles:['ADMIN'] },
-    { label:'KANGQORE', line2:'VIEW',         deg:144, pct: confidence,                                    color:C,  desc:'INTELLIGENCE',    roles:['ADMIN'] },
-    { label:'REVENUE',  line2:'',             deg:180, pct: kpis?.mrrDeltaPct != null ? Math.min(99, Math.max(1, 50 + kpis.mrrDeltaPct)) : 82, color:CG, desc:'PERFORMANCE', roles:['ADMIN'] },
-    { label:'FINANCE',  line2:'',             deg:216, pct: kpis?.totalBudget > 0 ? Math.min(99, Math.max(1, Math.round((1 - (kpis.totalSpend || 0) / kpis.totalBudget) * 60 + 40))) : 67, color:CA, desc:'METRICS', roles:['ADMIN', 'CLIENT'] },
-    { label:'CLIENTS',  line2:'',             deg:252, pct: Math.min(99, Math.round(((analytics.clients || 0) / 50) * 100)), color:C, desc:'PORTFOLIO', roles:['ADMIN'] },
-    { label:'OPS',      line2:'',             deg:288, pct: 88,                                            color:CA, desc:'EFFICIENCY',      roles:['ADMIN'] },
-    { label:'PROJECTS', line2:'',             deg:324, pct: kpis?.onTimeProjectPct ?? 61,                  color:C,  desc:'PIPELINE',        roles:['ADMIN', 'CLIENT'] },
+    { label:'LEAD',     line2:'INTELLIGENCE', deg:30,  pct: srcPct(['lead','revenue','conversion'],  65), color:C,  desc:'LEAD_SCORE_JUMP', roles:['ADMIN'] },
+    { label:'KANGQORE', line2:'ALIS',         deg:60,  pct: srcPct(['alis','market','demand'],        58), color:C,  desc:'DEMAND_SPIKE',    roles:['ADMIN'] },
+    { label:'KANGQORE', line2:'VIS',          deg:90,  pct: srcPct(['vis','content','gap'],           44), color:CG, desc:'CONTENT_GAP',     roles:['ADMIN'] },
+    { label:'KANGQORE', line2:'AEGIS',        deg:120, pct: srcPct(['aegis','security','threat'],     89), color:C,  desc:'SECURITY_MESH',   roles:['ADMIN'] },
+    { label:'KEOS',     line2:'',             deg:150, pct: srcPct(['keos','os','system'],            94), color:CG, desc:'CORE_SYS_HEALTH', roles:['ADMIN'] },
+    { label:'KORE',     line2:'',             deg:180, pct: srcPct(['kore','cloud','infra'],          98), color:C,  desc:'INFRASTRUCTURE',  roles:['ADMIN'] },
+    { label:'KIMMP',    line2:'',             deg:210, pct: srcPct(['kimmp','agent','mesh'],          82), color:CA, desc:'MULTI_AGENT',     roles:['ADMIN'] },
+    { label:'URGI',     line2:'',             deg:240, pct: srcPct(['urgi','graph','semantic'],       76), color:C,  desc:'GRAPH_INTEL',     roles:['ADMIN'] },
+    { label:'BIDS',     line2:'',             deg:270, pct: srcPct(['bids','business','analytics'],   88), color:CG, desc:'BI_SYSTEM',       roles:['ADMIN', 'CLIENT'] },
+    { label:'NEURAL',   line2:'CENTRE',       deg:300, pct: srcPct(['neural','ops','topology'],       95), color:CA, desc:'AI_TOPOLOGY',     roles:['ADMIN'] },
+    { label:'ONTOLOGY', line2:'',             deg:330, pct: srcPct(['ontology','mapping','memory'],   91), color:C,  desc:'SEMANTIC_MAP',    roles:['ADMIN'] },
   ]
   const visibleModules = userRole === 'ADMIN' ? modules : modules.filter(m => m.roles.includes(userRole))
 
@@ -410,7 +419,7 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
         </radialGradient>
         {/* Invisible arc paths — used as rails for curved textPath labels */}
         {visibleModules.flatMap(({ deg, line2 }) => {
-          const s = deg - 13, e = deg + 13
+          const s = deg - 11, e = deg + 11
           const rev = deg >= 120 && deg <= 240
           const fn = rev ? arcPathCCW : arcPath
           const r1 = line2 ? 126 : 129
@@ -453,8 +462,8 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
         const isHovered = hovered === label + deg
         const isFaded = hovered !== null && hovered !== label + deg
 
-        const arcStart = deg - 13, arcEnd = deg + 13
-        const valEnd   = deg - 13 + (pct/100) * 26
+        const arcStart = deg - 11, arcEnd = deg + 11
+        const valEnd   = deg - 11 + (pct/100) * 22
 
         // Boot — each arc fades in staggered
         const booted = bootPhase >= 2
@@ -505,8 +514,8 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
             {/* Scenario delta badge — appears outside the arc ring when scenario mode is active */}
             {scenarioDelta && (() => {
               const DELTA_MAP: Record<number, keyof ScenarioDelta> = {
-                180: 'revenueHealth', 36: 'pipelineVelocity', 288: 'executionCapacity',
-                324: 'riskExposure',  72: 'marketPosition',
+                270: 'revenueHealth', 30: 'pipelineVelocity', 210: 'executionCapacity',
+                120: 'riskExposure',  60: 'marketPosition',
               }
               const deltaKey = DELTA_MAP[deg]
               if (!deltaKey) return null
@@ -516,7 +525,7 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
               const bp = polar(cx, cy, 138, deg)
               return (
                 <g>
-                  <rect x={bp.x - 13} y={bp.y - 8} width={26} height={16} rx={3}
+                  <rect x={bp.x - 11} y={bp.y - 8} width={22} height={16} rx={3}
                     fill={`${bc}20`} stroke={bc} strokeWidth={0.8} />
                   <text x={bp.x} y={bp.y + 4.5} textAnchor="middle" fill={bc}
                     fontSize={7} fontFamily="monospace" fontWeight="900"
@@ -726,7 +735,7 @@ function WaandaGreeting({ kpis, insights, health, onDismiss, onSpeakDirect }: {
     `Good ${tod}, sir. WAANDA online.`,
     crit > 0
       ? `I've flagged ${crit} critical signal${crit > 1 ? 's' : ''} requiring immediate attention.`
-      : 'All ten modules are operational and running within normal parameters.',
+      : 'All twelve modules are operational and running within normal parameters.',
     twin != null ? `Business twin score is at ${twin} out of one hundred.` : '',
     rev != null  ? `Revenue health holding at ${rev}.` : '',
     'Standing by for your orders, sir.',
@@ -745,7 +754,7 @@ function WaandaGreeting({ kpis, insights, health, onDismiss, onSpeakDirect }: {
     [1500, { type: 'divider',  text: '' }],
     [1900, { type: 'greeting', text: `Good ${tod}, sir.` }],
     [2300, { type: 'body',     text: statusLine }],
-    [2700, { type: 'body',     text: `10 modules online  ·  AEGIS active  ·  All systems nominal` }],
+    [2700, { type: 'body',     text: `12 modules online  ·  AEGIS active  ·  All systems nominal` }],
     [3100, { type: 'ready',    text: 'WAANDA online. Standing by for orders.' }],
     [3700, { type: 'prompt',   text: '[ CLICK ANYWHERE OR PRESS ANY KEY TO PROCEED ]' }],
   ]
