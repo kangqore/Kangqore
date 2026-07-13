@@ -424,36 +424,7 @@ function WorkQueuePanel({ navigate }: { navigate: (p: string) => void }) {
         </div>
       )}
 
-      {/* Consultations pill */}
-      <div
-        onClick={() => navigate('/kangqore-view/admin/consultations')}
-        className="os-card p-3 cursor-pointer flex items-center gap-3 hover:translate-x-1 rounded-xl transition-all"
-      >
-        <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#0ea5e914' }}>
-          <Calendar className="w-4 h-4" style={{ color: '#0ea5e9' }} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-[11px] font-bold leading-tight" style={{ color: 'var(--os-text-1)' }}>Consultations</p>
-          <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-3)' }}>
-            {totalConsults} total · {pendingConsults > 0 ? `${pendingConsults} pending` : 'none pending'}
-          </p>
-        </div>
-        <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--os-text-3)' }} />
-      </div>
 
-      {/* KIMMP status */}
-      <div className="os-card p-3 flex items-center gap-3 rounded-xl">
-        <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0`}
-             style={{ background: kimmpOk ? '#00c87514' : 'var(--os-surface-0)' }}>
-          <Brain className="w-4 h-4" style={{ color: kimmpOk ? '#00c875' : 'var(--os-text-3)' }} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-[11px] font-bold leading-tight" style={{ color: 'var(--os-text-1)' }}>KIMMP v{kimmpVersion}</p>
-          <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-3)' }}>Tier 2: {kimmpHealth ? (tier2 ? 'Active' : 'Inactive') : '—'}</p>
-        </div>
-        <span className="w-2 h-2 rounded-full flex-shrink-0"
-              style={{ background: kimmpHealth ? (kimmpOk ? '#00c875' : '#e2445c') : 'var(--os-text-3)' }} />
-      </div>
 
       {/* Next Best Actions */}
       <div className="os-card p-4 mt-2 flex flex-col gap-3 rounded-2xl" style={{
