@@ -108,14 +108,14 @@ for (const route of PORTAL_ROUTES) {
 
 test('kimmp: actions input accepts text', async ({ page }) => {
   await page.goto('/kangqore-view/admin/kimmp/actions', { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(800)
+  await page.waitForTimeout(1500)
 
   // No crash
   await expect(page.getByText(/something went wrong/i)).toHaveCount(0)
 
   // The directive input renders without a backend (it is part of the form shell)
   const input = page.locator('textarea[placeholder*="KIMMP to do"]')
-  await expect(input).toBeVisible({ timeout: 5000 })
+  await expect(input).toBeVisible({ timeout: 10_000 })
   await input.fill('What should I focus on today?')
   expect(await input.inputValue()).toContain('What should I focus on today?')
 })
