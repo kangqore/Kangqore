@@ -166,6 +166,56 @@ function PageHeader({
   )
 }
 
+// ─── Engine Health Matrix ─────────────────────────────────────────────────────
+
+const ENGINE_STATUSES = [
+  'green', 'red', 'white', 'green', 'orange',
+  'green', 'white', 'red', 'red', 'red'
+]
+
+function EngineHealthMatrix() {
+  const activeCount = ENGINE_STATUSES.filter(s => s === 'green').length;
+  const totalCount = ENGINE_STATUSES.length;
+  const pct = Math.round((activeCount / totalCount) * 100);
+
+  return (
+    <div className="os-card p-5 rounded-2xl flex flex-col gap-4">
+      <div className="flex justify-between items-center">
+        <p className="text-[11px] font-semibold uppercase tracking-widest m-0" style={{ color: 'var(--os-text-2)' }}>
+          Engine Health
+        </p>
+        <span className="text-[10px] font-bold" style={{ color: 'var(--os-text-3)' }}>{pct}% ACTIVE</span>
+      </div>
+      
+      <p className="text-[10px] font-semibold tracking-wider m-0" style={{ color: 'var(--os-text-1)' }}>
+        ENGINES ({activeCount}/{totalCount})
+      </p>
+
+      <div className="grid grid-cols-5 gap-2 mt-1">
+        {ENGINE_STATUSES.map((status, i) => {
+          let bg = 'var(--os-surface-0)'
+          if (status === 'green') bg = '#10B981'
+          if (status === 'red') bg = '#EF4444'
+          if (status === 'orange') bg = '#F59E08'
+
+          return (
+            <div 
+              key={i}
+              className="rounded-[4px]"
+              style={{ 
+                height: 20, 
+                background: bg,
+                boxShadow: status !== 'white' ? `0 2px 6px ${bg}40` : 'none',
+                border: status === 'white' ? '1px solid var(--os-border)' : 'none'
+              }}
+            />
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 // ─── KPI Bar ──────────────────────────────────────────────────────────────────
 
 const KPI_DEFS = [
@@ -1204,11 +1254,11 @@ const MODULES = [
 
 function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
   return (
-    <div className="os-card p-5 rounded-2xl h-full flex flex-col justify-center">
+    <div className="os-card p-5 rounded-2xl flex flex-col justify-center">
       <p className="text-[11px] font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--os-text-2)' }}>
         Quick Access
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, placeItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, placeItems: 'center' }}>
         {MODULES.map(m => {
           const Icon = m.icon
           return (
@@ -1227,7 +1277,7 @@ function ModuleGrid({ navigate }: { navigate: (p: string) => void }) {
               style={{
                 background: 'var(--os-surface-0)',
                 border: '1px solid var(--os-border)',
-                width: '60%', 
+                width: '100%', 
                 aspectRatio: '1 / 1',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.02)',
               }}
@@ -1668,8 +1718,10 @@ export function DashboardHome() {
 
       {/* 3. Three-column main body */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5 items-start">
-        <div className="lg:col-span-3 col-span-1 w-full">
+        <div className="lg:col-span-3 col-span-1 flex flex-col gap-5 w-full">
           <WorkQueuePanel navigate={navigate} />
+          <ModuleGrid navigate={navigate} />
+          <EngineHealthMatrix />
         </div>
         <div className="lg:col-span-6 col-span-1 min-w-0 flex flex-col gap-4 w-full">
           <PipelineKanban navigate={navigate} leads={allLeads} />
@@ -1681,13 +1733,10 @@ export function DashboardHome() {
         </div>
       </div>
 
-      {/* 4. Bottom row: AEGIS full-width + Module Grid */}
+      {/* 4. Bottom row: AEGIS full-width */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
-        <div className="lg:col-span-7 col-span-1 w-full">
+        <div className="lg:col-span-12 col-span-1 w-full">
           <AegisWideCard navigate={navigate} />
-        </div>
-        <div className="lg:col-span-5 col-span-1 w-full">
-          <ModuleGrid navigate={navigate} />
         </div>
       </div>
 
