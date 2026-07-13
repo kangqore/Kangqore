@@ -2,7 +2,7 @@ import { ITwinNetwork } from '../../os/edtp/contracts/types';
 
 export class TwinNetworkRegistry {
   private static instance: TwinNetworkRegistry;
-  private networks: Map<string, ITwinNetwork> = new Map();
+  private readonly networks: Map<string, ITwinNetwork> = new Map();
 
   private constructor() {}
 

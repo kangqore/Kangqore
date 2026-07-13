@@ -10,8 +10,8 @@ import { TwinEvolutionEngine } from '../../os/edtp/TwinEvolutionEngine';
 import { SimulationLedger } from '../../os/edtp/SimulationLedger';
 
 export class EnterpriseSimulationEngine {
-  private timeEngine = new EnterpriseTimeEngine();
-  private evolutionEngine = new TwinEvolutionEngine();
+  private readonly timeEngine = new EnterpriseTimeEngine();
+  private readonly evolutionEngine = new TwinEvolutionEngine();
 
   /**
    * Generates scenarios based on the proposal and the council's conflicts/mitigations.

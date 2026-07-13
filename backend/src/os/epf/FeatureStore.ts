@@ -3,7 +3,7 @@ import { AnalyticsRegistry } from '../../domains/analytics/AnalyticsRegistry';
 
 export class FeatureStore {
   private static instance: FeatureStore;
-  private featureCache: Map<string, EnterpriseFeature> = new Map();
+  private readonly featureCache: Map<string, EnterpriseFeature> = new Map();
 
   private constructor() {}
 

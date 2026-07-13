@@ -2,7 +2,7 @@ import { AnalyticsRegistry } from './AnalyticsRegistry';
 import { Insight } from './contracts/types';
 
 export class InsightEngine {
-  private registry = AnalyticsRegistry.getInstance();
+  private readonly registry = AnalyticsRegistry.getInstance();
 
   /**
    * Scans KPIs and metrics to generate explainable, provenanced insights.

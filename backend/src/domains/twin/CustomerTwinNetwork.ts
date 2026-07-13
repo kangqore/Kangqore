@@ -10,13 +10,13 @@ export class CustomerTwinNetwork implements ITwinNetwork {
     const initialState = snapshot.twinStates[this.networkId];
     if (initialState) {
       // Deep clone to ensure we own this simulation state
-      this.state = JSON.parse(JSON.stringify(initialState));
+      this.state = structuredClone(initialState);
     }
   }
 
   clone(): ITwinNetwork {
     const clone = new CustomerTwinNetwork();
-    clone.state = JSON.parse(JSON.stringify(this.state));
+    clone.state = structuredClone(this.state);
     return clone;
   }
 
@@ -32,6 +32,6 @@ export class CustomerTwinNetwork implements ITwinNetwork {
   }
 
   getState(): Record<string, any> {
-    return JSON.parse(JSON.stringify(this.state));
+    return structuredClone(this.state);
   }
 }

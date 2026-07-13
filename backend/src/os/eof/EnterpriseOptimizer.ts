@@ -7,11 +7,11 @@ import { OptimizationLedger } from './OptimizationLedger';
 import { EnterpriseSimulationEngine } from '../../domains/simulation/EnterpriseSimulationEngine';
 
 export class EnterpriseOptimizer {
-  private searchEngine = new SearchEngine();
-  private branchEvaluator = new BranchEvaluator();
-  private paretoEngine = new ParetoEngine();
-  private recommendationEngine = new RecommendationEngine();
-  private ledger = OptimizationLedger.getInstance();
+  private readonly searchEngine = new SearchEngine();
+  private readonly branchEvaluator = new BranchEvaluator();
+  private readonly paretoEngine = new ParetoEngine();
+  private readonly recommendationEngine = new RecommendationEngine();
+  private readonly ledger = OptimizationLedger.getInstance();
 
   public async optimize(
     problem: OptimizationProblem,

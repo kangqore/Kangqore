@@ -4,10 +4,8 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import dotenv from 'dotenv';
-import { PrismaClient } from '@prisma/client';
-import { createServer } from 'http';
-import path from 'path';
+import { createServer } from 'node:http';
+import path from 'node:path';
 import passport from 'passport';
 
 import authRoutes from './routes/auth';
@@ -78,7 +76,7 @@ import { rateLimiter } from './middleware/rateLimiter';
 import { legacyRedirectsMiddleware } from './middleware/legacyRedirects';
 import { dashboardRedirectMiddleware } from './middleware/dashboardRedirect';
 import { customDomainRouter } from './middleware/customDomainRouter';
-import { initializeSocket, getIO } from './socket';
+import { initializeSocket } from './socket';
 
 
 // Server restart trigger 12345678901234567890
@@ -154,7 +152,7 @@ import publicContentRoutes from './routes/public_content';
 // ...
 app.use('/api/admin/media', mediaRoutes);
 app.use('/api/admin/content', contentRoutes);
-import adminIpRoutes from './routes/admin-ip';
+// admin-ip routes (reserved for future use)
 import koreRoutes from './os/kore/api/kore.routes'; // NEW KEOS Layer
 
 app.use('/api/kangqore/immp', kangqoreImmpRoutes);

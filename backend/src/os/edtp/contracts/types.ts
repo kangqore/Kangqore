@@ -1,5 +1,5 @@
 import { EnterpriseProposal } from '../../ecf/contracts/types';
-import { EnterprisePrediction } from '../../epf/contracts/types';
+import {  '../../epf/contracts/types';
 
 export interface EnterpriseTwinSnapshot {
   snapshotId: string;

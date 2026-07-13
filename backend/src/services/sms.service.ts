@@ -2,8 +2,8 @@ import twilio from 'twilio';
 import logger from '../utils/logger';
 
 class SmsService {
-  private client: twilio.Twilio | null = null;
-  private fromNumber: string | undefined;
+  private readonly client: twilio.Twilio | null = null;
+  private readonly fromNumber: string | undefined;
 
   constructor() {
     const accountSid = process.env.TWILIO_ACCOUNT_SID;

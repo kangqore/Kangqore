@@ -17,7 +17,7 @@ export interface AgentNode {
 
 class SwarmManagerService {
   private io: SocketIOServer | null = null;
-  private agents: Map<string, AgentNode> = new Map();
+  private readonly agents: Map<string, AgentNode> = new Map();
 
   constructor() {
     // Initialize with some default agents for the swarm

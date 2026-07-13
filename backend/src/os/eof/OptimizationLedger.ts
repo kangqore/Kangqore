@@ -2,7 +2,7 @@ import { OptimizationProblem, CandidateStrategy, ScoredBranch, Recommendation } 
 
 export class OptimizationLedger {
   private static instance: OptimizationLedger;
-  private logs: any[] = [];
+  private readonly logs: any[] = [];
 
   private constructor() {}
 

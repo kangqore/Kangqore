@@ -53,9 +53,9 @@ const TASK_LIBRARY: Record<AgentRole, TaskDefinition[]> = {
 };
 
 class SwarmActivityEngineService {
-  private timers: Map<string, NodeJS.Timeout> = new Map();
-  private taskProgress: Map<string, number> = new Map(); // agentId → 0-100
-  private progressIntervals: Map<string, NodeJS.Timeout> = new Map();
+  private readonly timers: Map<string, NodeJS.Timeout> = new Map();
+  private readonly taskProgress: Map<string, number> = new Map(); // agentId → 0-100
+  private readonly progressIntervals: Map<string, NodeJS.Timeout> = new Map();
   private running = false;
 
   /**

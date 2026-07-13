@@ -2,7 +2,7 @@ import { IPredictionModelPlugin, PredictionTarget } from './contracts/types';
 
 export class ModelRegistry {
   private static instance: ModelRegistry;
-  private models: IPredictionModelPlugin[] = [];
+  private readonly models: IPredictionModelPlugin[] = [];
 
   private constructor() {}
 
