@@ -360,6 +360,147 @@ const CommunitySpotlight = ({ joinedCommunities, onToggleJoin }) => {
   );
 };
 
+// ─── Tweet Composer ──────────────────────────────────────────────────────────
+
+const TweetComposer = ({ onPost }) => {
+  const [text, setText] = useState('');
+  const [title, setTitle] = useState('');
+  const [community, setCommunity] = useState('k/showcase');
+  const [category, setCategory] = useState('general');
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!text.trim()) return;
+
+    // Parse hashtags from text
+    const hashtagRegex = /#(\w+)/g;
+    const tags = [];
+    let match;
+    while ((match = hashtagRegex.exec(text)) !== null) {
+      tags.push(match[1]);
+    }
+    if (tags.length === 0) {
+      tags.push('showcase');
+    }
+
+    onPost({
+      title: title.trim() || text.split('\n')[0].substring(0, 50) + (text.length > 50 ? '...' : ''),
+      excerpt: text,
+      community,
+      category,
+      tags,
+    });
+
+    // Clear state
+    setText('');
+    setTitle('');
+    setIsExpanded(false);
+  };
+
+  return (
+    <div className="bg-white/70 dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] p-5 shadow-sm transition-all duration-300">
+      <div className="flex gap-4">
+        {/* Kangaroo styled avatar */}
+        <div className="flex-shrink-0">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-sm font-black text-sm">
+            🦘
+          </div>
+        </div>
+
+        {/* Form area */}
+        <form onSubmit={handleSubmit} className="flex-1 min-w-0">
+          {isExpanded && (
+            <input
+              type="text"
+              placeholder="Topic Title (optional)"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full bg-transparent border-none text-sm font-bold text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-0 mb-2 p-0"
+            />
+          )}
+
+          <textarea
+            placeholder="What's happening?"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onFocus={() => setIsExpanded(true)}
+            rows={isExpanded ? 3 : 1}
+            className="w-full bg-transparent border-none text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-0 resize-none p-0"
+          />
+
+          {isExpanded && (
+            <div className="flex gap-2 mb-3 mt-3 flex-wrap">
+              {/* Select Community */}
+              <select
+                value={community}
+                onChange={(e) => setCommunity(e.target.value)}
+                className="bg-gray-50 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 rounded-lg px-2.5 py-1 text-[11px] font-bold text-gray-600 dark:text-gray-400 focus:outline-none"
+              >
+                <option value="k/showcase">k/showcase</option>
+                <option value="k/governance">k/governance</option>
+                <option value="k/architecture">k/architecture</option>
+                <option value="k/workflows">k/workflows</option>
+              </select>
+
+              {/* Select Category */}
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="bg-gray-50 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 rounded-lg px-2.5 py-1 text-[11px] font-bold text-gray-600 dark:text-gray-400 focus:outline-none"
+              >
+                <option value="general">General</option>
+                <option value="ai">Agentic AI</option>
+                <option value="engineering">Engineering</option>
+                <option value="ask">Q&A</option>
+              </select>
+              
+              <span className="text-[10px] text-gray-400 self-center">
+                Tip: Include #hashtags in your text!
+              </span>
+            </div>
+          )}
+
+          {/* Bottom controls row */}
+          <div className="flex items-center justify-between pt-2 border-t border-gray-100/50 dark:border-white/[0.03] mt-2">
+            {/* Inline Action Icons */}
+            <div className="flex items-center gap-1 text-blue-500 dark:text-cyan-400">
+              <button type="button" className="p-1.5 rounded-full hover:bg-blue-500/10 transition-colors" title="Media">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><g><path d="M19.75 2H4.25C3.01 2 2 3.01 2 4.25v15.5C2 20.99 3.01 22 4.25 22h15.5c1.24 0 2.25-1.01 2.25-2.25V4.25C22 3.01 20.99 2 19.75 2zM4.25 3.5h15.5c.413 0 .75.337.75.75v9.676l-3.858-3.858c-.14-.14-.33-.22-.53-.22s-.39.08-.53.22l-4.75 4.75-2.95-2.95c-.14-.14-.33-.22-.53-.22s-.39.08-.53.22L3.5 16.251V4.25c0-.413.337-.75.75-.75zm0 17c-.413 0-.75-.337-.75-.75v-2.09l4.57-4.57 2.95 2.95c.14.14.33.22.53.22s.39-.08.53-.22l4.75-4.75 3.42 3.42V19.25c0 .413-.337.75-.75.75H4.25zM15 9c-.828 0-1.5-.672-1.5-1.5S14.172 6 15 6s1.5.672 1.5 1.5S15.828 9 15 9z"></path></g></svg>
+              </button>
+              <button type="button" className="p-1.5 rounded-full hover:bg-blue-500/10 transition-colors" title="GIF">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><g><path d="M19 10.5V8.8h-4.4v6.4h1.7v-2H18v-1.7h-1.7v-1H19zM12.5 8.8h-1.7v6.4h1.7V8.8zm-5.3 1.9c-.2-.3-.6-.5-1-.5-.6 0-1.1.5-1.1 1.2s.5 1.2 1.1 1.2c.4 0 .8-.2 1-.5V11H6.1v1.5h2.1V10c0-.5-.4-1.2-1-1.2h-.4c-.7 0-1.4.5-1.4 1.4v1.6c0 1 .7 1.4 1.4 1.4h.4c.5 0 1-.3 1-.8V10.7zM21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm.5 14c0 .3-.2.5-.5.5H3c-.3 0-.5-.2-.5-.5V6c0-.3.2-.5.5-.5h18c.3 0 .5.2.5.5v12z"></path></g></svg>
+              </button>
+              <button type="button" className="p-1.5 rounded-full hover:bg-blue-500/10 transition-colors" title="Poll">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><g><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm-5-9.5h10v1.5H7v-1.5zm0-3.5h10V7H7v1.5zm0 7h7V14H7v1.5z"></path></g></svg>
+              </button>
+              <button type="button" className="p-1.5 rounded-full hover:bg-blue-500/10 transition-colors" title="Emoji">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><g><path d="M12 22.75C6.07 22.75 1.25 17.93 1.25 12S6.07 1.25 12 1.25 22.75 6.07 22.75 12 17.93 22.75 12 22.75zm0-20C6.9 2.75 2.75 6.9 2.75 12S6.9 21.25 12 21.25s9.25-4.15 9.25-9.25S17.1 2.75 12 2.75zM8.38 10.3c-.46 0-.83-.37-.83-.83 0-.96.78-1.74 1.74-1.74.46 0 .83.37.83.83 0 .46-.37.83-.83.83-.41 0-.74.33-.74.74.01.46-.36.83-.83.83zm7.24 0c-.46 0-.83-.37-.83-.83 0-.41-.33-.74-.74-.74-.46 0-.83-.37-.83-.83 0-.96.78-1.74 1.74-1.74.46 0 .83.37.83.83 0 .46-.37.83-.83.83zm-3.62 7.75c-2.4 0-4.48-1.46-5.35-3.6-.17-.43.04-.91.47-1.08.43-.17.91.04 1.08.47.62 1.52 2.1 2.55 3.8 2.55s3.18-1.03 3.8-2.55c.17-.43.65-.64 1.08-.47.43.17.64.65.47 1.08-.87 2.14-2.95 3.6-5.35 3.6z"></path></g></svg>
+              </button>
+              <button type="button" className="p-1.5 rounded-full hover:bg-blue-500/10 transition-colors" title="Schedule">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><g><path d="M19 4h-2V3c0-.55-.45-1-1-1s-1 .45-1 1v1H9V3c0-.55-.45-1-1-1s-1 .45-1 1v1H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm.5 16c0 .28-.22.5-.5.5H5c-.28 0-.5-.22-.5-.5V9h15v11zm0-13h-15V6c0-.28.22-.5.5-.5h2V6c0 .55.45 1 1 1s1-.45 1-1v-.5h6V6c0 .55.45 1 1 1s1-.45 1-1v-.5h2c.28 0 .5.22.5.5v1zM10.5 12h3v3h-3v-3zm0 4.5h3v3h-3v-3z"></path></g></svg>
+              </button>
+            </div>
+
+            {/* Post button */}
+            <button
+              type="submit"
+              disabled={!text.trim()}
+              className={`font-black px-5 py-1.5 rounded-full text-xs transition-all ${
+                text.trim()
+                  ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:scale-[1.03]'
+                  : 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-600 cursor-not-allowed'
+              }`}
+            >
+              Post
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 // ─── Topic Card ───────────────────────────────────────────────────────────────
 
 const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userReposts = [], userBookmarks = [], onToggleJoin, onRate, onLike, onRepost, onBookmark, onTagClick, onCommunityClick, onCardClick }) => {
@@ -814,6 +955,29 @@ const CommunitiesPage = () => {
       }
       return { ...prev, [topicId]: topicVotes };
     });
+  };
+
+  const handleComposerPost = (newTopicData) => {
+    const newTopic = {
+      id: topics.length + 1,
+      title: newTopicData.title,
+      excerpt: newTopicData.excerpt,
+      category: newTopicData.category,
+      community: newTopicData.community,
+      tags: newTopicData.tags,
+      author: { name: 'Mahesh Kumar', initials: 'MK', color: '#8B5CF6' },
+      posters: [{ initials: 'MK', color: '#8B5CF6' }],
+      replies: 0,
+      views: 1,
+      lastActivity: new Date().toISOString().split('T')[0],
+      pinned: false,
+      solved: false,
+      ratings: { support: 0, oppose: 0, helpful: 0, notHelpful: 0, endorse: 0, challenge: 0 },
+      likes: 0,
+      reposts: 0,
+      comments: []
+    };
+    setTopics(prev => [newTopic, ...prev]);
   };
 
   // Filter & sort topics
@@ -1310,6 +1474,10 @@ const CommunitiesPage = () => {
               </div>
 
               {/* Topic cards */}
+              <div className="mb-4">
+                <TweetComposer onPost={handleComposerPost} />
+              </div>
+
               {displayedTopics.length > 0 ? (
                 <>
                   {displayedTopics.map((topic) => (
