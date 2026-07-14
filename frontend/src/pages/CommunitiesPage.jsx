@@ -400,15 +400,23 @@ const TagPill = ({ tag }) => (
 );
 
 /** Stat counter with animation */
-const StatCounter = ({ icon: Icon, value, label, color }) => (
-  <div className="flex items-center gap-4 px-6 py-5 relative overflow-hidden group cursor-default transition-all duration-300 hover:bg-white/[0.02] dark:hover:bg-white/[0.02] z-10">
-    <div className="relative w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden shadow-sm transition-transform duration-500 group-hover:scale-105">
-      <div className="absolute inset-0 opacity-10 dark:opacity-20 group-hover:opacity-25 dark:group-hover:opacity-45 transition-opacity duration-300" style={{ backgroundColor: color }} />
-      <Icon className="w-5 h-5 relative z-10 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500" style={{ color }} />
+const StatCounter = ({ icon: Icon, value, label, accentColor, bgGradientLight, bgGradientDark, iconBgLight, iconBgDark }) => (
+  <div className={`flex flex-col justify-between p-6 rounded-2xl border border-gray-200/50 dark:border-white/[0.05] backdrop-blur-xl relative overflow-hidden group cursor-default transition-all duration-500 hover:-translate-y-1 shadow-[0_8px_30px_rgb(0,0,0,0.02)] ${bgGradientLight} ${bgGradientDark}`}>
+    {/* Decorative blur blob */}
+    <div className="absolute -bottom-10 -right-10 w-24 h-24 rounded-full blur-2xl opacity-40 dark:opacity-20 transition-transform duration-700 group-hover:scale-150" style={{ backgroundColor: accentColor }} />
+    
+    <div className="flex items-center justify-between mb-4 relative z-10">
+      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm ${iconBgLight} ${iconBgDark} transition-transform duration-550 group-hover:rotate-6`}>
+        <Icon className="w-5 h-5" style={{ color: accentColor }} />
+      </div>
+      <span className="text-[10px] font-black opacity-20 dark:opacity-35 tracking-wider uppercase">
+        {label.split(' ')[0]}
+      </span>
     </div>
-    <div className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">
-      <div className="text-xl font-black text-gray-900 dark:text-white tracking-tight">{value}</div>
-      <div className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider transition-colors group-hover:text-gray-700 dark:group-hover:text-gray-300 mt-0.5">{label}</div>
+    
+    <div className="relative z-10">
+      <div className="text-3xl font-black tracking-tight text-gray-900 dark:text-white mb-0.5">{value}</div>
+      <div className="text-[10px] font-black uppercase tracking-wider text-gray-400 dark:text-gray-500">{label}</div>
     </div>
   </div>
 );
@@ -596,13 +604,47 @@ const CommunitiesPage = () => {
          SECTION 1: Community Stats Banner
          ═══════════════════════════════════════════════════════════ */}
       <section className="relative z-20 mt-6 sm:mt-9 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
-        <div className="bg-white/40 dark:bg-white/[0.01] backdrop-blur-2xl border border-gray-200/50 dark:border-white/[0.06] rounded-2xl overflow-hidden shadow-sm">
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-gray-200/40 dark:divide-white/[0.06] relative z-20">
-            <StatCounter icon={MessageCircle} value="1,801" label="Total Topics" color="#9e81ff" />
-            <StatCounter icon={Users} value="4,280" label="Active Members" color="#12a89d" />
-            <StatCounter icon={Zap} value="312" label="Posts This Week" color="#f97316" />
-            <StatCounter icon={Layers} value="7" label="Categories" color="#3b82f6" />
-          </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          <StatCounter 
+            icon={MessageCircle} 
+            value="1,801" 
+            label="Total Topics" 
+            accentColor="#8B5CF6"
+            bgGradientLight="bg-gradient-to-br from-[#EDE9FE]/40 to-[#EDE9FE]/10"
+            bgGradientDark="dark:from-[#8B5CF6]/08 dark:to-transparent"
+            iconBgLight="bg-[#EDE9FE]/60"
+            iconBgDark="dark:bg-[#8B5CF6]/15"
+          />
+          <StatCounter 
+            icon={Users} 
+            value="4,280" 
+            label="Active Members" 
+            accentColor="#10B981"
+            bgGradientLight="bg-gradient-to-br from-[#D1FAE5]/40 to-[#D1FAE5]/10"
+            bgGradientDark="dark:from-[#10B981]/08 dark:to-transparent"
+            iconBgLight="bg-[#D1FAE5]/60"
+            iconBgDark="dark:bg-[#10B981]/15"
+          />
+          <StatCounter 
+            icon={Zap} 
+            value="312" 
+            label="Posts This Week" 
+            accentColor="#FB923C"
+            bgGradientLight="bg-gradient-to-br from-[#FFEDD5]/40 to-[#FFEDD5]/10"
+            bgGradientDark="dark:from-[#FB923C]/08 dark:to-transparent"
+            iconBgLight="bg-[#FFEDD5]/60"
+            iconBgDark="dark:bg-[#FB923C]/15"
+          />
+          <StatCounter 
+            icon={Layers} 
+            value="7" 
+            label="Categories" 
+            accentColor="#3B82F6"
+            bgGradientLight="bg-gradient-to-br from-[#DBEAFE]/40 to-[#DBEAFE]/10"
+            bgGradientDark="dark:from-[#3B82F6]/08 dark:to-transparent"
+            iconBgLight="bg-[#DBEAFE]/60"
+            iconBgDark="dark:bg-[#3B82F6]/15"
+          />
         </div>
       </section>
 
