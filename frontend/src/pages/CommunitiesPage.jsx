@@ -191,6 +191,29 @@ function formatCount(num) {
   return num.toString();
 }
 
+function formatFullDateTime(dateStr, topicId = 1) {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  
+  const month = months[d.getMonth()];
+  const date = d.getDate();
+  const day = days[d.getDay()];
+  
+  // Custom mock times to match high-fidelity specs
+  const times = {
+    1: '9:00 AM',
+    2: '10:15 AM',
+    3: '2:30 PM',
+    4: '4:45 PM',
+  };
+  const mockTime = times[topicId] || '11:00 AM';
+  
+  return `${month} ${date} • ${day} ${mockTime}`;
+}
+
 function getCategoryById(id) {
   return CATEGORIES.find(c => c.id === id) || CATEGORIES[0];
 }
@@ -428,19 +451,45 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
       <div className="p-5 sm:p-6 relative z-10">
         <div className="flex gap-4 sm:gap-6">
           {/* Author avatar */}
-          <div className="hidden sm:block pt-0.5">
+          <div className="pt-0.5">
             <Avatar initials={topic.author.initials} color={topic.author.color} size="md" />
           </div>
           
           {/* Content */}
           <div className="flex-1 min-w-0">
-            {/* Top meta row */}
+            {/* X/Twitter Style Author Meta Row */}
+            <div className="flex items-center flex-wrap gap-x-1.5 gap-y-0.5 mb-1 text-xs">
+              {/* Display Name */}
+              <span className="font-extrabold text-gray-900 dark:text-white hover:underline cursor-pointer">
+                {topic.author.name}
+              </span>
+              
+              {/* Verified Blue Badge */}
+              <svg className="w-3.5 h-3.5 text-[#1D9BF0] fill-current" viewBox="0 0 24 24" aria-label="Verified account">
+                <g><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.99-3.818-3.99-.48 0-.939.1-1.353.27C14.78 2.52 13.5 1.75 12 1.75c-1.5 0-2.78.77-3.42 2.03-.414-.17-.873-.27-1.353-.27-2.108 0-3.819 1.78-3.819 3.99 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.71 3.99 3.818 3.99.48 0 .939-.1 1.353-.27.64 1.26 1.92 2.03 3.42 2.03 1.5 0 2.78-.77 3.42-2.03.414.17.873.27 1.353.27 2.108 0 3.818-1.78 3.818-3.99 0-.495-.084-.965-.238-1.4 1.273-.65 2.148-2.02 2.148-3.6zm-12.72 2.89l-3.23-3.23 1.31-1.31 1.92 1.92 4.97-4.97 1.31 1.31-6.28 6.28z"></path></g>
+              </svg>
+              
+              {/* Username Handle */}
+              <span className="text-gray-400 dark:text-gray-500 text-[11px]">
+                @{topic.author.name.toLowerCase().replace(/\s+/g, '')}
+              </span>
+              
+              {/* Separator dot */}
+              <span className="text-gray-300 dark:text-white/10 text-[10px]">•</span>
+              
+              {/* Date, Day, Time */}
+              <span className="text-gray-450 dark:text-gray-500 text-[11px] font-semibold">
+                {formatFullDateTime(topic.lastActivity, topic.id)}
+              </span>
+            </div>
+
+            {/* Sub-Community and Metadata Row */}
             <div className="flex items-center gap-2 mb-3 flex-wrap">
               {topic.community && (
                 <div className="flex items-center gap-1.5">
                   <button 
                     onClick={() => onCommunityClick?.(topic.community)}
-                    className="text-xs font-extrabold text-blue-600 dark:text-cyan-400 hover:underline transition-all"
+                    className="text-[11px] font-extrabold text-blue-600 dark:text-cyan-400 hover:underline transition-all"
                   >
                     {topic.community}
                   </button>
@@ -459,8 +508,8 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
               {topic.community && <span className="text-gray-300 dark:text-white/10 text-xs">•</span>}
               <CategoryBadge categoryId={topic.category} />
               {topic.solved && (
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-500 bg-emerald-500/10 border border-emerald-500/25 px-2.5 py-0.5 rounded-lg shadow-sm">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
+                <span className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wide text-emerald-500 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-lg shadow-sm">
+                  <CheckCircle2 className="w-3 h-3" />
                   Solved
                 </span>
               )}
