@@ -407,7 +407,7 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, 
   return (
     <div className={`group relative backdrop-blur-xl rounded-2xl shadow-sm hover:shadow-md dark:hover:shadow-none transition-all duration-500 hover:-translate-y-1 overflow-hidden ${
       topic.pinned 
-        ? 'border-[#F59E08]/40 dark:border-[#F59E08]/25 bg-[#FEF3C7]/20 dark:bg-[#F59E08]/06 shadow-[0_8px_30px_rgba(245,158,8,0.04)]' 
+        ? 'border-[#F59E08]/50 dark:border-[#FBBF24]/40 bg-gradient-to-br from-[#FBBF24]/20 via-[#F59E08]/10 to-transparent dark:from-[#FBBF24]/12 dark:via-[#F59E08]/04 dark:to-transparent shadow-[0_8px_30px_rgba(245,158,8,0.08)]' 
         : 'border-gray-200/50 dark:border-white/[0.05] bg-white/[0.7] dark:bg-white/[0.01]'
     }`}>
       {/* Pinned indicator */}
@@ -479,7 +479,11 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, 
             </div>
             
             {/* Alternate Ratings Section */}
-            <div className="grid grid-cols-3 gap-2 py-3 border-t border-b border-gray-100/50 dark:border-white/[0.03] mb-4">
+            <div className={`grid grid-cols-3 gap-2 py-3 border-t border-b mb-4 ${
+              topic.pinned 
+                ? 'border-[#F59E08]/30 dark:border-[#FBBF24]/20' 
+                : 'border-gray-100/50 dark:border-white/[0.03]'
+            }`}>
               {/* Axis 1: Support / Oppose */}
               <div className="flex items-center gap-1.5">
                 <button
