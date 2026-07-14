@@ -405,7 +405,11 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, 
   };
   
   return (
-    <div className={`group relative bg-white/[0.7] dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] shadow-sm hover:shadow-md dark:hover:shadow-none transition-all duration-500 hover:-translate-y-1 overflow-hidden ${topic.pinned ? 'border-amber-500/30 bg-amber-500/[0.01]' : ''}`}>
+    <div className={`group relative backdrop-blur-xl rounded-2xl shadow-sm hover:shadow-md dark:hover:shadow-none transition-all duration-500 hover:-translate-y-1 overflow-hidden ${
+      topic.pinned 
+        ? 'border-[#F59E08]/40 dark:border-[#F59E08]/25 bg-[#FEF3C7]/20 dark:bg-[#F59E08]/06 shadow-[0_8px_30px_rgba(245,158,8,0.04)]' 
+        : 'border-gray-200/50 dark:border-white/[0.05] bg-white/[0.7] dark:bg-white/[0.01]'
+    }`}>
       {/* Pinned indicator */}
       {topic.pinned && (
         <div className="absolute top-0 right-6 bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 text-[9px] font-black uppercase tracking-wider px-3 py-1 rounded-b-lg shadow-sm z-10">
