@@ -23,9 +23,9 @@ export function GraphHealth() {
   if (!stats) return <div className="text-gray-400">Loading Semantic Graph Stats...</div>;
 
   return (
-    <Card className="bg-black/40 border-gray-800 text-white shadow-xl shadow-cyan-900/10">
-      <CardHeader className="pb-2 border-b border-gray-800">
-        <CardTitle className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+    <Card className="os-card text-[var(--os-text-1)] shadow-sm border border-[var(--os-border)]">
+      <CardHeader className="pb-2 border-b border-[var(--os-border)]">
+        <CardTitle className="text-sm font-semibold text-[var(--os-text-1)] flex items-center gap-2">
           <Share2 className="w-4 h-4 text-cyan-500" />
           Semantic Graph Health
         </CardTitle>
@@ -33,43 +33,43 @@ export function GraphHealth() {
       <CardContent className="pt-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col">
-            <span className="text-xs text-gray-500 uppercase tracking-wider">Nodes</span>
-            <span className="text-2xl font-bold text-gray-100">{stats.nodes}</span>
+            <span className="text-xs text-[var(--os-text-3)] uppercase tracking-wider font-bold">Nodes</span>
+            <span className="text-2xl font-black text-[var(--os-text-1)]">{stats.nodes}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs text-gray-500 uppercase tracking-wider">Edges</span>
-            <span className="text-2xl font-bold text-gray-100">{stats.edges}</span>
+            <span className="text-xs text-[var(--os-text-3)] uppercase tracking-wider font-bold">Edges</span>
+            <span className="text-2xl font-black text-[var(--os-text-1)]">{stats.edges}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs text-gray-500 uppercase tracking-wider">Knowledge Packs</span>
-            <span className="text-2xl font-bold text-cyan-400">{stats.packs}</span>
+            <span className="text-xs text-[var(--os-text-3)] uppercase tracking-wider font-bold">Knowledge Packs</span>
+            <span className="text-2xl font-black text-cyan-500">{stats.packs}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs text-gray-500 uppercase tracking-wider">Orphans</span>
-            <span className={`text-2xl font-bold ${stats.orphans > 0 ? 'text-orange-400' : 'text-green-400'}`}>
+            <span className="text-xs text-[var(--os-text-3)] uppercase tracking-wider font-bold">Orphans</span>
+            <span className={`text-2xl font-black ${stats.orphans > 0 ? 'text-orange-500' : 'text-green-500'}`}>
               {stats.orphans}
             </span>
           </div>
         </div>
         
-        <div className="mt-4 pt-4 border-t border-gray-800 space-y-2">
-          <div className="flex items-center justify-between text-xs">
-            <span className="flex items-center gap-2 text-gray-400">
+        <div className="mt-4 pt-4 border-t border-[var(--os-border)] space-y-2">
+          <div className="flex items-center justify-between text-xs font-semibold">
+            <span className="flex items-center gap-2 text-[var(--os-text-2)]">
               <ShieldCheck className="w-3 h-3 text-green-500" /> Cycles
             </span>
-            <span className="text-gray-300">{stats.cycles} (Valid)</span>
+            <span className="text-[var(--os-text-1)]">{stats.cycles} (Valid)</span>
           </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="flex items-center gap-2 text-gray-400">
-              <AlertTriangle className={`w-3 h-3 ${stats.warnings > 0 ? 'text-yellow-500' : 'text-gray-600'}`} /> Warnings
+          <div className="flex items-center justify-between text-xs font-semibold">
+            <span className="flex items-center gap-2 text-[var(--os-text-2)]">
+              <AlertTriangle className={`w-3 h-3 ${stats.warnings > 0 ? 'text-yellow-500' : 'text-[var(--os-text-3)]'}`} /> Warnings
             </span>
-            <span className="text-gray-300">{stats.warnings}</span>
+            <span className="text-[var(--os-text-1)]">{stats.warnings}</span>
           </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="flex items-center gap-2 text-gray-400">
+          <div className="flex items-center justify-between text-xs font-semibold">
+            <span className="flex items-center gap-2 text-[var(--os-text-2)]">
               <Box className="w-3 h-3 text-blue-500" /> Compiled
             </span>
-            <span className="text-gray-300">Live</span>
+            <span className="text-[var(--os-text-1)] font-bold">Live</span>
           </div>
         </div>
       </CardContent>

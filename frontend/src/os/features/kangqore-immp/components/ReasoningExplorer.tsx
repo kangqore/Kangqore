@@ -33,33 +33,33 @@ export function ReasoningExplorer({ sessionId }: { sessionId: string }) {
 
   if (!sessionId) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500 bg-black/20 rounded-xl border border-gray-800">
+      <div className="flex items-center justify-center h-full text-[var(--os-text-3)] bg-white/[0.01] rounded-2xl border border-[var(--os-border)] py-12">
         Select a session to view Reasoning Trace
       </div>
     );
   }
 
-  if (!data) return <div className="text-gray-400 p-4">Tracing graph...</div>;
+  if (!data) return <div className="text-[var(--os-text-3)] p-4 font-semibold">Tracing graph...</div>;
 
   const { trace, alternatives } = data;
 
   const Step = ({ icon: Icon, title, value, detail, highlight = false }: any) => (
-    <div className={`relative flex items-start gap-4 p-4 rounded-xl border ${highlight ? 'border-cyan-500/50 bg-cyan-950/20' : 'border-gray-800 bg-black/40'}`}>
-      <div className={`p-2 rounded-lg ${highlight ? 'bg-cyan-500/20 text-cyan-400' : 'bg-gray-800 text-gray-400'}`}>
+    <div className={`relative flex items-start gap-4 p-4 rounded-xl border transition-all duration-300 ${highlight ? 'border-cyan-500/30 bg-cyan-500/[0.04]' : 'border-[var(--os-border)] bg-white/[0.02]'}`}>
+      <div className={`p-2 rounded-lg ${highlight ? 'bg-cyan-500/20 text-cyan-500' : 'bg-white/[0.05] text-[var(--os-text-2)]'}`}>
         <Icon className="w-5 h-5" />
       </div>
       <div className="flex-1">
-        <div className="text-xs text-gray-500 uppercase tracking-wider">{title}</div>
-        <div className={`text-lg font-medium ${highlight ? 'text-white' : 'text-gray-200'}`}>{value}</div>
-        {detail && <div className="text-sm text-gray-400 mt-1">{detail}</div>}
+        <div className="text-xs text-[var(--os-text-3)] uppercase tracking-wider font-bold">{title}</div>
+        <div className={`text-lg font-bold ${highlight ? 'text-[var(--os-text-1)]' : 'text-[var(--os-text-1)]'}`}>{value}</div>
+        {detail && <div className="text-sm text-[var(--os-text-2)] mt-1 font-medium">{detail}</div>}
       </div>
     </div>
   );
 
   return (
-    <Card className="bg-[#0a0a0a] border-gray-800 h-full overflow-y-auto">
-      <CardHeader className="border-b border-gray-800 sticky top-0 bg-[#0a0a0a]/95 backdrop-blur z-10">
-        <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+    <Card className="os-card text-[var(--os-text-1)] border border-[var(--os-border)] h-full overflow-y-auto">
+      <CardHeader className="border-b border-[var(--os-border)] sticky top-0 bg-[var(--os-card)] backdrop-blur z-10">
+        <CardTitle className="text-lg font-bold text-[var(--os-text-1)] flex items-center gap-2">
           <BrainCircuit className="w-5 h-5 text-cyan-500" />
           Reasoning Explorer
         </CardTitle>
@@ -76,9 +76,9 @@ export function ReasoningExplorer({ sessionId }: { sessionId: string }) {
           />
           
           <div className="flex justify-center py-1">
-            <ArrowDown className="w-4 h-4 text-gray-700" />
+            <ArrowDown className="w-4 h-4 text-[var(--os-text-3)]" />
           </div>
-
+ 
           {/* 2. Knowledge Inference */}
           <Step 
             icon={FileText} 
@@ -86,22 +86,22 @@ export function ReasoningExplorer({ sessionId }: { sessionId: string }) {
             value={trace.decisionState} 
             detail={`Persona: ${trace.visitor.persona}`}
           />
-
+ 
           <div className="flex justify-center py-1">
-            <ArrowDown className="w-4 h-4 text-gray-700" />
+            <ArrowDown className="w-4 h-4 text-[var(--os-text-3)]" />
           </div>
-
+ 
           {/* 3. Objective Engine */}
           <Step 
             icon={Target} 
             title="Active Objective" 
             value={trace.objective || 'Identify Intent'} 
           />
-
+ 
           <div className="flex justify-center py-1">
-            <ArrowDown className="w-4 h-4 text-gray-700" />
+            <ArrowDown className="w-4 h-4 text-[var(--os-text-3)]" />
           </div>
-
+ 
           {/* 4. Recommendation */}
           <Step 
             icon={Crosshair} 
@@ -110,30 +110,30 @@ export function ReasoningExplorer({ sessionId }: { sessionId: string }) {
             detail={`Overall Confidence: ${trace.confidence}%`}
             highlight={true}
           />
-
+ 
           {/* Alternatives */}
           {alternatives.length > 0 && (
-            <div className="mt-8 pt-6 border-t border-gray-800">
-              <h4 className="text-sm font-medium text-gray-400 mb-4 flex items-center gap-2">
-                <XCircle className="w-4 h-4" />
+            <div className="mt-8 pt-6 border-t border-[var(--os-border)]">
+              <h4 className="text-sm font-bold text-[var(--os-text-2)] mb-4 flex items-center gap-2">
+                <XCircle className="w-4 h-4 text-red-500" />
                 Rejected Paths
               </h4>
               <div className="space-y-3">
                 {alternatives.map((alt, idx) => (
-                  <div key={idx} className="p-3 bg-red-950/10 border border-red-900/30 rounded-lg">
+                  <div key={idx} className="p-3 bg-red-500/[0.03] border border-red-500/20 rounded-xl">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-gray-300 font-medium">{alt.action}</span>
-                      <span className="text-red-400 text-xs font-mono">{alt.confidence}% Conf</span>
+                      <span className="text-[var(--os-text-1)] font-semibold text-sm">{alt.action}</span>
+                      <span className="text-red-500 text-xs font-mono font-bold">{alt.confidence}% Conf</span>
                     </div>
-                    <div className="text-xs text-gray-500">
-                      Reason: <span className="text-red-300/70">{alt.rejectedReason}</span>
+                    <div className="text-xs text-[var(--os-text-2)]">
+                      Reason: <span className="text-red-400 font-medium">{alt.rejectedReason}</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
-
+ 
         </div>
       </CardContent>
     </Card>
