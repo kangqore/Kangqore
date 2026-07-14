@@ -3,9 +3,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   FileJson, Zap, Download, Upload, CheckCircle2, AlertTriangle,
   Building2, Target, Shield, GitBranch, BarChart3, Globe2, Archive,
-  ChevronDown, ChevronRight, Layers,
+  ChevronDown, ChevronRight, Layers, Loader2,
 } from 'lucide-react'
 import { adminApi } from '@lib/api'
+import { isDemo } from '@lib/api'
+import { cn } from '@design-system/cn'
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -41,14 +43,6 @@ interface BlueprintSpec {
   governance:   { approvalLevels: Record<string, string>; auditRetentionDays: number }
 }
 
-// ─── Design tokens ─────────────────────────────────────────────────────────────
-
-const CARD    = 'var(--os-card)'
-const BORDER  = 'var(--os-border)'
-const TEXT1   = 'var(--os-text-1)'
-const TEXT2   = 'var(--os-text-2)'
-const SURFACE = 'var(--os-surface-0)'
-
 const GREEN  = '#22c55e'
 const BLUE   = '#3b82f6'
 const AMBER  = '#f59e0b'
@@ -57,7 +51,11 @@ const TEAL   = '#14b8a6'
 const RED    = '#ef4444'
 const INDIGO = '#6366f1'
 
-const STATUS_COLOR: Record<string, string> = { DRAFT: AMBER, ACTIVE: GREEN, ARCHIVED: TEXT2 }
+const STATUS_COLOR: Record<string, string> = { 
+  DRAFT: AMBER, 
+  ACTIVE: GREEN, 
+  ARCHIVED: '#9ca3af' 
+}
 
 // ─── Blueprint tree section ────────────────────────────────────────────────────
 
@@ -66,32 +64,25 @@ function TreeSection({
 }: { icon: any; label: string; color: string; count?: number; children?: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   return (
-    <div>
+    <div className="border-b border-[var(--os-border)]/50 last:border-0">
       <button
         onClick={() => setOpen(o => !o)}
-        style={{
-          width: '100%', display: 'flex', alignItems: 'center', gap: 8,
-          background: 'none', border: 'none', cursor: 'pointer',
-          padding: '7px 10px', borderRadius: 6,
-          transition: 'background 0.12s',
-        }}
-        onMouseEnter={e => (e.currentTarget.style.background = `${BLUE}08`)}
-        onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+        className="w-full flex items-center gap-2.5 px-4 py-3.5 hover:bg-white/[0.02] transition-colors text-left"
       >
-        <Icon className="w-3.5 h-3.5" style={{ color, flexShrink: 0 }} />
-        <span style={{ fontSize: 12, fontWeight: 600, color: TEXT1, flex: 1, textAlign: 'left' }}>{label}</span>
+        <Icon className="w-4 h-4 flex-shrink-0" style={{ color }} />
+        <span className="text-xs font-bold text-[var(--os-text-1)] flex-1">{label}</span>
         {count !== undefined && (
-          <span style={{ fontSize: 10, background: `${color}20`, color, padding: '2px 7px', borderRadius: 20, fontWeight: 700 }}>
+          <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: `${color}15`, color }}>
             {count}
           </span>
         )}
         {children && (open
-          ? <ChevronDown className="w-3 h-3" style={{ color: TEXT2 }} />
-          : <ChevronRight className="w-3 h-3" style={{ color: TEXT2 }} />
+          ? <ChevronDown className="w-3.5 h-3.5 text-[var(--os-text-3)]" />
+          : <ChevronRight className="w-3.5 h-3.5 text-[var(--os-text-3)]" />
         )}
       </button>
       {open && children && (
-        <div style={{ paddingLeft: 28, paddingBottom: 4 }}>
+        <div className="pl-10 pr-4 pb-3 space-y-1.5 bg-black/[0.01] border-t border-[var(--os-border)]/20 pt-2">
           {children}
         </div>
       )}
@@ -101,9 +92,9 @@ function TreeSection({
 
 function TreeLeaf({ label, value }: { label: string; value?: string | number }) {
   return (
-    <div style={{ display: 'flex', gap: 8, padding: '4px 10px', fontSize: 11 }}>
-      <span style={{ color: TEXT2 }}>{label}</span>
-      {value !== undefined && <span style={{ color: TEXT1, fontWeight: 500 }}>{value}</span>}
+    <div className="flex items-center justify-between py-1.5 text-[11px] border-b border-dashed border-[var(--os-border)]/30 last:border-0">
+      <span className="text-[var(--os-text-2)] font-semibold">{label}</span>
+      {value !== undefined && <span className="text-[var(--os-text-1)] font-bold">{value}</span>}
     </div>
   )
 }
@@ -134,57 +125,57 @@ function BlueprintDetail({ blueprintId }: { blueprintId: string }) {
     URL.revokeObjectURL(url)
   }
 
-  if (isLoading) return <div style={{ padding: 20, fontSize: 12, color: TEXT2 }}>Loading blueprint…</div>
-  if (!data)     return <div style={{ padding: 20, fontSize: 12, color: RED }}>Blueprint not found.</div>
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12 gap-2 text-[var(--os-text-3)] font-semibold text-xs">
+        <Loader2 className="w-4 h-4 animate-spin text-indigo-500" /> Loading blueprint spec…
+      </div>
+    )
+  }
+  if (!data) return <div className="p-5 text-xs text-red-500 font-bold">Blueprint not found.</div>
 
   const s = data.spec
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className="flex flex-col gap-5">
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--os-border)] pb-4">
         <div>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: TEXT1, margin: 0 }}>{data.name}</h3>
-          <div style={{ fontSize: 11, color: TEXT2, marginTop: 2 }}>
-            v{data.version} · {data.pack ?? 'custom'} · {data.industry ?? '—'} ·{' '}
-            <span style={{ color: STATUS_COLOR[data.status] ?? TEXT2, fontWeight: 600 }}>{data.status}</span>
+          <h3 className="text-base font-extrabold text-[var(--os-text-1)]">{data.name}</h3>
+          <div className="text-xs text-[var(--os-text-3)] font-bold mt-1.5 flex items-center gap-2">
+            <span>v{data.version}</span>
+            <span>•</span>
+            <span className="uppercase">{data.pack ?? 'custom'}</span>
+            <span>•</span>
+            <span>{data.industry ?? '—'}</span>
+            <span>•</span>
+            <span className="px-2 py-0.5 rounded-md text-[9px] font-black" style={{ color: STATUS_COLOR[data.status], background: `${STATUS_COLOR[data.status]}15` }}>{data.status}</span>
           </div>
         </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+        
+        <div className="flex items-center gap-2">
           <button
             onClick={downloadSpec}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 5,
-              background: `${BLUE}15`, color: BLUE, border: `1px solid ${BLUE}44`,
-              borderRadius: 7, padding: '6px 12px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
-            }}
+            className="flex items-center gap-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-500 font-bold border border-indigo-500/20 rounded-xl px-4 py-2 text-xs transition-all shadow-sm"
           >
-            <Download className="w-3.5 h-3.5" /> Download
+            <Download className="w-4 h-4" /> Download
           </button>
           {data.status === 'DRAFT' && (
             <button
               onClick={() => activateMut.mutate()}
               disabled={activateMut.isPending}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 5,
-                background: GREEN, color: '#fff', border: 'none',
-                borderRadius: 7, padding: '6px 12px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
-              }}
+              className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl px-4 py-2 text-xs transition-all shadow-sm shadow-emerald-500/10"
             >
-              <CheckCircle2 className="w-3.5 h-3.5" /> Activate
+              <CheckCircle2 className="w-4 h-4" /> Activate
             </button>
           )}
           {data.status !== 'ARCHIVED' && (
             <button
               onClick={() => archiveMut.mutate()}
               disabled={archiveMut.isPending}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 5,
-                background: SURFACE, color: TEXT2, border: `1px solid ${BORDER}`,
-                borderRadius: 7, padding: '6px 12px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
-              }}
+              className="flex items-center gap-1.5 bg-white/[0.04] hover:bg-white/[0.08] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] font-bold border border-[var(--os-border)] rounded-xl px-4 py-2 text-xs transition-all"
             >
-              <Archive className="w-3.5 h-3.5" /> Archive
+              <Archive className="w-4 h-4" /> Archive
             </button>
           )}
         </div>
@@ -192,13 +183,13 @@ function BlueprintDetail({ blueprintId }: { blueprintId: string }) {
 
       {/* Checksum */}
       {data.checksum && (
-        <div style={{ fontSize: 10, color: TEXT2, fontFamily: 'monospace', background: SURFACE, padding: '6px 10px', borderRadius: 6, wordBreak: 'break-all' }}>
-          sha256: {data.checksum}
+        <div className="text-[10px] text-[var(--os-text-3)] font-mono bg-black/10 border border-[var(--os-border)]/40 p-3 rounded-xl word-break-all">
+          <span className="font-bold text-[var(--os-text-2)]">checksum:</span> {data.checksum}
         </div>
       )}
 
       {/* Tree view */}
-      <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, padding: '8px 4px' }}>
+      <div className="rounded-2xl border border-[var(--os-border)] bg-white/[0.01] overflow-hidden">
         <TreeSection icon={Building2} label="Organization" color={BLUE}>
           <TreeLeaf label="Name"     value={s.organization?.name} />
           <TreeLeaf label="Industry" value={s.organization?.industry} />
@@ -254,7 +245,6 @@ function BlueprintDetail({ blueprintId }: { blueprintId: string }) {
 
         <TreeSection icon={Shield} label="Governance" color={AMBER}>
           <TreeLeaf label="Audit Retention" value={`${s.governance?.auditRetentionDays}d`} />
-          <TreeLeaf label="Block Deletion"  value={s.governance?.blockRecordDeletion ? 'Yes' : 'No'} />
         </TreeSection>
       </div>
     </div>
@@ -320,59 +310,53 @@ export function BlueprintPage() {
   })
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 20, alignItems: 'flex-start' }}>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
       {/* ── Left panel: list + generate + import ── */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div className="lg:col-span-1 flex flex-col gap-5">
 
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ background: `${INDIGO}15`, borderRadius: 9, padding: 7 }}>
-            <FileJson className="w-5 h-5" style={{ color: INDIGO }} />
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
+            <FileJson className="w-6 h-6 text-indigo-500" />
           </div>
           <div>
-            <h2 style={{ fontSize: 14, fontWeight: 700, color: TEXT1, margin: 0 }}>Enterprise Blueprints</h2>
-            <p style={{ fontSize: 10, color: TEXT2, margin: 0 }}>Versioned deployment specs. The customer owns it.</p>
+            <h2 className="text-base font-extrabold text-[var(--os-text-1)]">Enterprise Blueprints</h2>
+            <p className="text-[11px] text-[var(--os-text-3)] font-semibold mt-0.5">Versioned deployment specs. Customer owned.</p>
           </div>
         </div>
 
         {/* Generate from live state */}
-        <div style={{ background: CARD, border: `1px solid ${INDIGO}33`, borderRadius: 10, padding: 14 }}>
-          <div style={{ fontSize: 11, fontWeight: 600, color: TEXT1, marginBottom: 10 }}>
+        <div className="os-card p-5 border border-[var(--os-border)]">
+          <div className="text-xs font-bold text-[var(--os-text-1)] mb-4">
             Generate from live state
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+          <div className="flex flex-col gap-3">
             {([
               ['Blueprint name',    generateName,     setGenerateName],
               ['Organization name', generateOrg,      setGenerateOrg],
             ] as [string, string, (v: string) => void][]).map(([label, value, setter]) => (
               <div key={label}>
-                <label style={{ fontSize: 9, color: TEXT2, fontWeight: 700, letterSpacing: 0.5, display: 'block', marginBottom: 3 }}>
-                  {label.toUpperCase()}
+                <label className="text-[9px] font-bold tracking-wider text-[var(--os-text-3)] uppercase block mb-1">
+                  {label}
                 </label>
                 <input
                   value={value}
                   onChange={e => setter(e.target.value)}
-                  style={{
-                    width: '100%', background: SURFACE, border: `1px solid ${BORDER}`,
-                    borderRadius: 5, padding: '6px 9px', fontSize: 11, color: TEXT1, outline: 'none', boxSizing: 'border-box',
-                  }}
+                  className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
                 />
               </div>
             ))}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7 }}>
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label style={{ fontSize: 9, color: TEXT2, fontWeight: 700, letterSpacing: 0.5, display: 'block', marginBottom: 3 }}>
+                <label className="text-[9px] font-bold tracking-wider text-[var(--os-text-3)] uppercase block mb-1">
                   INDUSTRY PACK
                 </label>
                 <select
                   value={generatePack}
                   onChange={e => { setGeneratePack(e.target.value); setGenerateIndustry(e.target.value) }}
-                  style={{
-                    width: '100%', background: SURFACE, border: `1px solid ${BORDER}`,
-                    borderRadius: 5, padding: '6px 9px', fontSize: 11, color: TEXT1, outline: 'none', boxSizing: 'border-box',
-                  }}
+                  className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
                 >
                   <option value="professional-services">Professional Services</option>
                   <option value="legal">Legal</option>
@@ -387,16 +371,13 @@ export function BlueprintPage() {
               </div>
 
               <div>
-                <label style={{ fontSize: 9, color: TEXT2, fontWeight: 700, letterSpacing: 0.5, display: 'block', marginBottom: 3 }}>
+                <label className="text-[9px] font-bold tracking-wider text-[var(--os-text-3)] uppercase block mb-1">
                   ORG SIZE
                 </label>
                 <select
                   value={generateSize}
                   onChange={e => setGenerateSize(e.target.value)}
-                  style={{
-                    width: '100%', background: SURFACE, border: `1px solid ${BORDER}`,
-                    borderRadius: 5, padding: '6px 9px', fontSize: 11, color: TEXT1, outline: 'none', boxSizing: 'border-box',
-                  }}
+                  className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
                 >
                   <option value="STARTUP">Startup</option>
                   <option value="SME">SME</option>
@@ -407,7 +388,7 @@ export function BlueprintPage() {
           </div>
 
           {generateMut.isError && (
-            <div style={{ marginTop: 8, fontSize: 10, color: RED }}>
+            <div className="mt-2 text-xs text-red-500 font-bold">
               {(generateMut.error as Error).message}
             </div>
           )}
@@ -415,65 +396,48 @@ export function BlueprintPage() {
           <button
             onClick={() => generateMut.mutate()}
             disabled={generateMut.isPending}
-            style={{
-              marginTop: 10, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-              background: INDIGO, color: '#fff', border: 'none', borderRadius: 7,
-              padding: '8px 14px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
-            }}
+            className="mt-4 w-full flex items-center justify-center gap-1.5 bg-indigo-500 hover:bg-indigo-600 text-white border-none rounded-xl py-2.5 text-xs font-bold transition-all shadow-md shadow-indigo-500/10"
           >
-            <Zap className="w-3.5 h-3.5" />
+            <Zap className="w-4 h-4" />
             {generateMut.isPending ? 'Generating…' : 'Generate Blueprint'}
           </button>
         </div>
 
         {/* Import */}
-        <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 14 }}>
+        <div className="os-card p-5 border border-[var(--os-border)]">
           <button
             onClick={() => setShowImport(o => !o)}
-            style={{
-              width: '100%', display: 'flex', alignItems: 'center', gap: 6,
-              background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-              fontSize: 11, fontWeight: 600, color: TEXT1,
-            }}
+            className="w-full flex items-center gap-2 bg-none border-none cursor-pointer p-0 text-xs font-bold text-[var(--os-text-1)]"
           >
-            <Upload className="w-3.5 h-3.5" style={{ color: AMBER }} />
-            Import Blueprint
+            <Upload className="w-4 h-4 text-amber-500" />
+            <span>Import Blueprint</span>
             {showImport
-              ? <ChevronDown className="w-3 h-3 ml-auto" style={{ color: TEXT2 }} />
-              : <ChevronRight className="w-3 h-3 ml-auto" style={{ color: TEXT2 }} />
+              ? <ChevronDown className="w-4 h-4 ml-auto text-[var(--os-text-3)]" />
+              : <ChevronRight className="w-4 h-4 ml-auto text-[var(--os-text-3)]" />
             }
           </button>
 
           {showImport && (
-            <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div className="mt-4 flex flex-col gap-3">
               <input
                 placeholder="Blueprint name"
                 value={importName}
                 onChange={e => setImportName(e.target.value)}
-                style={{
-                  width: '100%', background: SURFACE, border: `1px solid ${BORDER}`,
-                  borderRadius: 5, padding: '6px 9px', fontSize: 11, color: TEXT1, outline: 'none', boxSizing: 'border-box',
-                }}
+                className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
               />
               <textarea
-                placeholder={'Paste blueprint.json here…'}
+                placeholder="Paste blueprint.json here…"
                 value={importText}
                 onChange={e => { setImportText(e.target.value); setValidationResult(null) }}
                 rows={6}
-                style={{
-                  width: '100%', background: SURFACE, border: `1px solid ${BORDER}`,
-                  borderRadius: 5, padding: '6px 9px', fontSize: 10, color: TEXT1, outline: 'none',
-                  fontFamily: 'monospace', resize: 'vertical', boxSizing: 'border-box',
-                }}
+                className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-[11px] text-[var(--os-text-1)] outline-none font-mono resize-y"
               />
 
               {validationResult && (
-                <div style={{
-                  fontSize: 10, padding: '6px 10px', borderRadius: 5,
-                  background: validationResult.valid ? `${GREEN}15` : `${RED}15`,
-                  border: `1px solid ${validationResult.valid ? GREEN : RED}44`,
-                  color: validationResult.valid ? GREEN : RED,
-                }}>
+                <div className={cn(
+                  'text-[11px] p-3 rounded-xl border font-semibold',
+                  validationResult.valid ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500' : 'bg-red-500/10 border-red-500/30 text-red-500'
+                )}>
                   {validationResult.valid
                     ? '✓ Valid blueprint — ready to import'
                     : validationResult.errors.map((e, i) => <div key={i}>• {e}</div>)
@@ -482,29 +446,23 @@ export function BlueprintPage() {
               )}
 
               {importMut.isError && (
-                <div style={{ fontSize: 10, color: RED }}>
+                <div className="text-xs text-red-500 font-bold">
                   {(importMut.error as Error).message}
                 </div>
               )}
 
-              <div style={{ display: 'flex', gap: 6 }}>
+              <div className="flex gap-2">
                 <button
                   onClick={() => validateMut.mutate()}
                   disabled={!importText.trim() || validateMut.isPending}
-                  style={{
-                    flex: 1, background: SURFACE, color: TEXT1, border: `1px solid ${BORDER}`,
-                    borderRadius: 6, padding: '7px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
-                  }}
+                  className="flex-1 bg-white/[0.04] hover:bg-white/[0.08] text-[var(--os-text-1)] border border-[var(--os-border)] rounded-xl py-2 text-xs font-bold transition-all"
                 >
                   Validate
                 </button>
                 <button
                   onClick={() => importMut.mutate()}
                   disabled={!importText.trim() || importMut.isPending}
-                  style={{
-                    flex: 1, background: AMBER, color: '#000', border: 'none',
-                    borderRadius: 6, padding: '7px', fontSize: 11, fontWeight: 600, cursor: 'pointer',
-                  }}
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-black border-none rounded-xl py-2 text-xs font-bold transition-all shadow-md shadow-amber-500/10"
                 >
                   {importMut.isPending ? 'Importing…' : 'Import'}
                 </button>
@@ -514,65 +472,57 @@ export function BlueprintPage() {
         </div>
 
         {/* Blueprint list */}
-        <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, overflow: 'hidden' }}>
-          <div style={{ padding: '10px 14px', borderBottom: `1px solid ${BORDER}`, fontSize: 10, fontWeight: 700, color: TEXT2, letterSpacing: 0.5 }}>
+        <div className="os-card border border-[var(--os-border)] overflow-hidden">
+          <div className="px-4 py-3 border-b border-[var(--os-border)] text-[10px] font-black text-[var(--os-text-3)] tracking-wider">
             BLUEPRINTS ({blueprints.length})
           </div>
-          {isLoading && <div style={{ padding: 14, fontSize: 11, color: TEXT2 }}>Loading…</div>}
+          {isLoading && <div className="p-4 text-xs text-[var(--os-text-3)] font-semibold">Loading…</div>}
           {!isLoading && blueprints.length === 0 && (
-            <div style={{ padding: 14, fontSize: 11, color: TEXT2 }}>No blueprints yet. Generate one from live state.</div>
+            <div className="p-4 text-xs text-[var(--os-text-3)]">No blueprints yet. Generate one from live state.</div>
           )}
-          {blueprints.map(b => (
-            <button
-              key={b.id}
-              onClick={() => setSelectedId(b.id)}
-              style={{
-                width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer',
-                padding: '10px 14px', borderBottom: `1px solid ${BORDER}`,
-                background: selectedId === b.id ? `${INDIGO}10` : 'transparent',
-                borderLeft: selectedId === b.id ? `3px solid ${INDIGO}` : '3px solid transparent',
-                transition: 'background 0.12s',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ fontSize: 12, fontWeight: 600, color: TEXT1, flex: 1 }}>{b.name}</span>
-                <span style={{
-                  fontSize: 9, fontWeight: 700, letterSpacing: 0.4,
-                  background: `${STATUS_COLOR[b.status] ?? TEXT2}20`, color: STATUS_COLOR[b.status] ?? TEXT2,
-                  padding: '2px 6px', borderRadius: 10,
-                }}>
-                  {b.status}
-                </span>
-              </div>
-              <div style={{ fontSize: 10, color: TEXT2, marginTop: 2 }}>
-                v{b.version} · {b.pack ?? 'custom'} · {new Date(b.createdAt).toLocaleDateString()}
-              </div>
-            </button>
-          ))}
+          <div className="divide-y divide-[var(--os-border)]/50">
+            {blueprints.map(b => (
+              <button
+                key={b.id}
+                onClick={() => setSelectedId(b.id)}
+                className={cn(
+                  'w-full text-left px-4 py-3 transition-all flex flex-col gap-1 border-l-4',
+                  selectedId === b.id ? 'bg-indigo-500/[0.04] border-indigo-500' : 'bg-transparent border-transparent hover:bg-white/[0.01]'
+                )}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-[var(--os-text-1)] flex-1">{b.name}</span>
+                  <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: `${STATUS_COLOR[b.status] ?? '#6b7280'}15`, color: STATUS_COLOR[b.status] ?? '#6b7280' }}>
+                    {b.status}
+                  </span>
+                </div>
+                <div className="text-[10px] text-[var(--os-text-3)] font-semibold">
+                  v{b.version} · {b.pack ?? 'custom'} · {new Date(b.createdAt).toLocaleDateString()}
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* ── Right panel: detail view ── */}
-      <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 12, padding: 20, minHeight: 400 }}>
+      <div className="lg:col-span-2 os-card p-6 border border-[var(--os-border)] min-h-[400px]">
         {!selectedId && (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 300, gap: 12 }}>
-            <FileJson className="w-10 h-10" style={{ color: TEXT2, opacity: 0.4 }} />
-            <p style={{ fontSize: 12, color: TEXT2, textAlign: 'center', maxWidth: 280 }}>
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <FileJson className="w-12 h-12 text-[var(--os-text-3)] opacity-40" />
+            <p className="text-xs text-[var(--os-text-2)] text-center max-w-xs font-medium leading-relaxed">
               Select a blueprint to view its full spec, or generate one from your current live state.
             </p>
 
             {/* Callout */}
-            <div style={{
-              background: `${INDIGO}08`, border: `1px solid ${INDIGO}22`, borderRadius: 10,
-              padding: '14px 18px', maxWidth: 380, marginTop: 8,
-            }}>
-              <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                <AlertTriangle className="w-4 h-4" style={{ color: INDIGO, flexShrink: 0, marginTop: 1 }} />
+            <div className="bg-indigo-500/[0.03] border border-indigo-500/10 rounded-2xl p-5 max-w-md mt-4">
+              <div className="flex gap-3 items-start">
+                <AlertTriangle className="w-5 h-5 text-indigo-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: TEXT1, marginBottom: 4 }}>
+                  <div className="text-xs font-extrabold text-[var(--os-text-1)] mb-1">
                     Kangqore View Blueprint™
                   </div>
-                  <p style={{ fontSize: 11, color: TEXT2, margin: 0, lineHeight: 1.6 }}>
+                  <p className="text-[11px] text-[var(--os-text-2)] leading-relaxed font-medium margin-0">
                     Every customer deployment produces a versioned Blueprint — the enterprise equivalent of
                     infrastructure-as-code. The customer owns it. WAANDA executes it.
                     Partners deploy it without touching the core platform.
