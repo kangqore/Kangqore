@@ -119,7 +119,7 @@ export function KIMMMModule() {
   const { pathname } = useLocation()
 
   return (
-    <div>
+    <div className="admin-bento-theme max-w-[1400px] mx-auto p-6 space-y-6 min-h-screen">
       {/* Local navigation removed, handled globally by WorkspaceSidebar */}
 
       <AnimatePresence mode="wait" initial={false}>

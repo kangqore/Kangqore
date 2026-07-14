@@ -143,23 +143,24 @@ function TrendIcon({ v, color }: { v: number, color?: string }) {
 function DomainCard({ d }: { d: Domain }) {
   const bgColor = getColorForLabel(d.label)
   return (
-    <div className="relative overflow-hidden p-6 transition-transform hover:-translate-y-1 flex flex-col justify-between" style={{ 
-      background: bgColor, 
+    <div className="relative overflow-hidden p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-md flex flex-col justify-between" style={{ 
+      background: `linear-gradient(135deg, ${bgColor}15, ${bgColor}25)`, 
       borderRadius: 'var(--os-radius-xl)', 
-      boxShadow: `0 16px 32px ${bgColor}40` 
+      border: `1px solid ${bgColor}30`,
+      boxShadow: `0 8px 32px ${bgColor}10` 
     }}>
       <div className="absolute inset-0 opacity-10 bg-white" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 40%, 0 100%)' }} />
       <div className="flex items-center justify-between relative z-10 mb-4">
-        <p className="text-[12px] font-black uppercase tracking-widest text-white/90 drop-shadow-md">{d.label}</p>
+        <p className="text-[12px] font-black uppercase tracking-widest text-[var(--os-text-1)] drop-shadow-sm">{d.label}</p>
         <div className="flex items-center gap-1.5">
-          <TrendIcon v={d.trend} color="#ffffff" />
+          <TrendIcon v={d.trend} color={bgColor} />
           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider"
-            style={{ color: bgColor, background: '#ffffff' }}>
+            style={{ color: '#ffffff', background: bgColor }}>
             {RAG_LABEL[d.status]}
           </span>
         </div>
       </div>
-      <p className="text-[14px] font-bold leading-snug relative z-10" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>{d.signal}</p>
+      <p className="text-[14px] font-bold leading-snug relative z-10 text-[var(--os-text-1)]">{d.signal}</p>
     </div>
   )
 }
@@ -194,10 +195,11 @@ function InsightCard({ insight }: { insight: KIMMPInsight }) {
   }
 
   return (
-    <div className="relative p-6 transition-all hover:-translate-y-1 overflow-hidden" style={{
-      background: `${c}15`,
+    <div className="relative p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden border" style={{
+      background: `linear-gradient(135deg, ${c}05, ${c}12)`,
+      borderColor: `${c}25`,
       borderRadius: 'var(--os-radius-xl)',
-      boxShadow: `0 24px 64px ${c}25`
+      boxShadow: `0 8px 32px ${c}08`
     }}>
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-3 mb-2">

@@ -58,13 +58,15 @@ function VitalCard({ label, value, sub, color, icon: Icon, pulse }: {
   color?: string; icon: any; pulse?: boolean
 }) {
   return (
-    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-5 py-4">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-5 py-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
       <div className="flex items-start justify-between">
-        <Icon className={cn('w-4 h-4 mt-0.5', pulse && 'animate-pulse')} style={{ color: color ?? 'var(--os-text-2)' }} />
-        <span className="text-[10px] text-[var(--os-text-2)] font-semibold uppercase tracking-widest">{label}</span>
+        <div className="p-2 rounded-lg transition-transform duration-500 group-hover:scale-110" style={{ background: color ? `${color}15` : 'rgba(255, 255, 255, 0.05)' }}>
+          <Icon className={cn('w-4 h-4', pulse && 'animate-pulse')} style={{ color: color ?? 'var(--os-text-2)' }} />
+        </div>
+        <span className="text-[10px] text-[var(--os-text-3)] font-bold uppercase tracking-widest mt-1">{label}</span>
       </div>
-      <p className="text-3xl font-bold tabular-nums mt-2" style={{ color: color ?? 'var(--os-text-1)' }}>{value}</p>
-      {sub && <p className="text-[11px] text-[var(--os-text-2)] mt-0.5">{sub}</p>}
+      <p className="text-3xl font-extrabold text-[var(--os-text-1)] tracking-tight tabular-nums mt-3">{value}</p>
+      {sub && <p className="text-[11px] text-[var(--os-text-2)] mt-1 font-medium">{sub}</p>}
     </div>
   )
 }
