@@ -4,7 +4,7 @@ import {
   ArrowRight, Search, MessageSquare, Eye, Clock, 
   CheckCircle2, TrendingUp, Users, Hash, ChevronDown,
   Flame, Award, Star, MessageCircle, Layers, Zap, Plus, X,
-  ThumbsUp, ThumbsDown
+  ThumbsUp, ThumbsDown, Heart, Repeat2, BarChart2, Bookmark, Share
 } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import SEO from '../components/SEO';
@@ -48,6 +48,8 @@ const INITIAL_TOPICS = [
     pinned: true,
     solved: false,
     ratings: { support: 42, oppose: 1, helpful: 56, notHelpful: 0, endorse: 31, challenge: 0 },
+    likes: 413,
+    reposts: 95,
     comments: [
       { id: 1, author: 'Priya Sharma', initials: 'PS', color: '#10B981', text: 'This space is exactly what enterprise platform developers need. Glad to be here!', date: '2026-06-29' },
       { id: 2, author: 'Ravi Kumar', initials: 'RK', color: '#3B82F6', text: 'Let\'s collaborate on setting up custom governance rules for agent frameworks.', date: '2026-06-28' },
@@ -72,6 +74,8 @@ const INITIAL_TOPICS = [
     pinned: false,
     solved: true,
     ratings: { support: 89, oppose: 4, helpful: 95, notHelpful: 2, endorse: 67, challenge: 1 },
+    likes: 120,
+    reposts: 24,
     comments: [
       { id: 1, author: 'Sarah Chen', initials: 'SC', color: '#FB923C', text: 'We implemented dynamic limits on agent budget execution. It prevents token loops.', date: '2026-06-29' },
       { id: 2, author: 'David Park', initials: 'DP', color: '#22C55E', text: 'Are you using human-in-the-loop triggers for high-risk actions?', date: '2026-06-28' },
@@ -95,6 +99,8 @@ const INITIAL_TOPICS = [
     pinned: false,
     solved: false,
     ratings: { support: 34, oppose: 2, helpful: 41, notHelpful: 1, endorse: 18, challenge: 0 },
+    likes: 84,
+    reposts: 12,
     comments: [
       { id: 1, author: 'Arjun Mehta', initials: 'AM', color: '#3B82F6', text: 'We use isolated database schemas for tier-1 enterprise accounts, shared schema for startups.', date: '2026-06-28' },
     ]
@@ -119,6 +125,8 @@ const INITIAL_TOPICS = [
     pinned: false,
     solved: true,
     ratings: { support: 67, oppose: 0, helpful: 74, notHelpful: 1, endorse: 45, challenge: 0 },
+    likes: 210,
+    reposts: 38,
     comments: []
   },
 ];
@@ -331,7 +339,7 @@ const CommunitySpotlight = ({ joinedCommunities, onToggleJoin }) => {
 
 // ─── Topic Card ───────────────────────────────────────────────────────────────
 
-const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, onTagClick, onCommunityClick, onCardClick }) => {
+const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userReposts = [], userBookmarks = [], onToggleJoin, onRate, onLike, onRepost, onBookmark, onTagClick, onCommunityClick, onCardClick }) => {
   const cat = getCategoryById(topic.category);
   const isJoined = joinedCommunities.includes(topic.community);
 
@@ -534,27 +542,91 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, 
             </div>
 
             {/* Bottom meta row */}
-            <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center justify-between flex-wrap gap-4 pt-3 border-t border-gray-100/50 dark:border-white/[0.03]">
               <div className="flex items-center gap-3">
                 <AvatarStack posters={topic.posters} />
-                <span className="text-xs text-gray-400 dark:text-gray-500 hidden sm:inline">
-                  by <span className="text-gray-600 dark:text-gray-300 font-bold">{topic.author.name}</span>
+                <span className="text-[11px] text-gray-400 dark:text-gray-500 hidden sm:inline">
+                  by <span className="text-gray-650 dark:text-gray-300 font-bold">{topic.author.name}</span>
                 </span>
               </div>
               
-              <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500 font-bold">
-                <span className="inline-flex items-center gap-1.5 cursor-pointer hover:text-blue-500" title="Replies" onClick={() => onCardClick?.(topic)}>
+              {/* Twitter/X Style Engagement Bar */}
+              <div className="flex items-center gap-1 sm:gap-2 text-xs font-bold text-gray-400 dark:text-gray-500">
+                {/* 1. Comment/Reply Button */}
+                <button
+                  onClick={() => onCardClick?.(topic)}
+                  className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:text-blue-500 hover:bg-blue-500/10 transition-all duration-200"
+                  title="Reply"
+                >
                   <MessageSquare className="w-3.5 h-3.5 text-blue-500/60" />
-                  {topic.comments?.length ?? topic.replies} Comments
-                </span>
-                <span className="inline-flex items-center gap-1.5" title="Views">
-                  <Eye className="w-3.5 h-3.5 text-cyan-500/60" />
-                  {formatCount(topic.views)}
-                </span>
-                <span className="inline-flex items-center gap-1.5" title="Last activity">
-                  <Clock className="w-3.5 h-3.5 text-indigo-500/60" />
-                  {timeAgo(topic.lastActivity)}
-                </span>
+                  <span className="text-[10px]">{topic.comments?.length ?? topic.replies}</span>
+                </button>
+
+                {/* 2. Repost Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRepost?.(topic.id);
+                  }}
+                  className={`flex items-center gap-1.5 px-2 py-1 rounded-lg hover:text-emerald-500 hover:bg-emerald-500/10 transition-all duration-200 ${
+                    userReposts.includes(topic.id) ? 'text-emerald-500' : ''
+                  }`}
+                  title="Repost"
+                >
+                  <Repeat2 className="w-3.5 h-3.5 text-emerald-500/60" />
+                  <span className="text-[10px]">{topic.reposts ?? 0}</span>
+                </button>
+
+                {/* 3. Like Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onLike?.(topic.id);
+                  }}
+                  className={`flex items-center gap-1.5 px-2 py-1 rounded-lg hover:text-pink-500 hover:bg-pink-500/10 transition-all duration-200 ${
+                    userLikes.includes(topic.id) ? 'text-pink-500' : ''
+                  }`}
+                  title="Like"
+                >
+                  <Heart className={`w-3.5 h-3.5 text-pink-500/60 ${userLikes.includes(topic.id) ? 'fill-pink-500' : ''}`} />
+                  <span className="text-[10px]">{topic.likes ?? 0}</span>
+                </button>
+
+                {/* 4. Views Impression */}
+                <div
+                  className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:text-cyan-500 hover:bg-cyan-500/10 transition-all duration-200 cursor-default"
+                  title="Views"
+                >
+                  <BarChart2 className="w-3.5 h-3.5 text-cyan-500/60" />
+                  <span className="text-[10px]">{formatCount(topic.views)}</span>
+                </div>
+
+                {/* 5. Bookmark Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onBookmark?.(topic.id);
+                  }}
+                  className={`flex items-center gap-1.5 px-2 py-1 rounded-lg hover:text-yellow-500 hover:bg-yellow-500/10 transition-all duration-200 ${
+                    userBookmarks.includes(topic.id) ? 'text-yellow-500' : ''
+                  }`}
+                  title="Bookmark"
+                >
+                  <Bookmark className={`w-3.5 h-3.5 text-yellow-500/60 ${userBookmarks.includes(topic.id) ? 'fill-yellow-500 text-yellow-555' : ''}`} />
+                </button>
+
+                {/* 6. Share Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigator.clipboard.writeText(`${window.location.origin}/communities/topic/${topic.id}`);
+                    alert("Topic link copied to clipboard!");
+                  }}
+                  className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:text-blue-500 hover:bg-blue-500/10 transition-all duration-200"
+                  title="Share"
+                >
+                  <Share className="w-3.5 h-3.5 text-blue-500/60" />
+                </button>
               </div>
             </div>
           </div>
@@ -579,6 +651,56 @@ const CommunitiesPage = () => {
 
   // Ratings mutual exclusion tracking state
   const [userRatings, setUserRatings] = useState({});
+
+  // Social metrics state
+  const [userLikes, setUserLikes] = useState([1]); // pre-liked topic 1 as mock
+  const [userReposts, setUserReposts] = useState([]);
+  const [userBookmarks, setUserBookmarks] = useState([1]); // pre-bookmarked topic 1 as mock
+
+  // Handle Like
+  const handleLike = (topicId) => {
+    const isLiked = userLikes.includes(topicId);
+    setTopics(prev => prev.map(t => {
+      if (t.id !== topicId) return t;
+      const updated = {
+        ...t,
+        likes: isLiked ? Math.max(0, (t.likes ?? 1) - 1) : (t.likes ?? 0) + 1
+      };
+      if (selectedTopic && selectedTopic.id === topicId) {
+        setSelectedTopic(prevSelected => ({ ...prevSelected, likes: updated.likes }));
+      }
+      return updated;
+    }));
+    setUserLikes(prev => 
+      isLiked ? prev.filter(id => id !== topicId) : [...prev, topicId]
+    );
+  };
+
+  // Handle Repost
+  const handleRepost = (topicId) => {
+    const isReposted = userReposts.includes(topicId);
+    setTopics(prev => prev.map(t => {
+      if (t.id !== topicId) return t;
+      const updated = {
+        ...t,
+        reposts: isReposted ? Math.max(0, (t.reposts ?? 1) - 1) : (t.reposts ?? 0) + 1
+      };
+      if (selectedTopic && selectedTopic.id === topicId) {
+        setSelectedTopic(prevSelected => ({ ...prevSelected, reposts: updated.reposts }));
+      }
+      return updated;
+    }));
+    setUserReposts(prev => 
+      isReposted ? prev.filter(id => id !== topicId) : [...prev, topicId]
+    );
+  };
+
+  // Handle Bookmark
+  const handleBookmark = (topicId) => {
+    setUserBookmarks(prev => 
+      prev.includes(topicId) ? prev.filter(id => id !== topicId) : [...prev, topicId]
+    );
+  };
 
   // Create Topic Modal State
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -1147,8 +1269,14 @@ const CommunitiesPage = () => {
                       topic={topic} 
                       joinedCommunities={joinedCommunities}
                       userVotes={userRatings[topic.id]}
+                      userLikes={userLikes}
+                      userReposts={userReposts}
+                      userBookmarks={userBookmarks}
                       onToggleJoin={handleToggleJoin}
                       onRate={handleRate}
+                      onLike={handleLike}
+                      onRepost={handleRepost}
+                      onBookmark={handleBookmark}
                       onTagClick={(tag) => setSearchQuery(`#${tag}`)}
                       onCommunityClick={(comm) => setSearchQuery(comm)}
                       onCardClick={(t) => setSelectedTopic(t)}
