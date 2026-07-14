@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { 
   ArrowRight, Search, MessageSquare, Eye, Clock, 
   CheckCircle2, TrendingUp, Users, Hash, ChevronDown,
-  Flame, Award, Star, MessageCircle, Layers, Zap, Plus, X
+  Flame, Award, Star, MessageCircle, Layers, Zap, Plus, X,
+  ThumbsUp, ThumbsDown
 } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import SEO from '../components/SEO';
@@ -46,6 +47,11 @@ const INITIAL_TOPICS = [
     lastActivity: '2024-05-22',
     pinned: true,
     solved: false,
+    ratings: { support: 42, oppose: 1, helpful: 56, notHelpful: 0, endorse: 31, challenge: 0 },
+    comments: [
+      { id: 1, author: 'Priya Sharma', initials: 'PS', color: '#10B981', text: 'This space is exactly what enterprise platform developers need. Glad to be here!', date: '2026-06-29' },
+      { id: 2, author: 'Ravi Kumar', initials: 'RK', color: '#3B82F6', text: 'Let\'s collaborate on setting up custom governance rules for agent frameworks.', date: '2026-06-28' },
+    ]
   },
   {
     id: 2,
@@ -65,6 +71,11 @@ const INITIAL_TOPICS = [
     lastActivity: '2026-06-29',
     pinned: false,
     solved: true,
+    ratings: { support: 89, oppose: 4, helpful: 95, notHelpful: 2, endorse: 67, challenge: 1 },
+    comments: [
+      { id: 1, author: 'Sarah Chen', initials: 'SC', color: '#FB923C', text: 'We implemented dynamic limits on agent budget execution. It prevents token loops.', date: '2026-06-29' },
+      { id: 2, author: 'David Park', initials: 'DP', color: '#22C55E', text: 'Are you using human-in-the-loop triggers for high-risk actions?', date: '2026-06-28' },
+    ]
   },
   {
     id: 3,
@@ -83,6 +94,10 @@ const INITIAL_TOPICS = [
     lastActivity: '2026-06-28',
     pinned: false,
     solved: false,
+    ratings: { support: 34, oppose: 2, helpful: 41, notHelpful: 1, endorse: 18, challenge: 0 },
+    comments: [
+      { id: 1, author: 'Arjun Mehta', initials: 'AM', color: '#3B82F6', text: 'We use isolated database schemas for tier-1 enterprise accounts, shared schema for startups.', date: '2026-06-28' },
+    ]
   },
   {
     id: 4,
@@ -103,61 +118,8 @@ const INITIAL_TOPICS = [
     lastActivity: '2026-06-28',
     pinned: false,
     solved: true,
-  },
-  {
-    id: 5,
-    title: '[Request] Improve API Rate Limiting Dashboard for Enterprise Clients',
-    excerpt: 'The current rate limiting dashboard lacks granularity for enterprise-scale operations. Suggesting improvements for better visibility.',
-    category: 'feedback',
-    community: 'k/workflows',
-    tags: ['api-design', 'enterprise-ai'],
-    author: { name: 'Sarah Chen', initials: 'SC', color: '#22C55E' },
-    posters: [
-      { initials: 'SC', color: '#22C55E' },
-      { initials: 'MK', color: '#8B5CF6' },
-    ],
-    replies: 7,
-    views: 523,
-    lastActivity: '2026-06-27',
-    pinned: false,
-    solved: false,
-  },
-  {
-    id: 6,
-    title: 'Enterprise Security Compliance Checklist for Cloud Deployments',
-    excerpt: 'We\'ve compiled a comprehensive security compliance checklist based on SOC 2, ISO 27001, and GDPR requirements for cloud deployments.',
-    category: 'guides',
-    community: 'k/governance',
-    tags: ['security', 'governance'],
-    author: { name: 'David Park', initials: 'DP', color: '#22C55E' },
-    posters: [
-      { initials: 'DP', color: '#22C55E' },
-      { initials: 'PS', color: '#10B981' },
-      { initials: 'AM', color: '#3B82F6' },
-    ],
-    replies: 15,
-    views: 1893,
-    lastActivity: '2026-06-27',
-    pinned: false,
-    solved: false,
-  },
-  {
-    id: 7,
-    title: 'Scaling Microservices: Lessons from Running 500+ Services in Production',
-    excerpt: 'After 3 years of operating a large microservices estate, here are the key lessons our platform team has learned.',
-    category: 'engineering',
-    community: 'k/architecture',
-    tags: ['microservices', 'platform-engineering'],
-    author: { name: 'Vikram Singh', initials: 'VS', color: '#EF4444' },
-    posters: [
-      { initials: 'VS', color: '#EF4444' },
-      { initials: 'RK', color: '#FB923C' },
-    ],
-    replies: 42,
-    views: 3241,
-    lastActivity: '2026-06-26',
-    pinned: false,
-    solved: false,
+    ratings: { support: 67, oppose: 0, helpful: 74, notHelpful: 1, endorse: 45, challenge: 0 },
+    comments: []
   },
 ];
 
@@ -291,10 +253,67 @@ const StatCounter = ({ icon: Icon, value, label, accentColor, bgGradientLight, b
   </div>
 );
 
+// ─── Spotlight Carousel Component ─────────────────────────────────────────────
+
+const CommunitySpotlight = ({ joinedCommunities, onToggleJoin }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const current = COMMUNITIES[currentIndex];
+  const isJoined = joinedCommunities.includes(current.name);
+
+  return (
+    <div className="bg-white/40 dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] p-5 relative overflow-hidden group/spotlight">
+      <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/10 blur-2xl rounded-full pointer-events-none transition-transform duration-500 group-hover/spotlight:scale-125" />
+      
+      <div className="flex items-center justify-between mb-4 relative z-10">
+        <div className="flex items-center gap-2">
+          <Star className="w-4 h-4 text-amber-500 fill-amber-500 animate-pulse" />
+          <h3 className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-wider">Spotlight</h3>
+        </div>
+        <div className="flex gap-1">
+          <button 
+            onClick={() => setCurrentIndex(prev => (prev === 0 ? COMMUNITIES.length - 1 : prev - 1))}
+            className="w-5 h-5 rounded bg-gray-100 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:text-gray-400"
+          >
+            &lt;
+          </button>
+          <button 
+            onClick={() => setCurrentIndex(prev => (prev === COMMUNITIES.length - 1 ? 0 : prev + 1))}
+            className="w-5 h-5 rounded bg-gray-100 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:text-gray-400"
+          >
+            &gt;
+          </button>
+        </div>
+      </div>
+
+      <div className="space-y-3 relative z-10">
+        <div>
+          <span className="text-xs font-black text-blue-500 dark:text-cyan-400">{current.name}</span>
+          <p className="text-[11px] font-semibold text-gray-650 dark:text-gray-300 mt-1 leading-snug">{current.description}</p>
+        </div>
+        
+        <div className="flex items-center justify-between gap-3 pt-1 border-t border-gray-100/50 dark:border-white/[0.03]">
+          <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500">Sub-Community</span>
+          <button
+            onClick={() => onToggleJoin(current.name)}
+            className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all duration-300 ${
+              isJoined 
+                ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' 
+                : 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm'
+            }`}
+          >
+            {isJoined ? 'Joined' : 'Join'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ─── Topic Card ───────────────────────────────────────────────────────────────
 
-const TopicCard = ({ topic, onTagClick, onCommunityClick }) => {
+const TopicCard = ({ topic, joinedCommunities, onToggleJoin, onRate, onTagClick, onCommunityClick, onCardClick }) => {
   const cat = getCategoryById(topic.category);
+  const isJoined = joinedCommunities.includes(topic.community);
   
   return (
     <div className={`group relative bg-white/[0.7] dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] shadow-sm hover:shadow-md dark:hover:shadow-none transition-all duration-500 hover:-translate-y-1 overflow-hidden ${topic.pinned ? 'border-amber-500/30 bg-amber-500/[0.01]' : ''}`}>
@@ -317,12 +336,24 @@ const TopicCard = ({ topic, onTagClick, onCommunityClick }) => {
             {/* Top meta row */}
             <div className="flex items-center gap-2 mb-3 flex-wrap">
               {topic.community && (
-                <button 
-                  onClick={() => onCommunityClick?.(topic.community)}
-                  className="text-xs font-extrabold text-blue-600 dark:text-cyan-400 hover:underline transition-all"
-                >
-                  {topic.community}
-                </button>
+                <div className="flex items-center gap-1.5">
+                  <button 
+                    onClick={() => onCommunityClick?.(topic.community)}
+                    className="text-xs font-extrabold text-blue-600 dark:text-cyan-400 hover:underline transition-all"
+                  >
+                    {topic.community}
+                  </button>
+                  <button
+                    onClick={() => onToggleJoin?.(topic.community)}
+                    className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider transition-all ${
+                      isJoined 
+                        ? 'bg-emerald-500/10 text-emerald-500' 
+                        : 'bg-gray-100 dark:bg-white/5 text-gray-500 hover:bg-gray-200 dark:hover:bg-white/10'
+                    }`}
+                  >
+                    {isJoined ? 'Joined' : 'Join'}
+                  </button>
+                </div>
               )}
               {topic.community && <span className="text-gray-300 dark:text-white/10 text-xs">•</span>}
               <CategoryBadge categoryId={topic.category} />
@@ -335,7 +366,10 @@ const TopicCard = ({ topic, onTagClick, onCommunityClick }) => {
             </div>
             
             {/* Title */}
-            <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-snug mb-2 group-hover:text-blue-500 dark:group-hover:text-cyan-400 transition-colors cursor-pointer pr-8">
+            <h3 
+              onClick={() => onCardClick?.(topic)}
+              className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-snug mb-2 group-hover:text-blue-500 dark:group-hover:text-cyan-400 transition-colors cursor-pointer pr-8"
+            >
               {topic.title}
             </h3>
             {/* Excerpt */}
@@ -351,8 +385,59 @@ const TopicCard = ({ topic, onTagClick, onCommunityClick }) => {
               ))}
             </div>
             
+            {/* Alternate Ratings Section */}
+            <div className="grid grid-cols-3 gap-2 py-3 border-t border-b border-gray-100/50 dark:border-white/[0.03] mb-4">
+              {/* Axis 1: Support / Oppose */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => onRate?.(topic.id, 'support')}
+                  className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-450 hover:bg-emerald-500/5 px-2 py-1 rounded-md transition-all border border-emerald-500/10"
+                >
+                  <ThumbsUp className="w-3 h-3" /> Support ({topic.ratings?.support ?? 0})
+                </button>
+                <button
+                  onClick={() => onRate?.(topic.id, 'oppose')}
+                  className="flex items-center gap-1 text-[10px] font-bold text-red-500 dark:text-red-400 hover:bg-red-500/5 px-2 py-1 rounded-md transition-all border border-red-500/10"
+                >
+                  <ThumbsDown className="w-3 h-3" /> Oppose ({topic.ratings?.oppose ?? 0})
+                </button>
+              </div>
+
+              {/* Axis 2: Helpful / Not Helpful */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => onRate?.(topic.id, 'helpful')}
+                  className="flex items-center gap-1 text-[10px] font-bold text-blue-600 dark:text-cyan-400 hover:bg-blue-500/5 px-2 py-1 rounded-md transition-all border border-blue-500/10"
+                >
+                  Helpful ({topic.ratings?.helpful ?? 0})
+                </button>
+                <button
+                  onClick={() => onRate?.(topic.id, 'notHelpful')}
+                  className="flex items-center gap-1 text-[10px] font-bold text-gray-500 hover:bg-gray-500/5 px-2 py-1 rounded-md transition-all border border-gray-200/30 dark:border-white/10"
+                >
+                  Unhelpful ({topic.ratings?.notHelpful ?? 0})
+                </button>
+              </div>
+
+              {/* Axis 3: Endorse / Challenge */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => onRate?.(topic.id, 'endorse')}
+                  className="flex items-center gap-1 text-[10px] font-bold text-indigo-500 hover:bg-indigo-500/5 px-2 py-1 rounded-md transition-all border border-indigo-500/10"
+                >
+                  Endorse ({topic.ratings?.endorse ?? 0})
+                </button>
+                <button
+                  onClick={() => onRate?.(topic.id, 'challenge')}
+                  className="flex items-center gap-1 text-[10px] font-bold text-amber-500 hover:bg-amber-500/5 px-2 py-1 rounded-md transition-all border border-amber-500/10"
+                >
+                  Challenge ({topic.ratings?.challenge ?? 0})
+                </button>
+              </div>
+            </div>
+
             {/* Bottom meta row */}
-            <div className="flex items-center justify-between flex-wrap gap-3 border-t border-gray-100/50 dark:border-white/[0.03] pt-3.5">
+            <div className="flex items-center justify-between flex-wrap gap-3">
               <div className="flex items-center gap-3">
                 <AvatarStack posters={topic.posters} />
                 <span className="text-xs text-gray-400 dark:text-gray-500 hidden sm:inline">
@@ -361,9 +446,9 @@ const TopicCard = ({ topic, onTagClick, onCommunityClick }) => {
               </div>
               
               <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500 font-bold">
-                <span className="inline-flex items-center gap-1.5" title="Replies">
+                <span className="inline-flex items-center gap-1.5 cursor-pointer hover:text-blue-500" title="Replies" onClick={() => onCardClick?.(topic)}>
                   <MessageSquare className="w-3.5 h-3.5 text-blue-500/60" />
-                  {topic.replies}
+                  {topic.comments?.length ?? topic.replies} Comments
                 </span>
                 <span className="inline-flex items-center gap-1.5" title="Views">
                   <Eye className="w-3.5 h-3.5 text-cyan-500/60" />
@@ -392,6 +477,9 @@ const CommunitiesPage = () => {
   const [sortBy, setSortBy] = useState('newest');
   const [showAllTopics, setShowAllTopics] = useState(false);
 
+  // Community join states
+  const [joinedCommunities, setJoinedCommunities] = useState(['k/ai-agents', 'k/workflows']);
+
   // Create Topic Modal State
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -399,6 +487,27 @@ const CommunitiesPage = () => {
   const [newCategory, setNewCategory] = useState('ask');
   const [newCommunity, setNewCommunity] = useState('k/ai-agents');
   const [newTags, setNewTags] = useState('');
+
+  // Selected Topic for Discussion Drawer
+  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [commentText, setCommentText] = useState('');
+
+  // Toggle Sub-Community Join
+  const handleToggleJoin = (commName) => {
+    setJoinedCommunities(prev => 
+      prev.includes(commName) ? prev.filter(c => c !== commName) : [...prev, commName]
+    );
+  };
+
+  // Handle Dynamic Ratings Updates
+  const handleRate = (topicId, metric) => {
+    setTopics(prev => prev.map(t => {
+      if (t.id !== topicId) return t;
+      const ratings = { ...t.ratings };
+      ratings[metric] = (ratings[metric] ?? 0) + 1;
+      return { ...t, ratings };
+    }));
+  };
 
   // Filter & sort topics
   const filteredTopics = useMemo(() => {
@@ -411,7 +520,7 @@ const CommunitiesPage = () => {
     
     // Tab filter
     if (activeTab === 'unanswered') {
-      list = list.filter(t => t.replies === 0);
+      list = list.filter(t => (t.comments?.length ?? t.replies) === 0);
     }
     
     // Search filter
@@ -431,7 +540,7 @@ const CommunitiesPage = () => {
     } else if (sortBy === 'views') {
       list.sort((a, b) => b.views - a.views);
     } else if (sortBy === 'replies') {
-      list.sort((a, b) => b.replies - a.replies);
+      list.sort((a, b) => (b.comments?.length ?? b.replies) - (a.comments?.length ?? a.replies));
     }
     
     // Pin to top
@@ -469,13 +578,15 @@ const CommunitiesPage = () => {
       category: newCategory,
       community: newCommunity,
       tags: tagsArr.length > 0 ? tagsArr : ['general'],
-      author: { name: 'Mahesh K (C.O.D.E.)', initials: 'MK', color: '#9E81FF' },
-      posters: [{ initials: 'MK', color: '#9E81FF' }],
+      author: { name: 'Mahesh K (C.O.D.E.)', initials: 'MK', color: '#8B5CF6' },
+      posters: [{ initials: 'MK', color: '#8B5CF6' }],
       replies: 0,
       views: 1,
       lastActivity: new Date().toISOString().split('T')[0],
       pinned: false,
       solved: false,
+      ratings: { support: 0, oppose: 0, helpful: 0, notHelpful: 0, endorse: 0, challenge: 0 },
+      comments: []
     };
 
     setTopics([newTopic, ...topics]);
@@ -487,6 +598,31 @@ const CommunitiesPage = () => {
     setNewCommunity('k/ai-agents');
     setNewTags('');
     setShowCreateModal(false);
+  };
+
+  const handleAddComment = (e) => {
+    e.preventDefault();
+    if (!commentText.trim() || !selectedTopic) return;
+
+    const newComment = {
+      id: (selectedTopic.comments?.length ?? 0) + 1,
+      author: 'Mahesh K (C.O.D.E.)',
+      initials: 'MK',
+      color: '#8B5CF6',
+      text: commentText,
+      date: new Date().toISOString().split('T')[0]
+    };
+
+    setTopics(prev => prev.map(t => {
+      if (t.id !== selectedTopic.id) return t;
+      const updatedComments = [...(t.comments ?? []), newComment];
+      const updatedTopic = { ...t, comments: updatedComments };
+      // Sync local drawer view
+      setSelectedTopic(updatedTopic);
+      return updatedTopic;
+    }));
+
+    setCommentText('');
   };
 
   return (
@@ -587,7 +723,7 @@ const CommunitiesPage = () => {
                 className={`relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-300 flex-shrink-0 overflow-hidden group ${
                   activeCategory === cat.id
                     ? 'text-white shadow-sm hover:-translate-y-0.5'
-                    : 'bg-white/50 dark:bg-white/[0.02] border border-gray-200/60 dark:border-white/[0.05] text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-white/[0.06] hover:border-gray-300 dark:hover:border-white/[0.1] shadow-sm hover:-translate-y-0.5'
+                    : 'bg-white/50 dark:bg-white/[0.02] border border-gray-200/60 dark:border-white/[0.05] text-gray-550 dark:text-gray-400 hover:bg-white dark:hover:bg-white/[0.06] hover:border-gray-300 dark:hover:border-white/[0.1] shadow-sm hover:-translate-y-0.5'
                 }`}
               >
                 {activeCategory === cat.id && (
@@ -763,6 +899,91 @@ const CommunitiesPage = () => {
         </div>
       )}
 
+      {/* ─── Slide-out Discussion Drawer ─── */}
+      {selectedTopic && (
+        <div className="fixed inset-0 z-40 flex justify-end bg-black/50 backdrop-blur-sm transition-opacity duration-300">
+          <div className="absolute inset-0" onClick={() => setSelectedTopic(null)} />
+          <div className="w-full max-w-lg bg-white dark:bg-[#0e111a]/95 border-l border-gray-200 dark:border-white/[0.08] h-full flex flex-col relative z-50 shadow-2xl animate-[slideLeft_0.3s_ease-out]">
+            
+            {/* Header */}
+            <div className="p-5 border-b border-gray-150 dark:border-white/[0.05] flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-black text-blue-500 dark:text-cyan-400 uppercase tracking-widest">{selectedTopic.community}</span>
+                <h4 className="text-sm font-bold text-gray-900 dark:text-white mt-1">Discussion Panel</h4>
+              </div>
+              <button 
+                onClick={() => setSelectedTopic(null)}
+                className="p-1 rounded-lg bg-gray-100 dark:bg-white/5 text-gray-400 hover:text-white hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Scrollable Feed */}
+            <div className="flex-1 overflow-y-auto p-5 space-y-5">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Avatar initials={selectedTopic.author.initials} color={selectedTopic.author.color} size="sm" />
+                  <span className="text-xs font-bold text-gray-800 dark:text-gray-200">{selectedTopic.author.name}</span>
+                  <span className="text-[10px] text-gray-400 dark:text-gray-500">• {timeAgo(selectedTopic.lastActivity)}</span>
+                </div>
+                <h3 className="text-base font-extrabold text-gray-900 dark:text-white mb-2 leading-snug">{selectedTopic.title}</h3>
+                <p className="text-xs text-gray-650 dark:text-gray-450 leading-relaxed bg-gray-50 dark:bg-white/[0.01] p-3 rounded-xl border border-gray-200/50 dark:border-white/[0.03]">{selectedTopic.excerpt}</p>
+                
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {selectedTopic.tags.map((tag, i) => <TagPill key={i} tag={tag} />)}
+                </div>
+              </div>
+
+              {/* Comments Section */}
+              <div className="space-y-4">
+                <h5 className="text-[10px] font-black text-gray-400 dark:text-gray-550 uppercase tracking-widest border-b border-gray-100 dark:border-white/[0.03] pb-1.5">
+                  Comments ({selectedTopic.comments?.length ?? 0})
+                </h5>
+                
+                {(selectedTopic.comments ?? []).length > 0 ? (
+                  <div className="space-y-3.5">
+                    {selectedTopic.comments.map((comment) => (
+                      <div key={comment.id} className="p-3 bg-gray-50/50 dark:bg-white/[0.01] border border-gray-200/30 dark:border-white/[0.03] rounded-xl flex gap-3">
+                        <Avatar initials={comment.initials} color={comment.color} size="xs" />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-xs font-bold text-gray-900 dark:text-white">{comment.author}</span>
+                            <span className="text-[9px] text-gray-400 dark:text-gray-500">{timeAgo(comment.date)}</span>
+                          </div>
+                          <p className="text-xs text-gray-650 dark:text-gray-400 leading-relaxed">{comment.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-8 text-center text-xs text-gray-400 dark:text-gray-500 font-semibold">
+                    No comments yet. Start the discussion below!
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Input Comment Box */}
+            <form onSubmit={handleAddComment} className="p-4 border-t border-gray-150 dark:border-white/[0.05] bg-gray-50/30 dark:bg-black/20 flex gap-2">
+              <input
+                required
+                value={commentText}
+                onChange={e => setCommentText(e.target.value)}
+                placeholder="Write a comment..."
+                className="flex-1 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/[0.08] rounded-xl px-4 py-2 text-xs text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+              <button 
+                type="submit"
+                className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold px-4 py-2 rounded-xl text-xs hover:scale-[1.02] transition-transform"
+              >
+                Send
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* ═══════════════════════════════════════════════════════════
          SECTION 3 & 4: Main Content + Sidebar
          ═══════════════════════════════════════════════════════════ */}
@@ -788,8 +1009,12 @@ const CommunitiesPage = () => {
                     <TopicCard 
                       key={topic.id} 
                       topic={topic} 
+                      joinedCommunities={joinedCommunities}
+                      onToggleJoin={handleToggleJoin}
+                      onRate={handleRate}
                       onTagClick={(tag) => setSearchQuery(`#${tag}`)}
                       onCommunityClick={(comm) => setSearchQuery(comm)}
+                      onCardClick={(t) => setSelectedTopic(t)}
                     />
                   ))}
                   
@@ -827,6 +1052,12 @@ const CommunitiesPage = () => {
             {/* ─── Trending Sidebar ─── */}
             <aside className="hidden lg:block space-y-6 mt-8 lg:mt-0">
               
+              {/* Community Spotlight Carousel */}
+              <CommunitySpotlight 
+                joinedCommunities={joinedCommunities}
+                onToggleJoin={handleToggleJoin}
+              />
+
               {/* Trending This Week */}
               <div className="bg-white/40 dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] p-5 relative overflow-hidden">
                 <div className="flex items-center gap-2 mb-4 relative z-10">
@@ -838,13 +1069,13 @@ const CommunitiesPage = () => {
                     <div key={topic.id} className="group cursor-pointer relative transition-transform duration-355 hover:translate-x-1">
                       <div className="flex items-start gap-3">
                         <div className="relative flex-shrink-0">
-                          <span className="text-xl font-black text-gray-205 dark:text-gray-800 opacity-60 group-hover:text-orange-500/40 transition-colors">
+                          <span className="text-xl font-black text-gray-250 dark:text-gray-800 opacity-60 group-hover:text-orange-500/40 transition-colors">
                             {String(i + 1).padStart(2, '0')}
                           </span>
                         </div>
                         <div className="flex-1 min-w-0">
                           <p 
-                            onClick={() => setSearchQuery(topic.title)}
+                            onClick={() => setSelectedTopic(topic)}
                             className="text-xs font-bold text-gray-700 dark:text-gray-300 leading-snug group-hover:text-blue-500 dark:group-hover:text-cyan-400 transition-colors line-clamp-2"
                           >
                             {topic.title}
@@ -854,7 +1085,7 @@ const CommunitiesPage = () => {
                               <Eye className="w-3 h-3 text-blue-500/40" /> {formatCount(topic.views)}
                             </span>
                             <span className="inline-flex items-center gap-1">
-                              <MessageSquare className="w-3 h-3 text-emerald-500/40" /> {topic.replies}
+                              <MessageSquare className="w-3 h-3 text-emerald-500/40" /> {topic.comments?.length ?? topic.replies}
                             </span>
                           </div>
                         </div>
