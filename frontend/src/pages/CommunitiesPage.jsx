@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   ArrowRight, Search, MessageSquare, Eye, Clock, 
   CheckCircle2, TrendingUp, Users, Hash, ChevronDown,
-  Flame, Award, Filter, ChevronRight, Star,
-  MessageCircle, ThumbsUp, BookOpen, Zap, Shield,
-  Globe, Cpu, BarChart3, Layers, GitBranch
+  Flame, Award, Star, MessageCircle, Layers, Zap, Plus, X
 } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import SEO from '../components/SEO';
@@ -15,47 +13,33 @@ import { coreSEO } from '../data/seoData';
 
 const CATEGORIES = [
   { id: 'all', name: 'All Topics', color: '#6B7280', count: null },
-  { id: 'ask', name: 'Ask the Community', color: '#9E81FF', count: 847 },
-  { id: 'feedback', name: 'Product Feedback', color: '#12A89D', count: 312 },
-  { id: 'announcements', name: 'Announcements', color: '#FFEB81', count: 28 },
+  { id: 'ask', name: 'Ask the Community', color: '#8B5CF6', count: 847 },
+  { id: 'feedback', name: 'Product Feedback', color: '#10B981', count: 312 },
+  { id: 'announcements', name: 'Announcements', color: '#FB923C', count: 28 },
   { id: 'engineering', name: 'Engineering', color: '#3B82F6', count: 195 },
-  { id: 'ai', name: 'AI & Automation', color: '#F97316', count: 263 },
-  { id: 'guides', name: 'Guides & Tutorials', color: '#22C55E', count: 156 },
+  { id: 'ai', name: 'AI & Automation', color: '#F43F5E', count: 263 },
+  { id: 'guides', name: 'Guides & Tutorials', color: '#14B8A6', count: 156 },
 ];
 
-const TAGS = [
-  { name: 'cloud-architecture', count: 89 },
-  { name: 'governance', count: 76 },
-  { name: 'enterprise-ai', count: 134 },
-  { name: 'data-pipeline', count: 67 },
-  { name: 'microservices', count: 58 },
-  { name: 'security', count: 92 },
-  { name: 'api-design', count: 45 },
-  { name: 'devops', count: 71 },
-  { name: 'platform-engineering', count: 63 },
-  { name: 'observability', count: 41 },
-  { name: 'digital-transformation', count: 52 },
-  { name: 'agentic-ai', count: 118 },
+const COMMUNITIES = [
+  { id: 'k-architecture', name: 'k/architecture', description: 'Platform & Cloud Architecture', color: '#3B82F6' },
+  { id: 'k-ai-agents', name: 'k/ai-agents', description: 'Agentic AI & Cognition', color: '#10B981' },
+  { id: 'k-governance', name: 'k/governance', description: 'Enterprise Trust & Compliance', color: '#8B5CF6' },
+  { id: 'k-workflows', name: 'k/workflows', description: 'Automation & Engineering', color: '#FB923C' },
+  { id: 'k-showcase', name: 'k/showcase', description: 'Member Demos & Launches', color: '#F43F5E' },
 ];
 
-const CONTRIBUTORS = [
-  { name: 'Arjun Mehta', initials: 'AM', color: '#9E81FF', badges: 47, role: 'Top Contributor' },
-  { name: 'Priya Sharma', initials: 'PS', color: '#12A89D', badges: 38, role: 'Community Leader' },
-  { name: 'Ravi Kumar', initials: 'RK', color: '#3B82F6', badges: 34, role: 'Expert' },
-  { name: 'Sarah Chen', initials: 'SC', color: '#F97316', badges: 29, role: 'Rising Star' },
-  { name: 'David Park', initials: 'DP', color: '#22C55E', badges: 25, role: 'Contributor' },
-];
-
-const TOPICS = [
+const INITIAL_TOPICS = [
   {
     id: 1,
     title: 'Welcome to the Kangqore Developer Community',
     excerpt: 'Hi there, and welcome to the Kangqore Developer Community. We\'ve created this space to bring together enterprise leaders, technologists, and partners…',
     category: 'announcements',
+    community: 'k/showcase',
     tags: ['about-community'],
-    author: { name: 'Mahesh K', initials: 'MK', color: '#9E81FF' },
+    author: { name: 'Mahesh K', initials: 'MK', color: '#8B5CF6' },
     posters: [
-      { initials: 'MK', color: '#9E81FF' },
+      { initials: 'MK', color: '#8B5CF6' },
     ],
     replies: 12,
     views: 5980,
@@ -68,12 +52,13 @@ const TOPICS = [
     title: 'Best Practices for Implementing Agentic AI Governance in Enterprise Systems',
     excerpt: 'We\'ve been exploring governance frameworks for autonomous AI agents in production. What patterns have worked for your organization?',
     category: 'ai',
-    tags: ['agentic-ai', 'governance'],
+    community: 'k/governance',
+    tags: ['agentic-ai', 'governance', 'enterprise-ai'],
     author: { name: 'Arjun Mehta', initials: 'AM', color: '#3B82F6' },
     posters: [
       { initials: 'AM', color: '#3B82F6' },
-      { initials: 'PS', color: '#12A89D' },
-      { initials: 'RK', color: '#F97316' },
+      { initials: 'PS', color: '#10B981' },
+      { initials: 'RK', color: '#FB923C' },
     ],
     replies: 24,
     views: 1842,
@@ -86,10 +71,11 @@ const TOPICS = [
     title: 'Cloud-Native Reference Architecture for Multi-Tenant SaaS Platforms',
     excerpt: 'Looking for reference architectures for building multi-tenant SaaS platforms. Any frameworks or playbooks from the community?',
     category: 'engineering',
+    community: 'k/architecture',
     tags: ['cloud-architecture', 'microservices'],
-    author: { name: 'Priya Sharma', initials: 'PS', color: '#12A89D' },
+    author: { name: 'Priya Sharma', initials: 'PS', color: '#10B981' },
     posters: [
-      { initials: 'PS', color: '#12A89D' },
+      { initials: 'PS', color: '#10B981' },
       { initials: 'SC', color: '#22C55E' },
     ],
     replies: 18,
@@ -103,13 +89,14 @@ const TOPICS = [
     title: 'How to Configure Real-Time Data Pipeline Monitoring with Observability Stack',
     excerpt: 'Our team is setting up real-time monitoring for data pipelines. What tools and configurations have you found most effective?',
     category: 'ask',
+    community: 'k/workflows',
     tags: ['data-pipeline', 'observability'],
-    author: { name: 'Ravi Kumar', initials: 'RK', color: '#F97316' },
+    author: { name: 'Ravi Kumar', initials: 'RK', color: '#FB923C' },
     posters: [
-      { initials: 'RK', color: '#F97316' },
+      { initials: 'RK', color: '#FB923C' },
       { initials: 'AM', color: '#3B82F6' },
       { initials: 'DP', color: '#22C55E' },
-      { initials: 'SC', color: '#9E81FF' },
+      { initials: 'SC', color: '#8B5CF6' },
     ],
     replies: 31,
     views: 2190,
@@ -122,11 +109,12 @@ const TOPICS = [
     title: '[Request] Improve API Rate Limiting Dashboard for Enterprise Clients',
     excerpt: 'The current rate limiting dashboard lacks granularity for enterprise-scale operations. Suggesting improvements for better visibility.',
     category: 'feedback',
+    community: 'k/workflows',
     tags: ['api-design', 'enterprise-ai'],
     author: { name: 'Sarah Chen', initials: 'SC', color: '#22C55E' },
     posters: [
       { initials: 'SC', color: '#22C55E' },
-      { initials: 'MK', color: '#9E81FF' },
+      { initials: 'MK', color: '#8B5CF6' },
     ],
     replies: 7,
     views: 523,
@@ -139,11 +127,12 @@ const TOPICS = [
     title: 'Enterprise Security Compliance Checklist for Cloud Deployments',
     excerpt: 'We\'ve compiled a comprehensive security compliance checklist based on SOC 2, ISO 27001, and GDPR requirements for cloud deployments.',
     category: 'guides',
+    community: 'k/governance',
     tags: ['security', 'governance'],
     author: { name: 'David Park', initials: 'DP', color: '#22C55E' },
     posters: [
       { initials: 'DP', color: '#22C55E' },
-      { initials: 'PS', color: '#12A89D' },
+      { initials: 'PS', color: '#10B981' },
       { initials: 'AM', color: '#3B82F6' },
     ],
     replies: 15,
@@ -157,11 +146,12 @@ const TOPICS = [
     title: 'Scaling Microservices: Lessons from Running 500+ Services in Production',
     excerpt: 'After 3 years of operating a large microservices estate, here are the key lessons our platform team has learned.',
     category: 'engineering',
+    community: 'k/architecture',
     tags: ['microservices', 'platform-engineering'],
     author: { name: 'Vikram Singh', initials: 'VS', color: '#EF4444' },
     posters: [
       { initials: 'VS', color: '#EF4444' },
-      { initials: 'RK', color: '#F97316' },
+      { initials: 'RK', color: '#FB923C' },
     ],
     replies: 42,
     views: 3241,
@@ -169,145 +159,25 @@ const TOPICS = [
     pinned: false,
     solved: false,
   },
-  {
-    id: 8,
-    title: 'DevOps Pipeline Optimization: Reducing Build Times by 70%',
-    excerpt: 'We achieved a 70% reduction in CI/CD build times through caching strategies, parallel builds, and artifact optimization.',
-    category: 'guides',
-    tags: ['devops', 'platform-engineering'],
-    author: { name: 'Neha Gupta', initials: 'NG', color: '#EC4899' },
-    posters: [
-      { initials: 'NG', color: '#EC4899' },
-      { initials: 'VS', color: '#EF4444' },
-      { initials: 'DP', color: '#22C55E' },
-    ],
-    replies: 19,
-    views: 1678,
-    lastActivity: '2026-06-26',
-    pinned: false,
-    solved: true,
-  },
-  {
-    id: 9,
-    title: 'Is There a Way to Restrict Model Access in Multi-Org Deployments?',
-    excerpt: 'We need to restrict which AI models are accessible to different organizational units within our enterprise deployment.',
-    category: 'ask',
-    tags: ['enterprise-ai', 'security'],
-    author: { name: 'Alex Rivera', initials: 'AR', color: '#8B5CF6' },
-    posters: [
-      { initials: 'AR', color: '#8B5CF6' },
-      { initials: 'SC', color: '#22C55E' },
-      { initials: 'MK', color: '#9E81FF' },
-    ],
-    replies: 8,
-    views: 634,
-    lastActivity: '2026-06-25',
-    pinned: false,
-    solved: true,
-  },
-  {
-    id: 10,
-    title: '[Bug] Digital Transformation Maturity Assessment Tool Returns Incorrect Scores',
-    excerpt: 'The maturity assessment tool is returning incorrect scores for the "Data Governance" dimension when certain inputs are provided.',
-    category: 'feedback',
-    tags: ['digital-transformation', 'governance'],
-    author: { name: 'Kiran Patel', initials: 'KP', color: '#14B8A6' },
-    posters: [
-      { initials: 'KP', color: '#14B8A6' },
-    ],
-    replies: 3,
-    views: 287,
-    lastActivity: '2026-06-25',
-    pinned: false,
-    solved: false,
-  },
-  {
-    id: 11,
-    title: 'Building Event-Driven Architectures with Kafka and Enterprise Integration Patterns',
-    excerpt: 'A deep dive into implementing event-driven architectures using Kafka, including saga patterns and exactly-once semantics.',
-    category: 'engineering',
-    tags: ['cloud-architecture', 'data-pipeline'],
-    author: { name: 'Rahul Verma', initials: 'RV', color: '#0EA5E9' },
-    posters: [
-      { initials: 'RV', color: '#0EA5E9' },
-      { initials: 'AM', color: '#3B82F6' },
-      { initials: 'VS', color: '#EF4444' },
-    ],
-    replies: 27,
-    views: 2456,
-    lastActivity: '2026-06-24',
-    pinned: false,
-    solved: false,
-  },
-  {
-    id: 12,
-    title: 'Community AMA: Kangqore Engineering Leadership — June 2026',
-    excerpt: 'Join our monthly Ask Me Anything session with Kangqore engineering leaders. Bring your questions about platform strategy and roadmap.',
-    category: 'announcements',
-    tags: ['about-community'],
-    author: { name: 'Mahesh K', initials: 'MK', color: '#9E81FF' },
-    posters: [
-      { initials: 'MK', color: '#9E81FF' },
-      { initials: 'PS', color: '#12A89D' },
-    ],
-    replies: 45,
-    views: 4120,
-    lastActivity: '2026-06-24',
-    pinned: false,
-    solved: false,
-  },
-  {
-    id: 13,
-    title: 'Implementing Zero-Trust Security in Hybrid Cloud Environments',
-    excerpt: 'How we implemented a zero-trust security model across our hybrid cloud infrastructure spanning AWS, Azure, and on-premises.',
-    category: 'guides',
-    tags: ['security', 'cloud-architecture'],
-    author: { name: 'Anjali Desai', initials: 'AD', color: '#D946EF' },
-    posters: [
-      { initials: 'AD', color: '#D946EF' },
-      { initials: 'DP', color: '#22C55E' },
-    ],
-    replies: 11,
-    views: 967,
-    lastActivity: '2026-06-23',
-    pinned: false,
-    solved: false,
-  },
-  {
-    id: 14,
-    title: 'AI Agent Orchestration: Managing Multi-Agent Workflows at Scale',
-    excerpt: 'Exploring patterns for orchestrating multiple AI agents in production, including conflict resolution and resource management.',
-    category: 'ai',
-    tags: ['agentic-ai', 'platform-engineering'],
-    author: { name: 'Priya Sharma', initials: 'PS', color: '#12A89D' },
-    posters: [
-      { initials: 'PS', color: '#12A89D' },
-      { initials: 'AM', color: '#3B82F6' },
-      { initials: 'RK', color: '#F97316' },
-      { initials: 'SC', color: '#22C55E' },
-    ],
-    replies: 36,
-    views: 2874,
-    lastActivity: '2026-06-22',
-    pinned: false,
-    solved: false,
-  },
-  {
-    id: 15,
-    title: 'Looking for a Study Group on Enterprise Platform Engineering',
-    excerpt: 'Would anyone be interested in forming a study group focused on platform engineering practices for enterprise environments?',
-    category: 'ask',
-    tags: ['platform-engineering'],
-    author: { name: 'Tom Wilson', initials: 'TW', color: '#6366F1' },
-    posters: [
-      { initials: 'TW', color: '#6366F1' },
-    ],
-    replies: 6,
-    views: 342,
-    lastActivity: '2026-06-21',
-    pinned: false,
-    solved: false,
-  },
+];
+
+const TAGS = [
+  { name: 'cloud-architecture', count: 89 },
+  { name: 'governance', count: 76 },
+  { name: 'enterprise-ai', count: 134 },
+  { name: 'data-pipeline', count: 67 },
+  { name: 'microservices', count: 58 },
+  { name: 'security', count: 92 },
+  { name: 'observability', count: 41 },
+  { name: 'agentic-ai', count: 118 },
+];
+
+const CONTRIBUTORS = [
+  { name: 'Arjun Mehta', initials: 'AM', color: '#8B5CF6', badges: 47, role: 'Top Contributor' },
+  { name: 'Priya Sharma', initials: 'PS', color: '#10B981', badges: 38, role: 'Community Leader' },
+  { name: 'Ravi Kumar', initials: 'RK', color: '#3B82F6', badges: 34, role: 'Expert' },
+  { name: 'Sarah Chen', initials: 'SC', color: '#FB923C', badges: 29, role: 'Rising Star' },
+  { name: 'David Park', initials: 'DP', color: '#22C55E', badges: 25, role: 'Contributor' },
 ];
 
 // ─── Helper Functions ─────────────────────────────────────────────────────────
@@ -323,9 +193,6 @@ function timeAgo(dateStr) {
   if (diffDays < 7) return `${diffDays}d ago`;
   if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  if (diffDays < 365) {
-    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-  }
   return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
@@ -393,9 +260,12 @@ const CategoryBadge = ({ categoryId }) => {
 };
 
 /** Tag pill */
-const TagPill = ({ tag }) => (
-  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase bg-gray-50 dark:bg-white/[0.02] text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-white/[0.04] hover:bg-gray-100 dark:hover:bg-white/[0.06] hover:border-gray-200 dark:hover:border-white/[0.08] transition-all cursor-pointer">
-    {tag}
+const TagPill = ({ tag, onClick }) => (
+  <span 
+    onClick={onClick}
+    className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase bg-gray-50 dark:bg-white/[0.02] text-gray-550 dark:text-gray-400 border border-gray-100 dark:border-white/[0.04] hover:bg-gray-100 dark:hover:bg-white/[0.06] hover:border-gray-200 dark:hover:border-white/[0.08] transition-all cursor-pointer"
+  >
+    #{tag}
   </span>
 );
 
@@ -423,7 +293,7 @@ const StatCounter = ({ icon: Icon, value, label, accentColor, bgGradientLight, b
 
 // ─── Topic Card ───────────────────────────────────────────────────────────────
 
-const TopicCard = ({ topic }) => {
+const TopicCard = ({ topic, onTagClick, onCommunityClick }) => {
   const cat = getCategoryById(topic.category);
   
   return (
@@ -446,6 +316,15 @@ const TopicCard = ({ topic }) => {
           <div className="flex-1 min-w-0">
             {/* Top meta row */}
             <div className="flex items-center gap-2 mb-3 flex-wrap">
+              {topic.community && (
+                <button 
+                  onClick={() => onCommunityClick?.(topic.community)}
+                  className="text-xs font-extrabold text-blue-600 dark:text-cyan-400 hover:underline transition-all"
+                >
+                  {topic.community}
+                </button>
+              )}
+              {topic.community && <span className="text-gray-300 dark:text-white/10 text-xs">•</span>}
               <CategoryBadge categoryId={topic.category} />
               {topic.solved && (
                 <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-500 bg-emerald-500/10 border border-emerald-500/25 px-2.5 py-0.5 rounded-lg shadow-sm">
@@ -461,14 +340,14 @@ const TopicCard = ({ topic }) => {
             </h3>
             {/* Excerpt */}
             {topic.excerpt && (
-              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2">
+              <p className="text-xs text-gray-550 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2">
                 {topic.excerpt}
               </p>
             )}
             {/* Tags */}
             <div className="flex flex-wrap gap-1.5 mb-4">
               {topic.tags.map((tag, i) => (
-                <TagPill key={i} tag={tag} />
+                <TagPill key={i} tag={tag} onClick={() => onTagClick?.(tag)} />
               ))}
             </div>
             
@@ -506,31 +385,41 @@ const TopicCard = ({ topic }) => {
 // ─── Main Page Component ──────────────────────────────────────────────────────
 
 const CommunitiesPage = () => {
+  const [topics, setTopics] = useState(INITIAL_TOPICS);
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeTab, setActiveTab] = useState('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [showAllTopics, setShowAllTopics] = useState(false);
 
+  // Create Topic Modal State
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newTitle, setNewTitle] = useState('');
+  const [newExcerpt, setNewExcerpt] = useState('');
+  const [newCategory, setNewCategory] = useState('ask');
+  const [newCommunity, setNewCommunity] = useState('k/ai-agents');
+  const [newTags, setNewTags] = useState('');
+
   // Filter & sort topics
   const filteredTopics = useMemo(() => {
-    let topics = [...TOPICS];
+    let list = [...topics];
     
     // Category filter
     if (activeCategory !== 'all') {
-      topics = topics.filter(t => t.category === activeCategory);
+      list = list.filter(t => t.category === activeCategory);
     }
     
     // Tab filter
     if (activeTab === 'unanswered') {
-      topics = topics.filter(t => t.replies === 0);
+      list = list.filter(t => t.replies === 0);
     }
     
     // Search filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      topics = topics.filter(t =>
+      list = list.filter(t =>
         t.title.toLowerCase().includes(q) ||
+        t.community?.toLowerCase().includes(q) ||
         t.tags.some(tag => tag.toLowerCase().includes(q)) ||
         t.author.name.toLowerCase().includes(q)
       );
@@ -538,31 +427,67 @@ const CommunitiesPage = () => {
     
     // Sort
     if (sortBy === 'newest') {
-      topics.sort((a, b) => new Date(b.lastActivity) - new Date(a.lastActivity));
+      list.sort((a, b) => new Date(b.lastActivity) - new Date(a.lastActivity));
     } else if (sortBy === 'views') {
-      topics.sort((a, b) => b.views - a.views);
+      list.sort((a, b) => b.views - a.views);
     } else if (sortBy === 'replies') {
-      topics.sort((a, b) => b.replies - a.replies);
+      list.sort((a, b) => b.replies - a.replies);
     }
     
     // Pin to top
     if (activeTab === 'latest' && activeCategory === 'all') {
-      const pinned = topics.filter(t => t.pinned);
-      const unpinned = topics.filter(t => !t.pinned);
-      topics = [...pinned, ...unpinned];
+      const pinned = list.filter(t => t.pinned);
+      const unpinned = list.filter(t => !t.pinned);
+      list = [...pinned, ...unpinned];
     }
     
-    return topics;
-  }, [activeCategory, activeTab, searchQuery, sortBy]);
+    return list;
+  }, [topics, activeCategory, activeTab, searchQuery, sortBy]);
 
   const displayedTopics = showAllTopics ? filteredTopics : filteredTopics.slice(0, 10);
 
   // Trending topics (top 5 by views)
   const trendingTopics = useMemo(() => {
-    return [...TOPICS]
+    return [...topics]
       .sort((a, b) => b.views - a.views)
       .slice(0, 5);
-  }, []);
+  }, [topics]);
+
+  const handleCreateTopic = (e) => {
+    e.preventDefault();
+    if (!newTitle.trim()) return;
+
+    const tagsArr = newTags
+      .split(/[\s,]+/)
+      .map(t => t.trim().replace(/^#/, ''))
+      .filter(Boolean);
+
+    const newTopic = {
+      id: topics.length + 1,
+      title: newTitle,
+      excerpt: newExcerpt,
+      category: newCategory,
+      community: newCommunity,
+      tags: tagsArr.length > 0 ? tagsArr : ['general'],
+      author: { name: 'Mahesh K (C.O.D.E.)', initials: 'MK', color: '#9E81FF' },
+      posters: [{ initials: 'MK', color: '#9E81FF' }],
+      replies: 0,
+      views: 1,
+      lastActivity: new Date().toISOString().split('T')[0],
+      pinned: false,
+      solved: false,
+    };
+
+    setTopics([newTopic, ...topics]);
+    
+    // Reset Form
+    setNewTitle('');
+    setNewExcerpt('');
+    setNewCategory('ask');
+    setNewCommunity('k/ai-agents');
+    setNewTags('');
+    setShowCreateModal(false);
+  };
 
   return (
     <div className="bg-white dark:bg-black">
@@ -710,7 +635,7 @@ const CommunitiesPage = () => {
               ))}
             </div>
 
-            {/* Search + Sort */}
+            {/* Search + Sort + Create Button */}
             <div className="flex items-center gap-3">
               <div className="relative group">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 dark:group-focus-within:text-cyan-400 transition-colors" />
@@ -734,10 +659,109 @@ const CommunitiesPage = () => {
                 </select>
                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500 pointer-events-none" />
               </div>
+              
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-transform hover:scale-[1.02] shadow-md shadow-blue-500/10"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Create Topic</span>
+              </button>
             </div>
           </div>
         </div>
       </section>
+
+      {/* ─── Create Topic Modal ─── */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+          <div className="w-full max-w-lg bg-[#0e111a]/95 border border-white/[0.08] rounded-2xl p-6 shadow-2xl relative">
+            <button 
+              onClick={() => setShowCreateModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <h3 className="text-lg font-bold text-white mb-4">Create a New Topic</h3>
+            <form onSubmit={handleCreateTopic} className="space-y-4">
+              <div>
+                <label className="text-[10px] font-black uppercase text-gray-400 block mb-1">Title</label>
+                <input
+                  required
+                  value={newTitle}
+                  onChange={e => setNewTitle(e.target.value)}
+                  placeholder="What is your topic about?"
+                  className="w-full bg-white/5 border border-white/[0.08] rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] font-black uppercase text-gray-400 block mb-1">Community</label>
+                  <select
+                    value={newCommunity}
+                    onChange={e => setNewCommunity(e.target.value)}
+                    className="w-full bg-white/5 border border-white/[0.08] rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    {COMMUNITIES.map(c => (
+                      <option key={c.id} value={c.name} className="bg-[#0e111a]">{c.name} - {c.description}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-black uppercase text-gray-400 block mb-1">Category</label>
+                  <select
+                    value={newCategory}
+                    onChange={e => setNewCategory(e.target.value)}
+                    className="w-full bg-white/5 border border-white/[0.08] rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    {CATEGORIES.filter(c => c.id !== 'all').map(c => (
+                      <option key={c.id} value={c.id} className="bg-[#0e111a]">{c.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[10px] font-black uppercase text-gray-400 block mb-1">Content / Excerpt</label>
+                <textarea
+                  value={newExcerpt}
+                  onChange={e => setNewExcerpt(e.target.value)}
+                  placeholder="Write a brief description or details..."
+                  rows={4}
+                  className="w-full bg-white/5 border border-white/[0.08] rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] font-black uppercase text-gray-400 block mb-1">Hashtags (space separated)</label>
+                <input
+                  value={newTags}
+                  onChange={e => setNewTags(e.target.value)}
+                  placeholder="e.g. #agentic-ai #governance #enterprise"
+                  className="w-full bg-white/5 border border-white/[0.08] rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 rounded-xl text-xs transition-colors border border-white/[0.08]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold py-2.5 rounded-xl text-xs transition-transform hover:scale-[1.02]"
+                >
+                  Post Topic
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* ═══════════════════════════════════════════════════════════
          SECTION 3 & 4: Main Content + Sidebar
@@ -761,7 +785,12 @@ const CommunitiesPage = () => {
               {displayedTopics.length > 0 ? (
                 <>
                   {displayedTopics.map((topic) => (
-                    <TopicCard key={topic.id} topic={topic} />
+                    <TopicCard 
+                      key={topic.id} 
+                      topic={topic} 
+                      onTagClick={(tag) => setSearchQuery(`#${tag}`)}
+                      onCommunityClick={(comm) => setSearchQuery(comm)}
+                    />
                   ))}
                   
                   {/* Load more */}
@@ -806,7 +835,7 @@ const CommunitiesPage = () => {
                 </div>
                 <div className="space-y-4 relative z-10">
                   {trendingTopics.map((topic, i) => (
-                    <div key={topic.id} className="group cursor-pointer relative transition-transform duration-350 hover:translate-x-1">
+                    <div key={topic.id} className="group cursor-pointer relative transition-transform duration-355 hover:translate-x-1">
                       <div className="flex items-start gap-3">
                         <div className="relative flex-shrink-0">
                           <span className="text-xl font-black text-gray-205 dark:text-gray-800 opacity-60 group-hover:text-orange-500/40 transition-colors">
@@ -814,7 +843,10 @@ const CommunitiesPage = () => {
                           </span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-bold text-gray-700 dark:text-gray-300 leading-snug group-hover:text-blue-500 dark:group-hover:text-cyan-400 transition-colors line-clamp-2">
+                          <p 
+                            onClick={() => setSearchQuery(topic.title)}
+                            className="text-xs font-bold text-gray-700 dark:text-gray-300 leading-snug group-hover:text-blue-500 dark:group-hover:text-cyan-400 transition-colors line-clamp-2"
+                          >
                             {topic.title}
                           </p>
                           <div className="flex items-center gap-3 mt-1.5 text-[10px] font-bold text-gray-400 dark:text-gray-500 tracking-wide uppercase">
@@ -872,7 +904,7 @@ const CommunitiesPage = () => {
                   {TAGS.map((tag, i) => (
                     <button
                       key={i}
-                      onClick={() => setSearchQuery(tag.name)}
+                      onClick={() => setSearchQuery(`#${tag.name}`)}
                       className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/40 dark:bg-white/5 border border-gray-200/50 dark:border-white/[0.05] text-gray-500 dark:text-gray-400 hover:border-blue-300 dark:hover:border-cyan-500/30 hover:bg-blue-500/5 dark:hover:bg-cyan-500/5 hover:text-blue-500 dark:hover:text-cyan-450 transition-all cursor-pointer"
                     >
                       <span>#</span>
@@ -914,13 +946,13 @@ const CommunitiesPage = () => {
               Connect with leaders, share your expertise, and build resilient digital systems through our curated knowledge network.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto">
-              <Link 
-                to="/contact" 
+              <button 
+                onClick={() => setShowCreateModal(true)}
                 className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full overflow-hidden transition-all duration-350 bg-white hover:bg-white/90 text-gray-950 shadow-lg shadow-cyan-500/5 font-bold text-xs uppercase tracking-wider"
               >
                 <span>Start a Discussion</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-              </Link>
+              </button>
               <Link 
                 to="/insights" 
                 className="group w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-full text-xs font-bold text-white/80 tracking-wide uppercase hover:bg-white/5 border border-transparent hover:border-white/10 transition-all"
@@ -937,4 +969,3 @@ const CommunitiesPage = () => {
 };
 
 export default CommunitiesPage;
-
