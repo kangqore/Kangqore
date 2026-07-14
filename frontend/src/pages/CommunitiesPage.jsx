@@ -340,12 +340,68 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, 
     return userVotes?.[axis] === metric;
   };
 
-  const getButtonStyle = (metric, colorClass, borderClass, bgClass) => {
+  const getButtonStyle = (metric) => {
     const active = getVoteStatus(metric);
+    
+    // Exact colors from the premium gradient cards
+    const colors = {
+      support: {
+        text: 'text-[#10B981]',
+        bgActive: 'bg-[#10B981]/20',
+        bgInactive: 'bg-[#10B981]/05',
+        borderActive: 'border-[#10B981]/40',
+        borderInactive: 'border-[#10B981]/15',
+        hover: 'hover:bg-[#10B981]/12 hover:border-[#10B981]/30',
+      },
+      oppose: {
+        text: 'text-[#F43F5E]',
+        bgActive: 'bg-[#F43F5E]/20',
+        bgInactive: 'bg-[#F43F5E]/05',
+        borderActive: 'border-[#F43F5E]/40',
+        borderInactive: 'border-[#F43F5E]/15',
+        hover: 'hover:bg-[#F43F5E]/12 hover:border-[#F43F5E]/30',
+      },
+      helpful: {
+        text: 'text-[#3B82F6]',
+        bgActive: 'bg-[#3B82F6]/20',
+        bgInactive: 'bg-[#3B82F6]/05',
+        borderActive: 'border-[#3B82F6]/40',
+        borderInactive: 'border-[#3B82F6]/15',
+        hover: 'hover:bg-[#3B82F6]/12 hover:border-[#3B82F6]/30',
+      },
+      notHelpful: {
+        text: 'text-[#6366F1]',
+        bgActive: 'bg-[#6366F1]/20',
+        bgInactive: 'bg-[#6366F1]/05',
+        borderActive: 'border-[#6366F1]/40',
+        borderInactive: 'border-[#6366F1]/15',
+        hover: 'hover:bg-[#6366F1]/12 hover:border-[#6366F1]/30',
+      },
+      endorse: {
+        text: 'text-[#8B5CF6]',
+        bgActive: 'bg-[#8B5CF6]/20',
+        bgInactive: 'bg-[#8B5CF6]/05',
+        borderActive: 'border-[#8B5CF6]/40',
+        borderInactive: 'border-[#8B5CF6]/15',
+        hover: 'hover:bg-[#8B5CF6]/12 hover:border-[#8B5CF6]/30',
+      },
+      challenge: {
+        text: 'text-[#F59E08]',
+        bgActive: 'bg-[#F59E08]/20',
+        bgInactive: 'bg-[#F59E08]/05',
+        borderActive: 'border-[#F59E08]/40',
+        borderInactive: 'border-[#F59E08]/15',
+        hover: 'hover:bg-[#F59E08]/12 hover:border-[#F59E08]/30',
+      },
+    };
+
+    const c = colors[metric];
+    if (!c) return '';
+
     if (active) {
-      return `flex items-center gap-1 text-[10px] font-black ${colorClass} ${bgClass} ${borderClass} border px-2 py-1 rounded-md transition-all duration-300 shadow-sm scale-102`;
+      return `flex items-center gap-1 text-[10px] font-black ${c.text} ${c.bgActive} ${c.borderActive} border px-2 py-1 rounded-md transition-all duration-300 shadow-sm scale-102`;
     }
-    return `flex items-center gap-1 text-[10px] font-bold text-gray-450 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 border border-gray-200/40 dark:border-white/[0.04] px-2 py-1 rounded-md transition-all duration-300`;
+    return `flex items-center gap-1 text-[10px] font-bold ${c.text} ${c.bgInactive} ${c.borderInactive} border px-2 py-1 rounded-md transition-all duration-300 ${c.hover}`;
   };
   
   return (
@@ -424,13 +480,13 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, 
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => onRate?.(topic.id, 'support')}
-                  className={getButtonStyle('support', 'text-emerald-600 dark:text-emerald-400', 'border-emerald-500/30', 'bg-emerald-500/10')}
+                  className={getButtonStyle('support')}
                 >
                   <ThumbsUp className="w-3 h-3" /> Support ({topic.ratings?.support ?? 0})
                 </button>
                 <button
                   onClick={() => onRate?.(topic.id, 'oppose')}
-                  className={getButtonStyle('oppose', 'text-red-600 dark:text-red-400', 'border-red-500/30', 'bg-red-500/10')}
+                  className={getButtonStyle('oppose')}
                 >
                   <ThumbsDown className="w-3 h-3" /> Oppose ({topic.ratings?.oppose ?? 0})
                 </button>
@@ -440,13 +496,13 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, 
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => onRate?.(topic.id, 'helpful')}
-                  className={getButtonStyle('helpful', 'text-blue-600 dark:text-cyan-400', 'border-blue-500/30 dark:border-cyan-500/30', 'bg-blue-500/10 dark:bg-cyan-500/10')}
+                  className={getButtonStyle('helpful')}
                 >
                   Helpful ({topic.ratings?.helpful ?? 0})
                 </button>
                 <button
                   onClick={() => onRate?.(topic.id, 'notHelpful')}
-                  className={getButtonStyle('notHelpful', 'text-gray-700 dark:text-gray-300', 'border-gray-400/30', 'bg-gray-500/10 dark:bg-white/10')}
+                  className={getButtonStyle('notHelpful')}
                 >
                   Unhelpful ({topic.ratings?.notHelpful ?? 0})
                 </button>
@@ -456,13 +512,13 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, 
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => onRate?.(topic.id, 'endorse')}
-                  className={getButtonStyle('endorse', 'text-indigo-600 dark:text-indigo-455', 'border-indigo-500/30', 'bg-indigo-500/10')}
+                  className={getButtonStyle('endorse')}
                 >
                   Endorse ({topic.ratings?.endorse ?? 0})
                 </button>
                 <button
                   onClick={() => onRate?.(topic.id, 'challenge')}
-                  className={getButtonStyle('challenge', 'text-amber-600 dark:text-amber-500', 'border-amber-500/30', 'bg-amber-500/10')}
+                  className={getButtonStyle('challenge')}
                 >
                   Challenge ({topic.ratings?.challenge ?? 0})
                 </button>
