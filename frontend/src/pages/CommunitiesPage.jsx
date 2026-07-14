@@ -142,6 +142,26 @@ const CONTRIBUTORS = [
   { name: 'David Park', initials: 'DP', color: '#22C55E', badges: 25, role: 'Contributor' },
 ];
 
+// ─── Rating Config Constants ──────────────────────────────────────────────────
+
+const METRIC_TO_AXIS = {
+  support: 'agreement',
+  oppose: 'agreement',
+  helpful: 'utility',
+  notHelpful: 'utility',
+  endorse: 'credibility',
+  challenge: 'credibility',
+};
+
+const AXIS_OPPOSITES = {
+  support: 'oppose',
+  oppose: 'support',
+  helpful: 'notHelpful',
+  notHelpful: 'helpful',
+  endorse: 'challenge',
+  challenge: 'endorse',
+};
+
 // ─── Helper Functions ─────────────────────────────────────────────────────────
 
 function timeAgo(dateStr) {
@@ -311,9 +331,22 @@ const CommunitySpotlight = ({ joinedCommunities, onToggleJoin }) => {
 
 // ─── Topic Card ───────────────────────────────────────────────────────────────
 
-const TopicCard = ({ topic, joinedCommunities, onToggleJoin, onRate, onTagClick, onCommunityClick, onCardClick }) => {
+const TopicCard = ({ topic, joinedCommunities, userVotes, onToggleJoin, onRate, onTagClick, onCommunityClick, onCardClick }) => {
   const cat = getCategoryById(topic.category);
   const isJoined = joinedCommunities.includes(topic.community);
+
+  const getVoteStatus = (metric) => {
+    const axis = METRIC_TO_AXIS[metric];
+    return userVotes?.[axis] === metric;
+  };
+
+  const getButtonStyle = (metric, colorClass, borderClass, bgClass) => {
+    const active = getVoteStatus(metric);
+    if (active) {
+      return `flex items-center gap-1 text-[10px] font-black ${colorClass} ${bgClass} ${borderClass} border px-2 py-1 rounded-md transition-all duration-300 shadow-sm scale-102`;
+    }
+    return `flex items-center gap-1 text-[10px] font-bold text-gray-450 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 border border-gray-200/40 dark:border-white/[0.04] px-2 py-1 rounded-md transition-all duration-300`;
+  };
   
   return (
     <div className={`group relative bg-white/[0.7] dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] shadow-sm hover:shadow-md dark:hover:shadow-none transition-all duration-500 hover:-translate-y-1 overflow-hidden ${topic.pinned ? 'border-amber-500/30 bg-amber-500/[0.01]' : ''}`}>
@@ -391,13 +424,13 @@ const TopicCard = ({ topic, joinedCommunities, onToggleJoin, onRate, onTagClick,
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => onRate?.(topic.id, 'support')}
-                  className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-450 hover:bg-emerald-500/5 px-2 py-1 rounded-md transition-all border border-emerald-500/10"
+                  className={getButtonStyle('support', 'text-emerald-600 dark:text-emerald-400', 'border-emerald-500/30', 'bg-emerald-500/10')}
                 >
                   <ThumbsUp className="w-3 h-3" /> Support ({topic.ratings?.support ?? 0})
                 </button>
                 <button
                   onClick={() => onRate?.(topic.id, 'oppose')}
-                  className="flex items-center gap-1 text-[10px] font-bold text-red-500 dark:text-red-400 hover:bg-red-500/5 px-2 py-1 rounded-md transition-all border border-red-500/10"
+                  className={getButtonStyle('oppose', 'text-red-600 dark:text-red-400', 'border-red-500/30', 'bg-red-500/10')}
                 >
                   <ThumbsDown className="w-3 h-3" /> Oppose ({topic.ratings?.oppose ?? 0})
                 </button>
@@ -407,13 +440,13 @@ const TopicCard = ({ topic, joinedCommunities, onToggleJoin, onRate, onTagClick,
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => onRate?.(topic.id, 'helpful')}
-                  className="flex items-center gap-1 text-[10px] font-bold text-blue-600 dark:text-cyan-400 hover:bg-blue-500/5 px-2 py-1 rounded-md transition-all border border-blue-500/10"
+                  className={getButtonStyle('helpful', 'text-blue-600 dark:text-cyan-400', 'border-blue-500/30 dark:border-cyan-500/30', 'bg-blue-500/10 dark:bg-cyan-500/10')}
                 >
                   Helpful ({topic.ratings?.helpful ?? 0})
                 </button>
                 <button
                   onClick={() => onRate?.(topic.id, 'notHelpful')}
-                  className="flex items-center gap-1 text-[10px] font-bold text-gray-500 hover:bg-gray-500/5 px-2 py-1 rounded-md transition-all border border-gray-200/30 dark:border-white/10"
+                  className={getButtonStyle('notHelpful', 'text-gray-700 dark:text-gray-300', 'border-gray-400/30', 'bg-gray-500/10 dark:bg-white/10')}
                 >
                   Unhelpful ({topic.ratings?.notHelpful ?? 0})
                 </button>
@@ -423,13 +456,13 @@ const TopicCard = ({ topic, joinedCommunities, onToggleJoin, onRate, onTagClick,
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => onRate?.(topic.id, 'endorse')}
-                  className="flex items-center gap-1 text-[10px] font-bold text-indigo-500 hover:bg-indigo-500/5 px-2 py-1 rounded-md transition-all border border-indigo-500/10"
+                  className={getButtonStyle('endorse', 'text-indigo-600 dark:text-indigo-455', 'border-indigo-500/30', 'bg-indigo-500/10')}
                 >
                   Endorse ({topic.ratings?.endorse ?? 0})
                 </button>
                 <button
                   onClick={() => onRate?.(topic.id, 'challenge')}
-                  className="flex items-center gap-1 text-[10px] font-bold text-amber-500 hover:bg-amber-500/5 px-2 py-1 rounded-md transition-all border border-amber-500/10"
+                  className={getButtonStyle('challenge', 'text-amber-600 dark:text-amber-500', 'border-amber-500/30', 'bg-amber-500/10')}
                 >
                   Challenge ({topic.ratings?.challenge ?? 0})
                 </button>
@@ -480,6 +513,9 @@ const CommunitiesPage = () => {
   // Community join states
   const [joinedCommunities, setJoinedCommunities] = useState(['k/ai-agents', 'k/workflows']);
 
+  // Ratings mutual exclusion tracking state
+  const [userRatings, setUserRatings] = useState({});
+
   // Create Topic Modal State
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -499,14 +535,50 @@ const CommunitiesPage = () => {
     );
   };
 
-  // Handle Dynamic Ratings Updates
+  // Handle Dynamic Ratings Updates with Strong Voting Logic
   const handleRate = (topicId, metric) => {
+    const axis = METRIC_TO_AXIS[metric];
+    const currentVote = userRatings[topicId]?.[axis] || null;
+    const opposite = AXIS_OPPOSITES[metric];
+
     setTopics(prev => prev.map(t => {
       if (t.id !== topicId) return t;
+
       const ratings = { ...t.ratings };
-      ratings[metric] = (ratings[metric] ?? 0) + 1;
+
+      if (currentVote === metric) {
+        // Toggle off (retract vote)
+        ratings[metric] = Math.max(0, (ratings[metric] ?? 1) - 1);
+      } else {
+        // Increment clicked rating
+        ratings[metric] = (ratings[metric] ?? 0) + 1;
+        // Decrement opposite if it was active
+        if (currentVote === opposite) {
+          ratings[opposite] = Math.max(0, (ratings[opposite] ?? 1) - 1);
+        }
+      }
+
+      // If drawer is currently showing this topic, sync its displayed ratings
+      if (selectedTopic && selectedTopic.id === topicId) {
+        setSelectedTopic(prevSelected => ({
+          ...prevSelected,
+          ratings
+        }));
+      }
+
       return { ...t, ratings };
     }));
+
+    // Update user votes state
+    setUserRatings(prev => {
+      const topicVotes = prev[topicId] ? { ...prev[topicId] } : {};
+      if (currentVote === metric) {
+        topicVotes[axis] = null;
+      } else {
+        topicVotes[axis] = metric;
+      }
+      return { ...prev, [topicId]: topicVotes };
+    });
   };
 
   // Filter & sort topics
@@ -928,7 +1000,7 @@ const CommunitiesPage = () => {
                   <span className="text-[10px] text-gray-400 dark:text-gray-500">• {timeAgo(selectedTopic.lastActivity)}</span>
                 </div>
                 <h3 className="text-base font-extrabold text-gray-900 dark:text-white mb-2 leading-snug">{selectedTopic.title}</h3>
-                <p className="text-xs text-gray-650 dark:text-gray-450 leading-relaxed bg-gray-50 dark:bg-white/[0.01] p-3 rounded-xl border border-gray-200/50 dark:border-white/[0.03]">{selectedTopic.excerpt}</p>
+                <p className="text-xs text-gray-650 dark:text-gray-455 leading-relaxed bg-gray-50 dark:bg-white/[0.01] p-3 rounded-xl border border-gray-200/50 dark:border-white/[0.03]">{selectedTopic.excerpt}</p>
                 
                 <div className="flex flex-wrap gap-1.5 mt-3">
                   {selectedTopic.tags.map((tag, i) => <TagPill key={i} tag={tag} />)}
@@ -937,7 +1009,7 @@ const CommunitiesPage = () => {
 
               {/* Comments Section */}
               <div className="space-y-4">
-                <h5 className="text-[10px] font-black text-gray-400 dark:text-gray-550 uppercase tracking-widest border-b border-gray-100 dark:border-white/[0.03] pb-1.5">
+                <h5 className="text-[10px] font-black text-gray-400 dark:text-gray-555 uppercase tracking-widest border-b border-gray-100 dark:border-white/[0.03] pb-1.5">
                   Comments ({selectedTopic.comments?.length ?? 0})
                 </h5>
                 
@@ -1010,6 +1082,7 @@ const CommunitiesPage = () => {
                       key={topic.id} 
                       topic={topic} 
                       joinedCommunities={joinedCommunities}
+                      userVotes={userRatings[topic.id]}
                       onToggleJoin={handleToggleJoin}
                       onRate={handleRate}
                       onTagClick={(tag) => setSearchQuery(`#${tag}`)}
@@ -1031,7 +1104,7 @@ const CommunitiesPage = () => {
                 </>
               ) : (
                 /* Empty state */
-                <div className="py-16 text-center bg-white/[0.3] dark:bg-white/[0.01] border border-gray-200 dark:border-white/[0.05] rounded-2xl">
+                <div className="py-16 text-center bg-white/[0.3] dark:bg-white/[0.01] border border-gray-200/50 dark:border-white/[0.05] rounded-2xl">
                   <div className="w-12 h-12 bg-gray-100 dark:bg-white/[0.03] rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <Search className="w-5 h-5 text-gray-400" />
                   </div>
@@ -1114,7 +1187,7 @@ const CommunitiesPage = () => {
                         <p className="text-xs font-bold text-gray-900 dark:text-white group-hover:text-blue-550 dark:group-hover:text-cyan-400 transition-colors truncate">
                           {user.name}
                         </p>
-                        <p className="text-[10px] font-bold tracking-wide uppercase text-gray-400 dark:text-gray-500 mt-0.5">{user.role}</p>
+                        <p className="text-[10px] font-bold tracking-wide uppercase text-gray-400 dark:text-gray-550 mt-0.5">{user.role}</p>
                       </div>
                       <div className="flex items-center gap-1 text-[10px] font-bold text-amber-550 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md">
                         <Star className="w-3 h-3 fill-amber-500/80 text-amber-500/80" />
