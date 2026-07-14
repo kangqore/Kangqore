@@ -282,17 +282,24 @@ const TagPill = ({ tag, onClick }) => (
   </span>
 );
 
-const StatCounter = ({ icon: Icon, value, label }) => (
-  <div className="flex flex-col justify-between p-5 rounded-xl border border-[#2f3336] bg-[#16181c] relative overflow-hidden group cursor-default transition-all duration-300">
-    <div className="flex items-center justify-between mb-3 relative z-10">
-      <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/10 text-white">
-        <Icon className="w-4 h-4" />
+/** Stat counter with animation */
+const StatCounter = ({ icon: Icon, value, label, accentColor, bgGradientLight, bgGradientDark, iconBgLight, iconBgDark }) => (
+  <div className={`flex flex-col justify-between p-6 rounded-2xl border border-gray-200/50 dark:border-white/[0.05] backdrop-blur-xl relative overflow-hidden group cursor-default transition-all duration-500 hover:-translate-y-1 shadow-[0_8px_30px_rgb(0,0,0,0.02)] ${bgGradientLight} ${bgGradientDark}`}>
+    {/* Decorative blur blob */}
+    <div className="absolute -bottom-10 -right-10 w-24 h-24 rounded-full blur-2xl opacity-40 dark:opacity-20 transition-transform duration-700 group-hover:scale-150" style={{ backgroundColor: accentColor }} />
+    
+    <div className="flex items-center justify-between mb-4 relative z-10">
+      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm ${iconBgLight} ${iconBgDark} transition-transform duration-550 group-hover:rotate-6`}>
+        <Icon className="w-5 h-5" style={{ color: accentColor }} />
       </div>
+      <span className="text-[10px] font-black opacity-20 dark:opacity-35 tracking-wider uppercase">
+        {label.split(' ')[0]}
+      </span>
     </div>
     
     <div className="relative z-10">
-      <div className="text-xl font-black text-white leading-none tracking-tight mb-1">{value}</div>
-      <p className="text-[10px] font-bold text-[#71767b] uppercase tracking-wider">{label}</p>
+      <div className="text-3xl font-black tracking-tight text-gray-900 dark:text-white mb-0.5">{value}</div>
+      <div className="text-[10px] font-black uppercase tracking-wider text-gray-400 dark:text-gray-500">{label}</div>
     </div>
   </div>
 );
@@ -305,22 +312,24 @@ const CommunitySpotlight = ({ joinedCommunities, onToggleJoin }) => {
   const isJoined = joinedCommunities.includes(current.name);
 
   return (
-    <div className="bg-[#16181c] rounded-xl border border-[#2f3336] p-5 relative overflow-hidden group/spotlight">
+    <div className="bg-white/40 dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] p-5 relative overflow-hidden group/spotlight">
+      <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/10 blur-2xl rounded-full pointer-events-none transition-transform duration-500 group-hover/spotlight:scale-125" />
+      
       <div className="flex items-center justify-between mb-4 relative z-10">
         <div className="flex items-center gap-2">
-          <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-          <h3 className="text-[10px] font-black text-white uppercase tracking-wider">Spotlight</h3>
+          <Star className="w-4 h-4 text-amber-500 fill-amber-500 animate-pulse" />
+          <h3 className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-wider">Spotlight</h3>
         </div>
         <div className="flex gap-1">
           <button 
             onClick={() => setCurrentIndex(prev => (prev === 0 ? COMMUNITIES.length - 1 : prev - 1))}
-            className="w-5 h-5 rounded bg-white/5 border border-[#2f3336] hover:bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-400"
+            className="w-5 h-5 rounded bg-gray-100 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:text-gray-400"
           >
             &lt;
           </button>
           <button 
             onClick={() => setCurrentIndex(prev => (prev === COMMUNITIES.length - 1 ? 0 : prev + 1))}
-            className="w-5 h-5 rounded bg-white/5 border border-[#2f3336] hover:bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-400"
+            className="w-5 h-5 rounded bg-gray-100 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:text-gray-400"
           >
             &gt;
           </button>
@@ -329,18 +338,18 @@ const CommunitySpotlight = ({ joinedCommunities, onToggleJoin }) => {
 
       <div className="space-y-3 relative z-10">
         <div>
-          <span className="text-xs font-black text-blue-400">{current.name}</span>
-          <p className="text-[11px] font-semibold text-gray-300 mt-1 leading-snug">{current.description}</p>
+          <span className="text-xs font-black text-blue-500 dark:text-cyan-400">{current.name}</span>
+          <p className="text-[11px] font-semibold text-gray-650 dark:text-gray-300 mt-1 leading-snug">{current.description}</p>
         </div>
         
-        <div className="flex items-center justify-between gap-3 pt-2 border-t border-[#2f3336]">
-          <span className="text-[10px] font-bold text-gray-400">Sub-Community</span>
+        <div className="flex items-center justify-between gap-3 pt-1 border-t border-gray-100/50 dark:border-white/[0.03]">
+          <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500">Sub-Community</span>
           <button
             onClick={() => onToggleJoin(current.name)}
             className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all duration-300 ${
               isJoined 
-                ? 'bg-emerald-500/10 text-emerald-450 border border-emerald-500/20' 
-                : 'bg-white text-black hover:bg-gray-200'
+                ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' 
+                : 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm'
             }`}
           >
             {isJoined ? 'Joined' : 'Join'}
@@ -390,7 +399,7 @@ const TweetComposer = ({ onPost }) => {
   };
 
   return (
-    <div className="bg-black border border-[#2f3336] p-5 rounded-xl transition-all duration-300">
+    <div className="bg-white/70 dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] p-5 shadow-sm transition-all duration-300">
       <div className="flex gap-4">
         {/* Kangaroo styled avatar */}
         <div className="flex-shrink-0">
@@ -407,7 +416,7 @@ const TweetComposer = ({ onPost }) => {
               placeholder="Topic Title (optional)"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-transparent border-none text-sm font-bold text-white placeholder-gray-500 focus:outline-none focus:ring-0 mb-2 p-0"
+              className="w-full bg-transparent border-none text-sm font-bold text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-0 mb-2 p-0"
             />
           )}
 
@@ -417,7 +426,7 @@ const TweetComposer = ({ onPost }) => {
             onChange={(e) => setText(e.target.value)}
             onFocus={() => setIsExpanded(true)}
             rows={isExpanded ? 3 : 1}
-            className="w-full bg-transparent border-none text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-0 resize-none p-0"
+            className="w-full bg-transparent border-none text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-0 resize-none p-0"
           />
 
           {isExpanded && (
@@ -426,34 +435,34 @@ const TweetComposer = ({ onPost }) => {
               <select
                 value={community}
                 onChange={(e) => setCommunity(e.target.value)}
-                className="bg-[#16181c] border border-[#2f3336] rounded-lg px-2.5 py-1 text-[11px] font-bold text-gray-305 focus:outline-none"
+                className="bg-gray-50 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 rounded-lg px-2.5 py-1 text-[11px] font-bold text-gray-600 dark:text-gray-400 focus:outline-none"
               >
-                <option value="k/showcase" className="bg-black text-white">k/showcase</option>
-                <option value="k/governance" className="bg-black text-white">k/governance</option>
-                <option value="k/architecture" className="bg-black text-white">k/architecture</option>
-                <option value="k/workflows" className="bg-black text-white">k/workflows</option>
+                <option value="k/showcase">k/showcase</option>
+                <option value="k/governance">k/governance</option>
+                <option value="k/architecture">k/architecture</option>
+                <option value="k/workflows">k/workflows</option>
               </select>
 
               {/* Select Category */}
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="bg-[#16181c] border border-[#2f3336] rounded-lg px-2.5 py-1 text-[11px] font-bold text-gray-305 focus:outline-none"
+                className="bg-gray-50 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 rounded-lg px-2.5 py-1 text-[11px] font-bold text-gray-600 dark:text-gray-400 focus:outline-none"
               >
-                <option value="general" className="bg-black text-white">General</option>
-                <option value="ai" className="bg-black text-white">Agentic AI</option>
-                <option value="engineering" className="bg-black text-white">Engineering</option>
-                <option value="ask" className="bg-black text-white">Q&A</option>
+                <option value="general">General</option>
+                <option value="ai">Agentic AI</option>
+                <option value="engineering">Engineering</option>
+                <option value="ask">Q&A</option>
               </select>
               
-              <span className="text-[10px] text-gray-500 self-center font-bold">
+              <span className="text-[10px] text-gray-400 self-center">
                 Tip: Include #hashtags in your text!
               </span>
             </div>
           )}
 
           {/* Bottom controls row */}
-          <div className="flex items-center justify-between pt-2 border-t border-[#2f3336] mt-2">
+          <div className="flex items-center justify-between pt-2 border-t border-gray-100/50 dark:border-white/[0.03] mt-2">
             {/* Inline Action Icons */}
             <div className="flex items-center gap-1 text-blue-500 dark:text-cyan-400">
               <button type="button" className="p-1.5 rounded-full hover:bg-blue-500/10 transition-colors" title="Media">
@@ -568,14 +577,14 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
   };
   
   return (
-    <div className={`group relative transition-all duration-300 overflow-hidden ${
+    <div className={`group relative backdrop-blur-xl rounded-2xl shadow-sm hover:shadow-md dark:hover:shadow-none transition-all duration-500 hover:-translate-y-1 overflow-hidden ${
       topic.pinned 
-        ? 'border-amber-500/40 bg-black shadow-[0_0_15px_rgba(245,158,8,0.1)]' 
-        : 'border-[#2f3336] bg-black hover:border-gray-500'
-    } border rounded-xl`}>
+        ? 'border-[#F59E08]/50 dark:border-[#FBBF24]/40 bg-gradient-to-br from-[#FBBF24]/20 via-[#F59E08]/10 to-transparent dark:from-[#FBBF24]/12 dark:via-[#F59E08]/04 dark:to-transparent shadow-[0_8px_30px_rgba(245,158,8,0.08)]' 
+        : 'border-gray-200/50 dark:border-white/[0.05] bg-white/[0.7] dark:bg-white/[0.01]'
+    }`}>
       {/* Pinned indicator */}
       {topic.pinned && (
-        <div className="absolute top-0 right-6 bg-amber-500 text-black text-[9px] font-black uppercase tracking-wider px-3 py-1 rounded-b-lg shadow-sm z-10">
+        <div className="absolute top-0 right-6 bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 text-[9px] font-black uppercase tracking-wider px-3 py-1 rounded-b-lg shadow-sm z-10">
           Pinned
         </div>
       )}
@@ -592,7 +601,7 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
             {/* X/Twitter Style Author Meta Row */}
             <div className="flex items-center flex-wrap gap-x-1.5 gap-y-0.5 mb-1 text-xs">
               {/* Display Name */}
-              <span className="font-extrabold text-white hover:underline cursor-pointer">
+              <span className="font-extrabold text-gray-900 dark:text-white hover:underline cursor-pointer">
                 {topic.author.name}
               </span>
               
@@ -602,15 +611,15 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
               </svg>
               
               {/* Username Handle */}
-              <span className="text-gray-500 text-[11px]">
+              <span className="text-gray-400 dark:text-gray-500 text-[11px]">
                 @{topic.author.name.toLowerCase().replace(/\s+/g, '')}
               </span>
               
               {/* Separator dot */}
-              <span className="text-[#2f3336] text-[10px]">•</span>
+              <span className="text-gray-300 dark:text-white/10 text-[10px]">•</span>
               
               {/* Date, Day, Time */}
-              <span className="text-gray-500 text-[11px] font-semibold">
+              <span className="text-gray-450 dark:text-gray-500 text-[11px] font-semibold">
                 {formatFullDateTime(topic.lastActivity, topic.id)}
               </span>
             </div>
@@ -621,7 +630,7 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
                 <div className="flex items-center gap-1.5">
                   <button 
                     onClick={() => onCommunityClick?.(topic.community)}
-                    className="text-[11px] font-extrabold text-blue-400 hover:underline transition-all"
+                    className="text-[11px] font-extrabold text-blue-600 dark:text-cyan-400 hover:underline transition-all"
                   >
                     {topic.community}
                   </button>
@@ -629,15 +638,15 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
                     onClick={() => onToggleJoin?.(topic.community)}
                     className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider transition-all ${
                       isJoined 
-                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                        : 'bg-[#16181c] border border-[#2f3336] text-white hover:bg-white/5'
+                        ? 'bg-emerald-500/10 text-emerald-500' 
+                        : 'bg-gray-100 dark:bg-white/5 text-gray-500 hover:bg-gray-200 dark:hover:bg-white/10'
                     }`}
                   >
                     {isJoined ? 'Joined' : 'Join'}
                   </button>
                 </div>
               )}
-              {topic.community && <span className="text-[#2f3336] text-xs">•</span>}
+              {topic.community && <span className="text-gray-300 dark:text-white/10 text-xs">•</span>}
               <CategoryBadge categoryId={topic.category} />
               {topic.solved && (
                 <span className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wide text-emerald-500 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-lg shadow-sm">
@@ -1365,17 +1374,17 @@ const CommunitiesPage = () => {
       {selectedTopic && (
         <div className="fixed inset-0 z-40 flex justify-end bg-black/50 backdrop-blur-sm transition-opacity duration-300">
           <div className="absolute inset-0" onClick={() => setSelectedTopic(null)} />
-          <div className="w-full max-w-lg bg-black border-l border-[#2f3336] h-full flex flex-col relative z-50 shadow-2xl animate-[slideLeft_0.3s_ease-out]">
+          <div className="w-full max-w-lg bg-white dark:bg-[#0e111a]/95 border-l border-gray-200 dark:border-white/[0.08] h-full flex flex-col relative z-50 shadow-2xl animate-[slideLeft_0.3s_ease-out]">
             
             {/* Header */}
-            <div className="p-5 border-b border-[#2f3336] flex items-center justify-between">
+            <div className="p-5 border-b border-gray-150 dark:border-white/[0.05] flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest">{selectedTopic.community}</span>
-                <h4 className="text-sm font-bold text-white mt-1">Discussion Panel</h4>
+                <span className="text-[10px] font-black text-blue-500 dark:text-cyan-400 uppercase tracking-widest">{selectedTopic.community}</span>
+                <h4 className="text-sm font-bold text-gray-900 dark:text-white mt-1">Discussion Panel</h4>
               </div>
               <button 
                 onClick={() => setSelectedTopic(null)}
-                className="p-1 rounded-lg bg-white/5 border border-[#2f3336] text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                className="p-1 rounded-lg bg-gray-100 dark:bg-white/5 text-gray-400 hover:text-white hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1386,11 +1395,11 @@ const CommunitiesPage = () => {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Avatar initials={selectedTopic.author.initials} color={selectedTopic.author.color} size="sm" />
-                  <span className="text-xs font-bold text-white">{selectedTopic.author.name}</span>
-                  <span className="text-[10px] text-gray-500">• {timeAgo(selectedTopic.lastActivity)}</span>
+                  <span className="text-xs font-bold text-gray-800 dark:text-gray-200">{selectedTopic.author.name}</span>
+                  <span className="text-[10px] text-gray-400 dark:text-gray-500">• {timeAgo(selectedTopic.lastActivity)}</span>
                 </div>
-                <h3 className="text-base font-extrabold text-white mb-2 leading-snug">{selectedTopic.title}</h3>
-                <p className="text-xs text-[#71767b] leading-relaxed bg-[#16181c] p-3 rounded-xl border border-[#2f3336]">{selectedTopic.excerpt}</p>
+                <h3 className="text-base font-extrabold text-gray-900 dark:text-white mb-2 leading-snug">{selectedTopic.title}</h3>
+                <p className="text-xs text-gray-650 dark:text-gray-455 leading-relaxed bg-gray-50 dark:bg-white/[0.01] p-3 rounded-xl border border-gray-200/50 dark:border-white/[0.03]">{selectedTopic.excerpt}</p>
                 
                 <div className="flex flex-wrap gap-1.5 mt-3">
                   {selectedTopic.tags.map((tag, i) => <TagPill key={i} tag={tag} />)}
@@ -1399,27 +1408,27 @@ const CommunitiesPage = () => {
 
               {/* Comments Section */}
               <div className="space-y-4">
-                <h5 className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-[#2f3336] pb-1.5">
+                <h5 className="text-[10px] font-black text-gray-400 dark:text-gray-555 uppercase tracking-widest border-b border-gray-100 dark:border-white/[0.03] pb-1.5">
                   Comments ({selectedTopic.comments?.length ?? 0})
                 </h5>
                 
                 {(selectedTopic.comments ?? []).length > 0 ? (
                   <div className="space-y-3.5">
                     {selectedTopic.comments.map((comment) => (
-                      <div key={comment.id} className="p-3 bg-[#16181c] border border-[#2f3336] rounded-xl flex gap-3">
+                      <div key={comment.id} className="p-3 bg-gray-50/50 dark:bg-white/[0.01] border border-gray-200/30 dark:border-white/[0.03] rounded-xl flex gap-3">
                         <Avatar initials={comment.initials} color={comment.color} size="xs" />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs font-bold text-white">{comment.author}</span>
-                            <span className="text-[9px] text-gray-500">{timeAgo(comment.date)}</span>
+                            <span className="text-xs font-bold text-gray-900 dark:text-white">{comment.author}</span>
+                            <span className="text-[9px] text-gray-400 dark:text-gray-500">{timeAgo(comment.date)}</span>
                           </div>
-                          <p className="text-xs text-gray-300 leading-relaxed">{comment.text}</p>
+                          <p className="text-xs text-gray-650 dark:text-gray-400 leading-relaxed">{comment.text}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="py-8 text-center text-xs text-gray-500 font-semibold">
+                  <div className="py-8 text-center text-xs text-gray-400 dark:text-gray-500 font-semibold">
                     No comments yet. Start the discussion below!
                   </div>
                 )}
@@ -1427,17 +1436,17 @@ const CommunitiesPage = () => {
             </div>
 
             {/* Input Comment Box */}
-            <form onSubmit={handleAddComment} className="p-4 border-t border-[#2f3336] bg-[#16181c]/50 flex gap-2">
+            <form onSubmit={handleAddComment} className="p-4 border-t border-gray-150 dark:border-white/[0.05] bg-gray-50/30 dark:bg-black/20 flex gap-2">
               <input
                 required
                 value={commentText}
                 onChange={e => setCommentText(e.target.value)}
                 placeholder="Write a comment..."
-                className="flex-1 bg-transparent border border-[#2f3336] rounded-xl px-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-600"
+                className="flex-1 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/[0.08] rounded-xl px-4 py-2 text-xs text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
               <button 
                 type="submit"
-                className="bg-white text-black font-bold px-4 py-2 rounded-xl text-xs hover:bg-gray-250 transition-colors"
+                className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold px-4 py-2 rounded-xl text-xs hover:scale-[1.02] transition-transform"
               >
                 Send
               </button>
