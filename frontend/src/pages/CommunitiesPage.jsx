@@ -350,7 +350,7 @@ const Avatar = ({ initials, color, size = 'sm' }) => {
   };
   return (
     <div
-      className={`${sizeClasses[size]} rounded-full flex items-center justify-center font-bold text-white flex-shrink-0 ring-2 ring-white dark:ring-gray-900`}
+      className={`${sizeClasses[size]} rounded-full flex items-center justify-center font-bold text-white flex-shrink-0 ring-2 ring-white/10 dark:ring-gray-900/40 shadow-sm transition-transform duration-300 hover:scale-105`}
       style={{ backgroundColor: color }}
     >
       {initials}
@@ -363,14 +363,14 @@ const AvatarStack = ({ posters, max = 4 }) => {
   const shown = posters.slice(0, max);
   const extra = posters.length - max;
   return (
-    <div className="flex items-center -space-x-2">
+    <div className="flex items-center -space-x-1.5">
       {shown.map((p, i) => (
-        <div key={i} className="relative" style={{ zIndex: max - i }}>
+        <div key={i} className="relative transition-transform duration-200 hover:-translate-y-0.5" style={{ zIndex: max - i }}>
           <Avatar initials={p.initials} color={p.color} size="xs" />
         </div>
       ))}
       {extra > 0 && (
-        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[9px] font-bold text-gray-600 dark:text-gray-300 ring-2 ring-white dark:ring-gray-900">
+        <div className="w-6 h-6 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-[9px] font-black text-gray-600 dark:text-gray-300 ring-2 ring-white/10 dark:ring-gray-900/40">
           +{extra}
         </div>
       )}
@@ -382,9 +382,9 @@ const AvatarStack = ({ posters, max = 4 }) => {
 const CategoryBadge = ({ categoryId }) => {
   const cat = getCategoryById(categoryId);
   return (
-    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-400">
+    <span className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/[0.04] px-2.5 py-1 rounded-lg">
       <span
-        className="w-2 h-2 rounded-full flex-shrink-0"
+        className="w-2 h-2 rounded-full flex-shrink-0 animate-pulse"
         style={{ backgroundColor: cat.color }}
       />
       {cat.name}
@@ -394,22 +394,21 @@ const CategoryBadge = ({ categoryId }) => {
 
 /** Tag pill */
 const TagPill = ({ tag }) => (
-  <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase bg-gray-50 dark:bg-white/[0.02] text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-white/[0.04] hover:bg-gray-100 dark:hover:bg-white/[0.06] hover:border-gray-200 dark:hover:border-white/[0.08] transition-all cursor-pointer">
     {tag}
   </span>
 );
 
 /** Stat counter with animation */
 const StatCounter = ({ icon: Icon, value, label, color }) => (
-  <div className="flex items-center gap-4 px-6 py-5 relative overflow-hidden group cursor-default transition-all duration-300 hover:bg-white dark:hover:bg-white/5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:hover:shadow-none z-10">
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none" />
-    <div className="relative w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden shadow-sm transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-md">
-      <div className="absolute inset-0 opacity-10 dark:opacity-20 group-hover:opacity-25 dark:group-hover:opacity-40 transition-opacity duration-300" style={{ backgroundColor: color }} />
-      <Icon className="w-5 h-5 relative z-10 transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" style={{ color }} />
+  <div className="flex items-center gap-4 px-6 py-5 relative overflow-hidden group cursor-default transition-all duration-300 hover:bg-white/[0.02] dark:hover:bg-white/[0.02] z-10">
+    <div className="relative w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden shadow-sm transition-transform duration-500 group-hover:scale-105">
+      <div className="absolute inset-0 opacity-10 dark:opacity-20 group-hover:opacity-25 dark:group-hover:opacity-45 transition-opacity duration-300" style={{ backgroundColor: color }} />
+      <Icon className="w-5 h-5 relative z-10 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500" style={{ color }} />
     </div>
-    <div className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
-      <div className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">{value}</div>
-      <div className="text-sm text-gray-500 dark:text-gray-400 font-medium transition-colors group-hover:text-gray-700 dark:group-hover:text-gray-300">{label}</div>
+    <div className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">
+      <div className="text-xl font-black text-gray-900 dark:text-white tracking-tight">{value}</div>
+      <div className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider transition-colors group-hover:text-gray-700 dark:group-hover:text-gray-300 mt-0.5">{label}</div>
     </div>
   </div>
 );
@@ -420,17 +419,10 @@ const TopicCard = ({ topic }) => {
   const cat = getCategoryById(topic.category);
   
   return (
-    <div className={`group relative bg-white/90 dark:bg-[#0a0a0a]/70 backdrop-blur-xl rounded-2xl border border-gray-200/60 dark:border-white/5 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] dark:shadow-none hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] transition-all duration-500 ease-out hover:-translate-y-1.5 overflow-hidden ${topic.pinned ? 'ring-1 ring-amber-400/50 dark:ring-amber-500/30' : ''}`}>
-      {/* Hover Gradient Border (Animated) */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ padding: '1px', background: `linear-gradient(45deg, ${cat.color}, transparent 60%)`, WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude', borderRadius: 'inherit' }} />
-      
-      {/* Hover Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/5 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none" />
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-10 dark:group-hover:opacity-20 transition-opacity duration-500 pointer-events-none" style={{ background: `radial-gradient(circle at 80% 20%, ${cat.color}, transparent 60%)` }} />
-      
+    <div className={`group relative bg-white/[0.7] dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] shadow-sm hover:shadow-md dark:hover:shadow-none transition-all duration-500 hover:-translate-y-1 overflow-hidden ${topic.pinned ? 'border-amber-500/30 bg-amber-500/[0.01]' : ''}`}>
       {/* Pinned indicator */}
       {topic.pinned && (
-        <div className="absolute top-0 right-6 bg-gradient-to-b from-amber-400 to-amber-500 text-amber-950 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-b-lg shadow-sm z-10">
+        <div className="absolute top-0 right-6 bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 text-[9px] font-black uppercase tracking-wider px-3 py-1 rounded-b-lg shadow-sm z-10">
           Pinned
         </div>
       )}
@@ -448,50 +440,50 @@ const TopicCard = ({ topic }) => {
             <div className="flex items-center gap-2 mb-3 flex-wrap">
               <CategoryBadge categoryId={topic.category} />
               {topic.solved && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold tracking-wide text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200/50 dark:border-emerald-500/20 px-2.5 py-0.5 rounded-md shadow-sm">
-                  <CheckCircle2 className="w-3 h-3" />
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-500 bg-emerald-500/10 border border-emerald-500/25 px-2.5 py-0.5 rounded-lg shadow-sm">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
                   Solved
                 </span>
               )}
             </div>
             
             {/* Title */}
-            <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-snug mb-2 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors cursor-pointer pr-8">
+            <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-snug mb-2 group-hover:text-blue-500 dark:group-hover:text-cyan-400 transition-colors cursor-pointer pr-8">
               {topic.title}
             </h3>
             {/* Excerpt */}
             {topic.excerpt && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2">
+              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2">
                 {topic.excerpt}
               </p>
             )}
             {/* Tags */}
-            <div className="flex flex-wrap gap-1.5 mb-3">
+            <div className="flex flex-wrap gap-1.5 mb-4">
               {topic.tags.map((tag, i) => (
                 <TagPill key={i} tag={tag} />
               ))}
             </div>
             
             {/* Bottom meta row */}
-            <div className="flex items-center justify-between flex-wrap gap-3">
-              <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between flex-wrap gap-3 border-t border-gray-100/50 dark:border-white/[0.03] pt-3.5">
+              <div className="flex items-center gap-3">
                 <AvatarStack posters={topic.posters} />
                 <span className="text-xs text-gray-400 dark:text-gray-500 hidden sm:inline">
-                  by <span className="text-gray-600 dark:text-gray-300 font-medium">{topic.author.name}</span>
+                  by <span className="text-gray-600 dark:text-gray-300 font-bold">{topic.author.name}</span>
                 </span>
               </div>
               
-              <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500">
-                <span className="inline-flex items-center gap-1" title="Replies">
-                  <MessageSquare className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500 font-bold">
+                <span className="inline-flex items-center gap-1.5" title="Replies">
+                  <MessageSquare className="w-3.5 h-3.5 text-blue-500/60" />
                   {topic.replies}
                 </span>
-                <span className="inline-flex items-center gap-1" title="Views">
-                  <Eye className="w-3.5 h-3.5" />
+                <span className="inline-flex items-center gap-1.5" title="Views">
+                  <Eye className="w-3.5 h-3.5 text-cyan-500/60" />
                   {formatCount(topic.views)}
                 </span>
-                <span className="inline-flex items-center gap-1" title="Last activity">
-                  <Clock className="w-3.5 h-3.5" />
+                <span className="inline-flex items-center gap-1.5" title="Last activity">
+                  <Clock className="w-3.5 h-3.5 text-indigo-500/60" />
                   {timeAgo(topic.lastActivity)}
                 </span>
               </div>
@@ -604,12 +596,12 @@ const CommunitiesPage = () => {
          SECTION 1: Community Stats Banner
          ═══════════════════════════════════════════════════════════ */}
       <section className="relative z-20 mt-6 sm:mt-9 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
-        <div className="bg-white/80 dark:bg-black/60 backdrop-blur-2xl border border-gray-200/60 dark:border-white/10 rounded-[1.25rem] shadow-[0_8px_40px_-12px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.5)] overflow-hidden ring-1 ring-black/5 dark:ring-white/5 hover:shadow-[0_16px_60px_-15px_rgba(0,0,0,0.1)] transition-shadow duration-500">
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-gray-100 dark:divide-white/10 relative z-20 bg-white/40 dark:bg-transparent">
-            <StatCounter icon={MessageCircle} value="1,801" label="Total Topics" color="#9E81FF" />
-            <StatCounter icon={Users} value="4,280" label="Active Members" color="#12A89D" />
-            <StatCounter icon={Zap} value="312" label="Posts This Week" color="#F97316" />
-            <StatCounter icon={Layers} value="7" label="Categories" color="#3B82F6" />
+        <div className="bg-white/40 dark:bg-white/[0.01] backdrop-blur-2xl border border-gray-200/50 dark:border-white/[0.06] rounded-2xl overflow-hidden shadow-sm">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-gray-200/40 dark:divide-white/[0.06] relative z-20">
+            <StatCounter icon={MessageCircle} value="1,801" label="Total Topics" color="#9e81ff" />
+            <StatCounter icon={Users} value="4,280" label="Active Members" color="#12a89d" />
+            <StatCounter icon={Zap} value="312" label="Posts This Week" color="#f97316" />
+            <StatCounter icon={Layers} value="7" label="Categories" color="#3b82f6" />
           </div>
         </div>
       </section>
@@ -617,18 +609,18 @@ const CommunitiesPage = () => {
       {/* ═══════════════════════════════════════════════════════════
          SECTION 2: Category Navigation + Filter Bar
          ═══════════════════════════════════════════════════════════ */}
-      <section className="sticky top-[72px] z-30 bg-white/80 dark:bg-[#0a0a0a]/70 backdrop-blur-2xl border-b border-gray-200/50 dark:border-white/10 shadow-sm">
+      <section className="sticky top-[72px] z-30 bg-white/[0.85] dark:bg-black/[0.7] backdrop-blur-2xl border-b border-gray-200/50 dark:border-white/[0.06] shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Category Pills */}
-          <div className="flex items-center gap-3 py-4 overflow-x-auto hide-scrollbar">
+          <div className="flex items-center gap-2 py-4 overflow-x-auto hide-scrollbar">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-300 flex-shrink-0 overflow-hidden group ${
+                className={`relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-300 flex-shrink-0 overflow-hidden group ${
                   activeCategory === cat.id
-                    ? 'text-white shadow-[0_8px_20px_-6px_rgba(59,130,246,0.5)] hover:shadow-[0_12px_25px_-6px_rgba(59,130,246,0.6)] hover:-translate-y-0.5'
-                    : 'bg-white/70 dark:bg-white/5 border border-gray-200/80 dark:border-white/5 text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-white/10 hover:border-gray-300 dark:hover:border-white/20 shadow-sm hover:shadow-md hover:-translate-y-0.5'
+                    ? 'text-white shadow-sm hover:-translate-y-0.5'
+                    : 'bg-white/50 dark:bg-white/[0.02] border border-gray-200/60 dark:border-white/[0.05] text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-white/[0.06] hover:border-gray-300 dark:hover:border-white/[0.1] shadow-sm hover:-translate-y-0.5'
                 }`}
               >
                 {activeCategory === cat.id && (
@@ -637,13 +629,13 @@ const CommunitiesPage = () => {
                 <div className="relative z-10 flex items-center gap-2">
                   {cat.id !== 'all' && (
                     <span
-                      className={`w-2.5 h-2.5 rounded-full flex-shrink-0 transition-transform duration-300 group-hover:scale-125 ${activeCategory === cat.id ? 'shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'shadow-inner'}`}
+                      className={`w-2 h-2 rounded-full flex-shrink-0 transition-transform duration-300 group-hover:scale-110`}
                       style={{ backgroundColor: activeCategory === cat.id ? '#fff' : cat.color }}
                     />
                   )}
                   {cat.name}
                   {cat.count && (
-                    <span className={`text-[11px] px-2 py-0.5 rounded-md font-black tracking-wide ${activeCategory === cat.id ? 'bg-white/25 text-white shadow-inner' : 'bg-gray-100 dark:bg-black/40 text-gray-500 dark:text-gray-500 group-hover:bg-gray-200 dark:group-hover:bg-black/60 transition-colors'}`}>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-black tracking-wide ${activeCategory === cat.id ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500'}`}>
                       {cat.count}
                     </span>
                   )}
@@ -653,9 +645,9 @@ const CommunitiesPage = () => {
           </div>
 
           {/* Filter Bar */}
-          <div className="flex items-center justify-between gap-4 pb-4 flex-wrap border-t border-gray-100 dark:border-white/5 pt-4">
+          <div className="flex items-center justify-between gap-4 pb-4 flex-wrap border-t border-gray-100 dark:border-white/[0.04] pt-4">
             {/* Tabs */}
-            <div className="flex items-center gap-1 bg-gray-100/80 dark:bg-black/50 rounded-xl p-1 border border-gray-200/50 dark:border-white/5 shadow-inner">
+            <div className="flex items-center gap-1 bg-gray-100/60 dark:bg-white/[0.02] rounded-xl p-1 border border-gray-200/50 dark:border-white/[0.05]">
               {[
                 { id: 'latest', label: 'Latest', icon: Clock },
                 { id: 'top', label: 'Top', icon: TrendingUp },
@@ -664,13 +656,13 @@ const CommunitiesPage = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 ${
                     activeTab === tab.id
-                      ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md ring-1 ring-black/5 dark:ring-white/10'
-                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-white/50 dark:hover:bg-white/5'
+                      ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm border border-gray-200/30 dark:border-white/[0.06]'
+                      : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-300'
                   }`}
                 >
-                  <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-blue-500 dark:text-cyan-400' : ''}`} />
+                  <tab.icon className={`w-3.5 h-3.5 ${activeTab === tab.id ? 'text-blue-500 dark:text-cyan-400' : ''}`} />
                   {tab.label}
                 </button>
               ))}
@@ -679,26 +671,26 @@ const CommunitiesPage = () => {
             {/* Search + Sort */}
             <div className="flex items-center gap-3">
               <div className="relative group">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-400 group-focus-within:text-blue-500 dark:group-focus-within:text-cyan-400 transition-colors" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 dark:group-focus-within:text-cyan-400 transition-colors" />
                 <input
                   type="text"
                   placeholder="Search topics..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2.5 w-48 sm:w-64 rounded-xl border border-gray-200/80 dark:border-white/10 bg-white/50 dark:bg-black/40 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:focus:ring-cyan-500/50 focus:border-transparent transition-all shadow-inner"
+                  className="pl-10 pr-4 py-2 w-44 sm:w-56 rounded-xl border border-gray-200/80 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.01] text-xs font-semibold text-gray-950 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-cyan-500/50 focus:border-transparent transition-all"
                 />
               </div>
               <div className="relative">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="appearance-none pl-4 pr-10 py-2.5 rounded-xl border border-gray-200/80 dark:border-white/10 bg-white/50 dark:bg-black/40 text-sm font-semibold text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:focus:ring-cyan-500/50 transition-all hover:bg-white dark:hover:bg-white/5 cursor-pointer shadow-sm"
+                  className="appearance-none pl-4 pr-9 py-2 rounded-xl border border-gray-200/80 dark:border-white/[0.06] bg-white/50 dark:bg-white/[0.01] text-xs font-bold text-gray-650 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-cyan-500/50 transition-all hover:bg-white dark:hover:bg-white/[0.03] cursor-pointer"
                 >
                   <option value="newest">Newest</option>
                   <option value="views">Most Views</option>
                   <option value="replies">Most Replies</option>
                 </select>
-                <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500 pointer-events-none" />
               </div>
             </div>
           </div>
@@ -713,10 +705,10 @@ const CommunitiesPage = () => {
           <div className="lg:grid lg:grid-cols-[1fr_320px] lg:gap-8">
             
             {/* ─── Discussion Topics List ─── */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               {/* Results count */}
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-gray-550 dark:text-gray-455 font-bold uppercase tracking-wider">
                   {filteredTopics.length} topic{filteredTopics.length !== 1 ? 's' : ''}
                   {activeCategory !== 'all' && ` in ${getCategoryById(activeCategory).name}`}
                   {searchQuery && ` matching "${searchQuery}"`}
@@ -734,7 +726,7 @@ const CommunitiesPage = () => {
                   {!showAllTopics && filteredTopics.length > 10 && (
                     <button
                       onClick={() => setShowAllTopics(true)}
-                      className="w-full py-4 rounded-xl border border-gray-200 dark:border-gray-800 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex items-center justify-center gap-2"
+                      className="w-full py-3.5 rounded-xl border border-gray-200 dark:border-white/[0.05] bg-white/[0.3] dark:bg-white/[0.01] hover:bg-white/[0.6] dark:hover:bg-white/[0.02] text-xs font-bold text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-white/[0.08] transition-all flex items-center justify-center gap-2"
                     >
                       Load More Topics
                       <ChevronDown className="w-4 h-4" />
@@ -743,17 +735,17 @@ const CommunitiesPage = () => {
                 </>
               ) : (
                 /* Empty state */
-                <div className="py-16 text-center">
-                  <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-7 h-7 text-gray-400" />
+                <div className="py-16 text-center bg-white/[0.3] dark:bg-white/[0.01] border border-gray-200 dark:border-white/[0.05] rounded-2xl">
+                  <div className="w-12 h-12 bg-gray-100 dark:bg-white/[0.03] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-5 h-5 text-gray-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No topics found</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2">No topics found</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs mx-auto leading-relaxed">
                     Try adjusting your filters or search query to find what you're looking for.
                   </p>
                   <button
                     onClick={() => { setActiveCategory('all'); setSearchQuery(''); setActiveTab('latest'); }}
-                    className="mt-4 text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                    className="mt-4 text-xs font-bold text-blue-500 dark:text-cyan-400 hover:underline"
                   >
                     Clear all filters
                   </button>
@@ -762,40 +754,39 @@ const CommunitiesPage = () => {
             </div>
 
             {/* ─── Trending Sidebar ─── */}
-            <aside className="hidden lg:block space-y-8 mt-8 lg:mt-0">
+            <aside className="hidden lg:block space-y-6 mt-8 lg:mt-0">
               
               {/* Trending This Week */}
-              <div className="bg-white/90 dark:bg-[#0a0a0a]/60 backdrop-blur-xl rounded-[1.25rem] border border-gray-200/60 dark:border-white/5 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_30px_-10px_rgba(0,0,0,0.5)] p-6 relative overflow-hidden group/widget transition-shadow duration-500 hover:shadow-[0_12px_40px_-15px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_12px_40px_-15px_rgba(0,0,0,0.6)]">
-                <div className="absolute -top-10 -right-10 w-48 h-48 bg-orange-500/15 dark:bg-orange-500/10 blur-[50px] rounded-full pointer-events-none transition-transform duration-[2s] group-hover/widget:scale-150 group-hover/widget:-translate-x-4 group-hover/widget:translate-y-4" />
-                <div className="flex items-center gap-2 mb-6 relative z-10">
-                  <Flame className="w-5 h-5 text-orange-500" />
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-widest">Trending This Week</h3>
+              <div className="bg-white/40 dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] p-5 relative overflow-hidden">
+                <div className="flex items-center gap-2 mb-4 relative z-10">
+                  <Flame className="w-4 h-4 text-orange-500" />
+                  <h3 className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-wider">Trending This Week</h3>
                 </div>
                 <div className="space-y-4 relative z-10">
                   {trendingTopics.map((topic, i) => (
-                    <div key={topic.id} className="group cursor-pointer relative transition-transform duration-300 hover:translate-x-1.5">
-                      <div className="flex items-start gap-4">
-                        <div className="relative pt-1 flex-shrink-0">
-                          <span className="text-2xl font-black text-gray-200 dark:text-gray-800 opacity-80 group-hover:text-orange-500/40 dark:group-hover:text-orange-500/30 transition-colors">
+                    <div key={topic.id} className="group cursor-pointer relative transition-transform duration-350 hover:translate-x-1">
+                      <div className="flex items-start gap-3">
+                        <div className="relative flex-shrink-0">
+                          <span className="text-xl font-black text-gray-205 dark:text-gray-800 opacity-60 group-hover:text-orange-500/40 transition-colors">
                             {String(i + 1).padStart(2, '0')}
                           </span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-bold text-gray-700 dark:text-gray-300 leading-snug group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2">
+                          <p className="text-xs font-bold text-gray-700 dark:text-gray-300 leading-snug group-hover:text-blue-500 dark:group-hover:text-cyan-400 transition-colors line-clamp-2">
                             {topic.title}
                           </p>
-                          <div className="flex items-center gap-3 mt-2 text-[11px] font-semibold text-gray-400 dark:text-gray-500 tracking-wide uppercase">
-                            <span className="inline-flex items-center gap-1.5">
-                              <Eye className="w-3.5 h-3.5 text-blue-500/50" /> {formatCount(topic.views)}
+                          <div className="flex items-center gap-3 mt-1.5 text-[10px] font-bold text-gray-400 dark:text-gray-500 tracking-wide uppercase">
+                            <span className="inline-flex items-center gap-1">
+                              <Eye className="w-3 h-3 text-blue-500/40" /> {formatCount(topic.views)}
                             </span>
-                            <span className="inline-flex items-center gap-1.5">
-                              <MessageSquare className="w-3.5 h-3.5 text-emerald-500/50" /> {topic.replies}
+                            <span className="inline-flex items-center gap-1">
+                              <MessageSquare className="w-3 h-3 text-emerald-500/40" /> {topic.replies}
                             </span>
                           </div>
                         </div>
                       </div>
                       {i < trendingTopics.length - 1 && (
-                        <div className="border-b border-gray-100 dark:border-white/5 mt-4" />
+                        <div className="border-b border-gray-100 dark:border-white/[0.03] mt-3" />
                       )}
                     </div>
                   ))}
@@ -803,29 +794,25 @@ const CommunitiesPage = () => {
               </div>
 
               {/* Top Contributors */}
-              <div className="bg-white/90 dark:bg-[#0a0a0a]/60 backdrop-blur-xl rounded-[1.25rem] border border-gray-200/60 dark:border-white/5 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_30px_-10px_rgba(0,0,0,0.5)] p-6 relative overflow-hidden group/widget transition-shadow duration-500 hover:shadow-[0_12px_40px_-15px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_12px_40px_-15px_rgba(0,0,0,0.6)]">
-                <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-amber-500/15 dark:bg-amber-500/10 blur-[50px] rounded-full pointer-events-none transition-transform duration-[2s] group-hover/widget:scale-150 group-hover/widget:-translate-x-8 group-hover/widget:-translate-y-4" />
-                <div className="flex items-center gap-2 mb-6 relative z-10">
-                  <Award className="w-5 h-5 text-amber-500" />
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-widest">Top Contributors</h3>
+              <div className="bg-white/40 dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] p-5 relative overflow-hidden">
+                <div className="flex items-center gap-2 mb-4 relative z-10">
+                  <Award className="w-4 h-4 text-amber-500" />
+                  <h3 className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-wider">Top Contributors</h3>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {CONTRIBUTORS.map((user, i) => (
-                    <div key={i} className="flex items-center gap-4 group cursor-pointer p-2 -mx-2 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                    <div key={i} className="flex items-center gap-3 group cursor-pointer p-1.5 -mx-1.5 rounded-xl hover:bg-white/10 dark:hover:bg-white/5 transition-colors">
                       <div className="relative">
-                        <Avatar initials={user.initials} color={user.color} size="md" />
-                        {i < 3 && (
-                          <div className="absolute -inset-1 rounded-full border border-amber-400/30 group-hover:border-amber-400/80 group-hover:scale-110 transition-all duration-300" />
-                        )}
+                        <Avatar initials={user.initials} color={user.color} size="sm" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors truncate">
+                        <p className="text-xs font-bold text-gray-900 dark:text-white group-hover:text-blue-550 dark:group-hover:text-cyan-400 transition-colors truncate">
                           {user.name}
                         </p>
-                        <p className="text-[11px] font-semibold tracking-wide uppercase text-gray-500 dark:text-gray-400 mt-0.5">{user.role}</p>
+                        <p className="text-[10px] font-bold tracking-wide uppercase text-gray-400 dark:text-gray-500 mt-0.5">{user.role}</p>
                       </div>
-                      <div className="flex items-center gap-1 text-[11px] font-bold text-amber-500 bg-amber-50 dark:bg-amber-500/10 px-2 py-1 rounded-md">
-                        <Star className="w-3 h-3 fill-amber-500" />
+                      <div className="flex items-center gap-1 text-[10px] font-bold text-amber-550 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md">
+                        <Star className="w-3 h-3 fill-amber-500/80 text-amber-500/80" />
                         {user.badges}
                       </div>
                     </div>
@@ -834,22 +821,21 @@ const CommunitiesPage = () => {
               </div>
 
               {/* Popular Tags */}
-              <div className="bg-white/90 dark:bg-[#0a0a0a]/60 backdrop-blur-xl rounded-[1.25rem] border border-gray-200/60 dark:border-white/5 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_30px_-10px_rgba(0,0,0,0.5)] p-6 relative overflow-hidden group/widget transition-shadow duration-500 hover:shadow-[0_12px_40px_-15px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_12px_40px_-15px_rgba(0,0,0,0.6)]">
-                <div className="absolute top-10 -left-10 w-48 h-48 bg-blue-500/10 dark:bg-cyan-500/10 blur-[50px] rounded-full pointer-events-none transition-transform duration-[2s] group-hover/widget:scale-150 group-hover/widget:translate-x-8 group-hover/widget:-translate-y-4" />
-                <div className="flex items-center gap-2 mb-6 relative z-10">
-                  <Hash className="w-5 h-5 text-blue-500" />
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-widest">Popular Tags</h3>
+              <div className="bg-white/40 dark:bg-white/[0.01] backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-white/[0.05] p-5 relative overflow-hidden">
+                <div className="flex items-center gap-2 mb-4 relative z-10">
+                  <Hash className="w-4 h-4 text-blue-500" />
+                  <h3 className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-wider">Popular Tags</h3>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {TAGS.map((tag, i) => (
                     <button
                       key={i}
                       onClick={() => setSearchQuery(tag.name)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-50 dark:bg-white/5 border border-gray-200/50 dark:border-white/5 text-gray-600 dark:text-gray-400 hover:border-blue-300 dark:hover:border-cyan-500/50 hover:bg-blue-50 dark:hover:bg-cyan-500/10 hover:text-blue-600 dark:hover:text-cyan-400 transition-all duration-300 cursor-pointer shadow-sm"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/40 dark:bg-white/5 border border-gray-200/50 dark:border-white/[0.05] text-gray-500 dark:text-gray-400 hover:border-blue-300 dark:hover:border-cyan-500/30 hover:bg-blue-500/5 dark:hover:bg-cyan-500/5 hover:text-blue-500 dark:hover:text-cyan-450 transition-all cursor-pointer"
                     >
-                      <span className="text-gray-400 dark:text-gray-500 opacity-70">#</span>
+                      <span>#</span>
                       {tag.name}
-                      <span className="text-[10px] bg-white dark:bg-black/40 px-1.5 py-0.5 rounded-md ml-1 opacity-80">{tag.count}</span>
+                      <span className="text-[9px] bg-gray-100 dark:bg-black/30 px-1.5 py-0.5 rounded-md ml-1 opacity-80">{tag.count}</span>
                     </button>
                   ))}
                 </div>
@@ -862,49 +848,43 @@ const CommunitiesPage = () => {
       {/* ═══════════════════════════════════════════════════════════
          SECTION 5: Community CTA Banner
          ═══════════════════════════════════════════════════════════ */}
-      <section className="relative py-24 lg:py-32 bg-[#0a1228] overflow-hidden">
+      <section className="relative py-20 lg:py-28 bg-[#090b11] overflow-hidden border-t border-white/[0.03]">
         {/* Dynamic Abstract Background */}
         <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-cyan-500/20 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1228] via-transparent to-[#0a1228] pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:40px_40px] opacity-[0.03] pointer-events-none"></div>
+          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-80 h-80 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none" />
+          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-80 h-80 bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.02] pointer-events-none"></div>
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
-            <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-xl px-5 py-2.5 rounded-full text-sm font-bold tracking-wide text-white/90 mb-10 border border-white/10 shadow-lg shadow-black/20">
-              <Users className="w-4 h-4 text-cyan-400" />
+          <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
+            <div className="inline-flex items-center gap-1.5 bg-white/5 backdrop-blur-xl px-4 py-2 rounded-full text-xs font-bold tracking-wide text-white/80 mb-8 border border-white/10 shadow-sm">
+              <Users className="w-3.5 h-3.5 text-cyan-400" />
               Join 4,280+ enterprise leaders
             </div>
-            <h2 className="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem] font-bold text-white mb-6 tracking-tight leading-[1.1]">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 tracking-tight leading-[1.1]">
               Shape the Future of <br className="hidden sm:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-450">
                 Enterprise Technology
               </span>
             </h2>
-            <p className="text-lg sm:text-xl text-gray-300 mb-12 leading-relaxed max-w-2xl font-medium">
+            <p className="text-sm sm:text-base text-gray-300 mb-10 leading-relaxed max-w-xl font-medium">
               Connect with leaders, share your expertise, and build resilient digital systems through our curated knowledge network.
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto">
               <Link 
                 to="/contact" 
-                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/90 hover:bg-white backdrop-blur-xl text-gray-900 shadow-xl shadow-cyan-500/20"
+                className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full overflow-hidden transition-all duration-350 bg-white hover:bg-white/90 text-gray-950 shadow-lg shadow-cyan-500/5 font-bold text-xs uppercase tracking-wider"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
-                <span className="relative z-10 font-bold tracking-wide text-[14px] uppercase">
-                  Start a Discussion
-                </span>
-                <div className="relative z-10 w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center transition-all duration-500 group-hover:bg-blue-600 shadow-md">
-                  <ArrowRight className="w-4 h-4 text-white transition-all duration-500 group-hover:translate-x-0.5" />
-                </div>
+                <span>Start a Discussion</span>
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
               <Link 
                 to="/insights" 
-                className="group inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full text-[14px] font-bold text-white/90 tracking-wide uppercase hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-300"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-full text-xs font-bold text-white/80 tracking-wide uppercase hover:bg-white/5 border border-transparent hover:border-white/10 transition-all"
               >
-                Explore Insights
-                <ArrowRight className="w-4 h-4 text-cyan-400 transform group-hover:translate-x-1 transition-transform duration-300" />
+                <span>Explore Insights</span>
+                <ArrowRight className="w-3.5 h-3.5 text-cyan-450 transform group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
           </div>
@@ -915,3 +895,4 @@ const CommunitiesPage = () => {
 };
 
 export default CommunitiesPage;
+
