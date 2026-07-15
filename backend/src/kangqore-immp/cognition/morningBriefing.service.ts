@@ -182,17 +182,29 @@ export class MorningBriefingService {
     // WAANDA uses the brief's intelligence to direct subsystems for the day.
     try {
       const { WaandaAuthority } = await import('../../waanda/WaandaAuthority');
-      // Tell ALIS which market segment to focus on based on today's brief context
+
+      // ALIS segment: time-of-day intent — morning = revenue growth,
+      // midday = execution health, evening = market positioning
+      const alisSegment = briefType === 'MIDDAY' ? 'operations'
+        : briefType === 'EVENING' ? 'market'
+        : 'revenue';
+
+      // VIS module: platform health signal — low OIS → authority rebuild,
+      // high decision backlog → thought leadership, otherwise content mapping
+      const visModule = (oisScore !== null && oisScore < 70) ? 'authority-building'
+        : (decisions.proposedCount > 5 ? 'thought-leadership' : 'content-mapping');
+
       await WaandaAuthority.issueDirective('ALIS', 'FOCUS', {
-        segment:  'revenue',
+        segment:  alisSegment,
         briefId:  briefing.id,
         briefType,
-      }, `Morning brief ${briefType} — ALIS revenue focus`).catch(() => {});
-      // Tell VIS to prioritize the module with lowest coverage in today's brief
+      }, `Morning brief ${briefType} — ALIS ${alisSegment} focus`).catch(() => {});
+
       await WaandaAuthority.issueDirective('VIS', 'FOCUS', {
-        module:  'content-mapping',
+        module:  visModule,
         briefId: briefing.id,
-      }, `Morning brief ${briefType} — VIS content priority`).catch(() => {});
+        oisScore,
+      }, `Morning brief ${briefType} — VIS ${visModule} priority`).catch(() => {});
     } catch { /* directive failures are non-fatal */ }
 
     return {
