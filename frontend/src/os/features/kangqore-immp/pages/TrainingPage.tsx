@@ -288,7 +288,7 @@ function LocalModelPanel({ status }: { status: GenStatus }) {
             <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-4 space-y-2">
               {[
                 '1. Run the fine-tune script (see below)',
-                `2. ollama create ${lm.model} -f ./models/kimmp-reason-v1/Modelfile`,
+                `2. ollama create ${lm.model} -f ./models/WAANDAx/Modelfile`,
                 `3. Set KIMMP_LOCAL_REASON_MODEL=${lm.model}`,
                 '4. Restart core-backend — REASON phase auto-switches',
               ].map((step, i) => (
@@ -465,7 +465,7 @@ function ScriptPanel({ modelName }: { modelName: string }) {
     { n: '1', label: 'Export training data',   cmd: 'curl http://localhost:5050/api/admin/waanda-training/export' },
     { n: '2', label: 'Install Unsloth',         cmd: 'pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"\npip install --no-deps trl peft accelerate bitsandbytes' },
     { n: '3', label: 'Run fine-tune (GPU required)', cmd: 'cd backend\npython scripts/finetune_kimmp_reason.py --export-gguf' },
-    { n: '4', label: 'Deploy to Ollama',        cmd: `ollama create ${modelName} -f ./models/kimmp-reason-v1/Modelfile` },
+    { n: '4', label: 'Deploy to Ollama',        cmd: `ollama create ${modelName} -f ./models/WAANDAx/Modelfile` },
     { n: '5', label: 'Set env + restart',        cmd: `KIMMP_LOCAL_REASON_MODEL=${modelName}\nKIMMP_OLLAMA_URL=http://localhost:11434\n\ndocker compose up -d core-backend` },
   ]
 
@@ -586,7 +586,7 @@ export function TrainingPage() {
       </div>
 
       {/* Script steps */}
-      <ScriptPanel modelName={lm?.model ?? 'kimmp-reason:v1'} />
+      <ScriptPanel modelName={lm?.model ?? 'waandax:latest'} />
 
       {/* Full corpus stats */}
       {corpusStats && <CorpusPanel stats={corpusStats} />}
@@ -605,7 +605,7 @@ export function TrainingPage() {
             <p className="text-sm font-medium text-[var(--os-text-2)] leading-relaxed">
               Every KIMMP activation captures the REASON prompt + Claude's response as a training example. Once 1,000
               high-quality REASON examples are labelled, QLoRA fine-tuning on Llama-3.2-3B produces{' '}
-              <span className="font-bold text-[var(--os-text-1)]">kimmp-reason:v1</span> — a Kangqore-specific routing model.
+              <span className="font-bold text-[var(--os-text-1)]">WAANDAx</span> — a Kangqore-specific routing model.
               The dispatcher automatically switches REASON → local model, SPEAK + GOVERN stay on Claude.
               This eliminates ~50% of Claude API calls and reduces REASON latency from ~1,500 ms to &lt;100 ms.
             </p>

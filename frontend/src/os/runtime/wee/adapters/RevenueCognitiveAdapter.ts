@@ -91,6 +91,12 @@ export const RevenueCognitiveAdapter: CognitiveStateAdapter = {
       overdueInvoices:    kpis?.overdueInvoices  ?? 0,
       activeContracts:    kpis?.activeContracts  ?? 0,
       onTimeProjectPct:   kpis?.onTimeProjectPct ?? 0,
+
+      // Revenue Optimization (prediction signals for RevenueOptimizationWidget)
+      totalPredictions:           state.enterprisePredictions.length,
+      highConfidencePredictions:  state.enterprisePredictions.filter(p => p.confidence >= 0.8).length,
+      activeDrifts:               state.enterprisePredictions.filter(p => p.driftDetected).length,
+      analyticsBriefings:         state.systemBriefings.slice(0, 5),
     }
   },
 }
