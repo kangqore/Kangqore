@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // LocalReasonService — Gen 2 inference layer
 //
-// Supports two backends for the KIMMP REASON phase local model:
+// Supports two backends for the WAANDAx REASON phase local model:
 //
 //   1. MLX server  (mlx_lm.server — Apple Silicon, OpenAI-compatible API)
 //      KIMMP_MLX_SERVER_URL  = http://localhost:11435
@@ -9,7 +9,7 @@
 //
 //   2. Ollama      (ollama serve — OpenAI-compatible via /api/chat)
 //      KIMMP_OLLAMA_URL          = http://localhost:11434
-//      KIMMP_LOCAL_REASON_MODEL  = kimmp-reason:latest
+//      KIMMP_LOCAL_REASON_MODEL  = waandax:latest
 //
 // MLX server is tried first (lower latency on Apple Silicon).
 // Falls back to Ollama, then to Claude if both are unavailable.
