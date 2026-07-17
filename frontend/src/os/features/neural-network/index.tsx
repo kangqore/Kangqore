@@ -646,6 +646,7 @@ function InnerNetwork() {
   const [dynamicKimmpNodes, setDynamicKimmpNodes] = useState([]);
   const [dynamicKimmpEdges, setDynamicKimmpEdges] = useState([]);
   const [agentProgress, setAgentProgress] = useState<Record<string, number>>({}); // agentId → 0-100
+  const [swarmLive, setSwarmLive] = useState(false);
 
   const [semanticNodes, setSemanticNodes] = useState([]);
   const [semanticEdges, setSemanticEdges] = useState([]);
@@ -776,9 +777,10 @@ function InnerNetwork() {
       };
     };
 
-    const onConnected = () => logMessage('>> KIMMP: Live swarm telemetry connected.');
+    const onConnected = () => { logMessage('>> KIMMP: Live swarm telemetry connected.'); setSwarmLive(true); };
 
     const onTopology = (agents) => {
+      setSwarmLive(true);
       logMessage(`>> SWARM: Synced ${agents.length} active agent(s).`);
       const nodes = agents.map((agent, i) => mapAgentToNode(agent, i));
       const edges = agents.map(agent => ({
@@ -839,15 +841,19 @@ function InnerNetwork() {
       setAgentProgress(prev => ({ ...prev, [id]: progress }));
     };
 
+    const onDisconnect = () => setSwarmLive(false);
+
     socket.on('connected', onConnected);
     socket.on('SWARM_TOPOLOGY', onTopology);
     socket.on('AGENT_SPAWNED', onAgentSpawned);
     socket.on('AGENT_UPDATED', onAgentUpdated);
     socket.on('AGENT_PROGRESS', onAgentProgress);
     socket.on('SWARM_LOG', onSwarmLog);
+    socket.on('disconnect', onDisconnect);
 
     // If already connected, request topology immediately
     if (socket.connected) {
+      setSwarmLive(true);
       socket.emit('request:swarm_topology');
     }
 
@@ -858,6 +864,7 @@ function InnerNetwork() {
       socket.off('AGENT_UPDATED', onAgentUpdated);
       socket.off('AGENT_PROGRESS', onAgentProgress);
       socket.off('SWARM_LOG', onSwarmLog);
+      socket.off('disconnect', onDisconnect);
       // Do NOT disconnect — the socket is a shared singleton
     };
   }, [logMessage]);
@@ -1242,6 +1249,7 @@ function InnerNetwork() {
                 <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>LATENCY:</span> <span className={chaosState === 'HIGH_TRAFFIC' ? 'text-red-400' : (isMatrixMode ? 'text-green-400' : 'text-emerald-400')}>{(Math.random() * (chaosState === 'HIGH_TRAFFIC' ? 50 : 4) + 2).toFixed(1)}ms</span></div>
                 <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>ACTIVE NODES:</span> <span className={isMatrixMode ? 'text-green-400' : 'text-cyan-400'}>{nodes.length}</span></div>
                 <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>SYNCED EDGES:</span> <span className={isMatrixMode ? 'text-green-400' : 'text-cyan-400'}>{edges.length}</span></div>
+                <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>LIVE AGENTS:</span> <span className={swarmLive ? (isMatrixMode ? 'text-green-300' : 'text-emerald-300') : 'text-slate-600'}>{swarmLive ? `${dynamicKimmpNodes.length} ONLINE` : 'OFFLINE'}</span></div>
                 <div className="flex justify-between w-full"><span className={isMatrixMode ? 'text-green-700' : 'text-slate-500'}>SYS TIME:</span> <span className={isMatrixMode ? 'text-green-300' : 'text-white'}>{time.toLocaleTimeString()}</span></div>
               </div>
 

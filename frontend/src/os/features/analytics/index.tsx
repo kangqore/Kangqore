@@ -1,21 +1,23 @@
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { BarChart3, TrendingUp, Radio, Layers, Cpu } from 'lucide-react'
+import { BarChart3, TrendingUp, Radio, Layers, Cpu, Bot } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnalyticsOverview } from './pages/AnalyticsOverview'
 import { OISTrendPage } from './pages/OISTrendPage'
 import { WANDAActivityPage } from './pages/WANDAActivityPage'
 import { ModulePerformancePage } from './pages/ModulePerformancePage'
 import { DigitalTwinPage } from './pages/DigitalTwinPage'
+import { AgentPerformancePage } from './pages/AgentPerformancePage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/analytics'
 
 const TABS = [
-  { path: '',         label: 'Overview',         icon: BarChart3  },
-  { path: 'ois',      label: 'OIS Trend',        icon: TrendingUp },
-  { path: 'waanda',   label: 'WAANDA Activity',  icon: Radio      },
-  { path: 'modules',  label: 'Module Performance', icon: Layers   },
-  { path: 'twin',     label: 'Digital Twin™',    icon: Cpu        },
+  { path: '',         label: 'Overview',           icon: BarChart3  },
+  { path: 'ois',      label: 'OIS Trend',          icon: TrendingUp },
+  { path: 'waanda',   label: 'WAANDA Activity',    icon: Radio      },
+  { path: 'modules',  label: 'Module Performance', icon: Layers     },
+  { path: 'twin',     label: 'Digital Twin™',      icon: Cpu        },
+  { path: 'agents',   label: 'Agent Performance',  icon: Bot        },
 ]
 
 export function AnalyticsModule() {
@@ -51,6 +53,7 @@ export function AnalyticsModule() {
           <Route path="waanda"         element={<WANDAActivityPage />}    />
           <Route path="modules"        element={<ModulePerformancePage />} />
           <Route path="twin"           element={<DigitalTwinPage />}       />
+          <Route path="agents"         element={<AgentPerformancePage />}  />
           <Route path="*"              element={<Navigate to={BASE} replace />} />
         </Routes>
         </motion.div>
