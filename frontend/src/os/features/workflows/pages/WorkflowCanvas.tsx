@@ -2391,6 +2391,28 @@ export function WorkflowCanvas() {
     setCanRedo(futureRef.current.length > 0)
   }, [setNodes, setEdges])
 
+  // Duplicate + Delete — declared before the keyboard shortcut useEffect that references them
+  const deleteNode = useCallback((nodeId: string) => {
+    pushHistory()
+    setNodes(nds => nds.filter(n => n.id !== nodeId))
+    setEdges(eds => eds.filter(e => e.source !== nodeId && e.target !== nodeId))
+    if (configNodeId === nodeId) setConfigNodeId(null)
+    setCtxMenu(null); setSaved(false)
+  }, [pushHistory, configNodeId, setNodes, setEdges])
+
+  const duplicateNode = useCallback((nodeId: string) => {
+    const orig = nodesRef.current.find(n => n.id === nodeId)
+    if (!orig) return
+    pushHistory()
+    const newId = `step-${Date.now()}`
+    setNodes(nds => [...nds, {
+      ...orig, id: newId,
+      position: { x: orig.position.x + 60, y: orig.position.y + 100 },
+      data: { step: { ...(orig.data.step as WorkflowStep), id: newId, name: `${(orig.data.step as WorkflowStep).name} (copy)` } },
+    }])
+    setCtxMenu(null); setSaved(false)
+  }, [pushHistory, setNodes])
+
   // Keyboard shortcuts — undo/redo + navigation + selection + share
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -2542,29 +2564,6 @@ export function WorkflowCanvas() {
     ))
     setSaved(false)
   }, [pushHistory, setNodes])
-
-  // Duplicate
-  const duplicateNode = useCallback((nodeId: string) => {
-    const orig = nodesRef.current.find(n => n.id === nodeId)
-    if (!orig) return
-    pushHistory()
-    const newId = `step-${Date.now()}`
-    setNodes(nds => [...nds, {
-      ...orig, id: newId,
-      position: { x: orig.position.x + 60, y: orig.position.y + 100 },
-      data: { step: { ...(orig.data.step as WorkflowStep), id: newId, name: `${(orig.data.step as WorkflowStep).name} (copy)` } },
-    }])
-    setCtxMenu(null); setSaved(false)
-  }, [pushHistory, setNodes])
-
-  // Delete
-  const deleteNode = useCallback((nodeId: string) => {
-    pushHistory()
-    setNodes(nds => nds.filter(n => n.id !== nodeId))
-    setEdges(eds => eds.filter(e => e.source !== nodeId && e.target !== nodeId))
-    if (configNodeId === nodeId) setConfigNodeId(null)
-    setCtxMenu(null); setSaved(false)
-  }, [pushHistory, configNodeId, setNodes, setEdges])
 
   // Add step after
   const addAfterNode = useCallback((sourceId: string, type: string) => {
