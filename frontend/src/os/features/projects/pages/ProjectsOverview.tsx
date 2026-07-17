@@ -174,21 +174,21 @@ function ProjectCard({ p, onEdit, onDelete }: { p: Project; onEdit: () => void; 
         </div>
 
         {/* Services tags */}
-        {p.services.length > 0 && (
+        {(p.services ?? []).length > 0 && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {p.services.slice(0, 2).map(s => (
+            {(p.services ?? []).slice(0, 2).map(s => (
               <span key={s} style={{
                 fontSize: 9, padding: '2px 7px', borderRadius: 4,
                 background: col + '12', color: col, border: `1px solid ${col}22`,
                 fontWeight: 600,
               }}>{s}</span>
             ))}
-            {p.services.length > 2 && (
+            {(p.services ?? []).length > 2 && (
               <span style={{
                 fontSize: 9, padding: '2px 7px', borderRadius: 4,
                 background: 'var(--os-surface-3)', color: 'var(--os-text-4)',
                 border: '1px solid var(--os-border-subtle)',
-              }}>+{p.services.length - 2}</span>
+              }}>+{(p.services ?? []).length - 2}</span>
             )}
           </div>
         )}
@@ -283,16 +283,16 @@ function ProjectRow({ p, onEdit, onDelete }: { p: Project; onEdit: () => void; o
           {p.name}
         </div>
         <div style={{ fontSize: 10, color: 'var(--os-text-4)', marginTop: 2 }}>{p.client}</div>
-        {p.services.length > 0 && (
+        {(p.services ?? []).length > 0 && (
           <div style={{ display: 'flex', gap: 3, marginTop: 4, flexWrap: 'wrap' }}>
-            {p.services.slice(0, 2).map(s => (
+            {(p.services ?? []).slice(0, 2).map(s => (
               <span key={s} style={{
                 fontSize: 8, padding: '1px 5px', borderRadius: 3,
                 background: col + '12', color: col, border: `1px solid ${col}22`, fontWeight: 600,
               }}>{s}</span>
             ))}
-            {p.services.length > 2 && (
-              <span style={{ fontSize: 8, color: 'var(--os-text-4)' }}>+{p.services.length - 2}</span>
+            {(p.services ?? []).length > 2 && (
+              <span style={{ fontSize: 8, color: 'var(--os-text-4)' }}>+{(p.services ?? []).length - 2}</span>
             )}
           </div>
         )}
