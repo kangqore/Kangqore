@@ -163,6 +163,8 @@ async function persist(
   ctx: any,
   structured: ReturnType<typeof structureDecision> extends Promise<infer T> ? T : never,
   agentsMixed: string[],
+  workflowName?: string,
+  stepName?: string,
 ): Promise<string> {
   const evidence = [
     ...((ctx.signals  ?? []).map((s: any) => ({ source: 'KIMMP Signal', type: s.signalType, snippet: s.signalValue }))),
@@ -179,6 +181,8 @@ async function persist(
       options:    structured.options,
       confidence: structured.confidence,
       agentsMixed,
+      workflowName,
+      stepName,
     },
   }).catch(() => null)
 
@@ -241,6 +245,8 @@ export async function runStrategicDecision(
   options?:          string[],
   simulationType?:   SimulationType,
   simulationParams?: Record<string, any>,
+  workflowName?:     string,
+  stepName?:         string,
 ): Promise<StrategicDecisionResult> {
   const ctx        = await buildContext()
   const structured = await structureDecision(question, ctx, options)
@@ -269,7 +275,7 @@ export async function runStrategicDecision(
     simulation = await runSimulation(simulationType, { ...simulationParams, scenario: question }).catch(() => undefined)
   }
 
-  const id = await persist(question, ctx, structured, agentsMixed)
+  const id = await persist(question, ctx, structured, agentsMixed, workflowName, stepName)
 
   return {
     id,
@@ -298,4 +304,11 @@ export async function listStrategicDecisions(limit = 20): Promise<any[]> {
 
 export async function getStrategicDecision(id: string): Promise<any> {
   return (prisma as any).kimmpStrategicDecision.findUnique({ where: { id } }).catch(() => null)
+}
+
+export async function getStrategicDecisionByStep(workflowName: string, stepName: string): Promise<any> {
+  return (prisma as any).kimmpStrategicDecision.findFirst({
+    where: { workflowName, stepName },
+    orderBy: { createdAt: 'desc' },
+  }).catch(() => null)
 }

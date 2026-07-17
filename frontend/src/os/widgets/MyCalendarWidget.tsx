@@ -52,8 +52,8 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
           </div>
 
           {/* Remaining events */}
-          {rest.map((e: any, i: number) => (
-            <div key={e.id ?? i} style={{
+          {rest.map((e: any) => (
+            <div key={e.id ?? String(e.startsAt ?? e.time)} style={{
               display: 'flex', alignItems: 'center', gap: 8,
               padding: '5px 10px', borderRadius: 6,
               background: 'var(--os-surface-3)',

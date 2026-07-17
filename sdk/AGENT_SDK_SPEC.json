@@ -1,0 +1,105 @@
+{
+  "sdk":     "Kangqore Agent SDK",
+  "version": "1.0.0",
+  "description": "Build agents that run inside the Kangqore WAANDA runtime. Agents receive signals, reason with KIMMP, and execute approved actions.",
+
+  "concepts": {
+    "Agent": "A named, scheduled process registered in KimmpAgent. Receives trigger events, runs a reasoning loop, proposes actions, waits for approval (if L2/L3), then executes.",
+    "Signal": "A structured intelligence event (type, source, severity, payload). Signals activate relevant nodes in WVIS and are the primary input to agents.",
+    "Mission": "A KimmpWorkflow execution. Each run is tracked with status, latency, and outcome.",
+    "Decision": "A KimmpStrategicDecision. WAANDA proposes structured options with pros/cons/roi. Human selects or WAANDA auto-selects at L1.",
+    "Blueprint": "The portable deployment spec. Agents are declared in blueprint.agents[] and provisioned by importBlueprint()."
+  },
+
+  "agentLifecycle": {
+    "register":  "Declared in blueprint.agents[]. Provisioned on import with status=ACTIVE.",
+    "trigger":   "Via triggerOn events (e.g. 'project.created') OR schedule (cron expression).",
+    "reason":    "Agent calls POST /api/admin/kangqore-immp/decisions/detect to identify decision points. WAANDA synthesises options.",
+    "propose":   "Agent calls POST /api/admin/kangqore-immp/strategic-decisions with question + options.",
+    "approve":   "Human approves at /admin/aegis/approvals OR WAANDA auto-approves at L1 policy.",
+    "execute":   "Agent calls POST /api/admin/kangqore-immp/workflows/:id/run OR direct action endpoint.",
+    "record":    "Agent calls POST /api/admin/adoption/event to log activity (AGENT_INVOKE, DECISION_ACCEPT, etc.)."
+  },
+
+  "agentSpec": {
+    "description": "Define your agent in blueprint.agents[]. All fields below are supported.",
+    "schema": {
+      "id":        { "type": "string", "description": "Unique agent identifier. Used as KimmpAgent.name.", "example": "CHURN_PREDICTOR" },
+      "role":      { "type": "string", "description": "Human-readable role description.", "example": "Predict customer churn risk" },
+      "schedule":  { "type": "string", "description": "Cron expression for scheduled runs.", "example": "0 9 * * 1-5" },
+      "triggerOn": { "type": "array", "items": { "type": "string" }, "description": "Signal types or domain events that trigger the agent.", "example": ["customer.inactive_30d", "nps.low_score"] }
+    }
+  },
+
+  "builtInAgentIds": {
+    "PS_PACK": ["PROJECT_HEALTH", "DELIVERY_MONITOR", "INVOICE_INTELLIGENCE", "COLLECTIONS_AGENT", "DEAL_COACH", "ENTERPRISE_COACH", "SENTINEL"],
+    "BFSI_PACK": ["CREDIT_RISK_AGENT", "COMPLIANCE_MONITOR", "AML_SENTINEL", "TREASURY_INTELLIGENCE", "LOAN_COACH", "ENTERPRISE_COACH", "NPA_PREDICTOR"]
+  },
+
+  "signalTypes": {
+    "FINANCIAL":     "Revenue, cost, or cash flow movement",
+    "MARKET":        "External market or competitive signal",
+    "OPERATIONAL":   "System or process operational event",
+    "RISK":          "Risk exposure change or threshold breach",
+    "COMPLIANCE":    "Regulatory or policy compliance event",
+    "STRATEGIC":     "Goal or KPI milestone signal",
+    "ANOMALY":       "Unexpected pattern detected",
+    "PERFORMANCE":   "KPI performance change",
+    "PATTERN":       "Recurring pattern identified across data",
+    "HIGH_PRIORITY": "Urgently requires human review",
+    "PREDICTION":    "Forward-looking model output",
+    "FORECAST":      "Time-series forecast update",
+    "OPPORTUNITY":   "Commercial or operational opportunity",
+    "THREAT":        "Risk or threat identified",
+    "OUTCOME":       "Action outcome recorded"
+  },
+
+  "apiEndpoints": {
+    "ingestSignal":         "POST /api/admin/kangqore-immp/signals",
+    "listSignals":          "GET  /api/admin/kangqore-immp/signals",
+    "createDecision":       "POST /api/admin/kangqore-immp/strategic-decisions",
+    "getDecision":          "GET  /api/admin/kangqore-immp/strategic-decisions/:id",
+    "selectOption":         "POST /api/admin/kangqore-immp/strategic-decisions/:id/select",
+    "recordOutcome":        "POST /api/admin/kangqore-immp/strategic-decisions/:id/outcome",
+    "runWorkflow":          "POST /api/admin/kangqore-immp/workflows/:id/run",
+    "logAdoptionEvent":     "POST /api/admin/adoption/event",
+    "getOIS":               "GET  /api/admin/gate8/score",
+    "getCOIG":              "GET  /api/admin/enterprise/coig",
+    "recordGap":            "POST /api/admin/enterprise/blueprints/:id/gaps"
+  },
+
+  "connectorSpec": {
+    "description": "A Connector is a typed integration that WAANDA can call via the REQUIRE_APPROVAL policy flow.",
+    "schema": {
+      "connectorId":   { "type": "string", "description": "Unique connector identifier" },
+      "displayName":   { "type": "string" },
+      "category":      { "type": "string", "enum": ["CRM", "ERP", "COMMUNICATION", "ANALYTICS", "STORAGE", "PAYMENT", "COMPLIANCE", "CUSTOM"] },
+      "authType":      { "type": "string", "enum": ["BEARER", "API_KEY", "OAUTH2", "BASIC"] },
+      "baseUrl":       { "type": "string" },
+      "capabilities":  { "type": "array", "items": { "type": "string" }, "description": "What this connector can do (e.g. 'send_email', 'create_crm_contact', 'fetch_bureau_score')" },
+      "triggerPolicy": { "type": "string", "enum": ["L1_AUTO", "L2_MANAGER", "L3_SENIOR"], "description": "Minimum approval level required for WAANDA to invoke this connector" }
+    },
+    "registrationEndpoint": "POST /api/admin/enterprise/connectors (coming in SDK v1.1)"
+  },
+
+  "graphApi": {
+    "description": "WAANDA Graph™ — query the enterprise intelligence graph. Returns nodes, edges, and signal affinities in WVIS-compatible format.",
+    "endpoints": {
+      "getGraph":     "GET  /api/admin/enterprise/graph (coming in SDK v1.1)",
+      "queryNodes":   "POST /api/admin/enterprise/graph/query (coming in SDK v1.1)",
+      "streamSignals":"GET  /api/admin/enterprise/graph/stream (SSE, coming in SDK v1.1)"
+    },
+    "nodeTypes":     ["goal", "context", "analyze", "insight", "hypothesis", "simulate", "decision", "policy", "execute", "learn", "kpi"],
+    "operationalNodeTypes": ["notify", "wait", "agent", "event", "create", "integrate", "condition"],
+    "enterpriseNodeTypes":  ["department", "team", "objective", "budget", "risk", "milestone"],
+    "agentNodeTypes":       ["trigger", "tool", "store", "pipeline", "monitor", "handoff"]
+  },
+
+  "exampleAgent": {
+    "_comment": "A minimal CHURN_PREDICTOR agent definition for the PS Pack. Add to blueprint.agents[] and re-import.",
+    "id":        "CHURN_PREDICTOR",
+    "role":      "Predict and prevent client churn",
+    "schedule":  "0 9 * * 1",
+    "triggerOn": ["client.inactive_14d", "nps.below_threshold", "invoice.dispute"]
+  }
+}

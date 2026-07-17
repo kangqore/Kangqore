@@ -122,6 +122,7 @@ const VisitorsModule     = React.lazy(() => import('./os/features/visitors').the
 const ClientsModule      = React.lazy(() => import('./os/features/clients').then(m => ({ default: m.ClientsModule })));
 const PartnersModule     = React.lazy(() => import('./os/features/partners').then(m => ({ default: m.PartnersModule })));
 const LeadsModule        = React.lazy(() => import('./os/features/leads').then(m => ({ default: m.LeadsModule })));
+const HRModule           = React.lazy(() => import('./os/features/hr').then(m => ({ default: m.HRModule })));
 const InvestorsModule    = React.lazy(() => import('./os/features/investors').then(m => ({ default: m.InvestorsModule })));
 const DepartmentsModule  = React.lazy(() => import('./os/features/departments').then(m => ({ default: m.DepartmentsModule })));
 const WorkflowsModule    = React.lazy(() => import('./os/features/workflows').then(m => ({ default: m.WorkflowsModule })));
@@ -255,6 +256,7 @@ function AppContent() {
             <Route path="WAANDA/*"         element={<WaandaModule />}        />
             <Route path="strategy/*"       element={<StrategyModule />}      />
             <Route path="projects/*"       element={<ProjectsModule />}      />
+            <Route path="pmo/*"            element={<Navigate to="/kangqore-view/admin/projects" replace />} />
             <Route path="resources/*"      element={<ResourcesModule />}     />
             <Route path="finance/*"        element={<FinanceModule />}       />
             <Route path="consultations/*"  element={<ConsultationsModule />} />
@@ -265,6 +267,7 @@ function AppContent() {
             <Route path="clients/*"        element={<ClientsModule />}       />
             <Route path="partners/*"       element={<PartnersModule />}      />
             <Route path="leads/*"          element={<LeadsModule />}         />
+            <Route path="hr/*"             element={<HRModule />}            />
             <Route path="investors/*"      element={<InvestorsModule />}     />
             <Route path="departments/*"    element={<DepartmentsModule />}   />
             <Route path="workflows/*"      element={<WorkflowsModule />}     />

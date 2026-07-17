@@ -66,7 +66,11 @@ class WaandaCognitiveMirrorService {
       edf, epf, personal, edfGoals,
       projects,
       financialKpis, contactsRes,
-      gate8,
+      gate8, gate8History,
+      workflowsRes, workflowRunsRes,
+      aegisAgentSummary, aegisAuditRes, aegisAutonomyRes,
+      kimmpDecisionsRes, aegisPolicyRes,
+      kimmpMemoriesRes, twinScenariosRes,
     ] = await Promise.all([
       fetchJson<any>('/api/admin/waanda/status'),
       fetchJson<any>('/api/admin/kangqore-immp/systems/history'),
@@ -86,6 +90,20 @@ class WaandaCognitiveMirrorService {
       fetchJson<any>('/api/contact?limit=12'),
       // Executive Workspace — Gate 8 / OIS score (9-pillar intelligence score)
       fetchJson<any>('/api/admin/gate8/score'),
+      fetchJson<any>('/api/admin/gate8/history?limit=6'),
+      // Automation — active workflows and recent runs
+      fetchJson<any>('/api/admin/kangqore-immp/waoe/workflows?limit=20'),
+      fetchJson<any>('/api/admin/kangqore-immp/waoe/runs?limit=10'),
+      // AEGIS Governance — agent corps summary, audit ledger, autonomy boundary
+      fetchJson<any>('/api/admin/aegis/agents/summary'),
+      fetchJson<any>('/api/admin/aegis/audit?limit=10'),
+      fetchJson<any>('/api/admin/aegis/autonomy?limit=6'),
+      // Governance Workspace — KIMMP decision ledger + active policy rules
+      fetchJson<any>('/api/admin/kangqore-immp/strategic-decisions?limit=20'),
+      fetchJson<any>('/api/admin/aegis/policy/rules'),
+      // Intelligence Workspace — KIMMP learned memory + Digital Twin scenarios
+      fetchJson<any>('/api/admin/kangqore-immp/memory'),
+      fetchJson<any>('/api/admin/gate8/twin/scenarios?limit=6'),
     ])
 
     // EDF domains take precedence over domains from WAANDA status when available
@@ -112,14 +130,28 @@ class WaandaCognitiveMirrorService {
       systemBriefings:    history?.history           ?? [],
       pendingDecisions:   decisions?.rows            ?? [],
       relationshipIntelligence: {
-        liveSessions:   sessions?.data ?? [],
+        liveSessions: (sessions?.data ?? []).map((s: any) => ({
+          ...s,
+          // URGI returns trustScore as 0–100 integer; WEE expects 0.0–1.0 float
+          trustScore: typeof s.trustScore === 'number' && s.trustScore > 1 ? s.trustScore / 100 : (s.trustScore ?? 0),
+        })),
         evidenceLedger: [],
       },
       enterpriseGoals:    edfGoals?.goals            ?? [],
       projects:           Array.isArray(projects) ? projects : [],
+      workflows:          Array.isArray(workflowsRes?.items) ? workflowsRes.items : [],
+      workflowRuns:       Array.isArray(workflowRunsRes?.items) ? workflowRunsRes.items : [],
       gate8:              gate8 ?? null,
+      gate8History:       Array.isArray(gate8History) ? gate8History : [],
       financialKpis:      financialKpis              ?? null,
       recentLeads:        Array.isArray(contactsRes?.contacts) ? contactsRes.contacts : [],
+      aegisAgentSummary:  aegisAgentSummary          ?? null,
+      aegisAudit:         Array.isArray(aegisAuditRes?.rows)     ? aegisAuditRes.rows     : [],
+      aegisAutonomy:      Array.isArray(aegisAutonomyRes?.rows)  ? aegisAutonomyRes.rows  : [],
+      kimmpDecisions:     Array.isArray(kimmpDecisionsRes?.items) ? kimmpDecisionsRes.items : [],
+      aegisPolicies:      Array.isArray(aegisPolicyRes?.policies) ? aegisPolicyRes.policies.filter((p: any) => p.enabled !== false) : [],
+      kimmpMemories:      Array.isArray(kimmpMemoriesRes?.memories) ? kimmpMemoriesRes.memories : [],
+      twinScenarios:      Array.isArray(twinScenariosRes) ? twinScenariosRes : [],
       lastSynced:         new Date(),
       confidence:         status?.booted ? 0.9 : 0.4,
       personalSummary:    personal                   ?? undefined,

@@ -41,6 +41,7 @@ import ticketsRoutes from './routes/tickets'; // NEW
 import riskRoutes from './routes/risks'; // NEW
 import decisionRoutes from './routes/decisions'; // NEW
 import invoiceRoutes from './routes/invoices'; // NEW
+import expenseRoutes from './routes/expenses';
 import documentRoutes from './routes/documents'; // NEW
 import deliverablesRoutes from './routes/deliverables'; // NEW
 import clientProfileRoutes from './routes/clientProfile'; // NEW (MNC Pillar 1)
@@ -180,6 +181,7 @@ app.use('/api/tickets', ticketsRoutes);     // NEW
 app.use('/api/risks', riskRoutes);          // NEW
 app.use('/api/decisions', decisionRoutes);  // NEW
 app.use('/api/invoices', invoiceRoutes);    // NEW
+app.use('/api/expenses', expenseRoutes);
 app.use('/api/partner', partnerRoutes);       // NEW
 app.use('/api/deliverables', deliverablesRoutes); // NEW
 app.use('/api/client-profiles', clientProfileRoutes); // NEW (MNC Pillar 1)

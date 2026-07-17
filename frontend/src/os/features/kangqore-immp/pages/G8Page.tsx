@@ -563,7 +563,7 @@ function OisTrendChart({ history }: { history: SnapshotRecord[] }) {
         <TrendingUp className="w-4 h-4" style={{ color: BLUE }} />
         <span style={{ fontWeight: 600, fontSize: 13, color: TEXT1 }}>OIS Trend</span>
         <span style={{ marginLeft: 'auto', fontSize: 11, color: diff >= 0 ? GREEN : RED, fontWeight: 600 }}>
-          {diff >= 0 ? '+' : ''}{diff.toFixed(1)} from last snapshot
+          {diff >= 0 ? '+' : ''}{(diff ?? 0).toFixed(1)} from last snapshot
         </span>
       </div>
       <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ overflow: 'visible' }}>
@@ -703,7 +703,7 @@ function ForecastPanel() {
       <div style={{ display: 'flex', gap: 16, marginBottom: 16, alignItems: 'flex-end' }}>
         <div>
           <div style={{ fontSize: 10, color: TEXT2, marginBottom: 4 }}>CURRENT OIS</div>
-          <div style={{ fontSize: 32, fontWeight: 700, color: scoreColor(data.currentOis) }}>{data.currentOis.toFixed(1)}</div>
+          <div style={{ fontSize: 32, fontWeight: 700, color: scoreColor(data.currentOis ?? 0) }}>{(data.currentOis ?? 0).toFixed(1)}</div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingBottom: 6 }}>
@@ -717,9 +717,9 @@ function ForecastPanel() {
         <div>
           <div style={{ fontSize: 10, color: TEXT2, marginBottom: 4 }}>30-DAY FORECAST</div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-            <div style={{ fontSize: 32, fontWeight: 700, color: scoreColor(data.forecastOis) }}>{data.forecastOis.toFixed(1)}</div>
+            <div style={{ fontSize: 32, fontWeight: 700, color: scoreColor(data.forecastOis ?? 0) }}>{(data.forecastOis ?? 0).toFixed(1)}</div>
             <div style={{ fontSize: 14, fontWeight: 600, color: deltaColor }}>
-              {data.forecastDelta >= 0 ? '+' : ''}{data.forecastDelta.toFixed(1)}
+              {(data.forecastDelta ?? 0) >= 0 ? '+' : ''}{(data.forecastDelta ?? 0).toFixed(1)}
             </div>
           </div>
         </div>
@@ -793,9 +793,9 @@ function ForecastPanel() {
                 }} />
               )}
             </div>
-            <span style={{ fontSize: 10, color: TEXT2, width: 28, textAlign: 'right' }}>{pf.current.toFixed(0)}</span>
-            <span style={{ fontSize: 10, fontWeight: 600, color: pf.delta >= 0 ? GREEN : RED, width: 32, textAlign: 'right' }}>
-              →{pf.forecast.toFixed(0)}
+            <span style={{ fontSize: 10, color: TEXT2, width: 28, textAlign: 'right' }}>{(pf.current ?? 0).toFixed(0)}</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: (pf.delta ?? 0) >= 0 ? GREEN : RED, width: 32, textAlign: 'right' }}>
+              →{(pf.forecast ?? 0).toFixed(0)}
             </span>
           </div>
         ))}
@@ -953,7 +953,7 @@ function RecommendationPanel() {
                 </span>
                 <span style={{ marginLeft: 'auto', display: 'flex', gap: 6, alignItems: 'center' }}>
                   <span style={{ fontSize: 10, background: `${GREEN}20`, color: GREEN, padding: '2px 7px', borderRadius: 10, fontWeight: 600 }}>
-                    +{rec.oisImpact.toFixed(1)} OIS
+                    +{(rec.oisImpact ?? 0).toFixed(1)} OIS
                   </span>
                   {!isActed && !isIgnored && (
                     <>
@@ -1066,7 +1066,7 @@ function CoachInsightsPanel() {
                 {ins.category}
               </span>
               <span style={{ marginLeft: 'auto', fontSize: 10, color: TEAL, fontWeight: 600 }}>
-                +{ins.oisImpact.toFixed(1)} OIS
+                +{(ins.oisImpact ?? 0).toFixed(1)} OIS
               </span>
             </div>
 
@@ -1155,7 +1155,7 @@ function TwinGauge({ label, value, color }: { label: string; value: number; colo
           position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'center',
         }}>
-          <span style={{ fontSize: 14, fontWeight: 800, color, lineHeight: 1 }}>{value.toFixed(1)}</span>
+          <span style={{ fontSize: 14, fontWeight: 800, color, lineHeight: 1 }}>{(value ?? 0).toFixed(1)}</span>
           <span style={{ fontSize: 8, color: TEXT2 }}>/100</span>
         </div>
       </div>
@@ -1279,7 +1279,7 @@ function EnterpriseTwin() {
                 fontSize: 14, fontWeight: 800,
                 color: deltaColor(result.delta),
               }}>
-                {deltaSign(result.delta)}{result.delta.toFixed(1)}
+                {deltaSign(result.delta ?? 0)}{(result.delta ?? 0).toFixed(1)}
               </span>
               <span style={{ fontSize: 9, color: TEXT2 }}>OIS delta</span>
               <span style={{ fontSize: 9, color: TEXT2, marginTop: 2 }}>
@@ -1357,7 +1357,7 @@ function EnterpriseTwin() {
                 </span>
                 <span style={{ fontSize: 10, color: TEXT2, flexShrink: 0 }}>{h.horizon}d</span>
                 <span style={{ fontSize: 11, fontWeight: 700, color: deltaColor(h.delta), flexShrink: 0 }}>
-                  {deltaSign(h.delta)}{h.delta.toFixed(1)}
+                  {deltaSign(h.delta ?? 0)}{(h.delta ?? 0).toFixed(1)}
                 </span>
               </div>
             ))}
@@ -1514,7 +1514,7 @@ function EMIPanel() {
             {emi.description}
           </div>
           <div style={{ fontSize: 22, fontWeight: 800, color: TEXT1, marginTop: 4 }}>
-            {emi.emiScore.toFixed(1)}
+            {(emi.emiScore ?? 0).toFixed(1)}
           </div>
           <div style={{ fontSize: 9, color: TEXT2 }}>EMI Score (0–100)</div>
         </div>
@@ -1525,7 +1525,7 @@ function EMIPanel() {
             <div key={key}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
                 <span style={{ fontSize: 11, color: TEXT1 }}>{dimLabels[key]}</span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: scoreColor(val) }}>{val.toFixed(1)}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: scoreColor(val ?? 0) }}>{(val ?? 0).toFixed(1)}</span>
               </div>
               <div style={{ background: SURFACE, borderRadius: 3, height: 5, overflow: 'hidden' }}>
                 <div style={{
@@ -1568,7 +1568,7 @@ function EMIPanel() {
                   fontSize: 10, color: TEXT2,
                 }}>
                   <Lock className="w-3 h-3" style={{ color: AMBER, flexShrink: 0 }} />
-                  <span>{b.label}: <span style={{ color: RED }}>{b.current.toFixed(0)}</span> → <span style={{ color: GREEN }}>{b.required}</span> needed (+{b.gap.toFixed(0)})</span>
+                  <span>{b.label}: <span style={{ color: RED }}>{(b.current ?? 0).toFixed(0)}</span> → <span style={{ color: GREEN }}>{b.required}</span> needed (+{(b.gap ?? 0).toFixed(0)})</span>
                 </div>
               ))}
             </div>
@@ -1608,11 +1608,19 @@ export function G8Page() {
     refetchInterval: 120_000,
   })
 
+  const [snapMsg, setSnapMsg] = useState<{ ok: boolean; text: string } | null>(null)
+
   const snapshotMut = useMutation({
     mutationFn: () => adminApi('/admin/gate8/snapshot', { method: 'POST', body: JSON.stringify({ triggeredBy: 'MANUAL' }) }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['gate8-history'] })
       queryClient.invalidateQueries({ queryKey: ['gate8-score']   })
+      setSnapMsg({ ok: true, text: 'Snapshot saved' })
+      setTimeout(() => setSnapMsg(null), 4000)
+    },
+    onError: (e: any) => {
+      const msg = e?.message ?? 'Snapshot failed'
+      setSnapMsg({ ok: false, text: msg })
     },
   })
 
@@ -1865,7 +1873,7 @@ export function G8Page() {
         {/* Actions */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0 }}>
           <button
-            onClick={() => snapshotMut.mutate()}
+            onClick={() => { setSnapMsg(null); snapshotMut.mutate() }}
             disabled={snapshotMut.isPending}
             style={{
               display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px',
@@ -1877,6 +1885,16 @@ export function G8Page() {
             <Camera className="w-3.5 h-3.5" />
             {snapshotMut.isPending ? 'Saving…' : 'Save Snapshot'}
           </button>
+          {snapMsg && (
+            <div style={{
+              fontSize: 11, padding: '5px 10px', borderRadius: 6, fontWeight: 500,
+              background: snapMsg.ok ? `${GREEN}18` : `${RED}18`,
+              color: snapMsg.ok ? GREEN : RED,
+              border: `1px solid ${snapMsg.ok ? GREEN : RED}44`,
+            }}>
+              {snapMsg.ok ? '✓ ' : '✕ '}{snapMsg.text}
+            </div>
+          )}
           <button
             onClick={() => queryClient.invalidateQueries({ queryKey: ['gate8-score'] })}
             style={{
@@ -2017,7 +2035,17 @@ export function G8Page() {
                         color: snap.label === 'BASELINE' ? AMBER : snap.label === 'CHECKPOINT' ? BLUE : TEXT2,
                       }}>{snap.label ?? 'AUTO'}</span>
                     </td>
-                    {[snap.oisScore, snap.decisionScore, snap.workflowScore, snap.aiScore, snap.enterpriseScore, snap.goalScore, snap.businessScore, snap.trustScore, snap.adoptionScore ?? 0].map((v, i) => (
+                    {[
+                      snap.oisScore        ?? 0,
+                      snap.decisionScore   ?? 0,
+                      snap.workflowScore   ?? 0,
+                      snap.aiScore         ?? 0,
+                      snap.enterpriseScore ?? 0,
+                      snap.goalScore       ?? 0,
+                      snap.businessScore   ?? 0,
+                      snap.trustScore      ?? 0,
+                      snap.adoptionScore   ?? 0,
+                    ].map((v, i) => (
                       <td key={i} style={{ padding: '6px 10px', color: scoreColor(v), fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
                         {v.toFixed(1)}
                       </td>

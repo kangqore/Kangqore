@@ -29,6 +29,19 @@ export const OperationsCognitiveAdapter: CognitiveStateAdapter = {
     }
     const leads = Array.from(leadMap.values()).sort((a, b) => b.count - a.count)
 
+    // Workflow stats for automation section
+    const workflows = state.workflows ?? []
+    const workflowRuns = state.workflowRuns ?? []
+
+    const byTrigger = workflows.reduce<Record<string, number>>((acc, w) => {
+      acc[w.trigger] = (acc[w.trigger] ?? 0) + 1
+      return acc
+    }, {})
+
+    const activeRuns    = workflowRuns.filter(r => r.status === 'RUNNING' || r.status === 'PENDING')
+    const completedRuns = workflowRuns.filter(r => r.status === 'COMPLETED')
+    const failedRuns    = workflowRuns.filter(r => r.status === 'FAILED')
+
     return {
       waandaPhase: state.phase,
       pendingExecutionApprovals,
@@ -50,6 +63,18 @@ export const OperationsCognitiveAdapter: CognitiveStateAdapter = {
       watchCount,
       onTrackCount,
       leads,
+      // Automation (live from WAOE)
+      workflows,
+      workflowRuns,
+      workflowStats: {
+        total: workflows.length,
+        byTrigger,
+        activeRuns,
+        completedCount: completedRuns.length,
+        failedCount: failedRuns.length,
+        // Each run already has .workflow.name from the API include
+        recentRuns: workflowRuns.slice(0, 6),
+      },
     }
   },
 }

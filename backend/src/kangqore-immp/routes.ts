@@ -94,6 +94,47 @@ kangqoreImmpRoutes.get('/tts', async (req, res) => {
   }
 })
 
+// ── WAANDAx Gen2 — live inference probe ──────────────────────────────────────
+// Calls the local MLX server (port 11435). If offline, returns gen2Available:false
+// so the UI can surface the restart command gracefully.
+kangqoreImmpRoutes.post('/waandax/infer', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  const { prompt } = req.body as { prompt?: string }
+  if (!prompt?.trim()) return res.status(400).json({ error: 'prompt required' })
+
+  const MLX_BASE  = process.env.WAANDAX_MLX_URL || 'http://localhost:11435'
+  const MLX_MODEL = process.env.WAANDAX_MODEL   || 'mlx-community/Llama-3.2-3B-Instruct-4bit'
+  const t0 = Date.now()
+
+  try {
+    const response = await fetch(`${MLX_BASE}/v1/chat/completions`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        model:       MLX_MODEL,
+        messages:    [
+          { role: 'system', content: 'You are WAANDAx — Kangqore\'s local reasoning engine. Be concise and precise.' },
+          { role: 'user',   content: prompt.trim() },
+        ],
+        max_tokens:  512,
+        temperature: 0.3,
+      }),
+      signal: AbortSignal.timeout(30_000),
+    })
+    if (!response.ok) throw new Error(`MLX ${response.status}`)
+    const data = (await response.json()) as { choices?: { message?: { content?: string } }[] }
+    const gen2  = data.choices?.[0]?.message?.content ?? ''
+    res.json({ gen2, gen2Available: true, latencyMs: Date.now() - t0, model: MLX_MODEL })
+  } catch (err: any) {
+    logger.warn('[WAANDAx] local inference offline:', err.message)
+    res.json({
+      gen2:          null,
+      gen2Available: false,
+      latencyMs:     Date.now() - t0,
+      error:         'WAANDAx offline — restart: cd ~/.kimmp-venv && mlx_lm.server --model mlx-community/Llama-3.2-3B-Instruct-4bit --port 11435',
+    })
+  }
+})
+
 // Health — unauthenticated, mirrors the eQORE health route style.
 kangqoreImmpRoutes.get('/health', (_req, res) => {
   res.json({
@@ -471,8 +512,45 @@ Return ONLY valid JSON (no markdown, no explanation) in this exact shape:
   "category": "sales|delivery|finance|hr|ops|marketing"
 }`
 
+const INTEL_SYSTEM = `You are KIMMP/WAANDA — Kangqore's strategic intelligence engine.
+Generate an intelligence thinking chain from a natural language prompt.
+
+Return ONLY valid JSON (no markdown, no explanation) in this exact shape:
+{
+  "intent": "3-6 word label",
+  "steps": [
+    {
+      "id": "s1",
+      "type": "goal|context|analyze|insight|hypothesis|simulate|decision|policy|execute|learn|kpi",
+      "label": "Node label (3-8 words, specific to the prompt)",
+      "description": "What this thinking step captures or does (1-2 sentences)"
+    }
+  ]
+}
+
+Node type guide:
+- goal: What are we trying to achieve? (start here)
+- context: What does the system know right now? (data, signals, current state)
+- analyze: What happened? (facts, patterns, root causes — no interpretation yet)
+- insight: Why does it matter? (causal leap, so-what, implications)
+- hypothesis: What do we think is true? (testable claim, prediction)
+- simulate: What happens if we do X? (scenario modeling, what-if)
+- decision: What should we do? (choice between concrete options)
+- policy: What rules constrain us? (guardrails, compliance, governance)
+- execute: Take the action (concrete implementation step)
+- learn: Record outcome → Enterprise Memory (feedback loop close)
+- kpi: Strategic anchor — outcome measure (end here or alongside goal)
+
+Rules:
+- Generate 5-9 nodes forming a coherent reasoning chain
+- Start with goal or context
+- End with kpi or learn (or both)
+- Connect cause→effect in logical sequence
+- Make labels specific to the user's prompt — no generic placeholders
+- Every step's description must be concrete and domain-specific`
+
 kangqoreImmpRoutes.post('/workflows/generate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
-  const { description } = req.body ?? {}
+  const { description, mode } = req.body ?? {}
   if (!description || typeof description !== 'string' || description.length < 10) {
     return res.status(400).json({ error: 'description required (min 10 chars)' })
   }
@@ -481,12 +559,17 @@ kangqoreImmpRoutes.post('/workflows/generate', requireAuth, requireRole(['ADMIN'
     return res.status(503).json({ error: 'ANTHROPIC_API_KEY not configured — KIMMP workflow generation unavailable' })
   }
 
+  const isIntelligence = mode === 'intelligence' || mode === 'all'
+
   try {
-    const result = await _wfHaiku(WF_SYSTEM, `Design a workflow for: ${description.slice(0, 2000)}`, 1200, {
-      agentSystem: 'KIMMP',
-      agentType: 'workflow_generator',
-      tags: ['workflow', 'nl-generate'],
-    })
+    const result = await _wfHaiku(
+      isIntelligence ? INTEL_SYSTEM : WF_SYSTEM,
+      isIntelligence
+        ? `Build an intelligence thinking chain for: ${description.slice(0, 2000)}`
+        : `Design a workflow for: ${description.slice(0, 2000)}`,
+      1400,
+      { agentSystem: 'KIMMP', agentType: 'workflow_generator', tags: ['workflow', 'nl-generate', mode ?? 'operational'] },
+    )
     const raw = _wfTextOf(result)
 
     let parsed: any
@@ -505,6 +588,28 @@ kangqoreImmpRoutes.post('/workflows/generate', requireAuth, requireRole(['ADMIN'
   } catch (err: any) {
     res.status(500).json({ error: err.message })
   }
+})
+
+// ─── Intelligence node suggestions ───────────────────────────────────────────
+// Client-side suggestion map; this endpoint validates + extends with AI context.
+const INTEL_NEXT: Record<string, string[]> = {
+  goal:       ['context', 'kpi', 'policy'],
+  context:    ['analyze', 'hypothesis'],
+  analyze:    ['insight', 'hypothesis', 'simulate'],
+  insight:    ['decision', 'simulate'],
+  hypothesis: ['simulate', 'analyze'],
+  simulate:   ['decision', 'policy'],
+  decision:   ['execute', 'policy'],
+  policy:     ['execute'],
+  execute:    ['learn'],
+  learn:      ['kpi', 'goal'],
+  kpi:        ['insight', 'goal'],
+}
+
+kangqoreImmpRoutes.post('/workflows/suggest-nodes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  const { nodeType, nodeName, workflowName, existingTypes } = req.body ?? {}
+  const suggestions = (INTEL_NEXT[nodeType] ?? []).filter((t: string) => !(existingTypes ?? []).includes(t)).slice(0, 3)
+  res.json({ suggestions })
 })
 
 // ─── Validation explain ───────────────────────────────────────────────────────
@@ -625,8 +730,39 @@ kangqoreImmpRoutes.post('/workflows/explain-decision', requireAuth, requireRole(
     return res.status(503).json({ error: 'ANTHROPIC_API_KEY not configured' })
   }
 
+  const NODE_TYPE_CONTEXT: Record<string, string> = {
+    // Intelligence canvas
+    goal:       'A Goal node defines a desired outcome. Explain what business objective this goal drives and how its success should be measured.',
+    context:    'A Context node captures situational awareness. Explain what signals or state this node aggregates and why this context is critical for the decision chain.',
+    analyze:    'An Analyze node surfaces facts and patterns from data. Explain what happened, what changed, and what the evidence reveals — no interpretation, just observable facts.',
+    insight:    'An Insight node gives CAUSAL interpretation to analyzed facts. Explain WHY the observed pattern matters — the business significance and what it implies for action. Do not describe what happened; explain why it matters.',
+    hypothesis: 'A Hypothesis node states a testable claim BEFORE simulation. Explain WHAT the hypothesis claims, what evidence would confirm or refute it, and what a simulation of this hypothesis should test.',
+    simulate:   'A Simulation node models a counterfactual scenario. Explain what scenario is being tested, what assumptions the model relies on, and what outcomes it compares.',
+    decision:   'A Decision node commits to a course of action. Explain the strategic logic, the decision criteria, and what alternatives were considered before committing.',
+    policy:     'A Policy node enforces governance constraints. Explain which rules apply, what compliance requirements are triggered, and what the policy prevents or requires.',
+    execute:    'An Execute node triggers a concrete action. Explain what gets done, what systems are invoked, and how execution success is measured.',
+    learn:      'A Learn node captures outcomes into enterprise memory. Explain what the system records, how this knowledge is indexed for future decisions, and what pattern it reinforces.',
+    kpi:        'A KPI node is the strategic anchor of the entire intelligence chain. Explain what the KPI measures, what drives it up or down, and how the connected nodes collectively move it.',
+    // Enterprise canvas
+    department: 'A Department node represents an organizational unit. Explain this division\'s strategic mandate, its key dependencies on other units, and what value it is accountable for delivering.',
+    team:       'A Team node represents a squad or working group. Explain this team\'s purpose, the capabilities it owns, and how it connects to the broader organizational structure.',
+    objective:  'An Objective node defines a measurable OKR. Explain what this objective is trying to achieve, how progress is measured, and which teams and budgets are responsible for it.',
+    budget:     'A Budget node represents a cost center or financial allocation. Explain what this budget funds, what the ROI expectation is, and what spending controls or approval gates govern it.',
+    risk:       'A Risk node identifies a business risk or exposure. Explain the nature of this risk, its likelihood and impact, what mitigations are in place, and who owns it.',
+    milestone:  'A Milestone node marks a key delivery checkpoint. Explain what must be delivered, what the acceptance criteria are, what depends on this milestone shipping, and what the downstream impact of slipping is.',
+    // Agent Composition canvas
+    trigger:    'A Trigger node initiates the agent pipeline. Explain what event, condition, or schedule starts this pipeline, what state the trigger reads, and how it decides whether to fire.',
+    tool:       'A Tool node calls an external capability or function. Explain what this tool does, what inputs it requires, what outputs it produces, and what failure modes need to be handled.',
+    store:      'A Store node persists agent memory or retrieves context. Explain what data is stored or retrieved, how it is indexed (vector, key-value, relational), and how it shapes downstream agent behavior.',
+    pipeline:   'A Pipeline node chains agent operations in sequence or parallel. Explain what processing happens at this stage, what the data transformation is, and what the output contract is to downstream nodes.',
+    monitor:    'A Monitor node observes a live metric, output stream, or agent behavior. Explain what is being watched, what threshold triggers an alert, and what escalation path is taken when the monitor fires.',
+    handoff:    'A Handoff node escalates to human judgment. Explain why human review is required at this point, what information the human sees, what decisions they make, and what happens in each branch of their response.',
+  }
+  const nodeContext = NODE_TYPE_CONTEXT[nodeType] ?? 'Explain the strategic purpose and positioning of this node in the intelligence workflow.'
+
   const system = `You are WAANDA, Kangqore's strategic intelligence engine.
 A user has clicked a "${nodeType ?? 'decision'}" node on the WAANDA Intelligence Canvas.
+${nodeContext}
 Return a JSON object with exactly these keys:
 {
   "purpose": "1–2 sentences: what business objective this node serves",
@@ -646,9 +782,7 @@ Return ONLY the JSON object. No markdown, no prose, no code fences.`
 Workflow: "${workflowName ?? 'unknown'}" (${stepCount ?? '?'} nodes total)
 Node: "${nodeName}" (type: ${nodeType ?? 'decision'})
 Upstream nodes: ${upstreamNames}
-Downstream nodes: ${downstreamNames}
-
-Generate a strategic analysis for this node.`
+Downstream nodes: ${downstreamNames}`
 
   try {
     const raw    = _wfTextOf(await _wfHaiku(system, prompt, 600, {
@@ -731,6 +865,11 @@ Provide your structured review.`
 })
 
 // ─── Scout — external intelligence ───────────────────────────────────────────
+kangqoreImmpRoutes.get('/scout/providers', requireAuth, requireRole(['ADMIN']), (_req, res) => {
+  const { WebSearchService } = require('./scout/webSearch.service')
+  res.json({ providers: WebSearchService.activeProviders })
+})
+
 kangqoreImmpRoutes.get('/scout/sources', requireAuth, requireRole(['ADMIN']), (_req, res) => {
   res.json({ sources: SCOUT_SOURCES.map(s => ({
     name:           s.name,
@@ -1292,22 +1431,32 @@ kangqoreImmpRoutes.get('/learning/router/stats', requireAuth, requireRole(['ADMI
 // ─── Strategic Decisions ──────────────────────────────────────────────────────
 import {
   runStrategicDecision, listStrategicDecisions, getStrategicDecision,
+  getStrategicDecisionByStep,
   selectDecisionOption, recordDecisionOutcome, isStrategicDecision,
 } from './services/kimmpStrategicDecision.service'
 import { listPolicies, createPolicy, updatePolicy, deletePolicy, checkPolicy, seedDefaultPolicies } from '../services/policyEngine.service'
 import { runSimulation } from './services/kimmpSimulator.service'
 
-kangqoreImmpRoutes.post('/decisions', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.post('/strategic-decisions', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
-    const { question, options, simulationType, simulationParams } = req.body
+    const { question, options, simulationType, simulationParams, workflowName, stepName } = req.body
     if (!question?.trim()) return res.status(400).json({ error: 'question required' })
     const userId = (req as any).user?.userId
-    const result = await runStrategicDecision(question, userId, options, simulationType, simulationParams)
+    const result = await runStrategicDecision(question, userId, options, simulationType, simulationParams, workflowName, stepName)
     res.json(result)
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-kangqoreImmpRoutes.get('/decisions', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.get('/strategic-decisions/by-step', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { workflowName, stepName } = req.query as { workflowName: string; stepName: string }
+    if (!workflowName || !stepName) return res.status(400).json({ error: 'workflowName and stepName required' })
+    const record = await getStrategicDecisionByStep(workflowName, stepName)
+    res.json(record ?? null)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/strategic-decisions', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 20
     const items = await listStrategicDecisions(limit)
@@ -1315,7 +1464,7 @@ kangqoreImmpRoutes.get('/decisions', requireAuth, requireRole(['ADMIN']), async 
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-kangqoreImmpRoutes.get('/decisions/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.get('/strategic-decisions/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const d = await getStrategicDecision(req.params.id)
     if (!d) return res.status(404).json({ error: 'Not found' })
@@ -1323,7 +1472,7 @@ kangqoreImmpRoutes.get('/decisions/:id', requireAuth, requireRole(['ADMIN']), as
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-kangqoreImmpRoutes.post('/decisions/:id/select', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.post('/strategic-decisions/:id/select', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const adminId = (req as any).user?.userId
     const { label } = req.body
@@ -1333,24 +1482,22 @@ kangqoreImmpRoutes.post('/decisions/:id/select', requireAuth, requireRole(['ADMI
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-kangqoreImmpRoutes.post('/decisions/:id/outcome', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.post('/strategic-decisions/:id/outcome', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { outcome, domain = 'operations', tier = 'OPERATIONAL', roiValue } = req.body ?? {};
     if (!outcome) return res.status(400).json({ error: 'outcome required' });
     const userId = (req as any).user?.id;
-    // Route through full Phase 6.4 cognition pipeline
     const { CognitionOrchestrator } = await import('./cognition/cognitionOrchestrator');
     const result = await CognitionOrchestrator.process({
       type: 'decision_outcome', sourceId: req.params.id,
       outcome, userId, domain, tier, roiValue,
     });
-    // Also call legacy outcome recording for backward compat
     await recordDecisionOutcome(req.params.id, outcome).catch(() => null);
     res.json({ ok: true, lesson: result.lesson?.lesson, promoted: result.promoted, etiImpact: result.etiImpact });
   } catch (e: any) { res.status(500).json({ error: e.message }); }
 })
 
-kangqoreImmpRoutes.post('/decisions/detect', requireAuth, requireRole(['ADMIN']), (req, res) => {
+kangqoreImmpRoutes.post('/strategic-decisions/detect', requireAuth, requireRole(['ADMIN']), (req, res) => {
   const { question } = req.body
   res.json({ isDecision: isStrategicDecision(question ?? '') })
 })
@@ -2233,5 +2380,187 @@ kangqoreImmpRoutes.post('/cognition/candidates/:kind/:id/reject', requireAuth, r
     res.json({ ok: true, updated });
   } catch (e: any) { res.status(500).json({ error: e.message }); }
 });
+
+// ── Enterprise Proposal Builder ───────────────────────────────────────────────
+// WAANDA generates a structured enterprise proposal for a CRM lead + pack combo.
+// The proposal is returned as JSON with 7 sections ready to render in the OS.
+
+const PACK_KPI_MAP: Record<string, { name: string; kpis: string[]; pillars: string[] }> = {
+  'ps-pack-v1': {
+    name: 'Professional Services Pack™',
+    kpis: ['Project Delivery Rate', 'Utilisation Rate', 'Revenue per Head', 'Client NPS', 'Margin %', 'Pipeline Coverage'],
+    pillars: ['Delivery Excellence', 'Client Intelligence', 'Resource Optimisation', 'Revenue Operations', 'Knowledge Management', 'Growth Engine'],
+  },
+  'fintech-pack-v1': {
+    name: 'FinTech Pack™',
+    kpis: ['Net Interest Margin', 'NPA Ratio', 'Customer Acquisition Cost', 'Cross-sell Rate', 'Digital Channel Mix', 'Fraud Rate'],
+    pillars: ['Regulatory Compliance', 'Risk Intelligence', 'Financial Performance', 'Digital Banking', 'Customer Growth'],
+  },
+  'healthcare-pack-v1': {
+    name: 'Healthcare Pack™',
+    kpis: ['HCAHPS Score', 'Occupancy Rate', 'Denial Rate', 'ALOS', 'Staff Utilisation', 'Readmission Rate'],
+    pillars: ['Patient Safety', 'Clinical Intelligence', 'Financial Stewardship', 'Compliance', 'Operational Excellence'],
+  },
+}
+
+kangqoreImmpRoutes.post('/proposals/generate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { leadId, packId, customNote } = req.body as { leadId?: string; packId?: string; customNote?: string }
+    if (!leadId || !packId) return res.status(400).json({ error: 'leadId and packId required' })
+
+    const pack = PACK_KPI_MAP[packId]
+    if (!pack) return res.status(400).json({ error: `Unknown packId: ${packId}` })
+
+    // Fetch lead data
+    const lead = await (prisma as any).eqoreLead.findUnique({ where: { id: leadId } }).catch(() => null)
+    const companyName   = lead?.companyName   ?? 'Prospective Client'
+    const projectedValue = lead?.projectedValue ? `₹${Number(lead.projectedValue).toLocaleString('en-IN')}` : 'TBD'
+    const stage         = lead?.buyingStage    ?? 'qualified'
+    const painPoints    = lead?.painPoints     ? JSON.stringify(lead.painPoints) : 'operational efficiency, decision latency, data silos'
+    const problemStatement = lead?.problemStatement ?? ''
+
+    const system = `You are WAANDA — Kangqore's enterprise intelligence engine writing a concise, compelling enterprise proposal.
+Return ONLY valid JSON. No markdown, no explanation. Use this exact shape:
+{
+  "title": "Enterprise Intelligence Partnership Proposal",
+  "executiveSummary": "2-3 sentences positioning Kangqore as the right partner",
+  "challenges": ["challenge 1", "challenge 2", "challenge 3"],
+  "solutionNarrative": "2-3 sentences on how the pack addresses the challenges",
+  "kpiTargets": [{"kpi": "KPI name", "baseline": "estimated current", "target": "90-day target"}],
+  "timeline": [{"phase": "Phase label", "duration": "X weeks", "milestone": "What gets done"}],
+  "investment": {"engagement": "Investment description", "roi": "Expected ROI description", "paybackPeriod": "Payback timeline"},
+  "nextSteps": ["Immediate next step 1", "Next step 2", "Next step 3"]
+}`
+
+    const user = `Write an enterprise proposal for:
+Company: ${companyName}
+Pack: ${pack.name}
+KPIs: ${pack.kpis.join(', ')}
+Pillars: ${pack.pillars.join(', ')}
+Engagement Value: ${projectedValue}
+Buying Stage: ${stage}
+Pain Points: ${painPoints}
+${problemStatement ? `Problem Statement: ${problemStatement}` : ''}
+${customNote ? `Note: ${customNote}` : ''}
+
+Generate 3 kpiTargets from the pack KPIs, a 3-phase timeline (Discovery, Deployment, Optimisation), and 3 concrete next steps.`
+
+    const { haiku, textOf } = await import('./llm/kimmpLLMRouter')
+    const raw = await haiku(system, user, 900)
+    const text = textOf(raw).trim()
+
+    let proposal: unknown
+    try {
+      proposal = JSON.parse(text)
+    } catch {
+      const match = text.match(/\{[\s\S]*\}/)
+      proposal = match ? JSON.parse(match[0]) : { error: 'Parse failed', raw: text }
+    }
+
+    res.json({ proposal, lead: { companyName, projectedValue, stage, packId, packName: pack.name } })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── Multi-Agent Coordination ─────────────────────────────────────────────────
+import { KimmpAgentCoordinator, SpecialistAgent } from './agents/kimmpAgentCoordinator.service'
+import { KimmpContextAssembler } from './context/kimmpContextAssembler.service'
+
+const ALL_SPECIALISTS: SpecialistAgent[] = [
+  'SIGNAL_READ','GOAL_CHECK','FINANCIAL_SNAPSHOT','LEAD_ANALYSIS',
+  'RISK_ANALYSIS','DECISION_ENGINE','STRATEGIST','ADVISOR','COMPLIANCE','OPERATIONS','FORECAST',
+]
+
+// In-memory ring buffer — last 20 coordination runs
+const coordHistory: Array<{ id: string; question: string; agentCount: number; consensus: string; confidence: number; conflicting: string[]; actionRequired: boolean; durationMs: number; ranAt: string }> = []
+
+// POST /admin/kangqore-immp/agent-coordination/run
+kangqoreImmpRoutes.post('/agent-coordination/run', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { question, agents } = req.body as { question?: string; agents?: SpecialistAgent[] }
+    if (!question?.trim()) return res.status(400).json({ error: 'question required' })
+    const userId = (req as any).user?.id ?? 'system'
+    const selectedAgents = (agents && agents.length > 0) ? agents : ALL_SPECIALISTS
+    const t0 = Date.now()
+
+    const ctx = await KimmpContextAssembler.build({
+      userId, question, skipGraph: false, skipDecisions: false, skipMemories: false,
+    })
+    const result = await KimmpAgentCoordinator.coordinate(selectedAgents, question, ctx)
+    const durationMs = Date.now() - t0
+
+    const run = {
+      id: `coord-${Date.now()}`,
+      question: question.slice(0, 200),
+      agentCount: selectedAgents.length,
+      consensus: result.consensus,
+      confidence: result.confidence,
+      conflicting: result.conflicting,
+      actionRequired: result.actionRequired,
+      durationMs,
+      ranAt: new Date().toISOString(),
+    }
+    coordHistory.unshift(run)
+    if (coordHistory.length > 20) coordHistory.pop()
+
+    res.json({ ...result, durationMs, ranAt: run.ranAt })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/agent-coordination/history
+kangqoreImmpRoutes.get('/agent-coordination/history', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  res.json({ runs: coordHistory })
+})
+
+// ─── WAANDA Foundation Model Status ──────────────────────────────────────────
+// GET /admin/kangqore-immp/foundation-model/status
+kangqoreImmpRoutes.get('/foundation-model/status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const GRADUATION = 1_000
+
+    const [totalRaw, q05Raw, q07Raw, q09Raw, q10Raw, approvedRaw, recentRaw, runsRaw] = await Promise.all([
+      (prisma as any).kimmpLearningExample.count(),
+      (prisma as any).kimmpLearningExample.count({ where: { quality: { gte: 0.4, lt: 0.6 } } }),
+      (prisma as any).kimmpLearningExample.count({ where: { quality: { gte: 0.6, lt: 0.8 } } }),
+      (prisma as any).kimmpLearningExample.count({ where: { quality: { gte: 0.8, lt: 0.95 } } }),
+      (prisma as any).kimmpLearningExample.count({ where: { quality: { gte: 0.95 } } }),
+      (prisma as any).kimmpLearningExample.count({ where: { approved: true } }),
+      (prisma as any).kimmpLearningExample.findMany({
+        orderBy: { createdAt: 'desc' }, take: 10,
+        select: { id: true, source: true, agentSystem: true, quality: true, approved: true, createdAt: true, userMessage: true },
+      }),
+      (prisma as any).kimmpLearningRun.findMany({ orderBy: { startedAt: 'desc' }, take: 5 }),
+    ])
+
+    const total = totalRaw as number
+    const graduationPct = Math.min(100, Math.round((total / GRADUATION) * 100))
+
+    // Estimate examples/day from last 7 days
+    const weekAgo = new Date(Date.now() - 7 * 86400_000)
+    const lastWeek: number = await (prisma as any).kimmpLearningExample.count({
+      where: { createdAt: { gte: weekAgo } },
+    })
+    const examplesPerDay = Math.round((lastWeek / 7) * 10) / 10
+    const daysToGraduation = examplesPerDay > 0
+      ? Math.ceil((GRADUATION - total) / examplesPerDay)
+      : null
+
+    res.json({
+      total,
+      approved: approvedRaw as number,
+      graduationThreshold: GRADUATION,
+      graduationPct,
+      examplesPerDay,
+      daysToGraduation,
+      qualityBands: {
+        mined:     q05Raw as number,
+        synthetic: q07Raw as number,
+        operational: q09Raw as number,
+        approved:  q10Raw as number,
+      },
+      recentExamples: recentRaw,
+      recentRuns: runsRaw,
+    })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
 
 export { kangqoreImmpRoutes };

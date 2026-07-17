@@ -25,6 +25,8 @@ import { PlatformCognitiveAdapter }       from './adapters/PlatformCognitiveAdap
 import { CollaborationCognitiveAdapter }  from './adapters/CollaborationCognitiveAdapter'
 import { GovernanceCognitiveAdapter }     from './adapters/GovernanceCognitiveAdapter'
 import { EcosystemCognitiveAdapter }      from './adapters/EcosystemCognitiveAdapter'
+import { FinanceCognitiveAdapter }        from './adapters/FinanceCognitiveAdapter'
+import { HRCognitiveAdapter }             from './adapters/HRCognitiveAdapter'
 
 export function bootWEE(): void {
   WaandaExperienceEngine.registerAdapter(PersonalCognitiveAdapter)
@@ -36,5 +38,12 @@ export function bootWEE(): void {
   WaandaExperienceEngine.registerAdapter(CollaborationCognitiveAdapter)
   WaandaExperienceEngine.registerAdapter(GovernanceCognitiveAdapter)
   WaandaExperienceEngine.registerAdapter(EcosystemCognitiveAdapter)
+  WaandaExperienceEngine.registerAdapter(FinanceCognitiveAdapter)
+  WaandaExperienceEngine.registerAdapter(HRCognitiveAdapter)
   WaandaCognitiveMirror.start()
 }
+
+// Auto-boot: adapters register as soon as this module is imported.
+// Fixes: department WAANDA banners work regardless of KEOS visit order.
+// Safe: registerAdapter is Map.set — idempotent, WorkspaceOrchestrator calling bootWEE() again is harmless.
+bootWEE()

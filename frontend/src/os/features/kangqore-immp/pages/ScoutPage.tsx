@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Satellite, Play, Clock, CheckCircle2, XCircle, RefreshCw,
   Globe, Building, TrendingUp, Shield, Cpu, Handshake,
@@ -148,8 +148,15 @@ export function ScoutPage() {
     refetchInterval: 60_000,
   })
 
+  const { data: providersData } = useQuery({
+    queryKey: ['scout-providers'],
+    queryFn: () => api.get('/admin/kangqore-immp/scout/providers').then(r => r.data),
+    staleTime: 5 * 60_000,
+  })
+
   const sources: ScoutSource[] = sourcesData?.sources ?? []
   const jobs:    ScoutJob[]    = jobsData?.jobs     ?? []
+  const providers: string[]    = providersData?.providers ?? []
 
   const completedJobs = jobs.filter(j => j.status === 'COMPLETED').length
   const totalSignals  = jobs.reduce((s, j) => s + j.signalsEmitted, 0)
@@ -198,6 +205,30 @@ export function ScoutPage() {
           Run All Sources
         </button>
       </div>
+
+      {/* Provider status strip */}
+      {providers.length > 0 && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', background: 'var(--os-card)', borderRadius: 10, border: '1px solid var(--os-border)' }}>
+          <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--os-text-2)', marginRight: 4 }}>Web Intelligence</span>
+          {providers.map(p => {
+            const isSimulation = p === 'Simulation'
+            const color = isSimulation ? '#f59e0b' : '#10b981'
+            return (
+              <span key={p} style={{
+                fontSize: 10, fontWeight: 700, padding: '2px 9px', borderRadius: 20,
+                color, background: color + '18', border: `1px solid ${color}30`,
+              }}>
+                {isSimulation ? '⚡ Simulation' : `✓ ${p}`}
+              </span>
+            )
+          })}
+          {providers.includes('Simulation') && (
+            <span style={{ fontSize: 10, color: 'var(--os-text-2)', marginLeft: 4 }}>
+              Set BRAVE_SEARCH_API_KEY, SERPER_API_KEY, or TAVILY_API_KEY for live results
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">

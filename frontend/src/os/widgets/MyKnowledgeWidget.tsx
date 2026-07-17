@@ -34,11 +34,11 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
       {briefings.length === 0 ? (
         <p style={{ color: 'var(--os-text-4)', fontSize: 12, margin: 0 }}>No briefings available yet</p>
       ) : (
-        briefings.slice(0, 4).map((b: any, i: number) => {
+        briefings.slice(0, 4).map((b: any) => {
           const col = PRIORITY_COLOR[b.priority] ?? 'var(--os-text-4)'
           const conf = Math.round((b.confidence ?? 0) * 100)
           return (
-            <div key={b.id ?? i} style={{
+            <div key={b.id ?? b.summary} style={{
               padding: '7px 10px', borderRadius: 6,
               background: 'var(--os-surface-3)',
               border: `1px solid ${col}22`,

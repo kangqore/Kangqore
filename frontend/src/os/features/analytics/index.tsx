@@ -1,11 +1,21 @@
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { BarChart3 } from 'lucide-react'
+import { BarChart3, TrendingUp, Radio, Layers, Cpu } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnalyticsOverview } from './pages/AnalyticsOverview'
+import { OISTrendPage } from './pages/OISTrendPage'
+import { WANDAActivityPage } from './pages/WANDAActivityPage'
+import { ModulePerformancePage } from './pages/ModulePerformancePage'
+import { DigitalTwinPage } from './pages/DigitalTwinPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
+const BASE = '/kangqore-view/admin/analytics'
+
 const TABS = [
-  { path: '', label: 'Overview', icon: BarChart3 },
+  { path: '',         label: 'Overview',         icon: BarChart3  },
+  { path: 'ois',      label: 'OIS Trend',        icon: TrendingUp },
+  { path: 'waanda',   label: 'WAANDA Activity',  icon: Radio      },
+  { path: 'modules',  label: 'Module Performance', icon: Layers   },
+  { path: 'twin',     label: 'Digital Twin™',    icon: Cpu        },
 ]
 
 export function AnalyticsModule() {
@@ -17,8 +27,8 @@ export function AnalyticsModule() {
         {TABS.map(tab => (
           <NavLink
             key={tab.path}
-            to="/kangqore-view/admin/analytics"
-            end
+            to={tab.path === '' ? BASE : `${BASE}/${tab.path}`}
+            end={tab.path === ''}
             className={({ isActive }) => cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all',
               isActive
@@ -36,8 +46,12 @@ export function AnalyticsModule() {
         <motion.div key={pathname} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.15,ease:'easeOut'}}>
 
         <Routes>
-          <Route index  element={<AnalyticsOverview />} />
-          <Route path="*" element={<Navigate to="/kangqore-view/admin/analytics" replace />} />
+          <Route index                 element={<AnalyticsOverview />}  />
+          <Route path="ois"            element={<OISTrendPage />}        />
+          <Route path="waanda"         element={<WANDAActivityPage />}    />
+          <Route path="modules"        element={<ModulePerformancePage />} />
+          <Route path="twin"           element={<DigitalTwinPage />}       />
+          <Route path="*"              element={<Navigate to={BASE} replace />} />
         </Routes>
         </motion.div>
       </AnimatePresence>

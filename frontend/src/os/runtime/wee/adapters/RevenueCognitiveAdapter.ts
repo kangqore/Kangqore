@@ -20,13 +20,19 @@ export const RevenueCognitiveAdapter: CognitiveStateAdapter = {
 
     // Lead queue — from real contacts, scored by recency + status
     const STATUS_SCORE: Record<string, number> = { NEW: 90, IN_PROGRESS: 60, REPLIED: 30 }
+    const scoreCategoryOf = (status: string) => {
+      if (status === 'NEW')         return 'HIGH'
+      if (status === 'IN_PROGRESS') return 'MEDIUM'
+      return 'LOW'
+    }
+
     const prioritizedLeads = leads.map(l => ({
       id:             l.id,
-      companyName:    l.company ?? l.name ?? 'Unknown',
+      companyName:    l.company ?? l.organization ?? l.name ?? 'Unknown',
       contactName:    l.name ?? '',
       email:          l.email,
       score:          STATUS_SCORE[l.status] ?? 40,
-      scoreCategory:  l.status === 'NEW' ? 'HIGH' : l.status === 'IN_PROGRESS' ? 'MEDIUM' : 'LOW',
+      scoreCategory:  scoreCategoryOf(l.status),
       source:         l.inquiryType ?? 'INBOUND',
       status:         l.status,
       createdAt:      l.createdAt,
@@ -60,12 +66,22 @@ export const RevenueCognitiveAdapter: CognitiveStateAdapter = {
       : 0
     const atRiskSessions = liveSessions.filter(s => s.trustScore < 0.5).length
 
+    // Prediction signals (for RevenueOptimizationWidget)
+    const totalPredictions          = state.enterprisePredictions.length
+    const highConfidencePredictions = state.enterprisePredictions.filter(p => p.confidence >= 0.8).length
+    const activeDrifts              = state.enterprisePredictions.filter(p => p.driftDetected).length
+    const analyticsBriefings        = state.systemBriefings.slice(0, 5)
+
     return {
       waandaPhase:        state.phase,
       confidence:         state.confidence,
       kimmSynthesis:      state.kimmSynthesis,
       systemBriefings:    state.systemBriefings,
       predictions:        state.enterprisePredictions,
+      totalPredictions,
+      highConfidencePredictions,
+      activeDrifts,
+      analyticsBriefings,
 
       // Accounts
       liveSessions,

@@ -18,6 +18,9 @@ interface ApiProject {
   spend?: number | string | null
   startDate?: string | null
   endDate?: string | null
+  dueDate?: string | null
+  category?: string | null
+  services?: string[] | null
   client?: { id: string; name: string; company?: string }
   partner?: { id: string; name: string }
   deliverables?: { id: string; title: string; status: string }[]
@@ -51,16 +54,20 @@ export function toProject(p: ApiProject, index = 0): Project {
   const fallbackEnd = new Date()
   fallbackEnd.setFullYear(fallbackEnd.getFullYear() + 1)
 
+  const rawEnd = p.dueDate ?? p.endDate
   return {
     id:          p.id,
     name:        p.title,
     client:      p.client?.company ?? p.client?.name ?? 'Internal',
     status:      apiStatus,
     health,
+    healthScore: p.health != null ? Number(p.health) : 100,
+    category:    p.category ?? 'Transformation',
+    services:    Array.isArray(p.services) ? p.services : [],
     owner:       'Kangqore',
     team:        [],
     startDate:   p.startDate ? p.startDate.slice(0, 10) : p.createdAt.slice(0, 10),
-    endDate:     p.endDate ? p.endDate.slice(0, 10) : fallbackEnd.toISOString().slice(0, 10),
+    endDate:     rawEnd ? rawEnd.slice(0, 10) : fallbackEnd.toISOString().slice(0, 10),
     budget:      p.budget != null ? Number(p.budget) : 0,
     spent:       p.spend  != null ? Number(p.spend)  : 0,
     progress:    derivedProgress,

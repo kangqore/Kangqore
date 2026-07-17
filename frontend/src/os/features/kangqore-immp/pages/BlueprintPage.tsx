@@ -1,9 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   FileJson, Zap, Download, Upload, CheckCircle2, AlertTriangle,
   Building2, Target, Shield, GitBranch, BarChart3, Globe2, Archive,
-  ChevronDown, ChevronRight, Layers, Loader2,
+  ChevronDown, ChevronRight, Layers, Loader2, Wand2,
 } from 'lucide-react'
 import { adminApi } from '@lib/api'
 import { isDemo } from '@lib/api'
@@ -254,7 +255,8 @@ function BlueprintDetail({ blueprintId }: { blueprintId: string }) {
 // ─── Main page ─────────────────────────────────────────────────────────────────
 
 export function BlueprintPage() {
-  const qc = useQueryClient()
+  const qc       = useQueryClient()
+  const navigate = useNavigate()
 
   const [selectedId,        setSelectedId]       = useState<string | null>(null)
   const [showImport,        setShowImport]        = useState(false)
@@ -320,10 +322,17 @@ export function BlueprintPage() {
           <div className="p-3 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
             <FileJson className="w-6 h-6 text-indigo-500" />
           </div>
-          <div>
+          <div className="flex-1">
             <h2 className="text-base font-extrabold text-[var(--os-text-1)]">Enterprise Blueprints</h2>
             <p className="text-[11px] text-[var(--os-text-3)] font-semibold mt-0.5">Versioned deployment specs. Customer owned.</p>
           </div>
+          <button
+            onClick={() => navigate('/kangqore-view/admin/kangqore-immp/blueprint-customize')}
+            className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl px-3 py-1.5 text-[11px] font-bold transition-all"
+          >
+            <Wand2 className="w-3.5 h-3.5" />
+            Wizard
+          </button>
         </div>
 
         {/* Generate from live state */}

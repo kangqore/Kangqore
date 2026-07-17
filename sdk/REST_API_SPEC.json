@@ -1,0 +1,286 @@
+{
+  "openapi":  "3.1.0",
+  "info": {
+    "title":       "Kangqore View API",
+    "version":     "1.0.0",
+    "description": "The Kangqore View REST API. All authenticated routes use Bearer JWT. Base: /api/admin.",
+    "contact":     { "name": "Kangqore Engineering", "email": "dev@kangqore.com" }
+  },
+  "servers": [
+    { "url": "https://app.kangqore.com/api/admin",  "description": "Production" },
+    { "url": "http://localhost:3000/api/admin",      "description": "Local development" }
+  ],
+
+  "tags": [
+    { "name": "blueprints",     "description": "Enterprise Blueprint management — import, validate, deploy" },
+    { "name": "gate8",          "description": "Gate 8 OIS scoring and snapshots" },
+    { "name": "coig",           "description": "COIG triple number and week reports" },
+    { "name": "deployments",    "description": "Customer Success Platform — deployment health, QBR, renewal risk" },
+    { "name": "intelligence",   "description": "KIMMP signals, decisions, and strategic intelligence" },
+    { "name": "workflows",      "description": "WAANDA workflow engine — create, run, inspect" },
+    { "name": "enterprise",     "description": "Enterprise definition, goals, policies, ontology" },
+    { "name": "agents",         "description": "AEGIS agent corps and KIMMP agent registry" }
+  ],
+
+  "paths": {
+
+    "/enterprise/blueprints/validate": {
+      "post": {
+        "tags":        ["blueprints"],
+        "summary":     "Validate a Blueprint spec",
+        "description": "Returns a structured readiness report (9 sections, 0–100 score). Does not write to DB.",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ValidateBlueprintRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "Readiness report", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BlueprintReadinessReport" } } } }
+        }
+      }
+    },
+
+    "/enterprise/blueprints/import": {
+      "post": {
+        "tags":        ["blueprints"],
+        "summary":     "Import a Blueprint and provision the enterprise",
+        "description": "Idempotent. Provisions: EnterpriseDefinition + goals, OntologyObjectTypes, EnterprisePolicies, KimmpWorkflows, KimmpAgents, EnterpriseDNA, Gate8Snapshot BASELINE, EnterpriseBlueprint record. Target: < 10 minutes.",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ImportBlueprintRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "Import result with provisioning counts and next steps", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ImportBlueprintResult" } } } }
+        }
+      }
+    },
+
+    "/enterprise/blueprints": {
+      "get": {
+        "tags":    ["blueprints"],
+        "summary": "List all blueprints",
+        "responses": { "200": { "description": "Array of blueprint summaries" } }
+      }
+    },
+
+    "/enterprise/blueprints/gaps/aggregate": {
+      "get": {
+        "tags":        ["blueprints"],
+        "summary":     "Aggregate gaps across all deployments",
+        "description": "Ranks gaps by severity × frequency. Output is the input for generating PS Pack v1.1.",
+        "responses": { "200": { "description": "Aggregated gap report with pack improvement suggestions" } }
+      }
+    },
+
+    "/enterprise/blueprints/{id}/gaps": {
+      "get": {
+        "tags":    ["blueprints"],
+        "summary": "List gaps for a deployment",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Array of gaps" } }
+      },
+      "post": {
+        "tags":        ["blueprints"],
+        "summary":     "Record a pack gap for this deployment",
+        "description": "Use when the client needs something not in the current pack. Feeds PS Pack v1.1 pipeline.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AddGapRequest" } } }
+        },
+        "responses": { "201": { "description": "Updated gap list" } }
+      }
+    },
+
+    "/gate8/score": {
+      "get": {
+        "tags":        ["gate8"],
+        "summary":     "Live OIS score (no snapshot written)",
+        "description": "Computes Gate 8 OIS across 9 pillars from live DB state. Returns within 2s.",
+        "responses": { "200": { "description": "Gate8Result with oisScore 0–100 and pillar breakdowns" } }
+      }
+    },
+
+    "/gate8/snapshot": {
+      "post": {
+        "tags":        ["gate8"],
+        "summary":     "Create a Gate 8 snapshot (persisted to history)",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "triggeredBy": { "type": "string", "enum": ["MANUAL", "POST_DEPLOY", "AUTO"] } } } } } },
+        "responses": { "201": { "description": "Snapshot record" } }
+      }
+    },
+
+    "/gate8/history": {
+      "get": {
+        "tags":    ["gate8"],
+        "summary": "OIS history for trend chart",
+        "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer", "default": 30, "maximum": 90 } }],
+        "responses": { "200": { "description": "Array of snapshot records" } }
+      }
+    },
+
+    "/gate8/baseline": {
+      "post": {
+        "tags":        ["gate8"],
+        "summary":     "Save current OIS as BASELINE snapshot",
+        "description": "Marks today as Day 0. COIG delta is measured from this snapshot.",
+        "responses": { "201": { "description": "Baseline snapshot record" } }
+      }
+    },
+
+    "/enterprise/coig": {
+      "get": {
+        "tags":        ["coig"],
+        "summary":     "COIG triple number",
+        "description": "Returns current, expected, and potential COIG deltas from BASELINE.",
+        "parameters": [{ "name": "horizon", "in": "query", "schema": { "type": "integer", "default": 30 } }],
+        "responses": { "200": { "description": "COIGReport" } }
+      }
+    },
+
+    "/enterprise/coig/week-report": {
+      "get": {
+        "tags":        ["coig"],
+        "summary":     "Week N milestone report for client leadership",
+        "description": "OIS trajectory with maturity level framing. Use for Week 5 client presentation.",
+        "responses": { "200": { "description": "COIG week report with presentationSummary string" } }
+      }
+    },
+
+    "/enterprise/deployments": {
+      "get": {
+        "tags":        ["deployments"],
+        "summary":     "All deployments with health scores",
+        "description": "Lists every blueprint with COIG delta, gap counts, and HEALTHY/WATCH/AT_RISK status.",
+        "responses": { "200": { "description": "Array of DeploymentHealth" } }
+      }
+    },
+
+    "/enterprise/deployments/{id}/renewal-risk": {
+      "get": {
+        "tags":        ["deployments"],
+        "summary":     "WAANDA renewal risk signal for a deployment",
+        "description": "Scores renewal risk across 5 factors. Returns LOW / MEDIUM / HIGH / CRITICAL.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "RenewalRiskReport" } }
+      }
+    },
+
+    "/enterprise/deployments/{id}/qbr": {
+      "get": {
+        "tags":        ["deployments"],
+        "summary":     "Generate a Quarterly Business Review",
+        "description": "Full QBR: OIS trajectory, goals, activity, pack gaps, renewal signals, next quarter objectives.",
+        "parameters": [
+          { "name": "id",         "in": "path",  "required": true, "schema": { "type": "string" } },
+          { "name": "clientName", "in": "query", "schema": { "type": "string" } },
+          { "name": "quarter",    "in": "query", "schema": { "type": "string", "example": "Q3 2026" } }
+        ],
+        "responses": { "200": { "description": "QBRReport" } }
+      }
+    },
+
+    "/enterprise/onboarding/checklist": {
+      "get": {
+        "tags":        ["deployments"],
+        "summary":     "10-step deployment onboarding checklist",
+        "description": "Checks live DB state. completionPct >= 80 = readyToGo.",
+        "responses": { "200": { "description": "OnboardingChecklist" } }
+      }
+    },
+
+    "/enterprise/customer-zero": {
+      "get": {
+        "tags":        ["deployments"],
+        "summary":     "Customer Zero / case study report",
+        "description": "Full report: OIS before/after, COIG, hours saved, automation coverage, goal progress.",
+        "responses": { "200": { "description": "CustomerZeroReport" } }
+      }
+    },
+
+    "/kangqore-immp/workflows": {
+      "get": {
+        "tags":    ["workflows"],
+        "summary": "List all KIMMP workflows",
+        "responses": { "200": { "description": "Array of KimmpWorkflow" } }
+      },
+      "post": {
+        "tags":    ["workflows"],
+        "summary": "Create a workflow",
+        "responses": { "201": { "description": "KimmpWorkflow" } }
+      }
+    },
+
+    "/kangqore-immp/workflows/{id}/run": {
+      "post": {
+        "tags":    ["workflows"],
+        "summary": "Run a workflow",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "WorkflowRun" } }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+
+      "ValidateBlueprintRequest": {
+        "type": "object",
+        "required": ["spec"],
+        "properties": {
+          "spec": { "type": "object", "description": "Full blueprint spec JSON (kangqore-view/v1)" }
+        }
+      },
+
+      "ImportBlueprintRequest": {
+        "type": "object",
+        "required": ["spec", "blueprintName"],
+        "properties": {
+          "spec":          { "type": "object" },
+          "blueprintName": { "type": "string", "example": "PS Pack v1.0 — Acme Corp" }
+        }
+      },
+
+      "ImportBlueprintResult": {
+        "type": "object",
+        "properties": {
+          "blueprintId":              { "type": "string" },
+          "created":                  { "type": "object" },
+          "skipped":                  { "type": "object" },
+          "deployedAt":               { "type": "string", "format": "date-time" },
+          "setupTimeEstimateMinutes": { "type": "integer" },
+          "nextSteps":                { "type": "array", "items": { "type": "string" } }
+        }
+      },
+
+      "BlueprintReadinessReport": {
+        "type": "object",
+        "properties": {
+          "valid":           { "type": "boolean" },
+          "readinessScore":  { "type": "number", "minimum": 0, "maximum": 100 },
+          "errors":          { "type": "array", "items": { "type": "object", "properties": { "section": { "type": "string" }, "message": { "type": "string" } } } },
+          "warnings":        { "type": "array", "items": { "type": "object" } },
+          "ready":           { "type": "array", "items": { "type": "object" } },
+          "recommendations": { "type": "array", "items": { "type": "object" } },
+          "sections":        { "type": "object" }
+        }
+      },
+
+      "AddGapRequest": {
+        "type": "object",
+        "required": ["category", "description", "severity"],
+        "properties": {
+          "category":    { "type": "string", "enum": ["MISSING_ENTITY", "MISSING_POLICY", "MISSING_AGENT", "MISSING_WORKFLOW", "MISSING_CONFIG", "INTEGRATION", "OTHER"] },
+          "description": { "type": "string" },
+          "severity":    { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW"] },
+          "packVersion": { "type": "string", "example": "1.0.0" }
+        }
+      }
+    },
+
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  },
+
+  "security": [{ "BearerAuth": [] }]
+}

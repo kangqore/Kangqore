@@ -32,8 +32,8 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
               {top.priority} PRIORITY · {briefings.length} briefing{briefings.length !== 1 ? 's' : ''}
             </div>
           )}
-          {(top.recommendations ?? []).slice(0, 3).map((r: string, i: number) => (
-            <div key={i} style={{
+          {(top.recommendations ?? []).slice(0, 3).map((r: string) => (
+            <div key={r} style={{
               padding: '6px 10px', borderRadius: 6, fontSize: 11,
               background: 'var(--os-surface-3)',
               border: '1px solid var(--os-border-subtle)',

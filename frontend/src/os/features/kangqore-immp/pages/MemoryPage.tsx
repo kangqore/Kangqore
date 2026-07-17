@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import {
   Brain, Check, RotateCcw, TrendingUp, AlertTriangle,
-  Lightbulb, Zap, Target, Trash2, BookOpen,
+  Lightbulb, Zap, Target, BookOpen, Database, Award,
 } from 'lucide-react'
 import { Badge } from '@design-system/components/Badge'
+import { Spinner } from '@design-system/components/Spinner'
+import { api } from '@lib/api'
 import { useKIMMPStore, type InsightCategory, type MemoryEntry } from '@store/kimmp'
 
 const CATEGORY_CONFIG: Record<InsightCategory, {
@@ -19,43 +22,16 @@ const CATEGORY_CONFIG: Record<InsightCategory, {
   talent:      { label: 'Talent',      color: 'text-[#7f53f9]', bg: 'bg-[#7f53f9]', Icon: ({ className }) => <Target        className={className ?? 'w-3.5 h-3.5'} /> },
 }
 
-const LEARNED_PATTERNS = [
-  {
-    id: 'lp1',
-    icon: AlertTriangle,
-    color: '#e2445c',
-    title: 'Financial risks are always critical',
-    body: 'Every budget or cash signal in Finance has been escalated to critical within 48h. KIMMP now pre-classifies Finance risk signals at critical priority.',
-  },
-  {
-    id: 'lp2',
-    icon: TrendingUp,
-    color: '#00c875',
-    title: 'Deals stall at 10 days — win rate drops sharply',
-    body: 'Historical analysis of 14 closed deals: win rate drops from 81% to 52% once a negotiation exceeds 10 days without contact. KIMMP fires a revenue signal at day 8.',
-  },
-  {
-    id: 'lp3',
-    icon: Target,
-    color: '#7f53f9',
-    title: 'Offers not accepted within 48h rarely close',
-    body: 'Offers accepted in <24h: 94% close. >48h: 58% close. KIMMP triggers a talent signal at the 48h mark for all open offers.',
-  },
-  {
-    id: 'lp4',
-    icon: Lightbulb,
-    color: '#0073ea',
-    title: 'Usage spikes above 3× signal upsell readiness',
-    body: 'Clients who exceed 3× their 30-day usage baseline convert to a higher tier in 71% of cases within 6 weeks. KIMMP watches all client usage trends and flags above threshold.',
-  },
-  {
-    id: 'lp5',
-    icon: Zap,
-    color: '#fdab3d',
-    title: 'Three consecutive below-velocity sprints = delivery risk',
-    body: 'Analysis of 6 past project overruns: all preceded by 3+ sprints below target velocity. KIMMP now tracks rolling 3-sprint average and escalates at the third miss.',
-  },
-]
+const QUALITY_ICONS: Record<string, React.FC<{ size?: number }>> = {
+  mined:       ({ size }) => <Zap        size={size ?? 14} />,
+  synthetic:   ({ size }) => <Lightbulb  size={size ?? 14} />,
+  operational: ({ size }) => <TrendingUp size={size ?? 14} />,
+  approved:    ({ size }) => <Award      size={size ?? 14} />,
+}
+
+const QUALITY_COLORS: Record<string, string> = {
+  mined: '#f59e0b', synthetic: '#7c3aed', operational: '#2564ea', approved: '#10b981',
+}
 
 function formatTimestamp(iso: string): string {
   const d = new Date(iso)
@@ -88,11 +64,48 @@ function MemoryEntryRow({ entry }: { entry: MemoryEntry }) {
   )
 }
 
+interface LearningExample {
+  id: string
+  source: string
+  agentSystem: string
+  quality: number
+  approved: boolean
+  createdAt: string
+  userMessage: string
+}
+
+interface CorpusStats {
+  total: number
+  approved: number
+  graduationThreshold: number
+  graduationPct: number
+  examplesPerDay: number
+  daysToGraduation: number | null
+  qualityBands: { mined: number; synthetic: number; operational: number; approved: number }
+  recentExamples: LearningExample[]
+}
+
 export function MemoryPage() {
   const { memoryEntries, acknowledgedIds, unacknowledgeSignal, insights } = useKIMMPStore()
-  const [view, setView] = useState<'log' | 'patterns'>('log')
+  const [view, setView] = useState<'log' | 'patterns' | 'corpus'>('log')
 
   const acknowledgedSignals = insights.filter(i => acknowledgedIds.includes(i.id))
+
+  const { data: examplesData, isLoading: loadingExamples } = useQuery({
+    queryKey: ['learning-examples'],
+    queryFn: () => api.get('/admin/kangqore-immp/learning/examples?approved=true&limit=20').then(r => r.data),
+    enabled: view === 'patterns',
+    staleTime: 60_000,
+  })
+
+  const { data: corpusData, isLoading: loadingCorpus } = useQuery<CorpusStats>({
+    queryKey: ['foundation-model-status'],
+    queryFn: () => api.get('/admin/kangqore-immp/foundation-model/status').then(r => r.data),
+    enabled: view === 'corpus',
+    staleTime: 30_000,
+  })
+
+  const livePatterns: LearningExample[] = examplesData?.examples ?? examplesData ?? []
 
   return (
     <div className="space-y-8">
@@ -114,7 +127,8 @@ export function MemoryPage() {
       <div className="flex gap-2 w-fit mb-6">
         {([
           { key: 'log',      label: `Action Log (${memoryEntries.length})` },
-          { key: 'patterns', label: `Learned Patterns (${LEARNED_PATTERNS.length})` },
+          { key: 'patterns', label: 'Learned Patterns' },
+          { key: 'corpus',   label: 'Training Corpus' },
         ] as const).map(t => (
           <button
             key={t.key}
@@ -134,8 +148,6 @@ export function MemoryPage() {
       {/* Action Log */}
       {view === 'log' && (
         <div className="space-y-6">
-
-          {/* Currently acknowledged */}
           {acknowledgedSignals.length > 0 && (
             <div>
               <h3 className="text-[11px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-3 flex items-center gap-2">
@@ -162,8 +174,6 @@ export function MemoryPage() {
               </div>
             </div>
           )}
-
-          {/* Memory log */}
           <div>
             <h3 className="text-[11px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-3 flex items-center gap-2">
               <Brain className="w-4 h-4 text-purple-500" />
@@ -181,37 +191,142 @@ export function MemoryPage() {
               </div>
             ) : (
               <div className="space-y-2">
-                {memoryEntries.map(entry => (
-                  <MemoryEntryRow key={entry.id} entry={entry} />
-                ))}
+                {memoryEntries.map(entry => <MemoryEntryRow key={entry.id} entry={entry} />)}
               </div>
             )}
           </div>
         </div>
       )}
 
-      {/* Learned Patterns */}
+      {/* Learned Patterns — live from /learning/examples?approved=true */}
       {view === 'patterns' && (
         <div className="space-y-4">
-          <p className="text-sm text-slate-500">
-            These are patterns KIMMP has identified across your business data. They inform how signals are generated, prioritised, and timed.
+          <p className="text-sm text-[var(--os-text-2)]">
+            Approved examples from the KIMMP learning corpus — patterns WAANDA has validated and uses to improve signal generation.
           </p>
-          {LEARNED_PATTERNS.map(pattern => {
-            const Icon = pattern.icon
+          {loadingExamples && <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)]"><Spinner size="sm" /> Loading patterns…</div>}
+          {!loadingExamples && livePatterns.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-20 text-center" style={{ background: 'var(--os-card)', borderRadius: 'var(--os-radius-xl)' }}>
+              <Database size={32} style={{ color: '#7c3aed', marginBottom: 12 }} />
+              <p className="text-base font-bold text-[var(--os-text-1)]">No approved patterns yet</p>
+              <p className="text-sm text-[var(--os-text-2)] mt-1.5 max-w-xs">
+                Approve examples in the Training tab to build the pattern library.
+              </p>
+            </div>
+          )}
+          {livePatterns.map(ex => {
+            const qColor = ex.quality >= 0.95 ? QUALITY_COLORS.approved
+              : ex.quality >= 0.8 ? QUALITY_COLORS.operational
+              : ex.quality >= 0.6 ? QUALITY_COLORS.synthetic
+              : QUALITY_COLORS.mined
+            const QIcon = ex.quality >= 0.95 ? QUALITY_ICONS.approved
+              : ex.quality >= 0.8 ? QUALITY_ICONS.operational
+              : ex.quality >= 0.6 ? QUALITY_ICONS.synthetic
+              : QUALITY_ICONS.mined
             return (
-              <div key={pattern.id} className="p-6 transition-transform hover:-translate-y-1" style={{ background: `${pattern.color}10`, borderRadius: 'var(--os-radius-xl)', boxShadow: `0 16px 32px ${pattern.color}15` }}>
-                <div className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${pattern.color}20`, color: pattern.color }}>
-                    <Icon className="w-6 h-6" />
+              <div key={ex.id} style={{ background: qColor + '10', borderRadius: 'var(--os-radius-xl)', padding: '20px 24px', boxShadow: `0 16px 32px ${qColor}15` }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 12, background: qColor + '25', color: qColor, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <QIcon size={18} />
                   </div>
-                  <div>
-                    <p className="font-bold text-[var(--os-text-1)] text-base">{pattern.title}</p>
-                    <p className="text-sm text-[var(--os-text-2)] mt-1.5 leading-relaxed">{pattern.body}</p>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {ex.userMessage?.slice(0, 120) ?? ex.agentSystem}
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 10, fontWeight: 700, color: qColor, background: qColor + '20', padding: '2px 8px', borderRadius: 20 }}>
+                        q={ex.quality.toFixed(2)}
+                      </span>
+                      <span style={{ fontSize: 10, color: 'var(--os-text-2)' }}>{ex.source}</span>
+                      <span style={{ fontSize: 10, color: 'var(--os-text-2)' }}>{ex.agentSystem}</span>
+                      <span style={{ fontSize: 10, color: 'var(--os-text-2)', marginLeft: 'auto' }}>
+                        {new Date(ex.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             )
           })}
+        </div>
+      )}
+
+      {/* Training Corpus */}
+      {view === 'corpus' && (
+        <div className="space-y-6">
+          {loadingCorpus && <div className="flex items-center gap-2 text-sm text-[var(--os-text-2)]"><Spinner size="sm" /> Loading corpus stats…</div>}
+          {corpusData && (
+            <>
+              {/* Graduation progress */}
+              <div style={{ background: 'var(--os-card)', borderRadius: 'var(--os-radius-xl)', padding: 24, boxShadow: '0 32px 64px rgba(0,0,0,0.04)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                  <Award size={16} style={{ color: '#7c3aed' }} />
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)' }}>
+                    WAANDA Foundation Model — Graduation Progress
+                  </span>
+                  <span style={{ marginLeft: 'auto', fontSize: 12, fontWeight: 800, color: '#7c3aed' }}>
+                    {corpusData.total.toLocaleString()} / {corpusData.graduationThreshold.toLocaleString()} examples
+                  </span>
+                </div>
+                <div style={{ height: 10, background: 'var(--os-border)', borderRadius: 99, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${corpusData.graduationPct}%`, background: 'linear-gradient(90deg, #7c3aed, #2564ea)', borderRadius: 99, transition: 'width .6s ease' }} />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
+                  <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>{corpusData.graduationPct}% to graduation</span>
+                  {corpusData.daysToGraduation != null
+                    ? <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>~{corpusData.daysToGraduation}d at {corpusData.examplesPerDay}/day</span>
+                    : <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>Run a learning cycle to get velocity estimate</span>
+                  }
+                </div>
+              </div>
+
+              {/* Quality bands */}
+              <div>
+                <h3 className="text-[11px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-3">Quality Distribution</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                  {(Object.entries(corpusData.qualityBands) as [string, number][]).map(([band, count]) => {
+                    const col = QUALITY_COLORS[band] ?? '#888'
+                    const Icon = QUALITY_ICONS[band]
+                    const labels: Record<string, string> = { mined: 'Mined (0.5)', synthetic: 'Synthetic (0.7)', operational: 'Operational (0.9)', approved: 'Approved (1.0)' }
+                    return (
+                      <div key={band} style={{ background: col + '12', borderRadius: 12, padding: '16px 20px', border: `1px solid ${col}25` }}>
+                        <div style={{ color: col, marginBottom: 8 }}><Icon size={16} /></div>
+                        <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--os-text-1)', fontVariantNumeric: 'tabular-nums' }}>{count}</div>
+                        <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--os-text-2)', marginTop: 4 }}>{labels[band]}</div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Recent examples */}
+              <div>
+                <h3 className="text-[11px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-3">Recent Examples</h3>
+                <div style={{ background: 'var(--os-card)', borderRadius: 'var(--os-radius-xl)', overflow: 'hidden' }}>
+                  {(corpusData.recentExamples ?? []).map((ex: LearningExample, i: number) => {
+                    const qColor = ex.quality >= 0.95 ? QUALITY_COLORS.approved : ex.quality >= 0.8 ? QUALITY_COLORS.operational : ex.quality >= 0.6 ? QUALITY_COLORS.synthetic : QUALITY_COLORS.mined
+                    return (
+                      <div key={ex.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 20px', borderBottom: i < (corpusData.recentExamples.length - 1) ? '1px solid var(--os-border)' : 'none' }}>
+                        <span style={{ fontSize: 10, fontWeight: 800, color: qColor, background: qColor + '18', padding: '2px 7px', borderRadius: 20, flexShrink: 0 }}>
+                          {ex.quality.toFixed(2)}
+                        </span>
+                        <span style={{ fontSize: 12, color: 'var(--os-text-1)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {ex.userMessage?.slice(0, 80) ?? ex.agentSystem}
+                        </span>
+                        <span style={{ fontSize: 10, color: 'var(--os-text-2)', flexShrink: 0 }}>{ex.source}</span>
+                        {ex.approved && <span style={{ fontSize: 10, color: '#10b981', background: '#10b98118', padding: '1px 6px', borderRadius: 8 }}>approved</span>}
+                      </div>
+                    )
+                  })}
+                  {(corpusData.recentExamples ?? []).length === 0 && (
+                    <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--os-text-2)', fontSize: 13 }}>
+                      No examples yet — run a learning cycle from the Gen 2 Training page.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
