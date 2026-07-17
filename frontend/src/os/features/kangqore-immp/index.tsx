@@ -49,6 +49,10 @@ import { MultiAgentCoordinationPage }  from './pages/MultiAgentCoordinationPage'
 import { WAANDAFoundationPage }         from './pages/WAANDAFoundationPage'
 import { PSPackExtractionPage }         from './pages/PSPackExtractionPage'
 import { COIGDashboardPage }            from './pages/COIGDashboardPage'
+import { IndustryPackPage }             from './pages/IndustryPackPage'
+import { CustomerSuccessPlatformPage }  from './pages/CustomerSuccessPlatformPage'
+import { CustomerTwoPage }              from './pages/CustomerTwoPage'
+import { WaandaGen2Page }               from './pages/WaandaGen2Page'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -172,8 +176,12 @@ export function KIMMMModule() {
           <Route path="customer-one"        element={<CustomerOnePage />}            />
           <Route path="agent-coordination"  element={<MultiAgentCoordinationPage />} />
           <Route path="foundation-model"   element={<WAANDAFoundationPage />}       />
-          <Route path="ps-pack-extraction" element={<PSPackExtractionPage />}       />
-          <Route path="coig"              element={<COIGDashboardPage />}           />
+          <Route path="ps-pack-extraction"       element={<PSPackExtractionPage />}          />
+          <Route path="coig"                    element={<COIGDashboardPage />}             />
+          <Route path="industry-packs"          element={<IndustryPackPage />}              />
+          <Route path="customer-success-platform" element={<CustomerSuccessPlatformPage />} />
+          <Route path="customer-two"            element={<CustomerTwoPage />}               />
+          <Route path="waanda-gen2"             element={<WaandaGen2Page />}                />
           <Route path="reflection"          element={<ReflectionPage />}            />
           <Route path="authority"           element={<AuthorityPage />}             />
           <Route path="*"                   element={<Navigate to={BASE} replace />} />

@@ -17,8 +17,12 @@ interface Webhook {
 }
 
 const ALL_EVENTS = [
+  // Business events
   'booking.created', 'booking.cancelled', 'booking.rescheduled',
   'lead.created', 'lead.stage_changed', 'invoice.paid', 'workflow.completed',
+  // KIMMP / OS events
+  'kimmp.signal', 'kimmp.decision.made', 'ois.score.changed',
+  'agent.spawned', 'agent.error', 'blueprint.activated',
 ]
 
 const STATUS_CONFIG = {

@@ -141,6 +141,7 @@ const OntologyModule     = React.lazy(() => import('./os/features/ontology').the
 const NeuralNetworkModule = React.lazy(() => import('./os/features/neural-network').then(m => ({ default: m.NeuralNetworkModule })));
 const UrgiStudioModule    = React.lazy(() => import('./os/features/urgi-studio/RelationshipStudio'));
 const BidsModule         = React.lazy(() => import('./os/features/bids').then(m => ({ default: m.BidsModule })));
+const MarketplaceModule  = React.lazy(() => import('./os/features/marketplace').then(m => ({ default: m.MarketplaceModule })));
 const OpsCentreModule    = React.lazy(() => import('./os/features/ops-centre').then(m => ({ default: m.OpsCentreModule })));
 const ClientPortal       = React.lazy(() => import('./os/portals/client').then(m => ({ default: m.ClientPortal })));
 const PartnerPortal      = React.lazy(() => import('./os/portals/partner').then(m => ({ default: m.PartnerPortal })));
@@ -286,6 +287,7 @@ function AppContent() {
             <Route path="kangqore-urgi/*"    element={<UrgiStudioModule />}       />
             <Route path="settings/*"       element={<SettingsModule />}      />
             <Route path="relay/*"          element={<RelayPage />}           />
+            <Route path="marketplace/*"    element={<MarketplaceModule />}   />
           </Route>
 
           {/* External portals */}

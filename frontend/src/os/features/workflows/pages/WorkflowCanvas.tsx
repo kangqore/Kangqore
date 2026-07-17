@@ -2262,6 +2262,73 @@ function ShareModal({ nodes, edges, wfName, onClose }: {
   )
 }
 
+// ── Canvas Collaboration Presence (S54) ──────────────────────────────────────
+
+interface CanvasPeer {
+  userId:   string
+  userName: string
+  color:    string
+  x:        number | null
+  y:        number | null
+  nodeId:   string | null
+}
+
+function useCanvasPresence(canvasId: string | undefined) {
+  const [peers, setPeers] = useState<Map<string, CanvasPeer>>(new Map())
+
+  useEffect(() => {
+    if (!canvasId) return
+    const socket = getSocket()
+    socket.emit('canvas:join', { canvasId })
+
+    const onJoin = (d: { userId: string; userName: string; color: string }) => {
+      setPeers(m => new Map(m).set(d.userId, { ...d, x: null, y: null, nodeId: null }))
+    }
+    const onLeave = (d: { userId: string }) => {
+      setPeers(m => { const n = new Map(m); n.delete(d.userId); return n })
+    }
+    const onCursor = (d: { userId: string; x: number; y: number }) => {
+      setPeers(m => {
+        const n = new Map(m)
+        const p = n.get(d.userId)
+        if (p) n.set(d.userId, { ...p, x: d.x, y: d.y })
+        return n
+      })
+    }
+    const onSelect = (d: { userId: string; nodeId: string | null }) => {
+      setPeers(m => {
+        const n = new Map(m)
+        const p = n.get(d.userId)
+        if (p) n.set(d.userId, { ...p, nodeId: d.nodeId })
+        return n
+      })
+    }
+
+    socket.on('canvas:presence:joined', onJoin)
+    socket.on('canvas:presence:left',   onLeave)
+    socket.on('canvas:cursor',          onCursor)
+    socket.on('canvas:select',          onSelect)
+
+    return () => {
+      socket.emit('canvas:leave', { canvasId })
+      socket.off('canvas:presence:joined', onJoin)
+      socket.off('canvas:presence:left',   onLeave)
+      socket.off('canvas:cursor',          onCursor)
+      socket.off('canvas:select',          onSelect)
+    }
+  }, [canvasId])
+
+  const broadcastCursor = useCallback((canvasId: string, x: number, y: number) => {
+    getSocket().emit('canvas:cursor', { canvasId, x, y })
+  }, [])
+
+  const broadcastSelect = useCallback((canvasId: string, nodeId: string | null) => {
+    getSocket().emit('canvas:select', { canvasId, nodeId })
+  }, [])
+
+  return { peers, broadcastCursor, broadcastSelect }
+}
+
 // ── WorkflowCanvas ────────────────────────────────────────────────────────────
 
 interface Snapshot { nodes: Node[]; edges: Edge[] }
@@ -2291,6 +2358,11 @@ export function WorkflowCanvas() {
   const [showFeed,     setShowFeed]    = useState(false)
 
   const [searchParams, setSearchParams] = useSearchParams()
+
+  // S54 — canvas collaboration presence
+  const wfForPresence = useRef<string | undefined>(undefined)
+  const canvasContainerRef = useRef<HTMLDivElement>(null)
+  const cursorThrottleRef  = useRef<number>(0)
 
   const { liveNodeTypes, liveSignalCount, liveActive, nodeConfidence, kpiData, signals } = useLiveIntelligence(liveMode, canvasMode)
 
@@ -2471,6 +2543,20 @@ export function WorkflowCanvas() {
   }, [undo, redo, setNodes, duplicateNode, deleteNode, configNodeId])
 
   const wf = workflows.find(w => w.id === selectedId) ?? workflows[0]
+  wfForPresence.current = wf?.id
+
+  // S54 — presence hook (canvasId = workflow id)
+  const { peers, broadcastCursor, broadcastSelect } = useCanvasPresence(wf?.id)
+
+  // Throttled mouse handler for cursor broadcast
+  const onCanvasMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!wf?.id) return
+    const now = Date.now()
+    if (now - cursorThrottleRef.current < 50) return   // 20fps
+    cursorThrottleRef.current = now
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+    broadcastCursor(wf.id, Math.round(e.clientX - rect.left), Math.round(e.clientY - rect.top))
+  }, [wf?.id, broadcastCursor])
 
   // A.3 — Start a visual run simulation through canvas nodes
   const startRun = useCallback(() => {
@@ -2819,6 +2905,28 @@ export function WorkflowCanvas() {
             </button>
           </div>
 
+          {/* S54 — Presence avatar bar (only when peers are active) */}
+          {peers.size > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 10px', borderRadius: 10, background: CARD, border: `1px solid ${EDGE_C}`, width: 'fit-content' }}>
+              <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.08em', color: TEAL, textTransform: 'uppercase' }}>Live</span>
+              {Array.from(peers.values()).map(p => (
+                <div key={p.userId} title={`${p.userName}${p.nodeId ? ` — selecting ${p.nodeId}` : ''}`}
+                  style={{
+                    width: 22, height: 22, borderRadius: '50%',
+                    background: p.color, border: `2px solid ${CARD}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 9, fontWeight: 800, color: '#fff', flexShrink: 0,
+                    marginLeft: -4,
+                  }}>
+                  {p.userName.slice(0, 1).toUpperCase()}
+                </div>
+              ))}
+              <span style={{ fontSize: 10, color: SLATE, marginLeft: 4 }}>
+                {peers.size} viewer{peers.size !== 1 ? 's' : ''}
+              </span>
+            </div>
+          )}
+
           {/* WAANDA AI Copilot bar */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 16,
@@ -2920,7 +3028,7 @@ export function WorkflowCanvas() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 152px', gap: 12 }}>
 
             {/* React Flow */}
-            <div style={{ height: 580, borderRadius: 18, overflow: 'hidden', background: BG, border: `1px solid ${EDGE_C}` }}>
+            <div ref={canvasContainerRef} onMouseMove={onCanvasMouseMove} style={{ height: 580, borderRadius: 18, overflow: 'hidden', background: BG, border: `1px solid ${EDGE_C}`, position: 'relative' }}>
               <style>{`
                 .react-flow__controls-button{background:var(--os-card)!important;border-color:var(--os-border)!important;fill:var(--os-text-2)!important}
                 .react-flow__controls-button:hover{background:var(--os-surface-0)!important}
@@ -2979,6 +3087,21 @@ export function WorkflowCanvas() {
                   </div>
                 </Panel>
               </ReactFlow>
+              {/* S54 — peer cursor overlays */}
+              {Array.from(peers.values()).filter(p => p.x !== null).map(p => (
+                <div key={p.userId} style={{
+                  position: 'absolute', left: p.x!, top: p.y!, pointerEvents: 'none', zIndex: 50,
+                  transform: 'translate(2px, 2px)',
+                }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 2L7 14L9.5 9.5L14 7L2 2Z" fill={p.color} stroke="#fff" strokeWidth="1" />
+                  </svg>
+                  <span style={{
+                    display: 'block', marginTop: 2, padding: '1px 5px', borderRadius: 4,
+                    background: p.color, color: '#fff', fontSize: 9, fontWeight: 700, whiteSpace: 'nowrap',
+                  }}>{p.userName}</span>
+                </div>
+              ))}
             </div>
 
             {/* Right panel: config drawer or palette */}

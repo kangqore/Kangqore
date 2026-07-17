@@ -1,7 +1,22 @@
 import { useState } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { Shield, Download, Search, AlertTriangle, CheckCircle, Clock } from 'lucide-react'
+import { Shield, Download, Search, AlertTriangle, CheckCircle, Clock, Timer, Loader2 } from 'lucide-react'
 import { api } from '@lib/api'
+
+const RETENTION_TYPES = [
+  { key: 'activity_logs', label: 'Activity Logs',      desc: 'User actions, page visits, API calls' },
+  { key: 'decisions',     label: 'KIMMP Decisions',    desc: 'AI decisions and recommendations' },
+  { key: 'signals',       label: 'Intelligence Signals', desc: 'Market signals and alerts' },
+  { key: 'projects',      label: 'Archived Projects',  desc: 'Closed and archived project data' },
+]
+
+const RETENTION_OPTIONS = [
+  { value: 30,  label: '30 days' },
+  { value: 90,  label: '90 days' },
+  { value: 365, label: '1 year' },
+  { value: 2555, label: '7 years' },
+  { value: 0,   label: 'Forever' },
+]
 
 interface AuditRow {
   id:         string
@@ -46,6 +61,15 @@ export function DataPrivacyPage() {
   const [deleteReason, setReason] = useState('')
   const [exportDone, setExportDone] = useState(false)
   const [deleteSent, setDeleteSent] = useState(false)
+  const [retentionDays, setRetentionDays] = useState<Record<string, number>>({
+    activity_logs: 365, decisions: 2555, signals: 90, projects: 365,
+  })
+  const [retentionSaved, setRetentionSaved] = useState(false)
+
+  const saveRetention = useMutation({
+    mutationFn: () => api.post('/admin/data-privacy/retention-policy', { policies: retentionDays }),
+    onSuccess: () => { setRetentionSaved(true); setTimeout(() => setRetentionSaved(false), 2500) },
+  })
 
   const { data: audit, isLoading } = useQuery<AuditResponse>({
     queryKey:  ['data-privacy-audit', page, search],
@@ -185,6 +209,51 @@ export function DataPrivacyPage() {
             )}
           </>
         )}
+      </div>
+
+      {/* Retention Policy */}
+      <div className="rounded-2xl border border-[var(--os-border)]" style={{ background: 'var(--os-card)' }}>
+        <div className="flex items-center gap-2 px-5 py-4 border-b border-[var(--os-border)]">
+          <Timer className="w-4 h-4 text-amber-500" />
+          <p className="text-sm font-bold text-[var(--os-text-1)]">Data Retention Policy</p>
+          <span className="text-xs text-[var(--os-text-2)] ml-1">Configure how long each data type is kept</span>
+        </div>
+        <div className="divide-y divide-[var(--os-border)]">
+          {RETENTION_TYPES.map(rt => (
+            <div key={rt.key} className="flex items-center gap-4 px-5 py-3.5">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-[var(--os-text-1)]">{rt.label}</p>
+                <p className="text-xs text-[var(--os-text-2)] mt-0.5">{rt.desc}</p>
+              </div>
+              <select
+                value={retentionDays[rt.key]}
+                onChange={e => setRetentionDays(prev => ({ ...prev, [rt.key]: parseInt(e.target.value) }))}
+                className="px-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none focus:border-amber-500/50"
+              >
+                {RETENTION_OPTIONS.map(o => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+        <div className="px-5 py-3 border-t border-[var(--os-border)] flex items-center gap-3">
+          <button
+            onClick={() => saveRetention.mutate()}
+            disabled={saveRetention.isPending}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors disabled:opacity-50"
+            style={{ background: '#f59e0b', color: '#000' }}
+          >
+            {saveRetention.isPending
+              ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</>
+              : 'Save Retention Policy'}
+          </button>
+          {retentionSaved && (
+            <span className="flex items-center gap-1 text-xs font-bold text-green-500">
+              <CheckCircle className="w-3.5 h-3.5" /> Saved
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Danger zone — account deletion */}

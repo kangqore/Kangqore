@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -7,6 +7,7 @@ import {
   TrendingUp, ArrowRight, Radio, ChevronDown, Dna, Play, FileDown, CheckCheck,
 } from 'lucide-react'
 import { api } from '@lib/api'
+import { connectSocket, getSocket } from '@lib/socket'
 
 // ─── WAANDA Events tab ────────────────────────────────────────────────────────
 
@@ -1025,6 +1026,183 @@ function AnalyticsOverlay({ logs, onClose }: { logs: any[]; onClose: () => void 
   )
 }
 
+// ─── Live SWARM Feed Tab ──────────────────────────────────────────────────────
+
+const SWARM_ROLES = ['ALL', 'RESEARCH', 'SCRAPER', 'DIAGNOSTICS', 'EXECUTION', 'COACH'] as const
+const SWARM_SEV   = ['ALL', 'error', 'working', 'done', 'system'] as const
+
+type SwarmRole = typeof SWARM_ROLES[number]
+type SwarmSev  = typeof SWARM_SEV[number]
+
+interface LiveEntry {
+  id:        string
+  ts:        string
+  raw:        string
+  role?:     string
+  agentName?: string
+  sev:       SwarmSev
+  stack?:    string
+}
+
+function parseLiveEntry(msg: string): Omit<LiveEntry, 'id' | 'ts'> {
+  const isError   = msg.includes('!!') || msg.toLowerCase().includes('error') || msg.toLowerCase().includes('failed')
+  const isWorking = msg.includes('WORKING') || msg.includes('▶')
+  const isDone    = msg.includes('✓') || msg.toLowerCase().includes('done') || msg.toLowerCase().includes('complete')
+  const sev: SwarmSev = isError ? 'error' : isWorking ? 'working' : isDone ? 'done' : 'system'
+
+  const roleMatch = msg.match(/\[(RESEARCH|SCRAPER|DIAGNOSTICS|EXECUTION|COACH)\]/)
+  const role = roleMatch?.[1]
+
+  const agentMatch = msg.match(/Agent[:\s]+([^\s,]+)/i)
+  const agentName  = agentMatch?.[1]
+
+  const stackMatch = msg.match(/stack[:\s]+([\s\S]+)/i) || msg.match(/at\s+\w+[\s\S]+/)
+  const stack      = isError ? (stackMatch?.[1] ?? undefined) : undefined
+
+  return { raw: msg, sev, role, agentName, stack }
+}
+
+const SEV_COLOR: Record<SwarmSev, string> = {
+  error:   '#ef4444',
+  working: '#22c55e',
+  done:    '#3b82f6',
+  system:  '#64748b',
+  ALL:     '#64748b',
+}
+
+function LiveFeedTab() {
+  const [entries, setEntries]   = useState<LiveEntry[]>([])
+  const [live, setLive]         = useState(false)
+  const [roleFilter, setRole]   = useState<SwarmRole>('ALL')
+  const [sevFilter,  setSev]    = useState<SwarmSev>('ALL')
+  const [search,     setSearch] = useState('')
+  const [expanded,   setExpanded] = useState<string | null>(null)
+  const bottomRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    connectSocket()
+    const socket = getSocket()
+    const ts = () => new Date().toISOString().split('T')[1].substring(0, 8)
+
+    function onLog(msg: string) {
+      const parsed = parseLiveEntry(String(msg))
+      const entry: LiveEntry = { ...parsed, id: `${Date.now()}-${Math.random()}`, ts: ts() }
+      setEntries(prev => { const next = [entry, ...prev]; return next.length > 200 ? next.slice(0, 200) : next })
+    }
+
+    socket.on('SWARM_LOG', onLog)
+    setLive(socket.connected)
+    const onConnect    = () => setLive(true)
+    const onDisconnect = () => setLive(false)
+    socket.on('connect',    onConnect)
+    socket.on('disconnect', onDisconnect)
+
+    return () => {
+      socket.off('SWARM_LOG', onLog)
+      socket.off('connect',    onConnect)
+      socket.off('disconnect', onDisconnect)
+    }
+  }, [])
+
+  const filtered = useMemo(() => entries.filter(e => {
+    if (roleFilter !== 'ALL' && e.role !== roleFilter) return false
+    if (sevFilter  !== 'ALL' && e.sev  !== sevFilter)  return false
+    if (search && !e.raw.toLowerCase().includes(search.toLowerCase())) return false
+    return true
+  }), [entries, roleFilter, sevFilter, search])
+
+  function exportCSV() {
+    const rows = [['Timestamp', 'Severity', 'Role', 'Agent', 'Message'].join(',')]
+    filtered.forEach(e => rows.push([e.ts, e.sev, e.role ?? '', e.agentName ?? '', JSON.stringify(e.raw)].join(',')))
+    const blob = new Blob([rows.join('\n')], { type: 'text/csv' })
+    const url  = URL.createObjectURL(blob)
+    const a    = document.createElement('a'); a.href = url; a.download = `swarm-log-${Date.now()}.csv`; a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Controls */}
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-1.5">
+          <div className="w-1.5 h-1.5 rounded-full" style={{ background: live ? '#22c55e' : '#475569', boxShadow: live ? '0 0 4px #22c55e' : 'none' }} />
+          <span className="text-[11px] font-semibold" style={{ color: live ? '#22c55e' : '#64748b' }}>{live ? 'LIVE' : 'OFFLINE'}</span>
+        </div>
+        <div className="relative flex-1 min-w-40 max-w-xs">
+          <Search style={{ width: 13, height: 13, position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--os-text-3)' }} />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search logs…"
+            className="w-full pl-7 pr-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none focus:border-blue-500/50" />
+        </div>
+        <select value={roleFilter} onChange={e => setRole(e.target.value as SwarmRole)}
+          className="px-2 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none">
+          {SWARM_ROLES.map(r => <option key={r} value={r}>{r === 'ALL' ? 'All Roles' : r}</option>)}
+        </select>
+        <select value={sevFilter} onChange={e => setSev(e.target.value as SwarmSev)}
+          className="px-2 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none">
+          {SWARM_SEV.map(s => <option key={s} value={s}>{s === 'ALL' ? 'All Severity' : s}</option>)}
+        </select>
+        <button onClick={exportCSV} disabled={!filtered.length}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-30">
+          <FileDown style={{ width: 13, height: 13 }} /> Export CSV
+        </button>
+        {entries.length > 0 && (
+          <button onClick={() => setEntries([])}
+            className="text-xs text-[var(--os-text-3)] hover:text-red-400 transition-colors ml-auto">
+            Clear
+          </button>
+        )}
+      </div>
+
+      {/* Log tail */}
+      <div className="rounded-xl border border-[var(--os-border)] overflow-hidden font-mono text-[11px]"
+        style={{ background: '#050914', minHeight: 320, maxHeight: 560, overflowY: 'auto' }}>
+        {!entries.length && (
+          <div className="flex items-center justify-center h-32 text-[var(--os-text-3)]">
+            {live ? 'Waiting for SWARM_LOG events…' : 'Connecting to KIMMP swarm…'}
+          </div>
+        )}
+        {filtered.map(e => (
+          <div key={e.id}>
+            <div
+              className="flex items-start gap-3 px-4 py-1.5 hover:bg-white/[0.02] cursor-pointer border-b border-white/[0.03]"
+              onClick={() => e.stack ? setExpanded(expanded === e.id ? null : e.id) : undefined}
+            >
+              <span className="text-[10px] tabular-nums flex-shrink-0 mt-0.5" style={{ color: '#334155', minWidth: 64 }}>{e.ts}</span>
+              <span className="flex-shrink-0 mt-0.5 text-[9px] font-bold uppercase tracking-wide w-14 text-right"
+                style={{ color: SEV_COLOR[e.sev] }}>
+                {e.sev}
+              </span>
+              {e.role && (
+                <span className="flex-shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded mt-0.5"
+                  style={{ background: '#7c3aed14', color: '#a78bfa', border: '1px solid #7c3aed22' }}>
+                  {e.role}
+                </span>
+              )}
+              <span className="flex-1 text-[11px] leading-relaxed break-all" style={{ color: SEV_COLOR[e.sev] === '#64748b' ? '#475569' : SEV_COLOR[e.sev] + 'cc' }}>
+                {e.raw}
+              </span>
+              {e.stack && (
+                <span className="flex-shrink-0 text-[10px] text-red-500/60 mt-0.5">{expanded === e.id ? '▾' : '▸'}</span>
+              )}
+            </div>
+            {e.stack && expanded === e.id && (
+              <div className="px-4 py-3 border-b border-white/[0.03]" style={{ background: 'rgba(239,68,68,0.04)' }}>
+                <p className="text-[9px] font-bold uppercase tracking-widest mb-1.5" style={{ color: '#ef444480' }}>Stack Trace</p>
+                <pre className="text-[10px] text-red-400/70 whitespace-pre-wrap break-all leading-relaxed">{e.stack}</pre>
+              </div>
+            )}
+          </div>
+        ))}
+        <div ref={bottomRef} />
+      </div>
+
+      {filtered.length > 0 && (
+        <p className="text-[10px] text-[var(--os-text-3)] text-right">{filtered.length} entries (cap 200)</p>
+      )}
+    </div>
+  )
+}
+
 // ─── KIMMP Growth Tab ─────────────────────────────────────────────────────────
 
 const STAGE_LABEL: Record<string, string> = {
@@ -1431,7 +1609,7 @@ function KIMMLearningTab() {
 // ─── Main module ──────────────────────────────────────────────────────────────
 
 export function AgentLogsModule() {
-  const [activeTab, setActiveTab] = useState<'runs' | 'events' | 'growth'>('runs')
+  const [activeTab, setActiveTab] = useState<'runs' | 'events' | 'growth' | 'live'>('runs')
   const [search, setSearch]    = useState('')
   const [intentFilter, setIntent] = useState('ALL')
   const [agentFilter, setAgent]   = useState('ALL')
@@ -1509,6 +1687,7 @@ export function AgentLogsModule() {
           { key: 'runs',   label: 'Orchestration Runs', icon: ScrollText, color: '#2564ea' },
           { key: 'events', label: 'WAANDA Event Log',   icon: Radio,      color: '#2564ea' },
           { key: 'growth', label: 'KIMMP Growth',       icon: Dna,        color: '#a78bfa' },
+          { key: 'live',   label: 'Live SWARM Feed',    icon: Activity,   color: '#22c55e' },
         ] as const).map(t => (
           <button key={t.key} onClick={() => setActiveTab(t.key)}
             className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-all"
@@ -1524,6 +1703,7 @@ export function AgentLogsModule() {
 
       {activeTab === 'events' && <WaandaEventsTab />}
       {activeTab === 'growth' && <KIMMLearningTab />}
+      {activeTab === 'live'   && <LiveFeedTab />}
       {activeTab === 'runs' && <>
 
       {/* ── Page header ── */}
