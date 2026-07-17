@@ -1,9 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { TrendingUp, Target, Zap, BarChart3 } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Spinner } from '@design-system/components/Spinner'
 import { api, isDemo } from '@lib/api'
+import { connectSocket, getSocket } from '@lib/socket'
 
 // ── Types matching actual gate8 backend responses ─────────────────────────────
 
@@ -183,6 +185,32 @@ function GradePin({ grade }: { grade: string }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export function OISTrendPage() {
+  const qc = useQueryClient()
+
+  useEffect(() => {
+    if (isDemo()) return
+    connectSocket()
+    const socket = getSocket()
+
+    let debounce: ReturnType<typeof setTimeout> | null = null
+    const onActivity = () => {
+      if (debounce) clearTimeout(debounce)
+      debounce = setTimeout(() => {
+        qc.invalidateQueries({ queryKey: ['gate8-live'] })
+        qc.invalidateQueries({ queryKey: ['gate8-history'] })
+      }, 4000)
+    }
+
+    socket.on('SWARM_LOG',      onActivity)
+    socket.on('SWARM_TOPOLOGY', onActivity)
+
+    return () => {
+      socket.off('SWARM_LOG',      onActivity)
+      socket.off('SWARM_TOPOLOGY', onActivity)
+      if (debounce) clearTimeout(debounce)
+    }
+  }, [qc])
+
   const { data: history, isLoading: loadH } = useQuery<OISSnapshot[]>({
     queryKey: ['gate8-history'],
     queryFn:  () => api.get('/admin/gate8/history?limit=30').then(r => r.data),

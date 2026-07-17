@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Brain, Zap, Radio, DollarSign, Activity } from 'lucide-react'
+import { Brain, Zap, Radio, DollarSign, Activity, Wifi } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardBody } from '@design-system/components/Card'
 import { Badge } from '@design-system/components/Badge'
 import { Spinner } from '@design-system/components/Spinner'
 import { api, isDemo } from '@lib/api'
+import { connectSocket, getSocket } from '@lib/socket'
 
 interface Signal {
   id: string
@@ -90,7 +92,48 @@ function TimeSince({ iso }: { iso: string }) {
   return <>{Math.floor(hrs / 24)}d ago</>
 }
 
+interface LiveEntry {
+  id: string
+  text: string
+  ts: string
+}
+
 export function WANDAActivityPage() {
+  const [liveFeed, setLiveFeed] = useState<LiveEntry[]>([])
+  const [wsLive, setWsLive] = useState(false)
+
+  useEffect(() => {
+    connectSocket()
+    const socket = getSocket()
+    const ts = () => new Date().toISOString().split('T')[1].substring(0, 8)
+
+    const onLog = (msg: string) => {
+      setLiveFeed(prev => {
+        const entry: LiveEntry = { id: `${Date.now()}-${Math.random()}`, text: msg, ts: ts() }
+        const next = [entry, ...prev]
+        return next.length > 30 ? next.slice(0, 30) : next
+      })
+    }
+    const onTopology = (agents: Array<{ name: string; status: string }>) => {
+      const working = agents.filter(a => a.status === 'WORKING').length
+      onLog(`[SWARM] Topology synced — ${agents.length} agents, ${working} active`)
+      setWsLive(true)
+    }
+    const onDisconnect = () => setWsLive(false)
+
+    socket.on('SWARM_LOG',       onLog)
+    socket.on('SWARM_TOPOLOGY',  onTopology)
+    socket.on('disconnect',      onDisconnect)
+
+    if (socket.connected) setWsLive(true)
+
+    return () => {
+      socket.off('SWARM_LOG',      onLog)
+      socket.off('SWARM_TOPOLOGY', onTopology)
+      socket.off('disconnect',     onDisconnect)
+    }
+  }, [])
+
   const { data: signals, isLoading: loadS } = useQuery<Signal[]>({
     queryKey: ['kimmp-signals'],
     queryFn: () => api.get('/admin/kangqore-immp/signals?limit=20').then(r => {
@@ -142,6 +185,40 @@ export function WANDAActivityPage() {
           <Spinner size="sm" /> Loading WAANDA activity…
         </div>
       )}
+
+      {/* Live KIMMP Event Feed */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wifi className={`w-4 h-4 ${wsLive ? 'text-green-400' : 'text-slate-500'}`} />
+            Live KIMMP Feed
+            {wsLive && (
+              <span className="flex items-center gap-1 text-[10px] font-semibold text-green-400 bg-green-400/10 border border-green-400/20 px-2 py-0.5 rounded-full ml-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                Live
+              </span>
+            )}
+          </CardTitle>
+        </CardHeader>
+        <CardBody>
+          {liveFeed.length === 0 ? (
+            <p className="text-xs text-[var(--os-text-3)] py-2">
+              {wsLive ? 'Waiting for KIMMP events…' : 'Connecting to KIMMP runtime…'}
+            </p>
+          ) : (
+            <div className="space-y-1 max-h-52 overflow-y-auto pr-1">
+              {liveFeed.map(entry => (
+                <div key={entry.id} className="flex items-start gap-2 text-xs font-mono">
+                  <span className="text-[var(--os-text-3)] shrink-0">{entry.ts}</span>
+                  <span className={`${entry.text.startsWith('!!') ? 'text-red-400' : entry.text.startsWith('>>') ? 'text-cyan-400' : 'text-[var(--os-text-2)]'}`}>
+                    {entry.text}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardBody>
+      </Card>
 
       {/* KPI strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
