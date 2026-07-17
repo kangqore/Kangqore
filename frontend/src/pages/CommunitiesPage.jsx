@@ -28,6 +28,8 @@ const COMMUNITIES = [
   { id: 'k-governance', name: 'k/governance', description: 'Enterprise Trust & Compliance', color: '#8B5CF6' },
   { id: 'k-workflows', name: 'k/workflows', description: 'Automation & Engineering', color: '#FB923C' },
   { id: 'k-showcase', name: 'k/showcase', description: 'Member Demos & Launches', color: '#F43F5E' },
+  { id: 'k-kangqore-os', name: 'k/kangqore-os', description: 'Kangqore OS · Enterprise Operating System', color: '#d4a017' },
+  { id: 'k-bids', name: 'k/bids', description: 'BIDS™ · Business Intelligence Delivery System', color: '#2564ea' },
 ];
 
 const INITIAL_TOPICS = [
@@ -129,17 +131,123 @@ const INITIAL_TOPICS = [
     reposts: 38,
     comments: []
   },
+  {
+    id: 5,
+    title: 'Kangqore OS v1.0 is live — introducing the Enterprise Operating System',
+    excerpt: 'We\'re officially running Kangqore on Kangqore View. OIS baseline: 88.6. COIG gain: +9.7. This is what it looks like when an enterprise platform eats its own dog food. Sharing our journey from blueprint to production.',
+    category: 'announcements',
+    community: 'k/kangqore-os',
+    tags: ['kangqore-os', 'waanda', 'customer-zero', 'enterprise-os'],
+    author: { name: 'Mahesh K', initials: 'MK', color: '#d4a017' },
+    posters: [
+      { initials: 'MK', color: '#d4a017' },
+      { initials: 'AM', color: '#3B82F6' },
+      { initials: 'PS', color: '#10B981' },
+    ],
+    replies: 41,
+    views: 6820,
+    lastActivity: '2026-07-17',
+    pinned: true,
+    solved: false,
+    ratings: { support: 198, oppose: 0, helpful: 214, notHelpful: 0, endorse: 167, challenge: 0 },
+    likes: 892,
+    reposts: 213,
+    comments: [
+      { id: 1, author: 'Arjun Mehta', initials: 'AM', color: '#3B82F6', text: 'The COIG metric is fascinating — measuring operational intelligence gain rather than just cost savings. How is it calculated?', date: '2026-07-17' },
+      { id: 2, author: 'Priya Sharma', initials: 'PS', color: '#10B981', text: 'Love that you went Customer Zero before pitching to anyone. Real credibility when the founders run their own platform daily.', date: '2026-07-17' },
+      { id: 3, author: 'Sarah Chen', initials: 'SC', color: '#FB923C', text: 'Is the Blueprint portable? Can it be customised per industry vertical?', date: '2026-07-16' },
+    ]
+  },
+  {
+    id: 6,
+    title: 'WAANDA vs traditional BI: Why agentic intelligence beats dashboards',
+    excerpt: 'After 6 months running WAANDA across projects, finance, and strategy, here\'s the honest comparison. Dashboards show you what happened. WAANDA tells you what to do next — and runs it if you approve. The shift is fundamental.',
+    category: 'ai',
+    community: 'k/ai-agents',
+    tags: ['waanda', 'agentic-ai', 'business-intelligence', 'enterprise-ai'],
+    author: { name: 'Mahesh K', initials: 'MK', color: '#d4a017' },
+    posters: [
+      { initials: 'MK', color: '#d4a017' },
+      { initials: 'RK', color: '#FB923C' },
+    ],
+    replies: 19,
+    views: 3140,
+    lastActivity: '2026-07-15',
+    pinned: false,
+    solved: false,
+    ratings: { support: 112, oppose: 8, helpful: 128, notHelpful: 3, endorse: 94, challenge: 5 },
+    likes: 441,
+    reposts: 88,
+    comments: [
+      { id: 1, author: 'Ravi Kumar', initials: 'RK', color: '#FB923C', text: 'The approval-gate model is key — fully autonomous execution is too risky for CFOs, but \"WAANDA suggests, human approves\" is a pattern they understand.', date: '2026-07-15' },
+    ]
+  },
+  {
+    id: 7,
+    title: 'Building a BIDS™-aligned quality framework: lessons from our first enterprise audit',
+    excerpt: 'BIDS (Business Intelligence Delivery System) gives a structured language for enterprise capability. After running our first internal audit, here are the gaps we found and how we closed them across all 16 pillars.',
+    category: 'feedback',
+    community: 'k/bids',
+    tags: ['bids', 'enterprise-audit', 'quality-framework', 'governance'],
+    author: { name: 'Priya Sharma', initials: 'PS', color: '#10B981' },
+    posters: [
+      { initials: 'PS', color: '#10B981' },
+      { initials: 'AM', color: '#8B5CF6' },
+      { initials: 'MK', color: '#d4a017' },
+    ],
+    replies: 14,
+    views: 1890,
+    lastActivity: '2026-07-12',
+    pinned: false,
+    solved: true,
+    ratings: { support: 76, oppose: 2, helpful: 88, notHelpful: 0, endorse: 61, challenge: 1 },
+    likes: 197,
+    reposts: 42,
+    comments: [
+      { id: 1, author: 'Arjun Mehta', initials: 'AM', color: '#8B5CF6', text: 'The 16-pillar decomposition is really useful for gap analysis. Did you find any pillars that are consistently weak across PS firms?', date: '2026-07-12' },
+    ]
+  },
+  {
+    id: 8,
+    title: 'Ask the community: What does your enterprise AI governance policy look like in 2026?',
+    excerpt: 'Specifically looking for: how you handle agent autonomy levels, approval gates, audit logging, and what happens when an agent makes a wrong decision. Sharing our own AEGIS framework for reference.',
+    category: 'ask',
+    community: 'k/governance',
+    tags: ['ai-governance', 'aegis', 'enterprise-ai', 'compliance'],
+    author: { name: 'Ravi Kumar', initials: 'RK', color: '#FB923C' },
+    posters: [
+      { initials: 'RK', color: '#FB923C' },
+      { initials: 'SC', color: '#22C55E' },
+      { initials: 'DP', color: '#8B5CF6' },
+    ],
+    replies: 22,
+    views: 2650,
+    lastActivity: '2026-07-10',
+    pinned: false,
+    solved: false,
+    ratings: { support: 54, oppose: 1, helpful: 69, notHelpful: 0, endorse: 43, challenge: 2 },
+    likes: 178,
+    reposts: 37,
+    comments: [
+      { id: 1, author: 'Sarah Chen', initials: 'SC', color: '#22C55E', text: 'We classify agents into 4 autonomy tiers: read-only, suggest, execute-with-log, execute-autonomously. Only tier 1-2 allowed without senior approval.', date: '2026-07-10' },
+      { id: 2, author: 'David Park', initials: 'DP', color: '#8B5CF6', text: 'Immutable audit log is non-negotiable for us. Every agent action, every approval or rejection, stored with timestamp and user identity.', date: '2026-07-09' },
+    ]
+  },
 ];
 
 const TAGS = [
+  { name: 'enterprise-ai', count: 134 },
+  { name: 'agentic-ai', count: 118 },
+  { name: 'kangqore-os', count: 108 },
+  { name: 'security', count: 92 },
   { name: 'cloud-architecture', count: 89 },
   { name: 'governance', count: 76 },
-  { name: 'enterprise-ai', count: 134 },
   { name: 'data-pipeline', count: 67 },
+  { name: 'waanda', count: 64 },
   { name: 'microservices', count: 58 },
-  { name: 'security', count: 92 },
+  { name: 'bids', count: 52 },
   { name: 'observability', count: 41 },
-  { name: 'agentic-ai', count: 118 },
+  { name: 'customer-zero', count: 29 },
 ];
 
 const CONTRIBUTORS = [

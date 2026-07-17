@@ -71,6 +71,9 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
 import { WAANDA } from './waanda/WaandaBootstrap';
 import { authenticate, authorize } from './middleware/auth';
+import { apiKeyAuth } from './middleware/apiKeyAuth';
+import { v1RateLimiter } from './middleware/v1RateLimiter';
+import { v1Router } from './v1/router';
 
 import { errorHandler } from './middleware/errorHandler';
 import { rateLimiter } from './middleware/rateLimiter';
@@ -260,6 +263,8 @@ app.use('/api/public/visitor', publicVisitorRouter);
 app.use('/api/admin/visitor', adminVisitorRouter);
 
 import hcipRouter from './routes/hcip';
+app.use('/api/v1', apiKeyAuth, v1RateLimiter, v1Router);
+
 app.use('/api/hcip', hcipRouter);
 
 import servicesRoutes from './routes/services'; // Phase 3

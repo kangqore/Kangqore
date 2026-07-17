@@ -214,6 +214,52 @@ export function initializeSocket(httpServer: HttpServer): Server {
       socket.to(`page:${data.pageKey}`).emit('page:viewer:left', { userId, pageKey: data.pageKey });
     });
 
+    // ── CANVAS COLLABORATION (S54) ────────────────────────────────────────────
+    // canvas:join  — join a canvas editing session (room = canvas:{canvasId})
+    socket.on('canvas:join', (data: { canvasId: string }) => {
+      if (!data?.canvasId) return;
+      const room = `canvas:${data.canvasId}`;
+      socket.join(room);
+      // Announce presence to everyone else in the room
+      socket.to(room).emit('canvas:presence:joined', {
+        userId, userName: (socket as any).userName ?? 'User',
+        canvasId: data.canvasId,
+        color: `hsl(${(parseInt(userId.slice(-4), 16) % 360)},70%,55%)`,
+      });
+    });
+
+    socket.on('canvas:leave', (data: { canvasId: string }) => {
+      if (!data?.canvasId) return;
+      const room = `canvas:${data.canvasId}`;
+      socket.leave(room);
+      socket.to(room).emit('canvas:presence:left', { userId, canvasId: data.canvasId });
+    });
+
+    // cursor position broadcast — throttled by client, relayed to room peers
+    socket.on('canvas:cursor', (data: { canvasId: string; x: number; y: number }) => {
+      if (!data?.canvasId) return;
+      socket.to(`canvas:${data.canvasId}`).emit('canvas:cursor', { userId, x: data.x, y: data.y });
+    });
+
+    // node selection lock — first to claim owns it; others see a dim overlay
+    socket.on('canvas:select', (data: { canvasId: string; nodeId: string | null }) => {
+      if (!data?.canvasId) return;
+      socket.to(`canvas:${data.canvasId}`).emit('canvas:select', { userId, nodeId: data.nodeId });
+    });
+
+    // canvas comment with optional @mention
+    socket.on('canvas:comment', (data: { canvasId: string; nodeId: string; text: string; mentions?: string[] }) => {
+      if (!data?.canvasId || !data?.nodeId || !data?.text) return;
+      const room = `canvas:${data.canvasId}`;
+      io.to(room).emit('canvas:comment', {
+        id: Date.now().toString(),
+        userId, userName: (socket as any).userName ?? 'User',
+        nodeId: data.nodeId, text: data.text,
+        mentions: data.mentions ?? [],
+        ts: new Date().toISOString(),
+      });
+    });
+
     // Handle disconnect
     socket.on('disconnect', () => {
       console.log(`🔌 User disconnected: ${userId}`);

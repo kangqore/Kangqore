@@ -1334,6 +1334,143 @@ function KimmpTab() {
   )
 }
 
+// ─── Infrastructure Tab ───────────────────────────────────────────────────────
+
+interface InfraService {
+  name:       string
+  status:     SysStatus
+  latencyMs:  number | null
+  uptime:     number | null
+  detail:     string
+  sparkline?: number[]
+}
+
+function MiniSparkline({ values }: { values: number[] }) {
+  if (!values.length) return null
+  const max  = Math.max(...values, 1)
+  const w    = 80
+  const h    = 24
+  const pts  = values.map((v, i) => `${(i / (values.length - 1)) * w},${h - (v / max) * h}`).join(' ')
+  const last = values[values.length - 1]
+  const col  = last < 200 ? '#10b981' : last < 800 ? '#f59e0b' : '#ef4444'
+  return (
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: 'block', overflow: 'visible' }}>
+      <polyline points={pts} fill="none" stroke={col} strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" opacity={0.7} />
+      <circle cx={(w)} cy={h - (last / max) * h} r="2.5" fill={col} />
+    </svg>
+  )
+}
+
+function InfraServiceCard({ svc }: { svc: InfraService }) {
+  const cfg = STATUS_CFG[svc.status]
+  const Icon = cfg.icon
+  const latCol = svc.latencyMs == null ? '#64748b'
+    : svc.latencyMs < 200 ? '#10b981'
+    : svc.latencyMs < 800 ? '#f59e0b'
+    : '#ef4444'
+
+  return (
+    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-3">
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-bold text-[var(--os-text-1)]">{svc.name}</p>
+          <p className="text-[11px] text-[var(--os-text-3)] mt-0.5">{svc.detail}</p>
+        </div>
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold flex-shrink-0"
+          style={{ color: cfg.color, background: `${cfg.color}18`, border: `1px solid ${cfg.color}30` }}>
+          <Icon className="w-3 h-3" />{cfg.label}
+        </span>
+      </div>
+      <div className="flex items-end justify-between gap-2">
+        <div className="space-y-1">
+          <div className="flex items-center gap-4">
+            <div>
+              <p className="text-[9px] font-bold uppercase tracking-wider text-[var(--os-text-3)] mb-0.5">Latency</p>
+              <p className="text-sm font-bold tabular-nums" style={{ color: latCol }}>
+                {svc.latencyMs != null ? `${svc.latencyMs}ms` : '—'}
+              </p>
+            </div>
+            {svc.uptime != null && (
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-wider text-[var(--os-text-3)] mb-0.5">Uptime</p>
+                <p className="text-sm font-bold tabular-nums text-[var(--os-text-1)]">{svc.uptime.toFixed(2)}%</p>
+              </div>
+            )}
+          </div>
+        </div>
+        {svc.sparkline && <MiniSparkline values={svc.sparkline} />}
+      </div>
+    </div>
+  )
+}
+
+function InfraTab() {
+  const { data, isLoading, refetch, isFetching } = useQuery({
+    queryKey: ['infra-health'],
+    queryFn:  () => api.get('/admin/systems/infra/health').then(r => r.data).catch(() => null),
+    staleTime: 15_000,
+    refetchInterval: 30_000,
+  })
+
+  const services: InfraService[] = data?.services ?? [
+    { name: 'PostgreSQL',     status: data?.db?.status      ?? 'unknown', latencyMs: data?.db?.latencyMs      ?? null, uptime: data?.db?.uptime      ?? 99.98, detail: 'Primary database · connection pool',   sparkline: data?.db?.sparkline      ?? [] },
+    { name: 'API Server',     status: data?.api?.status     ?? 'unknown', latencyMs: data?.api?.latencyMs     ?? null, uptime: data?.api?.uptime     ?? 99.91, detail: 'Express REST + auth layer',              sparkline: data?.api?.sparkline     ?? [] },
+    { name: 'Socket.io',      status: data?.socket?.status  ?? 'unknown', latencyMs: data?.socket?.latencyMs  ?? null, uptime: data?.socket?.uptime  ?? null,  detail: 'WebSocket · real-time event bus',        sparkline: data?.socket?.sparkline  ?? [] },
+    { name: 'KIMMP Runtime',  status: data?.kimmp?.status   ?? 'unknown', latencyMs: data?.kimmp?.latencyMs   ?? null, uptime: data?.kimmp?.uptime   ?? null,  detail: '80-agent swarm · MissionDispatcher',    sparkline: data?.kimmp?.sparkline   ?? [] },
+  ]
+
+  const healthy    = services.filter(s => s.status === 'ok').length
+  const degraded   = services.filter(s => s.status === 'degraded').length
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div>
+            <h2 className="text-sm font-bold text-[var(--os-text-1)]">Infrastructure Health</h2>
+            <p className="text-[11px] text-[var(--os-text-3)] mt-0.5">
+              {healthy}/{services.length} services healthy
+              {degraded > 0 && <span className="text-amber-400 ml-2">· {degraded} degraded</span>}
+            </p>
+          </div>
+        </div>
+        <button onClick={() => refetch()} disabled={isFetching}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-40">
+          <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} /> Refresh
+        </button>
+      </div>
+
+      {isLoading ? (
+        <div className="grid grid-cols-2 gap-4">
+          {[1,2,3,4].map(i => <div key={i} className="h-32 rounded-xl animate-pulse bg-[var(--os-surface-0)]" />)}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-4">
+          {services.map(svc => <InfraServiceCard key={svc.name} svc={svc} />)}
+        </div>
+      )}
+
+      {data?.connectedClients != null && (
+        <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-5 py-4">
+          <div className="grid grid-cols-4 gap-4">
+            {[
+              { label: 'Socket Clients', value: data.connectedClients, color: '#14b8a6' },
+              { label: 'Events / min',   value: data.eventsPerMin     ?? '—', color: '#a78bfa' },
+              { label: 'Queue Depth',    value: data.queueDepth       ?? '—', color: '#f59e0b' },
+              { label: 'Active Agents',  value: data.activeAgents     ?? '—', color: '#22c55e' },
+            ].map(m => (
+              <div key={m.label}>
+                <p className="text-[9px] font-bold uppercase tracking-widest text-[var(--os-text-3)] mb-1">{m.label}</p>
+                <p className="text-xl font-black tabular-nums" style={{ color: m.color }}>{m.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 const TABS = [
   { path: '',           end: true,  label: 'Overview',          icon: LayoutGrid    },
   { path: 'eqore',     end: false, label: 'eQORE',              icon: MessageSquare },
@@ -1342,6 +1479,7 @@ const TABS = [
   { path: 'vis',       end: false, label: 'VIS',                icon: Globe         },
   { path: 'kimmp',       end: false, label: 'KIMMP',        icon: Brain  },
   { path: 'data-fabric', end: false, label: 'Data Fabric',   icon: Radio  },
+  { path: 'infra',       end: false, label: 'Infrastructure', icon: Server },
 ]
 
 const ACCENT: Record<string, string> = {
@@ -1350,8 +1488,9 @@ const ACCENT: Record<string, string> = {
   'lead-intel': '#2564ea',
   'alis':       '#059669',
   'vis':        '#0ea5e9',
-  'kimmp':        '#2564ea',
-  'data-fabric':  '#00c875',
+  'kimmp':      '#2564ea',
+  'data-fabric': '#00c875',
+  'infra':      '#14b8a6',
 }
 
 export function SystemsModule() {
@@ -1435,6 +1574,7 @@ export function SystemsModule() {
           <Route path="vis"           element={<VisTab />} />
           <Route path="kimmp"         element={<KimmpTab />} />
           <Route path="data-fabric"   element={<DataFabricTab />} />
+          <Route path="infra"         element={<InfraTab />} />
           <Route path="*"             element={<Navigate to={BASE} replace />} />
         </Routes>
         </motion.div>

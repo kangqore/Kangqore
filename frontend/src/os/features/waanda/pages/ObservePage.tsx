@@ -116,6 +116,13 @@ export function ObservePage() {
     staleTime:     20_000,
   })
 
+  const intelligence = useQuery({
+    queryKey:      ['waanda-intelligence'],
+    queryFn:       () => api.get('/admin/waanda/intelligence').then(r => r.data),
+    refetchInterval: 120_000,
+    staleTime:     60_000,
+  })
+
   useEffect(() => {
     if (isDemo()) return
     const socket = getSocket()
@@ -136,13 +143,74 @@ export function ObservePage() {
   const signalList: any[] = signals.data?.data ?? signals.data?.signals ?? []
   const sessionList: any[] = sessions.data?.data ?? []
   const aegisData: any = aegis.data
+  const intel: any     = intelligence.data
 
-  const verdictLabel = aegisData?.overallVerdict ?? 'LOADING'
-  const critical24h  = aegisData?.critical24h    ?? 0
-  const warn24h      = aegisData?.warn24h        ?? 0
+  const verdictLabel   = aegisData?.overallVerdict ?? 'LOADING'
+  const critical24h    = aegisData?.critical24h    ?? 0
+  const warn24h        = aegisData?.warn24h        ?? 0
+  const oisScore       = intel?.ois  ?? 0
+  const coigDelta      = intel?.coig ?? 0
+  const oisGrade       = intel?.grade ?? '—'
+  const activeAgents   = aegisData?.activeAgents ?? aegisData?.agentCount ?? aegisData?.total ?? 0
+  const signalVelocity = signalList.filter((s: any) => {
+    const d = s.detectedAt ?? s.createdAt
+    if (!d) return false
+    return Date.now() - new Date(d).getTime() < 3_600_000
+  }).length
 
   return (
     <div className="space-y-8">
+
+      {/* ── WAANDA Pulse Metrics */}
+      <div className={`${surfaceClass} animate-fade-in-up`} style={{ animationDelay: '0ms' }}>
+        <div className={`${S.label} flex items-center gap-2 mb-4`}>
+          <Cpu className="w-4 h-4 text-blue-500" />
+          WAANDA Pulse Metrics
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="flex flex-col gap-1">
+            <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">OIS Score</div>
+            <div className="flex items-end gap-2">
+              <span className="text-3xl font-light tracking-tight" style={{ color: oisScore >= 80 ? '#10b981' : oisScore >= 60 ? '#f59e0b' : '#f43f5e' }}>
+                {oisScore}
+              </span>
+              <span className="text-sm font-bold mb-0.5 px-1.5 py-0.5 rounded"
+                style={{ background: oisScore >= 80 ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)', color: oisScore >= 80 ? '#10b981' : '#f59e0b' }}>
+                {oisGrade}
+              </span>
+            </div>
+            <div className="text-[11px] text-slate-400">Organizational Intelligence</div>
+          </div>
+          <div className="flex flex-col gap-1">
+            <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">COIG Delta</div>
+            <div className="flex items-end gap-1">
+              <span className="text-3xl font-light tracking-tight" style={{ color: coigDelta >= 0 ? '#10b981' : '#f43f5e' }}>
+                {coigDelta >= 0 ? '+' : ''}{coigDelta}
+              </span>
+            </div>
+            <div className="text-[11px] text-slate-400">Cognitive OIG growth</div>
+          </div>
+          <div className="flex flex-col gap-1">
+            <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Signal Velocity</div>
+            <div className="flex items-end gap-1">
+              <span className="text-3xl font-light tracking-tight" style={{ color: signalVelocity > 5 ? '#f59e0b' : '#2564ea' }}>
+                {signalVelocity}
+              </span>
+              <span className="text-xs text-slate-400 mb-1">/hr</span>
+            </div>
+            <div className="text-[11px] text-slate-400">Signals in last hour</div>
+          </div>
+          <div className="flex flex-col gap-1">
+            <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Active Agents</div>
+            <div className="flex items-end gap-1">
+              <span className="text-3xl font-light tracking-tight" style={{ color: activeAgents > 0 ? '#10b981' : '#6b7280' }}>
+                {activeAgents}
+              </span>
+            </div>
+            <div className="text-[11px] text-slate-400">AEGIS agents running</div>
+          </div>
+        </div>
+      </div>
 
       {/* ── Governance pulse */}
       <div className={`${surfaceClass} animate-fade-in-up`} style={{ animationDelay: '0ms' }}>

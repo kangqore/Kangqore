@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@lib/api'
 import { apiFetch } from '@lib/api'
-import { Shield, Plus, Trash2, Loader2, ToggleLeft, ToggleRight, AlertTriangle, CheckCircle2, XCircle, Info } from 'lucide-react'
+import { Shield, Plus, Trash2, Loader2, ToggleLeft, ToggleRight, AlertTriangle, CheckCircle2, XCircle, Info, Network, Key, Clock } from 'lucide-react'
 import { cn } from '@design-system/cn'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -314,6 +314,186 @@ export function PoliciesPage() {
           saving={create.isPending}
         />
       )}
+
+      <hr className="border-[var(--os-border)]" />
+
+      {/* Access Control */}
+      <IPAllowlistSection />
+      <SSOConfigSection />
+      <SessionTimeoutSection />
+    </div>
+  )
+}
+
+// ── IP Allowlist ──────────────────────────────────────────────────────────────
+function IPAllowlistSection() {
+  const qc = useQueryClient()
+  const [newCidr, setNewCidr] = useState('')
+
+  const { data: list = [], isLoading } = useQuery<string[]>({
+    queryKey: ['ip-allowlist'],
+    queryFn:  () => api.get('/admin/settings/ip-allowlist').then(r => r.data?.cidrs ?? r.data ?? []),
+    staleTime: 30_000,
+  })
+
+  const add = useMutation({
+    mutationFn: () => api.post('/admin/settings/ip-allowlist', { cidr: newCidr.trim() }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['ip-allowlist'] }); setNewCidr('') },
+  })
+
+  const remove = useMutation({
+    mutationFn: (cidr: string) => api.delete('/admin/settings/ip-allowlist', { data: { cidr } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['ip-allowlist'] }),
+  })
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <Network className="w-4 h-4 text-blue-400" />
+        <h3 className="text-sm font-bold text-[var(--os-text-1)]">IP Allowlist</h3>
+        <span className="text-[11px] text-[var(--os-text-3)]">Restrict admin access to these CIDRs. Empty = unrestricted.</span>
+      </div>
+
+      <div className="flex gap-2">
+        <input
+          value={newCidr}
+          onChange={e => setNewCidr(e.target.value)}
+          placeholder="e.g. 203.0.113.0/24 or 10.0.0.1"
+          className="flex-1 px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm font-mono text-[var(--os-text-1)] outline-none focus:border-blue-500/50"
+        />
+        <button
+          onClick={() => add.mutate()}
+          disabled={!newCidr.trim() || add.isPending}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-semibold hover:bg-blue-500/20 disabled:opacity-40"
+        >
+          {add.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />} Add
+        </button>
+      </div>
+
+      {isLoading ? (
+        <div className="h-8 rounded-lg animate-pulse bg-[var(--os-surface-0)]" />
+      ) : list.length === 0 ? (
+        <p className="text-[11px] text-[var(--os-text-3)] italic px-1">No IP restrictions — all IPs allowed.</p>
+      ) : (
+        <div className="rounded-lg border border-[var(--os-border)] divide-y divide-[var(--os-border)] overflow-hidden">
+          {list.map(cidr => (
+            <div key={cidr} className="flex items-center gap-3 px-4 py-2.5 bg-[var(--os-card)] hover:bg-[var(--os-surface-0)] group">
+              <span className="text-sm font-mono text-[var(--os-text-1)] flex-1">{cidr}</span>
+              <button onClick={() => remove.mutate(cidr)} disabled={remove.isPending}
+                className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-all">
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── SSO Config ────────────────────────────────────────────────────────────────
+function SSOConfigSection() {
+  const [idpUrl,     setIdpUrl]     = useState('')
+  const [entityId,   setEntityId]   = useState('')
+  const [metadata,   setMetadata]   = useState('')
+  const [saved, setSaved] = useState(false)
+
+  const save = useMutation({
+    mutationFn: () => api.post('/admin/settings/sso', { idpUrl, entityId, metadata }),
+    onSuccess: () => { setSaved(true); setTimeout(() => setSaved(false), 2500) },
+  })
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <Key className="w-4 h-4 text-violet-400" />
+        <h3 className="text-sm font-bold text-[var(--os-text-1)]">SSO / SAML Configuration</h3>
+        <span className="text-[11px] text-[var(--os-text-3)]">Configure your Identity Provider for single sign-on.</span>
+      </div>
+
+      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-3">
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">IdP SSO URL</label>
+            <input value={idpUrl} onChange={e => setIdpUrl(e.target.value)}
+              placeholder="https://idp.example.com/sso/saml"
+              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-violet-500/50" />
+          </div>
+          <div>
+            <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Entity ID (Issuer)</label>
+            <input value={entityId} onChange={e => setEntityId(e.target.value)}
+              placeholder="https://idp.example.com/metadata"
+              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-violet-500/50" />
+          </div>
+        </div>
+        <div>
+          <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">SAML Metadata XML</label>
+          <textarea rows={5} value={metadata} onChange={e => setMetadata(e.target.value)}
+            placeholder="Paste your IdP metadata XML here…"
+            className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] font-mono text-[var(--os-text-1)] outline-none focus:border-violet-500/50 resize-none" />
+        </div>
+        <div className="flex items-center gap-3">
+          <button onClick={() => save.mutate()} disabled={save.isPending}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-violet-500/10 border border-violet-500/30 text-violet-400 text-sm font-semibold hover:bg-violet-500/20 disabled:opacity-40">
+            {save.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : 'Save SSO Config'}
+          </button>
+          {saved && <span className="flex items-center gap-1 text-xs font-bold text-green-500"><CheckCircle2 className="w-3.5 h-3.5" /> Saved</span>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Session Timeout ───────────────────────────────────────────────────────────
+function SessionTimeoutSection() {
+  const [idle,     setIdle]     = useState(30)
+  const [absolute, setAbsolute] = useState(480)
+  const [saved, setSaved] = useState(false)
+
+  const save = useMutation({
+    mutationFn: () => api.post('/admin/settings/session', { idleTimeoutMinutes: idle, absoluteTimeoutMinutes: absolute }),
+    onSuccess: () => { setSaved(true); setTimeout(() => setSaved(false), 2500) },
+  })
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <Clock className="w-4 h-4 text-amber-400" />
+        <h3 className="text-sm font-bold text-[var(--os-text-1)]">Session Timeout</h3>
+      </div>
+
+      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+        {[
+          { label: 'Idle Timeout',     sub: 'Log out after N minutes of inactivity',  value: idle,     set: setIdle,     min: 5,   max: 480,  step: 5  },
+          { label: 'Absolute Timeout', sub: 'Force re-login after N minutes total',   value: absolute, set: setAbsolute, min: 60,  max: 10080, step: 60 },
+        ].map(row => (
+          <div key={row.label}>
+            <div className="flex items-center justify-between mb-1.5">
+              <div>
+                <p className="text-sm font-semibold text-[var(--os-text-1)]">{row.label}</p>
+                <p className="text-[11px] text-[var(--os-text-3)]">{row.sub}</p>
+              </div>
+              <span className="text-sm font-bold text-amber-400 tabular-nums min-w-[72px] text-right">
+                {row.value >= 60 ? `${Math.round(row.value / 60)}h` : `${row.value}m`}
+              </span>
+            </div>
+            <input type="range" min={row.min} max={row.max} step={row.step} value={row.value}
+              onChange={e => row.set(parseInt(e.target.value))}
+              className="w-full accent-amber-500" />
+            <div className="flex justify-between text-[10px] text-[var(--os-text-3)] mt-0.5">
+              <span>{row.min >= 60 ? `${row.min / 60}h` : `${row.min}m`}</span>
+              <span>{row.max >= 60 ? `${row.max / 60}h` : `${row.max}m`}</span>
+            </div>
+          </div>
+        ))}
+        <div className="flex items-center gap-3 pt-1">
+          <button onClick={() => save.mutate()} disabled={save.isPending}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold hover:bg-amber-500/20 disabled:opacity-40">
+            {save.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : 'Save Timeout Rules'}
+          </button>
+          {saved && <span className="flex items-center gap-1 text-xs font-bold text-green-500"><CheckCircle2 className="w-3.5 h-3.5" /> Saved</span>}
+        </div>
+      </div>
     </div>
   )
 }

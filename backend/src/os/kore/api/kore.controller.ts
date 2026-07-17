@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { ObjectRegistry } from '../language/ObjectRegistry';
 import { PropertyRegistry } from '../language/PropertyRegistry';
 import { ActionRegistry } from '../language/ActionRegistry';
+import { RelationshipRegistry } from '../language/RelationshipRegistry';
 import { ActionRuntime } from '../runtime/ActionRuntime';
 
 export class KoreController {
@@ -61,6 +62,36 @@ export class KoreController {
       const payload = { ...req.body, objectName };
       const newAction = await ActionRegistry.registerAction(payload);
       res.json({ success: true, data: newAction });
+    } catch (error: any) {
+      res.status(400).json({ success: false, error: error.message });
+    }
+  }
+
+  // ==========================================
+  // Relationship Registry
+  // ==========================================
+  static async listRelationships(req: Request, res: Response) {
+    try {
+      const data = await RelationshipRegistry.listRelationships(req.params.name);
+      res.json({ success: true, data });
+    } catch (error: any) {
+      res.status(404).json({ success: false, error: error.message });
+    }
+  }
+
+  static async addRelationship(req: Request, res: Response) {
+    try {
+      const data = await RelationshipRegistry.registerRelationship({ ...req.body, objectName: req.params.name });
+      res.json({ success: true, data });
+    } catch (error: any) {
+      res.status(400).json({ success: false, error: error.message });
+    }
+  }
+
+  static async deleteRelationship(req: Request, res: Response) {
+    try {
+      await RelationshipRegistry.deleteRelationship(req.params.relId);
+      res.json({ success: true });
     } catch (error: any) {
       res.status(400).json({ success: false, error: error.message });
     }

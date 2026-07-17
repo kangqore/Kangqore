@@ -16,6 +16,14 @@ export interface KoreAction {
   permissions: string[];
 }
 
+export interface KoreRelationship {
+  id: string;
+  relationName: string;
+  targetObjectName: string;
+  cardinality: 'ONE_TO_ONE' | 'ONE_TO_MANY' | 'MANY_TO_MANY';
+  isRequired: boolean;
+}
+
 export interface KoreObject {
   id: string;
   name: string;
@@ -57,5 +65,22 @@ export const koreService = {
       method: 'POST',
       body: JSON.stringify(payload),
     }).then(r => r.data);
+  },
+
+  getRelationships(objectName: string): Promise<KoreRelationship[]> {
+    return apiFetch<KoreResp<KoreRelationship[]>>(`/kangqore/kore/objects/${objectName}/relationships`)
+      .then(r => r.data ?? []);
+  },
+
+  addRelationship(objectName: string, payload: Omit<KoreRelationship, 'id'>): Promise<KoreRelationship> {
+    return apiFetch<KoreResp<KoreRelationship>>(`/kangqore/kore/objects/${objectName}/relationships`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }).then(r => r.data);
+  },
+
+  deleteRelationship(objectName: string, relId: string): Promise<void> {
+    return apiFetch(`/kangqore/kore/objects/${objectName}/relationships/${relId}`, { method: 'DELETE' })
+      .then(() => undefined);
   },
 };

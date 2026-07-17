@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { api, isDemo } from '@lib/api'
 import { getSocket } from '@lib/socket'
 import { useKIMMPStore } from '@store/kimmp'
@@ -8,9 +9,12 @@ const surface = '#ffffff'
 const border  = '1px solid rgba(37,100,234,0.10)'
 
 export function ActPage() {
+  const navigate  = useNavigate()
   const qc = useQueryClient()
   const [running, setRunning]     = useState(false)
   const [runStatus, setRunStatus] = useState<'idle' | 'ok' | 'err'>('idle')
+  const [wfStarting, setWfStarting] = useState(false)
+  const [wfStatus, setWfStatus]     = useState<'idle' | 'ok' | 'err'>('idle')
 
   const acknowledgeSignal = useKIMMPStore(s => s.acknowledgeSignal)
   const insights          = useKIMMPStore(s => s.insights)
@@ -72,6 +76,27 @@ export function ActPage() {
     }
   }
 
+  async function startWorkflow() {
+    if (wfStarting) return
+    setWfStarting(true)
+    setWfStatus('idle')
+    try {
+      const r = await api.post('/admin/kangqore-immp/workflows', {
+        name:    'WAANDA-Initiated Workflow',
+        trigger: 'WAANDA_CYCLE',
+        context: { source: 'waanda-act', kimmpContext: true },
+      })
+      setWfStatus('ok')
+      const id = r.data?.id ?? r.data?.workflow?.id
+      if (id) navigate(`/kangqore-view/admin/workflows/${id}`)
+      else    navigate('/kangqore-view/admin/workflows')
+    } catch {
+      setWfStatus('err')
+    } finally {
+      setWfStarting(false)
+    }
+  }
+
   const pendingList: any[] = pending.data?.rows ?? pending.data?.data ?? []
   const logList: any[]     = actionLog.data?.rows ?? actionLog.data?.data ?? []
 
@@ -111,6 +136,41 @@ export function ActPage() {
             <span className="text-sm text-slate-400">
               Triggers the full reasoning pipeline: LEAD_INTEL → ALIS → EQORE → VIS
             </span>
+          )}
+        </div>
+      </div>
+
+      {/* ── Workflow trigger — start from WAANDA cycle */}
+      <div
+        style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(37,100,234,0.06) 100%)', border: '1px solid rgba(16,185,129,0.18)', borderRadius: 12, padding: 20 }}
+        className="flex items-center justify-between gap-4 flex-wrap"
+      >
+        <div>
+          <div className="text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase mb-1">
+            Workflow Trigger
+          </div>
+          <div className="text-sm font-medium text-slate-700">Start a workflow from WAANDA cycle context</div>
+          <div className="text-[12px] text-slate-400 mt-0.5">
+            Creates a new workflow pre-seeded with KIMMP context from the current cognitive cycle.
+          </div>
+        </div>
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <button
+            onClick={startWorkflow}
+            disabled={wfStarting}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
+            style={{
+              background: wfStarting ? 'rgba(16,185,129,0.3)' : 'linear-gradient(135deg, #10b981 0%, #2564ea 100%)',
+              color: '#fff',
+              boxShadow: wfStarting ? 'none' : '0 2px 8px rgba(16,185,129,0.25)',
+              cursor: wfStarting ? 'not-allowed' : 'pointer',
+              opacity: wfStarting ? 0.7 : 1,
+            }}
+          >
+            {wfStarting ? 'Starting…' : 'Start Workflow'}
+          </button>
+          {wfStatus === 'err' && (
+            <span className="text-xs" style={{ color: '#f43f5e' }}>Failed — check logs</span>
           )}
         </div>
       </div>

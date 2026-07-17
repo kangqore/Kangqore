@@ -63,9 +63,23 @@ export function UnderstandPage() {
     staleTime: 30_000,
   })
 
+  const koreObjects = useQuery({
+    queryKey:  ['kore-objects-summary'],
+    queryFn:   () => api.get('/admin/ontology/objects?limit=5').then(r => r.data),
+    staleTime: 120_000,
+  })
+
+  const koreMarkings = useQuery({
+    queryKey:  ['kore-markings-recent'],
+    queryFn:   () => api.get('/admin/ontology/markings?limit=5').then(r => r.data),
+    staleTime: 120_000,
+  })
+
   const evidenceList: any[] = evidence.data?.data ?? []
   const domainList: any[]   = domains.data?.domains ?? []
   const twinData: any       = twin.data?.data
+  const koreEntities: any[] = koreObjects.data?.objects ?? koreObjects.data ?? []
+  const recentMarkings: any[] = koreMarkings.data?.markings ?? koreMarkings.data ?? []
 
   return (
     <div className="space-y-8">
@@ -265,6 +279,86 @@ export function UnderstandPage() {
           )}
         </div>
       </div>
+
+      {/* ── KORE knowledge graph summary */}
+      <div style={{ background: surface, border, borderRadius: 12, padding: 20 }}>
+        <div className="text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase mb-4">
+          Knowledge Graph · Top Entities
+        </div>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+          {/* Entity types */}
+          <div>
+            <div className="text-[11px] text-slate-400 mb-2">Entity types</div>
+            {koreObjects.isLoading ? (
+              <div className="text-sm text-slate-400">Loading…</div>
+            ) : koreEntities.length === 0 ? (
+              <div className="text-sm text-slate-400">No entities marked yet.</div>
+            ) : (
+              <div className="space-y-1.5">
+                {koreEntities.slice(0, 5).map((obj: any, i: number) => (
+                  <div
+                    key={obj.id ?? i}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg"
+                    style={{ background: 'rgba(37,100,234,0.03)', border: '1px solid rgba(37,100,234,0.07)' }}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full flex-shrink-0"
+                      style={{ background: '#2564ea' }}
+                    />
+                    <span className="text-sm text-slate-700 flex-1 truncate">{obj.name ?? obj.type ?? obj.label}</span>
+                    {obj.instanceCount !== undefined && (
+                      <span className="text-[11px] text-slate-400 font-mono">{obj.instanceCount}</span>
+                    )}
+                    {obj.type && obj.type !== obj.name && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded"
+                        style={{ background: 'rgba(37,100,234,0.08)', color: '#2564ea' }}>
+                        {obj.type}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Recent markings */}
+          <div>
+            <div className="text-[11px] text-slate-400 mb-2">Recent markings</div>
+            {koreMarkings.isLoading ? (
+              <div className="text-sm text-slate-400">Loading…</div>
+            ) : recentMarkings.length === 0 ? (
+              <div className="text-sm text-slate-400">No recent markings.</div>
+            ) : (
+              <div className="space-y-1.5">
+                {recentMarkings.slice(0, 5).map((m: any, i: number) => (
+                  <div
+                    key={m.id ?? i}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg"
+                    style={{ background: 'rgba(16,185,129,0.03)', border: '1px solid rgba(16,185,129,0.10)' }}
+                  >
+                    <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#10b981' }} />
+                    <div className="flex-1 min-w-0">
+                      <span className="text-sm text-slate-700 truncate block">
+                        {m.objectName ?? m.entityName ?? m.label ?? m.type}
+                      </span>
+                      {m.note && (
+                        <span className="text-[10px] text-slate-400 truncate block">{m.note}</span>
+                      )}
+                    </div>
+                    {m.confidence !== undefined && (
+                      <span className="text-[11px] font-mono" style={{ color: confidenceColor(m.confidence) }}>
+                        {m.confidence}%
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }

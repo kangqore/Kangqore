@@ -2563,4 +2563,209 @@ kangqoreImmpRoutes.get('/foundation-model/status', requireAuth, requireRole(['AD
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// ─── S52 — External Agent SDK ─────────────────────────────────────────────────
+// crypto already imported at top of file
+
+// POST /admin/kangqore-immp/agents/register
+kangqoreImmpRoutes.post('/agents/register', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { name, role, capabilities, webhookUrl } = req.body
+    if (!name?.trim() || !role?.trim() || !webhookUrl?.trim()) {
+      return res.status(400).json({ error: 'name, role, and webhookUrl are required' })
+    }
+    if (!Array.isArray(capabilities) || capabilities.length === 0) {
+      return res.status(400).json({ error: 'capabilities must be a non-empty array' })
+    }
+    const secret = crypto.randomBytes(32).toString('hex')
+    const agent = await (prisma as any).externalAgent.create({
+      data: { name: name.trim(), role: role.trim(), capabilities, webhookUrl: webhookUrl.trim(), secret, registeredBy: req.user!.userId },
+    })
+    res.status(201).json({ agent: { ...agent, secret }, note: 'Store this secret — it will not be shown again' })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/agents
+kangqoreImmpRoutes.get('/agents', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const agents = await (prisma as any).externalAgent.findMany({
+      orderBy: { createdAt: 'desc' },
+      select: { id: true, name: true, role: true, capabilities: true, webhookUrl: true, status: true, lastPingAt: true, lastPingStatus: true, lastPingMs: true, createdAt: true },
+    })
+    res.json({ agents })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/agents/:id/ping — health check
+kangqoreImmpRoutes.post('/agents/:id/ping', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const agent = await (prisma as any).externalAgent.findUnique({ where: { id: req.params.id } })
+    if (!agent) return res.status(404).json({ error: 'Agent not found' })
+
+    const payload = { event: 'PING', agentId: agent.id, timestamp: new Date().toISOString() }
+    const sig = crypto.createHmac('sha256', agent.secret).update(JSON.stringify(payload)).digest('hex')
+    const t0 = Date.now()
+    let pingStatus = 'OK'; let pingMs = 0
+    try {
+      const controller = new AbortController()
+      const timer = setTimeout(() => controller.abort(), 5000)
+      const r = await fetch(agent.webhookUrl + '/ping', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'X-KIMMP-Signature': sig },
+        body:    JSON.stringify(payload),
+        signal:  controller.signal,
+      })
+      clearTimeout(timer)
+      pingMs = Date.now() - t0
+      pingStatus = r.ok ? 'OK' : 'ERROR'
+    } catch {
+      pingStatus = 'TIMEOUT'
+      pingMs = Date.now() - t0
+    }
+
+    const updated = await (prisma as any).externalAgent.update({
+      where: { id: req.params.id },
+      data: { lastPingAt: new Date(), lastPingStatus: pingStatus, lastPingMs: pingMs, status: pingStatus === 'OK' ? 'ACTIVE' : 'ERROR' },
+      select: { id: true, name: true, status: true, lastPingAt: true, lastPingStatus: true, lastPingMs: true },
+    })
+    res.json({ result: pingStatus, ms: pingMs, agent: updated })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/agents/:id/status
+kangqoreImmpRoutes.patch('/agents/:id/status', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status } = req.body
+    const VALID = ['ACTIVE', 'PAUSED', 'REVOKED']
+    if (!VALID.includes(status)) return res.status(400).json({ error: `status must be one of ${VALID.join(', ')}` })
+    const agent = await (prisma as any).externalAgent.update({ where: { id: req.params.id }, data: { status } })
+    res.json({ agent })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// DELETE /admin/kangqore-immp/agents/:id
+kangqoreImmpRoutes.delete('/agents/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    await (prisma as any).externalAgent.delete({ where: { id: req.params.id } })
+    res.json({ ok: true })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── S53 — WAANDA Gen 2: Fine-tune Job Tracker ────────────────────────────────
+
+// GET /admin/kangqore-immp/learning/finetune-jobs
+kangqoreImmpRoutes.get('/learning/finetune-jobs', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const jobs = await (prisma as any).finetuneJob.findMany({ orderBy: { createdAt: 'desc' } })
+    res.json({ jobs })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/learning/finetune-jobs
+kangqoreImmpRoutes.post('/learning/finetune-jobs', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { name, provider = 'ANTHROPIC', minQuality = 0.9, format = 'anthropic', baseModel, notes } = req.body
+    if (!name?.trim()) return res.status(400).json({ error: 'name is required' })
+    const exampleCount = await (prisma as any).kimmpLearningExample.count({ where: { approved: true, quality: { gte: minQuality } } })
+    const job = await (prisma as any).finetuneJob.create({
+      data: { name: name.trim(), provider, minQuality, format, baseModel: baseModel ?? 'claude-haiku-4-5-20251001', notes: notes ?? null, exampleCount, createdBy: req.user!.userId },
+    })
+    res.status(201).json({ job })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/learning/finetune-jobs/:id
+kangqoreImmpRoutes.patch('/learning/finetune-jobs/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status, providerJobId, notes } = req.body
+    const data: any = {}
+    if (status) {
+      data.status = status
+      if (status === 'EXPORTING') data.exportedAt = new Date()
+      if (status === 'SUBMITTED') data.submittedAt = new Date()
+      if (status === 'COMPLETE' || status === 'FAILED') data.completedAt = new Date()
+    }
+    if (providerJobId) data.providerJobId = providerJobId
+    if (notes !== undefined) data.notes = notes
+    const job = await (prisma as any).finetuneJob.update({ where: { id: req.params.id }, data })
+    res.json({ job })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/learning/examples/:id/rate  (annotation)
+kangqoreImmpRoutes.patch('/learning/examples/:id/rate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { rating } = req.body   // 'good' | 'needs-improvement' | 'bad'
+    const qualityMap: Record<string, number> = { good: 1.0, 'needs-improvement': 0.7, bad: 0.3 }
+    const quality = qualityMap[rating]
+    if (quality === undefined) return res.status(400).json({ error: 'rating must be good | needs-improvement | bad' })
+    const ex = await (prisma as any).kimmpLearningExample.update({
+      where: { id: req.params.id },
+      data: { quality, approved: rating === 'good' },
+    })
+    res.json({ example: ex })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── S55 — Marketplace ────────────────────────────────────────────────────────
+
+// GET /admin/kangqore-immp/marketplace
+kangqoreImmpRoutes.get('/marketplace', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const where: any = { status: 'PUBLISHED' }
+    if (req.query.type)     where.type     = String(req.query.type)
+    if (req.query.category) where.category = String(req.query.category)
+    const listings = await (prisma as any).marketplaceListing.findMany({ where, orderBy: { installCount: 'desc' } })
+    res.json({ listings })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/marketplace — submit listing
+kangqoreImmpRoutes.post('/marketplace', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { type, name, author, category, description, longDesc, oisImpact, price, manifest, iconEmoji, tags, status = 'PUBLISHED' } = req.body
+    if (!type || !name?.trim() || !author?.trim() || !category || !description?.trim() || !manifest) {
+      return res.status(400).json({ error: 'type, name, author, category, description, manifest are required' })
+    }
+    const slug = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now()
+    const listing = await (prisma as any).marketplaceListing.create({
+      data: { type, name: name.trim(), slug, author, category, description, longDesc: longDesc ?? null, oisImpact: oisImpact ?? null, price: price ?? 0, manifest, iconEmoji: iconEmoji ?? '🔌', tags: tags ?? [], status, publishedAt: status === 'PUBLISHED' ? new Date() : null },
+    })
+    res.status(201).json({ listing })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/marketplace/:id/install
+kangqoreImmpRoutes.post('/marketplace/:id/install', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const listing = await (prisma as any).marketplaceListing.findUnique({ where: { id: req.params.id } })
+    if (!listing) return res.status(404).json({ error: 'Listing not found' })
+
+    // Increment install count
+    await (prisma as any).marketplaceListing.update({ where: { id: req.params.id }, data: { installCount: { increment: 1 } } })
+
+    // If agent type — auto-register via webhook stub
+    let agentRegistration = null
+    if (listing.type === 'AGENT' && (listing.manifest as any).webhookUrl) {
+      const m = listing.manifest as any
+      const secret = crypto.randomBytes(32).toString('hex')
+      agentRegistration = await (prisma as any).externalAgent.create({
+        data: { name: listing.name, role: m.role ?? 'MARKETPLACE_AGENT', capabilities: m.capabilities ?? [], webhookUrl: m.webhookUrl, secret, registeredBy: req.user!.userId },
+      })
+    }
+
+    res.json({ ok: true, installed: listing.name, agentRegistration: agentRegistration ? { id: agentRegistration.id } : null })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/marketplace/:id/status
+kangqoreImmpRoutes.patch('/marketplace/:id/status', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status } = req.body
+    const VALID = ['DRAFT', 'PUBLISHED', 'SUSPENDED']
+    if (!VALID.includes(status)) return res.status(400).json({ error: `status must be one of ${VALID.join(', ')}` })
+    const listing = await (prisma as any).marketplaceListing.update({ where: { id: req.params.id }, data: { status, publishedAt: status === 'PUBLISHED' ? new Date() : undefined } })
+    res.json({ listing })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 export { kangqoreImmpRoutes };

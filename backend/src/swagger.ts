@@ -13,14 +13,21 @@ const options: swaggerJsdoc.Options = {
       },
     },
     servers: [
-      { url: '/api', description: 'Production' },
+      { url: '/api',    description: 'Admin / internal (JWT auth)' },
+      { url: '/api/v1', description: 'Public v1 (API key auth)'    },
     ],
     components: {
       securitySchemes: {
         bearerAuth: {
-          type:   'http',
-          scheme: 'bearer',
+          type:         'http',
+          scheme:       'bearer',
           bearerFormat: 'JWT',
+          description:  'JWT obtained from POST /api/auth/login',
+        },
+        apiKeyAuth: {
+          type:        'http',
+          scheme:      'bearer',
+          description: 'Programmatic API key (kq_live_...) from Settings → Developer',
         },
       },
     },
@@ -31,9 +38,18 @@ const options: swaggerJsdoc.Options = {
       { name: 'Developer',    description: 'Programmatic API key management' },
       { name: 'KIMMP',        description: 'AI intelligence and agent dispatch' },
       { name: 'AEGIS',        description: 'Governance, audit, and access control' },
+      { name: 'v1/OIS',       description: 'Public v1 — Operational Intelligence Score' },
+      { name: 'v1/Signals',   description: 'Public v1 — KIMMP signal ingestion' },
+      { name: 'v1/Decisions', description: 'Public v1 — Strategic decision records' },
+      { name: 'v1/Blueprints',description: 'Public v1 — Enterprise blueprint management' },
     ],
   },
-  apis: ['./src/routes/*.ts', './src/kangqore-immp/routes.ts', './src/kangqore-aegis/routes.ts'],
+  apis: [
+    './src/routes/*.ts',
+    './src/kangqore-immp/routes.ts',
+    './src/kangqore-aegis/routes.ts',
+    './src/v1/router.ts',
+  ],
 }
 
 export const swaggerSpec = swaggerJsdoc(options)

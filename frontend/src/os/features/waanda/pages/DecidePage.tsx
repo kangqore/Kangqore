@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { api } from '@lib/api'
 import { useKIMMPStore } from '@store/kimmp'
 
@@ -16,6 +17,7 @@ function priorityColor(p: string) {
 }
 
 export function DecidePage() {
+  const navigate        = useNavigate()
   const insights        = useKIMMPStore(s => s.insights)
   const acknowledgedIds = useKIMMPStore(s => s.acknowledgedIds)
 
@@ -41,6 +43,32 @@ export function DecidePage() {
 
   return (
     <div className="space-y-8">
+
+      {/* ── DecisionEngine bridge */}
+      <div
+        style={{ background: 'linear-gradient(135deg, rgba(37,100,234,0.06) 0%, rgba(124,58,237,0.06) 100%)', border: '1px solid rgba(37,100,234,0.15)', borderRadius: 12, padding: 20 }}
+        className="flex items-center justify-between gap-4 flex-wrap"
+      >
+        <div>
+          <div className="text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase mb-1">
+            DecisionEngine Bridge
+          </div>
+          <div className="text-sm font-medium text-slate-700">Ask WAANDA to reason through a strategic decision</div>
+          <div className="text-[12px] text-slate-400 mt-0.5">
+            WAANDA will analyse signals, evaluate options, and return structured reasoning with confidence scores.
+          </div>
+        </div>
+        <button
+          onClick={() => navigate('/kangqore-view/admin/kangqore-immp/decisions')}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90 active:scale-95 flex-shrink-0"
+          style={{ background: 'linear-gradient(135deg, #2564ea 0%, #7c3aed 100%)', color: '#fff', boxShadow: '0 2px 8px rgba(37,100,234,0.25)' }}
+        >
+          <span>Ask WAANDA to Decide</span>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </button>
+      </div>
 
       {/* ── KIMMP decision queue */}
       {decisionQueue.length > 0 && (

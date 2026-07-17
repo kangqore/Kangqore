@@ -53,9 +53,16 @@ export function LearnPage() {
     onSuccess:  () => { qc.invalidateQueries({ queryKey: ['waanda-history-learn'] }) },
   })
 
+  const examples = useQuery({
+    queryKey:  ['learning-examples-recent'],
+    queryFn:   () => api.get('/admin/kangqore-immp/learning/examples?limit=5').then(r => r.data),
+    staleTime: 60_000,
+  })
+
   const phases: any[]     = status.data?.phases ?? []
   const learningData: any = learning.data
   const briefings: any[]  = (history.data?.history ?? []).slice(0, 5)
+  const exampleList: any[] = examples.data?.examples ?? examples.data ?? []
 
   const okPhases  = phases.filter(p => p.status === 'ok').length
   const capacity  = phases.length > 0 ? Math.round((okPhases / phases.length) * 100) : 0
@@ -192,6 +199,71 @@ export function LearnPage() {
           </div>
         </div>
       )}
+
+      {/* ── Rated learning examples */}
+      <div style={{ background: surface, border, borderRadius: 12, padding: 20 }}>
+        <div className="text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase mb-4">
+          Learning Examples · Recent Rated
+        </div>
+        {examples.isLoading ? (
+          <div className="text-sm text-slate-400">Loading examples…</div>
+        ) : exampleList.length === 0 ? (
+          <div className="text-sm text-slate-400">
+            No rated examples yet. WAANDA improves as decisions receive feedback.
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {exampleList.map((ex: any, i: number) => {
+              const quality: string = ex.qualityLabel ?? ex.quality ?? ''
+              const qualityColor =
+                quality === 'excellent' || quality === 'good' ? '#10b981' :
+                quality === 'poor'      || quality === 'bad'  ? '#f43f5e' :
+                '#f59e0b'
+              const qualityBg =
+                quality === 'excellent' || quality === 'good' ? 'rgba(16,185,129,0.10)' :
+                quality === 'poor'      || quality === 'bad'  ? 'rgba(244,63,94,0.10)'  :
+                'rgba(245,158,11,0.10)'
+              return (
+                <div
+                  key={ex.id ?? i}
+                  className="p-4 rounded-xl space-y-2"
+                  style={{ background: 'rgba(37,100,234,0.03)', border: '1px solid rgba(37,100,234,0.07)' }}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[11px] font-mono text-slate-400 truncate">
+                      {ex.systemPromptPreview ?? ex.prompt?.slice(0, 60) ?? `Example ${i + 1}`}
+                    </span>
+                    {quality && (
+                      <span
+                        className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 capitalize"
+                        style={{ background: qualityBg, color: qualityColor }}
+                      >
+                        {quality}
+                      </span>
+                    )}
+                  </div>
+                  {ex.outputPreview ?? ex.output ? (
+                    <div className="text-sm text-slate-600 leading-relaxed line-clamp-2">
+                      {ex.outputPreview ?? ex.output}
+                    </div>
+                  ) : null}
+                  <div className="flex items-center gap-4 text-[10px] text-slate-400">
+                    {ex.agentType && <span>{ex.agentType}</span>}
+                    {ex.rating !== undefined && (
+                      <span className="flex items-center gap-1">
+                        Rating: <span className="font-semibold text-slate-500">{ex.rating}/5</span>
+                      </span>
+                    )}
+                    {ex.createdAt && (
+                      <span className="ml-auto">{new Date(ex.createdAt).toLocaleDateString()}</span>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
 
       {/* ── Feedback: did WAANDA get this right? */}
       {briefings.length > 0 && (

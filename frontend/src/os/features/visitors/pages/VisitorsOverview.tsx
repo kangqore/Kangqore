@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, Link } from 'react-router-dom'
-import { Globe, ChatCircle, ArrowUpRight, Users, Eye, Target, CaretLeft, CaretRight, Funnel, MagnifyingGlass } from '@phosphor-icons/react'
+import { Globe, ChatCircle, ArrowUpRight, Users, Eye, Target, CaretLeft, CaretRight, Funnel, MagnifyingGlass, Columns } from '@phosphor-icons/react'
 import { api } from '@lib/api'
 import { useUIStore } from '@store/ui'
 import { usePageViews } from '@hooks/usePageViews'
@@ -82,6 +82,12 @@ export function VisitorsOverview() {
       {/* Sub-nav */}
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-[11px] font-semibold text-[var(--os-text-1)] px-3 py-1.5 bg-[var(--os-surface-0)] rounded-lg border border-[var(--os-border)]">Visitors</span>
+        <Link
+          to="/kangqore-view/admin/visitors/pipeline"
+          className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"
+        >
+          <Columns size={12} /> Pipeline
+        </Link>
         <Link
           to="/kangqore-view/admin/visitors/transcripts"
           className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"

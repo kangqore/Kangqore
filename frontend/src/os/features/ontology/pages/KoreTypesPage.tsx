@@ -1,8 +1,14 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, ChevronDown, ChevronRight, Loader2, X, Tag, Zap } from 'lucide-react'
+import { Plus, ChevronDown, ChevronRight, Loader2, X, Tag, Zap, Link2, Trash2 } from 'lucide-react'
 import { cn } from '@design-system/cn'
-import { koreService, type KoreObject } from '../koreService'
+import { koreService, type KoreObject, type KoreRelationship } from '../koreService'
+
+const CARDINALITY_LABEL: Record<KoreRelationship['cardinality'], string> = {
+  ONE_TO_ONE:  '1 : 1',
+  ONE_TO_MANY: '1 : N',
+  MANY_TO_MANY:'N : N',
+}
 
 const PROP_TYPES = ['STRING', 'NUMBER', 'BOOLEAN', 'DATE']
 
@@ -165,10 +171,71 @@ function AddActionDrawer({ objectName, onClose }: { objectName: string; onClose:
   )
 }
 
+// ── Add Relationship drawer ───────────────────────────────────────────────────
+function AddRelationshipDrawer({ objectName, allTypes, onClose }: { objectName: string; allTypes: string[]; onClose: () => void }) {
+  const qc = useQueryClient()
+  const [relName, setRelName] = useState('')
+  const [target, setTarget] = useState(allTypes.filter(t => t !== objectName)[0] ?? '')
+  const [cardinality, setCardinality] = useState<KoreRelationship['cardinality']>('ONE_TO_MANY')
+  const [required, setRequired] = useState(false)
+
+  const add = useMutation({
+    mutationFn: () => koreService.addRelationship(objectName, { relationName: relName.trim(), targetObjectName: target, cardinality, isRequired: required }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['kore-relationships', objectName] }); onClose() },
+  })
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="w-full max-w-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-semibold text-[var(--os-text-1)]">Add Relationship — <span className="text-[var(--os-text-2)]">{objectName}</span></p>
+          <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><X className="w-4 h-4" /></button>
+        </div>
+        <div className="space-y-3">
+          <div>
+            <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Relation Name</label>
+            <input autoFocus placeholder="e.g. hasMany, belongsTo, references"
+              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              value={relName} onChange={e => setRelName(e.target.value)} />
+          </div>
+          <div>
+            <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Target Type</label>
+            <select className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+              value={target} onChange={e => setTarget(e.target.value)}>
+              {allTypes.filter(t => t !== objectName).map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Cardinality</label>
+            <select className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+              value={cardinality} onChange={e => setCardinality(e.target.value as KoreRelationship['cardinality'])}>
+              <option value="ONE_TO_ONE">1 : 1 (One to One)</option>
+              <option value="ONE_TO_MANY">1 : N (One to Many)</option>
+              <option value="MANY_TO_MANY">N : N (Many to Many)</option>
+            </select>
+          </div>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={required} onChange={e => setRequired(e.target.checked)} className="rounded" />
+            <span className="text-sm text-[var(--os-text-1)]">Required</span>
+          </label>
+        </div>
+        <button onClick={() => add.mutate()} disabled={!relName.trim() || !target || add.isPending}
+          className="w-full py-2 rounded-lg bg-[#7c3aed] text-white text-sm font-semibold hover:bg-[#6d28d9] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          {add.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Adding…</> : 'Add Relationship'}
+        </button>
+        {add.isError && <p className="text-[11px] text-red-400">Failed: {(add.error as Error).message}</p>}
+      </div>
+    </div>
+  )
+}
+
 // ── Expanded type row ─────────────────────────────────────────────────────────
-function TypeDetail({ obj }: { obj: KoreObject }) {
+function TypeDetail({ obj, allTypeNames }: { obj: KoreObject; allTypeNames: string[] }) {
+  const [activeTab, setActiveTab] = useState<'properties' | 'actions' | 'relationships'>('properties')
   const [propDrawer, setPropDrawer] = useState(false)
   const [actionDrawer, setActionDrawer] = useState(false)
+  const [relDrawer, setRelDrawer] = useState(false)
+  const qc = useQueryClient()
 
   const { data, isLoading } = useQuery<KoreObject>({
     queryKey: ['kore-type', obj.name],
@@ -176,72 +243,143 @@ function TypeDetail({ obj }: { obj: KoreObject }) {
     staleTime: 30_000,
   })
 
+  const { data: relationships = [], isLoading: relsLoading } = useQuery<KoreRelationship[]>({
+    queryKey: ['kore-relationships', obj.name],
+    queryFn: () => koreService.getRelationships(obj.name),
+    staleTime: 30_000,
+  })
+
+  const deleteRel = useMutation({
+    mutationFn: (relId: string) => koreService.deleteRelationship(obj.name, relId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['kore-relationships', obj.name] }),
+  })
+
   const loaded = data ?? obj
+  const tabs = [
+    { key: 'properties' as const,    label: `Properties (${loaded.properties?.length ?? 0})`,   color: 'text-emerald-500', border: 'border-emerald-500' },
+    { key: 'actions' as const,       label: `Actions (${loaded.actions?.length ?? 0})`,           color: 'text-amber-500',   border: 'border-amber-500'   },
+    { key: 'relationships' as const, label: `Relationships (${relationships.length})`,             color: 'text-violet-500',  border: 'border-violet-500'  },
+  ]
 
   return (
-    <div className="px-6 py-4 border-t border-[var(--os-border)] bg-[var(--os-surface-0)] grid grid-cols-2 gap-6">
-      {/* Properties */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-1.5">
-            <Tag className="w-3.5 h-3.5 text-emerald-500" />
-            <p className="text-[11px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Properties ({loaded.properties?.length ?? 0})</p>
-          </div>
-          <button onClick={() => setPropDrawer(true)} className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold border border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/10 transition-colors">
-            <Plus className="w-3 h-3" />Add
+    <div className="border-t border-[var(--os-border)] bg-[var(--os-surface-0)]">
+      {/* Tab bar */}
+      <div className="flex items-center gap-0 border-b border-[var(--os-border)] px-6">
+        {tabs.map(t => (
+          <button key={t.key} onClick={() => setActiveTab(t.key)}
+            className={cn('px-4 py-2.5 text-[11px] font-semibold border-b-2 -mb-px transition-all',
+              activeTab === t.key ? `${t.color} ${t.border}` : 'text-[var(--os-text-2)] border-transparent hover:text-[var(--os-text-1)]'
+            )}>
+            {t.label}
           </button>
-        </div>
-        {isLoading ? (
-          <div className="space-y-1.5">{[1,2,3].map(i => <div key={i} className="h-8 rounded bg-[var(--os-card)] animate-pulse" />)}</div>
-        ) : !loaded.properties?.length ? (
-          <p className="text-[11px] text-[var(--os-text-2)] italic">No properties defined.</p>
-        ) : (
-          <div className="space-y-1.5">
-            {loaded.properties.map(p => (
-              <div key={p.id} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
-                <span className="font-medium text-[var(--os-text-1)] truncate flex-1">{p.name}</span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]">{p.type}</span>
-                {p.isRequired && <span className="text-[9px] text-amber-400">required</span>}
-              </div>
-            ))}
-          </div>
-        )}
+        ))}
       </div>
 
-      {/* Actions */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5 text-amber-500" />
-            <p className="text-[11px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Actions ({loaded.actions?.length ?? 0})</p>
-          </div>
-          <button onClick={() => setActionDrawer(true)} className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold border border-amber-500/30 text-amber-500 hover:bg-amber-500/10 transition-colors">
-            <Plus className="w-3 h-3" />Add
-          </button>
-        </div>
-        {isLoading ? (
-          <div className="space-y-1.5">{[1,2,3].map(i => <div key={i} className="h-8 rounded bg-[var(--os-card)] animate-pulse" />)}</div>
-        ) : !loaded.actions?.length ? (
-          <p className="text-[11px] text-[var(--os-text-2)] italic">No actions defined.</p>
-        ) : (
-          <div className="space-y-1.5">
-            {loaded.actions.map(a => (
-              <div key={a.id} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
-                <span className="font-medium text-[var(--os-text-1)] truncate flex-1">{a.name}</span>
-                {a.description && <span className="text-[10px] text-[var(--os-text-2)] truncate">{a.description}</span>}
-                <div className="flex gap-1 flex-shrink-0">
-                  {a.permissions.map(p => (
-                    <span key={p} className="text-[9px] px-1.5 py-0.5 rounded bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]">{p}</span>
-                  ))}
-                </div>
+      <div className="px-6 py-4">
+        {/* Properties tab */}
+        {activeTab === 'properties' && (
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-1.5">
+                <Tag className="w-3.5 h-3.5 text-emerald-500" />
+                <p className="text-[11px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Properties</p>
               </div>
-            ))}
+              <button onClick={() => setPropDrawer(true)} className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold border border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/10 transition-colors">
+                <Plus className="w-3 h-3" />Add
+              </button>
+            </div>
+            {isLoading ? (
+              <div className="space-y-1.5">{[1,2,3].map(i => <div key={i} className="h-8 rounded bg-[var(--os-card)] animate-pulse" />)}</div>
+            ) : !loaded.properties?.length ? (
+              <p className="text-[11px] text-[var(--os-text-2)] italic">No properties defined.</p>
+            ) : (
+              <div className="space-y-1.5">
+                {loaded.properties.map(p => (
+                  <div key={p.id} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
+                    <span className="font-medium text-[var(--os-text-1)] truncate flex-1">{p.name}</span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]">{p.type}</span>
+                    {p.isRequired && <span className="text-[9px] text-amber-400">required</span>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Actions tab */}
+        {activeTab === 'actions' && (
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-amber-500" />
+                <p className="text-[11px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Actions</p>
+              </div>
+              <button onClick={() => setActionDrawer(true)} className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold border border-amber-500/30 text-amber-500 hover:bg-amber-500/10 transition-colors">
+                <Plus className="w-3 h-3" />Add
+              </button>
+            </div>
+            {isLoading ? (
+              <div className="space-y-1.5">{[1,2,3].map(i => <div key={i} className="h-8 rounded bg-[var(--os-card)] animate-pulse" />)}</div>
+            ) : !loaded.actions?.length ? (
+              <p className="text-[11px] text-[var(--os-text-2)] italic">No actions defined.</p>
+            ) : (
+              <div className="space-y-1.5">
+                {loaded.actions.map(a => (
+                  <div key={a.id} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
+                    <span className="font-medium text-[var(--os-text-1)] truncate flex-1">{a.name}</span>
+                    {a.description && <span className="text-[10px] text-[var(--os-text-2)] truncate">{a.description}</span>}
+                    <div className="flex gap-1 flex-shrink-0">
+                      {a.permissions.map(p => (
+                        <span key={p} className="text-[9px] px-1.5 py-0.5 rounded bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]">{p}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Relationships tab */}
+        {activeTab === 'relationships' && (
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-1.5">
+                <Link2 className="w-3.5 h-3.5 text-violet-500" />
+                <p className="text-[11px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Relationship Constraints</p>
+              </div>
+              <button onClick={() => setRelDrawer(true)} className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold border border-violet-500/30 text-violet-500 hover:bg-violet-500/10 transition-colors">
+                <Plus className="w-3 h-3" />Add
+              </button>
+            </div>
+            {relsLoading ? (
+              <div className="space-y-1.5">{[1,2].map(i => <div key={i} className="h-8 rounded bg-[var(--os-card)] animate-pulse" />)}</div>
+            ) : !relationships.length ? (
+              <p className="text-[11px] text-[var(--os-text-2)] italic">No relationship constraints. Define how this type links to other types.</p>
+            ) : (
+              <div className="space-y-1.5">
+                {relationships.map(r => (
+                  <div key={r.id} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs group">
+                    <span className="font-mono font-semibold text-violet-400 truncate">{obj.name}</span>
+                    <span className="text-[var(--os-text-3)] shrink-0">·{r.relationName}·</span>
+                    <span className="font-mono font-semibold text-[#579bfc] truncate flex-1">{r.targetObjectName}</span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-3)] shrink-0">{CARDINALITY_LABEL[r.cardinality]}</span>
+                    {r.isRequired && <span className="text-[9px] text-amber-400 shrink-0">required</span>}
+                    <button onClick={() => deleteRel.mutate(r.id)}
+                      className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-all ml-1 shrink-0">
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
 
       {propDrawer && <AddPropertyDrawer objectName={obj.name} onClose={() => setPropDrawer(false)} />}
       {actionDrawer && <AddActionDrawer objectName={obj.name} onClose={() => setActionDrawer(false)} />}
+      {relDrawer && <AddRelationshipDrawer objectName={obj.name} allTypes={allTypeNames} onClose={() => setRelDrawer(false)} />}
     </div>
   )
 }
@@ -326,7 +464,7 @@ export function KoreTypesPage() {
                   {isOpen && (
                     <tr key={`detail-${obj.name}`}>
                       <td colSpan={6} className="p-0">
-                        <TypeDetail obj={obj} />
+                        <TypeDetail obj={obj} allTypeNames={types.map(t => t.name)} />
                       </td>
                     </tr>
                   )}
