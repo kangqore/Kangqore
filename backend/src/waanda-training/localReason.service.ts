@@ -164,7 +164,7 @@ export class LocalReasonService {
           model: this.OLLAMA_MODEL, serverUrl: this.OLLAMA_URL,
           loadedModels: loaded,
           note: found
-            ? `${this.OLLAMA_MODEL} (Ollama) ready — REASON phase uses local model`
+            ? `${this.OLLAMA_MODEL} (Ollama) ready — REASON phase uses WAANDAx local model`
             : `Ollama reachable but ${this.OLLAMA_MODEL} not loaded. Run: ollama pull ${this.OLLAMA_MODEL}`,
         }
         this._lastCheck = now
@@ -175,7 +175,7 @@ export class LocalReasonService {
     this._status = {
       available: false, backend: 'none',
       model: this.MLX_MODEL, serverUrl: this.MLX_URL,
-      note: `No local model available. Start MLX server: python -m mlx_lm server --model ~/models/WAANDAx/fused --port 11435`,
+      note: `No local model available. Start MLX server: python -m mlx_lm.server --model ~/models/WAANDAx/fused --port 11435`,
     }
     this._lastCheck = now
     return this._status

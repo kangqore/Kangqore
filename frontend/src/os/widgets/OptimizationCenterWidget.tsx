@@ -2,12 +2,13 @@ import React from 'react';
 import { withWidgetContext, WidgetProps } from '../runtime/rendering/BaseWidget';
 
 const Core: React.FC<WidgetProps> = ({ viewModel }) => {
-  const confidence: number   = viewModel.platformConfidence  ?? 0
-  const breached: number     = viewModel.totalBreachedKpis   ?? 0
-  const riskExposure: number = viewModel.domainRiskExposure  ?? 0
-  const domains: any[]       = Array.isArray(viewModel.operationalDomains) ? viewModel.operationalDomains : []
+  const confidence: number  = viewModel.platformConfidence  ?? 0
+  const breached: number    = viewModel.totalBreachedKpis   ?? 0
+  const domainRisks: any[]  = Array.isArray(viewModel.domainRiskExposure) ? viewModel.domainRiskExposure : []
+  const riskCount: number   = domainRisks.length
+  const domains: any[]      = Array.isArray(viewModel.operationalDomains) ? viewModel.operationalDomains : []
 
-  const confPct   = Math.round(confidence * 100)
+  const confPct   = viewModel.platformConfidence != null ? Math.min(100, confidence) : Math.round(confidence * 100)
   const confColor = confPct >= 75 ? 'var(--os-success)' : confPct >= 50 ? 'var(--os-warning)' : 'var(--os-danger)'
 
   return (
@@ -35,9 +36,9 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
             </span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11 }}>
-            <span style={{ color: 'var(--os-text-4)' }}>Risk Exposure</span>
-            <span style={{ fontWeight: 700, color: riskExposure > 0 ? 'var(--os-warning)' : 'var(--os-success)', fontVariantNumeric: 'tabular-nums' }}>
-              {riskExposure}
+            <span style={{ color: 'var(--os-text-4)' }}>Domains at Risk</span>
+            <span style={{ fontWeight: 700, color: riskCount > 0 ? 'var(--os-warning)' : 'var(--os-success)', fontVariantNumeric: 'tabular-nums' }}>
+              {riskCount}
             </span>
           </div>
         </div>
@@ -73,7 +74,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
         </div>
       )}
 
-      {breached === 0 && riskExposure === 0 && (
+      {breached === 0 && riskCount === 0 && (
         <div style={{
           padding: '6px 10px', borderRadius: 5, fontSize: 11,
           background: 'var(--os-success-dim)', border: '1px solid var(--os-success)44',

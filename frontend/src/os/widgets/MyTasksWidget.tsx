@@ -35,11 +35,11 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
       </div>
 
       {tasks.length > 0 ? (
-        tasks.slice(0, 4).map((t: any, i: number) => {
+        tasks.slice(0, 4).map((t: any) => {
           const isOverdue = t.overdue
           const col = isOverdue ? 'var(--os-danger)' : t.dueToday ? 'var(--os-warning)' : 'var(--os-text-4)'
           return (
-            <div key={t.id ?? i} style={{
+            <div key={t.id ?? t.title} style={{
               display: 'flex', alignItems: 'center', gap: 8,
               padding: '6px 10px', borderRadius: 6,
               background: 'var(--os-surface-3)',

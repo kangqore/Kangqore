@@ -11,7 +11,8 @@ import {
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { TrendingUp, Search, Trash2 } from 'lucide-react'
+import { TrendingUp, Search, Trash2, Zap, ArrowRight, Star } from 'lucide-react'
+import { useNavigate as useNav } from 'react-router-dom'
 import { Badge } from '@design-system/components/Badge'
 import { StatCard } from '@design-system/components/StatCard'
 import { Input } from '@design-system/components/Input'
@@ -116,6 +117,63 @@ const STAGE_DOT: Record<LeadStage, string> = {
 const STAGE_BG: Record<LeadStage, string> = {
   new: '#579bfc', qualified: '#fdab3d', proposal: '#7c3aed',
   negotiation: '#323338', won: '#00c875', lost: '#e2445c',
+}
+
+// ── Customer One Banner ───────────────────────────────────────────────────────
+
+function CustomerOneBanner({ leads }: { leads: Lead[] }) {
+  const nav = useNav()
+  const topQualified = [...leads]
+    .filter(l => ['won', 'negotiation', 'proposal'].includes(l.stage))
+    .sort((a, b) => b.score - a.score)[0]
+
+  if (!topQualified) return null
+
+  const coigEstimate = Math.round(topQualified.score * 0.12 + (topQualified.value / 100000) * 2)
+  const isWon = topQualified.stage === 'won'
+
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, #1a1200 0%, #2a1e00 50%, #0a0f1a 100%)',
+      border: '1px solid #d4a01740',
+      borderLeft: '4px solid #d4a017',
+      borderRadius: 12, padding: '16px 20px',
+      display: 'flex', alignItems: 'center', gap: 16,
+      marginBottom: 4,
+    }}>
+      <div style={{ width: 40, height: 40, borderRadius: 10, background: '#d4a01720', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <Star size={20} color="#d4a017" fill="#d4a017" />
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 10, fontWeight: 800, textTransform: 'uppercase' as const, letterSpacing: '.1em', color: '#d4a017', marginBottom: 4 }}>
+          Customer One Target
+        </div>
+        <div style={{ fontSize: 14, fontWeight: 800, color: '#fff', marginBottom: 2 }}>{topQualified.company}</div>
+        <div style={{ fontSize: 11, color: '#9898c0' }}>
+          {topQualified.contactName} · <span style={{ color: '#d4a017', fontWeight: 700 }}>WAANDA Score {topQualified.score}</span> · ₹{(topQualified.value / 1000).toFixed(0)}K · Est. COIG +{coigEstimate}
+        </div>
+      </div>
+      <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+        {isWon ? (
+          <button
+            onClick={() => nav('/kangqore-view/admin/kangqore-immp/blueprint-customize')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '8px 16px', borderRadius: 8, border: 'none',
+              background: '#d4a017', color: '#000', cursor: 'pointer',
+              fontWeight: 800, fontSize: 12,
+            }}
+          >
+            <Zap size={13} /> Convert to Customer <ArrowRight size={13} />
+          </button>
+        ) : (
+          <span style={{ fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 8, background: '#fdab3d20', color: '#fdab3d', border: '1px solid #fdab3d40' }}>
+            {topQualified.stage === 'negotiation' ? 'In Negotiation' : 'In Proposal'}
+          </span>
+        )}
+      </div>
+    </div>
+  )
 }
 
 function ScoreBadge({ score }: { score: number }) {
@@ -402,6 +460,7 @@ export function LeadsPipeline() {
   return (
     <div className="space-y-5">
       <KIMMPSignalBar module="Leads" />
+      <CustomerOneBanner leads={leads} />
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-xl font-bold text-white">Lead Pipeline</h2>

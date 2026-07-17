@@ -36,10 +36,10 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
           All caught up — no alerts
         </div>
       ) : (
-        notifications.slice(0, 5).map((n: any, i: number) => {
+        notifications.slice(0, 5).map((n: any) => {
           const alert = n.alerts?.length > 0
           return (
-            <div key={n.id ?? i} style={{
+            <div key={n.id ?? n.summary} style={{
               display: 'flex', alignItems: 'flex-start', gap: 8,
               padding: '7px 10px', borderRadius: 6,
               background: 'var(--os-surface-3)',

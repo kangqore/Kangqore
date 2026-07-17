@@ -16,7 +16,7 @@ export const CONSTITUTIONAL_LAW_3 =
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type ProjectionScope =
-  | 'PERSONAL' | 'EXECUTIVE' | 'REVENUE'
+  | 'PERSONAL' | 'EXECUTIVE' | 'REVENUE' | 'FINANCE' | 'HR'
   | 'OPERATIONS' | 'INTELLIGENCE' | 'PLATFORM'
   | 'COLLABORATION' | 'GOVERNANCE' | 'ECOSYSTEM'
 
@@ -100,6 +100,25 @@ export interface WaandaCognitiveState {
     lead: string
     nextGate: string
   }>
+  workflows: Array<{
+    id: string
+    name: string
+    description?: string
+    trigger: string
+    status: string
+    stepCount?: number
+    createdAt: string
+  }>
+  workflowRuns: Array<{
+    id: string
+    workflowId: string
+    status: string
+    triggeredBy: string
+    startedAt: string
+    completedAt?: string
+    failedAt?: string
+    outcome?: string
+  }>
   gate8: {
     oisScore:        number
     decisionScore:   number
@@ -112,6 +131,7 @@ export interface WaandaCognitiveState {
     trustScore:      number
     adoptionScore:   number
   } | null
+  gate8History: Array<{ oisScore: number; createdAt: string; label?: string }>
   financialKpis: {
     revenueMTD: number
     revenueLastMonth: number
@@ -134,6 +154,56 @@ export interface WaandaCognitiveState {
     company: string | null
     status: string
     inquiryType: string | null
+    createdAt: string
+  }>
+  aegisAgentSummary: {
+    overallVerdict: string
+    healthScore: number | null
+    critical24h: number
+    warn24h: number
+    engines: Array<{ engine: string; latest: { verdict: string; raisedAt: string; agentId: string; summary: string | null } | null }>
+    lastChecked: string
+  } | null
+  aegisAudit: Array<{ id: string; eventType: string; system: string; description: string; raisedAt: string; verdict: string }>
+  aegisAutonomy: Array<{ id: string; eventType: string; system: string; description: string; raisedAt: string; verdict: string }>
+  kimmpDecisions: Array<{
+    id: string
+    question: string
+    selected: string | null
+    selectedBy: string | null
+    outcome: string | null
+    confidence: number
+    agentsMixed: string[]
+    createdAt: string
+    resolvedAt: string | null
+  }>
+  aegisPolicies: Array<{
+    id: string
+    name: string
+    description: string | null
+    trigger: string
+    effect: string
+    priority: number
+    enabled: boolean
+  }>
+  kimmpMemories: Array<{
+    id: string
+    type: string
+    content: string
+    tags: string[]
+    createdAt: string
+  }>
+  twinScenarios: Array<{
+    id: string
+    scenario: string
+    horizon: number
+    currentOis: number
+    simulatedOis: number
+    delta: number
+    pillarDeltas: Record<string, number>
+    confidence: number
+    reasoning: string
+    recommendation: string
     createdAt: string
   }>
   lastSynced: Date | null
@@ -223,9 +293,19 @@ export const EMPTY_WAANDA_STATE: WaandaCognitiveState = {
   relationshipIntelligence: { liveSessions: [], evidenceLedger: [] },
   enterpriseGoals: [],
   projects: [],
+  workflows: [],
+  workflowRuns: [],
   gate8: null,
+  gate8History: [],
   financialKpis: null,
   recentLeads: [],
+  aegisAgentSummary: null,
+  aegisAudit: [],
+  aegisAutonomy: [],
+  kimmpDecisions: [],
+  aegisPolicies: [],
+  kimmpMemories: [],
+  twinScenarios: [],
   lastSynced: null,
   confidence: 0,
 }

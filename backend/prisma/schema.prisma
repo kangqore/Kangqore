@@ -525,6 +525,28 @@ model DecisionStatusHistory {
   @@map("decision_status_history")
 }
 
+model Expense {
+  id           String    @id @default(cuid())
+  title        String
+  category     String    @default("Other")
+  amount       Decimal   @db.Decimal(10, 2)
+  currency     String    @default("INR")
+  expenseDate  DateTime  @default(now())
+  status       String    @default("PENDING")
+  notes        String?
+  projectId    String?
+  submittedBy  String
+  approvedBy   String?
+  approvedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([status])
+  @@index([expenseDate])
+  @@index([submittedBy])
+  @@map("expenses")
+}
+
 model Invoice {
   id                 String          @id @default(cuid())
   invoiceNumber      String          @unique
@@ -4747,12 +4769,15 @@ model KimmpStrategicDecision {
   selectedBy  String?   // userId or 'AUTO'
   outcome     String?
   confidence  Float     @default(0.0)
-  agentsMixed String[]  @default([])
-  createdAt   DateTime  @default(now())
-  resolvedAt  DateTime?
+  agentsMixed  String[]  @default([])
+  workflowName String?   // canvas link: OsWorkflow.name
+  stepName     String?   // canvas link: WorkflowStep.name
+  createdAt    DateTime  @default(now())
+  resolvedAt   DateTime?
 
   memories KimmpMemory[]
 
+  @@index([workflowName, stepName])
   @@index([createdAt])
   @@map("kimmp_strategic_decisions")
 }
@@ -5530,6 +5555,7 @@ model EnterpriseBlueprint {
   deployedAt  DateTime?
   importedAt  DateTime?
   createdBy   String?
+  gaps        Json?                           // array of { id, category, description, severity, reportedAt, packVersion }
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 

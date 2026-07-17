@@ -8,6 +8,7 @@ import {
   NodeToolbar,
   useNodesState,
   useEdgesState,
+  useReactFlow,
   addEdge,
   Handle,
   Position,
@@ -28,6 +29,9 @@ import {
   Target, Database, BarChart2, Scale, Shuffle, Shield, BookOpen, TrendingUp,
   FlaskConical, Star, ArrowRight, AlertTriangle, Gauge, Lightbulb, Microscope,
   Activity, Code2, CheckCircle, XCircle, Clock3,
+  Building2, Users, Crosshair, Wallet, Flag,
+  Wrench, Archive, Layers, Eye, UserCheck,
+  Share2, Download, Keyboard,
 } from 'lucide-react'
 import { api } from '@lib/api'
 import { connectSocket, getSocket } from '@lib/socket'
@@ -37,7 +41,7 @@ import { useSearchParams } from 'react-router-dom'
 import type { WorkflowStep, StepType, WvisStepType, IntelStepType, Workflow } from '../types'
 import { validateWorkflow, scoreWorkflow, type ValidationIssue, type ValidationResult, type ValidationScore } from '../workflowValidation'
 
-type CanvasMode = 'workflow' | 'intelligence' | 'all'
+type CanvasMode = 'workflow' | 'intelligence' | 'enterprise' | 'agents' | 'all'
 
 // ── Live Intelligence — signal-to-node-type affinity ──────────────────────────
 // Maps KIMMP signal types to the intelligence nodes that should pulse when active.
@@ -119,7 +123,7 @@ function useLiveIntelligence(enabled: boolean, canvasMode: CanvasMode) {
     return { liveNodeTypes: types, nodeConfidence: confidence, liveSignalCount: signals.length }
   }, [signals])
 
-  return { liveNodeTypes, liveSignalCount, liveActive, nodeConfidence, kpiData }
+  return { liveNodeTypes, liveSignalCount, liveActive, nodeConfidence, kpiData, signals }
 }
 
 // ── Tokens ────────────────────────────────────────────────────────────────────
@@ -150,7 +154,7 @@ const CYAN    = '#06d6a0'
 const HONEY   = '#f9c74f'  // Insight — warmth of understanding
 const SAGE    = '#43aa8b'  // Hypothesis — scientific, provisional
 
-const NODE_CFG: Record<string, { label: string; color: string; Icon: React.ElementType; emoji: string }> = {
+const NODE_CFG: Record<string, { label: string; color: string; Icon: React.ElementType; emoji: string; description?: string }> = {
   // ── Workflow canvas (Phase 1) ──────────────────────────────────────────────
   notify:       { label: 'Notify',     color: GREEN,  Icon: Bell,       emoji: '📢' },
   wait:         { label: 'Wait',       color: AMBER,  Icon: Clock,      emoji: '⏳' },
@@ -160,17 +164,31 @@ const NODE_CFG: Record<string, { label: string; color: string; Icon: React.Eleme
   integrate:    { label: 'Integrate',  color: RED,    Icon: LinkIcon,   emoji: '🔌' },
   condition:    { label: 'Condition',  color: AMBER,  Icon: GitBranch,  emoji: '◇'  },
   // ── Intelligence canvas (Phase 2) — 9+1 thinking nodes ────────────────────
-  goal:         { label: 'Goal',       color: ROSE,   Icon: Target,      emoji: '🎯' },
-  context:      { label: 'Context',    color: CYAN,   Icon: Database,    emoji: '🧠' },
-  analyze:      { label: 'Analyze',    color: INDIGO, Icon: BarChart2,   emoji: '🔍' },
-  insight:      { label: 'Insight',    color: HONEY,  Icon: Lightbulb,   emoji: '💡' },
-  hypothesis:   { label: 'Hypothesis', color: SAGE,   Icon: Microscope,  emoji: '🧪' },
-  simulate:     { label: 'Simulate',   color: ORANGE, Icon: FlaskConical, emoji: '🎲' },
-  decision:     { label: 'Decision',   color: VIOLET, Icon: Scale,       emoji: '⚖️' },
-  policy:       { label: 'Policy',     color: RED,    Icon: Shield,      emoji: '🛡️' },
-  execute:      { label: 'Execute',    color: LIME,   Icon: Zap,         emoji: '⚡' },
-  learn:        { label: 'Learn',      color: TEAL,   Icon: BookOpen,    emoji: '💾' },
-  kpi:          { label: 'KPI',        color: GOLD,   Icon: TrendingUp,  emoji: '📊' },
+  goal:         { label: 'Goal',       color: ROSE,   Icon: Target,      emoji: '🎯', description: 'What are we trying to achieve?' },
+  context:      { label: 'Context',    color: CYAN,   Icon: Database,    emoji: '🧠', description: 'What does the system know right now?' },
+  analyze:      { label: 'Analyze',    color: INDIGO, Icon: BarChart2,   emoji: '🔍', description: 'What happened? (facts + patterns)' },
+  insight:      { label: 'Insight',    color: HONEY,  Icon: Lightbulb,   emoji: '💡', description: 'Why does it matter? (causal interpretation)' },
+  hypothesis:   { label: 'Hypothesis', color: SAGE,   Icon: Microscope,  emoji: '🧪', description: 'What do we think is true? (testable claim)' },
+  simulate:     { label: 'Simulate',   color: ORANGE, Icon: FlaskConical, emoji: '🎲', description: 'What happens if we do X?' },
+  decision:     { label: 'Decision',   color: VIOLET, Icon: Scale,       emoji: '⚖️', description: 'What should we do?' },
+  policy:       { label: 'Policy',     color: RED,    Icon: Shield,      emoji: '🛡️', description: 'What rules constrain us?' },
+  execute:      { label: 'Execute',    color: LIME,   Icon: Zap,         emoji: '⚡', description: 'Take the action.' },
+  learn:        { label: 'Learn',      color: TEAL,   Icon: BookOpen,    emoji: '💾', description: 'Record outcome → Enterprise Memory' },
+  kpi:          { label: 'KPI',        color: GOLD,   Icon: TrendingUp,  emoji: '📊', description: 'Strategic anchor — outcome measure' },
+  // ── Enterprise canvas (Phase 3) — business architecture nodes ────────────
+  department:   { label: 'Department', color: BLUE,   Icon: Building2,  emoji: '🏢', description: 'Organizational unit or division' },
+  team:         { label: 'Team',       color: TEAL,   Icon: Users,      emoji: '👥', description: 'Squad, team, or working group' },
+  objective:    { label: 'Objective',  color: INDIGO, Icon: Crosshair,  emoji: '🎯', description: 'Measurable OKR or strategic objective' },
+  budget:       { label: 'Budget',     color: GOLD,   Icon: Wallet,     emoji: '💰', description: 'Cost center or budget allocation' },
+  risk:         { label: 'Risk',       color: RED,    Icon: AlertTriangle, emoji: '⚠️', description: 'Business risk or exposure item' },
+  milestone:    { label: 'Milestone',  color: ORANGE, Icon: Flag,       emoji: '🏁', description: 'Key delivery checkpoint or deadline' },
+  // ── Agent Composition canvas (Phase 3) — agent pipeline nodes ─────────────
+  trigger:      { label: 'Trigger',    color: PURPLE, Icon: Zap,        emoji: '⚡', description: 'Event or condition that starts the pipeline' },
+  tool:         { label: 'Tool',       color: BLUE,   Icon: Wrench,     emoji: '🔧', description: 'External capability or function call' },
+  store:        { label: 'Store',      color: TEAL,   Icon: Archive,    emoji: '💾', description: 'Memory store, vector DB, or RAG context' },
+  pipeline:     { label: 'Pipeline',   color: LIME,   Icon: Layers,     emoji: '🔄', description: 'Sequential or parallel processing stage' },
+  monitor:      { label: 'Monitor',    color: AMBER,  Icon: Eye,        emoji: '👁️', description: 'Observes a live metric or output stream' },
+  handoff:      { label: 'Handoff',    color: RED,    Icon: UserCheck,  emoji: '🤝', description: 'Escalation to human judgment' },
   // ── Legacy aliases ─────────────────────────────────────────────────────────
   action:       { label: 'Agent',      color: BLUE,   Icon: Play,       emoji: '🤖' },
   notification: { label: 'Notify',     color: GREEN,  Icon: Bell,       emoji: '📢' },
@@ -181,7 +199,8 @@ const NODE_CFG: Record<string, { label: string; color: string; Icon: React.Eleme
 
 // NODE_REGISTRY — single source of truth for node type → category mapping.
 // All new node types are added here; PALETTE derives from this automatically.
-const NODE_REGISTRY: Array<{ type: string; category: 'intelligence' | 'operational' }> = [
+const NODE_REGISTRY: Array<{ type: string; category: 'intelligence' | 'operational' | 'enterprise' | 'agents' }> = [
+  // Intelligence canvas — thinking nodes
   { type: 'goal',       category: 'intelligence' },
   { type: 'context',    category: 'intelligence' },
   { type: 'analyze',    category: 'intelligence' },
@@ -193,6 +212,7 @@ const NODE_REGISTRY: Array<{ type: string; category: 'intelligence' | 'operation
   { type: 'execute',    category: 'intelligence' },
   { type: 'learn',      category: 'intelligence' },
   { type: 'kpi',        category: 'intelligence' },
+  // Operational canvas — workflow nodes
   { type: 'notify',     category: 'operational'  },
   { type: 'wait',       category: 'operational'  },
   { type: 'agent',      category: 'operational'  },
@@ -200,17 +220,61 @@ const NODE_REGISTRY: Array<{ type: string; category: 'intelligence' | 'operation
   { type: 'create',     category: 'operational'  },
   { type: 'integrate',  category: 'operational'  },
   { type: 'condition',  category: 'operational'  },
+  // Enterprise canvas — business architecture nodes
+  { type: 'department', category: 'enterprise'   },
+  { type: 'team',       category: 'enterprise'   },
+  { type: 'objective',  category: 'enterprise'   },
+  { type: 'budget',     category: 'enterprise'   },
+  { type: 'risk',       category: 'enterprise'   },
+  { type: 'milestone',  category: 'enterprise'   },
+  // Agent Composition canvas — agent pipeline nodes
+  { type: 'trigger',    category: 'agents'        },
+  { type: 'tool',       category: 'agents'        },
+  { type: 'store',      category: 'agents'        },
+  { type: 'pipeline',   category: 'agents'        },
+  { type: 'monitor',    category: 'agents'        },
+  { type: 'handoff',    category: 'agents'        },
 ]
 
 // Palette derives from NODE_REGISTRY — adding a node type = add one entry above.
 const PALETTE: Record<CanvasMode, string[]> = {
   workflow:     NODE_REGISTRY.filter(n => n.category === 'operational').map(n => n.type),
   intelligence: NODE_REGISTRY.filter(n => n.category === 'intelligence').map(n => n.type),
+  enterprise:   NODE_REGISTRY.filter(n => n.category === 'enterprise').map(n => n.type),
+  agents:       NODE_REGISTRY.filter(n => n.category === 'agents').map(n => n.type),
   all:          NODE_REGISTRY.map(n => n.type),
 }
 
-// All intelligence-canvas node types that open the AI Explain drawer on click
-const INTEL_EXPLAIN = new Set<string>(['goal', 'context', 'analyze', 'insight', 'hypothesis', 'simulate', 'decision', 'policy', 'execute', 'learn', 'kpi'])
+// WVIS 3.0 — what node logically follows each intelligence thinking node type
+const INTEL_NEXT: Record<string, string[]> = {
+  goal:       ['context', 'kpi', 'policy'],
+  context:    ['analyze', 'hypothesis'],
+  analyze:    ['insight', 'hypothesis', 'simulate'],
+  insight:    ['decision', 'simulate'],
+  hypothesis: ['simulate', 'analyze'],
+  simulate:   ['decision', 'policy'],
+  decision:   ['execute', 'policy'],
+  policy:     ['execute'],
+  execute:    ['learn'],
+  learn:      ['kpi', 'goal'],
+  kpi:        ['insight', 'goal'],
+}
+
+// WVIS 3.0 — copilot placeholder text per canvas mode
+const COPILOT_PLACEHOLDER: Record<CanvasMode, string> = {
+  intelligence: 'Describe a strategic challenge → WAANDA builds the thinking chain…',
+  workflow:     'Describe a workflow → WAANDA generates it on canvas…',
+  enterprise:   'Describe your business architecture → WAANDA maps it…',
+  agents:       'Describe an agent pipeline → WAANDA scaffolds it…',
+  all:          'Describe anything → WAANDA generates the graph…',
+}
+
+// All node types that open the AI Explain drawer on click (intelligence + enterprise + agents)
+const INTEL_EXPLAIN = new Set<string>([
+  'goal', 'context', 'analyze', 'insight', 'hypothesis', 'simulate', 'decision', 'policy', 'execute', 'learn', 'kpi',
+  'department', 'team', 'objective', 'budget', 'risk', 'milestone',
+  'trigger', 'tool', 'store', 'pipeline', 'monitor', 'handoff',
+])
 const NODE_W = 234
 const NODE_H = 96
 
@@ -899,6 +963,19 @@ interface DecisionAnalysis {
   dependencies: number
 }
 
+interface LiveRecord {
+  id:          string
+  question:    string
+  reasoning:   string
+  evidence:    Array<{ source: string; type: string; snippet: string }>
+  options:     Array<{ label: string; recommendation: string; pros: string[]; cons: string[]; roi?: string; confidence: number }>
+  confidence:  number
+  selected?:   string
+  outcome?:    string
+  agentsMixed: string[]
+  createdAt:   string
+}
+
 function DecisionExplainDrawer({ step, workflowName, nodes, edges, onClose }: {
   step:         WorkflowStep
   workflowName: string
@@ -906,11 +983,30 @@ function DecisionExplainDrawer({ step, workflowName, nodes, edges, onClose }: {
   edges:        Edge[]
   onClose:      () => void
 }) {
-  const [loading,  setLoading]  = useState(true)
-  const [analysis, setAnalysis] = useState<DecisionAnalysis | null>(null)
-  const [fetchErr, setFetchErr] = useState('')
+  const [loading,      setLoading]      = useState(true)
+  const [analysis,     setAnalysis]     = useState<DecisionAnalysis | null>(null)
+  const [liveRecord,   setLiveRecord]   = useState<LiveRecord | null>(null)
+  const [fetchErr,     setFetchErr]     = useState('')
+  const [runningKimmp, setRunningKimmp] = useState(false)
+  const [kimmpErr,     setKimmpErr]     = useState('')
 
   const cfg = NODE_CFG[step.type] ?? NODE_CFG.decision
+
+  async function runKimmpDecision() {
+    setRunningKimmp(true); setKimmpErr('')
+    try {
+      const question = step.description?.trim()
+        || `Analyze the strategic decision: ${step.name}`
+      const res = await api.post('/admin/kangqore-immp/strategic-decisions', {
+        question, workflowName, stepName: step.name,
+      })
+      if (res.data) setLiveRecord(res.data)
+    } catch (e: any) {
+      setKimmpErr(e?.response?.data?.error || e?.message || 'KIMMP analysis failed')
+    } finally {
+      setRunningKimmp(false)
+    }
+  }
 
   // Derive ancestor + descendant names from graph
   const ancestors: string[]   = []
@@ -936,16 +1032,20 @@ function DecisionExplainDrawer({ step, workflowName, nodes, edges, onClose }: {
   }
 
   useEffect(() => {
-    setLoading(true); setAnalysis(null); setFetchErr('')
-    api.post('/admin/kangqore-immp/workflows/explain-decision', {
-      nodeName:     step.name,
-      nodeType:     step.type,
-      workflowName,
-      ancestors,
-      descendants,
-      stepCount:    nodes.length,
-    })
-      .then(r  => setAnalysis(r.data))
+    setLoading(true); setAnalysis(null); setLiveRecord(null); setFetchErr('')
+    Promise.all([
+      api.post('/admin/kangqore-immp/workflows/explain-decision', {
+        nodeName: step.name, nodeType: step.type, workflowName,
+        ancestors, descendants, stepCount: nodes.length,
+      }),
+      api.get('/admin/kangqore-immp/strategic-decisions/by-step', {
+        params: { workflowName, stepName: step.name },
+      }).catch(() => null),
+    ])
+      .then(([aiRes, liveRes]) => {
+        setAnalysis(aiRes.data)
+        if (liveRes?.data) setLiveRecord(liveRes.data)
+      })
       .catch(e => setFetchErr(e?.response?.data?.error || e?.message || 'WAANDA analysis failed'))
       .finally(() => setLoading(false))
   }, [step.id]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -999,6 +1099,11 @@ function DecisionExplainDrawer({ step, workflowName, nodes, edges, onClose }: {
               <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', color: SLATE, letterSpacing: '0.08em' }}>
                 Intelligence Canvas
               </span>
+              {liveRecord && (
+                <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 5, color: GREEN, background: `${GREEN}12`, border: `1px solid ${GREEN}28` }}>
+                  KIMMP Live
+                </span>
+              )}
             </div>
             <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--os-text-1)', margin: '0 0 3px' }}>
               {step.name}
@@ -1012,13 +1117,54 @@ function DecisionExplainDrawer({ step, workflowName, nodes, edges, onClose }: {
           </button>
         </div>
 
-        {/* WAANDA label */}
+        {/* WAANDA label + KIMMP trigger */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 16 }}>
           <Brain style={{ width: 11, height: 11, color: PURPLE }} />
           <span style={{ fontSize: 9, fontWeight: 700, color: PURPLE, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
             WAANDA Strategic Analysis
           </span>
+          {!loading && !liveRecord && (
+            <button
+              onClick={runKimmpDecision}
+              disabled={runningKimmp}
+              style={{
+                marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5,
+                padding: '4px 10px', borderRadius: 7, cursor: 'pointer',
+                background: runningKimmp ? `${GREEN}08` : `${GREEN}12`,
+                border: `1px solid ${GREEN}30`, color: GREEN,
+                fontSize: 9, fontWeight: 700, letterSpacing: '0.04em',
+                opacity: runningKimmp ? 0.7 : 1,
+                transition: 'all 0.15s ease',
+              }}
+            >
+              {runningKimmp
+                ? <><Loader2 style={{ width: 9, height: 9, animation: 'spin 1s linear infinite' }} /> Running…</>
+                : <><Zap style={{ width: 9, height: 9 }} /> Run KIMMP</>
+              }
+            </button>
+          )}
+          {!loading && liveRecord && (
+            <button
+              onClick={runKimmpDecision}
+              disabled={runningKimmp}
+              style={{
+                marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5,
+                padding: '4px 10px', borderRadius: 7, cursor: 'pointer',
+                background: 'none', border: `1px solid ${SLATE}25`,
+                color: SLATE, fontSize: 9, fontWeight: 600,
+                opacity: runningKimmp ? 0.5 : 0.7,
+              }}
+            >
+              {runningKimmp ? <Loader2 style={{ width: 9, height: 9, animation: 'spin 1s linear infinite' }} /> : '↺'} Refresh
+            </button>
+          )}
         </div>
+
+        {kimmpErr && (
+          <div style={{ padding: '8px 12px', borderRadius: 8, background: `${RED}0c`, border: `1px solid ${RED}22`, marginBottom: 12 }}>
+            <p style={{ fontSize: 11, color: RED, margin: 0 }}>{kimmpErr}</p>
+          </div>
+        )}
 
         {loading && (
           <div style={{
@@ -1050,18 +1196,19 @@ function DecisionExplainDrawer({ step, workflowName, nodes, edges, onClose }: {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
               <div style={{ background: RAISE, border: `1px solid ${EDGE_C}`, borderRadius: 12, padding: '12px 14px' }}>
                 <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: SLATE, margin: '0 0 6px' }}>
-                  Confidence
+                  {liveRecord ? 'KIMMP Confidence' : 'Confidence'}
                 </p>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 6 }}>
-                  <span style={{ fontSize: 28, fontWeight: 800, color: confidenceColor(analysis.confidence), lineHeight: 1 }}>
-                    {analysis.confidence}
+                  <span style={{ fontSize: 28, fontWeight: 800, color: confidenceColor(liveRecord ? liveRecord.confidence : analysis.confidence), lineHeight: 1 }}>
+                    {liveRecord ? liveRecord.confidence : analysis.confidence}
                   </span>
                   <span style={{ fontSize: 12, color: SLATE }}>/100</span>
                 </div>
                 <div style={{ height: 4, borderRadius: 2, background: `${SLATE}20`, overflow: 'hidden' }}>
                   <div style={{
-                    height: '100%', borderRadius: 2, width: `${analysis.confidence}%`,
-                    background: confidenceColor(analysis.confidence),
+                    height: '100%', borderRadius: 2,
+                    width: `${liveRecord ? liveRecord.confidence : analysis.confidence}%`,
+                    background: confidenceColor(liveRecord ? liveRecord.confidence : analysis.confidence),
                     transition: `width 0.5s ${EASE}`,
                   }} />
                 </div>
@@ -1131,18 +1278,126 @@ function DecisionExplainDrawer({ step, workflowName, nodes, edges, onClose }: {
               </Section>
             )}
 
-            {/* Pending */}
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', paddingTop: 4 }}>
-              {[
-                { label: 'Cost · pending', color: TEAL },
-                { label: 'Latency · pending', color: TEAL },
-                { label: 'WIR integration · Phase 3', color: SLATE },
-              ].map(p => (
-                <span key={p.label} style={{
-                  fontSize: 9, fontWeight: 600, padding: '2px 7px', borderRadius: 5,
-                  color: p.color, background: `${p.color}0a`, border: `1px solid ${p.color}20`, opacity: 0.65,
-                }}>{p.label}</span>
-              ))}
+            {/* KIMMP Live Record panel */}
+            {liveRecord && (
+              <>
+                <div style={{ height: 1, background: EDGE_C, margin: '16px 0 14px' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: GREEN, flexShrink: 0 }} />
+                  <span style={{ fontSize: 9, fontWeight: 700, color: GREEN, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    KIMMP Live Record
+                  </span>
+                  <span style={{ fontSize: 9, color: SLATE, marginLeft: 'auto' }}>
+                    {new Date(liveRecord.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  </span>
+                </div>
+
+                <p style={{ fontSize: 11, color: 'var(--os-text-2)', fontStyle: 'italic', margin: '0 0 12px',
+                  background: `${GREEN}06`, padding: '8px 12px', borderRadius: 8, border: `1px solid ${GREEN}16`, lineHeight: 1.55 }}>
+                  {liveRecord.question}
+                </p>
+
+                {liveRecord.evidence?.length > 0 && (
+                  <Section label="Real Evidence">
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                      {liveRecord.evidence.map((ev, i) => (
+                        <span key={i} style={{
+                          fontSize: 9, fontWeight: 600, padding: '3px 8px', borderRadius: 6,
+                          background: `${GREEN}0e`, border: `1px solid ${GREEN}28`, color: GREEN,
+                        }}>{ev.source} · {ev.snippet}</span>
+                      ))}
+                    </div>
+                  </Section>
+                )}
+
+                {liveRecord.options?.length > 0 && (
+                  <Section label="Structured Options">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {liveRecord.options.map((opt, i) => (
+                        <div key={i} style={{
+                          padding: '10px 12px', borderRadius: 10,
+                          background: liveRecord.selected === opt.label ? `${AMBER}0c` : `${ORANGE}06`,
+                          border: `1px solid ${liveRecord.selected === opt.label ? AMBER : ORANGE}22`,
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 5 }}>
+                            <span style={{ fontSize: 10, fontWeight: 700, color: liveRecord.selected === opt.label ? AMBER : ORANGE }}>
+                              {opt.label}
+                            </span>
+                            {liveRecord.selected === opt.label && (
+                              <span style={{ fontSize: 9, fontWeight: 700, color: AMBER, background: `${AMBER}18`, border: `1px solid ${AMBER}35`, padding: '1px 6px', borderRadius: 4 }}>
+                                Selected
+                              </span>
+                            )}
+                            <span style={{ fontSize: 9, color: SLATE, marginLeft: 'auto' }}>
+                              {opt.confidence}% confidence
+                            </span>
+                          </div>
+                          <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '0 0 5px', lineHeight: 1.5 }}>{opt.recommendation}</p>
+                          <div style={{ height: 3, borderRadius: 2, background: `${SLATE}18`, overflow: 'hidden', marginBottom: 6 }}>
+                            <div style={{ height: '100%', borderRadius: 2, width: `${opt.confidence}%`, background: confidenceColor(opt.confidence) }} />
+                          </div>
+                          {(opt.pros?.length > 0 || opt.cons?.length > 0) && (
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+                              {opt.pros?.length > 0 && (
+                                <div>
+                                  {opt.pros.map((p, j) => (
+                                    <p key={j} style={{ fontSize: 9, color: GREEN, margin: '0 0 2px', lineHeight: 1.4 }}>+ {p}</p>
+                                  ))}
+                                </div>
+                              )}
+                              {opt.cons?.length > 0 && (
+                                <div>
+                                  {opt.cons.map((c, j) => (
+                                    <p key={j} style={{ fontSize: 9, color: RED, margin: '0 0 2px', lineHeight: 1.4 }}>− {c}</p>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                          {opt.roi && (
+                            <p style={{ fontSize: 9, color: TEAL, margin: '4px 0 0', fontWeight: 600 }}>ROI: {opt.roi}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </Section>
+                )}
+
+                {liveRecord.outcome && (
+                  <Section label="Recorded Outcome">
+                    <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: 0, lineHeight: 1.55,
+                      background: `${TEAL}08`, padding: '8px 12px', borderRadius: 8, border: `1px solid ${TEAL}22` }}>
+                      {liveRecord.outcome}
+                    </p>
+                  </Section>
+                )}
+
+                {liveRecord.agentsMixed?.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 4 }}>
+                    {liveRecord.agentsMixed.map(a => (
+                      <span key={a} style={{
+                        fontSize: 9, color: SLATE, background: `${SLATE}0a`, border: `1px solid ${SLATE}18`,
+                        padding: '2px 6px', borderRadius: 4,
+                      }}>{a}</span>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Footer tag */}
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', paddingTop: liveRecord ? 12 : 4 }}>
+              {liveRecord ? (
+                <span style={{ fontSize: 9, fontWeight: 600, padding: '2px 7px', borderRadius: 5,
+                  color: GREEN, background: `${GREEN}0a`, border: `1px solid ${GREEN}20`, opacity: 0.7 }}>
+                  KIMMP Live · {new Date(liveRecord.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                </span>
+              ) : (
+                <span style={{ fontSize: 9, fontWeight: 600, padding: '2px 7px', borderRadius: 5,
+                  color: SLATE, background: `${SLATE}0a`, border: `1px solid ${SLATE}20`, opacity: 0.65 }}>
+                  WIR · Phase 3
+                </span>
+              )}
             </div>
           </>
         )}
@@ -1668,10 +1923,10 @@ function NodeConfigDrawer({
 // ── Node palette chip ─────────────────────────────────────────────────────────
 
 function PaletteChip({ type, cfg, onClick }: {
-  type: WvisStepType; cfg: typeof NODE_CFG[string]; onClick: () => void
+  type: string; cfg: typeof NODE_CFG[string]; onClick: () => void
 }) {
   return (
-    <button onClick={onClick} style={{
+    <button onClick={onClick} title={cfg.description} style={{
       display: 'flex', alignItems: 'center', gap: 7, padding: '7px 9px', width: '100%',
       borderRadius: 10, cursor: 'pointer',
       background: `${cfg.color}08`, border: `1px solid ${cfg.color}1a`,
@@ -1681,9 +1936,72 @@ function PaletteChip({ type, cfg, onClick }: {
       onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = `${cfg.color}08`; el.style.borderColor = `${cfg.color}1a` }}
     >
       <span style={{ fontSize: 13, lineHeight: 1 }}>{cfg.emoji}</span>
-      <span style={{ fontSize: 10, fontWeight: 600, color: cfg.color, flex: 1 }}>{cfg.label}</span>
-      <Plus style={{ width: 9, height: 9, color: cfg.color, opacity: 0.6 }} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <span style={{ fontSize: 10, fontWeight: 600, color: cfg.color, display: 'block' }}>{cfg.label}</span>
+        {cfg.description && (
+          <span style={{ fontSize: 9, color: SLATE, display: 'block', lineHeight: 1.3, marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {cfg.description}
+          </span>
+        )}
+      </div>
+      <Plus style={{ width: 9, height: 9, color: cfg.color, opacity: 0.6, flexShrink: 0 }} />
     </button>
+  )
+}
+
+// ── WVIS 3.0 — Node Suggestions (intelligence mode) ──────────────────────────
+// Shown below the palette when in intelligence mode. Suggests what node logically
+// follows the last-placed or last-selected node in the thinking chain.
+
+function NodeSuggestions({ lastType, existingTypes, onAdd }: {
+  lastType:      string | null
+  existingTypes: string[]
+  onAdd:         (type: string) => void
+}) {
+  if (!lastType || !INTEL_NEXT[lastType]) return null
+  const suggestions = INTEL_NEXT[lastType]
+    .filter(t => !existingTypes.includes(t))
+    .slice(0, 3)
+  if (!suggestions.length) return null
+
+  return (
+    <div style={{ marginTop: 10 }}>
+      <p style={{
+        fontSize: 9, fontWeight: 700, textTransform: 'uppercase',
+        letterSpacing: '0.08em', color: PURPLE, margin: '0 0 6px 2px',
+        display: 'flex', alignItems: 'center', gap: 5,
+      }}>
+        <Sparkles style={{ width: 9, height: 9 }} />
+        WAANDA suggests
+      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {suggestions.map(t => {
+          const cfg = NODE_CFG[t]
+          if (!cfg) return null
+          return (
+            <button key={t} onClick={() => onAdd(t)} style={{
+              display: 'flex', alignItems: 'center', gap: 6, padding: '6px 8px',
+              borderRadius: 9, cursor: 'pointer', width: '100%',
+              background: `${cfg.color}0c`,
+              border: `1px dashed ${cfg.color}40`,
+              transition: `all 0.14s ${EASE}`,
+            }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = `${cfg.color}18`; el.style.borderStyle = 'solid' }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = `${cfg.color}0c`; el.style.borderStyle = 'dashed' }}
+            >
+              <span style={{ fontSize: 12 }}>{cfg.emoji}</span>
+              <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
+                <span style={{ fontSize: 10, fontWeight: 700, color: cfg.color, display: 'block' }}>{cfg.label}</span>
+                <span style={{ fontSize: 8, color: SLATE, display: 'block', lineHeight: 1.3, marginTop: 1 }}>
+                  Next in chain
+                </span>
+              </div>
+              <ArrowRight style={{ width: 8, height: 8, color: cfg.color, opacity: 0.5, flexShrink: 0 }} />
+            </button>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
@@ -1786,6 +2104,164 @@ function ContextMenu({ menu, availableTypes, onExplain, onDuplicate, onDelete, o
   )
 }
 
+// ── FitViewHook — must live inside ReactFlow context ─────────────────────────
+function FitViewHook({ fitTrigger }: { fitTrigger: number }) {
+  const { fitView } = useReactFlow()
+  useEffect(() => {
+    if (fitTrigger > 0) fitView({ padding: 0.25, maxZoom: 1.2, duration: 350 })
+  }, [fitTrigger, fitView])
+  return null
+}
+
+// ── ShareModal ────────────────────────────────────────────────────────────────
+const KB_SHORTCUTS = [
+  { key: '⌘Z / ⌘⇧Z', desc: 'Undo / Redo' },
+  { key: '⌘D',        desc: 'Duplicate selected node' },
+  { key: '⌘A',        desc: 'Select all nodes' },
+  { key: 'Delete / ⌫', desc: 'Delete selected node' },
+  { key: '↑↓ / ↔',   desc: 'Navigate nodes' },
+  { key: 'Enter',      desc: 'Open node config' },
+  { key: 'Esc',        desc: 'Deselect / close' },
+  { key: 'F',          desc: 'Fit canvas to view' },
+  { key: '?',          desc: 'Toggle this cheatsheet' },
+]
+
+function ShareModal({ nodes, edges, wfName, onClose }: {
+  nodes:  Node[]; edges: Edge[]; wfName: string; onClose: () => void
+}) {
+  const [copied, setCopied] = useState(false)
+  const [tab,    setTab]    = useState<'share' | 'keys'>('share')
+
+  const canvasPayload = JSON.stringify({ nodes, edges, name: wfName, v: 1 })
+  const encoded       = btoa(unescape(encodeURIComponent(canvasPayload)))
+  const shareUrl      = `${window.location.origin}${window.location.pathname}?canvas=${encoded}`
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setCopied(true); setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  const exportJson = () => {
+    const blob = new Blob([JSON.stringify({ nodes, edges, name: wfName, exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' })
+    const url  = URL.createObjectURL(blob)
+    const a    = document.createElement('a')
+    a.href = url; a.download = `${wfName.replace(/\s+/g, '-').toLowerCase()}.canvas.json`
+    a.click(); URL.revokeObjectURL(url)
+  }
+
+  useEffect(() => {
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', esc)
+    return () => document.removeEventListener('keydown', esc)
+  }, [onClose])
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', zIndex: 9999,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }} onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div style={{
+        background: CARD, border: `1px solid ${EDGE_C}`, borderRadius: 18, width: 480, maxWidth: '92vw',
+        boxShadow: '0 24px 80px rgba(0,0,0,0.6)',
+        display: 'flex', flexDirection: 'column', overflow: 'hidden',
+      }}>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '16px 20px', borderBottom: `1px solid ${EDGE_C}` }}>
+          <div style={{ display: 'flex', gap: 0, borderRadius: 9, overflow: 'hidden', border: `1px solid ${EDGE_C}`, flexShrink: 0 }}>
+            {(['share', 'keys'] as const).map(t => (
+              <button key={t} onClick={() => setTab(t)} style={{
+                padding: '5px 12px', fontSize: 10, fontWeight: 700, cursor: 'pointer', border: 'none',
+                background: tab === t ? `${BLUE}20` : 'transparent',
+                color: tab === t ? BLUE : SLATE,
+              }}>
+                {t === 'share' ? '↗ Share' : '⌨ Shortcuts'}
+              </button>
+            ))}
+          </div>
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {wfName}
+          </span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, borderRadius: 6, color: SLATE }}>
+            <X style={{ width: 14, height: 14 }} />
+          </button>
+        </div>
+
+        {/* Body */}
+        {tab === 'share' ? (
+          <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: SLATE, marginBottom: 8 }}>
+                Share Link — encodes full canvas state
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{
+                  flex: 1, padding: '8px 10px', borderRadius: 8, border: `1px solid ${EDGE_C}`,
+                  background: BG, fontSize: 10, fontFamily: 'monospace', color: SLATE,
+                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                }}>
+                  {shareUrl.length > 60 ? shareUrl.slice(0, 60) + '…' : shareUrl}
+                </div>
+                <button onClick={copyLink} style={{
+                  flexShrink: 0, display: 'flex', alignItems: 'center', gap: 5,
+                  padding: '8px 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
+                  background: copied ? `${GREEN}18` : `${BLUE}18`,
+                  color: copied ? GREEN : BLUE, fontSize: 11, fontWeight: 700,
+                  transition: 'all 0.2s',
+                }}>
+                  {copied ? <CheckCircle2 style={{ width: 12, height: 12 }} /> : <Copy style={{ width: 12, height: 12 }} />}
+                  {copied ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+            <div style={{ height: 1, background: EDGE_C }} />
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: SLATE, marginBottom: 8 }}>
+                Export Canvas JSON
+              </div>
+              <button onClick={exportJson} style={{
+                display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px', borderRadius: 10,
+                border: `1px solid ${PURPLE}30`, background: `${PURPLE}10`, color: PURPLE,
+                fontSize: 12, fontWeight: 700, cursor: 'pointer', width: '100%',
+                transition: 'all 0.15s',
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${PURPLE}1e` }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = `${PURPLE}10` }}
+              >
+                <Download style={{ width: 14, height: 14 }} />
+                Download {wfName.replace(/\s+/g, '-').toLowerCase()}.canvas.json
+                <span style={{ marginLeft: 'auto', fontSize: 9, color: SLATE }}>
+                  {nodes.length} nodes · {edges.length} edges
+                </span>
+              </button>
+            </div>
+            <div style={{ padding: '10px 12px', borderRadius: 10, background: `${BLUE}08`, border: `1px solid ${BLUE}20` }}>
+              <p style={{ fontSize: 10, color: SLATE, lineHeight: 1.6, margin: 0 }}>
+                The share link encodes the full canvas (nodes, edges, positions) in the URL. Anyone with the link can open it in their WAANDA Graph canvas. JSON export is ideal for version control or Blueprint archiving.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div style={{ padding: '16px 20px 20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {KB_SHORTCUTS.map(({ key, desc }) => (
+                <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '7px 0', borderBottom: `1px solid ${EDGE_C}20` }}>
+                  <kbd style={{
+                    fontFamily: 'monospace', fontSize: 10, fontWeight: 700,
+                    padding: '2px 7px', borderRadius: 6, minWidth: 90, textAlign: 'center',
+                    background: `${BLUE}12`, color: BLUE, border: `1px solid ${BLUE}28`,
+                  }}>{key}</kbd>
+                  <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>{desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ── WorkflowCanvas ────────────────────────────────────────────────────────────
 
 interface Snapshot { nodes: Node[]; edges: Edge[] }
@@ -1810,10 +2286,13 @@ export function WorkflowCanvas() {
   const [liveMode,     setLiveMode]     = useState(false)
   const [showCompile,  setShowCompile]  = useState(false)
   const [compiledHash, setCompiledHash] = useState('')
+  const [showShare,    setShowShare]    = useState(false)
+  const [fitTrigger,   setFitTrigger]  = useState(0)
+  const [showFeed,     setShowFeed]    = useState(false)
 
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const { liveNodeTypes, liveSignalCount, liveActive, nodeConfidence, kpiData } = useLiveIntelligence(liveMode, canvasMode)
+  const { liveNodeTypes, liveSignalCount, liveActive, nodeConfidence, kpiData, signals } = useLiveIntelligence(liveMode, canvasMode)
 
   // A.3 — Live run status
   const [runNodeState, setRunNodeState] = useState<Map<string, string>>(new Map())
@@ -1834,6 +2313,21 @@ export function WorkflowCanvas() {
 
   useEffect(() => { nodesRef.current = nodes }, [nodes])
   useEffect(() => { edgesRef.current = edges }, [edges])
+
+  // Canvas import — ?canvas=<base64> → load encoded nodes+edges
+  useEffect(() => {
+    const enc = searchParams.get('canvas')
+    if (!enc) return
+    try {
+      const payload = JSON.parse(decodeURIComponent(escape(atob(enc))))
+      if (payload?.nodes?.length) {
+        historyRef.current = []; futureRef.current = []
+        setNodes(payload.nodes); setEdges(payload.edges ?? [])
+        setSaved(false)
+        setSearchParams(prev => { const n = new URLSearchParams(prev); n.delete('canvas'); return n }, { replace: true })
+      }
+    } catch { /* malformed URL param — ignore */ }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // OIS seed — ?seed=ois&score=72 → auto-create KPI node in intelligence mode
   useEffect(() => {
@@ -1897,21 +2391,57 @@ export function WorkflowCanvas() {
     setCanRedo(futureRef.current.length > 0)
   }, [setNodes, setEdges])
 
-  // Keyboard shortcuts — undo/redo + A.2 canvas navigation
+  // Duplicate + Delete — declared before the keyboard shortcut useEffect that references them
+  const deleteNode = useCallback((nodeId: string) => {
+    pushHistory()
+    setNodes(nds => nds.filter(n => n.id !== nodeId))
+    setEdges(eds => eds.filter(e => e.source !== nodeId && e.target !== nodeId))
+    if (configNodeId === nodeId) setConfigNodeId(null)
+    setCtxMenu(null); setSaved(false)
+  }, [pushHistory, configNodeId, setNodes, setEdges])
+
+  const duplicateNode = useCallback((nodeId: string) => {
+    const orig = nodesRef.current.find(n => n.id === nodeId)
+    if (!orig) return
+    pushHistory()
+    const newId = `step-${Date.now()}`
+    setNodes(nds => [...nds, {
+      ...orig, id: newId,
+      position: { x: orig.position.x + 60, y: orig.position.y + 100 },
+      data: { step: { ...(orig.data.step as WorkflowStep), id: newId, name: `${(orig.data.step as WorkflowStep).name} (copy)` } },
+    }])
+    setCtxMenu(null); setSaved(false)
+  }, [pushHistory, setNodes])
+
+  // Keyboard shortcuts — undo/redo + navigation + selection + share
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey) {
-        if (e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
-        if (e.key === 'z' &&  e.shiftKey) { e.preventDefault(); redo() }
-        if (e.key === 'y')                { e.preventDefault(); redo() }
+        if (e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo(); return }
+        if (e.key === 'z' &&  e.shiftKey) { e.preventDefault(); redo(); return }
+        if (e.key === 'y')                { e.preventDefault(); redo(); return }
+        if (e.key === 'a') {
+          e.preventDefault()
+          setNodes(nodesRef.current.map(n => ({ ...n, selected: true })))
+          return
+        }
+        if (e.key === 'd') {
+          e.preventDefault()
+          const sel = nodesRef.current.find(n => n.selected)
+          if (sel) duplicateNode(sel.id)
+          return
+        }
+        if (e.key === 'k') { e.preventDefault(); setShowShare(s => !s); return }
         return
       }
       // Don't steal from text inputs
       const tag = (e.target as HTMLElement)?.tagName?.toUpperCase()
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
       const nds = nodesRef.current
+      if (e.key === '?') { setShowShare(s => !s); return }
+      if (e.key === 'f' || e.key === 'F') { e.preventDefault(); setFitTrigger(t => t + 1); return }
       if (!nds.length) return
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'Tab') {
         e.preventDefault()
         const next = kbFocusIdxRef.current + 1 >= nds.length ? 0 : kbFocusIdxRef.current + 1
         kbFocusIdxRef.current = next
@@ -1925,15 +2455,20 @@ export function WorkflowCanvas() {
         e.preventDefault()
         const idx = kbFocusIdxRef.current
         if (idx >= 0 && idx < nds.length) setConfigNodeId(nds[idx]?.id ?? null)
+      } else if (e.key === 'Backspace') {
+        const selNode = nds.find(n => n.selected)
+        if (selNode && !configNodeId) { e.preventDefault(); deleteNode(selNode.id) }
       } else if (e.key === 'Escape') {
         e.preventDefault()
         setConfigNodeId(null)
+        setShowShare(false)
         kbFocusIdxRef.current = -1
+        setNodes(nds.map(n => ({ ...n, selected: false })))
       }
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [undo, redo, setNodes])
+  }, [undo, redo, setNodes, duplicateNode, deleteNode, configNodeId])
 
   const wf = workflows.find(w => w.id === selectedId) ?? workflows[0]
 
@@ -2006,12 +2541,12 @@ export function WorkflowCanvas() {
   const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
     setCtxMenu(null)
     const step = node.data?.step as WorkflowStep | undefined
-    if ((canvasMode === 'intelligence' || canvasMode === 'all') && step?.type && INTEL_EXPLAIN.has(step.type)) {
+    if (step?.type && INTEL_EXPLAIN.has(step.type)) {
       setIntelStep(step)
       return
     }
     setConfigNodeId(id => id === node.id ? null : node.id)
-  }, [canvasMode])
+  }, [])
 
   const onNodeContextMenu = useCallback((evt: React.MouseEvent, node: Node) => {
     evt.preventDefault()
@@ -2029,29 +2564,6 @@ export function WorkflowCanvas() {
     ))
     setSaved(false)
   }, [pushHistory, setNodes])
-
-  // Duplicate
-  const duplicateNode = useCallback((nodeId: string) => {
-    const orig = nodesRef.current.find(n => n.id === nodeId)
-    if (!orig) return
-    pushHistory()
-    const newId = `step-${Date.now()}`
-    setNodes(nds => [...nds, {
-      ...orig, id: newId,
-      position: { x: orig.position.x + 60, y: orig.position.y + 100 },
-      data: { step: { ...(orig.data.step as WorkflowStep), id: newId, name: `${(orig.data.step as WorkflowStep).name} (copy)` } },
-    }])
-    setCtxMenu(null); setSaved(false)
-  }, [pushHistory, setNodes])
-
-  // Delete
-  const deleteNode = useCallback((nodeId: string) => {
-    pushHistory()
-    setNodes(nds => nds.filter(n => n.id !== nodeId))
-    setEdges(eds => eds.filter(e => e.source !== nodeId && e.target !== nodeId))
-    if (configNodeId === nodeId) setConfigNodeId(null)
-    setCtxMenu(null); setSaved(false)
-  }, [pushHistory, configNodeId, setNodes, setEdges])
 
   // Add step after
   const addAfterNode = useCallback((sourceId: string, type: string) => {
@@ -2073,7 +2585,7 @@ export function WorkflowCanvas() {
     setCtxMenu(null); setSaved(false)
   }, [pushHistory, setNodes, setEdges])
 
-  // Palette add
+  // Palette add — WVIS 3.0: track last placed type for suggestion chain
   const addNode = useCallback((type: string) => {
     pushHistory()
     const cfg = NODE_CFG[type]
@@ -2083,6 +2595,7 @@ export function WorkflowCanvas() {
       position: { x: 380, y: 80 + (nds.length % 5) * 130 },
       data: { step: { id: newId, type, name: `New ${cfg.label}`, description: 'Click to configure', order: nds.length } as WorkflowStep },
     }])
+    setLastSuggestionType(type)
     setSaved(false)
   }, [pushHistory, setNodes])
 
@@ -2093,24 +2606,33 @@ export function WorkflowCanvas() {
     setNodes(applyDagreLayout([...nodesRef.current], [...edgesRef.current]))
   }, [pushHistory, setNodes])
 
-  // AI generation
+  // WVIS 3.0 — track last placed/selected node type for suggestions
+  const [lastSuggestionType, setLastSuggestionType] = useState<string | null>(null)
+
+  // AI generation — passes canvas mode so backend picks the right system prompt
   const generate = async () => {
     if (!copilot.trim() || generating) return
     setGenerating(true)
     try {
-      const { data } = await api.post('/admin/kangqore-immp/workflows/generate', { description: copilot })
+      const { data } = await api.post('/admin/kangqore-immp/workflows/generate', {
+        description: copilot,
+        mode: canvasMode,
+      })
       const gen = data.workflow
       if (gen?.steps?.length) {
         pushHistory()
         const steps: WorkflowStep[] = gen.steps.map((s: Record<string, unknown>, i: number) => ({
           id: String(s.id ?? `step-${Date.now()}-${i}`),
-          type: (s.type as StepType) ?? 'agent',
+          type: (s.type as StepType) ?? (canvasMode === 'intelligence' ? 'goal' : 'agent'),
           name: String(s.label ?? s.name ?? `Step ${i + 1}`),
           description: String(s.description ?? ''),
           order: i, config: (s.config as Record<string, string>) ?? {},
         }))
         const { nodes: n, edges: e } = stepsToFlow(steps)
         setNodes(n); setEdges(e); setCopilot(''); setSaved(false)
+        // seed suggestion type from last step of generated chain
+        const last = steps[steps.length - 1]
+        if (last?.type && canvasMode === 'intelligence') setLastSuggestionType(last.type)
       }
     } catch { /* silent */ } finally { setGenerating(false) }
   }
@@ -2169,10 +2691,18 @@ export function WorkflowCanvas() {
     const isLive = liveMode && (canvasMode === 'intelligence' || canvasMode === 'all') && liveNodeTypes.size > 0
     if (!isLive) return edges
     return edges.map(e => {
-      const srcNode = nodes.find(n => n.id === e.source)
-      const srcType = (srcNode?.data?.step as WorkflowStep)?.type ?? ''
-      if (!liveNodeTypes.has(srcType)) return e
-      return { ...e, animated: true, style: { ...e.style, stroke: `${GREEN}a0`, strokeWidth: 2.5 } }
+      const srcNode  = nodes.find(n => n.id === e.source)
+      const tgtNode  = nodes.find(n => n.id === e.target)
+      const srcType  = (srcNode?.data?.step as WorkflowStep)?.type ?? ''
+      const tgtType  = (tgtNode?.data?.step as WorkflowStep)?.type ?? ''
+      const srcLive  = liveNodeTypes.has(srcType)
+      const tgtLive  = liveNodeTypes.has(tgtType)
+      if (!srcLive && !tgtLive) return e
+      // Use source node color when it's live, otherwise target node color
+      const edgeColor = srcLive
+        ? (NODE_CFG[srcType]?.color ?? GREEN)
+        : (NODE_CFG[tgtType]?.color ?? GREEN)
+      return { ...e, animated: true, style: { ...e.style, stroke: `${edgeColor}b0`, strokeWidth: srcLive && tgtLive ? 3 : 2 } }
     })
   }, [edges, nodes, liveMode, canvasMode, liveNodeTypes])
 
@@ -2226,26 +2756,28 @@ export function WorkflowCanvas() {
         {/* Right: canvas area */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
 
-          {/* ── WAANDA Graph™ canvas mode toggle ───────────────────────────── */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {/* ── WAANDA Graph — canvas mode toggle ───────────────────────────── */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
             {([
               { mode: 'workflow'     as CanvasMode, emoji: '⚡', label: 'Operational',  color: BLUE   },
               { mode: 'intelligence' as CanvasMode, emoji: '🧠', label: 'Intelligence', color: PURPLE },
+              { mode: 'enterprise'   as CanvasMode, emoji: '🏢', label: 'Enterprise',   color: INDIGO },
+              { mode: 'agents'       as CanvasMode, emoji: '🤖', label: 'Agents',       color: LIME   },
               { mode: 'all'          as CanvasMode, emoji: '∞',  label: 'All Nodes',    color: TEAL   },
             ]).map(({ mode, emoji, label, color }) => {
               const active = canvasMode === mode
               return (
                 <button key={mode} onClick={() => setCanvasMode(mode)} style={{
-                  display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 10,
+                  display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px', borderRadius: 9,
                   border: `1px solid ${active ? color : EDGE_C}`,
                   background: active ? `${color}14` : CARD,
                   color: active ? color : SLATE,
-                  fontSize: 11, fontWeight: 700, cursor: 'pointer',
+                  fontSize: 10, fontWeight: 700, cursor: 'pointer',
                   transition: `all 0.18s ${EASE}`,
                 }}>
-                  <span style={{ fontSize: 12 }}>{emoji}</span>
+                  <span style={{ fontSize: 11 }}>{emoji}</span>
                   {label}
-                  {active && <span style={{ fontSize: 8, fontWeight: 800, letterSpacing: '0.06em', color, opacity: 0.7 }}>ACTIVE</span>}
+                  {active && <span style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.06em', color, opacity: 0.7 }}>ACTIVE</span>}
                 </button>
               )
             })}
@@ -2253,14 +2785,16 @@ export function WorkflowCanvas() {
 
             {/* Live Intelligence toggle — Intelligence and All modes */}
             {(canvasMode === 'intelligence' || canvasMode === 'all') && (
-              <button onClick={() => setLiveMode(m => !m)} style={{
-                display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 10,
-                border: `1px solid ${liveMode ? GREEN : EDGE_C}`,
-                background: liveMode ? `${GREEN}12` : CARD,
-                color: liveMode ? GREEN : SLATE,
-                fontSize: 11, fontWeight: 700, cursor: 'pointer',
-                transition: `all 0.18s ${EASE}`,
-              }}>
+              <button
+                onClick={() => { setLiveMode(m => { if (!m) setShowFeed(true); return !m }); if (liveMode) setShowFeed(false) }}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 10,
+                  border: `1px solid ${liveMode ? GREEN : EDGE_C}`,
+                  background: liveMode ? `${GREEN}12` : CARD,
+                  color: liveMode ? GREEN : SLATE,
+                  fontSize: 11, fontWeight: 700, cursor: 'pointer',
+                  transition: `all 0.18s ${EASE}`,
+                }}>
                 <Activity style={{ width: 12, height: 12 }} />
                 {liveMode
                   ? liveActive
@@ -2294,7 +2828,7 @@ export function WorkflowCanvas() {
             <Brain style={{ width: 15, height: 15, color: PURPLE, flexShrink: 0 }} />
             <input value={copilot} onChange={e => setCopilot(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') generate() }}
-              placeholder="Describe a workflow → WAANDA generates it on canvas…"
+              placeholder={COPILOT_PLACEHOLDER[canvasMode]}
               style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 13, color: 'var(--os-text-1)' }} />
             {copilot && (
               <button onClick={() => setCopilot('')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}>
@@ -2350,6 +2884,20 @@ export function WorkflowCanvas() {
                 : <><Play style={{ width: 12, height: 12 }} /> Run</>
               }
             </button>
+            <div style={{ width: 1, height: 20, background: EDGE_C, flexShrink: 0 }} />
+            {/* Share / keyboard shortcuts button */}
+            <button onClick={() => setShowShare(s => !s)} title="Share canvas · Keyboard shortcuts (?)" style={{
+              display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 10, border: 'none',
+              background: showShare ? `${TEAL}18` : `${TEAL}0c`,
+              color: showShare ? TEAL : SLATE, fontSize: 11, fontWeight: 700,
+              cursor: 'pointer', transition: `all 0.2s ${EASE}`, flexShrink: 0,
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${TEAL}18`; (e.currentTarget as HTMLElement).style.color = TEAL }}
+              onMouseLeave={e => { if (!showShare) { (e.currentTarget as HTMLElement).style.background = `${TEAL}0c`; (e.currentTarget as HTMLElement).style.color = SLATE } }}
+            >
+              <Share2 style={{ width: 12, height: 12 }} />
+              Share
+            </button>
           </div>
 
           {saveErr && (
@@ -2395,6 +2943,7 @@ export function WorkflowCanvas() {
                 minZoom={0.3} maxZoom={2}
                 deleteKeyCode="Delete"
               >
+                <FitViewHook fitTrigger={fitTrigger} />
                 <Background variant={BackgroundVariant.Dots} gap={24} size={1} color={`${SLATE}28`} />
                 <Controls showInteractive={false} style={{ borderRadius: 10, overflow: 'hidden', border: `1px solid ${EDGE_C}` }} />
                 <MiniMap
@@ -2448,26 +2997,127 @@ export function WorkflowCanvas() {
                 boxShadow: `inset 0 1px 0 rgba(255,255,255,0.02)`,
               }}>
                 <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: SLATE, margin: '0 0 10px 2px' }}>
-                  {canvasMode === 'intelligence' ? 'Thinking Nodes' : canvasMode === 'all' ? 'All Node Types' : 'Add Steps'}
+                  {canvasMode === 'intelligence' ? `Thinking Nodes · ${PALETTE.intelligence.length}`
+                   : canvasMode === 'enterprise' ? `Enterprise · ${PALETTE.enterprise.length}`
+                   : canvasMode === 'agents'     ? `Agent Nodes · ${PALETTE.agents.length}`
+                   : canvasMode === 'all'        ? 'WAANDA Graph'
+                   : 'Add Steps'}
                 </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                  {PALETTE[canvasMode].map(t => (
-                    <PaletteChip key={t} type={t as WvisStepType} cfg={NODE_CFG[t]} onClick={() => addNode(t)} />
-                  ))}
-                </div>
+                {canvasMode === 'all' ? (
+                  <>
+                    {([
+                      { key: 'intelligence' as CanvasMode, label: 'Intelligence' },
+                      { key: 'workflow'     as CanvasMode, label: 'Operational'  },
+                      { key: 'enterprise'   as CanvasMode, label: 'Enterprise'   },
+                      { key: 'agents'       as CanvasMode, label: 'Agents'       },
+                    ]).map(({ key, label }, i) => (
+                      <div key={key}>
+                        {i > 0 && <div style={{ height: 1, background: EDGE_C, margin: '8px 0' }} />}
+                        <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: SLATE, margin: '0 0 6px 2px', opacity: 0.7 }}>
+                          {label} · {PALETTE[key].length}
+                        </p>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                          {PALETTE[key].map(t => (
+                            <PaletteChip key={t} type={t} cfg={NODE_CFG[t]} onClick={() => addNode(t)} />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                    {PALETTE[canvasMode].map(t => (
+                      <PaletteChip key={t} type={t} cfg={NODE_CFG[t]} onClick={() => addNode(t)} />
+                    ))}
+                  </div>
+                )}
+                {/* WVIS 3.0 — node suggestions in intelligence mode */}
+                {canvasMode === 'intelligence' && (
+                  <NodeSuggestions
+                    lastType={lastSuggestionType}
+                    existingTypes={nodes.map(n => (n.data?.step as WorkflowStep)?.type ?? '')}
+                    onAdd={t => addNode(t)}
+                  />
+                )}
+
                 <div style={{ height: 1, background: EDGE_C, margin: '12px 0' }} />
-                {canvasMode === 'intelligence' || canvasMode === 'all' ? (
+                {canvasMode === 'workflow' ? (
                   <p style={{ fontSize: 9, color: SLATE, lineHeight: 1.5, margin: 0 }}>
-                    Click any node → WAANDA analysis · Double-click to rename
+                    Click to edit · Double-click to rename · Right-click for more
                   </p>
                 ) : (
                   <p style={{ fontSize: 9, color: SLATE, lineHeight: 1.5, margin: 0 }}>
-                    Click to edit · Double-click to rename · Right-click for more
+                    Click any node → WAANDA analysis · Double-click to rename
                   </p>
                 )}
               </div>
             )}
           </div>
+
+          {/* Phase 3 — Live Signal Feed Panel */}
+          {liveMode && (canvasMode === 'intelligence' || canvasMode === 'all') && (
+            <div style={{ borderRadius: 14, border: `1px solid ${GREEN}30`, background: `${GREEN}06`, overflow: 'hidden' }}>
+              <button
+                onClick={() => setShowFeed(f => !f)}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px',
+                  background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
+                }}
+              >
+                <span style={{
+                  width: 7, height: 7, borderRadius: '50%', background: GREEN, flexShrink: 0,
+                  animation: 'liveDot 1.6s ease-in-out infinite',
+                }} />
+                <span style={{ fontSize: 10, fontWeight: 700, color: GREEN, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                  Intelligence Feed
+                </span>
+                <span style={{ fontSize: 10, color: SLATE, marginLeft: 2 }}>·</span>
+                <span style={{ fontSize: 10, color: SLATE }}>{liveSignalCount} signal{liveSignalCount !== 1 ? 's' : ''} accumulated</span>
+                <div style={{ flex: 1 }} />
+                <span style={{ fontSize: 10, color: SLATE }}>{showFeed ? '▲ collapse' : '▼ expand'}</span>
+              </button>
+
+              {showFeed && (
+                <div style={{ maxHeight: 200, overflowY: 'auto', borderTop: `1px solid ${GREEN}20` }}>
+                  {signals.length === 0 ? (
+                    <p style={{ fontSize: 11, color: SLATE, padding: '12px 16px' }}>Waiting for live signals…</p>
+                  ) : (
+                    signals.slice(0, 40).map(sig => {
+                      const sevColor = sig.severity === 'CRITICAL' ? RED : sig.severity === 'HIGH' ? AMBER : sig.severity === 'MODERATE' ? BLUE : SLATE
+                      const affectedNodes = (SIGNAL_AFFINITY[(sig.signalType ?? '').toUpperCase()] ?? []).join(', ')
+                      return (
+                        <div key={sig.id} style={{
+                          display: 'grid', gridTemplateColumns: 'auto 1fr auto auto', gap: 10, alignItems: 'center',
+                          padding: '7px 14px', borderBottom: `1px solid ${GREEN}10`,
+                          fontSize: 10,
+                        }}>
+                          <span style={{
+                            padding: '1px 6px', borderRadius: 4, fontSize: 9, fontWeight: 700,
+                            background: `${sevColor}18`, color: sevColor, border: `1px solid ${sevColor}30`,
+                            letterSpacing: '0.05em', whiteSpace: 'nowrap',
+                          }}>
+                            {sig.severity}
+                          </span>
+                          <span style={{ color: 'var(--os-text-1)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {sig.signalType ?? sig.signalCategory}
+                            {affectedNodes && (
+                              <span style={{ color: SLATE, fontWeight: 400, marginLeft: 6 }}>→ {affectedNodes}</span>
+                            )}
+                          </span>
+                          <span style={{ color: SLATE, fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+                            {sig.sourceModule}
+                          </span>
+                          <span style={{ color: SLATE, fontFamily: 'monospace', fontSize: 9, whiteSpace: 'nowrap' }}>
+                            {new Date(sig.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                          </span>
+                        </div>
+                      )
+                    })
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Meta bar */}
           <div style={{
@@ -2481,7 +3131,18 @@ export function WorkflowCanvas() {
               {nodes.length} node{nodes.length !== 1 ? 's' : ''} · {edges.length} edge{edges.length !== 1 ? 's' : ''}
             </span>
             <div style={{ flex: 1 }} />
-            <span style={{ fontSize: 10, color: SLATE }}>⌘Z undo · ⌘⇧Z redo</span>
+            <button onClick={() => setShowShare(s => !s)} style={{
+              display: 'flex', alignItems: 'center', gap: 4, background: 'none', border: 'none',
+              cursor: 'pointer', padding: '2px 6px', borderRadius: 6,
+              fontSize: 10, color: SLATE, fontFamily: 'inherit',
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = TEAL }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = SLATE }}
+              title="Open keyboard shortcuts and share panel"
+            >
+              <Keyboard style={{ width: 11, height: 11 }} />
+              <span>⌘Z · ⌘D · ⌘A · F · ? → shortcuts</span>
+            </button>
           </div>
         </div>
 
@@ -2547,6 +3208,16 @@ export function WorkflowCanvas() {
             score={score}
             onClose={() => setShowCompile(false)}
             onDeployed={hash => { setCompiledHash(hash); setSaved(true); setTimeout(() => setSaved(false), 3000) }}
+          />
+        )}
+
+        {/* Share Canvas / Keyboard Shortcuts */}
+        {showShare && (
+          <ShareModal
+            nodes={nodes}
+            edges={edges}
+            wfName={wf.name}
+            onClose={() => setShowShare(false)}
           />
         )}
       </div>

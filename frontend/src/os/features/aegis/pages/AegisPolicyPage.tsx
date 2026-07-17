@@ -1,67 +1,210 @@
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { FileText, CheckCircle } from 'lucide-react'
+import { FileText, Shield, AlertTriangle, XCircle, CheckCircle2, Info } from 'lucide-react'
 import { api } from '@lib/api'
 
-const SEVERITY_COLORS: Record<string, string> = {
-  CRITICAL: 'text-red-400 bg-red-500/10 border-red-500/20',
-  HIGH:     'text-amber-400 bg-amber-500/10 border-amber-500/20',
-  MODERATE: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20',
-  LOW:      'text-[var(--os-text-2)] bg-[var(--os-surface-0)] border-[var(--os-border)]',
+// ── Policy metadata (matches backend aegisPolicy.service.ts) ─────────────────
+
+const POLICY_META: Record<string, {
+  action: string; domain: string; verdict: 'DENY' | 'WARN' | 'ALLOW'
+  description: string
+}> = {
+  ADMIN_ONLY_ACCESS: {
+    action: 'ACCESS_KIMMP', domain: 'Access Sentinel', verdict: 'DENY',
+    description: 'Any non-ADMIN role attempting to reach a KIMMP/WAANDA endpoint is immediately blocked. The request never proceeds.',
+  },
+  SCHEDULER_ONLY_AUTONOMOUS: {
+    action: 'AUTONOMOUS_ACTIVATION', domain: 'Autonomy Boundary', verdict: 'WARN',
+    description: 'Autonomous activations must originate from a known schedule or CRM event trigger. Anonymous callers attempting to trigger autonomous behaviour are flagged.',
+  },
+  CRITICAL_BRIEFING_MUST_LOG: {
+    action: 'BRIEFING_PRODUCED', domain: 'Audit Ledger', verdict: 'ALLOW',
+    description: 'CRITICAL-priority briefings are permitted but every one must be logged to the AEGIS audit ledger. Ensures full executive briefing traceability.',
+  },
+  RESTRICTED_ASSET_ADMIN_ONLY: {
+    action: 'ASSET_ACCESS', domain: 'Intelligence Registry', verdict: 'DENY',
+    description: 'RESTRICTED-classified intelligence assets may only be accessed by the ADMIN role. Any other role or unauthenticated access is blocked at the gate.',
+  },
+  EGRESS_MUST_BE_AUTHENTICATED: {
+    action: 'INTELLIGENCE_EGRESS', domain: 'Egress Control', verdict: 'DENY',
+    description: 'Intelligence leaving the system — briefings, signals, reports — requires a fully authenticated ADMIN session. Unauthenticated egress is hard-blocked.',
+  },
+  SENTINEL_AUTO_AUTHORITY: {
+    action: 'AUTONOMOUS_CRITICAL', domain: 'Sovereignty', verdict: 'WARN',
+    description: 'SENTINEL (the signals engine) has authority to emit CRITICAL alerts autonomously. Any other system attempting to do so is warned and logged for ADMIN review.',
+  },
 }
 
+const SEV_CFG: Record<string, { color: string; bg: string; icon: React.ElementType }> = {
+  CRITICAL: { color: '#ef4444', bg: '#ef44440e', icon: XCircle       },
+  HIGH:     { color: '#f59e0b', bg: '#f59e0b0e', icon: AlertTriangle  },
+  MODERATE: { color: '#eab308', bg: '#eab3080e', icon: AlertTriangle  },
+  LOW:      { color: '#6b7280', bg: '#6b72800e', icon: Info           },
+}
+
+const VERDICT_CFG: Record<string, { label: string; color: string }> = {
+  DENY:  { label: 'DENY',  color: '#ef4444' },
+  WARN:  { label: 'WARN',  color: '#f59e0b' },
+  ALLOW: { label: 'ALLOW', color: '#10b981' },
+}
+
+interface PolicyDef { id: string; name: string; severity: string }
+
 export function AegisPolicyPage() {
+  const [filter, setFilter] = useState<'all' | 'DENY' | 'WARN' | 'CRITICAL' | 'HIGH'>('all')
+
   const { data, isLoading } = useQuery({
     queryKey: ['aegis-policy'],
     queryFn:  () => api.get('/admin/aegis/policy/rules').then(r => r.data),
     staleTime: 300_000,
   })
 
-  const policies: any[] = data?.policies ?? []
+  const policies: PolicyDef[] = data?.policies ?? []
+
+  const filtered = policies.filter(p => {
+    if (filter === 'DENY')     return POLICY_META[p.id]?.verdict === 'DENY'
+    if (filter === 'WARN')     return POLICY_META[p.id]?.verdict === 'WARN'
+    if (filter === 'CRITICAL') return p.severity === 'CRITICAL'
+    if (filter === 'HIGH')     return p.severity === 'HIGH'
+    return true
+  })
+
+  const denyCount     = policies.filter(p => POLICY_META[p.id]?.verdict === 'DENY').length
+  const warnCount     = policies.filter(p => POLICY_META[p.id]?.verdict === 'WARN').length
+  const criticalCount = policies.filter(p => p.severity === 'CRITICAL').length
+  const highCount     = policies.filter(p => p.severity === 'HIGH').length
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {/* Description banner */}
       <div className="bg-cyan-900/20 border border-cyan-500/20 rounded-xl p-4 flex items-start gap-3">
-        <FileText className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+        <Shield className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-sm font-semibold text-cyan-300 mb-0.5">Policy Engine</p>
           <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
-            Governance rules evaluated at runtime before any sensitive action proceeds. Violations are logged to the AEGIS audit ledger.
-            Policies with a DENY verdict block the action immediately.
+            Governance rules evaluated <strong className="text-[var(--os-text-1)]">at runtime</strong> before any sensitive action proceeds.
+            DENY policies block immediately and log a violation. WARN policies pass but raise a flag to the AEGIS audit ledger.
           </p>
         </div>
       </div>
 
+      {/* KPI strip */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+        {[
+          { label: 'Total Policies',   value: policies.length, color: '#2564ea', bg: '#2564ea0e' },
+          { label: 'DENY Policies',    value: denyCount,       color: '#ef4444', bg: '#ef44440e' },
+          { label: 'WARN Policies',    value: warnCount,       color: '#f59e0b', bg: '#f59e0b0e' },
+          { label: 'CRITICAL Severity',value: criticalCount,   color: '#ef4444', bg: '#ef44440e' },
+        ].map(k => (
+          <div key={k.label} style={{ background: k.bg, border: `1px solid ${k.color}22`, borderLeft: `3px solid ${k.color}`, borderRadius: 10, padding: '12px 14px' }}>
+            <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6b7280', marginBottom: 4 }}>{k.label}</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: k.color, fontVariantNumeric: 'tabular-nums' }}>{k.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Filter chips */}
+      <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
+        {([
+          { key: 'all',      label: `All (${policies.length})`,     color: '#2564ea' },
+          { key: 'DENY',     label: `DENY (${denyCount})`,         color: '#ef4444' },
+          { key: 'WARN',     label: `WARN (${warnCount})`,         color: '#f59e0b' },
+          { key: 'CRITICAL', label: `CRITICAL (${criticalCount})`, color: '#ef4444' },
+          { key: 'HIGH',     label: `HIGH (${highCount})`,         color: '#f59e0b' },
+        ] as const).map(f => {
+          const active = filter === f.key
+          return (
+            <button key={f.key} onClick={() => setFilter(f.key as typeof filter)} style={{
+              fontSize: 10, fontWeight: 700, padding: '4px 11px', borderRadius: 20,
+              background: active ? f.color + '18' : 'var(--os-surface-3)',
+              color: active ? f.color : '#6b7280',
+              border: `1px solid ${active ? f.color + '40' : 'var(--os-border)'}`,
+              cursor: 'pointer',
+            }}>
+              {f.label}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Policy cards */}
       {isLoading ? (
-        <div className="space-y-3">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-16 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
-          ))}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {[...Array(6)].map((_, i) => <div key={i} style={{ height: 100, background: 'var(--os-surface-0)', borderRadius: 12 }} className="animate-pulse" />)}
         </div>
-      ) : policies.length === 0 ? (
-        <div className="text-center py-16 text-[var(--os-text-2)] text-sm">No policies loaded.</div>
       ) : (
-        <div className="space-y-3">
-          {policies.map((p: any) => (
-            <div key={p.id} className="bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:border-[var(--os-border)] rounded-xl p-4 transition-all">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                    <span className="text-sm font-medium text-[var(--os-text-1)]">{p.name}</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {filtered.map(p => {
+            const sev     = SEV_CFG[p.severity] ?? SEV_CFG.LOW
+            const meta    = POLICY_META[p.id]
+            const verdict = meta ? VERDICT_CFG[meta.verdict] : VERDICT_CFG.ALLOW
+            const SevIcon = sev.icon
+            return (
+              <div key={p.id} style={{
+                background: 'var(--os-card)',
+                border: `1px solid var(--os-border)`,
+                borderLeft: `4px solid ${sev.color}`,
+                borderRadius: 12,
+                padding: '16px 18px',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                  {/* Severity icon */}
+                  <div style={{ width: 36, height: 36, borderRadius: 9, background: sev.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+                    <SevIcon style={{ width: 16, height: 16, color: sev.color }} />
                   </div>
-                  <span className="text-[10px] font-mono text-[var(--os-text-2)]">{p.id}</span>
+
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    {/* Name row */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--os-text-1)' }}>{p.name}</span>
+                      <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 7, background: verdict.color + '14', color: verdict.color, border: `1px solid ${verdict.color}28` }}>
+                        {verdict.label}
+                      </span>
+                      <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 7, background: sev.bg, color: sev.color, border: `1px solid ${sev.color}28` }}>
+                        {p.severity}
+                      </span>
+                    </div>
+
+                    {/* Description */}
+                    {meta && (
+                      <p style={{ fontSize: 11, color: 'var(--os-text-3)', lineHeight: 1.65, marginBottom: 10 }}>{meta.description}</p>
+                    )}
+
+                    {/* Meta row */}
+                    <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                      <div>
+                        <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6b7280' }}>Policy ID</span>
+                        <div style={{ fontSize: 10, fontFamily: 'monospace', color: 'var(--os-text-2)', marginTop: 2 }}>{p.id}</div>
+                      </div>
+                      {meta && (
+                        <>
+                          <div>
+                            <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6b7280' }}>Action Guarded</span>
+                            <div style={{ fontSize: 10, fontFamily: 'monospace', color: 'var(--os-text-2)', marginTop: 2 }}>{meta.action}</div>
+                          </div>
+                          <div>
+                            <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6b7280' }}>Domain</span>
+                            <div style={{ fontSize: 10, color: 'var(--os-text-2)', marginTop: 2 }}>{meta.domain}</div>
+                          </div>
+                        </>
+                      )}
+                      <div style={{ marginLeft: 'auto' }}>
+                        <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 6, background: '#10b98114', color: '#10b981', border: '1px solid #10b98128' }}>
+                          <CheckCircle2 style={{ width: 9, height: 9, display: 'inline', marginRight: 3 }} />
+                          ACTIVE
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <span className={`flex-shrink-0 text-[11px] font-mono border rounded px-2 py-0.5 ${SEVERITY_COLORS[p.severity] ?? SEVERITY_COLORS.LOW}`}>
-                  {p.severity}
-                </span>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
 
-      <div className="text-xs text-[var(--os-text-2)] text-center">
-        {policies.length} policies enforced · All active · Runtime evaluation
+      <div style={{ textAlign: 'center', fontSize: 10, color: '#6b7280', padding: '4px 0' }}>
+        {policies.length} policies enforced · Runtime evaluation · All active
       </div>
     </div>
   )

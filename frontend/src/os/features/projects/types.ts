@@ -11,6 +11,9 @@ export interface Project {
   client: string
   status: ProjectStatus
   health: HealthStatus
+  healthScore: number
+  category: string
+  services: string[]
   owner: string
   team: string[]
   startDate: string

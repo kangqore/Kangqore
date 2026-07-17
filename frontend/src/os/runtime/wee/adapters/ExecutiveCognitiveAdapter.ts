@@ -60,7 +60,7 @@ function buildDomainRisk(state: Readonly<WaandaCognitiveState>) {
   return { domainRiskExposure: exposed, totalBreachedKpis: totalBreached }
 }
 
-function buildActiveMissions(state: Readonly<WaandaCognitiveState>, showDetail: boolean) {
+function buildActiveMissions(state: Readonly<WaandaCognitiveState>) {
   return state.systemBriefings
     .filter(b => b.priority === 'HIGH' || b.priority === 'CRITICAL')
     .map(b => ({
@@ -68,7 +68,8 @@ function buildActiveMissions(state: Readonly<WaandaCognitiveState>, showDetail: 
       status:     'ACTIVE',
       priority:   b.priority,
       confidence: b.confidence,
-      findings:   showDetail ? (b.keyFindings ?? []) : [],
+      findings:   b.keyFindings ?? [],
+      createdAt:  (b as any).createdAt,
     }))
 }
 
@@ -105,7 +106,7 @@ export const ExecutiveCognitiveAdapter: CognitiveStateAdapter = {
 
     const platformHealth              = buildPlatformHealth(state)
     const { domainRiskExposure, totalBreachedKpis } = buildDomainRisk(state)
-    const activeMissions              = buildActiveMissions(state, showDetail)
+    const activeMissions              = buildActiveMissions(state)
     const latestBriefing              = buildLatestBriefing(briefing, showDetail)
 
     return {
@@ -119,7 +120,7 @@ export const ExecutiveCognitiveAdapter: CognitiveStateAdapter = {
       oisPillars,
       // Health
       platformHealth,
-      operationalDomains: state.domains.filter(d => d.ready),
+      operationalDomains: state.domains,
       // Decisions
       pendingDecisions: state.pendingDecisions,
       openDecisions:    state.pendingDecisions,
@@ -140,6 +141,7 @@ export const ExecutiveCognitiveAdapter: CognitiveStateAdapter = {
       enterprisePredictions: state.enterprisePredictions,
       systemBriefings:       state.systemBriefings,
       confidence:            state.confidence,
+      oisHistory:            state.gate8History,
     }
   },
 }

@@ -59,6 +59,12 @@ const JOBS: KangqoreVisJobDescriptor[] = [
     task: () => KpiSnapshotService.snapshot(),
   },
   {
+    id: 'weekly-friday-snapshot',
+    cron: '0 6 * * 5',
+    description: 'Weekly Friday EOW snapshot — OIS baseline, KPI delta, deployment health',
+    task: () => KpiSnapshotService.snapshot(),
+  },
+  {
     id: 'broken-link-sweep',
     cron: '0 6 * * 0',
     description: 'Weekly broken-link sweep',

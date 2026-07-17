@@ -1,14 +1,25 @@
 {
-  "$blueprint": "kangqore-view/v1",
-  "version": "1.0.0",
-  "generatedAt": "2026-07-03T00:00:00Z",
-  "pack": "professional-services",
+  "$blueprint":     "kangqore-view/v1",
+  "version":        "1.0.0",
+  "generatedAt":    "2026-07-16T00:00:00Z",
+  "extractedFrom":  "Kangqore Global — validated live deployment, July 2026",
+  "validatedAt":    "2026-07-16",
+  "pack":           "professional-services",
+
+  "setupInstructions": {
+    "step1": "Set organization.name to your client's legal entity name.",
+    "step2": "Review goals — adjust targets to match the client's Year 1 ambitions.",
+    "step3": "POST this file to POST /admin/enterprise/blueprints/import.",
+    "step4": "Activate at PATCH /admin/enterprise/blueprints/:id/activate.",
+    "step5": "Invite the client admin at /admin/users, then run ENTERPRISE_COACH.",
+    "estimatedSetupMinutes": 10
+  },
 
   "organization": {
-    "name": "{{customerName}}",
+    "name":     "{{REQUIRED: Set to client organization name}}",
     "industry": "professional-services",
-    "size": "SME",
-    "pack": "professional-services"
+    "size":     "SME",
+    "pack":     "professional-services"
   },
 
   "departments": [
@@ -19,25 +30,60 @@
   ],
 
   "goals": [
-    { "pillar": "REVENUE",      "label": "Annual Revenue",         "target": 10, "unit": "₹ Cr", "weight": 1.5 },
-    { "pillar": "MARGIN",       "label": "Project Margin",         "target": 35, "unit": "%",    "weight": 1.3 },
-    { "pillar": "NPS",          "label": "Client NPS",             "target": 75, "unit": "score","weight": 1.0 },
-    { "pillar": "DELIVERY_SLA", "label": "Delivery SLA Adherence", "target": 98, "unit": "%",    "weight": 1.2 },
-    { "pillar": "UTILIZATION",  "label": "Employee Utilization",   "target": 82, "unit": "%",    "weight": 1.0 }
+    {
+      "pillar":  "REVENUE",
+      "label":   "Annual Revenue",
+      "target":  10,
+      "unit":    "₹ Cr",
+      "weight":  1.5,
+      "notes":   "Top-line revenue target. Tracked against invoices issued and collected."
+    },
+    {
+      "pillar":  "MARGIN",
+      "label":   "Project Margin",
+      "target":  35,
+      "unit":    "%",
+      "weight":  1.3,
+      "notes":   "Average gross margin across all active projects. Tracked against budget vs actuals."
+    },
+    {
+      "pillar":  "NPS",
+      "label":   "Client NPS",
+      "target":  75,
+      "unit":    "score",
+      "weight":  1.0,
+      "notes":   "Net Promoter Score from quarterly client feedback surveys."
+    },
+    {
+      "pillar":  "DELIVERY_SLA",
+      "label":   "Delivery SLA Adherence",
+      "target":  98,
+      "unit":    "%",
+      "weight":  1.2,
+      "notes":   "Percentage of milestones delivered on or before due date. Tracked per project by PROJECT_HEALTH agent."
+    },
+    {
+      "pillar":  "UTILIZATION",
+      "label":   "Employee Utilization",
+      "target":  82,
+      "unit":    "%",
+      "weight":  1.0,
+      "notes":   "Billable hours as percentage of available hours. Tracked against task assignments."
+    }
   ],
 
   "ontology": {
     "entityTypes": [
-      { "name": "Client",        "displayName": "Client",         "icon": "building2",       "color": "#579bfc", "description": "An organization purchasing professional services." },
-      { "name": "Project",       "displayName": "Project",        "icon": "folder-kanban",   "color": "#00c875", "description": "A scoped engagement delivered for a client." },
-      { "name": "Deliverable",   "displayName": "Deliverable",    "icon": "file-check",      "color": "#0ea5e9", "description": "A specific output or artifact within a project." },
-      { "name": "Milestone",     "displayName": "Milestone",      "icon": "flag",            "color": "#a855f7", "description": "A time-bound checkpoint within a project." },
-      { "name": "Invoice",       "displayName": "Invoice",        "icon": "receipt",         "color": "#fdab3d", "description": "A billing document issued to a client." },
-      { "name": "Risk",          "displayName": "Risk",           "icon": "alert-triangle",  "color": "#e2445c", "description": "A potential issue affecting delivery or revenue." },
-      { "name": "Lead",          "displayName": "Lead",           "icon": "user-plus",       "color": "#7c3aed", "description": "A prospective client in the sales pipeline." },
-      { "name": "Proposal",      "displayName": "Proposal",       "icon": "file-text",       "color": "#eab308", "description": "A formal commercial proposal to a prospect." },
-      { "name": "Resource",      "displayName": "Resource",       "icon": "user-check",      "color": "#66ccff", "description": "A person or capacity unit assigned to work." },
-      { "name": "ChangeRequest", "displayName": "Change Request", "icon": "git-pull-request","color": "#f97316", "description": "A formal scope, timeline, or budget change request." }
+      { "name": "Client",        "displayName": "Client",         "icon": "building2",        "color": "#579bfc", "description": "An organization purchasing professional services." },
+      { "name": "Project",       "displayName": "Project",        "icon": "folder-kanban",    "color": "#00c875", "description": "A scoped engagement delivered for a client." },
+      { "name": "Deliverable",   "displayName": "Deliverable",    "icon": "file-check",       "color": "#0ea5e9", "description": "A specific output or artifact within a project." },
+      { "name": "Milestone",     "displayName": "Milestone",      "icon": "flag",             "color": "#a855f7", "description": "A time-bound checkpoint within a project." },
+      { "name": "Invoice",       "displayName": "Invoice",        "icon": "receipt",          "color": "#fdab3d", "description": "A billing document issued to a client." },
+      { "name": "Risk",          "displayName": "Risk",           "icon": "alert-triangle",   "color": "#e2445c", "description": "A potential issue affecting delivery or revenue." },
+      { "name": "Lead",          "displayName": "Lead",           "icon": "user-plus",        "color": "#7c3aed", "description": "A prospective client in the sales pipeline." },
+      { "name": "Proposal",      "displayName": "Proposal",       "icon": "file-text",        "color": "#eab308", "description": "A formal commercial proposal to a prospect." },
+      { "name": "Resource",      "displayName": "Resource",       "icon": "user-check",       "color": "#66ccff", "description": "A person or capacity unit assigned to work." },
+      { "name": "ChangeRequest", "displayName": "Change Request", "icon": "git-pull-request", "color": "#f97316", "description": "A formal scope, timeline, or budget change request." }
     ],
     "relationshipTypes": [
       "HAS_PROJECT", "OWNS_INVOICE", "CREATES_RISK", "PRODUCES_DELIVERABLE",
@@ -48,100 +94,143 @@
 
   "policies": [
     {
-      "name": "Block unauthorised external writes",
-      "description": "Any EXTERNAL_API_CALL must pass L3 approval.",
-      "trigger": "EXTERNAL_API_CALL",
-      "condition": {},
-      "effect": "REQUIRE_APPROVAL",
-      "priority": 100
+      "name":        "Block record deletion",
+      "description": "WAANDA may never delete records — only archive. Immutable audit trail.",
+      "trigger":     "DELETE_RECORD",
+      "condition":   {},
+      "effect":      "DENY",
+      "priority":    200
     },
     {
-      "name": "Notify on critical risk",
-      "description": "CRITICAL risks must trigger an internal notification.",
-      "trigger": "CREATE_RISK",
-      "condition": { "field": "severity", "operator": "eq", "value": "CRITICAL" },
-      "effect": "NOTIFY",
-      "priority": 90
+      "name":        "Block unauthorised external writes",
+      "description": "Any EXTERNAL_API_CALL must pass L3 approval before proceeding.",
+      "trigger":     "EXTERNAL_API_CALL",
+      "condition":   {},
+      "effect":      "REQUIRE_APPROVAL",
+      "priority":    100
     },
     {
-      "name": "Require approval for large invoices",
-      "description": "Invoices above ₹5 lakh require L3 approval.",
-      "trigger": "CREATE_INVOICE",
-      "condition": { "field": "amount", "operator": "gte", "value": 500000 },
-      "effect": "REQUIRE_APPROVAL",
-      "priority": 80
+      "name":        "Notify on critical risk",
+      "description": "CRITICAL severity risks must trigger an immediate internal notification.",
+      "trigger":     "CREATE_RISK",
+      "condition":   { "field": "severity", "operator": "eq", "value": "CRITICAL" },
+      "effect":      "NOTIFY",
+      "priority":    90
     },
     {
-      "name": "Block record deletion",
-      "description": "WAANDA may never delete records — only archive.",
-      "trigger": "DELETE_RECORD",
-      "condition": {},
-      "effect": "DENY",
-      "priority": 200
+      "name":        "Require approval for large invoices",
+      "description": "Invoices above ₹5 lakh require L3 approval before issue.",
+      "trigger":     "CREATE_INVOICE",
+      "condition":   { "field": "amount", "operator": "gte", "value": 500000 },
+      "effect":      "REQUIRE_APPROVAL",
+      "priority":    80
     },
     {
-      "name": "Notify on low-quality lead advance",
-      "description": "Alert if a lead with score < 30 advances to PROPOSAL.",
-      "trigger": "UPDATE_LEAD_STATUS",
-      "condition": { "field": "score", "operator": "lt", "value": 30 },
-      "effect": "NOTIFY",
-      "priority": 70
+      "name":        "Notify on low-quality lead advance",
+      "description": "Alert if a lead with score < 30 advances to PROPOSAL stage.",
+      "trigger":     "UPDATE_LEAD_STATUS",
+      "condition":   { "field": "score", "operator": "lt", "value": 30 },
+      "effect":      "NOTIFY",
+      "priority":    70
     }
   ],
 
   "agents": [
     {
-      "id": "PROJECT_HEALTH",
-      "schedule": "0 9 * * 1-5",
+      "id":        "PROJECT_HEALTH",
+      "role":      "Project health monitor",
+      "schedule":  "0 9 * * 1-5",
       "triggerOn": ["project.created", "milestone.due_soon", "risk.created"]
     },
     {
-      "id": "DELIVERY_MONITOR",
-      "schedule": "0 8 * * 1-5",
+      "id":        "DELIVERY_MONITOR",
+      "role":      "Delivery SLA monitor",
+      "schedule":  "0 8 * * 1-5",
       "triggerOn": ["milestone.overdue", "deliverable.at_risk"]
     },
     {
-      "id": "INVOICE_INTELLIGENCE",
-      "schedule": "0 10 * * 1-5",
+      "id":        "INVOICE_INTELLIGENCE",
+      "role":      "Invoice and collections intelligence",
+      "schedule":  "0 10 * * 1-5",
       "triggerOn": ["invoice.created", "invoice.overdue"]
     },
     {
-      "id": "COLLECTIONS_AGENT",
-      "schedule": "0 11 * * 1,4",
+      "id":        "COLLECTIONS_AGENT",
+      "role":      "Collections escalation",
+      "schedule":  "0 11 * * 1,4",
       "triggerOn": ["invoice.overdue_14d"]
     },
     {
-      "id": "DEAL_COACH",
-      "schedule": "0 9 * * 1-5",
+      "id":        "DEAL_COACH",
+      "role":      "Sales deal coach",
+      "schedule":  "0 9 * * 1-5",
       "triggerOn": ["lead.created", "proposal.no_response"]
     },
     {
-      "id": "ENTERPRISE_COACH",
-      "schedule": "0 7 * * 1",
+      "id":        "ENTERPRISE_COACH",
+      "role":      "Weekly enterprise intelligence synthesis",
+      "schedule":  "0 7 * * 1",
       "triggerOn": ["weekly.summary"]
     },
     {
-      "id": "SENTINEL",
-      "schedule": "*/15 * * * *",
+      "id":        "SENTINEL",
+      "role":      "System anomaly detection",
+      "schedule":  "*/15 * * * *",
       "triggerOn": ["system.anomaly", "risk.critical"]
     }
   ],
 
   "playbooks": {
     "delivery": [
-      { "name": "Project Kick-off",  "trigger": "SIGNAL",   "description": "Triggered on new project creation. Briefs WAANDA, sets goals, creates milestone plan, assigns risks, notifies client." },
-      { "name": "Milestone Review",  "trigger": "SCHEDULE", "description": "7-day pre-milestone health check. Routes to internal flag or client update based on project status." },
-      { "name": "Risk Escalation",   "trigger": "SIGNAL",   "description": "CRITICAL risk triggers blast-radius assessment, L3 approval, then client notification." },
-      { "name": "Project Closure",   "trigger": "SIGNAL",   "description": "All deliverables complete. Quality check → client sign-off → COIG checkpoint → lessons learned." }
+      {
+        "name":        "Project Kick-off",
+        "trigger":     "SIGNAL",
+        "description": "Triggered on new project creation. Briefs WAANDA, sets goals, creates milestone plan, assigns risks, notifies client."
+      },
+      {
+        "name":        "Milestone Review",
+        "trigger":     "SCHEDULE",
+        "description": "7-day pre-milestone health check. Routes to internal flag or client update based on project status."
+      },
+      {
+        "name":        "Risk Escalation",
+        "trigger":     "SIGNAL",
+        "description": "CRITICAL risk triggers blast-radius assessment, L3 approval, then client notification."
+      },
+      {
+        "name":        "Project Closure",
+        "trigger":     "SIGNAL",
+        "description": "All deliverables complete. Quality check → client sign-off → COIG checkpoint → lessons learned."
+      }
     ],
     "finance": [
-      { "name": "Invoice Approval",         "trigger": "SIGNAL",   "description": "Invoice created above threshold. WAANDA validates → L3 approval → status update." },
-      { "name": "Collections Escalation",   "trigger": "SIGNAL",   "description": "14-day overdue invoice. WAANDA drafts collections message → L2 approval → send." },
-      { "name": "Budget Variance Alert",    "trigger": "SCHEDULE", "description": "Weekly actuals vs plan scan. Routes by severity: log / internal alert / decision proposal." }
+      {
+        "name":        "Invoice Approval",
+        "trigger":     "SIGNAL",
+        "description": "Invoice created above threshold. WAANDA validates → L3 approval → status update."
+      },
+      {
+        "name":        "Collections Escalation",
+        "trigger":     "SIGNAL",
+        "description": "14-day overdue invoice. WAANDA drafts collections message → L2 approval → send."
+      },
+      {
+        "name":        "Budget Variance Alert",
+        "trigger":     "SCHEDULE",
+        "description": "Weekly actuals vs plan scan. Routes by severity: log / internal alert / decision proposal."
+      }
     ],
     "sales": [
-      { "name": "Lead Qualification Flow",  "trigger": "SIGNAL",   "description": "New lead. DEAL_COACH scores → proposes accept/nurture/decline → creates tasks on qualification." },
-      { "name": "Proposal Follow-up",       "trigger": "SCHEDULE", "description": "5-day no-response trigger. DEAL_COACH drafts follow-up — auto-send < ₹5L, L2 review ≥ ₹5L." }
+      {
+        "name":        "Lead Qualification Flow",
+        "trigger":     "SIGNAL",
+        "description": "New lead. DEAL_COACH scores → proposes accept/nurture/decline → creates tasks on qualification."
+      },
+      {
+        "name":        "Proposal Follow-up",
+        "trigger":     "SCHEDULE",
+        "description": "5-day no-response trigger. DEAL_COACH drafts follow-up — auto-send < ₹5L, L2 review ≥ ₹5L."
+      }
     ],
     "custom": []
   },
@@ -162,7 +251,43 @@
   "oisProfile": {
     "baseline":           0,
     "target":             80,
-    "checkpointInterval": "weekly"
+    "checkpointInterval": "weekly",
+    "maturityLevels": {
+      "L1": { "label": "Aware",      "minComposite": 0,  "description": "Platform deployed, baseline captured." },
+      "L2": { "label": "Managed",    "minComposite": 40, "description": "Core workflows running, WAANDA making proposals." },
+      "L3": { "label": "Optimised",  "minComposite": 60, "description": "Delivery and finance on WAANDA. Coach insights surfacing." },
+      "L4": { "label": "Predictive", "minComposite": 75, "description": "Digital Twin active. COIG tracked. Customer Zero Report generated." },
+      "L5": { "label": "Adaptive",   "minComposite": 85, "description": "Enterprise continuously improves. Pack extracted and reusable." }
+    },
+    "emiWeights": {
+      "intelligence": 0.40,
+      "autonomy":     0.25,
+      "adoption":     0.20,
+      "governance":   0.15
+    }
+  },
+
+  "qefGates": {
+    "G1_ContextAssembly":      { "minScore": 80, "rationale": "Context must accurately reflect project, finance, and pipeline data." },
+    "G2_DecisionQuality":      { "minScore": 75, "rationale": "WAANDA decisions must be traceable to evidence before L3 approval." },
+    "G3_PlanningAccuracy":     { "minScore": 70, "rationale": "Workflow plans must match execution within acceptable variance." },
+    "G4_ExecutionReliability": { "minScore": 85, "rationale": "Approved workflows must complete without failure >85% of the time." },
+    "G5_WorkflowCanvas":       { "minScore": 70, "rationale": "Canvas must render all 9 seeded workflows correctly." },
+    "G6_RealTimeIntelligence": { "minScore": 75, "rationale": "Signals must surface within 60s of triggering events." },
+    "G7_ReleaseGovernance":    { "minScore": 80, "rationale": "All deployments must pass RGS pre-flight before production." },
+    "G8_OIS":                  { "minScore": 60, "rationale": "Minimum OIS of 60/100 before Customer Zero Report is considered credible." }
+  },
+
+  "dnaProfile": {
+    "approvalSpeed":       "MODERATE",
+    "riskTolerance":       "BALANCED",
+    "decisionStyle":       "DATA_DRIVEN",
+    "escalationThreshold": "NORMAL",
+    "meetingDensity":      "MODERATE",
+    "growthPhase":         "SCALING",
+    "dominantPillar":      "decision",
+    "weakestPillar":       "adoption",
+    "notes":               "approvalSpeed starts MODERATE for most PS firms — L3 approvals average 4–8 hours. After 90 days on WAANDA, firms with healthy COIG typically shift to FAST (< 2h median)."
   },
 
   "emi": {
@@ -177,6 +302,14 @@
   "governance": {
     "approvalLevels":      { "L1": "self", "L2": "manager", "L3": "senior" },
     "auditRetentionDays":  90,
-    "blockRecordDeletion": true
+    "blockRecordDeletion": true,
+    "rgsRules": [
+      "No workflow changes to ACTIVE workflows without RGS pre-flight check.",
+      "OIS must not decline more than 5 points within any 7-day window without a CHECKPOINT snapshot saved.",
+      "CRITICAL risks created by WAANDA agents must be acknowledged within 24 hours.",
+      "L3 approval queue must not accumulate more than 10 pending items — flag to admin if exceeded.",
+      "Enterprise DNA must be recomputed at least once every 30 days.",
+      "COIG baseline must be set before any COIG numbers are communicated externally."
+    ]
   }
 }

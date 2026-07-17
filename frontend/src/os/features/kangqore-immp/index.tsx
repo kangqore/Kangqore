@@ -40,6 +40,15 @@ import { CommandCenterPage }          from './pages/CommandCenterPage'
 import { MemoryTimelinePage }         from './pages/MemoryTimelinePage'
 import ReflectionPage                 from './pages/ReflectionPage'
 import { AuthorityPage }              from './pages/AuthorityPage'
+import { BlueprintCustomizePage }     from './pages/BlueprintCustomizePage'
+import { RevenuePipelinePage }        from './pages/RevenuePipelinePage'
+import { ProposalBuilderPage }        from './pages/ProposalBuilderPage'
+import { CustomerZeroCaseStudyPage }   from './pages/CustomerZeroCaseStudyPage'
+import { CustomerOnePage }             from './pages/CustomerOnePage'
+import { MultiAgentCoordinationPage }  from './pages/MultiAgentCoordinationPage'
+import { WAANDAFoundationPage }         from './pages/WAANDAFoundationPage'
+import { PSPackExtractionPage }         from './pages/PSPackExtractionPage'
+import { COIGDashboardPage }            from './pages/COIGDashboardPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -156,6 +165,15 @@ export function KIMMMModule() {
           <Route path="decision-engine"     element={<DecisionEnginePage />}        />
           <Route path="deployments"         element={<DeploymentsPage />}           />
           <Route path="blueprint"           element={<BlueprintPage />}             />
+          <Route path="blueprint-customize" element={<BlueprintCustomizePage />}   />
+          <Route path="revenue-pipeline"    element={<RevenuePipelinePage />}       />
+          <Route path="proposal-builder"    element={<ProposalBuilderPage />}       />
+          <Route path="case-study"          element={<CustomerZeroCaseStudyPage />} />
+          <Route path="customer-one"        element={<CustomerOnePage />}            />
+          <Route path="agent-coordination"  element={<MultiAgentCoordinationPage />} />
+          <Route path="foundation-model"   element={<WAANDAFoundationPage />}       />
+          <Route path="ps-pack-extraction" element={<PSPackExtractionPage />}       />
+          <Route path="coig"              element={<COIGDashboardPage />}           />
           <Route path="reflection"          element={<ReflectionPage />}            />
           <Route path="authority"           element={<AuthorityPage />}             />
           <Route path="*"                   element={<Navigate to={BASE} replace />} />

@@ -1,17 +1,51 @@
-import { useState } from 'react'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { Briefcase, Pencil, Trash2, CalendarDays, Users } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Search, Plus, TrendingUp, AlertTriangle, CheckCircle2, FolderKanban, CalendarDays, ArrowUpRight, Pencil, Trash2 } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { InlineSelect } from '@components/InlineSelect'
 import { EditDrawer } from '@components/EditDrawer'
-import { Card, CardHeader, CardTitle } from '@design-system/components/Card'
-import { Avatar, AvatarGroup } from '@design-system/components/Avatar'
 import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
 import { api, isDemo } from '@lib/api'
 import { useProjectsStore } from '../store'
-import { useUIStore } from '@store/ui'
 import type { Project, ProjectStatus, HealthStatus } from '../types'
+
+// ── Colour system ──────────────────────────────────────────────────────────────
+
+const CAT_COLOR: Record<string, string> = {
+  'Transformation':   '#2564ea',
+  'Innovation / R&D': '#7c3aed',
+  'Run & Maintain':   '#0d9488',
+}
+const HEALTH_COLOR: Record<string, string> = {
+  'on-track': '#10b981', 'at-risk': '#f59e0b', behind: '#ef4444', completed: '#6366f1',
+}
+const HEALTH_LABEL: Record<string, string> = {
+  'on-track': 'On Track', 'at-risk': 'At Risk', behind: 'Behind', completed: 'Done',
+}
+
+function catColor(cat: string) { return CAT_COLOR[cat] ?? '#64748b' }
+
+function fmt(n: number): string {
+  if (n >= 10_000_000) return `₹${(n / 10_000_000).toFixed(1)}Cr`
+  if (n >= 100_000)    return `₹${(n / 100_000).toFixed(1)}L`
+  if (n >= 1_000)      return `₹${(n / 1_000).toFixed(0)}K`
+  return `₹${n}`
+}
+
+function daysLeft(iso: string): number {
+  return Math.ceil((new Date(iso).getTime() - Date.now()) / 86_400_000)
+}
+
+function dueDateLabel(iso: string): { label: string; color: string } {
+  const d = daysLeft(iso)
+  if (d < 0)  return { label: `${Math.abs(d)}d overdue`, color: '#ef4444' }
+  if (d <= 7) return { label: `${d}d left`,             color: '#f59e0b' }
+  if (d <= 30) return { label: `${d}d left`,            color: '#10b981' }
+  return { label: new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' }), color: 'var(--os-text-4)' }
+}
+
+// ── Status / health selects ────────────────────────────────────────────────────
 
 const STATUS_OPTIONS: { value: ProjectStatus; label: string; variant: 'success' | 'info' | 'warning' | 'brand' }[] = [
   { value: 'active',    label: 'Active',    variant: 'success' },
@@ -19,7 +53,6 @@ const STATUS_OPTIONS: { value: ProjectStatus; label: string; variant: 'success' 
   { value: 'on-hold',   label: 'On Hold',   variant: 'warning' },
   { value: 'completed', label: 'Completed', variant: 'brand'   },
 ]
-
 const HEALTH_OPTIONS: { value: HealthStatus; label: string; variant: 'success' | 'warning' | 'danger' | 'info' }[] = [
   { value: 'on-track',  label: 'On Track',  variant: 'success' },
   { value: 'at-risk',   label: 'At Risk',   variant: 'warning' },
@@ -27,26 +60,20 @@ const HEALTH_OPTIONS: { value: HealthStatus; label: string; variant: 'success' |
   { value: 'completed', label: 'Completed', variant: 'info'    },
 ]
 
+// ── Edit drawer ────────────────────────────────────────────────────────────────
 
 function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: () => void }) {
-  const { updateProject } = useProjectsStore()
+  const { updateProject, updateProjectStatus, updateProjectHealth } = useProjectsStore()
   const [form, setForm] = useState({
     name:    project.name,
     client:  project.client,
-    owner:   project.owner,
     endDate: project.endDate.slice(0, 10),
     budget:  String(project.budget),
   })
   const [saving, setSaving] = useState(false)
 
   async function save() {
-    const patch = {
-      name:    form.name,
-      client:  form.client,
-      owner:   form.owner,
-      endDate: form.endDate,
-      budget:  Number(form.budget),
-    }
+    const patch = { name: form.name, client: form.client, endDate: form.endDate, budget: Number(form.budget) }
     updateProject(project.id, patch)
     if (!isDemo()) {
       setSaving(true)
@@ -56,15 +83,11 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
   }
 
   return (
-    <EditDrawer
-      open
-      onClose={onClose}
-      title="Edit Project"
-      description={project.name}
+    <EditDrawer open onClose={onClose} title="Edit Project" description={project.name}
       footer={
         <>
           <Button variant="secondary" size="sm" onClick={onClose}>Cancel</Button>
-          <Button variant="primary" size="sm" onClick={save} loading={saving}>Save changes</Button>
+          <Button variant="primary" size="sm" onClick={save} loading={saving}>Save</Button>
         </>
       }
     >
@@ -78,10 +101,6 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
           <Input value={form.client} onChange={e => setForm(f => ({ ...f, client: e.target.value }))} />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Owner</label>
-          <Input value={form.owner} onChange={e => setForm(f => ({ ...f, owner: e.target.value }))} />
-        </div>
-        <div>
           <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Due date</label>
           <Input type="date" value={form.endDate} onChange={e => setForm(f => ({ ...f, endDate: e.target.value }))} />
         </div>
@@ -89,26 +108,14 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
           <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Budget (₹)</label>
           <Input type="number" value={form.budget} onChange={e => setForm(f => ({ ...f, budget: e.target.value }))} />
         </div>
-
-        <div className="pt-2 border-t border-[var(--os-border)] border-t-white/20 space-y-3">
+        <div className="pt-2 border-t border-[var(--os-border)] space-y-3">
           <div>
             <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-2">Status</label>
-            <InlineSelect
-              value={project.status}
-              options={STATUS_OPTIONS}
-              onChange={status => updateProject(project.id, { status })}
-              size="md"
-            />
+            <InlineSelect value={project.status} options={STATUS_OPTIONS} onChange={s => updateProjectStatus(project.id, s)} size="md" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-2">Health</label>
-            <InlineSelect
-              value={project.health}
-              options={HEALTH_OPTIONS}
-              onChange={health => updateProject(project.id, { health })}
-              size="md"
-              dot
-            />
+            <InlineSelect value={project.health} options={HEALTH_OPTIONS} onChange={h => updateProjectHealth(project.id, h)} size="md" dot />
           </div>
         </div>
       </div>
@@ -116,209 +123,523 @@ function ProjectEditDrawer({ project, onClose }: { project: Project; onClose: ()
   )
 }
 
+// ── Project card ───────────────────────────────────────────────────────────────
+
+function ProjectCard({ p, onEdit, onDelete }: { p: Project; onEdit: () => void; onDelete: () => void }) {
+  const col    = catColor(p.category)
+  const hcol   = HEALTH_COLOR[p.health] ?? '#64748b'
+  const due    = dueDateLabel(p.endDate)
+  const budgetUsed = p.budget > 0 ? Math.min(100, Math.round((p.spent / p.budget) * 100)) : 0
+  const overBudget = p.budget > 0 && p.spent > p.budget
+
+  return (
+    <div
+      style={{
+        background: 'var(--os-card)',
+        border: '1px solid var(--os-border)',
+        borderRadius: 14,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'box-shadow 0.15s, border-color 0.15s',
+        boxShadow: 'var(--os-shadow-card)',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 32px ${col}18, var(--os-shadow-card)`; (e.currentTarget as HTMLElement).style.borderColor = col + '55' }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'var(--os-shadow-card)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--os-border)' }}
+    >
+      {/* Category accent bar */}
+      <div style={{ height: 3, background: col, flexShrink: 0 }} />
+
+      <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
+        {/* Top row: title + health pill */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{
+              fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', lineHeight: 1.35,
+              overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+            }}>
+              {p.name}
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--os-text-3)', marginTop: 3 }}>{p.client}</div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
+            <span style={{
+              fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 20,
+              background: hcol + '1a', color: hcol, border: `1px solid ${hcol}33`,
+              textTransform: 'uppercase', letterSpacing: '0.06em',
+            }}>
+              {HEALTH_LABEL[p.health]}
+            </span>
+          </div>
+        </div>
+
+        {/* Services tags */}
+        {(p.services ?? []).length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {(p.services ?? []).slice(0, 2).map(s => (
+              <span key={s} style={{
+                fontSize: 9, padding: '2px 7px', borderRadius: 4,
+                background: col + '12', color: col, border: `1px solid ${col}22`,
+                fontWeight: 600,
+              }}>{s}</span>
+            ))}
+            {(p.services ?? []).length > 2 && (
+              <span style={{
+                fontSize: 9, padding: '2px 7px', borderRadius: 4,
+                background: 'var(--os-surface-3)', color: 'var(--os-text-4)',
+                border: '1px solid var(--os-border-subtle)',
+              }}>+{(p.services ?? []).length - 2}</span>
+            )}
+          </div>
+        )}
+
+        {/* Progress */}
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <span style={{ fontSize: 10, color: 'var(--os-text-4)' }}>Progress</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: hcol, fontVariantNumeric: 'tabular-nums' }}>{p.progress}%</span>
+          </div>
+          <div style={{ height: 5, borderRadius: 3, background: 'var(--os-surface-0)', overflow: 'hidden' }}>
+            <div style={{ height: '100%', borderRadius: 3, width: `${p.progress}%`, background: `linear-gradient(90deg, ${col}, ${hcol})`, transition: 'width 0.5s ease' }} />
+          </div>
+        </div>
+
+        {/* Budget utilization */}
+        {p.budget > 0 && (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+              <span style={{ fontSize: 10, color: 'var(--os-text-4)' }}>Budget</span>
+              <span style={{
+                fontSize: 10, fontVariantNumeric: 'tabular-nums',
+                color: overBudget ? '#ef4444' : 'var(--os-text-3)',
+              }}>
+                {fmt(p.spent)} / {fmt(p.budget)}
+              </span>
+            </div>
+            <div style={{ height: 3, borderRadius: 2, background: 'var(--os-surface-0)', overflow: 'hidden' }}>
+              <div style={{
+                height: '100%', borderRadius: 2, width: `${budgetUsed}%`,
+                background: overBudget ? '#ef4444' : col,
+                transition: 'width 0.5s ease',
+              }} />
+            </div>
+          </div>
+        )}
+
+        {/* Footer: due date + category + actions */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          paddingTop: 8, marginTop: 'auto',
+          borderTop: '1px solid var(--os-border-subtle)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <CalendarDays style={{ width: 11, height: 11, color: due.color }} />
+            <span style={{ fontSize: 10, color: due.color, fontWeight: daysLeft(p.endDate) <= 7 ? 700 : 400 }}>{due.label}</span>
+          </div>
+          <div style={{ display: 'flex', gap: 4 }}>
+            <button onClick={e => { e.stopPropagation(); onEdit() }} style={{
+              background: 'none', border: 'none', cursor: 'pointer', padding: '3px 5px', borderRadius: 5,
+              color: 'var(--os-text-4)', display: 'flex', alignItems: 'center',
+            }}>
+              <Pencil style={{ width: 12, height: 12 }} />
+            </button>
+            <button onClick={e => { e.stopPropagation(); onDelete() }} style={{
+              background: 'none', border: 'none', cursor: 'pointer', padding: '3px 5px', borderRadius: 5,
+              color: '#ef444488', display: 'flex', alignItems: 'center',
+            }}>
+              <Trash2 style={{ width: 12, height: 12 }} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── List row ───────────────────────────────────────────────────────────────────
+
+function ProjectRow({ p, onEdit, onDelete }: { p: Project; onEdit: () => void; onDelete: () => void }) {
+  const col  = catColor(p.category)
+  const hcol = HEALTH_COLOR[p.health] ?? '#64748b'
+  const due  = dueDateLabel(p.endDate)
+  const budgetUsed = p.budget > 0 ? Math.min(100, Math.round((p.spent / p.budget) * 100)) : 0
+
+  return (
+    <div style={{
+      background: 'var(--os-card)', border: '1px solid var(--os-border)',
+      borderRadius: 10, padding: '0', overflow: 'hidden',
+      display: 'grid',
+      gridTemplateColumns: '3px 1fr 140px 100px 140px 90px 36px',
+      alignItems: 'center',
+      gap: 0,
+      transition: 'border-color 0.15s',
+    }}>
+      {/* Left accent */}
+      <div style={{ width: 3, alignSelf: 'stretch', background: col }} />
+
+      {/* Name + client + services */}
+      <div style={{ padding: '12px 14px', minWidth: 0 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {p.name}
+        </div>
+        <div style={{ fontSize: 10, color: 'var(--os-text-4)', marginTop: 2 }}>{p.client}</div>
+        {(p.services ?? []).length > 0 && (
+          <div style={{ display: 'flex', gap: 3, marginTop: 4, flexWrap: 'wrap' }}>
+            {(p.services ?? []).slice(0, 2).map(s => (
+              <span key={s} style={{
+                fontSize: 8, padding: '1px 5px', borderRadius: 3,
+                background: col + '12', color: col, border: `1px solid ${col}22`, fontWeight: 600,
+              }}>{s}</span>
+            ))}
+            {(p.services ?? []).length > 2 && (
+              <span style={{ fontSize: 8, color: 'var(--os-text-4)' }}>+{(p.services ?? []).length - 2}</span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Progress bar */}
+      <div style={{ padding: '0 12px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+          <span style={{ fontSize: 9, color: 'var(--os-text-4)' }}>Progress</span>
+          <span style={{ fontSize: 10, fontWeight: 700, color: hcol }}>{p.progress}%</span>
+        </div>
+        <div style={{ height: 4, borderRadius: 2, background: 'var(--os-surface-0)', overflow: 'hidden' }}>
+          <div style={{ height: '100%', width: `${p.progress}%`, background: `linear-gradient(90deg, ${col}, ${hcol})`, borderRadius: 2 }} />
+        </div>
+      </div>
+
+      {/* Budget */}
+      <div style={{ padding: '0 12px', textAlign: 'right' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.budget)}</div>
+        <div style={{ fontSize: 9, color: 'var(--os-text-4)', marginTop: 2 }}>{fmt(p.spent)} spent</div>
+      </div>
+
+      {/* Health + category */}
+      <div style={{ padding: '0 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <span style={{
+          fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 20,
+          background: hcol + '1a', color: hcol, border: `1px solid ${hcol}33`,
+          textTransform: 'uppercase', letterSpacing: '0.05em', alignSelf: 'flex-start',
+        }}>
+          {HEALTH_LABEL[p.health]}
+        </span>
+        <span style={{
+          fontSize: 9, padding: '1px 6px', borderRadius: 3, alignSelf: 'flex-start',
+          background: col + '12', color: col, fontWeight: 600,
+        }}>
+          {p.category === 'Innovation / R&D' ? 'R&D' : p.category === 'Run & Maintain' ? 'Retainer' : 'Transform'}
+        </span>
+      </div>
+
+      {/* Due date */}
+      <div style={{ padding: '0 12px', textAlign: 'right' }}>
+        <div style={{ fontSize: 10, color: due.color, fontWeight: daysLeft(p.endDate) <= 14 ? 700 : 400 }}>{due.label}</div>
+      </div>
+
+      {/* Actions */}
+      <div style={{ padding: '0 8px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <button onClick={e => { e.stopPropagation(); onEdit() }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--os-text-4)', padding: 3 }}>
+          <Pencil style={{ width: 11, height: 11 }} />
+        </button>
+        <button onClick={e => { e.stopPropagation(); onDelete() }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef444466', padding: 3 }}>
+          <Trash2 style={{ width: 11, height: 11 }} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Main overview ──────────────────────────────────────────────────────────────
+
+const CATEGORIES = ['All', 'Transformation', 'Innovation / R&D', 'Run & Maintain']
+type ViewMode = 'grid' | 'list'
+
 export function ProjectsOverview() {
   const { projects, tasks, isLoading, updateProjectStatus, updateProjectHealth, deleteProject } = useProjectsStore()
-  const viewMode  = useUIStore(s => s.viewMode)
-  const [editingId, setEditingId] = useState<string | null>(null)
+  const navigate = useNavigate()
+
+  const [editingId,   setEditingId]   = useState<string | null>(null)
+  const [search,      setSearch]      = useState('')
+  const [catFilter,   setCatFilter]   = useState('All')
+  const [healthFilter, setHealthFilter] = useState('All')
+  const [viewMode,    setViewMode]    = useState<ViewMode>('grid')
+
   const editingProject = projects.find(p => p.id === editingId)
 
   function patchStatus(id: string, status: ProjectStatus) {
     updateProjectStatus(id, status)
     if (!isDemo()) api.patch(`/projects/${id}`, { status })
   }
-
   function patchHealth(id: string, health: HealthStatus) {
     updateProjectHealth(id, health)
     if (!isDemo()) api.patch(`/projects/${id}`, { health })
   }
-
   function handleDelete(id: string) {
     deleteProject(id)
     if (!isDemo()) api.delete(`/projects/${id}`)
   }
 
+  // Portfolio metrics
+  const totalValue    = projects.reduce((s, p) => s + p.budget, 0)
+  const totalSpent    = projects.reduce((s, p) => s + p.spent, 0)
+  const onTrack       = projects.filter(p => p.health === 'on-track').length
+  const atRisk        = projects.filter(p => p.health === 'at-risk').length
+  const behind        = projects.filter(p => p.health === 'behind').length
+  const avgProgress   = projects.length > 0 ? Math.round(projects.reduce((s, p) => s + p.progress, 0) / projects.length) : 0
+  const portfolioHealth = projects.length > 0 ? Math.round((onTrack / projects.length) * 100) : 0
 
-  const chartData = projects
-    .filter(p => p.status !== 'planned')
-    .map(p => ({ name: p.name.split(' ').slice(0, 2).join(' '), progress: p.progress, color: p.pillarColor }))
+  // Filtered list
+  const filtered = useMemo(() => {
+    return projects.filter(p => {
+      if (catFilter !== 'All' && p.category !== catFilter) return false
+      if (healthFilter !== 'All' && p.health !== healthFilter) return false
+      if (search.trim()) {
+        const q = search.toLowerCase()
+        return p.name.toLowerCase().includes(q) || p.client.toLowerCase().includes(q) || p.services.some(s => s.toLowerCase().includes(q))
+      }
+      return true
+    })
+  }, [projects, catFilter, healthFilter, search])
 
-  const HEALTH_COLOR: Record<HealthStatus, string> = {
-    'on-track': '#00c875', 'at-risk': '#fdab3d', behind: '#e2445c', completed: '#579bfc',
-  }
-  const HEALTH_LABEL: Record<HealthStatus, string> = {
-    'on-track': 'On Track', 'at-risk': 'At Risk', behind: 'Behind', completed: 'Completed',
-  }
-
-  const onTrack = projects.filter(p => p.health === 'on-track').length
+  // Category counts
+  const catCounts = useMemo(() => {
+    const m: Record<string, number> = {}
+    projects.forEach(p => { m[p.category] = (m[p.category] ?? 0) + 1 })
+    return m
+  }, [projects])
 
   if (isLoading) {
     return (
-      <div className="space-y-6 animate-pulse">
+      <div className="space-y-5 animate-pulse">
         <div className="h-8 w-48 rounded-lg" style={{ background: 'var(--os-surface-0)' }} />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-24 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
-          ))}
+        <div className="grid grid-cols-5 gap-3">
+          {Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-20 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />)}
         </div>
-        <div className="h-48 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
-        <div className="space-y-3">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-24 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
-          ))}
+        <div className="grid grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-52 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />)}
         </div>
       </div>
     )
   }
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <KIMMPSignalBar module="Projects" />
-      <div>
-        <h2 className="text-[22px] font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Projects</h2>
-        <p className="text-sm mt-0.5" style={{ color: 'var(--os-text-2)' }}>{projects.length} projects · {tasks.length} tasks tracked</p>
+
+      {/* Page header */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+        <div>
+          <h2 style={{ fontSize: 22, fontWeight: 900, color: 'var(--os-text-1)', margin: 0, lineHeight: 1.2 }}>Projects</h2>
+          <p style={{ fontSize: 12, color: 'var(--os-text-3)', margin: '4px 0 0' }}>
+            {projects.length} active · {fmt(totalValue)} portfolio · {tasks.length} tasks tracked
+          </p>
+        </div>
+        <button
+          onClick={() => navigate('/kangqore-view/admin/projects/kanban')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8,
+            background: '#2564ea', color: '#fff', border: 'none', cursor: 'pointer',
+            fontSize: 12, fontWeight: 700,
+          }}
+        >
+          <Plus style={{ width: 14, height: 14 }} />
+          New Project
+        </button>
       </div>
 
-      {/* 4-stat header */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Portfolio stat bar */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10 }}>
         {[
-          { label: 'Total Projects', value: projects.length,                                              bg: 'linear-gradient(135deg,#2564ea 0%,#4ab6d4 100%)', glow: '#2564ea' },
-          { label: 'On Track',       value: onTrack,                                                      bg: 'linear-gradient(135deg,#00c875 0%,#00a86b 100%)', glow: '#00c875' },
-          { label: 'At Risk',        value: projects.filter(p => p.health === 'at-risk').length,          bg: 'linear-gradient(135deg,#fdab3d 0%,#f59e0b 100%)', glow: '#fdab3d' },
-          { label: 'Behind',         value: projects.filter(p => p.health === 'behind').length,           bg: 'linear-gradient(135deg,#e2445c 0%,#c0392b 100%)', glow: '#e2445c' },
+          { label: 'Portfolio Value', value: fmt(totalValue),       sub: `${fmt(totalSpent)} spent`,         icon: TrendingUp,    col: '#2564ea' },
+          { label: 'Total Projects',  value: String(projects.length), sub: `${avgProgress}% avg progress`,   icon: FolderKanban,  col: '#7c3aed' },
+          { label: 'Portfolio Health',value: `${portfolioHealth}%`,  sub: `${onTrack} on track`,             icon: CheckCircle2,  col: '#10b981' },
+          { label: 'At Risk',         value: String(atRisk),         sub: `needs attention`,                 icon: AlertTriangle, col: '#f59e0b' },
+          { label: 'Behind',          value: String(behind),         sub: `overdue or delayed`,              icon: AlertTriangle, col: '#ef4444' },
         ].map(stat => (
-          <div key={stat.label} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: stat.bg, boxShadow: `0 4px 20px ${stat.glow}40` }}>
-            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.30) 0%, transparent 60%)' }} />
-            <p className="relative text-[10px] uppercase tracking-widest font-semibold mb-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{stat.label}</p>
-            <p className="relative text-3xl font-black tracking-tight" style={{ color: '#ffffff' }}>{stat.value}</p>
+          <div key={stat.label} style={{
+            background: 'var(--os-card)', border: `1px solid ${stat.col}22`,
+            borderRadius: 12, padding: '14px 16px',
+            borderLeft: `3px solid ${stat.col}`,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-4)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{stat.label}</span>
+              <stat.icon style={{ width: 12, height: 12, color: stat.col }} />
+            </div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--os-text-1)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{stat.value}</div>
+            <div style={{ fontSize: 10, color: 'var(--os-text-4)', marginTop: 4 }}>{stat.sub}</div>
           </div>
         ))}
       </div>
 
-      <Card>
-        <CardHeader><CardTitle>Project Progress</CardTitle></CardHeader>
-        <ResponsiveContainer width="100%" height={180}>
-          <BarChart data={chartData} layout="vertical" barSize={14}>
-            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--os-border)" />
-            <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: 'var(--os-text-2)' }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
-            <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 11, fill: 'var(--os-text-1)' }} axisLine={false} tickLine={false} />
-            <Tooltip formatter={(v) => [`${v}%`, 'Progress']} contentStyle={{ borderRadius: 10, border: '1px solid var(--os-border)', background: 'var(--os-card)', color: 'var(--os-text-1)', fontSize: 12 }} />
-            <Bar dataKey="progress" radius={[0, 6, 6, 0]} fill="url(#brandGradient2)" />
-            <defs>
-              <linearGradient id="brandGradient2" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#579bfc" />
-                <stop offset="100%" stopColor="#00c875" />
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
-      </Card>
+      {/* Controls: category filter + health filter + search + view toggle */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+        {/* Category tabs */}
+        <div style={{ display: 'flex', gap: 4, background: 'var(--os-surface-3)', borderRadius: 8, padding: 3 }}>
+          {CATEGORIES.map(cat => {
+            const count = cat === 'All' ? projects.length : (catCounts[cat] ?? 0)
+            const active = catFilter === cat
+            const col = cat === 'All' ? '#64748b' : catColor(cat)
+            return (
+              <button key={cat} onClick={() => setCatFilter(cat)} style={{
+                padding: '5px 10px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                fontSize: 11, fontWeight: active ? 700 : 500,
+                background: active ? (cat === 'All' ? 'var(--os-card)' : col + '18') : 'transparent',
+                color: active ? (cat === 'All' ? 'var(--os-text-1)' : col) : 'var(--os-text-4)',
+                display: 'flex', alignItems: 'center', gap: 5,
+                boxShadow: active ? '0 1px 4px rgba(0,0,0,0.12)' : 'none',
+              }}>
+                {cat === 'All' ? 'All' : cat === 'Innovation / R&D' ? 'R&D' : cat === 'Run & Maintain' ? 'Retainer' : cat}
+                <span style={{
+                  fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 10,
+                  background: active ? (cat === 'All' ? 'var(--os-surface-3)' : col + '22') : 'var(--os-surface-0)',
+                  color: active ? (cat === 'All' ? 'var(--os-text-3)' : col) : 'var(--os-text-4)',
+                }}>{count}</span>
+              </button>
+            )
+          })}
+        </div>
 
-      {projects.length === 0 && (
-        <div className="py-16 text-center" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12 }}>
-          <Briefcase className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--os-text-2)' }} />
-          <p className="font-medium" style={{ color: 'var(--os-text-1)' }}>No projects yet</p>
-          <p className="text-sm mt-1" style={{ color: 'var(--os-text-2)' }}>Projects you create will appear here.</p>
+        {/* Health filter */}
+        <select
+          value={healthFilter}
+          onChange={e => setHealthFilter(e.target.value)}
+          style={{
+            fontSize: 11, fontWeight: 500, padding: '6px 10px', borderRadius: 7,
+            background: 'var(--os-surface-3)', border: '1px solid var(--os-border-subtle)',
+            color: 'var(--os-text-2)', cursor: 'pointer',
+          }}
+        >
+          <option value="All">All Health</option>
+          <option value="on-track">On Track</option>
+          <option value="at-risk">At Risk</option>
+          <option value="behind">Behind</option>
+          <option value="completed">Completed</option>
+        </select>
+
+        {/* Search */}
+        <div style={{ flex: 1, minWidth: 180, position: 'relative' }}>
+          <Search style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', width: 13, height: 13, color: 'var(--os-text-4)' }} />
+          <input
+            placeholder="Search projects, clients, services…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{
+              width: '100%', boxSizing: 'border-box',
+              padding: '7px 10px 7px 30px', borderRadius: 7, fontSize: 12,
+              background: 'var(--os-surface-3)', border: '1px solid var(--os-border-subtle)',
+              color: 'var(--os-text-1)', outline: 'none',
+            }}
+          />
+        </div>
+
+        {/* View toggle */}
+        <div style={{ display: 'flex', gap: 2, background: 'var(--os-surface-3)', borderRadius: 7, padding: 3 }}>
+          {(['grid', 'list'] as ViewMode[]).map(v => (
+            <button key={v} onClick={() => setViewMode(v)} style={{
+              padding: '5px 10px', borderRadius: 5, border: 'none', cursor: 'pointer', fontSize: 11, fontWeight: 600,
+              background: viewMode === v ? 'var(--os-card)' : 'transparent',
+              color: viewMode === v ? 'var(--os-text-1)' : 'var(--os-text-4)',
+              boxShadow: viewMode === v ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+            }}>
+              {v === 'grid' ? '⊞ Grid' : '≡ List'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Results count when filtering */}
+      {(catFilter !== 'All' || healthFilter !== 'All' || search) && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontSize: 11, color: 'var(--os-text-4)' }}>{filtered.length} of {projects.length} projects</span>
+          <button onClick={() => { setCatFilter('All'); setHealthFilter('All'); setSearch('') }} style={{
+            fontSize: 10, fontWeight: 600, color: '#2564ea', background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+          }}>
+            Clear filters
+          </button>
         </div>
       )}
 
-      {/* ── Board view — card grid ───────────────────────────────────────── */}
-      {viewMode === 'board' && projects.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {projects.map(p => (
-            <div key={p.id} className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-lg"
-              style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', boxShadow: 'var(--os-shadow-card)' }}>
-              {/* colour header strip */}
-              <div className="h-1.5 w-full" style={{ background: HEALTH_COLOR[p.health] }} />
-              <div className="flex flex-col gap-3 p-4 flex-1">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-bold text-sm leading-snug" style={{ color: 'var(--os-text-1)' }}>{p.name}</h3>
-                  <span className="rounded-full text-[10px] font-bold px-2 py-0.5 text-white shrink-0" style={{ background: HEALTH_COLOR[p.health] }}>
-                    {HEALTH_LABEL[p.health]}
-                  </span>
-                </div>
-                <p className="text-[11px] line-clamp-2" style={{ color: 'var(--os-text-2)' }}>{p.description}</p>
-                <div className="flex flex-col gap-1.5 text-[11px]" style={{ color: 'var(--os-text-2)' }}>
-                  <div className="flex items-center gap-1.5">
-                    <Users className="w-3 h-3 shrink-0" />
-                    <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{p.client}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <CalendarDays className="w-3 h-3 shrink-0" />
-                    <span>{new Date(p.endDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                  </div>
-                </div>
-                {/* progress */}
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-[10px]" style={{ color: 'var(--os-text-2)' }}>Progress</span>
-                    <span className="text-[11px] font-bold" style={{ color: HEALTH_COLOR[p.health] }}>{p.progress}%</span>
-                  </div>
-                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
-                    <div className="h-full rounded-full" style={{ width: `${p.progress}%`, background: HEALTH_COLOR[p.health] }} />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-auto pt-2 border-t" style={{ borderColor: 'var(--os-border)' }}>
-                  <AvatarGroup users={p.team.map(n => ({ name: n }))} max={4} size="xs" />
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button variant="ghost" size="icon" onClick={e => { e.stopPropagation(); setEditingId(p.id) }}>
-                      <Pencil className="w-3 h-3" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-400" onClick={e => { e.stopPropagation(); handleDelete(p.id) }}>
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* Empty state */}
+      {filtered.length === 0 && (
+        <div style={{
+          padding: '48px 0', textAlign: 'center',
+          background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 14,
+        }}>
+          <FolderKanban style={{ width: 36, height: 36, color: 'var(--os-text-3)', margin: '0 auto 12px' }} />
+          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--os-text-2)', margin: 0 }}>No projects match</p>
+          <p style={{ fontSize: 12, color: 'var(--os-text-4)', marginTop: 4 }}>Try clearing filters or adjusting your search.</p>
+        </div>
+      )}
+
+      {/* Grid view */}
+      {viewMode === 'grid' && filtered.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14 }}>
+          {filtered.map(p => (
+            <ProjectCard
+              key={p.id}
+              p={p}
+              onEdit={() => setEditingId(p.id)}
+              onDelete={() => handleDelete(p.id)}
+            />
           ))}
         </div>
       )}
 
-      {/* ── List view — horizontal rows (default) ────────────────────────── */}
-      {viewMode !== 'board' && projects.length > 0 && (
-        <div className="space-y-3">
-          {projects.map(p => (
-            <div key={p.id} className="group transition-all duration-200 hover:shadow-md" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, boxShadow: 'var(--os-shadow-card)' }}>
-              <div className="flex items-start gap-4 p-5">
-                <div className="w-1 self-stretch rounded-full flex-shrink-0" style={{ background: HEALTH_COLOR[p.health] }} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <h3 className="font-semibold text-sm" style={{ color: 'var(--os-text-1)' }}>{p.name}</h3>
-                    <span className="rounded-full text-[11px] font-bold px-2.5 py-0.5 text-white" style={{ background: HEALTH_COLOR[p.health] }}>
-                      {HEALTH_LABEL[p.health]}
-                    </span>
-                    <InlineSelect value={p.status} options={STATUS_OPTIONS} onChange={status => patchStatus(p.id, status)} size="sm" />
-                    <InlineSelect value={p.health} options={HEALTH_OPTIONS} onChange={health => patchHealth(p.id, health)} size="sm" dot />
-                  </div>
-                  <p className="text-xs mb-3 line-clamp-1" style={{ color: 'var(--os-text-2)' }}>{p.description}</p>
-                  <div className="flex items-center gap-6 text-xs mb-3" style={{ color: 'var(--os-text-2)' }}>
-                    <span>Client: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{p.client}</span></span>
-                    <span>Due: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>{new Date(p.endDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span></span>
-                    <span>Budget: <span className="font-medium" style={{ color: 'var(--os-text-1)' }}>₹{(p.spent / 1000).toFixed(0)}k / ₹{(p.budget / 1000).toFixed(0)}k</span></span>
-                    <span>{p.taskCount} tasks · {p.openIssues} issues</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'var(--os-surface-0)' }}>
-                      <div className="h-full rounded-full transition-all duration-500" style={{ width: `${p.progress}%`, background: HEALTH_COLOR[p.health] }} />
-                    </div>
-                    <span className="text-xs font-bold w-8" style={{ color: HEALTH_COLOR[p.health] }}>{p.progress}%</span>
-                  </div>
+      {/* List view */}
+      {viewMode === 'list' && filtered.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {/* Header row */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '3px 1fr 140px 100px 140px 90px 36px',
+            padding: '6px 0',
+            fontSize: 9, fontWeight: 700, color: 'var(--os-text-4)',
+            textTransform: 'uppercase', letterSpacing: '0.08em',
+          }}>
+            <div />
+            <div style={{ paddingLeft: 14 }}>Project</div>
+            <div style={{ paddingLeft: 12 }}>Progress</div>
+            <div style={{ paddingRight: 12, textAlign: 'right' }}>Budget</div>
+            <div style={{ paddingLeft: 12 }}>Health</div>
+            <div style={{ paddingRight: 12, textAlign: 'right' }}>Due</div>
+            <div />
+          </div>
+          {filtered.map(p => (
+            <ProjectRow
+              key={p.id}
+              p={p}
+              onEdit={() => setEditingId(p.id)}
+              onDelete={() => handleDelete(p.id)}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Portfolio breakdown by category */}
+      {filtered.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 4 }}>
+          {Object.entries(CAT_COLOR).map(([cat, col]) => {
+            const catProjects = projects.filter(p => p.category === cat)
+            if (catProjects.length === 0) return null
+            const catValue = catProjects.reduce((s, p) => s + p.budget, 0)
+            const catOnTrack = catProjects.filter(p => p.health === 'on-track').length
+            return (
+              <div key={cat} style={{
+                background: 'var(--os-card)', border: `1px solid ${col}22`,
+                borderRadius: 10, padding: '12px 14px',
+                borderLeft: `3px solid ${col}`,
+              }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: col, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+                  {cat === 'Innovation / R&D' ? 'Innovation / R&D' : cat}
                 </div>
-                <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                  <div className="flex items-center gap-1.5">
-                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => { e.stopPropagation(); setEditingId(p.id) }}>
-                      <Pencil className="w-3.5 h-3.5" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-400" onClick={e => { e.stopPropagation(); handleDelete(p.id) }}>
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </Button>
-                    <Avatar name={p.owner} size="sm" />
-                  </div>
-                  <AvatarGroup users={p.team.map(n => ({ name: n }))} max={3} size="xs" />
+                <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--os-text-1)', fontVariantNumeric: 'tabular-nums' }}>{fmt(catValue)}</div>
+                <div style={{ fontSize: 10, color: 'var(--os-text-4)', marginTop: 3 }}>
+                  {catProjects.length} project{catProjects.length !== 1 ? 's' : ''} · {catOnTrack} on track
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
 

@@ -9,6 +9,69 @@ import {
   Sparkles, FolderKanban, Gauge, Timer, AlertOctagon, Network,
 } from 'lucide-react'
 import { cn } from '@design-system/cn'
+import { useLeadershipProjection } from './useLeadershipProjection'
+
+// ── Gen III: WAANDA Leadership Intelligence banner ────────────────────────────
+function WANDALeadershipIntelligence() {
+  const model = useLeadershipProjection()
+  if (!model || model.confidence < 0.1) return null
+
+  const payload   = model.payload as Record<string, any>
+  const phase     = model.cognitivePhase
+  const oisScore  = payload.oisScore as number | null
+  const grade     = payload.grade    as string | null
+  const decisions = (payload.decisionCount ?? 0) as number
+  const breached  = (payload.totalBreachedKpis ?? 0) as number
+  const synthesis = payload.kimmSynthesis as string | null
+
+  const PHASE_COLOR: Record<string, string> = {
+    OBSERVE: '#3b82f6', UNDERSTAND: '#7c3aed', DECIDE: '#f59e0b',
+    ACT: '#10b981', LEARN: '#0d9488',
+  }
+  const col     = PHASE_COLOR[phase] ?? '#7c3aed'
+  const insight = synthesis?.slice(0, 140) ?? null
+
+  if (!insight && oisScore == null) return null
+
+  const GRADE_COLOR: Record<string, string> = { A: '#10b981', B: '#14b8a6', C: '#f59e0b', D: '#f97316', F: '#ef4444' }
+  const gradeCol = grade ? (GRADE_COLOR[grade] ?? col) : col
+
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 10,
+      padding: '7px 14px', marginBottom: 16,
+      background: col + '08', border: `1px solid ${col}20`, borderRadius: 8,
+    }}>
+      <Brain size={12} style={{ color: col, flexShrink: 0 }} />
+      <span style={{
+        fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em',
+        color: col, background: col + '15', padding: '2px 7px', borderRadius: 4, flexShrink: 0,
+      }}>
+        WAANDA · {phase}
+      </span>
+      {insight && (
+        <span style={{ fontSize: 11, color: 'var(--os-text-3)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {insight}{insight.length >= 140 ? '…' : ''}
+        </span>
+      )}
+      {oisScore != null && (
+        <span style={{ fontSize: 10, fontWeight: 700, color: gradeCol, background: gradeCol + '12', padding: '2px 8px', borderRadius: 4, flexShrink: 0 }}>
+          OIS {Math.round(oisScore)}{grade ? ` · ${grade}` : ''}
+        </span>
+      )}
+      {decisions > 0 && (
+        <span style={{ fontSize: 10, fontWeight: 700, color: '#f59e0b', background: '#f59e0b10', border: '1px solid #f59e0b25', padding: '2px 8px', borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
+          <AlertTriangle size={9} /> {decisions} pending
+        </span>
+      )}
+      {breached > 0 && (
+        <span style={{ fontSize: 10, fontWeight: 700, color: '#ef4444', background: '#ef444410', border: '1px solid #ef444425', padding: '2px 8px', borderRadius: 4, flexShrink: 0 }}>
+          {breached} KPIs breached
+        </span>
+      )}
+    </div>
+  )
+}
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface HealthScore {
@@ -148,6 +211,7 @@ export function MissionControlPage() {
 
   return (
     <div className="space-y-5">
+      <WANDALeadershipIntelligence />
 
       {/* ── Enterprise Pulse ── */}
       {pulse?.sentence && (

@@ -34,10 +34,10 @@ const Core: React.FC<WidgetProps> = ({ viewModel, onAction }) => {
           No active missions — system is stable
         </div>
       ) : (
-        missions.slice(0, 4).map((m: any, i: number) => {
+        missions.slice(0, 4).map((m: any) => {
           const col = PRIORITY_COLOR[m.priority] ?? 'var(--os-text-4)'
           return (
-            <div key={m.goal ?? i} style={{
+            <div key={m.goal ?? m.title} style={{
               padding: '7px 10px', borderRadius: 6,
               background: 'var(--os-surface-3)', border: `1px solid ${col}33`,
             }}>

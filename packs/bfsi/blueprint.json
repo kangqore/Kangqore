@@ -1,0 +1,333 @@
+{
+  "$blueprint":     "kangqore-view/v1",
+  "version":        "1.0.0",
+  "generatedAt":    "2026-07-16T00:00:00Z",
+  "extractedFrom":  "Kangqore BFSI Industry Pack — validated July 2026",
+  "validatedAt":    "2026-07-16",
+  "pack":           "bfsi",
+
+  "setupInstructions": {
+    "step1": "Set organization.name to the bank or NBFC's legal entity name.",
+    "step2": "Review goals — adjust NII target and NPA thresholds for the institution's current book.",
+    "step3": "POST this file to POST /admin/enterprise/blueprints/import.",
+    "step4": "Activate at PATCH /admin/enterprise/blueprints/:id/activate.",
+    "step5": "Configure COMPLIANCE_MONITOR with applicable regulatory framework (RBI / SEBI / Basel III).",
+    "estimatedSetupMinutes": 15
+  },
+
+  "organization": {
+    "name":     "{{REQUIRED: Set to institution name}}",
+    "industry": "bfsi",
+    "size":     "SME",
+    "pack":     "bfsi"
+  },
+
+  "departments": [
+    { "id": "credit",      "name": "Credit",      "head": null },
+    { "id": "treasury",    "name": "Treasury",    "head": null },
+    { "id": "compliance",  "name": "Compliance",  "head": null },
+    { "id": "retail",      "name": "Retail",      "head": null },
+    { "id": "risk",        "name": "Risk",        "head": null },
+    { "id": "operations",  "name": "Operations",  "head": null }
+  ],
+
+  "goals": [
+    {
+      "pillar":  "REVENUE",
+      "label":   "Net Interest Income",
+      "target":  50,
+      "unit":    "₹ Cr",
+      "weight":  1.5,
+      "notes":   "Core NII target. Tracked against interest income minus funding costs."
+    },
+    {
+      "pillar":  "MARGIN",
+      "label":   "Net Interest Margin",
+      "target":  3.5,
+      "unit":    "%",
+      "weight":  1.3,
+      "notes":   "NIM = NII / Average earning assets. Leading indicator of profitability."
+    },
+    {
+      "pillar":  "NPS",
+      "label":   "Customer Satisfaction Score",
+      "target":  72,
+      "unit":    "score",
+      "weight":  1.0,
+      "notes":   "Quarterly CSAT/NPS from retail and corporate banking clients."
+    },
+    {
+      "pillar":  "DELIVERY_SLA",
+      "label":   "Loan Approval TAT",
+      "target":  48,
+      "unit":    "hours",
+      "weight":  1.2,
+      "notes":   "Turnaround time from complete application to sanction letter. Lower is better."
+    },
+    {
+      "pillar":  "CUSTOM",
+      "label":   "Compliance Coverage",
+      "target":  98,
+      "unit":    "%",
+      "weight":  1.4,
+      "notes":   "Percentage of applicable regulatory controls mapped and verified. Sub-98 triggers COMPLIANCE_MONITOR alert."
+    },
+    {
+      "pillar":  "UTILIZATION",
+      "label":   "NPA Ratio",
+      "target":  2.0,
+      "unit":    "%",
+      "weight":  1.3,
+      "notes":   "Non-performing assets as percentage of gross advances. Target is upper bound — WAANDA tracks to stay below."
+    }
+  ],
+
+  "ontology": {
+    "entityTypes": [
+      { "name": "Customer",         "displayName": "Customer",          "icon": "user",             "color": "#579bfc", "description": "A retail or corporate banking customer." },
+      { "name": "Account",          "displayName": "Account",           "icon": "credit-card",      "color": "#00c875", "description": "A deposit, loan, or investment account." },
+      { "name": "LoanApplication",  "displayName": "Loan Application",  "icon": "file-text",        "color": "#0ea5e9", "description": "A credit application from a customer." },
+      { "name": "Transaction",      "displayName": "Transaction",       "icon": "arrow-left-right", "color": "#fdab3d", "description": "A financial movement between accounts." },
+      { "name": "ComplianceEvent",  "displayName": "Compliance Event",  "icon": "shield",           "color": "#e2445c", "description": "A regulatory filing, audit finding, or breach event." },
+      { "name": "RiskExposure",     "displayName": "Risk Exposure",     "icon": "alert-triangle",   "color": "#f97316", "description": "A quantified credit, market, or operational risk position." },
+      { "name": "Product",          "displayName": "Product",           "icon": "package",          "color": "#7c3aed", "description": "A banking or insurance product." },
+      { "name": "AMLAlert",         "displayName": "AML Alert",         "icon": "flag",             "color": "#dc2626", "description": "An anti-money-laundering flag raised by WAANDA." },
+      { "name": "TreasuryPosition", "displayName": "Treasury Position", "icon": "trending-up",      "color": "#eab308", "description": "A bond, derivative, or forex position held." },
+      { "name": "Branch",           "displayName": "Branch",            "icon": "building",         "color": "#66ccff", "description": "A physical or digital banking channel." }
+    ],
+    "relationshipTypes": [
+      "HOLDS_ACCOUNT", "APPLIED_FOR", "TRIGGERS_AML", "GENERATES_RISK",
+      "BELONGS_TO_PRODUCT", "REVIEWED_BY_COMPLIANCE", "LINKED_TRANSACTION",
+      "ISSUED_BY", "MONITORS", "ESCALATES_TO"
+    ]
+  },
+
+  "policies": [
+    {
+      "name":        "Comply before execute",
+      "description": "Any WAANDA action touching a regulated entity must pass COMPLIANCE_MONITOR check before execution.",
+      "trigger":     "EXTERNAL_API_CALL",
+      "condition":   {},
+      "effect":      "REQUIRE_APPROVAL",
+      "priority":    200
+    },
+    {
+      "name":        "Block record deletion",
+      "description": "No financial record may be deleted — immutable audit trail required by regulatory mandate.",
+      "trigger":     "DELETE_RECORD",
+      "condition":   {},
+      "effect":      "DENY",
+      "priority":    200
+    },
+    {
+      "name":        "AML flag escalation",
+      "description": "Any AML alert above threshold must trigger immediate L3 review.",
+      "trigger":     "CREATE_RISK",
+      "condition":   { "field": "type", "operator": "eq", "value": "AML" },
+      "effect":      "REQUIRE_APPROVAL",
+      "priority":    180
+    },
+    {
+      "name":        "Large credit approval",
+      "description": "Credit sanctions above ₹1 Cr require L3 approval before disbursement.",
+      "trigger":     "CREATE_INVOICE",
+      "condition":   { "field": "amount", "operator": "gte", "value": 10000000 },
+      "effect":      "REQUIRE_APPROVAL",
+      "priority":    150
+    },
+    {
+      "name":        "NPA threshold breach notification",
+      "description": "Notify credit risk team when any account crosses 90-day overdue threshold.",
+      "trigger":     "UPDATE_LEAD_STATUS",
+      "condition":   { "field": "overduedays", "operator": "gte", "value": 90 },
+      "effect":      "NOTIFY",
+      "priority":    130
+    },
+    {
+      "name":        "PII handling enforcement",
+      "description": "Any data export containing customer PII must be flagged and requires approval.",
+      "trigger":     "EXTERNAL_API_CALL",
+      "condition":   { "field": "dataClass", "operator": "eq", "value": "PII" },
+      "effect":      "REQUIRE_APPROVAL",
+      "priority":    120
+    }
+  ],
+
+  "agents": [
+    {
+      "id":        "CREDIT_RISK_AGENT",
+      "role":      "Credit risk monitor and NPA predictor",
+      "schedule":  "0 8 * * 1-5",
+      "triggerOn": ["loan.created", "account.overdue", "npa.threshold_approaching"]
+    },
+    {
+      "id":        "COMPLIANCE_MONITOR",
+      "role":      "Regulatory compliance and audit tracker",
+      "schedule":  "0 9 * * 1-5",
+      "triggerOn": ["compliance.filing_due", "audit.finding", "regulation.update"]
+    },
+    {
+      "id":        "AML_SENTINEL",
+      "role":      "Anti-money-laundering detection and alert",
+      "schedule":  "*/30 * * * *",
+      "triggerOn": ["transaction.created", "transaction.large_amount", "customer.pattern_change"]
+    },
+    {
+      "id":        "TREASURY_INTELLIGENCE",
+      "role":      "Treasury position monitoring and yield optimisation",
+      "schedule":  "0 7 * * 1-5",
+      "triggerOn": ["market.rate_change", "position.maturity_due", "yield_gap.detected"]
+    },
+    {
+      "id":        "LOAN_COACH",
+      "role":      "Loan origination and TAT optimisation",
+      "schedule":  "0 10 * * 1-5",
+      "triggerOn": ["loan_application.created", "loan_application.stalled", "credit.bureau_response"]
+    },
+    {
+      "id":        "ENTERPRISE_COACH",
+      "role":      "Weekly enterprise intelligence synthesis",
+      "schedule":  "0 7 * * 1",
+      "triggerOn": ["weekly.summary"]
+    },
+    {
+      "id":        "NPA_PREDICTOR",
+      "role":      "Forward-looking NPA risk scoring",
+      "schedule":  "0 6 * * 1,4",
+      "triggerOn": ["portfolio.refresh", "macro.indicator_change"]
+    }
+  ],
+
+  "playbooks": {
+    "delivery": [
+      {
+        "name":        "Loan Origination Flow",
+        "trigger":     "SIGNAL",
+        "description": "Application received → bureau check → credit scoring → WAANDA recommendation → L3 sanction (if >₹1Cr) → disbursement."
+      },
+      {
+        "name":        "NPA Recovery Protocol",
+        "trigger":     "SIGNAL",
+        "description": "90+ DPD detected → AML_SENTINEL check → legal hold → recovery team briefing → resolution tracking."
+      },
+      {
+        "name":        "KYC Refresh",
+        "trigger":     "SCHEDULE",
+        "description": "Annual KYC due → COMPLIANCE_MONITOR flags → customer notification → document collection → verification → sign-off."
+      },
+      {
+        "name":        "Account Closure",
+        "trigger":     "SIGNAL",
+        "description": "Closure request → balance check → regulatory hold check → AML clearance → archival."
+      }
+    ],
+    "finance": [
+      {
+        "name":        "Regulatory Filing",
+        "trigger":     "SCHEDULE",
+        "description": "Filing deadline T-7 days → COMPLIANCE_MONITOR assembles data → L3 review → submission → confirmation."
+      },
+      {
+        "name":        "Treasury Rebalancing",
+        "trigger":     "SIGNAL",
+        "description": "TREASURY_INTELLIGENCE detects yield gap → rebalancing proposal → L3 approval → execution."
+      },
+      {
+        "name":        "Provision Calculation",
+        "trigger":     "SCHEDULE",
+        "description": "Month-end NPA review → CREDIT_RISK_AGENT computes provision requirements → CFO approval → booking."
+      }
+    ],
+    "sales": [
+      {
+        "name":        "Product Cross-sell",
+        "trigger":     "SIGNAL",
+        "description": "ENTERPRISE_COACH identifies opportunity → LOAN_COACH prepares offer → relationship manager briefing → customer outreach."
+      },
+      {
+        "name":        "Attrition Prevention",
+        "trigger":     "SIGNAL",
+        "description": "Low activity or balance migration detected → WAANDA risk score → retention offer → outcome tracked."
+      }
+    ],
+    "custom": []
+  },
+
+  "kpis": {
+    "pillarWeights": {
+      "decision":   0.20,
+      "enterprise": 0.18,
+      "workflow":   0.15,
+      "goal":       0.14,
+      "ai":         0.10,
+      "business":   0.10,
+      "trust":      0.08,
+      "adoption":   0.05
+    }
+  },
+
+  "oisProfile": {
+    "baseline":           0,
+    "target":             75,
+    "checkpointInterval": "weekly",
+    "maturityLevels": {
+      "L1": { "label": "Aware",      "minComposite": 0,  "description": "Platform deployed, baseline captured." },
+      "L2": { "label": "Managed",    "minComposite": 40, "description": "Compliance and credit workflows running." },
+      "L3": { "label": "Optimised",  "minComposite": 60, "description": "AML + NPA intelligence surfacing proactively." },
+      "L4": { "label": "Predictive", "minComposite": 75, "description": "Loan TAT below target, NPA predicted before 90DPD." },
+      "L5": { "label": "Adaptive",   "minComposite": 85, "description": "Treasury intelligence and regulatory auto-filing operational." }
+    },
+    "emiWeights": {
+      "intelligence": 0.40,
+      "autonomy":     0.25,
+      "adoption":     0.20,
+      "governance":   0.15
+    }
+  },
+
+  "qefGates": {
+    "G1_ContextAssembly":      { "minScore": 85, "rationale": "Financial context must reflect up-to-date portfolio, NPA, and liquidity data." },
+    "G2_DecisionQuality":      { "minScore": 80, "rationale": "WAANDA credit/compliance decisions must cite evidence trail before approval." },
+    "G3_PlanningAccuracy":     { "minScore": 75, "rationale": "Loan origination plans must complete within TAT within acceptable variance." },
+    "G4_ExecutionReliability": { "minScore": 90, "rationale": "Regulatory filing workflows must complete with zero errors (compliance mandate)." },
+    "G5_WorkflowCanvas":       { "minScore": 70, "rationale": "Canvas must render all BFSI playbooks correctly." },
+    "G6_RealTimeIntelligence": { "minScore": 80, "rationale": "AML signals must surface within 30s — extended from 60s due to regulatory urgency." },
+    "G7_ReleaseGovernance":    { "minScore": 85, "rationale": "Any changes to compliance workflows require RGS sign-off and full audit trail." },
+    "G8_OIS":                  { "minScore": 60, "rationale": "Minimum OIS of 60/100 before external reporting on platform adoption." }
+  },
+
+  "dnaProfile": {
+    "approvalSpeed":       "SLOW",
+    "riskTolerance":       "CONSERVATIVE",
+    "decisionStyle":       "EVIDENCE_FIRST",
+    "escalationThreshold": "LOW",
+    "meetingDensity":      "HIGH",
+    "growthPhase":         "OPTIMISE",
+    "dominantPillar":      "decision",
+    "weakestPillar":       "adoption",
+    "notes":               "BFSI institutions are CONSERVATIVE by default — approvalSpeed SLOW, escalationThreshold LOW. WAANDA should expect longer approval cycles and surface evidence prominently. AML and compliance workflows carry the highest priority at all times."
+  },
+
+  "emi": {
+    "dimensions": ["REVENUE", "MARGIN", "NPS", "DELIVERY_SLA", "CUSTOM", "UTILIZATION"]
+  },
+
+  "coig": {
+    "northStar":  true,
+    "dimensions": ["ois", "compliance", "npa", "adoption"]
+  },
+
+  "governance": {
+    "approvalLevels":      { "L1": "self", "L2": "branch_manager", "L3": "credit_committee" },
+    "auditRetentionDays":  2555,
+    "blockRecordDeletion": true,
+    "rgsRules": [
+      "No changes to AML detection thresholds without Compliance Head sign-off.",
+      "All regulatory filing workflows must have a human-in-the-loop checkpoint before submission.",
+      "NPA thresholds must be reviewed quarterly and updated in dnaProfile.riskTolerance.",
+      "Audit retention is 7 years (2555 days) by regulatory mandate — never reduce this value.",
+      "WAANDA must not auto-approve any credit sanction above ₹1 Cr — L3 approval is mandatory.",
+      "OIS must be computed with G1 ContextAssembly score ≥ 85 — lower scores invalidate the result."
+    ]
+  }
+}

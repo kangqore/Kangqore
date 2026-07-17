@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Brain, CheckCircle, AlertTriangle, Cpu, Database,
   Download, Zap, Activity, Circle, ThumbsUp, ThumbsDown, Trash2, RefreshCw,
+  Play, Clock, Wifi, WifiOff, GitCompare,
 } from 'lucide-react'
 import { api, isDemo } from '@lib/api'
 
@@ -288,7 +289,7 @@ function LocalModelPanel({ status }: { status: GenStatus }) {
             <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-4 space-y-2">
               {[
                 '1. Run the fine-tune script (see below)',
-                `2. ollama create ${lm.model} -f ./models/WAANDAx/Modelfile`,
+                `2. ollama create ${lm.model} -f ~/models/WAANDAx/finetune/Modelfile`,
                 `3. Set KIMMP_LOCAL_REASON_MODEL=${lm.model}`,
                 '4. Restart core-backend — REASON phase auto-switches',
               ].map((step, i) => (
@@ -464,8 +465,8 @@ function ScriptPanel({ modelName }: { modelName: string }) {
   const steps = [
     { n: '1', label: 'Export training data',   cmd: 'curl http://localhost:5050/api/admin/waanda-training/export' },
     { n: '2', label: 'Install Unsloth',         cmd: 'pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"\npip install --no-deps trl peft accelerate bitsandbytes' },
-    { n: '3', label: 'Run fine-tune (GPU required)', cmd: 'cd backend\npython scripts/finetune_kimmp_reason.py --export-gguf' },
-    { n: '4', label: 'Deploy to Ollama',        cmd: `ollama create ${modelName} -f ./models/WAANDAx/Modelfile` },
+    { n: '3', label: 'Run fine-tune (Apple Silicon / MLX)', cmd: 'cd backend\n~/.kimmp-venv/bin/python scripts/finetune_waandax.py' },
+    { n: '4', label: 'Deploy to Ollama',        cmd: `ollama create ${modelName} -f ~/models/WAANDAx/finetune/Modelfile` },
     { n: '5', label: 'Set env + restart',        cmd: `KIMMP_LOCAL_REASON_MODEL=${modelName}\nKIMMP_OLLAMA_URL=http://localhost:11434\n\ndocker compose up -d core-backend` },
   ]
 
@@ -494,6 +495,148 @@ function ScriptPanel({ modelName }: { modelName: string }) {
         ))}
       </div>
     </Card>
+  )
+}
+
+// ── Gen2 live inference panel ─────────────────────────────────────────────────
+
+interface InferResult {
+  gen2:          string | null
+  gen2Available: boolean
+  latencyMs:     number
+  model?:        string
+  error?:        string
+}
+
+const EXAMPLE_PROMPTS = [
+  'What is the top strategic risk for a professional services firm scaling from 10 to 50 clients?',
+  'Summarize the key actions needed to improve OIS from 65 to 80 in 90 days.',
+  'List 3 leading indicators that a B2B enterprise customer is at churn risk.',
+]
+
+function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
+  const [prompt,  setPrompt]  = useState('')
+  const [result,  setResult]  = useState<InferResult | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  async function run() {
+    if (!prompt.trim() || loading) return
+    setLoading(true); setResult(null)
+    try {
+      const res = await api.post('/admin/kangqore-immp/waandax/infer', { prompt: prompt.trim() })
+      setResult(res.data)
+    } catch {
+      setResult({ gen2: null, gen2Available: false, latencyMs: 0, error: 'Request failed' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="rounded-3xl overflow-hidden" style={{ background: 'var(--os-card)', border: '1px solid rgba(127,83,249,0.25)' }}>
+      {/* Header */}
+      <div className="px-6 py-4 border-b border-[var(--os-border)] flex items-center gap-3">
+        <GitCompare style={{ width: 16, height: 16, color: '#a78bfa' }} />
+        <p className="text-[11px] font-bold text-[var(--os-text-2)] uppercase tracking-wider flex-1">
+          WAANDAx Gen2 — Live Inference
+        </p>
+        {modelAvailable
+          ? <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.25)' }}>
+              <Wifi style={{ width: 10, height: 10 }} /> Online
+            </span>
+          : <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-amber-400 px-2 py-0.5 rounded-full" style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.25)' }}>
+              <WifiOff style={{ width: 10, height: 10 }} /> Offline
+            </span>
+        }
+      </div>
+
+      <div className="p-6 space-y-4">
+        {/* Example prompts */}
+        <div className="flex flex-wrap gap-2">
+          {EXAMPLE_PROMPTS.map((p, i) => (
+            <button
+              key={i}
+              onClick={() => setPrompt(p)}
+              className="text-[10px] font-semibold px-2.5 py-1 rounded-lg transition-colors"
+              style={{ background: 'rgba(127,83,249,0.08)', color: '#a78bfa', border: '1px solid rgba(127,83,249,0.2)' }}
+            >
+              {p.slice(0, 48)}…
+            </button>
+          ))}
+        </div>
+
+        {/* Prompt input */}
+        <div>
+          <textarea
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
+            rows={3}
+            placeholder="Ask WAANDAx a strategic reasoning question…"
+            className="w-full text-sm font-mono leading-relaxed p-4 rounded-2xl resize-none outline-none transition-colors"
+            style={{
+              background:  'var(--os-surface-0)',
+              border:      '1px solid var(--os-border)',
+              color:       'var(--os-text-1)',
+              boxSizing:   'border-box',
+            }}
+            onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) run() }}
+          />
+          <div className="flex items-center justify-between mt-2">
+            <span className="text-[10px] text-[var(--os-text-4)]">⌘↵ to run</span>
+            <button
+              onClick={run}
+              disabled={loading || !prompt.trim()}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-opacity disabled:opacity-40"
+              style={{ background: 'rgba(127,83,249,0.9)', color: '#fff' }}
+            >
+              {loading
+                ? <><RefreshCw style={{ width: 12, height: 12 }} className="animate-spin" /> Running…</>
+                : <><Play style={{ width: 12, height: 12 }} /> Run Gen2</>
+              }
+            </button>
+          </div>
+        </div>
+
+        {/* Result */}
+        {result && (
+          <div className="space-y-3">
+            {result.gen2Available && result.gen2 ? (
+              <div className="rounded-2xl p-4 space-y-2" style={{ background: 'rgba(127,83,249,0.06)', border: '1px solid rgba(127,83,249,0.2)' }}>
+                <div className="flex items-center gap-2">
+                  <Brain style={{ width: 12, height: 12, color: '#a78bfa' }} />
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#a78bfa]">WAANDAx Gen2</span>
+                  <span className="ml-auto inline-flex items-center gap-1 text-[9px] font-bold text-[var(--os-text-4)]">
+                    <Clock style={{ width: 9, height: 9 }} /> {result.latencyMs}ms
+                  </span>
+                </div>
+                <p className="text-sm text-[var(--os-text-1)] leading-relaxed whitespace-pre-wrap font-mono">{result.gen2}</p>
+              </div>
+            ) : (
+              <div className="rounded-2xl p-4" style={{ background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.2)' }}>
+                <div className="flex items-start gap-2">
+                  <WifiOff style={{ width: 12, height: 12, color: '#fbbf24', flexShrink: 0, marginTop: 1 }} />
+                  <div>
+                    <p className="text-[10px] font-bold text-amber-400 mb-1">WAANDAx Offline</p>
+                    <pre className="text-[10px] text-[var(--os-text-3)] font-mono leading-relaxed whitespace-pre-wrap break-all">
+                      {result.error ?? 'MLX server not running on port 11435'}
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {!modelAvailable && !result && (
+          <div className="rounded-2xl p-4" style={{ background: 'rgba(251,191,36,0.04)', border: '1px solid rgba(251,191,36,0.15)' }}>
+            <p className="text-[10px] font-semibold text-[var(--os-text-3)] leading-relaxed">
+              WAANDAx Gen2 is offline. Start it with:<br />
+              <code className="font-mono text-amber-400">cd ~/.kimmp-venv && mlx_lm.server --model mlx-community/Llama-3.2-3B-Instruct-4bit --port 11435</code>
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
@@ -542,7 +685,7 @@ export function TrainingPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Brain style={{ width: 24, height: 24, color: '#a78bfa' }} />
-            <h2 className="text-xl font-bold text-[var(--os-text-1)] tracking-tight">KIMMP Gen 2 — Local Reasoning Model</h2>
+            <h2 className="text-xl font-bold text-[var(--os-text-1)] tracking-tight">WAANDAx Gen 2 — Local Reasoning Model</h2>
           </div>
           <p className="text-sm font-semibold text-[var(--os-text-2)] leading-relaxed max-w-xl">
             Capture REASON phase training data until 1,000 examples, then fine-tune Llama-3.2-3B-Instruct with QLoRA.
@@ -586,10 +729,13 @@ export function TrainingPage() {
       </div>
 
       {/* Script steps */}
-      <ScriptPanel modelName={lm?.model ?? 'waandax:latest'} />
+      <ScriptPanel modelName={lm?.model ?? 'waandax:v2'} />
 
       {/* Full corpus stats */}
       {corpusStats && <CorpusPanel stats={corpusStats} />}
+
+      {/* Gen2 live inference */}
+      <Gen2InferencePanel modelAvailable={lm?.available ?? false} />
 
       {/* Example review */}
       <ExampleReviewPanel />
@@ -605,7 +751,7 @@ export function TrainingPage() {
             <p className="text-sm font-medium text-[var(--os-text-2)] leading-relaxed">
               Every KIMMP activation captures the REASON prompt + Claude's response as a training example. Once 1,000
               high-quality REASON examples are labelled, QLoRA fine-tuning on Llama-3.2-3B produces{' '}
-              <span className="font-bold text-[var(--os-text-1)]">WAANDAx</span> — a Kangqore-specific routing model.
+              <span className="font-bold text-[var(--os-text-1)]">WAANDAx Gen 2</span> — a Kangqore-specific reasoning model.
               The dispatcher automatically switches REASON → local model, SPEAK + GOVERN stay on Claude.
               This eliminates ~50% of Claude API calls and reduces REASON latency from ~1,500 ms to &lt;100 ms.
             </p>

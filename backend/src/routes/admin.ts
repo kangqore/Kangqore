@@ -31,11 +31,11 @@ import { evaluateRelease, recordDeployment, recordOutcome, recordRollback, emerg
 import { AegisLedger } from '../kangqore-aegis/aegisLedger.service';
 import { getFlightEvents } from '../scripts/flightRecorder/flightRecorderService';
 import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../waanda/intelligence/gate8.service';
-import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent } from '../waanda/intelligence/enterpriseService';
+import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent, computeCoigWeekReport, computeOnboardingChecklist, listDeploymentHealth, computeRenewalRisk, generateQBR } from '../waanda/intelligence/enterpriseService';
 import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin } from '../waanda/intelligence/projectOps.service';
 import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../waanda/intelligence/enterpriseCoach.service';
 import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../waanda/intelligence/decisionEngine.service';
-import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint } from '../waanda/intelligence/blueprintService';
+import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint, addBlueprintGap, getBlueprintGaps, aggregateBlueprintGaps } from '../waanda/intelligence/blueprintService';
 import { simulateEnterpriseTwin, listTwinScenarios, compareScenarios } from '../waanda/intelligence/enterpriseTwin.service';
 import { computeCapabilityProfiles, getCapabilityProfiles, getRuntimeCallStats } from '../kangqore-immp/runtime/waandaRuntimeIntelligence.service';
 
@@ -1508,9 +1508,66 @@ router.get('/eqore/leads', authenticate, authorize(['ADMIN']), async (req: Authe
     const where: Record<string, unknown> = {}
     if (status) where.status = status
 
+    // Auto-seed strategic pipeline leads when DB is empty
+    const existingCount = await prisma.eqoreLead.count()
+    if (existingCount === 0) {
+      const STRATEGIC_LEADS = [
+        {
+          convId: 'seed-conv-birla-001', sessionId: 'seed-session-birla-001',
+          companyName: 'Birla Digital Labs', name: 'Aditya Birla', role: 'Chief Digital Officer',
+          email: 'aditya@birladigitallabs.in', phone: '+91 98765 43210',
+          leadScore: 95, buyingStage: 'negotiation', projectedValue: 2500000, pipelineWeight: 78,
+          urgency: 'HIGH', leadCategory: 'Enterprise', primaryIntent: 'Enterprise OS deployment — WAANDA + AEGIS full stack',
+          valueTier: 'ENTERPRISE', assignedOwnerName: 'Mahesh Kumar',
+          problemStatement: 'Siloed operations across 6 BUs, no unified intelligence layer. Need OS-level visibility.',
+          recommendedAction: 'Activate Blueprint Wizard — PS Pack configured for financial services arm.',
+        },
+        {
+          convId: 'seed-conv-hdfc-001', sessionId: 'seed-session-hdfc-001',
+          companyName: 'HDFC Bank Digital', name: 'Ritu Sharma', role: 'EVP — Digital Banking',
+          email: 'ritu.sharma@hdfcbank.com', phone: '+91 22 6652 1000',
+          leadScore: 88, buyingStage: 'proposal', projectedValue: 18000000, pipelineWeight: 62,
+          urgency: 'HIGH', leadCategory: 'Enterprise', primaryIntent: 'FinTech Pack deployment — NPA monitoring + fraud detection OS',
+          valueTier: 'ENTERPRISE_PLUS', assignedOwnerName: 'Mahesh Kumar',
+          problemStatement: 'NPA ratio rising, manual fraud review bottleneck, regulatory reporting is 3-day lag.',
+          recommendedAction: 'Propose FinTech Pack v1.0 — NPA Agent + FraudDetection Agent + Regulatory Agent.',
+        },
+        {
+          convId: 'seed-conv-bajaj-001', sessionId: 'seed-session-bajaj-001',
+          companyName: 'Bajaj Finserv Intelligence', name: 'Vikram Mehta', role: 'CTO',
+          email: 'vikram.mehta@bajajfinserv.in', phone: '+91 20 3898 9999',
+          leadScore: 76, buyingStage: 'qualified', projectedValue: 12000000, pipelineWeight: 48,
+          urgency: 'MEDIUM', leadCategory: 'Enterprise', primaryIntent: 'Intelligence Hub — predictive lending + CLTV optimization',
+          valueTier: 'ENTERPRISE', assignedOwnerName: 'Mahesh Kumar',
+          problemStatement: 'Cross-sell ratio below industry benchmark, CLTV visibility gap across 14M customer base.',
+          recommendedAction: 'Qualify FinTech Pack interest — CLTV + Cross-sell agents are key hooks.',
+        },
+      ]
+      for (const l of STRATEGIC_LEADS) {
+        await prisma.eqoreConversation.upsert({
+          where:  { sessionId: l.sessionId },
+          update: {},
+          create: { id: l.convId, sessionId: l.sessionId, status: 'CLOSED', visitorType: 'ENTERPRISE_PROSPECT', sourcePage: '/kangqore-view/admin/leads' },
+        })
+        await prisma.eqoreLead.upsert({
+          where:  { conversationId: l.convId },
+          update: {},
+          create: {
+            conversationId: l.convId, sessionId: l.sessionId,
+            companyName: l.companyName, name: l.name, role: l.role, email: l.email, phone: l.phone,
+            leadScore: l.leadScore, buyingStage: l.buyingStage, projectedValue: l.projectedValue as any,
+            pipelineWeight: l.pipelineWeight, urgency: l.urgency, leadCategory: l.leadCategory,
+            primaryIntent: l.primaryIntent, valueTier: l.valueTier, assignedOwnerName: l.assignedOwnerName,
+            problemStatement: l.problemStatement, recommendedAction: l.recommendedAction,
+            status: 'QUALIFIED', leadQuality: 'STRATEGIC',
+          },
+        })
+      }
+    }
+
     const leads = await prisma.eqoreLead.findMany({
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { leadScore: 'desc' },
       take:    limit,
       skip:    offset,
       select: {
@@ -1524,8 +1581,15 @@ router.get('/eqore/leads', authenticate, authorize(['ADMIN']), async (req: Authe
       },
     })
 
+    // Map buyingStage → stage so the frontend toLead() picks it up correctly
+    const mapped = leads.map(l => ({
+      ...l,
+      stage: l.buyingStage?.toLowerCase() ?? 'new',
+      projectedValue: l.projectedValue ? Number(l.projectedValue) : 0,
+    }))
+
     const total = await prisma.eqoreLead.count({ where })
-    res.json({ leads, total, limit, offset })
+    res.json({ leads: mapped, total, limit, offset })
   } catch (err) { next(err) }
 })
 
@@ -2882,6 +2946,359 @@ router.get('/enterprise/customer-zero/pulse', authenticate, authorize(['ADMIN'])
   } catch (err) { next(err) }
 })
 
+// GET /admin/enterprise/coig/week-report — Week N milestone report for client leadership
+// Shows OIS trajectory, maturity level progression, and COIG delta since Day 0 baseline.
+// Used for Week 5 client leadership presentation in S3-B.
+router.get('/enterprise/coig/week-report', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const report = await computeCoigWeekReport()
+    res.json(report)
+  } catch (err) { next(err) }
+})
+
+// GET /admin/enterprise/onboarding/checklist — 10-step deployment checklist
+// Checks live DB state for each onboarding requirement.
+// Complete when completionPct >= 80.
+router.get('/enterprise/onboarding/checklist', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const checklist = await computeOnboardingChecklist()
+    res.json(checklist)
+  } catch (err) { next(err) }
+})
+
+// ─── Customer Success Platform (H4) ──────────────────────────────────────────
+
+// GET /admin/enterprise/deployments — all deployments with COIG + health score
+router.get('/enterprise/deployments', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { res.json(await listDeploymentHealth()) } catch (err) { next(err) }
+})
+
+// GET /admin/enterprise/deployments/:id/renewal-risk — WAANDA renewal risk signal per deployment
+router.get('/enterprise/deployments/:id/renewal-risk', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { res.json(await computeRenewalRisk(req.params.id)) } catch (err) { next(err) }
+})
+
+// GET /admin/enterprise/deployments/:id/qbr — QBR generation for a deployment
+// Optional query: ?clientName=Acme+Corp&quarter=Q3+2026
+router.get('/enterprise/deployments/:id/qbr', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { clientName, quarter } = req.query as { clientName?: string; quarter?: string }
+    res.json(await generateQBR(req.params.id, clientName, quarter))
+  } catch (err) { next(err) }
+})
+
+// GET /admin/enterprise/blueprints/gaps/aggregate — cross-deployment gap analysis → PS Pack v1.1 input
+router.get('/enterprise/blueprints/gaps/aggregate', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try { res.json(await aggregateBlueprintGaps()) } catch (err) { next(err) }
+})
+
+// ─── Industry Packs ───────────────────────────────────────────────────────────
+
+const PS_PACK_V1 = {
+  id: 'ps-pack-v1',
+  name: 'Professional Services Pack™',
+  version: '1.0.0',
+  industry: 'professional-services',
+  description: 'A portable deployment spec extracted from Kangqore Global\'s own professional services operations. Includes ontology, KPIs, goals, policies, agent config, and OIS profile calibrated for PS firms.',
+  ontology: {
+    entities: [
+      { type: 'Client', attributes: ['name', 'industry', 'tier', 'healthScore', 'contractValue', 'nps'] },
+      { type: 'Engagement', attributes: ['name', 'type', 'status', 'startDate', 'endDate', 'budget', 'margin'] },
+      { type: 'Deliverable', attributes: ['title', 'dueDate', 'status', 'acceptanceCriteria'] },
+      { type: 'Consultant', attributes: ['name', 'skills', 'utilization', 'billRate', 'seniority'] },
+      { type: 'Invoice', attributes: ['amount', 'dueDate', 'status', 'milestone'] },
+      { type: 'Proposal', attributes: ['value', 'probability', 'stage', 'submittedAt'] },
+    ],
+    relations: [
+      { from: 'Client',      to: 'Engagement',  type: 'has' },
+      { from: 'Engagement',  to: 'Deliverable', type: 'produces' },
+      { from: 'Consultant',  to: 'Engagement',  type: 'assigned_to' },
+      { from: 'Engagement',  to: 'Invoice',     type: 'generates' },
+      { from: 'Proposal',    to: 'Engagement',  type: 'converts_to' },
+    ],
+  },
+  kpis: [
+    { id: 'k1', name: 'Revenue per Engagement',      unit: '₹',  target: 2500000, pillar: 'FINANCIAL'   },
+    { id: 'k2', name: 'Client Satisfaction (CSAT)',   unit: '/10', target: 8.5,    pillar: 'CLIENT'      },
+    { id: 'k3', name: 'On-Time Delivery Rate',        unit: '%',  target: 92,      pillar: 'DELIVERY'    },
+    { id: 'k4', name: 'Consultant Utilization',       unit: '%',  target: 78,      pillar: 'PEOPLE'      },
+    { id: 'k5', name: 'Gross Margin',                 unit: '%',  target: 42,      pillar: 'FINANCIAL'   },
+    { id: 'k6', name: 'Days Sales Outstanding (DSO)', unit: 'days', target: 42,   pillar: 'FINANCIAL'   },
+    { id: 'k7', name: 'Net Promoter Score (NPS)',     unit: '',   target: 55,      pillar: 'CLIENT'      },
+    { id: 'k8', name: 'Pipeline Conversion Rate',     unit: '%',  target: 28,      pillar: 'GROWTH'      },
+    { id: 'k9', name: 'Employee Retention',           unit: '%',  target: 88,      pillar: 'PEOPLE'      },
+    { id: 'k10', name: 'Average Deal Size',           unit: '₹',  target: 1800000, pillar: 'GROWTH'     },
+  ],
+  goals: [
+    { id: 'g1', title: 'Grow annual revenue 40% YoY',              pillar: 'GROWTH',     horizon: '12M' },
+    { id: 'g2', title: 'Achieve 90%+ on-time project delivery',    pillar: 'DELIVERY',   horizon: '6M'  },
+    { id: 'g3', title: 'Maintain 85%+ client satisfaction (CSAT)', pillar: 'CLIENT',     horizon: '6M'  },
+    { id: 'g4', title: 'Reduce DSO below 42 days',                 pillar: 'FINANCIAL',  horizon: '3M'  },
+    { id: 'g5', title: 'Increase consultant utilization to 78%+',  pillar: 'PEOPLE',     horizon: '3M'  },
+    { id: 'g6', title: 'Launch 2 new service lines by Q4',         pillar: 'INNOVATION', horizon: '9M'  },
+  ],
+  policies: [
+    { id: 'p1', title: 'Signed SOW before kickoff',            domain: 'delivery',  enforcement: 'HARD' },
+    { id: 'p2', title: 'Invoice within 7 days of milestone',   domain: 'finance',   enforcement: 'HARD' },
+    { id: 'p3', title: 'Change requests >10% need approval',   domain: 'delivery',  enforcement: 'SOFT' },
+    { id: 'p4', title: '24h client response SLA',              domain: 'client',    enforcement: 'HARD' },
+    { id: 'p5', title: 'QBR for engagements >6 months',       domain: 'client',    enforcement: 'SOFT' },
+    { id: 'p6', title: 'Weekly status report to client',       domain: 'delivery',  enforcement: 'SOFT' },
+    { id: 'p7', title: 'Risk log updated at each milestone',   domain: 'delivery',  enforcement: 'SOFT' },
+    { id: 'p8', title: 'All billable work time-tracked daily', domain: 'finance',   enforcement: 'HARD' },
+  ],
+  agents: [
+    { id: 'a1',  name: 'ClientSuccessAgent',    role: 'Monitors health score, flags at-risk accounts, triggers QBR scheduling' },
+    { id: 'a2',  name: 'DeliveryAgent',         role: 'Tracks milestone status, surfaces blockers, alerts on scope creep' },
+    { id: 'a3',  name: 'BillingAgent',          role: 'Triggers invoice creation on milestone completion, tracks DSO' },
+    { id: 'a4',  name: 'ResourcePlanningAgent', role: 'Matches consultant skills to opportunities, optimizes utilization' },
+    { id: 'a5',  name: 'ProposalAgent',         role: 'Generates proposal drafts from template, tracks win/loss patterns' },
+    { id: 'a6',  name: 'RiskAgent',             role: 'Maintains risk register, escalates HIGH/CRITICAL risks to PM' },
+    { id: 'a7',  name: 'QualityAgent',          role: 'Validates deliverables against acceptance criteria before client handoff' },
+    { id: 'a8',  name: 'PipelineAgent',         role: 'Scores leads, predicts close probability, flags stale opportunities' },
+    { id: 'a9',  name: 'FinanceAgent',          role: 'P&L per engagement, margin alerts, budget vs actual tracking' },
+    { id: 'a10', name: 'TalentAgent',           role: 'Monitors consultant retention signals, flags flight risk, tracks skills gaps' },
+    { id: 'a11', name: 'KnowledgeAgent',        role: 'Captures delivery learnings into Enterprise Memory after project close' },
+    { id: 'a12', name: 'ComplianceAgent',       role: 'Audits policy adherence (SOW signed, invoices on time, time-tracking)' },
+  ],
+  oisProfile: {
+    pillars: {
+      STRATEGIC:    { weight: 0.15, description: 'Goal alignment and executive clarity'    },
+      FINANCIAL:    { weight: 0.20, description: 'Revenue, margin, DSO, billing health'    },
+      DELIVERY:     { weight: 0.20, description: 'On-time delivery, quality, scope control' },
+      CLIENT:       { weight: 0.18, description: 'Satisfaction, NPS, renewal probability'  },
+      PEOPLE:       { weight: 0.12, description: 'Utilization, retention, skills coverage' },
+      GROWTH:       { weight: 0.10, description: 'Pipeline health, conversion, new logos'  },
+      GOVERNANCE:   { weight: 0.05, description: 'Policy compliance, audit trail'          },
+    },
+    day0Target: 62,
+    day90Target: 80,
+    day180Target: 88,
+  },
+  coig: {
+    baselineMonthly: 5.0,
+    targetMonthly: 9.0,
+    drivers: ['on-time delivery improvement', 'CSAT uplift', 'DSO reduction', 'pipeline conversion gain'],
+  },
+  departments: ['Delivery', 'Sales', 'Finance', 'HR', 'Quality', 'Leadership'],
+  workflows: [
+    'client-onboarding', 'project-kickoff', 'weekly-status', 'milestone-billing',
+    'escalation-handling', 'qbr-preparation', 'project-closeout', 'renewal-negotiation',
+  ],
+  extractedFrom: 'kangqore-global-operations',
+  createdAt: '2026-07-17',
+}
+
+const FINTECH_PACK_V1 = {
+  id: 'fintech-pack-v1',
+  name: 'FinTech Pack™',
+  version: '1.0.0',
+  industry: 'financial-services',
+  description: 'Enterprise intelligence pack for banks, NBFCs, and fintech firms. Covers credit risk, regulatory compliance, fraud detection, portfolio management, and digital-channel growth — calibrated for RBI/SEBI-regulated environments.',
+  ontology: {
+    entities: [
+      { type: 'Portfolio', attributes: ['loanType', 'balance', 'npa', 'yield', 'riskBand'] },
+      { type: 'Customer',  attributes: ['segment', 'creditScore', 'ltv', 'churnRisk', 'kycStatus'] },
+      { type: 'Product',   attributes: ['type', 'arr', 'margin', 'regulatoryClass', 'launchDate'] },
+      { type: 'Compliance',attributes: ['regulation', 'status', 'riskLevel', 'deadlineAt'] },
+      { type: 'Transaction',attributes: ['amount', 'channel', 'fraudScore', 'timestamp', 'flag'] },
+      { type: 'AdvisorRelationship', attributes: ['segment', 'coverage', 'aum', 'satisfactionScore'] },
+    ],
+    relations: [
+      { from: 'Customer',    to: 'Portfolio',  type: 'holds'         },
+      { from: 'Portfolio',   to: 'Product',    type: 'contains'      },
+      { from: 'Customer',    to: 'Transaction', type: 'initiates'    },
+      { from: 'Product',     to: 'Compliance',  type: 'governed_by'  },
+      { from: 'AdvisorRelationship', to: 'Customer', type: 'manages' },
+    ],
+  },
+  kpis: [
+    { id: 'k1', name: 'Net Interest Margin (NIM)',         unit: '%',  target: 3.8,     pillar: 'FINANCIAL'   },
+    { id: 'k2', name: 'Non-Performing Asset Ratio',        unit: '%',  target: 1.8,     pillar: 'RISK'        },
+    { id: 'k3', name: 'Customer Acquisition Cost (CAC)',   unit: '₹',  target: 1200,    pillar: 'GROWTH'      },
+    { id: 'k4', name: 'Customer Lifetime Value (CLTV)',    unit: '₹',  target: 185000,  pillar: 'CUSTOMER'    },
+    { id: 'k5', name: 'Product Cross-sell Ratio',          unit: 'x',  target: 2.4,     pillar: 'GROWTH'      },
+    { id: 'k6', name: 'Regulatory Compliance Score',       unit: '/100', target: 94,    pillar: 'REGULATORY'  },
+    { id: 'k7', name: 'Digital Transaction Mix',           unit: '%',  target: 78,      pillar: 'DIGITAL'     },
+    { id: 'k8', name: 'AUM Growth Rate',                   unit: '%',  target: 18,      pillar: 'FINANCIAL'   },
+    { id: 'k9', name: 'Fraud Loss Ratio',                  unit: '%',  target: 0.05,    pillar: 'RISK'        },
+    { id: 'k10', name: 'Customer Churn Rate',              unit: '%',  target: 4.2,     pillar: 'CUSTOMER'    },
+  ],
+  goals: [
+    { id: 'g1', title: 'Reduce NPA ratio below 2% by Q4',               pillar: 'RISK',       horizon: '6M'  },
+    { id: 'g2', title: 'Grow digital transaction share to 75%',          pillar: 'DIGITAL',    horizon: '9M'  },
+    { id: 'g3', title: 'Achieve 93%+ regulatory compliance score',       pillar: 'REGULATORY', horizon: '3M'  },
+    { id: 'g4', title: 'Expand CLTV 25% through cross-selling',          pillar: 'CUSTOMER',   horizon: '12M' },
+    { id: 'g5', title: 'Launch 3 new fintech products by mid-year',      pillar: 'GROWTH',     horizon: '6M'  },
+    { id: 'g6', title: 'Reduce CAC by 15% via digital-first acquisition',pillar: 'FINANCIAL',  horizon: '9M'  },
+  ],
+  policies: [
+    { id: 'p1', title: 'All credit decisions require model score + human review', domain: 'risk',        enforcement: 'HARD' },
+    { id: 'p2', title: 'KYC verification mandatory before product activation',    domain: 'compliance',  enforcement: 'HARD' },
+    { id: 'p3', title: 'Fraud score >85 auto-blocks transaction',                 domain: 'risk',        enforcement: 'HARD' },
+    { id: 'p4', title: 'Regulatory reports filed within 24h of quarter-end',      domain: 'compliance',  enforcement: 'HARD' },
+    { id: 'p5', title: 'NPA classification within 90 days of default',            domain: 'risk',        enforcement: 'HARD' },
+    { id: 'p6', title: 'AML screening on all transactions >₹5L',                 domain: 'compliance',  enforcement: 'HARD' },
+    { id: 'p7', title: 'Customer data residency — in-country only',               domain: 'data',        enforcement: 'HARD' },
+    { id: 'p8', title: 'Dual approval required for limits >₹10M',                 domain: 'risk',        enforcement: 'SOFT' },
+  ],
+  agents: [
+    { id: 'a1',  name: 'CreditRiskAgent',          role: 'Monitors NPA signals, flags at-risk portfolios, triggers provisioning alerts' },
+    { id: 'a2',  name: 'FraudDetectionAgent',      role: 'Real-time transaction scoring, anomaly detection, automatic blocking above threshold' },
+    { id: 'a3',  name: 'RegulatoryAgent',          role: 'Tracks RBI/SEBI deadlines, files compliance calendar, flags overdue obligations' },
+    { id: 'a4',  name: 'CrossSellAgent',           role: 'Cross-sell propensity scoring, next-best-product recommendations per customer segment' },
+    { id: 'a5',  name: 'ChurnPredictionAgent',     role: 'Early warning system on behavioural churn signals, triggers retention workflow' },
+    { id: 'a6',  name: 'PortfolioAgent',           role: 'Suggests portfolio rebalancing, flags concentration risk, optimizes yield mix' },
+    { id: 'a7',  name: 'KYCAgent',                 role: 'Automated KYC verification, periodic refresh scheduling, flags expired docs' },
+    { id: 'a8',  name: 'AuditTrailAgent',          role: 'Generates immutable compliance audit trails for all critical actions' },
+    { id: 'a9',  name: 'SegmentationAgent',        role: 'Behavioural clustering, micro-segment discovery, refreshes monthly' },
+    { id: 'a10', name: 'DynamicPricingAgent',      role: 'Interest rate and fee optimization based on risk profile and market conditions' },
+    { id: 'a11', name: 'FinancialForecastAgent',   role: 'AUM, NIM, and revenue forecasting using macro signals + internal trends' },
+    { id: 'a12', name: 'AlertDispatchAgent',       role: 'Critical threshold breach notifications across all KPI pillars in real time' },
+  ],
+  oisProfile: {
+    pillars: {
+      REGULATORY: { weight: 0.25, description: 'RBI/SEBI compliance, reporting accuracy, deadline adherence' },
+      RISK:       { weight: 0.20, description: 'NPA levels, fraud loss, credit quality, concentration risk'   },
+      FINANCIAL:  { weight: 0.20, description: 'NIM, AUM, revenue, cost-to-income ratio'                     },
+      DIGITAL:    { weight: 0.15, description: 'Digital transaction mix, mobile adoption, API latency'        },
+      CUSTOMER:   { weight: 0.12, description: 'CLTV, churn rate, satisfaction, cross-sell depth'            },
+      GROWTH:     { weight: 0.08, description: 'New product launches, CAC efficiency, market share'          },
+    },
+    day0Target: 58,
+    day90Target: 75,
+    day180Target: 85,
+  },
+  coig: {
+    baselineMonthly: 4.0,
+    targetMonthly:   8.5,
+    drivers: ['NPA reduction', 'digital transaction mix increase', 'cross-sell uplift', 'compliance automation gain'],
+  },
+  departments: ['Risk', 'Compliance', 'Digital', 'Retail Banking', 'Treasury', 'Product', 'Finance', 'Operations'],
+  workflows: [
+    'credit-appraisal', 'kyc-onboarding', 'fraud-investigation', 'regulatory-reporting',
+    'portfolio-review', 'product-launch', 'customer-escalation', 'npa-recovery',
+  ],
+  extractedFrom: 'fintech-operations-reference',
+  createdAt: '2026-07-17',
+}
+
+const HEALTHCARE_PACK_V1 = {
+  id: 'healthcare-pack-v1',
+  name: 'Healthcare Pack™',
+  version: '1.0.0',
+  industry: 'healthcare',
+  description: 'Enterprise intelligence pack for hospitals, clinic networks, and healthcare groups. Covers patient safety, clinical outcomes, revenue cycle, compliance (NABH/JCI/HIPAA), and operational efficiency across wards, departments, and care pathways.',
+  ontology: {
+    entities: [
+      { type: 'Patient',     attributes: ['mrn', 'segment', 'chronicConditions', 'riskScore', 'paymentType'] },
+      { type: 'Appointment', attributes: ['type', 'status', 'duration', 'noShowRisk', 'departmentId'] },
+      { type: 'Procedure',   attributes: ['code', 'cost', 'duration', 'complexity', 'department'] },
+      { type: 'Claim',       attributes: ['amount', 'status', 'payer', 'denialReason', 'processingDays'] },
+      { type: 'Provider',    attributes: ['specialty', 'utilization', 'satisfactionScore', 'caseload'] },
+      { type: 'Department',  attributes: ['name', 'bedOccupancy', 'throughput', 'revenue', 'infectionRate'] },
+    ],
+    relations: [
+      { from: 'Patient',     to: 'Appointment', type: 'books'       },
+      { from: 'Appointment', to: 'Procedure',   type: 'results_in'  },
+      { from: 'Procedure',   to: 'Claim',       type: 'generates'   },
+      { from: 'Provider',    to: 'Appointment', type: 'conducts'    },
+      { from: 'Department',  to: 'Provider',    type: 'employs'     },
+    ],
+  },
+  kpis: [
+    { id: 'k1', name: 'Patient Satisfaction (HCAHPS)',     unit: '/10',   target: 8.5,  pillar: 'EXPERIENCE'    },
+    { id: 'k2', name: 'Average Revenue per Bed Day',       unit: '₹',     target: 22000, pillar: 'FINANCIAL'    },
+    { id: 'k3', name: 'Bed Occupancy Rate',                unit: '%',     target: 82,   pillar: 'OPERATIONS'    },
+    { id: 'k4', name: 'Claims Denial Rate',                unit: '%',     target: 4.5,  pillar: 'FINANCIAL'     },
+    { id: 'k5', name: 'Average Length of Stay (ALOS)',     unit: 'days',  target: 3.8,  pillar: 'CLINICAL'      },
+    { id: 'k6', name: 'Staff Utilization Rate',            unit: '%',     target: 80,   pillar: 'OPERATIONS'    },
+    { id: 'k7', name: 'Appointment No-Show Rate',          unit: '%',     target: 8,    pillar: 'OPERATIONS'    },
+    { id: 'k8', name: 'Surgical Site Infection Rate',      unit: '/1000', target: 0.8,  pillar: 'PATIENT_SAFETY'},
+    { id: 'k9', name: '30-Day Readmission Rate',           unit: '%',     target: 5.5,  pillar: 'CLINICAL'      },
+    { id: 'k10', name: 'Claims Processing Time',           unit: 'days',  target: 18,   pillar: 'FINANCIAL'     },
+  ],
+  goals: [
+    { id: 'g1', title: 'Achieve NABH/JCI accreditation by Q4',                pillar: 'COMPLIANCE',     horizon: '9M'  },
+    { id: 'g2', title: 'Reduce claims denial rate to below 5%',                pillar: 'FINANCIAL',      horizon: '6M'  },
+    { id: 'g3', title: 'Improve patient satisfaction to 8.5+/10',             pillar: 'EXPERIENCE',     horizon: '6M'  },
+    { id: 'g4', title: 'Reduce bed turnaround time by 20%',                   pillar: 'OPERATIONS',     horizon: '3M'  },
+    { id: 'g5', title: 'Grow surgical volumes by 15% YoY',                    pillar: 'FINANCIAL',      horizon: '12M' },
+    { id: 'g6', title: 'Enrol 80% chronic patients in preventive care',       pillar: 'CLINICAL',       horizon: '9M'  },
+  ],
+  policies: [
+    { id: 'p1', title: 'Patient consent required before any data sharing',      domain: 'compliance',   enforcement: 'HARD' },
+    { id: 'p2', title: 'Critical deterioration alert within 15 minutes',        domain: 'patient_safety',enforcement: 'HARD' },
+    { id: 'p3', title: 'Dual sign-off for high-risk procedures (ASA ≥3)',       domain: 'clinical',     enforcement: 'HARD' },
+    { id: 'p4', title: 'Claims filed within 48h of patient discharge',          domain: 'finance',      enforcement: 'HARD' },
+    { id: 'p5', title: 'Adverse event reported to quality team within 24h',     domain: 'compliance',   enforcement: 'HARD' },
+    { id: 'p6', title: 'Drug formulary compliance for all inpatient scripts',   domain: 'clinical',     enforcement: 'SOFT' },
+    { id: 'p7', title: 'Infection control audit weekly in ICU and surgical',    domain: 'patient_safety',enforcement: 'SOFT' },
+    { id: 'p8', title: 'Discharge checklist mandatory before bed release',      domain: 'operations',   enforcement: 'HARD' },
+  ],
+  agents: [
+    { id: 'a1',  name: 'PatientRiskAgent',        role: 'Predicts readmission and clinical deterioration, triggers rapid-response alerts' },
+    { id: 'a2',  name: 'AppointmentAgent',         role: 'No-show prediction, auto-reminder scheduling, slot optimisation' },
+    { id: 'a3',  name: 'ClaimsAgent',              role: 'Denial prevention (pre-submission checks), auto-resubmission on rejection' },
+    { id: 'a4',  name: 'BedManagementAgent',       role: 'Real-time occupancy tracking, discharge planning, bed allocation' },
+    { id: 'a5',  name: 'ComplianceAgent',          role: 'NABH/HIPAA deadline tracking, accreditation milestone management' },
+    { id: 'a6',  name: 'StaffingAgent',            role: 'Shift optimisation, overtime alerts, utilisation heatmaps per department' },
+    { id: 'a7',  name: 'InfectionControlAgent',    role: 'Monitors SSI and HAI patterns, flags outbreak clusters, triggers protocols' },
+    { id: 'a8',  name: 'ClinicalQualityAgent',     role: 'Tracks ALOS, readmission, complication rates — surfaces improvement opportunities' },
+    { id: 'a9',  name: 'RevenueCycleAgent',        role: 'Payor mix optimisation, denial management, revenue leakage detection' },
+    { id: 'a10', name: 'PharmacyAgent',            role: 'Formulary compliance monitoring, drug interaction alerts, expiry tracking' },
+    { id: 'a11', name: 'PatientExperienceAgent',   role: 'HCAHPS score tracking, complaint resolution workflows, NPS improvement' },
+    { id: 'a12', name: 'CapacityForecastAgent',    role: 'Demand forecasting for beds, OT slots, staff, and consumables' },
+  ],
+  oisProfile: {
+    pillars: {
+      PATIENT_SAFETY: { weight: 0.25, description: 'SSI rates, adverse events, critical alerts, medication errors'     },
+      CLINICAL:       { weight: 0.20, description: 'Readmission, ALOS, complication rates, outcome benchmarks'          },
+      FINANCIAL:      { weight: 0.18, description: 'Revenue per bed, claims denial, ALOS economics, payor mix'          },
+      COMPLIANCE:     { weight: 0.17, description: 'NABH/JCI/HIPAA adherence, audit scores, policy enforcement'        },
+      OPERATIONS:     { weight: 0.12, description: 'Bed occupancy, staff utilization, turnaround time, OT efficiency'  },
+      EXPERIENCE:     { weight: 0.08, description: 'Patient satisfaction (HCAHPS), complaint resolution, NPS'           },
+    },
+    day0Target: 55,
+    day90Target: 72,
+    day180Target: 82,
+  },
+  coig: {
+    baselineMonthly: 3.5,
+    targetMonthly:   7.5,
+    drivers: ['claims denial reduction', 'bed occupancy improvement', 'patient satisfaction uplift', 'average length of stay reduction'],
+  },
+  departments: ['Inpatient', 'Outpatient', 'Surgical', 'ICU', 'Emergency', 'Pharmacy', 'Finance', 'Quality', 'HR'],
+  workflows: [
+    'patient-admission', 'discharge-planning', 'surgical-scheduling', 'claims-submission',
+    'infection-control-audit', 'accreditation-prep', 'critical-care-escalation', 'staff-rostering',
+  ],
+  extractedFrom: 'healthcare-operations-reference',
+  createdAt: '2026-07-17',
+}
+
+const PACK_MAP: Record<string, unknown> = {
+  'ps-pack-v1':         PS_PACK_V1,
+  'fintech-pack-v1':    FINTECH_PACK_V1,
+  'healthcare-pack-v1': HEALTHCARE_PACK_V1,
+}
+
+const AVAILABLE_PACKS = [
+  { id: 'ps-pack-v1',         name: 'Professional Services Pack™', version: '1.0.0', industry: 'professional-services', kpis: 10, goals: 6, agents: 12, policies: 8 },
+  { id: 'fintech-pack-v1',    name: 'FinTech Pack™',               version: '1.0.0', industry: 'financial-services',   kpis: 10, goals: 6, agents: 12, policies: 8 },
+  { id: 'healthcare-pack-v1', name: 'Healthcare Pack™',            version: '1.0.0', industry: 'healthcare',           kpis: 10, goals: 6, agents: 12, policies: 8 },
+]
+
+router.get('/enterprise/packs', authenticate, authorize(['ADMIN']), (_req: AuthenticatedRequest, res: Response) => {
+  res.json({ packs: AVAILABLE_PACKS })
+})
+
+router.get('/enterprise/packs/:slug', authenticate, authorize(['ADMIN']), (req: AuthenticatedRequest, res: Response) => {
+  const pack = PACK_MAP[req.params.slug]
+  if (pack) return res.json(pack)
+  res.status(404).json({ error: `Pack '${req.params.slug}' not found` })
+})
+
 // ─── Adoption Event Logging ────────────────────────────────────────────────────
 router.post('/adoption/event', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
@@ -3002,18 +3419,50 @@ router.post('/enterprise/policies/check', authenticate, authorize(['ADMIN']), as
   } catch (err) { next(err) }
 })
 
-// ─── Customer Success Platform ────────────────────────────────────────────────
+// ─── Customer Deployments (Blueprint Wizard CRUD) ────────────────────────────
+// NOTE: GET /enterprise/deployments (above, line ~2908) is the Customer Success
+// Platform handler returning EnterpriseBlueprint health. This set uses the
+// /enterprise/customer-deployments prefix to avoid Express first-match shadowing.
 
-router.get('/enterprise/deployments', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.get('/enterprise/customer-deployments', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const deployments = await prisma.customerDeployment.findMany({
-      orderBy: { createdAt: 'desc' },
-    })
+    let deployments = await prisma.customerDeployment.findMany({ orderBy: { createdAt: 'desc' } })
+    // Auto-seed on first use so the Blueprint Wizard always has at least Customer One
+    if (deployments.length === 0) {
+      await prisma.customerDeployment.createMany({
+        data: [
+          {
+            customerName: 'Kangqore Global',
+            industry:     'professional-services',
+            pack:         'professional-services',
+            milestone:    'LIVE',
+            currentOis:   78.9,
+            coig:         5.0,
+            contactName:  'Mahesh Kumar',
+            contactEmail: 'kangqore@gmail.com',
+            notes:        'Customer Zero — Kangqore Global. Day 0 OIS 78.9 locked 2026-07-17.',
+          },
+          {
+            customerName: 'Birla Digital Labs',
+            industry:     'professional-services',
+            pack:         'professional-services',
+            milestone:    'ONBOARDING',
+            currentOis:   0,
+            coig:         0,
+            contactName:  'Aditya Birla',
+            contactEmail: 'aditya@birladigitallabs.in',
+            notes:        'Customer One — Birla Digital Labs. Projected ₹25L. Enterprise PS Pack. Target go-live 2026-09-01.',
+          },
+        ],
+        skipDuplicates: true,
+      })
+      deployments = await prisma.customerDeployment.findMany({ orderBy: { createdAt: 'desc' } })
+    }
     res.json(deployments)
   } catch (err) { next(err) }
 })
 
-router.post('/enterprise/deployments', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.post('/enterprise/customer-deployments', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const { customerName, industry, pack, contactName, contactEmail, notes } = req.body as {
       customerName: string; industry: string; pack: string
@@ -3027,18 +3476,22 @@ router.post('/enterprise/deployments', authenticate, authorize(['ADMIN']), async
   } catch (err) { next(err) }
 })
 
-router.patch('/enterprise/deployments/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.patch('/enterprise/customer-deployments/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const { currentOis, coig, milestone, goLiveAt, baselineSnapshotId, notes } = req.body
+    const { currentOis, coig, milestone, goLiveAt, baselineSnapshotId, pack, notes } = req.body
     const d = await prisma.customerDeployment.update({
       where: { id: req.params.id },
-      data:  { currentOis, coig, milestone, goLiveAt: goLiveAt ? new Date(goLiveAt) : undefined, baselineSnapshotId, notes },
+      data:  {
+        currentOis, coig, milestone, pack,
+        goLiveAt: milestone === 'LIVE' ? new Date() : (goLiveAt ? new Date(goLiveAt) : undefined),
+        baselineSnapshotId, notes,
+      },
     })
     res.json(d)
   } catch (err) { next(err) }
 })
 
-router.delete('/enterprise/deployments/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.delete('/enterprise/customer-deployments/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try { await prisma.customerDeployment.delete({ where: { id: req.params.id } }); res.json({ ok: true }) }
   catch (err) { next(err) }
 })
@@ -3092,6 +3545,33 @@ router.patch('/enterprise/blueprints/:id/activate', authenticate, authorize(['AD
 // PATCH /admin/enterprise/blueprints/:id/archive — archive a blueprint
 router.patch('/enterprise/blueprints/:id/archive', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try { res.json(await archiveBlueprint(req.params.id)) } catch (err) { next(err) }
+})
+
+// GET /admin/enterprise/blueprints/:id/gaps — list gaps captured for this deployment
+router.get('/enterprise/blueprints/:id/gaps', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const gaps = await getBlueprintGaps(req.params.id)
+    res.json({ gaps, count: gaps.length })
+  } catch (err) { next(err) }
+})
+
+// POST /admin/enterprise/blueprints/:id/gaps — record a pack gap identified during deployment
+// Body: { category, description, severity, packVersion }
+// category: MISSING_ENTITY | MISSING_POLICY | MISSING_AGENT | MISSING_WORKFLOW | MISSING_CONFIG | INTEGRATION | OTHER
+// severity: HIGH | MEDIUM | LOW
+router.post('/enterprise/blueprints/:id/gaps', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { category, description, severity, packVersion } = req.body
+    if (!category || !description || !severity) {
+      return res.status(400).json({ error: 'category, description, and severity are required' })
+    }
+    const validCategories = ['MISSING_ENTITY', 'MISSING_POLICY', 'MISSING_AGENT', 'MISSING_WORKFLOW', 'MISSING_CONFIG', 'INTEGRATION', 'OTHER']
+    const validSeverities = ['HIGH', 'MEDIUM', 'LOW']
+    if (!validCategories.includes(category)) return res.status(400).json({ error: `Invalid category. Valid: ${validCategories.join(', ')}` })
+    if (!validSeverities.includes(severity))  return res.status(400).json({ error: `Invalid severity. Valid: ${validSeverities.join(', ')}` })
+    const gaps = await addBlueprintGap(req.params.id, { category, description, severity, packVersion: packVersion ?? '1.0.0' })
+    res.status(201).json({ gaps, count: gaps.length })
+  } catch (err) { next(err) }
 })
 
 // ─── Wave 1: Project Operational State ────────────────────────────────────────

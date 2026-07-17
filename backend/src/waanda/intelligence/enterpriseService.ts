@@ -861,3 +861,383 @@ Return ONLY a valid JSON object — no markdown, no preamble:
     return pulse
   }
 }
+
+// ─── COIG Week Report ─────────────────────────────────────────────────────────
+// Week N milestone report for client leadership presentation.
+// Surfaces OIS trajectory with maturity level framing.
+
+const MATURITY_LEVELS = [
+  { level: 'L1', label: 'Aware',      min: 0  },
+  { level: 'L2', label: 'Managed',    min: 40 },
+  { level: 'L3', label: 'Optimised',  min: 60 },
+  { level: 'L4', label: 'Predictive', min: 75 },
+  { level: 'L5', label: 'Adaptive',   min: 85 },
+]
+
+function getMaturityLevel(score: number) {
+  const lvl = [...MATURITY_LEVELS].reverse().find(l => score >= l.min)
+  return lvl ?? MATURITY_LEVELS[0]
+}
+
+export async function computeCoigWeekReport() {
+  const [baseline, gate8, coig, emi] = await Promise.all([
+    (prisma as any).gate8Snapshot.findFirst({
+      where:   { label: 'BASELINE' },
+      orderBy: { createdAt: 'asc' },
+    }).catch(() => null),
+    computeGate8(),
+    computeCOIG(),
+    computeEMI(),
+  ])
+
+  const baselineOis  = baseline?.oisScore ?? 0
+  const baselineDate = baseline?.createdAt ? new Date(baseline.createdAt) : new Date()
+  const daysSince    = Math.max(0, Math.round((Date.now() - baselineDate.getTime()) / (1000 * 60 * 60 * 24)))
+  const weekNumber   = Math.ceil(daysSince / 7) || 1
+  const currentOis   = gate8.oisScore
+  const delta        = Math.round((currentOis - baselineOis) * 10) / 10
+
+  const baseMaturity = getMaturityLevel(baselineOis)
+  const currMaturity = getMaturityLevel(currentOis)
+  const nextMaturity = MATURITY_LEVELS.find(l => l.min > currentOis) ?? null
+
+  const milestoneReached = currMaturity.level !== baseMaturity.level
+
+  let presentationSummary: string
+  if (milestoneReached) {
+    presentationSummary = `In ${daysSince} days (Week ${weekNumber}), OIS moved from ${Math.round(baselineOis)}/100 (${baseMaturity.label}) to ${currentOis}/100 (${currMaturity.label}). COIG delta: +${delta} points.`
+  } else {
+    presentationSummary = `Week ${weekNumber}: OIS at ${currentOis}/100 (+${delta} from Day 0 baseline of ${Math.round(baselineOis)}/100). Currently at ${currMaturity.label} maturity.`
+  }
+
+  return {
+    weekNumber,
+    daysSinceBaseline: daysSince,
+    baseline: {
+      oisScore:     Math.round(baselineOis * 10) / 10,
+      date:         baselineDate.toISOString(),
+      maturity:     baseMaturity.level,
+      maturityLabel: baseMaturity.label,
+    },
+    current: {
+      oisScore:     currentOis,
+      date:         new Date().toISOString(),
+      maturity:     currMaturity.level,
+      maturityLabel: currMaturity.label,
+      emiScore:     (emi as any).score ?? null,
+    },
+    coigDelta:     delta,
+    coigExpected:  coig.expected,
+    coigPotential: coig.potential,
+    milestoneReached,
+    milestoneLabel: milestoneReached ? `${currMaturity.level} — ${currMaturity.label}` : null,
+    nextMilestone:  nextMaturity
+      ? { level: nextMaturity.level, label: nextMaturity.label, gap: Math.round((nextMaturity.min - currentOis) * 10) / 10 }
+      : null,
+    presentationSummary,
+    generatedAt: new Date().toISOString(),
+  }
+}
+
+// ─── Onboarding Checklist ─────────────────────────────────────────────────────
+// Tracks completion of the 10 deployment steps for a new client.
+// Each step is checked against live DB state — no separate tracking table needed.
+
+const NEXT_ACTION_MAP: Record<string, string> = {
+  blueprint_imported:   'Import PS Pack at POST /admin/enterprise/blueprints/import',
+  goals_configured:     'Configure goals at /admin/enterprise/definition',
+  ontology_seeded:      'Seed entity types at /admin/ontology',
+  policies_active:      'Enable policies at /admin/enterprise/policies',
+  workflows_live:       'Activate workflows at /admin/kangqore-immp/workflows',
+  agents_active:        'Configure agents at /admin/kangqore-immp/agents',
+  baseline_set:         'Record OIS baseline at POST /admin/gate8/baseline',
+  team_invited:         'Invite team members at /admin/users',
+  first_project:        'Create the first project at /admin/pmo/projects',
+  first_waanda_session: 'Run first WAANDA session at /kangqore-view/waanda',
+}
+
+export async function computeOnboardingChecklist() {
+  const [
+    blueprint,
+    definition,
+    entityTypeCount,
+    policyCount,
+    workflowCount,
+    baseline,
+    agentCount,
+    userCount,
+    projectCount,
+    sessionCount,
+  ] = await Promise.all([
+    prisma.enterpriseBlueprint.findFirst({ where: { status: 'ACTIVE' }, orderBy: { createdAt: 'desc' } }),
+    prisma.enterpriseDefinition.findFirst({ where: { isActive: true }, include: { goals: true } }),
+    prisma.ontologyObjectType.count(),
+    prisma.enterprisePolicy.count({ where: { enabled: true } }),
+    prisma.kimmpWorkflow.count({ where: { status: 'ACTIVE' } }),
+    (prisma as any).gate8Snapshot.findFirst({ where: { label: 'BASELINE' } }).catch(() => null),
+    (prisma as any).kimmpAgent.count({ where: { status: 'ACTIVE' } }).catch(() => 0),
+    (prisma as any).user.count().catch(() => 0),
+    (prisma as any).project.count().catch(() => 0),
+    (prisma as any).urgiSession.count().catch(() => 0),
+  ])
+
+  const goalCount = definition?.goals?.length ?? 0
+
+  const steps = [
+    {
+      id: 'blueprint_imported', label: 'Blueprint imported',
+      complete: blueprint !== null,
+      completedAt: (blueprint as any)?.importedAt?.toISOString() ?? null,
+      detail:   blueprint ? `${blueprint.name} v${blueprint.version}` : null,
+    },
+    {
+      id: 'goals_configured', label: 'Goals configured (≥ 3)',
+      complete: goalCount >= 3,
+      detail:   `${goalCount} goals`, count: goalCount,
+    },
+    {
+      id: 'ontology_seeded', label: 'Ontology entity types seeded (≥ 6)',
+      complete: entityTypeCount >= 6,
+      detail:   `${entityTypeCount} entity types`, count: entityTypeCount,
+    },
+    {
+      id: 'policies_active', label: 'Policies active (≥ 3)',
+      complete: policyCount >= 3,
+      detail:   `${policyCount} policies`, count: policyCount,
+    },
+    {
+      id: 'workflows_live', label: 'Workflows live (≥ 5)',
+      complete: workflowCount >= 5,
+      detail:   `${workflowCount} workflows`, count: workflowCount,
+    },
+    {
+      id: 'agents_active', label: 'WAANDA agents active (≥ 5)',
+      complete: agentCount >= 5,
+      detail:   `${agentCount} agents`, count: agentCount,
+    },
+    {
+      id: 'baseline_set', label: 'OIS Day 0 baseline recorded',
+      complete: baseline !== null,
+      completedAt: baseline?.createdAt ? new Date(baseline.createdAt).toISOString() : null,
+      detail:   baseline ? `OIS = ${baseline.oisScore}/100` : null,
+    },
+    {
+      id: 'team_invited', label: 'Team users invited (≥ 2)',
+      complete: userCount >= 2,
+      detail:   `${userCount} user(s)`, count: userCount,
+    },
+    {
+      id: 'first_project', label: 'First project created',
+      complete: projectCount >= 1,
+      detail:   projectCount >= 1 ? `${projectCount} project(s)` : null, count: projectCount,
+    },
+    {
+      id: 'first_waanda_session', label: 'First WAANDA session completed',
+      complete: sessionCount >= 1,
+      detail:   sessionCount >= 1 ? `${sessionCount} session(s)` : null, count: sessionCount,
+    },
+  ]
+
+  const completedCount = steps.filter(s => s.complete).length
+  const completionPct  = Math.round((completedCount / steps.length) * 100)
+  const firstIncomplete = steps.find(s => !s.complete)
+
+  return {
+    steps,
+    completedCount,
+    totalSteps:   steps.length,
+    completionPct,
+    readyToGo:    completionPct >= 80,
+    nextAction:   firstIncomplete ? NEXT_ACTION_MAP[firstIncomplete.id] : null,
+    generatedAt:  new Date().toISOString(),
+  }
+}
+
+// ─── Customer Success Platform ────────────────────────────────────────────────
+// COIG per-deployment, deployment health scoring, renewal risk, QBR generation.
+// Powers the retention engine: makes churn structurally difficult.
+
+export async function listDeploymentHealth() {
+  const blueprints = await prisma.enterpriseBlueprint.findMany({
+    where:   { status: { in: ['ACTIVE', 'ARCHIVED'] } },
+    orderBy: { importedAt: 'desc' },
+    select:  { id: true, name: true, version: true, pack: true, industry: true, status: true, importedAt: true, deployedAt: true, gaps: true },
+  })
+
+  const [baseline, gate8] = await Promise.all([
+    (prisma as any).gate8Snapshot.findFirst({ where: { label: 'BASELINE' }, orderBy: { createdAt: 'asc' } }).catch(() => null),
+    computeGate8(),
+  ])
+
+  return blueprints.map(bp => {
+    const gaps: any[] = Array.isArray((bp as any).gaps) ? (bp as any).gaps : []
+    const highGaps    = gaps.filter((g: any) => g.severity === 'HIGH').length
+    const deployedAt  = (bp as any).importedAt ?? (bp as any).deployedAt
+    const daysSince   = deployedAt ? Math.round((Date.now() - new Date(deployedAt).getTime()) / 86_400_000) : null
+    const weekNumber  = daysSince !== null ? Math.ceil(daysSince / 7) || 1 : null
+
+    // Health heuristic: starts at 100, deducted by high gaps and age without activity
+    let health = 100
+    if (highGaps > 0) health -= highGaps * 10
+    if (daysSince !== null && daysSince > 60 && gaps.length === 0) health -= 15
+    health = Math.max(0, Math.min(100, health))
+
+    let healthStatus: 'HEALTHY' | 'WATCH' | 'AT_RISK'
+    if (health >= 75) healthStatus = 'HEALTHY'
+    else if (health >= 50) healthStatus = 'WATCH'
+    else healthStatus = 'AT_RISK'
+
+    return {
+      blueprintId:  bp.id,
+      name:         bp.name,
+      pack:         bp.pack,
+      industry:     bp.industry,
+      status:       bp.status,
+      deployedAt:   deployedAt?.toISOString() ?? null,
+      daysSince,
+      weekNumber,
+      health,
+      healthStatus,
+      gapCount:     gaps.length,
+      highGapCount: highGaps,
+      // OIS shown for own deployment only — multi-tenant will vary per schema
+      oisScore:     bp.status === 'ACTIVE' ? gate8.oisScore : null,
+      baselineOis:  bp.status === 'ACTIVE' ? (baseline?.oisScore ?? null) : null,
+      coigDelta:    bp.status === 'ACTIVE' && baseline ? Math.round((gate8.oisScore - baseline.oisScore) * 10) / 10 : null,
+    }
+  })
+}
+
+export async function computeRenewalRisk(blueprintId: string) {
+  const bp = await prisma.enterpriseBlueprint.findUnique({ where: { id: blueprintId } })
+  if (!bp) throw new Error(`Blueprint ${blueprintId} not found`)
+
+  const gaps: any[] = Array.isArray((bp as any).gaps) ? (bp as any).gaps : []
+  const [baseline, gate8, coig, adoptionEvents] = await Promise.all([
+    (prisma as any).gate8Snapshot.findFirst({ where: { label: 'BASELINE' }, orderBy: { createdAt: 'asc' } }).catch(() => null),
+    computeGate8(),
+    computeCOIG(),
+    (prisma as any).adoptionEvent.count({ where: { createdAt: { gte: new Date(Date.now() - 30 * 86_400_000) } } }).catch(() => 0),
+  ])
+
+  const highGaps      = gaps.filter((g: any) => g.severity === 'HIGH').length
+  const coigDelta     = coig.current
+  const oisTrend      = gate8.oisScore - (baseline?.oisScore ?? gate8.oisScore)
+  const adoptionLow   = adoptionEvents < 10
+
+  // Risk factors (additive)
+  const factors: Array<{ factor: string; weight: number; triggered: boolean }> = [
+    { factor: 'High-severity gaps unresolved',   weight: 30, triggered: highGaps > 0 },
+    { factor: 'Negative OIS trend',              weight: 25, triggered: oisTrend < -5 },
+    { factor: 'COIG delta below 10 after Week 4',weight: 20, triggered: coigDelta < 10 },
+    { factor: 'Low adoption (< 10 events/30d)',  weight: 15, triggered: adoptionLow },
+    { factor: 'No gaps reported (silent client)', weight: 10, triggered: gaps.length === 0 && adoptionEvents < 5 },
+  ]
+
+  const riskScore = factors.reduce((sum, f) => sum + (f.triggered ? f.weight : 0), 0)
+
+  let riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
+  if      (riskScore >= 50) riskLevel = 'CRITICAL'
+  else if (riskScore >= 30) riskLevel = 'HIGH'
+  else if (riskScore >= 15) riskLevel = 'MEDIUM'
+  else                      riskLevel = 'LOW'
+
+  const triggeredFactors = factors.filter(f => f.triggered)
+  const recommendations: string[] = []
+  if (highGaps > 0)   recommendations.push(`Resolve ${highGaps} high-severity pack gap(s) to improve fit.`)
+  if (oisTrend < -5)  recommendations.push('Schedule an OIS review session — platform intelligence is declining.')
+  if (coigDelta < 10) recommendations.push('Accelerate workflow activation — COIG growth is below target trajectory.')
+  if (adoptionLow)    recommendations.push('Run an adoption workshop — team engagement is below healthy levels.')
+
+  return {
+    blueprintId,
+    blueprintName: bp.name,
+    riskScore,
+    riskLevel,
+    triggeredFactors,
+    recommendations,
+    oisScore:    gate8.oisScore,
+    coigDelta,
+    adoptionLast30d: adoptionEvents,
+    generatedAt: new Date().toISOString(),
+  }
+}
+
+export async function generateQBR(blueprintId: string, clientName?: string, quarter?: string) {
+  const bp = await prisma.enterpriseBlueprint.findUnique({ where: { id: blueprintId } })
+  if (!bp) throw new Error(`Blueprint ${blueprintId} not found`)
+
+  const [baseline, gate8, emi, coig, recs, definition, activity, renewal] = await Promise.all([
+    (prisma as any).gate8Snapshot.findFirst({ where: { label: 'BASELINE' }, orderBy: { createdAt: 'asc' } }).catch(() => null),
+    computeGate8(),
+    computeEMI(),
+    computeCOIG(),
+    computeRecommendations(),
+    prisma.enterpriseDefinition.findFirst({ where: { isActive: true }, include: { goals: true } }),
+    computePlatformActivity(),
+    computeRenewalRisk(blueprintId),
+  ])
+
+  const gaps: any[] = Array.isArray((bp as any).gaps) ? (bp as any).gaps : []
+  const bm          = gate8.pillars.business.metrics as any
+  const deployedAt  = (bp as any).importedAt ?? (bp as any).deployedAt
+  const daysSince   = deployedAt ? Math.round((Date.now() - new Date(deployedAt).getTime()) / 86_400_000) : 0
+  const weekNumber  = Math.ceil(daysSince / 7) || 1
+  const quarterLabel = quarter ?? `Q${Math.ceil((new Date().getMonth() + 1) / 3)} ${new Date().getFullYear()}`
+
+  return {
+    meta: {
+      clientName:   clientName ?? bp.name,
+      pack:         bp.pack,
+      industry:     bp.industry,
+      quarter:      quarterLabel,
+      weekInProgram: weekNumber,
+      deployedAt:   deployedAt?.toISOString() ?? null,
+      generatedAt:  new Date().toISOString(),
+      verifiedBy:   'WAANDA Gate 8 + COIG Methodology (COM v1.0)',
+    },
+    executiveSummary: {
+      oisBefore:       baseline?.oisScore ?? null,
+      oisAfter:        gate8.oisScore,
+      coigDelta:       coig.current,
+      maturityBefore:  baseline ? getMaturityLevel(baseline.oisScore).label : null,
+      maturityAfter:   getMaturityLevel(gate8.oisScore).label,
+      hoursSaved:      bm?.estimatedHoursSaved ?? 0,
+      automationPct:   bm?.automationCoveragePct ?? 0,
+      workflowsRun:    bm?.totalWorkflowsCompleted ?? 0,
+      renewalRisk:     renewal.riskLevel,
+    },
+    goals: (definition?.goals ?? []).map((g: any) => ({
+      pillar:  g.pillar,
+      label:   g.label,
+      target:  g.target,
+      unit:    g.unit,
+    })),
+    platform: {
+      missionsExecuted:  (activity as any).missionsExecuted ?? 0,
+      decisionsApproved: (activity as any).executiveDecisions ?? 0,
+      sessionsRun:       (activity as any).waandaSessions ?? 0,
+      signalsCaptured:   (activity as any).evidenceCaptured ?? 0,
+    },
+    packGaps: {
+      total:       gaps.length,
+      highSeverity: gaps.filter((g: any) => g.severity === 'HIGH').length,
+      items:       gaps.slice(0, 5),
+      packUpdateRecommended: gaps.some((g: any) => g.severity === 'HIGH'),
+    },
+    topRecommendations: recs.slice(0, 5).map((r: any) => ({ action: r.action, oisImpact: r.oisImpact, priority: r.priority })),
+    renewalSignals: {
+      riskLevel:       renewal.riskLevel,
+      riskScore:       renewal.riskScore,
+      keyFactors:      renewal.triggeredFactors.map((f: any) => f.factor),
+      recommendations: renewal.recommendations,
+    },
+    nextQuarterObjectives: [
+      `Reach OIS ${Math.min(100, Math.round(gate8.oisScore + 15))}/100`,
+      `Complete ${Math.max(0, 10 - (recs.length))} outstanding WAANDA recommendations`,
+      `Resolve ${gaps.filter((g: any) => g.severity === 'HIGH').length} high-priority pack gaps`,
+      `Advance to ${getMaturityLevel(gate8.oisScore + 15).label} maturity`,
+    ],
+  }
+}
+
