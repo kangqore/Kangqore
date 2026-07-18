@@ -2768,4 +2768,398 @@ kangqoreImmpRoutes.patch('/marketplace/:id/status', requireAuth, requireRole(['A
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// S61 — WAANDA Gen 2: Anthropic fine-tuning + Gen2 model registry + A/B routing
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// POST /admin/kangqore-immp/learning/finetune-jobs/:id/submit
+// Exports approved examples to JSONL and submits to Anthropic Fine-Tuning API
+kangqoreImmpRoutes.post('/learning/finetune-jobs/:id/submit', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const job = await (prisma as any).finetuneJob.findUnique({ where: { id: req.params.id } })
+    if (!job) return res.status(404).json({ error: 'Job not found' })
+    if (job.status !== 'EXPORTING' && job.status !== 'PENDING') {
+      return res.status(400).json({ error: `Cannot submit a job in status ${job.status}` })
+    }
+
+    // Fetch approved examples at the job's quality threshold
+    const examples = await (prisma as any).kimmpLearningExample.findMany({
+      where: { quality: { gte: job.minQuality }, approved: true },
+      select: { systemPrompt: true, userMessage: true, idealResponse: true },
+      take: 5000,
+    })
+    if (examples.length < 10) {
+      return res.status(400).json({ error: `Need at least 10 approved examples (have ${examples.length})` })
+    }
+
+    // Build JSONL lines
+    const lines: string[] = examples.map((ex: any) => JSON.stringify({
+      messages: [
+        { role: 'system',    content: ex.systemPrompt  },
+        { role: 'user',      content: ex.userMessage   },
+        { role: 'assistant', content: ex.idealResponse },
+      ],
+    }))
+
+    const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY ?? ''
+    if (!ANTHROPIC_KEY) {
+      // Simulate submission for environments without the key
+      const simJobId = `ftjob-sim-${Date.now()}`
+      const updated = await (prisma as any).finetuneJob.update({
+        where: { id: job.id },
+        data: { status: 'TRAINING', providerJobId: simJobId, submittedAt: new Date(), exampleCount: examples.length },
+      })
+      return res.json({ ok: true, simulated: true, providerJobId: simJobId, exampleCount: examples.length, job: updated })
+    }
+
+    // Upload file to Anthropic
+    const blob = new Blob([lines.join('\n')], { type: 'application/jsonl' })
+    const formData = new FormData()
+    formData.append('file', blob, 'training.jsonl')
+    formData.append('purpose', 'fine-tune')
+
+    const uploadRes = await fetch('https://api.anthropic.com/v1/files', {
+      method: 'POST',
+      headers: { 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01', 'anthropic-beta': 'fine-tuning-2024-08-20' },
+      body: formData,
+      signal: AbortSignal.timeout(30_000),
+    })
+    if (!uploadRes.ok) {
+      const body = await uploadRes.text().catch(() => '')
+      return res.status(502).json({ error: `Anthropic file upload failed: ${uploadRes.status} ${body.slice(0, 200)}` })
+    }
+    const uploadData = await uploadRes.json() as any
+    const fileId = uploadData.id
+
+    // Create fine-tuning job
+    const ftRes = await fetch('https://api.anthropic.com/v1/fine-tuning/jobs', {
+      method: 'POST',
+      headers: {
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-beta': 'fine-tuning-2024-08-20',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ model: job.baseModel, training_file: fileId }),
+      signal: AbortSignal.timeout(30_000),
+    })
+    if (!ftRes.ok) {
+      const body = await ftRes.text().catch(() => '')
+      return res.status(502).json({ error: `Anthropic fine-tune submit failed: ${ftRes.status} ${body.slice(0, 200)}` })
+    }
+    const ftData = await ftRes.json() as any
+
+    const updated = await (prisma as any).finetuneJob.update({
+      where: { id: job.id },
+      data: { status: 'TRAINING', providerJobId: ftData.id, submittedAt: new Date(), exampleCount: examples.length },
+    })
+    res.json({ ok: true, providerJobId: ftData.id, exampleCount: examples.length, job: updated })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/learning/finetune-jobs/:id/status
+// Polls Anthropic for job status and updates DB
+kangqoreImmpRoutes.get('/learning/finetune-jobs/:id/status', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const job = await (prisma as any).finetuneJob.findUnique({ where: { id: req.params.id } })
+    if (!job) return res.status(404).json({ error: 'Job not found' })
+    if (!job.providerJobId) return res.json({ job, providerStatus: null })
+
+    const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY ?? ''
+    if (!ANTHROPIC_KEY || job.providerJobId.startsWith('ftjob-sim-')) {
+      return res.json({ job, providerStatus: { status: job.status, simulated: true } })
+    }
+
+    const pollRes = await fetch(`https://api.anthropic.com/v1/fine-tuning/jobs/${job.providerJobId}`, {
+      headers: {
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-beta': 'fine-tuning-2024-08-20',
+      },
+      signal: AbortSignal.timeout(10_000),
+    })
+    if (!pollRes.ok) return res.json({ job, providerStatus: null, pollError: pollRes.status })
+    const providerData = await pollRes.json() as any
+
+    // Map Anthropic status to internal status
+    const statusMap: Record<string, string> = { queued: 'TRAINING', running: 'TRAINING', succeeded: 'COMPLETE', failed: 'FAILED', cancelled: 'FAILED' }
+    const newStatus = statusMap[providerData.status] ?? job.status
+
+    const data: any = { status: newStatus }
+    if (newStatus === 'COMPLETE' && !job.completedAt) data.completedAt = new Date()
+    const updated = await (prisma as any).finetuneJob.update({ where: { id: job.id }, data })
+
+    res.json({ job: updated, providerStatus: providerData })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/learning/gen2-models
+kangqoreImmpRoutes.get('/learning/gen2-models', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const models = await (prisma as any).gen2Model.findMany({ orderBy: { createdAt: 'desc' } })
+    const deployed = models.find((m: any) => m.isDeployed) ?? null
+    res.json({ models, deployed })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/learning/gen2-models
+kangqoreImmpRoutes.post('/learning/gen2-models', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { name, provider, baseModel, providerModelId, finetuneJobId, benchmarkAccuracy, trainingExamples, notes } = req.body
+    if (!name || !provider || !baseModel || !providerModelId) return res.status(400).json({ error: 'name, provider, baseModel, providerModelId required' })
+    const model = await (prisma as any).gen2Model.create({
+      data: { name, provider, baseModel, providerModelId, finetuneJobId, benchmarkAccuracy: benchmarkAccuracy ? parseFloat(benchmarkAccuracy) : undefined, trainingExamples: trainingExamples ? parseInt(trainingExamples) : 0, notes, createdBy: req.user!.userId },
+    })
+    res.json({ model })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/learning/gen2-models/:id/deploy
+// Toggle deploy — undeploys all others first
+kangqoreImmpRoutes.patch('/learning/gen2-models/:id/deploy', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { deploy } = req.body // boolean
+    if (deploy) {
+      await (prisma as any).gen2Model.updateMany({ data: { isDeployed: false, deployedAt: null } })
+    }
+    const model = await (prisma as any).gen2Model.update({
+      where: { id: req.params.id },
+      data: { isDeployed: !!deploy, deployedAt: deploy ? new Date() : null },
+    })
+    res.json({ model })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/learning/router-stats
+kangqoreImmpRoutes.get('/learning/router-stats', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const { getRouterStats } = await import('./llm/kimmpLLMRouter')
+    const stats = await getRouterStats()
+    const deployedGen2 = await (prisma as any).gen2Model.findFirst({ where: { isDeployed: true }, select: { name: true, providerModelId: true, benchmarkAccuracy: true } }).catch(() => null)
+    res.json({ ...stats, deployedGen2 })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S62 — Connector SDK: field maps + bidirectional sync + KIMMP signal bridge
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// GET /admin/kangqore-immp/connectors/field-maps
+kangqoreImmpRoutes.get('/connectors/field-maps', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const maps = await (prisma as any).connectorFieldMap.findMany({
+      where: { createdBy: req.user!.userId },
+      orderBy: { createdAt: 'desc' },
+    })
+    res.json({ maps })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/connectors/field-maps
+kangqoreImmpRoutes.post('/connectors/field-maps', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { platform, syncDirection, fieldMaps, webhookEvents } = req.body
+    if (!platform || !fieldMaps) return res.status(400).json({ error: 'platform and fieldMaps required' })
+    const existing = await (prisma as any).connectorFieldMap.findFirst({ where: { platform, createdBy: req.user!.userId } })
+    const data = { platform, syncDirection: syncDirection ?? 'BIDIRECTIONAL', fieldMaps, webhookEvents: webhookEvents ?? [], createdBy: req.user!.userId, isActive: true }
+    const map = existing
+      ? await (prisma as any).connectorFieldMap.update({ where: { id: existing.id }, data })
+      : await (prisma as any).connectorFieldMap.create({ data })
+    res.json({ map })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/connectors/:platform/sync
+// Trigger bidirectional sync — pulls from external platform, generates KIMMP signals for changes
+kangqoreImmpRoutes.post('/connectors/:platform/sync', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { platform } = req.params
+    const { config } = req.body  // IntegrationConfig from frontend
+    const { ConnectorRegistry } = await import('../integrations/registry')
+    const connector = ConnectorRegistry.get(platform)
+    if (!connector) return res.status(404).json({ error: `Connector '${platform}' not registered` })
+
+    // Test connection
+    const testResult = await connector.adapter.test(config ?? {})
+    if (!testResult.ok) return res.status(400).json({ error: `Connection test failed: ${testResult.message}` })
+
+    // Get field map for this platform
+    const fieldMap = await (prisma as any).connectorFieldMap.findFirst({ where: { platform, createdBy: req.user!.userId, isActive: true } })
+
+    // Generate KIMMP signal about the sync
+    await (prisma as any).kimmpSignal.create({
+      data: {
+        signalType: 'CONNECTOR_SYNC',
+        severity:   'LOW',
+        signalValue: `${platform} sync initiated`,
+        source:      platform,
+        agentSystem: 'CONNECTOR_SDK',
+        metadata:    { platform, fieldMap: fieldMap?.id ?? null, triggeredBy: req.user!.userId },
+        status:      'ACTIVE',
+      },
+    }).catch(() => {})
+
+    res.json({ ok: true, platform, connection: testResult.message, fieldMapId: fieldMap?.id ?? null })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/connectors/inbound-event
+// External platforms POST here when events occur (webhook sink)
+// Generates KIMMP signals from inbound CRM/PM events
+kangqoreImmpRoutes.post('/connectors/inbound-event', async (req, res) => {
+  try {
+    const { platform, eventType, payload } = req.body
+    if (!platform || !eventType) return res.status(400).json({ error: 'platform and eventType required' })
+
+    const severityMap: Record<string, string> = {
+      'deal.lost': 'HIGH', 'contact.churned': 'HIGH', 'issue.critical': 'HIGH',
+      'deal.won': 'LOW', 'contact.created': 'LOW', 'issue.created': 'LOW',
+    }
+    const severity = severityMap[eventType] ?? 'MEDIUM'
+
+    await (prisma as any).kimmpSignal.create({
+      data: {
+        signalType:  'CONNECTOR_EVENT',
+        severity,
+        signalValue: `${platform}: ${eventType}`,
+        source:      platform,
+        agentSystem: 'CONNECTOR_WEBHOOK',
+        metadata:    { platform, eventType, payload: JSON.stringify(payload ?? {}).slice(0, 500) },
+        status:      'ACTIVE',
+      },
+    }).catch(() => {})
+
+    res.json({ ok: true, received: eventType })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S63 — Customer Three–Five: Blueprint clone + customer pipeline
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// GET /admin/kangqore-immp/customers/pipeline
+kangqoreImmpRoutes.get('/customers/pipeline', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    // Aggregate OIS-like readiness for prospective C3/C4/C5
+    // In production these would be pulled from real OIS snapshots per customer
+    // Here we return the scaffold for the pipeline page
+    const customers = await (prisma as any).kangqoreCustomer?.findMany?.({ orderBy: { createdAt: 'asc' } }).catch(() => null)
+    res.json({ pipeline: customers ?? [], total: customers?.length ?? 0 })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/customers/blueprint-clone
+// Clones blueprint.json, strips customer-specific data, bumps version
+kangqoreImmpRoutes.post('/customers/blueprint-clone', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { sourceBlueprintVersion, targetCustomerName, packId } = req.body
+    if (!targetCustomerName) return res.status(400).json({ error: 'targetCustomerName required' })
+
+    // Parse version and bump patch
+    const version = sourceBlueprintVersion ?? '1.0'
+    const [major, minor = 0, patch = 0] = version.split('.').map(Number)
+    const newVersion = `${major}.${minor}.${patch + 1}`
+
+    const cloned = {
+      version:          newVersion,
+      customerName:     targetCustomerName,
+      packId:           packId ?? 'ps-pack-v1',
+      generatedAt:      new Date().toISOString(),
+      generatedBy:      'Blueprint Clone Engine',
+      modules:          ['projects', 'finance', 'people', 'governance', 'intelligence'],
+      kimmpConfig: {
+        agentWarmup:    '20→80 over 14 days',
+        oisBaseline:    null,
+        coigTarget:     13.0,
+        onboardingDays: 1.5,
+      },
+      securityPolicy: {
+        ipAllowlist:    [],
+        ssoEnabled:     false,
+        auditLevel:     'FULL',
+      },
+      note: `Cloned from v${version}. Strip customer-specific data before delivery.`,
+    }
+
+    res.json({ ok: true, blueprint: cloned, version: newVersion })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S65 — AEGIS Depth P2: policy enforcement + KIMMP signal bridge
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// POST /admin/kangqore-immp/aegis/policy-violation
+// Called by AEGIS when a policy is violated — generates a KIMMP signal + AEGIS evidence
+kangqoreImmpRoutes.post('/aegis/policy-violation', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { policyId, policyName, severity, violatorId, violatorRole, endpoint, detail } = req.body
+    if (!policyId || !severity) return res.status(400).json({ error: 'policyId and severity required' })
+
+    const signal = await (prisma as any).kimmpSignal.create({
+      data: {
+        signalType:  'AEGIS_POLICY_VIOLATION',
+        severity:    severity.toUpperCase(),
+        signalValue: `Policy violated: ${policyName ?? policyId}`,
+        source:      'AEGIS',
+        agentSystem: 'AEGIS_SHIELD',
+        metadata:    { policyId, policyName, violatorId, violatorRole, endpoint, detail },
+        status:      'ACTIVE',
+      },
+    })
+    res.json({ ok: true, signalId: signal.id })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/aegis/threat-feed
+// Aggregates shield + egress data into IP reputation + threat severity matrix
+kangqoreImmpRoutes.get('/aegis/threat-feed', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { limit = 50 } = req.query
+
+    // Pull from AEGIS shield log (blocked requests) if model exists
+    const shieldRows = await (prisma as any).aegisShieldLog?.findMany?.({
+      orderBy: { createdAt: 'desc' },
+      take:    parseInt(String(limit)),
+      select:  { id: true, ipAddress: true, endpoint: true, method: true, userId: true, userRole: true, reason: true, createdAt: true },
+    }).catch(() => []) ?? []
+
+    // Compute per-IP reputation: more blocks → lower score
+    const ipMap: Record<string, { count: number; lastSeen: string; endpoints: Set<string> }> = {}
+    for (const row of shieldRows) {
+      const ip = row.ipAddress ?? 'unknown'
+      if (!ipMap[ip]) ipMap[ip] = { count: 0, lastSeen: row.createdAt, endpoints: new Set() }
+      ipMap[ip].count++
+      if (row.endpoint) ipMap[ip].endpoints.add(row.endpoint)
+      if (row.createdAt > ipMap[ip].lastSeen) ipMap[ip].lastSeen = row.createdAt
+    }
+
+    const ipReputation = Object.entries(ipMap).map(([ip, data]) => ({
+      ip,
+      blockCount:   data.count,
+      reputationScore: Math.max(0, 100 - data.count * 10),
+      severity:     data.count >= 5 ? 'CRITICAL' : data.count >= 3 ? 'HIGH' : 'MEDIUM',
+      lastSeen:     data.lastSeen,
+      uniqueEndpoints: data.endpoints.size,
+    })).sort((a, b) => b.blockCount - a.blockCount)
+
+    res.json({ threatFeed: shieldRows, ipReputation, total: shieldRows.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/aegis/export-control-rules
+kangqoreImmpRoutes.get('/aegis/export-control-rules', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    // Export control rules are stored in OrgIntegrationConfig or a dedicated table
+    // For now return the policy scaffold
+    const rules = [
+      { id: 'block-pii-export',  name: 'Block PII Export',      active: true,  description: 'Prevent export of fields matching PII patterns (email, phone, ssn)', severity: 'CRITICAL', action: 'BLOCK' },
+      { id: 'allowlist-dest',    name: 'Allowlist Destinations', active: true,  description: 'Only allow egress to approved API endpoints', severity: 'HIGH',     action: 'BLOCK' },
+      { id: 'log-all-egress',    name: 'Log All Egress',         active: true,  description: 'Capture every outbound API call in AEGIS egress log', severity: 'LOW',      action: 'LOG'   },
+      { id: 'rate-limit-export', name: 'Rate-limit Bulk Export', active: false, description: 'Flag any single request exporting >1000 records', severity: 'HIGH',     action: 'FLAG'  },
+    ]
+    res.json({ rules })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 export { kangqoreImmpRoutes };

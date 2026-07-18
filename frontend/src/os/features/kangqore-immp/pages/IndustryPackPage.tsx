@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import {
   Package, CheckCircle2, Zap, Brain, Target, FileText, Users,
   TrendingUp, Shield, Globe2, ChevronDown, ChevronRight,
-  ArrowRight, Sparkles, BookOpen, Layers,
+  ArrowRight, Sparkles, BookOpen, Layers, Heart, Factory, Wrench,
+  AlertTriangle, Activity,
 } from 'lucide-react'
 
 const T1   = 'var(--os-text-1)'
@@ -15,111 +16,108 @@ const PURP = '#7c3aed'
 const TEAL = '#10b981'
 const BLUE = '#3b82f6'
 const AMB  = '#f59e0b'
+const RED  = '#f43f5e'
+const ROSE = '#ec4899'
 
-// ── PS Pack definition ────────────────────────────────────────────────────────
+// ── PS Pack ───────────────────────────────────────────────────────────────────
 const PS_PILLARS = [
-  {
-    id: 'engagement', label: 'Engagement Intelligence', bids: 'P3',
-    desc: 'Track deal progress from first contact through SOW sign-off with KIMMP-guided engagement scoring.',
-    coverage: 92,
-  },
-  {
-    id: 'delivery', label: 'Delivery Excellence', bids: 'P5',
-    desc: 'Milestone-driven project delivery with automated escalation, capacity tracking, and quality gates.',
-    coverage: 88,
-  },
-  {
-    id: 'knowledge', label: 'Knowledge Fabric', bids: 'P8',
-    desc: 'Capture and reuse engagement learnings across proposals, delivery playbooks, and team wikis.',
-    coverage: 76,
-  },
-  {
-    id: 'revenue', label: 'Revenue Operations', bids: 'P11',
-    desc: 'End-to-end revenue tracking: proposal→SOW→invoice→renewal with WAANDA revenue signal detection.',
-    coverage: 85,
-  },
-  {
-    id: 'governance', label: 'Delivery Governance', bids: 'P14',
-    desc: 'Risk scoring, escalation protocols, and QBR automation baked into every active engagement.',
-    coverage: 80,
-  },
+  { id: 'engagement', label: 'Engagement Intelligence', bids: 'P3',  desc: 'Track deal progress from first contact through SOW sign-off with KIMMP-guided engagement scoring.', coverage: 92 },
+  { id: 'delivery',   label: 'Delivery Excellence',     bids: 'P5',  desc: 'Milestone-driven project delivery with automated escalation, capacity tracking, and quality gates.',  coverage: 88 },
+  { id: 'knowledge',  label: 'Knowledge Fabric',        bids: 'P8',  desc: 'Capture and reuse engagement learnings across proposals, delivery playbooks, and team wikis.',          coverage: 76 },
+  { id: 'revenue',    label: 'Revenue Operations',      bids: 'P11', desc: 'End-to-end revenue tracking: proposal→SOW→invoice→renewal with WAANDA revenue signal detection.',      coverage: 85 },
+  { id: 'governance', label: 'Delivery Governance',     bids: 'P14', desc: 'Risk scoring, escalation protocols, and QBR automation baked into every active engagement.',           coverage: 80 },
 ]
 
-const WORKFLOW_TEMPLATES = [
-  {
-    id: 'proposal',
-    name: 'Proposal Builder',
-    icon: FileText,
-    color: BLUE,
-    steps: ['Qualification → KIMMP scoring', 'Scope definition + AI draft', 'Pricing model + approval gate', 'Client review → finalise', 'Sent → track open + respond'],
-    eta: '5–7 days',
-    agents: ['RESEARCH', 'EXECUTION'],
-  },
-  {
-    id: 'sow',
-    name: 'SOW Execution',
-    icon: BookOpen,
-    color: PURP,
-    steps: ['SOW signed → project created', 'Team assignment + capacity check', 'Kickoff checklist (KIMMP-guided)', 'Sprint 0 planning + tooling setup', 'WAANDA missions activated'],
-    eta: '2–3 days',
-    agents: ['EXECUTION', 'DIAGNOSTICS'],
-  },
-  {
-    id: 'milestone',
-    name: 'Milestone Management',
-    icon: Target,
-    color: TEAL,
-    steps: ['Milestone due date tracking', 'Risk flag if slipping (−3d warning)', 'Auto-escalation to engagement lead', 'Stakeholder status briefing', 'Completion gate + sign-off capture'],
-    eta: 'Ongoing',
-    agents: ['DIAGNOSTICS', 'COACH'],
-  },
-  {
-    id: 'invoice',
-    name: 'Invoice Lifecycle',
-    icon: TrendingUp,
-    color: AMB,
-    steps: ['Milestone completion → invoice trigger', 'Finance approval gate', 'Invoice sent + delivery confirmation', 'OVERDUE detection (+7d auto-flag)', 'Payment confirmed → COIG credit'],
-    eta: '1–2 days per cycle',
-    agents: ['EXECUTION', 'DIAGNOSTICS'],
-  },
-  {
-    id: 'closeout',
-    name: 'Engagement Closeout',
-    icon: CheckCircle2,
-    color: TEAL,
-    steps: ['Final delivery sign-off', 'Retrospective capture → knowledge base', 'BIDS™ PS pillar score update', 'Renewal signal to CRM pipeline', 'Case study trigger + COIG snapshot'],
-    eta: '3–5 days',
-    agents: ['COACH', 'RESEARCH', 'EXECUTION'],
-  },
+const PS_WORKFLOWS = [
+  { id: 'proposal',  name: 'Proposal Builder',       icon: FileText,   color: BLUE, eta: '5–7 days',         agents: ['RESEARCH', 'EXECUTION'],           steps: ['Qualification → KIMMP scoring', 'Scope definition + AI draft', 'Pricing model + approval gate', 'Client review → finalise', 'Sent → track open + respond'] },
+  { id: 'sow',       name: 'SOW Execution',           icon: BookOpen,   color: PURP, eta: '2–3 days',         agents: ['EXECUTION', 'DIAGNOSTICS'],        steps: ['SOW signed → project created', 'Team assignment + capacity check', 'Kickoff checklist (KIMMP-guided)', 'Sprint 0 planning + tooling setup', 'WAANDA missions activated'] },
+  { id: 'milestone', name: 'Milestone Management',    icon: Target,     color: TEAL, eta: 'Ongoing',           agents: ['DIAGNOSTICS', 'COACH'],            steps: ['Milestone due date tracking', 'Risk flag if slipping (−3d warning)', 'Auto-escalation to engagement lead', 'Stakeholder status briefing', 'Completion gate + sign-off capture'] },
+  { id: 'invoice',   name: 'Invoice Lifecycle',       icon: TrendingUp, color: AMB,  eta: '1–2 days',         agents: ['EXECUTION', 'DIAGNOSTICS'],        steps: ['Milestone completion → invoice trigger', 'Finance approval gate', 'Invoice sent + delivery confirmation', 'OVERDUE detection (+7d auto-flag)', 'Payment confirmed → COIG credit'] },
+  { id: 'closeout',  name: 'Engagement Closeout',     icon: CheckCircle2, color: TEAL, eta: '3–5 days',       agents: ['COACH', 'RESEARCH', 'EXECUTION'],  steps: ['Final delivery sign-off', 'Retrospective capture → knowledge base', 'BIDS™ PS pillar score update', 'Renewal signal to CRM pipeline', 'Case study trigger + COIG snapshot'] },
 ]
 
-const PACK_STATS = [
-  { label: 'Workflows',      count: 17, icon: Zap,       color: BLUE },
-  { label: 'Agents',         count: 80, icon: Brain,     color: PURP },
-  { label: 'Goals',          count: 5,  icon: Target,    color: TEAL },
-  { label: 'KPI Templates',  count: 12, icon: TrendingUp, color: AMB },
-  { label: 'Ontology Types', count: 24, icon: Layers,    color: BLUE },
-  { label: 'Policies',       count: 9,  icon: Shield,    color: PURP },
+const PS_STATS = [
+  { label: 'Workflows',      count: 17, icon: Zap,        color: BLUE },
+  { label: 'Agents',         count: 80, icon: Brain,      color: PURP },
+  { label: 'Goals',          count: 5,  icon: Target,     color: TEAL },
+  { label: 'KPI Templates',  count: 12, icon: TrendingUp, color: AMB  },
+  { label: 'Ontology Types', count: 24, icon: Layers,     color: BLUE },
+  { label: 'Policies',       count: 9,  icon: Shield,     color: PURP },
 ]
 
-const INDUSTRY_EDITIONS = [
-  { name: 'Professional Services', status: 'live',    color: TEAL, desc: 'Consulting · Systems Integrators · Advisory' },
-  { name: 'Manufacturing',         status: 'planned', color: T3,   desc: 'Ops intelligence · Supply chain · Quality gates' },
-  { name: 'Healthcare',            status: 'planned', color: T3,   desc: 'Care pathways · Compliance · Clinical ops' },
-  { name: 'BFSI',                  status: 'planned', color: T3,   desc: 'Risk · Compliance · Financial intelligence' },
-  { name: 'Logistics',             status: 'planned', color: T3,   desc: 'Fleet · Routing · Fulfilment intelligence' },
-  { name: 'Education',             status: 'planned', color: T3,   desc: 'Curriculum · Enrolment · Outcome tracking' },
+// ── Healthcare Edition ────────────────────────────────────────────────────────
+const HC_PILLARS = [
+  { id: 'patient',     label: 'Patient Lifecycle',       bids: 'P2',  desc: 'KIMMP tracks referral → assessment → treatment → discharge → follow-up. Every stage generates intelligence signals.', coverage: 90, hipaa: true },
+  { id: 'quality',     label: 'Quality & Compliance',    bids: 'P7',  desc: 'HIPAA compliance markers on all ontology types. Automated audit trails. Privacy-first data handling.',             coverage: 95, hipaa: true },
+  { id: 'capacity',    label: 'Capacity Intelligence',   bids: 'P5',  desc: 'Bed occupancy, staffing ratios, department throughput — KIMMP flags capacity risks 48h ahead.',                    coverage: 83, hipaa: false },
+  { id: 'clinical',    label: 'Clinical Operations',     bids: 'P8',  desc: 'Care pathway optimisation, protocol adherence scoring, readmission risk detection.',                               coverage: 78, hipaa: true },
+  { id: 'nps',         label: 'Patient Experience',      bids: 'P10', desc: 'NPS collection, complaint categorisation, KIMMP follow-up signals for at-risk patients.',                          coverage: 72, hipaa: false },
+  { id: 'billing',     label: 'Revenue Cycle',           bids: 'P11', desc: 'Charge capture, denial rate, A/R aging, prior auth tracking — connected to KIMMP billing intelligence.',            coverage: 80, hipaa: true },
 ]
 
-// ── Workflow template card ─────────────────────────────────────────────────────
-function WorkflowCard({ wf }: { wf: typeof WORKFLOW_TEMPLATES[0] }) {
+const HC_WORKFLOWS = [
+  { id: 'referral',   name: 'Referral Intake',           icon: ArrowRight, color: BLUE, eta: '1–2 days', agents: ['EXECUTION', 'DIAGNOSTICS'], steps: ['Referral received → KIMMP triage', 'Insurance verification + pre-auth', 'Specialist assignment', 'Appointment scheduled → patient notified', 'Day-before reminder + instructions'] },
+  { id: 'assessment', name: 'Clinical Assessment',       icon: Activity,   color: ROSE, eta: '1 day',    agents: ['DIAGNOSTICS', 'RESEARCH'],  steps: ['Patient check-in → EHR pull', 'KIMMP care pathway assigned', 'Assessment recorded + risk scored', 'Care team briefed on KIMMP flags', 'Treatment plan generated'] },
+  { id: 'treatment',  name: 'Treatment Management',      icon: Heart,      color: TEAL, eta: 'Ongoing',   agents: ['COACH', 'DIAGNOSTICS'],     steps: ['Treatment plan → task queue', 'Daily adherence tracking', 'Readmission risk flagged at discharge −2d', 'Outcome gate: target metrics hit?', 'Discharge + follow-up scheduled'] },
+  { id: 'discharge',  name: 'Discharge & Follow-up',     icon: CheckCircle2, color: AMB, eta: '2–3 days', agents: ['EXECUTION', 'COACH'],       steps: ['Discharge summary generated (KIMMP)', 'Follow-up appointment set', 'Patient education materials sent', '7-day check-in trigger', 'NPS survey dispatch + response tracking'] },
+  { id: 'compliance', name: 'HIPAA Compliance Audit',    icon: Shield,     color: PURP, eta: 'Continuous', agents: ['AEGIS', 'DIAGNOSTICS'],    steps: ['Ontology PII markers active', 'Access log to AEGIS Shield', 'Anomalous data access → HIGH signal', 'Monthly privacy audit report', 'KIMMP policy violation → block + alert'] },
+]
+
+const HC_STATS = [
+  { label: 'Workflows',   count: 12, icon: Zap,        color: ROSE },
+  { label: 'Agents',      count: 80, icon: Brain,      color: PURP },
+  { label: 'Goals',       count: 6,  icon: Target,     color: TEAL },
+  { label: 'KPI Templates', count: 18, icon: TrendingUp, color: AMB },
+  { label: 'HIPAA Types', count: 31, icon: Shield,     color: RED  },
+  { label: 'Policies',    count: 14, icon: Shield,     color: PURP },
+]
+
+const HC_KPIS = [
+  { label: 'Bed Occupancy Rate',       target: '≥ 85%',   kimmpSignal: 'OEE equivalent for inpatient capacity' },
+  { label: 'Average Length of Stay',   target: '≤ 4.2d',  kimmpSignal: 'Flag if ALOS > benchmark by department' },
+  { label: 'Readmission Rate (30d)',    target: '< 8%',    kimmpSignal: 'HIGH signal when patient re-presents within 30d' },
+  { label: 'Patient NPS',              target: '≥ 72',     kimmpSignal: 'LOW: detractor responses trigger care review' },
+  { label: 'Prior Auth Approval Rate', target: '≥ 90%',   kimmpSignal: 'Denial spike → KIMMP billing intelligence alert' },
+  { label: 'Charge Capture Rate',      target: '≥ 98%',   kimmpSignal: 'Missing charges → MEDIUM signal to Revenue Cycle' },
+]
+
+// ── Manufacturing Edition ─────────────────────────────────────────────────────
+const MFG_PILLARS = [
+  { id: 'ops',      label: 'Operational Intelligence', bids: 'P1',  desc: 'OEE tracking, production scheduling intelligence, shift performance scoring.',                              coverage: 88 },
+  { id: 'quality',  label: 'Quality Management',       bids: 'P5',  desc: 'Defect rate, first-pass yield, non-conformance tracking — KIMMP root-cause analysis pipeline.',             coverage: 82 },
+  { id: 'decision', label: 'Decision Intelligence',    bids: 'P12', desc: 'WAANDA decision engine pre-configured for make/buy, capacity, and maintenance decisions.',                   coverage: 79 },
+]
+
+const MFG_WORKFLOWS = [
+  { id: 'oee',     name: 'OEE Monitoring',             icon: Activity,  color: BLUE, eta: 'Real-time', agents: ['DIAGNOSTICS', 'EXECUTION'], steps: ['Production data → KIMMP OEE compute', 'OEE < 75% → MEDIUM signal', 'Root-cause analysis: availability vs quality vs performance', 'Maintenance work order triggered', 'Post-maintenance OEE delta recorded'] },
+  { id: 'quality', name: 'Quality Gate Workflow',      icon: Shield,    color: TEAL, eta: 'Per batch', agents: ['DIAGNOSTICS', 'COACH'],     steps: ['Batch produced → quality gate check', 'Defect rate computed vs SLA', 'NON-CONFORMANCE record created in KORE', 'Root-cause assigned to operator/machine/material', 'Corrective action workflow triggered'] },
+  { id: 'maint',   name: 'Predictive Maintenance',     icon: Wrench,    color: AMB,  eta: 'Continuous', agents: ['DIAGNOSTICS', 'EXECUTION'], steps: ['Machine telemetry → KIMMP signal scoring', 'Vibration / temp / cycle count thresholds', 'MEDIUM signal: anomaly detected', 'HIGH signal: failure probability > 60%', 'Work order auto-raised, parts checked in inventory'] },
+]
+
+const MFG_STATS = [
+  { label: 'Workflows',   count: 8,  icon: Zap,        color: BLUE },
+  { label: 'Agents',      count: 80, icon: Brain,      color: PURP },
+  { label: 'Goals',       count: 3,  icon: Target,     color: TEAL },
+  { label: 'KPI Templates', count: 10, icon: TrendingUp, color: AMB },
+  { label: 'Ontology Types', count: 18, icon: Layers,  color: BLUE },
+  { label: 'Policies',    count: 7,  icon: Shield,     color: PURP },
+]
+
+const MFG_KPIS = [
+  { label: 'OEE',                target: '≥ 85%',   kimmpSignal: 'OEE < 75% → KIMMP MEDIUM signal; < 60% → HIGH' },
+  { label: 'Defect Rate',        target: '< 0.5%',  kimmpSignal: 'Spike in defect rate → root-cause workflow triggered' },
+  { label: 'Throughput',         target: 'Plan ±5%', kimmpSignal: 'Throughput deviation → capacity decision flagged' },
+  { label: 'MTBF (Mean Time Between Failures)', target: '> 720h', kimmpSignal: 'MTBF declining → predictive maintenance alert' },
+  { label: 'First-Pass Yield',   target: '≥ 97%',   kimmpSignal: 'FPY drop → quality gate review triggered' },
+]
+
+// ── Shared sub-components ─────────────────────────────────────────────────────
+
+function WorkflowCard({ wf }: { wf: { id: string; name: string; icon: React.ElementType; color: string; eta: string; agents: string[]; steps: string[] } }) {
   const [open, setOpen] = useState(false)
   return (
     <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 12, overflow: 'hidden' }}>
-      <div
-        onClick={() => setOpen(o => !o)}
-        style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px', cursor: 'pointer' }}
-      >
+      <div onClick={() => setOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px', cursor: 'pointer' }}>
         <div style={{ width: 28, height: 28, borderRadius: 8, background: wf.color + '12', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <wf.icon size={13} style={{ color: wf.color }} />
         </div>
@@ -150,147 +148,307 @@ function WorkflowCard({ wf }: { wf: typeof WORKFLOW_TEMPLATES[0] }) {
   )
 }
 
-// ── Main ─────────────────────────────────────────────────────────────────────
+function StatsGrid({ stats }: { stats: { label: string; count: number; icon: React.ElementType; color: string }[] }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${stats.length}, 1fr)`, gap: 8 }}>
+      {stats.map(s => (
+        <div key={s.label} style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 10, padding: '12px 10px', textAlign: 'center' }}>
+          <s.icon size={14} style={{ color: s.color, margin: '0 auto 6px' }} />
+          <div style={{ fontSize: 22, fontWeight: 900, color: s.color, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{s.count}</div>
+          <div style={{ fontSize: 8, fontWeight: 700, color: T3, marginTop: 4, textTransform: 'uppercase', letterSpacing: '.06em' }}>{s.label}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+type PackId = 'ps' | 'healthcare' | 'manufacturing'
+
+const PACK_CONFIG: Record<PackId, { label: string; shortLabel: string; color: string; icon: React.ElementType; status: 'live' | 'beta' }> = {
+  ps:            { label: 'Professional Services', shortLabel: 'PS Pack',      color: PURP, icon: Package,  status: 'live' },
+  healthcare:    { label: 'Healthcare Edition',    shortLabel: 'Healthcare',   color: ROSE, icon: Heart,    status: 'beta' },
+  manufacturing: { label: 'Manufacturing Edition', shortLabel: 'Manufacturing', color: BLUE, icon: Factory, status: 'beta' },
+}
+
 export function IndustryPackPage() {
   const navigate = useNavigate()
+  const [activePack, setActivePack] = useState<PackId>('ps')
+  const cfg = PACK_CONFIG[activePack]
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-      {/* ── Header ── */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-        <div style={{ width: 44, height: 44, borderRadius: 12, background: PURP + '15', border: `1px solid ${PURP}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-          <Package size={20} style={{ color: PURP }} />
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-            <h1 style={{ fontSize: 18, fontWeight: 900, color: T1, letterSpacing: '-.02em' }}>Professional Services Pack</h1>
-            <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: TEAL, background: TEAL + '12', padding: '3px 8px', borderRadius: 4 }}>v1.0 · Live</span>
-            <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: PURP, background: PURP + '12', padding: '3px 8px', borderRadius: 4 }}>Industry Pack</span>
-          </div>
-          <p style={{ fontSize: 11, color: T2 }}>Pre-built Blueprint for Consulting · Systems Integration · Advisory firms — engagement → delivery → renewal lifecycle</p>
-        </div>
-        <button
-          onClick={() => navigate('/kangqore-view/admin/kangqore-immp/blueprint-customize')}
-          style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#fff', background: PURP, padding: '8px 14px', borderRadius: 8, border: 'none', cursor: 'pointer', flexShrink: 0 }}
-        >
-          <Sparkles size={12} /> Deploy as Blueprint
-        </button>
-      </div>
-
-      {/* ── Pack stats ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8 }}>
-        {PACK_STATS.map(s => (
-          <div key={s.label} style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 10, padding: '12px 10px', textAlign: 'center' }}>
-            <s.icon size={14} style={{ color: s.color, margin: '0 auto 6px' }} />
-            <div style={{ fontSize: 22, fontWeight: 900, color: s.color, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{s.count}</div>
-            <div style={{ fontSize: 8, fontWeight: 700, color: T3, marginTop: 4, textTransform: 'uppercase', letterSpacing: '.06em' }}>{s.label}</div>
-          </div>
+      {/* Pack selector */}
+      <div style={{ display: 'flex', gap: 8, padding: '4px', background: 'var(--os-surface-0)', borderRadius: 12, width: 'fit-content', border: `1px solid ${BDR}` }}>
+        {(Object.entries(PACK_CONFIG) as [PackId, typeof PACK_CONFIG[PackId]][]).map(([id, c]) => (
+          <button
+            key={id}
+            onClick={() => setActivePack(id)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '7px 14px', borderRadius: 8,
+              fontSize: 11, fontWeight: 800, cursor: 'pointer', border: 'none', transition: 'all .15s',
+              background: activePack === id ? c.color : 'transparent',
+              color: activePack === id ? '#fff' : T2,
+            }}
+          >
+            <c.icon size={12} />
+            {c.shortLabel}
+            {c.status === 'beta' && (
+              <span style={{ fontSize: 8, fontWeight: 700, opacity: 0.8, letterSpacing: '.05em' }}>BETA</span>
+            )}
+          </button>
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-
-        {/* ── BIDS™ Pillars ── */}
-        <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
-            <Globe2 size={13} style={{ color: PURP }} />
-            <span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>BIDS™ Pillars Mapped</span>
-            <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>5 of 16 PS-specific pillars</span>
-          </div>
-          <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {PS_PILLARS.map(p => (
-              <div key={p.id}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <span style={{ fontSize: 9, fontWeight: 800, color: PURP, background: PURP + '12', padding: '1px 6px', borderRadius: 4 }}>BIDS™ {p.bids}</span>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: T1 }}>{p.label}</span>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: TEAL, marginLeft: 'auto' }}>{p.coverage}%</span>
-                </div>
-                <div style={{ height: 3, background: 'var(--os-surface-0)', borderRadius: 2, marginBottom: 4, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${p.coverage}%`, background: TEAL, borderRadius: 2 }} />
-                </div>
-                <p style={{ fontSize: 10, color: T2 }}>{p.desc}</p>
+      {/* ── PS Pack ── */}
+      {activePack === 'ps' && (
+        <>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: PURP + '15', border: `1px solid ${PURP}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Package size={20} style={{ color: PURP }} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                <h1 style={{ fontSize: 18, fontWeight: 900, color: T1, letterSpacing: '-.02em' }}>Professional Services Pack</h1>
+                <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: TEAL, background: TEAL + '12', padding: '3px 8px', borderRadius: 4 }}>v1.0 · Live</span>
+                <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: PURP, background: PURP + '12', padding: '3px 8px', borderRadius: 4 }}>Industry Pack</span>
               </div>
-            ))}
+              <p style={{ fontSize: 11, color: T2 }}>Pre-built Blueprint for Consulting · Systems Integration · Advisory firms — engagement → delivery → renewal lifecycle</p>
+            </div>
+            <button onClick={() => navigate('/kangqore-view/admin/kangqore-immp/blueprint-customize')}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#fff', background: PURP, padding: '8px 14px', borderRadius: 8, border: 'none', cursor: 'pointer', flexShrink: 0 }}>
+              <Sparkles size={12} /> Deploy as Blueprint
+            </button>
           </div>
-        </div>
-
-        {/* ── Industry editions ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <StatsGrid stats={PS_STATS} />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+                <Globe2 size={13} style={{ color: PURP }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>BIDS™ Pillars Mapped</span>
+                <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>5 of 16 PS-specific pillars</span>
+              </div>
+              <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {PS_PILLARS.map(p => (
+                  <div key={p.id}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontSize: 9, fontWeight: 800, color: PURP, background: PURP + '12', padding: '1px 6px', borderRadius: 4 }}>BIDS™ {p.bids}</span>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: T1 }}>{p.label}</span>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: TEAL, marginLeft: 'auto' }}>{p.coverage}%</span>
+                    </div>
+                    <div style={{ height: 3, background: 'var(--os-surface-0)', borderRadius: 2, marginBottom: 4, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${p.coverage}%`, background: TEAL, borderRadius: 2 }} />
+                    </div>
+                    <p style={{ fontSize: 10, color: T2 }}>{p.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div style={{ background: PURP + '06', border: `1.5px solid ${PURP}25`, borderRadius: 14, padding: '16px 20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                  <Sparkles size={14} style={{ color: PURP }} />
+                  <span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>One-click Blueprint Deployment</span>
+                </div>
+                <p style={{ fontSize: 11, color: T2, marginBottom: 14, lineHeight: 1.6 }}>
+                  Select this pack in the Blueprint Wizard and Kangqore will pre-configure all 17 workflows, 80 agents, 5 goals, and 12 KPI templates for a new customer instance in seconds.
+                </p>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={() => navigate('/kangqore-view/admin/kangqore-immp/blueprint-customize')}
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#fff', background: PURP, padding: '8px 14px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>
+                    New Deployment <ArrowRight size={12} />
+                  </button>
+                  <Link to="/kangqore-view/admin/kangqore-immp/blueprint"
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: PURP, background: PURP + '12', padding: '8px 14px', borderRadius: 8, textDecoration: 'none' }}>
+                    View Blueprints
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
           <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
-              <Layers size={13} style={{ color: BLUE }} />
-              <span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>Industry Editions Roadmap</span>
+              <Zap size={13} style={{ color: BLUE }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>Consulting Workflow Templates</span>
+              <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>5 core templates · click to expand</span>
             </div>
-            <div style={{ padding: 0 }}>
-              {INDUSTRY_EDITIONS.map((e, i) => (
-                <div key={e.name} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 18px', borderBottom: i < INDUSTRY_EDITIONS.length - 1 ? `1px solid ${BDR}` : 'none' }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: e.color, flexShrink: 0 }} />
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 11, fontWeight: 700, color: e.status === 'live' ? T1 : T2 }}>{e.name}</p>
-                    <p style={{ fontSize: 9, color: T3 }}>{e.desc}</p>
-                  </div>
-                  <span style={{ fontSize: 8, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', color: e.status === 'live' ? TEAL : T3, background: e.status === 'live' ? TEAL + '12' : 'var(--os-surface-0)', padding: '2px 6px', borderRadius: 4 }}>
-                    {e.status === 'live' ? '✓ Live' : 'Planned'}
-                  </span>
-                </div>
-              ))}
+            <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {PS_WORKFLOWS.map(wf => <WorkflowCard key={wf.id} wf={wf} />)}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── Healthcare Edition ── */}
+      {activePack === 'healthcare' && (
+        <>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: ROSE + '15', border: `1px solid ${ROSE}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Heart size={20} style={{ color: ROSE }} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                <h1 style={{ fontSize: 18, fontWeight: 900, color: T1, letterSpacing: '-.02em' }}>Healthcare Edition</h1>
+                <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: ROSE, background: ROSE + '12', padding: '3px 8px', borderRadius: 4 }}>BETA</span>
+                <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: PURP, background: PURP + '12', padding: '3px 8px', borderRadius: 4 }}>Industry Pack</span>
+              </div>
+              <p style={{ fontSize: 11, color: T2 }}>Hospital Systems · Clinics · Healthcare Networks — patient lifecycle, HIPAA compliance, clinical KPIs, and revenue cycle intelligence</p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700, color: RED, background: RED + '10', padding: '6px 12px', borderRadius: 8, flexShrink: 0, border: `1px solid ${RED}20` }}>
+              <Shield size={11} /> HIPAA-Ready
             </div>
           </div>
 
-          {/* ── Activate CTA ── */}
-          <div style={{ background: PURP + '06', border: `1.5px solid ${PURP}25`, borderRadius: 14, padding: '16px 20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-              <Sparkles size={14} style={{ color: PURP }} />
-              <span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>One-click Blueprint Deployment</span>
-            </div>
-            <p style={{ fontSize: 11, color: T2, marginBottom: 14, lineHeight: 1.6 }}>
-              Select this pack in the Blueprint Wizard and Kangqore will pre-configure all 17 workflows, 80 agents, 5 goals, and 12 KPI templates for a new customer instance in seconds.
+          <StatsGrid stats={HC_STATS} />
+
+          {/* HIPAA notice */}
+          <div style={{ background: RED + '05', border: `1px solid ${RED}25`, borderRadius: 12, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <AlertTriangle size={14} style={{ color: RED, flexShrink: 0 }} />
+            <p style={{ fontSize: 11, color: T2 }}>
+              HIPAA compliance markers are automatically applied to all patient-related ontology types. KIMMP signal metadata strips PHI before transit. AEGIS Shield enforces access controls and generates audit logs.
             </p>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button
-                onClick={() => navigate('/kangqore-view/admin/kangqore-immp/blueprint-customize')}
-                style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#fff', background: PURP, padding: '8px 14px', borderRadius: 8, border: 'none', cursor: 'pointer' }}
-              >
-                New Deployment <ArrowRight size={12} />
-              </button>
-              <Link
-                to="/kangqore-view/admin/kangqore-immp/blueprint"
-                style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: PURP, background: PURP + '12', padding: '8px 14px', borderRadius: 8, textDecoration: 'none' }}
-              >
-                View Blueprints
-              </Link>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            {/* BIDS Pillars */}
+            <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+                <Globe2 size={13} style={{ color: ROSE }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>BIDS™ Pillars Mapped</span>
+                <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>6 healthcare pillars</span>
+              </div>
+              <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {HC_PILLARS.map(p => (
+                  <div key={p.id}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontSize: 9, fontWeight: 800, color: ROSE, background: ROSE + '12', padding: '1px 6px', borderRadius: 4 }}>BIDS™ {p.bids}</span>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: T1 }}>{p.label}</span>
+                      {p.hipaa && <span style={{ fontSize: 7, fontWeight: 800, color: RED, background: RED + '12', padding: '1px 5px', borderRadius: 3, marginLeft: 'auto', marginRight: 4 }}>HIPAA</span>}
+                      <span style={{ fontSize: 9, fontWeight: 700, color: TEAL, marginLeft: p.hipaa ? 0 : 'auto' }}>{p.coverage}%</span>
+                    </div>
+                    <div style={{ height: 3, background: 'var(--os-surface-0)', borderRadius: 2, marginBottom: 4, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${p.coverage}%`, background: ROSE, borderRadius: 2 }} />
+                    </div>
+                    <p style={{ fontSize: 10, color: T2 }}>{p.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Clinical KPIs */}
+            <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+                <Activity size={13} style={{ color: ROSE }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>Clinical KPIs + KIMMP Signals</span>
+              </div>
+              <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {HC_KPIS.map(k => (
+                  <div key={k.label}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: T1 }}>{k.label}</span>
+                      <span style={{ fontSize: 10, fontWeight: 800, color: ROSE }}>{k.target}</span>
+                    </div>
+                    <p style={{ fontSize: 10, color: T2 }}>{k.kimmpSignal}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* ── Workflow templates ── */}
-      <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
-          <Zap size={13} style={{ color: BLUE }} />
-          <span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>Consulting Workflow Templates</span>
-          <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>5 core templates · click to expand steps</span>
-        </div>
-        <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {WORKFLOW_TEMPLATES.map(wf => <WorkflowCard key={wf.id} wf={wf} />)}
-        </div>
-      </div>
+          {/* Workflow templates */}
+          <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+              <Zap size={13} style={{ color: ROSE }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>Clinical Workflow Templates</span>
+              <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>5 templates · click to expand</span>
+            </div>
+            <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {HC_WORKFLOWS.map(wf => <WorkflowCard key={wf.id} wf={wf} />)}
+            </div>
+          </div>
+        </>
+      )}
 
-      {/* ── Lifecycle callout ── */}
-      <div style={{ background: TEAL + '06', border: `1.5px solid ${TEAL}25`, borderRadius: 14, padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
-        <Users size={16} style={{ color: TEAL, flexShrink: 0 }} />
-        <div style={{ flex: 1 }}>
-          <p style={{ fontSize: 12, fontWeight: 800, color: T1, marginBottom: 2 }}>Full Lifecycle Coverage: <span style={{ color: TEAL }}>Engagement → Delivery → Renewal</span></p>
-          <p style={{ fontSize: 11, color: T2 }}>PS Pack v1.0 covers the complete professional services revenue cycle — from first touch to closeout. KIMMP monitors every stage and flags risk automatically.</p>
-        </div>
-        <Link
-          to="/kangqore-view/admin/kangqore-immp/customer-one"
-          style={{ fontSize: 10, fontWeight: 700, color: TEAL, background: TEAL + '12', padding: '6px 12px', borderRadius: 8, textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap' }}
-        >
-          Customer One →
-        </Link>
-      </div>
+      {/* ── Manufacturing Edition ── */}
+      {activePack === 'manufacturing' && (
+        <>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: BLUE + '15', border: `1px solid ${BLUE}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Factory size={20} style={{ color: BLUE }} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                <h1 style={{ fontSize: 18, fontWeight: 900, color: T1, letterSpacing: '-.02em' }}>Manufacturing Edition</h1>
+                <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: BLUE, background: BLUE + '12', padding: '3px 8px', borderRadius: 4 }}>BETA</span>
+                <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: PURP, background: PURP + '12', padding: '3px 8px', borderRadius: 4 }}>Industry Pack</span>
+              </div>
+              <p style={{ fontSize: 11, color: T2 }}>Discrete + Process Manufacturing — OEE intelligence, predictive maintenance, quality gates, and supply chain signal monitoring</p>
+            </div>
+          </div>
+
+          <StatsGrid stats={MFG_STATS} />
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            {/* BIDS Pillars */}
+            <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+                <Globe2 size={13} style={{ color: BLUE }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>BIDS™ Pillars Mapped</span>
+                <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>3 ops pillars</span>
+              </div>
+              <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {MFG_PILLARS.map(p => (
+                  <div key={p.id}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontSize: 9, fontWeight: 800, color: BLUE, background: BLUE + '12', padding: '1px 6px', borderRadius: 4 }}>BIDS™ {p.bids}</span>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: T1 }}>{p.label}</span>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: TEAL, marginLeft: 'auto' }}>{p.coverage}%</span>
+                    </div>
+                    <div style={{ height: 3, background: 'var(--os-surface-0)', borderRadius: 2, marginBottom: 4, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${p.coverage}%`, background: BLUE, borderRadius: 2 }} />
+                    </div>
+                    <p style={{ fontSize: 10, color: T2 }}>{p.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Production KPIs */}
+            <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+                <TrendingUp size={13} style={{ color: BLUE }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>Production KPIs + KIMMP Signals</span>
+              </div>
+              <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {MFG_KPIS.map(k => (
+                  <div key={k.label}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: T1 }}>{k.label}</span>
+                      <span style={{ fontSize: 10, fontWeight: 800, color: BLUE }}>{k.target}</span>
+                    </div>
+                    <p style={{ fontSize: 10, color: T2 }}>{k.kimmpSignal}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Workflow templates */}
+          <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+              <Zap size={13} style={{ color: BLUE }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>Manufacturing Workflow Templates</span>
+              <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>3 core templates · click to expand</span>
+            </div>
+            <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {MFG_WORKFLOWS.map(wf => <WorkflowCard key={wf.id} wf={wf} />)}
+            </div>
+          </div>
+
+          {/* OEE trigger callout */}
+          <div style={{ background: AMB + '06', border: `1.5px solid ${AMB}25`, borderRadius: 14, padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
+            <Wrench size={16} style={{ color: AMB, flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 12, fontWeight: 800, color: T1, marginBottom: 2 }}>Predictive Maintenance Trigger: <span style={{ color: AMB }}>OEE &lt; 75% → KIMMP Signal</span></p>
+              <p style={{ fontSize: 11, color: T2 }}>When OEE drops below 75%, KIMMP automatically generates a MEDIUM signal, triggers the predictive maintenance workflow, and raises a work order in the connected ERP / CMMS. No manual intervention required.</p>
+            </div>
+          </div>
+        </>
+      )}
 
     </div>
   )
