@@ -111,6 +111,106 @@ const MFG_KPIS = [
   { label: 'First-Pass Yield',   target: '≥ 97%',   kimmpSignal: 'FPY drop → quality gate review triggered' },
 ]
 
+// ── BFSI Edition ─────────────────────────────────────────────────────────────
+const BFSI_PILLARS = [
+  { id: 'credit',     label: 'Credit Intelligence',       bids: 'P3',  desc: 'Loan lifecycle (Application→Credit Check→Underwriting→Approval→Disbursement), NPA ratio tracking, KIMMP credit event signals.', coverage: 85, compliance: 'RBI' },
+  { id: 'risk',       label: 'Risk & Capital Management', bids: 'P7',  desc: 'Capital adequacy ratio, liquidity coverage ratio, Basel III pillar compliance, stress-test scenario modelling.', coverage: 80, compliance: 'Basel III' },
+  { id: 'kyc',        label: 'KYC / AML Intelligence',   bids: 'P8',  desc: 'Customer due diligence workflow, transaction anomaly detection, FATF compliance markers, KIMMP fraud signals.', coverage: 78, compliance: 'FATF' },
+  { id: 'treasury',   label: 'Treasury Operations',       bids: 'P11', desc: 'Liquidity position tracking, FX exposure, ALM (Asset-Liability Mismatch) dashboard, WAANDA rate decision intelligence.', coverage: 74, compliance: 'RBI' },
+  { id: 'regulatory', label: 'Regulatory Reporting',      bids: 'P14', desc: 'Automated RBI/SEBI reporting, Basel III pillar disclosures, regulatory calendar with KIMMP deadline signals.', coverage: 82, compliance: 'SEBI' },
+]
+
+const BFSI_WORKFLOWS = [
+  { id: 'loan',     name: 'Loan Origination Lifecycle',   icon: FileText, color: BLUE, eta: '3–7 days',  agents: ['EXECUTION', 'DIAGNOSTICS'], steps: ['Application received → KIMMP credit score pull', 'Bureau data fetch + risk categorisation', 'Underwriting decision queue (WAANDA-assisted)', 'Approval gate → term sheet generation', 'Disbursement → repayment schedule activated'] },
+  { id: 'npa',      name: 'NPA Risk Monitoring',          icon: AlertTriangle, color: RED, eta: 'Daily', agents: ['DIAGNOSTICS', 'COACH'],     steps: ['Daily EMI payment check → KIMMP scoring', '30d overdue → MEDIUM signal + collections queue', '90d overdue → HIGH signal + provisioning trigger', 'NPA reclassification → AEGIS compliance log', 'Recovery workflow: legal → settlement → write-off'] },
+  { id: 'aml',      name: 'AML Transaction Screening',    icon: Shield,   color: PURP, eta: 'Real-time', agents: ['AEGIS', 'DIAGNOSTICS'],    steps: ['Transaction ingested → rule engine scoring', 'Threshold breach → CRITICAL KIMMP signal', 'Case file auto-created in AEGIS', 'SAR (Suspicious Activity Report) draft', 'Regulator escalation + audit trail locked'] },
+  { id: 'kyc',      name: 'KYC Onboarding Workflow',      icon: Users,    color: TEAL, eta: '1–2 days',  agents: ['EXECUTION', 'RESEARCH'],   steps: ['Identity documents received', 'OCR + data validation (KIMMP)', 'PEP / sanctions screening', 'Risk rating assigned (LOW/MEDIUM/HIGH)', 'Account activated or EDD triggered'] },
+]
+
+const BFSI_STATS = [
+  { label: 'Workflows',   count: 14, icon: Zap,        color: BLUE },
+  { label: 'Agents',      count: 80, icon: Brain,      color: PURP },
+  { label: 'Goals',       count: 5,  icon: Target,     color: TEAL },
+  { label: 'KPI Templates', count: 22, icon: TrendingUp, color: AMB },
+  { label: 'Compliance Markers', count: 41, icon: Shield, color: RED },
+  { label: 'Policies',    count: 18, icon: Shield,     color: PURP },
+]
+
+const BFSI_KPIS = [
+  { label: 'NPA Ratio',                  target: '< 2%',    kimmpSignal: 'Portfolio NPA > 2% → HIGH signal, > 5% → CRITICAL' },
+  { label: 'Capital Adequacy Ratio',     target: '≥ 15%',   kimmpSignal: 'CAR approaching regulatory minimum → WAANDA capital decision' },
+  { label: 'Liquidity Coverage Ratio',   target: '≥ 100%',  kimmpSignal: 'LCR < 110% → MEDIUM signal to Treasury' },
+  { label: 'Loan-to-Deposit Ratio',      target: '< 85%',   kimmpSignal: 'LDR breach → ALM decision trigger' },
+  { label: 'CASA Ratio',                 target: '≥ 40%',   kimmpSignal: 'CASA erosion → branch strategy signal' },
+  { label: 'Cost of Funds',              target: '< 5.5%',  kimmpSignal: 'CoF spike → WAANDA rate-setting analysis' },
+]
+
+// ── Logistics Edition ─────────────────────────────────────────────────────────
+const LOGI_PILLARS = [
+  { id: 'shipment',  label: 'Shipment Intelligence',   bids: 'P2',  desc: 'POD→In-Transit→Delivered→Returned lifecycle, real-time ETD tracking, KIMMP delay triggers.', coverage: 86 },
+  { id: 'fleet',     label: 'Fleet Management',         bids: 'P5',  desc: 'Vehicle telemetry, driver scoring, fuel efficiency, maintenance scheduling — WAANDA fleet intelligence.', coverage: 80 },
+  { id: 'warehouse', label: 'Warehouse Operations',     bids: 'P8',  desc: 'Inventory accuracy, pick rate, dock scheduling, KIMMP capacity signals when utilisation > 90%.', coverage: 75 },
+  { id: 'carbon',    label: 'Carbon & Sustainability', bids: 'P14', desc: 'Scope 1 & 2 emission tracking per shipment, route carbon footprint, ESG reporting (GHG Protocol).', coverage: 68 },
+]
+
+const LOGI_WORKFLOWS = [
+  { id: 'shipment', name: 'Shipment Lifecycle',         icon: ArrowRight, color: BLUE, eta: 'Per shipment', agents: ['EXECUTION', 'DIAGNOSTICS'], steps: ['Booking created → route optimisation (KIMMP)', 'POD dispatch → in-transit tracking activated', 'ETA miss > 2h → MEDIUM delay signal', 'Delivered confirmation → POD capture', 'Return initiated → reverse logistics workflow'] },
+  { id: 'fleet',    name: 'Fleet Maintenance Workflow', icon: Wrench,     color: AMB,  eta: 'Continuous',   agents: ['DIAGNOSTICS', 'EXECUTION'],  steps: ['Odometer + engine hours → KIMMP scoring', 'Service due in < 500km → pre-emptive alert', 'Breakdown event → HIGH signal + roadside dispatch', 'Driver behaviour scoring (harsh braking/acceleration)', 'Vehicle cost-per-km tracking vs fleet benchmark'] },
+  { id: 'otif',     name: 'OTIF Performance Tracking',  icon: TrendingUp, color: TEAL, eta: 'Daily',        agents: ['DIAGNOSTICS', 'COACH'],       steps: ['Daily OTIF compute (On-Time In-Full)', 'OTIF < 90% → MEDIUM signal to ops manager', 'Root-cause: carrier/route/weather/customs', 'SLA breach report auto-generated', 'Carrier performance scorecard updated'] },
+  { id: 'carbon',   name: 'Carbon Footprint Workflow',  icon: Globe2,     color: TEAL, eta: 'Per shipment', agents: ['RESEARCH', 'EXECUTION'],      steps: ['Distance + load weight → tCO₂e compute', 'Mode: road/rail/air/sea emission factors applied', 'Monthly Scope 1+2 roll-up for ESG report', 'Carbon offset recommendation (KIMMP)', 'Emission reduction action: route/modal shift'] },
+]
+
+const LOGI_STATS = [
+  { label: 'Workflows',   count: 11, icon: Zap,        color: BLUE },
+  { label: 'Agents',      count: 80, icon: Brain,      color: PURP },
+  { label: 'Goals',       count: 4,  icon: Target,     color: TEAL },
+  { label: 'KPI Templates', count: 16, icon: TrendingUp, color: AMB },
+  { label: 'ESG Metrics', count: 12, icon: Globe2,     color: TEAL },
+  { label: 'Policies',    count: 9,  icon: Shield,     color: PURP },
+]
+
+const LOGI_KPIS = [
+  { label: 'OTIF Rate',                  target: '≥ 95%',   kimmpSignal: 'OTIF < 90% → MEDIUM signal; < 80% → HIGH escalation' },
+  { label: 'On-Time Delivery Rate',      target: '≥ 97%',   kimmpSignal: 'OTD decline → carrier performance review signal' },
+  { label: 'Fleet Utilisation',          target: '≥ 82%',   kimmpSignal: 'Low utilisation → fleet right-sizing recommendation' },
+  { label: 'Fuel Efficiency (km/L)',     target: '> 12',    kimmpSignal: 'FE drop → driver coaching signal or maintenance alert' },
+  { label: 'Carbon Intensity (gCO₂/tkm)', target: '< 55',  kimmpSignal: 'Emission spike → route/mode optimisation trigger' },
+  { label: 'Return Rate',               target: '< 3%',    kimmpSignal: 'High return cluster → damage root-cause workflow' },
+]
+
+// ── Government Edition ────────────────────────────────────────────────────────
+const GOV_PILLARS = [
+  { id: 'procurement', label: 'Procurement Intelligence',    bids: 'P3',  desc: 'RFP→Tender→Evaluation→Award→Contract lifecycle, KIMMP bid scoring, transparency audit trail to AEGIS.', coverage: 84 },
+  { id: 'service',     label: 'Public Service Delivery',     bids: 'P5',  desc: 'Citizen service request tracking, SLA compliance, multi-channel intake (portal/walk-in/call), WAANDA triage.', coverage: 80 },
+  { id: 'budget',      label: 'Budget & Fund Management',    bids: 'P11', desc: 'Scheme-wise expenditure tracking, utilisation vs allocation, lapse detection, KIMMP underspend signals.', coverage: 78 },
+  { id: 'compliance',  label: 'Regulatory & Audit',          bids: 'P14', desc: 'Every decision logged to AEGIS compliance. CAG-ready audit trail. Policy violation → CRITICAL signal.', coverage: 90 },
+]
+
+const GOV_WORKFLOWS = [
+  { id: 'procurement', name: 'Procurement Lifecycle',        icon: FileText, color: BLUE, eta: '30–90d',    agents: ['EXECUTION', 'DIAGNOSTICS', 'COACH'], steps: ['RFP published → KIMMP market intelligence pull', 'Tender evaluation: WAANDA scoring matrix', 'L1 determination + policy compliance check', 'Award decision → AEGIS audit log entry', 'Contract execution → milestone tracking'] },
+  { id: 'service',     name: 'Citizen Service Request',      icon: Users,    color: TEAL, eta: '1–5 days',  agents: ['EXECUTION', 'COACH'],               steps: ['Request ingested (portal/offline)', 'KIMMP category + priority assignment', 'Department routing + officer assignment', 'SLA clock starts → KIMMP tracking', 'Resolution → citizen notification + satisfaction survey'] },
+  { id: 'budget',      name: 'Fund Utilisation Monitoring',  icon: TrendingUp, color: AMB, eta: 'Monthly',  agents: ['DIAGNOSTICS', 'RESEARCH'],           steps: ['Monthly expenditure data pull', 'Utilisation vs allocation per scheme', 'Underspend > 30% → MEDIUM signal', 'Q3 lapse risk → WAANDA reallocation recommendation', 'Annual CAG audit data export from AEGIS'] },
+  { id: 'audit',       name: 'AEGIS Compliance Audit',       icon: Shield,   color: PURP, eta: 'Continuous', agents: ['AEGIS', 'DIAGNOSTICS'],             steps: ['Every decision auto-logged to AEGIS AuditLog', 'Policy violation scan (daily)', 'CRITICAL finding → immediate escalation', 'Monthly compliance score computed', 'CAG-ready PDF export with decision provenance'] },
+]
+
+const GOV_STATS = [
+  { label: 'Workflows',   count: 13, icon: Zap,        color: BLUE },
+  { label: 'Agents',      count: 80, icon: Brain,      color: PURP },
+  { label: 'Goals',       count: 5,  icon: Target,     color: TEAL },
+  { label: 'KPI Templates', count: 19, icon: TrendingUp, color: AMB },
+  { label: 'Audit Types', count: 28, icon: Shield,     color: PURP },
+  { label: 'Policies',    count: 22, icon: Shield,     color: RED  },
+]
+
+const GOV_KPIS = [
+  { label: 'Service Delivery SLA',          target: '≥ 95%',   kimmpSignal: 'SLA breach → MEDIUM signal; repeat breach → HIGH escalation' },
+  { label: 'Fund Utilisation Rate',          target: '≥ 80%',   kimmpSignal: 'Utilisation < 60% at Q3 → underspend signal + reallocation trigger' },
+  { label: 'Procurement Cycle Time',         target: '< 45d',   kimmpSignal: 'Cycle > 60d → MEDIUM signal to procurement head' },
+  { label: 'Citizen Satisfaction (NPS)',     target: '≥ 60',    kimmpSignal: 'NPS < 50 → service design review signal' },
+  { label: 'Policy Compliance Rate',         target: '100%',    kimmpSignal: 'Any violation → CRITICAL AEGIS alert + immediate escalation' },
+  { label: 'Audit Findings Resolved',        target: '≥ 90%',   kimmpSignal: 'Unresolved CAG findings → WAANDA escalation decision' },
+]
+
 // ── Shared sub-components ─────────────────────────────────────────────────────
 
 function WorkflowCard({ wf }: { wf: { id: string; name: string; icon: React.ElementType; color: string; eta: string; agents: string[]; steps: string[] } }) {
@@ -163,12 +263,15 @@ function StatsGrid({ stats }: { stats: { label: string; count: number; icon: Rea
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
-type PackId = 'ps' | 'healthcare' | 'manufacturing'
+type PackId = 'ps' | 'healthcare' | 'manufacturing' | 'bfsi' | 'logistics' | 'government'
 
-const PACK_CONFIG: Record<PackId, { label: string; shortLabel: string; color: string; icon: React.ElementType; status: 'live' | 'beta' }> = {
-  ps:            { label: 'Professional Services', shortLabel: 'PS Pack',      color: PURP, icon: Package,  status: 'live' },
-  healthcare:    { label: 'Healthcare Edition',    shortLabel: 'Healthcare',   color: ROSE, icon: Heart,    status: 'beta' },
-  manufacturing: { label: 'Manufacturing Edition', shortLabel: 'Manufacturing', color: BLUE, icon: Factory, status: 'beta' },
+const PACK_CONFIG: Record<PackId, { label: string; shortLabel: string; color: string; icon: React.ElementType; status: 'live' | 'beta' | 'preview' }> = {
+  ps:            { label: 'Professional Services', shortLabel: 'PS Pack',       color: PURP, icon: Package,      status: 'live'    },
+  healthcare:    { label: 'Healthcare Edition',    shortLabel: 'Healthcare',    color: ROSE, icon: Heart,        status: 'beta'    },
+  manufacturing: { label: 'Manufacturing Edition', shortLabel: 'Manufacturing', color: BLUE, icon: Factory,      status: 'beta'    },
+  bfsi:          { label: 'BFSI Edition',          shortLabel: 'BFSI',          color: AMB,  icon: TrendingUp,   status: 'preview' },
+  logistics:     { label: 'Logistics Edition',     shortLabel: 'Logistics',     color: TEAL, icon: Globe2,       status: 'preview' },
+  government:    { label: 'Government Edition',    shortLabel: 'Government',    color: '#6366f1', icon: Shield,  status: 'preview' },
 }
 
 export function IndustryPackPage() {
@@ -450,6 +553,139 @@ export function IndustryPackPage() {
         </>
       )}
 
+      {/* ── BFSI Edition ── */}
+      {activePack === 'bfsi' && (
+        <>
+          <PreviewBanner packLabel="BFSI Edition" color={AMB} icon={TrendingUp} />
+          <GenericPackView
+            icon={TrendingUp} label="BFSI Edition" color={AMB} sprint="S73"
+            pillars={BFSI_PILLARS} workflows={BFSI_WORKFLOWS} stats={BFSI_STATS} kpis={BFSI_KPIS}
+            pillarsLabel="5 pillars · RBI/Basel III/SEBI/FATF compliance markers"
+            workflowsLabel="4 core templates · click to expand"
+            kpisLabel="Regulatory KPI framework"
+            complianceField="compliance"
+          />
+        </>
+      )}
+
+      {/* ── Logistics Edition ── */}
+      {activePack === 'logistics' && (
+        <>
+          <PreviewBanner packLabel="Logistics Edition" color={TEAL} icon={Globe2} />
+          <GenericPackView
+            icon={Globe2} label="Logistics Edition" color={TEAL} sprint="S73"
+            pillars={LOGI_PILLARS} workflows={LOGI_WORKFLOWS} stats={LOGI_STATS} kpis={LOGI_KPIS}
+            pillarsLabel="4 pillars · GHG Protocol / ESG compliance"
+            workflowsLabel="4 core templates · click to expand"
+            kpisLabel="Supply chain KPI framework"
+          />
+        </>
+      )}
+
+      {/* ── Government Edition ── */}
+      {activePack === 'government' && (
+        <>
+          <PreviewBanner packLabel="Government Edition" color="#6366f1" icon={Shield} />
+          <GenericPackView
+            icon={Shield} label="Government Edition" color="#6366f1" sprint="S73"
+            pillars={GOV_PILLARS} workflows={GOV_WORKFLOWS} stats={GOV_STATS} kpis={GOV_KPIS}
+            pillarsLabel="4 pillars · AEGIS full audit trail on every decision"
+            workflowsLabel="4 core templates · click to expand"
+            kpisLabel="Public service KPI framework"
+          />
+        </>
+      )}
+
     </div>
+  )
+}
+
+function PreviewBanner({ packLabel, color, icon: Icon }: { packLabel: string; color: string; icon: React.ElementType }) {
+  return (
+    <div style={{ background: color + '08', border: `1.5px solid ${color}30`, borderRadius: 14, padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
+      <Icon size={15} style={{ color, flexShrink: 0 }} />
+      <div>
+        <p style={{ fontSize: 12, fontWeight: 800, color, marginBottom: 2 }}>{packLabel} — Preview</p>
+        <p style={{ fontSize: 11, color: T2 }}>This pack ships in S73. Workflows, KPIs, and KIMMP signals are defined. Blueprint deployment available at GA.</p>
+      </div>
+    </div>
+  )
+}
+
+function GenericPackView({ icon: Icon, label, color, sprint, pillars, workflows, stats, kpis, pillarsLabel, workflowsLabel, kpisLabel, complianceField }: {
+  icon: React.ElementType; label: string; color: string; sprint: string
+  pillars: any[]; workflows: any[]; stats: any[]; kpis: any[]
+  pillarsLabel: string; workflowsLabel: string; kpisLabel: string; complianceField?: string
+}) {
+  return (
+    <>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+        <div style={{ width: 44, height: 44, borderRadius: 12, background: color + '15', border: `1px solid ${color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <Icon size={20} style={{ color }} />
+        </div>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+            <h1 style={{ fontSize: 18, fontWeight: 900, color: T1, letterSpacing: '-.02em' }}>{label}</h1>
+            <span style={{ fontSize: 8, fontWeight: 800, color: '#fff', background: color, padding: '2px 7px', borderRadius: 20 }}>{sprint}</span>
+          </div>
+          <p style={{ fontSize: 12, color: T2 }}>Industry-specific KIMMP intelligence pre-configured for this vertical.</p>
+        </div>
+      </div>
+
+      <StatsGrid stats={stats} />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+            <Globe2 size={13} style={{ color }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>BIDS™ Pillars Mapped</span>
+            <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>{pillarsLabel}</span>
+          </div>
+          <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {pillars.map((p: any) => (
+              <div key={p.id}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                  <span style={{ fontSize: 9, fontWeight: 800, color, background: color + '12', padding: '1px 6px', borderRadius: 4 }}>BIDS™ {p.bids}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: T1 }}>{p.label}</span>
+                  {complianceField && p[complianceField] && <span style={{ fontSize: 8, fontWeight: 700, color: RED, background: RED + '12', padding: '1px 5px', borderRadius: 3, marginLeft: 'auto' }}>{p[complianceField]}</span>}
+                  <span style={{ fontSize: 9, fontWeight: 700, color: TEAL, marginLeft: complianceField ? 0 : 'auto' }}>{p.coverage}%</span>
+                </div>
+                <div style={{ height: 3, background: 'var(--os-surface-0)', borderRadius: 2, marginBottom: 4, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${p.coverage}%`, background: color, borderRadius: 2 }} />
+                </div>
+                <p style={{ fontSize: 10, color: T2 }}>{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+            <TrendingUp size={13} style={{ color }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>KPIs + KIMMP Signals</span>
+            <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>{kpisLabel}</span>
+          </div>
+          <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {kpis.map((k: any) => (
+              <div key={k.label}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: T1 }}>{k.label}</span>
+                  <span style={{ fontSize: 10, fontWeight: 800, color }}>{k.target}</span>
+                </div>
+                <p style={{ fontSize: 10, color: T2 }}>{k.kimmpSignal}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: `1px solid ${BDR}` }}>
+          <Zap size={13} style={{ color }} /><span style={{ fontSize: 12, fontWeight: 800, color: T1 }}>{label} Workflow Templates</span>
+          <span style={{ fontSize: 9, color: T3, marginLeft: 'auto' }}>{workflowsLabel}</span>
+        </div>
+        <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {workflows.map((wf: any) => <WorkflowCard key={wf.id} wf={wf} />)}
+        </div>
+      </div>
+    </>
   )
 }

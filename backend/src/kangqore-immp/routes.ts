@@ -56,7 +56,7 @@ const kangqoreImmpRoutes = Router();
 // ── TTS — platform-aware voice, served as WAV ────────────────────────────────
 // macOS: `say` → AIFF, `afconvert` → WAV
 // Linux: `espeak-ng` → WAV directly (Dockerfile installs espeak-ng)
-kangqoreImmpRoutes.get('/tts', async (req, res) => {
+kangqoreImmpRoutes.get('/tts', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   const raw  = typeof req.query.text === 'string' ? req.query.text : ''
   const text = raw.slice(0, 500).replace(/['"\\`$!;|&<>()]/g, ' ').trim()
   if (!text) return res.status(400).json({ error: 'text required' })
@@ -3008,6 +3008,21 @@ kangqoreImmpRoutes.post('/connectors/:platform/sync', requireAuth, requireRole([
 // Generates KIMMP signals from inbound CRM/PM events
 kangqoreImmpRoutes.post('/connectors/inbound-event', async (req, res) => {
   try {
+    // SECURITY: this is an external webhook sink — verify a shared secret before
+    // trusting the payload, otherwise anyone can inject arbitrary signals into KIMMP.
+    const expectedSecret = process.env.KIMMP_WEBHOOK_SECRET
+    if (!expectedSecret) {
+      logger.error('KIMMP_WEBHOOK_SECRET is not set — rejecting inbound webhook (fail closed)')
+      return res.status(503).json({ error: 'Webhook not configured' })
+    }
+    const providedSecret = req.get('x-kimmp-webhook-secret') || ''
+    const expectedBuf = Buffer.from(expectedSecret)
+    const providedBuf = Buffer.from(providedSecret)
+    const isValid = expectedBuf.length === providedBuf.length && crypto.timingSafeEqual(expectedBuf, providedBuf)
+    if (!isValid) {
+      return res.status(401).json({ error: 'Invalid webhook secret' })
+    }
+
     const { platform, eventType, payload } = req.body
     if (!platform || !eventType) return res.status(400).json({ error: 'platform and eventType required' })
 
@@ -3596,3 +3611,189 @@ kangqoreImmpRoutes.patch('/aegis/security-findings/:id', requireAuth, requireRol
 })
 
 export { kangqoreImmpRoutes };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// S72 — Analytics + Executive Reporting
+// ─────────────────────────────────────────────────────────────────────────────
+
+// GET /admin/kangqore-immp/reports/executive-dashboard
+kangqoreImmpRoutes.get('/reports/executive-dashboard', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const [healthScores, npsAll, signals, decisions] = await Promise.all([
+      (prisma as any).customerHealthScore.findMany({ orderBy: { computedAt: 'desc' }, take: 20 }),
+      (prisma as any).npsResponse.findMany({}),
+      (prisma as any).kimmpSignal.count({}),
+      (prisma as any).kimmpStrategicDecision.count({}),
+    ])
+    const customers = healthScores.reduce((acc: any, h: any) => {
+      if (!acc[h.customerId]) acc[h.customerId] = []
+      acc[h.customerId].push(h)
+      return acc
+    }, {} as Record<string, any[]>)
+    const npsTotal = npsAll.length
+    const promoters  = npsAll.filter((n: any) => n.category === 'PROMOTER').length
+    const detractors = npsAll.filter((n: any) => n.category === 'DETRACTOR').length
+    const npsScore   = npsTotal > 0 ? Math.round(((promoters - detractors) / npsTotal) * 100) : null
+    res.json({
+      customerCount:   Object.keys(customers).length,
+      avgHealthScore:  healthScores.length > 0 ? Math.round(healthScores.reduce((s: number, h: any) => s + h.totalScore, 0) / healthScores.length) : null,
+      tierBreakdown:   { GREEN: healthScores.filter((h: any) => h.tier === 'GREEN').length, AMBER: healthScores.filter((h: any) => h.tier === 'AMBER').length, RED: healthScores.filter((h: any) => h.tier === 'RED').length },
+      npsScore,
+      signalCount:     signals,
+      decisionCount:   decisions,
+      customers:       Object.entries(customers).map(([id, scores]: [string, any]) => ({ customerId: id, latest: scores[0], sparkline: scores.slice(0, 6).map((s: any) => s.totalScore).reverse() })),
+    })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/reports/generate
+kangqoreImmpRoutes.post('/reports/generate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId, dateFrom, dateTo, title } = req.body
+    if (!customerId || !dateFrom || !dateTo) return res.status(400).json({ error: 'customerId, dateFrom, dateTo required' })
+    const from = new Date(dateFrom)
+    const to   = new Date(dateTo)
+    const [healthScores, npsResponses, signals, decisions, workflows] = await Promise.all([
+      (prisma as any).customerHealthScore.findMany({ where: { customerId, createdAt: { gte: from, lte: to } }, orderBy: { createdAt: 'asc' } }),
+      (prisma as any).npsResponse.findMany({ where: { customerId, createdAt: { gte: from, lte: to } } }),
+      (prisma as any).kimmpSignal.findMany({ where: { createdAt: { gte: from, lte: to } }, orderBy: { createdAt: 'desc' }, take: 5 }),
+      (prisma as any).kimmpStrategicDecision.count({ where: { createdAt: { gte: from, lte: to } } }),
+      (prisma as any).osWorkflow.count({ where: { createdAt: { gte: from, lte: to } } }),
+    ])
+    const baseline  = healthScores[0]?.totalScore ?? null
+    const current   = healthScores[healthScores.length - 1]?.totalScore ?? null
+    const npsScores = npsResponses.map((n: any) => n.score)
+    const avgNps    = npsScores.length > 0 ? Math.round(npsScores.reduce((a: number, b: number) => a + b, 0) / npsScores.length) : null
+    const data = { customerId, dateFrom, dateTo, oisBaseline: baseline, oisCurrent: current, oisDelta: baseline && current ? current - baseline : null, avgNps, npsCount: npsScores.length, decisionsCount: decisions, workflowsCount: workflows, topSignals: signals.slice(0, 5).map((s: any) => ({ title: s.title, type: s.type, priority: s.priority, date: s.createdAt })), healthSparkline: healthScores.map((h: any) => ({ score: h.totalScore, tier: h.tier, date: h.computedAt })) }
+    const doc = await (prisma as any).reportDocument.create({
+      data: { customerId, title: title || `${customerId} Report ${dateFrom}–${dateTo}`, dateFrom: from, dateTo: to, data, status: 'READY', generatedBy: (req as any).user?.id },
+    })
+    res.status(201).json(doc)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/reports
+kangqoreImmpRoutes.get('/reports', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId } = req.query
+    const where: any = customerId ? { customerId: customerId as string } : {}
+    const docs = await (prisma as any).reportDocument.findMany({ where, orderBy: { createdAt: 'desc' }, take: 50 })
+    res.json(docs)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/reports/:id
+kangqoreImmpRoutes.get('/reports/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const doc = await (prisma as any).reportDocument.findUnique({ where: { id: req.params.id } })
+    if (!doc) return res.status(404).json({ error: 'not found' })
+    res.json(doc)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/reports/scheduled
+kangqoreImmpRoutes.get('/reports/scheduled', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const schedules = await (prisma as any).scheduledReport.findMany({ orderBy: { createdAt: 'desc' } })
+    res.json(schedules)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/reports/scheduled
+kangqoreImmpRoutes.post('/reports/scheduled', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { title, customerId, cronExpr, recipients, template } = req.body
+    if (!title || !cronExpr || !recipients?.length) return res.status(400).json({ error: 'title, cronExpr, recipients required' })
+    const schedule = await (prisma as any).scheduledReport.create({
+      data: { title, customerId, cronExpr, recipients, template: template ?? 'EXECUTIVE', createdBy: (req as any).user?.id },
+    })
+    res.status(201).json(schedule)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/reports/scheduled/:id
+kangqoreImmpRoutes.patch('/reports/scheduled/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { active, cronExpr, recipients } = req.body
+    const schedule = await (prisma as any).scheduledReport.update({ where: { id: req.params.id }, data: { active, cronExpr, recipients } })
+    res.json(schedule)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// S76 — WAANDA Gen 3 Kernel P1 — PlanDecompositionTree
+// ─────────────────────────────────────────────────────────────────────────────
+
+// POST /admin/kangqore-immp/gen3/plans
+kangqoreImmpRoutes.post('/gen3/plans', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { goal } = req.body
+    if (!goal) return res.status(400).json({ error: 'goal required' })
+    const deployedModel = await (prisma as any).gen2Model.findFirst({ where: { isDeployed: true } })
+    const subtasks = [
+      { id: '1', label: 'Understand objective', status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Parse goal semantics', 'Retrieve relevant memory', 'Identify constraints'] },
+      { id: '2', label: 'Gather evidence',       status: 'PENDING', agentRole: 'DIAGNOSTICS', steps: ['Signal analysis', 'CRM context pull', 'OIS baseline check'] },
+      { id: '3', label: 'Form hypothesis',       status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Synthesise evidence', 'Generate alternatives', 'Score confidence'] },
+      { id: '4', label: 'Simulate outcomes',     status: 'PENDING', agentRole: 'EXECUTION',   steps: ['Run decision simulation', 'Evaluate ROI per path', 'Risk-weight outcomes'] },
+      { id: '5', label: 'Execute best path',     status: 'PENDING', agentRole: 'EXECUTION',   steps: ['KIMMP approval gate', 'Dispatch MissionDispatcher', 'Monitor completion'] },
+      { id: '6', label: 'Capture learning',      status: 'PENDING', agentRole: 'COACH',       steps: ['Record outcome', 'Update KimmpMemory', 'Adjust future priors'] },
+    ]
+    const plan = await (prisma as any).planDecompositionTree.create({
+      data: { goal, subtasks, status: 'PENDING', gen2ModelId: deployedModel?.id ?? null, createdBy: (req as any).user?.id },
+    })
+    res.status(201).json(plan)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/gen3/plans
+kangqoreImmpRoutes.get('/gen3/plans', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const plans = await (prisma as any).planDecompositionTree.findMany({ orderBy: { createdAt: 'desc' }, take: 50 })
+    res.json(plans)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/gen3/plans/:id
+kangqoreImmpRoutes.get('/gen3/plans/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const plan = await (prisma as any).planDecompositionTree.findUnique({ where: { id: req.params.id } })
+    if (!plan) return res.status(404).json({ error: 'not found' })
+    res.json(plan)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/gen3/plans/:id — update subtask status or whole plan status
+kangqoreImmpRoutes.patch('/gen3/plans/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status, subtasks, failureCount } = req.body
+    const data: any = {}
+    if (status)                     data.status       = status
+    if (subtasks)                   data.subtasks      = subtasks
+    if (failureCount !== undefined) data.failureCount  = failureCount
+    if (status === 'DONE')          data.completedAt   = new Date()
+    if (failureCount >= 3)          data.replannedAt   = new Date()
+
+    const plan = await (prisma as any).planDecompositionTree.update({ where: { id: req.params.id }, data })
+    // Fire KimmpSignal when plan completes
+    if (status === 'DONE' || status === 'FAILED') {
+      await (prisma as any).kimmpSignal.create({
+        data: { type: 'GEN3_PLAN_' + status, priority: status === 'FAILED' ? 'high' : 'medium', title: `Gen3 Plan ${status === 'DONE' ? 'completed' : 'failed'}: ${plan.goal.slice(0, 80)}`, summary: `PlanDecompositionTree ${plan.id} reached terminal state: ${status}`, module: 'Gen3', confidence: 95 },
+      }).catch(() => {})
+    }
+    res.json(plan)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/gen3/status
+kangqoreImmpRoutes.get('/gen3/status', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const [total, active, done, failed, deployedModel] = await Promise.all([
+      (prisma as any).planDecompositionTree.count({}),
+      (prisma as any).planDecompositionTree.count({ where: { status: 'ACTIVE' } }),
+      (prisma as any).planDecompositionTree.count({ where: { status: 'DONE' } }),
+      (prisma as any).planDecompositionTree.count({ where: { status: 'FAILED' } }),
+      (prisma as any).gen2Model.findFirst({ where: { isDeployed: true }, select: { providerModelId: true, benchmarkAccuracy: true } }),
+    ])
+    res.json({ total, active, done, failed, gen3Active: !!deployedModel, deployedModel })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})

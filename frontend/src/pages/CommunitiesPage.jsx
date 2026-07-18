@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight, Search, MessageSquare, Eye, Clock, 
@@ -257,6 +257,16 @@ const CONTRIBUTORS = [
   { name: 'Sarah Chen', initials: 'SC', color: '#FB923C', badges: 29, role: 'Rising Star' },
   { name: 'David Park', initials: 'DP', color: '#22C55E', badges: 25, role: 'Contributor' },
 ];
+
+// ─── API base ─────────────────────────────────────────────────────────────────
+
+const API_BASE = import.meta.env.VITE_BACKEND_URL || ''
+
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', headers: { 'Content-Type': 'application/json' }, ...opts })
+  if (!res.ok) throw new Error(`${res.status}`)
+  return res.json()
+}
 
 // ─── Rating Config Constants ──────────────────────────────────────────────────
 
@@ -938,6 +948,7 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
 
 const CommunitiesPage = () => {
   const [topics, setTopics] = useState(INITIAL_TOPICS);
+  const [apiCommunities, setApiCommunities] = useState([]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeTab, setActiveTab] = useState('latest');
   const [searchQuery, setSearchQuery] = useState('');
@@ -946,6 +957,38 @@ const CommunitiesPage = () => {
 
   // Community join states
   const [joinedCommunities, setJoinedCommunities] = useState(['k/ai-agents', 'k/workflows']);
+
+  // Fetch communities + posts from real API, blend with mock data
+  const fetchFromAPI = useCallback(async () => {
+    try {
+      const [comms, feed] = await Promise.all([
+        apiFetch('/api/communities'),
+        apiFetch('/api/communities/feed?sort=hot&limit=50'),
+      ])
+      if (Array.isArray(comms) && comms.length > 0) setApiCommunities(comms)
+      if (feed?.posts?.length > 0) {
+        const mapped = feed.posts.map(p => ({
+          id: p.id, title: p.title, excerpt: p.body?.slice(0, 200) ?? '',
+          category: p.category ?? 'ask', community: p.community?.name ?? 'k/showcase',
+          tags: p.tags ?? [], author: { name: p.authorName ?? 'Member', initials: (p.authorName ?? 'M').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(), color: '#8B5CF6' },
+          posters: [{ initials: (p.authorName ?? 'M').slice(0,2).toUpperCase(), color: '#8B5CF6' }],
+          replies: p.replyCount ?? 0, views: p.voteCount ?? 0, lastActivity: p.updatedAt ?? p.createdAt,
+          pinned: p.pinned ?? false, solved: p.solved ?? false,
+          ratings: { support: 0, oppose: 0, helpful: 0, notHelpful: 0, endorse: 0, challenge: 0 },
+          likes: p.voteCount ?? 0, reposts: 0, comments: (p.comments ?? []).map(c => ({ id: c.id, author: c.authorName ?? 'Member', initials: (c.authorName ?? 'M').slice(0,2).toUpperCase(), color: '#3B82F6', text: c.body, date: c.createdAt })),
+          _apiId: p.id,
+        }))
+        // Prepend API posts before mock data, deduplicate by title
+        setTopics(prev => {
+          const existingTitles = new Set(mapped.map(m => m.title))
+          const mockOnly = prev.filter(t => !existingTitles.has(t.title))
+          return [...mapped, ...mockOnly]
+        })
+      }
+    } catch { /* fall back to mock data silently */ }
+  }, [])
+
+  useEffect(() => { fetchFromAPI() }, [fetchFromAPI])
 
   // Ratings mutual exclusion tracking state
   const [userRatings, setUserRatings] = useState({});
@@ -1065,9 +1108,9 @@ const CommunitiesPage = () => {
     });
   };
 
-  const handleComposerPost = (newTopicData) => {
+  const handleComposerPost = async (newTopicData) => {
     const newTopic = {
-      id: topics.length + 1,
+      id: `local-${Date.now()}`,
       title: newTopicData.title,
       excerpt: newTopicData.excerpt,
       category: newTopicData.category,
@@ -1086,6 +1129,14 @@ const CommunitiesPage = () => {
       comments: []
     };
     setTopics(prev => [newTopic, ...prev]);
+    // Persist to API — find community by name match
+    try {
+      const comms = apiCommunities.length > 0 ? apiCommunities : await apiFetch('/api/communities')
+      const comm  = comms.find(c => c.name === newTopicData.community)
+      if (comm) {
+        await apiFetch(`/api/communities/${comm.id}/posts`, { method: 'POST', body: JSON.stringify({ title: newTopicData.title, body: newTopicData.excerpt, category: newTopicData.category, tags: newTopicData.tags }) })
+      }
+    } catch { /* silently ignore auth/API errors */ }
   };
 
   // Filter & sort topics

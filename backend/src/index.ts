@@ -60,6 +60,7 @@ import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor } from 
 import { waandaRouter } from './waanda/waandaRoutes';
 import { waandaTrainingRouter } from './waanda-training';
 import { dataPrivacyRouter } from './routes/data-privacy';
+import { communitiesRouter } from './communities/routes';
 import { developerRouter } from './routes/developer';
 import { itilRouter } from './routes/itil';
 import orgsRouter from './routes/orgs';
@@ -159,11 +160,14 @@ app.use('/api/admin/content', contentRoutes);
 // admin-ip routes (reserved for future use)
 import koreRoutes from './os/kore/api/kore.routes'; // NEW KEOS Layer
 
-app.use('/api/kangqore/immp', kangqoreImmpRoutes);
+// SECURITY: do not re-mount kangqoreImmpRoutes here. It is already mounted below
+// at /api/admin/kangqore-immp behind aegisAccessLogger + aegisEgressMonitor; a second,
+// unwrapped mount would let every KIMMP route bypass AEGIS governance logging entirely.
 app.use('/api/kangqore/urgi', authenticate, urgiRoutes);
 app.use('/api/kangqore/kore', koreRoutes); // Mount KEOS KORE APIs
 
 app.use('/api/content', publicContentRoutes); // Public access
+app.use('/api/communities', communitiesRouter); // S71 — real communities backend
 app.use('/api/uploads', uploadRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/admin/analytics', analyticsRoutes); // NEW
@@ -242,7 +246,7 @@ app.use('/api/admin/data-privacy', authenticate, dataPrivacyRouter);
 app.use('/api/admin/developer', authenticate, developerRouter);
 
 // ITIL — Incidents, Problems, CMDB (Sprint 7 — defeat ServiceNow).
-app.use('/api/admin/itil', authenticate, itilRouter);
+app.use('/api/admin/itil', authenticate, authorize(['ADMIN']), itilRouter);
 
 // OpenAPI / Swagger docs — public, no auth required.
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -265,7 +269,7 @@ app.use('/api/admin/visitor', adminVisitorRouter);
 import hcipRouter from './routes/hcip';
 app.use('/api/v1', apiKeyAuth, v1RateLimiter, v1Router);
 
-app.use('/api/hcip', hcipRouter);
+app.use('/api/hcip', authenticate, authorize(['ADMIN']), hcipRouter);
 
 import servicesRoutes from './routes/services'; // Phase 3
 app.use('/api/services', servicesRoutes);

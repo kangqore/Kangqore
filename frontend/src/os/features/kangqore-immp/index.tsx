@@ -58,6 +58,8 @@ import { WaandaGen2Page }               from './pages/WaandaGen2Page'
 import { TenantAdminPage }              from './pages/TenantAdminPage'
 import { ChurnRiskPage }                from './pages/ChurnRiskPage'
 import { RenewalWorkflowPage }          from './pages/RenewalWorkflowPage'
+import { ExecutiveDashboardPage }       from './pages/ExecutiveDashboardPage'
+import { WaandaGen3Page }               from './pages/WaandaGen3Page'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -195,6 +197,8 @@ export function KIMMMModule() {
           <Route path="tenants"                 element={<TenantAdminPage />}               />
           <Route path="churn-risk"              element={<ChurnRiskPage />}                 />
           <Route path="renewals"                element={<RenewalWorkflowPage />}           />
+          <Route path="exec-dashboard"          element={<ExecutiveDashboardPage />}        />
+          <Route path="gen3"                    element={<WaandaGen3Page />}                />
           <Route path="reflection"          element={<ReflectionPage />}            />
           <Route path="authority"           element={<AuthorityPage />}             />
           <Route path="*"                   element={<Navigate to={BASE} replace />} />

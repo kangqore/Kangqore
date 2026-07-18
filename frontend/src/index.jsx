@@ -13,6 +13,13 @@ import App from "@/App";
   }
 })()
 
+// S75 — PWA Service Worker registration
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {})
+  })
+}
+
 const rootElement = document.getElementById("root");
 
 if (rootElement.hasChildNodes()) {

@@ -1,15 +1,27 @@
 {
+  "name": "Kangqore OS",
   "short_name": "Kangqore",
-  "name": "Kangqore Platform",
+  "description": "Enterprise Operating System powered by WAANDA AI",
+  "start_url": "/kangqore-view",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "favicon.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#000000"
+  "categories": ["productivity", "business", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false
 }

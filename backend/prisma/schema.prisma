@@ -6813,3 +6813,142 @@ model SecurityFinding {
   @@index([severity, status])
   @@map("security_findings")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S71 — Communities: real backend
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model CommunityGroup {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?  @db.Text
+  memberCount Int      @default(0)
+  isPrivate   Boolean  @default(false)
+  topicTags   String[]
+  color       String?
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  posts       CommunityPost[]
+  members     CommunityMember[]
+  @@map("community_groups")
+}
+
+model CommunityPost {
+  id          String   @id @default(cuid())
+  title       String
+  body        String   @db.Text
+  authorId    String
+  authorName  String?
+  communityId String
+  pinned      Boolean  @default(false)
+  replyCount  Int      @default(0)
+  voteCount   Int      @default(0)
+  mediaUrls   String[]
+  solved      Boolean  @default(false)
+  category    String?
+  tags        String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  community   CommunityGroup   @relation(fields: [communityId], references: [id])
+  comments    CommunityComment[]
+  votes       CommunityVote[]
+  @@index([communityId, createdAt])
+  @@index([voteCount])
+  @@map("community_posts")
+}
+
+model CommunityMember {
+  id          String   @id @default(cuid())
+  userId      String
+  communityId String
+  role        String   @default("MEMBER")
+  joinedAt    DateTime @default(now())
+  community   CommunityGroup @relation(fields: [communityId], references: [id])
+  @@unique([userId, communityId])
+  @@index([communityId])
+  @@map("community_members")
+}
+
+model CommunityComment {
+  id         String   @id @default(cuid())
+  body       String   @db.Text
+  postId     String
+  parentId   String?
+  authorId   String
+  authorName String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  post       CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  @@index([postId])
+  @@index([parentId])
+  @@map("community_comments")
+}
+
+model CommunityVote {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  value     Int
+  createdAt DateTime @default(now())
+  post      CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  @@unique([postId, userId])
+  @@map("community_votes")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S72 — Analytics + Executive Reporting
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model ReportDocument {
+  id          String   @id @default(cuid())
+  customerId  String
+  title       String
+  dateFrom    DateTime
+  dateTo      DateTime
+  data        Json
+  status      String   @default("DRAFT")
+  generatedBy String?
+  createdAt   DateTime @default(now())
+  @@index([customerId])
+  @@index([status])
+  @@map("report_documents")
+}
+
+model ScheduledReport {
+  id         String    @id @default(cuid())
+  title      String
+  customerId String?
+  cronExpr   String
+  recipients String[]
+  template   String    @default("EXECUTIVE")
+  lastRunAt  DateTime?
+  nextRunAt  DateTime?
+  active     Boolean   @default(true)
+  createdBy  String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  @@map("scheduled_reports")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S76 — WAANDA Gen 3 Kernel P1
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model PlanDecompositionTree {
+  id           String    @id @default(cuid())
+  goal         String    @db.Text
+  subtasks     Json      @default("[]")
+  status       String    @default("PENDING")
+  gen2ModelId  String?
+  failureCount Int       @default(0)
+  replannedAt  DateTime?
+  completedAt  DateTime?
+  createdBy    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  @@index([status])
+  @@index([createdAt])
+  @@map("plan_decomposition_trees")
+}
