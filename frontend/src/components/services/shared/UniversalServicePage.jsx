@@ -178,7 +178,7 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
 
       {/* Hover Gradient Overlay */}
       {!isExpanded && !isVibrant && (
-        <div className="absolute inset-0 bg-gradient-to-br from-[#2564ea]/20 to-[#4ab6d4]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
       )}
       {!isExpanded && isVibrant && (
         <div className="absolute inset-0 bg-white/95 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
@@ -1128,6 +1128,11 @@ const featureMicros   = service.featureMicros
                 } else if (capabilities.length === 3) {
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
                   else cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 8) {
+                  if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 7) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 }
 
                 return (

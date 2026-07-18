@@ -19,18 +19,6 @@ export const AuthProvider = ({ children }) => {
     const userData = localStorage.getItem('user');
     
     if (token) {
-      if (token === 'demo-token') {
-        if (userData) {
-          try {
-            setUser(JSON.parse(userData));
-          } catch (e) {
-            console.error('Failed to parse user data:', e);
-          }
-        }
-        setLoading(false);
-        return;
-      }
-
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
       // If we have local data, show it first for responsiveness
@@ -80,33 +68,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [location, user]);
 
-  // DEMO MODE: Bypass backend if DB is down
-  const enableDemoMode = (role = 'client') => {
-    const demoUser = {
-      id: 'demo-user-123',
-      name: 'Demo User',
-      email: 'demo@kangqore.com',
-      role: role.toUpperCase(),
-      company: 'Demo Corp',
-      avatarUrl: 'https://ui-avatars.com/api/?name=Demo+User&background=0D8ABC&color=fff'
-    };
-    
-    localStorage.setItem('token', 'demo-token');
-    localStorage.setItem('user', JSON.stringify(demoUser));
-    setUser(demoUser);
-    return { success: true };
-  };
-
   const login = async (email, password) => {
-    // Secret backdoor for demo
-    if (email.startsWith('demo') && password === 'demo') {
-        const role = email.includes('admin') ? 'admin' : 
-                     email.includes('partner') ? 'partner' : 
-                     email.includes('investor') ? 'investor' : 
-                     email.includes('career') ? 'job_seeker' : 'client';
-        return enableDemoMode(role);
-    }
-
     try {
       const response = await axios.post(`${API}/auth/login`, { email, password });
       const { token, refreshToken, user } = response.data;
@@ -125,15 +87,15 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
        // If backend is unreachable or DB is down
        if (error.code === 'ERR_NETWORK' || (error.response && error.response.status >= 500)) {
-           console.warn('Backend unavailable, suggesting demo mode.');
-           return { 
-             success: false, 
-             error: 'Database unavailable. Use email "demo@kangqore.com" and password "demo" to enter Offline Mode.',
+           console.warn('Backend unavailable.');
+           return {
+             success: false,
+             error: 'The service is temporarily unavailable. Please try again in a moment.',
              isNetworkError: true
             };
        }
 
-      return { 
+      return {
         success: false, 
         error: error.response?.data?.error?.message || error.response?.data?.message || 'Login failed' 
       };
@@ -185,7 +147,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, loading, updateUser, enableDemoMode }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, loading, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

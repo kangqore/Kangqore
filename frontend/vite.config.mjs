@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => {
 
     server: {
       port: 3000,
-      proxy: {
+      proxy: process.env.DISABLE_API_PROXY ? {} : {
         '/socket.io':   { target: BACKEND, changeOrigin: true, ws: true },
         '/api':         { target: BACKEND, changeOrigin: true },
         '/sitemap.xml': { target: BACKEND, changeOrigin: true },

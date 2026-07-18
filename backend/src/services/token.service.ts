@@ -1,7 +1,10 @@
 import * as jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required and must not be empty');
+}
 const ACCESS_TOKEN_EXPIRY = '1d'; // 1 day (extended for better UX)
 const REFRESH_TOKEN_EXPIRY = '7d'; // 7 days
 

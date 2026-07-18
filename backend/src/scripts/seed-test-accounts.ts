@@ -1,6 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import { hashPassword } from '../utils/password';
 
+// SECURITY: this seeds accounts with hardcoded, publicly-known passwords.
+// It must never run against a production database.
+if (process.env.NODE_ENV === 'production' || process.env.ALLOW_TEST_SEED !== 'true') {
+  console.error('Refusing to seed test accounts: NODE_ENV=production or ALLOW_TEST_SEED is not set to "true".');
+  process.exit(1);
+}
+
 const prisma = new PrismaClient();
 
 const testAccounts = [

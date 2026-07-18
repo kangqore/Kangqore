@@ -4,6 +4,7 @@ import { requireAuth, requireRole, AuthRequest } from '../middleware/rbac';
 import { createError } from '../middleware/errorHandler';
 import { notifyNewEmail } from '../services/notificationService';
 import accountabilityService from '../services/AccountabilityService';
+import { escapeHtml } from '../utils/sanitize';
 
 const router = Router();
 
@@ -435,8 +436,9 @@ router.post('/emails/reply', requireAuth, requireRole(['CLIENT']), async (req: A
     const client = await prisma.user.findUnique({ where: { id: userId } });
     if (!client) throw createError('User not found', 404);
 
-    const emailContent = content || body; // Use either field
-    if (!emailContent) throw createError('Content required', 400);
+    const rawContent = content || body; // Use either field
+    if (!rawContent) throw createError('Content required', 400);
+    const emailContent = escapeHtml(rawContent);
 
     let originalEmail = null;
     let threadId = null;

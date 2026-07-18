@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { requireAuth, requireRole } from '../middleware/rbac';
+import { escapeHtml } from '../utils/sanitize';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -166,8 +167,9 @@ router.get('/emails', requireAuth, requirePartner, async (req, res) => {
 router.post('/emails/reply', requireAuth, requirePartner, async (req, res) => {
   try {
     const userId = req.user!.userId;
-    const { emailId, content, subject } = req.body;
-    if (!content) return res.status(400).json({ error: 'Content required' });
+    const { emailId, content: rawContent, subject } = req.body;
+    if (!rawContent) return res.status(400).json({ error: 'Content required' });
+    const content = escapeHtml(rawContent);
     const partner = await prisma.user.findUnique({ where: { id: userId } });
     if (!partner) return res.status(404).json({ error: 'User not found' });
     let threadId: string | undefined;

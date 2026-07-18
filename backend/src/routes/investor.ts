@@ -2,6 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { requireAuth, AuthRequest } from '../middleware/rbac';
 import { notifyNewEmail } from '../services/notificationService';
+import { escapeHtml } from '../utils/sanitize';
 
 const router = Router();
 
@@ -165,16 +166,17 @@ router.get('/emails', requireAuth, requireInvestor, async (req: AuthRequest, res
  */
 router.post('/emails/reply', requireAuth, requireInvestor, async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-        const { emailId, content, subject } = req.body;
+        const { emailId, content: rawContent, subject } = req.body;
         const userId = req.user!.userId;
 
         // Fetch full user details to get email/name
         const investor = await prisma.user.findUnique({ where: { id: userId } });
         if (!investor) return res.status(404).json({ error: 'User not found' });
 
-        if (!content) {
+        if (!rawContent) {
             return res.status(400).json({ error: 'Reply content is required' });
         }
+        const content = escapeHtml(rawContent);
 
         // Get original email if replying to one
         let originalEmail = null;

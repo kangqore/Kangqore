@@ -36,6 +36,7 @@ jobs:
         run: npx playwright test
         env:
           CI: true
+          DISABLE_API_PROXY: true
 
       - name: Upload Playwright report on failure
         if: failure()
