@@ -7,6 +7,33 @@ import { test, expect, type Page } from '@playwright/test'
 
 const BASE = 'http://localhost:3000'
 
+// Intercept every /api/** call so tests never depend on a running backend.
+// - GET /api/auth/me  → returns the demo admin user (keeps localStorage auth alive)
+// - GET everything else → empty array (safe for list endpoints the UI renders)
+// - POST/PUT/PATCH/DELETE → empty object (mutations complete without error)
+test.beforeEach(async ({ page }) => {
+  await page.route('**/api/**', (route) => {
+    const url    = route.request().url()
+    const method = route.request().method()
+
+    if (url.includes('/auth/me')) {
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          user: { id: 'demo-admin', name: 'C.O.D.E.', email: 'admin@kangqore.com', role: 'ADMIN' },
+        }),
+      })
+    }
+
+    if (method !== 'GET') {
+      return route.fulfill({ status: 200, contentType: 'application/json', body: '{}' })
+    }
+
+    return route.fulfill({ status: 200, contentType: 'application/json', body: '[]' })
+  })
+})
+
 async function withAuth(page: Page, route = '/kangqore-view/admin/dashboard') {
   await page.goto(`${BASE}/`)
   await page.evaluate(() => {
