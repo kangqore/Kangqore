@@ -29,6 +29,17 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
   }, []);
 
   const [isLightBackground, setIsLightBackground] = useState(false);
+  const [isErootActive, setIsErootActive] = useState(false);
+
+  useEffect(() => {
+    const handleErootVisibility = (e) => {
+      setIsErootActive(e.detail?.visible || false);
+    };
+    window.addEventListener('eroot-visibility', handleErootVisibility);
+    return () => {
+      window.removeEventListener('eroot-visibility', handleErootVisibility);
+    };
+  }, []);
 
   useEffect(() => {
     // Smart Yielding Logic: Dim utilities when hovering over interactive content
@@ -226,7 +237,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
       {/* Unified Omni-Action Trigger - Moved to RIGHT */}
       <div 
-        className={`fixed bottom-[calc(2rem+2cm)] sm:bottom-[calc(2.5rem+2cm)] right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
+        className={`fixed bottom-9 sm:bottom-11 right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu || isErootActive ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
       >
         {/* Standalone Scroll to Top - Rendered first to be at the very bottom in flex-col-reverse */}
         {isVisible && (

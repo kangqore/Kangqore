@@ -19,6 +19,18 @@ const GlobalAuthPrompt = () => {
   const [authSuccess, setAuthSuccess] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
 
+  const [isInHero, setIsInHero] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const inHero = location.pathname === '/' && window.scrollY < window.innerHeight * 0.6;
+      setIsInHero(inHero);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]);
+
   // Timers for showing Auth popup (30s initial, 45s interval)
   useEffect(() => {
     // If the user is logged in, or if we are on the login page, do not trigger anything
@@ -110,6 +122,7 @@ const GlobalAuthPrompt = () => {
   };
 
   if (location.pathname === '/login') return null;
+  if (isInHero) return null;
   if (!showAuthModal) return null;
 
   return (

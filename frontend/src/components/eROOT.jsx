@@ -149,6 +149,7 @@ const EROOT = () => {
   const { user }  = useAuth();
   const [visible, setVisible]   = useState(false);
   const [closing, setClosing]   = useState(false);
+  const [isInHero, setIsInHero] = useState(true);
   const ctx = useMemo(() => getSmartContext(), []);
   
   // Hook into the Human Context Intelligence Layer
@@ -159,14 +160,37 @@ const EROOT = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsInHero(window.scrollY < window.innerHeight * 0.6);
+    };
+    // Initial check
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('eroot-visibility', { detail: { visible } }));
+  }, [visible]);
+
   const handleClose = () => {
     setClosing(true);
     setTimeout(() => {
       setClosing(false);
       setVisible(false);
-      setTimeout(() => setVisible(true), 180000);
-    }, 300);
+      setTimeout(() => setVisible(true), 30000);
+    }, 1800);
   };
+
+  useEffect(() => {
+    if (visible) {
+      const autoDismiss = setTimeout(() => {
+        handleClose();
+      }, 12000);
+      return () => clearTimeout(autoDismiss);
+    }
+  }, [visible]);
 
   const handleFeedback = () => {
     setVisible(false);
@@ -228,48 +252,59 @@ const EROOT = () => {
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-[99998] w-72"
+      className="fixed bottom-6 right-8 z-[99998] w-[1140px] h-[114px] flex"
       style={{
         animation: closing
-          ? 'feedbackSlideOut 0.3s ease-in forwards'
-          : 'feedbackSlideIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards',
+          ? 'feedbackSlideOut 1.8s cubic-bezier(0.7, 0, 0.84, 0) forwards'
+          : 'feedbackSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       }}
     >
       <style>{`
         @keyframes feedbackSlideIn {
-          from { opacity: 0; transform: translateY(20px) scale(0.95); }
-          to   { opacity: 1; transform: translateY(0)   scale(1);    }
+          from { opacity: 0; transform: translateX(calc(100% + 32px)); }
+          to   { opacity: 1; transform: translateX(0); }
         }
         @keyframes feedbackSlideOut {
-          from { opacity: 1; transform: translateY(0)   scale(1);    }
-          to   { opacity: 0; transform: translateY(12px) scale(0.96); }
+          from { opacity: 1; transform: translateX(0); }
+          to   { opacity: 0; transform: translateX(calc(100% + 32px)); }
         }
       `}</style>
 
       <div
-        className="relative rounded-2xl overflow-hidden"
-        style={{
-          border: '1px solid #3a3a3e',
-          boxShadow: [
-            'inset 0 1px 0 rgba(255,255,255,0.10)',
-            'inset 0 -1px 0 rgba(0,0,0,0.70)',
-            'inset 1px 0 0 rgba(255,255,255,0.04)',
-            '0 1px 0 rgba(255,255,255,0.06)',
-            '0 4px 8px rgba(0,0,0,0.55)',
-            '0 12px 24px rgba(0,0,0,0.50)',
-            '0 32px 56px rgba(0,0,0,0.40)',
-          ].join(', '),
-        }}
+        className={`relative rounded-2xl overflow-hidden flex items-center justify-between w-full h-full p-4 gap-4 transition-all duration-500 ${
+          isInHero
+            ? 'backdrop-blur-none bg-transparent border border-transparent'
+            : ''
+        }`}
+        style={
+          isInHero
+            ? {
+                border: '1px solid transparent',
+                boxShadow: 'none',
+              }
+            : {
+                border: '1px solid #3a3a3e',
+                boxShadow: [
+                  'inset 0 1px 0 rgba(255,255,255,0.10)',
+                  'inset 0 -1px 0 rgba(0,0,0,0.70)',
+                  'inset 1px 0 0 rgba(255,255,255,0.04)',
+                  '0 1px 0 rgba(255,255,255,0.06)',
+                  '0 4px 8px rgba(0,0,0,0.55)',
+                  '0 12px 24px rgba(0,0,0,0.50)',
+                  '0 32px 56px rgba(0,0,0,0.40)',
+                ].join(', '),
+              }
+        }
       >
         {/* Background */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className={`absolute inset-0 z-0 overflow-hidden pointer-events-none transition-opacity duration-500 ${isInHero ? 'opacity-0' : 'opacity-100'}`}>
           <img
             src="/images/capabilities/agentic-governed-autonomy.png"
             alt=""
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/30 z-[1]" />
-          <div className="absolute inset-x-0 top-0 h-1/2 z-[2]" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.45) 45%,rgba(0,0,0,0) 100%)' }} />
+          <div className="absolute inset-x-0 top-0 h-full z-[2]" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.4) 100%)' }} />
         </div>
 
         {/* Sheen */}
@@ -278,93 +313,80 @@ const EROOT = () => {
           style={{ background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 100%)' }}
         />
 
-        {/* Top bar */}
-        <div
-          className="relative z-10 flex items-center justify-between px-4 pt-4 pb-3"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
-        >
-          <div className="flex items-center gap-2.5">
-            {knownUser ? (
-              // Avatar for known user
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#2564ea] to-[#4fa9d8] flex items-center justify-center flex-shrink-0 shadow-md text-white font-bold text-sm">
-                {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt={fname} className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  fname?.charAt(0).toUpperCase()
-                )}
-              </div>
-            ) : (
-              // Kangqore speech-bubble logo for anonymous
-              <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 drop-shadow-md flex-shrink-0">
-                <path d="M 2 12 A 10 10 0 1 1 7.3 20.7 L 2 22 L 3.3 16.7 A 10 10 0 0 1 2 12 Z" fill="#4fa9d8" />
-                <path d="M 13 17 A 7 7 0 1 1 24.9 21.9 L 28 25 L 22.3 23.6 A 7 7 0 0 1 13 17 Z" fill="#ffffff" />
-                <circle cx="16.5" cy="17" r="1.4" fill="#04588e" />
-                <circle cx="20" cy="17" r="1.4" fill="#04588e" />
-                <circle cx="23.5" cy="17" r="1.4" fill="#04588e" />
-              </svg>
-            )}
-            <div className="min-w-0">
-              <span className="text-sm font-bold text-white leading-tight block">{heading}</span>
-              {knownUser && user.role ? (
-                <span className="text-[9px] uppercase tracking-widest text-[#4fa9d8]/80 font-semibold">
-                  {user.role.replace(/_/g, ' ')}
-                </span>
+        {/* Left Side: Avatar + Vibe/Name */}
+        <div className="relative z-10 flex items-center gap-3.5 w-[230px] shrink-0 border-r border-white/5 pr-4">
+          {knownUser ? (
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#2564ea] to-[#4fa9d8] flex items-center justify-center flex-shrink-0 shadow-md text-white font-bold text-sm">
+              {user.avatarUrl ? (
+                <img src={user.avatarUrl} alt={fname} className="w-full h-full rounded-full object-cover" />
               ) : (
-                <div className="flex items-center gap-1.5 mt-0.5">
-                  <Activity className={`w-2.5 h-2.5 ${vibe === 'neutral' ? 'text-cyan-500/50' : vibe === 'rushed' ? 'text-amber-500' : vibe === 'confused' ? 'text-red-500' : 'text-cyan-400'}`} />
-                  <span className="text-[9px] uppercase tracking-widest text-cyan-400/80 font-semibold">
-                    eROOT Vibe: {vibe}
-                  </span>
-                </div>
+                fname?.charAt(0).toUpperCase()
               )}
             </div>
+          ) : (
+            <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 drop-shadow-md flex-shrink-0">
+              <path d="M 2 12 A 10 10 0 1 1 7.3 20.7 L 2 22 L 3.3 16.7 A 10 10 0 0 1 2 12 Z" fill="#4fa9d8" />
+              <path d="M 13 17 A 7 7 0 1 1 24.9 21.9 L 28 25 L 22.3 23.6 A 7 7 0 0 1 13 17 Z" fill="#ffffff" />
+              <circle cx="16.5" cy="17" r="1.4" fill="#04588e" />
+              <circle cx="20" cy="17" r="1.4" fill="#04588e" />
+              <circle cx="23.5" cy="17" r="1.4" fill="#04588e" />
+            </svg>
+          )}
+          <div className="min-w-0">
+            <span className="text-sm font-extrabold text-white leading-tight block whitespace-nowrap">{heading}</span>
+            {knownUser && user.role && (
+              <span className="text-[9px] uppercase tracking-widest text-[#4fa9d8]/80 font-bold block mt-0.5">
+                {user.role.replace(/_/g, ' ')}
+              </span>
+            )}
           </div>
-          <button
-            onClick={handleClose}
-            className="p-1 rounded-md text-gray-400 hover:text-white transition flex-shrink-0"
-            aria-label="Dismiss"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </div>
 
-        {/* Body */}
-        <div className="relative z-10 px-4 py-4 flex flex-col gap-3">
+        {/* Center: Message Body */}
+        <div className="relative z-10 flex-1 min-w-0 flex flex-col justify-center text-left px-2">
           {contextNote && (
-            <p className="text-xs text-cyan-300/80 leading-relaxed font-semibold drop-shadow-md">
+            <p className="text-[10px] text-cyan-300/80 leading-snug font-semibold drop-shadow-md mb-0.5">
               {contextNote}
             </p>
           )}
-
-          <p className="text-xs text-gray-200 leading-relaxed font-medium drop-shadow-md">
+          <p className="text-xs text-gray-200 leading-relaxed font-medium drop-shadow-md line-clamp-2">
             {primaryLine}
           </p>
-
-          <p className="text-[11px] text-gray-400 leading-relaxed drop-shadow-md">
-            {secondaryLine}
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col gap-2 pt-1">
-            <button
-              onClick={handleFeedback}
-              className="flex items-center gap-1.5 text-xs font-semibold text-brand-cyan hover:text-white transition-colors duration-200 group drop-shadow-md"
-            >
-              <span>Share your thoughts</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-
-            {!knownUser && (
-              <button
-                onClick={handleJoin}
-                className="flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-white transition-colors duration-200 group drop-shadow-md"
-              >
-                <Sparkles className="w-3 h-3 text-[#2564ea]/70 group-hover:text-[#2564ea] transition-colors" />
-                <span>Become part of the Kangqore family</span>
-              </button>
-            )}
-          </div>
+          {secondaryLine && (
+            <p className="text-[10px] text-gray-400 leading-snug drop-shadow-md mt-0.5">
+              {secondaryLine}
+            </p>
+          )}
         </div>
+
+        {/* Right Side: Action CTAs */}
+        <div className="relative z-10 flex flex-col justify-center items-start gap-1.5 w-[210px] shrink-0 border-l border-white/5 pl-6">
+          <button
+            onClick={handleFeedback}
+            className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-400/10 border border-cyan-400/20 hover:border-cyan-400/40 text-xs font-bold text-cyan-400 hover:text-white hover:bg-cyan-400/20 transition-all duration-200 group drop-shadow-md shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+          >
+            <span>Share your thoughts</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+          {!knownUser && (
+            <button
+              onClick={handleJoin}
+              className="flex items-center gap-1.5 text-[10px] font-medium text-slate-400 hover:text-white transition-colors duration-200 group pl-1 mt-0.5"
+            >
+              <Sparkles className="w-2.5 h-2.5 text-[#2564ea]/70 group-hover:text-[#2564ea] transition-colors" />
+              <span>Join the family</span>
+            </button>
+          )}
+        </div>
+
+        {/* Far Right: Close Button */}
+        <button
+          onClick={handleClose}
+          className="relative z-10 p-1 rounded-md text-gray-400 hover:text-white transition flex-shrink-0 self-center mr-1"
+          aria-label="Dismiss"
+        >
+          <X className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );

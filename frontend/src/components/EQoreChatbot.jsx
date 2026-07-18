@@ -111,7 +111,7 @@ const EQoreChatbot = () => {
   const [schedulingIntents, setSchedulingIntents] = useState({}); // msgId → parsedIntent
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [proactiveGreeting, setProactiveGreeting] = useState(null);
+
   const recognitionRef = useRef(null);
   const spokenMessagesRef = useRef(new Set());
   const messagesEndRef = useRef(null);
@@ -244,13 +244,11 @@ const EQoreChatbot = () => {
     // Initial popup at 5 seconds
     const initialTimer = setTimeout(() => {
       setIsOpen(true);
-      setProactiveGreeting("Hello! I'm eQORE. I've been analyzing your session — can I help you find something specific?");
     }, 5000); 
     
     // Recurring popup every 45 seconds
     const intervalTimer = setInterval(() => {
       setIsOpen(true);
-      setProactiveGreeting("Hello! I'm eQORE. I've been analyzing your session — can I help you find something specific?");
     }, 45000);
     
     return () => {
@@ -333,11 +331,11 @@ const EQoreChatbot = () => {
   const hasUserMessages = messages.some((m) => m.role === 'user');
 
   return (
-    <div className="fixed bottom-28 right-8 z-[10001]">
-      <div className={`absolute bottom-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-xl rounded-2xl shadow-2xl ${isMaximized ? 'w-[80vw] sm:w-[75vw] lg:w-[760px] h-[80vh]' : 'w-[340px] sm:w-[390px] lg:w-[440px] h-[600px]'} border border-white/10 overflow-hidden flex flex-col max-h-[85vh] animate-fade-in-up origin-bottom-right transition-all duration-500`}>
+    <div className="fixed bottom-[152px] right-8 z-[10001]">
+      <div className={`absolute bottom-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-xl rounded-2xl shadow-2xl ${isMaximized ? 'w-[80vw] sm:w-[75vw] lg:w-[760px] h-[80vh]' : 'w-[300px] sm:w-[350px] lg:w-[400px] h-[520px]'} border border-white/10 overflow-hidden flex flex-col max-h-[85vh] animate-fade-in-up origin-bottom-right transition-all duration-500`}>
 
         {/* Header */}
-        <div className="bg-[#111115] border-b border-white/5 p-4 flex items-center justify-between text-white relative overflow-hidden">
+        <div className="bg-[#111115] border-b border-white/5 py-2 px-4 flex items-center justify-between text-white relative overflow-hidden">
           <div className="absolute inset-0 bg-brand-cyan/5 blur-xl pointer-events-none"></div>
           
           <div className="flex items-center gap-5 relative z-10">
@@ -532,15 +530,7 @@ const EQoreChatbot = () => {
             );
           })}
 
-          {/* Proactive greeting banner */}
-          {!hasUserMessages && proactiveGreeting && (
-            <div className="mx-1 mt-2 mb-1 flex items-start gap-2.5 bg-cyan-500/10 border border-cyan-400/20 rounded-xl p-3">
-              <div className="w-5 h-5 rounded-md overflow-hidden shrink-0 mt-0.5">
-                <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
-              </div>
-              <p className="text-[12px] text-cyan-100 leading-relaxed">{proactiveGreeting}</p>
-            </div>
-          )}
+
 
           {/* Suggested Prompts (only show if no user messages yet) */}
           {!hasUserMessages && !streaming && (
@@ -567,7 +557,7 @@ const EQoreChatbot = () => {
         </div>
 
         {/* Input Area */}
-        <form onSubmit={handleSend} className="p-4 bg-[#111115] border-t border-white/5">
+        <form onSubmit={handleSend} className="py-2 px-4 bg-[#111115] border-t border-white/5">
           <div className="relative flex items-center">
             <input
               type="text"
@@ -575,7 +565,7 @@ const EQoreChatbot = () => {
               onChange={(e) => setInputText(e.target.value)}
               disabled={streaming || isListening}
               placeholder={isListening ? 'Listening...' : 'Query the intelligence core...'}
-              className={`w-full pl-4 pr-24 py-3.5 bg-[#050505] border rounded-xl focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 outline-none text-sm text-white placeholder-slate-500 transition-all shadow-inner disabled:opacity-60 ${
+              className={`w-full pl-4 pr-24 py-2 bg-[#050505] border rounded-xl focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 outline-none text-sm text-white placeholder-slate-500 transition-all shadow-inner disabled:opacity-60 ${
                 isListening ? 'border-red-500/60 ring-1 ring-red-500/30' : 'border-white/10'
               }`}
             />

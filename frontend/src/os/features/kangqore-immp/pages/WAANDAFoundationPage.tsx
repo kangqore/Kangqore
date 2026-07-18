@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Brain, Download, RefreshCw, TrendingUp, Award, Zap, Lightbulb } from 'lucide-react'
+import { Brain, Download, RefreshCw, TrendingUp, Award, Zap, Lightbulb, Database, FlaskConical, Layers, CheckCircle2 } from 'lucide-react'
 import { Spinner } from '@design-system/components/Spinner'
 import { api } from '@lib/api'
 
@@ -78,6 +78,48 @@ const QUALITY_META: Record<string, { label: string; color: string; Icon: React.F
   approved:    { label: 'Approved (1.0)',    color: '#10b981', Icon: ({ size }) => <Award      size={size ?? 14} /> },
 }
 
+// ─── S78 types ───────────────────────────────────────────────────────────────
+
+interface FMScan {
+  id: string
+  qualityThreshold: number
+  totalScanned: number
+  totalIncluded: number
+  byPhase: Record<string, number>
+  createdAt: string
+}
+
+interface FMStatus {
+  latestScan: FMScan | null
+  totalExamples: number
+  evals: Array<{ id: string; modelName: string; benchmarkAccuracy: number; loss?: number; evalAt: string; notes?: string }>
+}
+
+interface FMExample {
+  id: string
+  phase: string
+  prompt: string
+  quality: number
+  sourceType: string
+  included: boolean
+  createdAt: string
+}
+
+const PHASE_COLORS: Record<string, string> = {
+  REASON:  '#3b82f6',
+  DECIDE:  '#7c3aed',
+  PLAN:    '#f59e0b',
+  EXECUTE: '#10b981',
+  LEARN:   '#ef4444',
+}
+
+const ARCH_MODELS = [
+  { name: 'Mistral 7B',    params: '7B',  arch: 'Decoder-only', strength: 'Fast inference, strong reasoning', context: '32K', license: 'Apache 2.0' },
+  { name: 'Llama 3.1 8B',  params: '8B',  arch: 'Decoder-only', strength: 'Best-in-class at scale, RLHF-tuned', context: '128K', license: 'Meta' },
+  { name: 'Llama 3.1 13B', params: '13B', arch: 'Decoder-only', strength: 'Enterprise reasoning, slower but richer', context: '128K', license: 'Meta' },
+  { name: 'Qwen2 7B',      params: '7B',  arch: 'Decoder-only', strength: 'Multilingual, code-heavy', context: '32K', license: 'Apache 2.0' },
+]
+
 // ─── Generation card ──────────────────────────────────────────────────────────
 
 function GenCard({ g }: { g: typeof GENERATIONS[number] }) {
@@ -108,12 +150,30 @@ function GenCard({ g }: { g: typeof GENERATIONS[number] }) {
 
 export function WAANDAFoundationPage() {
   const [exporting, setExporting] = useState(false)
+  const [fmTab, setFmTab] = useState<'examples' | 'evals' | 'arch'>('examples')
   const qc = useQueryClient()
 
+  // Gen1 corpus
   const { data, isLoading, refetch } = useQuery<FoundationStatus>({
     queryKey: ['foundation-model-status'],
     queryFn: () => api.get('/admin/kangqore-immp/foundation-model/status').then(r => r.data),
     staleTime: 30_000,
+  })
+
+  // S78 WAANDA-FM
+  const { data: fmStatus, refetch: refetchFM } = useQuery<FMStatus>({
+    queryKey: ['waanda-fm-status'],
+    queryFn: () => api.get('/admin/bids/waanda-fm/status').then(r => r.data).catch(() => null),
+    staleTime: 60_000,
+  })
+  const { data: fmExamples } = useQuery<{ examples: FMExample[] }>({
+    queryKey: ['waanda-fm-examples'],
+    queryFn: () => api.get('/admin/bids/waanda-fm/examples?limit=20').then(r => r.data).catch(() => ({ examples: [] })),
+    staleTime: 60_000,
+  })
+  const { mutate: runCuration, isPending: curating } = useMutation({
+    mutationFn: () => api.post('/admin/bids/waanda-fm/curate').then(r => r.data),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['waanda-fm-status'] }); qc.invalidateQueries({ queryKey: ['waanda-fm-examples'] }) },
   })
 
   const { mutate: runLearning, isPending: runningLearning } = useMutation({
@@ -302,6 +362,169 @@ export function WAANDAFoundationPage() {
           </div>
         </>
       )}
+
+      {/* ─── S78: WAANDA-FM Panel ─────────────────────────────────────────── */}
+      <div style={{ borderTop: '1px solid var(--os-border)', paddingTop: 28 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: '#10b98115', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <FlaskConical size={16} style={{ color: '#10b981' }} />
+            </div>
+            <div>
+              <p style={{ fontSize: 14, fontWeight: 800, color: 'var(--os-text-1)' }}>WAANDA-FM — Gen 4 Pre-training Pipeline</p>
+              <p style={{ fontSize: 11, color: 'var(--os-text-2)', marginTop: 2 }}>S78 · Corpus curation from Gen1+2 operational data · Architecture evaluation</p>
+            </div>
+            <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 99, background: '#10b98112', color: '#10b981', border: '1px solid #10b98125' }}>S78</span>
+          </div>
+          <button
+            onClick={() => runCuration()}
+            disabled={curating}
+            style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 18px', borderRadius: 99, fontSize: 12, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg, #10b981, #059669)', border: 'none', cursor: 'pointer', opacity: curating ? 0.6 : 1 }}
+          >
+            {curating ? <Spinner size="sm" /> : <Database size={13} />}
+            {curating ? 'Curating…' : 'Run Corpus Curation'}
+          </button>
+        </div>
+
+        {/* Corpus scan summary */}
+        {fmStatus?.latestScan && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 20 }}>
+            {[
+              { label: 'Total Scanned',    value: fmStatus.latestScan.totalScanned,    color: 'var(--os-text-1)', Icon: Database },
+              { label: 'Included',          value: fmStatus.latestScan.totalIncluded,   color: '#10b981',          Icon: CheckCircle2 },
+              { label: 'Total FM Examples', value: fmStatus.totalExamples,              color: '#7c3aed',          Icon: Layers },
+              { label: 'Quality Threshold', value: `${(fmStatus.latestScan.qualityThreshold * 100).toFixed(0)}%`, color: '#f59e0b', Icon: FlaskConical },
+            ].map(k => (
+              <div key={k.label} style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, padding: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                  <k.Icon size={13} style={{ color: k.color }} />
+                  <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--os-text-2)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{k.label}</span>
+                </div>
+                <p style={{ fontSize: 20, fontWeight: 900, color: k.color }}>{k.value}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Phase breakdown from latest scan */}
+        {fmStatus?.latestScan?.byPhase && Object.keys(fmStatus.latestScan.byPhase).length > 0 && (
+          <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+            {Object.entries(fmStatus.latestScan.byPhase).map(([phase, count]) => (
+              <div key={phase} style={{ padding: '6px 14px', borderRadius: 8, background: `${PHASE_COLORS[phase] ?? '#888'}10`, border: `1px solid ${PHASE_COLORS[phase] ?? '#888'}30` }}>
+                <span style={{ fontSize: 9, fontWeight: 800, color: PHASE_COLORS[phase] ?? '#888', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{phase}</span>
+                <span style={{ fontSize: 13, fontWeight: 900, color: 'var(--os-text-1)', marginLeft: 8 }}>{count}</span>
+              </div>
+            ))}
+            <span style={{ fontSize: 11, color: 'var(--os-text-2)', alignSelf: 'center', marginLeft: 4 }}>examples in latest scan</span>
+          </div>
+        )}
+
+        {/* Tab selector */}
+        <div style={{ display: 'flex', gap: 4, borderBottom: '1px solid var(--os-border)', marginBottom: 16 }}>
+          {(['examples', 'evals', 'arch'] as const).map(t => (
+            <button key={t} onClick={() => setFmTab(t)} style={{ padding: '7px 14px', fontSize: 11, fontWeight: 600, borderRadius: '7px 7px 0 0', border: 'none', cursor: 'pointer', background: 'transparent', color: fmTab === t ? '#10b981' : 'var(--os-text-2)', borderBottom: fmTab === t ? '2px solid #10b981' : '2px solid transparent' }}>
+              {t === 'arch' ? 'Architecture' : t === 'evals' ? 'Evaluations' : 'Training Examples'}
+            </button>
+          ))}
+          <button onClick={() => refetchFM()} style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--os-text-2)', padding: '7px 10px' }}><RefreshCw size={13} /></button>
+        </div>
+
+        {/* Examples tab */}
+        {fmTab === 'examples' && (
+          <div style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 14, overflow: 'hidden' }}>
+            {!fmExamples?.examples?.length ? (
+              <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--os-text-2)', fontSize: 13 }}>
+                No training examples yet — run corpus curation to extract from Gen1+2 operational data.
+              </div>
+            ) : (
+              fmExamples.examples.map((ex, i) => {
+                const phaseColor = PHASE_COLORS[ex.phase] ?? '#888'
+                return (
+                  <div key={ex.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '12px 20px', borderBottom: i < fmExamples.examples.length - 1 ? '1px solid var(--os-border)' : 'none' }}>
+                    <span style={{ fontSize: 9, fontWeight: 800, padding: '2px 6px', borderRadius: 6, background: `${phaseColor}15`, color: phaseColor, flexShrink: 0, marginTop: 1 }}>{ex.phase}</span>
+                    <span style={{ fontSize: 11, color: 'var(--os-text-1)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ex.prompt?.slice(0, 100)}</span>
+                    <span style={{ fontSize: 10, color: 'var(--os-text-2)', flexShrink: 0 }}>{ex.sourceType}</span>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: ex.quality >= 0.85 ? '#10b981' : '#f59e0b', flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>{(ex.quality * 100).toFixed(0)}%</span>
+                    {ex.included && <span style={{ fontSize: 9, color: '#10b981', flexShrink: 0 }}>✓</span>}
+                  </div>
+                )
+              })
+            )}
+          </div>
+        )}
+
+        {/* Evals tab */}
+        {fmTab === 'evals' && (
+          <div style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 14, overflow: 'hidden' }}>
+            {!fmStatus?.evals?.length ? (
+              <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--os-text-2)', fontSize: 13 }}>
+                No evaluations recorded yet. POST to <code>/admin/bids/waanda-fm/evals</code> to log benchmark results.
+              </div>
+            ) : (
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                <thead>
+                  <tr>
+                    {['Model', 'Accuracy', 'Loss', 'Eval Date', 'Notes'].map(h => (
+                      <th key={h} style={{ textAlign: 'left', padding: '10px 16px', fontSize: 10, fontWeight: 700, color: 'var(--os-text-2)', borderBottom: '1px solid var(--os-border)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {fmStatus.evals.map((ev, i) => (
+                    <tr key={ev.id} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--os-surface-0)' }}>
+                      <td style={{ padding: '10px 16px', color: 'var(--os-text-1)', fontWeight: 700 }}>{ev.modelName}</td>
+                      <td style={{ padding: '10px 16px', color: ev.benchmarkAccuracy >= 0.85 ? '#10b981' : '#f59e0b', fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>{(ev.benchmarkAccuracy * 100).toFixed(1)}%</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--os-text-2)', fontVariantNumeric: 'tabular-nums' }}>{ev.loss != null ? ev.loss.toFixed(4) : '—'}</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--os-text-2)' }}>{new Date(ev.evalAt).toLocaleDateString()}</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--os-text-2)', fontSize: 11 }}>{ev.notes ?? '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+
+        {/* Architecture tab */}
+        {fmTab === 'arch' && (
+          <div style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 14, overflow: 'hidden' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr>
+                  {['Model', 'Params', 'Architecture', 'Context', 'Strength', 'License'].map(h => (
+                    <th key={h} style={{ textAlign: 'left', padding: '10px 16px', fontSize: 10, fontWeight: 700, color: 'var(--os-text-2)', borderBottom: '1px solid var(--os-border)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {ARCH_MODELS.map((m, i) => (
+                  <tr key={m.name} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--os-surface-0)' }}>
+                    <td style={{ padding: '10px 16px', fontWeight: 700, color: 'var(--os-text-1)' }}>{m.name}</td>
+                    <td style={{ padding: '10px 16px', fontWeight: 800, color: '#7c3aed' }}>{m.params}</td>
+                    <td style={{ padding: '10px 16px', color: 'var(--os-text-2)' }}>{m.arch}</td>
+                    <td style={{ padding: '10px 16px', color: 'var(--os-text-2)', fontVariantNumeric: 'tabular-nums' }}>{m.context}</td>
+                    <td style={{ padding: '10px 16px', color: 'var(--os-text-1)', fontSize: 11, maxWidth: 260 }}>{m.strength}</td>
+                    <td style={{ padding: '10px 16px' }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 6, background: '#10b98112', color: '#10b981' }}>{m.license}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div style={{ padding: '14px 16px', borderTop: '1px solid var(--os-border)', fontSize: 11, color: 'var(--os-text-2)' }}>
+              Recommended starting point: <strong style={{ color: 'var(--os-text-1)' }}>Llama 3.1 8B</strong> — best balance of reasoning quality, context length, and fine-tuning cost at WAANDA-FM corpus scale.
+            </div>
+          </div>
+        )}
+
+        {/* Last scan meta */}
+        {fmStatus?.latestScan && (
+          <p style={{ fontSize: 10, color: 'var(--os-text-2)', marginTop: 12 }}>
+            Last corpus scan: {new Date(fmStatus.latestScan.createdAt).toLocaleString()} · quality threshold {(fmStatus.latestScan.qualityThreshold * 100).toFixed(0)}%
+          </p>
+        )}
+      </div>
+
     </div>
   )
 }

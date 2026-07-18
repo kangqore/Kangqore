@@ -464,20 +464,6 @@ const HeroCarousel = () => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setIsManuallyPaused(prev => !prev);
-              }}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95 opacity-25 hover:opacity-100"
-              aria-label={isManuallyPaused ? "Start autoplay" : "Pause autoplay"}
-            >
-              {isManuallyPaused ? (
-                <Play className="w-5 h-5 fill-current ml-0.5" />
-              ) : (
-                <Pause className="w-5 h-5 fill-current" />
-              )}
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
                 goToSlide((activeSlide + 1) % slideCount);
               }}
               className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95 opacity-25 hover:opacity-100"
