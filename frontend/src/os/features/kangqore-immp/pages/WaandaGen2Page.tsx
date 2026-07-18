@@ -65,7 +65,7 @@ const JOB_STATUS_CFG: Record<string, { color: string; bg: string }> = {
   FAILED:    { color: RED,  bg: 'rgba(239,68,68,0.1)'  },
 }
 
-type Tab = 'annotate' | 'jobs' | 'export'
+type Tab = 'annotate' | 'jobs' | 'export' | 'health'
 
 export function WaandaGen2Page() {
   const [tab, setTab] = useState<Tab>('annotate')
@@ -96,7 +96,7 @@ export function WaandaGen2Page() {
 
       {/* Tab bar */}
       <div className="flex gap-1 p-1 rounded-xl border" style={{ background: SURF, borderColor: BDR, width: 'fit-content' }}>
-        {([['annotate', 'Annotate'], ['jobs', 'Fine-tune Jobs'], ['export', 'Export JSONL']] as const).map(([id, label]) => (
+        {([['annotate', 'Annotate'], ['jobs', 'Fine-tune Jobs'], ['export', 'Export JSONL'], ['health', 'Gen 2 Health']] as const).map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)}
             className="px-4 py-1.5 rounded-lg text-xs font-bold transition-colors"
             style={tab === id ? { background: PURP, color: '#fff' } : { color: T2 }}>
@@ -108,6 +108,7 @@ export function WaandaGen2Page() {
       {tab === 'annotate' && <AnnotateTab qc={qc} />}
       {tab === 'jobs'     && <JobsTab qc={qc} />}
       {tab === 'export'   && <ExportTab />}
+      {tab === 'health'   && <Gen2HealthTab qc={qc} />}
     </div>
   )
 }
@@ -512,6 +513,228 @@ function ExportTab() {
 # POST https://api.anthropic.com/v1/fine-tuning/jobs
 # (requires enterprise access)`}</pre>
       </div>
+    </div>
+  )
+}
+
+// ── Gen 2 Health tab ─────────────────────────────────────────────────────────
+
+function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
+  const { data: statsData, isLoading: statsLoading, refetch: refetchStats } = useQuery<any>({
+    queryKey: ['router-stats'],
+    queryFn:  () => api.get('/admin/kangqore-immp/learning/router-stats').then(r => r.data),
+    staleTime: 15_000,
+  })
+
+  const { data: modelsData, isLoading: modelsLoading, refetch: refetchModels } = useQuery<any>({
+    queryKey: ['gen2-models'],
+    queryFn:  () => api.get('/admin/kangqore-immp/learning/gen2-models').then(r => r.data),
+    staleTime: 15_000,
+  })
+
+  const deployMut = useMutation({
+    mutationFn: ({ id, deploy }: { id: string; deploy: boolean }) =>
+      api.patch(`/admin/kangqore-immp/learning/gen2-models/${id}/deploy`, { deploy }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['gen2-models'] })
+      qc.invalidateQueries({ queryKey: ['router-stats'] })
+    },
+  })
+
+  const routerStats = statsData
+  const models: any[] = modelsData?.models ?? []
+  const deployedModel = modelsData?.deployed ?? null
+  const providers: any[] = routerStats?.providers ?? []
+
+  const HEALTH_COLOR: Record<string, string> = {
+    healthy:     GRN,
+    degraded:    AMB,
+    recovering:  BLUE,
+    offline:     RED,
+    maintenance: T2,
+    warming:     TEAL,
+  }
+
+  return (
+    <div className="space-y-5">
+      {/* Router stats header */}
+      <div className="rounded-xl p-4 border flex items-center justify-between" style={{ background: CARD, borderColor: BDR }}>
+        <div>
+          <p className="text-xs font-bold mb-1" style={{ color: T1 }}>Live Router Stats</p>
+          <p className="text-[11px]" style={{ color: T2 }}>
+            {routerStats
+              ? `${routerStats.callsTotal} total calls · Gen2 ${routerStats.callsGen2 ?? 0} calls (${((routerStats.gen2Ratio ?? 0) * 100).toFixed(1)}%) · Autonomy ${((routerStats.autonomyRatio ?? 0) * 100).toFixed(1)}%`
+              : 'Loading…'}
+          </p>
+        </div>
+        <button
+          onClick={() => { refetchStats(); refetchModels() }}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
+          style={{ background: 'rgba(124,58,237,0.1)', color: PURP }}
+        >
+          <RefreshCw className="w-3 h-3" /> Refresh
+        </button>
+      </div>
+
+      {/* Provider health grid */}
+      <div>
+        <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Provider Health</p>
+        {statsLoading ? (
+          <p className="text-xs" style={{ color: T2 }}>Loading…</p>
+        ) : (
+          <div className="grid grid-cols-5 gap-2">
+            {providers.map((p: any) => (
+              <div key={p.name} className="rounded-xl p-3 border text-center" style={{ background: CARD, borderColor: BDR }}>
+                <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: T2 }}>{p.name}</p>
+                <p className="text-sm font-black mb-1" style={{ color: HEALTH_COLOR[p.health] ?? T2 }}>{p.health}</p>
+                <p className="text-[11px]" style={{ color: T2 }}>{p.calls} calls</p>
+                <p className="text-[11px]" style={{ color: PURP }}>{(p.ratio * 100).toFixed(1)}%</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* A/B routing bar */}
+      {routerStats && routerStats.callsTotal > 0 && (
+        <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+          <p className="text-xs font-bold mb-2" style={{ color: T1 }}>A/B Routing Distribution</p>
+          <div className="h-3 rounded-full overflow-hidden flex">
+            {providers.filter((p: any) => p.calls > 0).map((p: any) => (
+              <div
+                key={p.name}
+                title={`${p.name}: ${(p.ratio * 100).toFixed(1)}%`}
+                style={{ width: `${p.ratio * 100}%`, background: HEALTH_COLOR[p.health] ?? T2 }}
+              />
+            ))}
+          </div>
+          <div className="flex gap-3 mt-2 flex-wrap">
+            {providers.filter((p: any) => p.calls > 0).map((p: any) => (
+              <div key={p.name} className="flex items-center gap-1.5 text-[11px]" style={{ color: T2 }}>
+                <span className="w-2 h-2 rounded-full" style={{ background: HEALTH_COLOR[p.health] ?? T2 }} />
+                {p.name} {(p.ratio * 100).toFixed(1)}%
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Deployed Gen2 model banner */}
+      {deployedModel ? (
+        <div className="rounded-xl p-4 border flex items-center gap-3"
+          style={{ background: 'rgba(16,185,129,0.06)', borderColor: 'rgba(16,185,129,0.2)' }}>
+          <CheckCircle className="w-5 h-5 flex-shrink-0" style={{ color: GRN }} />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold" style={{ color: GRN }}>Gen 2 Active — {deployedModel.name}</p>
+            <p className="text-[11px]" style={{ color: T2 }}>
+              {deployedModel.providerModelId} · {deployedModel.provider}
+              {deployedModel.benchmarkAccuracy ? ` · Accuracy ${(deployedModel.benchmarkAccuracy * 100).toFixed(1)}%` : ''}
+            </p>
+          </div>
+          <button
+            onClick={() => deployMut.mutate({ id: deployedModel.id, deploy: false })}
+            disabled={deployMut.isPending}
+            className="px-3 py-1.5 rounded-lg text-xs font-medium"
+            style={{ background: 'rgba(239,68,68,0.1)', color: RED }}
+          >
+            Undeploy
+          </button>
+        </div>
+      ) : (
+        <div className="rounded-xl p-4 border flex items-center gap-3"
+          style={{ background: 'rgba(245,158,11,0.05)', borderColor: 'rgba(245,158,11,0.2)' }}>
+          <AlertCircle className="w-5 h-5 flex-shrink-0" style={{ color: AMB }} />
+          <div>
+            <p className="text-sm font-bold" style={{ color: AMB }}>No Gen 2 model deployed</p>
+            <p className="text-[11px]" style={{ color: T2 }}>All inference routing through Claude Gen 1 and fallbacks.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Model registry */}
+      <div>
+        <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Model Registry</p>
+        {modelsLoading ? (
+          <p className="text-xs" style={{ color: T2 }}>Loading…</p>
+        ) : models.length === 0 ? (
+          <div className="rounded-xl p-5 border text-center" style={{ background: CARD, borderColor: BDR }}>
+            <Cpu className="w-8 h-8 mx-auto mb-2 opacity-30" />
+            <p className="text-sm font-medium" style={{ color: T2 }}>No Gen 2 models registered</p>
+            <p className="text-[11px] mt-1" style={{ color: T2 }}>
+              Complete a fine-tune job and register the model ID from Anthropic.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {models.map((m: any) => (
+              <div key={m.id} className="rounded-xl p-4 border flex items-center gap-3" style={{ background: CARD, borderColor: BDR }}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <p className="text-sm font-bold truncate" style={{ color: T1 }}>{m.name}</p>
+                    {m.isDeployed && (
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold"
+                        style={{ background: 'rgba(16,185,129,0.1)', color: GRN }}>LIVE</span>
+                    )}
+                  </div>
+                  <p className="text-[11px] font-mono truncate" style={{ color: T2 }}>{m.providerModelId}</p>
+                  <p className="text-[11px]" style={{ color: T2 }}>
+                    {m.provider} · {m.baseModel} · {m.trainingExamples} examples
+                    {m.benchmarkAccuracy ? ` · ${(m.benchmarkAccuracy * 100).toFixed(1)}% accuracy` : ''}
+                  </p>
+                </div>
+                {!m.isDeployed ? (
+                  <button
+                    onClick={() => deployMut.mutate({ id: m.id, deploy: true })}
+                    disabled={deployMut.isPending}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                    style={{ background: 'rgba(124,58,237,0.1)', color: PURP }}
+                  >
+                    <ChevronRight className="w-3 h-3" /> Deploy
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => deployMut.mutate({ id: m.id, deploy: false })}
+                    disabled={deployMut.isPending}
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium"
+                    style={{ background: 'rgba(239,68,68,0.1)', color: RED }}
+                  >
+                    Undeploy
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Phase indicator */}
+      {routerStats && (
+        <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Router Phase</p>
+          <div className="flex items-center gap-3">
+            {['distilling', 'pre-graduation', 'routing'].map((phase, i) => {
+              const active = routerStats.phase === phase
+              const done   = ['distilling', 'pre-graduation', 'routing'].indexOf(routerStats.phase) > i
+              return (
+                <div key={phase} className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold"
+                      style={{ background: active ? PURP : done ? GRN : SURF, color: active || done ? '#fff' : T2 }}>
+                      {done ? '✓' : i + 1}
+                    </div>
+                    <span className="text-[11px] font-medium capitalize"
+                      style={{ color: active ? PURP : done ? GRN : T2 }}>{phase}</span>
+                  </div>
+                  {i < 2 && <span style={{ color: T2 }}>→</span>}
+                </div>
+              )
+            })}
+          </div>
+          <p className="text-[11px] mt-2" style={{ color: T2 }}>
+            Corpus: {routerStats.distillationCount} distilled / {routerStats.totalCorpus} total · Cap: {routerStats.distillationCap}
+          </p>
+        </div>
+      )}
     </div>
   )
 }

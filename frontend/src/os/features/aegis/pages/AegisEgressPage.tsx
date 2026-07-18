@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { ArrowUpRight, Clock, Search, HardDrive } from 'lucide-react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { ArrowUpRight, Clock, Search, HardDrive, Shield, AlertTriangle, ArrowRight, Database, Cpu, Globe, ToggleLeft, ToggleRight } from 'lucide-react'
 import { api } from '@lib/api'
 
 type TimeRange = '24h' | '7d' | '30d' | 'all'
@@ -38,6 +38,103 @@ function statusColor(s: number) {
   if (s >= 200 && s < 300) return '#10b981'
   if (s >= 400 && s < 500) return '#f59e0b'
   return '#ef4444'
+}
+
+// ── Data flow node for the map ────────────────────────────────────────────────
+function DataFlowMap() {
+  const nodes = [
+    { id: 'kimmp',   label: 'KIMMP Engine', sub: 'Reasoning + Signals', icon: Cpu,      color: '#7c3aed' },
+    { id: 'aegis',   label: 'AEGIS Shield', sub: 'Policy enforcement',  icon: Shield,   color: '#f43f5e' },
+    { id: 'egress',  label: 'Egress Log',   sub: 'Permanent audit',      icon: Database, color: '#f59e0b' },
+    { id: 'ext',     label: 'External',     sub: 'API / UI / Export',    icon: Globe,    color: '#2564ea' },
+  ]
+  return (
+    <div style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, padding: '14px 16px' }}>
+      <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.09em', color: '#6b7280', marginBottom: 12 }}>Intelligence Data Flow</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 0, overflowX: 'auto' }}>
+        {nodes.map((n, i) => (
+          <div key={n.id} style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: n.color + '12', border: `1px solid ${n.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <n.icon size={18} style={{ color: n.color }} />
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-1)' }}>{n.label}</div>
+                <div style={{ fontSize: 9, color: '#6b7280' }}>{n.sub}</div>
+              </div>
+            </div>
+            {i < nodes.length - 1 && (
+              <div style={{ display: 'flex', alignItems: 'center', padding: '0 12px', marginBottom: 20 }}>
+                <ArrowRight size={14} style={{ color: '#6b7280' }} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <p style={{ fontSize: 10, color: '#6b7280', marginTop: 10 }}>
+        Every intelligence exit passes through AEGIS Shield → is logged to Egress Ledger → reaches external consumers. No data leaves without being recorded.
+      </p>
+    </div>
+  )
+}
+
+// ── Export control rules panel ────────────────────────────────────────────────
+function ExportControlRules() {
+  const qc = useQueryClient()
+  const { data, isLoading } = useQuery<any>({
+    queryKey: ['aegis-export-rules'],
+    queryFn:  () => api.get('/admin/kangqore-immp/aegis/export-control-rules').then(r => r.data),
+    staleTime: 60_000,
+  })
+
+  const rules: any[] = data?.rules ?? []
+
+  const SEVERITY_COLOR: Record<string, string> = {
+    CRITICAL: '#f43f5e', HIGH: '#ef4444', MEDIUM: '#f59e0b', LOW: '#10b981',
+  }
+  const ACTION_COLOR: Record<string, string> = {
+    BLOCK: '#f43f5e', FLAG: '#f59e0b', LOG: '#2564ea',
+  }
+
+  return (
+    <div style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderBottom: '1px solid var(--os-border)' }}>
+        <Shield size={13} style={{ color: '#f43f5e' }} />
+        <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--os-text-1)' }}>Export Control Rules</span>
+        <span style={{ fontSize: 9, color: '#6b7280', marginLeft: 'auto' }}>AEGIS-enforced</span>
+      </div>
+      {isLoading ? (
+        <div style={{ padding: '16px', fontSize: 11, color: '#6b7280' }}>Loading rules…</div>
+      ) : (
+        <div>
+          {rules.map((rule: any) => (
+            <div key={rule.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderBottom: '1px solid var(--os-border)' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)' }}>{rule.name}</span>
+                  <span style={{ fontSize: 8, fontWeight: 700, padding: '1px 5px', borderRadius: 4,
+                    color: SEVERITY_COLOR[rule.severity] ?? '#6b7280',
+                    background: (SEVERITY_COLOR[rule.severity] ?? '#6b7280') + '15' }}>{rule.severity}</span>
+                  <span style={{ fontSize: 8, fontWeight: 700, padding: '1px 5px', borderRadius: 4,
+                    color: ACTION_COLOR[rule.action] ?? '#6b7280',
+                    background: (ACTION_COLOR[rule.action] ?? '#6b7280') + '15' }}>{rule.action}</span>
+                </div>
+                <p style={{ fontSize: 10, color: '#6b7280' }}>{rule.description}</p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+                {rule.active
+                  ? <ToggleRight size={20} style={{ color: '#10b981' }} />
+                  : <ToggleLeft  size={20} style={{ color: '#6b7280' }} />}
+                <span style={{ fontSize: 10, color: rule.active ? '#10b981' : '#6b7280', fontWeight: 700 }}>
+                  {rule.active ? 'ON' : 'OFF'}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export function AegisEgressPage() {
@@ -102,6 +199,12 @@ export function AegisEgressPage() {
           </p>
         </div>
       </div>
+
+      {/* Data flow map */}
+      <DataFlowMap />
+
+      {/* Export control rules */}
+      <ExportControlRules />
 
       {/* KPI strip */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>

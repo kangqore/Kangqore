@@ -6563,6 +6563,46 @@ model FinetuneJob {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// S61 — WAANDA Gen 2 Model Registry
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model Gen2Model {
+  id               String    @id @default(cuid())
+  name             String
+  provider         String                          // ANTHROPIC | TOGETHER | HUGGINGFACE
+  baseModel        String                          // e.g. claude-haiku-4-5-20251001
+  providerModelId  String?                         // fine-tuned model ID from provider
+  finetuneJobId    String?                         // source FinetuneJob.id
+  benchmarkAccuracy Float?                         // 0–1 accuracy vs Gen1 on eval set
+  trainingExamples  Int      @default(0)
+  isDeployed       Boolean   @default(false)
+  deployedAt       DateTime?
+  notes            String?
+  createdBy        String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([isDeployed])
+  @@map("gen2_models")
+}
+
+// S62 — Connector SDK field mappings
+model ConnectorFieldMap {
+  id             String   @id @default(cuid())
+  platform       String                           // salesforce | hubspot | jira | ...
+  syncDirection  String   @default("BIDIRECTIONAL") // INBOUND | OUTBOUND | BIDIRECTIONAL
+  fieldMaps      Json                             // Array<{sourceField,targetField,transform}>
+  webhookEvents  String[]                         // e.g. ["contact.created","deal.updated"]
+  isActive       Boolean  @default(true)
+  createdBy      String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([platform, createdBy])
+  @@map("connector_field_maps")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // S55 — Marketplace MVP
 // ═══════════════════════════════════════════════════════════════════════════════
 

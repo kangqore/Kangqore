@@ -52,6 +52,8 @@ import { COIGDashboardPage }            from './pages/COIGDashboardPage'
 import { IndustryPackPage }             from './pages/IndustryPackPage'
 import { CustomerSuccessPlatformPage }  from './pages/CustomerSuccessPlatformPage'
 import { CustomerTwoPage }              from './pages/CustomerTwoPage'
+import { CustomerThreePage }            from './pages/CustomerThreePage'
+import { CustomerPipelinePage }         from './pages/CustomerPipelinePage'
 import { WaandaGen2Page }               from './pages/WaandaGen2Page'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -165,6 +167,7 @@ export function KIMMMModule() {
           <Route path="flight-recorder"     element={<FlightRecorderPage />}       />
           <Route path="enterprise"          element={<EnterpriseDefinitionPage />} />
           <Route path="customer-zero"       element={<CustomerZeroPage />}          />
+          <Route path="customers/zero"      element={<CustomerZeroPage />}          />
           <Route path="coach"               element={<EnterpriseCoachPage />}       />
           <Route path="decision-engine"     element={<DecisionEnginePage />}        />
           <Route path="deployments"         element={<DeploymentsPage />}           />
@@ -174,13 +177,17 @@ export function KIMMMModule() {
           <Route path="proposal-builder"    element={<ProposalBuilderPage />}       />
           <Route path="case-study"          element={<CustomerZeroCaseStudyPage />} />
           <Route path="customer-one"        element={<CustomerOnePage />}            />
+          <Route path="customers/one"       element={<CustomerOnePage />}            />
           <Route path="agent-coordination"  element={<MultiAgentCoordinationPage />} />
           <Route path="foundation-model"   element={<WAANDAFoundationPage />}       />
           <Route path="ps-pack-extraction"       element={<PSPackExtractionPage />}          />
           <Route path="coig"                    element={<COIGDashboardPage />}             />
           <Route path="industry-packs"          element={<IndustryPackPage />}              />
           <Route path="customer-success-platform" element={<CustomerSuccessPlatformPage />} />
-          <Route path="customer-two"            element={<CustomerTwoPage />}               />
+          <Route path="customer-two"              element={<CustomerTwoPage />}               />
+          <Route path="customers/two"           element={<CustomerTwoPage />}               />
+          <Route path="customers/three"         element={<CustomerThreePage />}             />
+          <Route path="customers/pipeline"      element={<CustomerPipelinePage />}          />
           <Route path="waanda-gen2"             element={<WaandaGen2Page />}                />
           <Route path="reflection"          element={<ReflectionPage />}            />
           <Route path="authority"           element={<AuthorityPage />}             />

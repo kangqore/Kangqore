@@ -63,6 +63,7 @@ const _cb: Record<string, CircuitBreaker> = {
   openai: { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
   gemini: { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
   ollama: { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
+  gen2:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
 }
 
 // Providers in manual maintenance mode (skip entirely)
@@ -152,7 +153,24 @@ function cbFailure(provider: string) {
 
 // ─── In-memory call counters ──────────────────────────────────────────────────
 
-const _counts: Record<string, number> = { claude: 0, openai: 0, gemini: 0, ollama: 0 }
+const _counts: Record<string, number> = { claude: 0, openai: 0, gemini: 0, ollama: 0, gen2: 0 }
+
+// Cached deployed Gen2 model — refreshed every 5 minutes
+let _gen2ModelId: string | null = null
+let _gen2CheckedAt = 0
+
+async function _getDeployedGen2(): Promise<string | null> {
+  const now = Date.now()
+  if (_gen2ModelId !== null && now - _gen2CheckedAt < 5 * 60_000) return _gen2ModelId
+  try {
+    const m = await (prisma as any).gen2Model.findFirst({ where: { isDeployed: true }, select: { providerModelId: true } })
+    _gen2ModelId = m?.providerModelId ?? null
+  } catch {
+    _gen2ModelId = null
+  }
+  _gen2CheckedAt = now
+  return _gen2ModelId
+}
 
 // ─── Provider: Ollama (local) ─────────────────────────────────────────────────
 
@@ -415,6 +433,25 @@ export async function routedCall(
     toolCallCount: _toolCallCount,
   })
 
+  // ── 0. Gen2 fine-tuned model — highest priority when deployed ───────────────
+  const gen2ModelId = await _getDeployedGen2()
+  if (gen2ModelId && ANTHROPIC_KEY && cbAllow('gen2')) {
+    try {
+      const { text } = await _callClaude(gen2ModelId, system, user, maxTokens, options)
+      _counts.gen2++
+      cbSuccess('gen2')
+      _capture(system, user, text, gen2ModelId, 'gen2', meta).catch(() => {})
+      return {
+        content: [{ type: 'text', text }],
+        model: gen2ModelId,
+        _routerMeta: makeMeta('gen2', gen2ModelId, false),
+      }
+    } catch (err) {
+      cbFailure('gen2')
+      logger.warn('[KIMMP Router] Gen2 failed, falling back to Ollama/Claude:', (err as Error).message)
+    }
+  }
+
   // ── 1. Local model (Ollama) — post-graduation priority ──────────────────────
   if (await _ollamaAvailable() && cbAllow('ollama')) {
     try {
@@ -578,6 +615,7 @@ export async function getRouterStats() {
     ratio:     total > 0 ? calls / total : 0,
     health:    providerHealth(name),
     available: [
+      name === 'gen2'   && !!_gen2ModelId,
       name === 'claude'  && !!ANTHROPIC_KEY,
       name === 'openai'  && !!OPENAI_KEY,
       name === 'gemini'  && !!GEMINI_KEY,
@@ -591,16 +629,20 @@ export async function getRouterStats() {
     callsOpenAI:       _counts.openai,
     callsGemini:       _counts.gemini,
     callsLocal:        _counts.ollama,
-    autonomyRatio:     total > 0 ? _counts.ollama / total : 0,
+    callsGen2:         _counts.gen2,
+    autonomyRatio:     total > 0 ? (_counts.ollama + _counts.gen2) / total : 0,
+    gen2Ratio:         total > 0 ? _counts.gen2 / total : 0,
     providers,
     ollamaAvailable:   _ollamaOk ?? false,
     localModel:        LOCAL_MODEL || null,
+    deployedGen2Model: _gen2ModelId,
     distillationCount,
     totalCorpus,
     distillationCap:   DISTILLATION_CAP,
     circuitBreakers:   getCircuitBreakerStatus(),
     phase: LOCAL_MODEL ? 'routing' : distillationCount > 500 ? 'pre-graduation' : 'distilling',
     activeProviders: [
+      _gen2ModelId  && 'gen2',
       ANTHROPIC_KEY && 'claude',
       OPENAI_KEY    && 'openai',
       GEMINI_KEY    && 'gemini',
