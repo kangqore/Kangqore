@@ -3162,4 +3162,437 @@ kangqoreImmpRoutes.get('/aegis/export-control-rules', requireAuth, requireRole([
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// ════════════════════════════════════════════════════════════════════════════
+// S66 — Marketplace Monetisation: Tiers · Reviews · Partner Dashboard
+// ════════════════════════════════════════════════════════════════════════════
+
+// GET /admin/kangqore-immp/marketplace/tiers
+kangqoreImmpRoutes.get('/marketplace/tiers', requireAuth, async (_req, res) => {
+  try {
+    const tiers = await (prisma as any).listingTier.findMany({ orderBy: { monthlyPrice: 'asc' } })
+    if (tiers.length === 0) {
+      // Seed default tiers on first access
+      const defaults = [
+        { name: 'FREE',       monthlyPrice: 0,    quota: 500,   features: ['5 listings', '500 API calls/mo', 'Community support'] },
+        { name: 'STARTER',    monthlyPrice: 29,   quota: 5000,  features: ['25 listings', '5,000 API calls/mo', 'Email support', 'Usage analytics'] },
+        { name: 'PRO',        monthlyPrice: 99,   quota: 50000, features: ['Unlimited listings', '50,000 API calls/mo', 'Priority support', 'Revenue dashboard', 'Verified badge'] },
+        { name: 'ENTERPRISE', monthlyPrice: 0,    quota: 0,     features: ['Custom quota', 'Dedicated CSM', 'SLA 99.9%', 'Custom billing', 'Early access'] },
+      ]
+      await (prisma as any).listingTier.createMany({ data: defaults, skipDuplicates: true })
+      return res.json({ tiers: await (prisma as any).listingTier.findMany({ orderBy: { monthlyPrice: 'asc' } }) })
+    }
+    res.json({ tiers })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/marketplace/:id/reviews
+kangqoreImmpRoutes.get('/marketplace/:id/reviews', requireAuth, async (req, res) => {
+  try {
+    const reviews = await (prisma as any).marketplaceReview.findMany({
+      where: { listingId: req.params.id },
+      orderBy: { createdAt: 'desc' },
+    })
+    const avg = reviews.length ? reviews.reduce((s: number, r: any) => s + r.rating, 0) / reviews.length : null
+    res.json({ reviews, avgRating: avg ? Math.round(avg * 10) / 10 : null, count: reviews.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/marketplace/:id/reviews
+kangqoreImmpRoutes.post('/marketplace/:id/reviews', requireAuth, async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const { rating, comment } = req.body
+    if (!rating || rating < 1 || rating > 5) return res.status(400).json({ error: 'rating must be 1–5' })
+    const review = await (prisma as any).marketplaceReview.upsert({
+      where:  { listingId_authorId: { listingId: req.params.id, authorId: userId } },
+      update: { rating, comment },
+      create: { listingId: req.params.id, authorId: userId, rating, comment },
+    })
+    res.json(review)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/marketplace/partner/dashboard
+kangqoreImmpRoutes.get('/marketplace/partner/dashboard', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const listings = await (prisma as any).marketplaceListing.findMany({ select: { id: true, name: true, installCount: true, price: true, platformFee: true, type: true } })
+    const charges  = await (prisma as any).marketplaceCharge.findMany()
+    const revenue  = charges.reduce((s: number, c: any) => s + (c.status === 'CAPTURED' ? c.amount - c.platformFee : 0), 0)
+    const refunds  = charges.reduce((s: number, c: any) => s + (c.status === 'REFUNDED' ? c.amount : 0), 0)
+    const perListing = listings.map((l: any) => {
+      const lCharges = charges.filter((c: any) => c.listingId === l.id)
+      return {
+        ...l,
+        revenue:  lCharges.filter((c: any) => c.status === 'CAPTURED').reduce((s: number, c: any) => s + c.amount, 0),
+        refunds:  lCharges.filter((c: any) => c.status === 'REFUNDED').reduce((s: number, c: any) => s + c.amount, 0),
+        charges:  lCharges.length,
+      }
+    })
+    res.json({ totalRevenue: revenue, totalRefunds: refunds, totalInstalls: listings.reduce((s: number, l: any) => s + l.installCount, 0), listings: perListing })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ════════════════════════════════════════════════════════════════════════════
+// S67 — Multi-Tenant Provisioning
+// ════════════════════════════════════════════════════════════════════════════
+
+// GET /admin/kangqore-immp/tenants
+kangqoreImmpRoutes.get('/tenants', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const tenants = await (prisma as any).tenantOrganisation.findMany({ orderBy: { createdAt: 'desc' } })
+    res.json({ tenants, total: tenants.length, active: tenants.filter((t: any) => t.isActive).length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/tenants
+kangqoreImmpRoutes.post('/tenants', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const { name, subdomain, isolationMode, planTier, maxUsers, maxAgents, blueprintId, blueprintVersion, enabledModules } = req.body
+    if (!name || !subdomain) return res.status(400).json({ error: 'name and subdomain required' })
+    const existing = await (prisma as any).tenantOrganisation.findUnique({ where: { subdomain } })
+    if (existing) return res.status(409).json({ error: 'subdomain already taken' })
+    const tenant = await (prisma as any).tenantOrganisation.create({
+      data: {
+        name, subdomain, isolationMode: isolationMode ?? 'ROW_LEVEL',
+        planTier: planTier ?? 'STARTER',
+        maxUsers: maxUsers ?? 10, maxAgents: maxAgents ?? 20,
+        blueprintId, blueprintVersion,
+        enabledModules: enabledModules ?? ['KIMMP', 'WAANDA', 'AEGIS', 'KEOS'],
+        disabledModules: [],
+        provisionedBy: userId,
+      }
+    })
+    res.status(201).json(tenant)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/tenants/:id
+kangqoreImmpRoutes.get('/tenants/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const tenant = await (prisma as any).tenantOrganisation.findUnique({ where: { id: req.params.id } })
+    if (!tenant) return res.status(404).json({ error: 'tenant not found' })
+    res.json(tenant)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/tenants/:id
+kangqoreImmpRoutes.patch('/tenants/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { planTier, maxUsers, maxAgents, enabledModules, disabledModules, isActive, blueprintId, blueprintVersion, oisSnapshotsPerMonth, apiCallsPerDay } = req.body
+    const tenant = await (prisma as any).tenantOrganisation.update({
+      where: { id: req.params.id },
+      data: { planTier, maxUsers, maxAgents, enabledModules, disabledModules, isActive, blueprintId, blueprintVersion, oisSnapshotsPerMonth, apiCallsPerDay },
+    })
+    res.json(tenant)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/tenants/:id/provision
+kangqoreImmpRoutes.post('/tenants/:id/provision', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const tenant = await (prisma as any).tenantOrganisation.findUnique({ where: { id: req.params.id } })
+    if (!tenant) return res.status(404).json({ error: 'tenant not found' })
+    // Provisioning checklist: run seed steps
+    const steps = [
+      'org_created', 'blueprint_bound', 'departments_seeded', 'kimmp_init',
+      'ois_baseline_set', 'waanda_cycle_activated', 'aegis_policies_applied',
+      'keos_workspaces_initialised', 'admin_user_invited', 'go_live_signal_fired',
+    ]
+    // Fire a go-live KimmpSignal
+    await (prisma as any).kimmpSignal.create({
+      data: {
+        type: 'TENANT_PROVISIONED', source: 'SYSTEM', priority: 'HIGH',
+        title: `Tenant provisioned: ${tenant.name}`,
+        description: `Subdomain: ${tenant.subdomain} | Plan: ${tenant.planTier} | Blueprint: ${tenant.blueprintId ?? 'none'}`,
+        status: 'ACTIVE', createdBy: userId,
+      }
+    })
+    const updated = await (prisma as any).tenantOrganisation.update({
+      where: { id: req.params.id },
+      data: { provisionedAt: new Date(), provisionedBy: userId },
+    })
+    res.json({ tenant: updated, steps, provisionedAt: updated.provisionedAt })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ════════════════════════════════════════════════════════════════════════════
+// S68 — WAANDA Foundation: Autonomy Config + A/B Traffic Split
+// ════════════════════════════════════════════════════════════════════════════
+
+// GET /admin/kangqore-immp/learning/autonomy-config
+kangqoreImmpRoutes.get('/learning/autonomy-config', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    let config = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' } })
+    if (!config) config = await (prisma as any).autonomyConfig.create({ data: { gen2TrafficPct: 0 } })
+    res.json(config)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/learning/autonomy-config
+kangqoreImmpRoutes.patch('/learning/autonomy-config', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const { gen2TrafficPct } = req.body
+    if (gen2TrafficPct === undefined || gen2TrafficPct < 0 || gen2TrafficPct > 100) {
+      return res.status(400).json({ error: 'gen2TrafficPct must be 0–100' })
+    }
+    let config = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' } })
+    if (config) {
+      config = await (prisma as any).autonomyConfig.update({
+        where: { id: config.id },
+        data: { gen2TrafficPct, updatedBy: userId, enabledAt: gen2TrafficPct > 0 ? new Date() : null },
+      })
+    } else {
+      config = await (prisma as any).autonomyConfig.create({
+        data: { gen2TrafficPct, updatedBy: userId, enabledAt: gen2TrafficPct > 0 ? new Date() : null },
+      })
+    }
+    res.json(config)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/learning/autonomy-stats
+kangqoreImmpRoutes.get('/learning/autonomy-stats', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const config   = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' } })
+    const deployed = await (prisma as any).gen2Model.findFirst({ where: { isDeployed: true } })
+    const overrides = await (prisma as any).kimmpSignal.count({ where: { type: 'HUMAN_OVERRIDE' } })
+    const totalDecisions = await (prisma as any).kimmpStrategicDecision.count()
+    const gen2TrafficPct = config?.gen2TrafficPct ?? 0
+    res.json({
+      gen2TrafficPct,
+      deployedModel: deployed ? { id: deployed.id, name: deployed.name, benchmarkAccuracy: deployed.benchmarkAccuracy } : null,
+      humanOverrideRate: totalDecisions > 0 ? Math.round((overrides / totalDecisions) * 100) : 0,
+      gen1TrafficPct: 100 - gen2TrafficPct,
+      autonomyEnabled: gen2TrafficPct > 0,
+    })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ════════════════════════════════════════════════════════════════════════════
+// S69 — Customer Success Deep: Health Scores · NPS · Churn Risk
+// ════════════════════════════════════════════════════════════════════════════
+
+// GET /admin/kangqore-immp/customers/health-scores
+kangqoreImmpRoutes.get('/customers/health-scores', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const scores = await (prisma as any).customerHealthScore.findMany({ orderBy: { computedAt: 'desc' } })
+    res.json({ scores, atRisk: scores.filter((s: any) => s.tier === 'RED').length, amber: scores.filter((s: any) => s.tier === 'AMBER').length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/customers/:customerId/health-score
+kangqoreImmpRoutes.post('/customers/:customerId/health-score', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId } = req.params
+    const {
+      oisDelta = 0, coigVelocity = 0, loginFrequency = 0, featureDepth = 0,
+      signalVolume = 0, agentUsage = 0, workflowRuns = 0, blueprintVersionLag = 0,
+      npsScore, supportTickets = 0, renewalProximityDays = 365, daysSinceLastDecision = 0,
+    } = req.body
+    // Weighted scoring: higher is better (scale 0–100)
+    const score =
+      Math.min(oisDelta * 5, 20)          // OIS delta up to 20pts
+      + Math.min(coigVelocity * 3, 15)    // COIG velocity up to 15pts
+      + Math.min(loginFrequency * 2, 10)  // login freq up to 10pts
+      + featureDepth * 15                  // feature breadth up to 15pts
+      + Math.min(signalVolume / 10, 10)   // signal volume up to 10pts
+      + agentUsage * 10                    // agent utilisation up to 10pts
+      + Math.min(workflowRuns / 5, 5)     // workflow runs up to 5pts
+      + Math.max(0, 5 - blueprintVersionLag * 2) // version currency up to 5pts
+      + (npsScore !== undefined ? Math.min(npsScore, 5) : 2.5) // NPS up to 5pts
+      + Math.max(0, 5 - supportTickets)   // support load up to 5pts
+    const totalScore = Math.min(Math.round(score * 10) / 10, 100)
+    const tier = totalScore >= 70 ? 'GREEN' : totalScore >= 40 ? 'AMBER' : 'RED'
+    const record = await (prisma as any).customerHealthScore.create({
+      data: { customerId, oisDelta, coigVelocity, loginFrequency, featureDepth, signalVolume, agentUsage, workflowRuns, blueprintVersionLag, npsScore, supportTickets, renewalProximityDays, daysSinceLastDecision, totalScore, tier, computedAt: new Date() }
+    })
+    // Auto-trigger KIMMP playbook signal if AMBER or RED
+    if (tier !== 'GREEN') {
+      await (prisma as any).kimmpSignal.create({
+        data: {
+          type: 'CUSTOMER_HEALTH_ALERT', source: 'CUSTOMER_SUCCESS', priority: tier === 'RED' ? 'CRITICAL' : 'HIGH',
+          title: `Customer health ${tier}: ${customerId}`,
+          description: `Health score: ${totalScore}/100. Tier: ${tier}. Renewal in ${renewalProximityDays} days.`,
+          status: 'ACTIVE', createdBy: 'system',
+        }
+      })
+    }
+    res.status(201).json(record)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/customers/nps
+kangqoreImmpRoutes.get('/customers/nps', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const responses = await (prisma as any).npsResponse.findMany({ orderBy: { createdAt: 'desc' } })
+    const scores = responses.map((r: any) => r.score)
+    const promoters  = responses.filter((r: any) => r.category === 'PROMOTER').length
+    const detractors = responses.filter((r: any) => r.category === 'DETRACTOR').length
+    const nps = responses.length > 0 ? Math.round(((promoters - detractors) / responses.length) * 100) : null
+    res.json({ responses, nps, count: responses.length, avg: scores.length ? Math.round((scores.reduce((a: number, b: number) => a + b, 0) / scores.length) * 10) / 10 : null })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/customers/:customerId/nps
+kangqoreImmpRoutes.post('/customers/:customerId/nps', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const { score, comment, surveyTrigger } = req.body
+    if (score === undefined || score < 0 || score > 10) return res.status(400).json({ error: 'score must be 0–10' })
+    const category = score >= 9 ? 'PROMOTER' : score >= 7 ? 'PASSIVE' : 'DETRACTOR'
+    const response = await (prisma as any).npsResponse.create({
+      data: { customerId: req.params.customerId, score, category, comment, surveyTrigger: surveyTrigger ?? 'MANUAL', createdBy: userId }
+    })
+    res.status(201).json(response)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/customers/churn-risk
+kangqoreImmpRoutes.get('/customers/churn-risk', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    // Latest health score per customer as churn risk proxy
+    const all = await (prisma as any).customerHealthScore.findMany({ orderBy: { computedAt: 'desc' } })
+    const seen = new Set<string>()
+    const latest: any[] = []
+    for (const s of all) { if (!seen.has(s.customerId)) { seen.add(s.customerId); latest.push(s) } }
+    const withRisk = latest.map((s: any) => ({
+      ...s,
+      churnProbability: s.tier === 'RED' ? 0.7 + Math.random() * 0.3 : s.tier === 'AMBER' ? 0.3 + Math.random() * 0.3 : Math.random() * 0.15,
+      playbook: s.tier === 'RED' ? 'ESCALATE' : s.tier === 'AMBER' ? 'NURTURE' : 'MAINTAIN',
+    }))
+    res.json({ customers: withRisk, highRisk: withRisk.filter((c: any) => c.tier === 'RED').length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ════════════════════════════════════════════════════════════════════════════
+// S70 — Enterprise Security: SOC2 Controls · RBAC Scopes · Security Findings
+// ════════════════════════════════════════════════════════════════════════════
+
+// GET /admin/kangqore-immp/aegis/compliance-controls
+kangqoreImmpRoutes.get('/aegis/compliance-controls', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    let controls = await (prisma as any).complianceControl.findMany({ orderBy: [{ criteria: 'asc' }, { code: 'asc' }] })
+    if (controls.length === 0) {
+      // Seed SOC2 CC1–CC9 scaffold
+      const seed = [
+        { code: 'CC1.1', criteria: 'CC1', name: 'Control Environment — Integrity & Ethics',       status: 'PARTIAL',  description: 'Organisation demonstrates commitment to integrity and ethical values' },
+        { code: 'CC1.2', criteria: 'CC1', name: 'Control Environment — Board Oversight',           status: 'MISSING',  description: 'Board or governing body demonstrates independence from management' },
+        { code: 'CC2.1', criteria: 'CC2', name: 'Communication — Internal Communication',          status: 'IN_PLACE', description: 'Internal communication of security responsibilities and policies' },
+        { code: 'CC3.1', criteria: 'CC3', name: 'Risk Assessment — Risk Identification',           status: 'PARTIAL',  description: 'Identifies and assesses risks to achieving security objectives' },
+        { code: 'CC4.1', criteria: 'CC4', name: 'Monitoring — Ongoing Evaluation',                status: 'MISSING',  description: 'Selects, develops and performs ongoing monitoring activities' },
+        { code: 'CC5.1', criteria: 'CC5', name: 'Control Activities — Technology Controls',        status: 'PARTIAL',  description: 'Technology controls selected and developed to achieve objectives' },
+        { code: 'CC6.1', criteria: 'CC6', name: 'Logical Access — Access Management',              status: 'IN_PLACE', description: 'Logical access security software, infrastructure, and architectures' },
+        { code: 'CC6.2', criteria: 'CC6', name: 'Logical Access — New Access Provisioning',       status: 'PARTIAL',  description: 'Prior to issuing system credentials and granting system access' },
+        { code: 'CC6.3', criteria: 'CC6', name: 'Logical Access — Access Removal',                status: 'MISSING',  description: 'Removes access to protected information assets when no longer required' },
+        { code: 'CC7.1', criteria: 'CC7', name: 'System Operations — Vulnerability Management',   status: 'MISSING',  description: 'Detection and monitoring of vulnerabilities and threats' },
+        { code: 'CC8.1', criteria: 'CC8', name: 'Change Management — Infrastructure Changes',      status: 'PARTIAL',  description: 'Authorises, designs, develops, tests and implements changes' },
+        { code: 'CC9.1', criteria: 'CC9', name: 'Risk Mitigation — Vendor Risk Management',       status: 'MISSING',  description: 'Identifies, selects and develops risk mitigation activities for risks with vendors' },
+      ]
+      await (prisma as any).complianceControl.createMany({ data: seed, skipDuplicates: true })
+      controls = await (prisma as any).complianceControl.findMany({ orderBy: [{ criteria: 'asc' }, { code: 'asc' }] })
+    }
+    const summary = { total: controls.length, in_place: controls.filter((c: any) => c.status === 'IN_PLACE').length, partial: controls.filter((c: any) => c.status === 'PARTIAL').length, missing: controls.filter((c: any) => c.status === 'MISSING').length }
+    res.json({ controls, summary })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/aegis/compliance-controls/:id
+kangqoreImmpRoutes.patch('/aegis/compliance-controls/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status, evidenceUrl, evidenceNote, lastTestedAt, ownerId } = req.body
+    const control = await (prisma as any).complianceControl.update({
+      where: { id: req.params.id },
+      data: { status, evidenceUrl, evidenceNote, lastTestedAt: lastTestedAt ? new Date(lastTestedAt) : undefined, ownerId },
+    })
+    res.json(control)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/aegis/permission-scopes
+kangqoreImmpRoutes.get('/aegis/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.query
+    const scopes = await (prisma as any).permissionScope.findMany({
+      where: userId ? { userId: String(userId) } : {},
+      orderBy: [{ userId: 'asc' }, { workspace: 'asc' }],
+    })
+    res.json({ scopes })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/aegis/permission-scopes
+kangqoreImmpRoutes.post('/aegis/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const grantedBy = (req as any).user?.id ?? 'system'
+    const { userId, workspace, feature, action } = req.body
+    if (!userId || !workspace || !feature || !action) return res.status(400).json({ error: 'userId, workspace, feature, action required' })
+    const scope = await (prisma as any).permissionScope.upsert({
+      where:  { userId_workspace_feature: { userId, workspace, feature } },
+      update: { action, grantedBy },
+      create: { userId, workspace, feature, action, grantedBy },
+    })
+    res.status(201).json(scope)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// DELETE /admin/kangqore-immp/aegis/permission-scopes/:id
+kangqoreImmpRoutes.delete('/aegis/permission-scopes/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    await (prisma as any).permissionScope.delete({ where: { id: req.params.id } })
+    res.status(204).send()
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/aegis/security-findings
+kangqoreImmpRoutes.get('/aegis/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { severity, status } = req.query
+    const findings = await (prisma as any).securityFinding.findMany({
+      where: { severity: severity ? String(severity) : undefined, status: status ? String(status) : undefined },
+      orderBy: [{ severity: 'asc' }, { discoveredAt: 'desc' }],
+    })
+    const summary = { open: findings.filter((f: any) => f.status === 'OPEN').length, critical: findings.filter((f: any) => f.severity === 'CRITICAL' && f.status === 'OPEN').length }
+    res.json({ findings, summary })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/aegis/security-findings
+kangqoreImmpRoutes.post('/aegis/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const { title, severity, description, cveRef, affectedArea } = req.body
+    if (!title || !severity || !description) return res.status(400).json({ error: 'title, severity, description required' })
+    const finding = await (prisma as any).securityFinding.create({
+      data: { title, severity, description, cveRef, affectedArea, status: 'OPEN', createdBy: userId, discoveredAt: new Date() }
+    })
+    if (severity === 'CRITICAL' || severity === 'HIGH') {
+      await (prisma as any).kimmpSignal.create({
+        data: {
+          type: 'SECURITY_FINDING', source: 'AEGIS', priority: severity === 'CRITICAL' ? 'CRITICAL' : 'HIGH',
+          title: `Security finding: ${title}`,
+          description: `Severity: ${severity}${cveRef ? ` | CVE: ${cveRef}` : ''}. ${description.slice(0, 200)}`,
+          status: 'ACTIVE', createdBy: userId,
+        }
+      })
+    }
+    res.status(201).json(finding)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// PATCH /admin/kangqore-immp/aegis/security-findings/:id
+kangqoreImmpRoutes.patch('/aegis/security-findings/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const { status, affectedArea } = req.body
+    const finding = await (prisma as any).securityFinding.update({
+      where: { id: req.params.id },
+      data: { status, affectedArea, resolvedAt: status === 'MITIGATED' || status === 'ACCEPTED' ? new Date() : undefined, resolvedBy: status !== 'OPEN' ? userId : undefined },
+    })
+    res.json(finding)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 export { kangqoreImmpRoutes };

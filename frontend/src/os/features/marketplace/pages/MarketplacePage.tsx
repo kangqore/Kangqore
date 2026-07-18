@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Store, Bot, Link2, Package, Workflow, Search, Download, ChevronRight, Star, Plus, ArrowRight, Zap } from 'lucide-react'
+import { Store, Bot, Link2, Package, Workflow, Search, Download, ChevronRight, Star, Plus, ArrowRight, Zap, BarChart3, DollarSign, RefreshCw, TrendingUp } from 'lucide-react'
 import { api } from '@lib/api'
 
 const T1   = 'var(--os-text-1)'
@@ -33,6 +33,20 @@ interface Listing {
   publishedAt:  string | null
 }
 
+const TIER_CFG: Record<string, { label: string; color: string; bg: string }> = {
+  FREE:       { label: 'Free',       color: '#10b981', bg: 'rgba(16,185,129,0.1)'  },
+  STARTER:    { label: 'Starter',    color: '#579bfc', bg: 'rgba(87,155,252,0.1)'  },
+  PRO:        { label: 'Pro',        color: '#7c3aed', bg: 'rgba(124,58,237,0.1)'  },
+  ENTERPRISE: { label: 'Enterprise', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)'  },
+}
+
+function priceTier(price: number): string {
+  if (price === 0) return 'FREE'
+  if (price < 50)  return 'STARTER'
+  if (price < 200) return 'PRO'
+  return 'ENTERPRISE'
+}
+
 const TYPE_CFG: Record<string, { icon: React.FC<any>; color: string; bg: string }> = {
   AGENT:       { icon: Bot,      color: PURP, bg: 'rgba(124,58,237,0.1)' },
   INTEGRATION: { icon: Link2,    color: BLUE, bg: 'rgba(87,155,252,0.1)'  },
@@ -43,7 +57,7 @@ const TYPE_CFG: Record<string, { icon: React.FC<any>; color: string; bg: string 
 const CATEGORIES = ['All', 'intelligence', 'productivity', 'crm', 'finance', 'hr', 'ops']
 const TYPES      = ['All', 'AGENT', 'INTEGRATION', 'PACK', 'WORKFLOW']
 
-type View = 'browse' | 'submit'
+type View = 'browse' | 'submit' | 'revenue'
 
 export function MarketplacePage() {
   const qc = useQueryClient()
@@ -94,6 +108,11 @@ export function MarketplacePage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <button onClick={() => setView('revenue')}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold"
+              style={view === 'revenue' ? { background: AMB, color: '#fff' } : { background: 'rgba(245,158,11,0.1)', color: AMB, border: `1px solid rgba(245,158,11,0.2)` }}>
+              <BarChart3 className="w-3.5 h-3.5" /> Revenue
+            </button>
             <button onClick={() => setView('submit')}
               className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold"
               style={{ background: 'rgba(20,184,166,0.1)', color: TEAL, border: `1px solid rgba(20,184,166,0.2)` }}>
@@ -103,7 +122,8 @@ export function MarketplacePage() {
         </div>
       </div>
 
-      {view === 'submit' && <SubmitView qc={qc} onBack={() => setView('browse')} />}
+      {view === 'submit'  && <SubmitView qc={qc} onBack={() => setView('browse')} />}
+      {view === 'revenue' && <RevenueView onBack={() => setView('browse')} />}
 
       {view === 'browse' && (
         <>
@@ -219,6 +239,9 @@ function ListingCard({ listing, onInstall, onView, installing }: {
             <span key={t} className="text-[10px] px-1.5 py-0.5 rounded"
               style={{ background: SURF, color: T2 }}>{t}</span>
           ))}
+          {(() => { const tc = TIER_CFG[priceTier(listing.price)]; return (
+            <span className="text-[10px] px-1.5 py-0.5 rounded font-bold" style={{ background: tc.bg, color: tc.color }}>{tc.label}</span>
+          ) })()}
         </div>
 
         {listing.oisImpact && (
@@ -394,6 +417,94 @@ function SubmitView({ qc, onBack }: { qc: ReturnType<typeof useQueryClient>; onB
         <ArrowRight className="w-4 h-4" />
         {create.isPending ? 'Publishing…' : 'Publish Listing'}
       </button>
+    </div>
+  )
+}
+
+// ── Partner Revenue Dashboard ─────────────────────────────────────────────────
+
+interface PartnerDashboard {
+  totalRevenue: number; totalPlatformFee: number; netRevenue: number
+  totalInstalls: number; totalRefunds: number; refundRate: number
+  byListing: Array<{ listingId: string; name: string; installs: number; revenue: number; fee: number }>
+}
+
+function RevenueView({ onBack }: { onBack: () => void }) {
+  const { data, isLoading, refetch } = useQuery<PartnerDashboard>({
+    queryKey: ['marketplace-revenue'],
+    queryFn:  () => api.get('/admin/kangqore-immp/marketplace/partner/dashboard').then(r => r.data),
+    staleTime: 60_000,
+  })
+
+  return (
+    <div className="space-y-5 max-w-3xl">
+      <div className="flex items-center gap-2">
+        <button onClick={onBack} className="flex items-center gap-1.5 text-xs font-medium" style={{ color: T2 }}>
+          <ChevronRight className="w-3.5 h-3.5 rotate-180" /> Back
+        </button>
+        <button onClick={() => refetch()} className="ml-auto flex items-center gap-1 text-xs" style={{ color: T2 }}>
+          <RefreshCw className="w-3 h-3" /> Refresh
+        </button>
+      </div>
+
+      {isLoading ? (
+        <div className="grid grid-cols-3 gap-4">{[1,2,3].map(i => <div key={i} className="h-24 rounded-2xl animate-pulse" style={{ background: SURF }} />)}</div>
+      ) : data ? (
+        <>
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { label: 'Gross Revenue',   value: `$${data.totalRevenue.toFixed(2)}`,    icon: DollarSign, color: GRN  },
+              { label: 'Platform Fee',    value: `$${data.totalPlatformFee.toFixed(2)}`, icon: TrendingUp, color: AMB  },
+              { label: 'Net to Partners', value: `$${data.netRevenue.toFixed(2)}`,       icon: BarChart3,  color: TEAL },
+            ].map(s => (
+              <div key={s.label} className="rounded-2xl border p-4" style={{ background: CARD, borderColor: BDR }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <s.icon className="w-4 h-4" style={{ color: s.color }} />
+                  <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: T2 }}>{s.label}</span>
+                </div>
+                <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { label: 'Total Installs', value: data.totalInstalls,                      color: BLUE },
+              { label: 'Refunds',        value: data.totalRefunds,                        color: RED  },
+              { label: 'Refund Rate',    value: `${(data.refundRate * 100).toFixed(1)}%`, color: T1   },
+            ].map(s => (
+              <div key={s.label} className="rounded-2xl border p-4" style={{ background: CARD, borderColor: BDR }}>
+                <p className="text-[10px] font-semibold uppercase tracking-wider mb-2" style={{ color: T2 }}>{s.label}</p>
+                <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
+              </div>
+            ))}
+          </div>
+
+          {data.byListing.length > 0 && (
+            <div className="rounded-2xl border" style={{ background: CARD, borderColor: BDR }}>
+              <div className="p-4 border-b" style={{ borderColor: BDR }}>
+                <p className="text-xs font-bold" style={{ color: T1 }}>Revenue by Listing</p>
+              </div>
+              <div className="divide-y" style={{ borderColor: BDR }}>
+                {data.byListing.map(row => (
+                  <div key={row.listingId} className="flex items-center gap-4 px-4 py-3">
+                    <p className="text-xs font-medium flex-1" style={{ color: T1 }}>{row.name || row.listingId.slice(0, 8)}</p>
+                    <span className="text-[10px]" style={{ color: T2 }}>{row.installs} installs</span>
+                    <span className="text-xs font-bold" style={{ color: GRN }}>${row.revenue.toFixed(2)}</span>
+                    <span className="text-[10px]" style={{ color: T2 }}>fee: ${row.fee.toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="py-12 text-center" style={{ color: T2 }}>
+          <DollarSign className="w-8 h-8 mx-auto mb-3 opacity-30" />
+          <p className="text-sm font-medium">No revenue data yet</p>
+          <p className="text-xs mt-1">Install listings to generate charges</p>
+        </div>
+      )}
     </div>
   )
 }
