@@ -6952,3 +6952,91 @@ model PlanDecompositionTree {
   @@index([createdAt])
   @@map("plan_decomposition_trees")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S77 — BIDS™ 16-Pillar Completeness Audit
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model BidsPillarAuditRun {
+  id           String            @id @default(cuid())
+  trigger      String            // 'nightly' | 'manual'
+  overallScore Float             @default(0)
+  auditedAt    DateTime          @default(now())
+  createdAt    DateTime          @default(now())
+  scores       BidsPillarScore[]
+
+  @@index([auditedAt])
+  @@map("bids_pillar_audit_runs")
+}
+
+model BidsPillarScore {
+  id                   String   @id @default(cuid())
+  runId                String
+  pillarId             Int      // 1–16
+  pillarName           String
+  kpiCount             Int      @default(0)
+  workflowTemplateCount Int     @default(0)
+  agentsCoverage       Int      @default(0)  // 0–100
+  ontologyTypes        Int      @default(0)
+  industryPackCoverage Json     @default("[]") // string[] of pack names covering this pillar
+  score                Float    @default(0)    // 0–100
+  run                  BidsPillarAuditRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId])
+  @@index([pillarId])
+  @@map("bids_pillar_scores")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S78 — WAANDA Gen 4 Foundation Model (12–24 month horizon)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Individual curated training example extracted from operational logs
+model WaandaFMTrainingExample {
+  id         String   @id @default(cuid())
+  phase      String   // REASON | DECIDE | PLAN | EXECUTE | LEARN
+  prompt     String   @db.Text
+  completion String   @db.Text
+  sourceType String   // strategic_decision | plan | signal | mission | workflow
+  sourceId   String?  // FK to source record (polymorphic)
+  quality    Float    @default(0)  // 0–1; filtered by threshold at curation time
+  included   Boolean  @default(true)
+  scanId     String?
+  createdAt  DateTime @default(now())
+
+  @@index([phase])
+  @@index([quality])
+  @@index([included])
+  @@map("waanda_fm_training_examples")
+}
+
+// Tracks each corpus curation scan
+model WaandaFMCorpusScan {
+  id               String   @id @default(cuid())
+  trigger          String   @default("manual") // manual | nightly
+  qualityThreshold Float    @default(0.85)
+  totalScanned     Int      @default(0)
+  totalIncluded    Int      @default(0)
+  byPhase          Json     @default("{}") // { REASON: n, DECIDE: n, ... }
+  scanAt           DateTime @default(now())
+
+  @@index([scanAt])
+  @@map("waanda_fm_corpus_scans")
+}
+
+// Benchmark evaluation results for candidate base models
+model WaandaFMEval {
+  id                      String   @id @default(cuid())
+  modelCandidate          String   // e.g. "Llama-3-8B" | "Mistral-7B" | "Qwen-14B"
+  baseModelSize           String   // e.g. "7B" | "13B" | "70B"
+  oisPredictionAccuracy   Float?   // 0–1
+  coigRecommendQuality    Float?   // 0–1
+  enterpriseReasonScore   Float?   // 0–1
+  overallScore            Float?   // 0–1, weighted composite
+  evalDataset             String   @default("kangqore-v1")
+  notes                   String?  @db.Text
+  evalDate                DateTime @default(now())
+
+  @@index([evalDate])
+  @@map("waanda_fm_evals")
+}

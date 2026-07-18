@@ -406,6 +406,12 @@ server.listen(PORT, () => {
       });
       cron.default.schedule('30 7 * * 1',   async () => { await ExecutiveReviewService.generate().catch(e => console.error('[6.9] Review:', e)); });
 
+      // S77 — BIDS™ Pillar Audit: nightly at 02:00
+      cron.default.schedule('0 2 * * *', async () => {
+        const { runBidsPillarAudit } = await import('./kangqore-immp/services/bidsPillarAudit.service');
+        await runBidsPillarAudit('nightly').catch(e => console.error('[S77] BIDS Audit:', e));
+      });
+
       console.log('[KIMMP] Phase 6.6 briefing + 6.8 autopilot + 6.9 reflection crons scheduled');
     } catch (e) {
       console.warn('[KIMMP] node-cron unavailable — cron disabled:', (e as Error).message);

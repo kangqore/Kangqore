@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma'
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth'
 import { BidsRoadmapAgent } from '../kangqore-immp/agents/bidsRoadmapAgent'
 import { emailService } from '../services/email.service'
+import { runBidsPillarAudit } from '../kangqore-immp/services/bidsPillarAudit.service'
 
 const router = Router()
 
@@ -443,6 +444,92 @@ router.get('/clients', authenticate, authorize(['ADMIN']), async (_req: Authenti
   } catch (err) {
     next(err)
   }
+})
+
+// ─── S77: BIDS™ Pillar Audit ─────────────────────────────────────────────────
+
+// GET /api/admin/bids/audit/latest — most recent audit run with all 16 scores
+router.get('/audit/latest', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const run = await (prisma as any).bidsPillarAuditRun.findFirst({
+      orderBy: { auditedAt: 'desc' },
+      include: { scores: { orderBy: { pillarId: 'asc' } } },
+    })
+    res.json(run ?? null)
+  } catch (err) { next(err) }
+})
+
+// GET /api/admin/bids/audit/history — last 30 runs (summary only)
+router.get('/audit/history', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const runs = await (prisma as any).bidsPillarAuditRun.findMany({
+      orderBy: { auditedAt: 'desc' },
+      take: 30,
+      select: { id: true, trigger: true, overallScore: true, auditedAt: true },
+    })
+    res.json({ runs })
+  } catch (err) { next(err) }
+})
+
+// POST /api/admin/bids/audit/run — manual trigger
+router.post('/audit/run', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const run = await runBidsPillarAudit('manual')
+    res.status(201).json(run)
+  } catch (err) { next(err) }
+})
+
+// ─── S78: WAANDA-FM corpus ────────────────────────────────────────────────────
+
+// GET /api/admin/bids/waanda-fm/status
+router.get('/waanda-fm/status', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const [latestScan, totalExamples, evals] = await Promise.all([
+      (prisma as any).waandaFMCorpusScan.findFirst({ orderBy: { scanAt: 'desc' } }),
+      (prisma as any).waandaFMTrainingExample.count({ where: { included: true } }),
+      (prisma as any).waandaFMEval.findMany({ orderBy: { evalDate: 'desc' }, take: 10 }),
+    ])
+    res.json({ latestScan, totalIncludedExamples: totalExamples, evals })
+  } catch (err) { next(err) }
+})
+
+// POST /api/admin/bids/waanda-fm/curate — run corpus curation
+router.post('/waanda-fm/curate', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { runWaandaFMCuration } = await import('../kangqore-immp/services/bidsPillarAudit.service')
+    const qualityThreshold = Number(req.body.qualityThreshold ?? 0.85)
+    const scan = await runWaandaFMCuration(qualityThreshold)
+    res.status(201).json(scan)
+  } catch (err) { next(err) }
+})
+
+// GET /api/admin/bids/waanda-fm/examples — paginated training examples
+router.get('/waanda-fm/examples', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const limit = Math.min(Number(req.query.limit ?? 50), 200)
+    const page  = Math.max(Number(req.query.page ?? 1), 1)
+    const phase = req.query.phase as string | undefined
+    const where = { included: true, ...(phase ? { phase } : {}) }
+    const [examples, total] = await Promise.all([
+      (prisma as any).waandaFMTrainingExample.findMany({ where, orderBy: { createdAt: 'desc' }, skip: (page - 1) * limit, take: limit }),
+      (prisma as any).waandaFMTrainingExample.count({ where }),
+    ])
+    res.json({ examples, total, page, limit })
+  } catch (err) { next(err) }
+})
+
+// POST /api/admin/bids/waanda-fm/evals — record benchmark result
+router.post('/waanda-fm/evals', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { modelCandidate, baseModelSize, oisPredictionAccuracy, coigRecommendQuality, enterpriseReasonScore, notes } = req.body
+    const overallScore = [oisPredictionAccuracy, coigRecommendQuality, enterpriseReasonScore]
+      .filter(v => v != null)
+      .reduce((s, v, _, arr) => s + v / arr.length, 0)
+    const ev = await (prisma as any).waandaFMEval.create({
+      data: { modelCandidate, baseModelSize, oisPredictionAccuracy, coigRecommendQuality, enterpriseReasonScore, overallScore, notes },
+    })
+    res.status(201).json(ev)
+  } catch (err) { next(err) }
 })
 
 export default router

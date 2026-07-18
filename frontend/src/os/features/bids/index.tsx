@@ -1,22 +1,24 @@
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { LayoutDashboard, Layers, Cpu, Briefcase, FileText } from 'lucide-react'
+import { LayoutDashboard, Layers, Cpu, Briefcase, FileText, ShieldCheck } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BidsOverviewPage }     from './pages/BidsOverviewPage'
-import { PillarsPage }           from './pages/PillarsPage'
-import { EnginesPage }           from './pages/EnginesPage'
-import { EngagementsPage }       from './pages/EngagementsPage'
-import { DeliverablesPage }      from './pages/DeliverablesPage'
-import { BidsConsultantPage }    from './pages/BidsConsultantPage'
+import { BidsOverviewPage }      from './pages/BidsOverviewPage'
+import { PillarsPage }            from './pages/PillarsPage'
+import { EnginesPage }            from './pages/EnginesPage'
+import { EngagementsPage }        from './pages/EngagementsPage'
+import { DeliverablesPage }       from './pages/DeliverablesPage'
+import { BidsConsultantPage }     from './pages/BidsConsultantPage'
+import { BidsCompletenessPage }   from './pages/BidsCompletenessPage'
 
 const BASE = '/kangqore-view/admin/bids'
 
 const TABS = [
-  { path: '',              label: 'Overview',     icon: LayoutDashboard, end: true  },
-  { path: 'pillars',       label: 'Pillars (16)', icon: Layers,          end: false },
-  { path: 'engines',       label: 'Engines (6)',  icon: Cpu,             end: false },
-  { path: 'engagements',   label: 'Engagements',  icon: Briefcase,       end: false },
-  { path: 'deliverables',  label: 'Deliverables', icon: FileText,        end: false },
+  { path: '',               label: 'Overview',      icon: LayoutDashboard, end: true  },
+  { path: 'pillars',        label: 'Pillars (16)',  icon: Layers,          end: false },
+  { path: 'engines',        label: 'Engines (6)',   icon: Cpu,             end: false },
+  { path: 'engagements',    label: 'Engagements',   icon: Briefcase,       end: false },
+  { path: 'deliverables',   label: 'Deliverables',  icon: FileText,        end: false },
+  { path: 'completeness',   label: 'Completeness',  icon: ShieldCheck,     end: false },
 ]
 
 export function BidsModule() {
@@ -60,6 +62,7 @@ export function BidsModule() {
             <Route path="engagements"             element={<EngagementsPage />}      />
             <Route path="engagements/:id"         element={<BidsConsultantPage />}   />
             <Route path="deliverables"            element={<DeliverablesPage />}     />
+            <Route path="completeness"            element={<BidsCompletenessPage />}  />
             <Route path="*"                       element={<Navigate to={BASE} replace />} />
           </Routes>
         </motion.div>
