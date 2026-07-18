@@ -253,36 +253,6 @@ export default function Login() {
     setError('');
     setLoading(true);
 
-    if (formData.email.startsWith('demo') && formData.password === 'demo') {
-      const role = formData.email.includes('admin') ? 'admin' : 
-                   formData.email.includes('partner') ? 'partner' : 
-                   formData.email.includes('investor') ? 'investor' : 
-                   formData.email.includes('career') ? 'job_seeker' : 'client';
-      const demoUser = {
-        id: 'demo-user-123',
-        name: 'Demo User',
-        email: formData.email,
-        role: role.toUpperCase(),
-        company: 'Demo Corp',
-        avatarUrl: 'https://ui-avatars.com/api/?name=Demo+User&background=0D8ABC&color=fff'
-      };
-      localStorage.setItem('token', 'demo-token');
-      localStorage.setItem('user', JSON.stringify(demoUser));
-      const roleRoutes = {
-        'client':     '/kangqore-view/client',
-        'partner':    '/kangqore-view/partner',
-        'investor':   '/kangqore-view/investor',
-        'job_seeker': '/kangqore-view/careers',
-        'journalist': '/kangqore-view/journalist',
-        'analyst':    '/kangqore-view/analyst',
-        'admin':      '/kangqore-view/admin',
-        'team':       selectedDept ? `/kangqore-view/team/${selectedDept.id}` : '/kangqore-view/team',
-        'executive':  '/kangqore-view/executive',
-      };
-      window.location.href = buildOSRedirect(roleRoutes[demoUser.role.toLowerCase()] || '/kangqore-view/admin');
-      return;
-    }
-
     try {
       const response = await fetch(`/api/auth/login`, {
         method: 'POST',

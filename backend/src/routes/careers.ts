@@ -6,6 +6,7 @@ import logger from '../utils/logger';
 import { createError } from '../middleware/errorHandler';
 import { requireAuth, requireRole, AuthRequest } from '../middleware/rbac';
 import { notifyNewEmail } from '../services/notificationService';
+import { escapeHtml } from '../utils/sanitize';
 
 const router = Router();
 
@@ -367,13 +368,14 @@ router.get('/emails', requireAuth, requireRole(['JOB_SEEKER', 'ADMIN']), async (
  */
 router.post('/emails/reply', requireAuth, requireRole(['JOB_SEEKER']), async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const { emailId, content, subject } = req.body;
+    const { emailId, content: rawContent, subject } = req.body;
     const userId = req.user!.userId;
 
     const jobSeeker = await prisma.user.findUnique({ where: { id: userId } });
     if (!jobSeeker) throw createError('User not found', 404);
 
-    if (!content) throw createError('Content required', 400);
+    if (!rawContent) throw createError('Content required', 400);
+    const content = escapeHtml(rawContent);
 
     let originalEmail = null;
     let threadId = null;

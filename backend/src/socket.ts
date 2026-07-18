@@ -21,6 +21,14 @@ interface AuthenticatedSocket extends Socket {
 // User to socket mapping for targeted messaging
 const userSockets = new Map<string, Set<string>>();
 
+const SOCKET_JWT_SECRET: string = (() => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable is required and must not be empty');
+  }
+  return secret;
+})();
+
 let io: Server;
 
 /**
@@ -45,7 +53,7 @@ export function initializeSocket(httpServer: HttpServer): Server {
         return next(new Error('Authentication required'));
       }
 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as {
+      const decoded = jwt.verify(token, SOCKET_JWT_SECRET) as {
         userId: string;
         role: string;
         name?: string;
