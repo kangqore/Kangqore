@@ -172,6 +172,23 @@ async function _getDeployedGen2(): Promise<string | null> {
   return _gen2ModelId
 }
 
+// Cached A/B traffic split — refreshed every 2 minutes
+let _gen2TrafficPct = 0
+let _trafficPctCheckedAt = 0
+
+async function _getGen2TrafficPct(): Promise<number> {
+  const now = Date.now()
+  if (now - _trafficPctCheckedAt < 2 * 60_000) return _gen2TrafficPct
+  try {
+    const cfg = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' }, select: { gen2TrafficPct: true } })
+    _gen2TrafficPct = cfg?.gen2TrafficPct ?? 0
+  } catch {
+    _gen2TrafficPct = 0
+  }
+  _trafficPctCheckedAt = now
+  return _gen2TrafficPct
+}
+
 // ─── Provider: Ollama (local) ─────────────────────────────────────────────────
 
 let _ollamaOk: boolean | null = null
@@ -433,9 +450,11 @@ export async function routedCall(
     toolCallCount: _toolCallCount,
   })
 
-  // ── 0. Gen2 fine-tuned model — highest priority when deployed ───────────────
-  const gen2ModelId = await _getDeployedGen2()
-  if (gen2ModelId && ANTHROPIC_KEY && cbAllow('gen2')) {
+  // ── 0. Gen2 fine-tuned model — A/B traffic split (AutonomyConfig.gen2TrafficPct) ─
+  const gen2ModelId   = await _getDeployedGen2()
+  const gen2TrafficPct = await _getGen2TrafficPct()
+  const routeToGen2   = gen2ModelId && ANTHROPIC_KEY && cbAllow('gen2') && (Math.random() * 100 < gen2TrafficPct)
+  if (routeToGen2 && gen2ModelId) {
     try {
       const { text } = await _callClaude(gen2ModelId, system, user, maxTokens, options)
       _counts.gen2++

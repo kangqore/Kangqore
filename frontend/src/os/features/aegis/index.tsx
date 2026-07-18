@@ -1,17 +1,18 @@
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { Shield, List, Zap, BookOpen, ShieldOff, ArrowUpRight, FileText, Bot, ClipboardCheck, Radio } from 'lucide-react'
+import { Shield, List, Zap, BookOpen, ShieldOff, ArrowUpRight, FileText, Bot, ClipboardCheck, Radio, ShieldAlert } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
-import { AegisOverviewPage }    from './pages/AegisOverviewPage'
-import { AegisAuditPage }       from './pages/AegisAuditPage'
-import { AegisAutonomyPage }    from './pages/AegisAutonomyPage'
-import { AegisAssetsPage }      from './pages/AegisAssetsPage'
-import { AegisShieldPage }      from './pages/AegisShieldPage'
-import { AegisEgressPage }      from './pages/AegisEgressPage'
-import { AegisPolicyPage }      from './pages/AegisPolicyPage'
-import { AegisAgentsPage }      from './pages/AegisAgentsPage'
-import { AegisCompliancePage }  from './pages/AegisCompliancePage'
-import { AegisLiveFeedPage }    from './pages/AegisLiveFeedPage'
+import { AegisOverviewPage }       from './pages/AegisOverviewPage'
+import { AegisAuditPage }          from './pages/AegisAuditPage'
+import { AegisAutonomyPage }       from './pages/AegisAutonomyPage'
+import { AegisAssetsPage }         from './pages/AegisAssetsPage'
+import { AegisShieldPage }         from './pages/AegisShieldPage'
+import { AegisEgressPage }         from './pages/AegisEgressPage'
+import { AegisPolicyPage }         from './pages/AegisPolicyPage'
+import { AegisAgentsPage }         from './pages/AegisAgentsPage'
+import { AegisCompliancePage }     from './pages/AegisCompliancePage'
+import { AegisLiveFeedPage }       from './pages/AegisLiveFeedPage'
+import { SecurityFindingsPage }    from './pages/SecurityFindingsPage'
 
 const BASE = '/kangqore-view/admin/aegis'
 
@@ -25,7 +26,8 @@ const TABS = [
   { path: 'assets',     end: false, label: 'Assets',     icon: BookOpen       },
   { path: 'egress',     end: false, label: 'Egress',     icon: ArrowUpRight   },
   { path: 'shield',     end: false, label: 'Shield',     icon: ShieldOff      },
-  { path: 'policy',     end: false, label: 'Policy',     icon: FileText       },
+  { path: 'policy',    end: false, label: 'Policy',   icon: FileText    },
+  { path: 'findings',  end: false, label: 'Findings', icon: ShieldAlert },
 ]
 
 export function AegisModule() {
@@ -77,7 +79,8 @@ export function AegisModule() {
             <Route path="egress"          element={<AegisEgressPage />}      />
             <Route path="shield"          element={<AegisShieldPage />}      />
             <Route path="policy"          element={<AegisPolicyPage />}      />
-            <Route path="live"            element={<AegisLiveFeedPage />}    />
+            <Route path="live"             element={<AegisLiveFeedPage />}       />
+            <Route path="findings"        element={<SecurityFindingsPage />}    />
             <Route path="*"               element={<Navigate to={BASE} replace />} />
           </Routes>
         </motion.div>

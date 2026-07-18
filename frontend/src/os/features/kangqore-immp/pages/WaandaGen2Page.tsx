@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Brain, Download, Plus, CheckCircle, XCircle, AlertCircle, Cpu, ChevronRight, RefreshCw, Tag } from 'lucide-react'
+import { Brain, Download, Plus, CheckCircle, XCircle, AlertCircle, Cpu, ChevronRight, RefreshCw, Tag, Sliders, Rocket, BarChart3, GitMerge } from 'lucide-react'
 import { api } from '@lib/api'
 
 const T1   = 'var(--os-text-1)'
@@ -65,7 +65,7 @@ const JOB_STATUS_CFG: Record<string, { color: string; bg: string }> = {
   FAILED:    { color: RED,  bg: 'rgba(239,68,68,0.1)'  },
 }
 
-type Tab = 'annotate' | 'jobs' | 'export' | 'health'
+type Tab = 'annotate' | 'jobs' | 'export' | 'health' | 'autonomy'
 
 export function WaandaGen2Page() {
   const [tab, setTab] = useState<Tab>('annotate')
@@ -96,7 +96,7 @@ export function WaandaGen2Page() {
 
       {/* Tab bar */}
       <div className="flex gap-1 p-1 rounded-xl border" style={{ background: SURF, borderColor: BDR, width: 'fit-content' }}>
-        {([['annotate', 'Annotate'], ['jobs', 'Fine-tune Jobs'], ['export', 'Export JSONL'], ['health', 'Gen 2 Health']] as const).map(([id, label]) => (
+        {([['annotate', 'Annotate'], ['jobs', 'Fine-tune Jobs'], ['export', 'Export JSONL'], ['health', 'Gen 2 Health'], ['autonomy', 'Autonomy']] as const).map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)}
             className="px-4 py-1.5 rounded-lg text-xs font-bold transition-colors"
             style={tab === id ? { background: PURP, color: '#fff' } : { color: T2 }}>
@@ -109,6 +109,7 @@ export function WaandaGen2Page() {
       {tab === 'jobs'     && <JobsTab qc={qc} />}
       {tab === 'export'   && <ExportTab />}
       {tab === 'health'   && <Gen2HealthTab qc={qc} />}
+      {tab === 'autonomy' && <AutonomyTab qc={qc} />}
     </div>
   )
 }
@@ -735,6 +736,179 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           </p>
         </div>
       )}
+    </div>
+  )
+}
+
+// ── Autonomy Tab (S68) ────────────────────────────────────────────────────────
+
+interface AutonomyConfig {
+  id: string; gen2TrafficPct: number; enabledAt: string | null; updatedBy: string | null; updatedAt: string
+}
+
+interface AutonomyStats {
+  deployedModel: string | null; humanOverrideRate: number
+  gen1TrafficPct: number; gen2TrafficPct: number
+}
+
+function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
+  const [slider, setSlider] = useState<number | null>(null)
+
+  const { data: config, isLoading: cfgLoading } = useQuery<AutonomyConfig>({
+    queryKey: ['autonomy-config'],
+    queryFn:  () => api.get('/admin/kangqore-immp/learning/autonomy-config').then(r => r.data),
+    staleTime: 30_000,
+  })
+
+  useEffect(() => {
+    if (config && slider === null) setSlider(config.gen2TrafficPct)
+  }, [config]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const { data: stats } = useQuery<AutonomyStats>({
+    queryKey: ['autonomy-stats'],
+    queryFn:  () => api.get('/admin/kangqore-immp/learning/autonomy-stats').then(r => r.data),
+    staleTime: 30_000,
+  })
+
+  const update = useMutation({
+    mutationFn: (pct: number) => api.patch('/admin/kangqore-immp/learning/autonomy-config', { gen2TrafficPct: pct }),
+    onSuccess:  () => {
+      qc.invalidateQueries({ queryKey: ['autonomy-config'] })
+      qc.invalidateQueries({ queryKey: ['autonomy-stats'] })
+    },
+  })
+
+  const pct         = slider ?? config?.gen2TrafficPct ?? 0
+  const isDeplyed   = !!stats?.deployedModel
+  const graduated   = pct >= 75
+
+  if (cfgLoading) return <div className="h-48 rounded-2xl animate-pulse" style={{ background: SURF }} />
+
+  return (
+    <div className="space-y-4">
+      {/* Graduation Banner */}
+      {graduated && (
+        <div className="rounded-2xl p-4 flex items-center gap-3" style={{ background: 'rgba(16,185,129,0.08)', border: `1px solid rgba(16,185,129,0.2)` }}>
+          <Rocket className="w-5 h-5 flex-shrink-0" style={{ color: GRN }} />
+          <div>
+            <p className="text-xs font-bold" style={{ color: GRN }}>Gen 2 Graduation Active</p>
+            <p className="text-[11px] mt-0.5" style={{ color: T2 }}>≥75% traffic routing to Gen 2. Monitor quality delta before graduating to 100%.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Traffic split donut + controls */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="rounded-2xl border p-5" style={{ background: CARD, borderColor: BDR }}>
+          <div className="flex items-center gap-2 mb-4">
+            <GitMerge className="w-4 h-4" style={{ color: PURP }} />
+            <p className="text-sm font-bold" style={{ color: T1 }}>Traffic Split</p>
+          </div>
+
+          {/* SVG donut */}
+          <div className="flex items-center gap-6">
+            <DonutChart gen2Pct={pct} />
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: PURP }} />
+                <span className="text-xs font-bold" style={{ color: T1 }}>Gen 2 — {pct}%</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: BLUE }} />
+                <span className="text-xs font-bold" style={{ color: T1 }}>Gen 1 — {100 - pct}%</span>
+              </div>
+              {!isDeplyed && (
+                <p className="text-[10px] mt-2" style={{ color: RED }}>No Gen 2 model deployed</p>
+              )}
+            </div>
+          </div>
+
+          {/* Slider */}
+          <div className="mt-5 space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] font-semibold" style={{ color: T2 }}>Gen 2 traffic %</p>
+              <span className="text-sm font-black" style={{ color: PURP }}>{pct}%</span>
+            </div>
+            <input type="range" min={0} max={100} step={5} value={pct}
+              onChange={e => setSlider(parseInt(e.target.value))}
+              className="w-full accent-purple-600" />
+            <div className="flex gap-2">
+              {[0, 10, 25, 50, 75, 100].map(v => (
+                <button key={v} onClick={() => setSlider(v)}
+                  className="flex-1 py-1 rounded text-[10px] font-bold transition-colors"
+                  style={pct === v ? { background: PURP, color: '#fff' } : { background: SURF, color: T2 }}>
+                  {v}%
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button
+            disabled={update.isPending || slider === null || slider === config?.gen2TrafficPct}
+            onClick={() => slider !== null && update.mutate(slider)}
+            className="mt-4 flex items-center gap-2 w-full justify-center px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+            style={{ background: PURP, color: '#fff' }}>
+            <Sliders className="w-3.5 h-3.5" />
+            {update.isPending ? 'Applying…' : 'Apply Split'}
+          </button>
+        </div>
+
+        {/* Stats panel */}
+        <div className="rounded-2xl border p-5 space-y-4" style={{ background: CARD, borderColor: BDR }}>
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 className="w-4 h-4" style={{ color: TEAL }} />
+            <p className="text-sm font-bold" style={{ color: T1 }}>Autonomy Stats</p>
+          </div>
+
+          {stats ? (
+            <div className="space-y-3">
+              <StatRow label="Deployed Model" value={stats.deployedModel ?? 'None'} color={stats.deployedModel ? GRN : RED} />
+              <StatRow label="Human Override Rate"   value={`${(stats.humanOverrideRate * 100).toFixed(1)}%`} color={stats.humanOverrideRate > 0.1 ? AMB : GRN} />
+              <StatRow label="Gen 1 Traffic"         value={`${stats.gen1TrafficPct}%`} color={BLUE}  />
+              <StatRow label="Gen 2 Traffic"         value={`${stats.gen2TrafficPct}%`} color={PURP}  />
+            </div>
+          ) : (
+            <div className="py-8 text-center">
+              <BarChart3 className="w-6 h-6 mx-auto mb-2 opacity-30" style={{ color: T2 }} />
+              <p className="text-xs" style={{ color: T2 }}>Loading stats…</p>
+            </div>
+          )}
+
+          {config?.enabledAt && (
+            <div className="pt-3 border-t" style={{ borderColor: BDR }}>
+              <p className="text-[10px]" style={{ color: T2 }}>
+                Autonomy enabled {new Date(config.enabledAt).toLocaleDateString()}
+                {config.updatedBy && ` · by ${config.updatedBy}`}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function DonutChart({ gen2Pct }: { gen2Pct: number }) {
+  const R = 36; const CX = 44; const CY = 44
+  const circumference = 2 * Math.PI * R
+  const gen2Arc = (gen2Pct / 100) * circumference
+  return (
+    <svg width={88} height={88} viewBox={`0 0 88 88`}>
+      <circle cx={CX} cy={CY} r={R} fill="none" stroke={BLUE}     strokeWidth={12} />
+      <circle cx={CX} cy={CY} r={R} fill="none" stroke={PURP}     strokeWidth={12}
+        strokeDasharray={`${gen2Arc} ${circumference - gen2Arc}`}
+        strokeDashoffset={circumference / 4} strokeLinecap="round" />
+      <text x={CX} y={CY + 2} textAnchor="middle" dominantBaseline="middle"
+        fontSize="13" fontWeight="900" fill={PURP}>{gen2Pct}%</text>
+    </svg>
+  )
+}
+
+function StatRow({ label, value, color }: { label: string; value: string; color: string }) {
+  return (
+    <div className="flex items-center justify-between py-2 border-b" style={{ borderColor: BDR }}>
+      <span className="text-[11px]" style={{ color: T2 }}>{label}</span>
+      <span className="text-xs font-bold" style={{ color }}>{value}</span>
     </div>
   )
 }

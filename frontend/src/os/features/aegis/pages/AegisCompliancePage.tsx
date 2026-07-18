@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { Brain, CheckCircle, AlertTriangle, XCircle, Download, ChevronDown, ChevronUp, Clock, TrendingUp, Zap, Flag, Radio } from 'lucide-react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { Brain, CheckCircle, AlertTriangle, XCircle, Download, ChevronDown, ChevronUp, Clock, TrendingUp, Zap, Flag, Radio, Database, Pencil, Check } from 'lucide-react'
 import { api } from '@lib/api'
 
 type ControlStatus = 'PASS' | 'WARN' | 'FAIL'
@@ -666,6 +666,9 @@ export function AegisCompliancePage() {
       {/* Audit Countdown */}
       <AuditCountdown />
 
+      {/* Live SOC2 DB Controls (S70) */}
+      <LiveSoc2Controls />
+
       {/* Resolution Impact */}
       <ResolutionImpact currentScore={score} />
 
@@ -785,6 +788,121 @@ export function AegisCompliancePage() {
           />
         ))}
       </div>
+    </div>
+  )
+}
+
+// ── Live SOC2 Controls from DB (S70) ─────────────────────────────────────────
+
+interface LiveControl {
+  id: string; code: string; criteria: string; name: string
+  description: string; status: string
+  evidenceUrl: string | null; evidenceNote: string | null
+  lastTestedAt: string | null; ownerId: string | null
+  createdAt: string; updatedAt: string
+}
+
+const LIVE_STATUS_CFG: Record<string, { color: string; bg: string; label: string }> = {
+  IN_PLACE: { color: '#10b981', bg: 'rgba(16,185,129,0.1)', label: 'In Place'  },
+  PARTIAL:  { color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', label: 'Partial'   },
+  MISSING:  { color: '#ef4444', bg: 'rgba(239,68,68,0.1)',  label: 'Missing'   },
+}
+
+function LiveSoc2Controls() {
+  const qc = useQueryClient()
+  const [collapsed, setCollapsed]   = useState(false)
+  const [editingId, setEditingId]   = useState<string | null>(null)
+  const [editForm, setEditForm]     = useState({ status: 'IN_PLACE', evidenceNote: '' })
+
+  const { data, isLoading } = useQuery<{ controls: LiveControl[] }>({
+    queryKey: ['live-compliance-controls'],
+    queryFn:  () => api.get('/admin/kangqore-immp/aegis/compliance-controls').then(r => r.data),
+    staleTime: 60_000,
+  })
+
+  const update = useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: Record<string, string> }) =>
+      api.patch(`/admin/kangqore-immp/aegis/compliance-controls/${id}`, payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['live-compliance-controls'] })
+      setEditingId(null)
+    },
+  })
+
+  const controls = data?.controls ?? []
+  const inPlace  = controls.filter(c => c.status === 'IN_PLACE').length
+  const missing  = controls.filter(c => c.status === 'MISSING').length
+
+  return (
+    <div className="rounded-2xl border overflow-hidden" style={{ background: 'var(--os-card)', borderColor: 'var(--os-border)' }}>
+      <button onClick={() => setCollapsed(!collapsed)}
+        className="flex items-center gap-3 w-full px-5 py-4 text-left hover:bg-[var(--os-surface-0)] transition-colors"
+        style={{ borderBottom: collapsed ? undefined : '1px solid var(--os-border)' }}>
+        <Database className="w-4 h-4" style={{ color: '#7c3aed' }} />
+        <p className="text-sm font-bold flex-1" style={{ color: 'var(--os-text-1)' }}>SOC2 Live Controls</p>
+        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>{inPlace}/{controls.length} IN PLACE</span>
+        {missing > 0 && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444' }}>{missing} MISSING</span>}
+        {collapsed ? <ChevronDown className="w-4 h-4" style={{ color: 'var(--os-text-2)' }} /> : <ChevronUp className="w-4 h-4" style={{ color: 'var(--os-text-2)' }} />}
+      </button>
+
+      {!collapsed && (
+        isLoading ? (
+          <div className="p-5 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 rounded-xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}</div>
+        ) : (
+          <div className="divide-y" style={{ borderColor: 'var(--os-border)' }}>
+            {controls.map(c => {
+              const cfg = LIVE_STATUS_CFG[c.status] ?? LIVE_STATUS_CFG.MISSING
+              const editing = editingId === c.id
+              return (
+                <div key={c.id} className="px-5 py-4">
+                  <div className="flex items-start gap-3">
+                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded mt-0.5 flex-shrink-0"
+                      style={{ background: 'rgba(124,58,237,0.1)', color: '#7c3aed' }}>{c.code}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="text-xs font-bold" style={{ color: 'var(--os-text-1)' }}>{c.name}</p>
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: cfg.bg, color: cfg.color }}>{cfg.label}</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: 'var(--os-surface-0)', color: 'var(--os-text-2)' }}>{c.criteria}</span>
+                      </div>
+                      <p className="text-[11px] mt-1" style={{ color: 'var(--os-text-2)' }}>{c.description}</p>
+                      {c.evidenceNote && <p className="text-[10px] mt-1 italic" style={{ color: 'var(--os-text-2)' }}>{c.evidenceNote}</p>}
+                      {c.lastTestedAt && <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-2)' }}>Last tested: {new Date(c.lastTestedAt).toLocaleDateString()}</p>}
+                    </div>
+                    <button onClick={() => { setEditingId(editing ? null : c.id); setEditForm({ status: c.status, evidenceNote: c.evidenceNote ?? '' }) }}
+                      className="flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg flex-shrink-0"
+                      style={{ background: 'var(--os-surface-0)', color: 'var(--os-text-2)' }}>
+                      <Pencil className="w-3 h-3" /> Edit
+                    </button>
+                  </div>
+
+                  {editing && (
+                    <div className="mt-3 flex items-center gap-3 pl-10">
+                      <select value={editForm.status}
+                        onChange={e => setEditForm(f => ({ ...f, status: e.target.value }))}
+                        className="px-2 py-1.5 text-[10px] rounded-lg border focus:outline-none"
+                        style={{ borderColor: 'var(--os-border)', background: 'var(--os-surface-0)', color: 'var(--os-text-1)' }}>
+                        {['IN_PLACE', 'PARTIAL', 'MISSING'].map(s => <option key={s}>{s}</option>)}
+                      </select>
+                      <input value={editForm.evidenceNote}
+                        onChange={e => setEditForm(f => ({ ...f, evidenceNote: e.target.value }))}
+                        placeholder="Evidence note…"
+                        className="flex-1 px-2 py-1.5 text-[10px] rounded-lg border focus:outline-none"
+                        style={{ borderColor: 'var(--os-border)', background: 'var(--os-surface-0)', color: 'var(--os-text-1)' }} />
+                      <button disabled={update.isPending}
+                        onClick={() => update.mutate({ id: c.id, payload: { status: editForm.status, evidenceNote: editForm.evidenceNote } })}
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-[10px] font-bold disabled:opacity-40"
+                        style={{ background: '#10b981', color: '#fff' }}>
+                        <Check className="w-3 h-3" /> Save
+                      </button>
+                      <button onClick={() => setEditingId(null)} className="text-[10px] px-2 py-1.5 rounded-lg" style={{ color: 'var(--os-text-2)' }}>Cancel</button>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )
+      )}
     </div>
   )
 }

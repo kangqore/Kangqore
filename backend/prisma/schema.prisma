@@ -6632,3 +6632,184 @@ model MarketplaceListing {
   @@index([category, status])
   @@map("marketplace_listings")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S66 — Marketplace Monetisation: Tiers, Charges, Reviews
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model ListingTier {
+  id           String   @id @default(cuid())
+  name         String   @unique    // FREE | STARTER | PRO | ENTERPRISE
+  monthlyPrice Float    @default(0)
+  quota        Int      @default(0) // API calls/month; 0 = unlimited
+  features     String[]
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@map("listing_tiers")
+}
+
+model MarketplaceCharge {
+  id           String   @id @default(cuid())
+  listingId    String
+  partnerId    String
+  amount       Float
+  platformFee  Float
+  currency     String   @default("USD")
+  status       String   @default("PENDING")  // PENDING | CAPTURED | REFUNDED | FAILED
+  installId    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@index([listingId])
+  @@index([partnerId, status])
+  @@map("marketplace_charges")
+}
+
+model MarketplaceReview {
+  id           String   @id @default(cuid())
+  listingId    String
+  authorId     String
+  rating       Int                              // 1–5
+  comment      String?  @db.Text
+  verifiedBadge Boolean @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@index([listingId])
+  @@unique([listingId, authorId])
+  @@map("marketplace_reviews")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S67 — Multi-Tenant Provisioning
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model TenantOrganisation {
+  id              String   @id @default(cuid())
+  name            String
+  subdomain       String   @unique
+  isolationMode   String   @default("ROW_LEVEL")  // ROW_LEVEL | SCHEMA
+  planTier        String   @default("STARTER")     // STARTER | PRO | ENTERPRISE
+  maxUsers        Int      @default(10)
+  maxAgents       Int      @default(20)
+  blueprintId     String?
+  blueprintVersion String?
+  enabledModules  String[]                         // e.g. ["AEGIS","KEOS","WAANDA"]
+  disabledModules String[]
+  oisSnapshotsPerMonth Int @default(100)
+  apiCallsPerDay  Int      @default(1000)
+  isActive        Boolean  @default(true)
+  provisionedAt   DateTime?
+  provisionedBy   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@index([isActive])
+  @@map("tenant_organisations")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S68 — WAANDA Foundation: Autonomy Config + A/B Traffic Split
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model AutonomyConfig {
+  id              String   @id @default(cuid())
+  gen2TrafficPct  Int      @default(0)   // 0–100; % of calls routed to Gen2 first
+  enabledAt       DateTime?
+  updatedBy       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@map("autonomy_config")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S69 — Customer Success Deep: Health Scores + NPS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model CustomerHealthScore {
+  id                     String   @id @default(cuid())
+  customerId             String                       // links to CustomerPipeline entry
+  oisDelta               Float    @default(0)
+  coigVelocity           Float    @default(0)
+  loginFrequency         Float    @default(0)         // logins/week
+  featureDepth           Float    @default(0)         // 0–1 fraction of modules used
+  signalVolume           Int      @default(0)         // signals/day avg
+  agentUsage             Float    @default(0)         // 0–1 utilisation
+  workflowRuns           Int      @default(0)
+  blueprintVersionLag    Int      @default(0)         // versions behind current
+  npsScore               Float?
+  supportTickets         Int      @default(0)
+  renewalProximityDays   Int      @default(365)
+  daysSinceLastDecision  Int      @default(0)
+  totalScore             Float    @default(0)         // computed weighted sum
+  tier                   String   @default("GREEN")   // GREEN | AMBER | RED
+  computedAt             DateTime @default(now())
+  createdAt              DateTime @default(now())
+  @@index([customerId])
+  @@index([tier])
+  @@map("customer_health_scores")
+}
+
+model NpsResponse {
+  id             String   @id @default(cuid())
+  customerId     String
+  score          Int                              // 0–10
+  category       String                           // DETRACTOR (0–6) | PASSIVE (7–8) | PROMOTER (9–10)
+  comment        String?  @db.Text
+  surveyTrigger  String   @default("MANUAL")      // MANUAL | 30_DAY | 90_DAY | 180_DAY
+  createdBy      String?
+  createdAt      DateTime @default(now())
+  @@index([customerId])
+  @@index([category])
+  @@map("nps_responses")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S70 — Enterprise Security: SOC2 Controls, RBAC Scopes, Security Findings
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model ComplianceControl {
+  id           String    @id @default(cuid())
+  code         String    @unique              // e.g. "CC1.1", "CC6.3"
+  criteria     String                         // CC1–CC9 COSO category
+  name         String
+  description  String    @db.Text
+  status       String    @default("MISSING")  // IN_PLACE | PARTIAL | MISSING
+  evidenceUrl  String?
+  evidenceNote String?   @db.Text
+  lastTestedAt DateTime?
+  ownerId      String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  @@index([criteria, status])
+  @@map("compliance_controls")
+}
+
+model PermissionScope {
+  id         String   @id @default(cuid())
+  userId     String
+  workspace  String                           // e.g. "AEGIS", "KIMMP", "CRM"
+  feature    String                           // e.g. "shield", "signals", "leads"
+  action     String                           // READ | WRITE | ADMIN
+  grantedBy  String
+  createdAt  DateTime @default(now())
+  @@unique([userId, workspace, feature])
+  @@index([userId])
+  @@map("permission_scopes")
+}
+
+model SecurityFinding {
+  id           String    @id @default(cuid())
+  title        String
+  severity     String                          // CRITICAL | HIGH | MEDIUM | LOW
+  status       String    @default("OPEN")      // OPEN | MITIGATED | ACCEPTED
+  cveRef       String?
+  description  String    @db.Text
+  affectedArea String?
+  discoveredAt DateTime  @default(now())
+  resolvedAt   DateTime?
+  resolvedBy   String?
+  createdBy    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  @@index([severity, status])
+  @@map("security_findings")
+}
