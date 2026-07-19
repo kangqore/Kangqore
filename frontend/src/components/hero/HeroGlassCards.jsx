@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { ArrowRight, Cpu } from 'lucide-react';
-import { departmentData } from '../../data/departmentData';
 import { departmentsData, departmentsList } from '../../data/departmentsData';
+import { servicesData } from '../../data/servicesData';
 
 /**
  * Two stacked cards for the hero right panel — chat-bubble style, compact.
@@ -75,16 +75,18 @@ const HeroGlassCards = () => {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [paused, setPaused] = useState(false);
 
-  // Flatten all services from departmentData
+  // Flatten all services from canonical servicesData (62 services)
   const ALL_SERVICES = useMemo(() => {
-    return departmentData.flatMap(dept => 
-      dept.services.map(service => ({
-        name: service.name,
-        dept: dept.name,
-        slug: service.slug,
-        deptSlug: dept.slug
-      }))
-    );
+    return Object.keys(servicesData).map(slug => {
+      const svc = servicesData[slug];
+      const dept = departmentsData[svc.departmentSlug] || {};
+      return {
+        name: svc.name,
+        dept: dept.shortName || dept.name || svc.departmentSlug,
+        slug: slug,
+        deptSlug: svc.departmentSlug
+      };
+    });
   }, []);
 
   useEffect(() => {
