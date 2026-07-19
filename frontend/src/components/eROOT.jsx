@@ -156,7 +156,7 @@ const EROOT = () => {
   const { vibe, topIntent, probabilities } = useHumanContext();
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 2000);
+    const timer = setTimeout(() => setVisible(true), 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -185,12 +185,13 @@ const EROOT = () => {
 
   useEffect(() => {
     if (visible) {
+      const dismissTime = isInHero ? 12000 : 5000;
       const autoDismiss = setTimeout(() => {
         handleClose();
-      }, 12000);
+      }, dismissTime);
       return () => clearTimeout(autoDismiss);
     }
-  }, [visible]);
+  }, [visible, isInHero]);
 
   const handleFeedback = () => {
     setVisible(false);
@@ -252,7 +253,7 @@ const EROOT = () => {
 
   return (
     <div
-      className="fixed bottom-6 right-8 z-[99998] w-[1140px] h-[114px] flex"
+      className="fixed bottom-6 right-8 z-[99998] w-[1064px] h-[114px] flex"
       style={{
         animation: closing
           ? 'feedbackSlideOut 1.8s cubic-bezier(0.7, 0, 0.84, 0) forwards'
