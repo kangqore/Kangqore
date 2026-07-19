@@ -117,6 +117,7 @@ const EQoreChatbot = () => {
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
   const { messages, streaming, conversationId, error, send, reset } = useConcierge({ seedContext });
+  const hasUserMessages = messages.some((m) => m.role === 'user');
 
   // ─── Voice Input (Web Speech API) ──────────────────────────────────
   useEffect(() => {
@@ -235,27 +236,50 @@ const EQoreChatbot = () => {
     }
   }, []);
 
-  // Auto-Popout Logic (Aggressive Proactive Mode)
+  // Auto-Popout & Scroll Detection Logic
+  const [isInHero, setIsInHero] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const inHero = window.location.pathname === '/' && window.scrollY < window.innerHeight * 0.6;
+      setIsInHero(inHero);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.pathname.startsWith('/kangqore-view')) {
       return;
     }
     
-    // Initial popup at 5 seconds
+    // Initial popup at 8 seconds
     const initialTimer = setTimeout(() => {
       setIsOpen(true);
-    }, 5000); 
+    }, 8000); 
     
-    // Recurring popup every 45 seconds
+    // Recurring popup every 60 seconds
     const intervalTimer = setInterval(() => {
       setIsOpen(true);
-    }, 45000);
+    }, 60000);
     
     return () => {
       clearTimeout(initialTimer);
       clearInterval(intervalTimer);
     };
   }, []);
+
+  // Auto-Dismissal Logic
+  useEffect(() => {
+    if (isOpen && !hasUserMessages) {
+      const dismissTime = isInHero ? 12000 : 5000;
+      const autoDismiss = setTimeout(() => {
+        setIsOpen(false);
+      }, dismissTime);
+      return () => clearTimeout(autoDismiss);
+    }
+  }, [isOpen, isInHero, hasUserMessages]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -326,13 +350,9 @@ const EQoreChatbot = () => {
     return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).format(date);
   };
 
-  if (!isOpen) return null;
-
-  const hasUserMessages = messages.some((m) => m.role === 'user');
-
   return (
-    <div className="fixed bottom-[152px] right-8 z-[10001]">
-      <div className={`absolute bottom-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-xl rounded-2xl shadow-2xl ${isMaximized ? 'w-[80vw] sm:w-[75vw] lg:w-[760px] h-[80vh]' : 'w-[300px] sm:w-[350px] lg:w-[400px] h-[520px]'} border border-white/10 overflow-hidden flex flex-col max-h-[85vh] animate-fade-in-up origin-bottom-right transition-all duration-500`}>
+    <div className={`fixed ${isInHero ? 'bottom-[152px]' : 'bottom-[172px]'} right-8 z-[10001] transition-all duration-500 origin-bottom-right ${isOpen ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto' : 'opacity-0 scale-95 translate-y-10 pointer-events-none'}`}>
+      <div className={`absolute bottom-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-xl rounded-2xl shadow-2xl ${isMaximized ? 'w-[80vw] sm:w-[75vw] lg:w-[760px] h-[80vh]' : 'w-[300px] sm:w-[350px] lg:w-[400px] h-[500px]'} border border-white/10 overflow-hidden flex flex-col max-h-[85vh] transition-all duration-500`}>
 
         {/* Header */}
         <div className="bg-[#111115] border-b border-white/5 py-2 px-4 flex items-center justify-between text-white relative overflow-hidden">
