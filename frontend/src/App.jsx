@@ -118,6 +118,7 @@ const ConsultationsModule = React.lazy(() => import('./os/features/consultations
 const DeliveryModule     = React.lazy(() => import('./os/features/delivery').then(m => ({ default: m.DeliveryModule })));
 const GovernanceModule   = React.lazy(() => import('./os/features/governance').then(m => ({ default: m.GovernanceModule })));
 const CommsModule        = React.lazy(() => import('./os/features/comms').then(m => ({ default: m.CommsModule })));
+const CommunitiesModule  = React.lazy(() => import('./os/features/communities').then(m => ({ default: m.CommunitiesModule })));
 const VisitorsModule     = React.lazy(() => import('./os/features/visitors').then(m => ({ default: m.VisitorsModule })));
 const ClientsModule      = React.lazy(() => import('./os/features/clients').then(m => ({ default: m.ClientsModule })));
 const PartnersModule     = React.lazy(() => import('./os/features/partners').then(m => ({ default: m.PartnersModule })));
@@ -264,6 +265,7 @@ function AppContent() {
             <Route path="delivery/*"       element={<DeliveryModule />}      />
             <Route path="governance/*"     element={<GovernanceModule />}    />
             <Route path="comms/*"          element={<CommsModule />}         />
+            <Route path="communities/*"    element={<CommunitiesModule />}   />
             <Route path="visitors/*"       element={<VisitorsModule />}      />
             <Route path="clients/*"        element={<ClientsModule />}       />
             <Route path="partners/*"       element={<PartnersModule />}      />

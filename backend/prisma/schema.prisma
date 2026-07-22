@@ -6847,6 +6847,7 @@ model CommunityPost {
   voteCount   Int      @default(0)
   mediaUrls   String[]
   solved      Boolean  @default(false)
+  flagCount   Int      @default(0)
   category    String?
   tags        String[]
   createdAt   DateTime @default(now())
@@ -6856,6 +6857,7 @@ model CommunityPost {
   votes       CommunityVote[]
   @@index([communityId, createdAt])
   @@index([voteCount])
+  @@index([flagCount])
   @@map("community_posts")
 }
 

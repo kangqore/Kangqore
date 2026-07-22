@@ -36,6 +36,122 @@ communitiesRouter.get('/', async (req, res) => {
   }
 })
 
+// GET /api/communities/search?q=term&limit=20  — must come before /:id
+communitiesRouter.get('/search', async (req, res) => {
+  try {
+    const { q, limit = '20' } = req.query as Record<string, string>
+    if (!q || q.trim().length < 2) return res.json({ posts: [], total: 0 })
+    const term = q.trim()
+    const posts = await (prisma as any).communityPost.findMany({
+      where: {
+        OR: [
+          { title: { contains: term, mode: 'insensitive' } },
+          { body:  { contains: term, mode: 'insensitive' } },
+          { tags:  { has: term.toLowerCase() } },
+        ],
+      },
+      take: Math.min(parseInt(limit), 50),
+      orderBy: { createdAt: 'desc' },
+      include: { community: { select: { name: true, color: true, slug: true } } },
+    })
+    res.json({ posts, total: posts.length })
+  } catch (e) { res.status(500).json({ error: (e as Error).message }) }
+})
+
+// GET /api/communities/mod/stats  — moderation stats per community
+communitiesRouter.get('/mod/stats', requireAuth, async (req, res) => {
+  try {
+    const groups = await (prisma as any).communityGroup.findMany({
+      orderBy: { name: 'asc' },
+      include: {
+        _count: { select: { posts: true, members: true } },
+      },
+    })
+    const flagged = await (prisma as any).communityPost.groupBy({
+      by: ['communityId'],
+      where: { flagCount: { gt: 0 } },
+      _sum: { flagCount: true },
+      _count: { id: true },
+    })
+    const flaggedMap = Object.fromEntries(flagged.map((f: any) => [f.communityId, { count: f._count.id, total: f._sum.flagCount ?? 0 }]))
+    const stats = groups.map((g: any) => ({
+      id: g.id, name: g.name, slug: g.slug, color: g.color,
+      posts: g._count.posts, members: g._count.members,
+      flagged: flaggedMap[g.id]?.count ?? 0,
+    }))
+    res.json(stats)
+  } catch (e) { res.status(500).json({ error: (e as Error).message }) }
+})
+
+// GET /api/communities/mod/flagged?limit=50  — posts with flags
+communitiesRouter.get('/mod/flagged', requireAuth, async (req, res) => {
+  try {
+    const { limit = '50' } = req.query as Record<string, string>
+    const posts = await (prisma as any).communityPost.findMany({
+      where: { flagCount: { gt: 0 } },
+      orderBy: { flagCount: 'desc' },
+      take: parseInt(limit),
+      include: { community: { select: { name: true, color: true, slug: true } } },
+    })
+    res.json({ posts, total: posts.length })
+  } catch (e) { res.status(500).json({ error: (e as Error).message }) }
+})
+
+// POST /api/communities/digest/trigger  — generate KIMMP weekly digest per community
+communitiesRouter.post('/digest/trigger', requireAuth, async (req, res) => {
+  try {
+    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    const groups = await (prisma as any).communityGroup.findMany({ select: { id: true, name: true, slug: true } })
+    const signals = []
+    for (const g of groups) {
+      const top = await (prisma as any).communityPost.findMany({
+        where: { communityId: g.id, createdAt: { gte: since } },
+        orderBy: [{ voteCount: 'desc' }, { replyCount: 'desc' }],
+        take: 3,
+        select: { title: true, voteCount: true, replyCount: true },
+      })
+      if (top.length === 0) continue
+      const summary = top.map((p: any, i: number) => `${i + 1}. "${p.title}" (${p.voteCount} votes, ${p.replyCount} replies)`).join(' · ')
+      const sig = await (prisma as any).kimmpSignal.create({
+        data: {
+          type: 'COMMUNITY_DIGEST',
+          priority: 'low',
+          title: `Weekly Digest: ${g.name}`,
+          summary: `Top posts this week — ${summary}`,
+          module: 'Communities',
+          confidence: 100,
+        },
+      }).catch(() => null)
+      if (sig) signals.push(sig)
+    }
+    res.json({ ok: true, generated: signals.length })
+  } catch (e) { res.status(500).json({ error: (e as Error).message }) }
+})
+
+// GET /api/communities/feed?sort=hot|new|top&page=1&limit=20&category=all  — must come before /:id
+communitiesRouter.get('/feed', async (req, res) => {
+  try {
+    await seedCommunities()
+    const { sort = 'hot', page = '1', limit = '20', category } = req.query as Record<string, string>
+    const skip  = (parseInt(page) - 1) * parseInt(limit)
+    const where: any = {}
+    if (category && category !== 'all') where.category = category
+
+    const orderBy = sort === 'new' ? { createdAt: 'desc' as const }
+      : sort === 'top' ? { voteCount: 'desc' as const }
+      : [{ pinned: 'desc' as const }, { replyCount: 'desc' as const }, { voteCount: 'desc' as const }]
+
+    const [posts, total] = await Promise.all([
+      (prisma as any).communityPost.findMany({
+        where, orderBy, skip, take: parseInt(limit),
+        include: { community: { select: { name: true, color: true, slug: true } }, comments: { orderBy: { createdAt: 'asc' as const }, take: 3 } },
+      }),
+      (prisma as any).communityPost.count({ where }),
+    ])
+    res.json({ posts, total, page: parseInt(page), limit: parseInt(limit) })
+  } catch (e) { res.status(500).json({ error: (e as Error).message }) }
+})
+
 // POST /api/communities — admin only
 communitiesRouter.post('/', requireAuth, async (req, res) => {
   try {
@@ -70,7 +186,7 @@ communitiesRouter.get('/:id/posts', async (req, res) => {
 
     const orderBy = sort === 'new' ? { createdAt: 'desc' }
       : sort === 'top' ? { voteCount: 'desc' }
-      : [{ pinned: 'desc' }, { replyCount: 'desc' }, { voteCount: 'desc' }]  // hot
+      : [{ pinned: 'desc' }, { replyCount: 'desc' }, { voteCount: 'desc' }]
 
     const [posts, total] = await Promise.all([
       (prisma as any).communityPost.findMany({
@@ -96,6 +212,24 @@ communitiesRouter.post('/:id/posts', requireAuth, async (req, res) => {
   } catch (e) { res.status(500).json({ error: (e as Error).message }) }
 })
 
+// POST /api/communities/posts/:pid/flag  — toggle flag on a post
+communitiesRouter.post('/posts/:pid/flag', requireAuth, async (req, res) => {
+  try {
+    const { reason } = req.body
+    const post = await (prisma as any).communityPost.update({
+      where: { id: req.params.pid },
+      data: { flagCount: { increment: 1 } },
+      select: { id: true, flagCount: true, title: true },
+    })
+    if (post.flagCount === 1) {
+      await (prisma as any).kimmpSignal.create({
+        data: { type: 'CONTENT_FLAGGED', priority: 'medium', title: `Post flagged: ${post.title}`, summary: reason ? `Reason: ${reason}` : 'Community member flagged this post for review.', module: 'Communities', confidence: 80 },
+      }).catch(() => {})
+    }
+    res.json({ flagCount: post.flagCount })
+  } catch (e) { res.status(500).json({ error: (e as Error).message }) }
+})
+
 // POST /api/communities/posts/:pid/comments
 communitiesRouter.post('/posts/:pid/comments', requireAuth, async (req, res) => {
   try {
@@ -109,6 +243,15 @@ communitiesRouter.post('/posts/:pid/comments', requireAuth, async (req, res) => 
       where: { id: req.params.pid },
       data: { replyCount: { increment: 1 } },
     })
+
+    // Parse @mentions and emit KIMMP signal per mentioned username
+    const mentions = (body as string).match(/@(\w+)/g)?.map((m: string) => m.slice(1)) ?? []
+    if (mentions.length > 0) {
+      await (prisma as any).kimmpSignal.create({
+        data: { type: 'COMMUNITY_MENTION', priority: 'low', title: `@mention in community post`, summary: `${user?.name ?? 'Someone'} mentioned @${mentions.join(', @')} in a comment.`, module: 'Communities', confidence: 95 },
+      }).catch(() => {})
+    }
+
     // KIMMP trending signal when post reaches 10+ comments
     const post = await (prisma as any).communityPost.findUnique({ where: { id: req.params.pid }, select: { replyCount: true, title: true } })
     if (post && post.replyCount >= 10 && post.replyCount % 10 === 0) {
@@ -162,29 +305,5 @@ communitiesRouter.delete('/comments/:cid', requireAuth, async (req, res) => {
     const comment = await (prisma as any).communityComment.delete({ where: { id: req.params.cid } })
     await (prisma as any).communityPost.update({ where: { id: comment.postId }, data: { replyCount: { decrement: 1 } } })
     res.json({ ok: true })
-  } catch (e) { res.status(500).json({ error: (e as Error).message }) }
-})
-
-// GET /api/communities/feed?sort=hot|new|top&page=1&limit=20&category=all
-communitiesRouter.get('/feed', async (req, res) => {
-  try {
-    await seedCommunities()
-    const { sort = 'hot', page = '1', limit = '20', category } = req.query as Record<string, string>
-    const skip  = (parseInt(page) - 1) * parseInt(limit)
-    const where: any = {}
-    if (category && category !== 'all') where.category = category
-
-    const orderBy = sort === 'new' ? { createdAt: 'desc' as const }
-      : sort === 'top' ? { voteCount: 'desc' as const }
-      : [{ pinned: 'desc' as const }, { replyCount: 'desc' as const }, { voteCount: 'desc' as const }]
-
-    const [posts, total] = await Promise.all([
-      (prisma as any).communityPost.findMany({
-        where, orderBy, skip, take: parseInt(limit),
-        include: { community: { select: { name: true, color: true, slug: true } }, comments: { orderBy: { createdAt: 'asc' as const }, take: 3 } },
-      }),
-      (prisma as any).communityPost.count({ where }),
-    ])
-    res.json({ posts, total, page: parseInt(page), limit: parseInt(limit) })
   } catch (e) { res.status(500).json({ error: (e as Error).message }) }
 })
