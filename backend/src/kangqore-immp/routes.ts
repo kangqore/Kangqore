@@ -4092,3 +4092,129 @@ kangqoreImmpRoutes.post('/billing/subscribe', requireAuth, requireRole(['ADMIN']
     res.json({ ok: true, ...result })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
+
+// ════════════════════════════════════════════════════════════════════════════
+// S89 — Customer One Blueprint: generate, list, export, provision
+// ════════════════════════════════════════════════════════════════════════════
+import {
+  createCustomerBlueprint,
+  provisionCustomer,
+  buildBlueprintSpec,
+} from './services/customerBlueprint.service'
+
+// POST /admin/kangqore-immp/customers/blueprint
+// Generate a blueprint spec (persisted as DRAFT).
+kangqoreImmpRoutes.post('/customers/blueprint', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const {
+      customerName, industry, planTier = 'PRO', size = '51–200 employees',
+      oisBaseline = 62.0, oisTarget = 75.0,
+      enabledModules = ['projects', 'finance', 'sales', 'hr', 'leadership'],
+      packId,
+    } = req.body
+    if (!customerName) return res.status(400).json({ error: 'customerName required' })
+    const blueprint = await createCustomerBlueprint({
+      customerName, industry: industry ?? 'Enterprise', planTier, size,
+      oisBaseline, oisTarget, enabledModules, packId,
+    })
+    res.status(201).json(blueprint)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/customers/blueprints
+// List all CustomerBlueprint records.
+kangqoreImmpRoutes.get('/customers/blueprints', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const blueprints = await (prisma as any).customerBlueprint.findMany({
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true, customerName: true, tenantId: true, version: true, planTier: true,
+        industry: true, oisBaseline: true, oisTarget: true, status: true,
+        deployedAt: true, deployedBy: true, createdAt: true, enabledModules: true,
+      },
+    })
+    res.json({ blueprints, total: blueprints.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/customers/blueprints/:id/export
+// Return full JSON spec for download.
+kangqoreImmpRoutes.get('/customers/blueprints/:id/export', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const record = await (prisma as any).customerBlueprint.findUnique({ where: { id: req.params.id } })
+    if (!record) return res.status(404).json({ error: 'Blueprint not found' })
+    res.setHeader('Content-Type', 'application/json')
+    res.setHeader('Content-Disposition', `attachment; filename="blueprint-${record.customerName.replace(/\s+/g, '-').toLowerCase()}-${record.version}.json"`)
+    res.send(JSON.stringify(record.spec, null, 2))
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/customers/provision-one
+// One-shot: TenantOrganisation + CustomerBlueprint + KIMMP signal.
+kangqoreImmpRoutes.post('/customers/provision-one', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const {
+      customerName = 'Birla Digital Labs',
+      subdomain    = 'birla-digital',
+      industry     = 'Digital Transformation · Enterprise Technology',
+      planTier     = 'ENTERPRISE',
+      size         = '201–500 employees',
+      oisBaseline  = 62.0,
+      oisTarget    = 75.0,
+      enabledModules = ['projects', 'finance', 'sales', 'hr', 'leadership'],
+      packId,
+    } = req.body
+
+    const result = await provisionCustomer({
+      customerName, subdomain, industry, planTier, size,
+      oisBaseline, oisTarget, enabledModules, packId,
+      deployedBy: userId,
+    })
+
+    res.status(201).json({
+      ok: true,
+      tenantId:    result.tenant.id,
+      blueprintId: result.blueprint.id,
+      subdomain:   result.tenant.subdomain,
+      oisBaseline,
+      oisTarget,
+      message:     `Customer One provisioned: ${customerName}`,
+    })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/customers/customer-one
+// Live data for the Customer One page (blueprint + tenant + OIS).
+kangqoreImmpRoutes.get('/customers/customer-one', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    // Most recent ACTIVE blueprint
+    const blueprint = await (prisma as any).customerBlueprint.findFirst({
+      where: { status: { in: ['ACTIVE', 'DRAFT'] } },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    // Tenant linked to that blueprint (if provisioned)
+    let tenant: any = null
+    if (blueprint?.tenantId) {
+      tenant = await (prisma as any).tenantOrganisation.findUnique({ where: { id: blueprint.tenantId } })
+    }
+
+    // Latest OIS score from gate8
+    let oisCurrent: number | null = null
+    try {
+      const gate8 = await (prisma as any).platformMetric.findFirst({
+        where: { key: 'ois_score' },
+        orderBy: { recordedAt: 'desc' },
+      })
+      if (gate8) oisCurrent = gate8.value
+    } catch { /* gate8 table may not exist */ }
+
+    res.json({
+      blueprint: blueprint ?? null,
+      tenant:    tenant ?? null,
+      provisioned: !!tenant,
+      oisCurrent,
+    })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})

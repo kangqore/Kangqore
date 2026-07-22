@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
-  CheckCircle2, Circle, Clock, Target, Zap, TrendingUp,
+  CheckCircle2, Circle, Target, Zap, TrendingUp,
   Building2, Brain, FileJson, Users, Calendar, ChevronRight,
-  Award, AlertTriangle, Sparkles, Lock, BarChart2, ArrowUpRight,
-  GitBranch, Activity, Lightbulb, RefreshCw,
+  Award, Sparkles, Lock, BarChart2, ArrowUpRight,
+  Activity, Lightbulb, Download, Play,
 } from 'lucide-react'
 import { api } from '@lib/api'
 
@@ -21,14 +21,12 @@ const BLUE = '#3b82f6'
 const AMB  = '#f59e0b'
 const RED  = '#ef4444'
 
-// ── Customer One constants ─────────────────────────────────────────────────────
-const C1_NAME          = 'Birla Digital Labs'
-const C1_INDUSTRY      = 'Digital Transformation · Enterprise Technology'
-const ACTIVATION_DATE  = '2026-07-17'
-const OIS_DAY0         = 62.0
-const OIS_TARGET_90D   = 75.0
-const COIG_TARGET      = +(OIS_TARGET_90D - OIS_DAY0).toFixed(1)
-const BLUEPRINT_V      = 'v1.1'
+// ── Fallback constants (used when backend not yet provisioned) ─────────────────
+const DEFAULT_C1_NAME    = 'Birla Digital Labs'
+const DEFAULT_INDUSTRY   = 'Digital Transformation · Enterprise Technology'
+const DEFAULT_ACTIVATION = '2026-07-17'
+const DEFAULT_OIS_DAY0   = 62.0
+const DEFAULT_OIS_TARGET = 75.0
 
 const GAP_LEVERS = [
   { label: 'Decision Pipeline',    current: 58, target: 78, weight: 0.22, pillar: 'Decision Intelligence' },
@@ -88,21 +86,21 @@ const PACK_CONTENTS = [
 const CHECKLIST = [
   { id: 'blueprint-gen',   label: 'Blueprint Generated',             done: true,  when: '2026-07-15',  desc: 'PS Pack v1.0 distilled and packaged as blueprint.json' },
   { id: 'blueprint-act',   label: 'Blueprint Activated',             done: true,  when: '2026-07-17',  desc: 'Birla Digital Labs blueprint deployed to Kangqore View' },
-  { id: 'ois-baseline',    label: 'OIS Day 0 Baseline Set',          done: true,  when: '2026-07-17',  desc: `Baseline measured: ${OIS_DAY0} — COIG tracking starts now` },
+  { id: 'ois-baseline',    label: 'OIS Day 0 Baseline Set',          done: true,  when: '2026-07-17',  desc: `Baseline measured: ${DEFAULT_OIS_DAY0} — COIG tracking starts now` },
   { id: 'team-onboard',    label: 'Team Onboarding (4 users)',        done: false, when: 'Week 1',      desc: 'Admin, 2 Ops Leads, 1 Finance Lead to complete onboarding' },
   { id: 'first-mission',   label: 'First WAANDA Mission Completed',   done: false, when: 'Week 1',      desc: 'WAANDA executes first Projects workflow autonomously' },
   { id: 'waanda-live',     label: 'WAANDA Live — All Departments',    done: false, when: 'Day 7',       desc: '5-department WAANDA activation complete, intelligence active' },
   { id: 'coig-snap1',      label: 'First COIG Snapshot (Day 30)',     done: false, when: 'Day 30',      desc: 'OIS measured and delta calculated. First COIG report.' },
-  { id: 'qbr1',            label: 'QBR #1 — 90-Day COIG Review',     done: false, when: 'Day 90',      desc: `Target: OIS ${OIS_TARGET_90D} (+${COIG_TARGET} COIG™) reviewed with stakeholders` },
+  { id: 'qbr1',            label: 'QBR #1 — 90-Day COIG Review',     done: false, when: 'Day 90',      desc: `Target: OIS ${DEFAULT_OIS_TARGET} (+${+(DEFAULT_OIS_TARGET - DEFAULT_OIS_DAY0).toFixed(1)} COIG™) reviewed with stakeholders` },
 ]
 
 const MILESTONES_90D = [
-  { day: 0,   label: 'Day 0',   event: 'Blueprint activated · OIS baseline 62.0',     color: TEAL },
-  { day: 7,   label: 'Day 7',   event: 'WAANDA live on 5 departments',                color: PURP },
-  { day: 14,  label: 'Day 14',  event: 'Projects dept fully operational on WAANDA',   color: BLUE },
-  { day: 30,  label: 'Day 30',  event: 'First COIG snapshot · Mid-point review',      color: AMB  },
-  { day: 60,  label: 'Day 60',  event: 'Finance + Sales + HR on WAANDA',              color: BLUE },
-  { day: 90,  label: 'Day 90',  event: `Target OIS ${OIS_TARGET_90D} · COIG +${COIG_TARGET}`,    color: TEAL },
+  { day: 0,   label: 'Day 0',   event: `Blueprint activated · OIS baseline ${DEFAULT_OIS_DAY0}`,  color: TEAL },
+  { day: 7,   label: 'Day 7',   event: 'WAANDA live on 5 departments',                            color: PURP },
+  { day: 14,  label: 'Day 14',  event: 'Projects dept fully operational on WAANDA',               color: BLUE },
+  { day: 30,  label: 'Day 30',  event: 'First COIG snapshot · Mid-point review',                  color: AMB  },
+  { day: 60,  label: 'Day 60',  event: 'Finance + Sales + HR on WAANDA',                          color: BLUE },
+  { day: 90,  label: 'Day 90',  event: `Target OIS ${DEFAULT_OIS_TARGET} · COIG +${+(DEFAULT_OIS_TARGET - DEFAULT_OIS_DAY0).toFixed(1)}`, color: TEAL },
 ]
 
 // ── Stat card ─────────────────────────────────────────────────────────────────
@@ -196,18 +194,48 @@ function CheckItem({ item }: { item: typeof CHECKLIST[0] }) {
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 export function CustomerOnePage() {
-  const activationDate = new Date(ACTIVATION_DATE)
-  const today          = new Date()
-  const daysSince      = Math.max(0, Math.floor((today.getTime() - activationDate.getTime()) / 86400_000))
-  const daysToTarget   = Math.max(0, 90 - daysSince)
-  const doneTasks      = CHECKLIST.filter(c => c.done).length
+  const qc = useQueryClient()
+  const [provisionErr, setProvisionErr] = useState('')
+
+  const { data: c1Data } = useQuery({
+    queryKey: ['customer-one-live'],
+    queryFn: () => api.get('/admin/kangqore-immp/customers/customer-one').then(r => r.data),
+    staleTime: 1000 * 60 * 2,
+  })
 
   const { data: liveOis } = useQuery<{ score: number }>({
     queryKey: ['c1-ois-live'],
     queryFn: () => api.get('/admin/gate8/score').then(r => r.data),
     staleTime: 1000 * 60 * 5,
   })
-  const currentOis = liveOis?.score ?? WEEKLY_COIG[WEEKLY_COIG.length - 1].ois
+
+  const provision = useMutation({
+    mutationFn: () => api.post('/admin/kangqore-immp/customers/provision-one').then(r => r.data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['customer-one-live'] })
+      setProvisionErr('')
+    },
+    onError: (e: any) => setProvisionErr(e?.response?.data?.error ?? e.message),
+  })
+
+  // Derive values — live blueprint overrides defaults
+  const bp            = c1Data?.blueprint
+  const C1_NAME       = bp?.customerName  ?? DEFAULT_C1_NAME
+  const C1_INDUSTRY   = bp?.industry      ?? DEFAULT_INDUSTRY
+  const OIS_DAY0      = bp?.oisBaseline   ?? DEFAULT_OIS_DAY0
+  const OIS_TARGET_90D = bp?.oisTarget    ?? DEFAULT_OIS_TARGET
+  const COIG_TARGET   = +(OIS_TARGET_90D - OIS_DAY0).toFixed(1)
+  const BLUEPRINT_V   = bp ? `v${bp.version}` : 'v1.1'
+  const provisioned   = c1Data?.provisioned ?? false
+  const ACTIVATION_DATE = bp?.deployedAt ? new Date(bp.deployedAt).toISOString().slice(0, 10) : DEFAULT_ACTIVATION
+
+  const activationDate = new Date(ACTIVATION_DATE)
+  const today          = new Date()
+  const daysSince      = Math.max(0, Math.floor((today.getTime() - activationDate.getTime()) / 86400_000))
+  const daysToTarget   = Math.max(0, 90 - daysSince)
+  const doneTasks      = CHECKLIST.filter(c => c.done).length
+
+  const currentOis = c1Data?.oisCurrent ?? liveOis?.score ?? WEEKLY_COIG[WEEKLY_COIG.length - 1].ois
   const coigGained = +(currentOis - OIS_DAY0).toFixed(1)
   const coigPct    = Math.min(100, Math.round((coigGained / COIG_TARGET) * 100))
 
@@ -223,14 +251,40 @@ export function CustomerOnePage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
             <h1 style={{ fontSize: 18, fontWeight: 900, color: T1, letterSpacing: '-.02em' }}>{C1_NAME}</h1>
             <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: TEAL, background: TEAL + '12', padding: '3px 8px', borderRadius: 4 }}>Customer One</span>
-            <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: BLUE, background: BLUE + '12', padding: '3px 8px', borderRadius: 4 }}>Blueprint Active</span>
+            {provisioned
+              ? <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: BLUE, background: BLUE + '12', padding: '3px 8px', borderRadius: 4 }}>Blueprint Active</span>
+              : <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: AMB, background: AMB + '12', padding: '3px 8px', borderRadius: 4 }}>Not Provisioned</span>
+            }
           </div>
           <p style={{ fontSize: 11, color: T2 }}>{C1_INDUSTRY}</p>
+          {provisionErr && <p style={{ fontSize: 10, color: RED, marginTop: 4 }}>{provisionErr}</p>}
         </div>
-        <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{ fontSize: 22, fontWeight: 900, color: TEAL, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>Day {daysSince}</div>
-          <div style={{ fontSize: 10, color: T2, marginTop: 2 }}>of 90-day activation</div>
-          <div style={{ fontSize: 10, color: T3, marginTop: 2 }}>{daysToTarget}d to COIG review</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          {bp && (
+            <a
+              href={`/api/admin/kangqore-immp/customers/blueprints/${bp.id}/export`}
+              download
+              style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, fontWeight: 700, color: PURP, background: PURP + '10', border: `1px solid ${PURP}20`, padding: '6px 10px', borderRadius: 8, textDecoration: 'none' }}
+            >
+              <Download size={11} />
+              blueprint.json
+            </a>
+          )}
+          {!provisioned && (
+            <button
+              onClick={() => provision.mutate()}
+              disabled={provision.isPending}
+              style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, fontWeight: 700, color: '#fff', background: provision.isPending ? TEAL + '60' : TEAL, border: 'none', padding: '7px 12px', borderRadius: 8, cursor: provision.isPending ? 'not-allowed' : 'pointer' }}
+            >
+              <Play size={11} />
+              {provision.isPending ? 'Provisioning…' : 'Provision Customer One'}
+            </button>
+          )}
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: 22, fontWeight: 900, color: TEAL, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>Day {daysSince}</div>
+            <div style={{ fontSize: 10, color: T2, marginTop: 2 }}>of 90-day activation</div>
+            <div style={{ fontSize: 10, color: T3, marginTop: 2 }}>{daysToTarget}d to COIG review</div>
+          </div>
         </div>
       </div>
 
