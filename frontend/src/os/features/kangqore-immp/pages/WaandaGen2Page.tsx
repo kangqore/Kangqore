@@ -646,13 +646,66 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         </div>
       </div>
 
+      {/* ── WAANDAx Server Status ────────────────────────────────────────────── */}
+      <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full" style={{ background: routerStats?.waandaxAvailable ? GRN : RED }} />
+            <p className="text-xs font-bold" style={{ color: T1 }}>WAANDAx Local Server</p>
+            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: routerStats?.waandaxAvailable ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)', color: routerStats?.waandaxAvailable ? GRN : RED }}>
+              {routerStats?.waandaxAvailable ? 'ONLINE' : 'OFFLINE'}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <a
+              href="/api/admin/kangqore-immp/learning/export-jsonl"
+              download
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold"
+              style={{ background: 'rgba(124,58,237,0.1)', color: PURP, textDecoration: 'none' }}
+            >
+              <Download className="w-3 h-3" /> Export JSONL
+            </a>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3 text-[11px]">
+          <div>
+            <span style={{ color: T2 }}>Model path: </span>
+            <span className="font-mono font-bold" style={{ color: routerStats?.waandaxModel ? T1 : RED }}>
+              {routerStats?.waandaxModel ?? 'WAANDAX_MODEL not set'}
+            </span>
+          </div>
+          <div>
+            <span style={{ color: T2 }}>Server URL: </span>
+            <span className="font-mono" style={{ color: T2 }}>{routerStats?.waandaxUrl ?? 'http://localhost:11435'}</span>
+          </div>
+          <div>
+            <span style={{ color: T2 }}>Local calls: </span>
+            <span className="font-bold" style={{ color: GRN }}>{routerStats?.callsWaandax ?? 0}</span>
+          </div>
+          <div>
+            <span style={{ color: T2 }}>Autonomy ratio: </span>
+            <span className="font-bold" style={{ color: PURP }}>{((routerStats?.autonomyRatio ?? 0) * 100).toFixed(1)}%</span>
+          </div>
+        </div>
+        {!routerStats?.waandaxAvailable && (
+          <div className="mt-3 p-2 rounded-lg font-mono text-[10px]" style={{ background: 'rgba(239,68,68,0.06)', color: RED, border: '1px solid rgba(239,68,68,0.2)' }}>
+            cd ~/.kimmp-venv && mlx_lm.server --model {routerStats?.waandaxModel ?? '$WAANDAX_MODEL'} --port 11435
+          </div>
+        )}
+        {routerStats?.waandaxAvailable && routerStats?.waandaxModel && (
+          <p className="text-[11px] mt-2" style={{ color: GRN }}>
+            Router Step 1 active — WAANDAx handles local inference before Claude
+          </p>
+        )}
+      </div>
+
       {/* Router stats header */}
       <div className="rounded-xl p-4 border flex items-center justify-between" style={{ background: CARD, borderColor: BDR }}>
         <div>
           <p className="text-xs font-bold mb-1" style={{ color: T1 }}>Live Router Stats</p>
           <p className="text-[11px]" style={{ color: T2 }}>
             {routerStats
-              ? `${routerStats.callsTotal} total calls · Gen2 ${routerStats.callsGen2 ?? 0} calls (${((routerStats.gen2Ratio ?? 0) * 100).toFixed(1)}%) · Autonomy ${((routerStats.autonomyRatio ?? 0) * 100).toFixed(1)}%`
+              ? `${routerStats.callsTotal} total calls · WAANDAx ${routerStats.callsWaandax ?? 0} · Gen2 ${routerStats.callsGen2 ?? 0} (${((routerStats.gen2Ratio ?? 0) * 100).toFixed(1)}%) · Autonomy ${((routerStats.autonomyRatio ?? 0) * 100).toFixed(1)}%`
               : 'Loading…'}
           </p>
         </div>
@@ -750,7 +803,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
             <Cpu className="w-8 h-8 mx-auto mb-2 opacity-30" />
             <p className="text-sm font-medium" style={{ color: T2 }}>No Gen 2 models registered</p>
             <p className="text-[11px] mt-1" style={{ color: T2 }}>
-              Complete a fine-tune job and register the model ID from Anthropic.
+              Run MLX-LM fine-tune, then use POST /waandax/register-model to register the deployed weights path.
             </p>
           </div>
         ) : (
