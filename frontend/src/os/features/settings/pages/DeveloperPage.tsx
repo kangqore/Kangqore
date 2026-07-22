@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Code2, Key, Plus, Trash2, ExternalLink, Copy, CheckCircle, AlertTriangle, Bot, Activity, RefreshCw, Pause, Play } from 'lucide-react'
+import { Code2, Key, Plus, Trash2, ExternalLink, Copy, CheckCircle, AlertTriangle, Bot, Activity, RefreshCw, Pause, Play, Download, Package } from 'lucide-react'
 import { api } from '@lib/api'
 
 const T1  = 'var(--os-text-1)'
@@ -61,7 +61,7 @@ const STATUS_BG: Record<string, string> = {
 
 // ── Tab navigation ──────────────────────────────────────────────────────────
 
-type Tab = 'keys' | 'agents' | 'endpoints'
+type Tab = 'keys' | 'agents' | 'endpoints' | 'sdk'
 
 export function DeveloperPage() {
   const qc = useQueryClient()
@@ -71,7 +71,7 @@ export function DeveloperPage() {
     <div className="space-y-6 max-w-4xl">
       {/* Tab bar */}
       <div className="flex gap-1 p-1 rounded-xl border" style={{ background: SURF, borderColor: BDR, width: 'fit-content' }}>
-        {([['keys', 'API Keys'], ['agents', 'Registered Agents'], ['endpoints', 'REST API v1']] as const).map(([id, label]) => (
+        {([['keys', 'API Keys'], ['agents', 'Registered Agents'], ['endpoints', 'REST API v1'], ['sdk', 'TypeScript SDK']] as const).map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)}
             className="px-4 py-1.5 rounded-lg text-xs font-bold transition-colors"
             style={tab === id
@@ -82,9 +82,10 @@ export function DeveloperPage() {
         ))}
       </div>
 
-      {tab === 'keys'    && <KeysTab qc={qc} />}
-      {tab === 'agents'  && <AgentsTab qc={qc} />}
+      {tab === 'keys'      && <KeysTab qc={qc} />}
+      {tab === 'agents'    && <AgentsTab qc={qc} />}
       {tab === 'endpoints' && <EndpointsTab />}
+      {tab === 'sdk'       && <SdkTab />}
     </div>
   )
 }
@@ -430,6 +431,139 @@ function AgentsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 // X-KIMMP-Signature: sha256=<hmac>
 // X-KIMMP-Agent-ID:  <your-agent-id>
 // Body: { event, agentId, task, payload, timestamp }`}</pre>
+      </div>
+    </div>
+  )
+}
+
+// ── TypeScript SDK tab ───────────────────────────────────────────────────────
+
+const SDK_QUICKSTART = `import { KangqoreClient } from './kangqore-sdk'
+
+const kq = new KangqoreClient({
+  apiKey:  'kq_live_YOUR_KEY_HERE',
+  baseUrl: 'https://yourdomain.com',
+})
+
+// Latest OIS score
+const { data: [latest] } = await kq.getOIS({ limit: 1 })
+console.log('OIS:', latest.oisScore)
+
+// Ingest a signal from your CRM
+await kq.createSignal({
+  sourceModule:   'crm',
+  signalType:     'deal_won',
+  signalCategory: 'INTENT',
+  signalValue:    'Q3 enterprise deal closed — £250k ACV',
+  confidence:     0.95,
+  severity:       'HIGH',
+})
+
+// Ask KIMMP a strategic question
+const { data: decision } = await kq.createDecision({
+  question: 'Should we expand into BFSI in Q4?',
+})
+console.log('Decision ID:', decision.id)`
+
+const SDK_METHODS = [
+  { group: 'OIS', methods: [
+    { name: 'getOIS(opts?)',                ret: 'Promise<{ data: OISSnapshot[] }>', desc: 'Fetch OIS snapshots (latest first)' },
+    { name: 'createOISSnapshot(scores)',    ret: 'Promise<{ data: OISSnapshot }>',   desc: 'Push an OIS snapshot from an external source' },
+  ]},
+  { group: 'Signals', methods: [
+    { name: 'getSignals(opts?)',            ret: 'Promise<Paginated<Signal>>',       desc: 'List KIMMP signals with filters' },
+    { name: 'createSignal(input)',          ret: 'Promise<{ data: Signal }>',        desc: 'Ingest a new signal into KIMMP' },
+  ]},
+  { group: 'Decisions', methods: [
+    { name: 'getDecisions(opts?)',          ret: 'Promise<Paginated<Decision>>',     desc: 'List strategic decisions' },
+    { name: 'createDecision(input)',        ret: 'Promise<{ data: Decision }>',      desc: 'Submit a question to the KIMMP decision engine' },
+    { name: 'selectDecision(id, selected)', ret: 'Promise<{ data: Decision }>',     desc: 'Record the chosen option + optional outcome' },
+  ]},
+  { group: 'Blueprints', methods: [
+    { name: 'getBlueprints(opts?)',         ret: 'Promise<Paginated<Blueprint>>',    desc: 'List enterprise blueprints' },
+    { name: 'createBlueprint(input)',       ret: 'Promise<{ data: Blueprint }>',     desc: 'Create or import a blueprint spec' },
+  ]},
+]
+
+function SdkTab() {
+  return (
+    <div className="space-y-4">
+      {/* Header card */}
+      <div className="rounded-2xl p-5 border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(124,58,237,0.1)' }}>
+            <Package className="w-5 h-5" style={{ color: PURP }} />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-1">
+              <p className="text-sm font-bold" style={{ color: T1 }}>Kangqore TypeScript SDK</p>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(124,58,237,0.1)', color: PURP }}>v1.0</span>
+            </div>
+            <p className="text-xs font-medium mb-3" style={{ color: T2 }}>
+              Zero-dependency TypeScript/JavaScript client. Uses the native <code className="font-mono">fetch</code> API.
+              Works in Node.js ≥18, Deno, Bun, and all modern browsers.
+            </p>
+            <div className="flex gap-2 flex-wrap">
+              <a
+                href="/api/admin/developer/sdk/typescript"
+                download="kangqore-sdk.ts"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold"
+                style={{ background: 'rgba(124,58,237,0.12)', color: PURP, border: `1px solid rgba(124,58,237,0.2)` }}>
+                <Download className="w-3.5 h-3.5" /> Download kangqore-sdk.ts
+              </a>
+              <a href="/api/docs" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold"
+                style={{ background: 'rgba(87,155,252,0.08)', color: BLUE, border: `1px solid rgba(87,155,252,0.2)` }}>
+                <ExternalLink className="w-3.5 h-3.5" /> OpenAPI Docs
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick-start */}
+      <div className="rounded-2xl border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: BDR }}>
+          <p className="text-sm font-bold" style={{ color: T1 }}>Quick Start</p>
+          <CopyButton text={SDK_QUICKSTART} />
+        </div>
+        <pre className="px-5 py-4 text-xs font-mono overflow-x-auto leading-relaxed" style={{ color: T2 }}>{SDK_QUICKSTART}</pre>
+      </div>
+
+      {/* Method reference */}
+      <div className="rounded-2xl border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="px-5 py-4 border-b" style={{ borderColor: BDR }}>
+          <p className="text-sm font-bold" style={{ color: T1 }}>Method Reference</p>
+          <p className="text-xs mt-0.5" style={{ color: T2 }}>All methods return a Promise and throw on non-2xx responses.</p>
+        </div>
+        <div className="divide-y" style={{ '--tw-divide-color': BDR } as any}>
+          {SDK_METHODS.map(g => (
+            <div key={g.group} className="px-5 py-4">
+              <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: T2 }}>{g.group}</p>
+              <div className="space-y-3">
+                {g.methods.map(m => (
+                  <div key={m.name} className="grid grid-cols-[1fr_auto] gap-4 items-start">
+                    <div>
+                      <code className="text-xs font-mono font-bold" style={{ color: TEAL }}>kq.{m.name}</code>
+                      <p className="text-[11px] mt-0.5" style={{ color: T2 }}>{m.desc}</p>
+                    </div>
+                    <code className="text-[10px] font-mono flex-shrink-0" style={{ color: T2 }}>{m.ret}</code>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Auth note */}
+      <div className="rounded-2xl p-4 border" style={{ background: 'rgba(87,155,252,0.06)', borderColor: 'rgba(87,155,252,0.2)' }}>
+        <p className="text-xs font-medium leading-relaxed" style={{ color: T2 }}>
+          <span className="font-bold" style={{ color: BLUE }}>Authentication:</span> All SDK calls send{' '}
+          <code className="font-mono">Authorization: Bearer kq_live_…</code> automatically.
+          Generate a key in the <button className="underline" style={{ color: BLUE }} onClick={() => {}}>API Keys tab</button>{' '}
+          — keys expire in 365 days by default and can be revoked at any time.
+        </p>
       </div>
     </div>
   )

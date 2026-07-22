@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Users, CalendarDays, GitBranch, BarChart3, Layers, FlaskConical, UserPlus } from 'lucide-react'
+import { Users, CalendarDays, GitBranch, BarChart3, Layers, FlaskConical, UserPlus, PiggyBank } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { SkeletonCard } from '@design-system/components/Skeleton'
 import { api, isDemo } from '@lib/api'
@@ -13,6 +13,7 @@ import { UtilizationPage }       from './pages/UtilizationPage'
 import { SkillsMatrixPage }      from './pages/SkillsMatrixPage'
 import { ScenarioPlanningPage }  from './pages/ScenarioPlanningPage'
 import { HiringCalculatorPage }  from './pages/HiringCalculatorPage'
+import { ProjectFinancePage }    from './pages/ProjectFinancePage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
@@ -23,10 +24,12 @@ const TABS = [
   { path: 'hiring',       label: 'Hiring',      icon: UserPlus     },
   { path: 'assignments',  label: 'Assignments', icon: GitBranch    },
   { path: 'utilization',  label: 'Utilization', icon: BarChart3    },
+  { path: 'finance',      label: 'Finance',     icon: PiggyBank    },
 ]
 
 export function ResourcesModule() {
   const { hydrate } = useResourcesStore()
+  const { pathname } = useLocation()
 
   const { data, isLoading } = useQuery({
     queryKey: ['resources'],
@@ -47,8 +50,6 @@ export function ResourcesModule() {
       </div>
     )
   }
-
-  const { pathname } = useLocation()
 
   return (
     <div>
@@ -82,6 +83,7 @@ export function ResourcesModule() {
           <Route path="hiring"        element={<HiringCalculatorPage />} />
           <Route path="assignments"   element={<AssignmentsPage />}      />
           <Route path="utilization"   element={<UtilizationPage />}      />
+          <Route path="finance"       element={<ProjectFinancePage />}   />
           <Route path="*"             element={<Navigate to="/kangqore-view/admin/resources" replace />} />
         </Routes>
         </motion.div>
