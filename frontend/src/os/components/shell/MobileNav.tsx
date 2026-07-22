@@ -20,13 +20,12 @@ export function MobileNav() {
 
   return (
     <nav
-      className="md:hidden flex-shrink-0"
+      className="flex md:hidden flex-shrink-0"
       style={{
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100,
         background: 'var(--os-sidebar-bg)',
         borderTop: '1px solid var(--os-border)',
         paddingBottom: 'env(safe-area-inset-bottom)',
-        display: 'flex',
       }}
       aria-label="Mobile navigation"
     >
