@@ -6796,6 +6796,18 @@ model PermissionScope {
   @@map("permission_scopes")
 }
 
+model OnboardingState {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  currentStep Int       @default(1)
+  completed   Boolean   @default(false)
+  oisBaseline Float?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  @@map("onboarding_states")
+}
+
 model SecurityFinding {
   id           String    @id @default(cuid())
   title        String
