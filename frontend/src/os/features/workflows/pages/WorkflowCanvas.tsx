@@ -2553,6 +2553,21 @@ export function WorkflowCanvas() {
     setCtxMenu(null); setSaved(false)
   }, [pushHistory, setNodes])
 
+  const wf = workflows.find(w => w.id === selectedId) ?? workflows[0]
+  wfForPresence.current = wf?.id
+
+  // S54 — presence hook (canvasId = workflow id)
+  const { peers, broadcastCursor, broadcastSelect } = useCanvasPresence(wf?.id)
+
+  // S81 — Y.js CRDT: per-user undo/redo, IDB persistence, awareness cursors
+  // Must be declared before the keyboard handler that references undo/redo in its dep array.
+  const authUser = useAuthStore(s => s.user)
+  const {
+    yjsReady: _yjsReady, yjsOnline, yjsPeers, myClientId,
+    canUndo, canRedo, undo, redo,
+    syncToYjs, setMyAwareness,
+  } = useYjsCanvas(wf?.id, setNodes, setEdges)
+
   // Keyboard shortcuts — undo/redo + navigation + selection + share
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -2609,20 +2624,6 @@ export function WorkflowCanvas() {
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [undo, redo, setNodes, duplicateNode, deleteNode, configNodeId])
-
-  const wf = workflows.find(w => w.id === selectedId) ?? workflows[0]
-  wfForPresence.current = wf?.id
-
-  // S54 — presence hook (canvasId = workflow id)
-  const { peers, broadcastCursor, broadcastSelect } = useCanvasPresence(wf?.id)
-
-  // S81 — Y.js CRDT: per-user undo/redo, IDB persistence, awareness cursors
-  const authUser = useAuthStore(s => s.user)
-  const {
-    yjsReady: _yjsReady, yjsOnline, yjsPeers, myClientId,
-    canUndo, canRedo, undo, redo,
-    syncToYjs, setMyAwareness,
-  } = useYjsCanvas(wf?.id, setNodes, setEdges)
 
   // Sync canvas state to Y.js after any node/edge mutation (debounced 300ms)
   useEffect(() => {
