@@ -79,8 +79,14 @@ export function MarketplacePage() {
   })
 
   const install = useMutation({
-    mutationFn: (id: string) => api.post(`/admin/kangqore-immp/marketplace/${id}/install`),
-    onSuccess:  () => qc.invalidateQueries({ queryKey: ['marketplace'] }),
+    mutationFn: (id: string) => api.post(`/admin/kangqore-immp/marketplace/${id}/install`).then(r => r.data),
+    onSuccess: (data: any) => {
+      qc.invalidateQueries({ queryKey: ['marketplace'] })
+      // Paid listing — Stripe returned a checkout URL; redirect to complete payment
+      if (data?.checkoutUrl) {
+        window.location.href = data.checkoutUrl
+      }
+    },
   })
 
   const listings = (data?.listings ?? []).filter(l =>

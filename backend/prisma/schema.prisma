@@ -6638,30 +6638,35 @@ model MarketplaceListing {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 model ListingTier {
-  id           String   @id @default(cuid())
-  name         String   @unique    // FREE | STARTER | PRO | ENTERPRISE
-  monthlyPrice Float    @default(0)
-  quota        Int      @default(0) // API calls/month; 0 = unlimited
-  features     String[]
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id             String   @id @default(cuid())
+  name           String   @unique    // FREE | STARTER | PRO | ENTERPRISE
+  monthlyPrice   Float    @default(0)
+  quota          Int      @default(0) // API calls/month; 0 = unlimited
+  features       String[]
+  isActive       Boolean  @default(true)
+  stripeProductId String?
+  stripePriceId   String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
   @@map("listing_tiers")
 }
 
 model MarketplaceCharge {
-  id           String   @id @default(cuid())
-  listingId    String
-  partnerId    String
-  amount       Float
-  platformFee  Float
-  currency     String   @default("USD")
-  status       String   @default("PENDING")  // PENDING | CAPTURED | REFUNDED | FAILED
-  installId    String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                    String   @id @default(cuid())
+  listingId             String
+  partnerId             String
+  amount                Float
+  platformFee           Float
+  currency              String   @default("USD")
+  status                String   @default("PENDING")  // PENDING | CAPTURED | REFUNDED | FAILED
+  installId             String?
+  stripePaymentIntentId String?
+  stripeSessionId       String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
   @@index([listingId])
   @@index([partnerId, status])
+  @@index([stripeSessionId])
   @@map("marketplace_charges")
 }
 
@@ -6684,25 +6689,30 @@ model MarketplaceReview {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 model TenantOrganisation {
-  id              String   @id @default(cuid())
-  name            String
-  subdomain       String   @unique
-  isolationMode   String   @default("ROW_LEVEL")  // ROW_LEVEL | SCHEMA
-  planTier        String   @default("STARTER")     // STARTER | PRO | ENTERPRISE
-  maxUsers        Int      @default(10)
-  maxAgents       Int      @default(20)
-  blueprintId     String?
-  blueprintVersion String?
-  enabledModules  String[]                         // e.g. ["AEGIS","KEOS","WAANDA"]
-  disabledModules String[]
-  oisSnapshotsPerMonth Int @default(100)
-  apiCallsPerDay  Int      @default(1000)
-  isActive        Boolean  @default(true)
-  provisionedAt   DateTime?
-  provisionedBy   String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                   String    @id @default(cuid())
+  name                 String
+  subdomain            String    @unique
+  isolationMode        String    @default("ROW_LEVEL")  // ROW_LEVEL | SCHEMA
+  planTier             String    @default("STARTER")     // STARTER | PRO | ENTERPRISE
+  maxUsers             Int       @default(10)
+  maxAgents            Int       @default(20)
+  blueprintId          String?
+  blueprintVersion     String?
+  enabledModules       String[]                          // e.g. ["AEGIS","KEOS","WAANDA"]
+  disabledModules      String[]
+  oisSnapshotsPerMonth Int       @default(100)
+  apiCallsPerDay       Int       @default(1000)
+  isActive             Boolean   @default(true)
+  provisionedAt        DateTime?
+  provisionedBy        String?
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  subscriptionStatus   String?   // trial | active | past_due | churned
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
   @@index([isActive])
+  @@index([stripeCustomerId])
   @@map("tenant_organisations")
 }
 
