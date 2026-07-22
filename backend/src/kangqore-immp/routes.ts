@@ -2464,6 +2464,7 @@ Generate 3 kpiTargets from the pack KPIs, a 3-phase timeline (Discovery, Deploym
 // ─── Multi-Agent Coordination ─────────────────────────────────────────────────
 import { KimmpAgentCoordinator, SpecialistAgent } from './agents/kimmpAgentCoordinator.service'
 import { KimmpContextAssembler } from './context/kimmpContextAssembler.service'
+import { enqueue as gen3Enqueue } from './gen3Executor.service'
 
 const ALL_SPECIALISTS: SpecialistAgent[] = [
   'SIGNAL_READ','GOAL_CHECK','FINANCIAL_SNAPSHOT','LEAD_ANALYSIS',
@@ -3729,6 +3730,14 @@ kangqoreImmpRoutes.post('/gen3/plans', requireAuth, requireRole(['ADMIN']), asyn
   try {
     const { goal } = req.body
     if (!goal) return res.status(400).json({ error: 'goal required' })
+
+    // Concurrency check — reject if already at limit
+    const maxConcurrent = parseInt(process.env.GEN3_MAX_CONCURRENT_PLANS ?? '3', 10)
+    const activeCount = await (prisma as any).planDecompositionTree.count({ where: { status: 'ACTIVE' } })
+    if (activeCount >= maxConcurrent) {
+      return res.status(429).json({ error: `Concurrency limit reached (${activeCount}/${maxConcurrent} active plans). Wait for a plan to complete.` })
+    }
+
     const deployedModel = await (prisma as any).gen2Model.findFirst({ where: { isDeployed: true } })
     const subtasks = [
       { id: '1', label: 'Understand objective', status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Parse goal semantics', 'Retrieve relevant memory', 'Identify constraints'] },
@@ -3741,6 +3750,10 @@ kangqoreImmpRoutes.post('/gen3/plans', requireAuth, requireRole(['ADMIN']), asyn
     const plan = await (prisma as any).planDecompositionTree.create({
       data: { goal, subtasks, status: 'PENDING', gen2ModelId: deployedModel?.id ?? null, createdBy: (req as any).user?.id },
     })
+
+    // Auto-execute — no human gate required (S80)
+    gen3Enqueue(plan)
+
     res.status(201).json(plan)
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
@@ -3774,12 +3787,6 @@ kangqoreImmpRoutes.patch('/gen3/plans/:id', requireAuth, requireRole(['ADMIN']),
     if (failureCount >= 3)          data.replannedAt   = new Date()
 
     const plan = await (prisma as any).planDecompositionTree.update({ where: { id: req.params.id }, data })
-    // Fire KimmpSignal when plan completes
-    if (status === 'DONE' || status === 'FAILED') {
-      await (prisma as any).kimmpSignal.create({
-        data: { type: 'GEN3_PLAN_' + status, priority: status === 'FAILED' ? 'high' : 'medium', title: `Gen3 Plan ${status === 'DONE' ? 'completed' : 'failed'}: ${plan.goal.slice(0, 80)}`, summary: `PlanDecompositionTree ${plan.id} reached terminal state: ${status}`, module: 'Gen3', confidence: 95 },
-      }).catch(() => {})
-    }
     res.json(plan)
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })

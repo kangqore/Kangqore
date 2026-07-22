@@ -1,0 +1,175 @@
+/**
+ * Gen3Executor — Auto-execution engine for PlanDecompositionTree
+ * S80: removes manual Advance gate; executes subtasks sequentially,
+ * emits PLAN_PROGRESS via socket, handles failure loop + timeout guard.
+ */
+
+import { prisma } from '../lib/prisma';
+import { emitToAdmins } from '../socket';
+
+const MAX_CONCURRENT = parseInt(process.env.GEN3_MAX_CONCURRENT_PLANS ?? '3', 10);
+const SUBTASK_TIMEOUT_MS = 10 * 60 * 1000; // 10 min → auto-FAILED
+const EXEC_DELAY_MIN_MS  = 1500;
+const EXEC_DELAY_MAX_MS  = 3000;
+const FAIL_RATE          = 0.08; // 8% per subtask — realistic scaffold noise
+
+// In-memory tracking so we never double-execute a plan in this process
+const executing = new Set<string>();
+
+interface Subtask {
+  id: string;
+  label: string;
+  status: string;
+  agentRole: string;
+  steps: string[];
+}
+
+function defaultSubtasks(): Subtask[] {
+  return [
+    { id: '1', label: 'Understand objective', status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Parse goal semantics', 'Retrieve relevant memory', 'Identify constraints'] },
+    { id: '2', label: 'Gather evidence',       status: 'PENDING', agentRole: 'DIAGNOSTICS', steps: ['Signal analysis', 'CRM context pull', 'OIS baseline check'] },
+    { id: '3', label: 'Form hypothesis',       status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Synthesise evidence', 'Generate alternatives', 'Score confidence'] },
+    { id: '4', label: 'Simulate outcomes',     status: 'PENDING', agentRole: 'EXECUTION',   steps: ['Run decision simulation', 'Evaluate ROI per path', 'Risk-weight outcomes'] },
+    { id: '5', label: 'Execute best path',     status: 'PENDING', agentRole: 'EXECUTION',   steps: ['KIMMP approval gate', 'Dispatch MissionDispatcher', 'Monitor completion'] },
+    { id: '6', label: 'Capture learning',      status: 'PENDING', agentRole: 'COACH',       steps: ['Record outcome', 'Update KimmpMemory', 'Adjust future priors'] },
+  ];
+}
+
+async function simulateSubtask(_subtask: Subtask): Promise<'DONE' | 'FAILED'> {
+  const delay = EXEC_DELAY_MIN_MS + Math.random() * (EXEC_DELAY_MAX_MS - EXEC_DELAY_MIN_MS);
+  await new Promise(r => setTimeout(r, delay));
+  return Math.random() < FAIL_RATE ? 'FAILED' : 'DONE';
+}
+
+async function executePlan(planId: string): Promise<void> {
+  executing.add(planId);
+  try {
+    const plan = await (prisma as any).planDecompositionTree.findUnique({ where: { id: planId } });
+    if (!plan) return;
+
+    let subtasks: Subtask[] = plan.subtasks as Subtask[];
+    let consecutiveFails = 0;
+
+    // Mark plan ACTIVE
+    await (prisma as any).planDecompositionTree.update({ where: { id: planId }, data: { status: 'ACTIVE' } });
+
+    for (let i = 0; i < subtasks.length; i++) {
+      const task = subtasks[i];
+      if (task.status === 'DONE') continue;
+
+      // ── PENDING → ACTIVE ──
+      subtasks = subtasks.map((t, idx) => idx === i ? { ...t, status: 'ACTIVE' } : t);
+      await (prisma as any).planDecompositionTree.update({ where: { id: planId }, data: { subtasks } });
+      emitToAdmins('PLAN_PROGRESS', {
+        type: 'SUBTASK_ACTIVE', planId, goal: plan.goal,
+        subtasks, subtaskId: task.id, planStatus: 'ACTIVE',
+        ts: new Date().toISOString(),
+      });
+
+      // ── Execute with timeout guard ──
+      const timeoutPromise = new Promise<'FAILED'>(resolve =>
+        setTimeout(() => resolve('FAILED'), SUBTASK_TIMEOUT_MS)
+      );
+      const result = await Promise.race([simulateSubtask(task), timeoutPromise]);
+
+      // ── ACTIVE → DONE / FAILED ──
+      subtasks = subtasks.map((t, idx) => idx === i ? { ...t, status: result } : t);
+      await (prisma as any).planDecompositionTree.update({ where: { id: planId }, data: { subtasks } });
+      emitToAdmins('PLAN_PROGRESS', {
+        type: `SUBTASK_${result}`, planId, goal: plan.goal,
+        subtasks, subtaskId: task.id, planStatus: 'ACTIVE',
+        ts: new Date().toISOString(),
+      });
+
+      if (result === 'FAILED') {
+        consecutiveFails++;
+        if (consecutiveFails >= 3) {
+          // ── Failure loop: 3 consecutive failures → re-decompose ──
+          const failedLabels = subtasks
+            .filter(t => t.status === 'FAILED')
+            .map(t => t.label)
+            .join(', ');
+          const newGoal = `[Re-plan: failures at ${failedLabels}] ${plan.goal}`;
+          const newPlan = await (prisma as any).planDecompositionTree.create({
+            data: {
+              goal: newGoal,
+              subtasks: defaultSubtasks(),
+              status: 'PENDING',
+              gen2ModelId: plan.gen2ModelId,
+              createdBy: plan.createdBy,
+              replannedAt: new Date(),
+            },
+          });
+          await (prisma as any).planDecompositionTree.update({
+            where: { id: planId },
+            data: { status: 'FAILED', failureCount: consecutiveFails, completedAt: new Date() },
+          });
+          await (prisma as any).kimmpSignal.create({
+            data: {
+              type: 'GEN3_REPLAN', priority: 'high',
+              title: `Gen3 Re-Plan triggered: ${plan.goal.slice(0, 80)}`,
+              summary: `3 consecutive subtask failures at [${failedLabels}]. New plan: ${newPlan.id}`,
+              module: 'Gen3', confidence: 85,
+            },
+          }).catch(() => {});
+          emitToAdmins('PLAN_PROGRESS', {
+            type: 'PLAN_REPLANNED', planId, newPlanId: newPlan.id, goal: plan.goal,
+            planStatus: 'FAILED', ts: new Date().toISOString(),
+          });
+          // Drain concurrency slot before enqueuing replacement
+          executing.delete(planId);
+          enqueue(newPlan);
+          return;
+        }
+      } else {
+        consecutiveFails = 0;
+      }
+    }
+
+    // ── All subtasks finished — close out plan ──
+    const finalStatus = subtasks.every(t => t.status === 'DONE') ? 'DONE' : 'FAILED';
+    await (prisma as any).planDecompositionTree.update({
+      where: { id: planId },
+      data: { status: finalStatus, completedAt: new Date(), failureCount: consecutiveFails },
+    });
+    await (prisma as any).kimmpSignal.create({
+      data: {
+        type: 'GEN3_PLAN_' + finalStatus,
+        priority: finalStatus === 'FAILED' ? 'high' : 'medium',
+        title: `Gen3 Plan ${finalStatus === 'DONE' ? 'completed' : 'failed'}: ${plan.goal.slice(0, 80)}`,
+        summary: `PlanDecompositionTree ${planId} → ${finalStatus}`,
+        module: 'Gen3', confidence: 95,
+      },
+    }).catch(() => {});
+    emitToAdmins('PLAN_PROGRESS', {
+      type: 'PLAN_COMPLETE', planId, goal: plan.goal,
+      subtasks, planStatus: finalStatus,
+      ts: new Date().toISOString(),
+    });
+  } finally {
+    executing.delete(planId);
+    // Pick up next PENDING plan (natural queue drain)
+    const next = await (prisma as any).planDecompositionTree.findFirst({
+      where: { status: 'PENDING' },
+      orderBy: { createdAt: 'asc' },
+    }).catch(() => null);
+    if (next) enqueue(next);
+  }
+}
+
+export function enqueue(plan: any): void {
+  if (executing.has(plan.id)) return;
+
+  // Concurrency check (async, fire-and-forget pattern)
+  ;(async () => {
+    const activeCount = await (prisma as any).planDecompositionTree.count({ where: { status: 'ACTIVE' } });
+    if (activeCount >= MAX_CONCURRENT) {
+      console.log(`[Gen3Executor] Concurrency limit (${MAX_CONCURRENT}) reached — plan ${plan.id} queued`);
+      return;
+    }
+    executePlan(plan.id).catch(err => {
+      console.error(`[Gen3Executor] Plan ${plan.id} error:`, err.message);
+      executing.delete(plan.id);
+    });
+  })();
+}

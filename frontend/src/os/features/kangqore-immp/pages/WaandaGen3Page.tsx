@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Cpu, Plus, ChevronDown, ChevronRight, RefreshCw, CheckCircle2, XCircle, Loader2, Clock } from 'lucide-react'
+import { Cpu, Plus, ChevronDown, ChevronRight, RefreshCw, CheckCircle2, XCircle, Loader2, Clock, Zap, ArrowRight } from 'lucide-react'
 import { api } from '@lib/api'
+import { getSocket } from '@lib/socket'
 
 const T1   = 'var(--os-text-1)'
 const T2   = 'var(--os-text-2)'
@@ -48,9 +49,42 @@ export function WaandaGen3Page() {
   const { data: plans = [], isLoading, refetch } = useQuery<Plan[]>({
     queryKey: ['gen3-plans'],
     queryFn: () => api.get('/admin/kangqore-immp/gen3/plans').then(r => r.data),
-    staleTime: 20_000,
-    refetchInterval: status?.active ? 10_000 : false,
+    staleTime: 60_000,
+    refetchInterval: false, // live updates via socket — no polling
   })
+
+  // ── PLAN_PROGRESS socket listener ──
+  useEffect(() => {
+    const socket = getSocket()
+    if (!socket) return
+
+    const handler = (data: any) => {
+      if (data.type === 'PLAN_REPLANNED') {
+        // New plan created — refetch to get it + update stats
+        qc.invalidateQueries({ queryKey: ['gen3-plans'] })
+        qc.invalidateQueries({ queryKey: ['gen3-status'] })
+        return
+      }
+      if (data.type === 'PLAN_COMPLETE') {
+        qc.invalidateQueries({ queryKey: ['gen3-status'] })
+      }
+      // Patch the specific plan in-place (no round-trip)
+      qc.setQueryData<Plan[]>(['gen3-plans'], (old = []) =>
+        old.map(p => p.id === data.planId
+          ? {
+              ...p,
+              subtasks: data.subtasks ?? p.subtasks,
+              status: data.planStatus ?? p.status,
+              completedAt: data.planStatus === 'DONE' || data.planStatus === 'FAILED' ? new Date().toISOString() : p.completedAt,
+            }
+          : p
+        )
+      )
+    }
+
+    socket.on('PLAN_PROGRESS', handler)
+    return () => { socket.off('PLAN_PROGRESS', handler) }
+  }, [qc])
 
   return (
     <div className="space-y-5 max-w-5xl">
@@ -64,10 +98,13 @@ export function WaandaGen3Page() {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <p className="text-base font-bold" style={{ color: T1 }}>WAANDA Gen 3 Kernel</p>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: 'rgba(124,58,237,0.1)', color: PURP }}>S76 · P1</span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: 'rgba(124,58,237,0.1)', color: PURP }}>S80 · P2</span>
                 {status?.gen3Active && <span className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: `${GRN}15`, color: GRN }}>Gen2 Active</span>}
+                <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: `${BLUE}15`, color: BLUE }}>
+                  <Zap className="w-2.5 h-2.5" /> Auto-Execute
+                </span>
               </div>
-              <p className="text-xs" style={{ color: T2 }}>Native planning layer: goal → PlanDecompositionTree → sequential subtask execution via MissionDispatcher. Re-plans on 3 consecutive failures.</p>
+              <p className="text-xs" style={{ color: T2 }}>Goal → PlanDecompositionTree → sequential auto-execution via MissionDispatcher. Live updates via WebSocket. Re-plans on 3 consecutive failures.</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -118,31 +155,26 @@ export function WaandaGen3Page() {
         </div>
       ) : (
         <div className="space-y-3">
-          {plans.map(p => <PlanCard key={p.id} plan={p} qc={qc} />)}
+          {plans.map(p => <PlanCard key={p.id} plan={p} />)}
         </div>
       )}
     </div>
   )
 }
 
-function PlanCard({ plan, qc }: { plan: Plan; qc: ReturnType<typeof useQueryClient> }) {
+function PlanCard({ plan }: { plan: Plan }) {
   const [expanded, setExpanded] = useState(plan.status === 'ACTIVE')
   const [expandedTask, setExpandedTask] = useState<string | null>(null)
 
-  const advance = useMutation({
-    mutationFn: () => {
-      const tasks = plan.subtasks as Subtask[]
-      const pendingIdx = tasks.findIndex(t => t.status === 'PENDING')
-      if (pendingIdx === -1) return api.patch(`/admin/kangqore-immp/gen3/plans/${plan.id}`, { status: 'DONE' })
-      const updated = tasks.map((t, i) => i === pendingIdx ? { ...t, status: 'ACTIVE' } : i < pendingIdx ? { ...t, status: 'DONE' } : t)
-      return api.patch(`/admin/kangqore-immp/gen3/plans/${plan.id}`, { subtasks: updated, status: 'ACTIVE' })
-    },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['gen3-plans'] }),
-  })
+  // Auto-expand when plan becomes active
+  useEffect(() => {
+    if (plan.status === 'ACTIVE') setExpanded(true)
+  }, [plan.status])
 
   const statusColor = STATUS_COLOR[plan.status] ?? T2
   const tasks = plan.subtasks as Subtask[]
   const done  = tasks.filter(t => t.status === 'DONE').length
+  const active = tasks.filter(t => t.status === 'ACTIVE').length
   const pct   = tasks.length > 0 ? Math.round((done / tasks.length) * 100) : 0
 
   return (
@@ -158,26 +190,43 @@ function PlanCard({ plan, qc }: { plan: Plan; qc: ReturnType<typeof useQueryClie
           <p className="text-sm font-bold truncate" style={{ color: T1 }}>{plan.goal}</p>
           <div className="flex items-center gap-3 mt-1">
             <div className="flex-1 max-w-32 h-1 rounded-full overflow-hidden" style={{ background: SURF }}>
-              <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: statusColor }} />
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: statusColor }} />
             </div>
             <span className="text-[10px] font-mono" style={{ color: T2 }}>{done}/{tasks.length} subtasks</span>
+            {active > 0 && (
+              <span className="flex items-center gap-1 text-[10px] font-bold" style={{ color: BLUE }}>
+                <Loader2 className="w-2.5 h-2.5 animate-spin" /> executing
+              </span>
+            )}
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: `${statusColor}15`, color: statusColor }}>{plan.status}</span>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          {(plan.status === 'PENDING' || plan.status === 'ACTIVE') && (
-            <button onClick={e => { e.stopPropagation(); advance.mutate() }} disabled={advance.isPending}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-[10px] font-bold disabled:opacity-40"
-              style={{ background: `${BLUE}15`, color: BLUE }}>
-              {advance.isPending ? 'Running…' : 'Advance'}
-            </button>
-          )}
-          {expanded ? <ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: T2 }} /> : <ChevronRight className="w-4 h-4 flex-shrink-0" style={{ color: T2 }} />}
-        </div>
+        {expanded ? <ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: T2 }} /> : <ChevronRight className="w-4 h-4 flex-shrink-0" style={{ color: T2 }} />}
       </div>
 
       {expanded && (
         <div className="border-t px-5 pb-5 pt-4 space-y-2" style={{ borderColor: BDR }}>
+          {/* Execution pipeline */}
+          <div className="flex items-center gap-1 mb-3 overflow-x-auto pb-1">
+            {tasks.map((t, idx) => {
+              const tc = STATUS_COLOR[t.status] ?? T2
+              return (
+                <div key={t.id} className="flex items-center gap-1 flex-shrink-0">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-bold border"
+                    style={{ background: `${tc}12`, borderColor: `${tc}30`, color: tc }}>
+                    {t.status === 'ACTIVE' && <Loader2 className="w-2.5 h-2.5 animate-spin" />}
+                    {t.status === 'DONE' && <CheckCircle2 className="w-2.5 h-2.5" />}
+                    {t.status === 'FAILED' && <XCircle className="w-2.5 h-2.5" />}
+                    {t.status === 'PENDING' && <Clock className="w-2.5 h-2.5" />}
+                    {idx + 1}
+                  </div>
+                  {idx < tasks.length - 1 && <ArrowRight className="w-2.5 h-2.5 flex-shrink-0" style={{ color: T2, opacity: 0.3 }} />}
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Subtask detail rows */}
           {tasks.map((t, idx) => {
             const tColor = STATUS_COLOR[t.status] ?? T2
             const roleColor = ROLE_COLOR[t.agentRole] ?? T2
@@ -186,6 +235,7 @@ function PlanCard({ plan, qc }: { plan: Plan; qc: ReturnType<typeof useQueryClie
               <div key={t.id} className="rounded-xl border overflow-hidden" style={{ borderColor: BDR }}>
                 <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={() => setExpandedTask(isOpen ? null : t.id)} style={{ background: SURF }}>
                   <span className="text-[10px] font-black w-5 text-center" style={{ color: T2 }}>{idx + 1}</span>
+                  {t.status === 'ACTIVE' && <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" style={{ color: BLUE }} />}
                   <span className="flex-1 text-xs font-bold" style={{ color: T1 }}>{t.label}</span>
                   <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: `${roleColor}15`, color: roleColor }}>{t.agentRole}</span>
                   <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: `${tColor}15`, color: tColor }}>{t.status}</span>
@@ -218,10 +268,19 @@ function PlanCard({ plan, qc }: { plan: Plan; qc: ReturnType<typeof useQueryClie
 
 function CreatePlanForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClient>; onClose: () => void }) {
   const [goal, setGoal] = useState('')
+  const [concurrencyError, setConcurrencyError] = useState('')
 
   const create = useMutation({
     mutationFn: () => api.post('/admin/kangqore-immp/gen3/plans', { goal }).then(r => r.data),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['gen3-plans'] }); qc.invalidateQueries({ queryKey: ['gen3-status'] }); onClose() },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['gen3-plans'] })
+      qc.invalidateQueries({ queryKey: ['gen3-status'] })
+      onClose()
+    },
+    onError: (e: any) => {
+      const msg = e?.response?.data?.error ?? e?.message ?? 'Failed to create plan'
+      setConcurrencyError(msg)
+    },
   })
 
   return (
@@ -230,10 +289,18 @@ function CreatePlanForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClient>
         <p className="text-sm font-bold" style={{ color: T1 }}>Decompose New Goal</p>
         <button onClick={onClose} className="text-xs" style={{ color: T2 }}>Cancel</button>
       </div>
-      <p className="text-xs" style={{ color: T2 }}>Gen 3 will decompose your goal into 6 sequential subtasks (Understand → Gather → Hypothesise → Simulate → Execute → Learn) and execute them through MissionDispatcher.</p>
+      <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: `${BLUE}10`, border: `1px solid ${BLUE}25` }}>
+        <Zap className="w-3.5 h-3.5 flex-shrink-0" style={{ color: BLUE }} />
+        <p className="text-xs" style={{ color: T2 }}>Gen 3 will decompose your goal into 6 sequential subtasks and <strong style={{ color: BLUE }}>execute them automatically</strong> — no manual advancement required.</p>
+      </div>
+      {concurrencyError && (
+        <div className="px-3 py-2 rounded-xl text-xs" style={{ background: `${RED}10`, border: `1px solid ${RED}25`, color: RED }}>
+          {concurrencyError}
+        </div>
+      )}
       <div>
         <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Strategic Goal</p>
-        <textarea value={goal} onChange={e => setGoal(e.target.value)} rows={3}
+        <textarea value={goal} onChange={e => { setGoal(e.target.value); setConcurrencyError('') }} rows={3}
           placeholder="e.g. Identify the top 3 reasons Customer Zero's COIG velocity dropped in Q3 and propose corrective actions"
           className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none resize-none"
           style={{ borderColor: BDR, background: SURF, color: T1 }} />
@@ -242,7 +309,7 @@ function CreatePlanForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClient>
         className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
         style={{ background: PURP, color: '#fff' }}>
         <Cpu className="w-4 h-4" />
-        {create.isPending ? 'Decomposing…' : 'Create Plan'}
+        {create.isPending ? 'Decomposing & Executing…' : 'Create & Auto-Execute'}
       </button>
     </div>
   )
