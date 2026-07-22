@@ -130,6 +130,11 @@ app.use(cors({
   origin: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5500', 'http://127.0.0.1:3000', 'http://127.0.0.1:3001', 'http://10.23.184.152:3000', 'http://10.23.184.152:3001'],
   credentials: true
 }));
+// S88: capture raw body for Stripe webhook signature verification (must precede express.json)
+app.use('/api/admin/kangqore-immp/billing/webhook', express.raw({ type: 'application/json' }), (req: any, _res: any, next: any) => {
+  req.rawBody = req.body
+  next()
+})
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ extended: true, limit: '500mb' }));
 

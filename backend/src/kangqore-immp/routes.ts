@@ -2465,6 +2465,10 @@ Generate 3 kpiTargets from the pack KPIs, a 3-phase timeline (Discovery, Deploym
 import { KimmpAgentCoordinator, SpecialistAgent } from './agents/kimmpAgentCoordinator.service'
 import { KimmpContextAssembler } from './context/kimmpContextAssembler.service'
 import { enqueue as gen3Enqueue } from './gen3Executor.service'
+import {
+  stripeEnabled, syncTiersToStripe, createCheckoutSession,
+  upsertSubscription, getRevenueMetrics, getStripe, mapStripeStatus,
+} from './services/stripe.service'
 
 const ALL_SPECIALISTS: SpecialistAgent[] = [
   'SIGNAL_READ','GOAL_CHECK','FINANCIAL_SNAPSHOT','LEAD_ANALYSIS',
@@ -2741,7 +2745,37 @@ kangqoreImmpRoutes.post('/marketplace/:id/install', requireAuth, requireRole(['A
     const listing = await (prisma as any).marketplaceListing.findUnique({ where: { id: req.params.id } })
     if (!listing) return res.status(404).json({ error: 'Listing not found' })
 
-    // Increment install count
+    // Paid listing — create Stripe Checkout Session
+    if (listing.price > 0) {
+      const partnerId = (req as any).user?.userId ?? 'system'
+      const origin    = req.headers.origin ?? 'http://localhost:3001'
+      if (!stripeEnabled()) {
+        // Stripe not configured — create a PENDING charge record only
+        const charge = await (prisma as any).marketplaceCharge.create({
+          data: {
+            listingId:  listing.id,
+            partnerId,
+            amount:     listing.price,
+            platformFee: listing.price * listing.platformFee,
+            currency:   'USD',
+            status:     'PENDING',
+          },
+        })
+        logger.warn(`[Billing] Stripe not configured — charge ${charge.id} created as PENDING (no payment collected)`)
+        return res.json({ ok: true, installed: listing.name, chargeId: charge.id, checkoutUrl: null, stripeReady: false })
+      }
+      const { sessionId, url, chargeId } = await createCheckoutSession({
+        listingId:  listing.id,
+        amount:     listing.price,
+        currency:   'USD',
+        partnerId,
+        successUrl: `${origin}/kangqore-view/admin/kangqore-immp/marketplace?installed=${listing.id}`,
+        cancelUrl:  `${origin}/kangqore-view/admin/kangqore-immp/marketplace`,
+      })
+      return res.json({ ok: true, installed: listing.name, chargeId, checkoutUrl: url, sessionId, stripeReady: true })
+    }
+
+    // Free listing — increment install count
     await (prisma as any).marketplaceListing.update({ where: { id: req.params.id }, data: { installCount: { increment: 1 } } })
 
     // If agent type — auto-register via webhook stub
@@ -2754,7 +2788,7 @@ kangqoreImmpRoutes.post('/marketplace/:id/install', requireAuth, requireRole(['A
       })
     }
 
-    res.json({ ok: true, installed: listing.name, agentRegistration: agentRegistration ? { id: agentRegistration.id } : null })
+    res.json({ ok: true, installed: listing.name, agentRegistration: agentRegistration ? { id: agentRegistration.id } : null, stripeReady: stripeEnabled() })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
@@ -3886,5 +3920,175 @@ kangqoreImmpRoutes.get('/gen3/status', requireAuth, requireRole(['ADMIN']), asyn
       (prisma as any).gen2Model.findFirst({ where: { isDeployed: true }, select: { providerModelId: true, benchmarkAccuracy: true } }),
     ])
     res.json({ total, active, done, failed, gen3Active: !!deployedModel, deployedModel })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ════════════════════════════════════════════════════════════════════════════
+// S88 — Stripe Billing: product sync · checkout · webhook · subscriptions
+// ════════════════════════════════════════════════════════════════════════════
+
+// POST /admin/kangqore-immp/billing/sync-products
+// Syncs ListingTier rows to Stripe products + recurring prices.
+// Safe to call multiple times — idempotent (stores stripeProductId/stripePriceId).
+kangqoreImmpRoutes.post('/billing/sync-products', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    if (!stripeEnabled()) return res.status(503).json({ error: 'STRIPE_SECRET_KEY not configured' })
+    const result = await syncTiersToStripe()
+    res.json({ ok: true, ...result })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/billing/checkout
+// Creates a Stripe Checkout Session for a paid marketplace listing.
+kangqoreImmpRoutes.post('/billing/checkout', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { listingId, successUrl, cancelUrl } = req.body
+    if (!listingId) return res.status(400).json({ error: 'listingId required' })
+    const partnerId = (req as any).user?.userId ?? 'system'
+    const origin    = req.headers.origin ?? 'http://localhost:3001'
+    const listing   = await (prisma as any).marketplaceListing.findUnique({ where: { id: listingId } })
+    if (!listing)   return res.status(404).json({ error: 'Listing not found' })
+    if (!stripeEnabled()) return res.status(503).json({ error: 'STRIPE_SECRET_KEY not configured' })
+    const { sessionId, url, chargeId } = await createCheckoutSession({
+      listingId,
+      amount:     listing.price,
+      currency:   'USD',
+      partnerId,
+      successUrl: successUrl ?? `${origin}/kangqore-view/admin/kangqore-immp/marketplace?installed=${listingId}`,
+      cancelUrl:  cancelUrl  ?? `${origin}/kangqore-view/admin/kangqore-immp/marketplace`,
+    })
+    res.json({ sessionId, url, chargeId })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/billing/webhook
+// Stripe webhook — must be registered BEFORE the JSON body parser in Express.
+// Verifies signature with STRIPE_WEBHOOK_SECRET, then:
+//   payment_intent.succeeded    → MarketplaceCharge CAPTURED, installCount++
+//   payment_intent.failed       → MarketplaceCharge FAILED
+//   checkout.session.completed  → resolve chargeId via metadata
+//   customer.subscription.*     → update TenantOrganisation subscriptionStatus
+kangqoreImmpRoutes.post('/billing/webhook', async (req, res) => {
+  const sig     = req.headers['stripe-signature'] as string
+  const secret  = process.env.STRIPE_WEBHOOK_SECRET ?? ''
+  const stripe  = getStripe()
+  if (!stripe || !secret) return res.status(503).json({ error: 'Stripe webhook not configured' })
+
+  let event: any
+  try {
+    // req.body is a Buffer when rawBody middleware is active; fall back to string
+    const payload = (req as any).rawBody ?? req.body
+    event = stripe.webhooks.constructEvent(payload, sig, secret)
+  } catch (e: any) {
+    logger.warn(`[Billing] Webhook signature verification failed: ${e.message}`)
+    return res.status(400).json({ error: `Webhook error: ${e.message}` })
+  }
+
+  try {
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object as any
+      const chargeId = session.metadata?.chargeId
+      if (chargeId) {
+        await (prisma as any).marketplaceCharge.update({
+          where: { id: chargeId },
+          data:  { status: 'CAPTURED', stripeSessionId: session.id, stripePaymentIntentId: session.payment_intent },
+        })
+        // Increment install count on successful payment
+        const charge = await (prisma as any).marketplaceCharge.findUnique({ where: { id: chargeId } })
+        if (charge?.listingId) {
+          await (prisma as any).marketplaceListing.update({
+            where: { id: charge.listingId },
+            data:  { installCount: { increment: 1 } },
+          })
+        }
+      }
+    }
+
+    if (event.type === 'payment_intent.payment_failed') {
+      const pi       = event.data.object as any
+      const charge   = await (prisma as any).marketplaceCharge.findFirst({ where: { stripePaymentIntentId: pi.id } })
+      if (charge) {
+        await (prisma as any).marketplaceCharge.update({ where: { id: charge.id }, data: { status: 'FAILED' } })
+      }
+    }
+
+    if (['customer.subscription.updated', 'customer.subscription.deleted'].includes(event.type)) {
+      const sub      = event.data.object as any
+      const customerId = sub.customer
+      const tenant   = await (prisma as any).tenantOrganisation.findFirst({ where: { stripeCustomerId: customerId } })
+      if (tenant) {
+        const status      = mapStripeStatus(sub.status)
+        const periodEnd   = new Date(sub.current_period_end * 1000)
+        await (prisma as any).tenantOrganisation.update({
+          where: { id: tenant.id },
+          data:  { subscriptionStatus: status, currentPeriodEnd: periodEnd },
+        })
+      }
+    }
+
+    res.json({ received: true })
+  } catch (e: any) {
+    logger.error(`[Billing] Webhook handler error: ${e.message}`)
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// GET /admin/kangqore-immp/billing/revenue
+// Aggregate revenue metrics from DB (no Stripe API call — fast, no rate limits).
+kangqoreImmpRoutes.get('/billing/revenue', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const metrics = await getRevenueMetrics()
+    res.json({ ...metrics, stripeEnabled: stripeEnabled() })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /admin/kangqore-immp/billing/subscriptions
+// Lists all tenant organisations with their subscription status.
+kangqoreImmpRoutes.get('/billing/subscriptions', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const tenants = await (prisma as any).tenantOrganisation.findMany({
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true, name: true, subdomain: true, planTier: true,
+        stripeCustomerId: true, stripeSubscriptionId: true,
+        subscriptionStatus: true, currentPeriodEnd: true,
+        isActive: true, provisionedAt: true,
+      },
+    })
+    const tiers = await (prisma as any).listingTier.findMany()
+    const tierPrice: Record<string, number> = {}
+    tiers.forEach((t: any) => { tierPrice[t.name] = t.monthlyPrice })
+    const result = tenants.map((t: any) => ({
+      ...t,
+      monthlyValue: tierPrice[t.planTier] ?? 0,
+    }))
+    res.json({ tenants: result, total: result.length, stripeEnabled: stripeEnabled() })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/billing/subscribe
+// Creates or updates a Stripe subscription for a tenant organisation.
+kangqoreImmpRoutes.post('/billing/subscribe', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { tenantId, planTier, tenantEmail } = req.body
+    if (!tenantId || !planTier) return res.status(400).json({ error: 'tenantId and planTier required' })
+    if (!stripeEnabled()) return res.status(503).json({ error: 'STRIPE_SECRET_KEY not configured' })
+
+    const tier = await (prisma as any).listingTier.findUnique({ where: { name: planTier } })
+    if (!tier)          return res.status(404).json({ error: `Tier ${planTier} not found` })
+    if (!tier.stripePriceId) return res.status(400).json({ error: `Tier ${planTier} not synced to Stripe yet — call /billing/sync-products first` })
+
+    const tenant = await (prisma as any).tenantOrganisation.findUnique({ where: { id: tenantId } })
+    if (!tenant) return res.status(404).json({ error: 'Tenant not found' })
+
+    const result = await upsertSubscription({
+      tenantId,
+      stripePriceId: tier.stripePriceId,
+      tenantName:   tenant.name,
+      tenantEmail,
+    })
+    // Update planTier in DB to match
+    await (prisma as any).tenantOrganisation.update({ where: { id: tenantId }, data: { planTier } })
+    res.json({ ok: true, ...result })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
