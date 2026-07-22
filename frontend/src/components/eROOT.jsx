@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { X, ArrowRight, Sparkles, Activity } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import useHumanContext from '../hooks/useHumanContext';
@@ -146,10 +146,14 @@ const firstName = (name) => {
 
 const EROOT = () => {
   const navigate  = useNavigate();
+  const location  = useLocation();
   const { user }  = useAuth();
   const [visible, setVisible]   = useState(false);
   const [closing, setClosing]   = useState(false);
   const [isInHero, setIsInHero] = useState(true);
+  const isHomepage = location.pathname === '/';
+  
+  if (location.pathname.startsWith('/kangqore-view')) return null;
   const ctx = useMemo(() => getSmartContext(), []);
   
   // Hook into the Human Context Intelligence Layer
@@ -157,7 +161,16 @@ const EROOT = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 3000);
-    return () => clearTimeout(timer);
+    
+    const handleCookiesAccepted = () => {
+      setVisible(true);
+    };
+    window.addEventListener('cookies-accepted', handleCookiesAccepted);
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('cookies-accepted', handleCookiesAccepted);
+    };
   }, []);
 
   useEffect(() => {
@@ -174,24 +187,30 @@ const EROOT = () => {
     window.dispatchEvent(new CustomEvent('eroot-visibility', { detail: { visible } }));
   }, [visible]);
 
-  const handleClose = () => {
+  const handleClose = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    if (e && e.stopPropagation) e.stopPropagation();
+    
     setClosing(true);
     setTimeout(() => {
       setClosing(false);
       setVisible(false);
-      setTimeout(() => setVisible(true), 30000);
-    }, 1800);
+      // Only auto-reopen if it wasn't a manual close, or reopen after a much longer delay
+      if (!e) {
+        setTimeout(() => setVisible(true), 30000);
+      }
+    }, 300); // Faster close animation for better UX
   };
 
   useEffect(() => {
-    if (visible) {
+    if (visible && !closing) {
       const dismissTime = isInHero ? 12000 : 5000;
       const autoDismiss = setTimeout(() => {
         handleClose();
       }, dismissTime);
       return () => clearTimeout(autoDismiss);
     }
-  }, [visible, isInHero]);
+  }, [visible, isInHero, closing]);
 
   const handleFeedback = () => {
     setVisible(false);
@@ -253,10 +272,12 @@ const EROOT = () => {
 
   return (
     <div
-      className="fixed bottom-6 right-8 z-[99998] w-[1064px] h-[114px] flex"
+      className="fixed bottom-6 z-[99998] w-[1064px] h-[114px] flex"
       style={{
+        right: (isHomepage && isInHero) ? 'calc(2rem + 3.4cm)' : '2rem',
+        transition: 'right 0.5s ease-in-out',
         animation: closing
-          ? 'feedbackSlideOut 1.8s cubic-bezier(0.7, 0, 0.84, 0) forwards'
+          ? 'feedbackSlideOut 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards'
           : 'feedbackSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       }}
     >
@@ -310,12 +331,12 @@ const EROOT = () => {
 
         {/* Sheen */}
         <div
-          className="absolute inset-0 pointer-events-none z-[3]"
+          className={`absolute inset-0 pointer-events-none z-[3] transition-opacity duration-500 ${isHomepage && isInHero ? 'opacity-0' : 'opacity-100'}`}
           style={{ background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 100%)' }}
         />
 
         {/* Left Side: Avatar + Vibe/Name */}
-        <div className="relative z-10 flex items-center gap-3.5 w-[230px] shrink-0 border-r border-white/5 pr-4">
+        <div className={`relative z-10 flex items-center gap-3.5 w-[230px] shrink-0 pr-4 transition-all duration-500 ${isHomepage && isInHero ? 'border-r-0' : 'border-r border-white/5'}`}>
           {knownUser ? (
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#2564ea] to-[#4fa9d8] flex items-center justify-center flex-shrink-0 shadow-md text-white font-bold text-sm">
               {user.avatarUrl ? (
@@ -346,7 +367,7 @@ const EROOT = () => {
         {/* Center: Message Body */}
         <div className="relative z-10 flex-1 min-w-0 flex flex-col justify-center text-left px-2">
           {contextNote && (
-            <p className="text-[10px] text-cyan-300/80 leading-snug font-semibold drop-shadow-md mb-0.5">
+            <p className="text-[10px] leading-snug font-extrabold drop-shadow-md mb-0.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
               {contextNote}
             </p>
           )}
@@ -361,13 +382,19 @@ const EROOT = () => {
         </div>
 
         {/* Right Side: Action CTAs */}
-        <div className="relative z-10 flex flex-col justify-center items-start gap-1.5 w-[210px] shrink-0 border-l border-white/5 pl-6">
+        <div className={`relative z-10 flex flex-col justify-center items-start gap-1.5 w-[210px] shrink-0 pl-6 transition-all duration-500 ${isHomepage && isInHero ? 'border-l-0' : 'border-l border-white/5'}`}>
           <button
             onClick={handleFeedback}
-            className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-400/10 border border-cyan-400/20 hover:border-cyan-400/40 text-xs font-bold text-cyan-400 hover:text-white hover:bg-cyan-400/20 transition-all duration-200 group drop-shadow-md shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+            className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-[18px] py-[6px] rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/[0.07] backdrop-blur-md border border-white/14 text-white shadow-xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]"
           >
-            <span>Share your thoughts</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
+            <span className="relative z-10 text-white font-bold tracking-wide text-[11px] whitespace-nowrap">
+              Share your thoughts
+            </span>
+            <div className="relative z-10 w-5 h-5 rounded-full bg-white/10 flex items-center justify-center transition-all duration-500 group-hover:bg-white shadow-md">
+              <ArrowRight className="w-3 h-3 text-white group-hover:text-gray-900 transition-all duration-500 group-hover:translate-x-0.5" />
+            </div>
+            <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-cyan-400/50 blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </button>
           {!knownUser && (
             <button
@@ -382,11 +409,12 @@ const EROOT = () => {
 
         {/* Far Right: Close Button */}
         <button
+          type="button"
           onClick={handleClose}
-          className="relative z-10 p-1 rounded-md text-gray-400 hover:text-white transition flex-shrink-0 self-center mr-1"
+          className="relative z-[100] p-2 rounded-md text-gray-400 hover:text-white transition-colors flex-shrink-0 self-center mr-1 cursor-pointer pointer-events-auto"
           aria-label="Dismiss"
         >
-          <X className="w-4 h-4" />
+          <X className="w-4 h-4 pointer-events-none" />
         </button>
       </div>
     </div>

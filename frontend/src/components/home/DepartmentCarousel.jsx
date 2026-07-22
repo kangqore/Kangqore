@@ -28,26 +28,22 @@ import { servicesData } from '../../data/servicesData';
 // the dept-specific entry has no `imageClass` key.
 const DEPT_PRESENTATION = {
   cognition: {
-    image: '/images/departments/dept_bg_1_1778893880482.png',
+    image: '/images/capabilities/app_mod_thick.svg',
   },
   foundry: {
-    image: '/images/departments/dept_bg_2_1778893900884.png',
+    image: '/images/capabilities/cloud_mod_thick.svg',
   },
   reimagine: {
-    image: '/images/departments/dept_bg_3_1778893917993.png',
+    image: '/images/capabilities/infrastructure_mod_thick.svg',
   },
   shield: {
-    image: '/images/departments/dept_bg_4_1778893933258.png',
-    imageClass:
-      'object-cover object-[center_top] scale-[1.25] transition-transform duration-700 group-hover:scale-[1.35]',
+    image: '/images/capabilities/security_mod_thick.svg',
   },
   platforms: {
-    image: '/images/departments/dept_bg_5_1778893951306.png',
+    image: '/images/capabilities/integration_mod_thick.svg',
   },
   growth: {
-    image: '/images/departments/dept_bg_6_1778893966258.png',
-    imageClass:
-      'object-cover object-[70%_top] scale-[1.25] transition-transform duration-700 group-hover:scale-[1.35]',
+    image: '/images/capabilities/data_mod_thick.svg',
   },
 };
 
@@ -159,6 +155,236 @@ const carouselDepartments = departmentsList.map((slug) => {
   };
 });
 
+const BentoDepartmentCard = ({ dept, isExpanded, handleCardClick, toggleExpand, cardPlacement }) => {
+  const [tilt, setTilt] = useState({ x: 0, y: 0, active: false });
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current || isExpanded) return;
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
+    
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((centerY - y) / centerY) * 8; 
+    const rotateY = ((x - centerX) / centerX) * 8;
+    
+    setTilt({ x: rotateX, y: rotateY, active: true });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0, active: false });
+  };
+
+  const transformStyle = tilt.active
+    ? {
+        transform: `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.025, 1.025, 1.025)`,
+        transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease',
+        boxShadow: `0 25px 50px -12px rgba(37,100,234,0.25), 0 12px 24px -10px rgba(0, 0, 0, 0.4)`
+      }
+    : {
+        transform: 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+        transition: 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease',
+      };
+
+  const outcome = dept.businessOutcomes && dept.businessOutcomes[0];
+  const IconComponent = dept.icon;
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={transformStyle}
+      onClick={(e) => handleCardClick(dept.slug, dept.link, e)}
+      className={`group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 block ${cardPlacement} ${
+        isExpanded 
+          ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' 
+          : 'bg-[#0d0e12] border border-white/[0.08] shadow-[0_15px_35px_-5px_rgba(0,0,0,0.85),0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_25px_50px_-8px_rgba(37,100,234,0.3),0_10px_20px_rgba(0,0,0,0.8)]'
+      }`}
+    >
+      {/* 3D Realistic Bevel & Edge Highlights */}
+      {!isExpanded && (
+        <>
+          <div className="absolute inset-0 z-30 pointer-events-none rounded-2xl border border-white/[0.06] shadow-[inset_0_1.5px_0_0_rgba(255,255,255,0.15),inset_0_-1.5px_0_0_rgba(0,0,0,0.6)]" />
+          <div className="absolute inset-x-0 bottom-0 h-[3px] bg-black/40 z-30 pointer-events-none" />
+        </>
+      )}
+
+      {/* Glossy reflection sweep overlay */}
+      {!isExpanded && (
+        <div 
+          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" 
+          style={{
+            transform: tilt.active ? `translate3d(${-tilt.y * 1.5}px, ${tilt.x * 1.5}px, 0)` : 'none',
+            transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)'
+          }}
+        />
+      )}
+
+      {/* Dark hover overlay matching BentoCard */}
+      {!isExpanded && (
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
+      )}
+
+      {/* Background Image */}
+      <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <img
+          src={dept.image}
+          alt={dept.title}
+          className={`w-full h-full object-cover transition-transform duration-700 ${dept.imageClass}`}
+          style={{
+            transform: tilt.active ? `translate3d(${-tilt.y * 0.5}px, ${tilt.x * 0.5}px, 0) scale3d(1.03, 1.03, 1.03)` : 'none',
+            transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)'
+          }}
+        />
+        {/* Balanced overall dark tint for contrast */}
+        <div className="absolute inset-0 bg-black/15 z-[1] transition-colors duration-500" />
+        
+        {/* Premium top gradient vignette */}
+        <div
+          className="absolute inset-x-0 top-0 h-1/3 z-[2]"
+          style={{
+            background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%)',
+          }}
+        />
+        {/* Premium bottom gradient vignette to mask and make white text pop */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-1/3 z-[2]"
+          style={{
+            background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%)',
+          }}
+        />
+      </div>
+
+      {/* Default Content Overlay */}
+      <div className={`relative z-20 h-full flex flex-col justify-between p-8 lg:p-10 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <div className="flex flex-col h-full">
+          <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2 transition-transform duration-300 group-hover:translate-x-1 shrink-0">
+            {dept.title}
+          </h3>
+          <p className="text-xs lg:text-sm font-semibold text-brand-cyan mb-6 group-hover:text-white transition-colors duration-300 shrink-0">
+            {dept.subtitle}
+          </p>
+
+          {/* Description vs Top Services container */}
+          <div className="relative flex-1">
+            {/* Short Description (Visible by default, hidden on hover) */}
+            <p className="bento-desc absolute inset-0 text-white/90 leading-relaxed text-sm lg:text-[15px]">
+              {dept.description}
+            </p>
+
+            {/* Top Services List (Hidden by default, visible on hover) */}
+            <ul className="bento-services absolute inset-0 space-y-2.5">
+              <span className="block text-xs font-bold uppercase tracking-widest text-brand-cyan mb-2.5">Key Services:</span>
+              {dept.topServices.slice(0, 6).map((service, sIdx) => (
+                <li key={sIdx} className="flex items-start text-white/90 text-[13px] lg:text-sm font-medium">
+                  <span className="mr-2 text-brand-cyan opacity-80">✦</span>
+                  {service}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Floating Action Link Button */}
+        <div className="inline-flex items-center text-white font-bold w-fit mt-4 shrink-0 transition-all duration-300 group-hover:translate-x-1.5 text-sm lg:text-base">
+          Learn More
+          <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+        </div>
+      </div>
+
+      {/* Detailed Content Overlay */}
+      <div
+        className={`absolute inset-0 z-30 bg-[#0a0a0c]/98 backdrop-blur-xl p-6 lg:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar transition-all duration-500 ease-in-out border-t border-white/10 ${
+          isExpanded 
+            ? 'opacity-100 pointer-events-auto translate-y-0' 
+            : 'opacity-0 pointer-events-none translate-y-4'
+        }`}
+      >
+        <div className="flex flex-col text-left">
+          {/* Top Row: Icon & Category badge */}
+          <div className="flex items-center justify-between mb-4">
+            {IconComponent && (
+              <div 
+                className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)] text-white relative overflow-hidden group/icon"
+                style={{
+                  background: `linear-gradient(135deg, ${dept.accentColor} 0%, ${dept.accentColor}dd 100%)`,
+                }}
+              >
+                <div className="absolute inset-0 bg-white/20 opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300" />
+                <IconComponent className="w-5.5 h-5.5 sm:w-6 sm:h-6 relative z-10" strokeWidth={1.5} fill="currentColor" />
+              </div>
+            )}
+            <span className="text-[9px] sm:text-xs font-bold text-slate-300 uppercase tracking-widest bg-white/5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/10 font-mono">
+              {dept.serviceCount} Capabilities
+            </span>
+          </div>
+
+          {/* Title & Tagline */}
+          <h4 className="text-xl sm:text-2xl font-bold text-white mb-1 tracking-tight font-display">
+            {dept.title}
+          </h4>
+          <p className="text-[9px] sm:text-xs font-bold text-slate-400 mb-4 uppercase tracking-widest font-mono">
+            {dept.subtitle}
+          </p>
+
+          {/* Outcome Badge in Glass Container */}
+          {outcome && (
+            <div className="mb-4 p-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] backdrop-blur-md">
+              <span 
+                className="text-xl sm:text-2xl font-black shrink-0 tracking-tight leading-none drop-shadow-md"
+                style={{ color: dept.accentColor }}
+              >
+                {outcome.metric}
+              </span>
+              <span className="text-[10px] sm:text-xs text-slate-300 leading-snug font-medium">
+                {outcome.label}
+              </span>
+            </div>
+          )}
+
+          {/* Description */}
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            {dept.description}
+          </p>
+
+          {/* Custom Visual Panel Mockup */}
+          {VISUAL_PANELS[dept.slug]}
+        </div>
+
+        {/* Bottom Link (leaves space for close button via pr-14) */}
+        <div className="pt-4 border-t border-white/5 mt-6 flex justify-between items-center pr-14">
+          <Link
+            to={dept.link}
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-cyan-400 transition-colors group/link"
+          >
+            Explore Full Department
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
+          </Link>
+        </div>
+      </div>
+
+      {/* Floating Plus/X Action Button */}
+      <button
+        onClick={(e) => toggleExpand(dept.slug, e)}
+        className={`toggle-expand-btn absolute bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl ${
+          isExpanded 
+            ? 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-110 active:scale-95' 
+            : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 hover:scale-110 active:scale-95'
+        }`}
+        aria-label={isExpanded ? "Collapse details" : "Expand details"}
+      >
+        {isExpanded ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+      </button>
+    </div>
+  );
+};
+
 const DepartmentCarousel = () => {
   const navigate = useNavigate();
   const [expandedDepts, setExpandedDepts] = useState({});
@@ -251,164 +477,16 @@ const DepartmentCarousel = () => {
           {carouselDepartments.map((dept) => {
             const cardPlacement = getCardClasses(dept.slug);
             const isExpanded = !!expandedDepts[dept.slug];
-            const outcome = dept.businessOutcomes && dept.businessOutcomes[0];
-            const IconComponent = dept.icon;
 
             return (
-              <div
+              <BentoDepartmentCard
                 key={dept.slug}
-                onClick={(e) => handleCardClick(dept.slug, dept.link, e)}
-                className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)] transition-all duration-500 hover:-translate-y-1 block ${cardPlacement} ${
-                  isExpanded 
-                    ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' 
-                    : 'border border-transparent'
-                }`}
-              >
-                {/* Background Image */}
-                <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                  <img
-                    src={dept.image}
-                    alt={dept.title}
-                    className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${dept.imageClass}`}
-                  />
-                  {/* Subtle overall dark tint for contrast */}
-                  <div className="absolute inset-0 bg-black/25 z-[1] group-hover:bg-black/15 transition-colors duration-500" />
-                  
-                  {/* Premium top gradient vignette */}
-                  <div
-                    className="absolute inset-x-0 top-0 h-1/2 z-[2]"
-                    style={{
-                      background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 100%)',
-                    }}
-                  />
-                </div>
-
-                {/* Hover Gradient Overlay */}
-                {!isExpanded && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#2564ea]/90 to-[#4ab6d4]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-                )}
-
-                {/* Default Content Overlay */}
-                <div className={`relative z-20 h-full flex flex-col justify-between p-8 lg:p-10 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                  <div className="flex flex-col h-full">
-                    <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2 transition-transform duration-300 group-hover:translate-x-1 shrink-0">
-                      {dept.title}
-                    </h3>
-                    <p className="text-xs lg:text-sm font-semibold text-brand-cyan mb-6 group-hover:text-white transition-colors duration-300 shrink-0">
-                      {dept.subtitle}
-                    </p>
-
-                    {/* Description vs Top Services container */}
-                    <div className="relative flex-1">
-                      {/* Short Description (Visible by default, hidden on hover) */}
-                      <p className="bento-desc absolute inset-0 text-white/90 leading-relaxed text-sm lg:text-[15px]">
-                        {dept.description}
-                      </p>
-
-                      {/* Top Services List (Hidden by default, visible on hover) */}
-                      <ul className="bento-services absolute inset-0 space-y-2.5">
-                        <span className="block text-xs font-bold uppercase tracking-widest text-brand-cyan mb-2.5">Key Services:</span>
-                        {dept.topServices.slice(0, 6).map((service, sIdx) => (
-                          <li key={sIdx} className="flex items-start text-white/90 text-[13px] lg:text-sm font-medium">
-                            <span className="mr-2 text-brand-cyan opacity-80">✦</span>
-                            {service}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Floating Action Link Button */}
-                  <div className="inline-flex items-center text-white font-bold w-fit mt-4 shrink-0 transition-all duration-300 group-hover:translate-x-1.5 text-sm lg:text-base">
-                    Learn More
-                    <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </div>
-                </div>
-
-                {/* Detailed Content Overlay */}
-                <div
-                  className={`absolute inset-0 z-30 bg-[#0a0a0c]/98 backdrop-blur-xl p-6 lg:p-8 flex flex-col justify-between overflow-y-auto no-scrollbar transition-all duration-500 ease-in-out border-t border-white/10 ${
-                    isExpanded 
-                      ? 'opacity-100 pointer-events-auto translate-y-0' 
-                      : 'opacity-0 pointer-events-none translate-y-4'
-                  }`}
-                >
-                  <div className="flex flex-col text-left">
-                    {/* Top Row: Icon & Category badge */}
-                    <div className="flex items-center justify-between mb-4">
-                      {IconComponent && (
-                        <div 
-                          className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)] text-white relative overflow-hidden group/icon"
-                          style={{
-                            background: `linear-gradient(135deg, ${dept.accentColor} 0%, ${dept.accentColor}dd 100%)`,
-                          }}
-                        >
-                          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300" />
-                          <IconComponent className="w-5.5 h-5.5 sm:w-6 sm:h-6 relative z-10" strokeWidth={1.5} fill="currentColor" />
-                        </div>
-                      )}
-                      <span className="text-[9px] sm:text-xs font-bold text-slate-300 uppercase tracking-widest bg-white/5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/10 font-mono">
-                        {dept.serviceCount} Capabilities
-                      </span>
-                    </div>
-
-                    {/* Title & Tagline */}
-                    <h4 className="text-xl sm:text-2xl font-bold text-white mb-1 tracking-tight font-display">
-                      {dept.title}
-                    </h4>
-                    <p className="text-[9px] sm:text-xs font-bold text-slate-400 mb-4 uppercase tracking-widest font-mono">
-                      {dept.subtitle}
-                    </p>
-
-                    {/* Outcome Badge in Glass Container */}
-                    {outcome && (
-                      <div className="mb-4 p-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] backdrop-blur-md">
-                        <span 
-                          className="text-xl sm:text-2xl font-black shrink-0 tracking-tight leading-none drop-shadow-md"
-                          style={{ color: dept.accentColor }}
-                        >
-                          {outcome.metric}
-                        </span>
-                        <span className="text-[10px] sm:text-xs text-slate-300 leading-snug font-medium">
-                          {outcome.label}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Description */}
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                      {dept.description}
-                    </p>
-
-                    {/* Custom Visual Panel Mockup */}
-                    {VISUAL_PANELS[dept.slug]}
-                  </div>
-
-                  {/* Bottom Link (leaves space for close button via pr-14) */}
-                  <div className="pt-4 border-t border-white/5 mt-6 flex justify-between items-center pr-14">
-                    <Link
-                      to={dept.link}
-                      className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-cyan-400 transition-colors group/link"
-                    >
-                      Explore Full Department
-                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Floating Plus/X Action Button */}
-                <button
-                  onClick={(e) => toggleExpand(dept.slug, e)}
-                  className={`toggle-expand-btn absolute bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl ${
-                    isExpanded 
-                      ? 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-110 active:scale-95' 
-                      : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 hover:scale-110 active:scale-95'
-                  }`}
-                  aria-label={isExpanded ? "Collapse details" : "Expand details"}
-                >
-                  {isExpanded ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-                </button>
-              </div>
+                dept={dept}
+                isExpanded={isExpanded}
+                handleCardClick={handleCardClick}
+                toggleExpand={toggleExpand}
+                cardPlacement={cardPlacement}
+              />
             );
           })}
         </div>

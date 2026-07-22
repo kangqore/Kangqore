@@ -39,12 +39,12 @@ const GlobalAuthPrompt = () => {
       return;
     }
 
-    // Set 30s timer for initial floating prompt
+    // Set 45s timer for initial floating prompt
     const initialTimer = setTimeout(() => {
       if (!user && location.pathname !== '/login') {
         setShowAuthModal(true);
       }
-    }, 30000);
+    }, 45000);
 
     return () => clearTimeout(initialTimer);
   }, [user]);
@@ -53,12 +53,12 @@ const GlobalAuthPrompt = () => {
   const handleCloseAuthModal = () => {
     setShowAuthModal(false);
     
-    // Set 45s repeat timer
+    // Set 70s repeat timer
     const intervalTimer = setTimeout(() => {
       if (!user) {
         setShowAuthModal(true);
       }
-    }, 45000);
+    }, 70000);
 
     // We shouldn't strictly clear it here because it needs to run,
     // but in a real app we might want to store the timeout ID globally to clear it if they login.

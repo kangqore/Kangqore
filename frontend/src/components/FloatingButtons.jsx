@@ -28,6 +28,13 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
+  const [hasUnread, setHasUnread] = useState(false);
+  useEffect(() => {
+    const handleUnread = (e) => setHasUnread(e.detail?.hasUnread || false);
+    window.addEventListener('eqore-unread-status', handleUnread);
+    return () => window.removeEventListener('eqore-unread-status', handleUnread);
+  }, []);
+
   const [isLightBackground, setIsLightBackground] = useState(false);
   const [isErootActive, setIsErootActive] = useState(false);
 
@@ -277,6 +284,9 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
                 alt="eQORE AI" 
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
               />
+              {hasUnread && (
+                <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white dark:border-gray-800 animate-pulse"></span>
+              )}
             </button>
             {/* Tooltip */}
             <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10">

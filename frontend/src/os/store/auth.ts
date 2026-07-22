@@ -179,7 +179,7 @@ export const useAuthStore = create<AuthStore>((set, _get) => {
     loginAsDemo: (role: UserRole = 'ADMIN') => {
       const demoUsers: Record<UserRole, AuthUser> = {
         ADMIN:      { id: 'demo-admin',      name: 'C.O.D.E.',    email: 'admin@kangqore.com',       role: 'ADMIN'      },
-        CLIENT:     { id: 'demo-client',     name: 'Dr. Priya Rao',   email: 'priya@synapsehealth.com',  role: 'CLIENT'     },
+        CLIENT:     { id: 'demo-client',     name: 'Dr. Priya Rao',   email: 'client@kangqore.com',      role: 'CLIENT'     },
         PARTNER:    { id: 'demo-partner',    name: 'Dev Patel',       email: 'dev@kangqore.com',         role: 'PARTNER'    },
         INVESTOR:   { id: 'demo-investor',   name: 'James Whitfield', email: 'james@whitfieldvc.com',    role: 'INVESTOR'   },
         JOB_SEEKER: { id: 'demo-job',        name: 'Mia Johansson',   email: 'mia.j@outlook.com',        role: 'JOB_SEEKER' },

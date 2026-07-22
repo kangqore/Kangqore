@@ -24,6 +24,7 @@ import { useQuery } from '@tanstack/react-query'
 import { api, isDemo } from '@lib/api'
 import { QuickCreateModal, type CreateMode } from '../../components/QuickCreateModal'
 import { ModuleShell }             from '@components/ModuleShell'
+import { Rail }                    from '@components/shell/Rail'
 import { ClientDashboard }         from './pages/ClientDashboard'
 import { ClientProjects }          from './pages/ClientProjects'
 import { ClientInvoices }          from './pages/ClientInvoices'
@@ -150,8 +151,8 @@ function ClientSidebar({ collapsed, onToggle, badgeCounts = {} }: {
 
   return (
     <aside
-      className="flex flex-col h-full flex-shrink-0 transition-all duration-200 select-none relative z-20 bg-[#f6f7fb] dark:bg-[#111111] text-[#323338] dark:text-slate-200"
-      style={{ width: collapsed ? 56 : 220, borderRight: '1px solid var(--os-border)' }}>
+      className="flex flex-col h-full flex-shrink-0 transition-all duration-200 select-none relative z-20 bg-[var(--os-sidebar-bg)] border-r border-[var(--os-border)]"
+      style={{ width: collapsed ? 56 : 220 }}>
 
       {/* Logo area removed, now in ClientTopbar */}
 
@@ -812,6 +813,35 @@ function ClientTopbar({
 // ── Portal shell ──────────────────────────────────────────────────────────────
 import { AmbientBackground } from '../../components/shell/AmbientBackground'
 
+const LIGHT_TOKENS: React.CSSProperties = {
+  background:              'linear-gradient(160deg, #f0f4fc 0%, #eaeffa 50%, #f4f7fd 100%)',
+  color:                   '#0f1117',
+  '--os-bg'             :  '#f0f4fc',
+  '--os-surface-0'      :  '#f8faff',
+  '--os-surface-1'      :  '#ffffff',
+  '--os-surface-2'      :  '#f0f4fd',
+  '--os-surface-3'      :  '#e6ecf7',
+  '--os-glass'          :  'rgba(255,255,255,0.85)',
+  '--os-card'           :  '#ffffff',
+  '--os-sidebar-bg'     :  '#ffffff',
+  '--os-topbar-bg'      :  '#ffffff',
+  '--os-topbar-border'  :  'rgba(37,100,234,0.12)',
+  '--os-border'         :  'rgba(37,100,234,0.13)',
+  '--os-border-subtle'  :  'rgba(37,100,234,0.07)',
+  '--os-border-strong'  :  'rgba(37,100,234,0.24)',
+  '--os-text-1'         :  '#0f1117',
+  '--os-text-2'         :  '#3d4459',
+  '--os-text-3'         :  '#7280a0',
+  '--os-text-4'         :  '#a0aec0',
+  '--os-shadow-sm'      :  '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(37,100,234,0.04)',
+  '--os-shadow-md'      :  '0 4px 16px rgba(37,100,234,0.10), 0 1px 4px rgba(0,0,0,0.05)',
+  '--os-shadow-lg'      :  '0 12px 40px rgba(37,100,234,0.14), 0 4px 8px rgba(0,0,0,0.06)',
+  '--os-shadow-card'    :  '0 1px 3px rgba(0,0,0,0.06), 0 4px 20px rgba(37,100,234,0.09), 0 0 0 1px rgba(37,100,234,0.10)',
+  '--os-shadow-glow'    :  '0 0 24px rgba(37,100,234,0.22)',
+  '--os-blue-dim'       :  'rgba(37,100,234,0.09)',
+  '--os-cyan-dim'       :  'rgba(74,182,212,0.09)',
+} as React.CSSProperties
+
 export function ClientPortal() {
   const [collapsed, setCollapsed] = useState(false)
   const { pathname } = useLocation()
@@ -835,24 +865,7 @@ export function ClientPortal() {
 
   const portalStyle = isWaanda
     ? { background: '#000000', color: '#e2e8f0' }
-    : {
-        background: 'linear-gradient(160deg, #f4f7fe 0%, #edf1fb 50%, #f6f8fd 100%)',
-        color: '#0f1117',
-        '--os-bg':          '#f4f7fe',
-        '--os-card':        '#ffffff',
-        '--os-shadow-card': '0 1px 4px rgba(37,100,234,0.08), 0 6px 24px rgba(37,100,234,0.11), 0 0 0 1px rgba(37,100,234,0.07)',
-        '--os-surface':     'rgba(248,250,255,0.85)',
-        '--os-surface-0':   'rgba(243,247,255,0.7)',
-        '--os-surface-2':   '#eef2fb',
-        '--os-glass':       'rgba(255,255,255,0.72)',
-        '--os-border':      'rgba(37,100,234,0.10)',
-        '--os-border-subtle': 'rgba(37,100,234,0.06)',
-        '--os-text-1':      '#0f1117',
-        '--os-text-2':      '#4b5368',
-        '--os-text-3':      '#8896b0',
-        '--os-shadow-sm':   '0 1px 3px rgba(0,0,0,0.05)',
-        '--os-shadow-md':   '0 4px 16px rgba(37,100,234,0.08), 0 1px 3px rgba(0,0,0,0.04)',
-      }
+    : { ...LIGHT_TOKENS, '--dept-accent': '#14B8A6' }
 
   return (
     <div className="flex flex-col h-screen overflow-hidden relative" style={portalStyle as React.CSSProperties}>
@@ -867,9 +880,10 @@ export function ClientPortal() {
         />
       )}
       <div className="flex flex-1 min-h-0 relative z-10 w-full overflow-hidden">
+        <Rail />
         {!isWaanda && <ClientSidebar collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} badgeCounts={badgeCounts} />}
         <div className={cn(
-          "os-main-content flex flex-col flex-1 min-w-0 overflow-hidden relative z-10",
+          "os-main-content flex flex-col flex-1 min-w-0 overflow-hidden relative z-10 mx-2 md:my-2 md:mr-2 md:rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] shadow-[var(--os-shadow-card)]",
           isWaanda && "!bg-black !m-0 !rounded-none !border-none"
         )}>
         {isBids ? (

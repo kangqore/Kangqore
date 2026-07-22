@@ -4,6 +4,18 @@ import { getVisitorUuid } from './useVisitorIdentity'
 const API = import.meta.env.VITE_BACKEND_URL || ''
 const BATCH_INTERVAL = 5000
 
+const hasPerformanceConsent = () => {
+  const consent = localStorage.getItem('cookieConsent');
+  if (!consent) return false;
+  if (consent === 'accepted') return true;
+  try {
+    const parsed = JSON.parse(consent);
+    return !!parsed.performance;
+  } catch (e) {
+    return false;
+  }
+};
+
 export default function useFootprintTracker() {
   const queueRef      = useRef([])
   const timerRef      = useRef(null)
@@ -11,6 +23,10 @@ export default function useFootprintTracker() {
   const scrollMarksRef = useRef(new Set())
 
   const flush = useCallback(() => {
+    if (!hasPerformanceConsent()) {
+      queueRef.current = [];
+      return;
+    }
     const uuid = getVisitorUuid()
     if (!uuid || !queueRef.current.length) return
 
@@ -30,6 +46,7 @@ export default function useFootprintTracker() {
   }, [])
 
   const push = useCallback((type, path, data = {}) => {
+    if (!hasPerformanceConsent()) return;
     queueRef.current.push({ type, path, data })
     if (!timerRef.current) {
       timerRef.current = setInterval(flush, BATCH_INTERVAL)
@@ -50,7 +67,7 @@ export default function useFootprintTracker() {
       flush()
       if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null }
     }
-  }, [window.location.pathname])
+  }, [window.location.pathname, push, flush])
 
   // SCROLL_DEPTH
   useEffect(() => {

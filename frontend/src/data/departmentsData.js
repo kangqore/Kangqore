@@ -3,7 +3,7 @@
 // Each department owns a defined ordered list of service slugs (canonical, no
 // cross-tagging). All service-level data lives in servicesData.js.
 //
-// ARCHITECTURE: 6 Departments · 61 Services (canonical, single-layer)
+// ARCHITECTURE: 6 Departments · 62 Services (canonical, single-layer)
 // Supersedes the legacy 15-department structure in departmentData.js
 // (note: legacy file is singular `departmentData.js`; this canonical file
 // is plural `departmentsData.js`).
