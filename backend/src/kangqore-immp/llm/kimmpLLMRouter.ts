@@ -31,12 +31,11 @@ import logger from '../../utils/logger'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const OLLAMA_BASE    = process.env.OLLAMA_BASE_URL    || 'http://localhost:11434'
-const LOCAL_MODEL    = process.env.KIMMP_LOCAL_MODEL   || ''
-const FALLBACK_MODEL = process.env.OLLAMA_MODEL        || 'llama3.1:8b'
-const OPENAI_KEY     = process.env.OPENAI_API_KEY      || ''
-const GEMINI_KEY     = process.env.GEMINI_API_KEY      || ''
-const ANTHROPIC_KEY  = process.env.ANTHROPIC_API_KEY   || ''
+const WAANDAX_URL   = process.env.WAANDAX_URL         || 'http://localhost:11435'
+const WAANDAX_MODEL = process.env.WAANDAX_MODEL        || ''
+const OPENAI_KEY    = process.env.OPENAI_API_KEY       || ''
+const GEMINI_KEY    = process.env.GEMINI_API_KEY       || ''
+const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY    || ''
 
 const _anthropic = new Anthropic({ apiKey: ANTHROPIC_KEY })
 
@@ -59,11 +58,11 @@ const FAILURE_THRESHOLD   = 3
 const RECOVERY_TIMEOUT_MS = 60_000
 
 const _cb: Record<string, CircuitBreaker> = {
-  claude: { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
-  openai: { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
-  gemini: { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
-  ollama: { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
-  gen2:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
+  claude:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
+  openai:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
+  gemini:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
+  waandax:  { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
+  gen2:     { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
 }
 
 // Providers in manual maintenance mode (skip entirely)
@@ -153,7 +152,7 @@ function cbFailure(provider: string) {
 
 // ─── In-memory call counters ──────────────────────────────────────────────────
 
-const _counts: Record<string, number> = { claude: 0, openai: 0, gemini: 0, ollama: 0, gen2: 0 }
+const _counts: Record<string, number> = { claude: 0, openai: 0, gemini: 0, waandax: 0, gen2: 0 }
 
 // Cached deployed Gen2 model — refreshed every 5 minutes
 let _gen2ModelId: string | null = null
@@ -189,43 +188,43 @@ async function _getGen2TrafficPct(): Promise<number> {
   return _gen2TrafficPct
 }
 
-// ─── Provider: Ollama (local) ─────────────────────────────────────────────────
+// ─── Provider: WAANDAx (local MLX-LM — OpenAI-compatible) ────────────────────
 
-let _ollamaOk: boolean | null = null
-let _ollamaCheckedAt = 0
+let _waandaxOk: boolean | null = null
+let _waandaxCheckedAt = 0
 
-async function _ollamaAvailable(): Promise<boolean> {
-  if (!LOCAL_MODEL) return false
+async function _waandaxAvailable(): Promise<boolean> {
+  if (!WAANDAX_MODEL) return false
   const now = Date.now()
-  if (_ollamaOk !== null && now - _ollamaCheckedAt < 5 * 60_000) return _ollamaOk
+  if (_waandaxOk !== null && now - _waandaxCheckedAt < 5 * 60_000) return _waandaxOk
   try {
-    const res = await fetch(`${OLLAMA_BASE}/api/tags`, { signal: AbortSignal.timeout(2000) })
-    _ollamaOk = res.ok
+    const res = await fetch(`${WAANDAX_URL}/v1/models`, { signal: AbortSignal.timeout(2000) })
+    _waandaxOk = res.ok
   } catch {
-    _ollamaOk = false
+    _waandaxOk = false
   }
-  _ollamaCheckedAt = Date.now()
-  return _ollamaOk
+  _waandaxCheckedAt = Date.now()
+  return _waandaxOk
 }
 
-async function _callOllama(system: string, user: string, maxTokens: number): Promise<string> {
-  const res = await fetch(`${OLLAMA_BASE}/api/chat`, {
+async function _callWaandax(system: string, user: string, maxTokens: number): Promise<string> {
+  const res = await fetch(`${WAANDAX_URL}/v1/chat/completions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: LOCAL_MODEL || FALLBACK_MODEL,
+      model:       WAANDAX_MODEL,
       messages: [
         { role: 'system', content: system },
         { role: 'user',   content: user },
       ],
-      stream: false,
-      options: { num_predict: maxTokens, temperature: 0.1 },
+      max_tokens:  maxTokens,
+      temperature: 0.1,
     }),
     signal: AbortSignal.timeout(30_000),
   })
-  if (!res.ok) throw new Error(`Ollama ${res.status}`)
+  if (!res.ok) throw new Error(`WAANDAx ${res.status}`)
   const data = await res.json() as any
-  return String(data.message?.content ?? '')
+  return String(data.choices?.[0]?.message?.content ?? '')
 }
 
 // ─── Provider: Claude (Anthropic) ────────────────────────────────────────────
@@ -471,21 +470,21 @@ export async function routedCall(
     }
   }
 
-  // ── 1. Local model (Ollama) — post-graduation priority ──────────────────────
-  if (await _ollamaAvailable() && cbAllow('ollama')) {
+  // ── 1. WAANDAx (local MLX-LM) — post-graduation priority ───────────────────
+  if (await _waandaxAvailable() && cbAllow('waandax')) {
     try {
-      const text = await _callOllama(system, user, maxTokens)
-      _counts.ollama++
-      cbSuccess('ollama')
-      _capture(system, user, text, claudeModel, 'ollama', meta).catch(() => {})
+      const text = await _callWaandax(system, user, maxTokens)
+      _counts.waandax++
+      cbSuccess('waandax')
+      _capture(system, user, text, claudeModel, 'waandax', meta).catch(() => {})
       return {
         content: [{ type: 'text', text }],
-        model: LOCAL_MODEL,
-        _routerMeta: makeMeta('ollama', LOCAL_MODEL, false),
+        model: WAANDAX_MODEL,
+        _routerMeta: makeMeta('waandax', WAANDAX_MODEL, false),
       }
     } catch (err) {
-      cbFailure('ollama')
-      logger.warn('[KIMMP Router] Ollama failed, trying next provider:', (err as Error).message)
+      cbFailure('waandax')
+      logger.warn('[KIMMP Router] WAANDAx failed, trying next provider:', (err as Error).message)
     }
   }
 
@@ -634,11 +633,11 @@ export async function getRouterStats() {
     ratio:     total > 0 ? calls / total : 0,
     health:    providerHealth(name),
     available: [
-      name === 'gen2'   && !!_gen2ModelId,
+      name === 'gen2'    && !!_gen2ModelId,
       name === 'claude'  && !!ANTHROPIC_KEY,
       name === 'openai'  && !!OPENAI_KEY,
       name === 'gemini'  && !!GEMINI_KEY,
-      name === 'ollama'  && !!LOCAL_MODEL,
+      name === 'waandax' && !!WAANDAX_MODEL,
     ].some(Boolean),
   }))
 
@@ -647,25 +646,26 @@ export async function getRouterStats() {
     callsClaude:       _counts.claude,
     callsOpenAI:       _counts.openai,
     callsGemini:       _counts.gemini,
-    callsLocal:        _counts.ollama,
+    callsWaandax:      _counts.waandax,
     callsGen2:         _counts.gen2,
-    autonomyRatio:     total > 0 ? (_counts.ollama + _counts.gen2) / total : 0,
+    autonomyRatio:     total > 0 ? (_counts.waandax + _counts.gen2) / total : 0,
     gen2Ratio:         total > 0 ? _counts.gen2 / total : 0,
     providers,
-    ollamaAvailable:   _ollamaOk ?? false,
-    localModel:        LOCAL_MODEL || null,
+    waandaxAvailable:  _waandaxOk ?? false,
+    waandaxModel:      WAANDAX_MODEL || null,
+    waandaxUrl:        WAANDAX_URL,
     deployedGen2Model: _gen2ModelId,
     distillationCount,
     totalCorpus,
     distillationCap:   DISTILLATION_CAP,
     circuitBreakers:   getCircuitBreakerStatus(),
-    phase: LOCAL_MODEL ? 'routing' : distillationCount > 500 ? 'pre-graduation' : 'distilling',
+    phase: WAANDAX_MODEL ? 'routing' : distillationCount > 500 ? 'pre-graduation' : 'distilling',
     activeProviders: [
-      _gen2ModelId  && 'gen2',
-      ANTHROPIC_KEY && 'claude',
-      OPENAI_KEY    && 'openai',
-      GEMINI_KEY    && 'gemini',
-      LOCAL_MODEL   && 'ollama',
+      _gen2ModelId   && 'gen2',
+      ANTHROPIC_KEY  && 'claude',
+      OPENAI_KEY     && 'openai',
+      GEMINI_KEY     && 'gemini',
+      WAANDAX_MODEL  && 'waandax',
     ].filter(Boolean),
   }
 }

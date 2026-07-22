@@ -94,23 +94,23 @@ kangqoreImmpRoutes.get('/tts', requireAuth, requireRole(['ADMIN']), async (req, 
   }
 })
 
-// ── WAANDAx Gen2 — live inference probe ──────────────────────────────────────
-// Calls the local MLX server (port 11435). If offline, returns gen2Available:false
-// so the UI can surface the restart command gracefully.
+// ── WAANDAx — direct inference probe (bypasses router circuit breakers) ───────
+// Both this probe and the router's local slot now share WAANDAX_URL / WAANDAX_MODEL.
+// One MLX-LM server (port 11435), two consumers: probe (here) + router Step 1.
 kangqoreImmpRoutes.post('/waandax/infer', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   const { prompt } = req.body as { prompt?: string }
   if (!prompt?.trim()) return res.status(400).json({ error: 'prompt required' })
 
-  const MLX_BASE  = process.env.WAANDAX_MLX_URL || 'http://localhost:11435'
-  const MLX_MODEL = process.env.WAANDAX_MODEL   || 'mlx-community/Llama-3.2-3B-Instruct-4bit'
+  const WAANDAX_BASE  = process.env.WAANDAX_URL   || 'http://localhost:11435'
+  const WAANDAX_MODEL = process.env.WAANDAX_MODEL  || 'mlx-community/Llama-3.2-3B-Instruct-4bit'
   const t0 = Date.now()
 
   try {
-    const response = await fetch(`${MLX_BASE}/v1/chat/completions`, {
+    const response = await fetch(`${WAANDAX_BASE}/v1/chat/completions`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
-        model:       MLX_MODEL,
+        model:       WAANDAX_MODEL,
         messages:    [
           { role: 'system', content: 'You are WAANDAx — Kangqore\'s local reasoning engine. Be concise and precise.' },
           { role: 'user',   content: prompt.trim() },
@@ -120,19 +120,62 @@ kangqoreImmpRoutes.post('/waandax/infer', requireAuth, requireRole(['ADMIN']), a
       }),
       signal: AbortSignal.timeout(30_000),
     })
-    if (!response.ok) throw new Error(`MLX ${response.status}`)
+    if (!response.ok) throw new Error(`WAANDAx ${response.status}`)
     const data = (await response.json()) as { choices?: { message?: { content?: string } }[] }
-    const gen2  = data.choices?.[0]?.message?.content ?? ''
-    res.json({ gen2, gen2Available: true, latencyMs: Date.now() - t0, model: MLX_MODEL })
+    const text  = data.choices?.[0]?.message?.content ?? ''
+    res.json({ gen2: text, gen2Available: true, latencyMs: Date.now() - t0, model: WAANDAX_MODEL })
   } catch (err: any) {
     logger.warn('[WAANDAx] local inference offline:', err.message)
     res.json({
       gen2:          null,
       gen2Available: false,
       latencyMs:     Date.now() - t0,
-      error:         'WAANDAx offline — restart: cd ~/.kimmp-venv && mlx_lm.server --model mlx-community/Llama-3.2-3B-Instruct-4bit --port 11435',
+      error:         `WAANDAx offline — restart: cd ~/.kimmp-venv && mlx_lm.server --model ${process.env.WAANDAX_MODEL || 'mlx-community/Llama-3.2-3B-Instruct-4bit'} --port 11435`,
     })
   }
+})
+
+// POST /admin/kangqore-immp/waandax/register-model
+// Register a fine-tuned WAANDAx model into Gen2Model registry after training.
+kangqoreImmpRoutes.post('/waandax/register-model', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const { name, modelPath, benchmarkAccuracy, trainingExamples, notes } = req.body
+    if (!name || !modelPath) return res.status(400).json({ error: 'name and modelPath required' })
+
+    // Undeploy any currently deployed model first
+    await (prisma as any).gen2Model.updateMany({ where: { isDeployed: true }, data: { isDeployed: false } })
+
+    const model = await (prisma as any).gen2Model.create({
+      data: {
+        name,
+        provider:        'waandax',
+        baseModel:       'Llama-3.2-3B-Instruct',
+        providerModelId: modelPath,
+        finetuneJobId:   null,
+        benchmarkAccuracy: benchmarkAccuracy ? parseFloat(benchmarkAccuracy) : undefined,
+        trainingExamples:  trainingExamples  ? parseInt(trainingExamples)    : 0,
+        notes,
+        isDeployed: true,
+        createdBy:  userId,
+      },
+    })
+
+    // Fire KIMMP signal
+    await (prisma as any).kimmpSignal.create({
+      data: {
+        type:        'GEN2_WAANDAX_DEPLOYED',
+        source:      'SYSTEM',
+        priority:    'HIGH',
+        title:       `WAANDAx model deployed: ${name}`,
+        description: `Path: ${modelPath} · Examples: ${trainingExamples ?? 0} · Accuracy: ${benchmarkAccuracy ?? 'pending eval'}`,
+        status:      'ACTIVE',
+        createdBy:   userId,
+      },
+    })
+
+    res.status(201).json({ ok: true, model, message: `Set WAANDAX_MODEL=${modelPath} and restart backend to activate.` })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
 // Health — unauthenticated, mirrors the eQORE health route style.
@@ -1352,6 +1395,33 @@ kangqoreImmpRoutes.post('/learning/run', requireAuth, requireRole(['ADMIN']), as
   } catch (err: any) {
     res.status(500).json({ error: err.message })
   }
+})
+
+// GET /admin/kangqore-immp/learning/export-jsonl
+// Download approved corpus as JSONL for MLX-LM fine-tuning.
+// Format: one JSON object per line — { messages: [{role, content}, ...] }
+kangqoreImmpRoutes.get('/learning/export-jsonl', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const minQuality = parseFloat(String(req.query.minQuality ?? '0.5'))
+    const examples = await (prisma as any).kimmpLearningExample.findMany({
+      where: { approved: true, quality: { gte: minQuality } },
+      orderBy: { quality: 'desc' },
+      select: { systemPrompt: true, userMessage: true, idealResponse: true, quality: true, agentSystem: true },
+    })
+    if (examples.length === 0) return res.status(404).json({ error: 'No approved examples found. Approve examples first.' })
+
+    const lines = examples.map((ex: any) => JSON.stringify({
+      messages: [
+        { role: 'system',    content: ex.systemPrompt  ?? 'You are WAANDAx — Kangqore\'s local reasoning engine.' },
+        { role: 'user',      content: ex.userMessage   ?? '' },
+        { role: 'assistant', content: ex.idealResponse ?? '' },
+      ],
+    }))
+
+    res.setHeader('Content-Type', 'application/x-ndjson')
+    res.setHeader('Content-Disposition', `attachment; filename="waandax-corpus-${examples.length}ex-${new Date().toISOString().slice(0,10)}.jsonl"`)
+    res.send(lines.join('\n'))
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
 // GET /admin/kangqore-immp/learning/examples?limit=50&source=&approved=&system=

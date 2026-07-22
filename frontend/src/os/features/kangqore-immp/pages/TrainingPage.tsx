@@ -461,13 +461,13 @@ function CorpusPanel({ stats }: { stats: CorpusStats }) {
 
 // ── Fine-tune script panel ────────────────────────────────────────────────────
 
-function ScriptPanel({ modelName }: { modelName: string }) {
+function ScriptPanel() {
   const steps = [
-    { n: '1', label: 'Export training data',   cmd: 'curl http://localhost:5050/api/admin/waanda-training/export' },
-    { n: '2', label: 'Install Unsloth',         cmd: 'pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"\npip install --no-deps trl peft accelerate bitsandbytes' },
-    { n: '3', label: 'Run fine-tune (Apple Silicon / MLX)', cmd: 'cd backend\n~/.kimmp-venv/bin/python scripts/finetune_waandax.py' },
-    { n: '4', label: 'Deploy to Ollama',        cmd: `ollama create ${modelName} -f ~/models/WAANDAx/finetune/Modelfile` },
-    { n: '5', label: 'Set env + restart',        cmd: `KIMMP_LOCAL_REASON_MODEL=${modelName}\nKIMMP_OLLAMA_URL=http://localhost:11434\n\ndocker compose up -d core-backend` },
+    { n: '1', label: 'Export approved corpus',  cmd: 'curl -o waandax-corpus.jsonl \\\n  "http://localhost:3000/api/admin/kangqore-immp/learning/export-jsonl?minQuality=0.5"' },
+    { n: '2', label: 'Fine-tune via MLX-LM LoRA', cmd: 'cd ~/.kimmp-venv\nsource bin/activate\nmlx_lm.lora \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --train --data ~/waandax-corpus.jsonl \\\n  --iters 1000 --batch-size 4 \\\n  --adapter-path ~/.kimmp-models/waandax-gen2-v1/adapters' },
+    { n: '3', label: 'Fuse adapter → final weights', cmd: 'mlx_lm.fuse \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --adapter-path ~/.kimmp-models/waandax-gen2-v1/adapters \\\n  --save-path ~/.kimmp-models/waandax-gen2-v1' },
+    { n: '4', label: 'Start WAANDAx server',    cmd: 'mlx_lm.server \\\n  --model ~/.kimmp-models/waandax-gen2-v1 \\\n  --port 11435' },
+    { n: '5', label: 'Set env + register + restart', cmd: `# In backend .env:\nWAANDAX_URL=http://localhost:11435\nWAANDAX_MODEL=~/.kimmp-models/waandax-gen2-v1\n\n# Register in KIMMP:\ncurl -X POST http://localhost:3000/api/admin/kangqore-immp/waandax/register-model \\\n  -H "Content-Type: application/json" \\\n  -d '{"name":"WAANDAx Gen2 v1","modelPath":"~/.kimmp-models/waandax-gen2-v1","trainingExamples":1000}'\n\n# Restart backend:\ndocker compose up -d core-backend` },
   ]
 
   return (
@@ -729,7 +729,7 @@ export function TrainingPage() {
       </div>
 
       {/* Script steps */}
-      <ScriptPanel modelName={lm?.model ?? 'waandax:v2'} />
+      <ScriptPanel />
 
       {/* Full corpus stats */}
       {corpusStats && <CorpusPanel stats={corpusStats} />}
