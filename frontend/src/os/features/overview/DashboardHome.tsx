@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { OnboardingWizard } from './OnboardingWizard'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Zap, Briefcase, TrendingUp, Target, LayoutDashboard, Activity,
@@ -1694,6 +1695,8 @@ function LeadDistributionChart({ leads }: { leads: any[] }) {
 
 export function DashboardHome() {
   const navigate = useNavigate()
+  const [showOnboarding, setShowOnboarding] = useState(true)
+  const handleOnboardingComplete = useCallback(() => setShowOnboarding(false), [])
 
   const { data: kpis, isLoading: kpisLoading } = useQuery({
     queryKey: ['financial-kpis'],
@@ -1722,6 +1725,9 @@ export function DashboardHome() {
   return (
     <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 w-full min-h-screen relative overflow-hidden admin-bento-theme">
       <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#e0ebff] via-[#f0f8ff] to-[#f5ffd8]" />
+
+      {/* Onboarding wizard — renders as portal overlay, hides once user completes or API confirms done */}
+      {showOnboarding && <OnboardingWizard onComplete={handleOnboardingComplete} />}
 
       {/* 1. Header */}
       <PageHeader twinData={twinData} navigate={navigate} />
