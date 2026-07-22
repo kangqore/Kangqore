@@ -86,13 +86,13 @@ interface FMScan {
   totalScanned: number
   totalIncluded: number
   byPhase: Record<string, number>
-  createdAt: string
+  scanAt: string
 }
 
 interface FMStatus {
   latestScan: FMScan | null
-  totalExamples: number
-  evals: Array<{ id: string; modelName: string; benchmarkAccuracy: number; loss?: number; evalAt: string; notes?: string }>
+  totalIncludedExamples: number
+  evals: Array<{ id: string; modelCandidate: string; overallScore?: number; evalDate: string; notes?: string }>
 }
 
 interface FMExample {
@@ -392,7 +392,7 @@ export function WAANDAFoundationPage() {
             {[
               { label: 'Total Scanned',    value: fmStatus.latestScan.totalScanned,    color: 'var(--os-text-1)', Icon: Database },
               { label: 'Included',          value: fmStatus.latestScan.totalIncluded,   color: '#10b981',          Icon: CheckCircle2 },
-              { label: 'Total FM Examples', value: fmStatus.totalExamples,              color: '#7c3aed',          Icon: Layers },
+              { label: 'Total FM Examples', value: fmStatus.totalIncludedExamples,       color: '#7c3aed',          Icon: Layers },
               { label: 'Quality Threshold', value: `${(fmStatus.latestScan.qualityThreshold * 100).toFixed(0)}%`, color: '#f59e0b', Icon: FlaskConical },
             ].map(k => (
               <div key={k.label} style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, padding: 14 }}>
@@ -472,10 +472,10 @@ export function WAANDAFoundationPage() {
                 <tbody>
                   {fmStatus.evals.map((ev, i) => (
                     <tr key={ev.id} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--os-surface-0)' }}>
-                      <td style={{ padding: '10px 16px', color: 'var(--os-text-1)', fontWeight: 700 }}>{ev.modelName}</td>
-                      <td style={{ padding: '10px 16px', color: ev.benchmarkAccuracy >= 0.85 ? '#10b981' : '#f59e0b', fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>{(ev.benchmarkAccuracy * 100).toFixed(1)}%</td>
-                      <td style={{ padding: '10px 16px', color: 'var(--os-text-2)', fontVariantNumeric: 'tabular-nums' }}>{ev.loss != null ? ev.loss.toFixed(4) : '—'}</td>
-                      <td style={{ padding: '10px 16px', color: 'var(--os-text-2)' }}>{new Date(ev.evalAt).toLocaleDateString()}</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--os-text-1)', fontWeight: 700 }}>{ev.modelCandidate}</td>
+                      <td style={{ padding: '10px 16px', color: (ev.overallScore ?? 0) >= 0.85 ? '#10b981' : '#f59e0b', fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>{(((ev.overallScore ?? 0)) * 100).toFixed(1)}%</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--os-text-2)', fontVariantNumeric: 'tabular-nums' }}>—</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--os-text-2)' }}>{new Date(ev.evalDate).toLocaleDateString()}</td>
                       <td style={{ padding: '10px 16px', color: 'var(--os-text-2)', fontSize: 11 }}>{ev.notes ?? '—'}</td>
                     </tr>
                   ))}
@@ -520,7 +520,7 @@ export function WAANDAFoundationPage() {
         {/* Last scan meta */}
         {fmStatus?.latestScan && (
           <p style={{ fontSize: 10, color: 'var(--os-text-2)', marginTop: 12 }}>
-            Last corpus scan: {new Date(fmStatus.latestScan.createdAt).toLocaleString()} · quality threshold {(fmStatus.latestScan.qualityThreshold * 100).toFixed(0)}%
+            Last corpus scan: {new Date(fmStatus.latestScan.scanAt).toLocaleString()} · quality threshold {(fmStatus.latestScan.qualityThreshold * 100).toFixed(0)}%
           </p>
         )}
       </div>
