@@ -66,6 +66,16 @@ const stitchSchema = Joi.object({
   userId:      Joi.string().required(),
 })
 
+const consentSchema = Joi.object({
+  visitorUuid: Joi.string().uuid().required(),
+  preferences: Joi.object({
+    necessary: Joi.boolean().required(),
+    functional: Joi.boolean().required(),
+    targeting: Joi.boolean().required(),
+    performance: Joi.boolean().required(),
+  }).required(),
+})
+
 // ── Alert throttle — prevent re-alerting same visitor within 1 hour ───────────
 const alertedThisHour = new Map<string, Set<string>>()
 setInterval(() => alertedThisHour.clear(), 60 * 60 * 1000)
@@ -439,6 +449,40 @@ publicVisitorRouter.get('/footprint/:uuid', async (req: Request, res: Response) 
     return res.json(visitor)
   } catch {
     return res.json(null)
+  }
+})
+
+// ── POST /consent  (public — updates visitor's cookie consent choices) ───────
+
+publicVisitorRouter.post('/consent', async (req: Request, res: Response) => {
+  const { error, value } = consentSchema.validate(req.body)
+  if (error) return res.status(400).json({ error: error.details[0].message })
+
+  try {
+    const visitor = await prisma.anonymousVisitor.findUnique({
+      where: { visitorUuid: value.visitorUuid },
+    })
+
+    if (!visitor) {
+      return res.status(404).json({ error: 'Visitor not found' })
+    }
+
+    const currentSignals = (visitor.deviceSignals as Record<string, any>) || {}
+    const updated = await prisma.anonymousVisitor.update({
+      where: { id: visitor.id },
+      data: {
+        deviceSignals: {
+          ...currentSignals,
+          cookieConsent: value.preferences,
+        },
+      },
+    })
+
+    logger.info(`visitor.consent.updated: ${value.visitorUuid}`)
+    return res.json({ success: true, consent: value.preferences })
+  } catch (err: any) {
+    logger.error(`visitor.consent.error: ${err.message}`)
+    return res.status(500).json({ error: 'Failed to update consent preferences' })
   }
 })
 

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, Mic, MicOff, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useConcierge, getSuggestedPrompts } from '../hooks/useConcierge';
 import { parseSchedulingRequest } from '../hooks/nlpSchedulingParser';
 import CitationBadge from './concierge/CitationBadge';
@@ -106,11 +106,42 @@ const EQoreChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
   const [inputText, setInputText] = useState('');
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+  const [proactiveGreeting, setProactiveGreeting] = useState(null);
+  const [isSlideIn, setIsSlideIn] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const [isHovered, setIsHovered] = useState(false);
+  const idleTimerRef = useRef(null);
+  const location = useLocation();
+
+  if (location.pathname.startsWith('/kangqore-view')) return null;
+
+  // Staged animation logic
+  useEffect(() => {
+    if (isOpen) {
+      setIsSlideIn(true);
+      const timer = setTimeout(() => {
+        setIsExpanded(true);
+      }, 1000); // Wait for slide in to finish (1 second)
+      return () => clearTimeout(timer);
+    } else {
+      setIsExpanded(false);
+      const timer = setTimeout(() => {
+        setIsSlideIn(false);
+      }, 1000); // Wait for collapse to finish (1 second)
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+
+
   const [showLeadFor, setShowLeadFor] = useState(null);
   const [seedContext, setSeedContext] = useState(null);
   const [schedulingIntents, setSchedulingIntents] = useState({}); // msgId → parsedIntent
-  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+
   const [isListening, setIsListening] = useState(false);
+  const [isIdle, setIsIdle] = useState(false);
 
   const recognitionRef = useRef(null);
   const spokenMessagesRef = useRef(new Set());
@@ -118,6 +149,33 @@ const EQoreChatbot = () => {
   const chatContainerRef = useRef(null);
   const { messages, streaming, conversationId, error, send, reset } = useConcierge({ seedContext });
   const hasUserMessages = messages.some((m) => m.role === 'user');
+
+  // Idle Timer Logic
+  useEffect(() => {
+    if (!isExpanded) {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      setIsIdle(true);
+      return;
+    }
+
+    const isTyping = inputText.trim().length > 0;
+    const isBusy = streaming || isListening;
+    
+    if (isHovered || isTyping || isBusy) {
+      setIsIdle(false);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    } else {
+      setIsIdle(true);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = setTimeout(() => {
+        setIsOpen(false);
+      }, 5000);
+    }
+
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, [isExpanded, isHovered, inputText, streaming, isListening]);
 
   // ─── Voice Input (Web Speech API) ──────────────────────────────────
   useEffect(() => {
@@ -138,19 +196,12 @@ const EQoreChatbot = () => {
           finalTranscript += transcript;
         } else {
           interimTranscript += transcript;
-        }
-      }
-      // Show interim results in the input field for live feedback
+      // Show results in the input field for live feedback
       setInputText(finalTranscript || interimTranscript);
 
-      // Auto-send on final result
+      // Do NOT auto-send. Just stop listening and let user review.
       if (finalTranscript.trim()) {
         setIsListening(false);
-        // Small delay so user sees the final text before it sends
-        setTimeout(() => {
-          send(finalTranscript.trim());
-          setInputText('');
-        }, 300);
       }
     };
 
@@ -238,6 +289,20 @@ const EQoreChatbot = () => {
 
   // Auto-Popout & Scroll Detection Logic
   const [isInHero, setIsInHero] = useState(true);
+  const [cookieAccepted, setCookieAccepted] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return !!localStorage.getItem('cookieConsent');
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleCookieAccepted = () => {
+      setCookieAccepted(true);
+    };
+    window.addEventListener('cookies-accepted', handleCookieAccepted);
+    return () => window.removeEventListener('cookies-accepted', handleCookieAccepted);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -254,26 +319,54 @@ const EQoreChatbot = () => {
       return;
     }
     
-    // Initial popup at 8 seconds
-    const initialTimer = setTimeout(() => {
-      setIsOpen(true);
-    }, 8000); 
+    if (!cookieAccepted) return;
     
-    // Recurring popup every 60 seconds
+    // Initial popup at 5 seconds after cookie consent is accepted (only if not in hero)
+    const initialTimer = setTimeout(() => {
+      if (!isInHero) setIsOpen(true);
+    }, 5000); 
+    
+    // Recurring popup every 3 minutes (only if not in hero)
     const intervalTimer = setInterval(() => {
-      setIsOpen(true);
-    }, 60000);
+      if (!isInHero) setIsOpen(true);
+    }, 180000); // Increased from 60s to 3 minutes
     
     return () => {
       clearTimeout(initialTimer);
       clearInterval(intervalTimer);
     };
-  }, []);
+  }, [cookieAccepted, isInHero]);
+
+  // Unread Badge Logic
+  const [hasUnread, setHasUnread] = useState(false);
+  useEffect(() => {
+    if (isOpen) {
+      setHasUnread(false);
+    } else if (messages.length > 1) {
+      const last = messages[messages.length - 1];
+      if (last.role === 'assistant' && last.done && !isExpanded) {
+        setHasUnread(true);
+      }
+    }
+  }, [isOpen, messages, isExpanded]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('eqore-unread-status', { detail: { hasUnread } }));
+    }
+  }, [hasUnread]);
+
+  // Auto-close when user scrolls back into hero
+  useEffect(() => {
+    if (isInHero && isOpen && !hasUserMessages) {
+      setIsOpen(false);
+    }
+  }, [isInHero, isOpen, hasUserMessages]);
 
   // Auto-Dismissal Logic
   useEffect(() => {
-    if (isOpen && !hasUserMessages) {
-      const dismissTime = isInHero ? 12000 : 5000;
+    if (isOpen && !hasUserMessages && !isInHero) {
+      const dismissTime = 5000;
       const autoDismiss = setTimeout(() => {
         setIsOpen(false);
       }, dismissTime);
@@ -350,12 +443,54 @@ const EQoreChatbot = () => {
     return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).format(date);
   };
 
+  // Draggability Logic
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartPos = useRef({ x: 0, y: 0 });
+
+  const handlePointerDown = (e) => {
+    // Only allow drag on header, but prevent if clicking buttons
+    if (e.target.closest('button') || e.target.closest('a')) return;
+    setIsDragging(true);
+    dragStartPos.current = { x: e.clientX - position.x, y: e.clientY - position.y };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDragging) return;
+    setPosition({
+      x: e.clientX - dragStartPos.current.x,
+      y: e.clientY - dragStartPos.current.y
+    });
+  };
+
+  const handlePointerUp = (e) => {
+    setIsDragging(false);
+    e.currentTarget.releasePointerCapture(e.pointerId);
+  };
+
   return (
-    <div className={`fixed ${isInHero ? 'bottom-[152px]' : 'bottom-[172px]'} right-8 z-[10001] transition-all duration-500 origin-bottom-right ${isOpen ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto' : 'opacity-0 scale-95 translate-y-10 pointer-events-none'}`}>
-      <div className={`absolute bottom-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-xl rounded-2xl shadow-2xl ${isMaximized ? 'w-[80vw] sm:w-[75vw] lg:w-[760px] h-[80vh]' : 'w-[300px] sm:w-[350px] lg:w-[400px] h-[500px]'} border border-white/10 overflow-hidden flex flex-col max-h-[85vh] transition-all duration-500`}>
+    <div 
+      className={`fixed ${isInHero ? 'bottom-[152px]' : 'bottom-[172px]'} right-8 z-[10001] transition-opacity duration-1000 ${isSlideIn ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      style={{
+        transform: `translate(calc(${isSlideIn ? '0%' : '120%'} + ${position.x}px), ${position.y}px)`,
+        transition: isDragging ? 'none' : 'opacity 1s, transform 1s cubic-bezier(0.16, 1, 0.3, 1)'
+      }}
+    >
+      <div 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className={`relative bg-[#0a0a0c]/95 backdrop-blur-xl rounded-2xl ${isExpanded ? (isMaximized ? 'w-[80vw] sm:w-[75vw] lg:w-[760px] h-[80vh]' : 'w-[300px] sm:w-[350px] lg:w-[400px] h-[500px]') : 'w-[300px] sm:w-[350px] lg:w-[400px] h-[116px]'} border border-white/10 overflow-hidden flex flex-col max-h-[85vh] transition-all duration-1000 shadow-2xl`}
+      >
 
         {/* Header */}
-        <div className="bg-[#111115] border-b border-white/5 py-2 px-4 flex items-center justify-between text-white relative overflow-hidden">
+        <div 
+          className="bg-[#111115] border-b border-white/5 py-2 px-4 flex items-center justify-between text-white relative overflow-hidden cursor-move touch-none"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+        >
           <div className="absolute inset-0 bg-brand-cyan/5 blur-xl pointer-events-none"></div>
           
           <div className="flex items-center gap-5 relative z-10">
@@ -433,7 +568,7 @@ const EQoreChatbot = () => {
         {/* Chat Area */}
         <div 
           ref={chatContainerRef}
-          className="flex-1 overflow-y-auto p-4 space-y-5 bg-transparent custom-scrollbar scroll-smooth"
+          className={`overflow-y-auto bg-transparent custom-scrollbar scroll-smooth transition-all duration-1000 ${isExpanded ? 'flex-1 p-4 space-y-5 opacity-100 max-h-[1000px]' : 'flex-none p-0 space-y-0 opacity-0 max-h-0'}`}
         >
           {messages.map((msg) => {
             const isUser = msg.role === 'user';
@@ -456,9 +591,19 @@ const EQoreChatbot = () => {
                       ? 'bg-brand-blue text-white rounded-2xl rounded-br-sm font-medium'
                       : 'bg-[#1a1a1e] border border-white/5 text-slate-200 rounded-2xl rounded-bl-sm'
                   }`}>
-                    {renderFormattedText(msg.content)}
-                    {!msg.done && msg.role === 'assistant' && (
-                      <span className="inline-block w-1.5 h-4 ml-0.5 align-middle bg-cyan-400 animate-pulse rounded-sm" />
+                    {!isUser && !msg.done && msg.content === '' ? (
+                      <div className="flex items-center gap-1.5 h-4 px-1">
+                        <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    ) : (
+                      <>
+                        {renderFormattedText(msg.content)}
+                        {!msg.done && msg.role === 'assistant' && (
+                          <span className="inline-block w-1.5 h-4 ml-0.5 align-middle bg-cyan-400 animate-pulse rounded-sm" />
+                        )}
+                      </>
                     )}
                   </div>
                 </div>

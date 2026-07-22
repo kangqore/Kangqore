@@ -18,8 +18,8 @@ export function DeptSidebar({ config }: DeptSidebarProps) {
     <aside
       className={cn(
         'flex-shrink-0 flex flex-col',
-        'bg-[#f6f7fb] dark:bg-[#111111] text-[#323338] dark:text-[var(--os-text-1)]',
-        'border-r border-[#e6e9ef] dark:border-white/10',
+        'bg-[var(--os-sidebar-bg)] text-[var(--os-text-1)]',
+        'border-r border-[var(--os-border)]',
         'transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] h-full relative overflow-hidden',
         sidebarCollapsed ? 'w-16' : 'w-[176px]'
       )}
@@ -42,7 +42,7 @@ export function DeptSidebar({ config }: DeptSidebarProps) {
                 {group.label}
               </p>
             )}
-            {sidebarCollapsed && <div className="mx-4 my-2 h-px bg-[#e6e9ef] dark:bg-white/[0.08]" />}
+            {sidebarCollapsed && <div className="mx-4 my-2 h-px bg-[var(--os-border)]" />}
             <ul className="space-y-0.5">
               {group.items.map(item => {
                 const Icon = item.icon
@@ -56,7 +56,7 @@ export function DeptSidebar({ config }: DeptSidebarProps) {
                       sidebarCollapsed ? 'justify-center h-10 w-10 mx-auto' : 'h-8 px-3 mx-3',
                       isActive
                         ? 'text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]'
-                        : 'text-[#676879] dark:text-[var(--os-text-2)] hover:bg-[#e6e9ef] dark:hover:bg-white/[0.06] hover:text-[#323338] dark:hover:text-slate-100'
+                        : 'text-[var(--os-text-2)] hover:bg-[var(--os-border-subtle)] hover:text-[var(--os-text-1)]'
                     )}
                     style={({ isActive }) =>
                       isActive
@@ -90,12 +90,12 @@ export function DeptSidebar({ config }: DeptSidebarProps) {
       </motion.nav>
 
       {/* Collapse toggle */}
-      <div className="flex-shrink-0 border-t border-[#e6e9ef] dark:border-white/10 p-3">
+      <div className="flex-shrink-0 border-t border-[var(--os-border)] p-3">
         <button
           onClick={toggleSidebar}
           className={cn(
-            'flex items-center gap-2.5 w-full rounded-lg h-9 text-[#676879] dark:text-[var(--os-text-2)]',
-            'hover:text-[#323338] dark:hover:text-slate-100 hover:bg-[#e6e9ef] dark:hover:bg-white/[0.06] transition-all duration-150',
+            'flex items-center gap-2.5 w-full rounded-lg h-9 text-[var(--os-text-2)]',
+            'hover:text-[var(--os-text-1)] hover:bg-[var(--os-border-subtle)] transition-all duration-150',
             sidebarCollapsed ? 'justify-center' : 'px-3'
           )}
         >

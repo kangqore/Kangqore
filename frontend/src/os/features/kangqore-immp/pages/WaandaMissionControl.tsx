@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Activity, ShieldAlert, Zap, Server, Brain,
@@ -17,18 +17,18 @@ export function WaandaMissionControl() {
 
   const { data: missionControl, isLoading: loadingMission } = useQuery({
     queryKey: ['hcip-mission-control'],
-    queryFn: () => api.get('/admin/hcip/mission-control').then(r => r.data),
+    queryFn: () => api.get('/hcip/mission-control').then(r => r.data),
     refetchInterval: 5000,
   });
 
   const { data: queueData, isLoading: loadingQueue } = useQuery({
     queryKey: ['hcip-recommendation-queue'],
-    queryFn: () => api.get('/admin/hcip/recommendation-queue').then(r => r.data),
+    queryFn: () => api.get('/hcip/recommendation-queue').then(r => r.data),
     refetchInterval: 5000,
   });
 
   const feedbackMutation = useMutation({
-    mutationFn: (data: any) => api.post('/admin/hcip/feedback', data),
+    mutationFn: (data: any) => api.post('/hcip/feedback', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['hcip-recommendation-queue'] });
     },
@@ -36,40 +36,45 @@ export function WaandaMissionControl() {
 
   const [urgentAlerts, setUrgentAlerts] = useState<any[]>([]);
 
+  const handleAcknowledge = useCallback((alertId: number) => {
+    setUrgentAlerts(prev => prev.filter(a => a.id !== alertId));
+  }, []);
+
+  const handleAgentUpdate = useCallback((agent: any) => {
+    if (agent.status === 'ERROR') {
+      setUrgentAlerts(prev => {
+        if (prev.some(a => a.agentId === agent.id)) return prev;
+        
+        // Audibly announce the anomaly via the reliable backend TTS endpoint
+        try {
+          const ttsText = 'Urgent signal detected. Agent ' + agent.id + ' has encountered a critical anomaly.';
+          const audio = new Audio(`/api/admin/kangqore-immp/tts?text=${encodeURIComponent(ttsText)}`);
+          audio.play().catch(e => console.warn('[WAANDA Urgent Alert Audio Blocked]', e));
+        } catch (e) {
+          console.warn('[WAANDA TTS Error]', e);
+        }
+
+        return [...prev, { 
+          id: Date.now(), 
+          agentId: agent.id, 
+          message: `URGENT SIGNAL: Agent ${agent.id} entered ERROR state. Neural loop broken.`, 
+          time: new Date().toLocaleTimeString() 
+        }];
+      });
+    } else if (agent.status === 'IDLE' || agent.status === 'WORKING') {
+      setUrgentAlerts(prev => prev.filter(a => a.agentId !== agent.id));
+    }
+  }, []);
+
   useEffect(() => {
     try { connectSocket(); } catch {}
     const socket = getSocket();
-
-    const handleAgentUpdate = (agent: any) => {
-      if (agent.status === 'ERROR') {
-        setUrgentAlerts(prev => {
-          if (prev.find(a => a.agentId === agent.id)) return prev;
-          
-          // Audibly announce the anomaly via the reliable backend TTS endpoint
-          try {
-            const audio = new Audio(`/api/admin/kangqore-immp/tts?text=${encodeURIComponent(`Urgent signal detected. Agent ${agent.id} has encountered a critical anomaly.`)}`);
-            audio.play().catch(e => console.warn('[WAANDA Urgent Alert Audio Blocked]', e));
-          } catch (e) {
-            console.warn('[WAANDA TTS Error]', e);
-          }
-
-          return [...prev, { 
-            id: Date.now(), 
-            agentId: agent.id, 
-            message: `URGENT SIGNAL: Agent ${agent.id} entered ERROR state. Neural loop broken.`, 
-            time: new Date().toLocaleTimeString() 
-          }];
-        });
-      } else if (agent.status === 'IDLE' || agent.status === 'WORKING') {
-         setUrgentAlerts(prev => prev.filter(a => a.agentId !== agent.id));
-      }
-    };
 
     socket.on('AGENT_UPDATED', handleAgentUpdate);
     return () => {
       socket.off('AGENT_UPDATED', handleAgentUpdate);
     };
-  }, []);
+  }, [handleAgentUpdate]);
 
   if (loadingMission || loadingQueue) {
     return (
@@ -98,13 +103,15 @@ export function WaandaMissionControl() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-sm font-black tracking-widest text-red-400 uppercase flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+                    <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />{' '}
                     Critical Anomaly Detected
                   </h3>
                   <p className="text-red-200 mt-1 font-mono text-xs">{alert.message}</p>
-                  <p className="text-red-500/50 mt-1 font-mono text-[10px]">TIME: {alert.time} // WAANDA IS MONITORING RECOVERY PROTOCOLS</p>
+                  <p className="text-red-500/50 mt-1 font-mono text-[10px]">
+                    TIME: {alert.time} {'//'} WAANDA IS MONITORING RECOVERY PROTOCOLS
+                  </p>
                 </div>
-                <button className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold rounded-lg border border-red-500/25 text-xs transition-colors backdrop-blur-sm shadow-md" onClick={() => setUrgentAlerts(prev => prev.filter(a => a.id !== alert.id))}>
+                <button className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold rounded-lg border border-red-500/25 text-xs transition-colors backdrop-blur-sm shadow-md" onClick={() => handleAcknowledge(alert.id)}>
                   ACKNOWLEDGE
                 </button>
               </div>
@@ -185,7 +192,7 @@ export function WaandaMissionControl() {
         ) : (
           <div className="space-y-4">
             {queue.map((item: any, i: number) => (
-              <div key={i} className="p-5 rounded-xl bg-white/[0.02] border border-[var(--os-border)] flex items-start gap-4 transition-all duration-300 hover:border-indigo-500/40 hover:-translate-y-0.5 shadow-sm">
+              <div key={item.recommendation?.id || item.recommendation?.objective || i} className="p-5 rounded-xl bg-white/[0.02] border border-[var(--os-border)] flex items-start gap-4 transition-all duration-300 hover:border-indigo-500/40 hover:-translate-y-0.5 shadow-sm">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">

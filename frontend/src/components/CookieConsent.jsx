@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { X } from 'lucide-react';
+
+const API = import.meta.env.VITE_BACKEND_URL || '';
 
 const CookieConsent = () => {
   const [showBanner, setShowBanner] = useState(false);
+  const [customizing, setCustomizing] = useState(false);
+
+  const [functionalCookies, setFunctionalCookies] = useState(false);
+  const [targetingCookies, setTargetingCookies] = useState(false);
+  const [performanceCookies, setPerformanceCookies] = useState(false);
 
   useEffect(() => {
     // Check if user has already made a choice
@@ -16,53 +24,219 @@ const CookieConsent = () => {
     }
   }, []);
 
-  const handleAcceptAll = () => {
-    localStorage.setItem('cookieConsent', 'accepted');
+  const handleSaveConsent = async (preferences) => {
+    localStorage.setItem('cookieConsent', JSON.stringify(preferences));
     setShowBanner(false);
+    window.dispatchEvent(new CustomEvent('cookies-accepted'));
+
+    // Sync preferences with visitor profile in the database
+    const visitorUuid = localStorage.getItem('kq_visitor_uuid');
+    if (visitorUuid) {
+      try {
+        await fetch(`${API}/api/public/visitor/consent`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ visitorUuid, preferences }),
+        });
+      } catch (err) {
+        console.warn('[CookieConsent Sync Failed]', err);
+      }
+    }
   };
 
-  const handleChooseCookies = () => {
-    // For now, just close the banner - can be extended to show cookie preferences modal
-    localStorage.setItem('cookieConsent', 'custom');
-    setShowBanner(false);
+  const handleAcceptAll = () => {
+    handleSaveConsent({
+      necessary: true,
+      functional: true,
+      targeting: true,
+      performance: true,
+    });
   };
 
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-white dark:bg-gray-900 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-t border-gray-200 animate-slide-up">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-4">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          {/* Text Content */}
-          <div className="flex-1">
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-              We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. 
-              We also disclose information about your use of our site with our social media, advertising and analytics partners. 
-              Additional details are available in our{' '}
-              <Link to="#" className="text-brand-blue underline hover:text-blue-800 font-medium">
-                Cookie Policy
-              </Link>
-              .
-            </p>
-          </div>
+    <div 
+      className="fixed bottom-2 left-2 right-2 z-[99999] max-w-screen-2xl mx-auto bg-black border border-neutral-800 rounded-3xl animate-slide-up text-left pt-6 pb-8 px-6 md:px-8 max-h-[90vh] overflow-y-auto no-scrollbar"
+      style={{ backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
+    >
+      <style>{`
+        @keyframes slideUp {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+        .animate-slide-up {
+          animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}</style>
 
-          {/* Buttons */}
-          <div className="flex items-center gap-4 flex-shrink-0">
-            <button
-              onClick={handleChooseCookies}
-              className="text-sm text-brand-blue underline hover:text-blue-800 font-medium transition-colors"
-            >
-              Choose Cookies
-            </button>
+      {customizing ? (
+        <div className="w-full px-2 md:px-8 flex flex-col lg:flex-row items-start justify-between gap-8 lg:gap-16">
+          {/* Left Side: Title, and Allow All */}
+          <div className="flex flex-col gap-6 lg:w-[35%] w-full">
+
+            <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-snug">
+              Manage your cookies
+            </h2>
+
             <button
               onClick={handleAcceptAll}
-              className="px-6 py-2.5 bg-brand-gradient text-white text-sm font-semibold rounded-md hover:opacity-90 transition-colors shadow-sm"
+              className="w-[180px] py-2 bg-transparent border border-neutral-600 hover:border-white text-white font-bold rounded-full transition-all text-center text-xs"
             >
-              Accept All
+              Allow all
             </button>
           </div>
+
+          {/* Right Side: Accordion / Toggles list & Save button */}
+          <div className="flex flex-col gap-6 lg:w-[60%] w-full relative">
+
+            <div className="flex flex-col border-t border-neutral-800">
+              {/* Strictly Necessary Cookies */}
+              <div className="flex items-center justify-between py-4 border-b border-neutral-800">
+                <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
+                  <span>+</span> Strictly Necessary Cookies
+                </span>
+                <span className="text-[#1e62c9] text-xs font-bold uppercase tracking-wider select-none">
+                  Always Active
+                </span>
+              </div>
+
+              {/* Functional Cookies */}
+              <div className="flex items-center justify-between py-4 border-b border-neutral-800">
+                <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
+                  <span>+</span> Functional Cookies
+                </span>
+                <button
+                  onClick={() => setFunctionalCookies(!functionalCookies)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                    functionalCookies ? 'bg-[#1e62c9]' : 'bg-neutral-700'
+                  }`}
+                >
+                  <span
+                    className={`inline-flex h-4 w-4 transform items-center justify-center rounded-full bg-white transition-transform ${
+                      functionalCookies ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  >
+                    {functionalCookies ? (
+                      <span className="text-[10px] text-[#1e62c9] font-bold">✓</span>
+                    ) : (
+                      <span className="text-[10px] text-neutral-500 font-bold">✕</span>
+                    )}
+                  </span>
+                </button>
+              </div>
+
+              {/* Targeting Cookies */}
+              <div className="flex items-center justify-between py-4 border-b border-neutral-800">
+                <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
+                  <span>+</span> Targeting Cookies
+                </span>
+                <button
+                  onClick={() => setTargetingCookies(!targetingCookies)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                    targetingCookies ? 'bg-[#1e62c9]' : 'bg-neutral-700'
+                  }`}
+                >
+                  <span
+                    className={`inline-flex h-4 w-4 transform items-center justify-center rounded-full bg-white transition-transform ${
+                      targetingCookies ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  >
+                    {targetingCookies ? (
+                      <span className="text-[10px] text-[#1e62c9] font-bold">✓</span>
+                    ) : (
+                      <span className="text-[10px] text-neutral-500 font-bold">✕</span>
+                    )}
+                  </span>
+                </button>
+              </div>
+
+              {/* Performance Cookies */}
+              <div className="flex items-center justify-between py-4 border-b border-neutral-800">
+                <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
+                  <span>+</span> Performance Cookies
+                </span>
+                <button
+                  onClick={() => setPerformanceCookies(!performanceCookies)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                    performanceCookies ? 'bg-[#1e62c9]' : 'bg-neutral-700'
+                  }`}
+                >
+                  <span
+                    className={`inline-flex h-4 w-4 transform items-center justify-center rounded-full bg-white transition-transform ${
+                      performanceCookies ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  >
+                    {performanceCookies ? (
+                      <span className="text-[10px] text-[#1e62c9] font-bold">✓</span>
+                    ) : (
+                      <span className="text-[10px] text-neutral-500 font-bold">✕</span>
+                    )}
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Save Preferences Button */}
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => {
+                  handleSaveConsent({
+                    necessary: true,
+                    functional: functionalCookies,
+                    targeting: targetingCookies,
+                    performance: performanceCookies,
+                  });
+                }}
+                className="w-[180px] py-2 border border-neutral-600 hover:border-white text-white font-bold rounded-full bg-transparent hover:bg-white/5 transition-all text-center text-xs"
+              >
+                Save my preferences
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="w-full px-2 md:px-8 flex flex-col gap-6">
+
+          {/* Bottom Row: Text Content & Buttons */}
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-16">
+            <div className="flex flex-col gap-3 lg:flex-1">
+              <h2 className="text-xl font-bold text-white tracking-tight leading-snug">
+                At Kangqore, we value your privacy.
+              </h2>
+              <p className="text-[10px] md:text-[11px] text-slate-400 leading-relaxed font-normal">
+                When you visit any website, it may store or retrieve information on your browser, mostly in the form of cookies. 
+                This information might be about you, your preferences or your device and is mostly used to make the site work as you expect it to. 
+                The information does not usually directly identify you, but it can give you a more personalized web experience. 
+                Because we respect your right to privacy, you can choose not to allow some types of cookies. 
+                However, blocking some types of cookies may impact your experience of the site and the services we are able to offer. 
+                To find out more, read our updated{' '}
+                <Link to="/cookies" className="text-white hover:text-slate-300 underline font-semibold transition-colors">
+                  Cookie policy
+                </Link>
+                .
+              </p>
+            </div>
+
+            {/* Right Side: Actions */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full lg:w-auto justify-end flex-shrink-0">
+              <button
+                onClick={() => setCustomizing(true)}
+                className="w-[180px] py-2 bg-transparent border border-neutral-600 hover:border-white text-white font-bold rounded-full transition-all text-center text-xs"
+              >
+                Customize cookies
+              </button>
+              <button
+                onClick={handleAcceptAll}
+                className="w-[180px] py-2 text-white text-xs font-bold rounded-full transition-all shadow-md hover:opacity-90 active:opacity-80 text-center"
+                style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }}
+              >
+                Accept all cookies
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

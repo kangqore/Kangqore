@@ -367,7 +367,7 @@ const HeroCarousel = () => {
 
                   <h1
                     key={`title-${slide.id}`}
-                    className={`text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-fade-in ${
+                    className={`text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-in fade-in zoom-in-75 duration-1000 ease-out origin-left ${
                       slide.id === 2 ? '-translate-y-6' : ''
                     }`}
                   >
@@ -430,7 +430,7 @@ const HeroCarousel = () => {
                         <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
                           {slide.secondaryCta}
                         </span>
-                        <ArrowRight className="w-4 h-4 text-cyan-400 transform group-hover:translate-x-1 transition-transform duration-300" />
+                        <ArrowRight className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform duration-300" />
                       </Link>
                     )}
                   </div>
@@ -1319,83 +1319,6 @@ const TrustStatementTypewriter = ({ isVisible }) => {
         </div>
       </div>
     </section>
-
-
-  );
-};
-
-// ============================================================================
-// SECTION 5: TESTIMONIALS
-// ============================================================================
-const TestimonialCard = ({ testimonial, index, isActive, onHover }) => {
-  const [cardRef, cardVisible] = useScrollAnimation({ once: true, threshold: 0.2 });
-  
-  // Abstract gradients for the left image area
-  const gradients = [
-    "from-purple-600 via-pink-600 to-rose-500",
-    "from-indigo-600 via-blue-600 to-cyan-500",
-    "from-teal-600 via-emerald-500 to-cyan-500"
-  ];
-  const bgGradient = gradients[index % gradients.length];
-
-  return (
-    <div 
-      ref={cardRef}
-      onMouseEnter={onHover}
-      className={`group relative flex flex-col md:flex-row rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 shadow-2xl cursor-pointer transform origin-center w-full max-w-[85vw] md:max-w-3xl min-h-[400px] md:min-h-[500px] flex-shrink-0 ${
-        cardVisible ? 'translate-y-0' : 'translate-y-20 opacity-0'
-      } ${
-        isActive 
-          ? 'scale-100 z-30 opacity-100 mx-0 lg:mx-4 blur-none' 
-          : 'scale-[0.45] z-10 opacity-60 hover:opacity-80 -mx-[25vw] md:-mx-[220px] lg:-mx-[260px] xl:-mx-[280px] blur-[1px]'
-      }`}
-      style={{ transitionDelay: cardVisible ? '0s' : `${index * 0.15}s` }}
-    >
-      {/* Left side: Abstract Graphic */}
-      <div className={`w-full md:w-2/5 min-h-[200px] md:min-h-full bg-gradient-to-br ${bgGradient} relative overflow-hidden flex-shrink-0`}>
-        {/* Decorative glass shapes */}
-        <div className="absolute top-1/4 -left-1/4 w-full h-full bg-white/10 backdrop-blur-md rounded-3xl transform rotate-12 group-hover:rotate-45 transition-transform duration-1000 ease-in-out" />
-        <div className="absolute -bottom-1/4 right-0 w-3/4 h-3/4 bg-black/10 backdrop-blur-md rounded-3xl transform -rotate-12 group-hover:-rotate-45 transition-transform duration-1000 ease-in-out" />
-        
-        {/* Quote watermark */}
-        <div className="absolute bottom-6 left-6 opacity-40 mix-blend-overlay">
-          <Quote className="w-16 h-16 text-white" />
-        </div>
-      </div>
-
-      {/* Right side: Content */}
-      <div className="flex-1 p-8 md:p-10 lg:p-12 flex flex-col justify-between relative bg-[#E9EEF5] dark:bg-gray-900">
-        <div className="relative z-10">
-          {/* Star Ratings */}
-          <div className="flex items-center gap-1 mb-6">
-            {[...Array(testimonial.rating)].map((_, i) => (
-              <Star key={i} className="w-5 h-5 fill-[#020D3C] text-[#020D3C] dark:fill-brand-blue dark:text-brand-blue" />
-            ))}
-          </div>
-
-          {/* Quote Text */}
-          <blockquote className="text-xl md:text-2xl font-bold text-[#020D3C] dark:text-white leading-tight mb-10">
-            {testimonial.quote}
-          </blockquote>
-        </div>
-
-        {/* Author details */}
-        <div className="flex items-center gap-4 mt-auto relative z-10">
-          {/* Avatar Initials */}
-          <div className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-[#020D3C] dark:text-gray-300 font-bold text-sm shadow-sm border border-gray-200 dark:border-gray-700">
-            {testimonial.initials}
-          </div>
-          <div>
-            <cite className="not-italic text-base font-bold text-[#020D3C] dark:text-white block">
-              {testimonial.author}
-            </cite>
-            <span className="text-xs font-bold text-[#020D3C]/70 dark:text-gray-400 uppercase tracking-widest block mt-1">
-              {testimonial.role}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 };
 
@@ -1404,7 +1327,6 @@ const TestimonialsSection = () => {
   const [titleRef, titleVisible] = useScrollAnimation({ once: true, threshold: 0.3 });
   const sectionRef = useRef(null);
   const [parallaxOffset, setParallaxOffset] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(1);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1418,9 +1340,8 @@ const TestimonialsSection = () => {
         const scrollPosition = viewportHeight - rect.top;
         const progress = scrollPosition / scrollDistance;
         
-        // Move content up as we scroll down (speed up the scroll)
-        // Offset range from 100px (when entering) to -100px (when leaving)
-        setParallaxOffset((progress - 0.5) * -150);
+        // Move content up as we scroll down
+        setParallaxOffset((progress - 0.5) * -100);
       }
     };
 
@@ -1431,18 +1352,13 @@ const TestimonialsSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="pt-32 pb-0 relative bg-fixed bg-cover bg-center overflow-hidden"
-      style={{ 
-        backgroundImage: "url('https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1600&q=80')" 
-      }}
+      className="pt-32 pb-24 relative overflow-hidden bg-[#111827]"
     >
-      {/* Dark Overlay to ensure readability */}
-      <div className="absolute inset-0 bg-gray-900/90 dark:bg-black/90"></div>
-
       <div 
         className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-transform duration-100 ease-out"
         style={{ transform: `translateY(${parallaxOffset}px)` }}
       >
+        {/* Section Header */}
         <div 
           ref={titleRef}
           className={`mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6 transition-all duration-1000 ${
@@ -1452,12 +1368,12 @@ const TestimonialsSection = () => {
           <div>
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-cyan-400"></div>
-              <span className="text-sm font-semibold text-gray-300 uppercase tracking-widest">
-                TESTIMONIALS
+              <span className="text-sm font-semibold text-gray-300 uppercase tracking-widest font-mono">
+                INSIGHTS
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-              {t('home.case_studies.heading_prefix')} <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">{t('home.case_studies.heading_highlight')}</span>.
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight font-display">
+              Research & <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Insights</span>.
             </h2>
           </div>
           <Link 
@@ -1471,21 +1387,158 @@ const TestimonialsSection = () => {
           </Link>
         </div>
 
-        <div className="flex flex-col xl:flex-row items-center justify-start overflow-hidden xl:overflow-visible -space-y-4 xl:-space-y-0 w-full pt-10 pb-20">
-          {homeTestimonials.map((testimonial, index) => (
-            <TestimonialCard 
-              key={index} 
-              testimonial={testimonial} 
-              index={index} 
-              isActive={activeIndex === index}
-              onHover={() => setActiveIndex(index)}
-            />
-          ))}
+        {/* Editorial Layered Content Architecture Composition */}
+        <div className="flex flex-col gap-16 w-full pt-6">
+          
+          {/* Hero Composition: Neon Waves + Overlay Card (Top Row) */}
+          <div className="relative w-full h-[340px] flex items-center group">
+            
+            {/* Media Block: Edge-to-edge backdrop SVG */}
+            <div className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden shadow-2xl z-0">
+              {/* Custom High-Fidelity Laser Glow Neon waves background */}
+              <svg className="absolute inset-0 w-full h-full object-cover scale-[1.01] group-hover:scale-[1.04] transition-transform duration-[1.5s] ease-out" viewBox="0 0 800 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="neon-wave-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#080a10" />
+                    <stop offset="50%" stopColor="#030408" />
+                    <stop offset="100%" stopColor="#010204" />
+                  </linearGradient>
+                  <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="10" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#neon-wave-bg)" />
+                {/* Tech grid lines */}
+                <g stroke="rgba(255,255,255,0.02)" strokeWidth="1">
+                  <path d="M0 50 H800 M0 100 H800 M0 150 H800 M0 200 H800 M0 250 H800 M0 300 H800" />
+                  <path d="M50 0 V350 M100 0 V350 M150 0 V350 M200 0 V350 M250 0 V350 M300 0 V350 M350 0 V350 M400 0 V350 M450 0 V350 M500 0 V350 M550 0 V350 M600 0 V350 M650 0 V350 M700 0 V350 M750 0 V350" />
+                </g>
+                {/* Wavy Neon Curves - Laser cores on glowing blur paths */}
+                <path d="M-50 160 Q150 40 350 160 T750 160" stroke="#f43f5e" strokeWidth="6" filter="url(#neon-glow)" opacity="0.7" fill="none" />
+                <path d="M-50 160 Q150 40 350 160 T750 160" stroke="#ffffff" strokeWidth="1.5" opacity="0.9" fill="none" />
+
+                <path d="M-50 190 Q150 310 350 190 T750 190" stroke="#3b82f6" strokeWidth="5" filter="url(#neon-glow)" opacity="0.65" fill="none" />
+                <path d="M-50 190 Q150 310 350 190 T750 190" stroke="#ffffff" strokeWidth="1.2" opacity="0.95" fill="none" />
+
+                <path d="M-50 130 Q150 180 350 130 T750 130" stroke="#a855f7" strokeWidth="5" filter="url(#neon-glow)" opacity="0.6" fill="none" />
+                <path d="M-50 130 Q150 180 350 130 T750 130" stroke="#ffffff" strokeWidth="1.2" opacity="0.9" fill="none" />
+              </svg>
+            </div>
+
+            {/* Content Block: Floating Card overlay, 40% width, aligned right, taller height for overflow overlap */}
+            <div className="absolute right-6 w-[90%] md:w-[40%] h-[300px] bg-[#20242e] p-8 lg:p-10 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.7)] z-10 hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between">
+              <div>
+                <p className="text-xs font-semibold text-gray-400 mb-6">
+                  — Report
+                </p>
+                <h3 className="text-xl md:text-2xl font-medium text-white leading-tight mb-8 font-display">
+                  AI meets the grid: Shaping the data center power play
+                </h3>
+              </div>
+              <div className="mt-auto">
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase font-mono block">
+                  CAPGEMINI RESEARCH INSTITUTE
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Row 2: Story Block A (Left) & Story Block B (Right) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
+            
+            {/* Story Block A: Solid Slate-Blue Glass Card (col-span-4) */}
+            <div className="group relative lg:col-span-4 w-full rounded-3xl bg-[#1c2d47] p-8 lg:p-10 flex flex-col justify-between h-[380px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-all duration-500">
+              {/* Bevel highlight */}
+              <div className="absolute inset-0 z-30 pointer-events-none rounded-3xl border border-white/[0.06] shadow-[inset_0_1.5px_0_0_rgba(255,255,255,0.12),inset_0_-1.5px_0_0_rgba(0,0,0,0.6)]" />
+              
+              <div>
+                <p className="text-xs font-semibold text-slate-300 mb-6">
+                  — Capgemini Research Institute
+                </p>
+                <h3 className="text-lg lg:text-xl font-medium text-white leading-relaxed mb-8 font-display">
+                  Open source: Key to reclaiming public sector digital sovereignty
+                </h3>
+              </div>
+              
+              <div className="mt-auto">
+                <span className="text-[10px] font-bold text-slate-300 tracking-widest uppercase font-mono block">
+                  CAPGEMINI RESEARCH INSTITUTE
+                </span>
+              </div>
+            </div>
+
+            {/* Story Block B: Organic Leaves + Overlay Card (col-span-8) */}
+            <div className="relative lg:col-span-8 w-full h-[380px] flex items-center group">
+              
+              {/* Media Block: Edge-to-edge backdrop SVG */}
+              <div className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden shadow-2xl z-0">
+                {/* Custom Organic Teal Foliage / Bokeh SVG Background */}
+                <svg className="absolute inset-0 w-full h-full object-cover scale-[1.01] group-hover:scale-[1.04] transition-transform duration-[1.5s] ease-out" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="organic-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#011b15" />
+                      <stop offset="50%" stopColor="#010c10" />
+                      <stop offset="100%" stopColor="#000204" />
+                    </linearGradient>
+                    <filter id="organic-glow-filter-1" x="-30%" y="-30%" width="160%" height="160%">
+                      <feGaussianBlur stdDeviation="25" result="blur" />
+                    </filter>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#organic-grad-1)" />
+                  {/* Glowing bokeh spots */}
+                  <circle cx="600" cy="180" r="140" fill="#0d9488" opacity="0.25" filter="url(#organic-glow-filter-1)" />
+                  <circle cx="450" cy="120" r="100" fill="#0891b2" opacity="0.2" filter="url(#organic-glow-filter-1)" />
+                  <circle cx="720" cy="140" r="90" fill="#10b981" opacity="0.15" filter="url(#organic-glow-filter-1)" />
+                  
+                  {/* Overlapping organic leaves tapering to beautiful points (Uncropped) */}
+                  <g fill="#0d9488" opacity="0.22">
+                    {/* Leaf 1 (Large) */}
+                    <path d="M 480 400 C 550 300, 640 180, 720 100 C 660 160, 540 280, 480 400 Z" />
+                    {/* Leaf 2 (Medium) */}
+                    <path d="M 560 400 C 620 310, 700 220, 780 160 C 730 210, 630 300, 560 400 Z" opacity="0.6" />
+                    {/* Leaf 3 (Small) */}
+                    <path d="M 400 400 C 460 320, 540 240, 620 180 C 570 230, 470 320, 400 400 Z" opacity="0.8" fill="#115e59" />
+                  </g>
+                  
+                  {/* Fine glowing neon-teal outline veins tapering to tips */}
+                  <path d="M 480 400 C 550 300, 640 180, 720 100" stroke="#14b8a6" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" fill="none" />
+                  <path d="M 560 400 C 620 310, 700 220, 780 160" stroke="#06b6d4" strokeWidth="1.5" strokeLinecap="round" opacity="0.4" fill="none" />
+                  <path d="M 400 400 C 460 320, 540 240, 620 180" stroke="#10b981" strokeWidth="1.5" strokeLinecap="round" opacity="0.3" fill="none" />
+                </svg>
+              </div>
+
+              {/* Content Block: Floating Card overlay, 42% width, aligned left, taller height for overflow overlap */}
+              <div className="absolute left-6 w-[90%] md:w-[42%] h-[340px] bg-[#20242e] p-8 lg:p-10 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.7)] z-10 hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between">
+                <div>
+                  <p className="text-xs font-semibold text-gray-400 mb-6">
+                    — Report
+                  </p>
+                  <h3 className="text-lg lg:text-xl font-medium text-white leading-relaxed mb-8 font-display">
+                    Data-powered Innovation Review | Wave 12
+                  </h3>
+                </div>
+                <div className="mt-auto">
+                  <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase font-mono block">
+                    CAPGEMINI RESEARCH INSTITUTE
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
+
       </div>
 
       {/* New CTA Banner - Attached to bottom (Outside Parallax) */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mt-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mt-20">
         <div className="bg-brand-gradient p-8 md:p-12 rounded-t-sm shadow-2xl animate-fade-in-up">
           <div className="max-w-4xl">
             <h3 className="text-xl md:text-2xl font-medium text-white leading-relaxed mb-8">
@@ -1504,9 +1557,6 @@ const TestimonialsSection = () => {
     </section>
   );
 };
-
-// ============================================================================
-// SECTION 5.5: LEADERSHIP
 // ============================================================================
 
 // ============================================================================

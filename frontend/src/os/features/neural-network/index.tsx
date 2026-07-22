@@ -432,16 +432,20 @@ const AegisShieldNode = () => {
 };
 
 // --- INITIAL DATA ---
+// --- INITIAL DATA ---
 const initialNodesMacro = [
   // --- LAYER GROUPS ---
   { id: 'g-presentation', type: 'layerGroup', position: { x: 420, y: -250 }, width: 1700, height: 420, data: { label: 'Presentation Layer (Frontend)', color: '#3b82f6', borderColor: '#60a5fa' } },
   { id: 'g-eqore-suite', type: 'layerGroup', position: { x: 1850, y: -250 }, width: 1400, height: 420, data: { label: 'Kangqore AI Product Suite', color: '#facc15', borderColor: '#fde047' } },
-  { id: 'g-product', type: 'layerGroup', position: { x: 420, y: 250 }, width: 800, height: 350, data: { label: 'Product Engine (Node.js/Prisma)', color: '#10b981', borderColor: '#34d399' } },
-  { id: 'g-intelligence', type: 'layerGroup', position: { x: 420, y: 700 }, width: 1200, height: 500, data: { label: 'Intelligence Engine (Python/AI)', color: '#8b5cf6', borderColor: '#a78bfa' } },
-  { id: 's-aegis', type: 'shield', position: { x: 400, y: 220 }, width: 1240, height: 1000, data: {} },
+  { id: 'g-product', type: 'layerGroup', position: { x: 420, y: 250 }, width: 920, height: 350, data: { label: 'Product Engine (Node.js/Prisma)', color: '#10b981', borderColor: '#34d399' } },
+  { id: 'g-intelligence', type: 'layerGroup', position: { x: 420, y: 700 }, width: 1360, height: 500, data: { label: 'Intelligence Engine (Python/AI)', color: '#8b5cf6', borderColor: '#a78bfa' } },
+  { id: 's-aegis', type: 'shield', position: { x: 400, y: 220 }, width: 1400, height: 1000, data: {} },
   
+  // --- SUPREME ADMIN NODE ---
+  { id: 'code-admin', type: 'kangqore', position: { x: 1110, y: -450 }, width: 320, height: 100, data: { label: 'Admin C.O.D.E. Mahesh Kumar', sub: 'Supreme CEO & Founder', icon: ShieldCheckered, color: '#ef4444', desc: 'The supreme administrator governing the WAANDA KIMMP cognitive core.' } },
+
   // --- PRESENTATION LAYER ---
-  { id: 'kv-os', type: 'kangqore', parentId: 'g-presentation', position: { x: 500, y: 20 }, width: 320, height: 100, data: { label: 'Kangqore View (OS)', sub: 'React Shell Router', icon: Globe, color: '#f59e0b', desc: 'The dynamic shell routing users to specific portals.' } },
+  { id: 'kv-os', type: 'kangqore', parentId: 'g-presentation', position: { x: 500, y: 20 }, width: 320, height: 100, data: { label: 'Kangqore View', sub: 'Dumb Rendering Engine', icon: Globe, color: '#f59e0b', desc: 'The user interface shell that dynamically morphs widgets and screens under WAANDA\'s direct command.' } },
 
   // --- 9 FRONTEND PORTALS ---
   { id: 'p-admin', type: 'kangqore', parentId: 'g-presentation', position: { x: 40, y: 150 }, width: 280, height: 100, data: { label: 'Admin Portal', sub: 'OS Control', icon: ShieldCheckered, color: '#60a5fa' } },
@@ -465,32 +469,43 @@ const initialNodesMacro = [
   { id: 'p-feedback', type: 'kangqore', parentId: 'g-eqore-suite', position: { x: 40, y: 300 }, width: 300, height: 100, data: { label: 'eROOT', sub: 'Smart Context Prompt', icon: ChatCircleText, color: '#facc15' } },
 
   // --- PRODUCT ENGINE (CORE BACKEND) ---
-  { id: 'f-router', type: 'kangqore', parentId: 'g-product', position: { x: 260, y: 40 }, width: 280, height: 100, data: { label: 'Feature Router', sub: 'API Gateway', icon: HardDrives, color: '#10b981' } },
-  { id: 'sys-auth', type: 'kangqore', parentId: 'g-product', position: { x: -20, y: 180 }, width: 240, height: 80, data: { label: 'Auth System', sub: 'JWT / OAuth', icon: LockKey, color: '#34d399' } },
-  { id: 'core-api', type: 'kangqore', parentId: 'g-product', position: { x: 260, y: 200 }, width: 280, height: 100, data: { label: 'Node.js Core', sub: 'Express API', icon: TerminalWindow, color: '#10b981' } },
-  { id: 'core-db', type: 'kangqore', parentId: 'g-product', position: { x: 580, y: 200 }, width: 280, height: 100, data: { label: 'PostgreSQL DB', sub: 'via Prisma', icon: Database, color: '#f59e0b' } },
-  { id: 'sys-vector', type: 'kangqore', parentId: 'g-product', position: { x: 580, y: 40 }, width: 240, height: 80, data: { label: 'Vector DB', sub: 'Pinecone / Qdrant', icon: Database, color: '#f43f5e' } },
+  { id: 'f-router', type: 'kangqore', parentId: 'g-product', position: { x: 320, y: 40 }, width: 280, height: 100, data: { label: 'Feature Router', sub: 'API Gateway', icon: HardDrives, color: '#10b981' } },
+  { id: 'sys-auth', type: 'kangqore', parentId: 'g-product', position: { x: 40, y: 180 }, width: 240, height: 80, data: { label: 'Auth System', sub: 'JWT / OAuth', icon: LockKey, color: '#34d399' } },
+  { id: 'core-api', type: 'kangqore', parentId: 'g-product', position: { x: 320, y: 200 }, width: 280, height: 100, data: { label: 'Node.js Core', sub: 'Express API', icon: TerminalWindow, color: '#10b981' } },
+  { id: 'core-db', type: 'kangqore', parentId: 'g-product', position: { x: 620, y: 200 }, width: 280, height: 100, data: { label: 'PostgreSQL DB', sub: 'via Prisma', icon: Database, color: '#f59e0b' } },
+  { id: 'sys-vector', type: 'kangqore', parentId: 'g-product', position: { x: 620, y: 40 }, width: 240, height: 80, data: { label: 'KVIS Vector Memory', sub: 'Vector Memory Database', icon: Database, color: '#f43f5e', desc: 'WAANDA\'s long-term memory retrieval system for embeddings, vector storage, and logs.' } },
 
   // --- INTELLIGENCE LAYER & AGENTS ---
-  { id: 'ai-python', type: 'kangqore', parentId: 'g-intelligence', position: { x: 260, y: 50 }, width: 280, height: 100, data: { label: 'Python AI Layer', sub: 'FastAPI / ML', icon: Code, color: '#d946ef' } },
-  { id: 'ai-models', type: 'kangqore', parentId: 'g-intelligence', position: { x: 580, y: 50 }, width: 280, height: 100, data: { label: 'LLMs / Models', sub: 'Generative AI', icon: Brain, color: '#d946ef' } },
+  { id: 'ai-python', type: 'kangqore', parentId: 'g-intelligence', position: { x: 360, y: 50 }, width: 280, height: 100, data: { label: 'Python AI Layer', sub: 'FastAPI / ML', icon: Code, color: '#d946ef' } },
+  { id: 'ai-models', type: 'kangqore', parentId: 'g-intelligence', position: { x: 700, y: 50 }, width: 280, height: 100, data: { label: 'LLMs / Models', sub: 'Generative AI', icon: Brain, color: '#d946ef' } },
   
   // KIMMP Agent Orchestration
-  { id: 'ai-kimmp', type: 'kangqore', parentId: 'g-intelligence', position: { x: 20, y: 200 }, width: 300, height: 100, data: { label: 'KIMMP', sub: 'Agent Orchestration', icon: Robot, color: '#6366f1', desc: 'Central management for autonomous agents.' } },
-  { id: 'ag-mc', type: 'kangqore', parentId: 'g-intelligence', position: { x: 40, y: 350 }, width: 240, height: 80, data: { label: 'Mission Control', sub: 'Logic Core', icon: Network, color: '#818cf8' } },
-  { id: 'ag-402', type: 'kangqore', parentId: 'g-intelligence', position: { x: 300, y: 350 }, width: 180, height: 80, data: { label: 'Agent 402', sub: 'Research', icon: Robot, color: '#c084fc' } },
-  { id: 'ag-719', type: 'kangqore', parentId: 'g-intelligence', position: { x: 500, y: 350 }, width: 180, height: 80, data: { label: 'Agent 719', sub: 'Scraper', icon: Robot, color: '#c084fc' } },
+  { id: 'ai-kimmp', type: 'kangqore', parentId: 'g-intelligence', position: { x: 360, y: 350 }, width: 280, height: 100, data: { label: 'KIMMP', sub: 'Agent Orchestration', icon: Robot, color: '#6366f1', desc: 'Central management for autonomous agents.' } },
+  { id: 'ag-mc', type: 'kangqore', parentId: 'g-intelligence', position: { x: 700, y: 200 }, width: 280, height: 100, data: { label: 'Mission Control', sub: 'Logic Core', icon: Network, color: '#818cf8' } },
+  { id: 'ag-402', type: 'kangqore', parentId: 'g-intelligence', position: { x: 700, y: 350 }, width: 130, height: 80, data: { label: 'Agent 402', sub: 'Research', icon: Robot, color: '#c084fc' } },
+  { id: 'ag-719', type: 'kangqore', parentId: 'g-intelligence', position: { x: 850, y: 350 }, width: 130, height: 80, data: { label: 'Agent 719', sub: 'Scraper', icon: Robot, color: '#c084fc' } },
   
   // BIDS & Core Systems
-  { id: 'ai-bids', type: 'kangqore', parentId: 'g-intelligence', position: { x: 880, y: 200 }, width: 280, height: 100, data: { label: 'BIDS', sub: 'Diagnostic System', icon: MagnifyingGlass, color: '#14b8a6' } },
-  { id: 'ag-991', type: 'kangqore', parentId: 'g-intelligence', position: { x: 920, y: 350 }, width: 200, height: 80, data: { label: 'Agent 991', sub: 'Diagnostics bot', icon: Robot, color: '#5eead4' } },
+  { id: 'ai-bids', type: 'kangqore', parentId: 'g-intelligence', position: { x: 1040, y: 200 }, width: 280, height: 100, data: { label: 'BIDS', sub: 'Diagnostic System', icon: MagnifyingGlass, color: '#14b8a6' } },
+  { id: 'ag-991', type: 'kangqore', parentId: 'g-intelligence', position: { x: 1040, y: 350 }, width: 280, height: 80, data: { label: 'Agent 991', sub: 'Diagnostics bot', icon: Robot, color: '#5eead4' } },
   
-  { id: 'ai-waanda', type: 'kangqore', parentId: 'g-intelligence', position: { x: 360, y: 200 }, width: 280, height: 100, data: { label: 'WAANDA', sub: 'AI Persona', icon: Brain, color: '#06b6d4' } },
-  { id: 'ai-ontology', type: 'kangqore', parentId: 'g-intelligence', position: { x: -60, y: 50 }, width: 260, height: 100, data: { label: 'Ontology', sub: 'Data Map', icon: Graph, color: '#ec4899' } },
-  { id: 'ai-aegis', type: 'kangqore', parentId: 'g-intelligence', position: { x: 880, y: 50 }, width: 280, height: 100, data: { label: 'AEGIS', sub: 'Security Core', icon: ShieldCheckered, color: '#ef4444' } }
+  { id: 'ai-waanda', type: 'kangqore', parentId: 'g-intelligence', position: { x: 360, y: 200 }, width: 280, height: 100, data: { label: 'WAANDA [KIMMP]', sub: 'Supreme Orchestrator', icon: Brain, color: '#06b6d4', desc: 'The supreme cognitive mastermind processing event streams, ontology structures, and adaptive UI layouts.' } },
+  { id: 'ai-ontology', type: 'kangqore', parentId: 'g-intelligence', position: { x: 40, y: 50 }, width: 260, height: 100, data: { label: 'Enterprise Ontology', sub: 'Ontology Kernel', icon: Graph, color: '#ec4899', desc: 'Defines semantic entity mappings, relationships, and object mutations across the enterprise.' } },
+  { id: 'ai-aegis', type: 'kangqore', parentId: 'g-intelligence', position: { x: 1040, y: 50 }, width: 280, height: 100, data: { label: 'AEGIS Governance Core', sub: 'Security Shield', icon: ShieldCheckered, color: '#ef4444', desc: 'Autonomous executive governance and intelligence shield enforcing policy limits and transaction audits.' } },
+  { id: 'sys-eef', type: 'kangqore', parentId: 'g-intelligence', position: { x: 40, y: 200 }, width: 260, height: 100, data: { label: 'Enterprise Event Fabric', sub: 'Event Bus / PubSub', icon: Lightning, color: '#10b981', desc: 'The nervous system of the enterprise routing operational signals and state updates to WAANDA.' } }
 ];
 
 const initialEdgesMacro = [
+  // Supreme Governance Command Edge
+  { id: 'e-code-waanda', source: 'code-admin', target: 'ai-waanda', type: 'dataPacket', animated: true, label: 'Directs & Governs', style: { stroke: '#ef4444', strokeWidth: 3 } },
+
+  // WAANDA Infrastructure Control
+  { id: 'e-waanda-eef', source: 'ai-waanda', target: 'sys-eef', type: 'dataPacket', animated: true, label: 'Commands', style: { stroke: '#0ea5e9' } },
+  { id: 'e-waanda-aegis', source: 'ai-waanda', target: 'ai-aegis', type: 'dataPacket', animated: true, label: 'Enforces via', style: { stroke: '#0ea5e9' } },
+  { id: 'e-waanda-ont', source: 'ai-waanda', target: 'ai-ontology', type: 'dataPacket', animated: true, label: 'Reasons over', style: { stroke: '#0ea5e9' } },
+  { id: 'e-waanda-kvis', source: 'ai-waanda', target: 'sys-vector', type: 'dataPacket', animated: true, label: 'Recalls from', style: { stroke: '#0ea5e9' } },
+  { id: 'e-waanda-kv', source: 'ai-waanda', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Orchestrates state', style: { stroke: '#0ea5e9', strokeWidth: 2 } },
+
   // Portals -> OS Shell (Distinct Portal Colors)
   { id: 'e-pub-kv', source: 'p-public', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Public Traffic', style: { stroke: '#0ea5e9' } }, // Sky
   { id: 'e-pa-kv', source: 'p-admin', target: 'kv-os', type: 'dataPacket', animated: true, label: 'Admin Access', style: { stroke: '#8b5cf6' } }, // Violet
@@ -672,6 +687,14 @@ function InnerNetwork() {
 
   const { fitView, setCenter, setViewport, getViewport, zoomIn, zoomOut } = useReactFlow();
   const { initAudio, playBlip, playErrorBlip, toggleAmbient, toggleAlarm, isReady } = useSciFiAudio();
+
+  // Programmatic viewport fit to ensure correct scaling and prevent layout clipping under Topbar
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fitView({ duration: 600, padding: 0.45 });
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [fitView, focusGraph, nodes.length]);
 
   // --- KEYBOARD NAVIGATION (PAN & SMOOTH ZOOM) ---
   useEffect(() => {
@@ -871,7 +894,7 @@ function InnerNetwork() {
 
   useEffect(() => {
     if (focusGraph === 'semantic-graph') {
-      api.get('/admin/hcip/graph').then(res => {
+      api.get('/hcip/graph').then(res => {
         const data = res.data;
         if (data.nodes && data.edges) {
           const mapTypeToColor = (type: string) => {
@@ -1394,7 +1417,7 @@ function InnerNetwork() {
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             fitView
-            fitViewOptions={{ padding: 0.2 }}
+            fitViewOptions={{ padding: 0.45 }}
             className="bg-transparent"
           >
             {!isThermalMode && !isMatrixMode && <Background variant={BackgroundVariant.Dots} color="#1e293b" gap={50} size={1.5} />}

@@ -1,5 +1,15 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { SidebarSimpleIcon } from '@phosphor-icons/react'
+import {
+  SidebarSimpleIcon,
+  HouseIcon,
+  CalendarCheckIcon,
+  ChatCircleDotsIcon,
+  MegaphoneIcon,
+  BookOpenIcon,
+  UsersIcon,
+  BrainIcon,
+} from '@phosphor-icons/react'
+import { Briefcase, CheckSquare, Calendar, FileText, FolderOpen, Headphones } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { Tooltip } from '@design-system/components/Tooltip'
 import { type RailEntry, RAIL_ITEMS, getActiveRailItem } from '@lib/nav'
@@ -10,15 +20,31 @@ const INTEL    = RAIL_ITEMS.filter(i => ['waanda','kimmp','keos','aegis','ontolo
 const BUSINESS = RAIL_ITEMS.filter(i => ['crm','core','operations'].includes(i.id))
 const BOTTOM   = RAIL_ITEMS.find(i => i.id === 'settings')!
 
-function RailBtn({ item, isActive, onClick }: { item: RailEntry; isActive: boolean; onClick: () => void }) {
-  const Icon = item.icon
+const VALID_DEPTS = [
+  'it', 'hr', 'finance', 'security', 'legal', 'support', 'facilities',
+  'supply-chain', 'marketing', 'sales', 'customer-success', 'product',
+  'engineering', 'delivery', 'risk-compliance', 'procurement', 'data-analytics',
+  'ai-automation', 'innovation-rd', 'operations'
+]
+
+function RailBtn({
+  label,
+  icon: Icon,
+  isActive,
+  onClick
+}: {
+  label: string
+  icon: React.ComponentType<any>
+  isActive: boolean
+  onClick: () => void
+}) {
   return (
-    <Tooltip content={item.label} side="right">
+    <Tooltip content={label} side="right">
       <button
         onClick={onClick}
-        aria-label={item.label}
+        aria-label={label}
         className={cn(
-          'w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150 relative',
+          'w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150 relative cursor-pointer',
           isActive
             ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
             : 'text-[var(--os-text-2)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04] hover:text-[var(--os-text-1)]'
@@ -40,9 +66,106 @@ export function Rail() {
   const { sidebarCollapsed, setSidebarCollapsed, toggleSidebar } = useUIStore()
   const activeItem = getActiveRailItem(pathname)
 
+  const isTeamPortal = pathname.startsWith('/kangqore-view/team')
+  const isClientPortal = pathname.startsWith('/kangqore-view/client')
+
+  // Parse department from URL so Rail items route contextually within the active department workspace
+  const match = pathname.match(/^\/kangqore-view\/team\/([^/]+)/)
+  const deptFromUrl = match ? match[1] : 'it'
+  const currentDept = VALID_DEPTS.includes(deptFromUrl) ? deptFromUrl : 'it'
+
+  const teamItems = [
+    {
+      id: 'team-tasks',
+      label: 'My Tasks',
+      icon: CalendarCheckIcon,
+      path: `/kangqore-view/team/${currentDept}/my-work`,
+    },
+    {
+      id: 'team-relay',
+      label: 'RELAY Chat',
+      icon: ChatCircleDotsIcon,
+      path: `/kangqore-view/team/${currentDept}/relay`,
+    },
+    {
+      id: 'team-announcements',
+      label: 'Announcements',
+      icon: MegaphoneIcon,
+      path: `/kangqore-view/team/${currentDept}/announcements`,
+    },
+    {
+      id: 'team-resources',
+      label: 'Resources',
+      icon: BookOpenIcon,
+      path: `/kangqore-view/team/${currentDept}/resources`,
+    },
+    {
+      id: 'team-members',
+      label: 'Team Directory',
+      icon: UsersIcon,
+      path: `/kangqore-view/team/${currentDept}/members`,
+    },
+    {
+      id: 'team-kimmp',
+      label: 'KIMMP Brief',
+      icon: BrainIcon,
+      path: `/kangqore-view/team/${currentDept}/kimmp`,
+    },
+  ]
+
+  const clientItems = [
+    {
+      id: 'client-projects',
+      label: 'Projects',
+      icon: Briefcase,
+      path: `/kangqore-view/client/projects`,
+    },
+    {
+      id: 'client-tasks',
+      label: 'Tasks',
+      icon: CheckSquare,
+      path: `/kangqore-view/client/tasks`,
+    },
+    {
+      id: 'client-meetings',
+      label: 'Meetings',
+      icon: Calendar,
+      path: `/kangqore-view/client/meetings`,
+    },
+    {
+      id: 'client-invoices',
+      label: 'Invoices',
+      icon: FileText,
+      path: `/kangqore-view/client/invoices`,
+    },
+    {
+      id: 'client-documents',
+      label: 'Documents',
+      icon: FolderOpen,
+      path: `/kangqore-view/client/documents`,
+    },
+    {
+      id: 'client-waanda',
+      label: 'Ask WAANDA',
+      icon: BrainIcon,
+      path: `/kangqore-view/client/waanda`,
+    },
+    {
+      id: 'client-support',
+      label: 'Support Tickets',
+      icon: Headphones,
+      path: `/kangqore-view/client/support`,
+    },
+  ]
+
+  const isPortalItemActive = (itemPath: string) => {
+    if (pathname === itemPath) return true
+    const suffix = itemPath.split('/').pop()
+    return pathname.endsWith(`/${suffix}`)
+  }
+
   function handleClick(item: RailEntry) {
     navigate(item.defaultPath)
-    // Expand the WorkspaceSidebar if it has content and is currently collapsed
     if (item.sidebarItems.length > 0 && sidebarCollapsed) {
       setSidebarCollapsed(false)
     }
@@ -55,42 +178,94 @@ export function Rail() {
     >
       {/* Home */}
       <div className="flex flex-col items-center pt-3 pb-2 gap-1">
-        <RailBtn item={HOME} isActive={activeItem?.id === 'home'} onClick={() => handleClick(HOME)} />
+        {isTeamPortal ? (
+          <RailBtn
+            label="Portal Home"
+            icon={HouseIcon}
+            isActive={pathname === '/kangqore-view/team' || pathname === '/kangqore-view/team/'}
+            onClick={() => navigate('/kangqore-view/team')}
+          />
+        ) : isClientPortal ? (
+          <RailBtn
+            label="Client Home"
+            icon={HouseIcon}
+            isActive={pathname === '/kangqore-view/client' || pathname === '/kangqore-view/client/'}
+            onClick={() => navigate('/kangqore-view/client')}
+          />
+        ) : (
+          <RailBtn
+            label={HOME.label}
+            icon={HOME.icon}
+            isActive={activeItem?.id === 'home'}
+            onClick={() => handleClick(HOME)}
+          />
+        )}
         <Divider />
       </div>
 
       {/* Scrollable middle */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col items-center py-1 gap-0.5">
-        {INTEL.map(item => (
-          <RailBtn
-            key={item.id}
-            item={item}
-            isActive={activeItem?.id === item.id}
-            onClick={() => handleClick(item)}
-          />
-        ))}
+        {isTeamPortal ? (
+          teamItems.map(item => (
+            <RailBtn
+              key={item.id}
+              label={item.label}
+              icon={item.icon}
+              isActive={isPortalItemActive(item.path)}
+              onClick={() => navigate(item.path)}
+            />
+          ))
+        ) : isClientPortal ? (
+          clientItems.map(item => (
+            <RailBtn
+              key={item.id}
+              label={item.label}
+              icon={item.icon}
+              isActive={isPortalItemActive(item.path)}
+              onClick={() => navigate(item.path)}
+            />
+          ))
+        ) : (
+          <>
+            {INTEL.map(item => (
+              <RailBtn
+                key={item.id}
+                label={item.label}
+                icon={item.icon}
+                isActive={activeItem?.id === item.id}
+                onClick={() => handleClick(item)}
+              />
+            ))}
 
-        <Divider />
+            <Divider />
 
-        {BUSINESS.map(item => (
-          <RailBtn
-            key={item.id}
-            item={item}
-            isActive={activeItem?.id === item.id}
-            onClick={() => handleClick(item)}
-          />
-        ))}
+            {BUSINESS.map(item => (
+              <RailBtn
+                key={item.id}
+                label={item.label}
+                icon={item.icon}
+                isActive={activeItem?.id === item.id}
+                onClick={() => handleClick(item)}
+              />
+            ))}
+          </>
+        )}
       </nav>
 
       {/* Settings + Collapse */}
       <div className="flex flex-col items-center pt-2 pb-3 gap-1 border-t border-[var(--os-border)]">
-        <RailBtn item={BOTTOM} isActive={activeItem?.id === 'settings'} onClick={() => handleClick(BOTTOM)} />
+        <RailBtn
+          label={BOTTOM.label}
+          icon={BOTTOM.icon}
+          isActive={activeItem?.id === 'settings'}
+          onClick={() => handleClick(BOTTOM)}
+        />
 
         <Tooltip content={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'} side="right">
           <button
             onClick={toggleSidebar}
             aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className="w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150 text-[var(--os-text-2)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04] hover:text-[var(--os-text-1)]"
+            className="w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150 text-[var(--os-text-2)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04] hover:text-[var(--os-text-1)] cursor-pointer"
           >
             <SidebarSimpleIcon
               weight="fill"
@@ -105,3 +280,4 @@ export function Rail() {
     </aside>
   )
 }
+
