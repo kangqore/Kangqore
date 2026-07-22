@@ -1,7 +1,8 @@
-// S74 — Y.js CRDT layer for WorkflowCanvas co-editing
-// Requires: yjs, y-websocket, y-indexeddb (all installed)
-// Requires: y-websocket server running (Docker or standalone)
-// Docker: docker run -d -p 1234:1234 websockets/y-websocket
+// S74/S81 — Y.js CRDT layer for WorkflowCanvas co-editing
+// Packages: yjs, y-websocket, y-indexeddb  (all in frontend/package.json)
+// Real-time sync: requires y-websocket server (optional — omit VITE_YWS_URL for IDB-only mode)
+// Docker:  docker run -d -p 1234:1234 websockets/y-websocket
+// Env var: VITE_YWS_URL=ws://localhost:1234  (add to frontend/.env.development to enable live sync)
 
 import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
@@ -24,7 +25,7 @@ export class CanvasYDoc {
   ws:      WebsocketProvider | null = null
   idb:     IndexeddbPersistence
   undoMgr: Y.UndoManager
-  private listeners: Array<() => void> = []
+  private readonly listeners: Array<() => void> = []
 
   constructor(workflowId: string) {
     this.doc   = new Y.Doc()

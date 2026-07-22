@@ -38,6 +38,9 @@ import { connectSocket, getSocket } from '@lib/socket'
 import type { LiveSignal } from '@lib/useSignalStream'
 import { useWorkflowsStore } from '../store'
 import { useSearchParams } from 'react-router-dom'
+import { getCanvasYDoc, releaseCanvasYDoc } from '@os/lib/yjs-canvas'
+import type { CanvasUser, CanvasYDoc } from '@os/lib/yjs-canvas'
+import { useAuthStore } from '@os/store/auth'
 import type { WorkflowStep, StepType, WvisStepType, IntelStepType, Workflow } from '../types'
 import { validateWorkflow, scoreWorkflow, type ValidationIssue, type ValidationResult, type ValidationScore } from '../workflowValidation'
 
@@ -2262,6 +2265,106 @@ function ShareModal({ nodes, edges, wfName, onClose }: {
   )
 }
 
+// ── Y.js CRDT Canvas Integration (S81) ──────────────────────────────────────
+// Provides: per-user undo/redo (UndoManager), IndexedDB offline persistence,
+// real-time awareness cursors via WebSocket (optional — requires VITE_YWS_URL).
+// Docker: docker run -d -p 1234:1234 websockets/y-websocket
+// Env:    VITE_YWS_URL=ws://localhost:1234  (omit for offline-only IDB mode)
+
+function useYjsCanvas(
+  workflowId: string | undefined,
+  setNodes: (nds: Node[]) => void,
+  setEdges: (eds: Edge[]) => void,
+) {
+  const ydocRef         = useRef<CanvasYDoc | null>(null)
+  const isYjsUpdateRef  = useRef(false)
+  const syncTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [yjsReady,   setYjsReady]   = useState(false)
+  const [yjsOnline,  setYjsOnline]  = useState(false)
+  const [yjsPeers,   setYjsPeers]   = useState<Map<number, { user?: CanvasUser }>>(new Map())
+  const [myClientId, setMyClientId] = useState<number | null>(null)
+  const [canUndo,    setCanUndo]    = useState(false)
+  const [canRedo,    setCanRedo]    = useState(false)
+
+  useEffect(() => {
+    if (!workflowId) return
+    let destroyed = false
+    const ydoc = getCanvasYDoc(workflowId)
+    ydocRef.current = ydoc
+    isYjsUpdateRef.current = false
+
+    const refreshStacks = () => {
+      if (destroyed) return
+      setCanUndo(ydoc.undoMgr.undoStack.length > 0)
+      setCanRedo(ydoc.undoMgr.redoStack.length > 0)
+    }
+
+    // IndexedDB ready — mark ready; workflow API data takes precedence on initial load
+    ydoc.idb.on('synced', () => {
+      if (!destroyed) setYjsReady(true)
+    })
+
+    // Real-time CRDT — update React state when peers push changes or undo fires
+    ydoc.onChange(() => {
+      if (destroyed) return
+      const n = ydoc.toNodes()
+      const e = ydoc.toEdges()
+      if (n.length > 0) {
+        isYjsUpdateRef.current = true
+        setNodes(n)
+        setEdges(e)
+        Promise.resolve().then(() => { isYjsUpdateRef.current = false })
+      }
+      refreshStacks()
+    })
+
+    ydoc.undoMgr.on('stack-item-added', refreshStacks)
+    ydoc.undoMgr.on('stack-item-popped', refreshStacks)
+
+    if (ydoc.ws) {
+      setMyClientId(ydoc.ws.awareness.clientID)
+      ydoc.ws.on('status', ({ status }: { status: string }) => {
+        if (!destroyed) setYjsOnline(status === 'connected')
+      })
+      ydoc.ws.awareness.on('change', () => {
+        if (!destroyed) setYjsPeers(new Map(ydoc.getAwareness()))
+      })
+    } else {
+      setYjsReady(true) // offline-only mode; IDB provides persistence
+    }
+
+    return () => {
+      destroyed = true
+      if (syncTimerRef.current) clearTimeout(syncTimerRef.current)
+      try { ydoc.undoMgr.off('stack-item-added', refreshStacks) } catch {}
+      try { ydoc.undoMgr.off('stack-item-popped', refreshStacks) } catch {}
+      setYjsReady(false); setYjsOnline(false)
+      setYjsPeers(new Map()); setMyClientId(null)
+      setCanUndo(false); setCanRedo(false)
+      releaseCanvasYDoc(workflowId)
+      ydocRef.current = null
+    }
+  }, [workflowId]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Debounced sync — called after user mutations; skipped when Y.js itself triggered the update
+  const syncToYjs = useCallback((nodes: Node[], edges: Edge[]) => {
+    if (!ydocRef.current || isYjsUpdateRef.current || !nodes.length) return
+    if (syncTimerRef.current) clearTimeout(syncTimerRef.current)
+    syncTimerRef.current = setTimeout(() => {
+      if (!isYjsUpdateRef.current && ydocRef.current) {
+        ydocRef.current.syncNodes(nodes)
+        ydocRef.current.syncEdges(edges)
+      }
+    }, 300)
+  }, [])
+
+  const undo = useCallback(() => { ydocRef.current?.undo() }, [])
+  const redo = useCallback(() => { ydocRef.current?.redo() }, [])
+  const setMyAwareness = useCallback((user: CanvasUser) => { ydocRef.current?.setAwareness(user) }, [])
+
+  return { yjsReady, yjsOnline, yjsPeers, myClientId, canUndo, canRedo, undo, redo, syncToYjs, setMyAwareness }
+}
+
 // ── Canvas Collaboration Presence (S54) ──────────────────────────────────────
 
 interface CanvasPeer {
@@ -2331,8 +2434,6 @@ function useCanvasPresence(canvasId: string | undefined) {
 
 // ── WorkflowCanvas ────────────────────────────────────────────────────────────
 
-interface Snapshot { nodes: Node[]; edges: Edge[] }
-
 export function WorkflowCanvas() {
   const { workflows, selectedId, setSelected, updateWorkflow } = useWorkflowsStore()
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([])
@@ -2374,13 +2475,8 @@ export function WorkflowCanvas() {
   // A.2 — Keyboard canvas navigation
   const kbFocusIdxRef = useRef(-1)
 
-  // ① Undo/Redo — ref-based history (avoids stale closures)
-  const historyRef    = useRef<Snapshot[]>([])
-  const futureRef     = useRef<Snapshot[]>([])
   const nodesRef      = useRef(nodes)
   const edgesRef      = useRef(edges)
-  const [canUndo, setCanUndo] = useState(false)
-  const [canRedo, setCanRedo] = useState(false)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => { nodesRef.current = nodes }, [nodes])
@@ -2432,36 +2528,8 @@ export function WorkflowCanvas() {
     setSearchParams(prev => { const n = new URLSearchParams(prev); n.delete('seed'); n.delete('score'); return n }, { replace: true })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const pushHistory = useCallback(() => {
-    historyRef.current = [...historyRef.current.slice(-29), {
-      nodes: nodesRef.current, edges: edgesRef.current,
-    }]
-    futureRef.current = []
-    setCanUndo(true)
-    setCanRedo(false)
-  }, [])
-
-  const undo = useCallback(() => {
-    if (!historyRef.current.length) return
-    const prev = historyRef.current[historyRef.current.length - 1]
-    futureRef.current  = [{ nodes: nodesRef.current, edges: edgesRef.current }, ...futureRef.current.slice(0, 29)]
-    historyRef.current = historyRef.current.slice(0, -1)
-    setNodes(prev.nodes)
-    setEdges(prev.edges)
-    setCanUndo(historyRef.current.length > 0)
-    setCanRedo(true)
-  }, [setNodes, setEdges])
-
-  const redo = useCallback(() => {
-    if (!futureRef.current.length) return
-    const next = futureRef.current[0]
-    historyRef.current = [...historyRef.current, { nodes: nodesRef.current, edges: edgesRef.current }]
-    futureRef.current  = futureRef.current.slice(1)
-    setNodes(next.nodes)
-    setEdges(next.edges)
-    setCanUndo(true)
-    setCanRedo(futureRef.current.length > 0)
-  }, [setNodes, setEdges])
+  // pushHistory is a no-op stub: Y.js UndoManager auto-captures mutations via syncToYjs debounce
+  const pushHistory = useCallback(() => {}, [])
 
   // Duplicate + Delete — declared before the keyboard shortcut useEffect that references them
   const deleteNode = useCallback((nodeId: string) => {
@@ -2548,15 +2616,31 @@ export function WorkflowCanvas() {
   // S54 — presence hook (canvasId = workflow id)
   const { peers, broadcastCursor, broadcastSelect } = useCanvasPresence(wf?.id)
 
-  // Throttled mouse handler for cursor broadcast
+  // S81 — Y.js CRDT: per-user undo/redo, IDB persistence, awareness cursors
+  const authUser = useAuthStore(s => s.user)
+  const {
+    yjsReady: _yjsReady, yjsOnline, yjsPeers, myClientId,
+    canUndo, canRedo, undo, redo,
+    syncToYjs, setMyAwareness,
+  } = useYjsCanvas(wf?.id, setNodes, setEdges)
+
+  // Sync canvas state to Y.js after any node/edge mutation (debounced 300ms)
+  useEffect(() => {
+    syncToYjs(nodes, edges)
+  }, [nodes, edges, syncToYjs])
+
+  // Throttled mouse handler — broadcasts cursor via socket (S54) + Y.js awareness (S81)
   const onCanvasMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!wf?.id) return
     const now = Date.now()
     if (now - cursorThrottleRef.current < 50) return   // 20fps
     cursorThrottleRef.current = now
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
-    broadcastCursor(wf.id, Math.round(e.clientX - rect.left), Math.round(e.clientY - rect.top))
-  }, [wf?.id, broadcastCursor])
+    const x = Math.round(e.clientX - rect.left)
+    const y = Math.round(e.clientY - rect.top)
+    broadcastCursor(wf.id, x, y)
+    setMyAwareness({ name: authUser?.name ?? 'Me', color: '#7c3aed', cursor: { x, y } })
+  }, [wf?.id, broadcastCursor, setMyAwareness, authUser?.name])
 
   // A.3 — Start a visual run simulation through canvas nodes
   const startRun = useCallback(() => {
@@ -2597,8 +2681,6 @@ export function WorkflowCanvas() {
 
   useEffect(() => {
     if (!wf?.steps) return
-    historyRef.current = []; futureRef.current = []
-    setCanUndo(false); setCanRedo(false)
     const { nodes: n, edges: e } = stepsToFlow(wf.steps)
     setNodes(n); setEdges(e)
     setSaved(false); setConfigNodeId(null)
@@ -3062,32 +3144,46 @@ export function WorkflowCanvas() {
 
                 {/* ① Undo/Redo + ② Auto-arrange — floating panel inside canvas */}
                 <Panel position="top-left">
-                  <div style={{
-                    display: 'flex', gap: 4, padding: '4px 5px',
-                    background: CARD, border: `1px solid ${EDGE_C}`, borderRadius: 10,
-                    boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-                  }}>
-                    {[
-                      { icon: Undo2,      label: 'Undo (⌘Z)',        disabled: !canUndo, onClick: undo,      color: BLUE   },
-                      { icon: Redo2,      label: 'Redo (⌘⇧Z)',       disabled: !canRedo, onClick: redo,      color: BLUE   },
-                      { icon: LayoutGrid, label: 'Auto-arrange',     disabled: false,    onClick: reLayout,  color: PURPLE },
-                    ].map(({ icon: Icon, label, disabled, onClick, color }) => (
-                      <button key={label} onClick={onClick} disabled={disabled} title={label} style={{
-                        width: 28, height: 28, borderRadius: 7, border: 'none',
-                        background: 'transparent', cursor: disabled ? 'not-allowed' : 'pointer',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        opacity: disabled ? 0.3 : 1, transition: `all 0.15s ${EASE}`,
-                      }}
-                        onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLElement).style.background = `${color}16` }}
-                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
-                      >
-                        <Icon style={{ width: 13, height: 13, color: disabled ? SLATE : color }} />
-                      </button>
-                    ))}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <div style={{
+                      display: 'flex', gap: 4, padding: '4px 5px',
+                      background: CARD, border: `1px solid ${EDGE_C}`, borderRadius: 10,
+                      boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                    }}>
+                      {[
+                        { icon: Undo2,      label: 'Undo (⌘Z)',        disabled: !canUndo, onClick: undo,      color: BLUE   },
+                        { icon: Redo2,      label: 'Redo (⌘⇧Z)',       disabled: !canRedo, onClick: redo,      color: BLUE   },
+                        { icon: LayoutGrid, label: 'Auto-arrange',     disabled: false,    onClick: reLayout,  color: PURPLE },
+                      ].map(({ icon: Icon, label, disabled, onClick, color }) => (
+                        <button key={label} onClick={onClick} disabled={disabled} title={label} style={{
+                          width: 28, height: 28, borderRadius: 7, border: 'none',
+                          background: 'transparent', cursor: disabled ? 'not-allowed' : 'pointer',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          opacity: disabled ? 0.3 : 1, transition: `all 0.15s ${EASE}`,
+                        }}
+                          onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLElement).style.background = `${color}16` }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
+                        >
+                          <Icon style={{ width: 13, height: 13, color: disabled ? SLATE : color }} />
+                        </button>
+                      ))}
+                    </div>
+                    {/* S81 — Y.js sync status badge */}
+                    <div title={yjsOnline ? 'Y.js real-time sync active' : 'Y.js offline — IndexedDB persistence active'}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 4, padding: '3px 7px',
+                        background: CARD, border: `1px solid ${yjsOnline ? TEAL : EDGE_C}`,
+                        borderRadius: 6, cursor: 'default',
+                      }}>
+                      <div style={{ width: 5, height: 5, borderRadius: '50%', background: yjsOnline ? TEAL : SLATE, flexShrink: 0 }} />
+                      <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.08em', color: yjsOnline ? TEAL : SLATE, textTransform: 'uppercase' }}>
+                        {yjsOnline ? 'Y.js Live' : 'IDB'}
+                      </span>
+                    </div>
                   </div>
                 </Panel>
               </ReactFlow>
-              {/* S54 — peer cursor overlays */}
+              {/* S54 — peer cursor overlays (socket.io presence) */}
               {Array.from(peers.values()).filter(p => p.x !== null).map(p => (
                 <div key={p.userId} style={{
                   position: 'absolute', left: p.x!, top: p.y!, pointerEvents: 'none', zIndex: 50,
@@ -3102,6 +3198,28 @@ export function WorkflowCanvas() {
                   }}>{p.userName}</span>
                 </div>
               ))}
+              {/* S81 — Y.js awareness cursor overlays (real-time CRDT protocol) */}
+              {Array.from(yjsPeers.entries())
+                .filter(([clientId, state]) => clientId !== myClientId && state.user?.cursor != null)
+                .map(([clientId, state]) => {
+                  const u = state.user!
+                  return (
+                    <div key={`yjs-${clientId}`} style={{
+                      position: 'absolute', left: u.cursor!.x, top: u.cursor!.y,
+                      pointerEvents: 'none', zIndex: 51, transform: 'translate(2px, 2px)',
+                    }}>
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                        <path d="M2 2L7 14L9.5 9.5L14 7L2 2Z" fill={u.color} stroke="#fff" strokeWidth="1.2" />
+                      </svg>
+                      <span style={{
+                        display: 'block', marginTop: 1, padding: '1px 4px', borderRadius: 4,
+                        background: u.color, color: '#fff', fontSize: 8, fontWeight: 700, whiteSpace: 'nowrap',
+                        border: '1px solid rgba(255,255,255,0.3)',
+                      }}>{u.name}</span>
+                    </div>
+                  )
+                })
+              }
             </div>
 
             {/* Right panel: config drawer or palette */}
