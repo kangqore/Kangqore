@@ -196,6 +196,8 @@ const EQoreChatbot = () => {
           finalTranscript += transcript;
         } else {
           interimTranscript += transcript;
+        }
+      }
       // Show results in the input field for live feedback
       setInputText(finalTranscript || interimTranscript);
 
