@@ -3693,5 +3693,94 @@ router.get('/push-vapid-key', (_req, res: Response) => {
   res.json({ publicKey: key })
 })
 
+// ── Permission Scope management (S84 RBAC) ────────────────────────────────────
+
+// GET /admin/permissions — list all permission scopes
+router.get('/permissions', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const scopes = await (prisma as any).permissionScope.findMany({
+      orderBy: { createdAt: 'desc' },
+    })
+    res.json(scopes)
+  } catch (err) { next(err) }
+})
+
+// POST /admin/permissions — grant a permission scope
+router.post('/permissions', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { userId, workspace, feature, action } = req.body
+    if (!userId || !workspace || !feature || !action) {
+      return res.status(400).json({ error: 'userId, workspace, feature, action required' })
+    }
+    const scope = await (prisma as any).permissionScope.upsert({
+      where: { userId_workspace_feature: { userId, workspace, feature } },
+      update: { action, grantedBy: req.user?.userId ?? 'system' },
+      create: { userId, workspace, feature, action, grantedBy: req.user?.userId ?? 'system' },
+    })
+    const { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } = await import('../services/audit.service')
+    await createAuditLog({
+      userId: req.user?.userId,
+      action: AUDIT_ACTIONS.PERMISSION_GRANTED,
+      resource: `${workspace}:${feature}:${action}`,
+      newValue: { targetUserId: userId, scopeId: scope.id },
+      ...extractRequestMetadata(req),
+    }).catch(() => {})
+    res.status(201).json(scope)
+  } catch (err) { next(err) }
+})
+
+// DELETE /admin/permissions/:id — revoke a permission scope
+router.delete('/permissions/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const scope = await (prisma as any).permissionScope.delete({ where: { id: req.params.id } })
+    const { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } = await import('../services/audit.service')
+    await createAuditLog({
+      userId: req.user?.userId,
+      action: AUDIT_ACTIONS.PERMISSION_REVOKED,
+      resource: `${scope.workspace}:${scope.feature}:${scope.action}`,
+      newValue: { targetUserId: scope.userId, scopeId: scope.id },
+      ...extractRequestMetadata(req),
+    }).catch(() => {})
+    res.json({ ok: true })
+  } catch (err) { next(err) }
+})
+
+// ── Onboarding (S85) ─────────────────────────────────────────────────────────
+
+// GET /admin/onboarding — fetch or create the current user's onboarding state
+router.get('/onboarding', authenticate, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user?.userId
+    if (!userId) return res.status(401).json({ error: 'Auth required' })
+    let state = await (prisma as any).onboardingState.findUnique({ where: { userId } })
+    if (!state) {
+      state = await (prisma as any).onboardingState.create({ data: { userId } })
+    }
+    res.json(state)
+  } catch (err) { next(err) }
+})
+
+// PATCH /admin/onboarding — advance step or mark complete
+router.patch('/onboarding', authenticate, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user?.userId
+    if (!userId) return res.status(401).json({ error: 'Auth required' })
+    const { currentStep, completed, oisBaseline } = req.body
+    const data: any = {}
+    if (typeof currentStep === 'number') data.currentStep = currentStep
+    if (typeof completed  === 'boolean') {
+      data.completed   = completed
+      if (completed) data.completedAt = new Date()
+    }
+    if (typeof oisBaseline === 'number') data.oisBaseline = oisBaseline
+    const state = await (prisma as any).onboardingState.upsert({
+      where:  { userId },
+      update: data,
+      create: { userId, ...data },
+    })
+    res.json(state)
+  } catch (err) { next(err) }
+})
+
 export default router;
 

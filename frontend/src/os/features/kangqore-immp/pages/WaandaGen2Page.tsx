@@ -533,6 +533,18 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
     staleTime: 15_000,
   })
 
+  const { data: cbData, refetch: refetchCb } = useQuery<any>({
+    queryKey: ['gen2-circuit-breaker'],
+    queryFn:  () => api.get('/admin/kangqore-immp/learning/circuit-breaker').then(r => r.data),
+    refetchInterval: 30_000,
+  })
+
+  const { data: corpusStats } = useQuery<any>({
+    queryKey: ['corpus-stats'],
+    queryFn:  () => api.get('/admin/kangqore-immp/learning/corpus-stats').then(r => r.data),
+    staleTime: 30_000,
+  })
+
   const deployMut = useMutation({
     mutationFn: ({ id, deploy }: { id: string; deploy: boolean }) =>
       api.patch(`/admin/kangqore-immp/learning/gen2-models/${id}/deploy`, { deploy }),
@@ -541,6 +553,28 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
       qc.invalidateQueries({ queryKey: ['router-stats'] })
     },
   })
+
+  const graduateMut = useMutation({
+    mutationFn: () => api.post('/admin/kangqore-immp/learning/graduate'),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['router-stats'] })
+      refetchCb()
+    },
+  })
+
+  const circuitTripMut = useMutation({
+    mutationFn: (reason: string) => api.post('/admin/kangqore-immp/learning/circuit-trip', { reason }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['router-stats'] })
+      refetchCb()
+    },
+  })
+
+  const approved = corpusStats?.approved ?? 0
+  const threshold = corpusStats?.graduationThreshold ?? 1000
+  const readyToGraduate = approved >= threshold
+  const gen2CB = cbData?.gen2
+  const gen2CBHealth = gen2CB?.health ?? 'offline'
 
   const routerStats = statsData
   const models: any[] = modelsData?.models ?? []
@@ -558,6 +592,60 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 
   return (
     <div className="space-y-5">
+      {/* ── S86: Graduation + Circuit Breaker Panel ─────────────────────── */}
+      <div className="rounded-xl p-4 border grid grid-cols-1 sm:grid-cols-2 gap-4" style={{ background: CARD, borderColor: BDR }}>
+        {/* Graduate button */}
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Gen2 Graduation</p>
+          <p className="text-[11px] mb-3" style={{ color: T2 }}>
+            {approved}/{threshold} approved examples
+            {readyToGraduate ? ' — ready to graduate' : ` — ${threshold - approved} remaining`}
+          </p>
+          <button
+            onClick={() => graduateMut.mutate()}
+            disabled={!readyToGraduate || graduateMut.isPending}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+            style={{ background: readyToGraduate ? 'rgba(16,185,129,0.15)' : 'rgba(100,100,100,0.1)', color: readyToGraduate ? GRN : T2, cursor: readyToGraduate ? 'pointer' : 'not-allowed' }}
+            title={readyToGraduate ? 'Set Gen2 to 25% traffic' : `Need ${threshold} approved examples`}
+          >
+            <Rocket className="w-3 h-3" />
+            {graduateMut.isPending ? 'Graduating…' : 'Graduate → 25% Traffic'}
+          </button>
+          {graduateMut.isSuccess && (
+            <p className="text-[11px] mt-1" style={{ color: GRN }}>Graduated — Gen2 now at 25% traffic</p>
+          )}
+          {graduateMut.isError && (
+            <p className="text-[11px] mt-1" style={{ color: RED }}>{(graduateMut.error as any)?.response?.data?.error ?? 'Graduation failed'}</p>
+          )}
+        </div>
+
+        {/* Circuit breaker status */}
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Gen2 Circuit Breaker</p>
+          <div className="flex items-center gap-2 mb-3">
+            <span className="w-2.5 h-2.5 rounded-full" style={{ background: gen2CBHealth === 'healthy' ? GRN : gen2CBHealth === 'degraded' ? AMB : RED }} />
+            <span className="text-xs font-bold capitalize" style={{ color: gen2CBHealth === 'healthy' ? GRN : gen2CBHealth === 'degraded' ? AMB : RED }}>
+              {gen2CBHealth}
+            </span>
+            {gen2CB?.failures > 0 && (
+              <span className="text-[11px]" style={{ color: AMB }}>{gen2CB.failures} failure{gen2CB.failures !== 1 ? 's' : ''}</span>
+            )}
+          </div>
+          <button
+            onClick={() => { if (confirm('Trip circuit and revert all Gen2 traffic to 0%?')) circuitTripMut.mutate('>5% error rate — manual trip') }}
+            disabled={circuitTripMut.isPending}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+            style={{ background: 'rgba(239,68,68,0.1)', color: RED }}
+          >
+            <XCircle className="w-3 h-3" />
+            {circuitTripMut.isPending ? 'Tripping…' : 'Emergency Revert → 0%'}
+          </button>
+          {circuitTripMut.isSuccess && (
+            <p className="text-[11px] mt-1" style={{ color: AMB }}>Circuit tripped — Gen2 at 0%</p>
+          )}
+        </div>
+      </div>
+
       {/* Router stats header */}
       <div className="rounded-xl p-4 border flex items-center justify-between" style={{ background: CARD, borderColor: BDR }}>
         <div>

@@ -2941,6 +2941,90 @@ kangqoreImmpRoutes.get('/learning/router-stats', requireAuth, requireRole(['ADMI
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// ── S86 — Gen2 Graduation ─────────────────────────────────────────────────────
+
+// GET /admin/kangqore-immp/learning/circuit-breaker — gen2 CB status
+kangqoreImmpRoutes.get('/learning/circuit-breaker', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const { getCircuitBreakerStatus } = await import('./llm/kimmpLLMRouter')
+    const status = getCircuitBreakerStatus()
+    res.json({ gen2: status.gen2 ?? null, allProviders: status })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/learning/graduate
+// Sets gen2TrafficPct to 25 if approved count >= 1000; emits KIMMP signal
+kangqoreImmpRoutes.post('/learning/graduate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const GRADUATION = 1_000
+    const approved: number = await (prisma as any).kimmpLearningExample.count({ where: { approved: true } })
+    if (approved < GRADUATION) {
+      return res.status(400).json({ error: `Need ${GRADUATION} approved examples. Have ${approved}.`, approved, threshold: GRADUATION })
+    }
+
+    // Set traffic to 25%
+    let config = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' } })
+    const userId = req.user!.userId
+    if (config) {
+      config = await (prisma as any).autonomyConfig.update({
+        where: { id: config.id },
+        data: { gen2TrafficPct: 25, updatedBy: userId, enabledAt: new Date() },
+      })
+    } else {
+      config = await (prisma as any).autonomyConfig.create({
+        data: { gen2TrafficPct: 25, updatedBy: userId, enabledAt: new Date() },
+      })
+    }
+
+    // Emit KIMMP signal
+    await (prisma as any).kimmpSignal.create({
+      data: {
+        type: 'GEN2_GRADUATED',
+        priority: 'high',
+        title: 'Gen2 Model Graduated — 25% Traffic Live',
+        summary: `Training corpus reached ${approved} approved examples. Gen2 fine-tuned model now receives 25% of inference traffic. Monitor error rate; auto-revert triggers at >5% errors.`,
+        module: 'Gen2',
+        confidence: 100,
+      },
+    }).catch(() => {})
+
+    res.json({ ok: true, gen2TrafficPct: 25, approved, config })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/learning/circuit-trip
+// Emergency revert — set gen2TrafficPct to 0 and emit circuit-trip signal
+kangqoreImmpRoutes.post('/learning/circuit-trip', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { reason = 'Manual circuit trip' } = req.body
+    const userId = req.user!.userId
+    let config = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' } })
+    if (config) {
+      config = await (prisma as any).autonomyConfig.update({
+        where: { id: config.id },
+        data: { gen2TrafficPct: 0, updatedBy: userId, enabledAt: null },
+      })
+    } else {
+      config = await (prisma as any).autonomyConfig.create({
+        data: { gen2TrafficPct: 0, updatedBy: userId },
+      })
+    }
+
+    await (prisma as any).kimmpSignal.create({
+      data: {
+        type: 'GEN2_CIRCUIT_TRIP',
+        priority: 'critical',
+        title: 'Gen2 Circuit Tripped — Reverted to Gen1',
+        summary: `${reason} · Gen2 traffic set to 0%. All inference routing through Gen1 fallbacks.`,
+        module: 'Gen2',
+        confidence: 100,
+      },
+    }).catch(() => {})
+
+    res.json({ ok: true, gen2TrafficPct: 0, reason })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // S62 — Connector SDK: field maps + bidirectional sync + KIMMP signal bridge
 // ═══════════════════════════════════════════════════════════════════════════════

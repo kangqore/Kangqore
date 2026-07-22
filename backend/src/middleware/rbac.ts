@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyAccessToken } from '../services/token.service';
 import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../services/audit.service';
+import { prisma } from '../lib/prisma';
 
 /**
  * Extended Request interface with user data
@@ -167,11 +168,67 @@ export const requireOwnResourceOrAdmin = (userIdParam: string = 'userId') => {
         ...metadata
       });
 
-      return res.status(403).json({ 
-        error: { message: 'You can only access your own resources' } 
+      return res.status(403).json({
+        error: { message: 'You can only access your own resources' }
       });
     }
 
     next();
   };
 };
+
+/**
+ * Fine-grained permission check against PermissionScope table.
+ * ADMIN role always passes. All other roles need an explicit grant.
+ * Every check (pass or deny) is written to the AEGIS audit log.
+ *
+ * Usage: router.get('/secret', requireAuth, requirePermission('AEGIS', 'shield', 'READ'), handler)
+ */
+export const requirePermission = (workspace: string, feature: string, action: 'READ' | 'WRITE' | 'ADMIN') => {
+  return async (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({ error: { message: 'Authentication required' } })
+    }
+
+    const metadata = extractRequestMetadata(req)
+
+    // ADMIN role bypasses scope checks
+    if ((req.user as any).role === 'ADMIN') {
+      createAuditLog({
+        userId: (req.user as any).userId,
+        action: AUDIT_ACTIONS.PERMISSION_CHECKED_PASS,
+        resource: `${workspace}:${feature}:${action}`,
+        newValue: { granted: true, reason: 'ADMIN_BYPASS' },
+        ...metadata,
+      }).catch(() => {})
+      return next()
+    }
+
+    const scope = await (prisma as any).permissionScope.findFirst({
+      where: {
+        userId: (req.user as any).userId,
+        workspace,
+        feature,
+        action: { in: [action, 'ADMIN'] },
+      },
+    }).catch(() => null)
+
+    const granted = !!scope
+
+    createAuditLog({
+      userId: (req.user as any).userId,
+      action: granted ? AUDIT_ACTIONS.PERMISSION_CHECKED_PASS : AUDIT_ACTIONS.PERMISSION_CHECKED_DENY,
+      resource: `${workspace}:${feature}:${action}`,
+      newValue: { granted, scopeId: (scope as any)?.id ?? null, workspace, feature },
+      ...metadata,
+    }).catch(() => {})
+
+    if (!granted) {
+      return res.status(403).json({
+        error: { message: 'Permission denied', required: `${workspace}:${feature}:${action}` },
+      })
+    }
+
+    next()
+  }
+}
