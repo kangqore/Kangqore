@@ -2,26 +2,26 @@
  * Gen3Executor — Auto-execution engine for PlanDecompositionTree
  * S80: removes manual Advance gate; executes subtasks sequentially,
  * emits PLAN_PROGRESS via socket, handles failure loop + timeout guard.
+ * S92: replaced simulateSubtask() with real KIMMP LLM dispatch per agentRole.
  */
 
 import { prisma } from '../lib/prisma';
 import { emitToAdmins } from '../socket';
+import { sonnet, textOf } from './llm/kimmpLLMRouter';
 
-const MAX_CONCURRENT = parseInt(process.env.GEN3_MAX_CONCURRENT_PLANS ?? '3', 10);
+const MAX_CONCURRENT     = parseInt(process.env.GEN3_MAX_CONCURRENT_PLANS ?? '3', 10);
 const SUBTASK_TIMEOUT_MS = 10 * 60 * 1000; // 10 min → auto-FAILED
-const EXEC_DELAY_MIN_MS  = 1500;
-const EXEC_DELAY_MAX_MS  = 3000;
-const FAIL_RATE          = 0.08; // 8% per subtask — realistic scaffold noise
 
 // In-memory tracking so we never double-execute a plan in this process
 const executing = new Set<string>();
 
 interface Subtask {
-  id: string;
-  label: string;
-  status: string;
+  id:      string;
+  label:   string;
+  status:  string;
   agentRole: string;
-  steps: string[];
+  steps:   string[];
+  result?: string;
 }
 
 function defaultSubtasks(): Subtask[] {
@@ -35,10 +35,20 @@ function defaultSubtasks(): Subtask[] {
   ];
 }
 
-async function simulateSubtask(_subtask: Subtask): Promise<'DONE' | 'FAILED'> {
-  const delay = EXEC_DELAY_MIN_MS + Math.random() * (EXEC_DELAY_MAX_MS - EXEC_DELAY_MIN_MS);
-  await new Promise(r => setTimeout(r, delay));
-  return Math.random() < FAIL_RATE ? 'FAILED' : 'DONE';
+const ROLE_SYSTEM: Record<string, string> = {
+  RESEARCH: `You are KIMMP's Research Agent. Given a strategic goal and subtask, retrieve context, identify constraints, and synthesise a concise intelligence brief. Be specific and structured.`,
+  DIAGNOSTICS: `You are KIMMP's Diagnostics Agent. Analyse available signals and context to gather evidence relevant to the given goal. Surface risks, gaps, and confidence levels.`,
+  EXECUTION: `You are KIMMP's Execution Agent. Given a strategy and context, determine the optimal execution path. Evaluate ROI, sequence dependencies, and surface the clearest next action.`,
+  COACH: `You are KIMMP's Learning Agent. After plan execution, capture what was learned. Update priors, record outcome patterns, and produce a structured learning record for future runs.`,
+}
+
+async function dispatchSubtask(task: Subtask, goal: string): Promise<{ status: 'DONE' | 'FAILED'; result: string }> {
+  const system = ROLE_SYSTEM[task.agentRole] ?? ROLE_SYSTEM['RESEARCH'];
+  const user   = `Goal: ${goal}\n\nSubtask: ${task.label}\nSteps: ${task.steps.join(', ')}\n\nComplete this subtask and return a concise structured result (3–5 sentences).`;
+
+  const res  = await sonnet(system, user, 600, { agentType: task.agentRole, tags: ['gen3', 'auto-exec'] });
+  const text = textOf(res);
+  return { status: 'DONE', result: text };
 }
 
 async function executePlan(planId: string): Promise<void> {
@@ -67,13 +77,17 @@ async function executePlan(planId: string): Promise<void> {
       });
 
       // ── Execute with timeout guard ──
-      const timeoutPromise = new Promise<'FAILED'>(resolve =>
-        setTimeout(() => resolve('FAILED'), SUBTASK_TIMEOUT_MS)
+      const timeoutPromise = new Promise<{ status: 'FAILED'; result: string }>(resolve =>
+        setTimeout(() => resolve({ status: 'FAILED', result: 'Subtask exceeded 10-minute timeout' }), SUBTASK_TIMEOUT_MS)
       );
-      const result = await Promise.race([simulateSubtask(task), timeoutPromise]);
+      const dispatched = await Promise.race([
+        dispatchSubtask(task, plan.goal).catch((err: Error) => ({ status: 'FAILED' as const, result: err?.message ?? 'Dispatch error' })),
+        timeoutPromise,
+      ]);
+      const result = dispatched.status;
 
       // ── ACTIVE → DONE / FAILED ──
-      subtasks = subtasks.map((t, idx) => idx === i ? { ...t, status: result } : t);
+      subtasks = subtasks.map((t, idx) => idx === i ? { ...t, status: result, result: dispatched.result } : t);
       await (prisma as any).planDecompositionTree.update({ where: { id: planId }, data: { subtasks } });
       emitToAdmins('PLAN_PROGRESS', {
         type: `SUBTASK_${result}`, planId, goal: plan.goal,
