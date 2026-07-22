@@ -7040,3 +7040,16 @@ model WaandaFMEval {
   @@index([evalDate])
   @@map("waanda_fm_evals")
 }
+
+// S82 — Push notification subscriptions (Web Push API)
+model PushSubscription {
+  id        String   @id @default(cuid())
+  endpoint  String   @unique
+  auth      String
+  p256dh    String
+  userId    String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("push_subscriptions")
+}

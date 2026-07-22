@@ -5,6 +5,7 @@ import { Rail }              from './Rail'
 import { WorkspaceSidebar } from './WorkspaceSidebar'
 import { Topbar }            from './Topbar'
 import { NotificationPanel } from './NotificationPanel'
+import { MobileNav }         from './MobileNav'
 import { ModuleShell }       from '@components/ModuleShell'
 import { PageTransition }    from '@components/animations/PageTransition'
 import { Toaster }           from '@design-system/components/Toast'
@@ -66,10 +67,10 @@ export function OSLayout() {
       {!isWaandaGUI && <AmbientBackground />}
       {!isWaandaGUI && <Topbar />}
       <div className="flex flex-1 min-h-0 relative z-10 w-full overflow-hidden">
-        {!isWaandaGUI && !isNeuralNetwork && <Rail />}
+        {!isWaandaGUI && !isNeuralNetwork && <div className="hidden md:flex h-full"><Rail /></div>}
         {!isWaandaGUI && !isNeuralNetwork && <WorkspaceSidebar />}
 
-        <div className={`flex flex-col flex-1 min-w-0 overflow-hidden m-0 z-10 os-main-content${isWaandaGUI ? ' !bg-black' : (isNeuralNetwork ? ' !bg-black !m-0 md:!my-0 md:!mr-0 md:!rounded-none' : ' md:my-2 md:mr-2 md:rounded-2xl')}`}>
+        <div className={`flex flex-col flex-1 min-w-0 overflow-hidden m-0 z-10 os-main-content${isWaandaGUI ? ' !bg-black' : (isNeuralNetwork ? ' !bg-black !m-0 md:!my-0 md:!mr-0 md:!rounded-none' : ' md:my-2 md:mr-2 md:rounded-2xl')}${!isWaandaGUI && !isNeuralNetwork ? ' pb-[56px] md:pb-0' : ''}`}>
           {isWaandaGUI ? (
             <main className="flex-1 overflow-y-auto overflow-x-hidden !bg-black !m-0 !rounded-none !border-none">
               <ModuleShell>
@@ -112,6 +113,7 @@ export function OSLayout() {
         </div>
       </div>
 
+      {!isWaandaGUI && !isNeuralNetwork && <MobileNav />}
       <NotificationPanel />
       <Toaster />
       <CommandPalette />

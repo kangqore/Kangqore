@@ -38,9 +38,9 @@ import { connectSocket, getSocket } from '@lib/socket'
 import type { LiveSignal } from '@lib/useSignalStream'
 import { useWorkflowsStore } from '../store'
 import { useSearchParams } from 'react-router-dom'
-import { getCanvasYDoc, releaseCanvasYDoc } from '@os/lib/yjs-canvas'
-import type { CanvasUser, CanvasYDoc } from '@os/lib/yjs-canvas'
-import { useAuthStore } from '@os/store/auth'
+import { getCanvasYDoc, releaseCanvasYDoc } from '@lib/yjs-canvas'
+import type { CanvasUser, CanvasYDoc } from '@lib/yjs-canvas'
+import { useAuthStore } from '@store/auth'
 import type { WorkflowStep, StepType, WvisStepType, IntelStepType, Workflow } from '../types'
 import { validateWorkflow, scoreWorkflow, type ValidationIssue, type ValidationResult, type ValidationScore } from '../workflowValidation'
 
@@ -3131,6 +3131,8 @@ export function WorkflowCanvas() {
                 nodeTypes={nodeTypes}
                 fitView fitViewOptions={{ padding: 0.25, maxZoom: 1.2 }}
                 minZoom={0.3} maxZoom={2}
+                panOnPinch={true}
+                zoomOnPinch={true}
                 deleteKeyCode="Delete"
               >
                 <FitViewHook fitTrigger={fitTrigger} />

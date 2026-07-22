@@ -2,6 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import * as os from 'os';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
+import { saveSubscription } from '../services/pushNotification.service';
 import { Role } from '@prisma/client';
 import { redisConnection } from '../lib/redis';
 import { cacheService } from '../services/cache.service';
@@ -3671,6 +3672,25 @@ router.get('/gate8/twin/scenarios/compare', authenticate, authorize(['ADMIN']), 
     const limit      = Math.min(Number(req.query.limit ?? 20), 50)
     res.json(await compareScenarios(minAgeDays, limit))
   } catch (err) { next(err) }
+})
+
+// S82 — Push subscription registration
+router.post('/push-subscribe', authenticate, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { subscription } = req.body
+    if (!subscription?.endpoint || !subscription?.keys?.auth || !subscription?.keys?.p256dh) {
+      return res.status(400).json({ error: 'Invalid subscription object' })
+    }
+    const userId = (req as any).user?.id
+    await saveSubscription(subscription.endpoint, subscription.keys.auth, subscription.keys.p256dh, userId)
+    res.json({ ok: true })
+  } catch (err) { next(err) }
+})
+
+// S82 — VAPID public key (frontend needs this to subscribe)
+router.get('/push-vapid-key', (_req, res: Response) => {
+  const key = process.env.VAPID_PUBLIC_KEY ?? ''
+  res.json({ publicKey: key })
 })
 
 export default router;
