@@ -9,6 +9,7 @@ import { useUIStore } from '@store/ui'
 import { useKIMMPStore } from '@store/kimmp'
 import { api, isDemo } from '@lib/api'
 import { getSocket } from '@lib/socket'
+import { usePushNotifications } from '@hooks/usePushNotifications'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
@@ -147,6 +148,7 @@ function NotifRow({ n, onClick }: { n: NotificationItem; onClick: () => void }) 
 export function NotificationPanel() {
   const { notificationPanelOpen, closeNotificationPanel } = useUIStore()
   const queryClient = useQueryClient()
+  const { status: pushStatus, supported: pushSupported, subscribe: subscribePush } = usePushNotifications()
 
   const { data: apiData, isLoading } = useQuery({
     queryKey: ['notifications'],
@@ -330,7 +332,25 @@ export function NotificationPanel() {
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="px-5 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {/* S82 — Push notification opt-in */}
+          {pushSupported && pushStatus !== 'subscribed' && pushStatus !== 'denied' && (
+            <button
+              onClick={subscribePush}
+              disabled={pushStatus === 'checking'}
+              className="w-full flex items-center justify-center gap-2 py-1.5 rounded-lg transition-all text-[11px] font-semibold"
+              style={{ background: 'rgba(37,100,234,0.10)', color: '#4a9eff', border: '1px solid rgba(37,100,234,0.18)', cursor: pushStatus === 'checking' ? 'not-allowed' : 'pointer', opacity: pushStatus === 'checking' ? 0.6 : 1 }}
+            >
+              <Bell size={11} />
+              {pushStatus === 'checking' ? 'Checking…' : 'Enable KIMMP push alerts'}
+            </button>
+          )}
+          {pushStatus === 'subscribed' && (
+            <div className="flex items-center justify-center gap-1.5 text-[10px]" style={{ color: '#10b981' }}>
+              <Zap size={10} />
+              KIMMP push notifications active
+            </div>
+          )}
           <button
             onClick={closeNotificationPanel}
             className="w-full text-[11px] font-medium text-slate-600 hover:text-slate-400 py-1.5 transition-colors"

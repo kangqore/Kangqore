@@ -241,7 +241,7 @@ export const RAIL_ITEMS: RailEntry[] = [
     matchPrefixes: [
       `${BASE}/visitors`, `${BASE}/leads`, `${BASE}/clients`,
       `${BASE}/consultations`, `${BASE}/scheduling`, `${BASE}/comms`,
-      `${BASE}/partners`, `${BASE}/investors`,
+      `${BASE}/partners`, `${BASE}/investors`, `${BASE}/communities`,
     ],
     sidebarItems: [
       { id: 'visitors',      label: 'Visitors',      path: `${BASE}/visitors`,      category: 'Acquisition'  },
@@ -250,6 +250,7 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'consultations', label: 'Consultations', path: `${BASE}/consultations`, category: 'Accounts',    badge: 'consultations' },
       { id: 'scheduling',    label: 'Scheduling',    path: `${BASE}/scheduling`,    category: 'Accounts'     },
       { id: 'comms',         label: 'Communate',     path: `${BASE}/comms`,         category: 'Network',     badge: 'comms' },
+      { id: 'communities',   label: 'Communities',   path: `${BASE}/communities`,   category: 'Network'      },
       { id: 'partners',      label: 'Partners',      path: `${BASE}/partners`,      category: 'Network'      },
       { id: 'investors',     label: 'Investors',     path: `${BASE}/investors`,     category: 'Network'      },
     ],

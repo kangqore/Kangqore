@@ -87,7 +87,26 @@ import { initializeSocket } from './socket';
 // Server restart trigger 12345678901234567890
 // Initialize Prisma Client
 import { prisma } from './lib/prisma';
+import { sendPushToAll } from './services/pushNotification.service';
 export { prisma };
+
+// S82 — Push notifications: intercept all KimmpSignal creates, push on HIGH/CRITICAL
+(prisma as any).$use(async (params: any, next: (p: any) => Promise<any>) => {
+  const result = await next(params)
+  if (params.model === 'KimmpSignal' && params.action === 'create') {
+    const sig = result
+    if (sig?.priority === 'critical' || sig?.priority === 'high') {
+      sendPushToAll({
+        title: `KIMMP Signal: ${sig.title ?? sig.type}`,
+        body: sig.summary ?? sig.title ?? '',
+        type: sig.type,
+        url: '/kangqore-view/admin/kangqore-immp/signals',
+      }).catch(() => {})
+    }
+  }
+  return result
+})
+
 // Environment Variable Validation
 const requiredEnvVars = ['DATABASE_URL', 'REDIS_URL'];
 const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);

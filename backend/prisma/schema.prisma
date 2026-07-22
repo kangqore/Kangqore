@@ -6859,6 +6859,7 @@ model CommunityPost {
   voteCount   Int      @default(0)
   mediaUrls   String[]
   solved      Boolean  @default(false)
+  flagCount   Int      @default(0)
   category    String?
   tags        String[]
   createdAt   DateTime @default(now())
@@ -6868,6 +6869,7 @@ model CommunityPost {
   votes       CommunityVote[]
   @@index([communityId, createdAt])
   @@index([voteCount])
+  @@index([flagCount])
   @@map("community_posts")
 }
 
@@ -7051,4 +7053,17 @@ model WaandaFMEval {
 
   @@index([evalDate])
   @@map("waanda_fm_evals")
+}
+
+// S82 — Push notification subscriptions (Web Push API)
+model PushSubscription {
+  id        String   @id @default(cuid())
+  endpoint  String   @unique
+  auth      String
+  p256dh    String
+  userId    String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("push_subscriptions")
 }
