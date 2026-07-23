@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
       // If we have local data, show it first for responsiveness
-      if (userData) {
+      if (userData && userData !== 'undefined') {
         try {
           setUser(JSON.parse(userData));
         } catch (e) {
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     
-    if (token && userData && !user) {
+    if (token && userData && userData !== 'undefined' && !user) {
       try {
         setUser(JSON.parse(userData));
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
