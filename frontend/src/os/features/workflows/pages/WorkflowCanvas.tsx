@@ -2789,6 +2789,7 @@ export function WorkflowCanvas() {
   const [waandaLayoutLoading, setWaandaLayoutLoading] = useState(false)
   const [showDiff, setShowDiff] = useState(false)
   const [diffSnapshot, setDiffSnapshot] = useState<Node[] | null>(null)
+  const wfName = wf?.name ?? ''
 
   const waandaLayout = useCallback(async () => {
     if (!nodesRef.current.length || waandaLayoutLoading) return
