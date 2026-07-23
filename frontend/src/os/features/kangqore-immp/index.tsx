@@ -59,6 +59,12 @@ import { COIGNorthStarPage }            from './pages/COIGNorthStarPage'
 import { BlueprintVersionPage }         from './pages/BlueprintVersionPage'
 import { CustomerFourPage }             from './pages/CustomerFourPage'
 import { CustomerFivePage }             from './pages/CustomerFivePage'
+import { CustomerSixPage }             from './pages/CustomerSixPage'
+import { CustomerSevenPage }           from './pages/CustomerSevenPage'
+import { CustomerEightPage }           from './pages/CustomerEightPage'
+import { CustomerNinePage }            from './pages/CustomerNinePage'
+import { CustomerTenPage }             from './pages/CustomerTenPage'
+import { ChurnEarlyWarningPage }       from './pages/ChurnEarlyWarningPage'
 import { CustomerPipelinePage }         from './pages/CustomerPipelinePage'
 import { WaandaGen2Page }               from './pages/WaandaGen2Page'
 import { TenantAdminPage }              from './pages/TenantAdminPage'
@@ -217,6 +223,12 @@ export function KIMMMModule() {
           <Route path="blueprint-versions"      element={<BlueprintVersionPage />}          />
           <Route path="customers/four"          element={<CustomerFourPage />}              />
           <Route path="customers/five"          element={<CustomerFivePage />}              />
+          <Route path="customers/six"           element={<CustomerSixPage />}               />
+          <Route path="customers/seven"         element={<CustomerSevenPage />}             />
+          <Route path="customers/eight"         element={<CustomerEightPage />}             />
+          <Route path="customers/nine"          element={<CustomerNinePage />}              />
+          <Route path="customers/ten"           element={<CustomerTenPage />}               />
+          <Route path="churn-early-warning"     element={<ChurnEarlyWarningPage />}         />
           <Route path="reflection"          element={<ReflectionPage />}            />
           <Route path="authority"           element={<AuthorityPage />}             />
           <Route path="*"                   element={<Navigate to={BASE} replace />} />
