@@ -229,12 +229,12 @@
 }
 
 [data-radix-dialog-content][data-state="closed"] {
-  animation: drawer-slide-out 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+  animation: drawer-slide-out 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
   pointer-events: none;
 }
 
 [data-radix-dialog-overlay][data-state="closed"] {
-  animation: overlay-fade-out 0.18s ease-in forwards;
+  animation: overlay-fade-out 0.3s ease-in forwards;
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────────────────────── */
