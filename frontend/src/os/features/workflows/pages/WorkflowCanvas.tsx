@@ -31,7 +31,7 @@ import {
   Activity, Code2, CheckCircle, XCircle, Clock3,
   Building2, Users, Crosshair, Wallet, Flag,
   Wrench, Archive, Layers, Eye, UserCheck,
-  Share2, Download, Keyboard,
+  Share2, Download, Keyboard, Search,
 } from 'lucide-react'
 import { api } from '@lib/api'
 import { connectSocket, getSocket } from '@lib/socket'
@@ -2594,6 +2594,7 @@ export function WorkflowCanvas() {
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
       const nds = nodesRef.current
       if (e.key === '?') { setShowShare(s => !s); return }
+      if (e.key === '/') { e.preventDefault(); paletteSearchRef.current?.focus(); return }
       if (e.key === 'f' || e.key === 'F') { e.preventDefault(); setFitTrigger(t => t + 1); return }
       if (!nds.length) return
       if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'Tab') {
@@ -2617,6 +2618,8 @@ export function WorkflowCanvas() {
         e.preventDefault()
         setConfigNodeId(null)
         setShowShare(false)
+        setPaletteSearch('')
+        paletteSearchRef.current?.blur()
         kbFocusIdxRef.current = -1
         setNodes(nds.map(n => ({ ...n, selected: false })))
       }
@@ -2777,6 +2780,10 @@ export function WorkflowCanvas() {
 
   // WVIS 3.0 — track last placed/selected node type for suggestions
   const [lastSuggestionType, setLastSuggestionType] = useState<string | null>(null)
+
+  // WVIS 3.0 — keyboard-first palette search
+  const [paletteSearch, setPaletteSearch] = useState('')
+  const paletteSearchRef = useRef<HTMLInputElement>(null)
 
   // AI generation — passes canvas mode so backend picks the right system prompt
   const generate = async () => {
@@ -3240,13 +3247,37 @@ export function WorkflowCanvas() {
                 padding: '12px 10px', alignSelf: 'start',
                 boxShadow: `inset 0 1px 0 rgba(255,255,255,0.02)`,
               }}>
-                <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: SLATE, margin: '0 0 10px 2px' }}>
+                <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: SLATE, margin: '0 0 8px 2px' }}>
                   {canvasMode === 'intelligence' ? `Thinking Nodes · ${PALETTE.intelligence.length}`
                    : canvasMode === 'enterprise' ? `Enterprise · ${PALETTE.enterprise.length}`
                    : canvasMode === 'agents'     ? `Agent Nodes · ${PALETTE.agents.length}`
                    : canvasMode === 'all'        ? 'WAANDA Graph'
                    : 'Add Steps'}
                 </p>
+
+                {/* WVIS 3.0 — keyboard-first palette search (press / to focus) */}
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 5, marginBottom: 8,
+                  background: `${EDGE_C}60`, borderRadius: 8, padding: '4px 8px',
+                  border: `1px solid ${paletteSearch ? PURPLE + '50' : EDGE_C}`,
+                  transition: 'border-color 0.15s',
+                }}>
+                  <Search style={{ width: 10, height: 10, color: SLATE, flexShrink: 0 }} />
+                  <input
+                    ref={paletteSearchRef}
+                    value={paletteSearch}
+                    onChange={e => setPaletteSearch(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Escape') { setPaletteSearch(''); e.currentTarget.blur() } }}
+                    placeholder="Search nodes… (/)"
+                    style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 10, color: 'var(--os-text-1)', minWidth: 0 }}
+                  />
+                  {paletteSearch && (
+                    <button onClick={() => setPaletteSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, lineHeight: 1 }}>
+                      <X style={{ width: 9, height: 9, color: SLATE }} />
+                    </button>
+                  )}
+                </div>
+
                 {canvasMode === 'all' ? (
                   <>
                     {([
@@ -3254,29 +3285,50 @@ export function WorkflowCanvas() {
                       { key: 'workflow'     as CanvasMode, label: 'Operational'  },
                       { key: 'enterprise'   as CanvasMode, label: 'Enterprise'   },
                       { key: 'agents'       as CanvasMode, label: 'Agents'       },
-                    ]).map(({ key, label }, i) => (
-                      <div key={key}>
-                        {i > 0 && <div style={{ height: 1, background: EDGE_C, margin: '8px 0' }} />}
-                        <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: SLATE, margin: '0 0 6px 2px', opacity: 0.7 }}>
-                          {label} · {PALETTE[key].length}
-                        </p>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                          {PALETTE[key].map(t => (
-                            <PaletteChip key={t} type={t} cfg={NODE_CFG[t]} onClick={() => addNode(t)} />
-                          ))}
+                    ]).map(({ key, label }, i) => {
+                      const filtered = paletteSearch
+                        ? PALETTE[key].filter(t => {
+                            const q = paletteSearch.toLowerCase()
+                            return t.toLowerCase().includes(q) || NODE_CFG[t]?.label.toLowerCase().includes(q) || NODE_CFG[t]?.description?.toLowerCase().includes(q)
+                          })
+                        : PALETTE[key]
+                      if (paletteSearch && filtered.length === 0) return null
+                      return (
+                        <div key={key}>
+                          {i > 0 && <div style={{ height: 1, background: EDGE_C, margin: '8px 0' }} />}
+                          <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: SLATE, margin: '0 0 6px 2px', opacity: 0.7 }}>
+                            {label} · {filtered.length}
+                          </p>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                            {filtered.map(t => (
+                              <PaletteChip key={t} type={t} cfg={NODE_CFG[t]} onClick={() => addNode(t)} />
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                    {PALETTE[canvasMode].map(t => (
+                    {(paletteSearch
+                      ? PALETTE[canvasMode].filter(t => {
+                          const q = paletteSearch.toLowerCase()
+                          return t.toLowerCase().includes(q) || NODE_CFG[t]?.label.toLowerCase().includes(q) || NODE_CFG[t]?.description?.toLowerCase().includes(q)
+                        })
+                      : PALETTE[canvasMode]
+                    ).map(t => (
                       <PaletteChip key={t} type={t} cfg={NODE_CFG[t]} onClick={() => addNode(t)} />
                     ))}
+                    {paletteSearch && PALETTE[canvasMode].every(t => {
+                      const q = paletteSearch.toLowerCase()
+                      return !t.toLowerCase().includes(q) && !NODE_CFG[t]?.label.toLowerCase().includes(q) && !NODE_CFG[t]?.description?.toLowerCase().includes(q)
+                    }) && (
+                      <p style={{ fontSize: 10, color: SLATE, padding: '4px 2px', margin: 0 }}>No matching nodes</p>
+                    )}
                   </div>
                 )}
                 {/* WVIS 3.0 — node suggestions in intelligence mode */}
-                {canvasMode === 'intelligence' && (
+                {canvasMode === 'intelligence' && !paletteSearch && (
                   <NodeSuggestions
                     lastType={lastSuggestionType}
                     existingTypes={nodes.map(n => (n.data?.step as WorkflowStep)?.type ?? '')}

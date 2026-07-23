@@ -7,6 +7,7 @@ import {
   MessageCircle, X, Send,
 } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
+import { useClientDashboardSummary, useClientRisks } from '../useClientData'
 
 // ─── Palette / Theme ──────────────────────────────────────────────────────────
 const C = '#00aaff'     // Electric Blue
@@ -551,7 +552,9 @@ function useClock() {
 export function ClientWaanda() {
   const navigate = useNavigate()
   const clock = useClock()
-  
+  const { data: summary } = useClientDashboardSummary()
+  const { data: openRisks } = useClientRisks()
+
   const [bootPhase, setBootPhase] = useState(0)
   const [sweep, setSweep] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -765,10 +768,15 @@ export function ClientWaanda() {
     } catch {}
   }, [])
 
+  const RISK_WEIGHT: Record<string, number> = { CRITICAL: 25, HIGH: 15, MEDIUM: 8, LOW: 3 }
+
   // Recalculations for Scenario Impact Simulator
   const simulatedOutputs = useMemo(() => {
-    const baseSLA = 96
-    const baseRisk = 15
+    const baseSLA = summary?.engagement.slaCompliance ?? 96
+    const risks: Array<{ severity: string }> = openRisks ?? []
+    const baseRisk = risks.length
+      ? Math.min(95, Math.max(5, risks.reduce((s, r) => s + (RISK_WEIGHT[r.severity] ?? 5), 0)))
+      : 15
 
     let sla = baseSLA
     sla -= deadlineAccelerate * 4
@@ -801,7 +809,7 @@ export function ClientWaanda() {
       dateShiftDays,
       forecastedDate: finalDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
     }
-  }, [deadlineAccelerate, budgetAdjust, scopeAdd])
+  }, [deadlineAccelerate, budgetAdjust, scopeAdd, summary, openRisks])
 
   // Periodic Telemetry Updates
   useEffect(() => {
@@ -817,8 +825,8 @@ export function ClientWaanda() {
       const eventList: Omit<LiveHUDEvent, 'id' | 'announced'>[] = [
         { type: 'signal', title: 'UAT DEPLOYMENT', value: 'Client Portal build (v2.4.0) complete.', color: C, ts: Date.now() },
         { type: 'signal', title: 'INTELLIGENCE CORE', value: 'Sprint velocity model calibration complete.', color: CG, ts: Date.now() },
-        { type: 'alert',  title: 'AEGIS AUDIT', value: 'Resource limits checked by sentinel agent.', color: CR, ts: Date.now() },
-        { type: 'kpi',    title: 'MRR TRAJECTORY', value: 'Forecast update uploaded in ontology.', color: C, ts: Date.now() },
+        { type: 'alert',  title: 'COMPLIANCE CHECK', value: 'Deliverable audit trail verified.', color: CR, ts: Date.now() },
+        { type: 'kpi',    title: 'DELIVERY FORECAST', value: 'Milestone timeline recalculated.', color: C, ts: Date.now() },
       ]
       const randomEv = eventList[Math.floor(Math.random() * eventList.length)]
       const id = `${randomEv.type}-${Date.now()}`
@@ -831,10 +839,10 @@ export function ClientWaanda() {
   // Module configurations for Concentric Dial (Outer: Project, Inner: Client Success)
   const modules = [
     // Outer Ring (Project) - degs: 0, 72, 144, 216, 288
-    { label: 'DELIVERY PACE', deg: 0,   pct: 93,  color: C,  desc: 'Pace vs targets', type: 'project' },
+    { label: 'DELIVERY PACE', deg: 0,   pct: summary?.engagement.deliveryPace ?? 0,  color: C,  desc: 'Pace vs targets', type: 'project' },
     { label: 'SLA COMPLIANCE', deg: 72,  pct: simulatedOutputs.sla,  color: CG, desc: 'SLA conformance', type: 'project' },
-    { label: 'BUDGET HEALTH', deg: 144, pct: 88,  color: C,  desc: 'Spent vs planned', type: 'project' },
-    { label: 'SPRINT VELOCITY', deg: 216, pct: 87,  color: CG, desc: 'Sprint completed velocity', type: 'project' },
+    { label: 'BUDGET HEALTH', deg: 144, pct: summary?.engagement.budgetHealth ?? 100,  color: C,  desc: 'Spent vs planned', type: 'project' },
+    { label: 'SPRINT VELOCITY', deg: 216, pct: summary?.engagement.sprintVelocity ?? 100,  color: CG, desc: 'Sprint completed velocity', type: 'project' },
     { label: 'PROJECT RISK', deg: 288, pct: simulatedOutputs.risk, color: CR, desc: 'Simulated overall risk', type: 'project' },
     
     // Inner Ring (Client Success) - degs: 36, 108, 180, 252, 324

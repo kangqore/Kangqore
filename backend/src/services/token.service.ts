@@ -84,6 +84,37 @@ export const verifyRefreshToken = (token: string): TokenPayload | null => {
   }
 };
 
+const TWO_FA_CHALLENGE_EXPIRY = '5m';
+
+export interface TwoFactorChallengePayload {
+  userId: string;
+}
+
+/**
+ * Short-lived token issued after password verification when 2FA is enabled.
+ * Uses a distinct audience so it can never be accepted by verifyAccessToken.
+ */
+export const generateTwoFactorChallengeToken = (userId: string): string => {
+  return jwt.sign({ userId }, JWT_SECRET, {
+    expiresIn: TWO_FA_CHALLENGE_EXPIRY,
+    issuer: 'kangqore',
+    audience: 'kangqore-2fa-challenge',
+  });
+};
+
+export const verifyTwoFactorChallengeToken = (token: string): TwoFactorChallengePayload | null => {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET, {
+      issuer: 'kangqore',
+      audience: 'kangqore-2fa-challenge',
+    }) as TwoFactorChallengePayload;
+
+    return decoded;
+  } catch (error) {
+    return null;
+  }
+};
+
 /**
  * Decode token without verification (for debugging)
  */

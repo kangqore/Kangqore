@@ -137,8 +137,8 @@ router.get('/:id', authenticate, async (req: AuthenticatedRequest, res: Response
   }
 });
 
-// Create project
-router.post('/', authenticate, authorize(['CLIENT', 'ADMIN', 'PARTNER']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+// Create project (admin/partner delivery staff only — clients request new work via BIDS intake)
+router.post('/', authenticate, authorize(['ADMIN', 'PARTNER']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const { error, value } = projectSchema.validate(req.body);
     if (error) {

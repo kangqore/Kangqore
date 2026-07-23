@@ -6,7 +6,7 @@ import {
   FileText, Package, ChevronRight,
 } from 'lucide-react'
 import { Spinner } from '@design-system/components/Spinner'
-import { useClientProjects, useClientActions, useClientInvoices, type ClientProject } from '../useClientData'
+import { useClientProjects, useClientActions, useClientInvoices, useClientDashboardSummary, type ClientProject } from '../useClientData'
 import { useAuthStore } from '@store/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -33,33 +33,6 @@ const ACTION_COLOR: Record<string, string> = {
   INVOICE: AMBER, DELIVERABLE: BLUE, DECISION: GREEN,
   CHANGE_REQUEST: PURPLE, RISK: RED, TICKET: '#06b6d4',
 }
-
-const SLA_ITEMS = [
-  { metric: 'P1 Response',     target: '< 2h',  current: '1.4h',  met: true,  pct: 93 },
-  { metric: 'P2 Response',     target: '< 8h',  current: '6.2h',  met: true,  pct: 78 },
-  { metric: 'Staging Uptime',  target: '99.5%', current: '99.8%', met: true,  pct: 99 },
-  { metric: 'Sprint Delivery', target: '90%',   current: '87%',   met: false, pct: 87 },
-]
-
-const TEAM = [
-  { name: 'Ravi Nair',   role: 'Delivery Lead', project: 'Patient Portal',   initials: 'RN', color: BLUE   },
-  { name: 'Omar Khalid', role: 'Tech Lead',      project: 'HIPAA Compliance', initials: 'OK', color: PURPLE },
-  { name: 'Anika Roy',   role: 'Design Lead',    project: 'Analytics',        initials: 'AR', color: GREEN  },
-]
-
-const THIS_WEEK = [
-  { type: 'milestone', title: 'Beta release to UAT',       date: '20 Jun', project: 'Patient Portal v2',  urgent: false, color: BLUE   },
-  { type: 'task',      title: 'Sign off on BAA agreement', date: '12 Jun', project: 'HIPAA Compliance',   urgent: true,  color: RED    },
-  { type: 'meeting',   title: 'Sprint 13 Review',          date: '19 Jun', project: 'All Projects',       urgent: false, color: PURPLE },
-]
-
-const ACTIVITY = [
-  { title: 'Sprint 12 deployed to staging',          date: '17 Jun', color: BLUE   },
-  { title: 'HIPAA audit report shared in Documents', date: '14 Jun', color: PURPLE },
-  { title: 'Monthly sync meeting notes uploaded',    date: '12 Jun', color: GREEN  },
-  { title: 'Invoice INV-2026-041 issued — ₹42,000', date: '10 Jun', color: AMBER  },
-  { title: 'Change request CR-014 approved',         date: '7 Jun',  color: BLUE   },
-]
 
 // ── CSS injection ──────────────────────────────────────────────────────────────
 
@@ -127,6 +100,10 @@ function formatDate() {
 
 function getInitials(name: string) {
   return name.split(' ').map(n => n[0] ?? '').join('').slice(0, 2).toUpperCase()
+}
+
+function shortDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 }
 
 // ── Engagement Ring ────────────────────────────────────────────────────────────
@@ -290,10 +267,16 @@ export function ClientDashboard() {
   const { data: apiProjects, isLoading } = useClientProjects()
   const { data: actionsData } = useClientActions()
   const { data: apiInvoices } = useClientInvoices()
+  const { data: summary } = useClientDashboardSummary()
 
   useEffect(() => { ensureKeyframes() }, [])
 
   const projects: ClientProject[] = useMemo(() => apiProjects ?? [], [apiProjects])
+  const team      = summary?.team ?? []
+  const slaItems  = summary?.sla ?? []
+  const thisWeek  = summary?.thisWeek ?? []
+  const activity  = summary?.activity ?? []
+  const engagement = summary?.engagement
   const actions: ActionItem[] = useMemo(() => (actionsData as { actions?: ActionItem[] } | undefined)?.actions ?? [], [actionsData])
   const pendingActions = actions.length
   const invoices = (apiInvoices as Record<string, unknown>[] | undefined) ?? []
@@ -325,7 +308,9 @@ export function ClientDashboard() {
       grad: `linear-gradient(135deg, ${BLUE} 0%, #4f8ef7 100%)`,  glow: `${BLUE}35`  },
     { label: 'Pending Actions', value: String(pendingActions),     icon: Zap,         color: AMBER,
       grad: `linear-gradient(135deg, ${AMBER} 0%, #fbbf24 100%)`, glow: `${AMBER}35` },
-    { label: 'SLA Score',       value: '96%',                      icon: CheckCircle2,color: GREEN,
+    { label: 'SLA Score',
+      value: engagement ? `${engagement.slaCompliance}%` : '—',
+      icon: CheckCircle2, color: GREEN,
       grad: `linear-gradient(135deg, ${GREEN} 0%, #34d399 100%)`, glow: `${GREEN}35` },
     { label: 'Outstanding',
       value: outstanding > 0 ? `₹${(outstanding / 1000).toFixed(0)}k` : '₹0',
@@ -553,11 +538,11 @@ export function ClientDashboard() {
           </div>
           <EngagementRing score={score} color={scoreColor} />
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 13 }}>
-            <DimBar label="Delivery pace"   pct={93}  color={BLUE}   delay={0}   />
-            <DimBar label="SLA compliance"  pct={96}  color={GREEN}  delay={80}  />
-            <DimBar label="Communication"   pct={100} color={PURPLE} delay={160} />
-            <DimBar label="Budget health"   pct={88}  color={AMBER}  delay={240} />
-            <DimBar label="Sprint velocity" pct={87}  color={BLUE}   delay={320} />
+            <DimBar label="Delivery pace"   pct={engagement?.deliveryPace ?? 0}    color={BLUE}   delay={0}   />
+            <DimBar label="SLA compliance"  pct={engagement?.slaCompliance ?? 100} color={GREEN}  delay={80}  />
+            <DimBar label="Communication"   pct={engagement?.communication ?? 100} color={PURPLE} delay={160} />
+            <DimBar label="Budget health"   pct={engagement?.budgetHealth ?? 100}  color={AMBER}  delay={240} />
+            <DimBar label="Sprint velocity" pct={engagement?.sprintVelocity ?? 100} color={BLUE}  delay={320} />
           </div>
         </div>
 
@@ -573,7 +558,11 @@ export function ClientDashboard() {
             <span style={{ fontSize: 11, color: 'var(--os-text-3)', fontWeight: 500 }}>{new Date().toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {THIS_WEEK.map((item, i) => {
+            {thisWeek.length === 0 ? (
+              <p style={{ fontSize: 12, color: 'var(--os-text-3)', textAlign: 'center', padding: '20px 0' }}>
+                Nothing on the horizon — no milestones, tasks, or meetings due this week.
+              </p>
+            ) : thisWeek.map((item, i) => {
               const Icon = item.type === 'meeting' ? Users : item.type === 'task' ? CheckCircle2 : Calendar
               return (
                 <div key={i} style={{
@@ -601,7 +590,7 @@ export function ClientDashboard() {
                         Urgent
                       </span>
                     )}
-                    <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-3)' }}>{item.date}</span>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--os-text-3)' }}>{shortDate(item.date)}</span>
                   </div>
                 </div>
               )
@@ -730,8 +719,12 @@ export function ClientDashboard() {
             <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>Your Kangqore Team</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 13 }}>
-            {TEAM.map(t => (
-              <div key={t.name} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {team.length === 0 ? (
+              <p style={{ fontSize: 12, color: 'var(--os-text-3)', textAlign: 'center', padding: '10px 0' }}>
+                No team assigned yet.
+              </p>
+            ) : team.map(t => (
+              <div key={t.id} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{
                   width: 38, height: 38, borderRadius: 12, flexShrink: 0,
                   background: `linear-gradient(135deg, ${t.color}20, ${t.color}10)`,
@@ -770,7 +763,7 @@ export function ClientDashboard() {
             <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>SLA Performance</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {SLA_ITEMS.map(s => (
+            {slaItems.map(s => (
               <div key={s.metric}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                   <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--os-text-2)' }}>{s.metric}</span>
@@ -807,23 +800,29 @@ export function ClientDashboard() {
             </div>
             <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--os-text-1)', margin: 0 }}>Recent Activity</p>
           </div>
-          <div style={{ position: 'relative', paddingLeft: 18 }}>
-            <div style={{ position: 'absolute', left: 6, top: 6, bottom: 6, width: 1.5, background: 'var(--cd-edge)', borderRadius: 999 }} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 17 }}>
-              {ACTIVITY.map((a, i) => (
-                <div key={i} style={{ position: 'relative' }}>
-                  <div style={{
-                    position: 'absolute', left: -18, top: 4,
-                    width: 11, height: 11, borderRadius: '50%',
-                    background: `${a.color}15`, border: `2px solid ${a.color}`,
-                    boxShadow: `0 0 6px ${a.color}40`,
-                  }} />
-                  <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0, lineHeight: 1.5, fontWeight: 500 }}>{a.title}</p>
-                  <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: '3px 0 0' }}>{a.date}</p>
-                </div>
-              ))}
+          {activity.length === 0 ? (
+            <p style={{ fontSize: 12, color: 'var(--os-text-3)', textAlign: 'center', padding: '10px 0' }}>
+              No recent activity yet.
+            </p>
+          ) : (
+            <div style={{ position: 'relative', paddingLeft: 18 }}>
+              <div style={{ position: 'absolute', left: 6, top: 6, bottom: 6, width: 1.5, background: 'var(--cd-edge)', borderRadius: 999 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 17 }}>
+                {activity.map((a, i) => (
+                  <div key={i} style={{ position: 'relative' }}>
+                    <div style={{
+                      position: 'absolute', left: -18, top: 4,
+                      width: 11, height: 11, borderRadius: '50%',
+                      background: `${a.color}15`, border: `2px solid ${a.color}`,
+                      boxShadow: `0 0 6px ${a.color}40`,
+                    }} />
+                    <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0, lineHeight: 1.5, fontWeight: 500 }}>{a.title}</p>
+                    <p style={{ fontSize: 10, color: 'var(--os-text-3)', margin: '3px 0 0' }}>{shortDate(a.date)}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
       </div>

@@ -37,6 +37,7 @@ import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin }
 import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../waanda/intelligence/enterpriseCoach.service';
 import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../waanda/intelligence/decisionEngine.service';
 import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint, addBlueprintGap, getBlueprintGaps, aggregateBlueprintGaps } from '../waanda/intelligence/blueprintService';
+import { PackRegistry } from '../services/packRegistry.service';
 import { simulateEnterpriseTwin, listTwinScenarios, compareScenarios } from '../waanda/intelligence/enterpriseTwin.service';
 import { computeCapabilityProfiles, getCapabilityProfiles, getRuntimeCallStats } from '../kangqore-immp/runtime/waandaRuntimeIntelligence.service';
 
@@ -3541,6 +3542,30 @@ router.post('/enterprise/blueprints/import', authenticate, authorize(['ADMIN']),
 // PATCH /admin/enterprise/blueprints/:id/activate — mark as ACTIVE + set deployedAt
 router.patch('/enterprise/blueprints/:id/activate', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try { res.json(await activateBlueprint(req.params.id)) } catch (err) { next(err) }
+})
+
+// POST /admin/enterprise/blueprints/:id/apply-pack — S97 pack activation
+// Installs a named industry pack into the platform (ontology types, workflows, policies, agents)
+// and records the applied pack on the Blueprint record.
+router.post('/enterprise/blueprints/:id/apply-pack', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { packId } = req.body
+    if (!packId) return res.status(400).json({ error: 'packId is required' })
+    await PackRegistry.install(packId, req.user?.userId)
+    // Record applied pack on the blueprint spec
+    const bp = await getBlueprint(req.params.id).catch(() => null)
+    if (bp) {
+      const spec = (bp.spec ?? {}) as Record<string, any>
+      const appliedPacks: string[] = Array.isArray(spec.appliedPacks) ? spec.appliedPacks : []
+      if (!appliedPacks.includes(packId)) appliedPacks.push(packId)
+      await (prisma as any).customerBlueprint.update({
+        where: { id: req.params.id },
+        data:  { spec: { ...spec, appliedPacks } },
+      })
+    }
+    const stats = await PackRegistry.stats()
+    res.json({ ok: true, packId, stats })
+  } catch (err) { next(err) }
 })
 
 // PATCH /admin/enterprise/blueprints/:id/archive — archive a blueprint

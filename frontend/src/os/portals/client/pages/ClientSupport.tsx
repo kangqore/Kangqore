@@ -30,55 +30,6 @@ function getDeadline(createdAt: string, priority: string): number | null {
   return new Date(createdAt).getTime() + mins * 60_000
 }
 
-// ─── mock data ────────────────────────────────────────────────────────────────
-
-const MOCK_TICKETS = [
-  {
-    id: 'tk1', subject: 'Staging environment down — patient login 500 error',
-    category: 'BUG', priority: 'HIGH', status: 'IN_PROGRESS',
-    assignedAgent: { name: 'Ravi Nair', initials: 'RN', color: '#2564ea' },
-    content: 'Since this morning the staging environment is returning 500 on the patient login endpoint. Our UAT team cannot proceed.',
-    createdAt: '2026-06-22T06:47:00Z', updatedAt: '2026-06-22T09:00:00Z',
-    _count: { messages: 3 },
-    messages: [
-      { id: 'msg1', content: 'Since this morning the staging environment is returning 500 on the patient login endpoint.', createdAt: '2026-06-01T08:30:00Z', sender: { name: 'You', role: 'CLIENT' }, attachments: [] },
-      { id: 'msg2', content: 'We have identified the issue — a Redis config change caused session validation to fail. Fix is being deployed now.', createdAt: '2026-06-01T10:00:00Z', sender: { name: 'Ravi Nair', role: 'ADMIN' }, attachments: [] },
-      { id: 'msg3', content: 'Fix deployed to staging. Can you confirm login is working on your end?', createdAt: '2026-06-01T11:00:00Z', sender: { name: 'Ravi Nair', role: 'ADMIN' }, attachments: [] },
-    ],
-  },
-  {
-    id: 'tk2', subject: 'HIPAA audit report — page 14 has wrong organisation name',
-    category: 'CORRECTION', priority: 'MEDIUM', status: 'OPEN',
-    assignedAgent: { name: 'Priya Sharma', initials: 'PS', color: '#7f53f9' },
-    content: 'Page 14 of the HIPAA audit report (shared 27 May) has our old legal entity name. Please update and re-share.',
-    createdAt: '2026-06-21T13:40:00Z', updatedAt: '2026-06-21T13:40:00Z',
-    _count: { messages: 1 },
-    messages: [
-      { id: 'msg4', content: 'Page 14 of the HIPAA audit report (shared 27 May) has our old legal entity name. Please update and re-share.', createdAt: '2026-05-30T14:00:00Z', sender: { name: 'You', role: 'CLIENT' }, attachments: ['HIPAA_Report_May2026.pdf'] },
-    ],
-  },
-  {
-    id: 'tk3', subject: 'Analytics dashboard — can we add a date range filter?',
-    category: 'FEATURE_REQUEST', priority: 'LOW', status: 'OPEN',
-    assignedAgent: null,
-    content: 'The current analytics view is fixed to the last 30 days. It would be very useful to have a custom date range picker.',
-    createdAt: '2026-06-20T08:00:00Z', updatedAt: '2026-06-20T08:00:00Z',
-    _count: { messages: 1 },
-    messages: [
-      { id: 'msg5', content: 'The current analytics view is fixed to the last 30 days. It would be very useful to have a custom date range picker.', createdAt: '2026-05-28T09:00:00Z', sender: { name: 'You', role: 'CLIENT' }, attachments: [] },
-    ],
-  },
-  {
-    id: 'tk4', subject: 'Invoice INV-2026-038 — query on line item 3',
-    category: 'BILLING', priority: 'MEDIUM', status: 'RESOLVED',
-    assignedAgent: { name: 'Ravi Nair', initials: 'RN', color: '#2564ea' },
-    content: 'Line item 3 on the invoice mentions "Extended discovery — 8h" but our SOW only covers 4h.',
-    createdAt: '2026-05-15T10:00:00Z', updatedAt: '2026-05-20T14:00:00Z',
-    _count: { messages: 4 },
-    messages: [],
-  },
-]
-
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
 const STATUS_VARIANT: Record<string, 'danger' | 'warning' | 'success' | 'info' | 'neutral'> = {
@@ -488,9 +439,8 @@ function RaiseTicketDrawer({ onClose }: { onClose: () => void }) {
 
 export function ClientSupport() {
   const { data } = useClientTickets()
-  const [tickets, setTickets] = useState<Ticket[]>(() =>
-    (data as Ticket[] | undefined)?.length ? (data as Ticket[]) : MOCK_TICKETS
-  )
+  const [tickets, setTickets] = useState<Ticket[]>([])
+  useEffect(() => { setTickets((data as Ticket[] | undefined) ?? []) }, [data])
 
   const [openId,      setOpenId]    = useState<string | null>(null)
   const [showRaise,   setShowRaise] = useState(false)
@@ -585,7 +535,9 @@ export function ClientSupport() {
           </Card>
         ))}
         {visible.length === 0 && (
-          <div className="py-12 text-center text-sm text-slate-600">No tickets match this filter.</div>
+          <div className="py-12 text-center text-sm text-slate-600">
+            {tickets.length === 0 ? "You haven't raised any tickets yet." : 'No tickets match this filter.'}
+          </div>
         )}
       </div>
 

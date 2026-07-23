@@ -109,21 +109,64 @@ export function useClientFeedback() {
   })
 }
 
+const TASK_STATUS_MAP: Record<string, string> = {
+  todo: 'pending', in_progress: 'in-progress', blocked: 'pending',
+  completed: 'done', approved: 'done',
+}
+
 export function useClientTasks() {
   return useQuery({
     queryKey: ['client', 'tasks'],
-    queryFn: () => api.get('/tickets').then(r =>
-      (r.data.tickets ?? []).map((t: Record<string, unknown>) => ({
+    queryFn: () => api.get('/client/tasks').then(r =>
+      (r.data.tasks ?? []).map((t: Record<string, unknown>) => ({
         id:          String(t.id),
-        projectName: String(t.projectName ?? t.subject ?? ''),
-        title:       String(t.subject ?? t.title ?? ''),
-        status:      String(t.status ?? 'pending').toLowerCase().replace('open', 'pending').replace('resolved', 'completed'),
-        priority:    String(t.priority ?? 'medium').toLowerCase(),
-        assignee:    String((t.client as Record<string, unknown>)?.name ?? 'Client'),
-        dueDate:     t.dueDate ? String(t.dueDate).slice(0, 10) : new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10),
-        category:    String(t.category ?? 'Review'),
+        projectName: String((t.project as Record<string, unknown>)?.title ?? ''),
+        title:       String(t.title ?? ''),
+        status:      TASK_STATUS_MAP[String(t.status ?? 'todo')] ?? 'pending',
+        priority:    'medium',
+        assignee:    String((t.partner as Record<string, unknown>)?.name ?? 'Kangqore Team'),
+        dueDate:     t.dueDate ? String(t.dueDate).slice(0, 10) : null,
+        category:    'Task',
       }))
     ),
+    staleTime: 1000 * 60 * 2,
+  })
+}
+
+export interface ClientTeamMember {
+  id: string; name: string; role: string; project: string; initials: string; color: string
+}
+
+export interface ClientSlaMetric {
+  metric: string; target: string; current: string; met: boolean; pct: number
+}
+
+export interface ClientWeekItem {
+  type: 'milestone' | 'meeting' | 'task'; title: string; date: string
+  project: string; urgent: boolean; color: string
+}
+
+export interface ClientActivityItem {
+  title: string; date: string; color: string
+}
+
+export interface ClientEngagement {
+  deliveryPace: number; slaCompliance: number; communication: number
+  budgetHealth: number; sprintVelocity: number
+}
+
+export interface ClientDashboardSummary {
+  team: ClientTeamMember[]
+  sla: ClientSlaMetric[]
+  thisWeek: ClientWeekItem[]
+  activity: ClientActivityItem[]
+  engagement: ClientEngagement
+}
+
+export function useClientDashboardSummary() {
+  return useQuery({
+    queryKey: ['client', 'dashboard-summary'],
+    queryFn: () => api.get('/client/dashboard-summary').then(r => r.data as ClientDashboardSummary),
     staleTime: 1000 * 60 * 2,
   })
 }

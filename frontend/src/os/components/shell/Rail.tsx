@@ -257,8 +257,8 @@ export function Rail() {
         <RailBtn
           label={BOTTOM.label}
           icon={BOTTOM.icon}
-          isActive={activeItem?.id === 'settings'}
-          onClick={() => handleClick(BOTTOM)}
+          isActive={isClientPortal ? pathname.startsWith('/kangqore-view/client/settings') : activeItem?.id === 'settings'}
+          onClick={() => isClientPortal ? navigate('/kangqore-view/client/settings') : handleClick(BOTTOM)}
         />
 
         <Tooltip content={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'} side="right">

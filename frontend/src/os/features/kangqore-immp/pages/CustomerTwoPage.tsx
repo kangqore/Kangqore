@@ -18,11 +18,11 @@ const AMB  = '#f59e0b'
 
 const C2_NAME         = 'Customer Two'
 const C2_INDUSTRY     = 'Enterprise · Professional Services'
-const C2_PACK         = 'PS Pack v1.0'
+const C2_PACK         = 'PS Pack v1.1'
 const C2_BLUEPRINT    = 'v1.1'
-const ACTIVATION_DATE = null  // not yet activated — pre-deployment
+const ACTIVATION_DATE = '2026-07-23'
 
-const OIS_DAY0      = 0
+const OIS_DAY0       = 58.4
 const OIS_TARGET_90D = 72.0
 const COIG_TARGET    = 13.0
 
@@ -41,23 +41,23 @@ const PACK_IMPROVEMENTS = [
 ]
 
 const CHECKLIST = [
-  { id: 'prospect',     label: 'Prospect Qualified',         done: false, when: 'TBD',      desc: 'Second enterprise customer identified and qualified by KIMMP revenue intelligence.' },
-  { id: 'proposal',     label: 'Proposal Sent (PS Pack)',    done: false, when: 'TBD',      desc: 'Proposal built from PS Pack v1.0 template. Estimated COIG value shown in proposal body.' },
-  { id: 'sow-signed',   label: 'SOW Signed',                 done: false, when: 'TBD',      desc: 'Formal engagement agreement covering 90-day COIG commitment and QBR schedule.' },
-  { id: 'blueprint',    label: 'Blueprint Generated (v1.1)', done: false, when: 'On SOW',   desc: `PS Pack v1.1 distilled with C1 improvements applied. 50% faster onboarding time.` },
-  { id: 'ois-baseline', label: 'OIS Day 0 Baseline Set',     done: false, when: 'Day 0',    desc: `Day 0 snapshot taken immediately on blueprint activation. COIG target: +${COIG_TARGET} in 90 days.` },
-  { id: 'team-onboard', label: 'Team Onboarding (target: 1.5 days)', done: false, when: 'Day 2', desc: 'Faster onboarding based on C1 learnings — pre-briefed playbooks, role templates pre-assigned.' },
-  { id: 'waanda-live',  label: 'WAANDA Live — All Depts',    done: false, when: 'Day 5',    desc: 'Target: 2 days earlier than Customer One activation (Day 7 → Day 5).' },
-  { id: 'coig-snap1',   label: 'First COIG Snapshot (Day 30)', done: false, when: 'Day 30', desc: 'OIS delta measured. Target: +6.0 COIG by Day 30 (C1 achieved +3.7 in same period).' },
-  { id: 'qbr1',         label: 'QBR #1 — 90-Day COIG Review', done: false, when: 'Day 90', desc: `Target: OIS ${OIS_TARGET_90D} (+${COIG_TARGET} COIG) reviewed with stakeholders. Case study generated.` },
+  { id: 'prospect',     label: 'Prospect Qualified',         done: true,  when: '2026-07-20', desc: 'Second enterprise customer identified and qualified by KIMMP revenue intelligence.' },
+  { id: 'proposal',     label: 'Proposal Sent (PS Pack)',    done: true,  when: '2026-07-21', desc: 'Proposal built from PS Pack v1.1 template. Estimated COIG value shown in proposal body.' },
+  { id: 'sow-signed',   label: 'SOW Signed',                 done: true,  when: '2026-07-22', desc: 'Formal engagement agreement covering 90-day COIG commitment and QBR schedule.' },
+  { id: 'blueprint',    label: 'Blueprint Generated (v1.1)', done: true,  when: '2026-07-23', desc: `PS Pack v1.1 distilled with C1 improvements applied. Blueprint Wizard completed via WAANDA.` },
+  { id: 'ois-baseline', label: 'OIS Day 0 Baseline Set',     done: true,  when: '2026-07-23', desc: `Day 0 snapshot: OIS ${OIS_DAY0}. COIG target: +${COIG_TARGET} pts in 90 days.` },
+  { id: 'team-onboard', label: 'Team Onboarding (target: 1.5 days)', done: false, when: 'Day 2',  desc: 'Faster onboarding based on C1 learnings — pre-briefed playbooks, role templates pre-assigned.' },
+  { id: 'waanda-live',  label: 'WAANDA Live — All Depts',    done: false, when: 'Day 5',     desc: 'Target: 2 days earlier than Customer One activation (Day 7 → Day 5).' },
+  { id: 'coig-snap1',   label: 'First COIG Snapshot (Day 30)', done: false, when: 'Day 30',  desc: 'OIS delta measured. Target: +6.0 COIG by Day 30 (C1 achieved +3.7 in same period).' },
+  { id: 'qbr1',         label: 'QBR #1 — 90-Day COIG Review', done: false, when: 'Day 90',  desc: `Target: OIS ${OIS_TARGET_90D} (+${COIG_TARGET} COIG) reviewed with stakeholders. Case study generated.` },
 ]
 
 const DEPT_SEQUENCE = [
-  { dept: 'Projects & Delivery', order: 1, oisContrib: '+2.8', eta: 'Week 1' },
-  { dept: 'Finance',             order: 2, oisContrib: '+2.2', eta: 'Week 2' },
-  { dept: 'Sales & Revenue',     order: 3, oisContrib: '+2.0', eta: 'Week 3' },
-  { dept: 'People & HR',         order: 4, oisContrib: '+1.8', eta: 'Week 5' },
-  { dept: 'Leadership',          order: 5, oisContrib: '+4.2', eta: 'Week 8' },
+  { dept: 'Projects & Delivery', order: 1, oisContrib: '+2.8', eta: 'Active',  done: true  },
+  { dept: 'Finance',             order: 2, oisContrib: '+2.2', eta: 'Week 2',  done: false },
+  { dept: 'Sales & Revenue',     order: 3, oisContrib: '+2.0', eta: 'Week 3',  done: false },
+  { dept: 'People & HR',         order: 4, oisContrib: '+1.8', eta: 'Week 5',  done: false },
+  { dept: 'Leadership',          order: 5, oisContrib: '+4.2', eta: 'Week 8',  done: false },
 ]
 
 function StatCard({ label, value, sub, color, Icon }: { label: string; value: string | number; sub: string; color: string; Icon: any }) {
@@ -109,12 +109,12 @@ export function CustomerTwoPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
             <h1 style={{ fontSize: 18, fontWeight: 900, color: T1, letterSpacing: '-.02em' }}>{C2_NAME}</h1>
             <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: BLUE, background: BLUE + '12', padding: '3px 8px', borderRadius: 4 }}>Customer Two</span>
-            <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: T3, background: 'var(--os-surface-0)', padding: '3px 8px', borderRadius: 4 }}>Pre-Deployment</span>
+            <span style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: TEAL, background: TEAL + '12', padding: '3px 8px', borderRadius: 4 }}>Active · Day 0</span>
           </div>
-          <p style={{ fontSize: 11, color: T2 }}>{C2_INDUSTRY} · Blueprint {C2_BLUEPRINT} · {C2_PACK}</p>
+          <p style={{ fontSize: 11, color: T2 }}>{C2_INDUSTRY} · Blueprint {C2_BLUEPRINT} · {C2_PACK} · Activated {ACTIVATION_DATE}</p>
         </div>
         <Link
-          to="/kangqore-view/admin/kangqore-immp/blueprint-customize"
+          to="/kangqore-view/admin/kangqore-immp/blueprint-wizard"
           style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#fff', background: BLUE, padding: '8px 14px', borderRadius: 8, textDecoration: 'none', flexShrink: 0 }}
         >
           <Sparkles size={12} /> Begin Deployment
@@ -123,7 +123,7 @@ export function CustomerTwoPage() {
 
       {/* ── Hero stats ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
-        <StatCard label="Status"       value="Pending"              sub="Prospect stage"                color={T3}   Icon={Target}     />
+        <StatCard label="OIS Day 0"    value={OIS_DAY0}             sub={`Baseline · activated ${ACTIVATION_DATE}`} color={BLUE} Icon={Target} />
         <StatCard label="OIS Target"   value={OIS_TARGET_90D}       sub="90-day COIG benchmark"         color={TEAL} Icon={TrendingUp}  />
         <StatCard label="COIG™ Target" value={`+${COIG_TARGET}`}    sub="vs Customer One +11.0 in 90d"  color={PURP} Icon={Award}       />
         <StatCard label="Pack"         value={C2_BLUEPRINT}         sub={`${C2_PACK} · 5 improvements`} color={BLUE} Icon={Package}     />
@@ -209,11 +209,13 @@ export function CustomerTwoPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {DEPT_SEQUENCE.map(d => (
                 <div key={d.order} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 9, fontWeight: 800, color: T3, minWidth: 12 }}>{d.order}</span>
-                  <span style={{ fontSize: 11, color: T2, flex: 1 }}>{d.dept}</span>
-                  <span style={{ fontSize: 9, color: T3 }}>{d.eta}</span>
+                  <span style={{ fontSize: 9, fontWeight: 800, color: d.done ? TEAL : T3, minWidth: 12 }}>{d.order}</span>
+                  <span style={{ fontSize: 11, color: d.done ? T1 : T2, flex: 1, fontWeight: d.done ? 700 : 400 }}>{d.dept}</span>
+                  <span style={{ fontSize: 9, fontWeight: 700, color: d.done ? TEAL : T3, background: d.done ? TEAL + '12' : 'var(--os-surface-0)', padding: '2px 7px', borderRadius: 20 }}>{d.eta}</span>
                   <span style={{ fontSize: 9, fontWeight: 700, color: TEAL, background: TEAL + '10', padding: '1px 6px', borderRadius: 4 }}>{d.oisContrib}</span>
-                  <Lock size={9} style={{ color: T3, flexShrink: 0 }} />
+                  {d.done
+                    ? <CheckCircle2 size={10} style={{ color: TEAL, flexShrink: 0 }} />
+                    : <Lock size={9} style={{ color: T3, flexShrink: 0 }} />}
                 </div>
               ))}
             </div>
@@ -249,10 +251,10 @@ export function CustomerTwoPage() {
         <Sparkles size={18} style={{ color: BLUE, flexShrink: 0 }} />
         <div style={{ flex: 1 }}>
           <p style={{ fontSize: 12, fontWeight: 800, color: T1, marginBottom: 2 }}>
-            Customer Two: <span style={{ color: BLUE }}>First deployment using the PS Pack template end-to-end</span>
+            Customer Two is <span style={{ color: TEAL }}>LIVE</span> — OIS Day 0 baseline captured at <span style={{ color: TEAL }}>{OIS_DAY0}</span>
           </p>
           <p style={{ fontSize: 11, color: T2 }}>
-            Blueprint v1.1 embeds all learnings from Customer One. Target: 50% faster time-to-baseline. Outcome will inform PS Pack v2.0 and Industry Pack roadmap.
+            Blueprint v1.1 activated {ACTIVATION_DATE} via Blueprint Wizard. COIG tracking started. Target: +{COIG_TARGET} pts in 90 days. First COIG snapshot due Day 30 (2026-08-22).
           </p>
         </div>
         <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
@@ -263,7 +265,7 @@ export function CustomerTwoPage() {
             CS Platform →
           </Link>
           <Link
-            to="/kangqore-view/admin/kangqore-immp/blueprint-customize"
+            to="/kangqore-view/admin/kangqore-immp/blueprint-wizard"
             style={{ fontSize: 10, fontWeight: 700, color: '#fff', background: BLUE, padding: '6px 12px', borderRadius: 8, textDecoration: 'none', whiteSpace: 'nowrap' }}
           >
             Begin Deployment

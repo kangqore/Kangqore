@@ -7,11 +7,11 @@ import {
   MessageSquare, BarChart2, LogOut, ChevronLeft,
   Bell, ChevronRight, Phone, Search, Settings, User,
   ChevronDown, SlidersHorizontal, BookOpen, Package, Brain,
-  X, Clock, Crosshair, Sun, Moon, Maximize2, Minimize2, Plus, Eye, Home, ArrowUpRight, Building2, Check, Loader2
+  X, Clock, Crosshair, Sun, Moon, Maximize2, Minimize2, Eye, Home, ArrowUpRight, Building2, Check, Loader2
 } from 'lucide-react'
 import {
   ChatCircleDotsIcon, CpuIcon, UsersThreeIcon, CrownSimpleIcon,
-  UserCircleIcon, HandshakeIcon, TrendUpIcon, SquaresFourIcon, GlobeIcon, LightningIcon, TargetIcon
+  UserCircleIcon, HandshakeIcon, TrendUpIcon, SquaresFourIcon, GlobeIcon
 } from '@phosphor-icons/react'
 import { cn } from '@design-system/cn'
 import { Avatar } from '@design-system/components/Avatar'
@@ -22,7 +22,6 @@ import {
 } from '@design-system/components/Dropdown'
 import { useQuery } from '@tanstack/react-query'
 import { api, isDemo } from '@lib/api'
-import { QuickCreateModal, type CreateMode } from '../../components/QuickCreateModal'
 import { ModuleShell }             from '@components/ModuleShell'
 import { Rail }                    from '@components/shell/Rail'
 import { ClientDashboard }         from './pages/ClientDashboard'
@@ -44,6 +43,7 @@ import { useAuthStore }            from '@store/auth'
 import {
   useClientNotifications,
   useClientActions,
+  useClientDashboardSummary,
   useMarkNotificationRead,
   useMarkAllNotificationsRead,
   type ClientNotif,
@@ -148,6 +148,8 @@ function ClientSidebar({ collapsed, onToggle, badgeCounts = {} }: {
 }) {
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
+  const { data: summary } = useClientDashboardSummary()
+  const accountManager = summary?.team.find(t => t.role === 'Delivery Lead') ?? summary?.team[0]
 
   return (
     <aside
@@ -218,7 +220,7 @@ function ClientSidebar({ collapsed, onToggle, badgeCounts = {} }: {
       </nav>
 
       {/* Account manager card */}
-      {!collapsed && (
+      {!collapsed && accountManager && (
         <div className="flex-shrink-0 mx-2 mb-2 rounded-xl p-3"
           style={{ background: 'rgba(37,100,234,0.06)', border: '1px solid rgba(37,100,234,0.15)' }}>
           <p className="text-[9px] font-bold uppercase tracking-widest mb-2" style={{ color: `${ACCENT}80` }}>
@@ -226,15 +228,15 @@ function ClientSidebar({ collapsed, onToggle, badgeCounts = {} }: {
           </p>
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
-              style={{ background: ACCENT }}>
-              RN
+              style={{ background: accountManager.color || ACCENT }}>
+              {accountManager.initials}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>Ravi Nair</p>
-              <p className="text-[10px] text-slate-500">Delivery Lead</p>
+              <p className="text-xs font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{accountManager.name}</p>
+              <p className="text-[10px] text-slate-500">{accountManager.role}</p>
             </div>
             <button className="w-6 h-6 flex items-center justify-center rounded-lg text-slate-600 hover:text-white transition-colors flex-shrink-0"
-              style={{ background: 'var(--os-surface)' }} title="Call Ravi">
+              style={{ background: 'var(--os-surface)' }} title={`Contact ${accountManager.name}`}>
               <Phone className="w-3 h-3" />
             </button>
           </div>
@@ -367,13 +369,6 @@ const PORTALS = [
   { id: 'analyst',   label: 'Analyst Portal',    path: '/kangqore-view/analyst',   icon: SquaresFourIcon,  color: '#06B6D4', roles: ['ANALYST', 'ADMIN'] },
 ] as const
 
-const NEW_ACTIONS = [
-  { label: 'New Lead',    icon: LightningIcon,   mode: 'lead' as CreateMode },
-  { label: 'New Project', icon: SquaresFourIcon, mode: 'project' as CreateMode },
-  { label: 'New Goal',    icon: TargetIcon,      mode: 'goal' as CreateMode },
-  { label: 'Ask WAANDA',  icon: CpuIcon,         path: '/kangqore-view/client/waanda' },
-]
-
 function UserMonogram({ name, size = 28 }: { name: string; size?: number }) {
   const initials = name.split(' ').map(n => n[0] ?? '').join('').slice(0, 2).toUpperCase()
   return (
@@ -414,13 +409,12 @@ function ClientTopbar({
   const { user, logout, currentOrg, switchOrg } = useAuthStore()
   const [userOpen,      setUserOpen]      = useState(false)
   const [notifOpen,     setNotifOpen]     = useState(false)
+  const [presenceOpen,  setPresenceOpen]  = useState(false)
   const [switcherOpen,  setSwitcherOpen]  = useState(false)
-  const [createMode,    setCreateMode]    = useState<CreateMode>(null)
   const [isFullscreen,  setIsFullscreen]  = useState(false)
   const [isDark,        setIsDark]        = useState(() => document.documentElement.classList.contains('dark'))
   const userRef = useRef<HTMLDivElement>(null)
   const switcherRef = useRef<HTMLDivElement>(null)
-  const newRef = useRef<HTMLDivElement>(null)
 
   const toggleTheme = useCallback(() => {
     const nowDark = document.documentElement.classList.toggle('dark')
@@ -757,17 +751,6 @@ function ClientTopbar({
               {isDark ? <Sun className="w-[15px] h-[15px]" /> : <Moon className="w-[16px] h-[16px]" />}
             </button>
           </Tooltip>
-
-          <Tooltip content="Quick Create" side="bottom">
-            <div className="relative" ref={newRef}>
-              <button
-                onClick={() => setCreateMode('project')}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors active:scale-95 flex-shrink-0"
-              >
-                <Plus className="w-[16px] h-[16px]" />
-              </button>
-            </div>
-          </Tooltip>
         </div>
 
         {/* Separator */}
@@ -798,7 +781,6 @@ function ClientTopbar({
       </div>
     </header>
 
-    <QuickCreateModal mode={createMode} onClose={() => setCreateMode(null)} />
     <NotificationsPanel
       isOpen={notifOpen}
       notifications={notifications}

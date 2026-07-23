@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Cpu, Plus, ChevronDown, ChevronRight, RefreshCw, CheckCircle2, XCircle, Loader2, Clock, Zap, ArrowRight } from 'lucide-react'
+import { Cpu, Plus, ChevronDown, ChevronRight, RefreshCw, CheckCircle2, XCircle, Loader2, Clock, Zap, ArrowRight, Copy } from 'lucide-react'
 import { api } from '@lib/api'
 import { getSocket } from '@lib/socket'
 
@@ -15,7 +15,7 @@ const RED  = '#ef4444'
 const BLUE = '#579bfc'
 const PURP = '#7c3aed'
 
-interface Subtask { id: string; label: string; status: string; agentRole: string; steps: string[] }
+interface Subtask { id: string; label: string; status: string; agentRole: string; steps: string[]; result?: string }
 
 interface Plan {
   id: string; goal: string; subtasks: Subtask[]; status: string
@@ -162,6 +162,40 @@ export function WaandaGen3Page() {
   )
 }
 
+function ResultDrawer({ result, role }: { result: string; role: string }) {
+  const [copied, setCopied] = useState(false)
+  const roleColor = ROLE_COLOR[role] ?? T2
+
+  function copy() {
+    navigator.clipboard.writeText(result)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
+  return (
+    <div className="mt-3 rounded-xl border overflow-hidden" style={{ borderColor: `${PURP}30`, background: `${PURP}05` }}>
+      <div className="flex items-center justify-between px-3 py-2 border-b" style={{ borderColor: `${PURP}20` }}>
+        <div className="flex items-center gap-2">
+          <Cpu className="w-3 h-3" style={{ color: PURP }} />
+          <span className="text-[9px] font-black uppercase tracking-[0.15em]" style={{ color: PURP }}>KIMMP Output</span>
+          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: `${roleColor}15`, color: roleColor }}>{role}</span>
+        </div>
+        <button
+          onClick={copy}
+          className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg transition-all"
+          style={{ background: copied ? `${GRN}15` : `${PURP}10`, color: copied ? GRN : PURP }}
+        >
+          {copied ? <CheckCircle2 className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+      <div className="px-4 py-3">
+        <p className="text-xs leading-relaxed whitespace-pre-wrap" style={{ color: T1 }}>{result}</p>
+      </div>
+    </div>
+  )
+}
+
 function PlanCard({ plan }: { plan: Plan }) {
   const [expanded, setExpanded] = useState(plan.status === 'ACTIVE')
   const [expandedTask, setExpandedTask] = useState<string | null>(null)
@@ -249,6 +283,7 @@ function PlanCard({ plan }: { plan: Plan }) {
                         <span className="text-[11px]" style={{ color: T2 }}>{s}</span>
                       </div>
                     ))}
+                    {t.result && t.status === 'DONE' && <ResultDrawer result={t.result} role={t.agentRole} />}
                   </div>
                 )}
               </div>

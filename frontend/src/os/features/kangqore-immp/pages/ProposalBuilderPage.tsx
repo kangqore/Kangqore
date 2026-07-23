@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
   FileText, Zap, ChevronDown, CheckCircle,
-  TrendingUp, Calendar, DollarSign, ArrowRight, Copy, Check,
+  TrendingUp, Calendar, DollarSign, ArrowRight, Copy, Check, BookOpen,
 } from 'lucide-react'
 import { adminApi, api, isDemo } from '@lib/api'
 
@@ -44,6 +44,12 @@ interface Proposal {
 interface ProposalResult {
   proposal: Proposal
   lead: { companyName: string; projectedValue: string; stage: string; packId: string; packName: string }
+}
+
+interface CustomerBlueprint {
+  id: string; customerName: string; tenantId: string; version: string; planTier: string
+  industry: string; oisBaseline: number; oisTarget: number; status: string
+  deployedAt: string | null; enabledModules: string[]
 }
 
 // ─── Pack options ─────────────────────────────────────────────────────────────
@@ -266,13 +272,15 @@ ${p.nextSteps.map((s, i) => `${i + 1}. ${s}`).join('\n')}
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export function ProposalBuilderPage() {
-  const [selectedLead, setSelectedLead] = useState<string>('')
-  const [selectedPack, setSelectedPack] = useState<string>('')
-  const [customNote,   setCustomNote]   = useState('')
-  const [generating,   setGenerating]   = useState(false)
-  const [result,       setResult]       = useState<ProposalResult | null>(null)
-  const [genErr,       setGenErr]       = useState('')
-  const [showLeadDrop, setShowLeadDrop] = useState(false)
+  const [selectedLead,      setSelectedLead]      = useState<string>('')
+  const [selectedPack,      setSelectedPack]      = useState<string>('')
+  const [selectedBlueprint, setSelectedBlueprint] = useState<string>('')
+  const [customNote,        setCustomNote]        = useState('')
+  const [generating,        setGenerating]        = useState(false)
+  const [result,            setResult]            = useState<ProposalResult | null>(null)
+  const [genErr,            setGenErr]            = useState('')
+  const [showLeadDrop,      setShowLeadDrop]      = useState(false)
+  const [showBpDrop,        setShowBpDrop]        = useState(false)
 
   const { data: leadsRaw = [] } = useQuery<CrmLead[]>({
     queryKey: ['proposal-leads'],
@@ -281,10 +289,32 @@ export function ProposalBuilderPage() {
     staleTime: 120_000,
   })
 
+  const { data: bpData } = useQuery<{ blueprints: CustomerBlueprint[] }>({
+    queryKey: ['proposal-blueprints'],
+    queryFn:  () => api.get('/admin/kangqore-immp/customers/blueprints').then(r => r.data),
+    staleTime: 120_000,
+  })
+  const blueprints = bpData?.blueprints ?? []
+  const activeBlueprint = blueprints.find(b => b.id === selectedBlueprint) ?? null
+
   const leads = isDemo() || leadsRaw.length === 0 ? DEMO_LEADS : leadsRaw
   const activeLead  = leads.find(l => l.id === selectedLead)
   const activePack  = PACKS.find(p => p.id === selectedPack)
   const canGenerate = selectedLead && selectedPack && !generating
+
+  function applyBlueprintContext(bp: CustomerBlueprint) {
+    setSelectedBlueprint(bp.id)
+    setShowBpDrop(false)
+    const parts = [
+      `Customer: ${bp.customerName}`,
+      bp.industry ? `Industry: ${bp.industry}` : '',
+      `Plan tier: ${bp.planTier}`,
+      `OIS baseline: ${bp.oisBaseline} → target: ${bp.oisTarget}`,
+      bp.enabledModules?.length ? `Enabled modules: ${bp.enabledModules.join(', ')}` : '',
+      bp.status === 'ACTIVE' ? 'Blueprint status: live deployment' : `Blueprint status: ${bp.status}`,
+    ].filter(Boolean).join('\n')
+    setCustomNote(parts)
+  }
 
   async function generate() {
     if (!canGenerate) return
@@ -329,6 +359,77 @@ export function ProposalBuilderPage() {
         background: 'var(--os-card)', border: '1px solid var(--os-border)',
         borderRadius: 14, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16,
       }}>
+        {/* Blueprint context selector — S99 */}
+        <div>
+          <label style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-4)', textTransform: 'uppercase', letterSpacing: '0.07em', display: 'block', marginBottom: 8 }}>
+            Blueprint Context <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, color: 'var(--os-text-4)' }}>(optional — pre-fills context note)</span>
+          </label>
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => setShowBpDrop(d => !d)}
+              style={{
+                width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '10px 14px', borderRadius: 10, cursor: 'pointer', textAlign: 'left',
+                background: 'var(--os-surface-0)', border: `1px solid ${activeBlueprint ? TEAL + '50' : 'var(--os-border)'}`,
+                color: activeBlueprint ? 'var(--os-text-1)' : 'var(--os-text-4)',
+                fontSize: 12, fontWeight: activeBlueprint ? 700 : 400,
+              }}
+            >
+              <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <BookOpen style={{ width: 12, height: 12, color: activeBlueprint ? TEAL : 'var(--os-text-4)', flexShrink: 0 }} />
+                {activeBlueprint ? (
+                  <>
+                    {activeBlueprint.customerName}
+                    <span style={{ fontSize: 9, fontWeight: 700, color: TEAL, marginLeft: 4 }}>{activeBlueprint.planTier}</span>
+                    <span style={{ fontSize: 9, color: 'var(--os-text-4)', marginLeft: 4 }}>{activeBlueprint.industry}</span>
+                  </>
+                ) : 'Choose a customer blueprint…'}
+              </span>
+              <ChevronDown style={{ width: 14, height: 14, color: 'var(--os-text-4)', flexShrink: 0 }} />
+            </button>
+            {showBpDrop && (
+              <div style={{
+                position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 100,
+                background: 'var(--os-card)', border: '1px solid var(--os-border)',
+                borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
+                marginTop: 4, overflow: 'hidden', maxHeight: 220, overflowY: 'auto',
+              }}>
+                {blueprints.length === 0 && (
+                  <p style={{ padding: '12px 14px', fontSize: 11, color: 'var(--os-text-4)', margin: 0 }}>No customer blueprints found.</p>
+                )}
+                {blueprints.map(bp => (
+                  <button
+                    key={bp.id}
+                    onClick={() => applyBlueprintContext(bp)}
+                    style={{
+                      width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      padding: '10px 14px', background: 'none', border: 'none', cursor: 'pointer',
+                      borderBottom: '1px solid var(--os-border)', textAlign: 'left',
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--os-surface-3)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+                  >
+                    <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)' }}>{bp.customerName}</span>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: TEAL, textTransform: 'capitalize' }}>{bp.planTier}</span>
+                      {bp.industry && <span style={{ fontSize: 9, color: 'var(--os-text-4)' }}>{bp.industry}</span>}
+                      <span style={{ fontSize: 9, color: 'var(--os-text-4)' }}>OIS {bp.oisBaseline}→{bp.oisTarget}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          {activeBlueprint && (
+            <button
+              onClick={() => { setSelectedBlueprint(''); setCustomNote('') }}
+              style={{ fontSize: 10, color: 'var(--os-text-4)', background: 'none', border: 'none', cursor: 'pointer', marginTop: 4, padding: 0 }}
+            >
+              Clear blueprint context
+            </button>
+          )}
+        </div>
+
         {/* Lead selector */}
         <div>
           <label style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-4)', textTransform: 'uppercase', letterSpacing: '0.07em', display: 'block', marginBottom: 8 }}>

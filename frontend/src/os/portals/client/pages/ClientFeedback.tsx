@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Send, CheckCircle2, Star } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { api, isDemo } from '@lib/api'
-import { useClientFeedback } from '../useClientData'
+import { useClientFeedback, useClientProjects } from '../useClientData'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
@@ -43,25 +43,13 @@ function npsLabel(score: number): { label: string; description: string } {
   return               { label: 'Detractor', description: 'You\'re a Detractor — we want to do better.' }
 }
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
-
-const MOCK_FEEDBACK = [
-  {
-    id: 'fb1', npsScore: 9,
-    comment: 'The team has been incredibly responsive and the delivery quality has been excellent. The HIPAA compliance work was particularly thorough.',
-    project: { title: 'HIPAA Compliance Layer' }, createdAt: '2026-05-20T10:00:00Z',
-  },
-  {
-    id: 'fb2', npsScore: 7,
-    comment: 'Good progress overall. Would appreciate more frequent status updates — sometimes we are left guessing on milestone timing.',
-    project: { title: 'Patient Portal v2' }, createdAt: '2026-04-15T09:00:00Z',
-  },
-]
-
-const PROJECTS = [
-  { id: 'pj1', title: 'Patient Portal v2' },
-  { id: 'pj5', title: 'Analytics Dashboard' },
-]
+interface Feedback {
+  id: string
+  npsScore: number
+  comment: string | null
+  project: { title: string } | null
+  createdAt: string
+}
 
 const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
@@ -145,16 +133,22 @@ function ScoreSummary({ avg, count }: { avg: number; count: number }) {
 
 export function ClientFeedback() {
   const { data }    = useClientFeedback()
-  const feedbacks   = ((data as typeof MOCK_FEEDBACK | undefined)?.length ? data as typeof MOCK_FEEDBACK : MOCK_FEEDBACK)
+  const feedbacks   = (data as Feedback[] | undefined) ?? []
+  const { data: apiProjects } = useClientProjects()
+  const projects    = apiProjects ?? []
   const queryClient = useQueryClient()
 
   useEffect(() => { ensureKf() }, [])
 
   const [nps,       setNps]       = useState<number | null>(null)
   const [comment,   setComment]   = useState('')
-  const [projectId, setProjectId] = useState(PROJECTS[0].id)
+  const [projectId, setProjectId] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [focused,   setFocused]   = useState<'textarea' | 'select' | null>(null)
+
+  useEffect(() => {
+    if (!projectId && projects.length > 0) setProjectId(projects[0].id)
+  }, [projects, projectId])
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
@@ -241,7 +235,9 @@ export function ClientFeedback() {
               onFocus={() => setFocused('select')}
               onBlur={() => setFocused(null)}
               style={{ ...inputBase, borderColor: focused === 'select' ? `${BLUE}60` : EDGE, appearance: 'none', cursor: 'pointer' }}>
-              {PROJECTS.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
+              {projects.length === 0
+                ? <option value="">No active projects</option>
+                : projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
             </select>
           </div>
 
@@ -306,7 +302,7 @@ export function ClientFeedback() {
           {/* Submit */}
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
-              disabled={nps === null || isPending}
+              disabled={nps === null || !projectId || isPending}
               onClick={() => mutate()}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8,

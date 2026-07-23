@@ -31,62 +31,21 @@ function ensureKf() {
 }
 const anim = (d: number): React.CSSProperties => ({ animation: `_fadeUp 0.55s ${EASE} ${d}ms both` })
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
-
-const MOCK_CRS = [
-  {
-    id: 'cr1', title: 'Add offline mode to Patient Portal mobile app',
-    description: 'Clinicians in low-connectivity areas need to view patient records offline and sync when reconnected.',
-    priority: 'HIGH', status: 'PENDING_APPROVAL',
-    costImpact: 12000, timeImpact: '3 weeks',
-    requestedBy: 'Dr. Sarah Mitchell', decisionType: 'Scope Change',
-    project: { title: 'Patient Portal v2' },
-    createdAt: '2026-06-01T10:00:00Z', updatedAt: '2026-06-01T10:00:00Z',
-    approvingDecisions: [] as { id: string; title: string; status: string }[],
-  },
-  {
-    id: 'cr2', title: 'Integrate with existing Salesforce CRM',
-    description: 'We need bi-directional sync between the new Analytics Dashboard and our Salesforce instance for unified reporting.',
-    priority: 'MEDIUM', status: 'UNDER_REVIEW',
-    costImpact: 8500, timeImpact: '2 weeks',
-    requestedBy: 'James Okello', decisionType: 'Integration',
-    project: { title: 'Analytics Dashboard' },
-    createdAt: '2026-05-25T09:00:00Z', updatedAt: '2026-05-28T11:00:00Z',
-    approvingDecisions: [],
-  },
-  {
-    id: 'cr3', title: 'Multi-language support (Arabic + French)',
-    description: 'Regulatory requirement for our GCC expansion — patient-facing UI must support Arabic RTL and French.',
-    priority: 'HIGH', status: 'APPROVED',
-    costImpact: 18000, timeImpact: '5 weeks',
-    requestedBy: 'Yasmin Al-Hassan', decisionType: 'Scope Change',
-    project: { title: 'Patient Portal v2' },
-    createdAt: '2026-05-10T08:00:00Z', updatedAt: '2026-05-20T14:00:00Z',
-    approvingDecisions: [{ id: 'd1', title: 'GCC Localisation Approval', status: 'APPROVED' }],
-  },
-  {
-    id: 'cr4', title: 'Remove patient photo upload feature from MVP',
-    description: 'Scope reduction request — remove photo upload to reduce HIPAA surface area for MVP. Add back in Phase 2.',
-    priority: 'LOW', status: 'APPROVED',
-    costImpact: -5000, timeImpact: '-1 week',
-    requestedBy: 'Sarah Mitchell', decisionType: 'Scope Reduction',
-    project: { title: 'HIPAA Compliance Layer' },
-    createdAt: '2026-05-05T10:00:00Z', updatedAt: '2026-05-12T09:00:00Z',
-    approvingDecisions: [],
-  },
-  {
-    id: 'cr5', title: 'Add real-time P&L feed from Bloomberg',
-    description: 'Connect the financial dashboard to live Bloomberg data via their terminal API.',
-    priority: 'HIGH', status: 'REJECTED',
-    costImpact: 25000, timeImpact: '6 weeks',
-    requestedBy: 'Tom Chen', decisionType: 'Integration',
-    project: { title: 'Analytics Dashboard' },
-    createdAt: '2026-04-28T14:00:00Z', updatedAt: '2026-05-03T10:00:00Z',
-    approvingDecisions: [],
-  },
-]
-
-type CR = typeof MOCK_CRS[0]
+interface CR {
+  id: string
+  title: string
+  description: string
+  priority: string
+  status: string
+  costImpact: number | null
+  timeImpact: string | null
+  requestedBy: string | null
+  decisionType: string
+  project: { title: string }
+  createdAt: string
+  updatedAt: string
+  approvingDecisions: { id: string; title: string; status: string }[]
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -513,7 +472,7 @@ function KpiTile({ label, value, Icon, color }: { label: string; value: number; 
 
 export function ClientChangeRequests() {
   const { data } = useClientChangeRequests()
-  const crs: CR[] = (data as CR[] | undefined)?.length ? data as CR[] : MOCK_CRS
+  const crs: CR[] = (data as CR[] | undefined) ?? []
 
   useEffect(() => { ensureKf() }, [])
 
@@ -589,7 +548,7 @@ export function ClientChangeRequests() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {visible.length === 0 && (
           <div style={{ padding: '48px 0', textAlign: 'center', fontSize: 13, color: 'var(--os-text-2)' }}>
-            No change requests match this filter.
+            {crs.length === 0 ? "You haven't submitted any change requests yet." : 'No change requests match this filter.'}
           </div>
         )}
         {visible.map((cr, i) => {
