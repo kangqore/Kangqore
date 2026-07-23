@@ -3671,6 +3671,59 @@ kangqoreImmpRoutes.get('/customers/churn-risk', requireAuth, requireRole(['ADMIN
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// POST /admin/kangqore-immp/customers/churn-alerts
+// Analyses active blueprints for OIS velocity drops, creates KIMMP signals for HIGH/MEDIUM risk
+kangqoreImmpRoutes.post('/customers/churn-alerts', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId  = (req as any).user?.id
+    const bps     = await (prisma as any).customerBlueprint.findMany({ where: { status: 'ACTIVE' } })
+
+    const now = Date.now()
+    const alerts: any[] = []
+
+    for (const bp of bps) {
+      if (!bp.deployedAt) continue
+      const days      = Math.floor((now - new Date(bp.deployedAt).getTime()) / 86_400_000)
+      const baseline  = bp.oisBaseline ?? 60
+      const target    = bp.oisTarget   ?? 75
+      const velocity  = (target - baseline) / 90
+      const oisNow    = Math.min(target, baseline + velocity * days)
+      const expected  = baseline + velocity * Math.max(days, 1)
+      const tracking  = oisNow / (expected || 1)
+
+      let risk: string | null = null
+      let message = ''
+      if (days >= 60 && tracking < 0.80) {
+        risk = 'HIGH'
+        message = `CRITICAL CHURN RISK: ${bp.customerName} is at ${(tracking * 100).toFixed(0)}% tracking pace with ${90 - days}d until renewal. Immediate escalation required.`
+      } else if (days >= 30 && tracking < 0.90) {
+        risk = 'MEDIUM'
+        message = `AT RISK: ${bp.customerName} OIS velocity below expected pace (${(tracking * 100).toFixed(0)}% of target). Recommend scheduling QBR.`
+      } else if (days > 7 && tracking < 0.85) {
+        risk = 'MEDIUM'
+        message = `OIS VELOCITY DROP: ${bp.customerName} showing early deceleration. Review module adoption.`
+      }
+
+      if (risk) {
+        const signal = await (prisma as any).kimmpSignal.create({
+          data: {
+            type:      'CHURN_RISK',
+            source:    'WAANDA_CSM',
+            priority:  risk === 'HIGH' ? 'HIGH' : 'MEDIUM',
+            title:     `[WAANDA] Churn Risk — ${bp.customerName}`,
+            body:      message,
+            metadata:  JSON.stringify({ customerId: bp.id, tenantId: bp.tenantId, tracking, days, risk }),
+            createdBy: userId,
+          },
+        })
+        alerts.push({ signal: signal.id, customer: bp.customerName, risk })
+      }
+    }
+
+    res.json({ alertsCreated: alerts.length, alerts })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 // ════════════════════════════════════════════════════════════════════════════
 // S70 — Enterprise Security: SOC2 Controls · RBAC Scopes · Security Findings
 // ════════════════════════════════════════════════════════════════════════════
