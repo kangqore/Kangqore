@@ -306,14 +306,14 @@ export function UnderstandPage() {
                       className="w-2 h-2 rounded-full flex-shrink-0"
                       style={{ background: '#2564ea' }}
                     />
-                    <span className="text-sm text-slate-700 flex-1 truncate">{obj.name ?? obj.type ?? obj.label}</span>
+                    <span className="text-sm text-slate-700 flex-1 truncate">{obj.name ?? (typeof obj.type === 'string' ? obj.type : obj.type?.displayName ?? obj.type?.name) ?? obj.label}</span>
                     {obj.instanceCount !== undefined && (
                       <span className="text-[11px] text-slate-400 font-mono">{obj.instanceCount}</span>
                     )}
-                    {obj.type && obj.type !== obj.name && (
+                    {obj.type && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded"
                         style={{ background: 'rgba(37,100,234,0.08)', color: '#2564ea' }}>
-                        {obj.type}
+                        {typeof obj.type === 'string' ? obj.type : obj.type?.displayName ?? obj.type?.name}
                       </span>
                     )}
                   </div>
@@ -340,7 +340,7 @@ export function UnderstandPage() {
                     <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#10b981' }} />
                     <div className="flex-1 min-w-0">
                       <span className="text-sm text-slate-700 truncate block">
-                        {m.objectName ?? m.entityName ?? m.label ?? m.type}
+                        {m.objectName ?? m.entityName ?? m.label ?? (typeof m.type === 'string' ? m.type : m.type?.displayName ?? m.type?.name)}
                       </span>
                       {m.note && (
                         <span className="text-[10px] text-slate-400 truncate block">{m.note}</span>

@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
+import { authenticator } from 'otplib';
 import { prisma } from '../lib/prisma';
 import { emailService } from '../services/email.service';
 import crypto from 'crypto';
@@ -7,6 +8,7 @@ import logger from '../utils/logger';
 import bcrypt from 'bcryptjs';
 import { hashPassword, comparePassword } from '../utils/password';
 import { createSession } from '../services/session.service';
+import { generateTwoFactorChallengeToken, verifyTwoFactorChallengeToken } from '../services/token.service';
 import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../services/audit.service';
 import { requireAuth, AuthRequest } from '../middleware/rbac';
 import { createError } from '../middleware/errorHandler';
@@ -152,6 +154,12 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
       throw createError('Invalid credentials', 401);
     }
 
+    // If 2FA is enabled, issue a short-lived challenge instead of a full session
+    if (user.twoFactorEnabled) {
+      const challengeToken = generateTwoFactorChallengeToken(user.id);
+      return res.json({ requires2FA: true, challengeToken });
+    }
+
     // Update last login
     await prisma.user.update({
       where: { id: user.id },
@@ -181,6 +189,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
       company: user.company,
       role: user.role,
       avatarUrl: user.avatarUrl,
+      twoFactorEnabled: user.twoFactorEnabled,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     };
@@ -192,6 +201,96 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     });
 
     stitchVisitor(visitorUuid, user.id).catch(() => {})
+  } catch (error) {
+    next(error);
+  }
+});
+
+// ── Complete login after a 2FA challenge ────────────────────────────────────
+const twoFactorLoginSchema = Joi.object({
+  challengeToken: Joi.string().required(),
+  code: Joi.string().required(),
+});
+
+router.post('/2fa/verify-login', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { error, value } = twoFactorLoginSchema.validate(req.body);
+    if (error) {
+      throw createError(error.details[0].message, 400);
+    }
+    const { challengeToken, code } = value;
+
+    const payload = verifyTwoFactorChallengeToken(challengeToken);
+    if (!payload) {
+      throw createError('Your 2FA challenge has expired. Please log in again.', 401);
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: payload.userId } });
+    if (!user || !user.twoFactorEnabled || !user.twoFactorSecret) {
+      throw createError('Invalid session', 401);
+    }
+
+    const trimmedCode = String(code).trim();
+    let valid = authenticator.check(trimmedCode, user.twoFactorSecret);
+    let usedRecoveryCode: string | null = null;
+
+    if (!valid) {
+      for (const hashed of user.twoFactorRecoveryCodes) {
+        if (await bcrypt.compare(trimmedCode.toUpperCase(), hashed)) {
+          valid = true;
+          usedRecoveryCode = hashed;
+          break;
+        }
+      }
+    }
+
+    if (!valid) {
+      throw createError('Invalid authentication code', 401);
+    }
+
+    if (usedRecoveryCode) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { twoFactorRecoveryCodes: user.twoFactorRecoveryCodes.filter(c => c !== usedRecoveryCode) },
+      });
+    }
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLoginAt: new Date() },
+    });
+
+    const metadata = extractRequestMetadata(req);
+    const { tokens } = await createSession({
+      userId: user.id,
+      role: user.role,
+      ipAddress: metadata.ipAddress,
+      userAgent: metadata.userAgent,
+    });
+
+    await createAuditLog({
+      userId: user.id,
+      action: AUDIT_ACTIONS.LOGIN,
+      ...metadata,
+    });
+
+    const userResponse = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      company: user.company,
+      role: user.role,
+      avatarUrl: user.avatarUrl,
+      twoFactorEnabled: user.twoFactorEnabled,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+
+    res.json({
+      user: userResponse,
+      token: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+    });
   } catch (error) {
     next(error);
   }
@@ -213,11 +312,12 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response, next: Nex
         linkedin: true,
         github: true,
         twitter: true,
+        twoFactorEnabled: true,
         createdAt: true,
         updatedAt: true
       }
     });
-    
+
     res.json({ user });
   } catch (error) {
     next(error);

@@ -4163,6 +4163,63 @@ kangqoreImmpRoutes.post('/billing/subscribe', requireAuth, requireRole(['ADMIN']
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// POST /admin/kangqore-immp/billing/simulate-first-revenue
+// S96 — Simulate a first confirmed revenue event (dev/demo only when Stripe not configured).
+// Sets a tenant subscription to active, creates a CAPTURED charge against a stub listing,
+// and ensures a non-zero MRR appears in the billing panel.
+kangqoreImmpRoutes.post('/billing/simulate-first-revenue', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { tenantId, amount = 2499, planTier = 'PRO' } = req.body
+
+    // Resolve tenant
+    const tenant = tenantId
+      ? await (prisma as any).tenantOrganisation.findUnique({ where: { id: tenantId } })
+      : await (prisma as any).tenantOrganisation.findFirst({ orderBy: { createdAt: 'asc' } })
+    if (!tenant) return res.status(404).json({ error: 'No tenant found — provision one first' })
+
+    // Set subscription active
+    const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // +30 days
+    await (prisma as any).tenantOrganisation.update({
+      where: { id: tenant.id },
+      data:  { subscriptionStatus: 'active', planTier, currentPeriodEnd: periodEnd },
+    })
+
+    // Find or create a stub marketplace listing for the charge FK
+    let listing = await (prisma as any).marketplaceListing.findFirst({ where: { name: 'Kangqore Platform Subscription' } })
+    if (!listing) {
+      listing = await (prisma as any).marketplaceListing.create({
+        data: {
+          name:         'Kangqore Platform Subscription',
+          description:  'Monthly platform subscription — first revenue event',
+          type:         'SUBSCRIPTION',
+          price:        amount / 100,
+          currency:     'USD',
+          platformFee:  0.1,
+          status:       'PUBLISHED',
+          category:     'platform',
+          publishedById: req.user!.userId,
+        },
+      })
+    }
+
+    // Create CAPTURED charge (simulates successful Stripe webhook)
+    const charge = await (prisma as any).marketplaceCharge.create({
+      data: {
+        listingId:   listing.id,
+        partnerId:   tenant.id,
+        amount:      amount / 100,
+        platformFee: (amount / 100) * 0.1,
+        currency:    'USD',
+        status:      'CAPTURED',
+        stripePaymentIntentId: `sim_${Date.now()}`,
+      },
+    })
+
+    const metrics = await getRevenueMetrics()
+    res.json({ ok: true, charge, tenantId: tenant.id, tenantName: tenant.name, planTier, ...metrics })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 // ════════════════════════════════════════════════════════════════════════════
 // S89 — Customer One Blueprint: generate, list, export, provision
 // ════════════════════════════════════════════════════════════════════════════

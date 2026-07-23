@@ -50,9 +50,9 @@ const PIPELINE: PipelineCustomer[] = [
   },
   {
     id: 'c2', label: 'C2', name: 'Customer Two', industry: 'Enterprise · Professional Services',
-    pack: 'PS Pack v1.1', status: 'pre-deployment', oisBaseline: null, oisCurrent: null, oisTarget: 72.0,
-    coigTarget: 13.0, coigActual: null, blueprintVersion: '1.1', readinessScore: 62,
-    departmentsActive: 0, departmentsTotal: 6, activationDate: null,
+    pack: 'PS Pack v1.1', status: 'active', oisBaseline: 58.4, oisCurrent: 58.4, oisTarget: 72.0,
+    coigTarget: 13.0, coigActual: 0, blueprintVersion: '1.1', readinessScore: 100,
+    departmentsActive: 1, departmentsTotal: 6, activationDate: '2026-07-23',
     navLink: '/kangqore-view/admin/kangqore-immp/customers/two',
   },
   {

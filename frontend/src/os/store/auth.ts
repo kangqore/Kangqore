@@ -11,6 +11,7 @@ export interface AuthUser {
   company?: string
   avatarUrl?: string
   bidsActive?: boolean
+  twoFactorEnabled?: boolean
 }
 
 export interface OrgContext {

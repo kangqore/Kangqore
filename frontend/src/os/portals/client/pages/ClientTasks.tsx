@@ -3,16 +3,16 @@ import { Flag, CheckCircle2, Clock, Circle, Filter, ChevronDown } from 'lucide-r
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { useClientTasks } from '../useClientData'
 
-const MOCK_TASKS = [
-  { id: 't1', projectName: 'Patient Portal v2',      title: 'Review and approve wireframes for v3 intake form',   status: 'pending',     priority: 'high',    assignee: 'You',      dueDate: '2026-06-08', category: 'Review'   },
-  { id: 't2', projectName: 'Patient Portal v2',      title: 'Sign off on accessibility audit report',             status: 'pending',     priority: 'medium',  assignee: 'You',      dueDate: '2026-06-15', category: 'Sign-off' },
-  { id: 't3', projectName: 'Patient Portal v2',      title: 'Provide sample patient data for UAT seeding',        status: 'in-progress', priority: 'high',    assignee: 'IT Team',  dueDate: '2026-06-10', category: 'Input'    },
-  { id: 't4', projectName: 'Patient Portal v2',      title: 'HIPAA audit vendor selection — final decision',       status: 'done',        priority: 'critical',assignee: 'You',      dueDate: '2026-05-30', category: 'Decision' },
-  { id: 't5', projectName: 'HIPAA Compliance Layer', title: 'Review compliance gap report and confirm scope',     status: 'done',        priority: 'high',    assignee: 'You',      dueDate: '2026-05-25', category: 'Review'   },
-  { id: 't6', projectName: 'HIPAA Compliance Layer', title: 'Sign off on BAA agreement with Kangqore',           status: 'pending',     priority: 'critical',assignee: 'Legal',    dueDate: '2026-06-12', category: 'Sign-off' },
-  { id: 't7', projectName: 'Analytics Dashboard',    title: 'Provide branding assets (logo, colours, fonts)',     status: 'pending',     priority: 'medium',  assignee: 'Marketing',dueDate: '2026-06-09', category: 'Input'    },
-  { id: 't8', projectName: 'Analytics Dashboard',    title: 'Review Phase 1 design prototype',                   status: 'in-progress', priority: 'high',    assignee: 'You',      dueDate: '2026-06-11', category: 'Review'   },
-]
+interface Task {
+  id: string
+  projectName: string
+  title: string
+  status: string
+  priority: string
+  assignee: string
+  dueDate: string | null
+  category: string
+}
 
 const PRIORITY_CONFIG: Record<string, { color: string; label: string }> = {
   critical: { color: '#e2445c', label: 'Critical' },
@@ -28,10 +28,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Input':     '#7f53f9',
 }
 
-const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
-const isOverdue = (s: string, status: string) => status !== 'done' && new Date(s) < new Date()
-
-type Task = typeof MOCK_TASKS[0]
+const fmtDate = (s: string | null) => s ? new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : 'No due date'
+const isOverdue = (s: string | null, status: string) => !!s && status !== 'done' && new Date(s) < new Date()
 
 // ── Kanban card ───────────────────────────────────────────────────────────────
 
@@ -150,7 +148,7 @@ export function ClientTasks() {
   const [showFilter, setShowFilter] = useState(false)
 
   const { data: liveTasks } = useClientTasks()
-  const tasks: Task[] = ((liveTasks as Task[] | undefined)?.length ? liveTasks : MOCK_TASKS) as Task[]
+  const tasks: Task[] = (liveTasks as Task[] | undefined) ?? []
 
   const projects = ['All', ...new Set(tasks.map(t => t.projectName))]
   const filtered = projectFilter === 'All' ? tasks : tasks.filter(t => t.projectName === projectFilter)

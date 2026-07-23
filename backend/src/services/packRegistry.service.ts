@@ -841,6 +841,222 @@ const PROFESSIONAL_SERVICES_PACK: PackDefinition = {
   },
 }
 
+// ── S97 Industry Packs ────────────────────────────────────────────────────────
+
+const HEALTHCARE_PACK: PackDefinition = {
+  packId: 'kangqore/healthcare', name: 'Healthcare Pack™', version: '1.0.0',
+  description: 'Clinical operations, patient journey, regulatory compliance (HIPAA/CQC), care coordination, and clinical risk for healthcare organisations.',
+  author: 'Kangqore', category: 'INDUSTRY',
+  tags: ['healthcare', 'clinical', 'HIPAA', 'patient', 'care-coordination'],
+  icon: '🏥',
+  ontologyTypes: [
+    { name: 'Patient', displayName: 'Patient Record', icon: 'User', color: '#0891b2',
+      description: 'De-identified patient episode with care pathway and risk flags',
+      schema: { episodeRef: { type: 'string', required: true }, pathway: { type: 'select', description: 'INPATIENT | OUTPATIENT | EMERGENCY | ELECTIVE' }, riskScore: { type: 'number' }, consultant: { type: 'string' }, admissionDate: { type: 'date' }, dischargeDate: { type: 'date' }, status: { type: 'select', description: 'ACTIVE | DISCHARGED | FOLLOW_UP | DECEASED' } } },
+    { name: 'ClinicalIncident', displayName: 'Clinical Incident', icon: 'AlertTriangle', color: '#e2445c',
+      description: 'A patient safety incident or near-miss requiring investigation',
+      schema: { title: { type: 'string', required: true }, severity: { type: 'select', description: 'NEVER_EVENT | SERIOUS | MODERATE | MINOR | NEAR_MISS' }, reportedBy: { type: 'string' }, occurredAt: { type: 'date' }, rootCause: { type: 'string' }, status: { type: 'select', description: 'REPORTED | UNDER_REVIEW | CLOSED' } } },
+    { name: 'CarePathway', displayName: 'Care Pathway', icon: 'GitBranch', color: '#7c3aed',
+      description: 'A standardised clinical pathway for a diagnosis or procedure',
+      schema: { name: { type: 'string', required: true }, indication: { type: 'string' }, expectedDuration: { type: 'string' }, steps: { type: 'string', description: 'JSON array of steps' }, owner: { type: 'string' }, lastReviewed: { type: 'date' } } },
+  ],
+  workflows: [
+    { name: 'clinical-incident-report', displayName: 'Clinical Incident Reporting', description: 'Routes clinical incidents through initial triage, investigation, and closure. Escalates Never Events immediately.', category: 'compliance', triggerType: 'event', triggerConfig: JSON.stringify({ event: 'incident.reported' }), tags: ['clinical', 'safety'], owner: 'Clinical Governance',
+      steps: [ { id: 'step-1', name: 'Triage severity', type: 'NOTIFY_ADMINS', config: { message: 'Clinical incident reported — triage and classify severity', priority: 'HIGH' }, onSuccess: 'step-2' }, { id: 'step-2', name: 'Assign investigator', type: 'WAIT_APPROVAL', config: { role: 'MANAGER', timeoutHours: 4 }, onSuccess: 'step-3' }, { id: 'step-3', name: 'Root cause analysis', type: 'EMIT_EVENT', config: { eventType: 'MEETING', description: 'Schedule RCA session within 72 hours' } } ] },
+  ],
+  policies: [
+    { name: 'Block: Unreviewed Patient Data Export', description: 'Deny any bulk export of patient data without a signed data sharing agreement on record.', trigger: 'EXTERNAL_API_CALL', condition: { field: 'dataType', operator: 'eq', value: 'patient' }, effect: 'DENY', priority: 100 },
+    { name: 'Notify: Never Event Reported', description: 'Immediate KIMMP alert when a Never Event severity incident is logged.', trigger: 'CREATE_CLINICAL_INCIDENT', condition: { field: 'severity', operator: 'eq', value: 'NEVER_EVENT' }, effect: 'NOTIFY', priority: 99 },
+  ],
+  agents: [
+    { name: 'Clinical Safety Monitor', role: 'CLINICAL_SAFETY', description: 'Reviews open clinical incidents, flags overdue investigations, and produces weekly safety briefings.', maxLevel: 2, tools: ['READ_ONTOLOGY', 'NOTIFY_ADMINS', 'DRAFT_REPORT'], model: 'claude-sonnet-4-6', systemPrompt: 'You are Clinical Safety Monitor, a healthcare intelligence agent. Review open clinical incidents weekly. Flag any incident that has not been investigated within SLA. Produce a concise safety briefing. Never access identifiable patient data directly — work from de-identified episode references only.' },
+  ],
+  async install(installedBy?: string) {
+    for (const t of HEALTHCARE_PACK.ontologyTypes ?? []) {
+      await prisma.ontologyObjectType.upsert({ where: { name: t.name }, create: { name: t.name, displayName: t.displayName, icon: t.icon, color: t.color, description: t.description, schema: t.schema }, update: { displayName: t.displayName, description: t.description } })
+    }
+    for (const wf of HEALTHCARE_PACK.workflows ?? []) {
+      const existing = await prisma.osWorkflow.findFirst({ where: { name: wf.displayName } })
+      if (!existing) await prisma.osWorkflow.create({ data: { name: wf.displayName, description: wf.description, category: wf.category, status: 'draft', triggerType: wf.triggerType, triggerConfig: wf.triggerConfig, tags: wf.tags, owner: wf.owner, steps: wf.steps as any } })
+    }
+    for (const p of HEALTHCARE_PACK.policies ?? []) {
+      const existing = await prisma.kimmpPolicy.findFirst({ where: { name: p.name } })
+      if (!existing) await prisma.kimmpPolicy.create({ data: { name: p.name, description: p.description ?? null, trigger: p.trigger, condition: p.condition, effect: p.effect, priority: p.priority, enabled: true } })
+    }
+    for (const a of HEALTHCARE_PACK.agents ?? []) {
+      const existing = await prisma.kimmpAgent.findFirst({ where: { name: a.name } })
+      if (!existing) await prisma.kimmpAgent.create({ data: { name: a.name, role: a.role, description: a.description ?? null, maxLevel: a.maxLevel, tools: a.tools, model: a.model, systemPrompt: a.systemPrompt, status: 'ACTIVE' } })
+    }
+    await upsertPackRecord(HEALTHCARE_PACK, installedBy)
+  },
+  async uninstall() { await prisma.packManifest.update({ where: { packId: HEALTHCARE_PACK.packId }, data: { installed: false, installedAt: null } }) },
+}
+
+const MANUFACTURING_PACK: PackDefinition = {
+  packId: 'kangqore/manufacturing', name: 'Manufacturing Pack™', version: '1.0.0',
+  description: 'Shop floor operations, production orders, quality control (ISO 9001), OEE tracking, defect management, and supply chain for manufacturers.',
+  author: 'Kangqore', category: 'INDUSTRY',
+  tags: ['manufacturing', 'shop-floor', 'OEE', 'ISO9001', 'production', 'quality'],
+  icon: '🏭',
+  ontologyTypes: [
+    { name: 'ProductionOrder', displayName: 'Production Order', icon: 'Package', color: '#f59e0b',
+      description: 'A manufacturing work order tied to a product, BOM, and schedule',
+      schema: { orderRef: { type: 'string', required: true }, product: { type: 'string', required: true }, quantity: { type: 'number', required: true }, unit: { type: 'string' }, scheduledStart: { type: 'date' }, scheduledEnd: { type: 'date' }, status: { type: 'select', description: 'PLANNED | IN_PROGRESS | COMPLETED | SCRAPPED | ON_HOLD' }, line: { type: 'string', description: 'Production line ID' } } },
+    { name: 'QualityDefect', displayName: 'Quality Defect', icon: 'AlertOctagon', color: '#e2445c',
+      description: 'A defect found during production or quality inspection',
+      schema: { title: { type: 'string', required: true }, productRef: { type: 'string' }, defectType: { type: 'select', description: 'DIMENSIONAL | SURFACE | FUNCTIONAL | PACKAGING | DOCUMENTATION' }, severity: { type: 'select', description: 'CRITICAL | MAJOR | MINOR' }, quantity: { type: 'number' }, discoveredAt: { type: 'date' }, disposition: { type: 'select', description: 'SCRAP | REWORK | ACCEPT | UNDER_REVIEW' }, rootCause: { type: 'string' } } },
+    { name: 'MachineAsset', displayName: 'Machine Asset', icon: 'Settings', color: '#10b981',
+      description: 'A production machine or line with OEE and maintenance tracking',
+      schema: { assetId: { type: 'string', required: true }, name: { type: 'string', required: true }, line: { type: 'string' }, availability: { type: 'number', description: 'OEE availability %' }, performance: { type: 'number', description: 'OEE performance %' }, quality: { type: 'number', description: 'OEE quality %' }, oee: { type: 'number', description: 'Overall Equipment Effectiveness %' }, nextMaintenanceDate: { type: 'date' }, status: { type: 'select', description: 'RUNNING | STOPPED | MAINTENANCE | BREAKDOWN' } } },
+  ],
+  policies: [
+    { name: 'Block: Ship Without Quality Sign-off', description: 'Deny shipment dispatch if no approved quality inspection record is linked to the production order.', trigger: 'CREATE_SHIPMENT', condition: { field: 'qualityApproved', operator: 'eq', value: false }, effect: 'DENY', priority: 95 },
+    { name: 'Notify: OEE Below 70%', description: 'Alert operations when any machine OEE drops below 70% for 2 consecutive shifts.', trigger: 'OEE_THRESHOLD_BREACH', condition: { field: 'oee', operator: 'lt', value: 70 }, effect: 'NOTIFY', priority: 80 },
+  ],
+  agents: [
+    { name: 'OEE Sentinel', role: 'OPERATIONS_ANALYST', description: 'Monitors production line OEE, flags downtime root causes, and proposes maintenance scheduling.', maxLevel: 2, tools: ['READ_ONTOLOGY', 'NOTIFY_ADMINS', 'DRAFT_REPORT'], model: 'claude-sonnet-4-6', systemPrompt: 'You are OEE Sentinel, a manufacturing intelligence agent. Monitor production line OEE weekly. Flag any machine below 70% OEE. Identify top defect categories and propose root cause investigations. Surface any production order at risk of missing its schedule date.' },
+  ],
+  workflows: [],
+  async install(installedBy?: string) {
+    for (const t of MANUFACTURING_PACK.ontologyTypes ?? []) {
+      await prisma.ontologyObjectType.upsert({ where: { name: t.name }, create: { name: t.name, displayName: t.displayName, icon: t.icon, color: t.color, description: t.description, schema: t.schema }, update: { displayName: t.displayName, description: t.description } })
+    }
+    for (const p of MANUFACTURING_PACK.policies ?? []) {
+      const existing = await prisma.kimmpPolicy.findFirst({ where: { name: p.name } })
+      if (!existing) await prisma.kimmpPolicy.create({ data: { name: p.name, description: p.description ?? null, trigger: p.trigger, condition: p.condition, effect: p.effect, priority: p.priority, enabled: true } })
+    }
+    for (const a of MANUFACTURING_PACK.agents ?? []) {
+      const existing = await prisma.kimmpAgent.findFirst({ where: { name: a.name } })
+      if (!existing) await prisma.kimmpAgent.create({ data: { name: a.name, role: a.role, description: a.description ?? null, maxLevel: a.maxLevel, tools: a.tools, model: a.model, systemPrompt: a.systemPrompt, status: 'ACTIVE' } })
+    }
+    await upsertPackRecord(MANUFACTURING_PACK, installedBy)
+  },
+  async uninstall() { await prisma.packManifest.update({ where: { packId: MANUFACTURING_PACK.packId }, data: { installed: false, installedAt: null } }) },
+}
+
+const BFSI_PACK: PackDefinition = {
+  packId: 'kangqore/bfsi', name: 'BFSI Pack™', version: '1.0.0',
+  description: 'Banking, Financial Services & Insurance: credit risk, regulatory reporting (Basel III/IFRS 9), AML/KYC workflows, audit trail, and compliance gatekeeping.',
+  author: 'Kangqore', category: 'INDUSTRY',
+  tags: ['banking', 'financial-services', 'insurance', 'AML', 'KYC', 'Basel', 'IFRS9'],
+  icon: '🏦',
+  ontologyTypes: [
+    { name: 'CreditExposure', displayName: 'Credit Exposure', icon: 'TrendingDown', color: '#e2445c',
+      description: 'A loan, facility, or counterparty exposure with risk rating and provisions',
+      schema: { facilityRef: { type: 'string', required: true }, counterparty: { type: 'string', required: true }, exposure: { type: 'number', required: true, description: 'Outstanding balance in base currency' }, currency: { type: 'string' }, riskRating: { type: 'select', description: 'PERFORMING | WATCH | SUB_STANDARD | DOUBTFUL | LOSS' }, pd: { type: 'number', description: 'Probability of Default %' }, lgd: { type: 'number', description: 'Loss Given Default %' }, provision: { type: 'number', description: 'IFRS 9 expected credit loss provision' }, maturityDate: { type: 'date' } } },
+    { name: 'RegulatoryFiling', displayName: 'Regulatory Filing', icon: 'FileText', color: '#7c3aed',
+      description: 'A statutory regulatory submission (COREP, FINREP, CCAR, MAS, etc.)',
+      schema: { filingType: { type: 'string', required: true, description: 'e.g. COREP, FINREP, CCAR' }, regulator: { type: 'string', required: true }, period: { type: 'string', description: 'e.g. 2026-Q1' }, dueDate: { type: 'date', required: true }, submittedAt: { type: 'date' }, status: { type: 'select', description: 'PENDING | SUBMITTED | ACCEPTED | QUERIED | REJECTED' }, owner: { type: 'string' } } },
+    { name: 'AMLAlert', displayName: 'AML Alert', icon: 'ShieldAlert', color: '#f59e0b',
+      description: 'An anti-money laundering transaction alert requiring investigation',
+      schema: { alertRef: { type: 'string', required: true }, transactionRef: { type: 'string' }, amount: { type: 'number' }, currency: { type: 'string' }, ruleTriggered: { type: 'string' }, riskScore: { type: 'number' }, status: { type: 'select', description: 'OPEN | UNDER_REVIEW | ESCALATED | CLEARED | SAR_FILED' }, analyst: { type: 'string' } } },
+  ],
+  policies: [
+    { name: 'Require Approval: SAR Filing', description: 'Any Suspicious Activity Report must be reviewed by the MLRO before submission.', trigger: 'FILE_SAR', condition: {}, effect: 'REQUIRE_APPROVAL', priority: 100 },
+    { name: 'Block: Uncleared AML Alert — Transaction Above Threshold', description: 'Deny processing transactions above £50,000 where an open AML alert exists for the counterparty.', trigger: 'PROCESS_TRANSACTION', condition: { field: 'openAmlAlerts', operator: 'gt', value: 0 }, effect: 'DENY', priority: 98 },
+  ],
+  agents: [
+    { name: 'Credit Risk Analyst', role: 'RISK_COMPLIANCE', description: 'Monitors credit exposures, flags stage migrations under IFRS 9, and produces weekly credit risk briefings.', maxLevel: 2, tools: ['READ_ONTOLOGY', 'NOTIFY_ADMINS', 'DRAFT_REPORT'], model: 'claude-sonnet-4-6', systemPrompt: 'You are Credit Risk Analyst, a banking intelligence agent. Review credit exposures weekly for rating downgrades, PD increases, and provision gaps. Flag any stage 2→3 migration under IFRS 9. Produce a concise credit risk briefing for the Chief Risk Officer. Never approve credit decisions — analyse and escalate only.' },
+    { name: 'Regulatory Compliance Monitor', role: 'REGULATORY', description: 'Tracks regulatory filing deadlines, flags overdue submissions, and monitors AML alert resolution SLAs.', maxLevel: 2, tools: ['READ_ONTOLOGY', 'NOTIFY_ADMINS', 'DRAFT_REPORT'], model: 'claude-sonnet-4-6', systemPrompt: 'You are Regulatory Compliance Monitor, tracking all regulatory filings and AML alerts. Flag filings approaching their due date. Escalate AML alerts that have been open beyond SLA. Produce a weekly compliance status report for the Chief Compliance Officer.' },
+  ],
+  workflows: [],
+  async install(installedBy?: string) {
+    for (const t of BFSI_PACK.ontologyTypes ?? []) {
+      await prisma.ontologyObjectType.upsert({ where: { name: t.name }, create: { name: t.name, displayName: t.displayName, icon: t.icon, color: t.color, description: t.description, schema: t.schema }, update: { displayName: t.displayName, description: t.description } })
+    }
+    for (const p of BFSI_PACK.policies ?? []) {
+      const existing = await prisma.kimmpPolicy.findFirst({ where: { name: p.name } })
+      if (!existing) await prisma.kimmpPolicy.create({ data: { name: p.name, description: p.description ?? null, trigger: p.trigger, condition: p.condition, effect: p.effect, priority: p.priority, enabled: true } })
+    }
+    for (const a of BFSI_PACK.agents ?? []) {
+      const existing = await prisma.kimmpAgent.findFirst({ where: { name: a.name } })
+      if (!existing) await prisma.kimmpAgent.create({ data: { name: a.name, role: a.role, description: a.description ?? null, maxLevel: a.maxLevel, tools: a.tools, model: a.model, systemPrompt: a.systemPrompt, status: 'ACTIVE' } })
+    }
+    await upsertPackRecord(BFSI_PACK, installedBy)
+  },
+  async uninstall() { await prisma.packManifest.update({ where: { packId: BFSI_PACK.packId }, data: { installed: false, installedAt: null } }) },
+}
+
+const LOGISTICS_PACK: PackDefinition = {
+  packId: 'kangqore/logistics', name: 'Logistics Pack™', version: '1.0.0',
+  description: 'Supply chain visibility, shipment tracking, carrier management, customs compliance, and last-mile delivery intelligence for logistics operators.',
+  author: 'Kangqore', category: 'INDUSTRY',
+  tags: ['logistics', 'supply-chain', 'shipment', 'carrier', 'customs', 'last-mile'],
+  icon: '🚢',
+  ontologyTypes: [
+    { name: 'Shipment', displayName: 'Shipment', icon: 'Package', color: '#0891b2',
+      description: 'A tracked shipment from origin to destination with carrier and customs data',
+      schema: { trackingRef: { type: 'string', required: true }, origin: { type: 'string', required: true }, destination: { type: 'string', required: true }, carrier: { type: 'string' }, mode: { type: 'select', description: 'SEA | AIR | ROAD | RAIL | MULTIMODAL' }, etd: { type: 'date' }, eta: { type: 'date' }, actualArrival: { type: 'date' }, status: { type: 'select', description: 'BOOKED | IN_TRANSIT | CUSTOMS | DELIVERED | EXCEPTION' }, value: { type: 'number' }, currency: { type: 'string' }, customsClearedAt: { type: 'date' } } },
+    { name: 'CarrierContract', displayName: 'Carrier Contract', icon: 'FileSignature', color: '#7c3aed',
+      description: 'A rate agreement with a logistics carrier including SLA and lane details',
+      schema: { carrier: { type: 'string', required: true }, lanes: { type: 'string', description: 'Origin–destination lanes covered' }, rateType: { type: 'select', description: 'SPOT | CONTRACT | TENDER' }, validFrom: { type: 'date' }, validTo: { type: 'date' }, currency: { type: 'string' }, slaOnTime: { type: 'number', description: 'Contracted on-time delivery %' }, status: { type: 'select', description: 'ACTIVE | UNDER_REVIEW | EXPIRED | TERMINATED' } } },
+  ],
+  policies: [
+    { name: 'Notify: Shipment Exception — ETA Missed', description: 'Alert operations when a shipment has missed its ETA by more than 24 hours with no update.', trigger: 'SHIPMENT_ETA_MISSED', condition: { field: 'delayHours', operator: 'gt', value: 24 }, effect: 'NOTIFY', priority: 85 },
+  ],
+  agents: [
+    { name: 'Supply Chain Watcher', role: 'OPERATIONS_ANALYST', description: 'Monitors active shipments for exceptions, carrier SLA breaches, and customs holds.', maxLevel: 2, tools: ['READ_ONTOLOGY', 'NOTIFY_ADMINS', 'DRAFT_REPORT'], model: 'claude-sonnet-4-6', systemPrompt: 'You are Supply Chain Watcher, a logistics intelligence agent. Monitor all active shipments daily. Flag exceptions: customs delays > 48h, carrier SLA breaches, missing tracking updates > 12h. Produce a daily exception report. Suggest carrier reallocation when SLA breach patterns emerge.' },
+  ],
+  workflows: [],
+  async install(installedBy?: string) {
+    for (const t of LOGISTICS_PACK.ontologyTypes ?? []) {
+      await prisma.ontologyObjectType.upsert({ where: { name: t.name }, create: { name: t.name, displayName: t.displayName, icon: t.icon, color: t.color, description: t.description, schema: t.schema }, update: { displayName: t.displayName, description: t.description } })
+    }
+    for (const p of LOGISTICS_PACK.policies ?? []) {
+      const existing = await prisma.kimmpPolicy.findFirst({ where: { name: p.name } })
+      if (!existing) await prisma.kimmpPolicy.create({ data: { name: p.name, description: p.description ?? null, trigger: p.trigger, condition: p.condition, effect: p.effect, priority: p.priority, enabled: true } })
+    }
+    for (const a of LOGISTICS_PACK.agents ?? []) {
+      const existing = await prisma.kimmpAgent.findFirst({ where: { name: a.name } })
+      if (!existing) await prisma.kimmpAgent.create({ data: { name: a.name, role: a.role, description: a.description ?? null, maxLevel: a.maxLevel, tools: a.tools, model: a.model, systemPrompt: a.systemPrompt, status: 'ACTIVE' } })
+    }
+    await upsertPackRecord(LOGISTICS_PACK, installedBy)
+  },
+  async uninstall() { await prisma.packManifest.update({ where: { packId: LOGISTICS_PACK.packId }, data: { installed: false, installedAt: null } }) },
+}
+
+const GOVERNMENT_PACK: PackDefinition = {
+  packId: 'kangqore/government', name: 'Government Pack™', version: '1.0.0',
+  description: 'Public sector: procurement governance (OJEU/G-Cloud), FOI request management, policy lifecycle, ministerial briefings, and public accountability reporting.',
+  author: 'Kangqore', category: 'INDUSTRY',
+  tags: ['government', 'public-sector', 'procurement', 'FOI', 'policy', 'transparency'],
+  icon: '🏛️',
+  ontologyTypes: [
+    { name: 'ProcurementCase', displayName: 'Procurement Case', icon: 'ShoppingCart', color: '#0891b2',
+      description: 'A public procurement exercise with route-to-market, evaluation, and award',
+      schema: { reference: { type: 'string', required: true }, title: { type: 'string', required: true }, routeToMarket: { type: 'select', description: 'OJEU_OPEN | OJEU_RESTRICTED | G_CLOUD | DPS | DIRECT_AWARD | FRAMEWORK | PIN' }, estimatedValue: { type: 'number' }, currency: { type: 'string' }, publicationDate: { type: 'date' }, awardDate: { type: 'date' }, status: { type: 'select', description: 'PLANNING | PUBLISHED | EVALUATION | AWARDED | CANCELLED | CHALLENGED' }, awardedSupplier: { type: 'string' }, standstillEnd: { type: 'date' } } },
+    { name: 'FOIRequest', displayName: 'FOI Request', icon: 'Eye', color: '#7c3aed',
+      description: 'A Freedom of Information or Subject Access Request with deadline and disclosure decision',
+      schema: { reference: { type: 'string', required: true }, requestedBy: { type: 'string' }, summary: { type: 'string', required: true }, receivedDate: { type: 'date', required: true }, deadline: { type: 'date', required: true }, extension: { type: 'boolean' }, decision: { type: 'select', description: 'PENDING | FULLY_DISCLOSED | PARTIALLY_DISCLOSED | REFUSED | TRANSFERRED' }, exemptionsApplied: { type: 'string' }, closedAt: { type: 'date' } } },
+    { name: 'PolicyDocument', displayName: 'Policy Document', icon: 'FileText', color: '#10b981',
+      description: 'A ministerial or departmental policy document with review cycle and stakeholder clearance',
+      schema: { title: { type: 'string', required: true }, policyOwner: { type: 'string' }, status: { type: 'select', description: 'DRAFT | CONSULTATION | CLEARANCE | APPROVED | ARCHIVED' }, version: { type: 'string' }, effectiveDate: { type: 'date' }, reviewDate: { type: 'date' }, clearanceLevel: { type: 'select', description: 'INTERNAL | OFFICIAL | SENSITIVE | SECRET' } } },
+  ],
+  policies: [
+    { name: 'Require Approval: Contract Award Above £100k', description: 'Any procurement contract award above £100,000 must pass accounting officer approval before notification.', trigger: 'AWARD_CONTRACT', condition: { field: 'value', operator: 'gt', value: 100000 }, effect: 'REQUIRE_APPROVAL', priority: 95 },
+    { name: 'Notify: FOI Deadline Within 5 Days', description: 'Alert the information governance team when a FOI response deadline is within 5 calendar days.', trigger: 'FOI_DEADLINE_APPROACHING', condition: { field: 'daysRemaining', operator: 'lte', value: 5 }, effect: 'NOTIFY', priority: 90 },
+  ],
+  agents: [
+    { name: 'Public Accountability Monitor', role: 'GOVERNANCE', description: 'Tracks FOI deadlines, procurement award notices, and policy review cycles. Flags compliance risks.', maxLevel: 2, tools: ['READ_ONTOLOGY', 'NOTIFY_ADMINS', 'DRAFT_REPORT'], model: 'claude-sonnet-4-6', systemPrompt: 'You are Public Accountability Monitor, a public sector governance agent. Track all open FOI requests with deadlines approaching. Flag procurement cases in standstill period. Surface policy documents approaching their review date. Produce a weekly compliance dashboard for the permanent secretary. All outputs should reflect public accountability standards.' },
+  ],
+  workflows: [],
+  async install(installedBy?: string) {
+    for (const t of GOVERNMENT_PACK.ontologyTypes ?? []) {
+      await prisma.ontologyObjectType.upsert({ where: { name: t.name }, create: { name: t.name, displayName: t.displayName, icon: t.icon, color: t.color, description: t.description, schema: t.schema }, update: { displayName: t.displayName, description: t.description } })
+    }
+    for (const p of GOVERNMENT_PACK.policies ?? []) {
+      const existing = await prisma.kimmpPolicy.findFirst({ where: { name: p.name } })
+      if (!existing) await prisma.kimmpPolicy.create({ data: { name: p.name, description: p.description ?? null, trigger: p.trigger, condition: p.condition, effect: p.effect, priority: p.priority, enabled: true } })
+    }
+    for (const a of GOVERNMENT_PACK.agents ?? []) {
+      const existing = await prisma.kimmpAgent.findFirst({ where: { name: a.name } })
+      if (!existing) await prisma.kimmpAgent.create({ data: { name: a.name, role: a.role, description: a.description ?? null, maxLevel: a.maxLevel, tools: a.tools, model: a.model, systemPrompt: a.systemPrompt, status: 'ACTIVE' } })
+    }
+    await upsertPackRecord(GOVERNMENT_PACK, installedBy)
+  },
+  async uninstall() { await prisma.packManifest.update({ where: { packId: GOVERNMENT_PACK.packId }, data: { installed: false, installedAt: null } }) },
+}
+
 // ── Registry ──────────────────────────────────────────────────────────────────
 
 const BUILT_IN_PACKS: PackDefinition[] = [
@@ -852,6 +1068,11 @@ const BUILT_IN_PACKS: PackDefinition[] = [
   GOVERNANCE_POLICIES_PACK,
   BASE_AGENTS_PACK,
   PROFESSIONAL_SERVICES_PACK,
+  HEALTHCARE_PACK,
+  MANUFACTURING_PACK,
+  BFSI_PACK,
+  LOGISTICS_PACK,
+  GOVERNMENT_PACK,
 ]
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

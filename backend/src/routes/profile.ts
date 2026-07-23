@@ -1,5 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
+import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
+import { authenticator } from 'otplib';
+import QRCode from 'qrcode';
 import { prisma } from '../lib/prisma';
 import { requireAuth, AuthRequest, blockRoleModification } from '../middleware/rbac';
 import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../services/audit.service';
@@ -324,6 +328,132 @@ router.post('/change-password', requireAuth, async (req: AuthRequest, res: Respo
     res.json({
       message: 'Password changed successfully'
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// ==========================================
+// TWO-FACTOR AUTHENTICATION (TOTP)
+// ==========================================
+
+function generateRecoveryCodes(count = 8): string[] {
+  return Array.from({ length: count }, () => {
+    const raw = crypto.randomBytes(5).toString('hex').toUpperCase();
+    return `${raw.slice(0, 5)}-${raw.slice(5, 10)}`;
+  });
+}
+
+/**
+ * POST /api/profile/2fa/setup
+ * Generates a pending TOTP secret + QR code. Not enabled until /2fa/verify-setup succeeds.
+ */
+router.post('/2fa/setup', requireAuth, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.userId;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true, twoFactorEnabled: true },
+    });
+    if (!user) throw createError('User not found', 404);
+    if (user.twoFactorEnabled) throw createError('Two-factor authentication is already enabled', 400);
+
+    const secret = authenticator.generateSecret();
+    const otpauth = authenticator.keyuri(user.email, 'Kangqore', secret);
+    const qrCodeDataUrl = await QRCode.toDataURL(otpauth);
+
+    // Store the pending secret; twoFactorEnabled stays false until verified
+    await prisma.user.update({ where: { id: userId }, data: { twoFactorSecret: secret } });
+
+    res.json({ secret, qrCodeDataUrl });
+  } catch (error) {
+    next(error);
+  }
+});
+
+const verify2FASetupSchema = Joi.object({
+  code: Joi.string().required(),
+});
+
+/**
+ * POST /api/profile/2fa/verify-setup
+ * Confirms the code from the authenticator app and turns 2FA on, returning one-time recovery codes.
+ */
+router.post('/2fa/verify-setup', requireAuth, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.userId;
+    const { error, value } = verify2FASetupSchema.validate(req.body);
+    if (error) throw createError(error.details[0].message, 400);
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { twoFactorSecret: true, twoFactorEnabled: true },
+    });
+    if (!user?.twoFactorSecret) throw createError('Start setup first to get a QR code', 400);
+    if (user.twoFactorEnabled) throw createError('Two-factor authentication is already enabled', 400);
+
+    const valid = authenticator.check(String(value.code).trim(), user.twoFactorSecret);
+    if (!valid) throw createError('Invalid authentication code', 401);
+
+    const recoveryCodes = generateRecoveryCodes();
+    const hashedCodes = await Promise.all(recoveryCodes.map(c => bcrypt.hash(c, 10)));
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { twoFactorEnabled: true, twoFactorRecoveryCodes: hashedCodes },
+    });
+
+    const metadata = extractRequestMetadata(req);
+    await createAuditLog({ userId, action: 'TWO_FACTOR_ENABLED', ...metadata });
+
+    res.json({ recoveryCodes });
+  } catch (error) {
+    next(error);
+  }
+});
+
+const disable2FASchema = Joi.object({
+  password: Joi.string().required(),
+  code: Joi.string().required(),
+});
+
+/**
+ * POST /api/profile/2fa/disable
+ * Requires current password + a valid TOTP or recovery code.
+ */
+router.post('/2fa/disable', requireAuth, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.userId;
+    const { error, value } = disable2FASchema.validate(req.body);
+    if (error) throw createError(error.details[0].message, 400);
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user || !user.password) throw createError('User not found', 404);
+    if (!user.twoFactorEnabled || !user.twoFactorSecret) {
+      throw createError('Two-factor authentication is not enabled', 400);
+    }
+
+    const validPassword = await bcrypt.compare(value.password, user.password);
+    if (!validPassword) throw createError('Incorrect password', 401);
+
+    const trimmedCode = String(value.code).trim();
+    let validCode = authenticator.check(trimmedCode, user.twoFactorSecret);
+    if (!validCode) {
+      for (const hashed of user.twoFactorRecoveryCodes) {
+        if (await bcrypt.compare(trimmedCode.toUpperCase(), hashed)) { validCode = true; break; }
+      }
+    }
+    if (!validCode) throw createError('Invalid authentication code', 401);
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { twoFactorEnabled: false, twoFactorSecret: null, twoFactorRecoveryCodes: [] },
+    });
+
+    const metadata = extractRequestMetadata(req);
+    await createAuditLog({ userId, action: 'TWO_FACTOR_DISABLED', ...metadata });
+
+    res.json({ success: true });
   } catch (error) {
     next(error);
   }

@@ -346,13 +346,70 @@ function NotificationsTab() {
 
 // ── SECURITY TAB ──────────────────────────────────────────────────────────────
 
+type TwoFaPhase = 'idle' | 'setup' | 'recovery' | 'disable'
+
 function SecurityTab() {
+  const { user } = useAuthStore()
   const [pw, setPw]         = useState({ current: '', next: '', confirm: '' })
   const [showCurrent, setShowCurrent] = useState(false)
   const [showNext,    setShowNext]    = useState(false)
-  const [twoFa, setTwoFa]   = useState(false)
   const [banner, setBanner] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const set = (k: keyof typeof pw) => (v: string) => setPw(p => ({ ...p, [k]: v }))
+
+  const twoFa = !!user?.twoFactorEnabled
+  const [twoFaPhase, setTwoFaPhase] = useState<TwoFaPhase>('idle')
+  const [qr, setQr] = useState<{ secret: string; qrCodeDataUrl: string } | null>(null)
+  const [setupCode, setSetupCode] = useState('')
+  const [recoveryCodes, setRecoveryCodes] = useState<string[] | null>(null)
+  const [disableForm, setDisableForm] = useState({ password: '', code: '' })
+  const [twoFaBanner, setTwoFaBanner] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+
+  const startSetup = useMutation({
+    mutationFn: async () => {
+      if (isDemo()) throw new Error('Two-factor authentication cannot be changed in demo mode.')
+      const { data } = await api.post<{ secret: string; qrCodeDataUrl: string }>('/profile/2fa/setup')
+      return data
+    },
+    onSuccess: (data) => { setQr(data); setTwoFaPhase('setup') },
+    onError: (err: unknown) => setTwoFaBanner({ type: 'error', message: extractApiError(err, 'Could not start 2FA setup.') }),
+  })
+
+  const verifySetup = useMutation({
+    mutationFn: async () => {
+      const { data } = await api.post<{ recoveryCodes: string[] }>('/profile/2fa/verify-setup', { code: setupCode })
+      return data
+    },
+    onSuccess: (data) => {
+      setRecoveryCodes(data.recoveryCodes)
+      setTwoFaPhase('recovery')
+      setSetupCode('')
+      useAuthStore.setState(s => s.user ? { user: { ...s.user, twoFactorEnabled: true } } : {})
+    },
+    onError: (err: unknown) => setTwoFaBanner({ type: 'error', message: extractApiError(err, 'Invalid code — please try again.') }),
+  })
+
+  const disable2FA = useMutation({
+    mutationFn: async () => {
+      await api.post('/profile/2fa/disable', disableForm)
+    },
+    onSuccess: () => {
+      setTwoFaPhase('idle')
+      setDisableForm({ password: '', code: '' })
+      useAuthStore.setState(s => s.user ? { user: { ...s.user, twoFactorEnabled: false } } : {})
+      setTwoFaBanner({ type: 'success', message: 'Two-factor authentication disabled.' })
+      setTimeout(() => setTwoFaBanner(null), 3500)
+    },
+    onError: (err: unknown) => setTwoFaBanner({ type: 'error', message: extractApiError(err, 'Could not disable 2FA.') }),
+  })
+
+  const closeTwoFaFlow = () => {
+    setTwoFaPhase('idle')
+    setQr(null)
+    setSetupCode('')
+    setRecoveryCodes(null)
+    setDisableForm({ password: '', code: '' })
+    setTwoFaBanner(null)
+  }
 
   const pwMatch  = pw.next.length > 0 && pw.next === pw.confirm
   const pwStrong = pw.next.length >= 8
@@ -454,19 +511,139 @@ function SecurityTab() {
       </Section>
 
       <Section title="Two-Factor Authentication" description="Add a second layer of security to your account.">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ width: 40, height: 40, borderRadius: 12, flexShrink: 0, background: twoFa ? `${GREEN}14` : RAISE, border: `1px solid ${twoFa ? `${GREEN}25` : EDGE}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Smartphone style={{ width: 16, height: 16, color: twoFa ? GREEN : 'var(--os-text-2)' }} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {twoFaBanner && <Banner type={twoFaBanner.type} message={twoFaBanner.message} />}
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 12, flexShrink: 0, background: twoFa ? `${GREEN}14` : RAISE, border: `1px solid ${twoFa ? `${GREEN}25` : EDGE}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Smartphone style={{ width: 16, height: 16, color: twoFa ? GREEN : 'var(--os-text-2)' }} />
+              </div>
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0 }}>Authenticator App</p>
+                <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '3px 0 0' }}>
+                  {twoFa ? '2FA is enabled.' : 'Use Google Authenticator, Authy, or 1Password.'}
+                </p>
+              </div>
             </div>
-            <div>
-              <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5f9', margin: 0 }}>Authenticator App</p>
-              <p style={{ fontSize: 11, color: 'var(--os-text-2)', margin: '3px 0 0' }}>
-                {twoFa ? '2FA is enabled.' : 'Use Google Authenticator or Authy.'}
-              </p>
-            </div>
+            <Toggle
+              on={twoFa}
+              onChange={(v) => {
+                if (twoFaPhase !== 'idle') return
+                if (v) startSetup.mutate()
+                else setTwoFaPhase('disable')
+              }}
+            />
           </div>
-          <Toggle on={twoFa} onChange={setTwoFa} />
+
+          {/* Setup: QR code + verification code */}
+          {twoFaPhase === 'setup' && qr && (
+            <div style={{ borderRadius: 14, border: `1px solid ${EDGE}`, background: RAISE, padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0 }}>
+                Scan this QR code with your authenticator app, then enter the 6-digit code it generates.
+              </p>
+              <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                <img src={qr.qrCodeDataUrl} alt="2FA QR code" style={{ width: 160, height: 160, borderRadius: 10, background: '#fff', padding: 8 }} />
+                <div style={{ flex: 1, minWidth: 200 }}>
+                  <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', margin: '0 0 6px' }}>
+                    Can't scan? Enter manually
+                  </p>
+                  <p style={{ fontSize: 12, fontFamily: 'monospace', color: '#e2e8f0', wordBreak: 'break-all', background: CARD, border: `1px solid ${EDGE}`, borderRadius: 8, padding: '8px 10px', margin: '0 0 14px' }}>
+                    {qr.secret}
+                  </p>
+                  <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8 }}>6-digit code</label>
+                  <input
+                    type="text" value={setupCode} onChange={e => setSetupCode(e.target.value)}
+                    placeholder="123456" maxLength={6}
+                    style={{ width: '100%', maxWidth: 160, background: CARD, border: `1px solid ${EDGE}`, borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#e2e8f0', outline: 'none', fontFamily: 'inherit', letterSpacing: '0.2em', textAlign: 'center', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <button
+                  disabled={setupCode.length !== 6 || verifySetup.isPending}
+                  onClick={() => verifySetup.mutate()}
+                  style={{ padding: '9px 18px', borderRadius: 10, border: 'none', background: setupCode.length === 6 ? BLUE : EDGE, color: '#fff', fontSize: 13, fontWeight: 600, cursor: setupCode.length === 6 && !verifySetup.isPending ? 'pointer' : 'not-allowed' }}
+                >
+                  {verifySetup.isPending ? 'Verifying…' : 'Verify & Enable'}
+                </button>
+                <button onClick={closeTwoFaFlow} style={{ padding: '9px 18px', borderRadius: 10, background: 'none', border: `1px solid ${EDGE}`, color: 'var(--os-text-2)', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Recovery codes — shown once right after enabling */}
+          {twoFaPhase === 'recovery' && recoveryCodes && (
+            <div style={{ borderRadius: 14, border: `1px solid ${AMBER}30`, background: `${AMBER}08`, padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9', margin: '0 0 4px' }}>Save your recovery codes</p>
+                <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0 }}>
+                  Each code can be used once to sign in if you lose access to your authenticator app. Store them somewhere safe — they won't be shown again.
+                </p>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
+                {recoveryCodes.map(code => (
+                  <span key={code} style={{ fontSize: 12, fontFamily: 'monospace', color: '#e2e8f0', background: CARD, border: `1px solid ${EDGE}`, borderRadius: 8, padding: '8px 10px', textAlign: 'center' }}>
+                    {code}
+                  </span>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <button
+                  onClick={() => navigator.clipboard?.writeText(recoveryCodes.join('\n'))}
+                  style={{ padding: '9px 18px', borderRadius: 10, background: 'none', border: `1px solid ${EDGE}`, color: 'var(--os-text-2)', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+                >
+                  Copy all
+                </button>
+                <button
+                  onClick={closeTwoFaFlow}
+                  style={{ padding: '9px 18px', borderRadius: 10, border: 'none', background: GREEN, color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+                >
+                  I've saved these — done
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Disable flow — requires password + a valid code */}
+          {twoFaPhase === 'disable' && (
+            <div style={{ borderRadius: 14, border: `1px solid ${RED}25`, background: `${RED}08`, padding: 20, display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 380 }}>
+              <p style={{ fontSize: 12, color: 'var(--os-text-2)', margin: 0 }}>
+                Confirm your password and current authentication code to disable 2FA.
+              </p>
+              <div>
+                <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8 }}>Password</label>
+                <input
+                  type="password" value={disableForm.password}
+                  onChange={e => setDisableForm(f => ({ ...f, password: e.target.value }))}
+                  style={{ width: '100%', background: CARD, border: `1px solid ${EDGE}`, borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#e2e8f0', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--os-text-2)', marginBottom: 8 }}>Authentication code</label>
+                <input
+                  type="text" value={disableForm.code}
+                  onChange={e => setDisableForm(f => ({ ...f, code: e.target.value }))}
+                  placeholder="123456 or recovery code"
+                  style={{ width: '100%', background: CARD, border: `1px solid ${EDGE}`, borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#e2e8f0', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <button
+                  disabled={!disableForm.password || !disableForm.code || disable2FA.isPending}
+                  onClick={() => disable2FA.mutate()}
+                  style={{ padding: '9px 18px', borderRadius: 10, border: 'none', background: RED, color: '#fff', fontSize: 13, fontWeight: 600, cursor: !disable2FA.isPending ? 'pointer' : 'not-allowed', opacity: disableForm.password && disableForm.code ? 1 : 0.5 }}
+                >
+                  {disable2FA.isPending ? 'Disabling…' : 'Disable 2FA'}
+                </button>
+                <button onClick={closeTwoFaFlow} style={{ padding: '9px 18px', borderRadius: 10, background: 'none', border: `1px solid ${EDGE}`, color: 'var(--os-text-2)', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </Section>
 

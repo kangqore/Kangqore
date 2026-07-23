@@ -881,4 +881,209 @@ function getWeekNumber(d: Date) {
     return weekNo;
 }
 
+// ==========================================
+// DASHBOARD SUMMARY (Team, SLA, This Week, Activity, Engagement)
+// ==========================================
+// Same first-response SLA targets used by the client Support tab (ClientSupport.tsx)
+const SLA_RESPONSE_MINUTES: Record<string, number> = {
+  CRITICAL: 60,
+  HIGH: 240,
+  MEDIUM: 1440,
+  LOW: 4320,
+};
+
+const TEAM_ROLE_LABEL: Record<string, string> = {
+  ADMIN: 'Delivery Lead',
+  TEAM: 'Team Member',
+  EXECUTIVE: 'Executive Sponsor',
+  PARTNER: 'Delivery Partner',
+};
+
+const TEAM_PALETTE = ['#2564ea', '#7f53f9', '#00c875', '#fdab3d', '#e2445c'];
+
+function firstResponseMinutes(t: { createdAt: Date; messages: { createdAt: Date; sender: { role: string } }[] }): number | null {
+  const reply = t.messages.find(m => m.sender.role !== 'CLIENT');
+  if (!reply) return null;
+  return (reply.createdAt.getTime() - t.createdAt.getTime()) / 60000;
+}
+
+function bucketSla(
+  tickets: { createdAt: Date; messages: { createdAt: Date; sender: { role: string } }[] }[],
+  targetMinutes: number,
+  metric: string,
+  targetLabel: string,
+) {
+  if (tickets.length === 0) {
+    return { metric, target: targetLabel, current: 'No data', met: true, pct: 100 };
+  }
+  const responseTimes = tickets.map(firstResponseMinutes).filter((m): m is number => m != null);
+  const metCount = responseTimes.filter(m => m <= targetMinutes).length;
+  const pct = Math.round((metCount / tickets.length) * 100);
+  const avgMin = responseTimes.length ? responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length : null;
+  const current = avgMin == null ? 'Pending' : avgMin < 60 ? `${Math.round(avgMin)}m` : `${(avgMin / 60).toFixed(1)}h`;
+  return { metric, target: targetLabel, current, met: pct >= 80, pct };
+}
+
+// GET /api/client/dashboard-summary
+router.get('/dashboard-summary', requireAuth, requireRole(['CLIENT', 'ADMIN']), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.userId;
+    const now = new Date();
+    const weekOut = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+    const [projects, tickets, milestones, meetings, tasks, acceptedDeliverables, invoices, approvedChanges] = await Promise.all([
+      prisma.project.findMany({
+        where: { clientId: userId },
+        select: {
+          id: true, title: true, progress: true, budget: true, spend: true,
+          lead: { select: { id: true, name: true, role: true } },
+          partner: { select: { id: true, name: true, role: true } },
+        },
+      }),
+      prisma.ticket.findMany({
+        where: { clientId: userId },
+        select: {
+          priority: true, status: true, createdAt: true,
+          messages: { select: { createdAt: true, sender: { select: { role: true } } }, orderBy: { createdAt: 'asc' } },
+        },
+      }),
+      prisma.projectMilestone.findMany({
+        where: { project: { clientId: userId }, dueDate: { gte: now, lte: weekOut }, status: { not: 'completed' } },
+        select: { title: true, dueDate: true, status: true, project: { select: { title: true } } },
+        orderBy: { dueDate: 'asc' },
+      }),
+      prisma.meeting.findMany({
+        where: { clientId: userId, startTime: { gte: now, lte: weekOut } },
+        select: { title: true, startTime: true },
+        orderBy: { startTime: 'asc' },
+      }),
+      prisma.task.findMany({
+        where: { clientId: userId, dueDate: { gte: now, lte: weekOut }, status: { notIn: ['completed', 'done'] } },
+        select: { title: true, dueDate: true, project: { select: { title: true } } },
+        orderBy: { dueDate: 'asc' },
+      }),
+      prisma.deliverable.findMany({
+        where: { clientId: userId, status: 'ACCEPTED' },
+        select: { title: true, dueDate: true, approvedAt: true },
+      }),
+      prisma.invoice.findMany({
+        where: { clientId: userId },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: { invoiceNumber: true, amount: true, createdAt: true },
+      }),
+      prisma.changeRequest.findMany({
+        where: { clientId: userId, status: 'APPROVED' },
+        orderBy: { updatedAt: 'desc' },
+        take: 5,
+        select: { title: true, updatedAt: true },
+      }),
+    ]);
+
+    // ── Team: distinct leads/partners across the client's projects ──
+    const teamMap = new Map<string, { id: string; name: string; role: string; project: string; initials: string; color: string }>();
+    for (const p of projects) {
+      for (const person of [p.lead, p.partner]) {
+        if (!person || teamMap.has(person.id)) continue;
+        teamMap.set(person.id, {
+          id: person.id,
+          name: person.name,
+          role: TEAM_ROLE_LABEL[person.role] ?? 'Team Member',
+          project: p.title,
+          initials: person.name.split(' ').map(n => n[0] ?? '').join('').slice(0, 2).toUpperCase(),
+          color: TEAM_PALETTE[teamMap.size % TEAM_PALETTE.length],
+        });
+      }
+    }
+    const team = Array.from(teamMap.values()).slice(0, 6);
+
+    // ── SLA: ticket first-response time + deliverable/ticket outcomes ──
+    const highTickets = tickets.filter(t => ['CRITICAL', 'HIGH'].includes((t.priority || '').toUpperCase()));
+    const stdTickets = tickets.filter(t => !['CRITICAL', 'HIGH'].includes((t.priority || '').toUpperCase()));
+    const highSla = bucketSla(highTickets, SLA_RESPONSE_MINUTES.HIGH, 'High-Priority Response', '< 4h');
+    const stdSla = bucketSla(stdTickets, SLA_RESPONSE_MINUTES.MEDIUM, 'Standard Response', '< 24h');
+
+    const dueDeliverables = acceptedDeliverables.filter(d => d.dueDate);
+    const onTimeCount = dueDeliverables.filter(d => d.approvedAt && d.dueDate && d.approvedAt <= d.dueDate).length;
+    const deliveryPct = dueDeliverables.length ? Math.round((onTimeCount / dueDeliverables.length) * 100) : 100;
+    const deliverySla = {
+      metric: 'Deliverable On-Time', target: '90%',
+      current: dueDeliverables.length ? `${deliveryPct}%` : 'No data',
+      met: deliveryPct >= 90, pct: deliveryPct,
+    };
+
+    const resolvedCount = tickets.filter(t => ['RESOLVED', 'CLOSED'].includes((t.status || '').toUpperCase())).length;
+    const resolutionPct = tickets.length ? Math.round((resolvedCount / tickets.length) * 100) : 100;
+    const resolutionSla = {
+      metric: 'Ticket Resolution', target: '95%',
+      current: tickets.length ? `${resolutionPct}%` : 'No data',
+      met: resolutionPct >= 95, pct: resolutionPct,
+    };
+
+    const sla = [highSla, stdSla, deliverySla, resolutionSla];
+
+    // ── This week: milestones, meetings, and tasks due in the next 7 days ──
+    const thisWeek = [
+      ...milestones.map(m => ({
+        type: 'milestone', title: m.title, date: m.dueDate.toISOString(),
+        project: m.project.title, urgent: m.status === 'delayed', color: '#2564ea',
+      })),
+      ...meetings.map(m => ({
+        type: 'meeting', title: m.title, date: m.startTime.toISOString(),
+        project: 'Meeting', urgent: false, color: '#7f53f9',
+      })),
+      ...tasks.filter(t => t.dueDate).map(t => ({
+        type: 'task', title: t.title, date: t.dueDate!.toISOString(),
+        project: t.project.title, urgent: t.dueDate!.getTime() - now.getTime() < 2 * 24 * 60 * 60 * 1000, color: '#e2445c',
+      })),
+    ].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).slice(0, 6);
+
+    // ── Recent activity: deliverables, invoices, approved changes ──
+    const activity = [
+      ...acceptedDeliverables.filter(d => d.approvedAt).map(d => ({
+        title: `${d.title} delivered`, date: d.approvedAt!.toISOString(), color: '#2564ea',
+      })),
+      ...invoices.map(i => ({
+        title: `Invoice ${i.invoiceNumber} issued — ₹${Number(i.amount).toLocaleString('en-IN')}`,
+        date: i.createdAt.toISOString(), color: '#fdab3d',
+      })),
+      ...approvedChanges.map(c => ({
+        title: `Change request "${c.title}" approved`, date: c.updatedAt.toISOString(), color: '#00c875',
+      })),
+    ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5);
+
+    // ── Engagement ring dimensions ──
+    const deliveryPace = projects.length
+      ? Math.round(projects.reduce((s, p) => s + (p.progress ?? 0), 0) / projects.length)
+      : 0;
+    const slaPcts = [highSla, stdSla].map(s => s.pct);
+    const slaCompliance = Math.round(slaPcts.reduce((a, b) => a + b, 0) / slaPcts.length);
+    const respondedTickets = tickets.filter(t => t.messages.some(m => m.sender.role !== 'CLIENT')).length;
+    const communication = tickets.length ? Math.round((respondedTickets / tickets.length) * 100) : 100;
+    const projectsWithBudget = projects.filter(p => Number(p.budget ?? 0) > 0);
+    const budgetHealth = projectsWithBudget.length
+      ? Math.round(100 - projectsWithBudget.reduce((s, p) => {
+          const overrun = Math.max(0, (Number(p.spend ?? 0) - Number(p.budget ?? 0)) / Number(p.budget ?? 1) * 100);
+          return s + Math.min(overrun, 100);
+        }, 0) / projectsWithBudget.length)
+      : 100;
+
+    res.json({
+      team,
+      sla,
+      thisWeek,
+      activity,
+      engagement: {
+        deliveryPace,
+        slaCompliance,
+        communication,
+        budgetHealth,
+        sprintVelocity: deliveryPct,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

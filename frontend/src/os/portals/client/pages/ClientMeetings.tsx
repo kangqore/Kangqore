@@ -63,60 +63,17 @@ function countdownLabel(dateStr: string): string {
   return `In ${days} days · ${d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}`
 }
 
-// ── Mock data (dates kept future-relative to 2026-06-19) ─────────────────────
-
-const MOCK_MEETINGS = [
-  {
-    id: 'm1', title: 'Sprint 13 Review',
-    platform: 'ZOOM',
-    startTime: '2026-06-20T10:00:00', endTime: '2026-06-20T11:00:00',
-    status: 'SCHEDULED', joinLink: 'https://zoom.us/j/99001122',
-    creator: { name: 'Ravi Nair' },
-    agenda: ['Review Sprint 12 progress report', 'Demo new patient flow', 'Align on UAT timeline'],
-  },
-  {
-    id: 'm2', title: 'HIPAA Compliance Walkthrough',
-    platform: 'GOOGLE_MEET',
-    startTime: '2026-06-24T14:00:00', endTime: '2026-06-24T15:00:00',
-    status: 'SCHEDULED', joinLink: 'https://meet.google.com/abc-defg-hij',
-    creator: { name: 'Omar Khalid' },
-    agenda: ['Audit log module walkthrough', 'Sign-off on BAA', 'Q&A'],
-  },
-  {
-    id: 'm3', title: 'Monthly Steering Committee Q2',
-    platform: 'ZOOM',
-    startTime: '2026-06-30T09:00:00', endTime: '2026-06-30T10:30:00',
-    status: 'SCHEDULED', joinLink: 'https://zoom.us/j/77665544',
-    creator: { name: 'Ravi Nair' },
-    agenda: [],
-  },
-  {
-    id: 'm4', title: 'Monthly Steering Committee',
-    platform: 'ZOOM',
-    startTime: '2026-05-28T09:00:00', endTime: '2026-05-28T10:30:00',
-    status: 'COMPLETED', joinLink: null,
-    creator: { name: 'C.O.D.E.' },
-    agenda: [],
-  },
-  {
-    id: 'm5', title: 'Analytics Dashboard Design Review',
-    platform: 'ZOOM',
-    startTime: '2026-05-14T11:00:00', endTime: '2026-05-14T12:00:00',
-    status: 'COMPLETED', joinLink: null,
-    creator: { name: 'Anika Roy' },
-    agenda: [],
-  },
-  {
-    id: 'm6', title: 'HIPAA Phase 1 Kickoff',
-    platform: 'GOOGLE_MEET',
-    startTime: '2026-04-02T10:00:00', endTime: '2026-04-02T11:00:00',
-    status: 'COMPLETED', joinLink: null,
-    creator: { name: 'Omar Khalid' },
-    agenda: [],
-  },
-]
-
-type Meeting = typeof MOCK_MEETINGS[0]
+interface Meeting {
+  id: string
+  title: string
+  platform: string
+  startTime: string
+  endTime: string
+  status: string
+  joinLink: string | null
+  creator: { name: string }
+  agenda?: string[]
+}
 
 // ── Next-meeting hero ─────────────────────────────────────────────────────────
 
@@ -387,7 +344,7 @@ export function ClientMeetings() {
 
   useEffect(() => { ensureKeyframes() }, [])
 
-  const raw: Meeting[] = (data as any)?.meetings?.length ? (data as any).meetings : MOCK_MEETINGS
+  const raw: Meeting[] = (data as any)?.meetings ?? []
 
   const now      = new Date()
   const upcoming = raw.filter(m => new Date(m.startTime) >= now)

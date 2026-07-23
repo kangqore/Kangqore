@@ -36,6 +36,9 @@ model User {
   googleId                   String?                    @unique
   linkedinId                 String?                    @unique
   isRedFlagged               Boolean                    @default(false)
+  twoFactorEnabled           Boolean                    @default(false)
+  twoFactorSecret            String?
+  twoFactorRecoveryCodes     String[]                   @default([])
   age                        Int?
   gender                     String?
   profession                 String?

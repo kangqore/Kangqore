@@ -41,6 +41,7 @@ import { MemoryTimelinePage }         from './pages/MemoryTimelinePage'
 import ReflectionPage                 from './pages/ReflectionPage'
 import { AuthorityPage }              from './pages/AuthorityPage'
 import { BlueprintCustomizePage }     from './pages/BlueprintCustomizePage'
+import { BlueprintWizardPage }        from './pages/BlueprintWizardPage'
 import { RevenuePipelinePage }        from './pages/RevenuePipelinePage'
 import { ProposalBuilderPage }        from './pages/ProposalBuilderPage'
 import { CustomerZeroCaseStudyPage }   from './pages/CustomerZeroCaseStudyPage'
@@ -60,6 +61,9 @@ import { ChurnRiskPage }                from './pages/ChurnRiskPage'
 import { RenewalWorkflowPage }          from './pages/RenewalWorkflowPage'
 import { ExecutiveDashboardPage }       from './pages/ExecutiveDashboardPage'
 import { WaandaGen3Page }               from './pages/WaandaGen3Page'
+import { KEOSBillingPage }              from './pages/KEOSBillingPage'
+import { PackActivationPage }           from './pages/PackActivationPage'
+import { RevenueIntelPage }             from './pages/RevenueIntelPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -178,6 +182,7 @@ export function KIMMMModule() {
           <Route path="deployments"         element={<DeploymentsPage />}           />
           <Route path="blueprint"           element={<BlueprintPage />}             />
           <Route path="blueprint-customize" element={<BlueprintCustomizePage />}   />
+          <Route path="blueprint-wizard"    element={<BlueprintWizardPage />}      />
           <Route path="revenue-pipeline"    element={<RevenuePipelinePage />}       />
           <Route path="proposal-builder"    element={<ProposalBuilderPage />}       />
           <Route path="case-study"          element={<CustomerZeroCaseStudyPage />} />
@@ -199,6 +204,9 @@ export function KIMMMModule() {
           <Route path="renewals"                element={<RenewalWorkflowPage />}           />
           <Route path="exec-dashboard"          element={<ExecutiveDashboardPage />}        />
           <Route path="gen3"                    element={<WaandaGen3Page />}                />
+          <Route path="billing-dashboard"       element={<KEOSBillingPage />}               />
+          <Route path="pack-activation"         element={<PackActivationPage />}            />
+          <Route path="revenue-intel"           element={<RevenueIntelPage />}              />
           <Route path="reflection"          element={<ReflectionPage />}            />
           <Route path="authority"           element={<AuthorityPage />}             />
           <Route path="*"                   element={<Navigate to={BASE} replace />} />

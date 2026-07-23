@@ -151,6 +151,11 @@ export default function Login() {
   const [signupError,     setSignupError]     = useState('');
   const [signupSuccess,   setSignupSuccess]   = useState(false);
 
+  const [twoFactorChallenge, setTwoFactorChallenge] = useState(null); // { challengeToken }
+  const [twoFactorCode,      setTwoFactorCode]      = useState('');
+  const [twoFactorError,     setTwoFactorError]     = useState('');
+  const [twoFactorLoading,   setTwoFactorLoading]   = useState(false);
+
   useEffect(() => {
     const token      = localStorage.getItem('token');
     const userString = localStorage.getItem('user');
@@ -215,6 +220,9 @@ export default function Login() {
     setSignupData({ name: '', email: '', company: '', phone: '', password: '', confirmPassword: '' });
     setSignupError('');
     setSignupSuccess(false);
+    setTwoFactorChallenge(null);
+    setTwoFactorCode('');
+    setTwoFactorError('');
   };
 
   const handleSignupSubmit = async (e) => {
@@ -248,6 +256,24 @@ export default function Login() {
     }
   };
 
+  const completeLogin = (data) => {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
+    const roleRoutes = {
+      'client':     '/kangqore-view/client',
+      'partner':    '/kangqore-view/partner',
+      'investor':   '/kangqore-view/investor',
+      'job_seeker': '/kangqore-view/careers',
+      'journalist': '/kangqore-view/journalist',
+      'analyst':    '/kangqore-view/analyst',
+      'admin':      '/kangqore-view/admin',
+      'team':       selectedDept ? `/kangqore-view/team/${selectedDept.id}` : '/kangqore-view/team',
+      'executive':  '/kangqore-view/executive',
+    };
+    window.location.href = buildOSRedirect(roleRoutes[data.user.role.toLowerCase()] || '/kangqore-view/admin');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -263,24 +289,40 @@ export default function Login() {
       let data;
       try { data = text ? JSON.parse(text) : {}; } catch { throw new Error('Server returned an invalid response'); }
       if (!response.ok) throw new Error(data?.error?.message || data?.detail || 'Login failed');
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      const roleRoutes = {
-        'client':     '/kangqore-view/client',
-        'partner':    '/kangqore-view/partner',
-        'investor':   '/kangqore-view/investor',
-        'job_seeker': '/kangqore-view/careers',
-        'journalist': '/kangqore-view/journalist',
-        'analyst':    '/kangqore-view/analyst',
-        'admin':      '/kangqore-view/admin',
-        'team':       selectedDept ? `/kangqore-view/team/${selectedDept.id}` : '/kangqore-view/team',
-        'executive':  '/kangqore-view/executive',
-      };
-      window.location.href = buildOSRedirect(roleRoutes[data.user.role.toLowerCase()] || '/kangqore-view/admin');
+
+      if (data.requires2FA) {
+        setTwoFactorChallenge({ challengeToken: data.challengeToken });
+        return;
+      }
+
+      completeLogin(data);
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleVerify2FA = async (e) => {
+    e.preventDefault();
+    setTwoFactorError('');
+    setTwoFactorLoading(true);
+
+    try {
+      const response = await fetch(`/api/auth/2fa/verify-login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ challengeToken: twoFactorChallenge.challengeToken, code: twoFactorCode }),
+      });
+      const text = await response.text();
+      let data;
+      try { data = text ? JSON.parse(text) : {}; } catch { throw new Error('Server returned an invalid response'); }
+      if (!response.ok) throw new Error(data?.error?.message || data?.detail || 'Verification failed');
+      completeLogin(data);
+    } catch (err) {
+      setTwoFactorError(err.message || 'Verification failed. Please try again.');
+    } finally {
+      setTwoFactorLoading(false);
     }
   };
 
@@ -616,8 +658,49 @@ export default function Login() {
                       </p>
                     </div>
 
-                    {/* Success State */}
-                    {signupMode && signupSuccess ? (
+                    {/* Two-Factor Challenge */}
+                    {twoFactorChallenge ? (
+                      <form onSubmit={handleVerify2FA} className="space-y-4">
+                        <div className="text-center mb-2">
+                          <div className="w-12 h-12 rounded-full bg-brand-blue/10 text-brand-cyan flex items-center justify-center mx-auto mb-3 border border-brand-blue/20">
+                            <Shield className="w-5 h-5" />
+                          </div>
+                          <p className="text-[13px] text-white/50">Enter the 6-digit code from your authenticator app, or a recovery code.</p>
+                        </div>
+                        {twoFactorError && (
+                          <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs font-medium flex items-start gap-2.5">
+                            <Shield className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                            <span>{twoFactorError}</span>
+                          </div>
+                        )}
+                        <div>
+                          <label className="block text-[11px] font-bold text-white/40 tracking-widest uppercase mb-2">Authentication Code</label>
+                          <input
+                            type="text"
+                            value={twoFactorCode}
+                            onChange={e => setTwoFactorCode(e.target.value)}
+                            placeholder="123456"
+                            autoFocus
+                            required
+                            className="w-full bg-[#111622] border border-white/10 rounded-[12px] px-4 py-3.5 text-[14px] text-white placeholder-white/20 outline-none focus:border-brand-blue/50 focus:bg-white/[0.04] transition-all tracking-[0.3em] text-center"
+                          />
+                        </div>
+                        <button
+                          type="submit"
+                          disabled={twoFactorLoading}
+                          className="w-full mt-2 py-3.5 rounded-[12px] font-bold text-[15px] text-white bg-gradient-to-r from-brand-blue to-brand-cyan hover:shadow-[0_0_20px_rgba(37,100,234,0.3)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                        >
+                          {twoFactorLoading ? 'Verifying…' : 'Verify & Sign In'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { setTwoFactorChallenge(null); setTwoFactorCode(''); setTwoFactorError(''); }}
+                          className="w-full text-center text-[12px] text-white/40 hover:text-white/70 transition-colors"
+                        >
+                          Back to sign in
+                        </button>
+                      </form>
+                    ) : signupMode && signupSuccess ? (
                       <div className="py-8 text-center">
                         <div className="w-14 h-14 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-5 border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.15)]">
                           <CheckCircle className="w-7 h-7" />
