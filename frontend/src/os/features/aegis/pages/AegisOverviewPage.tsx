@@ -1,7 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Shield, Eye, BookOpen, ArrowUpRight, Lock, FileText,
-  Bot, AlertTriangle, CheckCircle, Info, Activity,
+  Bot, AlertTriangle, CheckCircle, Info, Activity, PowerOff, Power,
 } from 'lucide-react'
 import { api } from '@lib/api'
 
@@ -70,6 +71,23 @@ function VerdictIcon({ verdict }: { verdict: string }) {
 }
 
 export function AegisOverviewPage() {
+  const qc = useQueryClient()
+  const [toggling, setToggling] = useState(false)
+
+  const { data: config } = useQuery({
+    queryKey: ['aegis-config'],
+    queryFn:  () => api.get('/admin/aegis/config').then(r => r.data),
+    staleTime: 10_000,
+  })
+
+  const toggleMutation = useMutation({
+    mutationFn: () => api.post('/admin/aegis/config/toggle').then(r => r.data),
+    onMutate:   () => setToggling(true),
+    onSettled:  () => { setToggling(false); qc.invalidateQueries({ queryKey: ['aegis-config'] }) },
+  })
+
+  const aegisOn: boolean = config?.enabled ?? true
+
   const { data: stats, isLoading } = useQuery({
     queryKey: ['aegis-stats'],
     queryFn:  () => api.get('/admin/aegis/stats').then(r => r.data),
@@ -107,6 +125,49 @@ export function AegisOverviewPage() {
       <div>
         <h2 className="text-sm font-semibold text-[var(--os-text-2)] uppercase tracking-widest mb-1">Sovereignty Overview</h2>
         <p className="text-[var(--os-text-2)] text-sm">Every KIMMP action — admin-triggered or autonomous — is permanently recorded here.</p>
+      </div>
+
+      {/* ── AEGIS on/off switch ─────────────────────────────────────────────── */}
+      <div className={`flex items-center justify-between gap-4 rounded-2xl border px-5 py-4 transition-all duration-300 ${
+        aegisOn
+          ? 'bg-emerald-500/5 border-emerald-500/20'
+          : 'bg-amber-500/8 border-amber-400/30'
+      }`}>
+        <div className="flex items-center gap-3">
+          {aegisOn
+            ? <Shield className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+            : <PowerOff className="w-5 h-5 text-amber-400 flex-shrink-0" />}
+          <div>
+            <p className={`text-sm font-semibold ${aegisOn ? 'text-emerald-300' : 'text-amber-300'}`}>
+              AEGIS is {aegisOn ? 'ACTIVE' : 'BYPASSED'}
+            </p>
+            <p className="text-xs text-[var(--os-text-2)] mt-0.5">
+              {aegisOn
+                ? 'Access shield and audit logging are fully enforced. All KIMMP routes are protected.'
+                : 'Build mode — shield and logging are off. All routes pass through without auth checks or audit entries.'}
+              {config?.toggledAt && (
+                <span className="ml-2 opacity-60">
+                  Last toggled {new Date(config.toggledAt).toLocaleTimeString()} by {config.toggledBy ?? 'system'}
+                </span>
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* Toggle pill */}
+        <button
+          onClick={() => toggleMutation.mutate()}
+          disabled={toggling}
+          title={aegisOn ? 'Turn off AEGIS (build mode)' : 'Activate AEGIS'}
+          style={{ flexShrink: 0 }}
+          className={`relative inline-flex h-7 w-12 items-center rounded-full border transition-colors duration-200 focus:outline-none ${
+            toggling ? 'opacity-50 cursor-wait' : 'cursor-pointer'
+          } ${aegisOn ? 'bg-emerald-500 border-emerald-400' : 'bg-[var(--os-surface-0)] border-amber-400/40'}`}
+        >
+          <span className={`inline-block h-5 w-5 transform rounded-full shadow transition-transform duration-200 ${
+            aegisOn ? 'translate-x-6 bg-white' : 'translate-x-1 bg-amber-400'
+          }`} />
+        </button>
       </div>
 
       {/* Ledger stat cards */}

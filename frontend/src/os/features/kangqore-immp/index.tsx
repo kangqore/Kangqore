@@ -54,6 +54,7 @@ import { IndustryPackPage }             from './pages/IndustryPackPage'
 import { CustomerSuccessPlatformPage }  from './pages/CustomerSuccessPlatformPage'
 import { CustomerTwoPage }              from './pages/CustomerTwoPage'
 import { CustomerThreePage }            from './pages/CustomerThreePage'
+import { PMOAdminPage }                 from './pages/PMOAdminPage'
 import { CustomerPipelinePage }         from './pages/CustomerPipelinePage'
 import { WaandaGen2Page }               from './pages/WaandaGen2Page'
 import { TenantAdminPage }              from './pages/TenantAdminPage'
@@ -207,6 +208,7 @@ export function KIMMMModule() {
           <Route path="billing-dashboard"       element={<KEOSBillingPage />}               />
           <Route path="pack-activation"         element={<PackActivationPage />}            />
           <Route path="revenue-intel"           element={<RevenueIntelPage />}              />
+          <Route path="pmo"                     element={<PMOAdminPage />}                  />
           <Route path="reflection"          element={<ReflectionPage />}            />
           <Route path="authority"           element={<AuthorityPage />}             />
           <Route path="*"                   element={<Navigate to={BASE} replace />} />

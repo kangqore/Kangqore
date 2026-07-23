@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import { adminApi } from '@lib/api'
+import { adminApi, api } from '@lib/api'
 import {
   Check, ChevronRight, Package, Layers, TrendingUp,
   Target, Zap, Cpu, Globe2, Plus, X, Download,
@@ -207,7 +207,7 @@ export function BlueprintWizardPage() {
   const [oisDay0,      setOisDay0]      = useState(58)
   const [oisDay90,     setOisDay90]     = useState(75)
   const [coigTarget,   setCoigTarget]   = useState(13)
-  const [customerName, setCustomerName] = useState('Customer Two')
+  const [customerName, setCustomerName] = useState('Customer Three')
   const [orgSize,      setOrgSize]      = useState<'STARTUP' | 'SME' | 'ENTERPRISE'>('SME')
   const [goals,        setGoals]        = useState<string[]>([])
   const [newGoal,      setNewGoal]      = useState('')
@@ -251,8 +251,22 @@ export function BlueprintWizardPage() {
   })
 
   const activateMut = useMutation({
-    mutationFn: (id: string) => adminApi(`/admin/enterprise/blueprints/${id}/activate`, { method: 'PATCH' }),
-    onSuccess: () => navigate('/kangqore-view/admin/kangqore-immp/customers/two'),
+    mutationFn: async (id: string) => {
+      await adminApi(`/admin/enterprise/blueprints/${id}/activate`, { method: 'PATCH' })
+      // Provision the KIMMP CustomerBlueprint + TenantOrganisation (starts COIG clock + OIS Day 0)
+      const planTier = orgSize === 'STARTUP' ? 'STARTER' : orgSize === 'ENTERPRISE' ? 'ENTERPRISE' : 'PRO'
+      await api.post('/admin/kangqore-immp/customers/provision-one', {
+        customerName,
+        subdomain:      customerName.toLowerCase().replace(/\s+/g, '-'),
+        industry:       industry?.label ?? 'Enterprise Technology',
+        planTier,
+        size:           orgSize === 'STARTUP' ? '1–50 employees' : orgSize === 'SME' ? '51–200 employees' : '201–500 employees',
+        oisBaseline:    oisDay0,
+        oisTarget:      oisDay90,
+        enabledModules: modules,
+      }).catch(() => { /* non-blocking if tenant already exists */ })
+    },
+    onSuccess: () => navigate('/kangqore-view/admin/kangqore-immp/customers/three'),
   })
 
   // ── Step: Industry ─────────────────────────────────────────────────────────

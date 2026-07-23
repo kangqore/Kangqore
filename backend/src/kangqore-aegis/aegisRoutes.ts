@@ -10,9 +10,34 @@ import { AegisSovereignty }             from './aegisSovereignty.service'
 import { AegisPolicyEngine }            from './aegisPolicy.service'
 import { AegisEngineDispatcher }        from './aegisEngineDispatcher'
 import { AegisActionExecutor }          from './aegisActionExecutor'
+import { aegisConfig }                  from './aegisConfig'
+import { verifyAccessToken }            from '../services/token.service'
 import { prisma }                       from '../lib/prisma'
 
 export const aegisRouter = Router()
+
+// ── Config / on-off switch ─────────────────────────────────────────────────────
+// These routes self-protect with inline auth so they stay safe even when the
+// shield is bypassed (build mode).
+
+aegisRouter.get('/config', (_req: Request, res: Response) => {
+  res.json(aegisConfig.snapshot())
+})
+
+aegisRouter.post('/config/toggle', (req: Request, res: Response) => {
+  const auth = req.headers.authorization
+  if (!auth?.startsWith('Bearer ')) {
+    res.status(401).json({ error: 'Auth required to toggle AEGIS' })
+    return
+  }
+  const payload = verifyAccessToken(auth.substring(7)) as any
+  if (!payload || payload.role !== 'ADMIN') {
+    res.status(403).json({ error: 'Only ADMIN may toggle AEGIS' })
+    return
+  }
+  const enabled = aegisConfig.toggle(payload.userId)
+  res.json({ ...aegisConfig.snapshot(), message: enabled ? 'AEGIS activated' : 'AEGIS bypassed — build mode on' })
+})
 
 // ── Health ────────────────────────────────────────────────────────────────────
 
