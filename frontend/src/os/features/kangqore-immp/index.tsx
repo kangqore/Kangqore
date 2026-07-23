@@ -80,6 +80,21 @@ import { BlueprintMarketplacePage }     from './pages/BlueprintMarketplacePage'
 import { PartnerOrgPage }              from './pages/PartnerOrgPage'
 import { SDKv2Page }                   from './pages/SDKv2Page'
 import { SOC2AuditPage }               from './pages/SOC2AuditPage'
+import { RegionAdminPage }             from './pages/RegionAdminPage'
+import { PrivacyDashboardPage }        from './pages/PrivacyDashboardPage'
+import { CustomerElevenPage }          from './pages/CustomerElevenPage'
+import { CustomerTwelvePage }          from './pages/CustomerTwelvePage'
+import { CustomerThirteenPage }        from './pages/CustomerThirteenPage'
+import { CustomerFourteenPage }        from './pages/CustomerFourteenPage'
+import { CustomerFifteenPage }         from './pages/CustomerFifteenPage'
+import { PartnerCertificationPage }    from './pages/PartnerCertificationPage'
+import { CustomerSixteenPage }         from './pages/CustomerSixteenPage'
+import { CustomerSeventeenPage }       from './pages/CustomerSeventeenPage'
+import { CustomerEighteenPage }        from './pages/CustomerEighteenPage'
+import { CustomerNineteenPage }        from './pages/CustomerNineteenPage'
+import { CustomerTwentyPage }          from './pages/CustomerTwentyPage'
+import { CustomerTwentyMilestonePage } from './pages/CustomerTwentyMilestonePage'
+import { PlatformLaunchPage }          from './pages/PlatformLaunchPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -241,6 +256,21 @@ export function KIMMMModule() {
           <Route path="partner-network"         element={<PartnerOrgPage />}                />
           <Route path="sdk-v2"                  element={<SDKv2Page />}                     />
           <Route path="soc2-audit"              element={<SOC2AuditPage />}                 />
+          <Route path="region-admin"            element={<RegionAdminPage />}               />
+          <Route path="privacy-dashboard"       element={<PrivacyDashboardPage />}          />
+          <Route path="customers/eleven"        element={<CustomerElevenPage />}            />
+          <Route path="customers/twelve"        element={<CustomerTwelvePage />}            />
+          <Route path="customers/thirteen"      element={<CustomerThirteenPage />}          />
+          <Route path="customers/fourteen"      element={<CustomerFourteenPage />}          />
+          <Route path="customers/fifteen"       element={<CustomerFifteenPage />}           />
+          <Route path="partner-certification"   element={<PartnerCertificationPage />}      />
+          <Route path="customers/sixteen"       element={<CustomerSixteenPage />}           />
+          <Route path="customers/seventeen"     element={<CustomerSeventeenPage />}         />
+          <Route path="customers/eighteen"      element={<CustomerEighteenPage />}          />
+          <Route path="customers/nineteen"      element={<CustomerNineteenPage />}          />
+          <Route path="customers/twenty"        element={<CustomerTwentyPage />}            />
+          <Route path="customer-twenty-milestone" element={<CustomerTwentyMilestonePage />} />
+          <Route path="platform-launch"         element={<PlatformLaunchPage />}            />
           <Route path="*"                       element={<Navigate to={BASE} replace />}    />
         </Routes>
         </motion.div>
