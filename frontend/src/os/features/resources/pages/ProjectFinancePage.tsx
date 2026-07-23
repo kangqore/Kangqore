@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { api, isDemo } from '@lib/api'
 import { DollarSign, Clock, Users, TrendingUp, AlertTriangle } from 'lucide-react'
+import { Gen3WorkspacePanel } from '../../kangqore-immp/components/Gen3WorkspacePanel'
 
 interface FinanceRow {
   projectId:        string
@@ -212,6 +213,12 @@ export function ProjectFinancePage() {
           </div>
         ))}
       </div>
+
+      {/* S119 — Gen3 Finance Intelligence (Phase 5.5) */}
+      <Gen3WorkspacePanel
+        dispatchEndpoint="/admin/kangqore-immp/gen3/dispatch-finance-task"
+        workspaceName="Finance (Phase 5.5)"
+      />
     </div>
   )
 }

@@ -40,7 +40,7 @@ export function PartnerDashboard() {
     rating: 4.8
   }
 
-  const projectsList = (projectsData as any[]) || []
+  const projectsList = Array.isArray(projectsData) ? projectsData : []
 
   const tasks = projectsList.length
     ? projectsList.flatMap((p, pi) =>

@@ -42,7 +42,7 @@ const fmtDate = (s: string) => new Date(s).toLocaleDateString('en-GB', { day: 'n
 
 export function PartnerProjects() {
   const { data } = usePartnerProjects()
-  const projects = (data as typeof MOCK_PROJECTS | undefined)?.length ? data as typeof MOCK_PROJECTS : MOCK_PROJECTS
+  const projects = Array.isArray(data) && data.length ? data as typeof MOCK_PROJECTS : MOCK_PROJECTS
 
   const active    = projects.filter(p => p.status === 'ACTIVE').length
   const completed = projects.filter(p => p.status === 'COMPLETED').length

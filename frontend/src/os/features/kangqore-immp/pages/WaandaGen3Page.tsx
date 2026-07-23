@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Cpu, Plus, ChevronDown, ChevronRight, RefreshCw, CheckCircle2, XCircle, Loader2, Clock, Zap, ArrowRight, Copy } from 'lucide-react'
+import { Cpu, Plus, ChevronDown, ChevronRight, RefreshCw, CheckCircle2, XCircle, Loader2, Clock, Zap, ArrowRight, Copy, BarChart2, TrendingUp } from 'lucide-react'
 import { api } from '@lib/api'
 import { getSocket } from '@lib/socket'
 
@@ -15,7 +15,8 @@ const RED  = '#ef4444'
 const BLUE = '#579bfc'
 const PURP = '#7c3aed'
 
-interface Subtask { id: string; label: string; status: string; agentRole: string; steps: string[]; result?: string }
+// S116: priorResultCount added to Subtask for context-chain display
+interface Subtask { id: string; label: string; status: string; agentRole: string; steps: string[]; result?: string; priorResultCount?: number }
 
 interface Plan {
   id: string; goal: string; subtasks: Subtask[]; status: string
@@ -36,9 +37,20 @@ const ROLE_COLOR: Record<string, string> = {
   RESEARCH: PURP, DIAGNOSTICS: BLUE, EXECUTION: GRN, COACH: AMB
 }
 
+interface RoleMetric {
+  role: string; total: number; successRate: number; avgLatencyMs: number; avgResultLen: number
+}
+
+interface Gen3Performance {
+  summary: { totalPlans: number; donePlans: number; failedPlans: number; planSuccessRate: number; avgPlanDurationMs: number }
+  roleMetrics: RoleMetric[]
+  recentPlans: Array<{ id: string; goal: string; status: string; durationMs: number | null; subtaskCount: number }>
+}
+
 export function WaandaGen3Page() {
   const qc = useQueryClient()
   const [showCreate, setShowCreate] = useState(false)
+  const [showPerf, setShowPerf] = useState(false)
 
   const { data: status } = useQuery<Gen3Status>({
     queryKey: ['gen3-status'],
@@ -69,11 +81,18 @@ export function WaandaGen3Page() {
         qc.invalidateQueries({ queryKey: ['gen3-status'] })
       }
       // Patch the specific plan in-place (no round-trip)
+      // S116: inject priorResultCount into the active subtask for context-chain display
+      const priorCount: number = data.priorResultCount ?? 0
+      const patchedSubtasks = Array.isArray(data.subtasks)
+        ? data.subtasks.map((st: Subtask) =>
+            st.status === 'ACTIVE' ? { ...st, priorResultCount: priorCount } : st
+          )
+        : undefined
       qc.setQueryData<Plan[]>(['gen3-plans'], (old = []) =>
         old.map(p => p.id === data.planId
           ? {
               ...p,
-              subtasks: data.subtasks ?? p.subtasks,
+              subtasks: patchedSubtasks ?? p.subtasks,
               status: data.planStatus ?? p.status,
               completedAt: data.planStatus === 'DONE' || data.planStatus === 'FAILED' ? new Date().toISOString() : p.completedAt,
             }
@@ -109,6 +128,11 @@ export function WaandaGen3Page() {
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => refetch()} className="flex items-center gap-1 text-xs px-3 py-2 rounded-lg border" style={{ color: T2, borderColor: BDR }}><RefreshCw className="w-3 h-3" /></button>
+            <button onClick={() => setShowPerf(p => !p)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold border"
+              style={showPerf ? { background: PURP, color: '#fff', borderColor: PURP } : { color: T2, borderColor: BDR }}>
+              <BarChart2 className="w-3 h-3" /> Performance
+            </button>
             <button onClick={() => setShowCreate(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold" style={{ background: PURP, color: '#fff' }}><Plus className="w-3.5 h-3.5" /> New Plan</button>
           </div>
         </div>
@@ -141,6 +165,8 @@ export function WaandaGen3Page() {
           ))}
         </div>
       )}
+
+      {showPerf && <Gen3PerformancePanel />}
 
       {showCreate && <CreatePlanForm qc={qc} onClose={() => setShowCreate(false)} />}
 
@@ -271,6 +297,12 @@ function PlanCard({ plan }: { plan: Plan }) {
                   <span className="text-[10px] font-black w-5 text-center" style={{ color: T2 }}>{idx + 1}</span>
                   {t.status === 'ACTIVE' && <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" style={{ color: BLUE }} />}
                   <span className="flex-1 text-xs font-bold" style={{ color: T1 }}>{t.label}</span>
+                  {/* S116: context-chain tag */}
+                  {t.status === 'ACTIVE' && t.priorResultCount != null && t.priorResultCount > 0 && (
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: `${PURP}12`, color: PURP }}>
+                      ctx:{t.priorResultCount}
+                    </span>
+                  )}
                   <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: `${roleColor}15`, color: roleColor }}>{t.agentRole}</span>
                   <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: `${tColor}15`, color: tColor }}>{t.status}</span>
                   {isOpen ? <ChevronDown className="w-3 h-3" style={{ color: T2 }} /> : <ChevronRight className="w-3 h-3" style={{ color: T2 }} />}
@@ -296,6 +328,105 @@ function PlanCard({ plan }: { plan: Plan }) {
             {plan.failureCount > 0 && ` · ${plan.failureCount} failure(s)`}
           </p>
         </div>
+      )}
+    </div>
+  )
+}
+
+function Gen3PerformancePanel() {
+  const { data: perf, isLoading, refetch } = useQuery<Gen3Performance>({
+    queryKey: ['gen3-performance'],
+    queryFn:  () => api.get('/admin/kangqore-immp/gen3/performance').then(r => r.data),
+    staleTime: 60_000,
+  })
+
+  const ROLE_COLOR_MAP: Record<string, string> = {
+    RESEARCH: PURP, DIAGNOSTICS: BLUE, EXECUTION: GRN, COACH: AMB
+  }
+
+  const maxLatency = Math.max(...(perf?.roleMetrics.map(r => r.avgLatencyMs) ?? [1]), 1)
+
+  return (
+    <div className="rounded-2xl border space-y-4 p-5" style={{ background: CARD, borderColor: BDR }}>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <TrendingUp className="w-4 h-4" style={{ color: PURP }} />
+          <p className="text-sm font-bold" style={{ color: T1 }}>Gen 3 Performance Dashboard</p>
+          <span className="px-2 py-0.5 rounded text-[9px] font-bold" style={{ background: `${PURP}15`, color: PURP }}>S111</span>
+        </div>
+        <button onClick={() => refetch()} className="p-1.5 rounded-lg" style={{ color: T2 }}>
+          <RefreshCw className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
+      {isLoading && <div className="h-32 rounded-xl animate-pulse" style={{ background: SURF }} />}
+
+      {perf && (
+        <>
+          {/* Summary row */}
+          <div className="grid grid-cols-5 gap-3">
+            {[
+              { label: 'Total plans', value: perf.summary.totalPlans, color: BLUE },
+              { label: 'Completed',   value: perf.summary.donePlans, color: GRN },
+              { label: 'Failed',      value: perf.summary.failedPlans, color: RED },
+              { label: 'Success rate', value: `${perf.summary.planSuccessRate}%`, color: GRN },
+              { label: 'Avg duration', value: perf.summary.avgPlanDurationMs > 0 ? `${(perf.summary.avgPlanDurationMs / 1000).toFixed(1)}s` : '—', color: AMB },
+            ].map(s => (
+              <div key={s.label} className="rounded-xl p-3 border text-center" style={{ background: SURF, borderColor: BDR }}>
+                <p className="text-[9px] font-bold uppercase tracking-wider mb-1" style={{ color: T2 }}>{s.label}</p>
+                <p className="text-lg font-black" style={{ color: s.color }}>{s.value}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Role latency breakdown */}
+          {perf.roleMetrics.length > 0 && (
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Latency by Agent Role</p>
+              <div className="space-y-2">
+                {perf.roleMetrics.map(r => {
+                  const color = ROLE_COLOR_MAP[r.role] ?? T2
+                  const barPct = (r.avgLatencyMs / maxLatency) * 100
+                  return (
+                    <div key={r.role} className="flex items-center gap-3">
+                      <span className="text-[10px] font-bold w-24 flex-shrink-0" style={{ color }}>{r.role}</span>
+                      <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: SURF }}>
+                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${barPct}%`, background: color }} />
+                      </div>
+                      <span className="text-[10px] font-mono w-16 text-right" style={{ color: T2 }}>
+                        {r.avgLatencyMs > 0 ? `${r.avgLatencyMs}ms` : '—'}
+                      </span>
+                      <span className="text-[10px] w-12 text-right" style={{ color: GRN }}>{r.successRate}%</span>
+                      <span className="text-[9px] w-8 text-right" style={{ color: T2 }}>{r.total}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Recent plan latency table */}
+          {perf.recentPlans.length > 0 && (
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Recent Plans</p>
+              <div className="space-y-1">
+                {perf.recentPlans.slice(0, 6).map(p => {
+                  const sc = STATUS_COLOR[p.status] ?? T2
+                  return (
+                    <div key={p.id} className="flex items-center gap-3 px-3 py-2 rounded-lg" style={{ background: SURF }}>
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: sc }} />
+                      <span className="flex-1 text-[11px] truncate" style={{ color: T1 }}>{p.goal}</span>
+                      <span className="text-[10px] font-mono flex-shrink-0" style={{ color: T2 }}>{p.subtaskCount} tasks</span>
+                      <span className="text-[10px] font-mono flex-shrink-0 w-16 text-right" style={{ color: sc }}>
+                        {p.durationMs != null ? `${(p.durationMs / 1000).toFixed(1)}s` : '—'}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   )

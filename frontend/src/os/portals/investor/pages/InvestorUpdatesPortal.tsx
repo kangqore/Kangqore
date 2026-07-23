@@ -80,7 +80,7 @@ export function InvestorUpdatesPortal() {
   const { data: updatesData, isLoading } = useInvestorUpdates()
   const { updates: mockUpdates } = useInvestorsStore()
 
-  const updates: RichUpdate[] = updatesData?.length
+  const updates: RichUpdate[] = Array.isArray(updatesData) && updatesData.length
     ? updatesData.map((u: any, i: number) => mapInvestorUpdate(u, i))
     : mockUpdates.map((u: any, i: number) => mapInvestorUpdate(u, i))
 

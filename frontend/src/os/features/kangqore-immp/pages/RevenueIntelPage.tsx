@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { TrendingUp, DollarSign, Users, Zap, AlertTriangle, CheckCircle2, Activity } from 'lucide-react'
+import { TrendingUp, DollarSign, Users, Zap, AlertTriangle, CheckCircle2, Activity, Brain } from 'lucide-react'
 import { api } from '@lib/api'
 
 const T1   = 'var(--os-text-1)'
@@ -53,6 +53,46 @@ function RiskBadge({ tier, probability }: { tier: string; probability: number })
       style={{ background: `${color}12`, color, border: `1px solid ${color}25` }}>
       {label} · {(probability * 100).toFixed(0)}%
     </span>
+  )
+}
+
+// ── S118 — Compact AI Signal Intelligence panel ───────────────────────────────
+
+interface Correlation { signalType: string; avgOisVelocity: number; impact: 'positive' | 'negative' | 'neutral'; sampleSize: number }
+
+function AiSignalIntelPanel() {
+  const { data } = useQuery<{ correlations: Correlation[] }>({
+    queryKey: ['coig-correlation'],
+    queryFn:  () => api.get('/admin/kangqore-immp/analytics/coig-correlation').then(r => r.data),
+    staleTime: 60_000,
+  })
+
+  const top3 = (data?.correlations ?? []).filter(c => c.impact === 'positive').slice(0, 3)
+
+  if (top3.length === 0) return null
+
+  return (
+    <div className="rounded-2xl p-5 border" style={{ background: CARD, borderColor: BDR }}>
+      <div className="flex items-center gap-2 mb-4">
+        <Brain className="w-4 h-4" style={{ color: PURP }} />
+        <p className="text-sm font-bold" style={{ color: T1 }}>AI Signal Intelligence</p>
+        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold ml-auto"
+          style={{ background: `${PURP}12`, color: PURP }}>Top positive signals</span>
+      </div>
+      <div className="space-y-2">
+        {top3.map(c => (
+          <div key={c.signalType} className="flex items-center gap-3 p-2 rounded-lg" style={{ background: SURF }}>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-bold truncate" style={{ color: T1 }}>{c.signalType.replace(/_/g, ' ')}</p>
+              <p className="text-[10px]" style={{ color: T2 }}>{c.sampleSize} signals</p>
+            </div>
+            <span className="text-[11px] font-black tabular-nums" style={{ color: GREEN }}>
+              +{c.avgOisVelocity.toFixed(2)} OIS/sig
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -222,6 +262,9 @@ export function RevenueIntelPage() {
           </div>
         )}
       </div>
+
+      {/* S118 — AI Signal Intelligence compact panel */}
+      <AiSignalIntelPanel />
 
       {/* Info callout */}
       <div className="rounded-xl p-4 border flex items-start gap-3"

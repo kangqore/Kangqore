@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import {
   Users, TrendingUp, AlertTriangle, Shield,
-  Activity, ArrowUpRight, RefreshCw, Target,
+  Activity, ArrowUpRight, RefreshCw, Target, Zap,
 } from 'lucide-react'
 import { api } from '@lib/api'
 
@@ -12,6 +12,7 @@ const T2   = 'var(--os-text-2)'
 const T3   = 'var(--os-text-3, #4c4c68)'
 const BDR  = 'var(--os-border)'
 const CARD = 'var(--os-card)'
+const SURF = 'var(--os-surface-0)'
 const TEAL = '#10b981'
 const PURP = '#7c3aed'
 const BLUE = '#3b82f6'
@@ -136,6 +137,62 @@ function CustomerCard({ bp, idx }: { bp: Blueprint; idx: number }) {
   )
 }
 
+// ── S118 — Signal → Outcome Correlation Panel ─────────────────────────────────
+
+interface Correlation {
+  signalType: string; avgOisVelocity: number; avgConfidence: number; sampleSize: number; impact: 'positive' | 'negative' | 'neutral'
+}
+
+function CoigCorrelationPanel() {
+  const { data, isLoading } = useQuery<{ correlations: Correlation[]; totalSignals: number }>({
+    queryKey: ['coig-correlation'],
+    queryFn:  () => api.get('/admin/kangqore-immp/analytics/coig-correlation').then(r => r.data),
+    staleTime: 60_000,
+  })
+
+  const correlations = data?.correlations ?? []
+  const maxVel = Math.max(...correlations.map(c => Math.abs(c.avgOisVelocity)), 0.1)
+
+  return (
+    <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, padding: '16px 18px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+        <Zap size={13} style={{ color: PURP }} />
+        <span style={{ fontSize: 11, fontWeight: 800, color: T1 }}>Signal → Outcome Correlation</span>
+        <span style={{ fontSize: 9, fontWeight: 700, color: T2, marginLeft: 'auto' }}>{data?.totalSignals ?? 0} signals · 90d</span>
+      </div>
+
+      {isLoading ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {[1, 2, 3, 4].map(i => <div key={i} style={{ height: 28, borderRadius: 6, background: SURF, animation: 'pulse 1.5s infinite' }} />)}
+        </div>
+      ) : correlations.length === 0 ? (
+        <p style={{ fontSize: 11, color: T2 }}>No signals in the last 90 days.</p>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {correlations.slice(0, 10).map(c => {
+            const color = c.impact === 'positive' ? TEAL : c.impact === 'negative' ? RED : AMB
+            const barW = Math.abs(c.avgOisVelocity) / maxVel
+            return (
+              <div key={c.signalType} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ width: 130, fontSize: 9, fontWeight: 700, color: T2, flexShrink: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {c.signalType.replace(/_/g, ' ')}
+                </div>
+                <div style={{ flex: 1, height: 5, background: SURF, borderRadius: 99, overflow: 'hidden' }}>
+                  <div style={{ width: `${Math.max(2, barW * 100)}%`, height: '100%', background: color, borderRadius: 99, transition: 'width .4s ease' }} />
+                </div>
+                <span style={{ fontSize: 10, fontWeight: 800, color, fontVariantNumeric: 'tabular-nums', minWidth: 38, textAlign: 'right' }}>
+                  {c.avgOisVelocity >= 0 ? '+' : ''}{c.avgOisVelocity.toFixed(2)}
+                </span>
+                <span style={{ fontSize: 9, color: T2, minWidth: 24, textAlign: 'right' }}>×{c.sampleSize}</span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 export function CustomerSuccessPlatformPage() {
   const { data, isLoading, refetch } = useQuery({
@@ -247,6 +304,9 @@ export function CustomerSuccessPlatformPage() {
           </div>
         </div>
       )}
+
+      {/* S118 — Signal → Outcome Correlation */}
+      <CoigCorrelationPanel />
 
       {/* Quick links */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>

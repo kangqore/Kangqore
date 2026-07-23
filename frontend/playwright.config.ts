@@ -8,15 +8,15 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://127.0.0.1:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     serviceWorkers: 'block',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:3000',
+    command: 'npm run dev -- --host 127.0.0.1',
+    url: 'http://127.0.0.1:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

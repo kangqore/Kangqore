@@ -42,11 +42,17 @@ const ROLE_SYSTEM: Record<string, string> = {
   COACH: `You are KIMMP's Learning Agent. After plan execution, capture what was learned. Update priors, record outcome patterns, and produce a structured learning record for future runs.`,
 }
 
-async function dispatchSubtask(task: Subtask, goal: string): Promise<{ status: 'DONE' | 'FAILED'; result: string }> {
+// S116 — Sequential Multi-Agent Pipeline: dispatchSubtask accepts prior results for context chaining
+async function dispatchSubtask(task: Subtask, goal: string, priorResults: string[] = []): Promise<{ status: 'DONE' | 'FAILED'; result: string }> {
   const system = ROLE_SYSTEM[task.agentRole] ?? ROLE_SYSTEM['RESEARCH'];
-  const user   = `Goal: ${goal}\n\nSubtask: ${task.label}\nSteps: ${task.steps.join(', ')}\n\nComplete this subtask and return a concise structured result (3–5 sentences).`;
 
-  const res  = await sonnet(system, user, 600, { agentType: task.agentRole, tags: ['gen3', 'auto-exec'] });
+  const priorContext = priorResults.length > 0
+    ? `\n\nPrior agent outputs (use as context):\n${priorResults.map((r, i) => `[Step ${i + 1}]: ${r}`).join('\n\n')}`
+    : '';
+
+  const user = `Goal: ${goal}\n\nSubtask: ${task.label}\nSteps: ${task.steps.join(', ')}${priorContext}\n\nComplete this subtask, building on prior agent work. Return a concise structured result (3–5 sentences).`;
+
+  const res  = await sonnet(system, user, 800, { agentType: task.agentRole, tags: ['gen3', 'auto-exec', 'chained'] });
   const text = textOf(res);
   return { status: 'DONE', result: text };
 }
@@ -59,13 +65,15 @@ async function executePlan(planId: string): Promise<void> {
 
     let subtasks: Subtask[] = plan.subtasks as Subtask[];
     let consecutiveFails = 0;
+    // S116 — accumulate results for context chaining
+    const priorResults: string[] = [];
 
     // Mark plan ACTIVE
     await (prisma as any).planDecompositionTree.update({ where: { id: planId }, data: { status: 'ACTIVE' } });
 
     for (let i = 0; i < subtasks.length; i++) {
       const task = subtasks[i];
-      if (task.status === 'DONE') continue;
+      if (task.status === 'DONE') { if (task.result) priorResults.push(task.result); continue; }
 
       // ── PENDING → ACTIVE ──
       subtasks = subtasks.map((t, idx) => idx === i ? { ...t, status: 'ACTIVE' } : t);
@@ -73,15 +81,16 @@ async function executePlan(planId: string): Promise<void> {
       emitToAdmins('PLAN_PROGRESS', {
         type: 'SUBTASK_ACTIVE', planId, goal: plan.goal,
         subtasks, subtaskId: task.id, planStatus: 'ACTIVE',
+        priorResultCount: priorResults.length,
         ts: new Date().toISOString(),
       });
 
-      // ── Execute with timeout guard ──
+      // ── Execute with timeout guard (S116: pass priorResults for chaining) ──
       const timeoutPromise = new Promise<{ status: 'FAILED'; result: string }>(resolve =>
         setTimeout(() => resolve({ status: 'FAILED', result: 'Subtask exceeded 10-minute timeout' }), SUBTASK_TIMEOUT_MS)
       );
       const dispatched = await Promise.race([
-        dispatchSubtask(task, plan.goal).catch((err: Error) => ({ status: 'FAILED' as const, result: err?.message ?? 'Dispatch error' })),
+        dispatchSubtask(task, plan.goal, priorResults).catch((err: Error) => ({ status: 'FAILED' as const, result: err?.message ?? 'Dispatch error' })),
         timeoutPromise,
       ]);
       const result = dispatched.status;
@@ -89,9 +98,12 @@ async function executePlan(planId: string): Promise<void> {
       // ── ACTIVE → DONE / FAILED ──
       subtasks = subtasks.map((t, idx) => idx === i ? { ...t, status: result, result: dispatched.result } : t);
       await (prisma as any).planDecompositionTree.update({ where: { id: planId }, data: { subtasks } });
+      // S116: accumulate successful results for next subtask context
+      if (result === 'DONE' && dispatched.result) priorResults.push(dispatched.result);
       emitToAdmins('PLAN_PROGRESS', {
         type: `SUBTASK_${result}`, planId, goal: plan.goal,
         subtasks, subtaskId: task.id, planStatus: 'ACTIVE',
+        priorResultCount: priorResults.length,
         ts: new Date().toISOString(),
       });
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, AlertTriangle, Users, DollarSign, Star, CheckSquare, Trash2, ArrowUpRight } from 'lucide-react'
 import { useUIStore } from '@store/ui'
+import { Gen3WorkspacePanel } from '../../kangqore-immp/components/Gen3WorkspacePanel'
 import { usePageViews } from '@hooks/usePageViews'
 import { StaggerList, StaggerItem } from '@components/animations/Stagger'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
@@ -428,6 +429,12 @@ export function ClientsOverview() {
             onClick: handleBulkDelete,
           },
         ]}
+      />
+
+      {/* S119 — Gen3 CRM Intelligence (Phase 5.6) */}
+      <Gen3WorkspacePanel
+        dispatchEndpoint="/admin/kangqore-immp/gen3/dispatch-crm-task"
+        workspaceName="CRM (Phase 5.6)"
       />
     </div>
   )
