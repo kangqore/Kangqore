@@ -344,10 +344,15 @@ aegisRouter.post('/budget', async (req: Request, res: Response) => {
   // Emit KIMMP signal for audit
   await prisma.kimmpSignal.create({
     data: {
-      type: 'AEGIS_BUDGET_SET', priority: 'low',
-      title: `AEGIS Budget Set — ${tenantId}`,
-      summary: `callLimit=${callLimit ?? 500}/day, hardDeny=${hardDeny ?? true}`,
-      module: 'AEGIS', confidence: 100,
+      sourceModule: 'AEGIS',
+      signalType: 'BUDGET_SET',
+      signalCategory: 'SYSTEM',
+      signalValue: `AEGIS Budget Set — ${tenantId}`,
+      confidence: 100,
+      severity: 'LOW',
+      metadata: {
+        summary: `callLimit=${callLimit ?? 500}/day, hardDeny=${hardDeny ?? true}`
+      }
     },
   }).catch(() => {})
   res.json({ shield: 'AEGIS', domain: 'BUDGET_ENFORCEMENT', tenantId, config: tenantBudgets[tenantId] })
@@ -383,4 +388,4 @@ aegisRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) =
     since: since.toISOString(),
   })
 })
-})
+
