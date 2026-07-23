@@ -10,8 +10,16 @@ import { verifyAccessToken } from '../services/token.service'
 import { AegisLedger } from './aegisLedger.service'
 import { AegisEventEmitter } from './aegisEventEmitter'
 import { aegisStorage, generateCorrelationId, AegisRequestContext } from './AegisContext'
+import { aegisConfig } from './aegisConfig'
 
 export function aegisShield(req: Request, res: Response, next: NextFunction): void {
+  // Build-mode bypass — shield is off, let everything through
+  if (!aegisConfig.enabled) {
+    const token = req.headers.authorization?.substring(7)
+    const payload = token ? verifyAccessToken(token) : null
+    if (payload) (req as any).user = payload
+    return next()
+  }
   const correlationId = generateCorrelationId()
   const ctx: AegisRequestContext = { correlationId, requesterId: 'anonymous', httpSurface: 'aegis' }
   ;(req as any).aegisCorrelationId = correlationId
@@ -94,6 +102,9 @@ export function aegisShield(req: Request, res: Response, next: NextFunction): vo
 // KIMMP's own error format or auth flow.
 // ---------------------------------------------------------------------------
 export function aegisAccessLogger(req: Request, res: Response, next: NextFunction): void {
+  // Build-mode bypass — skip logging when AEGIS is off
+  if (!aegisConfig.enabled) return next()
+
   const correlationId = generateCorrelationId()
   const ctx: AegisRequestContext = { correlationId, requesterId: 'anonymous', httpSurface: 'kimmp' }
   ;(req as any).aegisCorrelationId = correlationId

@@ -164,6 +164,7 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'kimmp-proposal',       label: 'Proposal Builder',    path: `${BASE}/kangqore-immp/proposal-builder`,    category: 'Enterprise', badge: 'new' },
       { id: 'kimmp-case-study',     label: 'Case Study C0',       path: `${BASE}/kangqore-immp/case-study`,          category: 'Enterprise', badge: 'new' },
       { id: 'kimmp-customer-one',   label: 'Customer One',         path: `${BASE}/kangqore-immp/customer-one`,        category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-pmo',            label: 'PMO Organic Data',     path: `${BASE}/kangqore-immp/pmo`,                 category: 'Enterprise', badge: 'new' },
     ],
   },
   {
