@@ -4276,6 +4276,86 @@ kangqoreImmpRoutes.get('/customers/blueprints/:id/export', requireAuth, requireR
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// GET /admin/kangqore-immp/customers/blueprints/:id/history
+// Returns spec.history array for version diffing.
+kangqoreImmpRoutes.get('/customers/blueprints/:id/history', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const record = await (prisma as any).customerBlueprint.findUnique({ where: { id: req.params.id } })
+    if (!record) return res.status(404).json({ error: 'Blueprint not found' })
+    const spec    = (record.spec as any) ?? {}
+    const history: any[] = Array.isArray(spec.history) ? spec.history : []
+    res.json({ history, currentVersion: record.version })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/customers/blueprints/:id/version-bump
+// Saves current state to spec.history and increments version.
+kangqoreImmpRoutes.post('/customers/blueprints/:id/version-bump', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const userId = (req as any).user?.id ?? 'system'
+    const { planTier, oisTarget, enabledModules } = req.body
+    const record = await (prisma as any).customerBlueprint.findUnique({ where: { id: req.params.id } })
+    if (!record) return res.status(404).json({ error: 'Blueprint not found' })
+
+    // Increment patch version
+    const parts   = record.version.split('.').map(Number)
+    parts[parts.length - 1] = (parts[parts.length - 1] ?? 0) + 1
+    const newVersion = parts.join('.')
+
+    // Save current state to history
+    const prevSpec = (record.spec as any) ?? {}
+    const history  = Array.isArray(prevSpec.history) ? prevSpec.history : []
+    history.unshift({
+      version:        record.version,
+      planTier:       record.planTier,
+      oisTarget:      record.oisTarget,
+      enabledModules: record.enabledModules,
+      bumpedAt:       new Date().toISOString(),
+      bumpedBy:       userId,
+    })
+
+    const updated = await (prisma as any).customerBlueprint.update({
+      where: { id: req.params.id },
+      data: {
+        version:        newVersion,
+        planTier:       planTier       ?? record.planTier,
+        oisTarget:      oisTarget      ?? record.oisTarget,
+        enabledModules: enabledModules ?? record.enabledModules,
+        spec:           { ...prevSpec, history },
+      },
+    })
+    res.json({ ok: true, version: newVersion, previous: record.version, blueprint: updated })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// POST /admin/kangqore-immp/customers/blueprints/:id/rollback
+// Restores a previous version from spec.history.
+kangqoreImmpRoutes.post('/customers/blueprints/:id/rollback', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { toVersion } = req.body
+    if (!toVersion) return res.status(400).json({ error: 'toVersion required' })
+    const record = await (prisma as any).customerBlueprint.findUnique({ where: { id: req.params.id } })
+    if (!record) return res.status(404).json({ error: 'Blueprint not found' })
+
+    const spec    = (record.spec as any) ?? {}
+    const history = Array.isArray(spec.history) ? spec.history : []
+    const entry   = history.find((h: any) => h.version === toVersion)
+    if (!entry) return res.status(404).json({ error: `Version ${toVersion} not found in history` })
+
+    const updated = await (prisma as any).customerBlueprint.update({
+      where: { id: req.params.id },
+      data: {
+        version:        entry.version,
+        planTier:       entry.planTier,
+        oisTarget:      entry.oisTarget,
+        enabledModules: entry.enabledModules,
+        spec:           { ...spec, history },
+      },
+    })
+    res.json({ ok: true, rolledBackTo: toVersion, blueprint: updated })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 // POST /admin/kangqore-immp/customers/provision-one
 // One-shot: TenantOrganisation + CustomerBlueprint + KIMMP signal.
 kangqoreImmpRoutes.post('/customers/provision-one', requireAuth, requireRole(['ADMIN']), async (req, res) => {
