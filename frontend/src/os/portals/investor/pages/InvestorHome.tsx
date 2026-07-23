@@ -72,7 +72,7 @@ export function InvestorHome() {
   const myInvestor = investors.find(i => i.status === 'committed') ?? investors[0] ?? { name: 'Investor' }
   const activeRound = rounds.find(r => r.status === 'open')
 
-  const updatesList: RichUpdate[] = updatesData?.length
+  const updatesList: RichUpdate[] = Array.isArray(updatesData) && updatesData.length
     ? updatesData.map((u: any, i: number) => mapInvestorUpdate(u, i))
     : mockUpdates.map((u: any, i: number) => mapInvestorUpdate(u, i))
 
