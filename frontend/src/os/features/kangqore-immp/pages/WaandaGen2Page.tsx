@@ -65,7 +65,7 @@ const JOB_STATUS_CFG: Record<string, { color: string; bg: string }> = {
   FAILED:    { color: RED,  bg: 'rgba(239,68,68,0.1)'  },
 }
 
-type Tab = 'annotate' | 'jobs' | 'export' | 'health' | 'autonomy'
+type Tab = 'annotate' | 'jobs' | 'export' | 'health' | 'autonomy' | 'diff'
 
 export function WaandaGen2Page() {
   const [tab, setTab] = useState<Tab>('annotate')
@@ -96,7 +96,7 @@ export function WaandaGen2Page() {
 
       {/* Tab bar */}
       <div className="flex gap-1 p-1 rounded-xl border" style={{ background: SURF, borderColor: BDR, width: 'fit-content' }}>
-        {([['annotate', 'Annotate'], ['jobs', 'Fine-tune Jobs'], ['export', 'Export JSONL'], ['health', 'Gen 2 Health'], ['autonomy', 'Autonomy']] as const).map(([id, label]) => (
+        {([['annotate', 'Annotate'], ['jobs', 'Fine-tune Jobs'], ['export', 'Export JSONL'], ['health', 'Gen 2 Health'], ['autonomy', 'Autonomy'], ['diff', 'Quality Diff']] as const).map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)}
             className="px-4 py-1.5 rounded-lg text-xs font-bold transition-colors"
             style={tab === id ? { background: PURP, color: '#fff' } : { color: T2 }}>
@@ -110,6 +110,7 @@ export function WaandaGen2Page() {
       {tab === 'export'   && <ExportTab />}
       {tab === 'health'   && <Gen2HealthTab qc={qc} />}
       {tab === 'autonomy' && <AutonomyTab qc={qc} />}
+      {tab === 'diff'     && <QualityDiffTab />}
     </div>
   )
 }
@@ -1050,6 +1051,145 @@ function StatRow({ label, value, color }: { label: string; value: string; color:
     <div className="flex items-center justify-between py-2 border-b" style={{ borderColor: BDR }}>
       <span className="text-[11px]" style={{ color: T2 }}>{label}</span>
       <span className="text-xs font-bold" style={{ color }}>{value}</span>
+    </div>
+  )
+}
+
+// ── Quality Diff Tab (S110) ───────────────────────────────────────────────────
+
+interface DiffResult {
+  prompt: string
+  gen1: { response: string; latencyMs: number; model: string; provider: string }
+  gen2: { response: string; latencyMs: number; model: string; provider: string }
+  speedupRatio: string | null
+  qualityMetrics: { gen1Length: number; gen2Length: number; lengthRatio: string | null }
+  totalMs: number
+}
+
+function QualityDiffTab() {
+  const [prompt, setPrompt] = useState('')
+  const [context, setContext] = useState('')
+  const [result, setResult] = useState<DiffResult | null>(null)
+  const [running, setRunning] = useState(false)
+  const [error, setError] = useState('')
+
+  const run = async () => {
+    if (!prompt.trim()) return
+    setRunning(true); setError(''); setResult(null)
+    try {
+      const r = await api.post('/admin/kangqore-immp/learning/quality-diff', {
+        prompt: prompt.trim(),
+        context: context.trim() || undefined,
+      })
+      setResult(r.data)
+    } catch (e: any) {
+      setError(e?.response?.data?.error ?? e?.message ?? 'Comparison failed')
+    } finally {
+      setRunning(false)
+    }
+  }
+
+  const isGen2Faster = result && result.gen2.latencyMs > 0 && result.gen2.latencyMs < result.gen1.latencyMs
+
+  return (
+    <div className="space-y-4">
+      {/* Intro */}
+      <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="flex items-center gap-2 mb-1">
+          <GitMerge className="w-4 h-4" style={{ color: PURP }} />
+          <p className="text-sm font-bold" style={{ color: T1 }}>Gen 1 vs Gen 2 Quality Diff</p>
+        </div>
+        <p className="text-xs" style={{ color: T2 }}>
+          Run the same prompt through Gen 1 (Claude) and Gen 2 / WAANDAx in parallel. Compare response quality, latency, and output length to validate Gen 2 readiness.
+        </p>
+      </div>
+
+      {/* Input */}
+      <div className="rounded-xl border p-4 space-y-3" style={{ background: CARD, borderColor: BDR }}>
+        <div>
+          <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Test prompt</p>
+          <textarea value={prompt} onChange={e => setPrompt(e.target.value)} rows={3}
+            placeholder="e.g. What are the top 3 risks for a customer whose OIS velocity dropped below 80% at Day 45?"
+            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none resize-none"
+            style={{ borderColor: BDR, background: SURF, color: T1 }} />
+        </div>
+        <div>
+          <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>System context (optional)</p>
+          <input value={context} onChange={e => setContext(e.target.value)}
+            placeholder="Additional context to include in system prompt…"
+            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+            style={{ borderColor: BDR, background: SURF, color: T1 }} />
+        </div>
+        {error && <p className="text-xs" style={{ color: RED }}>{error}</p>}
+        <button disabled={!prompt.trim() || running} onClick={run}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+          style={{ background: PURP, color: '#fff' }}>
+          <Cpu className="w-4 h-4" />
+          {running ? 'Running comparison…' : 'Run Gen 1 vs Gen 2'}
+        </button>
+      </div>
+
+      {/* Results */}
+      {result && (
+        <>
+          {/* Summary metrics */}
+          <div className="grid grid-cols-4 gap-3">
+            {[
+              { label: 'Gen 1 latency', value: `${result.gen1.latencyMs}ms`, color: BLUE },
+              { label: 'Gen 2 latency', value: result.gen2.latencyMs > 0 ? `${result.gen2.latencyMs}ms` : 'N/A', color: result.gen2.provider === 'gen1' ? AMB : TEAL },
+              { label: 'Speed ratio', value: result.speedupRatio ? `${result.speedupRatio}×` : '—', color: isGen2Faster ? GRN : RED },
+              { label: 'Total time', value: `${result.totalMs}ms`, color: T2 },
+            ].map(s => (
+              <div key={s.label} className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+                <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: T2 }}>{s.label}</p>
+                <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Side-by-side responses */}
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { key: 'gen1', label: 'Gen 1 · Claude', data: result.gen1, accent: BLUE },
+              { key: 'gen2', label: `Gen 2 · ${result.gen2.provider === 'gen1' ? 'Claude (WAANDAx offline)' : 'WAANDAx'}`, data: result.gen2, accent: result.gen2.provider === 'gen1' ? AMB : PURP },
+            ].map(({ key, label, data, accent }) => (
+              <div key={key} className="rounded-xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
+                <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: BDR, background: SURF }}>
+                  <span className="w-2 h-2 rounded-full" style={{ background: accent }} />
+                  <span className="text-xs font-bold" style={{ color: accent }}>{label}</span>
+                  <span className="ml-auto text-[10px] font-mono" style={{ color: T2 }}>{data.latencyMs}ms · {data.response.length} chars</span>
+                </div>
+                <div className="p-4">
+                  <pre className="text-[11px] font-mono whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto" style={{ color: T1 }}>
+                    {data.response || <span style={{ color: T2, fontStyle: 'italic' }}>No response</span>}
+                  </pre>
+                </div>
+                {/* Length bar */}
+                <div className="px-4 pb-3">
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: SURF }}>
+                    <div className="h-full rounded-full" style={{
+                      background: accent,
+                      width: `${Math.min(100, (data.response.length / Math.max(result.gen1.response.length, result.gen2.response.length, 1)) * 100)}%`,
+                    }} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Model info */}
+          <div className="rounded-xl p-3 border" style={{ background: SURF, borderColor: BDR }}>
+            <p className="text-[10px]" style={{ color: T2 }}>
+              Gen 1: <span className="font-mono" style={{ color: T1 }}>{result.gen1.model}</span> ·
+              Gen 2: <span className="font-mono" style={{ color: T1 }}>{result.gen2.model}</span> ·
+              {result.gen2.provider !== 'gen1'
+                ? <span style={{ color: GRN }}> WAANDAx active — local inference serving Gen 2 slot</span>
+                : <span style={{ color: AMB }}> WAANDAx offline — both slots served by Claude</span>
+              }
+            </p>
+          </div>
+        </>
+      )}
     </div>
   )
 }

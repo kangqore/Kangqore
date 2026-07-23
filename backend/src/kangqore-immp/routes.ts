@@ -846,6 +846,57 @@ Downstream nodes: ${downstreamNames}`
   }
 })
 
+// S113 — WVIS 3.0 Phase 2: WAANDA layout suggestion
+// POST /admin/kangqore-immp/workflows/waanda-layout
+// WAANDA analyses node types + existing edges, returns a suggested topological ordering.
+kangqoreImmpRoutes.post('/workflows/waanda-layout', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  const { workflowName, nodes, edges } = req.body ?? {}
+  if (!Array.isArray(nodes) || nodes.length === 0) return res.status(400).json({ error: 'nodes required' })
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    // No API key — return a heuristic order: goal→context→analyze→insight→decision→execute→learn→kpi
+    const TYPE_ORDER: Record<string, number> = {
+      goal: 0, context: 1, analyze: 2, hypothesis: 3, simulate: 4,
+      insight: 5, decision: 6, policy: 7, execute: 8, learn: 9, kpi: 10,
+    }
+    const sorted = [...nodes].sort((a: any, b: any) => {
+      const ao = TYPE_ORDER[a.data?.step?.type ?? ''] ?? 99
+      const bo = TYPE_ORDER[b.data?.step?.type ?? ''] ?? 99
+      return ao - bo
+    })
+    return res.json({ suggestedOrder: sorted.map((n: any) => n.id), strategy: 'heuristic' })
+  }
+
+  const { haiku, textOf } = await import('./llm/kimmpLLMRouter')
+  const system = `You are WAANDA, Kangqore's intelligence engine. You are a workflow architect.
+Given a list of intelligence canvas nodes (with type and label), suggest an optimal execution/display order.
+Rules: Goal nodes first, then Context/Analyze, then Simulate/Hypothesis, then Decision/Policy, then Execute/Learn, with KPI last as the strategic anchor.
+Return ONLY a JSON array of node IDs in the suggested order. No prose, no fences.`
+
+  const user = JSON.stringify({
+    workflowName,
+    nodes: nodes.map((n: any) => ({ id: n.id, type: n.data?.step?.type, label: n.data?.step?.name })),
+    edgeCount: edges?.length ?? 0,
+  })
+
+  try {
+    const r = await haiku(system, user, 500)
+    const raw = textOf(r).trim().replace(/```json?/g, '').replace(/```/g, '').trim()
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed)) return res.json({ suggestedOrder: parsed, strategy: 'waanda' })
+    throw new Error('not array')
+  } catch {
+    const TYPE_ORDER: Record<string, number> = {
+      goal: 0, context: 1, analyze: 2, hypothesis: 3, simulate: 4,
+      insight: 5, decision: 6, policy: 7, execute: 8, learn: 9, kpi: 10,
+    }
+    const sorted = [...nodes].sort((a: any, b: any) =>
+      (TYPE_ORDER[a.data?.step?.type ?? ''] ?? 99) - (TYPE_ORDER[b.data?.step?.type ?? ''] ?? 99)
+    )
+    res.json({ suggestedOrder: sorted.map((n: any) => n.id), strategy: 'heuristic' })
+  }
+})
+
 // ─── Intelligence Canvas — AI Workflow Review ─────────────────────────────────
 // Analyses the full workflow and returns structured critique + improvement suggestions.
 kangqoreImmpRoutes.post('/workflows/review', requireAuth, requireRole(['ADMIN']), async (req, res) => {
@@ -3129,6 +3180,66 @@ kangqoreImmpRoutes.post('/learning/circuit-trip', requireAuth, requireRole(['ADM
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// ══════════════════════════════════════════════════════════════════════════════
+// S110 — WAANDAx Gen2 Quality Diff Dashboard
+// ══════════════════════════════════════════════════════════════════════════════
+
+// POST /admin/kangqore-immp/learning/quality-diff
+// Side-by-side Gen1 (Claude) vs Gen2 (WAANDAx) response comparison.
+kangqoreImmpRoutes.post('/learning/quality-diff', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { prompt, context } = req.body
+    if (!prompt?.trim()) return res.status(400).json({ error: 'prompt required' })
+
+    const { routedCall } = await import('./llm/kimmpLLMRouter')
+    const SYSTEM = context?.trim()
+      ? `You are KIMMP, Kangqore's intelligence engine. Context: ${context}`
+      : 'You are KIMMP, Kangqore\'s intelligence engine. Respond concisely and analytically.'
+
+    // Run Gen1 (Claude) and WAANDAx in parallel where possible
+    const t0 = Date.now()
+
+    // Gen1: force Claude by calling with a route meta that skips WAANDAx
+    // We call routedCall twice — the router will naturally pick the available path.
+    // To get a reliable Gen1 baseline we use the Anthropic SDK directly via haiku.
+    const { haiku, textOf } = await import('./llm/kimmpLLMRouter')
+
+    const [gen1Result, gen2Result] = await Promise.allSettled([
+      (async () => {
+        const t = Date.now()
+        const r = await haiku(SYSTEM, prompt, 800)
+        return { response: textOf(r), latencyMs: Date.now() - t, model: r.model ?? 'claude-haiku', provider: 'gen1' }
+      })(),
+      (async () => {
+        const t = Date.now()
+        const r = await routedCall('claude-haiku-4-5-20251001', SYSTEM, prompt, 800, { module: 'quality-diff', source: 'learning' })
+        return {
+          response: r.content[0]?.text ?? '',
+          latencyMs: Date.now() - t,
+          model: r._routerMeta.usedModel,
+          provider: r._routerMeta.usedProvider,
+        }
+      })(),
+    ])
+
+    const gen1 = gen1Result.status === 'fulfilled' ? gen1Result.value : { response: 'Gen1 call failed', latencyMs: 0, model: 'claude-haiku', provider: 'gen1' }
+    const gen2 = gen2Result.status === 'fulfilled' ? gen2Result.value : { response: 'WAANDAx not available — Gen1 fallback used', latencyMs: 0, model: 'N/A', provider: 'gen1' }
+
+    res.json({
+      prompt,
+      gen1,
+      gen2,
+      speedupRatio: gen1.latencyMs > 0 && gen2.latencyMs > 0 ? (gen1.latencyMs / gen2.latencyMs).toFixed(2) : null,
+      qualityMetrics: {
+        gen1Length: gen1.response.length,
+        gen2Length: gen2.response.length,
+        lengthRatio: gen1.response.length > 0 ? (gen2.response.length / gen1.response.length).toFixed(2) : null,
+      },
+      totalMs: Date.now() - t0,
+    })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // S62 — Connector SDK: field maps + bidirectional sync + KIMMP signal bridge
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -4043,6 +4154,77 @@ kangqoreImmpRoutes.get('/gen3/status', requireAuth, requireRole(['ADMIN']), asyn
       (prisma as any).gen2Model.findFirst({ where: { isDeployed: true }, select: { providerModelId: true, benchmarkAccuracy: true } }),
     ])
     res.json({ total, active, done, failed, gen3Active: !!deployedModel, deployedModel })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ══════════════════════════════════════════════════════════════════════════
+// S111 — Gen3 Runtime Promotion: performance + quality dashboard
+// ══════════════════════════════════════════════════════════════════════════
+
+// GET /admin/kangqore-immp/gen3/performance
+// Returns aggregated latency + quality metrics across completed plans.
+kangqoreImmpRoutes.get('/gen3/performance', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const recentPlans = await (prisma as any).planDecompositionTree.findMany({
+      where:   { status: { in: ['DONE', 'FAILED'] } },
+      orderBy: { createdAt: 'desc' },
+      take:    50,
+      select:  { id: true, status: true, goal: true, subtasks: true, createdAt: true, completedAt: true },
+    })
+
+    type SubtaskEntry = { agentRole: string; status: string; result?: string | null }
+
+    const byRole: Record<string, { latencies: number[]; successCount: number; total: number; resultLengths: number[] }> = {}
+
+    for (const plan of recentPlans) {
+      const subtasks = plan.subtasks as SubtaskEntry[]
+      if (!Array.isArray(subtasks)) continue
+      const planDurationMs = plan.completedAt
+        ? new Date(plan.completedAt).getTime() - new Date(plan.createdAt).getTime()
+        : 0
+      const avgPerSubtask = subtasks.length > 0 ? planDurationMs / subtasks.length : 0
+
+      for (const st of subtasks) {
+        const role = st.agentRole ?? 'UNKNOWN'
+        if (!byRole[role]) byRole[role] = { latencies: [], successCount: 0, total: 0, resultLengths: [] }
+        byRole[role].total++
+        if (st.status === 'DONE') {
+          byRole[role].successCount++
+          byRole[role].latencies.push(avgPerSubtask)
+          if (st.result) byRole[role].resultLengths.push(st.result.length)
+        }
+      }
+    }
+
+    const roleMetrics = Object.entries(byRole).map(([role, m]) => ({
+      role,
+      total:        m.total,
+      successRate:  m.total > 0 ? +(m.successCount / m.total * 100).toFixed(1) : 0,
+      avgLatencyMs: m.latencies.length > 0 ? Math.round(m.latencies.reduce((a, b) => a + b, 0) / m.latencies.length) : 0,
+      avgResultLen: m.resultLengths.length > 0 ? Math.round(m.resultLengths.reduce((a, b) => a + b, 0) / m.resultLengths.length) : 0,
+    }))
+
+    const totalPlans    = recentPlans.length
+    const donePlans     = recentPlans.filter((p: any) => p.status === 'DONE')
+    const failedPlans   = recentPlans.filter((p: any) => p.status === 'FAILED')
+    const planSuccessRate = totalPlans > 0 ? +(donePlans.length / totalPlans * 100).toFixed(1) : 0
+
+    const completedWithTime = donePlans.filter((p: any) => p.completedAt)
+    const avgPlanDurationMs = completedWithTime.length > 0
+      ? Math.round(completedWithTime.reduce((acc: number, p: any) =>
+          acc + (new Date(p.completedAt).getTime() - new Date(p.createdAt).getTime()), 0
+        ) / completedWithTime.length)
+      : 0
+
+    res.json({
+      summary: { totalPlans, donePlans: donePlans.length, failedPlans: failedPlans.length, planSuccessRate, avgPlanDurationMs },
+      roleMetrics,
+      recentPlans: recentPlans.slice(0, 10).map((p: any) => ({
+        id: p.id, goal: p.goal, status: p.status,
+        durationMs: p.completedAt ? new Date(p.completedAt).getTime() - new Date(p.createdAt).getTime() : null,
+        subtaskCount: Array.isArray(p.subtasks) ? (p.subtasks as SubtaskEntry[]).length : 0,
+      })),
+    })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 

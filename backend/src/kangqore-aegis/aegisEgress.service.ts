@@ -35,17 +35,43 @@ function classifyRoute(path: string): string | undefined {
   return undefined
 }
 
+// S112 Phase 3: hard-deny egress beyond payload size limit (default 512 KB)
+const EGRESS_LIMIT_BYTES = Number(process.env.AEGIS_EGRESS_LIMIT_KB ?? 512) * 1024
+
 // Express middleware — intercepts KIMMP intelligence responses and logs egress
+// Phase 3 upgrade: hard-deny if payload exceeds AEGIS_EGRESS_LIMIT_KB.
 export function aegisEgressMonitor(req: Request, res: Response, next: NextFunction): void {
   const isEgress = EGRESS_PATTERNS.some(p => p.test(req.path))
   if (!isEgress) { next(); return }
 
   const originalJson = res.json.bind(res)
 
-  // Override res.json to capture the outbound payload size
   ;(res as any).json = function (body: unknown): Response {
     const user      = (req as any).user
     const assetType = classifyRoute(req.path)
+    const payloadSize = body ? JSON.stringify(body).length : 0
+
+    // Phase 3 hard-deny: block oversized responses
+    if (payloadSize > EGRESS_LIMIT_BYTES) {
+      AegisLedger.logEgress({
+        endpoint:       req.path,
+        method:         req.method,
+        userId:         user?.userId,
+        userRole:       user?.role,
+        ip:             req.ip,
+        assetType,
+        payloadSize,
+        responseStatus: 403,
+      }).catch(() => {})
+
+      return originalJson({
+        error:    'AEGIS: Egress size limit exceeded. Response blocked.',
+        shield:   'AEGIS',
+        limitKb:  EGRESS_LIMIT_BYTES / 1024,
+        sizeKb:   +(payloadSize / 1024).toFixed(1),
+        domain:   'EGRESS_CONTROL',
+      })
+    }
 
     AegisLedger.logEgress({
       endpoint:        req.path,
@@ -54,7 +80,7 @@ export function aegisEgressMonitor(req: Request, res: Response, next: NextFuncti
       userRole:        user?.role,
       ip:              req.ip,
       assetType,
-      payloadSize:     body ? JSON.stringify(body).length : 0,
+      payloadSize,
       responseStatus:  res.statusCode,
     }).catch(() => {})
 

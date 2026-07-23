@@ -1,5 +1,5 @@
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { Shield, List, Zap, BookOpen, ShieldOff, ArrowUpRight, FileText, Bot, ClipboardCheck, Radio, ShieldAlert } from 'lucide-react'
+import { Shield, List, Zap, BookOpen, ShieldOff, ArrowUpRight, FileText, Bot, ClipboardCheck, Radio, ShieldAlert, Wallet } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AegisOverviewPage }       from './pages/AegisOverviewPage'
@@ -14,6 +14,7 @@ import { AegisCompliancePage }     from './pages/AegisCompliancePage'
 import { AegisLiveFeedPage }       from './pages/AegisLiveFeedPage'
 import { SecurityFindingsPage }    from './pages/SecurityFindingsPage'
 import { AegisPermissionsPage }    from './pages/AegisPermissionsPage'
+import { AegisBudgetPage }         from './pages/AegisBudgetPage'
 
 const BASE = '/kangqore-view/admin/aegis'
 
@@ -30,6 +31,7 @@ const TABS = [
   { path: 'shield',       end: false, label: 'Shield',      icon: ShieldOff      },
   { path: 'policy',       end: false, label: 'Policy',      icon: FileText       },
   { path: 'findings',     end: false, label: 'Findings',    icon: ShieldAlert    },
+  { path: 'enforcement',  end: false, label: 'Enforcement', icon: Wallet         },
 ]
 
 export function AegisModule() {
@@ -84,6 +86,7 @@ export function AegisModule() {
             <Route path="permissions"     element={<AegisPermissionsPage />}    />
             <Route path="live"            element={<AegisLiveFeedPage />}       />
             <Route path="findings"        element={<SecurityFindingsPage />}    />
+            <Route path="enforcement"     element={<AegisBudgetPage />}          />
             <Route path="*"               element={<Navigate to={BASE} replace />} />
           </Routes>
         </motion.div>

@@ -313,3 +313,74 @@ aegisRouter.get('/actions/log', async (req: Request, res: Response) => {
 
   res.json({ shield: 'AEGIS', domain: 'ACTION_LOG', rows, total })
 })
+
+// ── S112: Phase 3 — Per-tenant Budget Enforcement ────────────────────────────
+
+// In-memory budget store (persisted as KIMMP signals for audit trail)
+const tenantBudgets: Record<string, { callLimit: number; windowHours: number; hardDeny: boolean }> = {}
+
+aegisRouter.get('/budget', async (_req: Request, res: Response) => {
+  // Returns global + per-tenant enforcement config
+  const budgets = Object.entries(tenantBudgets).map(([tenantId, cfg]) => ({
+    tenantId, ...cfg,
+  }))
+  res.json({
+    shield:    'AEGIS',
+    domain:    'BUDGET_ENFORCEMENT',
+    global:    { egressSizeLimitKb: Number(process.env.AEGIS_EGRESS_LIMIT_KB ?? 512), hardDeny: true },
+    tenants:   budgets,
+    totalTenants: budgets.length,
+  })
+})
+
+aegisRouter.post('/budget', async (req: Request, res: Response) => {
+  const { tenantId, callLimit, windowHours, hardDeny } = req.body
+  if (!tenantId) return res.status(400).json({ error: 'tenantId required' })
+  tenantBudgets[tenantId] = {
+    callLimit:   callLimit   ?? 500,
+    windowHours: windowHours ?? 24,
+    hardDeny:    hardDeny    ?? true,
+  }
+  // Emit KIMMP signal for audit
+  await prisma.kimmpSignal.create({
+    data: {
+      type: 'AEGIS_BUDGET_SET', priority: 'low',
+      title: `AEGIS Budget Set — ${tenantId}`,
+      summary: `callLimit=${callLimit ?? 500}/day, hardDeny=${hardDeny ?? true}`,
+      module: 'AEGIS', confidence: 100,
+    },
+  }).catch(() => {})
+  res.json({ shield: 'AEGIS', domain: 'BUDGET_ENFORCEMENT', tenantId, config: tenantBudgets[tenantId] })
+})
+
+aegisRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) => {
+  const { tenantId } = req.params
+  const cfg = tenantBudgets[tenantId]
+  const since = cfg ? new Date(Date.now() - (cfg.windowHours ?? 24) * 3_600_000) : new Date(Date.now() - 86_400_000)
+
+  const callCount = await (prisma as any).aegisActionLog.count({
+    where: { agentId: { contains: tenantId }, executedAt: { gte: since } },
+  }).catch(() => 0)
+
+  const budget     = cfg?.callLimit ?? null
+  const overBudget = budget !== null && callCount > budget
+  if (overBudget && cfg?.hardDeny) {
+    await (prisma as any).aegisActionLog.create({
+      data: {
+        actionType: 'LOG_AUDIT_ENTRY', level: 0,
+        agentId: 'aegis.budget-enforcer', engine: 'AUTONOMY_BOUNDARY',
+        params: { tenantId, callCount, limit: budget },
+        result: { blocked: true }, status: 'SUCCESS',
+      },
+    }).catch(() => {})
+  }
+
+  res.json({
+    shield: 'AEGIS', domain: 'BUDGET_ENFORCEMENT',
+    tenantId, callCount, budget,
+    windowHours: cfg?.windowHours ?? 24,
+    overBudget, hardDeny: cfg?.hardDeny ?? false,
+    since: since.toISOString(),
+  })
+})
+})

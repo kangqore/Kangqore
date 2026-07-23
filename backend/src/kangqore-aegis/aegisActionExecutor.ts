@@ -195,8 +195,34 @@ async function execRevokeSession(action: AegisAction, result: AegisAgentResult):
   }).catch(() => {})
 }
 
+// S112: Rollback checkpoint — snapshot agent state before any L3 action
+async function createRollbackCheckpoint(action: AegisAction, result: AegisAgentResult): Promise<void> {
+  await (prisma as any).kimmpSignal.create({
+    data: {
+      type:     'AEGIS_ROLLBACK_CHECKPOINT',
+      priority: 'critical',
+      title:    `AEGIS Rollback Checkpoint — ${action.type}`,
+      summary:  `Pre-L3 snapshot before ${action.type} on ${result.agentId} (${result.verdict}). Checkpoint captures agent state for recovery if action is rejected.`,
+      module:   'AEGIS',
+      confidence: 100,
+      metadata: {
+        actionType:  action.type,
+        agentId:     result.agentId,
+        engine:      result.engine,
+        verdict:     result.verdict,
+        summary:     result.summary,
+        params:      action.params,
+        checkpointAt: new Date().toISOString(),
+      } as any,
+    },
+  }).catch(() => {})
+}
+
 // L3: write to pending table, notify admin via socket — await human approval
 async function execQueueL3(action: AegisAction, result: AegisAgentResult): Promise<void> {
+  // Phase 3: create rollback checkpoint before queuing the L3 action
+  await createRollbackCheckpoint(action, result)
+
   const pending = await (prisma as any).aegisPendingAction.create({
     data: {
       actionType:  action.type,

@@ -2785,6 +2785,126 @@ export function WorkflowCanvas() {
   const [paletteSearch, setPaletteSearch] = useState('')
   const paletteSearchRef = useRef<HTMLInputElement>(null)
 
+  // WVIS 3.0 Phase 2 — WAANDA layout + PNG export + canvas diff
+  const [waandaLayoutLoading, setWaandaLayoutLoading] = useState(false)
+  const [showDiff, setShowDiff] = useState(false)
+  const [diffSnapshot, setDiffSnapshot] = useState<Node[] | null>(null)
+
+  const waandaLayout = useCallback(async () => {
+    if (!nodesRef.current.length || waandaLayoutLoading) return
+    setWaandaLayoutLoading(true)
+    try {
+      const { data } = await api.post('/admin/kangqore-immp/workflows/waanda-layout', {
+        workflowName: wfName,
+        nodes: nodesRef.current,
+        edges: edgesRef.current,
+      })
+      const order: string[] = data.suggestedOrder ?? []
+      if (!order.length) return
+      pushHistory()
+      const nodeMap = new Map(nodesRef.current.map((n: Node) => [n.id, n]))
+      const reordered: Node[] = order
+        .map((id: string) => nodeMap.get(id))
+        .filter(Boolean) as Node[]
+      const remaining: Node[] = nodesRef.current.filter((n: Node) => !order.includes(n.id))
+      setNodes(applyDagreLayout([...reordered, ...remaining], [...edgesRef.current]))
+    } catch { /* silent */ } finally { setWaandaLayoutLoading(false) }
+  }, [waandaLayoutLoading, wfName, pushHistory, setNodes])
+
+  const exportPng = useCallback(() => {
+    const ns = nodesRef.current
+    const es = edgesRef.current
+    if (!ns.length) return
+
+    const PAD   = 40
+    const NW    = 160
+    const NH    = 48
+    const xs    = ns.map((n: Node) => n.position.x)
+    const ys    = ns.map((n: Node) => n.position.y)
+    const minX  = Math.min(...xs) - PAD
+    const minY  = Math.min(...ys) - PAD
+    const maxX  = Math.max(...xs) + NW + PAD
+    const maxY  = Math.max(...ys) + NH + PAD
+    const W     = maxX - minX
+    const H     = maxY - minY
+
+    const canvas = document.createElement('canvas')
+    const SCALE = 2
+    canvas.width  = W * SCALE
+    canvas.height = H * SCALE
+    const ctx = canvas.getContext('2d')!
+    ctx.scale(SCALE, SCALE)
+
+    // Background
+    ctx.fillStyle = '#1a1a2e'
+    ctx.fillRect(0, 0, W, H)
+
+    // Edges
+    const idToPos = new Map(ns.map((n: Node) => [n.id, { x: n.position.x - minX + NW / 2, y: n.position.y - minY + NH / 2 }]))
+    ctx.strokeStyle = '#444466'
+    ctx.lineWidth = 1.5
+    es.forEach((e: Edge) => {
+      const src = idToPos.get(e.source)
+      const tgt = idToPos.get(e.target)
+      if (!src || !tgt) return
+      ctx.beginPath()
+      ctx.moveTo(src.x, src.y)
+      ctx.bezierCurveTo(src.x, (src.y + tgt.y) / 2, tgt.x, (src.y + tgt.y) / 2, tgt.x, tgt.y)
+      ctx.stroke()
+    })
+
+    // Nodes
+    ns.forEach((n: Node) => {
+      const nx = n.position.x - minX
+      const ny = n.position.y - minY
+      const step = (n.data as any)?.step
+      const cfg  = NODE_CFG[step?.type as string] ?? { color: BLUE }
+      const col  = cfg.color
+
+      ctx.fillStyle = `${col}22`
+      ctx.strokeStyle = col
+      ctx.lineWidth = 1.5
+      roundRect(ctx, nx, ny, NW, NH, 8)
+      ctx.fill()
+      ctx.stroke()
+
+      ctx.fillStyle = col
+      ctx.font = `bold ${10 * SCALE / SCALE}px sans-serif`
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(String(step?.name ?? n.id).slice(0, 20), nx + NW / 2, ny + NH / 2)
+    })
+
+    canvas.toBlob(blob => {
+      if (!blob) return
+      const url = URL.createObjectURL(blob)
+      const a   = document.createElement('a')
+      a.href    = url
+      a.download = `${wfName.replace(/\s+/g, '-').toLowerCase()}.canvas.png`
+      a.click()
+      URL.revokeObjectURL(url)
+    }, 'image/png')
+  }, [wfName])
+
+  const openDiff = useCallback(() => {
+    setDiffSnapshot([...nodesRef.current])
+    setShowDiff(true)
+  }, [])
+
+  function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+    ctx.beginPath()
+    ctx.moveTo(x + r, y)
+    ctx.lineTo(x + w - r, y)
+    ctx.arcTo(x + w, y, x + w, y + r, r)
+    ctx.lineTo(x + w, y + h - r)
+    ctx.arcTo(x + w, y + h, x + w - r, y + h, r)
+    ctx.lineTo(x + r, y + h)
+    ctx.arcTo(x, y + h, x, y + h - r, r)
+    ctx.lineTo(x, y + r)
+    ctx.arcTo(x, y, x + r, y, r)
+    ctx.closePath()
+  }
+
   // AI generation — passes canvas mode so backend picks the right system prompt
   const generate = async () => {
     if (!copilot.trim() || generating) return
@@ -3161,9 +3281,12 @@ export function WorkflowCanvas() {
                       boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
                     }}>
                       {[
-                        { icon: Undo2,      label: 'Undo (⌘Z)',        disabled: !canUndo, onClick: undo,      color: BLUE   },
-                        { icon: Redo2,      label: 'Redo (⌘⇧Z)',       disabled: !canRedo, onClick: redo,      color: BLUE   },
-                        { icon: LayoutGrid, label: 'Auto-arrange',     disabled: false,    onClick: reLayout,  color: PURPLE },
+                        { icon: Undo2,      label: 'Undo (⌘Z)',             disabled: !canUndo,              onClick: undo,         color: BLUE   },
+                        { icon: Redo2,      label: 'Redo (⌘⇧Z)',            disabled: !canRedo,              onClick: redo,         color: BLUE   },
+                        { icon: LayoutGrid, label: 'Auto-arrange',          disabled: false,                 onClick: reLayout,     color: PURPLE },
+                        { icon: Sparkles,   label: 'WAANDA Layout Override', disabled: waandaLayoutLoading,   onClick: waandaLayout, color: GREEN  },
+                        { icon: Download,   label: 'Export PNG',             disabled: !nodesRef.current.length, onClick: exportPng, color: TEAL  },
+                        { icon: GitBranch,  label: 'Canvas Diff',            disabled: false,                 onClick: openDiff,    color: AMBER  },
                       ].map(({ icon: Icon, label, disabled, onClick, color }) => (
                         <button key={label} onClick={onClick} disabled={disabled} title={label} style={{
                           width: 28, height: 28, borderRadius: 7, border: 'none',
@@ -3516,7 +3639,129 @@ export function WorkflowCanvas() {
             onClose={() => setShowShare(false)}
           />
         )}
+
+        {/* WVIS 3.0 Phase 2 — Canvas Diff Modal */}
+        {showDiff && diffSnapshot !== null && (
+          <CanvasDiffModal
+            currentNodes={nodes}
+            snapshotNodes={diffSnapshot}
+            wfName={wf.name}
+            onClose={() => setShowDiff(false)}
+          />
+        )}
       </div>
     </CanvasCtx.Provider>
+  )
+}
+
+// ── WVIS 3.0 Phase 2 — Canvas Diff Modal ─────────────────────────────────────
+
+function CanvasDiffModal({
+  currentNodes, snapshotNodes, wfName, onClose,
+}: {
+  currentNodes: Node[]
+  snapshotNodes: Node[]
+  wfName: string
+  onClose: () => void
+}) {
+  const snapIds = new Set(snapshotNodes.map((n: Node) => n.id))
+  const currIds = new Set(currentNodes.map((n: Node) => n.id))
+
+  const added   = currentNodes.filter((n: Node) => !snapIds.has(n.id))
+  const removed = snapshotNodes.filter((n: Node) => !currIds.has(n.id))
+  const moved   = currentNodes.filter((n: Node) => {
+    const snap = snapshotNodes.find((s: Node) => s.id === n.id)
+    if (!snap) return false
+    return Math.abs(n.position.x - snap.position.x) > 10 || Math.abs(n.position.y - snap.position.y) > 10
+  })
+  const unchanged = currentNodes.filter((n: Node) =>
+    snapIds.has(n.id) && !moved.some((m: Node) => m.id === n.id)
+  )
+
+  const total = added.length + removed.length + moved.length
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', zIndex: 9999,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }} onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div style={{
+        background: CARD, border: `1px solid ${EDGE_C}`, borderRadius: 18, width: 520, maxWidth: '92vw',
+        boxShadow: '0 24px 80px rgba(0,0,0,0.6)', display: 'flex', flexDirection: 'column', overflow: 'hidden',
+        maxHeight: '80vh',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '16px 20px', borderBottom: `1px solid ${EDGE_C}` }}>
+          <GitBranch style={{ width: 14, height: 14, color: AMBER }} />
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)', flex: 1 }}>Canvas Diff — {wfName}</span>
+          <span style={{ fontSize: 10, fontWeight: 700, color: total > 0 ? AMBER : GREEN }}>
+            {total === 0 ? 'No changes since snapshot' : `${total} change${total !== 1 ? 's' : ''}`}
+          </span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: SLATE }}>
+            <X style={{ width: 14, height: 14 }} />
+          </button>
+        </div>
+
+        <div style={{ overflowY: 'auto', padding: '16px 20px 20px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Summary */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+            {[
+              { label: 'Added',     count: added.length,     color: GREEN  },
+              { label: 'Removed',   count: removed.length,   color: RED    },
+              { label: 'Moved',     count: moved.length,     color: AMBER  },
+              { label: 'Unchanged', count: unchanged.length, color: SLATE  },
+            ].map(s => (
+              <div key={s.label} style={{
+                padding: '10px 12px', borderRadius: 10, border: `1px solid ${EDGE_C}`,
+                background: 'var(--os-surface-0)', textAlign: 'center',
+              }}>
+                <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: SLATE, marginBottom: 4 }}>{s.label}</p>
+                <p style={{ fontSize: 22, fontWeight: 900, color: s.color }}>{s.count}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Diff list */}
+          {[
+            { items: added,   color: GREEN,  prefix: '+ ' },
+            { items: removed, color: RED,    prefix: '− ' },
+            { items: moved,   color: AMBER,  prefix: '↕ ' },
+          ].map(({ items, color, prefix }) => items.map((n: Node) => {
+            const step = (n.data as any)?.step
+            const snap = snapshotNodes.find((s: Node) => s.id === n.id)
+            return (
+              <div key={`${prefix}${n.id}`} style={{
+                padding: '8px 12px', borderRadius: 8,
+                border: `1px solid ${color}30`, background: `${color}08`,
+                display: 'flex', alignItems: 'center', gap: 10,
+              }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color, fontFamily: 'monospace' }}>{prefix}</span>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)' }}>
+                    {step?.name ?? n.id}
+                    {step?.type && (
+                      <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 600, color: NODE_CFG[step.type]?.color ?? SLATE }}>
+                        [{step.type}]
+                      </span>
+                    )}
+                  </p>
+                  {snap && prefix === '↕ ' && (
+                    <p style={{ fontSize: 9, color: SLATE, marginTop: 2, fontFamily: 'monospace' }}>
+                      ({Math.round(snap.position.x)}, {Math.round(snap.position.y)}) → ({Math.round(n.position.x)}, {Math.round(n.position.y)})
+                    </p>
+                  )}
+                </div>
+              </div>
+            )
+          }))}
+
+          {total === 0 && (
+            <div style={{ padding: '24px 0', textAlign: 'center' }}>
+              <CheckCircle2 style={{ width: 24, height: 24, color: GREEN, margin: '0 auto 8px' }} />
+              <p style={{ fontSize: 13, color: SLATE }}>Canvas matches snapshot — no changes detected.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
