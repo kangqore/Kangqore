@@ -2,6 +2,16 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
+// In CI there is no Google Drive access and the video is not needed for tests.
+if (process.env.CI) {
+  const dest = path.join(__dirname, '../public/videos/hero-bg.mp4');
+  const dir = path.dirname(dest);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(dest)) fs.writeFileSync(dest, '');
+  console.log('CI environment detected — skipping video download.');
+  process.exit(0);
+}
+
 const fileId = '1JEIakdEzkD1uTTFEhe5GQf03A3uPxNrZ';
 const dest = path.join(__dirname, '../public/videos/hero-bg.mp4');
 
