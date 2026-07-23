@@ -6712,6 +6712,7 @@ model TenantOrganisation {
   stripeSubscriptionId String?
   subscriptionStatus   String?   // trial | active | past_due | churned
   currentPeriodEnd     DateTime?
+  region               String?   @default("US")  // US | UK | EU | INDIA
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
   @@index([isActive])
@@ -7192,7 +7193,8 @@ model PartnerOrganisation {
   totalRevenue    Float    @default(0)          // lifetime billed through partner
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-  commissions     PartnerCommission[]
+  commissions      PartnerCommission[]
+  partnerCerts     PartnerCertification[] @relation("partnerCerts")
 
   @@index([status, tier])
   @@map("partner_organisations")
@@ -7274,4 +7276,80 @@ model SOC2Evidence {
 
   @@index([periodId, controlId])
   @@map("soc2_evidence")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S124 — Multi-region Foundation
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model RegionConfig {
+  id                String   @id @default(cuid())
+  region            String   @unique              // US | UK | EU | INDIA
+  displayName       String
+  baseUrl           String?
+  storageRegion     String?
+  gdprApplicable    Boolean  @default(false)
+  dataResidencyNote String?  @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("region_configs")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S125 — GDPR DPA + Privacy Controls
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model GDPRDataRequest {
+  id          String    @id @default(cuid())
+  tenantId    String?
+  requestType String                         // ACCESS | ERASURE | PORTABILITY
+  requestedBy String?
+  status      String    @default("PENDING")  // PENDING | IN_PROGRESS | COMPLETE | REJECTED
+  dueDate     DateTime?
+  completedAt DateTime?
+  notes       String?   @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([tenantId, status])
+  @@index([status, dueDate])
+  @@map("gdpr_data_requests")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S127 — Partner Certification Program
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model PartnerCertification {
+  id         String    @id @default(cuid())
+  partnerId  String
+  certType   String                         // CERTIFIED_IMPLEMENTER | CERTIFIED_INTEGRATOR | CERTIFIED_RESELLER
+  status     String    @default("ACTIVE")   // PENDING | ACTIVE | EXPIRED | REVOKED
+  issuedAt   DateTime  @default(now())
+  expiresAt  DateTime?
+  assessorId String?
+  score      Float?
+  notes      String?   @db.Text
+  createdAt  DateTime  @default(now())
+  partner    PartnerOrganisation @relation(fields: [partnerId], references: [id], name: "partnerCerts")
+
+  @@index([partnerId])
+  @@index([status])
+  @@map("partner_certifications")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S130 — Platform v1.0 Declaration
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model PlatformDeclaration {
+  id          String   @id @default(cuid())
+  version     String                        // "1.0.0"
+  declaredAt  DateTime @default(now())
+  declaredBy  String?
+  gateCriteria Json?                        // snapshot of all 8 gate criteria at declaration time
+  notes       String?  @db.Text
+
+  @@map("platform_declarations")
 }
