@@ -164,7 +164,11 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'kimmp-proposal',       label: 'Proposal Builder',    path: `${BASE}/kangqore-immp/proposal-builder`,    category: 'Enterprise', badge: 'new' },
       { id: 'kimmp-case-study',     label: 'Case Study C0',       path: `${BASE}/kangqore-immp/case-study`,          category: 'Enterprise', badge: 'new' },
       { id: 'kimmp-customer-one',   label: 'Customer One',         path: `${BASE}/kangqore-immp/customer-one`,        category: 'Enterprise', badge: 'new' },
-      { id: 'kimmp-pmo',            label: 'PMO Organic Data',     path: `${BASE}/kangqore-immp/pmo`,                 category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-pmo',            label: 'PMO Organic Data',       path: `${BASE}/kangqore-immp/pmo`,                   category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-coig-north-star',label: 'COIG North Star',       path: `${BASE}/kangqore-immp/coig-north-star`,       category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-bp-versions',    label: 'Blueprint Versions',     path: `${BASE}/kangqore-immp/blueprint-versions`,    category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-customer-four',  label: 'Customer Four',          path: `${BASE}/kangqore-immp/customers/four`,        category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-customer-five',  label: 'Customer Five',          path: `${BASE}/kangqore-immp/customers/five`,        category: 'Enterprise', badge: 'new' },
     ],
   },
   {

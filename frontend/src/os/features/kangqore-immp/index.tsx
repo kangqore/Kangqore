@@ -55,6 +55,10 @@ import { CustomerSuccessPlatformPage }  from './pages/CustomerSuccessPlatformPag
 import { CustomerTwoPage }              from './pages/CustomerTwoPage'
 import { CustomerThreePage }            from './pages/CustomerThreePage'
 import { PMOAdminPage }                 from './pages/PMOAdminPage'
+import { COIGNorthStarPage }            from './pages/COIGNorthStarPage'
+import { BlueprintVersionPage }         from './pages/BlueprintVersionPage'
+import { CustomerFourPage }             from './pages/CustomerFourPage'
+import { CustomerFivePage }             from './pages/CustomerFivePage'
 import { CustomerPipelinePage }         from './pages/CustomerPipelinePage'
 import { WaandaGen2Page }               from './pages/WaandaGen2Page'
 import { TenantAdminPage }              from './pages/TenantAdminPage'
@@ -209,6 +213,10 @@ export function KIMMMModule() {
           <Route path="pack-activation"         element={<PackActivationPage />}            />
           <Route path="revenue-intel"           element={<RevenueIntelPage />}              />
           <Route path="pmo"                     element={<PMOAdminPage />}                  />
+          <Route path="coig-north-star"         element={<COIGNorthStarPage />}             />
+          <Route path="blueprint-versions"      element={<BlueprintVersionPage />}          />
+          <Route path="customers/four"          element={<CustomerFourPage />}              />
+          <Route path="customers/five"          element={<CustomerFivePage />}              />
           <Route path="reflection"          element={<ReflectionPage />}            />
           <Route path="authority"           element={<AuthorityPage />}             />
           <Route path="*"                   element={<Navigate to={BASE} replace />} />
