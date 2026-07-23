@@ -7124,3 +7124,154 @@ model Gen2AccuracyRecord {
   @@index([provider])
   @@map("gen2_accuracy_records")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S120 — Blueprint Marketplace: publish / fork / rate / version blueprint specs
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model MarketplaceBlueprint {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  description   String   @db.Text
+  industry      String?
+  planTier      String   @default("PRO")       // STARTER | PRO | ENTERPRISE
+  version       String   @default("1.0")
+  spec          Json                            // blueprint.json payload
+  enabledModules String[]
+  authorId      String?                         // User.id of publisher
+  authorName    String
+  forkOf        String?                         // MarketplaceBlueprint.id if forked
+  forkCount     Int      @default(0)
+  installCount  Int      @default(0)
+  ratingAvg     Float    @default(0)
+  ratingCount   Int      @default(0)
+  status        String   @default("PUBLISHED")  // DRAFT | PUBLISHED | DEPRECATED
+  tags          String[]
+  publishedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  ratings       MarketplaceBlueprintRating[]
+
+  @@index([status, industry])
+  @@index([authorId])
+  @@map("marketplace_blueprints")
+}
+
+model MarketplaceBlueprintRating {
+  id          String   @id @default(cuid())
+  blueprintId String
+  userId      String
+  rating      Int                              // 1–5
+  review      String?  @db.Text
+  createdAt   DateTime @default(now())
+  blueprint   MarketplaceBlueprint @relation(fields: [blueprintId], references: [id])
+
+  @@unique([blueprintId, userId])
+  @@index([blueprintId])
+  @@map("marketplace_blueprint_ratings")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S121 — Partner Portal: implementation partner org + commission ledger
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model PartnerOrganisation {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  contactEmail    String
+  website         String?
+  tier            String   @default("SILVER")  // BRONZE | SILVER | GOLD | PLATINUM
+  commissionRate  Float    @default(0.15)       // 15% default
+  stripeAccountId String?                       // Stripe Connect account
+  status          String   @default("ACTIVE")   // PENDING | ACTIVE | SUSPENDED
+  specialisms     String[]                      // e.g. ["fintech", "healthcare"]
+  certifications  String[]                      // e.g. ["BIDS_CERTIFIED"]
+  oisBoostAvg     Float    @default(0)          // avg OIS boost delivered to customers
+  totalRevenue    Float    @default(0)          // lifetime billed through partner
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  commissions     PartnerCommission[]
+
+  @@index([status, tier])
+  @@map("partner_organisations")
+}
+
+model PartnerCommission {
+  id              String   @id @default(cuid())
+  partnerId       String
+  sourceType      String                        // BLUEPRINT_SALE | DEPLOYMENT | PACK_SALE
+  sourceId        String?                       // FK to originating record
+  grossAmount     Float
+  commissionRate  Float
+  commissionEarned Float
+  status          String   @default("PENDING")  // PENDING | CLEARED | PAID
+  clearedAt       DateTime?
+  paidAt          DateTime?
+  paidBatch       String?
+  createdAt       DateTime @default(now())
+  partner         PartnerOrganisation @relation(fields: [partnerId], references: [id])
+
+  @@index([partnerId, status])
+  @@index([createdAt])
+  @@map("partner_commissions")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S122 — SDK v2: webhook event log + HMAC signature store
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model WebhookEventLog {
+  id            String   @id @default(cuid())
+  eventType     String                          // blueprint.published | signal.created | ois.updated …
+  payload       Json
+  signature     String                          // HMAC-SHA256 hex of payload
+  webhookId     String?                         // target WebhookSubscription.id
+  deliveryStatus String  @default("DELIVERED")  // DELIVERED | FAILED | PENDING
+  deliveredAt   DateTime?
+  createdAt     DateTime @default(now())
+
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("webhook_event_logs")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S123 — SOC2 Type II: audit period + evidence collection
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model SOC2AuditPeriod {
+  id              String   @id @default(cuid())
+  label           String                        // e.g. "FY2026 SOC2 Type II"
+  auditor         String?                       // Auditing firm name
+  periodStart     DateTime
+  periodEnd       DateTime
+  status          String   @default("IN_PROGRESS") // IN_PROGRESS | SUBMITTED | COMPLETE | FAILED
+  evidenceCount   Int      @default(0)
+  controlsPassed  Int      @default(0)
+  controlsFailed  Int      @default(0)
+  notes           String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  evidence        SOC2Evidence[]
+
+  @@index([status])
+  @@map("soc2_audit_periods")
+}
+
+model SOC2Evidence {
+  id          String   @id @default(cuid())
+  periodId    String
+  controlId   String                            // CC6.1 | CC7.2 | A1.1 … (SOC2 trust criteria)
+  controlName String
+  evidenceType String                           // AUDIT_LOG | ACCESS_CONTROL | ENCRYPTION | INCIDENT | POLICY
+  description String   @db.Text
+  sourceTable String?                           // e.g. "aegis_audit_logs"
+  sourceCount Int      @default(0)             // row count at collection time
+  collectedAt DateTime @default(now())
+  period      SOC2AuditPeriod @relation(fields: [periodId], references: [id])
+
+  @@index([periodId, controlId])
+  @@map("soc2_evidence")
+}

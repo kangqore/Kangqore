@@ -358,3 +358,304 @@ console.log('Decision ID:', decision.id)
   res.setHeader('Content-Type', 'text/plain; charset=utf-8')
   res.send(sdk)
 })
+
+// ─── S122: Python SDK v2 ───────────────────────────────────────────────────────
+
+developerRouter.get('/sdk/python', (_req: Request, res: Response) => {
+  const sdk = `"""
+Kangqore OS — Python SDK v2.0
+Auto-generated — https://kangqore.com/docs/sdk/python
+
+Install:
+    pip install requests
+
+Usage:
+    from kangqore import KangqoreClient
+    kq = KangqoreClient(api_key="kq_live_...", base_url="https://yourdomain.com")
+    ois = kq.get_ois()
+    print(ois["data"][0]["oisScore"])
+"""
+from __future__ import annotations
+import hashlib, hmac, json, time
+from typing import Any, Dict, List, Optional
+import requests
+
+
+class KangqoreError(Exception):
+    def __init__(self, status: int, message: str):
+        super().__init__(f"[{status}] {message}")
+        self.status = status
+
+
+class KangqoreClient:
+    def __init__(self, api_key: str, base_url: str = "https://yourdomain.com"):
+        self._key = api_key
+        self._base = base_url.rstrip("/") + "/api/v1"
+        self._headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+
+    def _get(self, path: str, params: Optional[Dict] = None) -> Any:
+        r = requests.get(self._base + path, headers=self._headers, params=params or {})
+        if not r.ok:
+            raise KangqoreError(r.status_code, r.text)
+        return r.json()
+
+    def _post(self, path: str, body: Dict) -> Any:
+        r = requests.post(self._base + path, headers=self._headers, json=body)
+        if not r.ok:
+            raise KangqoreError(r.status_code, r.text)
+        return r.json()
+
+    def _patch(self, path: str, body: Dict) -> Any:
+        r = requests.patch(self._base + path, headers=self._headers, json=body)
+        if not r.ok:
+            raise KangqoreError(r.status_code, r.text)
+        return r.json()
+
+    # ── OIS ──────────────────────────────────────────────────────────────────
+
+    def get_ois(self, limit: int = 10, label: Optional[str] = None) -> Dict:
+        params: Dict = {"limit": limit}
+        if label:
+            params["label"] = label
+        return self._get("/ois", params)
+
+    def create_ois_snapshot(self, scores: Dict) -> Dict:
+        return self._post("/ois/snapshot", scores)
+
+    # ── Signals ───────────────────────────────────────────────────────────────
+
+    def get_signals(self, page: int = 1, limit: int = 20,
+                    category: Optional[str] = None, severity: Optional[str] = None) -> Dict:
+        params: Dict = {"page": page, "limit": limit}
+        if category: params["category"] = category
+        if severity: params["severity"] = severity
+        return self._get("/signals", params)
+
+    def create_signal(self, source_module: str, signal_type: str,
+                      signal_category: str, signal_value: str,
+                      confidence: float = 0.9, severity: str = "LOW",
+                      metadata: Optional[Dict] = None) -> Dict:
+        return self._post("/signals", {
+            "sourceModule": source_module, "signalType": signal_type,
+            "signalCategory": signal_category, "signalValue": signal_value,
+            "confidence": confidence, "severity": severity,
+            "metadata": metadata or {},
+        })
+
+    # ── Decisions ─────────────────────────────────────────────────────────────
+
+    def get_decisions(self, page: int = 1, limit: int = 20) -> Dict:
+        return self._get("/decisions", {"page": page, "limit": limit})
+
+    def create_decision(self, question: str, workflow_name: Optional[str] = None,
+                        step_name: Optional[str] = None) -> Dict:
+        body: Dict = {"question": question}
+        if workflow_name: body["workflowName"] = workflow_name
+        if step_name:     body["stepName"]     = step_name
+        return self._post("/decisions", body)
+
+    def select_decision(self, decision_id: str, selected: str,
+                        outcome: Optional[str] = None) -> Dict:
+        return self._patch(f"/decisions/{decision_id}/select", {"selected": selected, "outcome": outcome})
+
+    # ── Blueprints ────────────────────────────────────────────────────────────
+
+    def get_blueprints(self, page: int = 1, limit: int = 20,
+                       status: Optional[str] = None) -> Dict:
+        params: Dict = {"page": page, "limit": limit}
+        if status: params["status"] = status
+        return self._get("/blueprints", params)
+
+    def create_blueprint(self, name: str, spec: Dict, version: str = "1.0",
+                         industry: Optional[str] = None, enabled_modules: Optional[List[str]] = None) -> Dict:
+        return self._post("/blueprints", {
+            "name": name, "spec": spec, "version": version,
+            "industry": industry, "enabledModules": enabled_modules or [],
+        })
+
+    # ── Webhooks ─────────────────────────────────────────────────────────────
+
+    @staticmethod
+    def verify_webhook(payload: bytes, signature: str, secret: str) -> bool:
+        """Verify an inbound Kangqore webhook signature (HMAC-SHA256)."""
+        expected = hmac.new(secret.encode(), payload, hashlib.sha256).hexdigest()
+        return hmac.compare_digest(expected, signature)
+
+
+# ── Quick-start ────────────────────────────────────────────────────────────────
+
+if __name__ == "__main__":
+    kq = KangqoreClient(api_key="kq_live_YOUR_KEY_HERE", base_url="https://yourdomain.com")
+
+    ois = kq.get_ois(limit=1)
+    print("Latest OIS:", ois["data"][0]["oisScore"] if ois.get("data") else "no data")
+
+    kq.create_signal(
+        source_module="crm", signal_type="deal_won",
+        signal_category="INTENT", signal_value="Q3 enterprise deal closed — £250k ACV",
+        confidence=0.95, severity="HIGH",
+    )
+    print("Signal created")
+`
+
+  res.setHeader('Content-Disposition', 'attachment; filename="kangqore_client.py"')
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+  res.send(sdk)
+})
+
+// ─── S122: OpenAPI 3.1 spec ───────────────────────────────────────────────────
+
+developerRouter.get('/openapi.json', (_req: Request, res: Response) => {
+  const spec = {
+    openapi: '3.1.0',
+    info: {
+      title: 'Kangqore OS API',
+      version: '2.0.0',
+      description: 'Public API for the Kangqore Operating System — signals, decisions, blueprints, OIS.',
+      contact: { name: 'Kangqore Developer Support', email: 'dev@kangqore.com' },
+      license: { name: 'Commercial', url: 'https://kangqore.com/terms' },
+    },
+    servers: [{ url: '/api/v1', description: 'Kangqore OS REST API v1' }],
+    security: [{ bearerAuth: [] }],
+    components: {
+      securitySchemes: {
+        bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', description: 'Programmatic API key prefixed kq_live_' },
+      },
+      schemas: {
+        Signal: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' }, sourceModule: { type: 'string' }, signalType: { type: 'string' },
+            signalCategory: { type: 'string', enum: ['BEHAVIOR','INTENT','MARKET','CONTENT','RISK','SYSTEM'] },
+            signalValue: { type: 'string' }, confidence: { type: 'number', minimum: 0, maximum: 100 },
+            severity: { type: 'string', enum: ['LOW','MODERATE','HIGH','CRITICAL'] },
+            status: { type: 'string' }, createdAt: { type: 'string', format: 'date-time' },
+          },
+        },
+        Decision: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' }, question: { type: 'string' }, reasoning: { type: 'string' },
+            confidence: { type: 'number' }, selected: { type: 'string' }, outcome: { type: 'string' },
+            createdAt: { type: 'string', format: 'date-time' },
+          },
+        },
+        Blueprint: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' }, name: { type: 'string' }, version: { type: 'string' },
+            industry: { type: 'string' }, status: { type: 'string', enum: ['DRAFT','ACTIVE','ARCHIVED'] },
+            createdAt: { type: 'string', format: 'date-time' },
+          },
+        },
+        OISSnapshot: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' }, oisScore: { type: 'number', minimum: 0, maximum: 100 },
+            label: { type: 'string', enum: ['AUTO','BASELINE','CHECKPOINT'] },
+            createdAt: { type: 'string', format: 'date-time' },
+          },
+        },
+        Error: {
+          type: 'object',
+          properties: { error: { type: 'string' } },
+        },
+      },
+    },
+    paths: {
+      '/ois': {
+        get: {
+          tags: ['OIS'], summary: 'List OIS snapshots',
+          parameters: [
+            { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } },
+            { name: 'label', in: 'query', schema: { type: 'string', enum: ['AUTO','BASELINE','CHECKPOINT'] } },
+          ],
+          responses: { '200': { description: 'OIS snapshots', content: { 'application/json': { schema: { type: 'object', properties: { data: { type: 'array', items: { '$ref': '#/components/schemas/OISSnapshot' } } } } } } } },
+        },
+      },
+      '/signals': {
+        get: { tags: ['Signals'], summary: 'List intelligence signals',
+          parameters: [
+            { name: 'page', in: 'query', schema: { type: 'integer', default: 1 } },
+            { name: 'limit', in: 'query', schema: { type: 'integer', default: 20 } },
+            { name: 'category', in: 'query', schema: { type: 'string' } },
+            { name: 'severity', in: 'query', schema: { type: 'string' } },
+          ],
+          responses: { '200': { description: 'Signals list', content: { 'application/json': { schema: { type: 'object', properties: { data: { type: 'array', items: { '$ref': '#/components/schemas/Signal' } } } } } } } },
+        },
+        post: { tags: ['Signals'], summary: 'Ingest a new signal',
+          requestBody: { required: true, content: { 'application/json': { schema: { '$ref': '#/components/schemas/Signal' } } } },
+          responses: { '201': { description: 'Signal created' }, '400': { description: 'Validation error', content: { 'application/json': { schema: { '$ref': '#/components/schemas/Error' } } } } },
+        },
+      },
+      '/decisions': {
+        get: { tags: ['Decisions'], summary: 'List strategic decisions',
+          responses: { '200': { description: 'Decisions list', content: { 'application/json': { schema: { type: 'object', properties: { data: { type: 'array', items: { '$ref': '#/components/schemas/Decision' } } } } } } } },
+        },
+        post: { tags: ['Decisions'], summary: 'Create a KIMMP strategic decision',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { question: { type: 'string' }, workflowName: { type: 'string' }, stepName: { type: 'string' } }, required: ['question'] } } } },
+          responses: { '201': { description: 'Decision created', content: { 'application/json': { schema: { '$ref': '#/components/schemas/Decision' } } } } },
+        },
+      },
+      '/blueprints': {
+        get: { tags: ['Blueprints'], summary: 'List deployment blueprints',
+          responses: { '200': { description: 'Blueprints', content: { 'application/json': { schema: { type: 'object', properties: { data: { type: 'array', items: { '$ref': '#/components/schemas/Blueprint' } } } } } } } },
+        },
+        post: { tags: ['Blueprints'], summary: 'Create a new Blueprint',
+          requestBody: { required: true, content: { 'application/json': { schema: { '$ref': '#/components/schemas/Blueprint' } } } },
+          responses: { '201': { description: 'Blueprint created' } },
+        },
+      },
+    },
+    tags: [
+      { name: 'OIS', description: 'Operational Intelligence Score' },
+      { name: 'Signals', description: 'KIMMP intelligence signals' },
+      { name: 'Decisions', description: 'KIMMP strategic decisions' },
+      { name: 'Blueprints', description: 'Customer deployment blueprints' },
+    ],
+  }
+  res.json(spec)
+})
+
+// ─── S122: Webhook HMAC verification ─────────────────────────────────────────
+
+developerRouter.post('/webhook/verify', (_req: Request, res: Response) => {
+  const { payload, signature, secret } = _req.body ?? {}
+  if (!payload || !signature || !secret) {
+    res.status(400).json({ error: 'payload, signature, secret required' }); return
+  }
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(typeof payload === 'string' ? payload : JSON.stringify(payload))
+    .digest('hex')
+  const valid = crypto.timingSafeEqual(Buffer.from(expected, 'hex'), Buffer.from(signature, 'hex').slice(0, expected.length / 2 * 2))
+  res.json({ valid, expected: `sha256=${expected}` })
+})
+
+developerRouter.post('/webhook/sign', (_req: Request, res: Response) => {
+  const { payload, secret } = _req.body ?? {}
+  if (!payload || !secret) { res.status(400).json({ error: 'payload and secret required' }); return }
+  const sig = crypto
+    .createHmac('sha256', secret)
+    .update(typeof payload === 'string' ? payload : JSON.stringify(payload))
+    .digest('hex')
+  res.json({ signature: `sha256=${sig}`, timestamp: Date.now() })
+})
+
+developerRouter.get('/webhook/event-types', (_req: Request, res: Response) => {
+  res.json({
+    eventTypes: [
+      { type: 'ois.updated',          description: 'OIS score recalculated', example: { oisScore: 88.5, label: 'AUTO' } },
+      { type: 'signal.created',       description: 'New KIMMP signal ingested', example: { signalType: 'deal_won', severity: 'HIGH' } },
+      { type: 'signal.escalated',     description: 'Signal severity upgraded to CRITICAL', example: { signalId: 'abc', severity: 'CRITICAL' } },
+      { type: 'decision.created',     description: 'New strategic decision triggered', example: { question: 'Should we expand?', confidence: 82 } },
+      { type: 'decision.resolved',    description: 'Decision outcome recorded', example: { decisionId: 'abc', selected: 'Expand in Q4' } },
+      { type: 'blueprint.published',  description: 'Blueprint published to marketplace', example: { name: 'FinTech Blueprint', version: '1.0' } },
+      { type: 'blueprint.installed',  description: 'Blueprint installed by customer', example: { blueprintId: 'abc', customerName: 'Acme' } },
+      { type: 'customer.ois_drop',    description: 'Customer OIS dropped >5 points', example: { tenantId: 'abc', drop: -6.2 } },
+      { type: 'customer.churned',     description: 'Customer churned', example: { tenantId: 'abc', oisAtChurn: 54 } },
+      { type: 'aegis.alert',          description: 'AEGIS raised a governance alert', example: { severity: 'HIGH', module: 'EGRESS' } },
+      { type: 'partner.commission',   description: 'Partner commission event created', example: { partnerId: 'abc', amount: 1500 } },
+    ],
+  })
+})

@@ -189,7 +189,11 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'kimmp-customer-eight',      label: 'Customer Eight',         path: `${BASE}/kangqore-immp/customers/eight`,         category: 'Enterprise', badge: 'new' },
       { id: 'kimmp-customer-nine',       label: 'Customer Nine',          path: `${BASE}/kangqore-immp/customers/nine`,          category: 'Enterprise', badge: 'new' },
       { id: 'kimmp-customer-ten',        label: 'Customer Ten 🏆',        path: `${BASE}/kangqore-immp/customers/ten`,           category: 'Enterprise', badge: 'new' },
-      { id: 'kimmp-churn-early-warning', label: 'Churn Early Warning',    path: `${BASE}/kangqore-immp/churn-early-warning`,     category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-churn-early-warning',    label: 'Churn Early Warning',       path: `${BASE}/kangqore-immp/churn-early-warning`,     category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-bp-marketplace',        label: 'Blueprint Marketplace',     path: `${BASE}/kangqore-immp/blueprint-marketplace`,   category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-partner-network',       label: 'Partner Network',           path: `${BASE}/kangqore-immp/partner-network`,          category: 'Enterprise', badge: 'new' },
+      { id: 'kimmp-sdk-v2',                label: 'SDK v2',                    path: `${BASE}/kangqore-immp/sdk-v2`,                   category: 'Governance', badge: 'new' },
+      { id: 'kimmp-soc2-audit',            label: 'SOC2 Type II',              path: `${BASE}/kangqore-immp/soc2-audit`,               category: 'Governance', badge: 'new' },
     ],
   },
   {

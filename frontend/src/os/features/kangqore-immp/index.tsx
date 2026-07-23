@@ -76,6 +76,10 @@ import { KEOSBillingPage }              from './pages/KEOSBillingPage'
 import { PackActivationPage }           from './pages/PackActivationPage'
 import { RevenueIntelPage }             from './pages/RevenueIntelPage'
 import { Gen2AccuracyPage }             from './pages/Gen2AccuracyPage'
+import { BlueprintMarketplacePage }     from './pages/BlueprintMarketplacePage'
+import { PartnerOrgPage }              from './pages/PartnerOrgPage'
+import { SDKv2Page }                   from './pages/SDKv2Page'
+import { SOC2AuditPage }               from './pages/SOC2AuditPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -231,9 +235,13 @@ export function KIMMMModule() {
           <Route path="customers/nine"          element={<CustomerNinePage />}              />
           <Route path="customers/ten"           element={<CustomerTenPage />}               />
           <Route path="churn-early-warning"     element={<ChurnEarlyWarningPage />}         />
-          <Route path="reflection"          element={<ReflectionPage />}            />
-          <Route path="authority"           element={<AuthorityPage />}             />
-          <Route path="*"                   element={<Navigate to={BASE} replace />} />
+          <Route path="reflection"              element={<ReflectionPage />}                />
+          <Route path="authority"               element={<AuthorityPage />}                 />
+          <Route path="blueprint-marketplace"   element={<BlueprintMarketplacePage />}      />
+          <Route path="partner-network"         element={<PartnerOrgPage />}                />
+          <Route path="sdk-v2"                  element={<SDKv2Page />}                     />
+          <Route path="soc2-audit"              element={<SOC2AuditPage />}                 />
+          <Route path="*"                       element={<Navigate to={BASE} replace />}    />
         </Routes>
         </motion.div>
       </AnimatePresence>

@@ -4903,3 +4903,321 @@ kangqoreImmpRoutes.post('/gen3/dispatch-crm-task', requireAuth, requireRole(['AD
     res.status(201).json({ planId: plan.id, goal: plan.goal, status: 'PENDING', message: 'Gen3 plan dispatched for CRM workspace' })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S120 — Blueprint Marketplace: publish / fork / rate / version
+// ═══════════════════════════════════════════════════════════════════════════════
+
+kangqoreImmpRoutes.get('/blueprint-marketplace', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { industry, status = 'PUBLISHED', q } = req.query as Record<string, string>
+    const where: any = { status }
+    if (industry) where.industry = industry
+    if (q) where.name = { contains: q, mode: 'insensitive' }
+    const items = await (prisma as any).marketplaceBlueprint.findMany({
+      where, orderBy: { installCount: 'desc' },
+      include: { ratings: { select: { rating: true } } },
+    })
+    res.json({ items, total: items.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/blueprint-marketplace/publish', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { blueprintId } = req.body ?? {}
+    if (!blueprintId) return res.status(400).json({ error: 'blueprintId required' })
+    const bp = await (prisma as any).customerBlueprint.findUnique({ where: { id: blueprintId } })
+    if (!bp) return res.status(404).json({ error: 'Blueprint not found' })
+    const userId = (req as any).user?.id ?? 'admin'
+    const slug = `${bp.customerName.toLowerCase().replace(/\s+/g, '-')}-v${bp.version}-${Date.now()}`
+    const listing = await (prisma as any).marketplaceBlueprint.create({
+      data: {
+        name: bp.customerName, slug, description: `Published from ${bp.customerName} deployment`,
+        industry: bp.industry ?? 'general', planTier: bp.planTier, version: bp.version,
+        spec: bp.spec, enabledModules: bp.enabledModules ?? [],
+        authorId: userId, authorName: 'Kangqore Admin', status: 'PUBLISHED', publishedAt: new Date(),
+      },
+    })
+    res.status(201).json({ listing })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/blueprint-marketplace/:id/fork', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const orig = await (prisma as any).marketplaceBlueprint.findUnique({ where: { id: req.params.id } })
+    if (!orig) return res.status(404).json({ error: 'Not found' })
+    const userId = (req as any).user?.id ?? 'admin'
+    const slug = `fork-${orig.slug}-${Date.now()}`
+    const fork = await (prisma as any).marketplaceBlueprint.create({
+      data: {
+        name: `${orig.name} (Fork)`, slug, description: orig.description,
+        industry: orig.industry, planTier: orig.planTier,
+        version: '1.0', spec: orig.spec, enabledModules: orig.enabledModules,
+        authorId: userId, authorName: 'Kangqore Admin',
+        forkOf: orig.id, status: 'DRAFT',
+      },
+    })
+    await (prisma as any).marketplaceBlueprint.update({
+      where: { id: orig.id }, data: { forkCount: { increment: 1 } },
+    })
+    res.status(201).json({ fork })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/blueprint-marketplace/:id/rate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { rating, review } = req.body ?? {}
+    if (!rating || rating < 1 || rating > 5) return res.status(400).json({ error: 'rating 1–5 required' })
+    const userId = (req as any).user?.id ?? 'admin'
+    const r = await (prisma as any).marketplaceBlueprintRating.upsert({
+      where: { blueprintId_userId: { blueprintId: req.params.id, userId } },
+      update: { rating, review },
+      create: { blueprintId: req.params.id, userId, rating, review },
+    })
+    const agg = await (prisma as any).marketplaceBlueprintRating.aggregate({
+      where: { blueprintId: req.params.id },
+      _avg: { rating: true }, _count: { rating: true },
+    })
+    await (prisma as any).marketplaceBlueprint.update({
+      where: { id: req.params.id },
+      data: { ratingAvg: agg._avg.rating ?? rating, ratingCount: agg._count.rating },
+    })
+    res.json({ rating: r })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/blueprint-marketplace/:id/install', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const listing = await (prisma as any).marketplaceBlueprint.findUnique({ where: { id: req.params.id } })
+    if (!listing) return res.status(404).json({ error: 'Not found' })
+    const { customerName, tenantId } = req.body ?? {}
+    const bp = await (prisma as any).customerBlueprint.create({
+      data: {
+        customerName: customerName ?? listing.name, version: listing.version,
+        planTier: listing.planTier, industry: listing.industry, spec: listing.spec,
+        enabledModules: listing.enabledModules, status: 'ACTIVE',
+        tenantId: tenantId ?? null, deployedAt: new Date(), deployedBy: 'marketplace',
+      },
+    })
+    await (prisma as any).marketplaceBlueprint.update({
+      where: { id: req.params.id }, data: { installCount: { increment: 1 } },
+    })
+    res.status(201).json({ blueprint: bp })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S121 — Partner Portal: partner org + commission ledger + pack publishing
+// ═══════════════════════════════════════════════════════════════════════════════
+
+kangqoreImmpRoutes.get('/partner-orgs', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const orgs = await (prisma as any).partnerOrganisation.findMany({
+      orderBy: { totalRevenue: 'desc' },
+      include: { commissions: { orderBy: { createdAt: 'desc' }, take: 5 } },
+    })
+    res.json({ orgs })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/partner-orgs', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { name, contactEmail, tier, commissionRate, specialisms, website } = req.body ?? {}
+    if (!name || !contactEmail) return res.status(400).json({ error: 'name and contactEmail required' })
+    const slug = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now()
+    const org = await (prisma as any).partnerOrganisation.create({
+      data: { name, slug, contactEmail, website, tier: tier ?? 'SILVER',
+              commissionRate: commissionRate ?? 0.15, specialisms: specialisms ?? [] },
+    })
+    res.status(201).json({ org })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/partner-orgs/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const org = await (prisma as any).partnerOrganisation.findUnique({
+      where: { id: req.params.id },
+      include: { commissions: { orderBy: { createdAt: 'desc' } } },
+    })
+    if (!org) return res.status(404).json({ error: 'Not found' })
+    res.json({ org })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.patch('/partner-orgs/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { tier, commissionRate, status, certifications, oisBoostAvg } = req.body ?? {}
+    const org = await (prisma as any).partnerOrganisation.update({
+      where: { id: req.params.id },
+      data: { ...(tier && { tier }), ...(commissionRate && { commissionRate }),
+               ...(status && { status }), ...(certifications && { certifications }),
+               ...(oisBoostAvg != null && { oisBoostAvg }) },
+    })
+    res.json({ org })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/partner-orgs/:id/commissions', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const commissions = await (prisma as any).partnerCommission.findMany({
+      where: { partnerId: req.params.id }, orderBy: { createdAt: 'desc' },
+    })
+    const summary = {
+      totalEarned: commissions.reduce((s: number, c: any) => s + c.commissionEarned, 0),
+      totalPending: commissions.filter((c: any) => c.status === 'PENDING').reduce((s: number, c: any) => s + c.commissionEarned, 0),
+      totalPaid: commissions.filter((c: any) => c.status === 'PAID').reduce((s: number, c: any) => s + c.commissionEarned, 0),
+    }
+    res.json({ commissions, summary })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/partner-orgs/:id/commissions', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { grossAmount, sourceType = 'DEPLOYMENT', sourceId } = req.body ?? {}
+    if (!grossAmount) return res.status(400).json({ error: 'grossAmount required' })
+    const org = await (prisma as any).partnerOrganisation.findUnique({ where: { id: req.params.id } })
+    if (!org) return res.status(404).json({ error: 'Partner not found' })
+    const commissionEarned = grossAmount * org.commissionRate
+    const commission = await (prisma as any).partnerCommission.create({
+      data: { partnerId: req.params.id, sourceType, sourceId, grossAmount, commissionRate: org.commissionRate, commissionEarned },
+    })
+    await (prisma as any).partnerOrganisation.update({
+      where: { id: req.params.id }, data: { totalRevenue: { increment: grossAmount } },
+    })
+    res.status(201).json({ commission })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/partner-orgs/:id/publish-pack', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const org = await (prisma as any).partnerOrganisation.findUnique({ where: { id: req.params.id } })
+    if (!org) return res.status(404).json({ error: 'Partner not found' })
+    const { name, description, industry, spec, enabledModules } = req.body ?? {}
+    if (!name || !spec) return res.status(400).json({ error: 'name and spec required' })
+    const slug = `${org.slug}-${name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`
+    const listing = await (prisma as any).marketplaceBlueprint.create({
+      data: {
+        name, slug, description: description ?? `Blueprint pack by ${org.name}`,
+        industry: industry ?? 'general', planTier: 'PRO', version: '1.0',
+        spec: spec ?? {}, enabledModules: enabledModules ?? [],
+        authorId: org.id, authorName: org.name, status: 'PUBLISHED', publishedAt: new Date(),
+      },
+    })
+    const commission = await (prisma as any).partnerCommission.create({
+      data: { partnerId: org.id, sourceType: 'BLUEPRINT_SALE', sourceId: listing.id,
+               grossAmount: 0, commissionRate: org.commissionRate, commissionEarned: 0 },
+    })
+    res.status(201).json({ listing, commission })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S123 — SOC2 Type II: audit period + AEGIS evidence collection
+// ═══════════════════════════════════════════════════════════════════════════════
+
+kangqoreImmpRoutes.get('/soc2/periods', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const periods = await (prisma as any).sOC2AuditPeriod.findMany({
+      orderBy: { periodStart: 'desc' },
+      include: { evidence: { select: { id: true, controlId: true, evidenceType: true } } },
+    })
+    res.json({ periods })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/soc2/periods', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { label, auditor, periodStart, periodEnd } = req.body ?? {}
+    if (!label || !periodStart || !periodEnd) return res.status(400).json({ error: 'label, periodStart, periodEnd required' })
+    const period = await (prisma as any).sOC2AuditPeriod.create({
+      data: { label, auditor, periodStart: new Date(periodStart), periodEnd: new Date(periodEnd) },
+    })
+    res.status(201).json({ period })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/soc2/periods/:id/collect-evidence', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const period = await (prisma as any).sOC2AuditPeriod.findUnique({ where: { id: req.params.id } })
+    if (!period) return res.status(404).json({ error: 'Audit period not found' })
+
+    const controls = [
+      { controlId: 'CC6.1', controlName: 'Logical Access Controls',      evidenceType: 'ACCESS_CONTROL', sourceTable: 'aegis_audit_logs' },
+      { controlId: 'CC6.2', controlName: 'User Authentication',           evidenceType: 'ACCESS_CONTROL', sourceTable: 'users' },
+      { controlId: 'CC6.3', controlName: 'Access Revocation',             evidenceType: 'ACCESS_CONTROL', sourceTable: 'programmatic_api_keys' },
+      { controlId: 'CC7.1', controlName: 'Vulnerability Management',      evidenceType: 'INCIDENT',        sourceTable: 'security_findings' },
+      { controlId: 'CC7.2', controlName: 'Security Incident Response',    evidenceType: 'INCIDENT',        sourceTable: 'security_findings' },
+      { controlId: 'CC8.1', controlName: 'Change Management',             evidenceType: 'AUDIT_LOG',       sourceTable: 'aegis_audit_logs' },
+      { controlId: 'A1.1',  controlName: 'System Availability Monitoring',evidenceType: 'AUDIT_LOG',       sourceTable: 'kimmp_signals' },
+      { controlId: 'A1.2',  controlName: 'Incident Recovery',             evidenceType: 'POLICY',          sourceTable: 'aegis_policies' },
+      { controlId: 'C1.1',  controlName: 'Confidentiality Classification',evidenceType: 'ENCRYPTION',      sourceTable: 'aegis_autonomy_logs' },
+      { controlId: 'PI1.1', controlName: 'Processing Integrity',          evidenceType: 'AUDIT_LOG',       sourceTable: 'waanda_fm_training_examples' },
+    ]
+
+    const [auditCount, signalCount, findingCount, keyCount] = await Promise.all([
+      (prisma as any).kIMMPSignal.count({ where: { createdAt: { gte: period.periodStart, lte: period.periodEnd } } }).catch(() => 0),
+      (prisma as any).kIMMPSignal.count().catch(() => 0),
+      (prisma as any).securityFinding.count().catch(() => 0),
+      (prisma as any).programmaticApiKey.count({ where: { revoked: false } }).catch(() => 0),
+    ])
+
+    const countMap: Record<string, number> = {
+      'aegis_audit_logs': auditCount, 'kimmp_signals': signalCount,
+      'security_findings': findingCount, 'programmatic_api_keys': keyCount,
+    }
+
+    const evidence = await Promise.all(controls.map(c =>
+      (prisma as any).sOC2Evidence.upsert({
+        where: { periodId_controlId: { periodId: period.id, controlId: c.controlId } },
+        update: { sourceCount: countMap[c.sourceTable] ?? 0, collectedAt: new Date() },
+        create: { periodId: period.id, ...c, description: `Evidence collected from ${c.sourceTable} covering ${c.controlName}`, sourceCount: countMap[c.sourceTable] ?? 0 },
+      }).catch(() => null)
+    ))
+
+    const collected = evidence.filter(Boolean).length
+    await (prisma as any).sOC2AuditPeriod.update({
+      where: { id: period.id },
+      data: { evidenceCount: collected, controlsPassed: collected },
+    })
+
+    res.json({ collected, controls: collected })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/soc2/periods/:id/export', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const period = await (prisma as any).sOC2AuditPeriod.findUnique({
+      where: { id: req.params.id },
+      include: { evidence: { orderBy: { controlId: 'asc' } } },
+    })
+    if (!period) return res.status(404).json({ error: 'Not found' })
+    const findings = await (prisma as any).securityFinding.findMany({ orderBy: { discoveredAt: 'asc' } })
+
+    const report = {
+      exportedAt: new Date().toISOString(),
+      auditPeriod: { label: period.label, auditor: period.auditor, start: period.periodStart, end: period.periodEnd, status: period.status },
+      summary: { evidenceCount: period.evidenceCount, controlsPassed: period.controlsPassed, controlsFailed: period.controlsFailed },
+      controls: period.evidence.map((e: any) => ({
+        controlId: e.controlId, controlName: e.controlName, evidenceType: e.evidenceType,
+        description: e.description, sourceTable: e.sourceTable, sourceCount: e.sourceCount,
+        collectedAt: e.collectedAt, status: e.sourceCount > 0 ? 'PASS' : 'REVIEW',
+      })),
+      securityFindings: findings.map((f: any) => ({
+        title: f.title, severity: f.severity, status: f.status, cveRef: f.cveRef,
+        discoveredAt: f.discoveredAt, resolvedAt: f.resolvedAt,
+      })),
+    }
+    res.setHeader('Content-Disposition', `attachment; filename="soc2-evidence-${period.id}.json"`)
+    res.json(report)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.patch('/soc2/periods/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status, notes } = req.body ?? {}
+    const period = await (prisma as any).sOC2AuditPeriod.update({
+      where: { id: req.params.id }, data: { ...(status && { status }), ...(notes && { notes }) },
+    })
+    res.json({ period })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
