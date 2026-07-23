@@ -1,12 +1,13 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Plus, TrendingUp, AlertTriangle, CheckCircle2, FolderKanban, CalendarDays, ArrowUpRight, Pencil, Trash2 } from 'lucide-react'
+import { Search, Plus, TrendingUp, AlertTriangle, CheckCircle2, FolderKanban, CalendarDays, ArrowUpRight, Pencil, Trash2, Brain, Zap, Activity } from 'lucide-react'
 import { KIMMPSignalBar } from '@components/KIMMPSignalBar'
 import { InlineSelect } from '@components/InlineSelect'
 import { EditDrawer } from '@components/EditDrawer'
 import { Button } from '@design-system/components/Button'
 import { Input } from '@design-system/components/Input'
 import { api, isDemo } from '@lib/api'
+import { getSocket, connectSocket } from '../../../lib/socket'
 import { useProjectsStore } from '../store'
 import type { Project, ProjectStatus, HealthStatus } from '../types'
 
@@ -350,6 +351,121 @@ function ProjectRow({ p, onEdit, onDelete }: { p: Project; onEdit: () => void; o
   )
 }
 
+// ── Gen3 Intelligence Panel (Phase 5.4) ───────────────────────────────────────
+
+const ROLE_COLOR: Record<string, string> = {
+  RESEARCH: '#579bfc', DIAGNOSTICS: '#f59e0b', EXECUTION: '#10b981', COACH: '#7c3aed',
+}
+
+interface Gen3Subtask { id: string; label: string; status: string; agentRole: string; steps: string[]; result?: string | null }
+interface Gen3Progress { planId: string; goal: string; subtasks: Gen3Subtask[]; planStatus: string; priorResultCount?: number }
+
+function Gen3ProjectsPanel() {
+  const [goal, setGoal] = useState('')
+  const [dispatching, setDispatching] = useState(false)
+  const [activePlan, setActivePlan] = useState<Gen3Progress | null>(null)
+  const socketRef = useRef<ReturnType<typeof getSocket> | null>(null)
+
+  useEffect(() => {
+    try { connectSocket() } catch {}
+    const socket = getSocket()
+    socketRef.current = socket
+
+    const onProgress = (data: Gen3Progress) => {
+      setActivePlan(prev => (prev && prev.planId !== data.planId) ? prev : data)
+    }
+    socket.on('PLAN_PROGRESS', onProgress)
+    return () => { socket.off('PLAN_PROGRESS', onProgress) }
+  }, [])
+
+  async function dispatch() {
+    if (!goal.trim() || dispatching) return
+    setDispatching(true)
+    setActivePlan(null)
+    try {
+      const r = await api.post('/admin/kangqore-immp/gen3/dispatch-project-task', { goal: goal.trim() })
+      setActivePlan({ planId: r.data.planId, goal: r.data.goal, subtasks: [], planStatus: 'PENDING' })
+      setGoal('')
+    } catch { /* ignore */ } finally {
+      setDispatching(false)
+    }
+  }
+
+  const T1 = 'var(--os-text-1)', T2 = 'var(--os-text-2)', BDR = 'var(--os-border)', CARD = 'var(--os-card)', SURF = 'var(--os-surface-0)'
+
+  return (
+    <div style={{ borderRadius: 14, border: `1px solid ${BDR}`, background: CARD, padding: '16px 18px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: 'rgba(87,155,252,0.1)', border: '1px solid rgba(87,155,252,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <Brain size={13} style={{ color: '#579bfc' }} />
+        </div>
+        <div>
+          <p style={{ fontSize: 11, fontWeight: 800, color: T1, margin: 0 }}>Gen3 Intelligence — Projects (Phase 5.4)</p>
+          <p style={{ fontSize: 10, color: T2, margin: 0 }}>Dispatch a 6-step AI pipeline to plan, simulate, and execute a project-level goal</p>
+        </div>
+        {activePlan && (
+          <span style={{ marginLeft: 'auto', fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', padding: '2px 7px', borderRadius: 4,
+            background: activePlan.planStatus === 'DONE' ? 'rgba(16,185,129,0.1)' : 'rgba(87,155,252,0.1)',
+            color: activePlan.planStatus === 'DONE' ? '#10b981' : '#579bfc' }}>
+            {activePlan.planStatus}
+          </span>
+        )}
+      </div>
+
+      {/* Goal input */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: activePlan ? 14 : 0 }}>
+        <input
+          value={goal}
+          onChange={e => setGoal(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && dispatch()}
+          placeholder="e.g. Identify delivery blockers on the Alpha Platform project and propose a recovery plan"
+          style={{ flex: 1, padding: '8px 12px', fontSize: 11, borderRadius: 8, border: `1px solid ${BDR}`, background: SURF, color: T1, outline: 'none' }}
+        />
+        <button
+          onClick={dispatch}
+          disabled={!goal.trim() || dispatching || isDemo()}
+          style={{ padding: '8px 14px', borderRadius: 8, fontSize: 11, fontWeight: 700, background: '#579bfc', color: '#fff', border: 'none', cursor: 'pointer', flexShrink: 0, opacity: (!goal.trim() || dispatching) ? 0.5 : 1 }}>
+          <Zap size={11} style={{ display: 'inline', marginRight: 5 }} />
+          {dispatching ? 'Dispatching…' : 'Dispatch Gen3 Plan'}
+        </button>
+      </div>
+
+      {/* Live subtask list */}
+      {activePlan && activePlan.subtasks.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {activePlan.subtasks.map((st, idx) => {
+            const roleColor = ROLE_COLOR[st.agentRole] ?? '#64748b'
+            const statusColor = st.status === 'DONE' ? '#10b981' : st.status === 'ACTIVE' ? '#579bfc' : st.status === 'FAILED' ? '#ef4444' : T2 as string
+            const prior = (activePlan.priorResultCount ?? 0)
+            return (
+              <div key={st.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 10px', borderRadius: 8, background: SURF, border: `1px solid ${st.status === 'ACTIVE' ? statusColor + '40' : BDR}` }}>
+                <div style={{ width: 5, height: 5, borderRadius: '50%', background: statusColor, flexShrink: 0 }} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: T1 }}>{st.label}</span>
+                    <span style={{ fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.06em', padding: '1px 5px', borderRadius: 3, background: roleColor + '15', color: roleColor }}>{st.agentRole}</span>
+                    {st.status === 'ACTIVE' && idx > 0 && prior > 0 && (
+                      <span style={{ fontSize: 8, color: '#579bfc' }}>building on {prior} prior agent{prior > 1 ? 's' : ''}</span>
+                    )}
+                  </div>
+                  {st.result && st.status === 'DONE' && (
+                    <p style={{ fontSize: 9, color: T2, margin: '3px 0 0', lineHeight: 1.5 }}>{st.result.slice(0, 120)}{st.result.length > 120 ? '…' : ''}</p>
+                  )}
+                </div>
+                <Activity size={9} style={{ color: statusColor, flexShrink: 0 }} />
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {activePlan && activePlan.subtasks.length === 0 && (
+        <p style={{ fontSize: 10, color: T2, marginTop: 8 }}>Waiting for Gen3 plan to start…</p>
+      )}
+    </div>
+  )
+}
+
 // ── Main overview ──────────────────────────────────────────────────────────────
 
 const CATEGORIES = ['All', 'Transformation', 'Innovation / R&D', 'Run & Maintain']
@@ -642,6 +758,9 @@ export function ProjectsOverview() {
           })}
         </div>
       )}
+
+      {/* Gen3 Intelligence Panel — Phase 5.4 */}
+      <Gen3ProjectsPanel />
 
       {editingProject && (
         <ProjectEditDrawer project={editingProject} onClose={() => setEditingId(null)} />

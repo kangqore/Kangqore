@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Brain, Download, Plus, CheckCircle, XCircle, AlertCircle, Cpu, ChevronRight, RefreshCw, Tag, Sliders, Rocket, BarChart3, GitMerge } from 'lucide-react'
+import { Brain, Download, Plus, CheckCircle, XCircle, AlertCircle, Cpu, ChevronRight, RefreshCw, Tag, Sliders, Rocket, BarChart3, GitMerge, Radio } from 'lucide-react'
 import { api } from '@lib/api'
 
 const T1   = 'var(--os-text-1)'
@@ -286,6 +286,8 @@ function AnnotateTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
   const [showCreate, setShowCreate] = useState(false)
   const [form, setForm] = useState({ name: '', provider: 'ANTHROPIC', minQuality: '0.9', format: 'anthropic', baseModel: 'claude-haiku-4-5-20251001', notes: '' })
+  const [pollResults, setPollResults] = useState<Record<string, any>>({})
+  const [polling, setPolling] = useState<Record<string, boolean>>({})
 
   const { data, isLoading } = useQuery<{ jobs: FinetuneJob[] }>({
     queryKey: ['finetune-jobs'],
@@ -316,6 +318,29 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
   const STATUS_FLOW: Record<string, string | null> = {
     PENDING: 'EXPORTING', EXPORTING: 'SUBMITTED', SUBMITTED: 'TRAINING', TRAINING: 'COMPLETE', COMPLETE: null, FAILED: null,
   }
+
+  async function pollJob(id: string) {
+    setPolling(p => ({ ...p, [id]: true }))
+    try {
+      const r = await api.get(`/admin/kangqore-immp/learning/finetune-jobs/${id}/poll`)
+      setPollResults(p => ({ ...p, [id]: r.data }))
+      qc.invalidateQueries({ queryKey: ['finetune-jobs'] })
+    } catch { /* ignore */ } finally {
+      setPolling(p => ({ ...p, [id]: false }))
+    }
+  }
+
+  // Auto-poll every 30s when any job is SUBMITTED or RUNNING
+  const autoRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  useEffect(() => {
+    const active = jobs.filter(j => j.providerJobId && (j.status === 'SUBMITTED' || j.status === 'TRAINING'))
+    if (active.length > 0) {
+      autoRef.current = setInterval(() => {
+        active.forEach(j => pollJob(j.id))
+      }, 30_000)
+    }
+    return () => { if (autoRef.current) clearInterval(autoRef.current) }
+  }, [jobs.map(j => j.id + j.status).join(',')])
 
   return (
     <div className="space-y-4">
@@ -389,6 +414,8 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         const next = STATUS_FLOW[job.status]
         const STEPS = ['PENDING', 'EXPORTING', 'SUBMITTED', 'TRAINING', 'COMPLETE']
         const stepIdx = STEPS.indexOf(job.status)
+        const pr = pollResults[job.id]
+        const isAutoRegistered = pr?.fineTunedModelId && pr?.providerStatus === 'succeeded'
         return (
           <div key={job.id} className="rounded-xl border" style={{ background: CARD, borderColor: BDR }}>
             <div className="flex items-start gap-3 px-4 py-4">
@@ -396,14 +423,26 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
                 <Cpu className="w-4 h-4" style={{ color: cfg.color }} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <p className="text-xs font-bold" style={{ color: T1 }}>{job.name}</p>
                   <span className="px-1.5 py-0.5 rounded text-[10px] font-bold" style={{ background: cfg.bg, color: cfg.color }}>{job.status}</span>
                   <span className="text-[10px]" style={{ color: T2 }}>{job.provider}</span>
+                  {pr?.providerStatus && (
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold"
+                      style={{ background: 'rgba(87,155,252,0.12)', color: BLUE }}>
+                      Provider: {pr.providerStatus}
+                    </span>
+                  )}
+                  {isAutoRegistered && (
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold"
+                      style={{ background: 'rgba(16,185,129,0.12)', color: GRN }}>
+                      Auto-registered as active Gen2 model
+                    </span>
+                  )}
                 </div>
                 <p className="text-[10px] mb-2" style={{ color: T2 }}>
                   {job.exampleCount} examples · q≥{job.minQuality} · {job.baseModel}
-                  {job.providerJobId ? ` · ID: ${job.providerJobId}` : ''}
+                  {job.providerJobId ? ` · ID: ${job.providerJobId.slice(0, 20)}…` : ''}
                 </p>
                 {/* Status timeline */}
                 <div className="flex items-center gap-1">
@@ -426,14 +465,23 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
                   })}
                 </div>
               </div>
-              {next && (
-                <button onClick={() => advance.mutate({ id: job.id, status: next })}
-                  disabled={advance.isPending}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold flex-shrink-0 disabled:opacity-40"
-                  style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.color}30` }}>
-                  → {next}
-                </button>
-              )}
+              <div className="flex flex-col gap-1.5 flex-shrink-0">
+                {job.providerJobId && (
+                  <button onClick={() => pollJob(job.id)} disabled={polling[job.id]}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold disabled:opacity-40"
+                    style={{ background: 'rgba(87,155,252,0.1)', color: BLUE, border: `1px solid rgba(87,155,252,0.2)` }}>
+                    <Radio className="w-3 h-3" /> {polling[job.id] ? 'Polling…' : 'Poll Status'}
+                  </button>
+                )}
+                {next && (
+                  <button onClick={() => advance.mutate({ id: job.id, status: next })}
+                    disabled={advance.isPending}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold disabled:opacity-40"
+                    style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.color}30` }}>
+                    → {next}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )

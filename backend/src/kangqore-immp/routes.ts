@@ -3049,6 +3049,65 @@ kangqoreImmpRoutes.get('/learning/finetune-jobs/:id/status', requireAuth, requir
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// ── S114 — Gen2 Fine-Tune Polling + Auto-Register ─────────────────────────────
+// GET /admin/kangqore-immp/learning/finetune-jobs/:id/poll
+kangqoreImmpRoutes.get('/learning/finetune-jobs/:id/poll', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const job = await (prisma as any).finetuneJob.findUnique({ where: { id: req.params.id } })
+    if (!job) return res.status(404).json({ error: 'Job not found' })
+    if (!job.providerJobId) return res.json({ ...job, polled: false, message: 'Not submitted yet' })
+
+    const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY ?? ''
+    if (!ANTHROPIC_KEY || job.providerJobId.startsWith('ftjob-sim-')) {
+      return res.json({ ...job, polled: true, providerStatus: job.status, fineTunedModelId: null, simulated: true })
+    }
+
+    const pollRes = await fetch(`https://api.anthropic.com/v1/fine-tuning/jobs/${job.providerJobId}`, {
+      headers: { 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01', 'anthropic-beta': 'fine-tuning-2024-12-17' },
+      signal: AbortSignal.timeout(10_000),
+    })
+
+    if (!pollRes.ok) {
+      return res.json({ ...job, polled: true, providerError: `Poll failed: ${pollRes.status}` })
+    }
+
+    const providerData = await pollRes.json() as any
+    const statusMap: Record<string, string> = { pending: 'SUBMITTED', running: 'RUNNING', succeeded: 'COMPLETED', failed: 'FAILED' }
+    const newStatus = statusMap[providerData.status] ?? job.status
+    const fineTunedModelId: string | null = providerData.fine_tuned_model ?? null
+
+    const updateData: any = { status: newStatus }
+    if (newStatus === 'COMPLETED' || newStatus === 'FAILED') updateData.completedAt = new Date()
+    const updated = await (prisma as any).finetuneJob.update({ where: { id: req.params.id }, data: updateData })
+
+    // Auto-register Gen2Model when job succeeds for the first time
+    if (newStatus === 'COMPLETED' && fineTunedModelId && !job.completedAt) {
+      await (prisma as any).gen2Model.updateMany({ where: { isDeployed: true }, data: { isDeployed: false, deployedAt: null } })
+      await (prisma as any).gen2Model.create({
+        data: {
+          name: `WAANDA Gen2 — ${job.baseModel} fine-tune`,
+          provider: 'ANTHROPIC', baseModel: job.baseModel,
+          providerModelId: fineTunedModelId, finetuneJobId: job.id,
+          isDeployed: true, deployedAt: new Date(),
+          trainingExamples: job.exampleCount ?? 0, createdBy: job.createdBy,
+          notes: `Auto-registered from fine-tune job ${job.id}`,
+        },
+      })
+      await (prisma as any).kimmpSignal.create({
+        data: {
+          type: 'GEN2_MODEL_DEPLOYED', priority: 'high',
+          title: `WAANDA Gen2 model deployed: ${fineTunedModelId}`,
+          summary: `Fine-tune job ${job.id} succeeded. Model ${fineTunedModelId} auto-registered as active Gen2 deployment.`,
+          module: 'Gen2', confidence: 99,
+          metadata: { providerJobId: job.providerJobId, modelId: fineTunedModelId, baseModel: job.baseModel } as any,
+        },
+      }).catch(() => {})
+    }
+
+    res.json({ ...updated, polled: true, providerStatus: providerData.status, fineTunedModelId })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 // GET /admin/kangqore-immp/learning/gen2-models
 kangqoreImmpRoutes.get('/learning/gen2-models', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
@@ -3212,7 +3271,7 @@ kangqoreImmpRoutes.post('/learning/quality-diff', requireAuth, requireRole(['ADM
       })(),
       (async () => {
         const t = Date.now()
-        const r = await routedCall('claude-haiku-4-5-20251001', SYSTEM, prompt, 800, { module: 'quality-diff', source: 'learning' })
+        const r = await routedCall('claude-haiku-4-5-20251001', SYSTEM, prompt, 800, { agentType: 'quality-diff', hint: 'learning' })
         return {
           response: r.content[0]?.text ?? '',
           latencyMs: Date.now() - t,
@@ -4658,5 +4717,189 @@ kangqoreImmpRoutes.get('/customers/customer-one', requireAuth, requireRole(['ADM
       provisioned: !!tenant,
       oisCurrent,
     })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ══════════════════════════════════════════════════════════════════════════
+// S115 — Gen3 Projects Workspace (Phase 5.4)
+// ══════════════════════════════════════════════════════════════════════════
+
+kangqoreImmpRoutes.post('/gen3/dispatch-project-task', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { goal, projectId, taskLabel } = req.body ?? {}
+    if (!goal?.trim()) return res.status(400).json({ error: 'goal required' })
+    const userId = (req as any).user?.id ?? 'admin'
+
+    const subtasks = [
+      { id: '1', label: 'Understand project objective', status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Parse goal semantics', 'Retrieve project context', 'Identify blockers'], result: null },
+      { id: '2', label: 'Gather project evidence',      status: 'PENDING', agentRole: 'DIAGNOSTICS', steps: ['Task dependency scan', 'Resource availability check', 'Risk assessment'], result: null },
+      { id: '3', label: 'Form delivery hypothesis',     status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Synthesise evidence', 'Generate delivery plan', 'Score confidence'], result: null },
+      { id: '4', label: 'Simulate project outcomes',    status: 'PENDING', agentRole: 'EXECUTION',   steps: ['Timeline simulation', 'Resource allocation optimisation', 'Risk-weighted path'], result: null },
+      { id: '5', label: 'Execute delivery path',        status: 'PENDING', agentRole: 'EXECUTION',   steps: ['Create action items', 'Assign resources', 'Set milestones'], result: null },
+      { id: '6', label: 'Capture project learning',     status: 'PENDING', agentRole: 'COACH',       steps: ['Record delivery patterns', 'Update team priors', 'Log outcome metrics'], result: null },
+    ]
+
+    const plan = await (prisma as any).planDecompositionTree.create({
+      data: {
+        goal: goal.trim(), subtasks, status: 'PENDING', createdBy: userId,
+        metadata: { projectId: projectId ?? null, taskLabel: taskLabel ?? null, workspace: 'projects', phase: '5.4' } as any,
+      },
+    })
+    const { enqueue } = await import('./gen3Executor.service')
+    enqueue(plan)
+    res.status(201).json({ planId: plan.id, goal: plan.goal, status: 'PENDING', message: 'Gen3 plan dispatched for Projects workspace' })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ══════════════════════════════════════════════════════════════════════════
+// S117 — Gen2 Live A/B Routing + Per-Tenant Accuracy
+// ══════════════════════════════════════════════════════════════════════════
+
+kangqoreImmpRoutes.post('/gen2/accuracy', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { tenantId, provider, responseId, isAccurate, ratingComment } = req.body ?? {}
+    if (!tenantId || typeof isAccurate !== 'boolean') return res.status(400).json({ error: 'tenantId and isAccurate required' })
+    const record = await (prisma as any).gen2AccuracyRecord.create({
+      data: { tenantId, provider: provider ?? 'gen1', responseId: responseId ?? null, isAccurate, ratingComment: ratingComment ?? null },
+    })
+    res.status(201).json(record)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/gen2/accuracy', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const allRecords = await (prisma as any).gen2AccuracyRecord.findMany({ orderBy: { createdAt: 'desc' }, take: 2000 })
+    const byTenant: Record<string, { gen2: number; gen2ok: number; gen1: number; gen1ok: number }> = {}
+    for (const r of allRecords) {
+      if (!byTenant[r.tenantId]) byTenant[r.tenantId] = { gen2: 0, gen2ok: 0, gen1: 0, gen1ok: 0 }
+      if (r.provider === 'gen1') { byTenant[r.tenantId].gen1++; if (r.isAccurate) byTenant[r.tenantId].gen1ok++ }
+      else { byTenant[r.tenantId].gen2++; if (r.isAccurate) byTenant[r.tenantId].gen2ok++ }
+    }
+    const tenants = Object.entries(byTenant).map(([tenantId, c]) => ({
+      tenantId,
+      gen2AccuracyPct: c.gen2 > 0 ? Math.round((c.gen2ok / c.gen2) * 100) : null,
+      gen1AccuracyPct: c.gen1 > 0 ? Math.round((c.gen1ok / c.gen1) * 100) : null,
+      gen2SampleSize: c.gen2,
+      qualifiesForLiveRouting: c.gen2 >= 10 && c.gen2 > 0 && Math.round((c.gen2ok / c.gen2) * 100) >= 80,
+    }))
+    res.json({ tenants, totalRecords: allRecords.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/gen2/accuracy/:tenantId', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const records = await (prisma as any).gen2AccuracyRecord.findMany({
+      where: { tenantId: req.params.tenantId },
+      orderBy: { createdAt: 'desc' }, take: 200,
+    })
+    const total = records.length
+    const gen2Records = records.filter((r: any) => r.provider !== 'gen1')
+    const gen2Accurate = gen2Records.filter((r: any) => r.isAccurate).length
+    const gen1Records = records.filter((r: any) => r.provider === 'gen1')
+    const gen1Accurate = gen1Records.filter((r: any) => r.isAccurate).length
+    const gen2AccuracyPct = gen2Records.length > 0 ? Math.round((gen2Accurate / gen2Records.length) * 100) : null
+    const gen1AccuracyPct = gen1Records.length > 0 ? Math.round((gen1Accurate / gen1Records.length) * 100) : null
+    const qualifiesForLiveRouting = gen2AccuracyPct !== null && gen2AccuracyPct >= 80 && gen2Records.length >= 10
+    res.json({ tenantId: req.params.tenantId, total, gen2AccuracyPct, gen1AccuracyPct, qualifiesForLiveRouting, gen2SampleSize: gen2Records.length, gen1SampleSize: gen1Records.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ══════════════════════════════════════════════════════════════════════════
+// S118 — COIG ↔ AI Accuracy Correlation
+// ══════════════════════════════════════════════════════════════════════════
+
+kangqoreImmpRoutes.get('/analytics/coig-correlation', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const since = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+    const signals = await (prisma as any).kimmpSignal.findMany({
+      where: { createdAt: { gte: since } }, orderBy: { createdAt: 'desc' }, take: 500,
+    })
+
+    const typeVelocity: Record<string, { totalDelta: number; count: number; confSum: number }> = {}
+    for (const sig of signals) {
+      const type = sig.type ?? 'UNKNOWN'
+      if (!typeVelocity[type]) typeVelocity[type] = { totalDelta: 0, count: 0, confSum: 0 }
+      const metaDelta = (sig.metadata as any)?.coigDelta ?? (sig.confidence > 80 ? 0.8 : -0.2)
+      typeVelocity[type].totalDelta += metaDelta
+      typeVelocity[type].count++
+      typeVelocity[type].confSum += sig.confidence ?? 50
+    }
+
+    const correlations = Object.entries(typeVelocity).map(([signalType, v]) => ({
+      signalType,
+      avgOisVelocity: v.count > 0 ? parseFloat((v.totalDelta / v.count).toFixed(3)) : 0,
+      avgConfidence:  v.count > 0 ? Math.round(v.confSum / v.count) : 0,
+      sampleSize:     v.count,
+      impact: v.totalDelta / v.count > 0.5 ? 'positive' : v.totalDelta / v.count < -0.2 ? 'negative' : 'neutral',
+    })).sort((a, b) => b.avgOisVelocity - a.avgOisVelocity)
+
+    const customers = await (prisma as any).customer.findMany({
+      where: { oisScore: { not: null } }, take: 50,
+    }).catch(() => [] as any[])
+
+    const topCustomers = customers
+      .map((c: any) => ({ id: c.id, name: c.name ?? c.company ?? c.id, oisScore: c.oisScore, coigVelocity: c.coigVelocity ?? 0 }))
+      .sort((a: any, b: any) => (b.coigVelocity ?? 0) - (a.coigVelocity ?? 0))
+      .slice(0, 10)
+
+    res.json({ correlations: correlations.slice(0, 20), topCustomers, signalsSince: since.toISOString(), totalSignals: signals.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ══════════════════════════════════════════════════════════════════════════
+// S119 — Gen3 Finance + CRM Workspaces (Phase 5.5–5.6)
+// ══════════════════════════════════════════════════════════════════════════
+
+kangqoreImmpRoutes.post('/gen3/dispatch-finance-task', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { goal, budgetContext } = req.body ?? {}
+    if (!goal?.trim()) return res.status(400).json({ error: 'goal required' })
+    const userId = (req as any).user?.id ?? 'admin'
+
+    const subtasks = [
+      { id: '1', label: 'Parse financial objective',   status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Parse goal', 'Pull budget context', 'Identify financial constraints'], result: null },
+      { id: '2', label: 'Analyse financial signals',   status: 'PENDING', agentRole: 'DIAGNOSTICS', steps: ['Revenue trend analysis', 'Cost centre review', 'Variance detection'], result: null },
+      { id: '3', label: 'Build financial hypothesis',  status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Synthesise data', 'Model forecast scenarios', 'Confidence scoring'], result: null },
+      { id: '4', label: 'Simulate financial outcomes', status: 'PENDING', agentRole: 'EXECUTION',   steps: ['Run budget simulations', 'ROI per scenario', 'Risk-weight cash flows'], result: null },
+      { id: '5', label: 'Execute financial plan',      status: 'PENDING', agentRole: 'EXECUTION',   steps: ['Allocate budget', 'Flag reallocation needs', 'Document decisions'], result: null },
+      { id: '6', label: 'Capture financial learning',  status: 'PENDING', agentRole: 'COACH',       steps: ['Record forecast accuracy', 'Update financial priors', 'Log variance patterns'], result: null },
+    ]
+
+    const plan = await (prisma as any).planDecompositionTree.create({
+      data: {
+        goal: goal.trim(), subtasks, status: 'PENDING', createdBy: userId,
+        metadata: { workspace: 'finance', phase: '5.5', budgetContext: budgetContext ?? null } as any,
+      },
+    })
+    const { enqueue } = await import('./gen3Executor.service')
+    enqueue(plan)
+    res.status(201).json({ planId: plan.id, goal: plan.goal, status: 'PENDING', message: 'Gen3 plan dispatched for Finance workspace' })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/gen3/dispatch-crm-task', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { goal, customerContext } = req.body ?? {}
+    if (!goal?.trim()) return res.status(400).json({ error: 'goal required' })
+    const userId = (req as any).user?.id ?? 'admin'
+
+    const subtasks = [
+      { id: '1', label: 'Parse CRM objective',       status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Parse goal', 'Pull customer segments', 'Identify relationship blockers'], result: null },
+      { id: '2', label: 'Diagnose customer health',  status: 'PENDING', agentRole: 'DIAGNOSTICS', steps: ['OIS score analysis', 'Churn risk scan', 'Engagement signal review'], result: null },
+      { id: '3', label: 'Synthesise CRM strategy',   status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Identify at-risk accounts', 'Prioritise interventions', 'Score confidence'], result: null },
+      { id: '4', label: 'Simulate CRM outcomes',     status: 'PENDING', agentRole: 'EXECUTION',   steps: ['Model intervention impact', 'Revenue retention forecast', 'COIG delta estimate'], result: null },
+      { id: '5', label: 'Execute CRM interventions', status: 'PENDING', agentRole: 'EXECUTION',   steps: ['Create CSM tasks', 'Flag at-risk accounts', 'Schedule follow-ups'], result: null },
+      { id: '6', label: 'Capture CRM learning',      status: 'PENDING', agentRole: 'COACH',       steps: ['Record intervention outcomes', 'Update churn priors', 'Log COIG patterns'], result: null },
+    ]
+
+    const plan = await (prisma as any).planDecompositionTree.create({
+      data: {
+        goal: goal.trim(), subtasks, status: 'PENDING', createdBy: userId,
+        metadata: { workspace: 'crm', phase: '5.6', customerContext: customerContext ?? null } as any,
+      },
+    })
+    const { enqueue } = await import('./gen3Executor.service')
+    enqueue(plan)
+    res.status(201).json({ planId: plan.id, goal: plan.goal, status: 'PENDING', message: 'Gen3 plan dispatched for CRM workspace' })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })

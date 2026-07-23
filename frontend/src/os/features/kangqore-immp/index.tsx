@@ -75,6 +75,7 @@ import { WaandaGen3Page }               from './pages/WaandaGen3Page'
 import { KEOSBillingPage }              from './pages/KEOSBillingPage'
 import { PackActivationPage }           from './pages/PackActivationPage'
 import { RevenueIntelPage }             from './pages/RevenueIntelPage'
+import { Gen2AccuracyPage }             from './pages/Gen2AccuracyPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -218,6 +219,7 @@ export function KIMMMModule() {
           <Route path="billing-dashboard"       element={<KEOSBillingPage />}               />
           <Route path="pack-activation"         element={<PackActivationPage />}            />
           <Route path="revenue-intel"           element={<RevenueIntelPage />}              />
+          <Route path="gen2-accuracy"           element={<Gen2AccuracyPage />}              />
           <Route path="pmo"                     element={<PMOAdminPage />}                  />
           <Route path="coig-north-star"         element={<COIGNorthStarPage />}             />
           <Route path="blueprint-versions"      element={<BlueprintVersionPage />}          />

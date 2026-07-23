@@ -15,7 +15,8 @@ const RED  = '#ef4444'
 const BLUE = '#579bfc'
 const PURP = '#7c3aed'
 
-interface Subtask { id: string; label: string; status: string; agentRole: string; steps: string[]; result?: string }
+// S116: priorResultCount added to Subtask for context-chain display
+interface Subtask { id: string; label: string; status: string; agentRole: string; steps: string[]; result?: string; priorResultCount?: number }
 
 interface Plan {
   id: string; goal: string; subtasks: Subtask[]; status: string
@@ -80,11 +81,18 @@ export function WaandaGen3Page() {
         qc.invalidateQueries({ queryKey: ['gen3-status'] })
       }
       // Patch the specific plan in-place (no round-trip)
+      // S116: inject priorResultCount into the active subtask for context-chain display
+      const priorCount: number = data.priorResultCount ?? 0
+      const patchedSubtasks = Array.isArray(data.subtasks)
+        ? data.subtasks.map((st: Subtask) =>
+            st.status === 'ACTIVE' ? { ...st, priorResultCount: priorCount } : st
+          )
+        : undefined
       qc.setQueryData<Plan[]>(['gen3-plans'], (old = []) =>
         old.map(p => p.id === data.planId
           ? {
               ...p,
-              subtasks: data.subtasks ?? p.subtasks,
+              subtasks: patchedSubtasks ?? p.subtasks,
               status: data.planStatus ?? p.status,
               completedAt: data.planStatus === 'DONE' || data.planStatus === 'FAILED' ? new Date().toISOString() : p.completedAt,
             }
@@ -289,6 +297,12 @@ function PlanCard({ plan }: { plan: Plan }) {
                   <span className="text-[10px] font-black w-5 text-center" style={{ color: T2 }}>{idx + 1}</span>
                   {t.status === 'ACTIVE' && <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" style={{ color: BLUE }} />}
                   <span className="flex-1 text-xs font-bold" style={{ color: T1 }}>{t.label}</span>
+                  {/* S116: context-chain tag */}
+                  {t.status === 'ACTIVE' && t.priorResultCount != null && t.priorResultCount > 0 && (
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: `${PURP}12`, color: PURP }}>
+                      ctx:{t.priorResultCount}
+                    </span>
+                  )}
                   <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: `${roleColor}15`, color: roleColor }}>{t.agentRole}</span>
                   <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: `${tColor}15`, color: tColor }}>{t.status}</span>
                   {isOpen ? <ChevronDown className="w-3 h-3" style={{ color: T2 }} /> : <ChevronRight className="w-3 h-3" style={{ color: T2 }} />}
