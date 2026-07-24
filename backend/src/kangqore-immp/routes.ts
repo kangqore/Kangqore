@@ -5536,3 +5536,199 @@ kangqoreImmpRoutes.get('/platform/chapter-9-brief', requireAuth, requireRole(['A
     ],
   })
 })
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S131–S133 — Vertical SaaS Editions (HealthTech | LegalTech | FinTech)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const VERTICAL_EDITIONS_SEED = [
+  {
+    slug: 'healthtech',
+    displayName: 'HealthTech Edition',
+    personaName: 'ARIA',
+    personaColor: '#10b981',
+    aegisProfile: '{"hipaaEnabled":true,"clinicalOpsGovernance":true,"patientDataAudit":true}',
+    complianceFlags: ['HIPAA'],
+    description: 'Clinical operations, patient analytics, and HIPAA-aligned AEGIS governance for healthcare organisations.',
+    planTiers: {
+      STARTER:    { priceGBP: 299,  features: ['Clinical OIS baseline', 'ARIA WAANDA persona', 'Patient analytics pack', 'HIPAA AEGIS profile'] },
+      PRO:        { priceGBP: 799,  features: ['+ Multi-department OIS', 'Advanced AEGIS audit trail', 'Clinical WVIS nodes', 'HIPAA evidence export'] },
+      ENTERPRISE: { priceGBP: 1999, features: ['+ AEGIS Phase 3 enforcement', 'Custom clinical workflows', 'SOC2 + HIPAA compliance export', 'Priority SLA'] },
+    },
+  },
+  {
+    slug: 'legaltech',
+    displayName: 'LegalTech Edition',
+    personaName: 'LEX',
+    personaColor: '#3b82f6',
+    aegisProfile: '{"jurisdictionAware":true,"matterGovernance":true,"contractAudit":true}',
+    complianceFlags: ['GDPR', 'BAR_ASSOCIATION'],
+    description: 'Contract lifecycle management, matter tracking, and jurisdiction-aware regulatory compliance for law firms.',
+    planTiers: {
+      STARTER:    { priceGBP: 349,  features: ['Matter OIS baseline', 'LEX WAANDA persona', 'Contract tracking pack', 'Jurisdiction AEGIS flags'] },
+      PRO:        { priceGBP: 899,  features: ['+ Regulatory WVIS nodes', 'Advanced matter analytics', 'GDPR DPA auto-generation', 'Bar association audit'] },
+      ENTERPRISE: { priceGBP: 2199, features: ['+ Full firm governance', 'Custom regulatory workflows', 'SOC2 + compliance export', 'Multi-jurisdiction AEGIS'] },
+    },
+  },
+  {
+    slug: 'fintech',
+    displayName: 'FinTech Edition',
+    personaName: 'FINX',
+    personaColor: '#f59e0b',
+    aegisProfile: '{"soxEnabled":true,"pciEnabled":true,"tradeGovernance":true,"riskMonitoring":true}',
+    complianceFlags: ['SOX', 'PCI'],
+    description: 'Portfolio operations, trade compliance, and SOX/PCI-enforced AEGIS governance for financial services.',
+    planTiers: {
+      STARTER:    { priceGBP: 399,  features: ['Portfolio OIS baseline', 'FINX WAANDA persona', 'Trade compliance pack', 'SOX/PCI AEGIS profile'] },
+      PRO:        { priceGBP: 999,  features: ['+ Risk WVIS nodes', 'Advanced trade analytics', 'PCI compliance report', 'SOX evidence export'] },
+      ENTERPRISE: { priceGBP: 2499, features: ['+ Full trade governance', 'Custom risk workflows', 'SOC2 + SOX + PCI audit', 'Real-time risk AEGIS'] },
+    },
+  },
+] as const
+
+async function seedVerticalEditions() {
+  for (const ed of VERTICAL_EDITIONS_SEED) {
+    await (prisma as any).verticalEdition.upsert({
+      where:  { slug: ed.slug },
+      update: {},
+      create: { ...ed, complianceFlags: [...ed.complianceFlags], planTiers: ed.planTiers as any },
+    }).catch(() => null)
+  }
+}
+
+const EDITION_PRICES: Record<string, Record<string, number>> = {
+  healthtech: { STARTER: 299, PRO: 799,  ENTERPRISE: 1999 },
+  legaltech:  { STARTER: 349, PRO: 899,  ENTERPRISE: 2199 },
+  fintech:    { STARTER: 399, PRO: 999,  ENTERPRISE: 2499 },
+}
+
+// S131–S133: List all vertical editions (with auto-seed)
+kangqoreImmpRoutes.get('/vertical-editions', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    await seedVerticalEditions()
+    const editions = await (prisma as any).verticalEdition.findMany({ orderBy: { slug: 'asc' } })
+    res.json({ editions })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S134: Edition pricing comparison (register before /:slug)
+kangqoreImmpRoutes.get('/vertical-editions/pricing', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    await seedVerticalEditions()
+    const editions = await (prisma as any).verticalEdition.findMany({ orderBy: { slug: 'asc' } })
+    res.json({ pricing: editions.map((e: any) => ({ slug: e.slug, displayName: e.displayName, personaName: e.personaName, personaColor: e.personaColor, complianceFlags: e.complianceFlags, planTiers: e.planTiers })) })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// Single edition by slug
+kangqoreImmpRoutes.get('/vertical-editions/:slug', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const edition = await (prisma as any).verticalEdition.findUnique({ where: { slug: req.params.slug } })
+    if (!edition) return res.status(404).json({ error: 'Edition not found' })
+    res.json({ edition })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S135: Edition-aware blueprint seed defaults
+kangqoreImmpRoutes.get('/vertical-editions/:slug/blueprint-seed', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const edition = await (prisma as any).verticalEdition.findUnique({ where: { slug: req.params.slug } })
+    if (!edition) return res.status(404).json({ error: 'Edition not found' })
+    const SEED_MODULES: Record<string, string[]> = {
+      healthtech: ['WAANDA', 'AEGIS', 'Projects', 'KIMMP', 'OIS', 'Clinical-Ops'],
+      legaltech:  ['WAANDA', 'AEGIS', 'Projects', 'KIMMP', 'OIS', 'Matter-Management'],
+      fintech:    ['WAANDA', 'AEGIS', 'Finance', 'KIMMP', 'OIS', 'Trade-Compliance'],
+    }
+    res.json({
+      slug: req.params.slug,
+      personaName: edition.personaName,
+      personaColor: edition.personaColor,
+      complianceFlags: edition.complianceFlags,
+      suggestedModules: SEED_MODULES[req.params.slug] ?? ['WAANDA', 'AEGIS', 'KIMMP', 'OIS'],
+      aegisProfile: edition.aegisProfile,
+    })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S136: Vertical SaaS analytics overview
+kangqoreImmpRoutes.get('/vertical-analytics/overview', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    await seedVerticalEditions()
+    const tenants = await (prisma as any).tenantOrganisation.findMany({
+      where: { isActive: true },
+      select: { industry: true, verticalEditionSlug: true, planTier: true },
+    }).catch(() => [] as any[])
+
+    const vertMap: Record<string, { customers: number; plans: Record<string, number> }> = {
+      healthtech: { customers: 0, plans: {} },
+      legaltech:  { customers: 0, plans: {} },
+      fintech:    { customers: 0, plans: {} },
+    }
+    for (const t of tenants) {
+      const slug = t.verticalEditionSlug || (
+        (t.industry ?? '').toLowerCase().includes('health') ? 'healthtech' :
+        (t.industry ?? '').toLowerCase().includes('legal')  ? 'legaltech'  :
+        (t.industry ?? '').toLowerCase().includes('fin')    ? 'fintech'    : null
+      )
+      if (slug && vertMap[slug]) {
+        vertMap[slug].customers++
+        vertMap[slug].plans[t.planTier] = (vertMap[slug].plans[t.planTier] ?? 0) + 1
+      }
+    }
+
+    const summary = VERTICAL_EDITIONS_SEED.map(ed => {
+      const v = vertMap[ed.slug]
+      const mrrGBP = Object.entries(v.plans).reduce((acc, [tier, cnt]) => acc + (EDITION_PRICES[ed.slug]?.[tier] ?? 0) * cnt, 0)
+      return { slug: ed.slug, displayName: ed.displayName, personaName: ed.personaName, personaColor: ed.personaColor, customers: v.customers, mrrGBP, planBreakdown: v.plans }
+    })
+
+    const totalCustomers = await (prisma as any).tenantOrganisation.count({ where: { isActive: true } }).catch(() => 0)
+    res.json({ summary, totalCustomers, totalVerticalCustomers: summary.reduce((a, s) => a + s.customers, 0), totalVerticalMRR: summary.reduce((a, s) => a + s.mrrGBP, 0) })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// OIS distribution by vertical
+kangqoreImmpRoutes.get('/vertical-analytics/ois-distribution', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const blueprints = await (prisma as any).customerBlueprint.findMany({
+      select: { oisBaseline: true, industry: true },
+    }).catch(() => [] as any[])
+    const buckets: Record<string, number[]> = { healthtech: [], legaltech: [], fintech: [] }
+    for (const bp of blueprints) {
+      const ind = (bp.industry ?? '').toLowerCase()
+      if (ind.includes('health')) buckets.healthtech.push(bp.oisBaseline ?? 0)
+      else if (ind.includes('legal')) buckets.legaltech.push(bp.oisBaseline ?? 0)
+      else if (ind.includes('fin'))   buckets.fintech.push(bp.oisBaseline ?? 0)
+    }
+    const distribution = Object.entries(buckets).map(([slug, vals]) => ({
+      slug,
+      count: vals.length,
+      avg: vals.length ? parseFloat((vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1)) : 0,
+      min: vals.length ? Math.min(...vals) : 0,
+      max: vals.length ? Math.max(...vals) : 0,
+    }))
+    res.json({ distribution })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S140: Gate S140 status
+kangqoreImmpRoutes.get('/platform/s140-status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [editionCount, tenantCount, healthCount, legalCount, fintechCount] = await Promise.all([
+      (prisma as any).verticalEdition.count().catch(() => 0),
+      (prisma as any).tenantOrganisation.count({ where: { isActive: true } }).catch(() => 0),
+      (prisma as any).customerBlueprint.count({ where: { industry: { contains: 'Health', mode: 'insensitive' } } }).catch(() => 0),
+      (prisma as any).customerBlueprint.count({ where: { industry: { contains: 'Legal',  mode: 'insensitive' } } }).catch(() => 0),
+      (prisma as any).customerBlueprint.count({ where: { industry: { contains: 'Fin',    mode: 'insensitive' } } }).catch(() => 0),
+    ])
+    const criteria = [
+      { id: 'G1', label: '3 vertical editions configured (HealthTech · LegalTech · FinTech)', passed: editionCount >= 3 },
+      { id: 'G2', label: '30 total customers deployed across platform',                        passed: tenantCount >= 30 },
+      { id: 'G3', label: 'HealthTech cohort provisioned (C21–C23, min 3)',                     passed: healthCount >= 3 },
+      { id: 'G4', label: 'LegalTech cohort provisioned (C24–C26, min 3)',                      passed: legalCount >= 3 },
+      { id: 'G5', label: 'FinTech cohort provisioned (C27–C29, min 3)',                        passed: fintechCount >= 3 },
+    ]
+    const passed = criteria.filter(c => c.passed).length
+    res.json({ criteria, passed, total: criteria.length, score: Math.round((passed / criteria.length) * 100), tenantCount, editionCount })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})

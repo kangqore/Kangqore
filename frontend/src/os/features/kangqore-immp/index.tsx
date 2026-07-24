@@ -95,6 +95,18 @@ import { CustomerNineteenPage }        from './pages/CustomerNineteenPage'
 import { CustomerTwentyPage }          from './pages/CustomerTwentyPage'
 import { CustomerTwentyMilestonePage } from './pages/CustomerTwentyMilestonePage'
 import { PlatformLaunchPage }          from './pages/PlatformLaunchPage'
+import { VerticalEditionPage }         from './pages/VerticalEditionPage'
+import { VerticalAnalyticsPage }       from './pages/VerticalAnalyticsPage'
+import { VerticalSaasGatePage }        from './pages/VerticalSaasGatePage'
+import { CustomerTwentyOnePage }       from './pages/CustomerTwentyOnePage'
+import { CustomerTwentyTwoPage }       from './pages/CustomerTwentyTwoPage'
+import { CustomerTwentyThreePage }     from './pages/CustomerTwentyThreePage'
+import { CustomerTwentyFourPage }      from './pages/CustomerTwentyFourPage'
+import { CustomerTwentyFivePage }      from './pages/CustomerTwentyFivePage'
+import { CustomerTwentySixPage }       from './pages/CustomerTwentySixPage'
+import { CustomerTwentySevenPage }     from './pages/CustomerTwentySevenPage'
+import { CustomerTwentyEightPage }     from './pages/CustomerTwentyEightPage'
+import { CustomerTwentyNinePage }      from './pages/CustomerTwentyNinePage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -270,7 +282,19 @@ export function KIMMMModule() {
           <Route path="customers/nineteen"      element={<CustomerNineteenPage />}          />
           <Route path="customers/twenty"        element={<CustomerTwentyPage />}            />
           <Route path="customer-twenty-milestone" element={<CustomerTwentyMilestonePage />} />
-          <Route path="platform-launch"         element={<PlatformLaunchPage />}            />
+          <Route path="platform-launch"           element={<PlatformLaunchPage />}            />
+          <Route path="vertical-editions"       element={<VerticalEditionPage />}           />
+          <Route path="vertical-analytics"      element={<VerticalAnalyticsPage />}         />
+          <Route path="vertical-gate-s140"      element={<VerticalSaasGatePage />}          />
+          <Route path="customers/twenty-one"    element={<CustomerTwentyOnePage />}         />
+          <Route path="customers/twenty-two"    element={<CustomerTwentyTwoPage />}         />
+          <Route path="customers/twenty-three"  element={<CustomerTwentyThreePage />}       />
+          <Route path="customers/twenty-four"   element={<CustomerTwentyFourPage />}        />
+          <Route path="customers/twenty-five"   element={<CustomerTwentyFivePage />}        />
+          <Route path="customers/twenty-six"    element={<CustomerTwentySixPage />}         />
+          <Route path="customers/twenty-seven"  element={<CustomerTwentySevenPage />}       />
+          <Route path="customers/twenty-eight"  element={<CustomerTwentyEightPage />}       />
+          <Route path="customers/twenty-nine"   element={<CustomerTwentyNinePage />}        />
           <Route path="*"                       element={<Navigate to={BASE} replace />}    />
         </Routes>
         </motion.div>

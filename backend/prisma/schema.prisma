@@ -6713,6 +6713,7 @@ model TenantOrganisation {
   subscriptionStatus   String?   // trial | active | past_due | churned
   currentPeriodEnd     DateTime?
   region               String?   @default("US")  // US | UK | EU | INDIA
+  verticalEditionSlug  String?                   // healthtech | legaltech | fintech
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
   @@index([isActive])
@@ -7352,4 +7353,25 @@ model PlatformDeclaration {
   notes       String?  @db.Text
 
   @@map("platform_declarations")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S131–S133 — Vertical SaaS Editions (HealthTech | LegalTech | FinTech)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model VerticalEdition {
+  id              String   @id @default(cuid())
+  slug            String   @unique        // healthtech | legaltech | fintech
+  displayName     String
+  personaName     String                  // ARIA | LEX | FINX
+  personaColor    String
+  aegisProfile    String?  @db.Text       // JSON: compliance flags + governance config
+  complianceFlags String[]                // HIPAA | SOX | PCI | GDPR | BAR_ASSOCIATION
+  description     String?  @db.Text
+  planTiers       Json?                   // { STARTER: { priceGBP, features }, PRO:..., ENTERPRISE:... }
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("vertical_editions")
 }
