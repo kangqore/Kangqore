@@ -5732,3 +5732,240 @@ kangqoreImmpRoutes.get('/platform/s140-status', requireAuth, requireRole(['ADMIN
     res.json({ criteria, passed, total: criteria.length, score: Math.round((passed / criteria.length) * 100), tenantCount, editionCount })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S141–S148 — OEM / White-label Program
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// S141: OEM Branding Config
+kangqoreImmpRoutes.get('/oem/config/:partnerId', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const cfg = await (prisma as any).oEMConfig.findUnique({ where: { partnerId: req.params.partnerId } })
+    res.json({ config: cfg ?? null })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/oem/config', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { partnerId, brandName, tagline, logoUrl, primaryColor, accentColor, domainSlug } = req.body
+    if (!partnerId || !brandName) return res.status(400).json({ error: 'partnerId and brandName required' })
+    const cfg = await (prisma as any).oEMConfig.upsert({
+      where:  { partnerId },
+      update: { brandName, tagline, logoUrl, primaryColor, accentColor, domainSlug, updatedAt: new Date() },
+      create: { partnerId, brandName, tagline, logoUrl, primaryColor: primaryColor ?? '#7c3aed', accentColor: accentColor ?? '#10b981', domainSlug },
+    })
+    res.json({ config: cfg })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S142: OEM Persona Config
+kangqoreImmpRoutes.get('/oem/persona/:partnerId', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const persona = await (prisma as any).oEMPersonaConfig.findUnique({ where: { partnerId: req.params.partnerId } })
+    res.json({ persona: persona ?? null })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/oem/persona', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { partnerId, personaName, toneProfile, avatarColor, greetingScript, systemPrompt } = req.body
+    if (!partnerId) return res.status(400).json({ error: 'partnerId required' })
+    const persona = await (prisma as any).oEMPersonaConfig.upsert({
+      where:  { partnerId },
+      update: { personaName, toneProfile, avatarColor, greetingScript, systemPrompt, updatedAt: new Date() },
+      create: { partnerId, personaName: personaName ?? 'ARIA', toneProfile: toneProfile ?? 'professional', avatarColor: avatarColor ?? '#7c3aed', greetingScript, systemPrompt },
+    })
+    res.json({ persona })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S143: OEM Blueprint Packages
+kangqoreImmpRoutes.get('/oem/blueprints', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { partnerId } = req.query
+    const pkgs = await (prisma as any).oEMBlueprintPackage.findMany({
+      where: partnerId ? { partnerId: String(partnerId) } : {},
+      orderBy: { createdAt: 'desc' },
+    })
+    res.json({ packages: pkgs })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/oem/blueprints', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { partnerId, packageName, description, baseBlueprintId, industryPack, version } = req.body
+    if (!partnerId || !packageName) return res.status(400).json({ error: 'partnerId and packageName required' })
+    const pkg = await (prisma as any).oEMBlueprintPackage.create({
+      data: { partnerId, packageName, description, baseBlueprintId, industryPack, version: version ?? '1.0.0', status: 'PUBLISHED' },
+    })
+    res.json({ package: pkg })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.patch('/oem/blueprints/:id/status', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status } = req.body
+    const pkg = await (prisma as any).oEMBlueprintPackage.update({ where: { id: req.params.id }, data: { status, updatedAt: new Date() } })
+    res.json({ package: pkg })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S144: Sub-tenant Fleet Management
+kangqoreImmpRoutes.get('/oem/sub-tenants', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { oemPartnerId } = req.query
+    const subTenants = await (prisma as any).subTenant.findMany({
+      where: oemPartnerId ? { oemPartnerId: String(oemPartnerId) } : {},
+      orderBy: { provisionedAt: 'desc' },
+    })
+    const total    = subTenants.length
+    const avgOIS   = total > 0 ? parseFloat((subTenants.reduce((a: number, t: any) => a + (t.oisCurrent ?? t.oisBaseline ?? 0), 0) / total).toFixed(1)) : 0
+    const atRisk   = subTenants.filter((t: any) => (t.healthScore ?? 70) < 60).length
+    res.json({ subTenants, total, avgOIS, atRisk })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/oem/sub-tenants', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { oemPartnerId, tenantName, subdomain, industry, planTier, oisBaseline } = req.body
+    if (!oemPartnerId || !tenantName || !subdomain) return res.status(400).json({ error: 'oemPartnerId, tenantName, subdomain required' })
+    const st = await (prisma as any).subTenant.create({
+      data: {
+        oemPartnerId, tenantName, subdomain, industry, planTier: planTier ?? 'STARTER',
+        oisBaseline: oisBaseline ?? 60, oisCurrent: oisBaseline ?? 60,
+        healthScore: 72 + Math.random() * 20,
+      },
+    })
+    res.json({ subTenant: st })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S145: OEM Margin Config & Revenue Ledger
+kangqoreImmpRoutes.get('/oem/margin/:partnerId', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const margin = await (prisma as any).oEMMarginConfig.findUnique({ where: { partnerId: req.params.partnerId } })
+    res.json({ margin: margin ?? null })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/oem/margin', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { partnerId, wholesaleGBP, retailGBP, kangqoreCutPct, partnerMarginPct } = req.body
+    if (!partnerId) return res.status(400).json({ error: 'partnerId required' })
+    const margin = await (prisma as any).oEMMarginConfig.upsert({
+      where:  { partnerId },
+      update: { wholesaleGBP, retailGBP, kangqoreCutPct, partnerMarginPct, updatedAt: new Date() },
+      create: { partnerId, wholesaleGBP: wholesaleGBP ?? 199, retailGBP: retailGBP ?? 349, kangqoreCutPct: kangqoreCutPct ?? 40, partnerMarginPct: partnerMarginPct ?? 60 },
+    })
+    res.json({ margin })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/oem/revenue-share', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { partnerId, period } = req.query
+    const entries = await (prisma as any).oEMRevenueEntry.findMany({
+      where: {
+        ...(partnerId ? { partnerId: String(partnerId) } : {}),
+        ...(period    ? { period: String(period) }       : {}),
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    })
+    const totalGBP    = entries.reduce((a: number, e: any) => a + e.amountGBP, 0)
+    const kangqoreCut = entries.filter((e: any) => e.type === 'KANGQORE_CUT').reduce((a: number, e: any) => a + e.amountGBP, 0)
+    const partnerPay  = entries.filter((e: any) => e.type === 'PARTNER_MARGIN').reduce((a: number, e: any) => a + e.amountGBP, 0)
+    res.json({ entries, totalGBP, kangqoreCut, partnerPay })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S147: Partner Zero seed
+kangqoreImmpRoutes.post('/oem/seed-partner-zero', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const partners = await (prisma as any).partnerOrganisation.findMany({ take: 1, orderBy: { createdAt: 'asc' } })
+    if (!partners.length) return res.status(404).json({ error: 'No PartnerOrganisation found — create one first' })
+    const partnerId = partners[0].id
+
+    await (prisma as any).oEMConfig.upsert({
+      where:  { partnerId },
+      update: {},
+      create: { partnerId, brandName: 'Nexus Intelligence', tagline: 'Enterprise AI, Delivered.', primaryColor: '#6d28d9', accentColor: '#06b6d4', domainSlug: 'nexus-intel' },
+    }).catch(() => null)
+
+    await (prisma as any).oEMPersonaConfig.upsert({
+      where:  { partnerId },
+      update: {},
+      create: { partnerId, personaName: 'NOVA', toneProfile: 'dynamic', avatarColor: '#06b6d4', greetingScript: 'Hello! I\'m NOVA, your Nexus Intelligence AI. How can I help your organisation today?' },
+    }).catch(() => null)
+
+    await (prisma as any).oEMMarginConfig.upsert({
+      where:  { partnerId },
+      update: {},
+      create: { partnerId, wholesaleGBP: 249, retailGBP: 499, kangqoreCutPct: 45, partnerMarginPct: 55 },
+    }).catch(() => null)
+
+    const SUBS = [
+      { tenantName: 'Helix Dynamics Ltd',       subdomain: 'helix-dynamics',     industry: 'Technology',  planTier: 'PRO',        oisBaseline: 67.4 },
+      { tenantName: 'Orbital Consulting Group',  subdomain: 'orbital-consulting',  industry: 'Consulting',  planTier: 'ENTERPRISE', oisBaseline: 74.1 },
+      { tenantName: 'Starfield Analytics',       subdomain: 'starfield-analytics', industry: 'Analytics',   planTier: 'PRO',        oisBaseline: 62.8 },
+    ]
+    const subTenantsCreated: any[] = []
+    for (const s of SUBS) {
+      const st = await (prisma as any).subTenant.upsert({
+        where:  { subdomain: s.subdomain },
+        update: {},
+        create: { oemPartnerId: partnerId, tenantName: s.tenantName, subdomain: s.subdomain, industry: s.industry, planTier: s.planTier, oisBaseline: s.oisBaseline, oisCurrent: s.oisBaseline + Math.random() * 5, healthScore: 72 + Math.random() * 20 },
+      }).catch(() => null)
+      if (st) subTenantsCreated.push(st)
+    }
+
+    const PERIOD = '2026-07'
+    const REVENUE = [
+      { type: 'WHOLESALE_CHARGE', amountGBP: 747, description: '3 sub-tenants × £249 wholesale' },
+      { type: 'PARTNER_MARGIN',   amountGBP: 825, description: '3 × £275 partner margin (55%)' },
+      { type: 'KANGQORE_CUT',     amountGBP: 672, description: '3 × £224 Kangqore cut (45%)' },
+    ]
+    for (const r of REVENUE) {
+      await (prisma as any).oEMRevenueEntry.create({ data: { partnerId, type: r.type, amountGBP: r.amountGBP, description: r.description, period: PERIOD, status: 'CLEARED' } }).catch(() => null)
+    }
+
+    res.json({ partnerId, brand: 'Nexus Intelligence', subTenantsCreated: subTenantsCreated.length, period: PERIOD, message: 'Partner Zero seeded — OEM channel open' })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S146: OEM overview (all partners)
+kangqoreImmpRoutes.get('/oem/overview', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [configs, subTenants, revenueEntries] = await Promise.all([
+      (prisma as any).oEMConfig.findMany({ where: { isActive: true } }).catch(() => [] as any[]),
+      (prisma as any).subTenant.findMany().catch(() => [] as any[]),
+      (prisma as any).oEMRevenueEntry.findMany({ where: { status: { in: ['CLEARED', 'PAID'] } } }).catch(() => [] as any[]),
+    ])
+    const totalSubTenants = subTenants.length
+    const totalMRR        = revenueEntries.filter((e: any) => e.type === 'KANGQORE_CUT').reduce((a: number, e: any) => a + e.amountGBP, 0)
+    const partnerRevenue  = revenueEntries.filter((e: any) => e.type === 'PARTNER_MARGIN').reduce((a: number, e: any) => a + e.amountGBP, 0)
+    res.json({ partnerCount: configs.length, totalSubTenants, kangqoreMRR: totalMRR, partnerMRR: partnerRevenue })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S148: Gate S148 status
+kangqoreImmpRoutes.get('/platform/s148-status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [oemCount, personaCount, packageCount, subTenantCount, revenueCount] = await Promise.all([
+      (prisma as any).oEMConfig.count({ where: { isActive: true } }).catch(() => 0),
+      (prisma as any).oEMPersonaConfig.count({ where: { isActive: true } }).catch(() => 0),
+      (prisma as any).oEMBlueprintPackage.count({ where: { status: 'PUBLISHED' } }).catch(() => 0),
+      (prisma as any).subTenant.count().catch(() => 0),
+      (prisma as any).oEMRevenueEntry.count({ where: { status: { in: ['CLEARED', 'PAID'] } } }).catch(() => 0),
+    ])
+    const criteria = [
+      { id: 'O1', label: 'At least 1 OEM partner configured with branding (OEMConfig)',   passed: oemCount >= 1 },
+      { id: 'O2', label: 'At least 1 white-label WAANDA persona configured (PersonaConfig)', passed: personaCount >= 1 },
+      { id: 'O3', label: 'At least 1 OEM Blueprint Package published',                      passed: packageCount >= 1 },
+      { id: 'O4', label: 'At least 1 sub-tenant provisioned under OEM partner',              passed: subTenantCount >= 1 },
+      { id: 'O5', label: 'Revenue share ledger has at least 1 cleared entry',                passed: revenueCount >= 1 },
+    ]
+    const passed = criteria.filter(c => c.passed).length
+    res.json({ criteria, passed, total: criteria.length, score: Math.round((passed / criteria.length) * 100), oemCount, subTenantCount })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})

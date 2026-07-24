@@ -6714,6 +6714,8 @@ model TenantOrganisation {
   currentPeriodEnd     DateTime?
   region               String?   @default("US")  // US | UK | EU | INDIA
   verticalEditionSlug  String?                   // healthtech | legaltech | fintech
+  whitelabel           Boolean   @default(false) // true if sub-tenant under OEM partner
+  oemPartnerId         String?                   // ref to PartnerOrganisation if whitelabel
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
   @@index([isActive])
@@ -7374,4 +7376,109 @@ model VerticalEdition {
   updatedAt       DateTime @updatedAt
 
   @@map("vertical_editions")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S141–S148 — OEM / White-label Program
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model OEMConfig {
+  id           String   @id @default(cuid())
+  partnerId    String   @unique
+  brandName    String
+  tagline      String?
+  logoUrl      String?
+  primaryColor String   @default("#7c3aed")
+  accentColor  String   @default("#10b981")
+  domainSlug   String?  @unique
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([partnerId])
+  @@map("oem_configs")
+}
+
+model OEMPersonaConfig {
+  id             String   @id @default(cuid())
+  partnerId      String   @unique
+  personaName    String   @default("ARIA")
+  toneProfile    String   @default("professional")  // professional | friendly | formal | dynamic
+  avatarColor    String   @default("#7c3aed")
+  greetingScript String?  @db.Text
+  systemPrompt   String?  @db.Text
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([partnerId])
+  @@map("oem_persona_configs")
+}
+
+model OEMBlueprintPackage {
+  id              String   @id @default(cuid())
+  partnerId       String
+  packageName     String
+  description     String?  @db.Text
+  baseBlueprintId String?
+  industryPack    String?
+  version         String   @default("1.0.0")
+  status          String   @default("DRAFT")   // DRAFT | PUBLISHED | ARCHIVED
+  downloadCount   Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([partnerId])
+  @@index([status])
+  @@map("oem_blueprint_packages")
+}
+
+model SubTenant {
+  id             String   @id @default(cuid())
+  oemPartnerId   String
+  tenantName     String
+  subdomain      String   @unique
+  industry       String?
+  planTier       String   @default("STARTER")
+  oisBaseline    Float?
+  oisCurrent     Float?
+  healthScore    Float?
+  status         String   @default("ACTIVE")
+  provisionedAt  DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([oemPartnerId])
+  @@index([status])
+  @@map("sub_tenants")
+}
+
+model OEMMarginConfig {
+  id               String   @id @default(cuid())
+  partnerId        String   @unique
+  wholesaleGBP     Float    @default(199)   // what partner pays Kangqore
+  retailGBP        Float    @default(349)   // what partner charges their customers
+  kangqoreCutPct   Float    @default(40)    // % of retail that goes to Kangqore
+  partnerMarginPct Float    @default(60)    // % retained by partner
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([partnerId])
+  @@map("oem_margin_configs")
+}
+
+model OEMRevenueEntry {
+  id           String   @id @default(cuid())
+  partnerId    String
+  subTenantId  String?
+  type         String                        // WHOLESALE_CHARGE | PARTNER_MARGIN | KANGQORE_CUT
+  amountGBP    Float
+  description  String?
+  period       String?                       // e.g. "2026-07"
+  status       String   @default("PENDING")  // PENDING | CLEARED | PAID
+  createdAt    DateTime @default(now())
+
+  @@index([partnerId])
+  @@index([period])
+  @@map("oem_revenue_entries")
 }
