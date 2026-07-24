@@ -22,9 +22,11 @@ export interface CustomerConfig {
   oisBaseline:    number
   oisTarget:      number
   modules:        string[]
-  isMilestone?:   boolean
+  isMilestone?:    boolean
   milestoneLabel?: string
-  accentColor?:   string
+  accentColor?:    string
+  verticalEdition?: string
+  personaName?:    string
 }
 
 interface Blueprint {
