@@ -107,6 +107,14 @@ import { CustomerTwentySixPage }       from './pages/CustomerTwentySixPage'
 import { CustomerTwentySevenPage }     from './pages/CustomerTwentySevenPage'
 import { CustomerTwentyEightPage }     from './pages/CustomerTwentyEightPage'
 import { CustomerTwentyNinePage }      from './pages/CustomerTwentyNinePage'
+import { OEMPortalPage }              from './pages/OEMPortalPage'
+import { OEMBrandingPage }            from './pages/OEMBrandingPage'
+import { OEMPersonaPage }             from './pages/OEMPersonaPage'
+import { OEMBlueprintPackagerPage }   from './pages/OEMBlueprintPackagerPage'
+import { OEMFleetPage }               from './pages/OEMFleetPage'
+import { OEMMarginPage }              from './pages/OEMMarginPage'
+import { OEMPartnerZeroPage }         from './pages/OEMPartnerZeroPage'
+import { OEMGatePage }                from './pages/OEMGatePage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -286,6 +294,14 @@ export function KIMMMModule() {
           <Route path="vertical-editions"       element={<VerticalEditionPage />}           />
           <Route path="vertical-analytics"      element={<VerticalAnalyticsPage />}         />
           <Route path="vertical-gate-s140"      element={<VerticalSaasGatePage />}          />
+          <Route path="oem-portal"              element={<OEMPortalPage />}                 />
+          <Route path="oem-branding"            element={<OEMBrandingPage />}               />
+          <Route path="oem-persona"             element={<OEMPersonaPage />}                />
+          <Route path="oem-blueprints"          element={<OEMBlueprintPackagerPage />}      />
+          <Route path="oem-fleet"               element={<OEMFleetPage />}                  />
+          <Route path="oem-margin"              element={<OEMMarginPage />}                 />
+          <Route path="oem-partner-zero"        element={<OEMPartnerZeroPage />}            />
+          <Route path="oem-gate-s148"           element={<OEMGatePage />}                   />
           <Route path="customers/twenty-one"    element={<CustomerTwentyOnePage />}         />
           <Route path="customers/twenty-two"    element={<CustomerTwentyTwoPage />}         />
           <Route path="customers/twenty-three"  element={<CustomerTwentyThreePage />}       />
