@@ -7537,3 +7537,151 @@ model IntlCustomer {
   @@index([customerRef])
   @@map("intl_customers")
 }
+
+// ── S158: Corpus Quality Audit ───────────────────────────────────────────────
+model CorpusRecord {
+  id          String   @id @default(cuid())
+  recordType  String   // decision | signal | ois | workflow
+  sourceId    String
+  qualityTier String   @default("bronze") // gold | silver | bronze
+  tokenCount  Int?
+  category    String?
+  isDuplicate Boolean  @default(false)
+  isIncluded  Boolean  @default(true)
+  content     String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([qualityTier])
+  @@index([recordType])
+  @@map("corpus_records")
+}
+
+// ── S159: Training Dataset Pipeline ─────────────────────────────────────────
+model DatasetVersion {
+  id           String        @id @default(cuid())
+  version      String        @unique
+  totalRecords Int
+  trainCount   Int
+  valCount     Int
+  testCount    Int
+  totalTokens  Int?
+  hfPushed     Boolean       @default(false)
+  hfRepoId     String?
+  changelog    String?       @db.Text
+  exportedAt   DateTime      @default(now())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  trainingJobs TrainingJob[]
+
+  @@map("dataset_versions")
+}
+
+// ── S160: Training Infrastructure ────────────────────────────────────────────
+model TrainingJob {
+  id               String          @id @default(cuid())
+  jobRef           String          @unique
+  provider         String          @default("runpod") // runpod | vast.ai | local
+  baseModel        String          @default("llama3.1-8b")
+  status           String          @default("QUEUED") // QUEUED | RUNNING | COMPLETED | FAILED | CANCELLED
+  loraRank         Int?
+  batchSize        Int?
+  epochs           Int?
+  learningRate     Float?
+  trainLoss        Float?
+  valLoss          Float?
+  perplexity       Float?
+  checkpointPath   String?
+  costUsd          Float?
+  durationMinutes  Int?
+  datasetVersionId String?
+  datasetVersion   DatasetVersion? @relation(fields: [datasetVersionId], references: [id])
+  startedAt        DateTime?
+  completedAt      DateTime?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  evalResults      Gen4EvalResult[]
+
+  @@index([status])
+  @@index([jobRef])
+  @@map("training_jobs")
+}
+
+// ── S162: Gen4 Evaluation Suite ──────────────────────────────────────────────
+model Gen4EvalResult {
+  id                     String      @id @default(cuid())
+  trainingJobId          String
+  trainingJob            TrainingJob @relation(fields: [trainingJobId], references: [id])
+  evalSetSize            Int
+  gen4Accuracy           Float
+  claudeAccuracy         Float
+  parityScore            Float
+  gen4AvgLatencyMs       Float?
+  claudeAvgLatencyMs     Float?
+  gen4CostPerInference   Float?
+  claudeCostPerInference Float?
+  passedThreshold        Boolean     @default(false)
+  evaluatedAt            DateTime    @default(now())
+  createdAt              DateTime    @default(now())
+
+  @@index([trainingJobId])
+  @@map("gen4_eval_results")
+}
+
+// ── S163: Gen4 A/B Router ────────────────────────────────────────────────────
+model Gen4RouterConfig {
+  id                  String   @id @default(cuid())
+  livePercent         Int      @default(0)
+  shadowMode          Boolean  @default(true)
+  circuitOpen         Boolean  @default(false)
+  consecutiveFails    Int      @default(0)
+  failThreshold       Int      @default(3)
+  confidenceThreshold Float    @default(0.7)
+  totalRequests       Int      @default(0)
+  gen4Requests        Int      @default(0)
+  fallbackCount       Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("gen4_router_configs")
+}
+
+// ── S168: Dunning / Payment Recovery ─────────────────────────────────────────
+model DunningSequence {
+  id         String    @id @default(cuid())
+  tenantId   String
+  stage      String    @default("DAY_3") // DAY_3 | DAY_7 | DAY_14 | DAY_30
+  status     String    @default("PENDING") // PENDING | SENT | RESOLVED | CHURNED
+  invoiceRef String?
+  amountGbp  Float?
+  sentAt     DateTime?
+  resolvedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([tenantId])
+  @@index([status])
+  @@map("dunning_sequences")
+}
+
+// ── S169: Enterprise Sales Pipeline ──────────────────────────────────────────
+model EnterpriseLead {
+  id               String    @id @default(cuid())
+  companyName      String
+  contactEmail     String?
+  industry         String?
+  estimatedArr     Float?
+  stage            String    @default("QUALIFIED") // QUALIFIED | POC | LEGAL | WON | LOST
+  intentScore      Int?
+  dealVelocityDays Int?
+  pocStartedAt     DateTime?
+  legalSignedAt    DateTime?
+  wonAt            DateTime?
+  notes            String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([stage])
+  @@map("enterprise_leads")
+}
+
