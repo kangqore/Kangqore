@@ -1341,12 +1341,7 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
 
   const { speak, silence, speaking, muted, toggleMute } = useTTS()
 
-  useEffect(() => {
-    if (!criticalAlert || alertedRef.current === criticalAlert.id) return
-    alertedRef.current = criticalAlert.id
-    const msg = `CRITICAL ALERT. ${criticalAlert.sourceModule} — ${criticalAlert.signalValue}. Immediate attention required, sir.`
-    setTimeout(() => speak(msg, 'alert'), 800)
-  }, [criticalAlert, speak])
+  // Critical alerts are announced by AdminOverview's hudEvents TTS — no duplicate speak here
 
   const displayed = useTypewriter(result?.response ?? '', animate)
 
@@ -5751,10 +5746,11 @@ export function AdminOverview() {
     const sorted = [...pending].sort((a, b) => (ORDER[a.type] ?? 5) - (ORDER[b.type] ?? 5))
 
     sorted.forEach(e => {
+      // agent responses are spoken by HUDCommandBar directly — skip here to avoid doubles
+      if (e.type === 'agent') return
       const v = (e.value ?? '').toLowerCase().replace(/_/g, ' ')
       const phrases: Record<string, string> = {
         signal: `${e.title.toLowerCase()} signal: ${v}`,
-        agent:  `${v || 'agent run'}, complete`,
         alert:  `critical alert: ${v}`,
         kpi:    `${e.title.toLowerCase()}: ${e.value}`,
         system: `system: ${v}`,
