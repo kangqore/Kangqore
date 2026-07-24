@@ -133,6 +133,8 @@ import { TrainingJobsPage }          from './pages/TrainingJobsPage'
 import { Gen4EvalPage }              from './pages/Gen4EvalPage'
 import { Gen4RouterPage }            from './pages/Gen4RouterPage'
 import { Gen4GatePage }              from './pages/Gen4GatePage'
+import { Gen4Scale50Page }           from './pages/Gen4Scale50Page'
+import { Gen4Scale80Page }           from './pages/Gen4Scale80Page'
 import { ARRIntelPage }              from './pages/ARRIntelPage'
 import { DunningPage }               from './pages/DunningPage'
 import { EnterprisePipelinePage }    from './pages/EnterprisePipelinePage'
@@ -336,6 +338,8 @@ export function KIMMMModule() {
           <Route path="gen4-eval"              element={<Gen4EvalPage />}                  />
           <Route path="gen4-router"            element={<Gen4RouterPage />}                />
           <Route path="gen4-gate-s166"         element={<Gen4GatePage />}                  />
+          <Route path="gen4-scale-50"          element={<Gen4Scale50Page />}               />
+          <Route path="gen4-scale-80"          element={<Gen4Scale80Page />}               />
           <Route path="arr-intelligence"       element={<ARRIntelPage />}                  />
           <Route path="dunning"                element={<DunningPage />}                   />
           <Route path="enterprise-pipeline"    element={<EnterprisePipelinePage />}        />
