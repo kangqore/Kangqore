@@ -247,6 +247,8 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'kimmp-gen4-eval',            label: 'Evaluation Suite',              path: `${BASE}/kangqore-immp/gen4-eval`,                  category: 'WAANDAx Gen4', badge: 'new' },
       { id: 'kimmp-gen4-router',          label: 'A/B Router + Circuit Breaker',  path: `${BASE}/kangqore-immp/gen4-router`,                category: 'WAANDAx Gen4', badge: 'new' },
       { id: 'kimmp-gen4-gate-s166',       label: '⭐ Gate S166 · Foundation v0.1',path: `${BASE}/kangqore-immp/gen4-gate-s166`,             category: 'WAANDAx Gen4', badge: 'new' },
+      { id: 'kimmp-gen4-scale-50',        label: 'S171 · Scale to 50%',          path: `${BASE}/kangqore-immp/gen4-scale-50`,              category: 'WAANDAx Gen4', badge: 'new' },
+      { id: 'kimmp-gen4-scale-80',        label: '⭐ S172 · Production 80%',      path: `${BASE}/kangqore-immp/gen4-scale-80`,              category: 'WAANDAx Gen4', badge: 'new' },
       { id: 'kimmp-arr-intel',            label: 'ARR Intelligence',              path: `${BASE}/kangqore-immp/arr-intelligence`,           category: 'Revenue Ops', badge: 'new' },
       { id: 'kimmp-dunning',              label: 'Dunning Automation',            path: `${BASE}/kangqore-immp/dunning`,                    category: 'Revenue Ops', badge: 'new' },
       { id: 'kimmp-enterprise-pipeline',  label: 'Enterprise Sales Pipeline',     path: `${BASE}/kangqore-immp/enterprise-pipeline`,        category: 'Revenue Ops', badge: 'new' },
