@@ -82,7 +82,7 @@ export function AegisBudgetPage() {
       </div>
 
       {/* Global enforcement status */}
-      {budget && (
+      {budget?.global && (
         <div className="grid grid-cols-3 gap-4">
           <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
             <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Egress Size Limit</p>
@@ -165,7 +165,7 @@ export function AegisBudgetPage() {
 
       {isLoading && <div className="space-y-2">{[1,2].map(i => <div key={i} className="h-16 rounded-xl animate-pulse" style={{ background: SURF }} />)}</div>}
 
-      {budget?.tenants.length === 0 && !showAdd && (
+      {(budget?.tenants?.length ?? 0) === 0 && !showAdd && (
         <div className="py-12 text-center rounded-xl border" style={{ borderColor: BDR }}>
           <ShieldCheck className="w-8 h-8 mx-auto mb-2 opacity-20" style={{ color: T2 }} />
           <p className="text-sm font-medium" style={{ color: T2 }}>No tenant budgets configured</p>
@@ -173,7 +173,7 @@ export function AegisBudgetPage() {
         </div>
       )}
 
-      {budget?.tenants.map(t => (
+      {(budget?.tenants ?? []).map(t => (
         <div key={t.tenantId} className="rounded-xl border" style={{ background: CARD, borderColor: BDR }}>
           <div className="flex items-center gap-4 px-4 py-3">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"

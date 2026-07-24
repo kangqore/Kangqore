@@ -201,9 +201,9 @@ function Panel({ title, subtitle, color = C, collapsible = false, children, onCl
     if (!collapsible) return
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp') {
-        setCollapsed(true)
+        setCollapsed(false)   // ↑ = expand (panel open, shows ▲)
       } else if (e.key === 'ArrowDown') {
-        setCollapsed(false)
+        setCollapsed(true)    // ↓ = collapse (panel closed, shows ▼)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
@@ -249,8 +249,28 @@ function Panel({ title, subtitle, color = C, collapsible = false, children, onCl
             <div style={{ flex:1, height:1, background:`linear-gradient(90deg, ${color}40, transparent)` }} />
             {collapsible ? (
               <button onClick={(e) => { e.stopPropagation(); setCollapsed(!collapsed); }}
-                style={{ background: 'none', border: 'none', color: color, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: 10, fontFamily: 'monospace' }}>{collapsed ? '▼' : '▲'}</span>
+                title={collapsed ? 'Expand panel' : 'Collapse panel'}
+                style={{
+                  width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  border: `1px solid ${color}35`,
+                  background: `radial-gradient(circle at 50% 35%, ${color}12 0%, transparent 100%)`,
+                  boxShadow: `0 0 8px ${color}20, inset 0 1px 0 rgba(255,255,255,0.06)`,
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={e => {
+                  const b = e.currentTarget as HTMLButtonElement
+                  b.style.borderColor = `${color}70`
+                  b.style.boxShadow = `0 0 14px ${color}45, inset 0 1px 0 rgba(255,255,255,0.10)`
+                  b.style.background = `radial-gradient(circle at 50% 35%, ${color}22 0%, ${color}08 100%)`
+                }}
+                onMouseLeave={e => {
+                  const b = e.currentTarget as HTMLButtonElement
+                  b.style.borderColor = `${color}35`
+                  b.style.boxShadow = `0 0 8px ${color}20, inset 0 1px 0 rgba(255,255,255,0.06)`
+                  b.style.background = `radial-gradient(circle at 50% 35%, ${color}12 0%, transparent 100%)`
+                }}>
+                <span style={{ fontSize: 8, color, fontFamily: 'monospace', lineHeight: 1 }}>{collapsed ? '▲' : '▼'}</span>
               </button>
             ) : (
               <div style={{ width: 4, height: 4, borderRadius: '50%', background: color }} />
@@ -1146,16 +1166,29 @@ function useTTS() {
     setSpeaking(true)
     const item = s.queue.shift()!
     const delay = item.type !== 'response' ? chime(item.type) : 0
-    setTimeout(() => {
+    setTimeout(async () => {
       if (s.muted) { s.playing = false; setSpeaking(false); return }
       const done = () => { s.playing = false; s.current = null; setSpeaking(false); setTimeout(playNext, 200) }
+      let blobUrl: string | null = null
       try {
-        const audio = new Audio(`/api/admin/kangqore-immp/tts?text=${encodeURIComponent(item.text.slice(0, 500))}`)
-        audio.onended = done
-        audio.onerror = (e) => { console.warn('[WAANDA TTS Error]', e); done() }
+        const token = localStorage.getItem('token')
+        const resp = await fetch(
+          `/api/admin/kangqore-immp/tts?text=${encodeURIComponent(item.text.slice(0, 500))}`,
+          { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+        )
+        if (!resp.ok) throw new Error(`TTS ${resp.status}`)
+        const blob = await resp.blob()
+        blobUrl = URL.createObjectURL(blob)
+        const audio = new Audio(blobUrl)
         s.current = audio as any
-        audio.play().catch(done)
-      } catch { done() }
+        audio.onended  = () => { URL.revokeObjectURL(blobUrl!); done() }
+        audio.onerror  = (e) => { console.warn('[WAANDA TTS]', e); URL.revokeObjectURL(blobUrl!); done() }
+        await audio.play()
+      } catch (e) {
+        console.warn('[WAANDA TTS fetch]', e)
+        if (blobUrl) URL.revokeObjectURL(blobUrl)
+        done()
+      }
     }, delay)
   }, [chime])
 
@@ -1167,8 +1200,7 @@ function useTTS() {
   }, [playNext])
 
   // speakDirect: bypasses the queue and speaks immediately.
-  // Must be called synchronously from a user gesture (click/keydown) so Chrome
-  // permits speechSynthesis. Used by the greeting dismiss handler.
+  // Uses fetch() so the auth Bearer token is included — Audio elements can't send custom headers.
   const speakDirect = useCallback((text: string) => {
     const s = st.current
     if (s.muted || !text.trim()) return
@@ -1176,19 +1208,33 @@ function useTTS() {
       s.current.pause()
       s.current.currentTime = 0
     }
-    window.speechSynthesis.cancel()          // clear any pending unlock utterances
-    s.queue    = []
-    s.playing  = true
+    window.speechSynthesis.cancel()
+    s.queue   = []
+    s.playing = true
     setSpeaking(true)
     const done = () => { s.playing = false; s.current = null; setSpeaking(false); setTimeout(playNext, 200) }
-    
-    try {
-      const audio = new Audio(`/api/admin/kangqore-immp/tts?text=${encodeURIComponent(text.slice(0, 500))}`)
-      audio.onended = done
-      audio.onerror = (e) => { console.warn('[WAANDA TTS Direct Error]', e); done() }
-      s.current = audio as any
-      audio.play().catch(done)
-    } catch { done() }
+    ;(async () => {
+      let blobUrl: string | null = null
+      try {
+        const token = localStorage.getItem('token')
+        const resp = await fetch(
+          `/api/admin/kangqore-immp/tts?text=${encodeURIComponent(text.slice(0, 500))}`,
+          { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+        )
+        if (!resp.ok) throw new Error(`TTS ${resp.status}`)
+        const blob = await resp.blob()
+        blobUrl = URL.createObjectURL(blob)
+        const audio = new Audio(blobUrl)
+        s.current = audio as any
+        audio.onended = () => { URL.revokeObjectURL(blobUrl!); done() }
+        audio.onerror = (e) => { console.warn('[WAANDA TTS Direct]', e); URL.revokeObjectURL(blobUrl!); done() }
+        await audio.play()
+      } catch (e) {
+        console.warn('[WAANDA TTS Direct fetch]', e)
+        if (blobUrl) URL.revokeObjectURL(blobUrl)
+        done()
+      }
+    })()
   }, [playNext])
 
 
@@ -1461,8 +1507,8 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
 
   // Wake Word Listener
   useWakeWord(!listening && !voiceMode, useCallback((phrase) => {
-    // Open the panel by simulating ArrowDown just in case it's collapsed
-    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+    // Open the panel — ArrowUp = expand
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
     setVM(true)
     silence()
     // Small delay to ensure passive listener has fully released the mic
@@ -1783,30 +1829,46 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
 
       {/* Suggested + Saved queries */}
       {!result && !thinking && (
-        <div style={{ marginTop:6 }}>
+        <div style={{ marginTop:8 }}>
           {saved.length > 0 && (
-            <div style={{ display:'flex', gap:4, flexWrap:'wrap', marginBottom:4 }}>
+            <div style={{ display:'flex', gap:4, flexWrap:'wrap', marginBottom:6 }}>
               {saved.map(s => (
                 <div key={s} style={{ display:'flex', alignItems:'center', gap:2 }}>
                   <button onClick={() => submit(s)}
-                    style={{ fontSize:8, padding:'2px 6px', borderRadius:4, cursor:'pointer', fontFamily:'monospace',
-                      background:`${CG}10`, border:`1px solid ${CG}30`, color:`${CG}90`, letterSpacing:'0.05em' }}>
+                    style={{ fontSize:9, padding:'3px 8px', borderRadius:5, cursor:'pointer', fontFamily:'monospace',
+                      background:`${CG}12`, border:`1px solid ${CG}35`, color:`${CG}`, letterSpacing:'0.04em',
+                      transition:'all 0.15s' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = `${CG}22`; (e.currentTarget as HTMLButtonElement).style.borderColor = `${CG}60` }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = `${CG}12`; (e.currentTarget as HTMLButtonElement).style.borderColor = `${CG}35` }}>
                     ★ {s}
                   </button>
                   <button onClick={() => removeQuery(s)}
-                    style={{ background:'none', border:'none', cursor:'pointer', fontSize:7, color:`${CR}40`, padding:0 }}>✕</button>
+                    style={{ background:'none', border:'none', cursor:'pointer', fontSize:8, color:`${CR}40`, padding:0 }}>✕</button>
                 </div>
               ))}
             </div>
           )}
-          <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+          <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
             {SUGGESTED.map(s => (
               <button key={s} onClick={() => submit(s)}
-                style={{ fontSize:8, padding:'3px 8px', borderRadius:4, cursor:'pointer', fontFamily:'monospace',
-                  background:`${color}08`, border:`1px solid ${color}20`, color:`${color}70`, letterSpacing:'0.05em' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = `${color}18`; (e.currentTarget as HTMLButtonElement).style.borderColor = `${color}50` }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = `${color}08`; (e.currentTarget as HTMLButtonElement).style.borderColor = `${color}20` }}
-              >{s}</button>
+                style={{ fontSize:9, padding:'4px 10px', borderRadius:5, cursor:'pointer', fontFamily:'monospace',
+                  background:`${color}08`, border:`1px solid ${color}22`, color:`${color}80`,
+                  letterSpacing:'0.04em', display:'flex', alignItems:'center', gap:5, transition:'all 0.15s' }}
+                onMouseEnter={e => {
+                  const b = e.currentTarget as HTMLButtonElement
+                  b.style.background = `${color}18`
+                  b.style.borderColor = `${color}55`
+                  b.style.color = color
+                }}
+                onMouseLeave={e => {
+                  const b = e.currentTarget as HTMLButtonElement
+                  b.style.background = `${color}08`
+                  b.style.borderColor = `${color}22`
+                  b.style.color = `${color}80`
+                }}
+              >
+                <span style={{ fontSize:7, opacity:0.5 }}>→</span>{s}
+              </button>
             ))}
           </div>
         </div>
@@ -4911,8 +4973,8 @@ function HUDLogRow({ ev, idx }: { ev: LiveHUDEvent; idx: number }) {
   )
 }
 
-function HUDLogDrawer({ onClose }: { onClose: () => void }) {
-  const [filter, setFilter] = useState<string>('all')
+function HUDLogDrawer({ onClose, defaultFilter = 'all' }: { onClose: () => void; defaultFilter?: string }) {
+  const [filter, setFilter] = useState<string>(defaultFilter)
   const [search, setSearch] = useState('')
 
   const { data: apiLog, isLoading, refetch } = useQuery({
@@ -5128,12 +5190,144 @@ function LiveCard({ event }: { event: LiveHUDEvent }) {
   )
 }
 
+// ─── Activity Ticker — Live Intelligence Stream ───────────────────────────────
+function ActivityTicker({ events }: { events: LiveHUDEvent[] }) {
+  const COL: Record<string, string> = { signal: C, alert: CR, agent: '#00ddaa', kpi: '#ffaa00', system: C }
+  const ICO: Record<string, string> = { signal: '◈', alert: '▲', agent: '⬡', kpi: '⟳', system: '◉' }
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      {events.slice(0, 6).map((e, i) => {
+        const col = COL[e.type] ?? C
+        const sec = Math.round((Date.now() - e.ts) / 1000)
+        const ts  = sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec/60)}m` : `${Math.round(sec/3600)}h`
+        return (
+          <div key={e.id} style={{
+            display: 'flex', alignItems: 'flex-start', gap: 5,
+            padding: '3px 5px', borderRadius: 3,
+            background: `${col}08`, borderLeft: `2px solid ${col}50`,
+            animation: i === 0 ? 'hudCardIn 0.4s ease' : 'none',
+          }}>
+            <span style={{ fontSize: 7, color: col, flexShrink: 0, marginTop: 1 }}>{ICO[e.type] ?? '•'}</span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 6.5, color: col, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.06em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{e.title}</div>
+              {e.value && <div style={{ fontSize: 7.5, color: '#b0cce8', fontFamily: 'monospace', marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{e.value}</div>}
+            </div>
+            <div style={{ fontSize: 5.5, color: `${C}30`, fontFamily: 'monospace', flexShrink: 0 }}>{ts}</div>
+          </div>
+        )
+      })}
+      {events.length === 0 && <div style={{ fontSize: 7, color: `${C}25`, fontFamily: 'monospace', textAlign: 'center', padding: '6px 0', letterSpacing: '0.1em' }}>STREAM INITIALIZING…</div>}
+    </div>
+  )
+}
+
+// ─── Situation Report — replaces raw Command Center ───────────────────────────
+function SituationReport({ cc, recentSignals, insights, liveApprovals, health }: {
+  cc: any; recentSignals: LiveSignal[]; insights: any[]; liveApprovals: any[]; health: number
+}) {
+  const [lastRefresh, setLastRefresh] = useState(Date.now())
+  useEffect(() => {
+    const t = setInterval(() => setLastRefresh(Date.now()), 60_000)
+    return () => clearInterval(t)
+  }, [])
+
+  const critSig  = recentSignals.filter(s => s.severity === 'CRITICAL').length
+  const highSig  = recentSignals.filter(s => s.severity === 'HIGH').length
+  const pending  = (cc?.decisions?.proposedCount ?? 0) + liveApprovals.length
+  const ois      = cc?.ois?.score
+  const critIns  = insights.filter(i => i.priority === 'critical').length
+  const status   = critSig > 0 || critIns > 0 ? 'CRITICAL' : highSig > 2 || pending > 3 ? 'ELEVATED' : 'NOMINAL'
+  const stCol    = status === 'CRITICAL' ? CR : status === 'ELEVATED' ? '#ffaa00' : '#0066ff'
+
+  const bullets: { text: string; color: string }[] = [
+    critSig > 0 ? { text: `${critSig} critical signal${critSig > 1 ? 's' : ''} active`, color: CR }
+      : highSig > 0 ? { text: `${highSig} high-priority signals in queue`, color: '#ffaa00' }
+      : { text: 'Signal mesh clear', color: '#0066ff' },
+    pending > 0 ? { text: `${pending} decision${pending > 1 ? 's' : ''} awaiting input`, color: '#ffaa00' }
+      : { text: 'Decision queue clear', color: '#0066ff' },
+    ois != null ? { text: `OIS ${ois}/100 · ${ois >= 80 ? 'Excellent' : ois >= 60 ? 'Good' : ois >= 40 ? 'Fair' : 'Poor'}`, color: ois >= 60 ? '#0066ff' : '#ffaa00' }
+      : { text: `System health ${Math.round(health)}%`, color: health >= 90 ? '#0066ff' : '#ffaa00' },
+    critIns > 0 ? { text: `${critIns} critical insight${critIns > 1 ? 's' : ''} flagged`, color: CR }
+      : { text: 'Intelligence mesh nominal', color: `${C}70` },
+  ]
+
+  const agoSec = Math.round((Date.now() - lastRefresh) / 1000)
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '5px 7px', borderRadius: 4, background: `${stCol}10`, border: `1px solid ${stCol}25` }}>
+        <div className="live-blink" style={{ width: 5, height: 5, borderRadius: '50%', background: stCol, boxShadow: `0 0 5px ${stCol}`, flexShrink: 0 }} />
+        <span style={{ fontSize: 8, fontWeight: 800, color: stCol, fontFamily: 'monospace', letterSpacing: '0.14em' }}>SITUATION: {status}</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {bullets.map((b, i) => (
+          <div key={i} style={{ display: 'flex', gap: 5, alignItems: 'flex-start', padding: '2px 0', borderBottom: i < 3 ? `1px solid ${C}08` : 'none' }}>
+            <span style={{ fontSize: 7, color: b.color, flexShrink: 0, marginTop: 1 }}>›</span>
+            <span style={{ fontSize: 7.5, color: '#7aaac8', fontFamily: 'monospace', lineHeight: 1.4 }}>{b.text}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: 5.5, color: `${C}28`, fontFamily: 'monospace', letterSpacing: '0.08em', textAlign: 'right' }}>REFRESHED {agoSec}s AGO · AUTO 60s</div>
+    </div>
+  )
+}
+
+// ─── Decision Queue Strip ─────────────────────────────────────────────────────
+function DecisionQueueStrip() {
+  const { data, refetch } = useQuery({
+    queryKey: ['waanda-pending-hud'],
+    queryFn: () => api.get('/admin/kangqore-immp/authority/approvals').then(r => r.data),
+    refetchInterval: 30_000,
+    staleTime: 15_000,
+  })
+  useEffect(() => {
+    try {
+      const { getSocket } = require('../../../lib/socket') as typeof import('../../../lib/socket')
+      getSocket().on('kimmp:approval_request', () => refetch())
+      return () => { getSocket().off('kimmp:approval_request', () => refetch()) }
+    } catch {}
+  }, [refetch])
+
+  const pending: any[] = data?.approvals ?? []
+  const act = async (id: string, action: 'approve' | 'deny') => {
+    await api.post(`/admin/kangqore-immp/authority/approvals/${id}/${action}`).catch(() => {})
+    refetch()
+  }
+
+  if (pending.length === 0) return (
+    <div style={{ padding: '5px 7px', borderRadius: 3, background: `${CG}06`, border: `1px solid ${CG}15` }}>
+      <span style={{ fontSize: 7, color: `${CG}60`, fontFamily: 'monospace', letterSpacing: '0.1em' }}>✓ DECISION QUEUE CLEAR</span>
+    </div>
+  )
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {pending.slice(0, 3).map((a: any) => (
+        <div key={a.id} style={{ padding: '5px 7px', borderRadius: 4, background: `${'#003388'}08`, border: `1px solid ${'#003388'}25` }}>
+          <div style={{ fontSize: 6.5, color: '#6699ff', fontFamily: 'monospace', fontWeight: 800, letterSpacing: '0.06em', marginBottom: 2 }}>
+            {(a.action ?? a.type ?? 'DECISION').replace(/_/g, ' ')}
+          </div>
+          <div style={{ fontSize: 7, color: '#5a8aaa', fontFamily: 'monospace', lineHeight: 1.4, marginBottom: 4 }}>
+            {(a.description ?? '').slice(0, 80)}{(a.description ?? '').length > 80 ? '…' : ''}
+          </div>
+          <div style={{ display: 'flex', gap: 4 }}>
+            <button onClick={() => act(a.id, 'approve')} style={{ flex: 1, padding: '2px 0', fontSize: 6.5, fontFamily: 'monospace', letterSpacing: '0.06em', borderRadius: 3, cursor: 'pointer', background: `${CG}15`, border: `1px solid ${CG}30`, color: CG }}>✓ APPROVE</button>
+            <button onClick={() => act(a.id, 'deny')}    style={{ flex: 1, padding: '2px 0', fontSize: 6.5, fontFamily: 'monospace', letterSpacing: '0.06em', borderRadius: 3, cursor: 'pointer', background: `${CR}10`, border: `1px solid ${CR}25`, color: CR }}>✕ DENY</button>
+          </div>
+        </div>
+      ))}
+      {pending.length > 3 && <div style={{ fontSize: 6, color: `${C}35`, fontFamily: 'monospace', textAlign: 'center' }}>+{pending.length - 3} more pending</div>}
+    </div>
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 export function AdminOverview() {
   const navigate  = useNavigate()
   const clock     = useClock()
   const [modal, setModal] = useState<ModalType | null>(null)
   const [showLog, setShowLog] = useState(false)
+  const [logDefaultFilter, setLogDefaultFilter] = useState('all')
   const [showWaandaSettings, setShowWaandaSettings] = useState(false)
   const uptime   = useUptime()
 
@@ -5160,6 +5354,18 @@ export function AdminOverview() {
   // ── Goal Cockpit ─────────────────────────────────────────────────────────
   const [goalCockpitOpen, setGoalCockpitOpen] = useState(false)
   const handleGoalCockpit = useCallback(() => setGoalCockpitOpen(true), [])
+
+  // ── Quick Scenario ────────────────────────────────────────────────────────
+  const [simulating, setSimulating] = useState(false)
+  const quickScenario = useCallback(async (q: string) => {
+    if (simulating) return
+    setSimulating(true)
+    try {
+      const res = await api.post('/admin/kangqore-immp/simulate', { scenario: q })
+      handleScenario(res.data as ScenarioResult, res.data.delta as ScenarioDelta)
+    } catch {}
+    setSimulating(false)
+  }, [simulating, handleScenario])
 
 
   // ── Live HUD Event feed ──────────────────────────────────────────────────
@@ -5808,32 +6014,62 @@ export function AdminOverview() {
 <div style={{ display:'flex', flexDirection:'column', gap:20, overflow:'hidden', transform: 'scale(0.9)', transformOrigin: 'top center' }}>
   {/* ── SYSTEM STATUS ── */}
   <SectionLabel text="SYSTEM STATUS" color={CG} />
-  <div style={{ display:'flex', alignItems: 'center', justifyContent: 'space-between', padding:'4px 16px', background:'rgba(0,8,24,0.6)', borderRadius:8, border:`1px solid ${CG}15` }}>
-    <div style={{ position: 'relative', width: 60, height: 60 }}>
-      <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-120deg)' }}>
-        <circle cx="50" cy="50" r="40" fill="none" stroke={`${CG}20`} strokeWidth="4" strokeDasharray="180 300" />
-        <circle cx="50" cy="50" r="40" fill="none" stroke={CG} strokeWidth="4" strokeDasharray={`${180 * (health/100)} 300`} style={{ filter: `drop-shadow(0 0 6px ${CG})` }} />
-      </svg>
-      <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
-        <div style={{ fontSize: 10.8, fontWeight: 800, color: '#fff' }}>{Math.round(health)}%</div>
-        <div style={{ fontSize: 5.4, color: CG }}>HEALTH</div>
+  {(() => {
+    const ois      = cc?.ois?.score ?? null
+    const oisColor = ois == null ? `${C}50` : ois >= 80 ? CG : ois >= 60 ? C : '#ffaa00'
+    return (
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'8px 10px', background:'rgba(0,8,24,0.6)', borderRadius:8, border:`1px solid ${CG}15` }}>
+
+        {/* Health ring */}
+        <div style={{ position:'relative', width:68, height:68 }}>
+          <svg viewBox="0 0 100 100" style={{ width:'100%', height:'100%', transform:'rotate(-120deg)' }}>
+            <circle cx="50" cy="50" r="38" fill="none" stroke={`${CG}15`} strokeWidth="6" strokeDasharray="180 300" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke={CG} strokeWidth="6" strokeLinecap="round"
+              strokeDasharray={`${180 * (health / 100)} 300`}
+              style={{ filter:`drop-shadow(0 0 8px ${CG})`, transition:'stroke-dasharray 1.2s ease' }} />
+          </svg>
+          <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
+            <div style={{ fontSize:12, fontWeight:900, color:'#fff', lineHeight:1 }}>{Math.round(health)}%</div>
+            <div style={{ fontSize:5, color:CG, letterSpacing:'0.12em', marginTop:2 }}>HEALTH</div>
+          </div>
+        </div>
+
+        {/* Center live stats */}
+        <div style={{ display:'flex', flexDirection:'column', gap:6, alignItems:'center' }}>
+          {[
+            { label:'AGENTS',  val: Math.round(agents),      color: C  },
+            { label:'SIGNALS', val: recentSignals.length,    color: `${C}80` },
+            { label:'ALERTS',  val: critical,                color: critical > 0 ? CR : `${C}50` },
+          ].map(({ label, val, color }) => (
+            <div key={label} style={{ textAlign:'center', lineHeight:1 }}>
+              <div style={{ fontSize:10, fontWeight:800, color, fontFamily:'monospace' }}>{val}</div>
+              <div style={{ fontSize:4.5, color:`${C}40`, letterSpacing:'0.1em' }}>{label}</div>
+            </div>
+          ))}
+          <div className="live-blink" style={{ width:4, height:4, borderRadius:'50%', background:CG, boxShadow:`0 0 5px ${CG}`, marginTop:2 }} />
+        </div>
+
+        {/* OIS ring */}
+        <div style={{ position:'relative', width:68, height:68 }}>
+          <svg viewBox="0 0 100 100" style={{ width:'100%', height:'100%', transform:'rotate(-120deg)' }}>
+            <circle cx="50" cy="50" r="38" fill="none" stroke={`${oisColor}15`} strokeWidth="6" strokeDasharray="180 300" />
+            {ois != null && (
+              <circle cx="50" cy="50" r="38" fill="none" stroke={oisColor} strokeWidth="6" strokeLinecap="round"
+                strokeDasharray={`${180 * (ois / 100)} 300`}
+                style={{ filter:`drop-shadow(0 0 8px ${oisColor})`, transition:'stroke-dasharray 1.2s ease' }} />
+            )}
+          </svg>
+          <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
+            <div style={{ fontSize:12, fontWeight:900, color:'#fff', lineHeight:1 }}>
+              {ois != null ? Math.round(ois) : '—'}
+            </div>
+            <div style={{ fontSize:5, color:oisColor, letterSpacing:'0.12em', marginTop:2 }}>OIS</div>
+          </div>
+        </div>
+
       </div>
-    </div>
-    <svg width="40" height="20" viewBox="0 0 40 20">
-       <path d="M0 10 L10 10 L15 2 L20 18 L25 8 L30 10 L40 10" fill="none" stroke={CG} strokeWidth="1" />
-       <circle cx="20" cy="18" r="2" fill={CG} />
-    </svg>
-    <div style={{ position: 'relative', width: 60, height: 60 }}>
-      <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-120deg)' }}>
-        <circle cx="50" cy="50" r="40" fill="none" stroke={`${C}20`} strokeWidth="4" strokeDasharray="180 300" />
-        <circle cx="50" cy="50" r="40" fill="none" stroke={C} strokeWidth="4" strokeDasharray={`${180 * (conf/100)} 300`} style={{ filter: `drop-shadow(0 0 6px ${C})` }} />
-      </svg>
-      <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
-        <div style={{ fontSize: 10.8, fontWeight: 800, color: '#fff' }}>{conf}%</div>
-        <div style={{ fontSize: 5.4, color: C }}>WAANDA</div>
-      </div>
-    </div>
-  </div>
+    )
+  })()}
   {/* ── PERFORMANCE METRICS ── */}
   <SectionLabel text="PERFORMANCE METRICS" color={C} />
   <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 24px', padding:'4px 8px' }}>
@@ -5888,6 +6124,9 @@ export function AdminOverview() {
       <div key={t} style={{ fontSize: 6.3, color: `${C}60` }}>{t}</div>
     ))}
   </div>
+  {/* ── LIVE INTELLIGENCE STREAM ── */}
+  <SectionLabel text="LIVE STREAM" color={C} />
+  <ActivityTicker events={hudEvents} />
 </div>{/* ═ CENTER HUD ═ */}
           <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'flex-start', minHeight:0, gap:8, overflow:'hidden' }}>
 
@@ -5927,6 +6166,31 @@ export function AdminOverview() {
             {/* Bottom Group — only essentials under the arc */}
             <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:8, width:'100%', flexShrink:0 }}>
 
+              {/* Scenario Simulator + Reasoning Trace quick-access strip */}
+              {!scenarioResult && (
+                <div style={{ width: '85%', display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {[
+                    'What if we close 5 more deals this month?',
+                    'What if revenue drops 20%?',
+                    'What if we onboard 3 new enterprise clients?',
+                  ].map(q => (
+                    <button key={q} onClick={() => quickScenario(q)} disabled={simulating}
+                      style={{ flex: '1 1 0', padding: '4px 6px', fontSize: 7, fontFamily: 'monospace', letterSpacing: '0.08em', borderRadius: 4, cursor: simulating ? 'wait' : 'pointer', background: `${C}08`, border: `1px solid ${C}20`, color: `${C}70`, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      ⚡ {q.slice(8, 36)}…
+                    </button>
+                  ))}
+                  <button onClick={() => { setLogDefaultFilter('agent'); setShowLog(true) }}
+                    style={{ padding: '4px 8px', fontSize: 7, fontFamily: 'monospace', letterSpacing: '0.08em', borderRadius: 4, cursor: 'pointer', background: `#00ddaa08`, border: `1px solid #00ddaa20`, color: '#00ddaa80', whiteSpace: 'nowrap' }}>
+                    ⬡ TRACE
+                  </button>
+                </div>
+              )}
+              {simulating && (
+                <div style={{ width: '85%', padding: '4px 10px', borderRadius: 4, background: `${C}08`, border: `1px solid ${C}25` }}>
+                  <span style={{ fontSize: 8, color: `${C}70`, fontFamily: 'monospace', letterSpacing: '0.1em' }}>⚡ WAANDA running scenario simulation…</span>
+                </div>
+              )}
+
               {/* WAANDA Command Bar */}
               <div style={{ width: '85%' }}>
                 <Panel title="WAANDA" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C} collapsible>
@@ -5951,47 +6215,12 @@ export function AdminOverview() {
 
           {/* ═ RIGHT ═ */}
 <div style={{ display:'flex', flexDirection:'column', gap:20, overflow:'hidden', paddingBottom: 20, transform: 'scale(0.9)', transformOrigin: 'top center' }}>
-  {/* ── COMMAND CENTER — Phase 6.1 Business Domains ── */}
-  <SectionLabel text="COMMAND CENTER" color={CA} />
-  {cc?.business?.length > 0 ? (
-    <>
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
-        {(cc.business as any[]).slice(0, 4).map((domain: any) => {
-          const domainColor = domain.status === 'CRITICAL' ? CR : domain.status === 'ATTENTION' ? CA : domain.status === 'HEALTHY' ? CG : '#888';
-          return (
-            <MinimalistRingWidget
-              key={domain.id}
-              label={domain.label.toUpperCase()}
-              value={domain.count > 0 ? domain.count : '✓'}
-              sub={domain.status}
-              color={domainColor}
-            />
-          );
-        })}
-      </div>
-      <div style={{ display:'flex', flexDirection:'column', gap:3, padding:'6px 4px', borderTop:`1px solid ${CA}20`, marginTop:4 }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
-          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>OIS</span>
-          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{cc.ois?.score ?? '—'}</span>
-        </div>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
-          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>DECISIONS</span>
-          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{cc.decisions?.proposedCount ?? 0}</span>
-        </div>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'2px 0', borderBottom:`1px solid ${CA}10` }}>
-          <span style={{ fontSize:7.5, color:'#6aaac8', fontFamily:'monospace', letterSpacing:'0.08em' }}>SIGNALS</span>
-          <span style={{ fontSize:9, fontWeight:800, color:'#c0dff0', fontFamily:'monospace' }}>{cc.signals?.criticalCount ?? 0} critical</span>
-        </div>
-      </div>
-    </>
-  ) : (
-    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 4px' }}>
-      <MinimalistRingWidget label="CRITICAL" value={cc?.signals?.criticalCount ?? '—'} sub="SIGNALS" color={CR} />
-      <MinimalistRingWidget label="PROPOSED" value={cc?.decisions?.proposedCount ?? '—'} sub="DECISIONS" color={CA} />
-      <MinimalistRingWidget label="OIS SCORE" value={cc?.ois?.score ?? '—'} sub="ENTERPRISE" color={C} />
-      <MinimalistRingWidget label="TRAINING" value={cc?.training?.exportReady ?? '—'} sub="EXAMPLES" color={CG} />
-    </div>
-  )}
+  {/* ── SITUATION AWARENESS ── */}
+  <SectionLabel text="SITUATION AWARENESS" color={'#ffaa00'} />
+  <SituationReport cc={cc} recentSignals={recentSignals} insights={insights} liveApprovals={liveApprovals} health={health} />
+  {/* ── DECISION QUEUE ── */}
+  <SectionLabel text="DECISION QUEUE" color={'#ffaa00'} />
+  <DecisionQueueStrip />
   {/* ── WAANDA AUTHORITY — subsystem health dots ── */}
   <SectionLabel text="WAANDA AUTHORITY" color='#818cf8' />
   <div style={{ display:'flex', flexDirection:'column', gap:4, padding:'4px 8px', cursor:'pointer' }}
@@ -6064,7 +6293,7 @@ export function AdminOverview() {
           }}
         />
       )}
-      {showLog && <HUDLogDrawer onClose={() => setShowLog(false)} />}
+      {showLog && <HUDLogDrawer onClose={() => { setShowLog(false); setLogDefaultFilter('all') }} defaultFilter={logDefaultFilter} />}
       {showWaandaSettings && <WaandaSettingsModal onClose={() => setShowWaandaSettings(false)} />}
       
       {/* Settings Button */}

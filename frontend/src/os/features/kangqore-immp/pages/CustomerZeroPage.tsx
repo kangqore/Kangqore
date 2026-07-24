@@ -7,7 +7,7 @@ import {
   Cpu, Brain, BarChart2, Wand2, FlaskConical, Lightbulb, Timer,
   ArrowUp, ArrowDown, Minus, FileJson, RefreshCw, ShieldCheck,
   Target, CheckCircle2, AlertTriangle, Camera, ChevronRight,
-  Activity, Sparkles,
+  Activity, Sparkles, Play, Pause,
 } from 'lucide-react'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -55,15 +55,31 @@ const SURF2 = 'var(--os-surface-2)'
 const SURF3 = 'var(--os-surface-3)'
 const BDR   = 'var(--os-border)'
 const BDR_S = 'var(--os-border-subtle)'
-const BLUE  = '#2564ea'
-const GREEN = '#00c875'
-const GOLD  = '#eab308'
-const PURP  = '#a855f7'
-const RED   = '#ef4444'
-const INDIGO = '#6366f1'
+const BLUE   = '#3B82F6'   // Aurora Blue
+const GREEN  = '#22C55E'   // Emerald Green
+const MINT   = '#10B981'   // Evergreen Mint
+const GOLD   = '#F59E08'   // Amber Gold
+const PURP   = '#8B5CF6'   // Royal Purple
+const RED    = '#F43F5E'   // Coral Rose
+const ORANGE = '#FB923C'   // Sunset Peach
+const INDIGO = '#6366F1'   // Slate Indigo
+const TEAL   = '#14B8A6'   // Ocean Teal
+const PINK   = '#D946EF'   // Cosmic Magenta
+
+// light-tint backgrounds from the palette
+const BLUE_BG   = '#DBEAFE'
+const GREEN_BG  = '#DCFCE7'
+const MINT_BG   = '#D1FAE5'
+const GOLD_BG   = '#FEF3C7'
+const PURP_BG   = '#EDE9FE'
+const RED_BG    = '#FFE4E6'
+const ORANGE_BG = '#FFEDD5'
+const INDIGO_BG = '#E0E7FF'
+const TEAL_BG   = '#CCFBF1'
+const PINK_BG   = '#FCE7F3'
 
 const EMI_COLOR: Record<string, string> = {
-  L1: '#e2445c', L2: '#fdab3d', L3: '#579bfc', L4: PURP, L5: GREEN,
+  L1: RED, L2: ORANGE, L3: BLUE, L4: PURP, L5: MINT,
 }
 
 const PILLAR_WEIGHT: Record<string, string> = {
@@ -80,141 +96,163 @@ function gradeFromScore(s: number) {
   if (s >= 45) return 'D'
   return 'F'
 }
-function scoreColor(v: number) { return v >= 75 ? GREEN : v >= 50 ? GOLD : RED }
+function scoreColor(v: number) { return v >= 75 ? MINT : v >= 50 ? GOLD : RED }
 
-// ── OIS Gauge ─────────────────────────────────────────────────────────────────
+// ── OIS Score Display ─────────────────────────────────────────────────────────
 
-function arcPt(score100: number, CX: number, CY: number, R: number) {
-  const a = ((225 + score100 * 2.7) * Math.PI) / 180
-  return { x: CX + R * Math.sin(a), y: CY - R * Math.cos(a) }
-}
+const OIS_ZONES = [
+  { label: 'Critical', max: 20,  color: RED,    bg: RED_BG    },
+  { label: 'Poor',     max: 40,  color: ORANGE, bg: ORANGE_BG },
+  { label: 'Fair',     max: 60,  color: GOLD,   bg: GOLD_BG   },
+  { label: 'Good',     max: 80,  color: BLUE,   bg: BLUE_BG   },
+  { label: 'Excellent',max: 100, color: MINT,   bg: MINT_BG   },
+]
 
-function OISGauge({ score, before, size = 'lg' }: { score: number; before: number | null; size?: 'sm' | 'lg' }) {
-  const R  = size === 'lg' ? 86 : 58
-  const SW = size === 'lg' ? 12 : 8
-  const TW = size === 'lg' ? 14 : 9
-  const W  = R * 2 + TW * 2 + 16
-  const H  = Math.round(W * 0.78)
-  const CX = W / 2
-  const CY = H - 8
-
-  const circ = 2 * Math.PI * R
-  const ARC  = circ * 0.75
-  const OFF  = -(circ * 0.125)
-  const fill = (v: number) => (Math.min(v, 100) / 100) * ARC
-
+function OISScoreDisplay({ score, before }: { score: number; before: number | null }) {
   const grade    = gradeFromScore(score)
   const gc       = grade === 'A' || grade === 'B' ? GREEN : grade === 'C' ? GOLD : RED
-  const dot      = arcPt(score, CX, CY, R)
   const hasDelta = before !== null && before !== score
   const delta    = hasDelta ? score - before! : 0
   const deltaCol = delta >= 0 ? GREEN : RED
+  const pct      = Math.min(Math.max(score, 0), 100)
 
-  const tickPt = (pct: number, inner: boolean) =>
-    arcPt(pct, CX, CY, inner ? R - TW / 2 + 1 : R + TW / 2 - 1)
-
-  const fs = size === 'lg' ? 50 : 32
-  const labelFs = size === 'lg' ? 8.5 : 6
+  // which zone is the score in?
+  const activeZone = OIS_ZONES.find(z => score <= z.max) ?? OIS_ZONES[4]
 
   return (
-    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ overflow: 'visible' }}>
-      <defs>
-        <linearGradient id="czFill" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stopColor={BLUE} />
-          <stop offset="100%" stopColor={PURP} />
-        </linearGradient>
-        <radialGradient id="czAtm" cx="50%" cy="55%" r="50%">
-          <stop offset="0%"   stopColor={BLUE} stopOpacity="0.12" />
-          <stop offset="100%" stopColor={BLUE} stopOpacity="0" />
-        </radialGradient>
-        <filter id="czArc" x="-15%" y="-15%" width="130%" height="130%">
-          <feGaussianBlur stdDeviation="3" result="b" />
-          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
-        <filter id="czDot" x="-200%" y="-200%" width="500%" height="500%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="4"  result="b1" />
-          <feGaussianBlur in="SourceGraphic" stdDeviation="9"  result="b2" />
-          <feMerge><feMergeNode in="b2" /><feMergeNode in="b1" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
-        <filter id="czTxt" x="-10%" y="-10%" width="120%" height="120%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="b" />
-          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
-      </defs>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
 
-      <circle cx={CX} cy={CY} r={R - SW / 2 - 1} fill="url(#czAtm)" />
-      <circle cx={CX} cy={CY} r={R} fill="none" stroke="#131e31" strokeWidth={TW}
-        strokeDasharray={`${ARC} ${circ}`} strokeDashoffset={OFF}
-        strokeLinecap="round" transform={`rotate(-90 ${CX} ${CY})`} />
-      <circle cx={CX} cy={CY} r={R - TW / 2 - 2} fill="none"
-        stroke="rgba(255,255,255,0.04)" strokeWidth="1.5" />
+      {/* ── Big score ── */}
+      <div style={{ textAlign: 'center', padding: '20px 0 12px' }}>
+        <div style={{
+          fontSize: 76, fontWeight: 900, lineHeight: 1,
+          color: gc,
+          fontVariantNumeric: 'tabular-nums',
+          letterSpacing: '-0.03em',
+          fontFamily: "-apple-system,'SF Pro Display',BlinkMacSystemFont,sans-serif",
+        }}>
+          {score.toFixed(1)}
+        </div>
+        <div style={{ fontSize: 10, color: T4, marginTop: 5, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+          OIS™ Score
+        </div>
+      </div>
 
-      {hasDelta && (
-        <circle cx={CX} cy={CY} r={R} fill="none" stroke={`${BLUE}20`} strokeWidth={SW - 4}
-          strokeDasharray={`${fill(before!)} ${circ}`} strokeDashoffset={OFF}
-          strokeLinecap="round" transform={`rotate(-90 ${CX} ${CY})`} />
-      )}
-
-      <circle cx={CX} cy={CY} r={R} fill="none" stroke="url(#czFill)" strokeWidth={SW}
-        strokeDasharray={`${fill(score)} ${circ}`} strokeDashoffset={OFF}
-        strokeLinecap="round" transform={`rotate(-90 ${CX} ${CY})`}
-        filter="url(#czArc)"
-        style={{ transition: 'stroke-dasharray 1.4s cubic-bezier(0.4,0,0.2,1)' }} />
-
-      {([45, 75] as const).map(pct => {
-        const col = pct === 45 ? GOLD : GREEN
-        const i2 = tickPt(pct, true), o = tickPt(pct, false)
-        return (
-          <line key={pct} x1={i2.x} y1={i2.y} x2={o.x} y2={o.y}
-            stroke={col} strokeWidth="2" strokeLinecap="round" opacity="0.5" />
-        )
-      })}
-
-      <circle cx={dot.x} cy={dot.y} r={SW / 2 + 2.5} fill={gc} filter="url(#czDot)" />
-      <circle cx={dot.x} cy={dot.y} r={SW / 2 + 1}   fill={gc} />
-      <circle cx={dot.x} cy={dot.y} r={SW / 2 - 2.5} fill="rgba(255,255,255,0.92)" />
-
-      <text x={CX} y={CY - 22} textAnchor="middle"
-        fill="white" fontSize={fs} fontWeight="800" letterSpacing="-1.5"
-        fontFamily="-apple-system,'SF Pro Display',BlinkMacSystemFont,sans-serif"
-        filter="url(#czTxt)">
-        {score.toFixed(1)}
-      </text>
-
-      <text x={CX - 5} y={CY - 6} textAnchor="end"
-        fill={BLUE} fontSize={labelFs} fontWeight="700" letterSpacing="0.3"
-        fontFamily="-apple-system,sans-serif" opacity="0.9">
-        OIS™
-      </text>
-      <text x={CX - 1} y={CY - 6} textAnchor="start"
-        fill="#4a5f82" fontSize={labelFs} letterSpacing="2"
-        fontFamily="-apple-system,sans-serif">
-        SCORE
-      </text>
-
-      <rect x={CX - 44} y={CY + 4} width={88} height={23} rx={11.5}
-        fill={gc + '1c'} stroke={gc} strokeWidth="1.5" />
-      <text x={CX} y={CY + 19} textAnchor="middle"
-        fill={gc} fontSize="11.5" fontWeight="900" letterSpacing="1.2"
-        fontFamily="-apple-system,sans-serif">
-        GRADE {gradeFromScore(score)}
-      </text>
-
-      {hasDelta && (
-        <>
-          <rect x={CX - 54} y={CY + 34} width={108} height={20} rx={10}
-            fill={deltaCol + '0d'} stroke={deltaCol + '35'} strokeWidth="1" />
-          <text x={CX} y={CY + 47.5} textAnchor="middle" fontSize="10.5"
-            fontFamily="-apple-system,sans-serif">
-            <tspan fill="#4a5f82" fontWeight="500">{before!.toFixed(1)}</tspan>
-            <tspan fill="#2e3f5c" fontWeight="400">  →  </tspan>
-            <tspan fill={deltaCol} fontWeight="800">
+      {/* ── Grade + delta chips ── */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 22 }}>
+        <div style={{
+          padding: '5px 18px', borderRadius: 20,
+          background: gc + '12', border: `1px solid ${gc}30`,
+        }}>
+          <span style={{ fontSize: 13, fontWeight: 900, color: gc }}>Grade {grade}</span>
+        </div>
+        {hasDelta && (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 4,
+            padding: '5px 12px', borderRadius: 20,
+            background: deltaCol + '0e', border: `1px solid ${deltaCol}28`,
+          }}>
+            {delta >= 0
+              ? <ArrowUp size={10} style={{ color: deltaCol }} />
+              : <ArrowDown size={10} style={{ color: deltaCol }} />}
+            <span style={{ fontSize: 12, fontWeight: 800, color: deltaCol }}>
               {delta >= 0 ? '+' : ''}{delta.toFixed(1)} pts
-            </tspan>
-          </text>
-        </>
-      )}
-    </svg>
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* ── Zone band ── */}
+      <div style={{ padding: '0 2px' }}>
+
+        {/* zone label row */}
+        <div style={{ display: 'flex', marginBottom: 5 }}>
+          {OIS_ZONES.map(z => {
+            const isActive = z.label === activeZone.label
+            return (
+              <div key={z.label} style={{ flex: 1, textAlign: 'center' }}>
+                <span style={{
+                  fontSize: 8, fontWeight: isActive ? 800 : 500,
+                  color: isActive ? z.color : T4,
+                  letterSpacing: '0.04em',
+                }}>
+                  {z.label}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* the bar */}
+        <div style={{ position: 'relative' }}>
+          <div style={{ display: 'flex', height: 10, borderRadius: 6, overflow: 'hidden', gap: 1.5 }}>
+            {OIS_ZONES.map((z, i) => {
+              const prevMax = i === 0 ? 0 : OIS_ZONES[i - 1].max
+              const segPct  = ((z.max - prevMax) / 100) * 100
+              const filled  = score >= z.max         // fully lit
+              const partial = !filled && score > prevMax  // currently here
+              const opacity = filled ? 1 : partial ? 1 : 0.14
+              return (
+                <div key={z.label} style={{
+                  flex: 1, background: z.color,
+                  opacity,
+                  position: 'relative', overflow: 'hidden',
+                }}>
+                  {/* partial fill within the active segment */}
+                  {partial && (
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      background: z.color, opacity: 0.14,
+                    }} />
+                  )}
+                  {partial && (
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      width: `${((score - prevMax) / (z.max - prevMax)) * 100}%`,
+                      background: z.color,
+                    }} />
+                  )}
+                </div>
+              )
+            })}
+          </div>
+
+          {/* score marker */}
+          <div style={{
+            position: 'absolute', top: -3, left: `${pct}%`,
+            transform: 'translateX(-50%)',
+            width: 3, height: 16, background: gc,
+            borderRadius: 2,
+            boxShadow: `0 0 0 2px white, 0 0 0 3px ${gc}`,
+          }} />
+        </div>
+
+        {/* axis numbers */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
+          {[0, 20, 40, 60, 80, 100].map(v => (
+            <span key={v} style={{ fontSize: 8, color: T4, fontVariantNumeric: 'tabular-nums' }}>{v}</span>
+          ))}
+        </div>
+
+        {/* current score callout */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+          marginTop: 10, padding: '6px 14px', borderRadius: 8,
+          background: activeZone.bg, border: `1px solid ${activeZone.color}30`,
+        }}>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: gc }} />
+          <span style={{ fontSize: 10, color: gc, fontWeight: 700 }}>
+            {score.toFixed(1)} — {activeZone.label}
+          </span>
+          {before !== null && (
+            <span style={{ fontSize: 9, color: T4 }}>
+              · was {before.toFixed(1)}
+            </span>
+          )}
+        </div>
+      </div>
+
+    </div>
   )
 }
 
@@ -225,8 +263,8 @@ function SectionLabel({ children, color = T4, icon: Icon }: { children: React.Re
     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
       {Icon && <Icon size={11} style={{ color, flexShrink: 0 }} />}
       <span style={{
-        fontSize: 9, fontWeight: 700, color,
-        textTransform: 'uppercase', letterSpacing: '0.12em', whiteSpace: 'nowrap',
+        fontSize: 9, fontWeight: 800, color,
+        textTransform: 'uppercase', letterSpacing: '0.13em', whiteSpace: 'nowrap',
       }}>
         {children}
       </span>
@@ -238,39 +276,44 @@ function SectionLabel({ children, color = T4, icon: Icon }: { children: React.Re
 // ── Pillar row ─────────────────────────────────────────────────────────────────
 
 function PillarRow({ id, label, score, index }: { id: string; label: string; score: number; index: number }) {
-  const col  = scoreColor(score)
-  const wt   = PILLAR_WEIGHT[id] ?? ''
+  const col = scoreColor(score)
+  const wt  = PILLAR_WEIGHT[id] ?? ''
 
   return (
     <div style={{
       display: 'flex', alignItems: 'center', gap: 10,
-      padding: '5px 8px', borderRadius: 6,
-      background: index % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent',
+      padding: '7px 10px', borderRadius: 7,
+      background: index % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'transparent',
     }}>
-      <span style={{ fontSize: 10, color: T3, width: 70, flexShrink: 0, textAlign: 'right', fontWeight: 500 }}>{label}</span>
+      <span style={{ fontSize: 10, color: T3, width: 68, flexShrink: 0, textAlign: 'right', fontWeight: 600 }}>
+        {label}
+      </span>
       {wt && (
-        <span style={{ fontSize: 8, color: T4, width: 22, flexShrink: 0, textAlign: 'center',
-          background: col + '15', borderRadius: 3, padding: '1px 0', fontWeight: 600, color: col + 'aa',
-        }}>{wt}</span>
+        <span style={{
+          fontSize: 8, width: 24, flexShrink: 0, textAlign: 'center',
+          background: col + '15', borderRadius: 3, padding: '1px 0',
+          fontWeight: 700, color: col,
+        }}>
+          {wt}
+        </span>
       )}
-      <div style={{ flex: 1, position: 'relative', height: 7, background: '#131e31', borderRadius: 4 }}>
+      <div style={{ flex: 1, position: 'relative', height: 7, background: 'rgba(0,0,0,0.07)', borderRadius: 4 }}>
         <div style={{
           width: `${score}%`, height: '100%', background: col,
           borderRadius: 4, transition: 'width 1s ease',
-          boxShadow: score >= 75 ? `0 0 8px ${col}44` : 'none',
         }} />
         <div style={{
           position: 'absolute', top: '50%', left: `${score}%`,
           width: 11, height: 11, borderRadius: '50%',
-          background: col, border: '2px solid #0c1220',
+          background: col, border: '2px solid white',
           transform: 'translate(-50%, -50%)',
-          boxShadow: `0 0 6px ${col}60`,
+          boxShadow: `0 1px 4px ${col}60`,
           transition: 'left 1s ease', zIndex: 1,
         }} />
       </div>
       <span style={{
-        fontSize: 12, fontWeight: 800, color: col,
-        width: 28, textAlign: 'right', flexShrink: 0,
+        fontSize: 12, fontWeight: 900, color: col,
+        width: 30, textAlign: 'right', flexShrink: 0,
         fontVariantNumeric: 'tabular-nums',
       }}>
         {score.toFixed(0)}
@@ -294,44 +337,43 @@ function ActivityCard({
   return (
     <div style={{
       background: SURF2,
-      border: `1px solid ${isZero ? BDR_S : color + '28'}`,
+      border: `1px solid ${isZero ? BDR_S : color + '30'}`,
       borderRadius: 10,
       padding: '14px 16px',
       display: 'flex', flexDirection: 'column', gap: 10,
       position: 'relative', overflow: 'hidden',
     }}>
-      {/* left accent stripe */}
       <div style={{
         position: 'absolute', left: 0, top: 0, bottom: 0, width: 3,
         background: isZero ? BDR : color,
         borderRadius: '10px 0 0 10px',
-        opacity: isZero ? 0.3 : 1,
+        opacity: isZero ? 0.2 : 1,
       }} />
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 4 }}>
         <div style={{
-          width: 28, height: 28, borderRadius: 7,
-          background: isZero ? SURF3 : color + '15',
+          width: 30, height: 30, borderRadius: 8,
+          background: isZero ? SURF3 : color + '18',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          <Icon size={13} style={{ color: isZero ? T4 : color }} />
+          <Icon size={14} style={{ color: isZero ? T4 : color }} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           {win && (
             <span style={{
               fontSize: 8, color: isZero ? T4 : color,
               background: isZero ? 'transparent' : color + '12',
-              padding: '2px 6px', borderRadius: 4, fontWeight: 600,
+              padding: '2px 6px', borderRadius: 4, fontWeight: 700,
               border: isZero ? `1px solid ${BDR_S}` : `1px solid ${color}28`,
             }}>
               {win}
             </span>
           )}
           {trend && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <TI size={9} style={{ color: tc }} />
               {trend.delta !== 0 && (
-                <span style={{ fontSize: 8, fontWeight: 700, color: tc }}>
+                <span style={{ fontSize: 8, fontWeight: 800, color: tc }}>
                   {trend.delta > 0 ? '+' : ''}{trend.delta}
                 </span>
               )}
@@ -342,11 +384,11 @@ function ActivityCard({
 
       <div style={{ paddingLeft: 4 }}>
         {isZero ? (
-          <div style={{ fontSize: 24, fontWeight: 800, lineHeight: 1, color: T4, opacity: 0.3 }}>—</div>
+          <div style={{ fontSize: 24, fontWeight: 800, lineHeight: 1, color: T4, opacity: 0.25 }}>—</div>
         ) : (
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 3 }}>
             <span style={{
-              fontSize: 26, fontWeight: 900, lineHeight: 1,
+              fontSize: 28, fontWeight: 900, lineHeight: 1,
               color, fontVariantNumeric: 'tabular-nums',
             }}>
               {value.toLocaleString()}
@@ -354,7 +396,7 @@ function ActivityCard({
             {unit && <span style={{ fontSize: 12, fontWeight: 600, color: color + 'aa' }}>{unit}</span>}
           </div>
         )}
-        <div style={{ fontSize: 10, color: isZero ? T4 : T3, marginTop: 4, lineHeight: 1.35 }}>{label}</div>
+        <div style={{ fontSize: 10, color: isZero ? T4 : T3, marginTop: 5, lineHeight: 1.35 }}>{label}</div>
       </div>
     </div>
   )
@@ -367,24 +409,95 @@ function CoigBar({ label, value, note, color, max }: { label: string; value: num
   const isPositive = value >= 0
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <div style={{ width: 7, height: 7, borderRadius: '50%', background: color, flexShrink: 0 }} />
-          <span style={{ fontSize: 11, color: T3, fontWeight: 500 }}>{label}</span>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: color, flexShrink: 0, boxShadow: `0 0 6px ${color}60` }} />
+          <span style={{ fontSize: 11, color: T2, fontWeight: 600 }}>{label}</span>
           <span style={{ fontSize: 9, color: T4 }}>· {note}</span>
         </div>
-        <span style={{ fontSize: 16, fontWeight: 900, color, fontVariantNumeric: 'tabular-nums' }}>
+        <span style={{ fontSize: 18, fontWeight: 900, color, fontVariantNumeric: 'tabular-nums' }}>
           {isPositive ? '+' : ''}{value.toFixed(1)}
         </span>
       </div>
-      <div style={{ height: 8, background: '#131e31', borderRadius: 4, overflow: 'hidden' }}>
+      <div style={{ height: 10, background: 'rgba(0,0,0,0.07)', borderRadius: 5, overflow: 'hidden', position: 'relative' }}>
         <div style={{
           width: `${pct}%`, height: '100%', background: color,
-          borderRadius: 4, transition: 'width 1.2s cubic-bezier(0.4,0,0.2,1)',
-          boxShadow: `0 0 10px ${color}44`,
+          borderRadius: 5, transition: 'width 1.2s cubic-bezier(0.4,0,0.2,1)',
+          boxShadow: `0 0 12px ${color}44`,
         }} />
       </div>
     </div>
+  )
+}
+
+// ── Quick stat chip ────────────────────────────────────────────────────────────
+
+const PALETTE_BG: Record<string, string> = {
+  [BLUE]:   BLUE_BG,
+  [MINT]:   MINT_BG,
+  [GREEN]:  GREEN_BG,
+  [GOLD]:   GOLD_BG,
+  [PURP]:   PURP_BG,
+  [RED]:    RED_BG,
+  [ORANGE]: ORANGE_BG,
+  [INDIGO]: INDIGO_BG,
+  [TEAL]:   TEAL_BG,
+  [PINK]:   PINK_BG,
+}
+
+function StatChip({ label, value, color }: { label: string; value: string; color: string }) {
+  const bg = PALETTE_BG[color] ?? color + '12'
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+      padding: '8px 16px',
+      background: bg,
+      border: `1px solid ${color}30`,
+      borderRadius: 10,
+      minWidth: 80,
+    }}>
+      <span style={{ fontSize: 16, fontWeight: 900, color, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
+        {value}
+      </span>
+      <span style={{ fontSize: 9, fontWeight: 700, color, opacity: 0.65, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+        {label}
+      </span>
+    </div>
+  )
+}
+
+// ── Timeline sparkline ─────────────────────────────────────────────────────────
+
+function TimelineSparkline({ snapshots, base }: { snapshots: any[]; base: number }) {
+  if (snapshots.length < 2) return null
+  const W = 640, H = 48, PAD = 4
+  const scores = snapshots.map((s: any) => s.oisScore as number)
+  const minS = Math.min(...scores, base) - 1
+  const maxS = Math.max(...scores, base) + 1
+  const range = maxS - minS || 1
+  const pts = scores.map((s, i) => ({
+    x: PAD + (i / (scores.length - 1)) * (W - PAD * 2),
+    y: H - PAD - ((s - minS) / range) * (H - PAD * 2),
+  }))
+  const d = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
+  const area = `${d} L${pts[pts.length - 1].x},${H} L${pts[0].x},${H} Z`
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 48, overflow: 'visible', marginBottom: 8 }} preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={BLUE} stopOpacity="0.18" />
+          <stop offset="100%" stopColor={BLUE} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill="url(#sparkFill)" />
+      <path d={d} fill="none" stroke={BLUE} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      {pts.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r={i === pts.length - 1 ? 4 : 2.5}
+          fill={i === pts.length - 1 ? GREEN : BLUE}
+          stroke={i === pts.length - 1 ? 'white' : 'none'} strokeWidth="1.5" />
+      ))}
+    </svg>
   )
 }
 
@@ -504,29 +617,30 @@ export function CustomerZeroPage() {
   if (error || !data) return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center',
-      justifyContent: 'center', gap: 20, background: SURF1,
-      borderRadius: 14, border: `1px solid ${BDR}`, padding: 56,
+      justifyContent: 'center', gap: 20,
+      background: SURF1, borderRadius: 16, border: `1px solid ${BDR}`, padding: 60,
     }}>
       <div style={{
-        width: 56, height: 56, borderRadius: 14,
-        background: SURF2, border: `1px solid ${BDR}`,
+        width: 60, height: 60, borderRadius: 16,
+        background: `linear-gradient(135deg, ${BLUE}18, ${PURP}10)`,
+        border: `1px solid ${BLUE}22`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        <FileText size={24} style={{ color: T4 }} />
+        <Camera size={26} style={{ color: BLUE }} />
       </div>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: T2, marginBottom: 8 }}>No baseline snapshot</div>
-        <div style={{ fontSize: 12, color: T3, maxWidth: 320, lineHeight: 1.6 }}>
-          Set a baseline OIS snapshot to generate the Customer Zero Report™. This locks your Day 0 score.
+        <div style={{ fontSize: 17, fontWeight: 800, color: T1, marginBottom: 8 }}>No baseline snapshot yet</div>
+        <div style={{ fontSize: 12, color: T3, maxWidth: 340, lineHeight: 1.7 }}>
+          Set a baseline OIS snapshot to generate the Customer Zero Report™. This locks your Day 0 score and starts the COIG measurement clock.
         </div>
       </div>
       <button onClick={() => snapshotMut.mutate()} disabled={snapshotMut.isPending}
         style={{
           display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 700,
-          padding: '10px 24px', borderRadius: 9,
+          padding: '12px 28px', borderRadius: 10,
           background: BLUE, color: '#fff', border: 'none',
           cursor: 'pointer', opacity: snapshotMut.isPending ? 0.6 : 1,
-          boxShadow: `0 0 20px ${BLUE}30`,
+          boxShadow: `0 4px 24px ${BLUE}40`,
         }}>
         <Camera size={14} /> {snapshotMut.isPending ? 'Computing…' : 'Set Baseline Now'}
       </button>
@@ -559,86 +673,85 @@ export function CustomerZeroPage() {
 
   const enterpriseGoals: any[] = g8Score?.pillars?.goal?.metrics?.enterpriseGoals ?? []
   const healthyCount  = pillars.filter(p => p.score >= 75).length
+  const warningCount  = pillars.filter(p => p.score >= 50 && p.score < 75).length
   const criticalCount = pillars.filter(p => p.score < 50).length
   const coigMax       = Math.max(data.coigPotential, 10)
+  const grade         = gradeFromScore(data.oisAfter)
+  const gradeColor    = grade === 'A' || grade === 'B' ? GREEN : grade === 'C' ? GOLD : RED
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%' }}>
 
       {/* ══════════════════════════════════════════════════════════════════════
-          COMMAND HEADER
+          HERO HEADER
       ════════════════════════════════════════════════════════════════════════ */}
       <div style={{
-        display: 'flex', alignItems: 'center', gap: 12,
-        padding: '12px 20px',
-        background: SURF1, border: `1px solid ${BDR}`, borderRadius: 12,
-        flexWrap: 'wrap',
+        background: SURF1,
+        border: `1px solid ${BDR}`,
+        borderRadius: 12,
+        padding: '20px 24px',
       }}>
-        {/* Badge + org */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 200 }}>
-          <div style={{
-            width: 34, height: 34, borderRadius: 8, flexShrink: 0,
-            background: `linear-gradient(135deg, ${BLUE}30, ${PURP}20)`,
-            border: `1px solid ${BLUE}30`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <Award size={16} style={{ color: GOLD }} />
-          </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: 9, fontWeight: 700, color: GOLD, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+        {/* Top row: eyebrow + export */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+              background: BLUE + '12', border: `1px solid ${BLUE}22`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Award size={18} style={{ color: BLUE }} />
+            </div>
+            <div>
+              <div style={{ fontSize: 9, fontWeight: 800, color: BLUE, textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 2 }}>
                 Customer Zero Report™
-              </span>
+              </div>
+              <div style={{ fontSize: 20, fontWeight: 900, color: T1, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                {data.organization}
+              </div>
             </div>
-            <div style={{ fontSize: 15, fontWeight: 800, color: T1, letterSpacing: '-0.01em' }}>
-              {data.organization}
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: 10, color: T3, marginBottom: 1 }}>{data.platform}</div>
+              <div style={{ fontSize: 9, color: T4 }}>{periodStr}</div>
             </div>
+            <button onClick={() => window.print()} style={{
+              display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, fontWeight: 600,
+              color: T3, background: SURF2,
+              border: `1px solid ${BDR}`, borderRadius: 8,
+              padding: '6px 12px', cursor: 'pointer',
+            }}>
+              <Download size={11} /> Export
+            </button>
           </div>
         </div>
 
-        {/* Period + platform */}
-        <div style={{ display: 'flex', flex: 1, flexDirection: 'column', gap: 1, minWidth: 160 }}>
-          <span style={{ fontSize: 10, color: T3 }}>{data.platform}</span>
-          <span style={{ fontSize: 10, color: T4 }}>{periodStr}</span>
-        </div>
+        {/* Stat chips row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          <StatChip label="OIS Score" value={data.oisAfter.toFixed(1)} color={BLUE} />
+          <StatChip label="Grade"     value={`Grade ${grade}`}          color={gradeColor} />
+          <StatChip label="COIG Gain" value={`+${data.coig.toFixed(1)}`} color={GREEN} />
+          <StatChip label="EMI Level" value={`EMI™ ${data.maturityAfter}`} color={maturityColor} />
 
-        {/* EMI badge */}
-        <span style={{
-          fontSize: 10, fontWeight: 700, color: maturityColor,
-          background: maturityColor + '18', border: `1px solid ${maturityColor}33`,
-          padding: '4px 12px', borderRadius: 20, textTransform: 'uppercase', flexShrink: 0,
-        }}>
-          EMI™ {data.maturityAfter}
-        </span>
+          <div style={{ flex: 1 }} />
 
-        {/* Mode badge */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 7, flexShrink: 0,
-          padding: '5px 12px', borderRadius: 20,
-          background: modeColor + '10', border: `1px solid ${modeColor}28`,
-        }}>
+          {/* Production mode status */}
           <div style={{
-            width: 7, height: 7, borderRadius: '50%', background: modeColor,
-            boxShadow: isProduction ? `0 0 0 3px ${GREEN}25, 0 0 8px ${GREEN}40` : 'none',
-            animation: isProduction ? 'pulse-ring 2s ease-in-out infinite' : 'none',
-          }} />
-          <span style={{ fontSize: 10, fontWeight: 700, color: modeColor }}>
-            {isProduction ? 'PRODUCTION' : 'STAGING'}
-          </span>
+            display: 'flex', alignItems: 'center', gap: 8,
+            padding: '8px 16px', borderRadius: 10,
+            background: modeColor + '0e', border: `1px solid ${modeColor}30`,
+          }}>
+            <div style={{
+              width: 8, height: 8, borderRadius: '50%', background: modeColor,
+              boxShadow: isProduction ? `0 0 0 3px ${GREEN}22` : 'none',
+            }} />
+            <span style={{ fontSize: 11, fontWeight: 800, color: modeColor }}>
+              {isProduction ? 'PRODUCTION LIVE' : 'STAGING MODE'}
+            </span>
+          </div>
         </div>
-
-        {/* Export */}
-        <button
-          onClick={() => window.print()}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, fontWeight: 600,
-            color: T3, background: SURF2, border: `1px solid ${BDR}`,
-            borderRadius: 7, padding: '5px 12px', cursor: 'pointer', flexShrink: 0,
-          }}
-        >
-          <Download size={11} /> Export
-        </button>
       </div>
 
       {/* ══════════════════════════════════════════════════════════════════════
@@ -646,93 +759,109 @@ export function CustomerZeroPage() {
       ════════════════════════════════════════════════════════════════════════ */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '260px 1fr 300px',
-        gap: 14,
+        gridTemplateColumns: '280px 1fr 272px',
+        gap: 12,
       }}>
 
-        {/* OIS Gauge panel */}
+        {/* OIS Score card */}
         <div style={{
-          background: `linear-gradient(160deg, #0c1320 0%, #111829 60%, #16102a 100%)`,
-          border: `1px solid ${BLUE}20`,
-          borderRadius: 14, padding: '24px 20px',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16,
-          position: 'relative', overflow: 'hidden',
+          background: SURF1,
+          border: `1px solid ${BDR}`,
+          borderRadius: 12,
+          padding: '20px 20px 18px',
+          display: 'flex', flexDirection: 'column', gap: 0,
         }}>
-          <div style={{
-            position: 'absolute', top: -50, left: '50%', transform: 'translateX(-50%)',
-            width: 200, height: 200, borderRadius: '50%',
-            background: `${BLUE}0a`, filter: 'blur(50px)', pointerEvents: 'none',
-          }} />
-
-          <div style={{ fontSize: 9, fontWeight: 700, color: BLUE, textTransform: 'uppercase', letterSpacing: '0.12em', alignSelf: 'flex-start' }}>
+          {/* label */}
+          <div style={{ fontSize: 9, fontWeight: 800, color: BLUE, textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 2 }}>
             Operational Intelligence Score
           </div>
+          <div style={{ fontSize: 11, color: T3 }}>OIS™ — 9-pillar composite</div>
 
-          <OISGauge score={data.oisAfter} before={data.oisBefore} size="lg" />
+          <OISScoreDisplay score={data.oisAfter} before={data.oisBefore} />
 
-          {/* Pillar health summary */}
+          {/* Pillar health */}
           {pillars.length > 0 && (
-            <div style={{
-              display: 'flex', gap: 8, width: '100%',
-              padding: '10px 14px', background: 'rgba(255,255,255,0.025)',
-              borderRadius: 8, border: `1px solid rgba(255,255,255,0.05)`,
-            }}>
-              {[
-                { label: 'Healthy', count: healthyCount, color: GREEN },
-                { label: 'Warning', count: pillars.filter(p => p.score >= 50 && p.score < 75).length, color: GOLD },
-                { label: 'Critical', count: criticalCount, color: RED },
-              ].map(z => (
-                <div key={z.label} style={{ flex: 1, textAlign: 'center' }}>
-                  <div style={{ fontSize: 18, fontWeight: 900, color: z.count > 0 ? z.color : T4, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
-                    {z.count}
+            <div style={{ borderTop: `1px solid ${BDR}`, paddingTop: 14, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ fontSize: 9, fontWeight: 700, color: T4, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Pillar Health
+              </div>
+              <div style={{ display: 'flex', height: 7, borderRadius: 4, overflow: 'hidden', gap: 1 }}>
+                {healthyCount  > 0 && <div style={{ flex: healthyCount,  background: GREEN }} />}
+                {warningCount  > 0 && <div style={{ flex: warningCount,  background: GOLD  }} />}
+                {criticalCount > 0 && <div style={{ flex: criticalCount, background: RED   }} />}
+              </div>
+              <div style={{ display: 'flex' }}>
+                {[
+                  { label: 'Good',   count: healthyCount,  color: GREEN },
+                  { label: 'Warn',   count: warningCount,  color: GOLD  },
+                  { label: 'Crit',   count: criticalCount, color: RED   },
+                ].map(z => (
+                  <div key={z.label} style={{ flex: 1, textAlign: 'center' }}>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: z.count > 0 ? z.color : T4, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
+                      {z.count}
+                    </div>
+                    <div style={{ fontSize: 8, color: T4, marginTop: 2 }}>{z.label}</div>
                   </div>
-                  <div style={{ fontSize: 8, color: T4, marginTop: 2 }}>{z.label}</div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
+
+          <Link to="/kangqore-view/admin/kangqore-immp/operational-intel" style={{
+            display: 'flex', alignItems: 'center', gap: 3, marginTop: 14,
+            fontSize: 10, fontWeight: 600, color: BLUE, textDecoration: 'none',
+          }}>
+            Full OIS Breakdown <ChevronRight size={10} />
+          </Link>
         </div>
 
         {/* COIG Intelligence Gain */}
         <div style={{
           background: SURF1, border: `1px solid ${BDR}`,
-          borderRadius: 14, padding: '24px 24px',
-          display: 'flex', flexDirection: 'column', gap: 20,
+          borderRadius: 14, padding: '22px 24px',
+          display: 'flex', flexDirection: 'column', gap: 18,
         }}>
           <SectionLabel color={GOLD} icon={TrendingUp}>COIG™ — Operational Intelligence Gain</SectionLabel>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <CoigBar label="Current"   value={data.coig}          note="measured"   color={BLUE}  max={coigMax} />
-            <CoigBar label="Expected"  value={data.coigExpected}  note="90-day forecast" color={GOLD}  max={coigMax} />
-            <CoigBar label="Potential" value={data.coigPotential} note="all recs applied" color={PURP}  max={coigMax} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <CoigBar label="Measured" value={data.coig}          note="current gain"       color={BLUE}  max={coigMax} />
+            <CoigBar label="Forecast" value={data.coigExpected}  note="90-day projection"  color={GOLD}  max={coigMax} />
+            <CoigBar label="Potential" value={data.coigPotential} note="all recs applied"  color={PURP}  max={coigMax} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 8, paddingTop: 4, borderTop: `1px solid ${BDR}` }}>
-            {[
-              { label: 'Hours Saved',    value: data.hoursSaved > 0 ? `${data.hoursSaved}h` : '—',                      color: GREEN },
-              { label: 'Workflows',      value: data.workflowsCompleted > 0 ? data.workflowsCompleted : '—',            color: BLUE  },
-              { label: 'Automation',     value: data.automationCoverage > 0 ? `${data.automationCoverage}%` : '—',      color: PURP  },
-              { label: 'Tasks Elim.',    value: data.manualEliminated > 0 ? data.manualEliminated : '—',                color: GOLD  },
-            ].map(m => (
-              <div key={m.label} style={{
-                padding: '10px 12px', background: SURF2,
-                border: `1px solid ${BDR_S}`, borderRadius: 8, textAlign: 'center',
-              }}>
-                <div style={{ fontSize: 18, fontWeight: 800, color: m.value === '—' ? T4 : m.color, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
-                  {m.value}
+          <div style={{ paddingTop: 14, borderTop: `1px solid ${BDR}` }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+              {[
+                { label: 'Hours Saved',   value: data.hoursSaved > 0 ? `${data.hoursSaved}h` : '—',                     color: GREEN },
+                { label: 'Workflows',     value: data.workflowsCompleted > 0 ? data.workflowsCompleted : '—',           color: BLUE  },
+                { label: 'Automation',    value: data.automationCoverage > 0 ? `${data.automationCoverage}%` : '—',     color: PURP  },
+                { label: 'Tasks Elim.',   value: data.manualEliminated > 0 ? data.manualEliminated : '—',               color: GOLD  },
+              ].map(m => (
+                <div key={m.label} style={{
+                  padding: '12px 10px', background: SURF2,
+                  border: `1px solid ${m.value === '—' ? BDR_S : m.color + '22'}`,
+                  borderRadius: 9, textAlign: 'center',
+                }}>
+                  <div style={{
+                    fontSize: 20, fontWeight: 900,
+                    color: m.value === '—' ? T4 : m.color,
+                    fontVariantNumeric: 'tabular-nums', lineHeight: 1,
+                  }}>
+                    {m.value}
+                  </div>
+                  <div style={{ fontSize: 9, color: T4, marginTop: 5, fontWeight: 600 }}>{m.label}</div>
                 </div>
-                <div style={{ fontSize: 9, color: T4, marginTop: 4 }}>{m.label}</div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Production Control */}
+        {/* Production Command */}
         <div style={{
-          background: SURF1, border: `1px solid ${isProduction ? GREEN + '30' : BDR}`,
-          borderRadius: 14, padding: '24px 20px',
-          display: 'flex', flexDirection: 'column', gap: 18,
-          boxShadow: isProduction ? `0 0 20px ${GREEN}10` : 'none',
+          background: SURF1,
+          border: `1px solid ${BDR}`,
+          borderRadius: 12, padding: '20px 20px',
+          display: 'flex', flexDirection: 'column', gap: 16,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <SectionLabel color={modeColor} icon={isProduction ? CheckCircle2 : AlertTriangle}>
@@ -740,71 +869,84 @@ export function CustomerZeroPage() {
             </SectionLabel>
           </div>
 
-          {/* Big toggle */}
+          {/* Status display */}
           <div style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
             padding: '20px 16px',
-            background: isProduction ? GREEN + '08' : SURF2,
-            border: `1px solid ${isProduction ? GREEN + '25' : BDR_S}`,
+            background: SURF2,
+            border: `1px solid ${isProduction ? GREEN + '30' : BDR_S}`,
             borderRadius: 10,
           }}>
-            <button
-              onClick={handleProductionToggle}
-              disabled={togglePending}
-              style={{
-                position: 'relative', display: 'flex', alignItems: 'center',
-                width: 60, height: 32, borderRadius: 20, padding: 4,
-                background: isProduction ? GREEN : '#1e2a3e',
-                border: `2px solid ${isProduction ? GREEN + '60' : BDR}`,
-                cursor: togglePending ? 'not-allowed' : 'pointer',
-                transition: 'all 0.3s ease',
-                opacity: togglePending ? 0.65 : 1,
-                justifyContent: isProduction ? 'flex-end' : 'flex-start',
-                boxShadow: isProduction ? `0 0 16px ${GREEN}30` : 'none',
-              }}
-            >
-              <div style={{
-                width: 22, height: 22, borderRadius: '50%', background: '#fff',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.35)', transition: 'all 0.3s ease',
-              }} />
-            </button>
+            {/* Status icon */}
+            <div style={{
+              width: 52, height: 52, borderRadius: '50%',
+              background: isProduction ? `${GREEN}14` : `${GOLD}10`,
+              border: `2px solid ${isProduction ? GREEN + '40' : GOLD + '30'}`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: isProduction ? `0 0 20px ${GREEN}25` : 'none',
+            }}>
+              {isProduction
+                ? <Play size={22} style={{ color: GREEN, marginLeft: 2 }} />
+                : <Pause size={22} style={{ color: GOLD } } />
+              }
+            </div>
 
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: modeColor, marginBottom: 4 }}>
+              <div style={{ fontSize: 13, fontWeight: 800, color: modeColor, marginBottom: 4 }}>
                 {togglePending ? 'Switching…'
                   : isProduction ? 'Currently LIVE'
                   : blueprintDisplay ? 'Ready to go live'
                   : 'No Blueprint yet'}
               </div>
-              <div style={{ fontSize: 10, color: T4, lineHeight: 1.5 }}>
+              <div style={{ fontSize: 10, color: T4, lineHeight: 1.55, maxWidth: 200 }}>
                 {isProduction
-                  ? 'Real clients can connect. Toggle off to go back to staging.'
+                  ? 'Real clients can connect. Click below to return to staging.'
                   : blueprintDisplay
-                    ? 'Internal only. Flip to go live with real clients.'
-                    : 'Flip to generate Blueprint from live DB and go live.'}
+                    ? 'Internal only. Click Go Live to open to real clients.'
+                    : 'Click to generate Blueprint from live DB and go live.'}
               </div>
             </div>
+
+            {/* Action button */}
+            <button
+              onClick={handleProductionToggle}
+              disabled={togglePending}
+              style={{
+                width: '100%', padding: '10px 14px',
+                borderRadius: 9, border: 'none', cursor: togglePending ? 'not-allowed' : 'pointer',
+                fontSize: 12, fontWeight: 800,
+                background: isProduction ? `${RED}18` : `${GREEN}18`,
+                color: isProduction ? RED : GREEN,
+                border: `1px solid ${isProduction ? RED + '30' : GREEN + '35'}`,
+                opacity: togglePending ? 0.55 : 1,
+                transition: 'all 0.2s ease',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+              }}
+            >
+              {togglePending ? <RefreshCw size={12} style={{ animation: 'spin 1s linear infinite' }} /> : null}
+              {togglePending ? 'Switching…' : isProduction ? 'Move to Staging' : 'Go Live →'}
+            </button>
 
             {/* Confirm off */}
             {confirmOff && (
               <div style={{
-                display: 'flex', gap: 6, width: '100%',
+                width: '100%', display: 'flex', gap: 6,
                 padding: '8px 10px', borderRadius: 7,
                 background: RED + '0e', border: `1px solid ${RED}25`,
               }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 10, color: RED, fontWeight: 600, marginBottom: 2 }}>Are you sure?</div>
-                  <div style={{ fontSize: 9, color: T4 }}>This will move to staging mode.</div>
+                  <div style={{ fontSize: 10, color: RED, fontWeight: 700, marginBottom: 2 }}>Confirm move to staging?</div>
+                  <div style={{ fontSize: 9, color: T4 }}>Real clients will lose access.</div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                   <button onClick={() => archiveMut.mutate(blueprintDisplay!.id)} style={{
                     fontSize: 9, fontWeight: 700, color: '#fff', background: RED, border: 'none',
-                    borderRadius: 4, padding: '3px 8px', cursor: 'pointer',
-                  }}>Confirm</button>
+                    borderRadius: 4, padding: '4px 9px', cursor: 'pointer',
+                  }}>Yes</button>
                   <button onClick={() => setConfirmOff(false)} style={{
                     fontSize: 9, color: T4, background: 'transparent', border: `1px solid ${BDR}`,
-                    borderRadius: 4, padding: '3px 8px', cursor: 'pointer',
-                  }}>Cancel</button>
+                    borderRadius: 4, padding: '4px 9px', cursor: 'pointer',
+                  }}>No</button>
                 </div>
               </div>
             )}
@@ -815,7 +957,7 @@ export function CustomerZeroPage() {
             <div style={{
               display: 'flex', alignItems: 'center', gap: 8,
               padding: '9px 12px', background: SURF2, borderRadius: 8,
-              border: `1px solid ${BDR_S}`,
+              border: `1px solid ${INDIGO}22`,
             }}>
               <FileJson size={13} style={{ color: INDIGO, flexShrink: 0 }} />
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -825,9 +967,9 @@ export function CustomerZeroPage() {
                 <div style={{ fontSize: 9, color: T4 }}>v{blueprintDisplay.version} · {blueprintDisplay.pack ?? 'professional-services'}</div>
               </div>
               <span style={{
-                fontSize: 8, fontWeight: 700, color: modeColor,
+                fontSize: 8, fontWeight: 800, color: modeColor,
                 background: modeColor + '18', border: `1px solid ${modeColor}30`,
-                padding: '2px 7px', borderRadius: 4,
+                padding: '2px 7px', borderRadius: 4, textTransform: 'uppercase',
               }}>
                 {blueprintDisplay.status}
               </span>
@@ -837,7 +979,7 @@ export function CustomerZeroPage() {
             </div>
           )}
 
-          {/* Snapshot button */}
+          {/* Snapshot */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <button
               onClick={() => { setSnapMsg(null); snapshotMut.mutate() }}
@@ -845,7 +987,7 @@ export function CustomerZeroPage() {
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
                 fontSize: 11, fontWeight: 700, padding: '9px 14px', borderRadius: 8,
-                background: `${BLUE}18`, color: BLUE, border: `1px solid ${BLUE}30`,
+                background: `${BLUE}14`, color: BLUE, border: `1px solid ${BLUE}28`,
                 cursor: snapshotMut.isPending ? 'not-allowed' : 'pointer',
                 opacity: snapshotMut.isPending ? 0.6 : 1, width: '100%',
               }}
@@ -868,7 +1010,7 @@ export function CustomerZeroPage() {
           {/* Seed data warning */}
           {!isProduction && blueprintDisplay && (
             <div style={{
-              fontSize: 10, color: GOLD, lineHeight: 1.5,
+              fontSize: 10, color: GOLD, lineHeight: 1.55,
               background: GOLD + '08', border: `1px dashed ${GOLD}30`,
               borderRadius: 7, padding: '8px 10px',
               display: 'flex', alignItems: 'flex-start', gap: 6,
@@ -890,75 +1032,74 @@ export function CustomerZeroPage() {
         <div style={{
           background: SURF1, border: `1px solid ${BDR}`, borderRadius: 12, padding: '20px 24px',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
             <SectionLabel color={BLUE} icon={Activity}>OIS™ — 9 Intelligence Pillars</SectionLabel>
             <div style={{
               display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0,
               padding: '4px 14px', borderRadius: 20,
               background: `${BLUE}10`, border: `1px solid ${BLUE}22`,
             }}>
-              <span style={{ fontSize: 14, fontWeight: 900, color: BLUE, fontVariantNumeric: 'tabular-nums' }}>
+              <span style={{ fontSize: 15, fontWeight: 900, color: BLUE, fontVariantNumeric: 'tabular-nums' }}>
                 {data.oisAfter.toFixed(1)}
               </span>
               <div style={{ width: 1, height: 12, background: BDR }} />
-              {(() => {
-                const g = gradeFromScore(data.oisAfter)
-                const gc = g === 'A' || g === 'B' ? GREEN : g === 'C' ? GOLD : RED
-                return <span style={{ fontSize: 10, fontWeight: 800, color: gc }}>Grade {g}</span>
-              })()}
+              <span style={{ fontSize: 10, fontWeight: 800, color: gradeColor }}>Grade {grade}</span>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2px 20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2px 18px' }}>
             {pillars.map((p, i) => <PillarRow key={p.id} id={p.id} label={p.label} score={p.score} index={i} />)}
           </div>
 
-          <div style={{ display: 'flex', gap: 20, marginTop: 14, paddingTop: 12, borderTop: `1px solid ${BDR}`, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 18, marginTop: 14, paddingTop: 12, borderTop: `1px solid ${BDR}`, flexWrap: 'wrap', alignItems: 'center' }}>
             {[
-              { label: 'Healthy (75–100)', color: GREEN },
-              { label: 'Warning (50–74)',  color: GOLD  },
-              { label: 'Critical (< 50)', color: RED   },
+              { label: 'Healthy (75–100)', color: GREEN, count: healthyCount },
+              { label: 'Warning (50–74)',  color: GOLD,  count: warningCount },
+              { label: 'Critical (< 50)', color: RED,   count: criticalCount },
             ].map(z => (
-              <div key={z.label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <div key={z.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <div style={{ width: 7, height: 7, borderRadius: '50%', background: z.color }} />
                 <span style={{ fontSize: 9, color: T4 }}>{z.label}</span>
+                <span style={{ fontSize: 9, fontWeight: 800, color: z.count > 0 ? z.color : T4 }}>{z.count}</span>
               </div>
             ))}
-            <div style={{ marginLeft: 'auto', fontSize: 9, color: T4, fontVariantNumeric: 'tabular-nums' }}>
-              <span style={{ color: GREEN }}>{healthyCount}</span> healthy ·{' '}
-              <span style={{ color: GOLD }}>{pillars.filter(p => p.score >= 50 && p.score < 75).length}</span> warning ·{' '}
-              <span style={{ color: RED }}>{criticalCount}</span> critical
+            <div style={{ marginLeft: 'auto' }}>
+              <Link to="/kangqore-view/admin/kangqore-immp/operational-intel" style={{
+                fontSize: 9, color: BLUE, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 3,
+              }}>
+                Full OIS Dashboard <ChevronRight size={9} />
+              </Link>
             </div>
           </div>
         </div>
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          PULSE + ACTIVITY — 2 column
+          PULSE + ACTIVITY
       ════════════════════════════════════════════════════════════════════════ */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
 
         {/* WAANDA Pulse */}
         {pulse?.summary ? (() => {
           const hc = pulse.health === 'healthy' ? GREEN : pulse.health === 'warning' ? GOLD : RED
           return (
             <div style={{
-              background: SURF1, border: `1px solid ${hc}20`,
+              background: SURF1, border: `1px solid ${hc}22`,
               borderRadius: 12, padding: '20px 22px',
               display: 'flex', flexDirection: 'column', gap: 14,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <SectionLabel color={PURP} icon={Brain}>WAANDA Enterprise Pulse</SectionLabel>
                 <span style={{
-                  fontSize: 9, fontWeight: 700, color: hc,
+                  fontSize: 9, fontWeight: 800, color: hc,
                   background: hc + '18', border: `1px solid ${hc}30`,
-                  padding: '2px 8px', borderRadius: 5, textTransform: 'uppercase', flexShrink: 0,
+                  padding: '3px 9px', borderRadius: 5, textTransform: 'uppercase', flexShrink: 0,
                 }}>
                   {pulse.health}
                 </span>
               </div>
 
-              <p style={{ fontSize: 12, color: T2, lineHeight: 1.7, margin: 0 }}>{pulse.summary}</p>
+              <p style={{ fontSize: 12, color: T2, lineHeight: 1.75, margin: 0 }}>{pulse.summary}</p>
 
               {pulse.drivers.length > 0 && (
                 <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
@@ -968,7 +1109,7 @@ export function CustomerZeroPage() {
                       <span key={i} style={{
                         fontSize: 9, color: dc, background: dc + '10',
                         border: `1px solid ${dc}22`, borderRadius: 5,
-                        padding: '2px 8px', fontWeight: 600,
+                        padding: '3px 9px', fontWeight: 600,
                       }}>
                         {d.metric}: {d.value}
                       </span>
@@ -977,7 +1118,7 @@ export function CustomerZeroPage() {
                   {pulse.recommendedAction && (
                     <span style={{
                       fontSize: 9, color: GOLD, background: GOLD + '10',
-                      border: `1px solid ${GOLD}22`, borderRadius: 5, padding: '2px 8px',
+                      border: `1px solid ${GOLD}22`, borderRadius: 5, padding: '3px 9px', fontWeight: 600,
                     }}>
                       ⚡ {pulse.recommendedAction}
                     </span>
@@ -998,26 +1139,25 @@ export function CustomerZeroPage() {
             display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start',
           }}>
             <SectionLabel color={PURP} icon={Brain}>WAANDA Enterprise Pulse</SectionLabel>
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '20px 0' }}>
-              <span style={{ fontSize: 11, color: T4 }}>Pulse will generate after first active session.</span>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '24px 0' }}>
+              <span style={{ fontSize: 11, color: T4 }}>Pulse generates after the first active session.</span>
             </div>
           </div>
         )}
 
         {/* Adoption Signal */}
         {activity ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <SectionLabel color={GREEN} icon={Zap}>Adoption Signal · Live</SectionLabel>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-              <ActivityCard icon={Cpu}         color={BLUE}  label="Missions (24h)"    value={activity.missionsLast24h}    window="24h"  trend={activity.missionsTrend} />
-              <ActivityCard icon={Brain}        color={PURP}  label="Decisions (7d)"   value={activity.decisionsLast7d}    window="7d"   trend={activity.decisionsTrend} />
-              <ActivityCard icon={Timer}        color={GREEN} label="Hours Captured"   value={activity.estimatedTimeSaved} unit="h" />
-              <ActivityCard icon={Lightbulb}    color={GOLD}  label="Evidence"         value={activity.evidenceCaptured}   trend={activity.evidenceTrend} />
-              <ActivityCard icon={FlaskConical} color={BLUE}  label="Simulations"      value={activity.simulationRuns}     trend={activity.simulationsTrend} />
-              <ActivityCard icon={Wand2}        color={PURP}  label="WAANDA Sessions"  value={activity.waandaSessions} />
+              <ActivityCard icon={Cpu}         color={BLUE}  label="Missions (24h)"   value={activity.missionsLast24h}    window="24h" trend={activity.missionsTrend} />
+              <ActivityCard icon={Brain}        color={PURP}  label="Decisions (7d)"  value={activity.decisionsLast7d}    window="7d"  trend={activity.decisionsTrend} />
+              <ActivityCard icon={Timer}        color={GREEN} label="Hours Captured"  value={activity.estimatedTimeSaved} unit="h" />
+              <ActivityCard icon={Lightbulb}    color={GOLD}  label="Evidence"        value={activity.evidenceCaptured}   trend={activity.evidenceTrend} />
+              <ActivityCard icon={FlaskConical} color={BLUE}  label="Simulations"     value={activity.simulationRuns}     trend={activity.simulationsTrend} />
+              <ActivityCard icon={Wand2}        color={PURP}  label="WAANDA Sessions" value={activity.waandaSessions} />
             </div>
 
-            {/* Context prompt */}
             {(() => {
               const { missionsLast24h: m, decisionsLast7d: d, evidenceCaptured: e, simulationRuns: s, waandaSessions: w } = activity
               let prompt: string | null = null, col = GOLD
@@ -1036,12 +1176,12 @@ export function CustomerZeroPage() {
               if (!prompt) return null
               return (
                 <div style={{
-                  padding: '9px 14px',
+                  padding: '10px 14px',
                   background: col + '0e', border: `1px solid ${col}22`, borderRadius: 8,
                   display: 'flex', alignItems: 'flex-start', gap: 8,
                 }}>
                   <AlertTriangle size={11} style={{ color: col, flexShrink: 0, marginTop: 2 }} />
-                  <span style={{ fontSize: 11, color: T3, lineHeight: 1.55 }}>{prompt}</span>
+                  <span style={{ fontSize: 11, color: T3, lineHeight: 1.6 }}>{prompt}</span>
                 </div>
               )
             })()}
@@ -1056,7 +1196,7 @@ export function CustomerZeroPage() {
       {/* ══════════════════════════════════════════════════════════════════════
           GOALS + RECOMMENDATIONS
       ════════════════════════════════════════════════════════════════════════ */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
 
         {/* Enterprise Goals */}
         <div style={{ background: SURF1, border: `1px solid ${BDR}`, borderRadius: 12, padding: '20px 22px' }}>
@@ -1072,28 +1212,28 @@ export function CustomerZeroPage() {
                 const currentVal = g.current != null ? g.current : null
                 return (
                   <div key={i} style={{
-                    padding: '11px 14px', background: SURF2,
-                    border: `1px solid ${BDR_S}`, borderRadius: 9,
+                    padding: '12px 14px', background: SURF2,
+                    border: `1px solid ${pct >= 75 ? GREEN + '20' : BDR_S}`, borderRadius: 9,
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <div style={{
-                          width: 20, height: 20, borderRadius: 5, flexShrink: 0,
+                          width: 22, height: 22, borderRadius: 6, flexShrink: 0,
                           background: col + '18', display: 'flex', alignItems: 'center',
-                          justifyContent: 'center', fontSize: 8, fontWeight: 800, color: col,
+                          justifyContent: 'center', fontSize: 9, fontWeight: 900, color: col,
                         }}>
                           {i + 1}
                         </div>
                         <span style={{ fontSize: 11, fontWeight: 600, color: T2 }}>{g.label}</span>
                       </div>
-                      <span style={{ fontSize: 13, fontWeight: 900, color: col, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
+                      <span style={{ fontSize: 14, fontWeight: 900, color: col, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
                         {pct.toFixed(0)}%
                       </span>
                     </div>
-                    <div style={{ height: 6, background: '#131e31', borderRadius: 3, overflow: 'hidden', marginBottom: 5 }}>
+                    <div style={{ height: 7, background: 'rgba(0,0,0,0.07)', borderRadius: 3.5, overflow: 'hidden', marginBottom: 6 }}>
                       <div style={{
                         width: `${pct}%`, height: '100%', background: col,
-                        borderRadius: 3, transition: 'width 1s ease',
+                        borderRadius: 3.5, transition: 'width 1s ease',
                         boxShadow: pct >= 75 ? `0 0 6px ${col}40` : 'none',
                       }} />
                     </div>
@@ -1114,12 +1254,12 @@ export function CustomerZeroPage() {
               {data.goalProgress.map((g, i) => (
                 <div key={i} style={{
                   display: 'flex', alignItems: 'center', gap: 10,
-                  padding: '9px 12px', background: SURF2, border: `1px solid ${BDR_S}`, borderRadius: 8,
+                  padding: '10px 12px', background: SURF2, border: `1px solid ${BDR_S}`, borderRadius: 8,
                 }}>
                   <div style={{
-                    width: 20, height: 20, borderRadius: 5, flexShrink: 0,
+                    width: 22, height: 22, borderRadius: 6, flexShrink: 0,
                     background: PURP + '18', display: 'flex', alignItems: 'center',
-                    justifyContent: 'center', fontSize: 8, fontWeight: 800, color: PURP,
+                    justifyContent: 'center', fontSize: 9, fontWeight: 800, color: PURP,
                   }}>
                     {i + 1}
                   </div>
@@ -1135,7 +1275,7 @@ export function CustomerZeroPage() {
               <p style={{ fontSize: 12, color: T3, margin: 0 }}>No enterprise goals defined yet.</p>
               <Link to="/kangqore-view/admin/kangqore-immp/enterprise" style={{
                 fontSize: 11, fontWeight: 600, color: PURP, textDecoration: 'none',
-                padding: '5px 12px', borderRadius: 6, background: PURP + '12', border: `1px solid ${PURP}30`,
+                padding: '6px 14px', borderRadius: 7, background: PURP + '12', border: `1px solid ${PURP}30`,
               }}>
                 Set Goals →
               </Link>
@@ -1157,24 +1297,24 @@ export function CustomerZeroPage() {
                 <div key={i} style={{
                   display: 'flex', alignItems: 'flex-start', gap: 10,
                   padding: '12px 14px', background: SURF2,
-                  border: `1px solid ${i === 0 ? GREEN + '28' : BDR_S}`,
+                  border: `1px solid ${i === 0 ? GREEN + '30' : BDR_S}`,
                   borderRadius: 9,
-                  boxShadow: i === 0 ? `0 0 12px ${GREEN}08` : 'none',
+                  boxShadow: i === 0 ? `0 0 14px ${GREEN}08` : 'none',
                 }}>
                   <div style={{
-                    flexShrink: 0, width: 22, height: 22, borderRadius: 6,
+                    flexShrink: 0, width: 24, height: 24, borderRadius: 7,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 9, fontWeight: 800, color: '#fff',
+                    fontSize: 9, fontWeight: 900, color: '#fff',
                     background: i === 0 ? GREEN : i === 1 ? BLUE : T4,
                   }}>
                     #{i + 1}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 11, color: T2, lineHeight: 1.55, margin: '0 0 6px' }}>{r.action}</p>
+                    <p style={{ fontSize: 11, color: T2, lineHeight: 1.6, margin: '0 0 7px' }}>{r.action}</p>
                     <span style={{
                       display: 'inline-flex', alignItems: 'center', gap: 4,
-                      fontSize: 9, color: GREEN, fontWeight: 700,
-                      background: GREEN + '12', padding: '2px 8px', borderRadius: 5,
+                      fontSize: 9, color: GREEN, fontWeight: 800,
+                      background: GREEN + '12', padding: '3px 8px', borderRadius: 5,
                       border: `1px solid ${GREEN}25`,
                     }}>
                       <TrendingUp size={8} /> +{r.oisImpact.toFixed(1)} OIS
@@ -1194,9 +1334,13 @@ export function CustomerZeroPage() {
           COIG TIMELINE
       ════════════════════════════════════════════════════════════════════════ */}
       <div style={{ background: SURF1, border: `1px solid ${BDR}`, borderRadius: 12, padding: '20px 24px' }}>
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 14 }}>
           <SectionLabel color={BLUE} icon={Layers}>COIG™ Milestone Timeline</SectionLabel>
         </div>
+
+        {snapshots.length > 1 && (
+          <TimelineSparkline snapshots={snapshots} base={BASE_SCORE} />
+        )}
 
         {snapshots.length > 0 ? (
           <div style={{ overflowX: 'auto', paddingBottom: 4 }}>
@@ -1223,17 +1367,17 @@ export function CustomerZeroPage() {
                       }} />
                     )}
                     <div style={{
-                      width: 18, height: 18, borderRadius: '50%', zIndex: 1, flexShrink: 0,
+                      width: 20, height: 20, borderRadius: '50%', zIndex: 1, flexShrink: 0,
                       background: isLatest ? col : isBase ? BLUE + '55' : SURF3,
                       border: `2px solid ${isLatest ? col : isBase ? BLUE : BDR}`,
-                      boxShadow: isLatest ? `0 0 0 4px ${col}18, 0 0 10px ${col}40` : 'none',
+                      boxShadow: isLatest ? `0 0 0 5px ${col}18, 0 0 12px ${col}50` : 'none',
                     }} />
                     <div style={{ textAlign: 'center' }}>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: isLatest ? col : isBase ? BLUE : T3, fontVariantNumeric: 'tabular-nums' }}>
+                      <div style={{ fontSize: 15, fontWeight: 900, color: isLatest ? col : isBase ? BLUE : T3, fontVariantNumeric: 'tabular-nums' }}>
                         {snap.oisScore.toFixed(1)}
                       </div>
                       {!isBase && delta !== 0 && (
-                        <div style={{ fontSize: 9, fontWeight: 700, color: delta >= 0 ? GREEN : RED }}>
+                        <div style={{ fontSize: 9, fontWeight: 800, color: delta >= 0 ? GREEN : RED }}>
                           {delta >= 0 ? '+' : ''}{delta}
                         </div>
                       )}
@@ -1252,22 +1396,22 @@ export function CustomerZeroPage() {
         ) : (
           <div style={{ display: 'flex', alignItems: 'flex-start' }}>
             {[
-              { label: 'Day 0',  sub: 'Baseline',   score: BASE_SCORE.toFixed(1),           col: BLUE,  active: true  },
-              { label: 'Week 1', sub: 'Go-live',     score: '—',                             col: T4,    active: false },
-              { label: 'Week 4', sub: '+5 target',   score: (BASE_SCORE + 5).toFixed(1)+'+', col: GREEN, active: false },
-              { label: 'Day 90', sub: '+6.1 target', score: (BASE_SCORE + 6.1).toFixed(1)+'+', col: GREEN, active: false },
+              { label: 'Day 0',  sub: 'Baseline',      score: BASE_SCORE.toFixed(1),                col: BLUE,  active: true  },
+              { label: 'Week 1', sub: 'Go-live',        score: '—',                                  col: T4,    active: false },
+              { label: 'Week 4', sub: '+5 target',      score: (BASE_SCORE + 5).toFixed(1) + '+',    col: GREEN, active: false },
+              { label: 'Day 90', sub: '+6.1 target',    score: (BASE_SCORE + 6.1).toFixed(1) + '+',  col: GREEN, active: false },
             ].map((m, i, arr) => (
               <div key={m.label} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, position: 'relative' }}>
                 {i < arr.length - 1 && (
                   <div style={{ position: 'absolute', top: 9, left: '50%', width: '100%', height: 1, background: BDR }} />
                 )}
                 <div style={{
-                  width: 18, height: 18, borderRadius: '50%', zIndex: 1,
+                  width: 20, height: 20, borderRadius: '50%', zIndex: 1,
                   background: m.active ? BLUE : SURF3, border: `2px solid ${m.active ? BLUE : BDR}`,
-                  boxShadow: m.active ? `0 0 0 4px ${BLUE}18` : 'none',
+                  boxShadow: m.active ? `0 0 0 5px ${BLUE}18` : 'none',
                 }} />
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: m.col, fontVariantNumeric: 'tabular-nums' }}>{m.score}</div>
+                  <div style={{ fontSize: 15, fontWeight: 900, color: m.col, fontVariantNumeric: 'tabular-nums' }}>{m.score}</div>
                   <div style={{ fontSize: 8, color: T4, marginTop: 3 }}>{m.label}</div>
                   <div style={{ fontSize: 8, color: T4 }}>{m.sub}</div>
                 </div>
@@ -1276,7 +1420,7 @@ export function CustomerZeroPage() {
           </div>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 14, fontSize: 9, color: T4, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 16, fontSize: 9, color: T4, flexWrap: 'wrap' }}>
           <span>Baseline: <strong style={{ color: BLUE, fontVariantNumeric: 'tabular-nums' }}>{BASE_SCORE.toFixed(1)}</strong></span>
           {snapshots.length > 0 && <span>{snapshots.length} snapshot{snapshots.length !== 1 ? 's' : ''}</span>}
           <span>90-day target: <strong style={{ color: GREEN, fontVariantNumeric: 'tabular-nums' }}>{(BASE_SCORE + 6.1).toFixed(1)}+</strong></span>
@@ -1293,14 +1437,19 @@ export function CustomerZeroPage() {
       ════════════════════════════════════════════════════════════════════════ */}
       <div style={{
         background: SURF1, border: `1px solid ${BDR}`, borderRadius: 10,
-        padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
+        padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
       }}>
-        <ShieldCheck size={11} style={{ color: T4 }} />
+        <ShieldCheck size={12} style={{ color: T4 }} />
         <span style={{ fontSize: 9, color: T4 }}>
           Verified by <strong style={{ color: T3 }}>{data.verifiedBy}</strong>
         </span>
         <div style={{ flex: 1 }} />
-        <Clock size={10} style={{ color: T4 }} />
+        <Link to="/kangqore-view/admin/kangqore-immp/customer-zero-case-study" style={{
+          fontSize: 9, color: BLUE, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 3,
+        }}>
+          View Case Study <ChevronRight size={9} />
+        </Link>
+        <Clock size={11} style={{ color: T4 }} />
         <span style={{ fontSize: 9, color: T4 }}>
           Generated {new Date(data.generatedAt).toLocaleString('en-GB', {
             day: 'numeric', month: 'short', year: 'numeric',
