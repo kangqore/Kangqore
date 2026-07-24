@@ -7482,3 +7482,58 @@ model OEMRevenueEntry {
   @@index([period])
   @@map("oem_revenue_entries")
 }
+
+model RegionalPricingConfig {
+  id              String   @id @default(cuid())
+  region          String   @unique  // UK | EU | INDIA | US
+  currency        String            // GBP | EUR | INR | USD
+  currencySymbol  String            // £ | € | ₹ | $
+  starterPrice    Float
+  proPrice        Float
+  enterprisePrice Float
+  paymentGateway  String   @default("stripe")  // stripe | razorpay
+  isLive          Boolean  @default(false)
+  launchedAt      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([region])
+  @@index([isLive])
+  @@map("regional_pricing_configs")
+}
+
+model RegionalPersonaConfig {
+  id                String   @id @default(cuid())
+  region            String   @unique  // UK | EU | INDIA | US
+  personaName       String   @default("WAANDA")
+  toneStyle         String   @default("professional")
+  regulatoryContext String?  @db.Text
+  languageHint      String?
+  calendarFormat    String?
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([region])
+  @@map("regional_persona_configs")
+}
+
+model IntlCustomer {
+  id          String   @id @default(cuid())
+  customerRef String   @unique  // C30, C31 …
+  name        String
+  region      String            // UK | EU | INDIA
+  industry    String?
+  planTier    String   @default("PRO")
+  currency    String
+  oisBaseline Float?
+  oisCurrent  Float?
+  dpaSigned   Boolean  @default(false)
+  complianceFlags String?  // JSON string of flags
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([region])
+  @@index([customerRef])
+  @@map("intl_customers")
+}

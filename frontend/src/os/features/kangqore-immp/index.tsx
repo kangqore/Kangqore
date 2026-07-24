@@ -115,6 +115,18 @@ import { OEMFleetPage }               from './pages/OEMFleetPage'
 import { OEMMarginPage }              from './pages/OEMMarginPage'
 import { OEMPartnerZeroPage }         from './pages/OEMPartnerZeroPage'
 import { OEMGatePage }                from './pages/OEMGatePage'
+import { UKLaunchPage }              from './pages/UKLaunchPage'
+import { EULaunchPage }              from './pages/EULaunchPage'
+import { IndiaLaunchPage }           from './pages/IndiaLaunchPage'
+import { RegionalPersonaPage }       from './pages/RegionalPersonaPage'
+import { CustomerThirtyPage }        from './pages/CustomerThirtyPage'
+import { CustomerThirtyOnePage }     from './pages/CustomerThirtyOnePage'
+import { CustomerThirtyTwoPage }     from './pages/CustomerThirtyTwoPage'
+import { CustomerThirtyThreePage }   from './pages/CustomerThirtyThreePage'
+import { CustomerThirtyFourPage }    from './pages/CustomerThirtyFourPage'
+import { CustomerThirtyFivePage }    from './pages/CustomerThirtyFivePage'
+import { RegionalAnalyticsPage }     from './pages/RegionalAnalyticsPage'
+import { IntlGatePage }              from './pages/IntlGatePage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -302,7 +314,19 @@ export function KIMMMModule() {
           <Route path="oem-margin"              element={<OEMMarginPage />}                 />
           <Route path="oem-partner-zero"        element={<OEMPartnerZeroPage />}            />
           <Route path="oem-gate-s148"           element={<OEMGatePage />}                   />
-          <Route path="customers/twenty-one"    element={<CustomerTwentyOnePage />}         />
+          <Route path="uk-launch"              element={<UKLaunchPage />}                  />
+          <Route path="eu-launch"              element={<EULaunchPage />}                  />
+          <Route path="india-launch"           element={<IndiaLaunchPage />}               />
+          <Route path="intl-personas"          element={<RegionalPersonaPage />}           />
+          <Route path="intl-analytics"         element={<RegionalAnalyticsPage />}         />
+          <Route path="intl-gate-s157"         element={<IntlGatePage />}                  />
+          <Route path="customers/thirty"       element={<CustomerThirtyPage />}            />
+          <Route path="customers/thirty-one"   element={<CustomerThirtyOnePage />}         />
+          <Route path="customers/thirty-two"   element={<CustomerThirtyTwoPage />}         />
+          <Route path="customers/thirty-three" element={<CustomerThirtyThreePage />}       />
+          <Route path="customers/thirty-four"  element={<CustomerThirtyFourPage />}        />
+          <Route path="customers/thirty-five"  element={<CustomerThirtyFivePage />}        />
+          <Route path="customers/twenty-one"   element={<CustomerTwentyOnePage />}         />
           <Route path="customers/twenty-two"    element={<CustomerTwentyTwoPage />}         />
           <Route path="customers/twenty-three"  element={<CustomerTwentyThreePage />}       />
           <Route path="customers/twenty-four"   element={<CustomerTwentyFourPage />}        />
