@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@lib/api'
-import { Sliders, Zap, AlertTriangle, TrendUp } from 'lucide-react'
+import { Sliders, Zap, AlertTriangle, TrendingUp } from 'lucide-react'
 
 const T1 = 'var(--os-text-1)', T2 = 'var(--os-text-2)', BDR = 'var(--os-border)', CARD = 'var(--os-card)'
 const PURPLE = '#a78bfa', GREEN = '#10b981', AMBER = '#f59e0b', RED = '#ef4444', TEAL = '#06b6d4'
@@ -65,7 +65,7 @@ export function Gen4RouterPage() {
       {/* Routing scale progress */}
       <div style={{ background: CARD, border: `1px solid ${BDR}`, borderRadius: 14, padding: '20px 24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-          <TrendUp style={{ width: 15, height: 15, color: PURPLE }} />
+          <TrendingUp style={{ width: 15, height: 15, color: PURPLE }} />
           <span style={{ fontSize: 12, fontWeight: 800, color: T1, textTransform: 'uppercase', letterSpacing: '.07em' }}>Routing Scale Path</span>
         </div>
         {/* Progress bar */}
