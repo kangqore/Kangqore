@@ -127,6 +127,16 @@ import { CustomerThirtyFourPage }    from './pages/CustomerThirtyFourPage'
 import { CustomerThirtyFivePage }    from './pages/CustomerThirtyFivePage'
 import { RegionalAnalyticsPage }     from './pages/RegionalAnalyticsPage'
 import { IntlGatePage }              from './pages/IntlGatePage'
+import { CorpusAuditPage }          from './pages/CorpusAuditPage'
+import { DatasetExportPage }         from './pages/DatasetExportPage'
+import { TrainingJobsPage }          from './pages/TrainingJobsPage'
+import { Gen4EvalPage }              from './pages/Gen4EvalPage'
+import { Gen4RouterPage }            from './pages/Gen4RouterPage'
+import { Gen4GatePage }              from './pages/Gen4GatePage'
+import { ARRIntelPage }              from './pages/ARRIntelPage'
+import { DunningPage }               from './pages/DunningPage'
+import { EnterprisePipelinePage }    from './pages/EnterprisePipelinePage'
+import { Chapter9GatePage }          from './pages/Chapter9GatePage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -320,6 +330,16 @@ export function KIMMMModule() {
           <Route path="intl-personas"          element={<RegionalPersonaPage />}           />
           <Route path="intl-analytics"         element={<RegionalAnalyticsPage />}         />
           <Route path="intl-gate-s157"         element={<IntlGatePage />}                  />
+          <Route path="gen4-corpus"            element={<CorpusAuditPage />}               />
+          <Route path="gen4-dataset"           element={<DatasetExportPage />}             />
+          <Route path="gen4-training"          element={<TrainingJobsPage />}              />
+          <Route path="gen4-eval"              element={<Gen4EvalPage />}                  />
+          <Route path="gen4-router"            element={<Gen4RouterPage />}                />
+          <Route path="gen4-gate-s166"         element={<Gen4GatePage />}                  />
+          <Route path="arr-intelligence"       element={<ARRIntelPage />}                  />
+          <Route path="dunning"                element={<DunningPage />}                   />
+          <Route path="enterprise-pipeline"    element={<EnterprisePipelinePage />}        />
+          <Route path="ch9-gate-s170"          element={<Chapter9GatePage />}              />
           <Route path="customers/thirty"       element={<CustomerThirtyPage />}            />
           <Route path="customers/thirty-one"   element={<CustomerThirtyOnePage />}         />
           <Route path="customers/thirty-two"   element={<CustomerThirtyTwoPage />}         />
