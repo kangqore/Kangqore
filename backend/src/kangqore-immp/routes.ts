@@ -6856,7 +6856,7 @@ kangqoreImmpRoutes.post('/customers/:customerId/onboarding/briefing', requireAut
     const completed = milestones.filter((m: any) => m.status === 'COMPLETED').map((m: any) => m.milestone)
     const { routedCall } = await import('./llm/kimmpLLMRouter')
     const prompt = `Customer: ${bp?.customerName ?? customerId}. Industry: ${bp?.industry ?? 'Unknown'}. OIS Baseline: ${bp?.oisBaseline ?? 'N/A'}. Completed milestones: ${completed.join(', ') || 'none yet'}. Generate a 2-sentence WAANDA onboarding briefing for the CSM team.`
-    const briefing = await routedCall('claude-haiku-4-5-20251001', 'You are WAANDA. Generate concise CSM onboarding briefings.', prompt, 200, { module: 'onboarding-engine' }).catch(() => ({ text: `${bp?.customerName ?? 'Customer'} is progressing through onboarding. Focus on activating core modules and capturing Day-1 baseline signals.` }))
+    const briefing = await routedCall('claude-haiku-4-5-20251001', 'You are WAANDA. Generate concise CSM onboarding briefings.', prompt, 200, {}).catch(() => ({ text: `${bp?.customerName ?? 'Customer'} is progressing through onboarding. Focus on activating core modules and capturing Day-1 baseline signals.` }))
     res.json({ briefing: (briefing as any).text ?? briefing, customer: bp?.customerName, completed })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
@@ -7021,7 +7021,7 @@ kangqoreImmpRoutes.post('/customers/fleet/briefing', requireAuth, requireRole(['
     const topVertical = (() => { const c: Record<string, number> = {}; all.forEach((b: any) => { const k = b.industry ?? 'Other'; c[k] = (c[k] ?? 0) + 1 }); return Object.entries(c).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'Unknown' })()
     const { routedCall } = await import('./llm/kimmpLLMRouter')
     const prompt = `Fleet of ${all.length} active customers. Avg OIS: ${avgOis}. Top vertical: ${topVertical}. Generate a 3-sentence WAANDA fleet intelligence briefing for the exec team.`
-    const briefing = await routedCall('claude-haiku-4-5-20251001', 'You are WAANDA. Generate concise fleet intelligence briefings.', prompt, 250, { module: 'fleet-intelligence' }).catch(() => ({ text: `Fleet of ${all.length} customers shows avg OIS of ${avgOis}. ${topVertical} remains the strongest cohort. Focus on converting AMBER customers to GREEN to improve fleet-wide COIG velocity.` }))
+    const briefing = await routedCall('claude-haiku-4-5-20251001', 'You are WAANDA. Generate concise fleet intelligence briefings.', prompt, 250, {}).catch(() => ({ text: `Fleet of ${all.length} customers shows avg OIS of ${avgOis}. ${topVertical} remains the strongest cohort. Focus on converting AMBER customers to GREEN to improve fleet-wide COIG velocity.` }))
     res.json({ briefing: (briefing as any).text ?? briefing, fleetSize: all.length, avgOis, topVertical })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
@@ -7271,7 +7271,7 @@ kangqoreImmpRoutes.post('/customers/:customerId/renewal/pitch', requireAuth, req
     const prediction = await (prisma as any).renewalPrediction.findFirst({ where: { customerId }, orderBy: { predictedAt: 'desc' } })
     const { routedCall } = await import('./llm/kimmpLLMRouter')
     const prompt = `Customer: ${bp?.customerName}. Industry: ${bp?.industry}. OIS baseline: ${bp?.oisBaseline}, target: ${bp?.oisTarget}. Renewal likelihood: ${prediction?.renewalLikelihood ?? 60}%. Recommended action: ${prediction?.recommendedAction ?? 'RENEW'}. Generate a 3-sentence WAANDA renewal pitch for the CSM to present.`
-    const pitch = await routedCall('claude-haiku-4-5-20251001', 'You are WAANDA. Generate compelling, data-driven CSM renewal pitches. Be concise and specific.', prompt, 300, { module: 'renewal-intel-v2' }).catch(() => ({ text: `${bp?.customerName} has achieved measurable OIS improvement and is on track for their targets. The data clearly demonstrates ROI from the Kangqore platform. We recommend scheduling a QBR to align on expansion opportunities for the coming year.` }))
+    const pitch = await routedCall('claude-haiku-4-5-20251001', 'You are WAANDA. Generate compelling, data-driven CSM renewal pitches. Be concise and specific.', prompt, 300, {}).catch(() => ({ text: `${bp?.customerName} has achieved measurable OIS improvement and is on track for their targets. The data clearly demonstrates ROI from the Kangqore platform. We recommend scheduling a QBR to align on expansion opportunities for the coming year.` }))
     const pitchText = (pitch as any).text ?? pitch
     if (prediction) await (prisma as any).renewalPrediction.update({ where: { id: prediction.id }, data: { pitchSummary: pitchText } })
     res.json({ pitch: pitchText, customer: bp?.customerName, likelihood: prediction?.renewalLikelihood, action: prediction?.recommendedAction })
