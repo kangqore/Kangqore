@@ -8025,3 +8025,87 @@ model BidsSmbScan {
   @@index([status])
   @@map("bids_smb_scans")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S199–S207 — Gen5 Foundation (WAANDA Cognitive Engine)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model Gen5CorpusRecord {
+  id         String   @id @default(cuid())
+  domain     String   // Finance | PMO | CRM | HR | Strategy
+  decisionId String?
+  prompt     String   @db.Text
+  completion String   @db.Text
+  quality    Float    @default(0.8)
+  tier       String   @default("STANDARD") // STANDARD | HIGH | SYNTHETIC
+  included   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  @@index([domain])
+  @@index([quality])
+  @@index([tier])
+  @@map("gen5_corpus_records")
+}
+
+model Gen5SyntheticPair {
+  id         String   @id @default(cuid())
+  sourceType String   // reasoning_trace | debate | decision
+  sourceId   String?
+  prompt     String   @db.Text
+  completion String   @db.Text
+  quality    Float    @default(0.85)
+  approved   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  @@index([sourceType])
+  @@index([approved])
+  @@map("gen5_synthetic_pairs")
+}
+
+model Gen5TrainingRun {
+  id             String    @id @default(cuid())
+  runLabel       String
+  baseModel      String    @default("Mistral-22B")
+  adapterType    String    @default("LoRA+QLoRA")
+  corpusSize     Int       @default(0)
+  syntheticSize  Int       @default(0)
+  epochs         Int       @default(3)
+  finalLoss      Float?
+  status         String    @default("PENDING") // PENDING | RUNNING | COMPLETE | FAILED
+  checkpointPath String?
+  costGbp        Float?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  @@index([status])
+  @@map("gen5_training_runs")
+}
+
+model Gen5EvalResult {
+  id              String   @id @default(cuid())
+  runLabel        String
+  decisionCount   Int      @default(1000)
+  gen5Accuracy    Float
+  gen4Accuracy    Float
+  claudeAccuracy  Float
+  gen5Latency     Float
+  gen4Latency     Float
+  claudeLatency   Float
+  gen5Cost        Float
+  gen4Cost        Float
+  coherenceScore  Float
+  routingPct      Float    @default(0)
+  status          String   @default("COMPLETE")
+  createdAt       DateTime @default(now())
+  @@index([createdAt])
+  @@map("gen5_eval_results")
+}
+
+model Gen5RouterConfig {
+  id          String   @id @default(cuid())
+  gen5Pct     Float    @default(0)
+  gen4Pct     Float    @default(80)
+  claudePct   Float    @default(20)
+  shadowMode  Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  @@map("gen5_router_configs")
+}

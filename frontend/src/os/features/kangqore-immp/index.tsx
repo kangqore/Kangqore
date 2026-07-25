@@ -168,6 +168,20 @@ import { BidsVerticalPacksPage }          from './pages/BidsVerticalPacksPage'
 import { BidsPartnerDeliveryPage }        from './pages/BidsPartnerDeliveryPage'
 import { BidsSmbScanPage }               from './pages/BidsSmbScanPage'
 import { BidsGateS198Page }              from './pages/BidsGateS198Page'
+import { Gen5ArchitecturePage }          from './pages/Gen5ArchitecturePage'
+import { TrainingCorpusV2Page }          from './pages/TrainingCorpusV2Page'
+import { SyntheticDataPipelinePage }     from './pages/SyntheticDataPipelinePage'
+import { Gen5ReasoningModulePage }       from './pages/Gen5ReasoningModulePage'
+import { Gen5PretrainingPage }           from './pages/Gen5PretrainingPage'
+import { Gen5EvalSuitePage }             from './pages/Gen5EvalSuitePage'
+import { Gen5ABRouterPage }              from './pages/Gen5ABRouterPage'
+import { Gen5BetaRoutingPage }           from './pages/Gen5BetaRoutingPage'
+import { Gen5GateS207Page }              from './pages/Gen5GateS207Page'
+import { ArrDashboardV2Page }            from './pages/ArrDashboardV2Page'
+import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
+import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
+import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
+import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
 // Customer pages C36–C75
 import { CustomerThirtySixPage }     from './pages/CustomerThirtySixPage'
 import { CustomerThirtySevenPage }   from './pages/CustomerThirtySevenPage'
@@ -449,6 +463,22 @@ export function KIMMMModule() {
           <Route path="bids-partner-delivery"       element={<BidsPartnerDeliveryPage />}       />
           <Route path="bids-smb-scan"               element={<BidsSmbScanPage />}              />
           <Route path="bids-gate-s198"              element={<BidsGateS198Page />}             />
+          {/* S199–S207 Gen5 Foundation */}
+          <Route path="gen5-architecture"          element={<Gen5ArchitecturePage />}          />
+          <Route path="gen5-corpus-v2"             element={<TrainingCorpusV2Page />}          />
+          <Route path="gen5-synthetic-pipeline"    element={<SyntheticDataPipelinePage />}     />
+          <Route path="gen5-reasoning-module"      element={<Gen5ReasoningModulePage />}       />
+          <Route path="gen5-pretraining"           element={<Gen5PretrainingPage />}           />
+          <Route path="gen5-eval-suite"            element={<Gen5EvalSuitePage />}             />
+          <Route path="gen5-ab-router"             element={<Gen5ABRouterPage />}              />
+          <Route path="gen5-beta-routing"          element={<Gen5BetaRoutingPage />}           />
+          <Route path="gen5-gate-s207"             element={<Gen5GateS207Page />}              />
+          {/* S208–S212 TX Commercial Close */}
+          <Route path="arr-dashboard-v2"           element={<ArrDashboardV2Page />}            />
+          <Route path="professional-services-pack" element={<ProfServicesPackPage />}          />
+          <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
+          <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
+          <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
           {/* Customer pages C36–C40 */}
           <Route path="customers/thirty-six"    element={<CustomerThirtySixPage />}         />
           <Route path="customers/thirty-seven"  element={<CustomerThirtySevenPage />}       />
