@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../../kangqore-immp/llm/waandaxAnthropic'
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
+const client = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 export async function callLLM(
   system: string,

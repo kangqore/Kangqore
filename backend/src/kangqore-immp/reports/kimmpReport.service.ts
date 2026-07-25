@@ -6,6 +6,7 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../llm/waandaxAnthropic'
 import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
 
@@ -158,7 +159,7 @@ export class KimmpReportService {
     if (!apiKey) {
       throw new Error('ANTHROPIC_API_KEY is not configured')
     }
-    const client = new Anthropic({ apiKey })
+    const client = withWaandax(new Anthropic({ apiKey }))
 
     // Collect data
     const { since, context } = await collectData(type)

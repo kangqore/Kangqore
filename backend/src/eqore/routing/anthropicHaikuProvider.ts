@@ -5,14 +5,15 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import { withWaandax } from '../../kangqore-immp/llm/waandaxAnthropic';
 import { EqoreIntent, EqoreRoutingDecision } from './intentSchema';
 import { RouterClassificationInput, RouterModelProvider } from './routerModelProvider';
 import logger from '../../utils/logger';
 import { z } from 'zod';
 
-const anthropic = new Anthropic({
+const anthropic = withWaandax(new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || ''
-});
+}));
 
 const routingSchema = z.object({
   intent: z.nativeEnum(EqoreIntent),

@@ -2332,7 +2332,7 @@ function WaandaChat({ onClose, recentSignals, initialGreeting }: {
       setMessages(prev => {
         const fallback: ChatMessage = {
           role: 'assistant',
-          content: "I'm having trouble connecting right now. Please check that the backend is running and ANTHROPIC_API_KEY is set.",
+          content: "I'm having trouble connecting right now. Please check that the backend is running — AI engines may be busy or offline.",
           confidence: 0, suggestedAction: null, navigate: null, model: 'fallback', ts: Date.now(),
         }
         const next = [...prev, fallback]
@@ -4046,6 +4046,7 @@ function OrchestrationPanel() {
   const [question, setQuestion]   = useState('')
   const [running, setRunning]     = useState(false)
   const [result, setResult]       = useState<any | null>(null)
+  const [error, setError]         = useState<string | null>(null)
   const [runningAgents, setRunningAgents] = useState<string[]>([])
   const [traceOpen, setTraceOpen] = useState(false)
   const [expandedAgents, setExpandedAgents] = useState<Set<number>>(new Set())
@@ -4065,6 +4066,7 @@ function OrchestrationPanel() {
     if (!question.trim()) return
     setRunning(true)
     setResult(null)
+    setError(null)
     const phases = ['DECOMPOSING…', 'DISPATCHING AGENTS…', 'SYNTHESISING…']
     let pi = 0
     const interval = setInterval(() => {
@@ -4078,7 +4080,9 @@ function OrchestrationPanel() {
       setExpandedAgents(new Set())
       setQuestion('')
       refetch()
-    } catch {}
+    } catch (err: any) {
+      setError(err?.response?.data?.error ?? 'Orchestration failed — AI engines busy or offline. Try again.')
+    }
     clearInterval(interval)
     setRunning(false)
     setRunningAgents([])
@@ -4135,6 +4139,14 @@ function OrchestrationPanel() {
               <span style={{ fontSize:8, color:`${C}60`, fontFamily:'monospace' }}>
                 {runningAgents[0] ?? 'INITIALISING…'}
               </span>
+            </div>
+          )}
+
+          {error && !running && (
+            <div style={{ padding:'8px 10px', background:`${CR}08`, borderRadius:5, marginBottom:8,
+              border:`1px solid ${CR}25`, display:'flex', alignItems:'center', gap:8 }}>
+              <span style={{ fontSize:10 }}>⚠</span>
+              <span style={{ fontSize:8, color:`${CR}90`, fontFamily:'monospace' }}>{error}</span>
             </div>
           )}
 
@@ -5724,6 +5736,72 @@ function DecisionQueueStrip() {
   )
 }
 
+// ─── LLM ENGINE — live routing chain from kimmpLLMRouter ─────────────────────
+// Shows which model is actually answering: providers in router priority order,
+// health per circuit breaker, and the one currently serving marked ◀ SERVING.
+function LLMEngineStrip() {
+  const { data } = useQuery({
+    queryKey: ['llm-router-stats'],
+    queryFn: () => api.get('/admin/kangqore-immp/learning/router/stats').then(r => r.data),
+    refetchInterval: 15_000,
+  })
+  if (!data) return null
+
+  const byName: Record<string, { calls: number; health: string; available: boolean }> = {}
+  for (const p of data.providers ?? []) byName[p.name] = p
+
+  const localModel = (data.waandaxModel ?? '').split('/').pop() || '—'
+  // Platform policy: Claude-first when usable; WAANDAx is the resilience layer
+  const chain = [
+    ...(data.deployedGen2Model ? [{ key: 'gen2', label: 'GEN2', model: 'fine-tuned' }] : []),
+    { key: 'claude',  label: 'CLAUDE',  model: 'sonnet-4-6' },
+    { key: 'openai',  label: 'OPENAI',  model: 'gpt-4o' },
+    { key: 'gemini',  label: 'GEMINI',  model: 'flash' },
+    { key: 'waandax', label: 'WAANDAX', model: localModel },
+  ]
+  // Ground truth from the router's last actual successful call — NOT a guess
+  // from circuit-breaker health. Health can read 'recovering' (not 'offline')
+  // while a re-probe is still in flight and about to fail, which would
+  // wrongly badge that provider as serving before the real answer is known.
+  const serving = data.lastServedBy as string | undefined
+  const localPct = Math.round((data.autonomyRatio ?? 0) * 100)
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, padding: '4px 8px' }}>
+      {chain.map(c => {
+        const p = byName[c.key]
+        const isServing = c.key === serving
+        const statusText = !p?.available
+          ? (c.key === 'gen2' ? 'NOT DEPLOYED' : 'NO KEY')
+          : isServing ? 'SERVING' : (p.health ?? 'unknown').toUpperCase()
+        const dotColor = isServing ? '#22c55e'
+          : !p?.available ? '#6b7280'
+          : p.health === 'offline' ? CR
+          : p.health === 'healthy' ? '#3a6a5a'
+          : '#f59e0b'
+        return (
+          <div key={c.key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+            <span style={{ fontSize: 7.5, color: isServing ? '#00ddaa' : '#88ccff', fontFamily: 'monospace', letterSpacing: '0.08em', fontWeight: isServing ? 800 : 400 }}>
+              {c.label}
+            </span>
+            <span style={{ fontSize: 6, color: `${C}50`, fontFamily: 'monospace', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'right' }}>
+              {c.model}
+            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, width: 86, justifyContent: 'flex-end' }}>
+              <span style={{ fontSize: 6.5, color: dotColor, fontFamily: 'monospace' }}>{isServing ? '◀ SERVING' : statusText}</span>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: dotColor, boxShadow: `0 0 4px ${dotColor}` }} />
+            </div>
+          </div>
+        )
+      })}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2, paddingTop: 4, borderTop: `1px solid ${C}15` }}>
+        <span style={{ fontSize: 6, color: `${C}45`, fontFamily: 'monospace', letterSpacing: '0.08em' }}>{data.callsTotal} CALLS</span>
+        <span style={{ fontSize: 6, color: localPct >= 50 ? '#00ddaa' : `${C}45`, fontFamily: 'monospace', letterSpacing: '0.08em' }}>LOCAL AUTONOMY {localPct}%</span>
+      </div>
+    </div>
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 export function AdminOverview() {
   const navigate  = useNavigate()
@@ -6734,7 +6812,7 @@ export function AdminOverview() {
 
               {/* WAANDA Command Bar */}
               <div style={{ width: '85%' }}>
-                <Panel title="WAANDA" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C} collapsible>
+                <Panel title="WAANDAx" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C} collapsible>
                   <HUDCommandBar
                     insights={insights} color={C} recentSignals={recentSignals} criticalAlert={criticalAlert}
                     onScenario={handleScenario} onGoalCockpit={handleGoalCockpit}
@@ -6780,6 +6858,9 @@ export function AdminOverview() {
       )
     })}
   </div>
+  {/* ── LLM ENGINE — live routing chain ── */}
+  <SectionLabel text="LLM ENGINE" color='#00ddaa' />
+  <LLMEngineStrip />
   {/* ── MODULE NEXUS ── */}
   <SectionLabel text="MODULE NEXUS" color='#00ffcc' />
   <div style={{ padding: '8px' }}>

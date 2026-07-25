@@ -20,6 +20,7 @@ import { KIMMP_VERSION } from './core/types';
 import { KimmpFlags } from './core/flags';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
+import { brainRoutes } from './brain/brainRoutes';
 import { SignalLedgerController } from './controllers/signalLedger.controller';
 import { DecisionEngineController } from './controllers/decisionEngine.controller';
 import { VisSignalProducer } from '../kangqore-vis/signals/visSignalProducer.service';
@@ -1317,6 +1318,7 @@ kangqoreImmpRoutes.delete('/rag/doc/:id', requireAuth, requireRole(['ADMIN']), a
 
 // Page Factory (PR-A1) — generated-page store + lifecycle API.
 kangqoreImmpRoutes.use('/page-factory', pageFactoryRoutes);
+kangqoreImmpRoutes.use('/brain', brainRoutes);
 
 // ─── Agent Registry & System Dispatch — governed by KIMMP/WAANDA ─────────────
 // All 35 agents permanently assigned to 5 systems. KIMMP governs all.
@@ -4094,8 +4096,14 @@ kangqoreImmpRoutes.get('/reports/executive-dashboard', requireAuth, requireRole(
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// POST /admin/kangqore-immp/reports/generate
-kangqoreImmpRoutes.post('/reports/generate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// POST /admin/kangqore-immp/reports/customer/generate
+// NOTE: this path used to be '/reports/generate', colliding with the KIMMP
+// type-based report generator registered earlier in this file at that exact
+// path — Express always matched the first-registered handler, so this whole
+// customer report generator (and its list/getById siblings below) was 100%
+// unreachable. Renamed 2026-07-25 to actually be reachable; the frontend
+// caller (ExecutiveDashboardPage.tsx CustomerReportBuilder) was updated to match.
+kangqoreImmpRoutes.post('/reports/customer/generate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { customerId, dateFrom, dateTo, title } = req.body
     if (!customerId || !dateFrom || !dateTo) return res.status(400).json({ error: 'customerId, dateFrom, dateTo required' })
@@ -4120,8 +4128,8 @@ kangqoreImmpRoutes.post('/reports/generate', requireAuth, requireRole(['ADMIN'])
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/reports
-kangqoreImmpRoutes.get('/reports', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// GET /admin/kangqore-immp/reports/customer/list — was '/reports' (see note above)
+kangqoreImmpRoutes.get('/reports/customer/list', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { customerId } = req.query
     const where: any = customerId ? { customerId: customerId as string } : {}
@@ -4130,8 +4138,8 @@ kangqoreImmpRoutes.get('/reports', requireAuth, requireRole(['ADMIN']), async (r
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/reports/:id
-kangqoreImmpRoutes.get('/reports/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// GET /admin/kangqore-immp/reports/customer/:id — was '/reports/:id' (see note above)
+kangqoreImmpRoutes.get('/reports/customer/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const doc = await (prisma as any).reportDocument.findUnique({ where: { id: req.params.id } })
     if (!doc) return res.status(404).json({ error: 'not found' })

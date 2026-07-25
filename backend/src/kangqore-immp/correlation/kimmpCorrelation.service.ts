@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../llm/waandaxAnthropic'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { prisma } from '../../lib/prisma'
 
@@ -11,7 +12,7 @@ export interface CorrelationPattern {
   detectedAt: string
 }
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
+const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 export class KimmpCorrelationEngine {
   static async analyze(windowHours = 24): Promise<CorrelationPattern[]> {

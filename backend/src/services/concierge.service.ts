@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { withWaandax } from '../kangqore-immp/llm/waandaxAnthropic';
 import { API_KEYS } from '../api-keys';
 import { getKB, KBChunk, KBIndex } from './kb-loader';
 import { postfilter, HANDOFF_MESSAGE } from './concierge.guardrails';
@@ -18,7 +19,7 @@ function getClient(): Anthropic {
     if (!API_KEYS.ANTHROPIC_API_KEY) {
       throw new Error('ANTHROPIC_API_KEY is not configured');
     }
-    client = new Anthropic({ apiKey: API_KEYS.ANTHROPIC_API_KEY });
+    client = withWaandax(new Anthropic({ apiKey: API_KEYS.ANTHROPIC_API_KEY }));
   }
   return client;
 }

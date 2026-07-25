@@ -8,12 +8,13 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../llm/waandaxAnthropic'
 import { SystemBriefing } from './systemDispatcher'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { SystemRAG } from './systemRAG'
 import logger from '../../utils/logger'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
 
 const CONTRADICTION_SYSTEM = `You are a contradiction analyst reviewing briefings from multiple intelligence systems.
 Your job is to find direct factual contradictions between their outputs — cases where System A asserts X and System B asserts NOT-X.

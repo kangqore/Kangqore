@@ -1,10 +1,11 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { withWaandax } from '../../kangqore-immp/llm/waandaxAnthropic';
 import logger from '../../utils/logger';
 import { prisma } from '../../lib/prisma';
 import { ShadowIntelligence, ShadowLeadExtractionSchema } from './shadowLead.schema';
 import { KANGQORE_SERVICES } from '../../eqore-lead-intelligence/taxonomy/kangqoreServiceTaxonomy';
 
-const anthropic = process.env.ANTHROPIC_API_KEY ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }) : null;
+const anthropic = process.env.ANTHROPIC_API_KEY ? withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })) : null;
 
 export class EqoreShadowLeadAgent {
   /**

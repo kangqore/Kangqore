@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../llm/waandaxAnthropic'
 import { prisma } from '../../lib/prisma'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { KimmpAuthorityEngine, ACTION_LEVELS } from '../authority/kimmpAuthority.service'
@@ -10,7 +11,7 @@ import { KimmpToolDispatch } from './kimmpToolDispatch.service'
 import type { Platform } from '../../integrations/types'
 import { checkPolicy } from '../../services/policyEngine.service'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
+const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 export type ActionType =
   // L0 — auto-execute, pure reads or safe KIMMP-internal writes
