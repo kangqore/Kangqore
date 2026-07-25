@@ -13,11 +13,23 @@ import App from "@/App";
   }
 })()
 
-// S75 — PWA Service Worker registration
+// Nuke any active service workers — they were intercepting API POST requests.
+// On first load: unregister all, then force a reload so the page runs clean.
+// sessionStorage flag prevents the reload from looping.
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {})
-  })
+  const alreadyKilled = sessionStorage.getItem('sw-killed')
+  if (!alreadyKilled) {
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      if (regs.length > 0) {
+        Promise.all(regs.map(r => r.unregister())).then(() => {
+          sessionStorage.setItem('sw-killed', '1')
+          window.location.reload()
+        })
+      } else {
+        sessionStorage.setItem('sw-killed', '1')
+      }
+    })
+  }
 }
 
 const rootElement = document.getElementById("root");
