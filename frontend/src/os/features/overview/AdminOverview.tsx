@@ -1484,13 +1484,15 @@ interface GoalCockpitData {
 }
 
 function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
-  onScenario, onGoalCockpit, scenarioActive, onExitScenario }: {
+  onScenario, onGoalCockpit, scenarioActive, onExitScenario, selectedEvent, onClearSelectedEvent }: {
   insights: any[]; color: string
   recentSignals: LiveSignal[]; criticalAlert: LiveSignal | null
   onScenario: (result: ScenarioResult, delta: ScenarioDelta) => void
   onGoalCockpit: () => void
   scenarioActive: boolean
   onExitScenario: () => void
+  selectedEvent?: LiveHUDEvent | null
+  onClearSelectedEvent?: () => void
 }) {
   const navigate = useNavigate()
   const [query,    setQuery]    = useState('')
@@ -1625,10 +1627,14 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
 
     setQuery(text); setThinking(true); setResult(null); setAnimate(false)
     try {
+      const queryWithContext = selectedEvent 
+        ? `[Context: ${selectedEvent.title} - ${selectedEvent.value}] ${text}`
+        : text;
+
       const res = await api.post('/admin/kangqore-immp/command', {
-        query: text,
+        query: queryWithContext,
         history: history.slice(-10),
-        moduleContext: recentSignals[0]?.sourceModule,
+        moduleContext: selectedEvent ? selectedEvent.raw?.sourceModule ?? recentSignals[0]?.sourceModule : recentSignals[0]?.sourceModule,
         attachments: attachments.map(a => ({ type: a.type, data: a.data, mimeType: a.mimeType, name: a.name })),
       })
       setResult(res.data)
@@ -1747,6 +1753,23 @@ function HUDCommandBar({ insights, color, recentSignals, criticalAlert,
             style={{ background:'none', border:'none', cursor:'pointer', fontSize:7, color:`${CR}50`, fontFamily:'monospace' }}>
             ✕ clear conversation
           </button>
+        </div>
+      )}
+
+      {/* Selected Event Context */}
+      {selectedEvent && (
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '4px 10px', marginBottom: 5,
+          background: `${selectedEvent.color}15`, border: `1px solid ${selectedEvent.color}40`, borderRadius: 5,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, overflow: 'hidden' }}>
+            <span style={{ fontSize: 9, color: selectedEvent.color }}>◈</span>
+            <span style={{ fontSize: 8, color: '#fff', fontFamily: 'monospace', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+              <span style={{ color: selectedEvent.color, fontWeight: 700 }}>{selectedEvent.title}</span> — {selectedEvent.value}
+            </span>
+          </div>
+          <button onClick={onClearSelectedEvent} style={{ background: 'none', border: 'none', color: `${selectedEvent.color}80`, cursor: 'pointer', fontSize: 10 }}>✕</button>
         </div>
       )}
 
@@ -5556,7 +5579,7 @@ const HUD_EVT_ICONS: Record<string, string> = {
   signal: '◈', agent: '⬡', alert: '▲', kpi: '⟳', system: '◉',
 }
 
-function LiveCard({ event }: { event: LiveHUDEvent }) {
+function LiveCard({ event, selected, onClick }: { event: LiveHUDEvent, selected?: boolean, onClick?: () => void }) {
   const [opacity, setOpacity] = useState(1)
   useEffect(() => {
     const tick = () => {
@@ -5569,15 +5592,19 @@ function LiveCard({ event }: { event: LiveHUDEvent }) {
   }, [event.ts])
 
   return (
-    <div style={{
-      background: `${event.color}0a`,
-      border: `1px solid ${event.color}40`,
-      borderRadius: 5, padding: '5px 7px',
-      opacity, transition: 'opacity 1s ease',
-      animation: 'hudCardIn 0.45s ease',
-      boxShadow: `0 0 10px ${event.color}0f, inset 0 0 6px ${event.color}06`,
-      position: 'relative', overflow: 'hidden',
-    }}>
+    <div 
+      onClick={onClick}
+      style={{
+        background: selected ? `${event.color}15` : `${event.color}0a`,
+        border: `1px solid ${selected ? event.color : event.color + '40'}`,
+        borderRadius: 5, padding: '5px 7px',
+        opacity: selected ? 1 : opacity, transition: 'all 0.3s ease',
+        animation: 'hudCardIn 0.45s ease',
+        boxShadow: selected ? `0 0 16px ${event.color}40, inset 0 0 8px ${event.color}10` : `0 0 10px ${event.color}0f, inset 0 0 6px ${event.color}06`,
+        position: 'relative', overflow: 'hidden',
+        cursor: onClick ? 'pointer' : 'default',
+        transform: selected ? 'scale(1.02)' : 'scale(1)',
+      }}>
       {/* Accent line */}
       <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 2, background: event.color, borderRadius: '2px 0 0 2px', opacity: 0.7 }} />
       <div style={{ paddingLeft: 4 }}>
@@ -5806,6 +5833,7 @@ function LLMEngineStrip() {
 export function AdminOverview() {
   const navigate  = useNavigate()
   const clock     = useClock()
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
   const [modal, setModal] = useState<ModalType | null>(null)
   const [showLog, setShowLog] = useState(false)
   const [logDefaultFilter, setLogDefaultFilter] = useState('all')
@@ -6741,9 +6769,9 @@ export function AdminOverview() {
                 position: 'absolute', left: 4, top: 12, bottom: 12,
                 width: arcLeft > 20 ? arcLeft - 10 : 0,
                 display: 'flex', flexDirection: 'column', gap: 6,
-                justifyContent: 'center', overflow: 'hidden', pointerEvents: 'none',
+                justifyContent: 'center', overflow: 'hidden',
               }}>
-                {leftEvents.map(e => <LiveCard key={e.id} event={e} />)}
+                {leftEvents.map(e => <LiveCard key={e.id} event={e} selected={selectedEventId === e.id} onClick={() => setSelectedEventId(e.id === selectedEventId ? null : e.id)} />)}
               </div>
 
               <div ref={arcRef} style={{ height:'100%', aspectRatio:'1/1', maxWidth:'100%' }}>
@@ -6759,9 +6787,9 @@ export function AdminOverview() {
                 position: 'absolute', right: 4, top: 12, bottom: 12,
                 width: arcLeft > 20 ? arcLeft - 10 : 0,
                 display: 'flex', flexDirection: 'column', gap: 6,
-                justifyContent: 'center', overflow: 'hidden', pointerEvents: 'none',
+                justifyContent: 'center', overflow: 'hidden',
               }}>
-                {rightEvents.map(e => <LiveCard key={e.id} event={e} />)}
+                {rightEvents.map(e => <LiveCard key={e.id} event={e} selected={selectedEventId === e.id} onClick={() => setSelectedEventId(e.id === selectedEventId ? null : e.id)} />)}
               </div>
 
               {/* ── Voice mode response overlay — floats over the arc bottom ── */}
@@ -6817,6 +6845,8 @@ export function AdminOverview() {
                     insights={insights} color={C} recentSignals={recentSignals} criticalAlert={criticalAlert}
                     onScenario={handleScenario} onGoalCockpit={handleGoalCockpit}
                     scenarioActive={scenarioResult !== null} onExitScenario={handleExitScenario}
+                    selectedEvent={hudEvents.find(e => e.id === selectedEventId)}
+                    onClearSelectedEvent={() => setSelectedEventId(null)}
                   />
                 </Panel>
               </div>
