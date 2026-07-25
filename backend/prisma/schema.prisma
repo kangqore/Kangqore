@@ -7768,3 +7768,179 @@ model RenewalPrediction {
   @@index([outcome])
   @@map("renewal_predictions")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S183 — SSO / SAML 2.0
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model SsoConfiguration {
+  id          String    @id @default(cuid())
+  customerId  String
+  provider    String                           // OKTA | AZURE_AD | GOOGLE_WORKSPACE
+  entityId    String
+  ssoUrl      String
+  certificate String?   @db.Text
+  jitEnabled  Boolean   @default(true)
+  status      String    @default("PENDING")    // PENDING | ACTIVE | ERROR
+  testedAt    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  @@index([customerId])
+  @@index([status])
+  @@map("sso_configurations")
+}
+
+model SsoAuditEvent {
+  id         String   @id @default(cuid())
+  customerId String
+  userId     String?
+  provider   String
+  event      String                            // LOGIN | LOGOUT | JIT_PROVISION | ERROR
+  ipAddress  String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  @@index([customerId])
+  @@index([event])
+  @@map("sso_audit_events")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S184 — Custom Domains (enterprise tenant white-label URLs)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model EnterpriseDomain {
+  id           String    @id @default(cuid())
+  customerId   String
+  subdomain    String                           // e.g. acme.kangqore.io
+  customDomain String?                          // e.g. intelligence.acme.com
+  dnsStatus    String    @default("PENDING")    // PENDING | VERIFYING | VERIFIED | FAILED
+  sslStatus    String    @default("PENDING")    // PENDING | PROVISIONING | ACTIVE | FAILED
+  verifiedAt   DateTime?
+  sslIssuedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  @@index([customerId])
+  @@index([dnsStatus, sslStatus])
+  @@map("enterprise_domains")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S185 — Dedicated Compute
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model DedicatedTenant {
+  id               String    @id @default(cuid())
+  customerId       String    @unique
+  dbInstanceId     String?
+  waandaInstanceId String?
+  region           String    @default("US")    // US | UK | EU | INDIA
+  sovereigntyFlag  Boolean   @default(false)
+  singleTenantMode Boolean   @default(false)
+  status           String    @default("PROVISIONING") // PROVISIONING | ACTIVE | SUSPENDED
+  provisionedAt    DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  @@index([status])
+  @@map("dedicated_tenants")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S186 — SLA Management
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model SlaCommitment {
+  id           String    @id @default(cuid())
+  customerId   String
+  uptimeTarget Float     @default(99.9)
+  creditRate   Float     @default(10.0)        // % service credit per 0.1% below target
+  startDate    DateTime  @default(now())
+  endDate      DateTime?
+  status       String    @default("ACTIVE")    // ACTIVE | EXPIRED | SUSPENDED
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  @@index([customerId])
+  @@map("sla_commitments")
+}
+
+model SlaIncident {
+  id            String    @id @default(cuid())
+  customerId    String?
+  priority      String                          // P1 | P2 | P3 | P4
+  title         String
+  description   String?   @db.Text
+  startedAt     DateTime  @default(now())
+  resolvedAt    DateTime?
+  durationMins  Int?
+  slaBreached   Boolean   @default(false)
+  creditApplied Float?
+  status        String    @default("OPEN")     // OPEN | INVESTIGATING | RESOLVED
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  @@index([priority])
+  @@index([status])
+  @@map("sla_incidents")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S187 — Advanced RBAC v2
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model CustomRole {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  customerId  String?
+  permissions Json     @default("[]")          // Array of permission strings
+  fieldAccess Json     @default("{}")          // { modelName: [allowedFields] }
+  deptScope   Json     @default("[]")          // Array of department names
+  isSystem    Boolean  @default(false)
+  memberCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([customerId])
+  @@map("custom_roles")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S188 — Enterprise Blueprint Templates
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model EnterpriseBlueprintTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  useCase     String
+  industry    String?
+  description String?  @db.Text
+  modules     Json     @default("[]")
+  config      Json     @default("{}")
+  isPublished Boolean  @default(false)
+  deployCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([useCase])
+  @@index([isPublished])
+  @@map("enterprise_blueprint_templates")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S189 — Digital Contract Suite
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model DigitalContract {
+  id             String    @id @default(cuid())
+  customerId     String
+  type           String                         // MSA | ORDER_FORM | DPA | NDA | SOW
+  version        String    @default("1.0")
+  status         String    @default("DRAFT")    // DRAFT | PENDING_SIGN | SIGNED | EXPIRED | RENEWED
+  clauses        Json      @default("[]")       // Array of { id, title, body, category }
+  signatoryName  String?
+  signatoryEmail String?
+  signedAt       DateTime?
+  expiresAt      DateTime?
+  renewalDate    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  @@index([customerId])
+  @@index([type, status])
+  @@map("digital_contracts")
+}
