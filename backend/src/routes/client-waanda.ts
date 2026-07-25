@@ -1,5 +1,6 @@
 import { Router, Response, NextFunction } from 'express'
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../kangqore-immp/llm/waandaxAnthropic'
 import { prisma } from '../lib/prisma'
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth'
 import { API_KEYS } from '../api-keys'
@@ -139,7 +140,7 @@ router.post(
     let fullText = ''
 
     try {
-      const anthropic = new Anthropic({ apiKey: API_KEYS.ANTHROPIC_API_KEY })
+      const anthropic = withWaandax(new Anthropic({ apiKey: API_KEYS.ANTHROPIC_API_KEY }))
       const stream = anthropic.messages.stream({
         model: process.env.WAANDA_CLIENT_MODEL ?? 'claude-sonnet-5',
         max_tokens: 1024,

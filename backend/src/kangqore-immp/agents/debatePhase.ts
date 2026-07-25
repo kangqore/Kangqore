@@ -16,12 +16,13 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../llm/waandaxAnthropic'
 import { SystemBriefing } from './systemDispatcher'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
 
 export interface DebateResult {
   bullCase:         string   // optimistic interpretation

@@ -143,7 +143,7 @@ export function ResearchPage() {
       setCurrent(res.data)
       refetch()
     } catch (e: any) {
-      setError(e?.response?.data?.error ?? 'Research failed. Check ANTHROPIC_API_KEY.')
+      setError(e?.response?.data?.error ?? 'Research failed — AI engines busy or offline. Try again shortly.')
     } finally {
       setThinking(false)
     }

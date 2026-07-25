@@ -48,7 +48,7 @@ export function ExecutiveDashboardPage() {
 
   const { data: reports = [] } = useQuery<ReportDoc[]>({
     queryKey: ['reports-list'],
-    queryFn: () => api.get('/admin/kangqore-immp/reports').then(r => r.data),
+    queryFn: () => api.get('/admin/kangqore-immp/reports/customer/list').then(r => r.data),
     staleTime: 30_000,
     enabled: tab === 'reports',
   })
@@ -268,7 +268,7 @@ function CustomerReportBuilder({ qc, onClose }: { qc: any; onClose: () => void }
   const [generated, setGenerated] = useState<ReportDoc | null>(null)
 
   const generate = useMutation({
-    mutationFn: () => api.post('/admin/kangqore-immp/reports/generate', form).then(r => r.data),
+    mutationFn: () => api.post('/admin/kangqore-immp/reports/customer/generate', form).then(r => r.data),
     onSuccess: (doc: ReportDoc) => {
       setGenerated(doc)
       qc.invalidateQueries({ queryKey: ['reports-list'] })

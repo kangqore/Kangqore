@@ -14,6 +14,7 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../llm/waandaxAnthropic'
 import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
 import {
@@ -44,7 +45,7 @@ import { WaandaTrainingPipeline, LocalReasonService } from '../../waanda-trainin
 import { sonnetWithTools, textOf } from '../llm/kimmpLLMRouter'
 import { SemanticMapper, ExternalRef } from '../../services/semanticMapper.service'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
+const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

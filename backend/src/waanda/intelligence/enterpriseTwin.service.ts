@@ -1,9 +1,10 @@
 import { PrismaClient } from '@prisma/client'
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../../kangqore-immp/llm/waandaxAnthropic'
 import { computeGate8 } from './gate8.service'
 
 const prisma  = new PrismaClient()
-const claude  = new Anthropic()
+const claude  = withWaandax(new Anthropic())
 
 export interface PillarDeltas {
   decision:   number

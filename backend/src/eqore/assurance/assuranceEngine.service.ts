@@ -9,12 +9,13 @@
 import { prisma } from '../../lib/prisma';
 import { EqoreAgentResult } from '../orchestrator/agentResult';
 import Anthropic from '@anthropic-ai/sdk';
+import { withWaandax } from '../../kangqore-immp/llm/waandaxAnthropic';
 import logger from '../../utils/logger';
 import { KANGQORE_DEPARTMENTS } from '../../eqore-lead-intelligence/taxonomy/kangqoreServiceTaxonomy';
 
-const anthropic = new Anthropic({
+const anthropic = withWaandax(new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || ''
-});
+}));
 
 export class EqoreAssuranceService {
   /**

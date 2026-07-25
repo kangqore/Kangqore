@@ -1,5 +1,6 @@
 import { prisma } from '../../lib/prisma'
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../llm/waandaxAnthropic'
 
 export type MemoryType = 'USER_PREFERENCE' | 'ORG_KNOWLEDGE' | 'WORKFLOW_INSIGHT'
 
@@ -79,7 +80,7 @@ export class KimmpMemoryService {
     if (response.length < 100) return
     setImmediate(async () => {
       try {
-        const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
+        const client = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
         const r = await client.messages.create({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 300,

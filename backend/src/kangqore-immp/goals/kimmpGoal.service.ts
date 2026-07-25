@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../llm/waandaxAnthropic'
 import { prisma } from '../../lib/prisma'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { KimmpActionsService } from '../actions/kimmpActions.service'
@@ -6,7 +7,7 @@ import { KimmpResearchService } from '../research/kimmpResearch.service'
 import { SCOUT_SOURCES, KimmpScoutService } from '../scout/kimmpScout.service'
 import logger from '../../utils/logger'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' })
+const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 // Hours of CEO time each task type saves when KIMMP executes it
 const LEVERAGE_HOURS: Record<string, number> = {

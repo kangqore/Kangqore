@@ -1688,7 +1688,7 @@ function CompilerModal({ wf, nodes, edges, validation, score, onClose, onDeploye
           detail: `Risk ${s.riskBefore ?? '?'} → ${s.riskAfter ?? '?'} · ${count} suggestion${count !== 1 ? 's' : ''}`,
         })
       } catch {
-        set('review', { status: 'warn', detail: 'Review skipped — ANTHROPIC_API_KEY not configured' })
+        set('review', { status: 'warn', detail: 'Review skipped — AI engines busy or offline' })
       }
       if (cancelled) return
 

@@ -7,6 +7,7 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk'
+import { withWaandax } from '../llm/waandaxAnthropic'
 import { WebSearchService } from '../scout/webSearch.service'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { prisma } from '../../lib/prisma'
@@ -37,7 +38,7 @@ function fallbackResult(question: string, domain?: string): ResearchResult {
     id: `fallback-${Date.now()}`,
     question,
     domain,
-    summary: 'Research unavailable — check ANTHROPIC_API_KEY and search API keys',
+    summary: 'Research unavailable — AI engines busy or offline; retry shortly. (Deep research needs Anthropic credits; web search needs SERPER/TAVILY keys.)',
     competitors: [],
     marketGaps: [],
     opportunities: [],
@@ -52,7 +53,7 @@ function fallbackResult(question: string, domain?: string): ResearchResult {
 
 function getClient(): Anthropic | null {
   if (!process.env.ANTHROPIC_API_KEY) return null
-  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+  return withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
 }
 
 // ---------------------------------------------------------------------------

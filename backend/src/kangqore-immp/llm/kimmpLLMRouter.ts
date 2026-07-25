@@ -28,6 +28,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
+import { waandaxSlot, isWaandaxBusyError } from './waandaxAnthropic'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -55,7 +56,14 @@ interface CircuitBreaker {
 }
 
 const FAILURE_THRESHOLD   = 3
-const RECOVERY_TIMEOUT_MS = 60_000
+// How long a provider stays "open" (blocked) after tripping the breaker before
+// one real probe call is allowed through. 3s, not the old 60s: each probe is a
+// single HTTP call that fails fast (auth/network errors return in well under
+// a second), and cbAllow's half-open gate means at most ONE real attempt fires
+// platform-wide per cycle regardless of traffic — so a short window costs
+// nothing when the provider is still down, and gets it back online almost
+// immediately once it's not (e.g. Claude credits topped up).
+const RECOVERY_TIMEOUT_MS = 3_000
 
 const _cb: Record<string, CircuitBreaker> = {
   claude:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
@@ -154,6 +162,15 @@ function cbFailure(provider: string) {
 
 const _counts: Record<string, number> = { claude: 0, openai: 0, gemini: 0, waandax: 0, gen2: 0 }
 
+// Ground truth for "who answered the last call" — the HUD's LLM ENGINE panel
+// must show this, NOT a guess derived from circuit-breaker health. Breaker
+// state includes a transient 'half-open' probe (reported as 'recovering')
+// that looks "not offline" while the probe call is still in flight and may
+// yet fail — guessing from health alone mislabels that window as serving.
+let _lastServedBy: string | null = null
+let _lastServedAt = 0
+function markServed(provider: string) { _lastServedBy = provider; _lastServedAt = Date.now() }
+
 // Cached deployed Gen2 model — refreshed every 5 minutes
 let _gen2ModelId: string | null = null
 let _gen2CheckedAt = 0
@@ -208,6 +225,7 @@ async function _waandaxAvailable(): Promise<boolean> {
 }
 
 async function _callWaandax(system: string, user: string, maxTokens: number): Promise<string> {
+  return waandaxSlot(async () => {
   const res = await fetch(`${WAANDAX_URL}/v1/chat/completions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -225,6 +243,7 @@ async function _callWaandax(system: string, user: string, maxTokens: number): Pr
   if (!res.ok) throw new Error(`WAANDAx ${res.status}`)
   const data = await res.json() as any
   return String(data.choices?.[0]?.message?.content ?? '')
+  })
 }
 
 // ─── Provider: Claude (Anthropic) ────────────────────────────────────────────
@@ -409,6 +428,8 @@ export interface RouterOptions {
   // Logic Tool support — pass tool definitions and an executor for the tool_use loop
   tools?:        Anthropic.Tool[]
   toolExecutor?: (name: string, input: any) => any
+  // Persona-critical calls: skip the Gen2/WAANDAx local slots and go straight to Claude
+  preferClaude?: boolean
 }
 
 export interface RouterResult {
@@ -450,13 +471,14 @@ export async function routedCall(
   })
 
   // ── 0. Gen2 fine-tuned model — A/B traffic split (AutonomyConfig.gen2TrafficPct) ─
-  const gen2ModelId   = await _getDeployedGen2()
+  const gen2ModelId   = options.preferClaude ? null : await _getDeployedGen2()
   const gen2TrafficPct = await _getGen2TrafficPct()
   const routeToGen2   = gen2ModelId && ANTHROPIC_KEY && cbAllow('gen2') && (Math.random() * 100 < gen2TrafficPct)
   if (routeToGen2 && gen2ModelId) {
     try {
       const { text } = await _callClaude(gen2ModelId, system, user, maxTokens, options)
       _counts.gen2++
+      markServed('gen2')
       cbSuccess('gen2')
       _capture(system, user, text, gen2ModelId, 'gen2', meta).catch(() => {})
       return {
@@ -470,11 +492,26 @@ export async function routedCall(
     }
   }
 
-  // ── 1. WAANDAx (local MLX-LM) — post-graduation priority ───────────────────
-  if (await _waandaxAvailable() && cbAllow('waandax')) {
+  // ── 1. WAANDAx (local MLX-LM) — serves up front ONLY when Claude can't ─────
+  // Platform policy (2026-07-25): Claude-first whenever it is usable; WAANDAx
+  // is the resilience layer. This slot activates when Claude has no key or its
+  // circuit breaker is open. Tool-carrying calls always skip it (no tool_use
+  // on the local model) — they reach WAANDAx only via the last resort below.
+  //
+  // cbAllow('claude') is called EXACTLY ONCE per request and cached below.
+  // cbAllow has a side effect: when the breaker is 'open' and the recovery
+  // timeout has elapsed, it flips to 'half-open' and returns true ONCE — a
+  // second call in the same request would see 'half-open' and return false,
+  // so the real Claude attempt at step 2 would never fire, cbSuccess/
+  // cbFailure would never be called, and the breaker would be stuck
+  // "recovering" forever — Claude could never self-heal even with credits
+  // restored. Caching the single result is what keeps recovery working.
+  const claudeUsable = !!ANTHROPIC_KEY && cbAllow('claude')
+  if (!claudeUsable && !options.tools?.length && await _waandaxAvailable() && cbAllow('waandax')) {
     try {
       const text = await _callWaandax(system, user, maxTokens)
       _counts.waandax++
+      markServed('waandax')
       cbSuccess('waandax')
       _capture(system, user, text, claudeModel, 'waandax', meta).catch(() => {})
       return {
@@ -483,17 +520,24 @@ export async function routedCall(
         _routerMeta: makeMeta('waandax', WAANDAX_MODEL, false),
       }
     } catch (err) {
-      cbFailure('waandax')
-      logger.warn('[KIMMP Router] WAANDAx failed, trying next provider:', (err as Error).message)
+      if (isWaandaxBusyError(err)) {
+        logger.debug('[KIMMP Router] WAANDAx slots full — passing to next provider (no CB penalty)')
+      } else {
+        cbFailure('waandax')
+        logger.warn('[KIMMP Router] WAANDAx failed, trying next provider:', (err as Error).message)
+      }
     }
   }
 
   // ── 2. Claude (Anthropic) — primary cloud ───────────────────────────────────
-  if (ANTHROPIC_KEY && cbAllow('claude')) {
+  // Reuses the SAME cbAllow('claude') result cached in claudeUsable above —
+  // do not call cbAllow('claude') again here (see note above).
+  if (claudeUsable) {
     try {
       const { text, toolCallCount } = await _callClaude(claudeModel, system, user, maxTokens, options)
       _toolCallCount = toolCallCount
       _counts.claude++
+      markServed('claude')
       cbSuccess('claude')
       _capture(system, user, text, claudeModel, 'claude', meta).catch(() => {})
       return {
@@ -512,6 +556,7 @@ export async function routedCall(
     try {
       const text = await _callOpenAI(system, user, maxTokens)
       _counts.openai++
+      markServed('openai')
       cbSuccess('openai')
       _capture(system, user, text, claudeModel, 'openai', meta).catch(() => {})
       logger.info('[KIMMP Router] Routed to OpenAI (fallback)')
@@ -531,6 +576,7 @@ export async function routedCall(
     try {
       const text = await _callGemini(system, user, maxTokens)
       _counts.gemini++
+      markServed('gemini')
       cbSuccess('gemini')
       _capture(system, user, text, claudeModel, 'gemini', meta).catch(() => {})
       logger.info('[KIMMP Router] Routed to Gemini (fallback)')
@@ -542,6 +588,38 @@ export async function routedCall(
     } catch (err) {
       cbFailure('gemini')
       logger.warn('[KIMMP Router] Gemini failed:', (err as Error).message)
+    }
+  }
+
+  // ── 4.5 cloud providers exhausted — WAANDAx as the universal last resort.
+  // preferClaude and tool-carrying calls both skipped the local slot up front;
+  // they land here when the cloud chain fails. Tool calls are served WITHOUT
+  // their Logic Tools (the local model has no tool_use) — a degraded answer
+  // beats returning empty. Callers can detect this via _routerMeta.fallback.
+  if (await _waandaxAvailable() && cbAllow('waandax')) {
+    try {
+      const text = await _callWaandax(system, user, maxTokens)
+      _counts.waandax++
+      markServed('waandax')
+      cbSuccess('waandax')
+      _capture(system, user, text, claudeModel, 'waandax', meta).catch(() => {})
+      if (options.tools?.length) {
+        logger.warn('[KIMMP Router] cloud exhausted — WAANDAx served WITHOUT Logic Tools (tool execution unavailable)')
+      } else {
+        logger.info('[KIMMP Router] cloud exhausted — served by WAANDAx last resort')
+      }
+      return {
+        content: [{ type: 'text', text }],
+        model: WAANDAX_MODEL,
+        _routerMeta: makeMeta('waandax', WAANDAX_MODEL, true),
+      }
+    } catch (err) {
+      if (isWaandaxBusyError(err)) {
+        logger.debug('[KIMMP Router] WAANDAx last-resort slots full (no CB penalty)')
+      } else {
+        cbFailure('waandax')
+        logger.warn('[KIMMP Router] WAANDAx last-resort failed:', (err as Error).message)
+      }
     }
   }
 
@@ -648,6 +726,8 @@ export async function getRouterStats() {
     callsGemini:       _counts.gemini,
     callsWaandax:      _counts.waandax,
     callsGen2:         _counts.gen2,
+    lastServedBy:      _lastServedBy,
+    lastServedAgoMs:   _lastServedBy ? Date.now() - _lastServedAt : null,
     autonomyRatio:     total > 0 ? (_counts.waandax + _counts.gen2) / total : 0,
     gen2Ratio:         total > 0 ? _counts.gen2 / total : 0,
     providers,
