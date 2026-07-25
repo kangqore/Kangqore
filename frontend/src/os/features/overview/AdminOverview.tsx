@@ -12,6 +12,8 @@ const C = '#2bbdff'   // Stark Electric Blue
 const CG = '#0066ff'  // Stark Mid-Blue
 const CR = '#ff3333'  // Critical Red
 const CA = '#003388'  // Stark Deep Blue
+const VOICE_GREEN = '#00ddaa'
+const VOICE_AMBER = '#ffaa00'
 
 // ─── Scout signal type icons ──────────────────────────────────────────────────
 const SCOUT_ICONS: Record<string, string> = {
@@ -322,10 +324,12 @@ class HUDBoundary extends Component<{ children: ReactNode; label: string }, { er
 }
 
 // ─── Central HUD SVG ──────────────────────────────────────────────────────────
-function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal, criticalAlert, bootPhase, kpis, userRole, scenarioDelta }: {
+function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal, criticalAlert, bootPhase, kpis, userRole, scenarioDelta, voiceState, onOrbClick }: {
   confidence: number; health: number; analytics: any; sweep: number; insights: any[]
   lastSignal: LiveSignal | null; criticalAlert: LiveSignal | null; bootPhase: number; kpis: any; userRole: string
   scenarioDelta?: ScenarioDelta | null
+  voiceState?: 'listening' | 'speaking' | 'processing' | 'standby' | null
+  onOrbClick?: () => void
 }) {
   const [hovered, setHovered] = useState<string | null>(null)
   const [flowKey, setFlowKey] = useState<{deg:number; key:number} | null>(null)
@@ -687,7 +691,34 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
       {/* Glass Lens reflection */}
       <circle cx={cx} cy={cy} r={42} fill="url(#glassLens)" pointerEvents="none" />
 
-      {/* ── Dynamic Center Info Overlay ── */}
+      {/* Clickable hit area over the orb — activates / deactivates voice */}
+      {onOrbClick && (
+        <circle cx={cx} cy={cy} r={44}
+          fill="transparent" style={{ cursor: 'pointer' }}
+          onClick={onOrbClick}
+        />
+      )}
+
+      {/* ── Voice Mode Halo — active only when voice is engaged ── */}
+      {voiceState && (() => {
+        const VC = voiceState === 'processing' ? VOICE_AMBER : VOICE_GREEN
+        const intense = voiceState !== 'standby'
+        return (
+          <>
+            <circle cx={cx} cy={cy} r={50} fill="none" stroke={VC}
+              strokeWidth={intense ? 2 : 0.5} opacity={intense ? 0.85 : 0.12}
+              style={{
+                filter: intense ? `drop-shadow(0 0 16px ${VC})` : 'none',
+                animation: voiceState === 'listening' ? 'arcPulse 0.8s infinite' : voiceState === 'speaking' ? 'arcPulseFast 0.6s infinite' : voiceState === 'processing' ? 'arcPulse 1.4s infinite' : 'none',
+                transition: 'opacity 0.4s',
+              }} />
+            <circle cx={cx} cy={cy} r={24} fill={VC}
+              opacity={intense ? 0.2 : 0.04}
+              style={{ filter: `drop-shadow(0 0 22px ${VC})`, transition: 'opacity 0.4s' }} />
+          </>
+        )
+      })()}
+
       {/* ── Dynamic Center Info Overlay ── */}
       <g style={{ opacity: 1, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
         <image href="/assets/kangqore-icon-white.png" x={cx-14} y={cy-14} width={28} height={28}
@@ -698,6 +729,14 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
         <text x={cx} y={cy+66} textAnchor="middle" fill="#88ccff" fontSize={6} fontFamily="monospace" letterSpacing="0.1em" style={{ filter:`drop-shadow(0 0 4px #0066ff)` }}>
           SYS {health.toFixed(1)}%
         </text>
+        {voiceState && (
+          <text x={cx} y={cy+77} textAnchor="middle"
+            fill={voiceState === 'processing' ? VOICE_AMBER : VOICE_GREEN}
+            fontSize={6} fontFamily="monospace" fontWeight="800" letterSpacing="0.2em"
+            style={{ filter:`drop-shadow(0 0 6px ${voiceState === 'processing' ? VOICE_AMBER : VOICE_GREEN})` }}>
+            {voiceState === 'listening' ? '● LISTENING' : voiceState === 'speaking' ? '◈ SPEAKING' : voiceState === 'processing' ? '⟳ PROCESSING' : '◎ VOICE READY'}
+          </text>
+        )}
       </g>
       {/* Hovered Module Readout */}
       <g style={{ opacity: hovered ? 1 : 0, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
@@ -986,35 +1025,170 @@ function useTypewriter(text: string, active: boolean) {
   return displayed
 }
 
+// ── WAV encoder — packages Float32 PCM samples into a standard WAV buffer ──
+function encodeWAV(samples: Float32Array, sampleRate: number): ArrayBuffer {
+  const buf  = new ArrayBuffer(44 + samples.length * 2)
+  const view = new DataView(buf)
+  const str  = (o: number, s: string) => { for (let i = 0; i < s.length; i++) view.setUint8(o + i, s.charCodeAt(i)) }
+  str(0, 'RIFF');  view.setUint32(4,  36 + samples.length * 2, true)
+  str(8, 'WAVE');  str(12, 'fmt ')
+  view.setUint32(16, 16, true);  view.setUint16(20, 1, true)  // PCM
+  view.setUint16(22, 1, true);   view.setUint32(24, sampleRate, true)
+  view.setUint32(28, sampleRate * 2, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true)
+  str(36, 'data'); view.setUint32(40, samples.length * 2, true)
+  let off = 44
+  for (let i = 0; i < samples.length; i++) {
+    const s = Math.max(-1, Math.min(1, samples[i]))
+    view.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7FFF, true); off += 2
+  }
+  return buf
+}
+
+// ── useVoiceInput — MediaRecorder capture + AnalyserNode VAD → Whisper STT ────
 function useVoiceInput(onResult: (t: string) => void) {
-  const [listening, setListening] = useState(false)
-  const [supported, setSupported] = useState(false)
-  const [interim,   setInterim]   = useState('')
-  const ref = useRef<any>(null)
-  useEffect(() => {
-    setSupported(!!(( window as any).SpeechRecognition || (window as any).webkitSpeechRecognition))
+  const [listening,  setListening]  = useState(false)
+  const [interim,    setInterim]    = useState('')
+  const [voiceError, setVoiceError] = useState<string | null>(null)
+
+  const recorderRef  = useRef<MediaRecorder | null>(null)
+  const chunksRef    = useRef<Blob[]>([])
+  const streamRef    = useRef<MediaStream | null>(null)
+  const ctxRef       = useRef<AudioContext | null>(null)
+  const vadRef       = useRef<ReturnType<typeof setInterval> | null>(null)
+  const maxTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hasVoiceRef  = useRef(false)
+  const silenceRef   = useRef(0)
+  const activeRef    = useRef(false)
+  const onResultRef  = useRef(onResult)
+  useEffect(() => { onResultRef.current = onResult }, [onResult])
+
+  const cleanup = useCallback(() => {
+    if (vadRef.current)      clearInterval(vadRef.current)
+    if (maxTimerRef.current) clearTimeout(maxTimerRef.current)
+    streamRef.current?.getTracks().forEach(t => t.stop())
+    ctxRef.current?.close().catch(() => {})
+    vadRef.current = maxTimerRef.current = null
+    streamRef.current = ctxRef.current = null
   }, [])
-  const start = useCallback(() => {
-    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    if (!SR) return
-    const r = new SR(); ref.current = r
-    r.continuous = false; r.interimResults = true; r.lang = 'en-GB'
-    r.onstart  = () => { setListening(true); setInterim('') }
-    r.onend    = () => { setListening(false); setInterim('') }
-    r.onerror  = () => { setListening(false); setInterim('') }
-    r.onresult = (e: any) => {
-      let interim = '', final = ''
-      for (const res of Array.from(e.results) as any[]) {
-        if (res.isFinal) final += res[0].transcript
-        else interim += res[0].transcript
-      }
-      setInterim(interim)
-      if (final) { onResult(final.trim()); setInterim('') }
+
+  const stopAndSend = useCallback((cancelled = false) => {
+    if (!activeRef.current) return
+    activeRef.current = false
+    setListening(false)
+    if (cancelled) chunksRef.current = []
+    const rec = recorderRef.current
+    if (rec && rec.state !== 'inactive') rec.stop()   // triggers onstop → send
+    else cleanup()
+  }, [cleanup])
+
+  const start = useCallback(async () => {
+    console.log('[WAANDA] start() called')
+    if (activeRef.current) return
+    chunksRef.current = []; hasVoiceRef.current = false; silenceRef.current = 0
+    activeRef.current = true
+    setVoiceError(null)
+
+    // 1. Get mic
+    let stream: MediaStream
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      console.log('[WAANDA] mic OK, tracks:', stream.getAudioTracks().length)
+    } catch (err: any) {
+      activeRef.current = false
+      setVoiceError(err.name === 'NotAllowedError'
+        ? 'Mic blocked — allow microphone in Chrome (lock icon → Site settings)'
+        : `Mic error: ${err.message}`)
+      return
     }
-    r.start()
-  }, [onResult])
-  const stop = useCallback(() => { ref.current?.stop(); setListening(false) }, [])
-  return { listening, supported, interim, start, stop }
+    streamRef.current = stream
+
+    // 2. AudioContext for VAD — MUST connect to ctx.destination for AnalyserNode
+    //    to receive data; use gain=0 so no audio goes to speakers
+    const ctx = new AudioContext()
+    ctxRef.current = ctx
+    if (ctx.state === 'suspended') { try { await ctx.resume() } catch {} }
+    console.log('[WAANDA] AudioContext state:', ctx.state)
+
+    const source   = ctx.createMediaStreamSource(stream)
+    const analyser = ctx.createAnalyser()
+    analyser.fftSize = 1024
+    const silencer = ctx.createGain()
+    silencer.gain.value = 0
+    // source → analyser → gain(0) → destination  (activates graph, zero audio output)
+    source.connect(analyser)
+    analyser.connect(silencer)
+    silencer.connect(ctx.destination)
+
+    const tdata = new Uint8Array(analyser.fftSize / 2)
+
+    // 3. MediaRecorder — captures natively, independent of AudioContext
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+      ? 'audio/webm;codecs=opus' : 'audio/webm'
+    const recorder = new MediaRecorder(stream, { mimeType })
+    recorderRef.current = recorder
+    recorder.ondataavailable = (e) => { if (e.data.size > 0) chunksRef.current.push(e.data) }
+
+    recorder.onstop = async () => {
+      cleanup()
+      if (!hasVoiceRef.current || chunksRef.current.length === 0) { setInterim(''); return }
+      setInterim('Processing…')
+      const blob = new Blob(chunksRef.current, { type: mimeType })
+      chunksRef.current = []
+      try {
+        // Decode webm/opus → PCM via browser, encode as WAV for Whisper
+        const ab       = await blob.arrayBuffer()
+        const dec      = new AudioContext({ sampleRate: 16000 })
+        const decoded  = await dec.decodeAudioData(ab)
+        await dec.close()
+        const wav      = encodeWAV(decoded.getChannelData(0), decoded.sampleRate)
+        const fd       = new FormData()
+        fd.append('audio', new Blob([wav], { type: 'audio/wav' }), 'voice.wav')
+        const res = await api.post('/admin/kangqore-immp/stt', fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        setInterim('')
+        const t = (res.data.transcript ?? '').trim()
+        console.log('[WAANDA] transcript:', t || '(empty)')
+        if (t) onResultRef.current(t)
+      } catch (e) { console.error('[WAANDA] STT error:', e); setInterim('') }
+    }
+
+    recorder.start(250)
+    setListening(true)
+
+    // 4. VAD — poll AnalyserNode every 100 ms
+    // speechFrames: require 4 consecutive loud frames (~400ms) before marking as speech
+    // This prevents ambient noise (amp 3-6) from triggering a send with empty audio
+    let speechFrames = 0
+    vadRef.current = setInterval(() => {
+      if (!activeRef.current) return
+      analyser.getByteTimeDomainData(tdata)
+      let amp = 0
+      for (let i = 0; i < tdata.length; i++) amp += Math.abs(tdata[i] - 128)
+      amp /= tdata.length
+
+      if (amp > 10) {                              // actual speech threshold
+        speechFrames = Math.min(speechFrames + 1, 10)
+        if (speechFrames >= 4) {                   // sustained for ~400ms → real speech
+          if (!hasVoiceRef.current) console.log('[WAANDA] voice onset, amp:', amp.toFixed(1))
+          hasVoiceRef.current = true
+        }
+        silenceRef.current = 0
+      } else {
+        speechFrames = Math.max(speechFrames - 1, 0)
+        if (hasVoiceRef.current) {
+          if (++silenceRef.current > 15) { console.log('[WAANDA] silence → send'); stopAndSend() }
+        }
+      }
+    }, 100)
+
+    // Safety cap — send after 20s regardless
+    maxTimerRef.current = setTimeout(() => stopAndSend(), 20_000)
+  }, [stopAndSend, cleanup])
+
+  const stop = useCallback(() => stopAndSend(true), [stopAndSend])
+
+  return { listening, supported: true, interim, voiceError, start, stop }
 }
 
 function useWakeWord(active: boolean, onWake: (phrase: string) => void) {
@@ -2059,13 +2233,22 @@ interface ChatMessage {
   ts: number
 }
 
-function WaandaChat({ onClose, recentSignals }: {
+function WaandaChat({ onClose, recentSignals, initialGreeting }: {
   onClose: () => void
   recentSignals: LiveSignal[]
+  initialGreeting?: string
 }) {
   const navigate = useNavigate()
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    try { return JSON.parse(localStorage.getItem('waanda-chat-messages') || '[]') } catch { return [] }
+    try {
+      const stored = JSON.parse(localStorage.getItem('waanda-chat-messages') || '[]')
+      if (stored.length === 0 && initialGreeting) {
+        return [{ role: 'assistant', content: initialGreeting, ts: Date.now(), confidence: 99 }]
+      }
+      return stored
+    } catch {
+      return initialGreeting ? [{ role: 'assistant' as const, content: initialGreeting, ts: Date.now(), confidence: 99 }] : []
+    }
   })
   const [query,       setQuery]       = useState('')
   const [thinking,    setThinking]    = useState(false)
@@ -2088,6 +2271,18 @@ function WaandaChat({ onClose, recentSignals }: {
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [onClose, silence])
+
+  // Speak the JARVIS opening briefing once when chat first opens after boot
+  const greetingSpokenRef = useRef(false)
+  useEffect(() => {
+    if (!initialGreeting || greetingSpokenRef.current) return
+    if (messages.length === 1 && messages[0].role === 'assistant' && messages[0].content === initialGreeting) {
+      greetingSpokenRef.current = true
+      const t = setTimeout(() => speak(initialGreeting, 'response'), 1400)
+      return () => clearTimeout(t)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const submit = useCallback(async (q?: string) => {
     const text = (q ?? query).trim()
@@ -2179,11 +2374,11 @@ function WaandaChat({ onClose, recentSignals }: {
   const displayedQuery = listening && interim ? interim : query
 
   const STARTERS = [
-    "What should I focus on today?",
-    "How's our pipeline looking?",
-    "What are the biggest risks right now?",
-    "Give me a business brief",
-    "What if we close 5 deals this month?",
+    "Run a full situation assessment.",
+    "What demands my immediate attention?",
+    "Pipeline and revenue — where do we stand?",
+    "Walk me through the risks.",
+    "What would you prioritise today, WAANDA?",
   ]
 
   return (
@@ -2242,8 +2437,8 @@ function WaandaChat({ onClose, recentSignals }: {
         {messages.length === 0 && (
           <div style={{ textAlign: 'center', marginTop: 80, padding: '0 40px' }}>
             <div style={{ fontSize: 32, fontWeight: 900, color: `${C}25`, letterSpacing: '0.4em', marginBottom: 12 }}>◈</div>
-            <div style={{ fontSize: 13, color: `${C}40`, letterSpacing: '0.1em', marginBottom: 6 }}>WAANDA is ready</div>
-            <div style={{ fontSize: 10, color: `${C}25`, letterSpacing: '0.08em', marginBottom: 28 }}>Ask anything — business, strategy, data, code, ideas</div>
+            <div style={{ fontSize: 13, color: `${C}40`, letterSpacing: '0.1em', marginBottom: 6 }}>WAANDA standing by, sir.</div>
+            <div style={{ fontSize: 10, color: `${C}25`, letterSpacing: '0.08em', marginBottom: 28 }}>Strategy, data, code, ideas — anything you need.</div>
             <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
               {STARTERS.map(s => (
                 <button key={s} onClick={() => submit(s)} style={{
@@ -2326,7 +2521,7 @@ function WaandaChat({ onClose, recentSignals }: {
                 {[0,1,2].map(j => (
                   <div key={j} style={{ width: 6, height: 6, borderRadius: '50%', background: CG, animation: `orbit-cw 1s ${j * 0.25}s ease-in-out infinite`, boxShadow: `0 0 4px ${CG}` }} />
                 ))}
-                <span style={{ fontSize: 9, color: `${CG}60`, marginLeft: 4 }}>thinking…</span>
+                <span style={{ fontSize: 9, color: `${CG}60`, marginLeft: 4 }}>processing, sir…</span>
               </div>
             </div>
           </div>
@@ -2361,7 +2556,7 @@ function WaandaChat({ onClose, recentSignals }: {
             value={displayedQuery}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && !e.shiftKey && submit()}
-            placeholder={listening ? 'Listening…' : speaking ? 'WAANDA is speaking…' : 'Ask WAANDA anything — strategy, data, ideas, code…'}
+            placeholder={listening ? 'Listening, sir…' : speaking ? 'WAANDA is speaking…' : 'Your orders, sir — strategy, data, code, anything…'}
             style={{
               flex: 1, background: 'transparent', border: 'none', outline: 'none',
               fontSize: 13, color: listening ? '#ff5577' : '#c0d8f0',
@@ -2406,6 +2601,219 @@ function WaandaChat({ onClose, recentSignals }: {
           Enter to send · Esc to close · Voice and file attachment supported
         </div>
       </div>
+    </div>
+  )
+}
+
+// ─── JARVIS Voice Console — pure speech-to-speech, no typing ─────────────────
+function JarvisVoiceConsole({ onClose, recentSignals }: {
+  onClose: () => void
+  recentSignals: LiveSignal[]
+}) {
+  const [lastResponse, setLastResponse] = useState<string | null>(null)
+  const [thinking, setThinking]         = useState(false)
+  const { speak, silence, speaking }    = useTTS()
+  const voiceModeRef = useRef(true)
+
+  const [history, setHistory] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('waanda-chat-messages') || '[]')
+        .slice(-12)
+        .map((m: any) => ({ role: m.role as 'user' | 'assistant', content: m.content }))
+    } catch { return [] }
+  })
+
+  const submit = useCallback(async (text: string) => {
+    if (!text.trim() || thinking) return
+    silence()
+    setThinking(true)
+
+    // Exit phrases
+    const lower = text.toLowerCase().trim()
+    if (['stop', 'exit', 'close', 'goodbye', 'bye', 'that will be all', 'stand by', 'standby', 'dismissed'].some(p => lower.includes(p))) {
+      speak('Very well, sir. Standing by.', 'response')
+      voiceModeRef.current = false
+      setTimeout(onClose, 1800)
+      setThinking(false)
+      return
+    }
+
+    const nextHistory = [...history, { role: 'user' as const, content: text }]
+    setHistory(nextHistory)
+
+    try {
+      const res = await api.post('/admin/kangqore-immp/command', {
+        query: text,
+        history: nextHistory.slice(-12),
+        moduleContext: recentSignals[0]?.sourceModule,
+      })
+      const reply = res.data.response as string
+      const withAction = reply + (res.data.suggestedAction ? '. ' + res.data.suggestedAction : '')
+      setLastResponse(reply)
+      const final = [...nextHistory, { role: 'assistant' as const, content: reply }]
+      setHistory(final)
+      try {
+        localStorage.setItem('waanda-chat-messages',
+          JSON.stringify(final.slice(-60).map((m, i) => ({ ...m, ts: Date.now() + i, confidence: 90 }))))
+      } catch {}
+      speak(withAction, 'response')
+    } catch {
+      const err = "I'm having trouble reaching the intelligence layer, sir. Please check the connection."
+      setLastResponse(err)
+      speak(err, 'response')
+    } finally {
+      setThinking(false)
+    }
+  }, [thinking, history, recentSignals, silence, speak, onClose])
+
+  const { listening, supported, interim, start, stop } = useVoiceInput(
+    useCallback((t: string) => submit(t), [submit])
+  )
+
+  // Continuous loop: after WAANDA finishes speaking, auto-listen again
+  const prevSpeakRef = useRef(false)
+  useEffect(() => {
+    const was = prevSpeakRef.current
+    prevSpeakRef.current = speaking
+    if (was && !speaking && voiceModeRef.current && !thinking) {
+      setTimeout(() => { if (voiceModeRef.current) start() }, 600)
+    }
+  }, [speaking, thinking, start])
+
+  // Auto-start listening when console opens
+  useEffect(() => {
+    const t = setTimeout(() => { if (supported && voiceModeRef.current) start() }, 500)
+    return () => clearTimeout(t)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Escape to close
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      voiceModeRef.current = false; stop(); silence(); onClose()
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [onClose, stop, silence])
+
+  const state: 'listening' | 'speaking' | 'processing' | 'standby' =
+    thinking ? 'processing' : speaking ? 'speaking' : listening ? 'listening' : 'standby'
+
+  const STATE = {
+    listening:  { label: 'Listening, sir…',       ring: C,           glow: C,           orbBorder: `${C}cc` },
+    speaking:   { label: 'WAANDA is speaking…',   ring: VOICE_GREEN, glow: VOICE_GREEN, orbBorder: `${VOICE_GREEN}aa` },
+    processing: { label: 'Processing, sir…',      ring: VOICE_AMBER, glow: VOICE_AMBER, orbBorder: `${VOICE_AMBER}80` },
+    standby:    { label: 'Standing by.',           ring: `${C}30`,    glow: C,           orbBorder: `${C}30` },
+  }[state]
+
+  const ringAnim = state === 'listening' ? 'orbit-cw' : state === 'speaking' ? 'orbit-ccw' : 'none'
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 1600,
+      background: 'radial-gradient(ellipse at 50% 40%, #000e28 0%, #000510 100%)',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      fontFamily: 'monospace',
+    }}>
+      {/* Scan-line texture */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,80,200,0.01) 3px, rgba(0,80,200,0.01) 4px)' }} />
+      {/* Corner brackets */}
+      {[{t:0,l:0},{t:0,r:0},{b:0,l:0},{b:0,r:0}].map((p,i) => (
+        <svg key={i} width={50} height={50} style={{ position:'absolute', ...p as any, pointerEvents:'none', opacity: 0.4 }}>
+          <path d={i===0?'M0 0 L40 0 L40 5 L5 5 L5 40 L0 40 Z':i===1?'M50 0 L10 0 L10 5 L45 5 L45 40 L50 40 Z':i===2?'M0 50 L0 10 L5 10 L5 45 L40 45 L40 50 Z':'M50 50 L50 10 L45 10 L45 45 L10 45 L10 50 Z'} fill={C} />
+        </svg>
+      ))}
+
+      {/* Header */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '14px 28px', borderBottom: `1px solid ${C}20`,
+        background: `linear-gradient(90deg, rgba(0,16,48,0.9), rgba(0,8,24,0.95), rgba(0,16,48,0.9))`,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div className="live-blink" style={{ width: 7, height: 7, borderRadius: '50%', background: STATE.glow, boxShadow: `0 0 8px ${STATE.glow}`, transition: 'background 0.4s' }} />
+          <span style={{ fontSize: 12, fontWeight: 900, color: C, letterSpacing: '0.3em' }}>W·A·A·N·D·A</span>
+          <span style={{ fontSize: 8, color: `${C}40`, letterSpacing: '0.12em' }}>VOICE INTERFACE</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <span style={{ fontSize: 9, color: `${C}35`, letterSpacing: '0.1em' }}>SAY "EXIT" · OR PRESS ESC</span>
+          <button onClick={() => { voiceModeRef.current = false; stop(); silence(); onClose() }}
+            style={{ background: `${CR}10`, border: `1px solid ${CR}40`, borderRadius: 4,
+              color: CR, cursor: 'pointer', fontSize: 9, padding: '4px 14px',
+              fontFamily: 'monospace', letterSpacing: '0.1em' }}>
+            ✕ CLOSE
+          </button>
+        </div>
+      </div>
+
+      {/* ── Central orb ── */}
+      <div style={{ position: 'relative', width: 240, height: 240, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Animated rings */}
+        {[170, 200, 228].map((size, i) => (
+          <div key={i} style={{
+            position: 'absolute', width: size, height: size, borderRadius: '50%',
+            border: `1px solid ${STATE.ring}`,
+            opacity: state === 'standby' ? 0.08 - i * 0.02 : 0.6 - i * 0.15,
+            animation: ringAnim !== 'none' ? `${ringAnim} ${2.2 + i * 0.9}s linear infinite` : 'none',
+            transition: 'opacity 0.5s, border-color 0.4s',
+            boxShadow: state !== 'standby' ? `0 0 ${8 + i * 4}px ${STATE.ring}30` : 'none',
+          }} />
+        ))}
+
+        {/* Core sphere */}
+        <div style={{
+          width: 110, height: 110, borderRadius: '50%',
+          background: `radial-gradient(circle at 35% 35%, ${STATE.glow}35 0%, ${STATE.glow}08 55%, transparent 100%)`,
+          border: `2px solid ${STATE.orbBorder}`,
+          boxShadow: `0 0 ${state === 'listening' ? 48 : state === 'speaking' ? 36 : state === 'processing' ? 28 : 14}px ${STATE.glow}${state === 'standby' ? '18' : '40'}, inset 0 0 24px ${STATE.glow}10`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transition: 'all 0.5s',
+        }}>
+          <span style={{
+            fontSize: 34, color: STATE.glow,
+            animation: state === 'processing' ? 'orbit-cw 2s linear infinite' : 'none',
+            opacity: state === 'standby' ? 0.4 : 0.9,
+            transition: 'color 0.4s, opacity 0.3s',
+            filter: state !== 'standby' ? `drop-shadow(0 0 8px ${STATE.glow})` : 'none',
+          }}>◈</span>
+        </div>
+      </div>
+
+      {/* State label */}
+      <div style={{ marginTop: 28, fontSize: 13, fontWeight: 700, letterSpacing: '0.14em', transition: 'color 0.35s',
+        color: state === 'standby' ? `${C}50` : state === 'speaking' ? VOICE_GREEN : state === 'processing' ? VOICE_AMBER : C }}>
+        {STATE.label}
+      </div>
+
+      {/* Live interim transcript — what you're saying right now */}
+      {interim && (
+        <div style={{ marginTop: 18, maxWidth: 620, padding: '10px 20px', textAlign: 'center',
+          fontSize: 13, color: `${C}90`, fontStyle: 'italic', lineHeight: 1.65,
+          background: `${C}06`, border: `1px solid ${C}15`, borderRadius: 8 }}>
+          "{interim}"
+        </div>
+      )}
+
+      {/* WAANDA's last response */}
+      {lastResponse && !interim && (
+        <div style={{ marginTop: 28, maxWidth: 700, padding: '18px 28px', borderRadius: 12,
+          background: 'rgba(0,14,42,0.85)', border: `1px solid ${C}15`,
+          boxShadow: `0 4px 32px rgba(0,0,0,0.4)`, textAlign: 'center' }}>
+          <div style={{ fontSize: 8, fontWeight: 800, letterSpacing: '0.2em', color: `${VOICE_GREEN}80`, marginBottom: 10 }}>◈ WAANDA</div>
+          <div style={{ fontSize: 14, color: '#c8e0f8', lineHeight: 1.8 }}>{lastResponse}</div>
+        </div>
+      )}
+
+      {/* Voice not supported warning */}
+      {!supported && (
+        <div style={{ marginTop: 24, padding: '10px 20px', borderRadius: 8, border: `1px solid ${CR}40`,
+          background: `${CR}08`, fontSize: 11, color: CR, letterSpacing: '0.08em' }}>
+          Voice input is unavailable in this browser, sir.
+        </div>
+      )}
     </div>
   )
 }
@@ -5327,13 +5735,29 @@ export function AdminOverview() {
   const uptime   = useUptime()
 
   // HUD TTS for live event announcements (must come before any callback that calls speak)
-  const { speak, speakDirect } = useTTS()
+  const { speak, speakDirect, speaking: waandaSpeaking, silence } = useTTS()
 
   // ── WAANDA Boot Greeting ─────────────────────────────────────────────────
-  const [greetingDone, setGreetingDone] = useState(false)
-  const handleGreetingDismiss = useCallback((voiceText: string) => {
+  const [greetingDone, setGreetingDone] = useState(true)
+  const [chatOpen, setChatOpen]         = useState(false)
+  const [voiceActive, setVoiceActive]   = useState(false)
+  const [voiceLastResponse, setVoiceLastResponse] = useState<string | null>(null)
+  const [voiceThinking, setVoiceThinking]         = useState(false)
+  const voiceModeRef          = useRef(false)
+  const voiceHistoryRef       = useRef<Array<{ role: 'user' | 'assistant'; content: string }>>([])
+  const voiceGreetingSpokenRef = useRef(false)
+  const jarvisOpeningRef      = useRef('')
+
+  const handleGreetingDismiss = useCallback((_voiceText: string) => {
     setGreetingDone(true)
-    // Voice is already started synchronously by WaandaGreeting.dismiss() via onSpeakDirect
+    setTimeout(() => setVoiceActive(true), 800)
+  }, [])
+
+  // Auto-activate voice on mount — no boot screen, JARVIS is always ready
+  useEffect(() => {
+    const t = setTimeout(() => setVoiceActive(true), 1200)
+    return () => clearTimeout(t)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // ── Scenario Playground ──────────────────────────────────────────────────
@@ -5464,6 +5888,95 @@ export function AdminOverview() {
   // Live signal stream via WebSocket
   const { lastSignal, criticalAlert, recentSignals } = useSignalStream()
 
+  // ── Inline WAANDA Voice Mode ──────────────────────────────────────────────
+  const voiceSubmit = useCallback(async (text: string) => {
+    if (!text.trim() || voiceThinking) return
+    silence()
+    setVoiceThinking(true)
+    const lower = text.toLowerCase().trim()
+    if (['stop', 'exit', 'close', 'goodbye', 'bye', 'that will be all', 'stand by', 'standby', 'dismissed'].some(p => lower.includes(p))) {
+      speak('Very well, sir. Standing by.', 'response')
+      voiceModeRef.current = false
+      setTimeout(() => setVoiceActive(false), 1800)
+      setVoiceThinking(false)
+      return
+    }
+    const nextHistory = [...voiceHistoryRef.current, { role: 'user' as const, content: text }]
+    voiceHistoryRef.current = nextHistory
+    try {
+      console.log('[WAANDA] posting /command, voiceMode=true, query:', text.slice(0, 50))
+      const res = await api.post('/admin/kangqore-immp/command', {
+        query: text,
+        history: nextHistory.slice(-12),
+        moduleContext: recentSignals[0]?.sourceModule,
+        voiceMode: true,
+      })
+      console.log('[WAANDA] /command raw response:', JSON.stringify(res.data))
+      const reply = res.data.response as string
+      setVoiceLastResponse(reply)
+      voiceHistoryRef.current = [...nextHistory, { role: 'assistant' as const, content: reply }]
+      try {
+        localStorage.setItem('waanda-chat-messages',
+          JSON.stringify(voiceHistoryRef.current.slice(-60).map((m, i) => ({ ...m, ts: Date.now() + i, confidence: 90 }))))
+      } catch {}
+      speak(reply, 'response')
+    } catch (e: any) {
+      console.error('[WAANDA] /command failed:', e?.response?.status, e?.response?.data, e?.message)
+      const err = "I'm having trouble reaching the intelligence layer, sir. Please check the connection."
+      setVoiceLastResponse(err)
+      speak(err, 'response')
+    } finally {
+      setVoiceThinking(false)
+    }
+  }, [voiceThinking, recentSignals, silence, speak])
+
+  const { listening: voiceListening, supported: voiceSupported, interim: voiceInterim, voiceError, start: voiceStart, stop: voiceStop } = useVoiceInput(voiceSubmit) as any
+
+  // Stop mic while WAANDA is talking; restart 600ms after she stops
+  const voicePrevSpeakRef = useRef(false)
+  useEffect(() => {
+    if (!voiceModeRef.current) return
+    const was = voicePrevSpeakRef.current
+    voicePrevSpeakRef.current = waandaSpeaking
+    if (waandaSpeaking) {
+      voiceStop()   // WAANDA speaking → stop listening
+    } else if (was && !voiceThinking) {
+      // Finished speaking → restart mic after short pause
+      const t = setTimeout(() => { if (voiceModeRef.current && !voiceThinking) voiceStart() }, 600)
+      return () => clearTimeout(t)
+    }
+  }, [waandaSpeaking, voiceThinking, voiceStart, voiceStop])
+
+  useEffect(() => {
+    if (voiceActive) {
+      voiceModeRef.current = true
+      try {
+        voiceHistoryRef.current = JSON.parse(localStorage.getItem('waanda-chat-messages') || '[]')
+          .slice(-12).map((m: any) => ({ role: m.role as 'user' | 'assistant', content: m.content }))
+      } catch { voiceHistoryRef.current = [] }
+
+      const greeting = jarvisOpeningRef.current
+      if (greeting && !voiceGreetingSpokenRef.current) {
+        voiceGreetingSpokenRef.current = true
+        setVoiceLastResponse(greeting)
+        voiceHistoryRef.current = [{ role: 'assistant', content: greeting }]
+        setTimeout(() => { if (voiceModeRef.current) speak(greeting, 'response') }, 400)
+      }
+
+      // Always start mic after a delay — works even if TTS fails or is skipped
+      const t = setTimeout(() => { if (voiceModeRef.current && !waandaSpeaking) voiceStart() }, 3000)
+      return () => clearTimeout(t)
+    } else {
+      voiceModeRef.current = false
+      voiceStop()
+      silence()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [voiceActive])
+
+  const voiceState: 'listening' | 'speaking' | 'processing' | 'standby' | null = !voiceActive ? null
+    : voiceThinking ? 'processing' : waandaSpeaking ? 'speaking' : voiceListening ? 'listening' : 'standby'
+
   // Real-time approval requests from KIMMP agents
   const [liveApprovals, setLiveApprovals] = useState<any[]>([])
   useEffect(() => {
@@ -5565,6 +6078,30 @@ export function AdminOverview() {
   const insights = storeInsights
   const critical = insights.filter(i => i.priority === 'critical').length
   const conf     = Math.round(insights.reduce((a, i) => a + i.confidence, 0) / (insights.length || 1))
+
+  // ── JARVIS opening briefing — built from live data, shown as first chat message ──
+  const jarvisOpening = useMemo(() => {
+    const hour = new Date().getHours()
+    const tod = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening'
+    const critCount = insights.filter((i: any) => i.priority === 'critical').length
+    const highCount = insights.filter((i: any) => i.priority === 'high').length
+    const twin = kpis?.overallScore != null ? Math.round(kpis.overallScore) : null
+    const rev  = kpis?.revenueHealth != null ? Math.round(kpis.revenueHealth) : null
+    const parts: string[] = [`Good ${tod}, sir.`]
+    if (critCount > 0) {
+      parts.push(`I've flagged ${critCount} critical signal${critCount > 1 ? 's' : ''} that require your immediate attention.`)
+    } else if (highCount > 0) {
+      parts.push(`${highCount} high-priority signal${highCount > 1 ? 's' : ''} in the queue — no critical issues at present.`)
+    } else {
+      parts.push('All twelve modules are running within normal parameters.')
+    }
+    if (twin != null) parts.push(`Business twin score is holding at ${twin}.`)
+    if (rev  != null) parts.push(`Revenue health stands at ${rev}%.`)
+    parts.push('What would you like to tackle first?')
+    return parts.join(' ')
+  }, [insights, kpis])
+  // keep ref in sync so the voiceActive effect can read it without stale-closure issues
+  jarvisOpeningRef.current = jarvisOpening
 
   // Real health score derived from service checks; ticker animates around it
   const healthSeed = healthData?.system?.healthPct ?? 97
@@ -5731,7 +6268,7 @@ export function AdminOverview() {
 
   // ── TTS: announce ALL pending events, one after another ──────────────────
   // Alerts jump to the front of the speech queue; all others append in order.
-  // Time guards removed — the speak queue handles sequencing behind the greeting.
+  // HUD event announcements — silenced during voice session (WAANDA is talking)
   useEffect(() => {
     const pending = hudEvents.filter(e => !e.announced && !spokenIds.current.has(e.id))
     if (pending.length === 0) return
@@ -5741,12 +6278,14 @@ export function AdminOverview() {
     pending.forEach(e => spokenIds.current.add(e.id))
     setHudEvents(prev => prev.map(e => ids.has(e.id) ? { ...e, announced: true } : e))
 
+    // During a voice session the orb speaks — background alerts stay silent
+    if (voiceModeRef.current) return
+
     // Alerts first, then signals, agents, kpis, system
     const ORDER: Record<string, number> = { alert:0, signal:1, agent:2, kpi:3, system:4 }
     const sorted = [...pending].sort((a, b) => (ORDER[a.type] ?? 5) - (ORDER[b.type] ?? 5))
 
     sorted.forEach(e => {
-      // agent responses are spoken by HUDCommandBar directly — skip here to avoid doubles
       if (e.type === 'agent') return
       const v = (e.value ?? '').toLowerCase().replace(/_/g, ' ')
       const phrases: Record<string, string> = {
@@ -5809,16 +6348,6 @@ export function AdminOverview() {
     }}>
       <style>{CSS}</style>
 
-      {/* WAANDA boot greeting — JARVIS-style, shows once per session */}
-      {!greetingDone && bootPhase >= 2 && (
-        <WaandaGreeting
-          kpis={kpis}
-          insights={insights}
-          health={health}
-          onDismiss={handleGreetingDismiss}
-          onSpeakDirect={speakDirect}
-        />
-      )}
 
 
       {/* KIMMP Morning Brief notification strip (Phase 6.6) */}
@@ -6140,7 +6669,7 @@ export function AdminOverview() {
               </div>
 
               <div ref={arcRef} style={{ height:'100%', aspectRatio:'1/1', maxWidth:'100%' }}>
-                <WaandaGUI confidence={conf} health={+health.toFixed(0)} insights={insights} analytics={analytics} sweep={sweep} lastSignal={lastSignal} criticalAlert={criticalAlert} bootPhase={bootPhase} kpis={kpis} userRole={userRole} scenarioDelta={scenarioDelta} />
+                <WaandaGUI confidence={conf} health={+health.toFixed(0)} insights={insights} analytics={analytics} sweep={sweep} lastSignal={lastSignal} criticalAlert={criticalAlert} bootPhase={bootPhase} kpis={kpis} userRole={userRole} scenarioDelta={scenarioDelta} voiceState={voiceState} onOrbClick={() => setVoiceActive(v => !v)} />
               </div>
               {/* Goal Cockpit overlay — covers the entire arc area */}
               {goalCockpitOpen && (
@@ -6156,6 +6685,22 @@ export function AdminOverview() {
               }}>
                 {rightEvents.map(e => <LiveCard key={e.id} event={e} />)}
               </div>
+
+              {/* ── Voice mode response overlay — floats over the arc bottom ── */}
+              {voiceActive && (
+                <div style={{
+                  position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)',
+                  maxWidth: 480, width: '78%', textAlign: 'center', pointerEvents: 'none', zIndex: 80,
+                }}>
+                  {voiceError && (
+                    <div style={{
+                      padding: '8px 16px', borderRadius: 8,
+                      background: `${CR}10`, border: `1px solid ${CR}40`,
+                      fontSize: 10, color: CR, fontFamily: 'monospace', lineHeight: 1.5,
+                    }}>{voiceError}</div>
+                  )}
+                </div>
+              )}
 
             </div>
 
@@ -6276,7 +6821,43 @@ export function AdminOverview() {
   </div>
 </div>
         </div>
-      </div>{/* ── Widget Modal overlay ── */}
+      </div>
+
+      {/* ── Floating voice button — activates inline arc voice mode ── */}
+      {greetingDone && (
+        <button
+          onClick={() => setVoiceActive(v => !v)}
+          title={voiceActive ? 'End voice session' : 'Talk to WAANDA — voice to voice'}
+          style={{
+            position: 'absolute', bottom: 24, right: 24, zIndex: 200,
+            display: 'flex', alignItems: 'center', gap: 10,
+            padding: '10px 20px', borderRadius: 8, cursor: 'pointer',
+            background: voiceActive
+              ? `linear-gradient(135deg, ${VOICE_GREEN}28, ${VOICE_GREEN}0c)`
+              : `linear-gradient(135deg, ${C}22, ${C}08)`,
+            border: `1px solid ${voiceActive ? VOICE_GREEN : C}50`,
+            boxShadow: voiceActive
+              ? `0 0 20px ${VOICE_GREEN}30, 0 0 40px ${VOICE_GREEN}12`
+              : `0 0 20px ${C}25, 0 0 40px ${C}10`,
+            fontFamily: 'monospace', fontSize: 11, fontWeight: 800,
+            color: voiceActive ? VOICE_GREEN : C, letterSpacing: '0.15em', transition: 'all 0.3s',
+          }}
+        >
+          {voiceActive ? (
+            <>
+              <div className="live-blink" style={{ width: 7, height: 7, borderRadius: '50%', background: VOICE_GREEN, boxShadow: `0 0 8px ${VOICE_GREEN}` }} />
+              END VOICE SESSION
+            </>
+          ) : (
+            <>
+              <Mic size={13} color={C} />
+              ◈ TALK TO WAANDA
+            </>
+          )}
+        </button>
+      )}
+
+      {/* ── Widget Modal overlay ── */}
       {modal && (
         <WidgetModal
           type={modal}

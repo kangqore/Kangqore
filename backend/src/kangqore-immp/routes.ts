@@ -13,6 +13,7 @@ import { pipeline as streamPipeline } from 'stream/promises';
 import path from 'path';
 import os from 'os';
 import crypto from 'crypto';
+import multer from 'multer';
 import logger from '../utils/logger';
 import { requireAuth, requireRole } from '../middleware/rbac';
 import { KIMMP_VERSION } from './core/types';
@@ -93,6 +94,39 @@ kangqoreImmpRoutes.get('/tts', requireAuth, requireRole(['ADMIN']), async (req, 
     fsPromises.unlink(wavPath).catch(() => {})
   }
 })
+
+// ── STT — browser WAV → Whisper (no ffmpeg needed, reads PCM directly) ───────
+const sttUpload  = multer({ dest: os.tmpdir(), limits: { fileSize: 10 * 1024 * 1024 } })
+const STT_SCRIPT = path.join(__dirname, '../../scripts/waanda_stt.py')
+const PYTHON3    = '/usr/bin/python3'
+
+kangqoreImmpRoutes.post('/stt', requireAuth, requireRole(['ADMIN']),
+  sttUpload.single('audio'),
+  async (req: any, res) => {
+    if (!req.file) return res.status(400).json({ error: 'audio required' })
+
+    const uploadedPath = req.file.path
+    const wavPath      = uploadedPath + '.wav'
+
+    try {
+      await fsPromises.rename(uploadedPath, wavPath)
+
+      const transcript = await new Promise<string>((resolve) => {
+        execFile(PYTHON3, [STT_SCRIPT, wavPath], { timeout: 30_000 }, (err, stdout, stderr) => {
+          if (err) logger.warn('[STT] whisper error', { code: err.code, stderr: stderr?.slice(0, 200) })
+          resolve((stdout ?? '').trim())
+        })
+      })
+
+      res.json({ transcript })
+    } catch (err: any) {
+      logger.error('[STT] failed', err)
+      res.json({ transcript: '' })
+    } finally {
+      await fsPromises.unlink(wavPath).catch(() => {})
+    }
+  }
+)
 
 // ── WAANDAx — direct inference probe (bypasses router circuit breakers) ───────
 // Both this probe and the router's local slot now share WAANDAX_URL / WAANDAX_MODEL.
@@ -387,9 +421,11 @@ kangqoreImmpRoutes.post('/command', requireAuth, requireRole(['ADMIN']), async (
   const history: any[] = Array.isArray(req.body?.history) ? req.body.history.slice(0, 20) : [];
   const attachments: any[] = Array.isArray(req.body?.attachments) ? req.body.attachments.slice(0, 5) : [];
   const userId = (req as any).user?.id ?? undefined;
+  const voiceMode = req.body?.voiceMode === true;
+  logger.info(`[VOICE] /command hit — query="${query.slice(0,40)}" voiceMode=${voiceMode}`);
 
   try {
-    const result = await KIMMMCommandService.run({ query, moduleContext, history, attachments, userId });
+    const result = await KIMMMCommandService.run({ query, moduleContext, history, attachments, userId, voiceMode });
     res.json(result);
   } catch (err: any) {
     res.status(500).json({ error: 'Command failed', message: err.message });
