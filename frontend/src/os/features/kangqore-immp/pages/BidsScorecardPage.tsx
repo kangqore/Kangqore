@@ -68,7 +68,7 @@ export function BidsScorecardPage() {
         ].map(m => (
           <div key={m.label} style={{ background: '#1a2235', border: '1px solid #263250', borderRadius: 12, padding: '14px 16px', textAlign: 'center' }}>
             <div style={{ fontSize: 26, fontWeight: 900, color: m.color, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>{m.value}</div>
-            <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: .08em, color: '#8899aa', marginTop: 5 }}>{m.label}</div>
+            <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8899aa', marginTop: 5 }}>{m.label}</div>
           </div>
         ))}
       </div>
