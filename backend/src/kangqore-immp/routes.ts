@@ -7378,3 +7378,75 @@ kangqoreImmpRoutes.get('/platform/s181-status', requireAuth, requireRole(['ADMIN
     res.json({ criteria, passed, total: criteria.length, score: Math.round((passed / criteria.length) * 100), fleetSize: total, c61c75: c61c75.length })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
+
+// S182 — publish a COIG case study (fires KimmpSignal)
+kangqoreImmpRoutes.post('/customers/fleet/case-studies/publish', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const all = await (prisma as any).customerBlueprint.findMany({ where: { status: 'ACTIVE', oisBaseline: { not: null }, oisTarget: { not: null } } })
+    const candidates = all
+      .filter((b: any) => (b.oisTarget - b.oisBaseline) >= CASE_STUDY_THRESHOLD)
+      .sort((a: any, b: any) => (b.oisTarget - b.oisBaseline) - (a.oisTarget - a.oisBaseline))
+    if (!candidates.length) return res.status(400).json({ error: 'No case study candidates found' })
+    const top = candidates[0]
+    const gain = +(top.oisTarget - top.oisBaseline).toFixed(1)
+    await (prisma as any).kimmpSignal.create({
+      data: {
+        type: 'CASE_STUDY_PUBLISHED',
+        severity: 'CRITICAL',
+        title: `COIG Case Study Published: ${top.customerName}`,
+        description: `First COIG case study published. ${top.customerName} (${top.industry}) projected +${gain} OIS pts — from ${top.oisBaseline} to ${top.oisTarget}. Demonstrates COIG North Star in production.`,
+        sourceModule: 'CustomerFleet',
+        confidence: 97,
+      },
+    })
+    res.json({ ok: true, customer: top.customerName, industry: top.industry, oisBaseline: top.oisBaseline, oisTarget: top.oisTarget, projectedGain: gain })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S182 — Gate S182 status: 75-Customer Fleet · COIG North Star Live
+kangqoreImmpRoutes.get('/platform/s182-status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [allActive, allRenewals, caseStudySignal] = await Promise.all([
+      (prisma as any).customerBlueprint.findMany({ where: { status: 'ACTIVE' } }),
+      (prisma as any).renewalPrediction.findMany({ where: { outcome: { not: null } } }),
+      (prisma as any).kimmpSignal.findFirst({ where: { type: 'CASE_STUDY_PUBLISHED' }, orderBy: { createdAt: 'desc' } }),
+    ])
+
+    const fleetSize = allActive.length
+    const withBaseline = allActive.filter((b: any) => b.oisBaseline != null).length
+    const coigCoverage = fleetSize > 0 ? +(withBaseline / fleetSize * 100).toFixed(1) : 0
+
+    const withTarget = allActive.filter((b: any) => b.oisTarget != null)
+    const avgOisTarget = withTarget.length
+      ? +(withTarget.reduce((s: number, b: any) => s + b.oisTarget, 0) / withTarget.length).toFixed(1)
+      : 0
+
+    const renewedExpanded = allRenewals.filter((r: any) => r.outcome === 'RENEWED' || r.outcome === 'EXPANDED').length
+    const renewalCohortSize = allRenewals.length
+    const renewalRate = renewalCohortSize > 0 ? +(renewedExpanded / renewalCohortSize * 100).toFixed(1) : 0
+
+    // Top case study candidate (for the publish button on the gate page)
+    const candidatesBp = allActive
+      .filter((b: any) => b.oisBaseline != null && b.oisTarget != null && (b.oisTarget - b.oisBaseline) >= CASE_STUDY_THRESHOLD)
+      .sort((a: any, b: any) => (b.oisTarget - b.oisBaseline) - (a.oisTarget - a.oisBaseline))
+    const topCandidate = candidatesBp.length
+      ? { name: candidatesBp[0].customerName, industry: candidatesBp[0].industry, projectedGain: +(candidatesBp[0].oisTarget - candidatesBp[0].oisBaseline).toFixed(1) }
+      : null
+
+    const criteria = [
+      { id: 'G1', label: '≥ 75 organic customers provisioned',                       passed: fleetSize >= 75,         detail: `${fleetSize} active blueprints` },
+      { id: 'G2', label: 'COIG measured for ≥ 80% of fleet',                        passed: coigCoverage >= 80,       detail: `${coigCoverage}% fleet coverage (${withBaseline}/${fleetSize})` },
+      { id: 'G3', label: 'Fleet avg OIS trajectory target ≥ 70',                    passed: avgOisTarget >= 70,       detail: `Avg OIS target: ${avgOisTarget} pts` },
+      { id: 'G4', label: 'Renewal rate ≥ 80% (Day-90 cohort)',                       passed: renewalCohortSize > 0 && renewalRate >= 80, detail: renewalCohortSize > 0 ? `${renewalRate}% (${renewedExpanded}/${renewalCohortSize} outcomes)` : 'No Day-90 cohort yet' },
+      { id: 'G5', label: '≥ 1 published COIG case study',                            passed: !!caseStudySignal,        detail: caseStudySignal ? `Published: ${caseStudySignal.title.replace('COIG Case Study Published: ', '')}` : 'None published yet' },
+    ]
+
+    const passed = criteria.filter((c) => c.passed).length
+    res.json({
+      criteria, passed, total: criteria.length,
+      score: Math.round((passed / criteria.length) * 100),
+      fleetSize, coigCoverage, avgOisTarget, renewalRate, renewalCohortSize,
+      topCandidate, caseStudyPublished: !!caseStudySignal,
+    })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})

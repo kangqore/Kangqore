@@ -149,6 +149,7 @@ import { PlaybookEnginePage }        from './pages/PlaybookEnginePage'
 import { FleetSixtyPage }            from './pages/FleetSixtyPage'
 import { RenewalIntelV2Page }        from './pages/RenewalIntelV2Page'
 import { FleetSeventyFivePage }      from './pages/FleetSeventyFivePage'
+import { FleetGateS182Page }         from './pages/FleetGateS182Page'
 // Customer pages C36–C75
 import { CustomerThirtySixPage }     from './pages/CustomerThirtySixPage'
 import { CustomerThirtySevenPage }   from './pages/CustomerThirtySevenPage'
@@ -411,6 +412,7 @@ export function KIMMMModule() {
           <Route path="fleet-sixty"             element={<FleetSixtyPage />}                />
           <Route path="renewal-intel-v2"        element={<RenewalIntelV2Page />}            />
           <Route path="fleet-seventy-five"      element={<FleetSeventyFivePage />}          />
+          <Route path="fleet-gate-s182"         element={<FleetGateS182Page />}             />
           {/* Customer pages C36–C40 */}
           <Route path="customers/thirty-six"    element={<CustomerThirtySixPage />}         />
           <Route path="customers/thirty-seven"  element={<CustomerThirtySevenPage />}       />
