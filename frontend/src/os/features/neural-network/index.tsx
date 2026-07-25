@@ -95,6 +95,25 @@ const timeGreeting = () => {
   return h < 12 ? 'morning' : h < 18 ? 'afternoon' : 'evening'
 }
 
+// PCM Float32 → 16-bit WAV, for the backend Whisper STT endpoint
+function encodeWAV(samples: Float32Array, sampleRate: number): ArrayBuffer {
+  const buf  = new ArrayBuffer(44 + samples.length * 2)
+  const view = new DataView(buf)
+  const str  = (o: number, s: string) => { for (let i = 0; i < s.length; i++) view.setUint8(o + i, s.charCodeAt(i)) }
+  str(0, 'RIFF');  view.setUint32(4,  36 + samples.length * 2, true)
+  str(8, 'WAVE');  str(12, 'fmt ')
+  view.setUint32(16, 16, true);  view.setUint16(20, 1, true)  // PCM
+  view.setUint16(22, 1, true);   view.setUint32(24, sampleRate, true)
+  view.setUint32(28, sampleRate * 2, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true)
+  str(36, 'data'); view.setUint32(40, samples.length * 2, true)
+  let off = 44
+  for (let i = 0; i < samples.length; i++) {
+    const s = Math.max(-1, Math.min(1, samples[i]))
+    view.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7FFF, true); off += 2
+  }
+  return buf
+}
+
 // sticky fallback: once speechSynthesis fails to start, skip it and go straight
 // to backend WAV on every later utterance (this machine's Chrome is known-broken)
 const TTS_BROKEN_KEY = 'waanda-tts-broken'
@@ -112,9 +131,23 @@ export function NeuralNetworkModule() {
   const focusedRef = useRef(false)
   const unlockedRef = useRef(false)
   const pendingSpeechRef = useRef<string | null>(null)
-  const recRef = useRef<any>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const initRef = useRef(false)
+
+  // Voice input — MediaRecorder + AnalyserNode VAD → backend Whisper STT.
+  // webkitSpeechRecognition was tried first (matches other WAANDA voice UIs) but
+  // proved unreliable on this machine (aborted mid-session, unclear why). This
+  // is the same mechanism the WAANDA HUD already uses successfully, so it's a
+  // known-good fallback rather than a second guess at the browser API.
+  const micActiveRef    = useRef(false)
+  const micStreamRef    = useRef<MediaStream | null>(null)
+  const micCtxRef       = useRef<AudioContext | null>(null)
+  const micRecorderRef  = useRef<MediaRecorder | null>(null)
+  const micChunksRef    = useRef<Blob[]>([])
+  const micVadRef       = useRef<ReturnType<typeof setInterval> | null>(null)
+  const micMaxTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const micHasVoiceRef  = useRef(false)
+  const micSilenceRef   = useRef(0)
 
   const [count, setCount] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -344,32 +377,128 @@ export function NeuralNetworkModule() {
     }
   }, [status, remember, speak, focusNode, highlightCluster])
 
-  // ── voice in ──────────────────────────────────────────────────────────────
+  // ── voice in — MediaRecorder + AnalyserNode VAD → backend Whisper STT ──────
+  // (webkitSpeechRecognition was tried first but proved unreliable on this
+  // machine; this is the same proven mechanism the WAANDA HUD already uses.)
 
-  const micClick = useCallback(() => {
+  const micCleanup = useCallback(() => {
+    if (micVadRef.current) clearInterval(micVadRef.current)
+    if (micMaxTimerRef.current) clearTimeout(micMaxTimerRef.current)
+    micStreamRef.current?.getTracks().forEach(t => t.stop())
+    micCtxRef.current?.close().catch(() => {})
+    micVadRef.current = null
+    micMaxTimerRef.current = null
+    micStreamRef.current = null
+    micCtxRef.current = null
+  }, [])
+
+  const micStopAndSend = useCallback(() => {
+    if (!micActiveRef.current) return
+    micActiveRef.current = false
+    const rec = micRecorderRef.current
+    if (rec && rec.state !== 'inactive') rec.stop()   // triggers onstop below → transcribe + send
+    else micCleanup()
+  }, [micCleanup])
+
+  const micClick = useCallback(async () => {
     markInteraction()
-    if (recRef.current) { try { recRef.current.stop() } catch { /* already stopping */ } return }
-    const SR = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
-    if (!SR) {
-      setAnswer('Voice input requires Chrome, sir. The typing implement below works splendidly meanwhile.')
-      return
-    }
+    if (micActiveRef.current) { micStopAndSend(); return }   // click again to stop early
+
     try { window.speechSynthesis?.cancel() } catch { /* noop */ }
     audioRef.current?.pause()
-    const rec = new SR()
-    rec.lang = 'en-GB'
-    rec.interimResults = false
-    rec.maxAlternatives = 1
-    rec.onresult = (e: any) => {
-      const transcript = e.results?.[0]?.[0]?.transcript ?? ''
-      if (transcript) { setInput(transcript); void send(transcript) }
+
+    micChunksRef.current = []
+    micHasVoiceRef.current = false
+    micSilenceRef.current = 0
+    micActiveRef.current = true
+
+    let stream: MediaStream
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    } catch (err: any) {
+      micActiveRef.current = false
+      const msg = err?.name === 'NotAllowedError'
+        ? 'Microphone access is blocked for this page, sir — check the site permissions in the address bar.'
+        : `I cannot reach a microphone, sir (${err?.message ?? err?.name ?? 'unknown error'}).`
+      setAnswer(msg); speak(msg)
+      return
     }
-    rec.onend = () => { recRef.current = null; setStatus(s => (s === 'listening' ? 'idle' : s)) }
-    rec.onerror = () => { recRef.current = null; setStatus('idle') }
-    recRef.current = rec
+    micStreamRef.current = stream
+
+    // AudioContext for VAD only — routed through a zero-gain node so nothing
+    // is actually audible; MediaRecorder captures the real audio separately.
+    const ctx = new AudioContext()
+    micCtxRef.current = ctx
+    if (ctx.state === 'suspended') { try { await ctx.resume() } catch { /* noop */ } }
+    const source   = ctx.createMediaStreamSource(stream)
+    const analyser = ctx.createAnalyser()
+    analyser.fftSize = 1024
+    const silencer = ctx.createGain()
+    silencer.gain.value = 0
+    source.connect(analyser)
+    analyser.connect(silencer)
+    silencer.connect(ctx.destination)
+    const tdata = new Uint8Array(analyser.fftSize / 2)
+
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+      ? 'audio/webm;codecs=opus' : 'audio/webm'
+    const recorder = new MediaRecorder(stream, { mimeType })
+    micRecorderRef.current = recorder
+    recorder.ondataavailable = (e) => { if (e.data.size > 0) micChunksRef.current.push(e.data) }
+
+    recorder.onstop = async () => {
+      micCleanup()
+      if (!micHasVoiceRef.current || micChunksRef.current.length === 0) {
+        setStatus(s => (s === 'listening' ? 'idle' : s))
+        return
+      }
+      setStatus('thinking')
+      const blob = new Blob(micChunksRef.current, { type: mimeType })
+      micChunksRef.current = []
+      try {
+        const ab      = await blob.arrayBuffer()
+        const dec     = new AudioContext({ sampleRate: 16000 })
+        const decoded = await dec.decodeAudioData(ab)
+        await dec.close()
+        const wav = encodeWAV(decoded.getChannelData(0), decoded.sampleRate)
+        const fd  = new FormData()
+        fd.append('audio', new Blob([wav], { type: 'audio/wav' }), 'voice.wav')
+        const { data } = await api.post('/admin/kangqore-immp/stt', fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        const transcript = (data.transcript ?? '').trim()
+        if (transcript) { setInput(transcript); void send(transcript) }
+        else { setStatus('idle'); setAnswer("Didn't catch anything that time, sir. Do try again.") }
+      } catch {
+        setStatus('idle')
+        setAnswer('The microphone pipeline had a hiccup, sir. Do try again.')
+      }
+    }
+
+    recorder.start(250)
     setStatus('listening')
-    try { rec.start() } catch { recRef.current = null; setStatus('idle') }
-  }, [send])
+
+    // VAD: poll amplitude every 100ms; require ~400ms of sustained loudness to
+    // count as real speech (filters ambient noise), then auto-stop ~1.5s after
+    // speech ends. A 20s safety cap guards against a session that never ends.
+    let speechFrames = 0
+    micVadRef.current = setInterval(() => {
+      if (!micActiveRef.current) return
+      analyser.getByteTimeDomainData(tdata)
+      let amp = 0
+      for (let i = 0; i < tdata.length; i++) amp += Math.abs(tdata[i] - 128)
+      amp /= tdata.length
+      if (amp > 10) {
+        speechFrames = Math.min(speechFrames + 1, 10)
+        if (speechFrames >= 4) micHasVoiceRef.current = true
+        micSilenceRef.current = 0
+      } else {
+        speechFrames = Math.max(speechFrames - 1, 0)
+        if (micHasVoiceRef.current && ++micSilenceRef.current > 15) micStopAndSend()
+      }
+    }, 100)
+    micMaxTimerRef.current = setTimeout(() => micStopAndSend(), 20_000)
+  }, [send, speak, micCleanup, micStopAndSend])
 
   // ── boot: fetch brain, build galaxy ───────────────────────────────────────
 
@@ -455,6 +584,9 @@ export function NeuralNetworkModule() {
         .linkDirectionalParticleSpeed(0.007)
         .onNodeClick((n: any) => focusNode(n))
         .onBackgroundClick(() => clearFocus())
+        .enableNodeDrag(false)  // clicking a star should fly the camera, never reposition it — this also
+                                 // sidesteps a 3d-force-graph DragControls/OrbitControls crash (reading 'x'
+                                 // on an undefined pointer state) that was interrupting active mic sessions
         .graphData({ nodes, links })
 
       ;(graph.d3Force('charge') as any)?.strength(-140)
@@ -498,7 +630,12 @@ export function NeuralNetworkModule() {
       window.removeEventListener('pointerdown', unlock)
       window.removeEventListener('keydown', unlock)
       try { window.speechSynthesis?.cancel() } catch { /* noop */ }
-      try { recRef.current?.stop() } catch { /* noop */ }
+      micActiveRef.current = false
+      try { micRecorderRef.current?.state !== 'inactive' && micRecorderRef.current?.stop() } catch { /* noop */ }
+      if (micVadRef.current) clearInterval(micVadRef.current)
+      if (micMaxTimerRef.current) clearTimeout(micMaxTimerRef.current)
+      micStreamRef.current?.getTracks().forEach(t => t.stop())
+      micCtxRef.current?.close().catch(() => {})
       audioRef.current?.pause()
       try { graphRef.current?._destructor() } catch { /* noop */ }
       graphRef.current = null
