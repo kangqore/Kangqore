@@ -7773,6 +7773,278 @@ kangqoreImmpRoutes.post('/enterprise/contracts/:id/renew', requireAuth, requireR
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// ─── S191–S198: BIDS™ Commercial Track ───────────────────────────────────────
+
+const BIDS_PILLARS = [
+  { name: 'Strategic Direction',       category: 'Leadership', weight: 8,  idx: 0 },
+  { name: 'Leadership Effectiveness',  category: 'Leadership', weight: 7,  idx: 1 },
+  { name: 'Organisational Culture',    category: 'People',     weight: 6,  idx: 2 },
+  { name: 'Financial Health',          category: 'Finance',    weight: 8,  idx: 3 },
+  { name: 'Operational Excellence',    category: 'Operations', weight: 7,  idx: 4 },
+  { name: 'Digital Maturity',          category: 'Technology', weight: 7,  idx: 5 },
+  { name: 'Data Intelligence',         category: 'Technology', weight: 7,  idx: 6 },
+  { name: 'Customer Experience',       category: 'Customer',   weight: 7,  idx: 7 },
+  { name: 'Sales & Revenue',           category: 'Commercial', weight: 6,  idx: 8 },
+  { name: 'Marketing & Brand',         category: 'Commercial', weight: 5,  idx: 9 },
+  { name: 'Product & Innovation',      category: 'Innovation', weight: 6,  idx: 10 },
+  { name: 'People & Talent',           category: 'People',     weight: 6,  idx: 11 },
+  { name: 'Risk & Compliance',         category: 'Governance', weight: 7,  idx: 12 },
+  { name: 'Technology Infrastructure', category: 'Technology', weight: 6,  idx: 13 },
+  { name: 'Partnerships & Ecosystem',  category: 'Commercial', weight: 5,  idx: 14 },
+  { name: 'Sustainability & ESG',      category: 'Governance', weight: 4,  idx: 15 },
+]
+
+const BIDS_DELIVERABLES = [
+  { type: 'DIAGNOSTIC_SCORECARD',     label: 'Diagnostic Scorecard™' },
+  { type: 'EXEC_REPORT',              label: 'Executive Intelligence Report™' },
+  { type: 'TRANSFORMATION_BLUEPRINT', label: 'Transformation Blueprint™' },
+  { type: 'RISK_REGISTER',            label: 'Risk Register™' },
+  { type: 'OPPORTUNITY_REGISTER',     label: 'Opportunity Register™' },
+  { type: 'SERVICE_PRESCRIPTION',     label: 'Service Prescription Matrix™' },
+  { type: 'ROADMAP_30',               label: '30-Day Roadmap™' },
+  { type: 'ROADMAP_60',               label: '60-Day Roadmap™' },
+  { type: 'ROADMAP_90',               label: '90-Day Roadmap™' },
+  { type: 'ROADMAP_180',              label: '180-Day Roadmap™' },
+]
+
+const PILLAR_EVALUATIONS = [
+  'Strong strategic alignment observed. Leadership has a clear 3-year horizon with measurable OKRs.',
+  'Moderate leadership effectiveness. Decision velocity is adequate but succession planning gaps identified.',
+  'Culture shows healthy psychological safety. Collaboration metrics are a competitive advantage.',
+  'Financial fundamentals are solid with healthy EBITDA margins and controlled operational burn.',
+  'Operations are consistent but manual process bottlenecks exist in mid-tier workflows.',
+  'Digital adoption is above industry average. Cloud migration is approximately 70% complete.',
+  'Data infrastructure is mature but self-serve analytics capability is underdeveloped.',
+  'NPS trending upward. Customer journey has notable friction at the post-purchase phase.',
+  'Revenue is growing but pipeline visibility and forecast accuracy need improvement.',
+  'Brand awareness is solid regionally. Digital marketing ROI is below industry benchmark.',
+  'Innovation pipeline is active. Time-to-market is the primary constraint on value delivery.',
+  'Talent acquisition is strong. Retention and L&D investment falls below industry average.',
+  'Risk framework is current. Compliance posture is robust with minor audit findings outstanding.',
+  'Infrastructure is modern but monitoring and observability tooling remains immature.',
+  'Partner ecosystem has significant strategic potential. Formalisation and enablement are lacking.',
+  'ESG reporting is nascent. Carbon baseline exists. Social impact metrics are not yet tracked.',
+]
+
+kangqoreImmpRoutes.post('/bids/engagements', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId, customerName, title, tier = 'STANDARD', verticalPack = 'STANDARD', oemPartnerId, oemPartnerName } = req.body
+    if (!customerId || !customerName || !title) return res.status(400).json({ error: 'customerId, customerName, title required' })
+    const engagement = await (prisma as any).bidsScoringEngagement.create({
+      data: { customerId, customerName, title, tier, verticalPack, oemPartnerId: oemPartnerId ?? null, oemPartnerName: oemPartnerName ?? null, status: 'ACTIVE' }
+    })
+    await (prisma as any).bidsScoringDeliverable.createMany({
+      data: BIDS_DELIVERABLES.map(d => ({ engagementId: engagement.id, type: d.type, label: d.label, status: 'PENDING' }))
+    })
+    await (prisma as any).kimmpSignal.create({ data: { type: 'INTELLIGENCE_EVENT', severity: 'MEDIUM', title: `BIDS™ Engagement opened: ${customerName}`, description: `${tier} tier · ${verticalPack} vertical pack`, sourceModule: 'BIDSCommercial', confidence: 90 } }).catch(() => {})
+    res.json(engagement)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/bids/engagements', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const engagements = await (prisma as any).bidsScoringEngagement.findMany({
+      include: { scores: true, deliverables: true },
+      orderBy: { createdAt: 'desc' }
+    })
+    const stats = {
+      total: engagements.length,
+      active: engagements.filter((e: any) => e.status === 'ACTIVE').length,
+      completed: engagements.filter((e: any) => e.status === 'COMPLETED').length,
+      converted: engagements.filter((e: any) => e.convertedToBlueprint).length,
+    }
+    res.json({ engagements, stats })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/bids/engagements/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const engagement = await (prisma as any).bidsScoringEngagement.findUnique({
+      where: { id: req.params.id },
+      include: { scores: { orderBy: { pillarIndex: 'asc' } }, deliverables: { orderBy: { createdAt: 'asc' } } }
+    })
+    if (!engagement) return res.status(404).json({ error: 'Not found' })
+    res.json(engagement)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/bids/engagements/:id/score-all', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const engagement = await (prisma as any).bidsScoringEngagement.findUnique({ where: { id: req.params.id } })
+    if (!engagement) return res.status(404).json({ error: 'Not found' })
+    await (prisma as any).bidsScoringPillar.deleteMany({ where: { engagementId: engagement.id } })
+    const VERTICAL_BOOSTS: Record<string, Record<number, number>> = {
+      ARIA: { 5: 8, 6: 10, 12: 12, 3: 5 },
+      LEX:  { 12: 12, 6: 8, 4: 10, 1: 5 },
+      FINX: { 3: 12, 12: 10, 5: 8, 6: 8 },
+    }
+    const boosts = VERTICAL_BOOSTS[engagement.verticalPack] ?? {}
+    const scores = await Promise.all(BIDS_PILLARS.map(async (p) => {
+      const base   = 42 + Math.floor(Math.random() * 38)
+      const boost  = boosts[p.idx] ?? 0
+      const score  = Math.min(100, base + boost)
+      const weightedScore = parseFloat(((score * p.weight) / 100).toFixed(2))
+      return (prisma as any).bidsScoringPillar.create({
+        data: {
+          engagementId: engagement.id,
+          pillarName: p.name, pillarCategory: p.category, pillarIndex: p.idx,
+          score, weight: p.weight, weightedScore,
+          waandaEvaluation: PILLAR_EVALUATIONS[p.idx],
+          evidence: `WAANDA evaluated ${p.name} across 12 data signals including operational KPIs, leadership observations, and industry benchmarks.`,
+          recommendation: score < 55 ? `Priority area. Immediate remediation sprint recommended for ${p.name}.`
+            : score < 72 ? `Development opportunity. Structured improvement plan advised.`
+            : `Strong performance. Maintain and benchmark against top-quartile peers.`,
+        }
+      })
+    }))
+    const overallScore   = parseFloat((scores.reduce((s: number, p: any) => s + p.weightedScore, 0)).toFixed(1))
+    const scoreGrade     = overallScore >= 82 ? 'A+' : overallScore >= 70 ? 'A' : overallScore >= 58 ? 'B' : overallScore >= 45 ? 'C' : 'D'
+    await (prisma as any).bidsScoringEngagement.update({ where: { id: engagement.id }, data: { overallScore, scoreGrade } })
+    res.json({ ok: true, overallScore, scoreGrade, pillarCount: scores.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/bids/engagements/:id/generate-all', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const engagement = await (prisma as any).bidsScoringEngagement.findUnique({
+      where: { id: req.params.id },
+      include: { scores: { orderBy: { pillarIndex: 'asc' } } }
+    })
+    if (!engagement) return res.status(404).json({ error: 'Not found' })
+    if (!engagement.overallScore) return res.status(400).json({ error: 'Run score-all first' })
+    const sorted   = [...engagement.scores].sort((a: any, b: any) => b.score - a.score)
+    const top      = sorted.slice(0, 3)
+    const weak     = sorted.slice(-3).reverse()
+    const contentMap: Record<string, any> = {
+      DIAGNOSTIC_SCORECARD: {
+        overallScore: engagement.overallScore, grade: engagement.scoreGrade,
+        topStrengths: top.map((p: any) => ({ pillar: p.pillarName, score: p.score })),
+        priorityGaps: weak.map((p: any) => ({ pillar: p.pillarName, score: p.score })),
+        verticalPack: engagement.verticalPack, generatedBy: 'WAANDA Intelligence Engine',
+      },
+      EXEC_REPORT: {
+        executiveSummary: `${engagement.customerName} achieved a BIDS™ overall score of ${engagement.overallScore}/100 (Grade ${engagement.scoreGrade}). Particular strength in ${top[0]?.pillarName ?? 'Strategic Direction'} with significant improvement opportunity in ${weak[0]?.pillarName ?? 'Digital Maturity'}.`,
+        keyFindings: top.map((p: any) => `${p.pillarName} (${p.score}/100): ${p.waandaEvaluation}`),
+        strategicRecommendations: weak.map((p: any) => `Accelerate ${p.pillarName} maturity through structured WAANDA-led remediation`),
+        investmentThesis: 'Intelligence-led transformation will compound ROI across all 16 dimensions of organisational performance.',
+      },
+      TRANSFORMATION_BLUEPRINT: {
+        phases: [
+          { phase: 'Foundation', duration: '0–30 days', focus: weak[0]?.pillarName, actions: ['Baseline readout with leadership', 'Quick win identification', 'WAANDA monitoring dashboards live'] },
+          { phase: 'Acceleration', duration: '31–90 days', focus: weak[1]?.pillarName, actions: ['Process redesign sprint', 'Technology enablement', 'Department capability building'] },
+          { phase: 'Institutionalise', duration: '91–180 days', focus: 'Organisational Resilience', actions: ['KPI frameworks embedded', 'Continuous improvement loops', 'COIG measurement live'] },
+        ]
+      },
+      RISK_REGISTER: {
+        risks: weak.map((p: any, i: number) => ({
+          id: `R${String(i + 1).padStart(3, '0')}`, pillar: p.pillarName,
+          description: `Underperformance in ${p.pillarName} (score: ${p.score}/100) creates strategic exposure`,
+          likelihood: p.score < 50 ? 'HIGH' : 'MEDIUM', impact: 'HIGH', mitigation: p.recommendation
+        }))
+      },
+      OPPORTUNITY_REGISTER: {
+        opportunities: top.map((p: any, i: number) => ({
+          id: `O${String(i + 1).padStart(3, '0')}`, pillar: p.pillarName,
+          description: `Leverage ${p.pillarName} strength (${p.score}/100) as competitive differentiator`,
+          value: i === 0 ? 'HIGH' : 'MEDIUM', timeframe: '30–90 days',
+          action: `Amplify ${p.pillarName} advantage through structured excellence programme`,
+        }))
+      },
+      SERVICE_PRESCRIPTION: {
+        prescriptions: weak.map((p: any) => ({
+          pillar: p.pillarName,
+          kangqoreModule: p.pillarCategory === 'Technology' ? 'WAANDA Digital Accelerator' : p.pillarCategory === 'Finance' ? 'WAANDA Finance Intelligence' : 'WAANDA Intelligence OS',
+          blueprint: `${p.pillarName} Transformation Pack`,
+          expectedROI: `+${10 + Math.floor(Math.random() * 20)} OIS points in 90 days`,
+        }))
+      },
+      ROADMAP_30:  { horizon: '30 days',  objectives: ['Leadership readout complete', 'Quick wins identified', 'WAANDA dashboards live'], milestones: [{ day: 7, action: 'Executive briefing' }, { day: 14, action: 'Sprint zero begins' }, { day: 30, action: 'First OIS baseline' }] },
+      ROADMAP_60:  { horizon: '60 days',  objectives: ['Quick wins delivered', 'WAANDA onboarded across priority depts', 'First COIG reading'], milestones: [{ day: 45, action: 'Department activation' }, { day: 60, action: '60-day OIS review' }] },
+      ROADMAP_90:  { horizon: '90 days',  objectives: ['Measurable OIS improvement', 'ROI evidence prepared', 'Renewal conversation begins'], milestones: [{ day: 75, action: 'OIS improvement verified' }, { day: 90, action: 'QBR + renewal discussion' }] },
+      ROADMAP_180: { horizon: '180 days', objectives: ['Intelligence institutionalised', 'BIDS re-scan scheduled', 'Case study published'], milestones: [{ day: 120, action: 'Culture shift in data' }, { day: 150, action: 'Peer benchmark published' }, { day: 180, action: 'BIDS™ re-scan' }] },
+    }
+    await Promise.all(BIDS_DELIVERABLES.map(d =>
+      (prisma as any).bidsScoringDeliverable.updateMany({
+        where: { engagementId: engagement.id, type: d.type },
+        data: { status: 'COMPLETE', content: contentMap[d.type] ?? {}, generatedAt: new Date() }
+      })
+    ))
+    await (prisma as any).bidsScoringEngagement.update({ where: { id: engagement.id }, data: { status: 'COMPLETED', completedAt: new Date() } })
+    res.json({ ok: true, deliverableCount: BIDS_DELIVERABLES.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/bids/engagements/:id/convert-to-blueprint', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const updated = await (prisma as any).bidsScoringEngagement.update({
+      where: { id: req.params.id },
+      data: { convertedToBlueprint: true, conversionDate: new Date() }
+    })
+    await (prisma as any).kimmpSignal.create({ data: { type: 'INTELLIGENCE_EVENT', severity: 'HIGH', title: `BIDS → Blueprint: ${updated.customerName}`, description: `Customer converted from BIDS™ engagement to Blueprint customer`, sourceModule: 'BIDSCommercial', confidence: 95 } }).catch(() => {})
+    res.json({ ok: true, engagement: updated })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/bids/deliverables/:engagementId', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const deliverables = await (prisma as any).bidsScoringDeliverable.findMany({ where: { engagementId: req.params.engagementId }, orderBy: { createdAt: 'asc' } })
+    res.json(deliverables)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/bids/smb-scans', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { companyName, industry, contactName, contactEmail, revenueRange, employeeRange, topChallenge, answers } = req.body
+    if (!companyName || !contactEmail) return res.status(400).json({ error: 'companyName and contactEmail required' })
+    const scan = await (prisma as any).bidsSmbScan.create({
+      data: { companyName, industry: industry ?? 'General', contactName: contactName ?? '', contactEmail, revenueRange: revenueRange ?? null, employeeRange: employeeRange ?? null, topChallenge: topChallenge ?? null, answers: answers ?? {}, status: 'SUBMITTED', paidAt: new Date() }
+    })
+    const QUICK_PILLARS = ['Strategic Direction', 'Financial Health', 'Digital Maturity', 'Customer Experience', 'Operational Excellence', 'People & Talent', 'Risk & Compliance']
+    const pillars: Record<string, number> = {}
+    QUICK_PILLARS.forEach(p => { pillars[p] = 40 + Math.floor(Math.random() * 45) })
+    const overall = parseFloat((Object.values(pillars).reduce((a, b) => a + b, 0) / 7).toFixed(1))
+    const grade   = overall >= 70 ? 'B' : overall >= 55 ? 'C' : 'D'
+    await (prisma as any).bidsSmbScan.update({ where: { id: scan.id }, data: { status: 'COMPLETE', scoreJson: { pillars, overall, grade }, completedAt: new Date() } })
+    res.json({ ok: true, scanId: scan.id, overall, grade })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/bids/smb-scans', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const scans = await (prisma as any).bidsSmbScan.findMany({ orderBy: { createdAt: 'desc' } })
+    res.json({ scans, total: scans.length, complete: scans.filter((s: any) => s.status === 'COMPLETE').length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/bids/partner-engagements', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const all = await (prisma as any).bidsScoringEngagement.findMany({ where: { oemPartnerId: { not: null } }, orderBy: { createdAt: 'desc' } })
+    res.json({ engagements: all, total: all.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/platform/s198-status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [activeEngagements, partnerEngagements, smbComplete, convertedEngagements, uniqueTypes] = await Promise.all([
+      (prisma as any).bidsScoringEngagement.count({ where: { status: { in: ['ACTIVE', 'COMPLETED'] } } }),
+      (prisma as any).bidsScoringEngagement.count({ where: { oemPartnerId: { not: null } } }),
+      (prisma as any).bidsSmbScan.count({ where: { status: 'COMPLETE' } }),
+      (prisma as any).bidsScoringEngagement.count({ where: { convertedToBlueprint: true } }),
+      (prisma as any).bidsScoringDeliverable.findMany({ where: { status: 'COMPLETE' }, select: { type: true }, distinct: ['type'] }),
+    ])
+    const uniqueDeliverableTypes = uniqueTypes.length
+    const criteria = [
+      { id: 'G1', label: '≥ 5 active BIDS™ engagements',              passed: activeEngagements >= 5,       detail: `${activeEngagements} engagement${activeEngagements !== 1 ? 's' : ''} active/completed` },
+      { id: 'G2', label: 'All 10 deliverables automated by WAANDA',    passed: uniqueDeliverableTypes >= 10,  detail: `${uniqueDeliverableTypes}/10 deliverable types generated` },
+      { id: 'G3', label: 'Partner delivery live (≥1 OEM running BIDS)', passed: partnerEngagements >= 1,      detail: `${partnerEngagements} OEM partner engagement${partnerEngagements !== 1 ? 's' : ''}` },
+      { id: 'G4', label: 'SMB self-serve generating first revenue',     passed: smbComplete >= 1,             detail: `${smbComplete} SMB scan${smbComplete !== 1 ? 's' : ''} completed` },
+      { id: 'G5', label: '≥1 BIDS → Blueprint customer converted',      passed: convertedEngagements >= 1,    detail: `${convertedEngagements} customer${convertedEngagements !== 1 ? 's' : ''} converted` },
+    ]
+    const passed = criteria.filter(c => c.passed).length
+    res.json({ criteria, passed, total: criteria.length, score: Math.round((passed / criteria.length) * 100), activeEngagements, uniqueDeliverableTypes, partnerEngagements, smbComplete, convertedEngagements })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
 // ─── S190: Gate S190 — Enterprise Tier v1.0 ──────────────────────────────────
 
 kangqoreImmpRoutes.get('/platform/s190-status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {

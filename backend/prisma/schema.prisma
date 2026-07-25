@@ -7944,3 +7944,84 @@ model DigitalContract {
   @@index([type, status])
   @@map("digital_contracts")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S191–S198 — BIDS™ Commercial Track (scoring engine models)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model BidsScoringEngagement {
+  id                   String    @id @default(cuid())
+  customerId           String
+  customerName         String
+  title                String
+  tier                 String    @default("STANDARD")  // ENTERPRISE | STANDARD | SMB
+  verticalPack         String    @default("STANDARD")  // STANDARD | ARIA | LEX | FINX
+  oemPartnerId         String?
+  oemPartnerName       String?
+  status               String    @default("ACTIVE")    // ACTIVE | COMPLETED | PAUSED | CANCELLED
+  overallScore         Float?
+  scoreGrade           String?
+  convertedToBlueprint Boolean   @default(false)
+  conversionDate       DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  completedAt          DateTime?
+  scores               BidsScoringPillar[]
+  deliverables         BidsScoringDeliverable[]
+  @@index([customerId])
+  @@index([status])
+  @@index([verticalPack])
+  @@map("bids_scoring_engagements")
+}
+
+model BidsScoringPillar {
+  id               String                @id @default(cuid())
+  engagementId     String
+  engagement       BidsScoringEngagement @relation(fields: [engagementId], references: [id])
+  pillarName       String
+  pillarCategory   String
+  pillarIndex      Int
+  score            Float
+  weight           Float
+  weightedScore    Float
+  waandaEvaluation String?
+  evidence         String?
+  recommendation   String?
+  createdAt        DateTime @default(now())
+  @@index([engagementId])
+  @@map("bids_scoring_pillars")
+}
+
+model BidsScoringDeliverable {
+  id           String                @id @default(cuid())
+  engagementId String
+  engagement   BidsScoringEngagement @relation(fields: [engagementId], references: [id])
+  type         String
+  label        String
+  status       String   @default("PENDING")  // PENDING | GENERATING | COMPLETE
+  content      Json?
+  generatedAt  DateTime?
+  createdAt    DateTime @default(now())
+  @@index([engagementId])
+  @@index([type, status])
+  @@map("bids_scoring_deliverables")
+}
+
+model BidsSmbScan {
+  id            String   @id @default(cuid())
+  companyName   String
+  industry      String
+  contactName   String
+  contactEmail  String
+  revenueRange  String?
+  employeeRange String?
+  topChallenge  String?
+  answers       Json     @default("{}")
+  status        String   @default("SUBMITTED")  // SUBMITTED | PROCESSING | COMPLETE
+  scoreJson     Json?
+  paidAt        DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime @default(now())
+  @@index([status])
+  @@map("bids_smb_scans")
+}
