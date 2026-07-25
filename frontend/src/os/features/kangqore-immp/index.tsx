@@ -159,6 +159,15 @@ import { RbacV2Page }                        from './pages/RbacV2Page'
 import { EnterpriseBlueprintTemplatesPage }  from './pages/EnterpriseBlueprintTemplatesPage'
 import { DigitalContractSuitePage }          from './pages/DigitalContractSuitePage'
 import { EnterpriseGateS190Page }            from './pages/EnterpriseGateS190Page'
+// S191–S198 BIDS™ Commercial Track
+import { BidsScorecardPage }              from './pages/BidsScorecardPage'
+import { BidsReportGeneratorPage }        from './pages/BidsReportGeneratorPage'
+import { BidsClientPortalPage }           from './pages/BidsClientPortalPage'
+import { BidsBlueprintPrescriptionPage }  from './pages/BidsBlueprintPrescriptionPage'
+import { BidsVerticalPacksPage }          from './pages/BidsVerticalPacksPage'
+import { BidsPartnerDeliveryPage }        from './pages/BidsPartnerDeliveryPage'
+import { BidsSmbScanPage }               from './pages/BidsSmbScanPage'
+import { BidsGateS198Page }              from './pages/BidsGateS198Page'
 // Customer pages C36–C75
 import { CustomerThirtySixPage }     from './pages/CustomerThirtySixPage'
 import { CustomerThirtySevenPage }   from './pages/CustomerThirtySevenPage'
@@ -431,6 +440,15 @@ export function KIMMMModule() {
           <Route path="enterprise-blueprint-templates"   element={<EnterpriseBlueprintTemplatesPage />}   />
           <Route path="digital-contracts"                element={<DigitalContractSuitePage />}           />
           <Route path="enterprise-gate-s190"             element={<EnterpriseGateS190Page />}             />
+          {/* S191–S198 BIDS™ Commercial Track */}
+          <Route path="bids-scorecard"              element={<BidsScorecardPage />}             />
+          <Route path="bids-report-generator"       element={<BidsReportGeneratorPage />}       />
+          <Route path="bids-client-portal"          element={<BidsClientPortalPage />}          />
+          <Route path="bids-blueprint-prescription" element={<BidsBlueprintPrescriptionPage />} />
+          <Route path="bids-vertical-packs"         element={<BidsVerticalPacksPage />}         />
+          <Route path="bids-partner-delivery"       element={<BidsPartnerDeliveryPage />}       />
+          <Route path="bids-smb-scan"               element={<BidsSmbScanPage />}              />
+          <Route path="bids-gate-s198"              element={<BidsGateS198Page />}             />
           {/* Customer pages C36–C40 */}
           <Route path="customers/thirty-six"    element={<CustomerThirtySixPage />}         />
           <Route path="customers/thirty-seven"  element={<CustomerThirtySevenPage />}       />
