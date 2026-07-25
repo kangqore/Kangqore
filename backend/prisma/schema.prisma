@@ -6758,10 +6758,17 @@ model CustomerHealthScore {
   daysSinceLastDecision  Int      @default(0)
   totalScore             Float    @default(0)         // computed weighted sum
   tier                   String   @default("GREEN")   // GREEN | AMBER | RED
+  // v2 fields (S174)
+  oisVelocity            Float?                        // pts/week OIS change
+  coigAttribution        Float?                        // % of fleet COIG driven by this customer
+  engagementDepthScore   Float?                        // composite engagement 0-100
+  healthGrade            String?                       // A | B | C | D
+  npsCohort              String?                       // PROMOTER | PASSIVE | DETRACTOR
   computedAt             DateTime @default(now())
   createdAt              DateTime @default(now())
   @@index([customerId])
   @@index([tier])
+  @@index([healthGrade])
   @@map("customer_health_scores")
 }
 
@@ -7685,3 +7692,79 @@ model EnterpriseLead {
   @@map("enterprise_leads")
 }
 
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S175 — WAANDA Onboarding Engine
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model CustomerOnboardingMilestone {
+  id           String    @id @default(cuid())
+  customerId   String
+  milestone    String                           // DAY_0 | DAY_1 | DAY_7 | DAY_30 | DAY_90
+  status       String    @default("PENDING")    // PENDING | IN_PROGRESS | COMPLETED | OVERDUE
+  nudgeSentAt  DateTime?
+  completedAt  DateTime?
+  notes        String?   @db.Text
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  @@unique([customerId, milestone])
+  @@index([customerId])
+  @@index([status])
+  @@map("customer_onboarding_milestones")
+}
+
+model CustomerActivationScore {
+  id             String   @id @default(cuid())
+  customerId     String
+  department     String                           // Projects | Finance | CRM | WAANDA | AEGIS | etc.
+  activationPct  Float    @default(0)             // 0–100: % of dept features activated
+  lastActivityAt DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  @@unique([customerId, department])
+  @@index([customerId])
+  @@map("customer_activation_scores")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S178 — Customer Success Playbook Engine
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model CustomerPlaybook {
+  id           String   @id @default(cuid())
+  customerId   String   @unique
+  vertical     String                           // HealthTech | LegalTech | FinTech | etc.
+  currentStep  Int      @default(0)             // 0-indexed
+  steps        Json                             // Array of { label, day, status, completedAt?, notes? }
+  health       String   @default("ON_TRACK")    // ON_TRACK | AT_RISK | OVERDUE
+  outcomeNotes String?  @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@index([vertical])
+  @@index([health])
+  @@map("customer_playbooks")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S180 — Renewal Intelligence v2
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model RenewalPrediction {
+  id                String   @id @default(cuid())
+  customerId        String
+  renewalLikelihood Float    @default(50)       // 0–100 KIMMP-scored
+  riskFactors       Json                        // Array of { factor, impact, weight }
+  coigScore         Float    @default(0)        // COIG at time of prediction
+  oisAtPrediction   Float    @default(0)
+  recommendedAction String   @default("NURTURE") // EXPAND | RENEW | NURTURE | ESCALATE | OFFBOARD
+  pitchSummary      String?  @db.Text           // WAANDA-generated renewal pitch
+  nudgeSentAt       DateTime?
+  outcome           String?                     // RENEWED | EXPANDED | CHURNED | PENDING
+  outcomeAt         DateTime?
+  predictedAt       DateTime @default(now())
+  createdAt         DateTime @default(now())
+  @@index([customerId])
+  @@index([renewalLikelihood])
+  @@index([outcome])
+  @@map("renewal_predictions")
+}

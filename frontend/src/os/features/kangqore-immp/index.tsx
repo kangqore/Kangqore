@@ -139,6 +139,57 @@ import { ARRIntelPage }              from './pages/ARRIntelPage'
 import { DunningPage }               from './pages/DunningPage'
 import { EnterprisePipelinePage }    from './pages/EnterprisePipelinePage'
 import { Chapter9GatePage }          from './pages/Chapter9GatePage'
+// S173–S181 imports
+import { FleetOrganicSeedPage }      from './pages/FleetOrganicSeedPage'
+import { HealthScoreV2Page }         from './pages/HealthScoreV2Page'
+import { OnboardingEnginePage }      from './pages/OnboardingEnginePage'
+import { FleetFiftyMilestonePage }   from './pages/FleetFiftyMilestonePage'
+import { FleetIntelligencePage }     from './pages/FleetIntelligencePage'
+import { PlaybookEnginePage }        from './pages/PlaybookEnginePage'
+import { FleetSixtyPage }            from './pages/FleetSixtyPage'
+import { RenewalIntelV2Page }        from './pages/RenewalIntelV2Page'
+import { FleetSeventyFivePage }      from './pages/FleetSeventyFivePage'
+// Customer pages C36–C75
+import { CustomerThirtySixPage }     from './pages/CustomerThirtySixPage'
+import { CustomerThirtySevenPage }   from './pages/CustomerThirtySevenPage'
+import { CustomerThirtyEightPage }   from './pages/CustomerThirtyEightPage'
+import { CustomerThirtyNinePage }    from './pages/CustomerThirtyNinePage'
+import { CustomerFortyPage }         from './pages/CustomerFortyPage'
+import { CustomerFortyOnePage }      from './pages/CustomerFortyOnePage'
+import { CustomerFortyTwoPage }      from './pages/CustomerFortyTwoPage'
+import { CustomerFortyThreePage }    from './pages/CustomerFortyThreePage'
+import { CustomerFortyFourPage }     from './pages/CustomerFortyFourPage'
+import { CustomerFortyFivePage }     from './pages/CustomerFortyFivePage'
+import { CustomerFortySixPage }      from './pages/CustomerFortySixPage'
+import { CustomerFortySevenPage }    from './pages/CustomerFortySevenPage'
+import { CustomerFortyEightPage }    from './pages/CustomerFortyEightPage'
+import { CustomerFortyNinePage }     from './pages/CustomerFortyNinePage'
+import { CustomerFiftyPage }         from './pages/CustomerFiftyPage'
+import { CustomerFiftyOnePage }      from './pages/CustomerFiftyOnePage'
+import { CustomerFiftyTwoPage }      from './pages/CustomerFiftyTwoPage'
+import { CustomerFiftyThreePage }    from './pages/CustomerFiftyThreePage'
+import { CustomerFiftyFourPage }     from './pages/CustomerFiftyFourPage'
+import { CustomerFiftyFivePage }     from './pages/CustomerFiftyFivePage'
+import { CustomerFiftySixPage }      from './pages/CustomerFiftySixPage'
+import { CustomerFiftySevenPage }    from './pages/CustomerFiftySevenPage'
+import { CustomerFiftyEightPage }    from './pages/CustomerFiftyEightPage'
+import { CustomerFiftyNinePage }     from './pages/CustomerFiftyNinePage'
+import { CustomerSixtyPage }         from './pages/CustomerSixtyPage'
+import { CustomerSixtyOnePage }      from './pages/CustomerSixtyOnePage'
+import { CustomerSixtyTwoPage }      from './pages/CustomerSixtyTwoPage'
+import { CustomerSixtyThreePage }    from './pages/CustomerSixtyThreePage'
+import { CustomerSixtyFourPage }     from './pages/CustomerSixtyFourPage'
+import { CustomerSixtyFivePage }     from './pages/CustomerSixtyFivePage'
+import { CustomerSixtySixPage }      from './pages/CustomerSixtySixPage'
+import { CustomerSixtySevenPage }    from './pages/CustomerSixtySevenPage'
+import { CustomerSixtyEightPage }    from './pages/CustomerSixtyEightPage'
+import { CustomerSixtyNinePage }     from './pages/CustomerSixtyNinePage'
+import { CustomerSeventyPage }       from './pages/CustomerSeventyPage'
+import { CustomerSeventyOnePage }    from './pages/CustomerSeventyOnePage'
+import { CustomerSeventyTwoPage }    from './pages/CustomerSeventyTwoPage'
+import { CustomerSeventyThreePage }  from './pages/CustomerSeventyThreePage'
+import { CustomerSeventyFourPage }   from './pages/CustomerSeventyFourPage'
+import { CustomerSeventyFivePage }   from './pages/CustomerSeventyFivePage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BASE = '/kangqore-view/admin/kangqore-immp'
@@ -350,6 +401,60 @@ export function KIMMMModule() {
           <Route path="customers/thirty-three" element={<CustomerThirtyThreePage />}       />
           <Route path="customers/thirty-four"  element={<CustomerThirtyFourPage />}        />
           <Route path="customers/thirty-five"  element={<CustomerThirtyFivePage />}        />
+          {/* S173–S181 feature routes */}
+          <Route path="fleet-organic-seed"      element={<FleetOrganicSeedPage />}          />
+          <Route path="health-score-v2"         element={<HealthScoreV2Page />}             />
+          <Route path="onboarding-engine"       element={<OnboardingEnginePage />}          />
+          <Route path="fleet-fifty-milestone"   element={<FleetFiftyMilestonePage />}       />
+          <Route path="fleet-intelligence"      element={<FleetIntelligencePage />}         />
+          <Route path="playbook-engine"         element={<PlaybookEnginePage />}            />
+          <Route path="fleet-sixty"             element={<FleetSixtyPage />}                />
+          <Route path="renewal-intel-v2"        element={<RenewalIntelV2Page />}            />
+          <Route path="fleet-seventy-five"      element={<FleetSeventyFivePage />}          />
+          {/* Customer pages C36–C40 */}
+          <Route path="customers/thirty-six"    element={<CustomerThirtySixPage />}         />
+          <Route path="customers/thirty-seven"  element={<CustomerThirtySevenPage />}       />
+          <Route path="customers/thirty-eight"  element={<CustomerThirtyEightPage />}       />
+          <Route path="customers/thirty-nine"   element={<CustomerThirtyNinePage />}        />
+          <Route path="customers/forty"         element={<CustomerFortyPage />}             />
+          {/* C41–C50 */}
+          <Route path="customers/forty-one"     element={<CustomerFortyOnePage />}          />
+          <Route path="customers/forty-two"     element={<CustomerFortyTwoPage />}          />
+          <Route path="customers/forty-three"   element={<CustomerFortyThreePage />}        />
+          <Route path="customers/forty-four"    element={<CustomerFortyFourPage />}         />
+          <Route path="customers/forty-five"    element={<CustomerFortyFivePage />}         />
+          <Route path="customers/forty-six"     element={<CustomerFortySixPage />}          />
+          <Route path="customers/forty-seven"   element={<CustomerFortySevenPage />}        />
+          <Route path="customers/forty-eight"   element={<CustomerFortyEightPage />}        />
+          <Route path="customers/forty-nine"    element={<CustomerFortyNinePage />}         />
+          <Route path="customers/fifty"         element={<CustomerFiftyPage />}             />
+          {/* C51–C60 */}
+          <Route path="customers/fifty-one"     element={<CustomerFiftyOnePage />}          />
+          <Route path="customers/fifty-two"     element={<CustomerFiftyTwoPage />}          />
+          <Route path="customers/fifty-three"   element={<CustomerFiftyThreePage />}        />
+          <Route path="customers/fifty-four"    element={<CustomerFiftyFourPage />}         />
+          <Route path="customers/fifty-five"    element={<CustomerFiftyFivePage />}         />
+          <Route path="customers/fifty-six"     element={<CustomerFiftySixPage />}          />
+          <Route path="customers/fifty-seven"   element={<CustomerFiftySevenPage />}        />
+          <Route path="customers/fifty-eight"   element={<CustomerFiftyEightPage />}        />
+          <Route path="customers/fifty-nine"    element={<CustomerFiftyNinePage />}         />
+          <Route path="customers/sixty"         element={<CustomerSixtyPage />}             />
+          {/* C61–C75 */}
+          <Route path="customers/sixty-one"     element={<CustomerSixtyOnePage />}          />
+          <Route path="customers/sixty-two"     element={<CustomerSixtyTwoPage />}          />
+          <Route path="customers/sixty-three"   element={<CustomerSixtyThreePage />}        />
+          <Route path="customers/sixty-four"    element={<CustomerSixtyFourPage />}         />
+          <Route path="customers/sixty-five"    element={<CustomerSixtyFivePage />}         />
+          <Route path="customers/sixty-six"     element={<CustomerSixtySixPage />}          />
+          <Route path="customers/sixty-seven"   element={<CustomerSixtySevenPage />}        />
+          <Route path="customers/sixty-eight"   element={<CustomerSixtyEightPage />}        />
+          <Route path="customers/sixty-nine"    element={<CustomerSixtyNinePage />}         />
+          <Route path="customers/seventy"       element={<CustomerSeventyPage />}           />
+          <Route path="customers/seventy-one"   element={<CustomerSeventyOnePage />}        />
+          <Route path="customers/seventy-two"   element={<CustomerSeventyTwoPage />}        />
+          <Route path="customers/seventy-three" element={<CustomerSeventyThreePage />}      />
+          <Route path="customers/seventy-four"  element={<CustomerSeventyFourPage />}       />
+          <Route path="customers/seventy-five"  element={<CustomerSeventyFivePage />}       />
           <Route path="customers/twenty-one"   element={<CustomerTwentyOnePage />}         />
           <Route path="customers/twenty-two"    element={<CustomerTwentyTwoPage />}         />
           <Route path="customers/twenty-three"  element={<CustomerTwentyThreePage />}       />
