@@ -150,6 +150,15 @@ import { FleetSixtyPage }            from './pages/FleetSixtyPage'
 import { RenewalIntelV2Page }        from './pages/RenewalIntelV2Page'
 import { FleetSeventyFivePage }      from './pages/FleetSeventyFivePage'
 import { FleetGateS182Page }         from './pages/FleetGateS182Page'
+// S183–S190 Enterprise Tier
+import { SsoSamlPage }                       from './pages/SsoSamlPage'
+import { CustomDomainsPage }                 from './pages/CustomDomainsPage'
+import { DedicatedComputePage }              from './pages/DedicatedComputePage'
+import { SlaManagementPage }                 from './pages/SlaManagementPage'
+import { RbacV2Page }                        from './pages/RbacV2Page'
+import { EnterpriseBlueprintTemplatesPage }  from './pages/EnterpriseBlueprintTemplatesPage'
+import { DigitalContractSuitePage }          from './pages/DigitalContractSuitePage'
+import { EnterpriseGateS190Page }            from './pages/EnterpriseGateS190Page'
 // Customer pages C36–C75
 import { CustomerThirtySixPage }     from './pages/CustomerThirtySixPage'
 import { CustomerThirtySevenPage }   from './pages/CustomerThirtySevenPage'
@@ -413,6 +422,15 @@ export function KIMMMModule() {
           <Route path="renewal-intel-v2"        element={<RenewalIntelV2Page />}            />
           <Route path="fleet-seventy-five"      element={<FleetSeventyFivePage />}          />
           <Route path="fleet-gate-s182"         element={<FleetGateS182Page />}             />
+          {/* S183–S190 Enterprise Tier */}
+          <Route path="sso-saml"                         element={<SsoSamlPage />}                        />
+          <Route path="custom-domains"                   element={<CustomDomainsPage />}                  />
+          <Route path="dedicated-compute"                element={<DedicatedComputePage />}               />
+          <Route path="sla-management"                   element={<SlaManagementPage />}                  />
+          <Route path="rbac-v2"                          element={<RbacV2Page />}                         />
+          <Route path="enterprise-blueprint-templates"   element={<EnterpriseBlueprintTemplatesPage />}   />
+          <Route path="digital-contracts"                element={<DigitalContractSuitePage />}           />
+          <Route path="enterprise-gate-s190"             element={<EnterpriseGateS190Page />}             />
           {/* Customer pages C36–C40 */}
           <Route path="customers/thirty-six"    element={<CustomerThirtySixPage />}         />
           <Route path="customers/thirty-seven"  element={<CustomerThirtySevenPage />}       />

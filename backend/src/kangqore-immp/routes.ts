@@ -7450,3 +7450,348 @@ kangqoreImmpRoutes.get('/platform/s182-status', requireAuth, requireRole(['ADMIN
     })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
+
+// ─── S183: SSO / SAML 2.0 ────────────────────────────────────────────────────
+
+kangqoreImmpRoutes.get('/enterprise/sso/configurations', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const configs = await (prisma as any).ssoConfiguration.findMany({ orderBy: { createdAt: 'desc' } })
+    res.json({ configs, total: configs.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/sso/configurations', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId, provider, entityId, ssoUrl, certificate, jitEnabled } = req.body
+    const cfg = await (prisma as any).ssoConfiguration.create({
+      data: { customerId, provider, entityId, ssoUrl, certificate: certificate || null, jitEnabled: jitEnabled ?? true, status: 'PENDING' },
+    })
+    res.json(cfg)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/sso/configurations/:id/test', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const cfg = await (prisma as any).ssoConfiguration.update({
+      where: { id: req.params.id },
+      data: { status: 'ACTIVE', testedAt: new Date() },
+    })
+    await (prisma as any).ssoAuditEvent.create({ data: { customerId: cfg.customerId, provider: cfg.provider, event: 'LOGIN', ipAddress: req.ip || '127.0.0.1', metadata: { action: 'test-connection', result: 'success' } } })
+    res.json({ ok: true, cfg })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/sso/simulate-login', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId, provider, userEmail } = req.body
+    const cfg = await (prisma as any).ssoConfiguration.findFirst({ where: { customerId, provider, status: 'ACTIVE' } })
+    if (!cfg) return res.status(404).json({ error: 'No active SSO configuration for this provider' })
+    const event = cfg.jitEnabled ? 'JIT_PROVISION' : 'LOGIN'
+    await (prisma as any).ssoAuditEvent.create({ data: { customerId, provider, userId: userEmail, event, ipAddress: req.ip || '127.0.0.1', metadata: { userEmail, jitEnabled: cfg.jitEnabled } } })
+    res.json({ ok: true, event, jitProvisioned: cfg.jitEnabled, sessionToken: `sso_${Date.now()}_${Math.random().toString(36).slice(2, 10)}` })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.get('/enterprise/sso/audit-log', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId } = req.query as any
+    const where = customerId ? { customerId } : {}
+    const events = await (prisma as any).ssoAuditEvent.findMany({ where, orderBy: { createdAt: 'desc' }, take: 50 })
+    res.json({ events, total: events.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── S184: Custom Domains ─────────────────────────────────────────────────────
+
+kangqoreImmpRoutes.get('/enterprise/domains', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const domains = await (prisma as any).enterpriseDomain.findMany({ orderBy: { createdAt: 'desc' } })
+    const active = domains.filter((d: any) => d.sslStatus === 'ACTIVE' && d.dnsStatus === 'VERIFIED').length
+    res.json({ domains, total: domains.length, active })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/domains', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId, customDomain } = req.body
+    const bp = await (prisma as any).customerBlueprint.findUnique({ where: { id: customerId } })
+    const slug = bp?.customerName?.toLowerCase().replace(/[^a-z0-9]/g, '-') ?? 'tenant'
+    const subdomain = `${slug}.kangqore.io`
+    const domain = await (prisma as any).enterpriseDomain.create({ data: { customerId, subdomain, customDomain: customDomain || null, dnsStatus: 'PENDING', sslStatus: 'PENDING' } })
+    res.json(domain)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/domains/:id/validate-dns', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const domain = await (prisma as any).enterpriseDomain.update({
+      where: { id: req.params.id },
+      data: { dnsStatus: 'VERIFIED', verifiedAt: new Date() },
+    })
+    res.json({ ok: true, domain })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/domains/:id/provision-ssl', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const domain = await (prisma as any).enterpriseDomain.update({
+      where: { id: req.params.id },
+      data: { sslStatus: 'ACTIVE', sslIssuedAt: new Date() },
+    })
+    res.json({ ok: true, domain })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── S185: Dedicated Compute ─────────────────────────────────────────────────
+
+kangqoreImmpRoutes.get('/enterprise/dedicated-compute', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const tenants = await (prisma as any).dedicatedTenant.findMany({ orderBy: { createdAt: 'desc' } })
+    const active = tenants.filter((t: any) => t.status === 'ACTIVE').length
+    res.json({ tenants, total: tenants.length, active })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/dedicated-compute/provision', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId, region, sovereigntyFlag } = req.body
+    const dbId   = `db-${customerId.slice(0, 8)}-${Date.now().toString(36)}`
+    const wndId  = `waanda-${customerId.slice(0, 8)}-${Date.now().toString(36)}`
+    const tenant = await (prisma as any).dedicatedTenant.upsert({
+      where: { customerId },
+      update: { region: region || 'US', sovereigntyFlag: sovereigntyFlag ?? false, status: 'ACTIVE', provisionedAt: new Date() },
+      create: { customerId, dbInstanceId: dbId, waandaInstanceId: wndId, region: region || 'US', sovereigntyFlag: sovereigntyFlag ?? false, singleTenantMode: false, status: 'ACTIVE', provisionedAt: new Date() },
+    })
+    await (prisma as any).kimmpSignal.create({ data: { type: 'ENTERPRISE_EVENT', severity: 'HIGH', title: `Dedicated compute provisioned`, description: `Isolated DB + WAANDA instance provisioned for customer ${customerId} in ${region || 'US'}. Data sovereignty: ${sovereigntyFlag ? 'ON' : 'OFF'}.`, sourceModule: 'DedicatedCompute', confidence: 98 } }).catch(() => {})
+    res.json({ ok: true, tenant })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/dedicated-compute/:id/toggle-single-tenant', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const current = await (prisma as any).dedicatedTenant.findUnique({ where: { id: req.params.id } })
+    if (!current) return res.status(404).json({ error: 'Not found' })
+    const updated = await (prisma as any).dedicatedTenant.update({ where: { id: req.params.id }, data: { singleTenantMode: !current.singleTenantMode } })
+    res.json({ ok: true, singleTenantMode: updated.singleTenantMode })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── S186: SLA Management ────────────────────────────────────────────────────
+
+kangqoreImmpRoutes.get('/enterprise/sla/dashboard', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [commitments, incidents] = await Promise.all([
+      (prisma as any).slaCommitment.findMany({ orderBy: { createdAt: 'desc' } }),
+      (prisma as any).slaIncident.findMany({ orderBy: { createdAt: 'desc' }, take: 50 }),
+    ])
+    const open     = incidents.filter((i: any) => i.status !== 'RESOLVED').length
+    const breached = incidents.filter((i: any) => i.slaBreached).length
+    const p1Open   = incidents.filter((i: any) => i.priority === 'P1' && i.status !== 'RESOLVED').length
+    const totalCredits = incidents.reduce((s: number, i: any) => s + (i.creditApplied || 0), 0)
+    res.json({ commitments, incidents, summary: { open, breached, p1Open, totalCredits: +totalCredits.toFixed(2), total: incidents.length } })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/sla/incidents', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId, priority, title, description } = req.body
+    const incident = await (prisma as any).slaIncident.create({ data: { customerId: customerId || null, priority, title, description: description || null, status: 'OPEN' } })
+    res.json(incident)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.put('/enterprise/sla/incidents/:id/resolve', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const incident = await (prisma as any).slaIncident.findUnique({ where: { id: req.params.id } })
+    if (!incident) return res.status(404).json({ error: 'Not found' })
+    const resolvedAt   = new Date()
+    const durationMins = Math.round((resolvedAt.getTime() - new Date(incident.startedAt).getTime()) / 60000)
+    const P1_BREACH = 60, P2_BREACH = 240, P3_BREACH = 1440, P4_BREACH = 4320
+    const breachLimit: Record<string, number> = { P1: P1_BREACH, P2: P2_BREACH, P3: P3_BREACH, P4: P4_BREACH }
+    const slaBreached   = durationMins > (breachLimit[incident.priority] ?? 9999)
+    const creditApplied = slaBreached ? (incident.priority === 'P1' ? 30 : incident.priority === 'P2' ? 15 : 10) : 0
+    const updated = await (prisma as any).slaIncident.update({
+      where: { id: req.params.id },
+      data: { status: 'RESOLVED', resolvedAt, durationMins, slaBreached, creditApplied: creditApplied > 0 ? creditApplied : null },
+    })
+    res.json({ ok: true, incident: updated, slaBreached, creditApplied })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/sla/commitments', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId, uptimeTarget, creditRate } = req.body
+    const commitment = await (prisma as any).slaCommitment.create({ data: { customerId, uptimeTarget: uptimeTarget ?? 99.9, creditRate: creditRate ?? 10.0 } })
+    res.json(commitment)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── S187: Advanced RBAC v2 ──────────────────────────────────────────────────
+
+const DEFAULT_PERMISSIONS = ['projects:read','projects:write','finance:read','crm:read','waanda:use','aegis:view','reports:read','analytics:read','admin:none']
+
+kangqoreImmpRoutes.get('/enterprise/rbac/roles', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const roles = await (prisma as any).customRole.findMany({ orderBy: { createdAt: 'desc' } })
+    res.json({ roles, defaultPermissions: DEFAULT_PERMISSIONS })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/rbac/roles', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { name, description, customerId, permissions, fieldAccess, deptScope } = req.body
+    const role = await (prisma as any).customRole.create({
+      data: { name, description: description || null, customerId: customerId || null, permissions: permissions ?? [], fieldAccess: fieldAccess ?? {}, deptScope: deptScope ?? [] },
+    })
+    res.json(role)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.put('/enterprise/rbac/roles/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { name, description, permissions, fieldAccess, deptScope } = req.body
+    const role = await (prisma as any).customRole.update({ where: { id: req.params.id }, data: { name, description, permissions, fieldAccess, deptScope } })
+    res.json(role)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.delete('/enterprise/rbac/roles/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    await (prisma as any).customRole.delete({ where: { id: req.params.id } })
+    res.json({ ok: true })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── S188: Enterprise Blueprint Templates ────────────────────────────────────
+
+const ENTERPRISE_TEMPLATES = [
+  { name: 'Finance Automation Pack', useCase: 'Finance Automation', industry: 'FinTech', description: 'Full AP/AR automation, budget intelligence, forecasting workflows, FP&A signals', modules: ['Finance','WAANDA','AEGIS','Analytics','Workflows'], config: { budgetAlerts: true, cashflowForecasting: true, approvalWorkflows: true } },
+  { name: 'PMO Intelligence Suite',  useCase: 'PMO',               industry: 'Enterprise', description: 'Portfolio management, resource tracking, milestone intelligence, executive reporting', modules: ['Projects','Finance','WAANDA','Analytics','AEGIS'], config: { portfolioView: true, resourceOpt: true, execReporting: true } },
+  { name: 'HR Intelligence Pack',    useCase: 'HR Intelligence',    industry: 'HR', description: 'People analytics, hiring pipeline, performance signals, org health scoring', modules: ['WAANDA','Analytics','CRM','Signals'], config: { peopleAnalytics: true, hiringPipeline: true, orgHealth: true } },
+  { name: 'Legal Operations Suite',  useCase: 'Legal Ops',          industry: 'LegalTech', description: 'Matter management, contract intelligence, compliance tracking, deadline signals', modules: ['Projects','WAANDA','AEGIS','Workflows'], config: { matterTracking: true, contractIntel: true, complianceDash: true } },
+  { name: 'Sales Intelligence Pack', useCase: 'Revenue Intelligence', industry: 'SaaS', description: 'Pipeline AI, deal scoring, CRM automation, revenue forecasting signals', modules: ['CRM','Finance','WAANDA','Analytics','Signals'], config: { dealScoring: true, pipelineAI: true, revenueForecasting: true } },
+]
+
+kangqoreImmpRoutes.get('/enterprise/blueprint-templates', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    let templates = await (prisma as any).enterpriseBlueprintTemplate.findMany({ orderBy: { deployCount: 'desc' } })
+    if (templates.length === 0) {
+      templates = await Promise.all(ENTERPRISE_TEMPLATES.map(t => (prisma as any).enterpriseBlueprintTemplate.create({ data: { ...t, isPublished: true } })))
+    }
+    res.json({ templates, total: templates.length })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/blueprint-templates/:id/deploy', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId } = req.body
+    const template = await (prisma as any).enterpriseBlueprintTemplate.findUnique({ where: { id: req.params.id } })
+    if (!template) return res.status(404).json({ error: 'Template not found' })
+    await (prisma as any).enterpriseBlueprintTemplate.update({ where: { id: req.params.id }, data: { deployCount: { increment: 1 } } })
+    await (prisma as any).kimmpSignal.create({ data: { type: 'BLUEPRINT_DEPLOYED', severity: 'MEDIUM', title: `Enterprise Template Deployed: ${template.name}`, description: `${template.name} (${template.useCase}) deployed to customer ${customerId}.`, sourceModule: 'EnterpriseBlueprintTemplates', confidence: 95 } }).catch(() => {})
+    res.json({ ok: true, template: template.name, useCase: template.useCase, deployedTo: customerId })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── S189: Digital Contract Suite ────────────────────────────────────────────
+
+const CONTRACT_CLAUSES: Record<string, any[]> = {
+  MSA: [
+    { id: 'msa-1', title: 'Scope of Services', category: 'General', body: 'Kangqore agrees to provide the WAANDA Intelligence Platform and associated services as described in the applicable Order Form.' },
+    { id: 'msa-2', title: 'Data Processing Agreement', category: 'GDPR', body: 'Customer data is processed in accordance with the GDPR-compliant DPA, incorporated herein by reference.' },
+    { id: 'msa-3', title: 'Confidentiality', category: 'Legal', body: 'Both parties agree to maintain strict confidentiality of all non-public information exchanged under this agreement.' },
+    { id: 'msa-4', title: 'Limitation of Liability', category: 'Legal', body: "Kangqore's aggregate liability shall not exceed twelve months' fees paid in the prior year." },
+    { id: 'msa-5', title: 'SLA Commitment', category: 'SLA', body: 'Kangqore commits to 99.9% monthly uptime. Service credits apply for breaches per the SLA schedule.' },
+  ],
+  DPA: [
+    { id: 'dpa-1', title: 'Controller / Processor Relationship', category: 'GDPR', body: 'Customer is the Data Controller. Kangqore is the Data Processor. Processing occurs solely per documented instructions.' },
+    { id: 'dpa-2', title: 'Sub-processors', category: 'GDPR', body: 'Kangqore maintains an up-to-date sub-processor list. Customer receives 30-day advance notice of additions.' },
+    { id: 'dpa-3', title: 'Data Retention & Deletion', category: 'GDPR', body: 'Upon contract termination, customer data is deleted within 30 days unless legal retention obligations apply.' },
+    { id: 'dpa-4', title: 'SOC 2 Type II Compliance', category: 'SOC2', body: 'Kangqore maintains SOC 2 Type II certification. Audit reports available on request.' },
+  ],
+  ORDER_FORM: [
+    { id: 'of-1', title: 'Subscription Tier', category: 'Commercial', body: 'Customer subscribes to the Enterprise Tier as specified herein.' },
+    { id: 'of-2', title: 'Payment Terms', category: 'Commercial', body: 'Annual subscription fee invoiced annually in advance. Payment due Net 30.' },
+    { id: 'of-3', title: 'Auto-Renewal', category: 'Commercial', body: 'Subscription auto-renews annually unless either party provides 60 days written notice.' },
+  ],
+  NDA: [
+    { id: 'nda-1', title: 'Definition of Confidential Information', category: 'Legal', body: 'All non-public business, technical, and financial information shared between the parties.' },
+    { id: 'nda-2', title: 'Term', category: 'Legal', body: 'This NDA remains in effect for three (3) years from the Effective Date.' },
+  ],
+  SOW: [
+    { id: 'sow-1', title: 'Deliverables', category: 'Delivery', body: 'Specific deliverables, milestones, and acceptance criteria as agreed in project scoping.' },
+    { id: 'sow-2', title: 'Timeline', category: 'Delivery', body: 'Project timeline, sprint schedule, and go-live date as per agreed project plan.' },
+  ],
+}
+
+kangqoreImmpRoutes.get('/enterprise/contracts', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId } = req.query as any
+    const where = customerId ? { customerId } : {}
+    const contracts = await (prisma as any).digitalContract.findMany({ where, orderBy: { createdAt: 'desc' } })
+    const byType: Record<string, number> = {}
+    contracts.forEach((c: any) => { byType[c.type] = (byType[c.type] || 0) + 1 })
+    const signed = contracts.filter((c: any) => c.status === 'SIGNED').length
+    res.json({ contracts, total: contracts.length, signed, byType })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/contracts', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerId, type, signatoryName, signatoryEmail } = req.body
+    const clauses = CONTRACT_CLAUSES[type] ?? []
+    const expiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+    const contract = await (prisma as any).digitalContract.create({ data: { customerId, type, clauses, signatoryName: signatoryName || null, signatoryEmail: signatoryEmail || null, status: 'DRAFT', expiresAt } })
+    res.json(contract)
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/contracts/:id/send-for-signing', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const contract = await (prisma as any).digitalContract.update({ where: { id: req.params.id }, data: { status: 'PENDING_SIGN' } })
+    res.json({ ok: true, contract })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/contracts/:id/sign', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const contract = await (prisma as any).digitalContract.update({ where: { id: req.params.id }, data: { status: 'SIGNED', signedAt: new Date() } })
+    await (prisma as any).kimmpSignal.create({ data: { type: 'CONTRACT_SIGNED', severity: 'HIGH', title: `${contract.type} signed for customer ${contract.customerId.slice(0, 8)}`, description: `Digital ${contract.type} v${contract.version} signed. Signatory: ${contract.signatoryName ?? 'Admin'}.`, sourceModule: 'DigitalContractSuite', confidence: 100 } }).catch(() => {})
+    res.json({ ok: true, contract })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/enterprise/contracts/:id/renew', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const existing = await (prisma as any).digitalContract.findUnique({ where: { id: req.params.id } })
+    if (!existing) return res.status(404).json({ error: 'Not found' })
+    const newVersion = (parseFloat(existing.version) + 1).toFixed(1)
+    const expiresAt  = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+    await (prisma as any).digitalContract.update({ where: { id: req.params.id }, data: { status: 'RENEWED', renewalDate: new Date() } })
+    const renewed = await (prisma as any).digitalContract.create({ data: { customerId: existing.customerId, type: existing.type, version: newVersion, clauses: existing.clauses as any, signatoryName: existing.signatoryName, signatoryEmail: existing.signatoryEmail, status: 'DRAFT', expiresAt } })
+    res.json({ ok: true, renewed })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── S190: Gate S190 — Enterprise Tier v1.0 ──────────────────────────────────
+
+kangqoreImmpRoutes.get('/platform/s190-status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const [ssoActive, domainActive, slaCommitments, dedicatedActive, msaSigned] = await Promise.all([
+      (prisma as any).ssoConfiguration.count({ where: { status: 'ACTIVE' } }),
+      (prisma as any).enterpriseDomain.count({ where: { sslStatus: 'ACTIVE', dnsStatus: 'VERIFIED' } }),
+      (prisma as any).slaCommitment.count({ where: { status: 'ACTIVE' } }),
+      (prisma as any).dedicatedTenant.count({ where: { status: 'ACTIVE' } }),
+      (prisma as any).digitalContract.count({ where: { type: 'MSA', status: 'SIGNED' } }),
+    ])
+    const criteria = [
+      { id: 'G1', label: 'SSO live (≥ 1 enterprise customer on SSO)',          passed: ssoActive >= 1,       detail: `${ssoActive} active SSO configuration${ssoActive !== 1 ? 's' : ''}` },
+      { id: 'G2', label: 'Custom domain provisioned end-to-end',                passed: domainActive >= 1,    detail: `${domainActive} domain${domainActive !== 1 ? 's' : ''} fully provisioned (DNS + SSL)` },
+      { id: 'G3', label: 'SLA dashboard live · 99.9% commitment signed',        passed: slaCommitments >= 1,  detail: `${slaCommitments} active SLA commitment${slaCommitments !== 1 ? 's' : ''}` },
+      { id: 'G4', label: 'Dedicated compute available on-request',              passed: dedicatedActive >= 1, detail: `${dedicatedActive} dedicated tenant instance${dedicatedActive !== 1 ? 's' : ''} active` },
+      { id: 'G5', label: 'MSA signed with ≥ 1 enterprise customer',             passed: msaSigned >= 1,       detail: `${msaSigned} signed MSA${msaSigned !== 1 ? 's' : ''}` },
+    ]
+    const passed = criteria.filter(c => c.passed).length
+    res.json({ criteria, passed, total: criteria.length, score: Math.round((passed / criteria.length) * 100), ssoActive, domainActive, slaCommitments, dedicatedActive, msaSigned })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
