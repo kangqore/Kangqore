@@ -375,7 +375,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                         }`}
                       >
                         {msg.id === 'greeting' ? (
-                          <span className={inverted ? 'text-white font-semibold' : 'bg-brand-gradient bg-clip-text text-transparent'}>
+                          <span className={inverted ? 'text-white font-semibold' : 'bg-gradient-to-r from-cyan-300 via-sky-200 to-blue-300 bg-clip-text text-transparent font-medium'}>
                             {msg.content}
                           </span>
                         ) : (

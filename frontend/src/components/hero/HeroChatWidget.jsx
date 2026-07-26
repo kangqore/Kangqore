@@ -211,7 +211,7 @@ const HeroChatWidget = ({ isActive }) => {
                     }`}
                   >
                     {msg.id === 'greeting' ? (
-                      <span className="bg-brand-gradient bg-clip-text text-transparent">
+                      <span className="bg-gradient-to-r from-cyan-300 via-sky-200 to-blue-300 bg-clip-text text-transparent font-medium">
                         {msg.content}
                       </span>
                     ) : (
