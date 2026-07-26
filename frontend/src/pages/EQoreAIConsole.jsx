@@ -277,39 +277,33 @@ const EQoreAIConsole = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex bg-[#06080e] text-white font-sans overflow-hidden relative">
+    <div className="flex h-screen bg-[#05080f] text-gray-200 overflow-hidden font-sans relative">
       
-      {/* Background Decorative Neon Glows */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-brand-blue/5 rounded-full blur-[140px] pointer-events-none z-0" />
-      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-brand-cyan/5 rounded-full blur-[160px] pointer-events-none z-0" />
+      {/* Ambient Glow Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center">
+        <div className="w-[80vw] h-[80vh] rounded-full bg-cyan-900/10 blur-[120px] mix-blend-screen animate-[pulse_10s_ease-in-out_infinite]"></div>
+        <div className="absolute w-[50vw] h-[50vh] right-0 top-0 rounded-full bg-blue-900/10 blur-[100px] mix-blend-screen animate-[pulse_15s_ease-in-out_infinite_reverse]"></div>
+      </div>
 
       {/* LEFT COLLAPSIBLE SIDEBAR */}
       <div 
         className={`h-full bg-[#0b0f19]/90 border-r border-white/5 backdrop-blur-xl z-20 flex flex-col transition-all duration-300 ${
-          sidebarOpen ? 'w-72 opacity-100' : 'w-0 opacity-0 overflow-hidden border-r-0'
+          sidebarOpen ? 'w-56 opacity-100' : 'w-0 opacity-0 overflow-hidden border-r-0'
         }`}
       >
         {/* Sidebar Header */}
-        <div className="p-4 flex items-center justify-between border-b border-white/5">
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative group-hover:scale-105 transition-all shrink-0">
-              <div className="w-9 h-9 rounded-xl overflow-hidden border border-cyan-400/30 bg-[#050505] flex items-center justify-center">
-                <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
-              </div>
-              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-cyan-400 border-2 border-[#0b0f19] rounded-full animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.6)]"></span>
-            </div>
-            <div>
-              <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-cyan tracking-wide font-display text-lg">
-                eQORE AI
-              </span>
-              <span className="block text-[10px] text-gray-500 font-medium tracking-wider -mt-1">
-                SYSTEM CONSOLE
-              </span>
-            </div>
+        <div className="h-[60px] px-3 flex items-center justify-between border-b border-white/5">
+          <Link to="/" className="group" style={{ overflow: 'hidden', height: '36px', display: 'flex', alignItems: 'center' }}>
+            <img 
+              src="https://customer-assets.emergentagent.com/job_cog-site-clone/artifacts/focgf8oz_Logo%2BText.png" 
+              alt="Kangqore Logo" 
+              style={{ width: '126px', marginTop: '-28px', marginBottom: '-28px' }}
+              className="brightness-0 invert group-hover:opacity-80 transition-opacity duration-300" 
+            />
           </Link>
           <button 
             onClick={() => setSidebarOpen(false)}
-            className="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition"
+            className="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition shrink-0"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -337,25 +331,41 @@ const EQoreAIConsole = () => {
             </div>
           ) : (
             historyList.map((item) => (
-              <div 
-                key={item.id}
-                onClick={() => loadConversation(item.id)}
-                className={`group flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer transition text-xs border ${
-                  conversationId === item.id 
-                    ? 'bg-brand-blue/10 border-brand-blue/30 text-white font-medium' 
-                    : 'border-transparent text-gray-400 hover:bg-white/5 hover:text-white'
-                }`}
-              >
-                <div className="flex items-center gap-2 truncate pr-2">
-                  <History className="w-3.5 h-3.5 flex-shrink-0 text-brand-cyan" />
-                  <span className="truncate">{item.title}</span>
-                </div>
-                <button 
-                  onClick={(e) => handleDeleteHistory(e, item.id)}
-                  className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-white/10 text-gray-400 hover:text-rose-400 transition"
+              <div key={item.id} className="relative group [perspective:1000px] mb-2">
+                <div 
+                  onClick={() => loadConversation(item.id)}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 ease-out group-hover:[transform:rotateX(10deg)_rotateY(-10deg)_scale(1.02)] group-hover:shadow-[0_10px_20px_rgba(34,211,238,0.15)] text-xs border ${
+                    conversationId === item.id 
+                      ? 'bg-brand-blue/10 border-brand-blue/30 text-white font-medium' 
+                      : 'border-cyan-400/10 bg-white/5 backdrop-blur-sm text-gray-400 hover:border-cyan-400/30 hover:text-white'
+                  }`}
+                  style={{ transformStyle: 'preserve-3d' }}
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
+                  <div className="flex items-center gap-2 truncate pr-2" style={{ transform: 'translateZ(10px)' }}>
+                    <History className="w-3.5 h-3.5 flex-shrink-0 text-brand-cyan" />
+                    <span className="truncate">{item.title}</span>
+                  </div>
+                  <button 
+                    onClick={(e) => handleDeleteHistory(e, item.id)}
+                    className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-white/10 text-gray-400 hover:text-rose-400 transition"
+                    style={{ transform: 'translateZ(10px)' }}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+                
+                {/* Floating Pre-Cog Tooltip */}
+                <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 w-48 p-3 rounded-lg bg-black/90 backdrop-blur-xl border border-cyan-400/30 text-[10px] text-cyan-200 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 shadow-[0_0_30px_rgba(34,211,238,0.2)] transform translate-x-[-10px] group-hover:translate-x-0 hidden md:block">
+                  <div className="font-bold text-white mb-1 uppercase tracking-widest text-[9px] flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-cyan-400" /> Pre-Cog Analysis
+                  </div>
+                  <div className="text-gray-400 leading-relaxed truncate">
+                    "{item.title}"
+                  </div>
+                  <div className="mt-2 text-cyan-500/50 italic text-[8px]">
+                    Status: Archived • Entropy: Minimal
+                  </div>
+                </div>
               </div>
             ))
           )}
@@ -419,7 +429,7 @@ const EQoreAIConsole = () => {
       <div className="flex-1 h-full flex flex-col z-10 relative">
         
         {/* Navigation / Header bar */}
-        <header className="p-4 border-b border-white/5 bg-[#0b0f19]/70 backdrop-blur-md flex items-center justify-between">
+        <header className="h-[60px] px-4 border-b border-white/5 bg-[#0b0f19]/70 backdrop-blur-md flex items-center justify-between">
           <div className="flex items-center gap-3">
             {!sidebarOpen && (
               <button 
@@ -461,34 +471,17 @@ const EQoreAIConsole = () => {
                 <div className="w-8 h-8 rounded-lg overflow-hidden border border-cyan-400/30 bg-[#050505] flex items-center justify-center">
                   <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-cyan-400 border-2 border-[#0b0f19] rounded-full animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.6)]"></span>
               </div>
               
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm text-gray-200">eQORE AI System Console</span>
-                <span className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20 text-[9px] font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  ACTIVE PIPELINE
-                </span>
+                <span className="font-bold text-sm text-gray-200">eQORE AI Assistant Console</span>
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             
-            {/* Audio Voice Output Toggles */}
-            <button 
-              onClick={() => setIsVoiceEnabled(prev => !prev)}
-              className={`p-2 rounded-xl border transition flex items-center justify-center gap-1.5 text-xs font-medium ${
-                isVoiceEnabled 
-                  ? 'bg-brand-blue/20 border-brand-blue/40 text-brand-cyan shadow-[0_0_15px_rgba(37,100,234,0.2)]' 
-                  : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'
-              }`}
-              title={isVoiceEnabled ? "Mute Voice output" : "Enable Male Speech synthesizer Output"}
-            >
-              {isVoiceEnabled ? <Volume2 className="w-4 h-4 animate-[pulse_1.5s_infinite]" /> : <VolumeX className="w-4 h-4" />}
-              <span className="hidden sm:inline">Voice Engine</span>
-            </button>
+            {/* Audio Voice Output Toggles Removed as per User Request */}
 
             {/* Reset chat button */}
             <button 
@@ -504,58 +497,21 @@ const EQoreAIConsole = () => {
         {/* Scrollable Conversation Stream */}
         <div 
           ref={chatContainerRef}
-          className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6"
+          className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6 z-10"
         >
           {messages.length <= 1 ? (
             
             /* DYNAMIC EMPTY STATE DASHBOARD */
-            <div className="h-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center px-4">
-              
-              <div className="relative mb-8 group shrink-0">
-                <div className="w-20 h-20 rounded-[1.75rem] overflow-hidden border border-cyan-400/40 shadow-[0_0_40px_rgba(34,211,238,0.25)] bg-[#050505] flex items-center justify-center animate-[pulse_3s_ease-in-out_infinite]">
-                  <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
-                </div>
-                <span className="absolute bottom-0 right-0 flex h-4.5 w-4.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-4 w-4 bg-cyan-400 border border-[#0b0f19]"></span>
-                </span>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-display mb-4 max-w-5xl text-center">
-                From Business Questions to Solution Direction — Ask <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-cyan">eQORE AI</span><sup className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-cyan text-[0.55em] ml-0.5">™</sup>
+            <div className="h-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center px-4 pb-[200px]">
+              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight font-display mb-6 mt-8">
+                Ask <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-cyan">eQORE AI</span><sup className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-cyan text-lg ml-1">™</sup>
               </h1>
-              <p className="text-gray-400 text-sm sm:text-base max-w-3xl mb-12 text-center leading-relaxed">
-                eQORE helps leaders identify relevant Kangqore capabilities, understand possible solution paths, and connect with the right team for deeper consultation.
-              </p>
-
-              {/* Premium Suggested Prompt Chips Cloud */}
-              <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-4xl mt-4">
-                {CONCIERGE_SUGGESTED_PROMPTS.map((prompt) => {
-                  const isSpecial = prompt === "Which industries do you serve?" || prompt === "Schedule Your Consultation" || prompt === "What is your approach to Agentic AI?";
-                  return (
-                    <button
-                      key={prompt}
-                      type="button"
-                      disabled={streaming}
-                      onClick={() => handleSend(null, prompt)}
-                      className={`group inline-flex items-center gap-2 text-xs font-semibold px-4 py-2.5 rounded-full border transition-all duration-300 cursor-pointer ${
-                        isSpecial
-                          ? 'bg-brand-blue/10 border-brand-cyan/40 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.1)] hover:bg-brand-blue/20 hover:border-brand-cyan/60 hover:shadow-[0_0_20px_rgba(34,211,238,0.25)]'
-                          : 'bg-white/5 border-white/10 text-white/70 hover:text-white hover:bg-white/10 hover:border-brand-cyan/30 hover:shadow-[0_0_12px_rgba(34,211,238,0.12)]'
-                      }`}
-                    >
-                      <span>{prompt}</span>
-                      <ChevronRight className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-brand-cyan" />
-                    </button>
-                  );
-                })}
-              </div>
             </div>
 
           ) : (
             
             /* MESSAGE LIST CANVAS */
-            <div className="max-w-4xl mx-auto space-y-6">
+            <div className="max-w-5xl mx-auto space-y-6 pb-32">
               {messages.map((m, idx) => {
                 if (m.id === 'greeting') return null; // handled via empty state or clean greet layout
 
@@ -572,11 +528,11 @@ const EQoreAIConsole = () => {
                       </div>
                     )}
 
-                    {/* Chat Bubble Cards */}
-                    <div className={`p-4 rounded-2xl max-w-[85%] border shadow-lg ${
+                    {/* Chat Bubble Cards - VisionOS Glassmorphism */}
+                    <div className={`p-4 rounded-3xl max-w-[85%] shadow-2xl backdrop-blur-2xl border ${
                       isUser 
-                        ? 'bg-[#151b2a]/90 border-brand-blue/20 text-white rounded-tr-none' 
-                        : 'bg-[#0f1320]/80 border-white/5 text-gray-200 rounded-tl-none backdrop-blur-md'
+                        ? 'bg-white/10 border-white/10 text-white rounded-tr-sm' 
+                        : 'bg-[#0f1320]/60 border-white/5 text-gray-100 rounded-tl-sm shadow-cyan-900/10'
                     }`}>
                       
                       {/* Formatted Text Content */}
@@ -604,16 +560,25 @@ const EQoreAIConsole = () => {
                 );
               })}
 
-              {/* Streaming Indicator */}
+              {/* Premium Skeleton Streaming Indicator */}
               {streaming && (
                 <div className="flex gap-4 justify-start">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-blue to-brand-cyan flex-shrink-0 flex items-center justify-center animate-spin-slow">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-blue to-brand-cyan flex-shrink-0 flex items-center justify-center animate-[spin_4s_linear_infinite]">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
-                  <div className="p-4 rounded-2xl bg-[#0f1320]/80 border border-white/5 rounded-tl-none backdrop-blur-md flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-brand-cyan animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-2 h-2 rounded-full bg-brand-cyan animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-2 h-2 rounded-full bg-brand-cyan animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                  <div className="p-4 rounded-3xl bg-[#0f1320]/60 border border-white/5 rounded-tl-sm backdrop-blur-2xl shadow-cyan-900/10 w-64">
+                    <div className="animate-pulse flex space-x-4">
+                      <div className="flex-1 space-y-3 py-1">
+                        <div className="h-2 bg-cyan-400/20 rounded"></div>
+                        <div className="space-y-2">
+                          <div className="grid grid-cols-3 gap-2">
+                            <div className="h-2 bg-brand-blue/20 rounded col-span-2"></div>
+                            <div className="h-2 bg-brand-blue/20 rounded col-span-1"></div>
+                          </div>
+                          <div className="h-2 bg-cyan-400/20 rounded w-4/5"></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -634,46 +599,111 @@ const EQoreAIConsole = () => {
         {/* Floating lead/scheduling card container in chat area if needed */}
         {/* Render a custom schedule card when scheduling intent is confirmed */}
 
-        {/* BOTTOM INPUT FORM CANVAS */}
-        <div className="p-4 border-t border-white/5 bg-[#0b0f19]/70 backdrop-blur-md">
-          <div className="max-w-4xl mx-auto">
-            <form onSubmit={handleSend} className="relative flex items-center">
+        {/* BOTTOM INPUT FORM CANVAS - FLOATING PILL OR CENTERED */}
+        <div className={`left-0 right-0 px-4 pointer-events-none z-20 transition-all duration-700 ease-in-out ${
+          messages.length <= 1 
+            ? 'absolute top-1/2 -translate-y-1/2 mt-[120px]' 
+            : 'absolute bottom-6'
+        }`}>
+          <div className="max-w-4xl mx-auto pointer-events-auto w-full">
+            <form onSubmit={handleSend} className="relative flex flex-col group bg-[#111622]/80 backdrop-blur-3xl border border-white/10 focus-within:border-cyan-400/50 shadow-2xl shadow-cyan-900/20 rounded-2xl overflow-hidden transition-all duration-300">
               
-              {/* Mic Speech-to-Text Button */}
-              <button 
-                type="button"
-                onClick={toggleListening}
-                className={`absolute left-3 p-2 rounded-xl flex items-center justify-center transition ${
-                  isListening 
-                    ? 'bg-rose-500 text-white animate-pulse' 
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-                title={isListening ? "Stop voice listening" : "Speak to eQORE"}
-              >
-                {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-              </button>
+              {/* Animated streaming border glow */}
+              {streaming && (
+                <div className="absolute -inset-[1.5px] bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-blue opacity-70 blur-sm animate-[pulse_2s_ease-in-out_infinite]"></div>
+              )}
 
               <input 
                 type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder={isListening ? "Listening to your voice..." : "Ask eQORE AI a question... (e.g. Build me a capability roadmap)"}
-                className="w-full bg-[#111622] border border-white/10 focus:border-brand-blue/50 focus:ring-1 focus:ring-brand-blue/30 rounded-2xl pl-12 pr-14 py-3.5 text-sm placeholder-gray-500 text-white outline-none transition"
+                className="w-full bg-transparent pl-4 pr-4 pt-4 pb-2 text-sm placeholder-gray-500 text-white outline-none relative z-10"
                 disabled={streaming}
               />
 
-              {/* Submit Message Button */}
-              <button 
-                type="submit"
-                disabled={!inputText.trim() || streaming}
-                className="absolute right-3 p-2 rounded-xl bg-gradient-to-r from-brand-blue to-brand-cyan text-white hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition shadow-lg"
-              >
-                <Send className="w-4 h-4" />
-              </button>
+              {/* Bottom Actions Row inside the input box */}
+              <div className="flex items-center justify-between px-2 pb-2 relative z-10">
+                {/* Left side actions (+) */}
+                <button 
+                  type="button"
+                  className="p-1.5 rounded-lg border border-white/10 hover:bg-white/5 text-gray-400 hover:text-white transition-all ml-1"
+                  title="Upload attachment (Coming soon)"
+                >
+                  <Plus className="w-4 h-4" />
+                </button>
+
+                {/* Right side actions (Mic + Send) */}
+                <div className="flex items-center gap-1.5">
+                  {(window.SpeechRecognition || window.webkitSpeechRecognition) && (
+                    <button
+                      type="button"
+                      onClick={toggleListening}
+                      disabled={streaming}
+                      className={`p-1.5 rounded-lg transition-all flex items-center justify-center cursor-pointer ${
+                        isListening
+                          ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30 shadow-[0_0_12px_rgba(239,68,68,0.3)]'
+                          : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                      } disabled:opacity-50`}
+                      title={isListening ? 'Stop listening' : 'Voice input'}
+                    >
+                      {isListening ? (
+                        <svg className="w-4 h-4 text-red-400" viewBox="0 0 24 24" fill="currentColor">
+                          <rect x="2" y="8" width="4" height="8" rx="2">
+                            <animate attributeName="height" values="8;16;8" dur="1s" repeatCount="indefinite"/>
+                            <animate attributeName="y" values="8;4;8" dur="1s" repeatCount="indefinite"/>
+                          </rect>
+                          <rect x="10" y="4" width="4" height="16" rx="2">
+                            <animate attributeName="height" values="16;4;16" dur="0.8s" repeatCount="indefinite"/>
+                            <animate attributeName="y" values="4;10;4" dur="0.8s" repeatCount="indefinite"/>
+                          </rect>
+                          <rect x="18" y="8" width="4" height="8" rx="2">
+                            <animate attributeName="height" values="8;20;8" dur="1.2s" repeatCount="indefinite"/>
+                            <animate attributeName="y" values="8;2;8" dur="1.2s" repeatCount="indefinite"/>
+                          </rect>
+                        </svg>
+                      ) : (
+                        <Mic className="w-4 h-4" />
+                      )}
+                    </button>
+                  )}
+
+                  {/* Submit Message Button */}
+                  <button 
+                    type="submit"
+                    disabled={!inputText.trim() || streaming}
+                    className="p-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all duration-200 mr-1"
+                  >
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
             </form>
-            <p className="text-[10px] text-gray-500 text-center mt-2 font-medium">
-              eQORE AI may retrieve information from the corporate knowledge indexes. Standard data compliance rules apply.
-            </p>
+
+            {/* Suggested Prompt Chips below input */}
+            {messages.length <= 1 && (
+              <div className="flex flex-wrap items-center justify-center gap-2 mt-4 pointer-events-auto max-w-3xl mx-auto">
+                {CONCIERGE_SUGGESTED_PROMPTS.map((prompt) => {
+                  const isSpecial = prompt === "Which industries do you serve?" || prompt === "Schedule Your Consultation" || prompt === "What is your approach to Agentic AI?";
+                  return (
+                    <button
+                      key={prompt}
+                      type="button"
+                      disabled={streaming}
+                      onClick={() => handleSend(null, prompt)}
+                      className={`group inline-flex items-center gap-1 text-[9px] font-semibold px-2 py-1 rounded-full border transition-all duration-300 cursor-pointer transform hover:scale-105 ${
+                        isSpecial
+                          ? 'bg-brand-blue/10 border-brand-cyan/40 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.1)] hover:bg-brand-blue/20 hover:border-brand-cyan/60 hover:shadow-[0_0_20px_rgba(34,211,238,0.25)]'
+                          : 'bg-white/5 border-white/10 text-white/70 hover:text-white hover:bg-white/10 hover:border-brand-cyan/30 hover:shadow-[0_0_12px_rgba(34,211,238,0.12)]'
+                      }`}
+                    >
+                      <span>{prompt}</span>
+                      <ChevronRight className="w-2.5 h-2.5 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-brand-cyan" />
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>
