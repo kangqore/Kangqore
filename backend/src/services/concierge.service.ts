@@ -16,10 +16,8 @@ const DAILY_TOKEN_BUDGET = parseInt(
 let client: Anthropic | null = null;
 function getClient(): Anthropic {
   if (!client) {
-    if (!API_KEYS.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY is not configured');
-    }
-    client = withWaandax(new Anthropic({ apiKey: API_KEYS.ANTHROPIC_API_KEY }));
+    const key = API_KEYS.ANTHROPIC_API_KEY || 'sk-ant-dummy-for-waandax-fallback';
+    client = withWaandax(new Anthropic({ apiKey: key }));
   }
   return client;
 }
@@ -430,9 +428,29 @@ export async function streamConcierge(
       }
     }
   } catch (e: any) {
-    logger.error(`concierge.anthropic.error: ${e.message}`);
-    handlers.onError(e);
-    return;
+    logger.warn(`concierge.anthropic.stream.error: ${e.message} — falling back to WAANDAx`);
+    try {
+      const fallbackResponse = await anthropic.messages.create({
+        model: MODEL,
+        max_tokens: MAX_OUTPUT_TOKENS,
+        system: system.text,
+        messages: messages as any,
+      });
+      const block = fallbackResponse.content[0] as any;
+      if (block?.type === 'text') {
+        assembled = block.text;
+        const { stripped } = extractFollowups(assembled);
+        visibleEmitted = stripped;
+        handlers.onDelta(stripped);
+      }
+      inputTokens = fallbackResponse.usage?.input_tokens || 0;
+      outputTokens = fallbackResponse.usage?.output_tokens || 0;
+      cacheReadTokens = (fallbackResponse.usage as any)?.cache_read_input_tokens || 0;
+    } catch (fallbackErr: any) {
+      logger.error(`concierge.waandax.fallback.error: ${fallbackErr.message}`);
+      handlers.onError(fallbackErr);
+      return;
+    }
   }
 
   const { stripped, followups } = extractFollowups(assembled);

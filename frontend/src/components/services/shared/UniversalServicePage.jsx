@@ -1133,6 +1133,12 @@ const featureMicros   = service.featureMicros
                   else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else if (i === 7) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 10) {
+                  if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 8) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 9) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 }
 
                 return (
@@ -1538,109 +1544,111 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ JOURNEY TIMELINE ══════════════════════ */}
-      <section id="svc-phases" className="py-32 overflow-hidden relative" style={{ backgroundColor: '#000000' }}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
-        </div>
+      {!service.servicePackages && (
+        <section id="svc-phases" className="py-32 overflow-hidden relative" style={{ backgroundColor: '#000000' }}>
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+          </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={journeyRef}>
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={journeyRef}>
+            <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
 
-            {/* Timeline cards */}
-            <div className="w-full lg:w-[55%] relative">
-              <div className="hidden lg:block absolute left-[14px] top-0 bottom-0 w-[30px]" style={{ zIndex: 1 }}>
-                <svg className="w-full h-full" viewBox="0 0 30 1000" preserveAspectRatio="none" fill="none">
-                  <defs>
-                    <linearGradient id="svc-jg" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#94a3b8" /><stop offset="25%" stopColor="#3b82f6" />
-                      <stop offset="50%" stopColor="#2564ea" /><stop offset="75%" stopColor="#10b981" />
-                      <stop offset="100%" stopColor="#a855f7" />
-                    </linearGradient>
-                    <filter id="svc-jglow">
-                      <feGaussianBlur stdDeviation="2" result="blur" />
-                      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                    </filter>
-                  </defs>
-                  <path d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="rgba(255,255,255,0.08)" strokeWidth="2" fill="none" />
-                  <path className="svc-journey-glow" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#svc-jg)" strokeWidth="3" strokeLinecap="round" fill="none" filter="url(#svc-jglow)" opacity="0.4" />
-                  <path className="svc-journey-path" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#svc-jg)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                  {activeJourney.map((_, i) => {
-                    const cy = Math.round(1000 / (2 * activeJourney.length) + i * 1000 / activeJourney.length);
+              {/* Timeline cards */}
+              <div className="w-full lg:w-[55%] relative">
+                <div className="hidden lg:block absolute left-[14px] top-0 bottom-0 w-[30px]" style={{ zIndex: 1 }}>
+                  <svg className="w-full h-full" viewBox="0 0 30 1000" preserveAspectRatio="none" fill="none">
+                    <defs>
+                      <linearGradient id="svc-jg" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#94a3b8" /><stop offset="25%" stopColor="#3b82f6" />
+                        <stop offset="50%" stopColor="#2564ea" /><stop offset="75%" stopColor="#10b981" />
+                        <stop offset="100%" stopColor="#a855f7" />
+                      </linearGradient>
+                      <filter id="svc-jglow">
+                        <feGaussianBlur stdDeviation="2" result="blur" />
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                      </filter>
+                    </defs>
+                    <path d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="rgba(255,255,255,0.08)" strokeWidth="2" fill="none" />
+                    <path className="svc-journey-glow" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#svc-jg)" strokeWidth="3" strokeLinecap="round" fill="none" filter="url(#svc-jglow)" opacity="0.4" />
+                    <path className="svc-journey-path" d="M 15 0 C 15 100, 22 150, 15 250 S 8 400, 15 500 C 22 650, 8 700, 15 750 S 22 900, 15 1000" stroke="url(#svc-jg)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                    {activeJourney.map((_, i) => {
+                      const cy = Math.round(1000 / (2 * activeJourney.length) + i * 1000 / activeJourney.length);
+                      return (
+                        <g key={i} className="svc-journey-node" style={{ transformOrigin: `15px ${cy}px` }}>
+                          <circle cx="15" cy={cy} r="9" fill="none" stroke="url(#svc-jg)" strokeWidth="0.8" opacity="0.2">
+                            <animate attributeName="r" values="9;13;9" dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.2;0.08;0.2" dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
+                          </circle>
+                          <circle cx="15" cy={cy} r="7" fill="#06090f" stroke="url(#svc-jg)" strokeWidth="1.5" />
+                          <circle cx="15" cy={cy} r="3" fill="url(#svc-jg)" opacity="0.7">
+                            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+                          </circle>
+                        </g>
+                      );
+                    })}
+                  </svg>
+                </div>
+
+                <div className="space-y-6 lg:pl-[55px]">
+                  {activeJourney.map((item, idx) => {
+                    const { Icon } = item;
                     return (
-                      <g key={i} className="svc-journey-node" style={{ transformOrigin: `15px ${cy}px` }}>
-                        <circle cx="15" cy={cy} r="9" fill="none" stroke="url(#svc-jg)" strokeWidth="0.8" opacity="0.2">
-                          <animate attributeName="r" values="9;13;9" dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
-                          <animate attributeName="opacity" values="0.2;0.08;0.2" dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
-                        </circle>
-                        <circle cx="15" cy={cy} r="7" fill="#06090f" stroke="url(#svc-jg)" strokeWidth="1.5" />
-                        <circle cx="15" cy={cy} r="3" fill="url(#svc-jg)" opacity="0.7">
-                          <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
-                        </circle>
-                      </g>
-                    );
-                  })}
-                </svg>
-              </div>
-
-              <div className="space-y-6 lg:pl-[55px]">
-                {activeJourney.map((item, idx) => {
-                  const { Icon } = item;
-                  return (
-                    <div key={idx} className="svc-journey-card group">
-                      <div className="relative bg-[#06090f] border border-white/[0.08] rounded-3xl p-6 lg:p-8 hover:border-transparent transition-all duration-500 hover:-translate-y-1 flex items-start gap-6 overflow-hidden">
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
-                        <div className={`relative z-10 w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br ${PHASE_GRADIENTS[idx]} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-all duration-500`}>
-                          <Icon className="w-7 h-7" />
-                        </div>
-                        <div className="relative z-10 flex-1 min-w-0">
-                          <div className="flex items-center gap-3 mb-2">
-                            <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/20 group-hover:text-white/80 uppercase transition-colors duration-500">{item.phase}</div>
-                            {item.kangqore && (
-                              <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 group-hover:bg-white/15 border border-brand-blue/20 group-hover:border-white/30 rounded-full transition-colors duration-500">
-                                <div className="w-1 h-1 bg-brand-blue group-hover:bg-white rounded-full animate-pulse transition-colors duration-500" />
-                                <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue group-hover:text-white uppercase transition-colors duration-500">Kangqore</span>
-                              </div>
-                            )}
+                      <div key={idx} className="svc-journey-card group">
+                        <div className="relative bg-[#06090f] border border-white/[0.08] rounded-3xl p-6 lg:p-8 hover:border-transparent transition-all duration-500 hover:-translate-y-1 flex items-start gap-6 overflow-hidden">
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
+                          <div className={`relative z-10 w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br ${PHASE_GRADIENTS[idx]} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-all duration-500`}>
+                            <Icon className="w-7 h-7" />
                           </div>
-                          <h4 className="text-lg font-black text-white mb-1">{item.title}</h4>
-                          <p className="text-sm text-white/40 group-hover:text-white font-light leading-relaxed transition-colors duration-500">{item.desc}</p>
+                          <div className="relative z-10 flex-1 min-w-0">
+                            <div className="flex items-center gap-3 mb-2">
+                              <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/20 group-hover:text-white/80 uppercase transition-colors duration-500">{item.phase}</div>
+                              {item.kangqore && (
+                                <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 group-hover:bg-white/15 border border-brand-blue/20 group-hover:border-white/30 rounded-full transition-colors duration-500">
+                                  <div className="w-1 h-1 bg-brand-blue group-hover:bg-white rounded-full animate-pulse transition-colors duration-500" />
+                                  <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue group-hover:text-white uppercase transition-colors duration-500">Kangqore</span>
+                                </div>
+                              )}
+                            </div>
+                            <h4 className="text-lg font-black text-white mb-1">{item.title}</h4>
+                            <p className="text-sm text-white/40 group-hover:text-white font-light leading-relaxed transition-colors duration-500">{item.desc}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Sticky right panel */}
-            <div className="w-full lg:w-[45%] lg:sticky lg:top-32">
-              <div className="space-y-10">
-                <div>
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="h-[1px] w-12 bg-white/20" />
-                    <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.name} Journey</span>
-                  </div>
-                  <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
-                    From Ambition to<br />
-                    <span className="bg-brand-gradient bg-clip-text text-transparent">Delivered Outcomes.</span>
-                  </h2>
-                  <p className="text-white/40 text-lg font-light leading-relaxed max-w-lg">
-                    A connected system for moving from business goals through solution design to implementation and continuous optimization.
-                  </p>
+                    );
+                  })}
                 </div>
-                <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/[0.08]">
-                  {[['Phases', String(activeJourney.length).padStart(2, '0')], ['Timeline', '4-16 wks'], ['Confidence', '100%']].map(([label, val], i) => (
-                    <div key={label}>
-                      <div className="font-mono text-[10px] text-white/40 tracking-widest uppercase font-bold mb-2">{label}</div>
-                      <div className={`text-2xl font-black ${i === 2 ? 'bg-brand-gradient bg-clip-text text-transparent' : 'text-white'}`}>{val}</div>
+              </div>
+
+              {/* Sticky right panel */}
+              <div className="w-full lg:w-[45%] lg:sticky lg:top-32">
+                <div className="space-y-10">
+                  <div>
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="h-[1px] w-12 bg-white/20" />
+                      <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.name} Journey</span>
                     </div>
-                  ))}
+                    <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
+                      From Ambition to<br />
+                      <span className="bg-brand-gradient bg-clip-text text-transparent">Delivered Outcomes.</span>
+                    </h2>
+                    <p className="text-white/40 text-lg font-light leading-relaxed max-w-lg">
+                      A connected system for moving from business goals through solution design to implementation and continuous optimization.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/[0.08]">
+                    {[['Phases', String(activeJourney.length).padStart(2, '0')], ['Timeline', '4-16 wks'], ['Confidence', '100%']].map(([label, val], i) => (
+                      <div key={label}>
+                        <div className="font-mono text-[10px] text-white/40 tracking-widest uppercase font-bold mb-2">{label}</div>
+                        <div className={`text-2xl font-black ${i === 2 ? 'bg-brand-gradient bg-clip-text text-transparent' : 'text-white'}`}>{val}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ══════════════════════ SERVICE PACKAGES ══════════════════════ */}
       {service.servicePackages && (

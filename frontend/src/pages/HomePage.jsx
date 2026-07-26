@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { format, addDays } from 'date-fns';
 import { parseSchedulingRequest, parseSchedulingRequestAsync, timeRangeToTimeStr } from '../hooks/nlpSchedulingParser';
 import AvailabilityPulse from '../components/scheduling/AvailabilityPulse';
+import { useVoiceInput } from '../hooks/useVoiceInput';
 
 const ConciergeSection = lazy(() =>
   import('../components/concierge/ConciergeSection')
@@ -19,7 +20,7 @@ import {
   Plus, X, Pause, Play, SkipForward, Briefcase, Globe, Phone, Send, Search, Menu,
   Facebook, Twitter, Linkedin, Instagram, Target, ShieldCheck, Scale, Handshake,
   Bot, RefreshCw, Cloud, TrendingUp, Lock, BarChart3, BookOpen,
-  Landmark, Factory, Monitor, Sparkles, Quote, Star
+  Landmark, Factory, Monitor, Sparkles, Quote, Star, Mic, Volume2, VolumeX
 } from 'lucide-react';
 import {
   Dialog,
@@ -1661,16 +1662,22 @@ const EqoreTypingSection = ({ bookingRef }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [feedback, setFeedback] = useState("Command the Intelligence Core...");
 
-  const handleAutomate = async (e) => {
-    e.preventDefault();
-    if (!inputValue.trim() || isProcessing) return;
+  const { listening, toggle } = useVoiceInput({
+    onFinal: (text) => {
+      setInputValue(text);
+      executeAutomate(text);
+    }
+  });
+
+  const executeAutomate = async (text) => {
+    if (!text || !text.trim() || isProcessing) return;
 
     setIsProcessing(true);
     setFeedback("Processing with NLP engine...");
 
     try {
       // Advanced NLP Parser — async call to chrono-node backend
-      const intent = await parseSchedulingRequestAsync(inputValue);
+      const intent = await parseSchedulingRequestAsync(text);
 
       if (intent.understood) {
         let finalTimeStr = intent.timeStr;
@@ -1708,6 +1715,11 @@ const EqoreTypingSection = ({ bookingRef }) => {
     }
   };
 
+  const handleAutomate = async (e) => {
+    e.preventDefault();
+    await executeAutomate(inputValue);
+  };
+
   return (
     <section className="pb-32 bg-white dark:bg-black">
       <div className="max-w-4xl mx-auto px-6">
@@ -1718,8 +1730,16 @@ const EqoreTypingSection = ({ bookingRef }) => {
             <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-white/20 dark:border-white/10 shadow-2xl bg-black relative z-10 transition-transform duration-500 hover:scale-110">
               <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
             </div>
-            {/* Status Indicator */}
-            <div className="absolute bottom-1 right-1 w-5 h-5 bg-cyan-400 border-2 border-white dark:border-[#0a0a0c] rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)] z-20"></div>
+            {/* Mic Button (Replaces Status Indicator) */}
+            <button 
+              type="button"
+              onClick={toggle}
+              className={`absolute bottom-0 right-0 w-8 h-8 rounded-full border-2 border-white dark:border-[#0a0a0c] flex items-center justify-center z-20 shadow-[0_0_15px_rgba(34,211,238,0.8)] transition-colors duration-300 ${listening ? 'bg-red-500 text-white' : 'bg-cyan-400 text-white hover:bg-cyan-300'}`}
+              aria-label="Start voice input"
+            >
+              {listening && <div className="absolute inset-0 rounded-full bg-red-500/50 animate-ping pointer-events-none" />}
+              <Mic className="w-4 h-4 relative z-10" />
+            </button>
           </div>
 
           {/* Premium Minimal Input Content */}
@@ -1755,15 +1775,17 @@ const EqoreTypingSection = ({ bookingRef }) => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder=""
-                className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 px-0 py-5 text-2xl md:text-4xl font-light tracking-tight text-gray-900 dark:text-white placeholder-gray-300 focus:outline-none focus:border-cyan-400 transition-all duration-500"
+                className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 px-0 py-5 text-2xl md:text-4xl font-light tracking-tight text-gray-900 dark:text-white placeholder-gray-300 focus:outline-none focus:border-cyan-400 transition-all duration-500 pr-16"
               />
-              <button 
-                type="submit"
-                disabled={isProcessing || !inputValue.trim()}
-                className="absolute right-0 top-1/2 -translate-y-1/2 p-3 text-cyan-400 hover:text-brand-blue hover:scale-125 active:scale-95 transition-all duration-300 disabled:opacity-0"
-              >
-                {isProcessing ? <RefreshCw className="w-7 h-7 animate-spin" /> : <Send className="w-7 h-7" />}
-              </button>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center">
+                <button 
+                  type="submit"
+                  disabled={isProcessing || !inputValue.trim()}
+                  className="p-3 text-cyan-400 hover:text-brand-blue hover:scale-125 active:scale-95 transition-all duration-300 disabled:opacity-0"
+                >
+                  {isProcessing ? <RefreshCw className="w-6 h-6 md:w-7 md:h-7 animate-spin" /> : <Send className="w-6 h-6 md:w-7 md:h-7" />}
+                </button>
+              </div>
               
               {/* Animated underline glow on hover/focus */}
               <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-cyan-400 transition-all duration-700 group-focus-within:w-full group-hover:w-full opacity-50 shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
