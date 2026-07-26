@@ -511,7 +511,6 @@ export const CONCIERGE_SUGGESTED_PROMPTS = [
   'What does Kangqore do?',
   'Which service is right for my business?',
   'Build me a project roadmap',
-  'I need more leads',
   'I want to build an app',
   'I need AI automation',
   'Compare Kangqore services',
