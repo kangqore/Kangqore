@@ -32,7 +32,7 @@ import { waandaxSlot, isWaandaxBusyError } from './waandaxAnthropic'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const WAANDAX_URL   = process.env.WAANDAX_URL         || 'http://localhost:11435'
+const WAANDAX_URL   = process.env.WAANDAX_URL         || 'http://127.0.0.1:11435'
 const WAANDAX_MODEL = process.env.WAANDAX_MODEL        || ''
 const OPENAI_KEY    = process.env.OPENAI_API_KEY       || ''
 const GEMINI_KEY    = process.env.GEMINI_API_KEY       || ''

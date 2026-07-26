@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, Mic, MicOff, ExternalLink } from 'lucide-react';
+import { Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, Mic, MicOff, ExternalLink, Square, Copy, Maximize2, Minimize2 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useConcierge, getSuggestedPrompts } from '../hooks/useConcierge';
+import { useConcierge, getSuggestedPrompts, stripSystemMetadata } from '../hooks/useConcierge';
 import { parseSchedulingRequest } from '../hooks/nlpSchedulingParser';
 import CitationBadge from './concierge/CitationBadge';
 import LeadCaptureInline from './concierge/LeadCaptureInline';
 import InlineSchedulingCard from './concierge/InlineSchedulingCard';
 import SlotPicker from './concierge/SlotPicker';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import TextareaAutosize from 'react-textarea-autosize';
 
 const HANDOFF_KEYWORDS = [
   "connect you to a kangqore consultant",
@@ -40,55 +43,7 @@ function looksLikeSchedulingRequest(text) {
   return SCHEDULING_KEYWORDS.test(text);
 }
 
-function renderFormattedText(text) {
-  if (!text) return text;
-  
-  // Strip out citations and any preceding whitespace to fix punctuation spacing
-  const cleanText = text.replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '');
-  
-  // Handle bold syntax
-  const boldParts = cleanText.split(/(\*\*.*?\*\*)/g);
-  return boldParts.flatMap((bPart, j) => {
-    if (bPart.startsWith('**') && bPart.endsWith('**')) {
-      const boldInner = bPart.slice(2, -2);
-      // Check if the bold text itself contains a link
-      const boldLinkParts = boldInner.split(/(\[.*?\]\(.*?\))/g);
-      return <strong key={`bold-${j}`} className="text-white font-bold">
-        {boldLinkParts.map((lPart, k) => {
-          const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
-          if (m) {
-            return (
-              <a key={`blink-${j}-${k}`} href={m[2]} target="_blank" rel="noopener noreferrer" className="text-brand-cyan hover:underline">
-                {m[1]}
-              </a>
-            );
-          }
-          return <span key={`btext-${j}-${k}`}>{lPart}</span>;
-        })}
-      </strong>;
-    }
-    
-    // Also parse markdown links outside of bold [text](url)
-    const linkParts = bPart.split(/(\[.*?\]\(.*?\))/g);
-    return linkParts.map((lPart, k) => {
-      const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
-      if (m) {
-        return (
-          <a
-            key={`link-${j}-${k}`}
-            href={m[2]}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-brand-cyan hover:underline"
-          >
-            {m[1]}
-          </a>
-        );
-      }
-      return <span key={`text-${j}-${k}`}>{lPart}</span>;
-    });
-  });
-}
+
 
 function getProactiveGreeting(page) {
   if (!page) return null;
@@ -147,7 +102,7 @@ const EQoreChatbot = () => {
   const spokenMessagesRef = useRef(new Set());
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
-  const { messages, streaming, conversationId, error, send, reset } = useConcierge({ seedContext });
+  const { messages, streaming, conversationId, error, send, reset, stop } = useConcierge({ seedContext });
   const hasUserMessages = messages.some((m) => m.role === 'user');
 
   // Idle Timer Logic
@@ -167,15 +122,28 @@ const EQoreChatbot = () => {
     } else {
       setIsIdle(true);
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      idleTimerRef.current = setTimeout(() => {
-        setIsOpen(false);
-      }, 5000);
+      // Auto-closing removed to prevent chatbot from fading away while reading
+      // idleTimerRef.current = setTimeout(() => {
+      //   setIsOpen(false);
+      // }, 5000);
     }
 
     return () => {
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
   }, [isExpanded, isHovered, inputText, streaming, isListening]);
+
+  // Keyboard Shortcut: Esc to close
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen]);
 
   // ─── Voice Input (Web Speech API) ──────────────────────────────────
   useEffect(() => {
@@ -367,14 +335,14 @@ const EQoreChatbot = () => {
 
   // Auto-Dismissal Logic
   useEffect(() => {
-    if (isOpen && !hasUserMessages && !isInHero) {
+    if (isOpen && !hasUserMessages && !isInHero && !isHovered) {
       const dismissTime = 5000;
       const autoDismiss = setTimeout(() => {
         setIsOpen(false);
       }, dismissTime);
       return () => clearTimeout(autoDismiss);
     }
-  }, [isOpen, isInHero, hasUserMessages]);
+  }, [isOpen, isInHero, hasUserMessages, isHovered]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -495,32 +463,7 @@ const EQoreChatbot = () => {
         >
           <div className="absolute inset-0 bg-brand-cyan/5 blur-xl pointer-events-none"></div>
           
-          <div className="flex items-center gap-5 relative z-10">
-            <div className="flex items-center gap-2 group relative z-20">
-              <button 
-                onClick={() => setIsOpen(false)} 
-                className="w-3.5 h-3.5 rounded-full bg-pink-500 hover:bg-pink-400 transition-colors shadow-sm flex items-center justify-center relative cursor-pointer" 
-                title="Close"
-              >
-                <X className="w-2 h-2 text-black/80 opacity-80 hover:opacity-100 transition-opacity absolute pointer-events-none font-bold" strokeWidth={3.5} />
-              </button>
-              <button 
-                onClick={() => setIsMaximized(false)} 
-                className="w-3.5 h-3.5 rounded-full bg-purple-500 hover:bg-purple-400 transition-colors shadow-sm flex items-center justify-center relative cursor-pointer" 
-                title="Minimize"
-              >
-                <div className="w-1.5 h-0.5 bg-black/80 opacity-85 hover:opacity-100 transition-opacity absolute rounded-full pointer-events-none font-bold" />
-              </button>
-              <button 
-                onClick={() => setIsMaximized(true)} 
-                className="w-3.5 h-3.5 rounded-full bg-blue-500 hover:bg-blue-400 transition-colors shadow-sm flex items-center justify-center relative cursor-pointer" 
-                title="Maximize"
-              >
-                <div className="w-1.5 h-1.5 border border-black/80 opacity-85 hover:opacity-100 transition-opacity absolute rounded-[1px] pointer-events-none font-bold" strokeWidth={3.5} />
-              </button>
-            </div>
-
-            <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 relative z-10">
             <div className="relative">
               <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.2)] bg-[#050505]">
                 <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
@@ -529,16 +472,12 @@ const EQoreChatbot = () => {
             </div>
             <div>
               <h3 className="font-display font-bold text-sm tracking-wide">eQORE</h3>
-              <p className="text-[10px] text-cyan-400/80 uppercase tracking-widest font-semibold">
-                {streaming ? 'Thinking…' : 'System Online'}
+              <p className="text-[6px] text-cyan-400/80 uppercase tracking-widest font-semibold">
+                {streaming ? 'Thinking…' : 'AI Assistant'}
               </p>
-            </div>
             </div>
           </div>
           <div className="flex items-center gap-1 relative z-10">
-            <Link to="/eqore-ai" className="p-2 hover:bg-white/10 rounded-lg transition-colors text-slate-400 hover:text-white" title="Launch Standalone Full-Screen Console">
-              <ExternalLink className="w-4 h-4 text-cyan-400 animate-[pulse_2s_infinite]" />
-            </Link>
             <button
               onClick={() => {
                 const newState = !isVoiceEnabled;
@@ -561,9 +500,20 @@ const EQoreChatbot = () => {
                 <RefreshCw className="w-4 h-4" />
               </button>
             )}
-            <Link to="/eqore" className="p-2 hover:bg-white/10 rounded-lg transition-colors text-slate-400 hover:text-white" title="About eQORE">
-              <Info className="w-4 h-4" />
+            <Link
+              to="/eqore-ai"
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors text-slate-400 hover:text-white cursor-pointer"
+              title="Launch eQORE AI Full-Screen Console"
+            >
+              <Maximize2 className="w-4 h-4 text-white/80" />
             </Link>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors text-slate-400 hover:text-white cursor-pointer"
+              title="Close"
+            >
+              <X className="w-4 h-4 text-white/80" />
+            </button>
           </div>
         </div>
 
@@ -590,7 +540,7 @@ const EQoreChatbot = () => {
                   )}
                   <div className={`p-3.5 text-[13px] leading-relaxed shadow-sm whitespace-pre-wrap ${
                     isUser
-                      ? 'bg-brand-blue text-white rounded-2xl rounded-br-sm font-medium'
+                      ? 'bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white rounded-2xl rounded-br-sm font-medium'
                       : 'bg-[#1a1a1e] border border-white/5 text-slate-200 rounded-2xl rounded-bl-sm'
                   }`}>
                     {!isUser && !msg.done && msg.content === '' ? (
@@ -601,9 +551,44 @@ const EQoreChatbot = () => {
                       </div>
                     ) : (
                       <>
-                        {renderFormattedText(msg.content)}
+                        <div className="text-sm leading-relaxed overflow-hidden">
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              a: ({node, ...props}) => <a className="text-brand-cyan hover:underline" target="_blank" rel="noopener noreferrer" {...props} />,
+                              strong: ({node, ...props}) => <strong className="text-white font-bold" {...props} />,
+                              p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                              ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-2 space-y-1" {...props} />,
+                              ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-2 space-y-1" {...props} />,
+                              li: ({node, ...props}) => <li className="" {...props} />,
+                              code: ({node, inline, className, children, ...props}) => {
+                                return !inline ? (
+                                  <pre className="bg-[#050505] p-3 rounded-lg border border-white/10 text-xs overflow-x-auto mb-2 mt-2 font-mono text-slate-300">
+                                    <code className={className} {...props}>{children}</code>
+                                  </pre>
+                                ) : (
+                                  <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono text-cyan-200" {...props}>{children}</code>
+                                )
+                              }
+                            }}
+                          >
+                            {stripSystemMetadata(msg.content || '').replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '')}
+                          </ReactMarkdown>
+                        </div>
                         {!msg.done && msg.role === 'assistant' && (
                           <span className="inline-block w-1.5 h-4 ml-0.5 align-middle bg-cyan-400 animate-pulse rounded-sm" />
+                        )}
+                        {/* Copy Button */}
+                        {msg.done && msg.role === 'assistant' && (
+                          <div className="flex justify-end mt-2">
+                            <button
+                              onClick={() => navigator.clipboard.writeText(msg.content)}
+                              className="text-slate-500 hover:text-white p-1 rounded transition-colors flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider"
+                              title="Copy to clipboard"
+                            >
+                              <Copy className="w-3 h-3" /> Copy
+                            </button>
+                          </div>
                         )}
                       </>
                     )}
@@ -726,17 +711,24 @@ const EQoreChatbot = () => {
         {/* Input Area */}
         <form onSubmit={handleSend} className="py-2 px-4 bg-[#111115] border-t border-white/5">
           <div className="relative flex items-center">
-            <input
-              type="text"
+            <TextareaAutosize
+              minRows={1}
+              maxRows={5}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend(e);
+                }
+              }}
               disabled={streaming || isListening}
               placeholder={isListening ? 'Listening...' : 'Query the intelligence core...'}
-              className={`w-full pl-4 pr-24 py-2 bg-[#050505] border rounded-xl focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 outline-none text-sm text-white placeholder-slate-500 transition-all shadow-inner disabled:opacity-60 ${
+              className={`w-full pl-4 pr-24 py-2 bg-[#050505] border rounded-xl focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 outline-none text-sm text-white placeholder-slate-500 transition-all shadow-inner disabled:opacity-60 resize-none leading-relaxed ${
                 isListening ? 'border-red-500/60 ring-1 ring-red-500/30' : 'border-white/10'
               }`}
             />
-            <div className="absolute right-2 flex items-center gap-1">
+            <div className="absolute right-2 bottom-1 flex items-center gap-1">
               {/* Mic Button */}
               {(window.SpeechRecognition || window.webkitSpeechRecognition) && (
                 <button
@@ -753,18 +745,25 @@ const EQoreChatbot = () => {
                   {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
                 </button>
               )}
-              {/* Send Button */}
-              <button
-                type="submit"
-                disabled={!inputText.trim() || streaming}
-                className="p-2 bg-brand-blue text-white rounded-lg hover:bg-brand-blue/80 disabled:opacity-30 disabled:bg-white/10 disabled:text-white/30 transition-all flex items-center justify-center"
-              >
-                {streaming ? (
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                ) : (
+              {/* Stop / Send Button */}
+              {streaming ? (
+                <button
+                  type="button"
+                  onClick={stop}
+                  className="p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all flex items-center justify-center"
+                  title="Stop generating"
+                >
+                  <Square className="w-4 h-4 fill-current" />
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={!inputText.trim()}
+                  className="p-2 bg-brand-blue text-white rounded-lg hover:bg-brand-blue/80 disabled:opacity-30 disabled:bg-white/10 disabled:text-white/30 transition-all flex items-center justify-center"
+                >
                   <Send className="w-4 h-4" />
-                )}
-              </button>
+                </button>
+              )}
             </div>
           </div>
         </form>
