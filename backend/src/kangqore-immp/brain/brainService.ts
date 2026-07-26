@@ -286,27 +286,6 @@ export async function addCapture(text: string): Promise<{ node: BrainNode; relat
   return { node, relatedId: related ? graph.nodes.find(n => n.slug === related.slug)?.id ?? null : null }
 }
 
-// ── delete a capture (manage the brain) ──────────────────────────────────────
-// Only ever touches files inside captures/ — the slug must match the strict
-// format addCapture() generates, and the resolved path is verified to still
-// live inside capturesDir before unlinking, so this can't be used to delete
-// arbitrary files even if a caller passed a crafted slug.
-
-export async function deleteCapture(slug: string): Promise<boolean> {
-  if (!/^[a-z0-9-]+$/.test(slug)) return false
-  const dir = resolveBrainDir()
-  const capturesDir = path.join(dir, 'captures')
-  const target = path.join(capturesDir, `${slug}.md`)
-  if (path.dirname(target) !== capturesDir) return false
-  try {
-    await fs.unlink(target)
-  } catch {
-    return false
-  }
-  invalidateBrain()
-  return true
-}
-
 // ── per-session conversation history ─────────────────────────────────────────
 
 interface Turn { role: 'user' | 'assistant'; content: string }

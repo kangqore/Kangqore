@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 const ServicePage6 = React.lazy(() => import('../pages/ServicePageReal'));
 
 // AI & Cognitive services
-
+const AgenticAI = React.lazy(() => import('../pages/services/ai-cognitive/AgenticAI'));
 const AICognitiveComputing = React.lazy(() => import('../pages/services/ai-cognitive/AICognitiveComputing'));
 const AIGovernance = React.lazy(() => import('../pages/services/ai-cognitive/AIGovernance'));
 const DataScienceAI = React.lazy(() => import('../pages/services/ai-cognitive/DataScienceAI'));
@@ -109,7 +109,7 @@ export const serviceRoutes = [
   <Route key="service-flat" path="/services/:slug" element={<ServicePage6 />} />,
 
   // AI & Cognitive (6)
-
+  <Route key="agentic-ai" path="/services/ai-cognitive/agentic-ai" element={<AgenticAI />} />,
   <Route key="ai-cognitive-computing" path="/services/ai-cognitive/ai-cognitive-computing" element={<AICognitiveComputing />} />,
   <Route key="ai-governance" path="/services/ai-cognitive/ai-governance" element={<AIGovernance />} />,
   <Route key="data-science-ai" path="/services/ai-cognitive/data-science-ai" element={<DataScienceAI />} />,

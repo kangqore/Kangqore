@@ -116,24 +116,6 @@ export function parseSchedulingRequest(input) {
     targetDate = addDays(now, parseInt(inDaysMatch[1], 10));
   }
 
-  // Explicit dates: "27th july", "july 27", "27 july"
-  if (!targetDate) {
-    const explicitDateMatch = text.match(/\b(\d{1,2})(?:st|nd|rd|th)?\s+(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b|\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\s+(\d{1,2})(?:st|nd|rd|th)?\b/);
-    if (explicitDateMatch) {
-      const day = parseInt(explicitDateMatch[1] || explicitDateMatch[4], 10);
-      const monthStr = explicitDateMatch[2] || explicitDateMatch[3];
-      const monthMap = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11, january: 0, february: 1, march: 2, april: 3, june: 5, july: 6, august: 7, september: 8, october: 9, november: 10, december: 11 };
-      const month = monthMap[monthStr];
-      const year = now.getFullYear();
-      let parsedDate = new Date(year, month, day);
-      if (parsedDate < now && (now - parsedDate) > 24 * 60 * 60 * 1000) {
-        parsedDate.setFullYear(year + 1);
-      }
-      targetDate = parsedDate;
-      type = 'exact';
-    }
-  }
-
   // ═══ 2. EXTRACT TIME ═══════════════════════════════════════════════════════
 
   // Exact time: "10:00 AM", "2pm", "3:30 pm", "10 am"

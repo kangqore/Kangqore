@@ -49,7 +49,7 @@ export const servicesData = {
     capabilityAreas: [
       {
         title: 'Autonomous Goal Execution',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-goal-execution.png',
         desc: 'Turn high-level business objectives into structured, self-adjusting execution plans that recover automatically when conditions change.',
         items: [
           'Goal Decomposition Engine: Transform high-level business objectives into structured execution plans with intelligent task sequencing, dependency mapping, and milestone tracking.',
@@ -60,7 +60,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Agent Orchestration',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-multi-agent.png',
         desc: 'Deploy specialized agent teams across every department and route work intelligently, with built-in consensus and centralized oversight.',
         items: [
           'Specialized Agent Teams: Deploy domain-specific AI agents across Finance, HR, Sales, Marketing, Operations, Customer Support, Legal, IT, and Engineering to collaborate on complex business processes.',
@@ -71,7 +71,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Memory & Knowledge',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-memory-knowledge.png',
         desc: 'Give every agent persistent, shared organizational memory — grounded in your enterprise systems and continuously improving over time.',
         items: [
           'Persistent Enterprise Memory: Maintain long-term context across conversations, workflows, projects, customers, and organizational knowledge for consistent decision-making.',
@@ -82,7 +82,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Intelligence',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-enterprise-intelligence.png',
         desc: 'Ground every recommendation in live business context and verified data — with transparent, explainable reasoning behind every decision.',
         items: [
           'Context-Aware Decision Intelligence: Understand business objectives, operational constraints, historical context, and live enterprise signals before making recommendations or taking action.',
@@ -93,7 +93,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Governance',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-governed-autonomy-backup.png',
         desc: 'Keep humans in control of every critical action with configurable approval gates, immutable audit trails, and policy-aware execution.',
         items: [
           'Human Approval Gates: Ensure critical financial, legal, compliance, and security actions require configurable human authorization before execution.',
@@ -104,7 +104,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Security',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-enterprise-security.png',
         desc: 'Protect every integration, credential, and inter-agent exchange with encryption, access controls, and continuous threat monitoring.',
         items: [
           'Secure Tool Access: Protect integrations with authenticated, encrypted, and policy-controlled access to enterprise systems and external services.',
@@ -115,7 +115,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Operations',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-enterprise-operations.png',
         desc: 'Automate complex business processes end-to-end, triggered by real events and continuously tuned for efficiency and cost.',
         items: [
           'Intelligent Workflow Automation: Automate repetitive and complex business processes while maintaining visibility, governance, and operational control.',
@@ -126,7 +126,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Integrations',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-enterprise-integrations.png',
         desc: 'Connect agents directly into the business applications, productivity tools, and data platforms your enterprise already runs on.',
         items: [
           'Business Applications: Integrate seamlessly with CRM, ERP, HRMS, ITSM, Finance, and industry-specific enterprise platforms.',
@@ -599,243 +599,16 @@ export const servicesData = {
     relatedServiceSlugs: ['agentic-ai', 'data-science-ai', 'genai-business-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1655720828018-edd2daec9349?w=800&q=80',
-    capabilitiesLabel: 'COGNITIVE COMPUTING SERVICES',
-    capabilitiesSectionTitle: 'Cognitive Computing Service',
-    capabilitiesSectionHighlight: 'Capabilities.',
-    capabilityAreas: [
-      {
-        title: 'Machine Learning Engineering',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Design, develop, and operationalise enterprise machine learning systems that transform data into predictive intelligence, automated decision-making, and continuously improving business outcomes.',
-        items: [
-          'Predictive Intelligence: Forecast customer behaviour, market trends, operational demand, and business outcomes using historical and real-time enterprise data.',
-          'Statistical Learning: Develop mathematically robust models that uncover hidden patterns, quantify uncertainty, and support evidence-based decision making.',
-          'Deep Learning Systems: Leverage advanced neural network architectures to solve complex recognition, forecasting, optimisation, and generative AI challenges.',
-          'Feature Engineering: Transform and optimise enterprise data to maximise model accuracy, reliability, and business performance.',
-          'Model Optimisation: Continuously improve model accuracy, efficiency, scalability, and inference performance across production environments.',
-          'Model Monitoring: Monitor model drift, bias, accuracy, explainability, and operational health throughout the AI lifecycle.',
-        ],
-      },
-      {
-        title: 'Computer Vision & Visual Intelligence',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Enable enterprise systems to understand, interpret, and derive actionable intelligence from images, video streams, visual documents, and spatial environments.',
-        items: [
-          'Image Intelligence: Extract structured insights from photographs, satellite imagery, scanned documents, and industrial visual assets.',
-          'Video Analytics: Analyse live and recorded video streams to detect events, monitor activities, and automate operational workflows.',
-          'Object Recognition: Identify, classify, and monitor physical objects across diverse visual environments using AI-powered detection models.',
-          'Facial Analytics: Perform face detection, verification, identification, and behavioural analysis while supporting enterprise security and compliance.',
-          'Document Intelligence: Convert unstructured visual documents into searchable, structured, and actionable enterprise information.',
-          'Scene Intelligence: Understand complete visual environments by interpreting objects, activities, relationships, and contextual information.',
-          'Visual Search: Enable intelligent image-based search and content discovery across enterprise media repositories.',
-        ],
-      },
-      {
-        title: 'Natural Language Intelligence',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Empower enterprise applications to understand, interpret, generate, and reason over human language across conversations, documents, and organisational knowledge.',
-        items: [
-          'Conversational AI: Develop intelligent virtual assistants and enterprise chatbots capable of natural, context-aware interactions.',
-          'Language Understanding: Interpret user intent, sentiment, entities, relationships, and contextual meaning across communication channels.',
-          'Speech Intelligence: Enable speech recognition, transcription, speaker identification, and voice analytics for enterprise applications.',
-          'Document Intelligence: Automatically classify, summarise, process, and extract knowledge from enterprise documents at scale.',
-          'Information Extraction: Identify entities, business facts, relationships, and critical information from unstructured textual content.',
-          'Semantic Search & Retrieval: Deliver AI-powered enterprise search that surfaces contextually relevant knowledge across distributed information sources.',
-          'Language Generation: Generate accurate reports, summaries, business communications, and contextual responses using advanced language models.',
-        ],
-      },
-      {
-        title: 'Generative AI Services',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Design, build, and deploy enterprise-grade generative AI solutions that accelerate innovation, automate knowledge work, and transform digital experiences.',
-        items: [
-          'Enterprise LLM Solutions: Build customised large language model applications aligned with enterprise knowledge and business processes.',
-          'Retrieval-Augmented Generation (RAG): Combine enterprise knowledge with foundation models to deliver accurate, secure, and context-aware AI responses.',
-          'AI Copilots: Develop intelligent copilots that assist employees with research, analysis, decision-making, and workflow automation.',
-          'AI Agent Development: Engineer autonomous AI agents capable of reasoning, planning, tool utilisation, and multi-step execution.',
-          'Multimodal AI: Develop AI systems capable of understanding and generating text, images, audio, video, and structured data.',
-          'AI Content Generation: Automate the creation of reports, proposals, marketing content, technical documentation, software code, and business communications.',
-          'Prompt Engineering: Design, evaluate, and optimise AI interactions for accuracy, consistency, reliability, and business effectiveness.',
-          'LLMOps: Manage the deployment, evaluation, monitoring, optimisation, governance, and lifecycle of enterprise language models.',
-        ],
-      },
-      {
-        title: 'Decision Intelligence',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Transform enterprise data into explainable recommendations that improve strategic, operational, and real-time business decisions.',
-        items: [
-          'Predictive Decision Support: Provide AI-driven recommendations based on predictive analytics and enterprise intelligence.',
-          'Prescriptive Analytics: Recommend optimal actions by evaluating business objectives, constraints, and available alternatives.',
-          'Scenario Simulation: Model multiple business scenarios to evaluate potential outcomes before critical decisions are made.',
-          'Optimisation Engines: Continuously optimise pricing, logistics, scheduling, inventory, resource allocation, and operational performance.',
-          'Risk Intelligence: Identify, quantify, and monitor operational, financial, regulatory, and strategic risks.',
-          'Decision Automation: Automate repeatable business decisions while maintaining governance and human oversight.',
-        ],
-      },
-      {
-        title: 'Knowledge Intelligence',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Transform enterprise knowledge into a connected, searchable, and AI-accessible intelligence layer that enhances organisational decision-making.',
-        items: [
-          'Enterprise Knowledge Graphs: Connect business entities, relationships, and organisational knowledge into intelligent graph-based systems.',
-          'Semantic Intelligence: Understand business meaning, relationships, and context beyond traditional keyword-based systems.',
-          'Ontology Engineering: Design enterprise ontologies that establish consistent business definitions and AI reasoning capabilities.',
-          'Knowledge Discovery: Identify hidden relationships, trends, and opportunities across enterprise information ecosystems.',
-          'Enterprise Search: Provide unified semantic search across structured and unstructured enterprise knowledge sources.',
-          'Contextual Intelligence: Deliver relevant knowledge based on user context, organisational relationships, and business objectives.',
-        ],
-      },
-      {
-        title: 'Autonomous & Agentic Systems',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Develop intelligent autonomous systems capable of reasoning, planning, collaborating, and executing complex enterprise workflows with minimal human intervention.',
-        items: [
-          'Autonomous Agents: Deploy AI agents capable of independently planning, executing, and adapting complex business tasks.',
-          'Multi-Agent Systems: Coordinate specialised AI agents that collaborate to solve enterprise-scale business challenges.',
-          'Agent Orchestration: Manage communication, coordination, and task distribution across multiple autonomous agents.',
-          'Cognitive Workflow Automation: Automate end-to-end enterprise workflows requiring reasoning, planning, and contextual decision-making.',
-          'Human-AI Collaboration: Enable intelligent cooperation between employees and AI agents through governed decision workflows.',
-          'Agent Governance: Monitor, secure, audit, and control autonomous agent behaviour across enterprise environments.',
-        ],
-      },
-      {
-        title: 'AI Engineering & MLOps',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Operationalise enterprise AI by building scalable infrastructure, deployment pipelines, monitoring frameworks, and production-ready AI platforms.',
-        items: [
-          'MLOps: Automate the development, deployment, monitoring, and maintenance of machine learning models.',
-          'AI Infrastructure: Design scalable compute, storage, networking, and GPU architectures supporting enterprise AI workloads.',
-          'AI Deployment Pipelines: Streamline continuous integration and continuous deployment for AI models and intelligent applications.',
-          'Model Lifecycle Management: Manage versioning, validation, approvals, deployment, rollback, and retirement of AI models.',
-          'Performance Optimisation: Improve latency, throughput, scalability, resource utilisation, and infrastructure efficiency.',
-          'AI Observability: Monitor model performance, operational health, usage patterns, costs, and production reliability.',
-        ],
-      },
-      {
-        title: 'AI Governance & Responsible AI',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Establish enterprise governance frameworks that ensure AI systems remain secure, transparent, compliant, explainable, and trustworthy throughout their lifecycle.',
-        items: [
-          'Responsible AI: Implement ethical AI principles that promote fairness, accountability, transparency, and responsible innovation.',
-          'Explainable AI: Provide transparent reasoning, confidence scoring, and interpretable AI decision-making.',
-          'AI Governance: Define enterprise policies, governance frameworks, approval workflows, and operational controls for AI systems.',
-          'AI Risk Management: Identify, assess, monitor, and mitigate operational, regulatory, and reputational AI risks.',
-          'Compliance Management: Ensure AI systems align with organisational policies and applicable regulatory requirements.',
-          'AI Security: Protect AI models, datasets, infrastructure, APIs, and inference pipelines from threats and misuse.',
-        ],
-      },
-      {
-        title: 'Extended Reality (XR) Solutions',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Create immersive digital experiences that improve engineering, workforce training, product visualisation, operational planning, and customer engagement.',
-        items: [
-          'Augmented Reality Solutions: Overlay contextual digital information onto physical environments to improve operational efficiency and user experiences.',
-          'Virtual Reality Experiences: Develop immersive virtual environments for collaboration, simulation, training, and customer engagement.',
-          'Mixed Reality Applications: Combine physical and digital environments to enable intelligent real-time interaction with enterprise systems.',
-          'Digital Twin Visualisation: Create interactive virtual representations of physical assets, facilities, and business operations for monitoring and optimisation.',
-          'Spatial Computing: Enable intelligent interaction between users, digital content, and physical environments using spatial awareness technologies.',
-          'Immersive Product Experiences: Allow customers and stakeholders to visualise, configure, and experience products before manufacturing or purchase.',
-          'Industrial Simulation: Model engineering, manufacturing, logistics, and operational environments to optimise performance while reducing cost and risk.',
-        ],
-      },
-    ],
-    whatIsEyebrow: 'What AI & Cognitive Computing services does Kangqore offer?',
     whatIsTitle: 'AI & Cognitive Computing',
     whatIsTitleLine2: 'Solutions That',
     whatIsHighlight: 'Think, Learn & Act.',
     whatIsPara2: 'Kangqore implements cognitive systems across NLP, knowledge reasoning, and adaptive learning — enabling enterprises to automate judgment-intensive decisions and surface insights from unstructured information at scale.',
-    bannerBrandDesc: 'Our enterprise AI & cognitive computing product & platform',
-    downloadAsset: '/assets/downloads/kangqore-cognitive-computing-playbook.pdf',
-    comparisonTable: {
-      colA: 'Traditional Automation',
-      colB: 'Cognitive Computing & AI',
-      rows: [
-        { dimension: 'Autonomy',    before: 'Rule-dependent, semi-autonomous — requires human instruction at every branch.', after: 'Fully autonomous reasoning — perceives context, evaluates goals, and acts without prompting.' },
-        { dimension: 'Workflow',    before: 'Linear and predefined — breaks on edge cases outside the script.', after: 'Multi-step, non-linear, self-correcting — adapts when conditions change.' },
-        { dimension: 'Learning',    before: 'Static logic — must be manually reprogrammed to handle new scenarios.', after: 'Continuous learning — learns from execution loops and improves with every cycle.' },
-        { dimension: 'Integration', before: 'Siloed connectors — isolated databases, manual reports, and fragmented analytics.', after: 'Multi-system orchestration — unifies knowledge across ERP, CRM, and enterprise APIs.' },
-        { dimension: 'Outcomes',    before: 'Reactive task reduction — reduces effort on known tasks.', after: 'Goal-driven business outcomes — transforms enterprise data into autonomous execution.' },
-      ],
-    },
-    architectureNodes: [
-      {
-        title: 'Perception Layer',
-        icon: 'Search',
-        description: 'Systems ingest and interpret multi-modal enterprise context — structured data, documents, vision, and real-time event streams.',
-        features: ['RAG Integration', 'API Connectors', 'Real-time Event Streams'],
-      },
-      {
-        title: 'Cognitive Engine',
-        icon: 'BrainCircuit',
-        description: 'LLM & neural reasoning for goal decomposition, multi-step planning, semantic search, and self-correction when outcomes deviate.',
-        features: ['Multi-step Planning', 'Memory Management', 'Self-Correction', 'Cognitive Reasoning'],
-      },
-      {
-        title: 'Action & Execution',
-        icon: 'Zap',
-        description: 'Cognitive agents autonomously execute tasks across CRM, ERP, and internal systems — writing to systems and triggering workflows.',
-        features: ['Function Calling', 'Workflow Automation', 'System Write Access'],
-      },
-      {
-        title: 'Governance Core',
-        icon: 'Shield',
-        description: 'Strict oversight, explainability, ethical boundaries, and policy enforcement baked in at the architecture level.',
-        features: ['Immutable Audit Logs', 'RBAC Controls', 'Human-in-the-Loop'],
-      },
+    businessMetrics: [
+      { title: 'Comprehension Accuracy', desc: 'Improvement in unstructured data comprehension using cognitive NLP and enterprise reasoning engines.', value: '87', suffix: '%', metricLabel: 'Comprehension Accuracy', icon: 'BrainCircuit' },
+      { title: 'Insights Speed',          desc: 'Faster time to insight from enterprise knowledge bases using cognitive search and semantic retrieval.',  value: '4',  suffix: 'x',   metricLabel: 'Faster Insights',        icon: 'Zap'         },
+      { title: 'Decision Automation',     desc: 'Complex decisions automated through cognitive reasoning frameworks without manual human review.',          value: '65', suffix: '%', metricLabel: 'Decisions Automated',    icon: 'Target'      },
+      { title: 'Live Deployments',        desc: 'Enterprise cognitive systems deployed across financial services, healthcare, and manufacturing sectors.',   value: '30', suffix: '+', metricLabel: 'Deployments',            icon: 'Layers'      },
     ],
-    industryUseCases: [
-      {
-        industry: 'Banking & Financial Services',
-        headline: 'Compliance, fraud, and risk handled with cognitive precision.',
-        agents: ['Compliance monitoring agent', 'Fraud investigation agent', 'Credit decisioning agent'],
-      },
-      {
-        industry: 'Healthcare',
-        headline: 'Clinical workflows that move at the speed of care.',
-        agents: ['Patient triage agent', 'Prior authorization agent', 'Clinical data extraction agent'],
-      },
-      {
-        industry: 'Manufacturing',
-        headline: 'Supply chains and industrial operations that self-optimise.',
-        agents: ['Supply chain rerouting agent', 'Predictive maintenance agent', 'Vendor onboarding agent'],
-      },
-      {
-        industry: 'Retail & Consumer',
-        headline: 'Personalisation and demand intelligence at scale.',
-        agents: ['Conversational shopping agent', 'Personalized campaign agent', 'Demand forecasting agent'],
-      },
-      {
-        industry: 'IT & Infrastructure',
-        headline: 'Incidents resolved before the ticket is raised.',
-        agents: ['Incident triage agent', 'Self-service IT support agent', 'DevOps remediation agent'],
-      },
-      {
-        industry: 'EdTech',
-        headline: 'Learning experiences that adapt to every student.',
-        agents: ['Personalized learning agent', 'Automated grading agent', 'Administrative compliance agent'],
-      },
-    ],
-    servicePackages: [
-      { name: 'Strategy & Audit', description: 'Map your highest-value cognitive automation opportunities. Baseline current state, identify targets, and define a prioritised roadmap.', duration: '2–3 weeks', tier: 'Advisory' },
-      { name: 'Cognitive Pod', description: 'Rapid delivery of one targeted production cognitive system — scoped, built, tested, and live. The fastest way to prove cognitive ROI.', duration: '8 weeks', tier: 'Pilot' },
-      { name: 'Platform Build', description: 'Design and engineer a scalable cognitive platform integrated into your ERP, CRM, and data systems with full governance architecture.', duration: '16–24 weeks', tier: 'Platform' },
-      { name: 'Governed Deployment', description: 'Monitored production rollout with HITL dashboards, immutable audit trails, explainability layers, and compliance validation at every step.', duration: 'Ongoing', tier: 'Managed' },
-      { name: 'Scale & Optimise', description: 'Continuous performance tuning, drift detection, and capability expansion across cognitive networks — so your AI compounds, not stagnates.', duration: 'Ongoing', tier: 'Enterprise' },
-    ],
-    outcomeCard: {
-      metric: '87%',
-      metricLabel: 'Improvement in unstructured data comprehension',
-      industry: 'Global Financial Services',
-      problem: 'Risk and compliance teams spent 12,000+ hours annually manually reading unstructured regulatory filings, cross-border contracts, and compliance disclosures — creating severe decision latency and missed operational risk flags.',
-      outcome: 'Kangqore implemented an enterprise cognitive reasoning engine using multi-modal NLP, semantic search, and knowledge graph extraction — enabling automated compliance analysis with 87% comprehension accuracy and 4x faster insights.',
-    },
-    outcomeCard2: {
-      metric: '65%',
-      metricLabel: 'Complex decision automation rate',
-      industry: 'Healthcare & Clinical Research',
-      problem: 'Clinical research data extraction and patient eligibility screening required doctors to manually review dense EHR notes and protocol documents across multiple hospital silos.',
-      outcome: 'A cognitive decision intelligence platform parsed unstructured clinical records in real-time, matching eligible patients to trial protocols autonomously — accelerating clinical trial candidate identification by 65%.',
-    },
   },
 
   'data-science-ai': {

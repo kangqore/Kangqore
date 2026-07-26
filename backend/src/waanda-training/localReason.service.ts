@@ -48,7 +48,7 @@ export interface LocalModelStatus {
 
 export class LocalReasonService {
   // MLX server (mlx_lm.server — OpenAI-compatible)
-  private static readonly MLX_URL   = process.env.KIMMP_MLX_SERVER_URL ?? 'http://127.0.0.1:11435'
+  private static readonly MLX_URL   = process.env.KIMMP_MLX_SERVER_URL ?? 'http://localhost:11435'
   private static readonly MLX_MODEL = process.env.KIMMP_MLX_MODEL ?? `${process.env.HOME}/models/WAANDAx/fused`
 
   // Ollama fallback

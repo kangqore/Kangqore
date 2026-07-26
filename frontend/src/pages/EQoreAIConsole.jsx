@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, 
   Mic, MicOff, Menu, History, Plus, LogOut, ArrowLeft, ShieldAlert,
-  Globe, Laptop, Sparkles, User, LogIn, ChevronLeft, Trash2, Minimize2, Maximize2
+  Globe, Laptop, Sparkles, User, LogIn, ChevronLeft, Trash2
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useConcierge, CONCIERGE_SUGGESTED_PROMPTS, stripSystemMetadata } from '../hooks/useConcierge';
+import { useConcierge, CONCIERGE_SUGGESTED_PROMPTS } from '../hooks/useConcierge';
 import { useAuth } from '../context/AuthContext';
 import CitationBadge from '../components/concierge/CitationBadge';
 import { parseSchedulingRequest } from '../hooks/nlpSchedulingParser';
@@ -13,7 +13,7 @@ import { parseSchedulingRequest } from '../hooks/nlpSchedulingParser';
 // Helper to sanitize markdown bold & links for TTS
 function cleanTextForSpeech(text) {
   if (!text) return '';
-  return stripSystemMetadata(text)
+  return text
     .replace(/\[CHUNK:[a-zA-Z0-9_\-]+\]/g, '') 
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') 
     .replace(/\*\*(.*?)\*\*/g, '$1') 
@@ -25,7 +25,7 @@ function cleanTextForSpeech(text) {
 // Format markdown links & bold text beautifully for premium output
 function renderFormattedText(text) {
   if (!text) return text;
-  const cleanText = stripSystemMetadata(text).replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '');
+  const cleanText = text.replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '');
   const boldParts = cleanText.split(/(\*\*.*?\*\*)/g);
   
   return boldParts.flatMap((bPart, j) => {
@@ -129,12 +129,11 @@ const EQoreAIConsole = () => {
     const firstUser = messages.find(m => m.role === 'user');
     if (!firstUser) return;
     
-    const cleanText = stripSystemMetadata(firstUser.content);
     setHistoryList((prev) => {
       const exists = prev.find(item => item.id === conversationId);
       if (exists) return prev;
       
-      const title = cleanText.slice(0, 35) + (cleanText.length > 35 ? '...' : '');
+      const title = firstUser.content.slice(0, 35) + (firstUser.content.length > 35 ? '...' : '');
       const newList = [{ id: conversationId, title, createdAt: new Date().toISOString() }, ...prev];
       localStorage.setItem('eqore.concierge.history', JSON.stringify(newList));
       return newList;
@@ -282,7 +281,8 @@ const EQoreAIConsole = () => {
       
       {/* Ambient Glow Background */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center">
-        <div className="w-[80vw] h-[80vh] rounded-full bg-cyan-950/20 blur-[140px]"></div>
+        <div className="w-[80vw] h-[80vh] rounded-full bg-cyan-900/10 blur-[120px] mix-blend-screen animate-[pulse_10s_ease-in-out_infinite]"></div>
+        <div className="absolute w-[50vw] h-[50vh] right-0 top-0 rounded-full bg-blue-900/10 blur-[100px] mix-blend-screen animate-[pulse_15s_ease-in-out_infinite_reverse]"></div>
       </div>
 
       {/* LEFT COLLAPSIBLE SIDEBAR */}
@@ -313,7 +313,7 @@ const EQoreAIConsole = () => {
         <div className="p-3">
           <button 
             onClick={reset}
-            className="w-full py-2 px-2 text-brand-cyan hover:text-white font-medium text-xs flex items-center justify-start gap-2 transition-colors cursor-pointer"
+            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-blue to-brand-cyan text-white font-semibold text-sm hover:shadow-[0_0_20px_rgba(37,100,234,0.3)] flex items-center justify-center gap-2 transition duration-300"
           >
             <Plus className="w-4 h-4" />
             <span>New Chat Session</span>
@@ -331,25 +331,40 @@ const EQoreAIConsole = () => {
             </div>
           ) : (
             historyList.map((item) => (
-              <div key={item.id} className="relative group mb-1">
+              <div key={item.id} className="relative group [perspective:1000px] mb-2">
                 <div 
                   onClick={() => loadConversation(item.id)}
-                  className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors text-xs ${
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 ease-out group-hover:[transform:rotateX(10deg)_rotateY(-10deg)_scale(1.02)] group-hover:shadow-[0_10px_20px_rgba(34,211,238,0.15)] text-xs border ${
                     conversationId === item.id 
-                      ? 'text-brand-cyan font-bold bg-white/5' 
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-brand-blue/10 border-brand-blue/30 text-white font-medium' 
+                      : 'border-cyan-400/10 bg-white/5 backdrop-blur-sm text-gray-400 hover:border-cyan-400/30 hover:text-white'
                   }`}
+                  style={{ transformStyle: 'preserve-3d' }}
                 >
-                  <div className="flex items-center gap-2 truncate pr-2">
+                  <div className="flex items-center gap-2 truncate pr-2" style={{ transform: 'translateZ(10px)' }}>
                     <History className="w-3.5 h-3.5 flex-shrink-0 text-brand-cyan" />
                     <span className="truncate">{item.title}</span>
                   </div>
                   <button 
                     onClick={(e) => handleDeleteHistory(e, item.id)}
                     className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-white/10 text-gray-400 hover:text-rose-400 transition"
+                    style={{ transform: 'translateZ(10px)' }}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
+                </div>
+                
+                {/* Floating Pre-Cog Tooltip */}
+                <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 w-48 p-3 rounded-lg bg-black/90 backdrop-blur-xl border border-cyan-400/30 text-[10px] text-cyan-200 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 shadow-[0_0_30px_rgba(34,211,238,0.2)] transform translate-x-[-10px] group-hover:translate-x-0 hidden md:block">
+                  <div className="font-bold text-white mb-1 uppercase tracking-widest text-[9px] flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-cyan-400" /> Pre-Cog Analysis
+                  </div>
+                  <div className="text-gray-400 leading-relaxed truncate">
+                    "{item.title}"
+                  </div>
+                  <div className="mt-2 text-cyan-500/50 italic text-[8px]">
+                    Status: Archived • Entropy: Minimal
+                  </div>
                 </div>
               </div>
             ))
@@ -360,8 +375,8 @@ const EQoreAIConsole = () => {
         <div className="p-4 border-t border-white/5 bg-[#080b13]">
           
           {/* User state details */}
-          <div className="flex items-center gap-3 mb-3 px-1 py-1">
-            <div className="w-8 h-8 rounded-full bg-brand-blue/20 flex items-center justify-center text-brand-cyan text-sm font-semibold shrink-0">
+          <div className="flex items-center gap-3 mb-4 p-2 rounded-xl bg-white/5 border border-white/5">
+            <div className="w-8 h-8 rounded-full bg-brand-blue/20 flex items-center justify-center text-brand-cyan text-sm font-semibold">
               {user ? user.name.slice(0, 2).toUpperCase() : <User className="w-4 h-4" />}
             </div>
             <div className="truncate flex-1">
@@ -384,15 +399,15 @@ const EQoreAIConsole = () => {
             {!user ? (
               <button 
                 onClick={() => window.dispatchEvent(new CustomEvent('show-auth-modal', { detail: { tab: 'signin' } }))}
-                className="py-1.5 px-2 text-brand-cyan hover:text-white text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2 px-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5"
               >
-                <LogIn className="w-3.5 h-3.5" />
+                <LogIn className="w-3.5 h-3.5 text-brand-cyan" />
                 <span>Link Account / Sign In</span>
               </button>
             ) : (
               <button 
                 onClick={logout}
-                className="py-1.5 px-2 text-rose-400 hover:text-rose-300 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2 px-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Sign Out</span>
@@ -401,10 +416,10 @@ const EQoreAIConsole = () => {
             
             <Link 
               to="/" 
-              className="py-1.5 px-2 text-gray-400 hover:text-white text-xs font-medium transition-colors flex items-center justify-center gap-1.5"
+              className="py-2 px-3 bg-white/5 hover:bg-white/10 text-gray-300 border border-white/5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back</span>
+              <span>Back to main website</span>
             </Link>
           </div>
         </div>
@@ -425,6 +440,31 @@ const EQoreAIConsole = () => {
               </button>
             )}
 
+            {/* macOS Circular Controls for Brand Continuity */}
+            <div className="flex items-center gap-1.5 mr-4 relative z-20">
+              <button 
+                onClick={handleClose}
+                className="w-3.5 h-3.5 rounded-full bg-pink-500 hover:bg-pink-400 transition-all shadow-[0_0_8px_rgba(236,72,153,0.5)] flex items-center justify-center relative group/btn cursor-pointer" 
+                title="Close (Return to previous page)"
+              >
+                <X className="w-2 h-2 text-black/80 opacity-80 hover:opacity-100 transition-opacity absolute pointer-events-none font-bold" strokeWidth={3.5} />
+              </button>
+              <button 
+                onClick={handleMinimize}
+                className="w-3.5 h-3.5 rounded-full bg-purple-500 hover:bg-purple-400 transition-all shadow-[0_0_8px_rgba(168,85,247,0.5)] flex items-center justify-center relative group/btn cursor-pointer" 
+                title="Minimize (Back to normal page floating chat)"
+              >
+                <div className="w-1.5 h-0.5 bg-black/80 opacity-85 hover:opacity-100 transition-opacity absolute rounded-full pointer-events-none font-bold" />
+              </button>
+              <button 
+                disabled
+                className="w-3.5 h-3.5 rounded-full bg-blue-500/20 shadow-none cursor-not-allowed flex items-center justify-center relative opacity-45" 
+                title="Maximize (Already full-screen)"
+              >
+                <Plus className="w-2 h-2 text-blue-400/40 absolute pointer-events-none font-bold" strokeWidth={3.5} />
+              </button>
+            </div>
+
             <div className="flex items-center gap-3">
               {/* Premium eQORE Avatar with glowing online status */}
               <div className="relative shrink-0">
@@ -440,20 +480,8 @@ const EQoreAIConsole = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Voice Output Toggle */}
-            <button
-              onClick={() => {
-                const newState = !isVoiceEnabled;
-                setIsVoiceEnabled(newState);
-                if (!newState && 'speechSynthesis' in window) {
-                  window.speechSynthesis.cancel();
-                }
-              }}
-              className={`p-2 rounded-xl transition-colors ${isVoiceEnabled ? 'bg-cyan-400/20 text-cyan-400 border border-cyan-400/30' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white'}`}
-              title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
-            >
-              {isVoiceEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            </button>
+            
+            {/* Audio Voice Output Toggles Removed as per User Request */}
 
             {/* Reset chat button */}
             <button 
@@ -462,24 +490,6 @@ const EQoreAIConsole = () => {
               title="Clear Active Chat Session"
             >
               <RefreshCw className="w-4 h-4" />
-            </button>
-
-            {/* Minimize / Back to floating chat button */}
-            <button
-              onClick={handleMinimize}
-              className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-gray-400 hover:text-white transition flex items-center justify-center cursor-pointer"
-              title="Minimize (Return to floating chat window)"
-            >
-              <Minimize2 className="w-4 h-4 text-white/80" />
-            </button>
-
-            {/* Close / Return to site button */}
-            <button
-              onClick={handleClose}
-              className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-gray-400 hover:text-white transition flex items-center justify-center cursor-pointer"
-              title="Close Console"
-            >
-              <X className="w-4 h-4 text-white/80" />
             </button>
           </div>
         </header>
@@ -550,13 +560,26 @@ const EQoreAIConsole = () => {
                 );
               })}
 
-              {/* Clean Streaming Indicator */}
+              {/* Premium Skeleton Streaming Indicator */}
               {streaming && (
-                <div className="flex gap-3 items-center text-xs text-gray-400 pl-1">
-                  <div className="w-7 h-7 rounded-full bg-brand-blue/20 border border-brand-cyan/30 flex items-center justify-center">
-                    <Sparkles className="w-3.5 h-3.5 text-brand-cyan" />
+                <div className="flex gap-4 justify-start">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-blue to-brand-cyan flex-shrink-0 flex items-center justify-center animate-[spin_4s_linear_infinite]">
+                    <Sparkles className="w-4 h-4 text-white" />
                   </div>
-                  <span className="text-gray-400 font-medium">eQORE is processing...</span>
+                  <div className="p-4 rounded-3xl bg-[#0f1320]/60 border border-white/5 rounded-tl-sm backdrop-blur-2xl shadow-cyan-900/10 w-64">
+                    <div className="animate-pulse flex space-x-4">
+                      <div className="flex-1 space-y-3 py-1">
+                        <div className="h-2 bg-cyan-400/20 rounded"></div>
+                        <div className="space-y-2">
+                          <div className="grid grid-cols-3 gap-2">
+                            <div className="h-2 bg-brand-blue/20 rounded col-span-2"></div>
+                            <div className="h-2 bg-brand-blue/20 rounded col-span-1"></div>
+                          </div>
+                          <div className="h-2 bg-cyan-400/20 rounded w-4/5"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -584,6 +607,11 @@ const EQoreAIConsole = () => {
         }`}>
           <div className="max-w-4xl mx-auto pointer-events-auto w-full">
             <form onSubmit={handleSend} className="relative flex flex-col group bg-[#111622]/80 backdrop-blur-3xl border border-white/10 focus-within:border-cyan-400/50 shadow-2xl shadow-cyan-900/20 rounded-2xl overflow-hidden transition-all duration-300">
+              
+              {/* Animated streaming border glow */}
+              {streaming && (
+                <div className="absolute -inset-[1.5px] bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-blue opacity-70 blur-sm animate-[pulse_2s_ease-in-out_infinite]"></div>
+              )}
 
               <input 
                 type="text"

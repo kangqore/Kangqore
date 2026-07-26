@@ -93,7 +93,7 @@ const Footer = () => {
       <div style={{ maxWidth: 1150, margin: '0 auto', display: 'grid', gridTemplateColumns: '350px 1fr', gap: 16, alignItems: 'stretch' }} className="footer-grid-wrapper">
 
         {/* LEFT CARD — Video Background */}
-        <div style={{ position: 'relative', minHeight: 420, borderRadius: 28, padding: 32, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.12)', background: '#111214', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div style={{ position: 'relative', minHeight: 420, borderRadius: 28, padding: 32, overflow: 'hidden', boxShadow: '0 12px 40px rgba(37,100,234,0.25)', background: '#1e4fc0', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <video autoPlay muted loop playsInline preload="auto" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, pointerEvents: 'none' }}>
             <source src="/videos/hero-bg.mp4" type="video/mp4" />
           </video>
@@ -121,6 +121,17 @@ const Footer = () => {
 
         {/* RIGHT CARD — Navigation */}
         <div className="bg-[#f0f1f5] dark:bg-[#0a0a0c] footer-right-card" style={{ borderRadius: 28, padding: 40, overflow: 'visible', boxShadow: '0 4px 20px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative' }}>
+
+          {/* Floating Badge */}
+          <div style={{ position: 'absolute', top: -36, right: 40, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }} className="footer-lucky-badge">
+            <div style={{ width: 96, height: 96, borderRadius: 22, transform: 'rotate(-10deg)', background: 'linear-gradient(135deg, #5b9ffb 0%, #1e5dd7 55%, #1448be 100%)', boxShadow: 'inset 3px 3px 8px rgba(255,255,255,0.35), inset -3px -3px 12px rgba(0,0,0,0.18), 8px 14px 28px rgba(20,72,200,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+              <img src="/assets/kangqore-icon-white.png" alt="Kangqore" style={{ width: '75px', height: '75px', objectFit: 'contain', transform: 'rotate(10deg)' }} />
+            </div>
+            <div style={{ display: 'flex', gap: 6, alignItems: 'center', transform: 'rotate(-4deg)', marginTop: 4 }}>
+              <svg viewBox="0 0 24 24" style={{ width: 22, height: 22, color: '#9ca3af' }}><path d="M3 20 C 6 14, 10 9, 18 5" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M18 5 L 12 5" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M18 5 L 18 11" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              <span style={{ fontFamily: "'Caveat', cursive", fontSize: 20, fontWeight: 600, color: '#9ca3af', whiteSpace: 'nowrap' }}>Let's connect!</span>
+            </div>
+          </div>
 
           {/* Nav Columns */}
           <div style={{ display: 'flex', gap: 28, paddingTop: 8, flexWrap: 'wrap' }} className="footer-nav-cols">
@@ -213,6 +224,8 @@ const Footer = () => {
           .footer-bottom-row { flex-direction: column !important; align-items: flex-start !important; }
           .footer-subscribe-form { width: 100% !important; }
           .footer-subscribe-block { width: 100%; }
+          .footer-lucky-badge { right: 12px !important; top: -28px !important; }
+          .footer-lucky-badge > div:first-child { width: 72px !important; height: 72px !important; }
         }
       `}</style>
     </footer>

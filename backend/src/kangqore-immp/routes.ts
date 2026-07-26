@@ -136,7 +136,7 @@ kangqoreImmpRoutes.post('/waandax/infer', requireAuth, requireRole(['ADMIN']), a
   const { prompt } = req.body as { prompt?: string }
   if (!prompt?.trim()) return res.status(400).json({ error: 'prompt required' })
 
-  const WAANDAX_BASE  = process.env.WAANDAX_URL   || 'http://127.0.0.1:11435'
+  const WAANDAX_BASE  = process.env.WAANDAX_URL   || 'http://localhost:11435'
   const WAANDAX_MODEL = process.env.WAANDAX_MODEL  || 'mlx-community/Llama-3.2-3B-Instruct-4bit'
   const t0 = Date.now()
 

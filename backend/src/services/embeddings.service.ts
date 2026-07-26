@@ -48,9 +48,6 @@ async function callVoyage(
   });
 
   if (res.status === 429 && attempt < 5) {
-    if (inputType === 'query') {
-      throw new Error('Voyage API 429 Rate Limit on query - failing fast to prevent chat hang');
-    }
     const retryAfter = parseInt(res.headers.get('retry-after') || '0', 10);
     // Free tier is 3 RPM / 10K TPM — wait at least 25s, exponentially back off if it keeps failing.
     const waitMs = Math.max(retryAfter * 1000, 25000) * Math.pow(1.4, attempt);
