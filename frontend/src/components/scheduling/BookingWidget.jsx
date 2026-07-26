@@ -281,15 +281,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                     </div>
                   ))}
                 </div>
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shadow-lg shadow-brand-blue/20 overflow-hidden">
-                  <img 
-                    src="/assets/kangqore-icon-white.png" 
-                    alt="Kangqore Executive" 
-                    className="w-8 h-8 object-contain"
-                  />
-                </div>
-              )}
+              ) : null}
               
               <div>
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
@@ -377,6 +369,18 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                   Select Date
                 </h3>
                 <div className="day-picker-container scale-110 origin-top-left">
+                  <style>{`
+                    .day-picker-container .rdp-day_selected,
+                    .day-picker-container .rdp-day_selected:focus,
+                    .day-picker-container .rdp-day_selected:hover,
+                    .day-picker-container .rdp-day_button:focus,
+                    .day-picker-container .rdp-selected .rdp-day_button {
+                      border: none !important;
+                      outline: none !important;
+                      box-shadow: none !important;
+                      background-color: transparent !important;
+                    }
+                  `}</style>
                   <DayPicker
                     mode="single"
                     selected={selectedDate}
@@ -385,6 +389,17 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                     styles={{
                       caption: { color: '#2564ea', fontWeight: 'bold' },
                       head_cell: { color: '#94a3b8', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase' }
+                    }}
+                    modifiersStyles={{
+                      selected: {
+                        background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)',
+                        color: 'white',
+                        fontWeight: 'bold',
+                        border: 'none',
+                        outline: 'none',
+                        boxShadow: 'none',
+                        borderRadius: '50%'
+                      }
                     }}
                   />
                 </div>
@@ -395,7 +410,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                   {format(selectedDate, 'EEEE, MMM do')}
                 </h3>
                 
-                <div className="flex-1 overflow-y-auto pr-2 space-y-2 max-h-[400px] scrollbar-thin scrollbar-thumb-gray-200">
+                <div className="flex-1 overflow-y-auto p-2 -m-2 pr-4 space-y-2 max-h-[400px] scrollbar-thin scrollbar-thumb-gray-200">
                   {loadingSlots ? (
                     <div className="flex items-center justify-center py-20">
                       <Loader2 className="w-6 h-6 text-brand-blue animate-spin" />
@@ -407,9 +422,10 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
                         onClick={() => setSelectedSlot(slot)}
                         className={`w-full py-3 px-4 rounded-xl text-sm font-bold transition-all border ${
                           selectedSlot === slot 
-                          ? 'bg-brand-blue text-white border-brand-blue shadow-lg shadow-brand-blue/30 scale-[1.02]' 
+                          ? 'text-white shadow-lg shadow-brand-blue/30 scale-[1.02]' 
                           : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 text-brand-blue hover:border-brand-blue hover:bg-blue-50'
                         }`}
+                        style={selectedSlot === slot ? { background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)', border: 'none' } : {}}
                       >
                         {format(new Date(slot.startTime), 'h:mm a')}
                       </button>
@@ -460,7 +476,7 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Almost there!</h2>
               <p className="text-gray-500 mb-8">Confirm your details to finalize the booking.</p>
 
-              <form onSubmit={handleSubmit} className="space-y-6 flex-1 overflow-y-auto pr-2">
+              <form onSubmit={handleSubmit} className="space-y-6 flex-1 overflow-y-auto p-2 -m-2 pr-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>

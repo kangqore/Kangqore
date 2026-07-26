@@ -252,7 +252,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
           </p>
         </div>
 
-        <div className={`group relative rounded-2xl overflow-hidden w-full shadow-2xl hover:shadow-[0_20px_40px_rgba(37,100,234,0.4)] transition-all duration-500 hover:-translate-y-1 ${inverted ? 'border border-white/10' : 'border border-white/[0.05] bg-[#11131a]'}`}>
+        <div className={`group relative rounded-2xl overflow-hidden w-full transition-all duration-500 hover:-translate-y-1 ${inverted ? 'border border-white/10' : 'border border-white/[0.05] bg-[#11131a]'}`}>
           <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl pointer-events-none" style={{ background: inverted ? 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' : 'linear-gradient(145deg, #181a20 0%, #000000 100%)' }}>
             {/* Sharp diagonal gloss reflection */}
             <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(125deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 30%, rgba(255,255,255,0) 50%)' }} />

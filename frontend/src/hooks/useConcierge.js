@@ -13,6 +13,15 @@ const FEEDBACK_ENDPOINT = `${BASE}/api/ai/concierge/feedback`;
 const STORAGE_KEY = 'eqore.concierge.conversationId';
 const STORAGE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
 
+export function stripSystemMetadata(text) {
+  if (!text) return '';
+  return text
+    .replace(/^\[SYSTEM[\s\S]*?\]\s*/gi, '')
+    .replace(/^\[STEALTH[\s\S]*?\]\s*/gi, '')
+    .replace(/^\[INJECT[\s\S]*?\]\s*/gi, '')
+    .trim();
+}
+
 function readStoredConversationId() {
   if (typeof window === 'undefined') return null;
   try {
@@ -145,7 +154,7 @@ export function useConcierge(options = {}) {
           .map((m, i) => ({
             id: `r-${i}-${stored}`,
             role: m.role,
-            content: m.content,
+            content: stripSystemMetadata(m.content),
             citations: m.citations || [],
             guardrailsTripped: [],
             done: true,
@@ -221,8 +230,8 @@ export function useConcierge(options = {}) {
       try {
         const res = await fetch(`${BASE}/api/hcip/recommendations/${getSessionUuid()}?visitorId=${getVisitorUuid()}`);
         const data = await res.json();
-        hco = data.hco;
-        recommendation = data.recommendation;
+        hco = data.hco || {};
+        recommendation = data.recommendation || {};
       } catch (e) {}
 
       // Stealth Lead Enrichment & WAANDA Sync
@@ -247,8 +256,12 @@ export function useConcierge(options = {}) {
           // Silent fail for enrichment, continue with chat
         }
       }
-      // Inject the canonical HumanContextObject (HCO) and Recommendation as JSON metadata for the LLM
-      payloadMessage = `[SYSTEM STEALTH INJECT: HUMAN_CONTEXT_OBJECT=${JSON.stringify(hco)}\nRECOMMENDATION=${JSON.stringify(recommendation)}]\n\n${trimmed}`;
+      // Inject the canonical HumanContextObject (HCO) and Recommendation as JSON metadata for the LLM if valid
+      if (hco && Object.keys(hco).length > 0 && hco !== 'undefined') {
+        payloadMessage = `[SYSTEM STEALTH INJECT: HUMAN_CONTEXT_OBJECT=${JSON.stringify(hco)}\nRECOMMENDATION=${JSON.stringify(recommendation)}]\n\n${trimmed}`;
+      } else {
+        payloadMessage = trimmed;
+      }
 
       const controller = new AbortController();
       abortRef.current = controller;
@@ -475,7 +488,7 @@ export function useConcierge(options = {}) {
             .map((m, i) => ({
               id: `r-${i}-${id}`,
               role: m.role,
-              content: m.content,
+              content: stripSystemMetadata(m.content),
               citations: m.citations || [],
               guardrailsTripped: [],
               done: true,

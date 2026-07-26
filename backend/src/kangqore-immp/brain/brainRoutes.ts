@@ -1,9 +1,10 @@
 // ---------------------------------------------------------------------------
 // WAANDA Brain routes — mounted at /api/admin/kangqore-immp/brain
 //
-//   GET  /graph      → { nodes, links, count }  (node.id === index in nodes[])
-//   POST /chat       → { answer, nodes: number[] }  butler persona, session memory
-//   POST /remember   → { answer, node, relatedId, count }  writes captures/*.md
+//   GET    /graph              → { nodes, links, count }  (node.id === index in nodes[])
+//   POST   /chat               → { answer, nodes: number[] }  butler persona, session memory
+//   POST   /remember           → { answer, node, relatedId, count }  writes captures/*.md
+//   DELETE /captures/:slug     → fresh { nodes, links, count }  removes a captures/*.md file
 //
 // All LLM calls go through kimmpLLMRouter server-side; the API key is never
 // exposed to the browser or any served asset.
@@ -14,7 +15,7 @@ import logger from '../../utils/logger'
 import { requireAuth, requireRole } from '../../middleware/rbac'
 import { sonnet, haiku, textOf } from '../llm/kimmpLLMRouter'
 import {
-  loadBrain, searchNotes, addCapture, getSession, pushSession,
+  loadBrain, searchNotes, addCapture, deleteCapture, getSession, pushSession,
 } from './brainService'
 
 export const brainRoutes = Router()
@@ -126,5 +127,22 @@ brainRoutes.post('/remember', async (req, res) => {
   } catch (err: any) {
     logger.error('[Brain] remember failed', err)
     res.status(500).json({ error: 'remember failed' })
+  }
+})
+
+// Deletes a capture note (never a curated one — deleteCapture only ever
+// touches files inside captures/) and returns the fresh, correctly
+// re-indexed graph so the frontend can rebuild without breaking the
+// numeric-id === array-index contract.
+brainRoutes.delete('/captures/:slug', async (req, res) => {
+  const { slug } = req.params
+  try {
+    const ok = await deleteCapture(slug)
+    if (!ok) return res.status(404).json({ error: 'capture not found' })
+    const graph = await loadBrain(true)
+    res.json(graph)
+  } catch (err: any) {
+    logger.error('[Brain] delete capture failed', err)
+    res.status(500).json({ error: 'delete failed' })
   }
 })
