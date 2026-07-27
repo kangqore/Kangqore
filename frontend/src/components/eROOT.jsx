@@ -274,7 +274,7 @@ const EROOT = () => {
     <div
       className="fixed bottom-6 z-[99998] w-[1064px] h-[114px] flex"
       style={{
-        right: (isHomepage && isInHero) ? 'calc(2rem + 3.4cm)' : '2rem',
+        right: (isHomepage && isInHero) ? 'calc(2rem + 1.4cm)' : '2rem',
         transition: 'right 0.5s ease-in-out',
         animation: closing
           ? 'feedbackSlideOut 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards'
