@@ -957,6 +957,12 @@ export const servicesData = {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Automated policy enforcement, real-time evidence generation, continuous SLA monitoring, and instant audit readiness.',
         items: ['Automated Policy Enforcement', 'Real-Time Evidence Packaging', 'SLA & Observability Monitoring', 'Continuous Audit Readiness']
+      },
+      {
+        title: 'Human-in-the-Loop Oversight & Escalation Controls',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Configurable human approval gates, real-time exception escalation, kill-switch mechanisms, and interactive governance dashboards.',
+        items: ['Human Approval Workflows', 'Real-Time Exception Escalation', 'Automated Kill-Switch Safeguards', 'Interactive Governance Dashboards']
       }
     ],
     whatIsEyebrow: 'What AI Governance services does Kangqore offer?',
