@@ -1813,7 +1813,7 @@ import EqoreShowSection from '../components/podcast/EqoreShowSection';
 
 
 // ============================================================================
-// CAREERS SECTION — PINNED EXPANSION & TEXT CROSS-FADE (EXACT OPTION 1 ARCHITECTURE)
+// CAREERS SECTION — PINNED EXPANSION & TEXT CROSS-FADE
 // ============================================================================
 const CareersSection = () => {
   const { t } = useTranslation();
@@ -1869,24 +1869,27 @@ const CareersSection = () => {
             }}
             className="w-full lg:w-1/2 text-white space-y-6 z-20 pointer-events-auto"
           >
-            <span className="text-xs uppercase tracking-widest text-gray-400 font-mono">
-              {t('careers_section.badge', 'CAREERS')}
-            </span>
+            <div className="inline-flex items-center gap-2 mb-2">
+              <span className="px-3 py-1 text-xs font-bold tracking-wider text-white uppercase bg-brand-blue/20 border border-brand-blue/30 rounded-full shadow-[0_0_15px_rgba(37,100,234,0.3)]">
+                {t('careers_section.badge', 'Careers')}
+              </span>
+            </div>
             
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-white tracking-tight">
-              {t('careers_section.heading', "Build a career that's as exciting as the world we're shaping")}
+            <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
+              {t('careers_section.heading', 'Build your future with Kangqore')}
             </h2>
             
-            <p className="text-gray-300 text-base md:text-lg leading-relaxed max-w-xl font-normal">
-              {t('careers_section.description', 'Grow personally and professionally in a global company that helps you unlock your full potential. The next-generation AI-first, digital-first, cloud-first partner.')}
+            <p className="text-lg text-gray-400 font-medium mb-8 max-w-md leading-[1.6]">
+              {t('careers_section.description', 'The next-generation AI-first, digital-first, cloud-first partner, we stand at the forefront of business evolution.')}
             </p>
             
             <div>
               <a 
                 href="/careers" 
-                className="inline-flex items-center gap-3 px-8 py-4 bg-purple-600 hover:bg-purple-500 rounded-full font-medium text-white transition-all duration-300 shadow-[0_0_25px_rgba(147,51,234,0.4)] hover:scale-105"
+                className="group inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-semibold text-[15px] hover:bg-gray-100 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300"
               >
-                {t('careers_section.cta', 'Join us')} <ArrowUpRight className="w-5 h-5" />
+                {t('careers_section.cta', 'Explore Careers')}
+                <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
             </div>
           </motion.div>
