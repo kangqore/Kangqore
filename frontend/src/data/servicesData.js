@@ -924,23 +924,39 @@ export const servicesData = {
     capabilityAreas: [
       {
         title: 'Managing AI & GenAI Solution Quality',
-        desc: 'Data validation, model testing, and bias detection frameworks that ensure high-quality AI outputs.',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Data validation, model testing, and bias detection frameworks that ensure high-quality, hallucination-free AI outputs.',
         items: ['Data Validation Pipelines', 'Model Quality Assurance', 'Bias & Hallucination Controls', 'Drift Detection']
       },
       {
         title: 'Establishing Ethical AI Guidelines',
-        desc: 'Fairness, accountability, transparency, and explainable AI controls aligned with human values.',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Fairness, accountability, transparency, and explainable AI controls aligned with human values and organizational principles.',
         items: ['Ethical AI Principles', 'Transparency Standards', 'Responsible GenAI', 'Explainability Controls']
       },
       {
-        title: 'Enabling Model Governance',
-        desc: 'Model versioning, lineage tracking, approval workflows, and lifecycle management.',
-        items: ['Model Registries', 'Approval Gates', 'Lineage Tracking', 'Safe Rollback & Retirement']
+        title: 'Enabling Model & Agent Governance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Centralized model registries, agent behavior limits, version control, approval gates, and lifecycle management.',
+        items: ['Model & Agent Registries', 'Approval & Release Gates', 'Lineage & Behavior Tracking', 'Safe Rollback & Retirement']
       },
       {
-        title: 'Navigating Compliance & Risk',
-        desc: 'Alignment with global regulations (EU AI Act, GDPR, HIPAA) and enterprise risk management.',
-        items: ['Regulatory Alignment', 'Data Masking & PII', 'Audit Logging', 'Risk Mitigation']
+        title: 'Navigating Regulatory Compliance & Risk',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Complete alignment with global regulations (EU AI Act, NIST AI RMF, ISO/IEC 42001, GDPR) and enterprise risk management.',
+        items: ['EU AI Act & Regulatory Alignment', 'Data Masking & PII Protection', 'Audit Trail Logging', 'Risk Classification & Mitigation']
+      },
+      {
+        title: 'AI Security, Privacy & Data Protection',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Zero-trust security controls, model asset protection, inference pipeline security, and encrypted data sovereignty.',
+        items: ['Zero-Trust Access Controls', 'Model & Prompt Injection Shield', 'Inference Pipeline Security', 'Data Privacy & Encryption']
+      },
+      {
+        title: 'Continuous Governance Operations & Audit Readiness',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Automated policy enforcement, real-time evidence generation, continuous SLA monitoring, and instant audit readiness.',
+        items: ['Automated Policy Enforcement', 'Real-Time Evidence Packaging', 'SLA & Observability Monitoring', 'Continuous Audit Readiness']
       }
     ],
     whatIsEyebrow: 'What AI Governance services does Kangqore offer?',
