@@ -735,108 +735,111 @@ const featureMicros   = service.featureMicros
                     </defs>
 
                     {/* ── TOP SYSTEM STATUS BANNER ── */}
-                    <g transform="translate(140, 16)">
-                      <rect x="0" y="0" width="260" height="22" rx="11" fill="#080c14" stroke="#00c875" strokeWidth="1" strokeOpacity="0.4" />
+                    <g transform="translate(130, 6)">
+                      <rect x="0" y="0" width="280" height="22" rx="11" fill="#080c14" stroke="#00c875" strokeWidth="1" strokeOpacity="0.5" />
                       <circle cx="16" cy="11" r="3.5" fill="#00c875" filter="url(#glow-green-gov)" />
-                      <text x="28" y="14" fill="#00c875" fontSize="7.5" fontWeight="bold" fontFamily="monospace" letterSpacing="0.8">eQORE™ :: CONTINUOUS GOVERNANCE ACTIVE</text>
+                      <text x="28" y="14.5" fill="#00c875" fontSize="7.5" fontWeight="bold" fontFamily="monospace" letterSpacing="0.8">eQORE™ :: CONTINUOUS AI GOVERNANCE ENGINE</text>
                     </g>
 
+                    {/* ── COLUMN HEADERS ── */}
+                    <text x="75" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="7.5" fontFamily="monospace" letterSpacing="0.8">GOVERNANCE INPUTS</text>
+                    <text x="270" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="7.5" fontFamily="monospace" letterSpacing="0.8">eQORE™ GOVERNANCE KERNEL</text>
+                    <text x="470" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="7.5" fontFamily="monospace" letterSpacing="0.8">COMPLIANCE OUTCOME</text>
+
                     {/* ── LEFT: INPUT STREAM CAPSULES ── */}
-                    <text x="75" y="48" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.8">GOVERNANCE INPUTS</text>
-                    
                     {/* Input 1: Prompts */}
                     <g transform="translate(20, 56)">
-                      <rect x="0" y="0" width="110" height="26" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
-                      <circle cx="14" cy="13" r="3" fill="#f59e0b" />
-                      <text x="24" y="16" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace" fontWeight="bold">MODEL PROMPTS</text>
+                      <rect x="0" y="0" width="110" height="25" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
+                      <circle cx="12" cy="12.5" r="3" fill="#f59e0b" />
+                      <text x="22" y="15.5" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace" fontWeight="bold">MODEL PROMPTS</text>
                     </g>
                     {/* Input 2: Agent Actions */}
                     <g transform="translate(20, 88)">
-                      <rect x="0" y="0" width="110" height="26" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
-                      <circle cx="14" cy="13" r="3" fill="#ea580c" />
-                      <text x="24" y="16" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace" fontWeight="bold">AGENT ACTIONS</text>
+                      <rect x="0" y="0" width="110" height="25" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
+                      <circle cx="12" cy="12.5" r="3" fill="#ea580c" />
+                      <text x="22" y="15.5" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace" fontWeight="bold">AGENT ACTIONS</text>
                     </g>
                     {/* Input 3: RAG / Context */}
                     <g transform="translate(20, 120)">
-                      <rect x="0" y="0" width="110" height="26" rx="6" fill="#080c14" stroke="url(#gov-cyan)" strokeWidth="1.2" strokeOpacity="0.8"/>
-                      <circle cx="14" cy="13" r="3" fill="#00f0ff" />
-                      <text x="24" y="16" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace" fontWeight="bold">RAG / CONTEXT</text>
+                      <rect x="0" y="0" width="110" height="25" rx="6" fill="#080c14" stroke="url(#gov-cyan)" strokeWidth="1.2" strokeOpacity="0.8"/>
+                      <circle cx="12" cy="12.5" r="3" fill="#00f0ff" />
+                      <text x="22" y="15.5" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace" fontWeight="bold">RAG / CONTEXT</text>
                     </g>
                     {/* Input 4: 3rd Party Models */}
                     <g transform="translate(20, 152)">
-                      <rect x="0" y="0" width="110" height="26" rx="6" fill="#080c14" stroke="url(#gov-purple)" strokeWidth="1.2" strokeOpacity="0.8"/>
-                      <circle cx="14" cy="13" r="3" fill="#a78bfa" />
-                      <text x="24" y="16" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace" fontWeight="bold">3RD PARTY LLMS</text>
+                      <rect x="0" y="0" width="110" height="25" rx="6" fill="#080c14" stroke="url(#gov-purple)" strokeWidth="1.2" strokeOpacity="0.8"/>
+                      <circle cx="12" cy="12.5" r="3" fill="#a78bfa" />
+                      <text x="22" y="15.5" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace" fontWeight="bold">3RD PARTY LLMS</text>
                     </g>
 
-                    {/* Connecting input paths to central engine */}
-                    <path d="M 130 69 C 160 69, 175 117, 196 117" stroke="url(#gov-gold)" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.7" markerEnd="url(#diag-arrow-cyan-gov)" />
-                    <path d="M 130 101 L 196 117" stroke="url(#gov-gold)" strokeWidth="1.5" strokeOpacity="0.9" markerEnd="url(#diag-arrow-cyan-gov)" />
-                    <path d="M 130 133 L 196 117" stroke="url(#gov-cyan)" strokeWidth="1.5" strokeOpacity="0.9" markerEnd="url(#diag-arrow-cyan-gov)" />
-                    <path d="M 130 165 C 160 165, 175 117, 196 117" stroke="url(#gov-purple)" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.7" markerEnd="url(#diag-arrow-cyan-gov)" />
+                    {/* Connecting input paths to central engine (4 distinct entry points on circle) */}
+                    <path d="M 130 68.5 C 160 68.5, 180 92, 209 95" stroke="url(#gov-gold)" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.7" markerEnd="url(#diag-arrow-cyan-gov)" />
+                    <path d="M 130 100.5 L 208 112" stroke="url(#gov-gold)" strokeWidth="1.5" strokeOpacity="0.9" markerEnd="url(#diag-arrow-cyan-gov)" />
+                    <path d="M 130 132.5 L 208 138" stroke="url(#gov-cyan)" strokeWidth="1.5" strokeOpacity="0.9" markerEnd="url(#diag-arrow-cyan-gov)" />
+                    <path d="M 130 164.5 C 160 164.5, 180 155, 209 155" stroke="url(#gov-purple)" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.7" markerEnd="url(#diag-arrow-cyan-gov)" />
 
                     {/* ── CENTER: eQORE™ GOVERNANCE ENGINE KERNEL ── */}
-                    <text x="270" y="48" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.8">eQORE™ GOVERNANCE KERNEL</text>
-                    
                     {/* Outer Orbit Shield */}
-                    <circle cx="270" cy="117" r="70" fill="#050810" stroke="url(#gov-purple)" strokeWidth="1.5" filter="url(#glow-purple-gov)" />
+                    <circle cx="270" cy="125" r="62" fill="#050810" stroke="url(#gov-purple)" strokeWidth="1.5" filter="url(#glow-purple-gov)" />
                     {/* Inner Dashed Radar */}
-                    <circle cx="270" cy="117" r="52" fill="#090d1a" stroke="#00f0ff" strokeWidth="1" strokeDasharray="5 3" />
-                    <circle cx="270" cy="117" r="36" fill="none" stroke="white" strokeWidth="0.8" strokeOpacity="0.15" />
+                    <circle cx="270" cy="125" r="46" fill="#090d1a" stroke="#00f0ff" strokeWidth="1" strokeDasharray="5 3" />
+                    <circle cx="270" cy="125" r="30" fill="none" stroke="white" strokeWidth="0.8" strokeOpacity="0.15" />
                     
                     {/* Hexagon Core Engine Chip */}
-                    <g transform="translate(248, 95)">
-                      <rect x="0" y="0" width="44" height="44" rx="10" fill="#090e18" stroke="url(#gov-cyan)" strokeWidth="1.5" filter="url(#glow-cyan-gov)" />
-                      <path d="M 22 8 L 36 15 L 36 29 L 22 36 L 8 29 L 8 15 Z" fill="none" stroke="#00f0ff" strokeWidth="1.4" />
-                      <circle cx="22" cy="22" r="4" fill="#00f0ff" filter="url(#glow-cyan-gov)" />
+                    <g transform="translate(250, 105)">
+                      <rect x="0" y="0" width="40" height="40" rx="9" fill="#090e18" stroke="url(#gov-cyan)" strokeWidth="1.5" filter="url(#glow-cyan-gov)" />
+                      <path d="M 20 7 L 33 14 L 33 27 L 20 34 L 7 27 L 7 14 Z" fill="none" stroke="#00f0ff" strokeWidth="1.4" />
+                      <circle cx="20" cy="20.5" r="3.5" fill="#00f0ff" filter="url(#glow-cyan-gov)" />
                     </g>
 
-                    {/* Satellites on orbit */}
-                    <g transform="translate(270, 47)">
-                      <circle cx="0" cy="0" r="4" fill="#7f53f9" />
-                      <text x="0" y="-7" textAnchor="middle" fill="#a78bfa" fontSize="6.5" fontWeight="bold" fontFamily="monospace">RISK</text>
+                    {/* Satellites on orbit — zero overlap */}
+                    {/* Top: RISK TIER */}
+                    <g transform="translate(270, 63)">
+                      <circle cx="0" cy="0" r="3.5" fill="#7f53f9" />
+                      <text x="0" y="-7" textAnchor="middle" fill="#a78bfa" fontSize="6.5" fontWeight="bold" fontFamily="monospace">RISK TIER</text>
                     </g>
-                    <g transform="translate(340, 117)">
-                      <circle cx="0" cy="0" r="4" fill="#00f0ff" />
-                      <text x="8" y="2" fill="#00f0ff" fontSize="6.5" fontWeight="bold" fontFamily="monospace">BIAS</text>
+                    {/* Right: BIAS SHIELD */}
+                    <g transform="translate(332, 125)">
+                      <circle cx="0" cy="0" r="3.5" fill="#00f0ff" />
+                      <text x="7" y="2.5" fill="#00f0ff" fontSize="6.5" fontWeight="bold" fontFamily="monospace">BIAS SHIELD</text>
                     </g>
+                    {/* Bottom: AUDIT LEDGER */}
                     <g transform="translate(270, 187)">
-                      <circle cx="0" cy="0" r="4" fill="#00c875" />
-                      <text x="0" y="11" textAnchor="middle" fill="#00c875" fontSize="6.5" fontWeight="bold" fontFamily="monospace">AUDIT</text>
+                      <circle cx="0" cy="0" r="3.5" fill="#00c875" />
+                      <text x="0" y="11" textAnchor="middle" fill="#00c875" fontSize="6.5" fontWeight="bold" fontFamily="monospace">AUDIT LEDGER</text>
                     </g>
-                    <g transform="translate(200, 117)">
-                      <circle cx="0" cy="0" r="4" fill="#ea580c" />
-                      <text x="-8" y="2" textAnchor="end" fill="#fbbf24" fontSize="6.5" fontWeight="bold" fontFamily="monospace">POLICY</text>
+                    {/* Left: POLICY GATE */}
+                    <g transform="translate(208, 125)">
+                      <circle cx="0" cy="0" r="3.5" fill="#ea580c" />
+                      <text x="-7" y="-5" textAnchor="end" fill="#fbbf24" fontSize="6.5" fontWeight="bold" fontFamily="monospace">POLICY GATE</text>
                     </g>
 
                     {/* Connecting output path from center to right */}
-                    <path d="M 340 117 L 415 117" stroke="url(#gov-green)" strokeWidth="2.5" filter="url(#glow-green-gov)" markerEnd="url(#diag-arrow-green-gov)" />
+                    <path d="M 332 125 L 415 125" stroke="url(#gov-green)" strokeWidth="2.5" filter="url(#glow-green-gov)" markerEnd="url(#diag-arrow-green-gov)" />
 
                     {/* ── RIGHT: AUDIT VERIFIED COMPLIANCE LEDGER ── */}
-                    <text x="470" y="48" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.8">COMPLIANCE OUTCOME</text>
-                    
-                    <g transform="translate(415, 56)">
-                      <rect x="0" y="0" width="112" height="124" rx="10" fill="#080d16" stroke="url(#gov-green)" strokeWidth="1.5" filter="url(#glow-green-gov)" />
+                    <g transform="translate(415, 54)">
+                      <rect x="0" y="0" width="112" height="136" rx="10" fill="#080d16" stroke="url(#gov-green)" strokeWidth="1.5" filter="url(#glow-green-gov)" />
                       
                       {/* Badge Header */}
-                      <rect x="8" y="8" width="96" height="16" rx="4" fill="#00c875" fillOpacity="0.15" />
-                      <text x="56" y="19" textAnchor="middle" fill="#00c875" fontSize="7.5" fontWeight="black" fontFamily="monospace">VERIFIED PASSPORT</text>
+                      <rect x="8" y="8" width="96" height="18" rx="5" fill="#00c875" fillOpacity="0.15" />
+                      <text x="56" y="20.5" textAnchor="middle" fill="#00c875" fontSize="7.5" fontWeight="black" fontFamily="monospace">VERIFIED PASSPORT</text>
 
                       {/* Checklist */}
-                      <text x="14" y="40" fill="#00c875" fontSize="8" fontWeight="bold">✓</text>
-                      <text x="24" y="40" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">EU AI Act Aligned</text>
+                      <text x="12" y="42" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="42" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">EU AI Act Aligned</text>
 
-                      <text x="14" y="58" fill="#00c875" fontSize="8" fontWeight="bold">✓</text>
-                      <text x="24" y="58" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Bias &lt; 0.01 Threshold</text>
+                      <text x="12" y="60" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="60" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Bias &lt; 0.01 Threshold</text>
 
-                      <text x="14" y="76" fill="#00c875" fontSize="8" fontWeight="bold">✓</text>
-                      <text x="24" y="76" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Zero-Trust Shielded</text>
+                      <text x="12" y="78" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="78" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Zero-Trust Shielded</text>
 
-                      <text x="14" y="94" fill="#00c875" fontSize="8" fontWeight="bold">✓</text>
-                      <text x="24" y="94" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Audit Trail Logged</text>
+                      <text x="12" y="96" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="96" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Audit Trail Logged</text>
 
-                      <text x="14" y="112" fill="#00c875" fontSize="8" fontWeight="bold">✓</text>
-                      <text x="24" y="112" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Kill-Switch Ready</text>
+                      <text x="12" y="114" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="114" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Kill-Switch Ready</text>
                     </g>
 
                     {/* ── BOTTOM: 4-STAGE GOVERNANCE PIPELINE BAR ── */}
