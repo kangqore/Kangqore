@@ -964,7 +964,7 @@ export const servicesData = {
     keyFeatures: ['Predictive modeling', 'Statistical analysis', 'Feature engineering', 'Model deployment', 'Data visualization'],
     relatedServiceSlugs: ['mlops', 'analytics', 'big-data'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80',
+    image: '/images/capabilities/agentic-governed-autonomy.png',
     whatIsTitle: 'Data Science & AI',
     whatIsTitleLine2: 'That Turns Data Into',
     whatIsHighlight: 'Predictable Revenue.',

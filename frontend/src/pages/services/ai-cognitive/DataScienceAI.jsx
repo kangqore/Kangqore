@@ -274,7 +274,7 @@ const DataScienceAI = () => {
     capabilities: [
       {
         title: 'Data Engineering & Modern Platforms',
-        bgImage: '/images/capabilities/data-analytics.png',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
           { heading: 'Real-time & batch pipelines', description: 'Design and deploy scalable data pipelines for both real-time streaming and batch processing workloads.' },
           { heading: 'Data lakehouse & warehouse design', description: 'Build modern lakehouse architectures that unify structured and unstructured data for analytics and ML.' },
@@ -284,7 +284,7 @@ const DataScienceAI = () => {
       },
       {
         title: 'Machine Learning & Predictive Systems',
-        bgImage: '/images/capabilities/education.png',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
           { heading: 'Forecasting & optimization models', description: 'Build predictive models for demand forecasting, resource optimization, and strategic planning.' },
           { heading: 'Classification & anomaly detection', description: 'Develop classifiers and anomaly detectors for fraud prevention, quality control, and risk assessment.' },
@@ -294,7 +294,7 @@ const DataScienceAI = () => {
       },
       {
         title: 'Generative AI & Intelligent Assistants',
-        bgImage: '/images/capabilities/ai-cognitive.png',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
           { heading: 'RAG systems & enterprise copilots', description: 'Build retrieval-augmented generation systems that ground AI responses in your enterprise knowledge.' },
           { heading: 'Knowledge retrieval engines', description: 'Deploy intelligent search and retrieval systems that surface relevant information instantly.' },
@@ -304,7 +304,7 @@ const DataScienceAI = () => {
       },
       {
         title: 'MLOps & Model Lifecycle Management',
-        bgImage: '/images/capabilities/ai-cognitive.png',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
           { heading: 'CI/CD for ML', description: 'Implement continuous integration and deployment pipelines specifically designed for machine learning workflows.' },
           { heading: 'Model versioning & rollback', description: 'Manage model versions with full lineage tracking and instant rollback capabilities.' },
@@ -314,7 +314,7 @@ const DataScienceAI = () => {
       },
       {
         title: 'AI Governance & Responsible AI',
-        bgImage: '/images/capabilities/ai-cognitive.png',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
           { heading: 'Ethical AI policies', description: 'Establish organizational policies and frameworks for ethical AI development and deployment.' },
           { heading: 'Bias detection & mitigation', description: 'Identify and mitigate bias in training data and model predictions to ensure fair outcomes.' },
