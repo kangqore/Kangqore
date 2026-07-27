@@ -1,20 +1,19 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, 
-  Mic, MicOff, Menu, History, Plus, LogOut, ArrowLeft, ShieldAlert,
-  Globe, Laptop, Sparkles, User, LogIn, ChevronLeft, Trash2, Minimize2, Maximize2
+  Send, X, ChevronRight, RefreshCw, Volume2, VolumeX, 
+  Mic, Menu, History, Plus, LogOut, ArrowLeft, ShieldAlert,
+  Sparkles, User, LogIn, ChevronLeft, Trash2, Minimize2
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useConcierge, CONCIERGE_SUGGESTED_PROMPTS, stripSystemMetadata } from '../hooks/useConcierge';
 import { useAuth } from '../context/AuthContext';
 import CitationBadge from '../components/concierge/CitationBadge';
-import { parseSchedulingRequest } from '../hooks/nlpSchedulingParser';
 
 // Helper to sanitize markdown bold & links for TTS
 function cleanTextForSpeech(text) {
   if (!text) return '';
   return stripSystemMetadata(text)
-    .replace(/\[CHUNK:[a-zA-Z0-9_\-]+\]/g, '') 
+    .replace(/\[CHUNK:[a-zA-Z0-9_-]+\]/g, '') 
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') 
     .replace(/\*\*(.*?)\*\*/g, '$1') 
     .replace(/`(.*?)`/g, '$1') 
@@ -25,9 +24,9 @@ function cleanTextForSpeech(text) {
 // Format markdown links & bold text beautifully for premium output
 function renderFormattedText(text) {
   if (!text) return text;
-  const cleanText = stripSystemMetadata(text).replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '');
+  const cleanText = stripSystemMetadata(text).replace(/\s*\[CHUNK:[A-Za-z0-9_#-]+\]/g, '');
   const boldParts = cleanText.split(/(\*\*.*?\*\*)/g);
-  
+
   return boldParts.flatMap((bPart, j) => {
     if (bPart.startsWith('**') && bPart.endsWith('**')) {
       const boldInner = bPart.slice(2, -2);
@@ -71,7 +70,7 @@ function renderFormattedText(text) {
 }
 
 const EQoreAIConsole = () => {
-  const { user, login, signup, logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
